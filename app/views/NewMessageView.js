@@ -178,38 +178,42 @@ class NewMessageView extends React.Component {
 			maxUsers, theme, serverVersion, createTeamPermission, user, createDirectMessagePermission, createPublicChannelPermission, createPrivateChannelPermission, createDiscussionPermission
 		} = this.props;
 
-		const hasPermissionToCreateTeam = createTeamPermission.includes(...user.roles);
-		const hasPermissionToCreateDirectMessage = createDirectMessagePermission.includes(...user.roles);
-		const hasPermissionToCreatePublicChannel = createPublicChannelPermission.includes(...user.roles);
-		const hasPermissionToCreatePrivateChannel = createPrivateChannelPermission.includes(...user.roles);
-		const hasPermissionToCreateDiscussion = createDiscussionPermission.includes(...user.roles);
-
+		const permissionsToCreate = RocketChat.userHasRolePermission(
+			[
+				createPublicChannelPermission,
+				createPrivateChannelPermission,
+				createTeamPermission,
+				createDirectMessagePermission,
+				createDiscussionPermission
+			],
+			user
+		);
 
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<View style={styles.buttonContainer}>
-					{(hasPermissionToCreatePrivateChannel || hasPermissionToCreatePublicChannel) ? this.renderButton({
+					{(permissionsToCreate[0] || permissionsToCreate[1]) ? this.renderButton({
 						onPress: this.createChannel,
 						title: I18n.t('Create_Channel'),
 						icon: 'channel-public',
 						testID: 'new-message-view-create-channel',
 						first: true
 					}) : null}
-					{(compareServerVersion(serverVersion, '3.13.0', methods.greaterThanOrEqualTo) && hasPermissionToCreateTeam)
+					{(compareServerVersion(serverVersion, '3.13.0', methods.greaterThanOrEqualTo) && permissionsToCreate[2])
 						? (this.renderButton({
 							onPress: this.createTeam,
 							title: I18n.t('Create_Team'),
 							icon: 'teams',
 							testID: 'new-message-view-create-team'
 						})) : null}
-					{(maxUsers > 2 && hasPermissionToCreateDirectMessage) ? this.renderButton({
+					{(maxUsers > 2 && permissionsToCreate[3]) ? this.renderButton({
 						onPress: this.createGroupChat,
 						title: I18n.t('Create_Direct_Messages'),
 						icon: 'message',
 						testID: 'new-message-view-create-direct-message'
 					}) : null}
-					{hasPermissionToCreateDiscussion ? this.renderButton({
+					{permissionsToCreate[4] ? this.renderButton({
 						onPress: this.createDiscussion,
 						title: I18n.t('Create_Discussion'),
 						icon: 'discussions',

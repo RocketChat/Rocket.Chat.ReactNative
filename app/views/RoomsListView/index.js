@@ -351,13 +351,17 @@ class RoomsListView extends React.Component {
 
 		let count = 0;
 
-		const hasPermissionToCreateTeam = createTeamPermission?.includes(...user.roles);
-		const hasPermissionToCreateDirectMessage = createDirectMessagePermission?.includes(...user.roles);
-		const hasPermissionToCreatePublicChannel = createPublicChannelPermission?.includes(...user.roles);
-		const hasPermissionToCreatePrivateChannel = createPrivateChannelPermission?.includes(...user.roles);
-		const hasPermissionToCreateDiscussion = createDiscussionPermission?.includes(...user.roles);
+		const permissionsToCreate = RocketChat.userHasRolePermission(
+			[
+				createPublicChannelPermission,
+				createPrivateChannelPermission,
+				createTeamPermission,
+				createDirectMessagePermission,
+				createDiscussionPermission
+			], user
+		);
 
-		[hasPermissionToCreateTeam, hasPermissionToCreateDirectMessage, hasPermissionToCreateDiscussion, hasPermissionToCreatePrivateChannel, hasPermissionToCreatePublicChannel].map((val => (val ? count += 1 : null)));
+		permissionsToCreate.map((val => (val ? count += 1 : null)));
 
 
 		return {

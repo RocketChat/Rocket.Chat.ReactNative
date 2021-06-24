@@ -1286,6 +1286,9 @@ const RocketChat = {
 		// RC 0.65.0
 		return this.sdk.get(`${ this.roomTypeToApiType(type) }.roles`, { roomId });
 	},
+	userHasRolePermission(permissionsArray, user) {
+		return permissionsArray.map(permission => permission.includes(...user.roles));
+	},
 	/**
 	 * Permissions: array of permissions' roles from redux. Example: [['owner', 'admin'], ['leader']]
 	 * Returns an array of boolean for each permission from permissions arg

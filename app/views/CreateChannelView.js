@@ -24,6 +24,7 @@ import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';
 import { logEvent, events } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
+import RocketChat from '../lib/rocketchat';
 
 const styles = StyleSheet.create({
 	container: {
@@ -219,15 +220,19 @@ class CreateChannelView extends React.Component {
 		const { type, isTeam } = this.state;
 		const { createPublicChannelPermission, createPrivateChannelPermission, user } = this.props;
 
-		const hasPermissionToCreatePublicChannel = createPublicChannelPermission.includes(...user.roles);
-		const hasPermissionToCreatePrivateChannel = createPrivateChannelPermission.includes(...user.roles);
-
 		let count = 0;
-		[hasPermissionToCreatePrivateChannel, hasPermissionToCreatePublicChannel].map((val => (val ? count += 1 : null)));
+		const permissionsToCreate = RocketChat.userHasRolePermission(
+			[
+				createPublicChannelPermission,
+				createPrivateChannelPermission
+			],
+			user
+		);
+		permissionsToCreate.map((val => (val ? count += 1 : null)));
 
 		return this.renderSwitch({
 			id: 'type',
-			value: hasPermissionToCreatePrivateChannel ? type : false,
+			value: permissionsToCreate[1] ? type : false,
 			disabled: count <= 1,
 			label: isTeam ? 'Private_Team' : 'Private_Channel',
 			onValueChange: (value) => {
