@@ -1,4 +1,3 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -386,7 +385,7 @@ class RoomsListView extends React.Component {
 			},
 			headerRight: () => (searching ? null : (
 				<HeaderButton.Container>
-					 {count > 0 ? (
+					{count > 0 ? (
 						<HeaderButton.Item
 							iconName='create'
 							onPress={this.goToNewMessage}
