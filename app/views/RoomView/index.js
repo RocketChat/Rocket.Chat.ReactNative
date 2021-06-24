@@ -69,6 +69,7 @@ import LoadMore from './LoadMore';
 import RoomServices from './services';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
+import { goRoom } from '../../utils/goRoom';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -832,7 +833,7 @@ class RoomView extends React.Component {
 
 	navToThread = async(item) => {
 		const { roomUserId } = this.state;
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 
 		if (item.tmid) {
 			let name = item.tmsg;
@@ -841,6 +842,12 @@ class RoomView extends React.Component {
 			}
 			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
+			}
+
+			if (isMasterDetail) {
+				return navigation.push('RoomView', {
+					rid: this.rid, tmid: item.tmid, name, t: 'thread', roomUserId, jumpToMessageId: item.id
+				});
 			}
 
 			return Navigation.reset({
@@ -883,7 +890,14 @@ class RoomView extends React.Component {
 	}
 
 	navToRoom = async(item) => {
+		const { navigation, isMasterDetail } = this.props;
 		const roomInfo = await getRoomInfo(item.rid);
+
+		if (isMasterDetail) {
+			return goRoom({
+				item: roomInfo, isMasterDetail, navigationMethod: navigation.push, jumpToMessageId: item.id
+			});
+		}
 
 		return Navigation.reset({
 			index: 1,
