@@ -199,5 +199,8 @@ export default {
 	},
 	Jitsi_Enable_Teams: {
 		type: 'valueAsBoolean'
+	},
+	Jitsi_Enable_Channels: {
+		type: 'valuesAsBoolean'
 	}
 };
