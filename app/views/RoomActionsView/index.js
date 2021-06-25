@@ -659,10 +659,10 @@ class RoomActionsView extends React.Component {
 		const { room } = this.state;
 		const { jitsiEnabled, jitsiEnableTeams, jitsiEnableChannels } = this.props;
 
-		const isJitsiDisableForTeams = room.teamMain && !jitsiEnableTeams;
-		const isJitsiDisableForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
+		const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
+		const isJitsiDisabledForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
 
-		if (!jitsiEnabled || isJitsiDisableForTeams || isJitsiDisableForChannels) {
+		if (!jitsiEnabled || isJitsiDisabledForTeams || isJitsiDisabledForChannels) {
 			return null;
 		}
 
