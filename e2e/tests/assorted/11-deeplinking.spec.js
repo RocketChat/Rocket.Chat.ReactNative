@@ -35,7 +35,7 @@ describe('Deep linking', () => {
 				delete: true,
 				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=123${amp}token=abc`),
 			});
-			if(device.getPlatform() == 'android') await prepareAndroid();
+			await prepareAndroid();
 			await waitFor(element(by.text('You\'ve been logged out by the server. Please log in again.'))).toExist().withTimeout(10000); // TODO: we need to improve this message
 		});
 

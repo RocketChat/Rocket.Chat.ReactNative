@@ -177,7 +177,6 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             setProguardFiles([getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'])
-            proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
             signingConfig signingConfigs.release
             if (!isFoss) {
                 firebaseCrashlytics {
@@ -206,6 +205,10 @@ android {
             dimension = "app"
             buildConfigField "boolean", "IS_OFFICIAL", "false"
         }
+        e2e {
+            dimension = "app"
+            buildConfigField "boolean", "IS_OFFICIAL", "true"
+        }
         foss {
             dimension = "type"
             buildConfigField "boolean", "FDROID_BUILD", "true"
@@ -231,6 +234,16 @@ android {
         }
         officialPlayRelease {
             java.srcDirs = ['src/main/java', 'src/play/java']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        e2ePlayDebug {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            res.srcDirs = ['src/official/res']
+            manifest.srcFile 'src/play/AndroidManifest.xml'
+        }
+        e2ePlayRelease {
+            java.srcDirs = ['src/main/java', 'src/play/java']
+            res.srcDirs = ['src/official/res']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
     }

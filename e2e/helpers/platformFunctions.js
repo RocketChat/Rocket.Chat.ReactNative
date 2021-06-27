@@ -17,7 +17,10 @@ function runCommand(command) {
     });
 }
 
+// The Spell Checker and the autofill service introduce additional flakiness, and appear over other elements.
+// So, we disable them before running the tests.
 exports.prepareAndroid = async () => {
+    if(device.getPlatform() !== 'android') return;
     await runCommand('adb shell settings put secure spell_checker_enabled 0');
     await runCommand('adb shell settings put secure autofill_service null');
 }
@@ -31,7 +34,7 @@ exports.launchWithLanguage = async (language, countryCode="US", launchArgs=defau
     {
         await runCommand('adb root');
         await runCommand(`adb shell "setprop persist.sys.locale ${language}-${countryCode}; setprop ctl.restart zygote"`);
-        await sleep(5000);
+        await sleep(20000);
         await device.launchApp(launchArgs);
     }
     else

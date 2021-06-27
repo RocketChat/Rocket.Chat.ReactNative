@@ -19,7 +19,7 @@ async function navigateToRoom(search) {
 describe('Join room from directory', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		if(device.getPlatform() == 'android') await prepareAndroid();
+		await prepareAndroid();
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 	});

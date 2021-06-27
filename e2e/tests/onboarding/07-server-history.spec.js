@@ -8,7 +8,7 @@ const data = require('../../data');
 describe('Server history', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		if(device.getPlatform() == 'android') await prepareAndroid();
+		await prepareAndroid();
 	});
 
 	describe('Usage', () => {

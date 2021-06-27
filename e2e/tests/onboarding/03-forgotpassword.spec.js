@@ -8,7 +8,7 @@ const { prepareAndroid } = require('../../helpers/platformFunctions');
 describe('Forgot password screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		if(device.getPlatform() == 'android') await prepareAndroid();
+		await prepareAndroid();
 		await navigateToLogin();
 		await element(by.id('login-view-forgot-password')).tap();
 		await waitFor(element(by.id('forgot-password-view'))).toExist().withTimeout(2000);

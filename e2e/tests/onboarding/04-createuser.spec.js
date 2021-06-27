@@ -8,7 +8,7 @@ const data = require('../../data');
 describe('Create user screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		if(device.getPlatform() == 'android') await prepareAndroid();
+		await prepareAndroid();
 		await navigateToRegister();
 	});
 

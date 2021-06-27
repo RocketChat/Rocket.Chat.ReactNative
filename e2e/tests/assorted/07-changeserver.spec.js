@@ -15,7 +15,7 @@ const reopenAndCheckServer = async(server) => {
 describe('Change server', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		if(device.getPlatform() == 'android') await prepareAndroid();
+		await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);

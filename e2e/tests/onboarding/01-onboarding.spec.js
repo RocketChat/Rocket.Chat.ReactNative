@@ -7,7 +7,7 @@ const { prepareAndroid } = require('../../helpers/platformFunctions');
 describe('Onboarding', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		if(device.getPlatform() == 'android') await prepareAndroid();
+		await prepareAndroid();
 		await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 	});
 

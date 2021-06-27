@@ -24,7 +24,7 @@ describe('Profile screen', () => {
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		if(device.getPlatform() == 'android') await prepareAndroid();
+		await prepareAndroid();
 		({ textInputType, scrollViewType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(profileChangeUser.username, profileChangeUser.password);

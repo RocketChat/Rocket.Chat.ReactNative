@@ -11,7 +11,7 @@ describe('Delete server', () => {
 	let scrollViewType, alertButtonType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		if(device.getPlatform() == 'android') await prepareAndroid();
+		await prepareAndroid();
 		({ alertButtonType, scrollViewType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);

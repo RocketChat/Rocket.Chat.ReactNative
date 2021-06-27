@@ -34,7 +34,7 @@ async function waitForLoading() {
 describe('Room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		if(device.getPlatform() == 'android') await prepareAndroid();
+		await prepareAndroid();
 		await navigateToLogin();
 		await login(data.adminUser, data.adminPassword);
 	});
