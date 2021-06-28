@@ -13,7 +13,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
-import { userTyping as userTypingAction } from '../../actions/room';
+import { userTyping as userTypingAction, userRecording as userRecordingAction, userUploading as userUploadingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
@@ -97,6 +97,8 @@ class MessageBox extends Component {
 		editRequest: PropTypes.func.isRequired,
 		onSubmit: PropTypes.func.isRequired,
 		typing: PropTypes.func,
+		recording: PropTypes.func,
+		uploading: PropTypes.func,
 		theme: PropTypes.string,
 		replyCancel: PropTypes.func,
 		showSend: PropTypes.bool,
@@ -689,19 +691,23 @@ class MessageBox extends Component {
 		this.setState({ showEmojiKeyboard: true });
 	}
 
-	recordingCallback = (recording) => {
-		this.setState({ recording });
+	recordingCallback = (isRecording) => {
+		const { rid, recording } = this.props;
+		this.setState({ recording: isRecording });
+		recording(rid, isRecording);
 	}
 
 	finishAudioMessage = async(fileInfo) => {
 		const {
-			rid, tmid, baseUrl: server, user
+			rid, tmid, baseUrl: server, user, uploading
 		} = this.props;
 
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
+					uploading(rid, true);
 					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
+					uploading(rid, false);
 				}
 			} catch (e) {
 				log(e);
@@ -1018,7 +1024,9 @@ const mapStateToProps = state => ({
 });
 
 const dispatchToProps = ({
-	typing: (rid, status) => userTypingAction(rid, status)
+	typing: (rid, status) => userTypingAction(rid, status),
+	uploading: (rid, status) => userUploadingAction(rid, status),
+	recording: (rid, status) => userRecordingAction(rid, status)
 });
 
 export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));

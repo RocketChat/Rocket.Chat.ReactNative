@@ -12,6 +12,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
+import { userUploading as userUploadingAction } from '../../actions/room';
 import Header from './Header';
 import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
@@ -153,7 +154,9 @@ class ShareView extends Component {
 		const {
 			attachments, room, text, thread
 		} = this.state;
-		const { navigation, server, user } = this.props;
+		const {
+			navigation, server, user, uploading
+		} = this.props;
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
@@ -167,6 +170,7 @@ class ShareView extends Component {
 		try {
 			// Send attachment
 			if (attachments.length) {
+				uploading(room.rid, true);
 				await Promise.all(attachments.map(({
 					filename: name,
 					mime: type,
@@ -194,12 +198,14 @@ class ShareView extends Component {
 					return Promise.resolve();
 				}));
 
+				uploading(room.rid, false);
 			// Send text message
 			} else if (text.length) {
 				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
 			}
 		} catch {
 			// Do nothing
+			uploading(room.rid, false);
 		}
 
 		// if it's share extension this should close
@@ -343,7 +349,8 @@ ShareView.propTypes = {
 	}),
 	server: PropTypes.string,
 	FileUpload_MediaTypeWhiteList: PropTypes.string,
-	FileUpload_MaxFileSize: PropTypes.string
+	FileUpload_MaxFileSize: PropTypes.string,
+	uploading: PropTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -353,4 +360,8 @@ const mapStateToProps = state => ({
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });
 
-export default connect(mapStateToProps)(withTheme(ShareView));
+const dispatchToProps = ({
+	uploading: (rid, status) => userUploadingAction(rid, status)
+});
+
+export default connect(mapStateToProps, dispatchToProps)(withTheme(ShareView));

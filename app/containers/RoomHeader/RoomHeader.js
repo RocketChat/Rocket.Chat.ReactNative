@@ -41,22 +41,58 @@ const styles = StyleSheet.create({
 	}
 });
 
+const UserActivity = React.memo(({ activity, singular, plural }) => {
+	const getUsersText = (action) => {
+		let usersText;
+		if (action.length === 2) {
+			usersText = action.join(` ${ I18n.t('and') } `);
+		} else {
+			usersText = action.join(', ');
+		}
+		return usersText;
+	};
+	if (!activity.length) {
+		return null;
+	}
+
+	return (
+		<Text>
+			<Text style={styles.typingUsers}>{getUsersText(activity)} </Text>
+			{ activity.length > 1 ? I18n.t(plural) : I18n.t(singular) }...
+		</Text>
+	);
+});
+
+UserActivity.propTypes = {
+	activity: PropTypes.array,
+	singular: PropTypes.string,
+	plural: PropTypes.string
+};
+
 const SubTitle = React.memo(({
-	usersTyping, subtitle, renderFunc, theme, scale
+	usersActivity, subtitle, renderFunc, theme, scale
 }) => {
 	const fontSize = getSubTitleSize(scale);
-	// typing
-	if (usersTyping.length) {
-		let usersText;
-		if (usersTyping.length === 2) {
-			usersText = usersTyping.join(` ${ I18n.t('and') } `);
-		} else {
-			usersText = usersTyping.join(', ');
-		}
+	const { typing, uploading, recording } = usersActivity;
+
+	if (typing.length) {
 		return (
 			<Text style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-				<Text style={styles.typingUsers}>{usersText} </Text>
-				{ usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing') }...
+				<UserActivity activity={typing} singular='is_typing' plural='are_typing' />
+			</Text>
+		);
+	}
+	if (recording.length) {
+		return (
+			<Text style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+				<UserActivity activity={recording} singular='is_recording' plural='are_recording' />
+			</Text>
+		);
+	}
+	if (uploading.length) {
+		return (
+			<Text style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+				<UserActivity activity={uploading} singular='is_uploading' plural='are_uploading' />
 			</Text>
 		);
 	}
@@ -83,7 +119,11 @@ const SubTitle = React.memo(({
 });
 
 SubTitle.propTypes = {
-	usersTyping: PropTypes.array,
+	usersActivity: PropTypes.shape({
+		typing: PropTypes.array,
+		recording: PropTypes.array,
+		uploading: PropTypes.array
+	}),
 	theme: PropTypes.string,
 	subtitle: PropTypes.string,
 	renderFunc: PropTypes.func,
@@ -128,13 +168,13 @@ HeaderTitle.propTypes = {
 };
 
 const Header = React.memo(({
-	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, onPress, theme, isGroupChat, teamMain, testID
+	title, subtitle, parentTitle, type, status, usersActivity, width, height, prid, tmid, onPress, theme, isGroupChat, teamMain, testID
 }) => {
 	const portrait = height > width;
 	let scale = 1;
 
 	if (!portrait && !tmid) {
-		if (usersTyping.length > 0 || subtitle) {
+		if (usersActivity.typing.length > 0 || subtitle) {
 			scale = 0.8;
 		}
 	}
@@ -172,7 +212,7 @@ const Header = React.memo(({
 				/>
 			</View>
 			<SubTitle
-				usersTyping={tmid ? [] : usersTyping}
+				usersActivity={usersActivity}
 				subtitle={subtitle}
 				theme={theme}
 				renderFunc={renderFunc}
@@ -193,7 +233,11 @@ Header.propTypes = {
 	teamMain: PropTypes.bool,
 	status: PropTypes.string,
 	theme: PropTypes.string,
-	usersTyping: PropTypes.array,
+	usersActivity: PropTypes.shape({
+		typing: PropTypes.array,
+		recording: PropTypes.array,
+		uploading: PropTypes.array
+	}),
 	isGroupChat: PropTypes.bool,
 	parentTitle: PropTypes.string,
 	onPress: PropTypes.func,
@@ -201,7 +245,7 @@ Header.propTypes = {
 };
 
 Header.defaultProps = {
-	usersTyping: []
+	usersActivity: { typing: [], recording: [], uploading: [] }
 };
 
 export default withTheme(Header);

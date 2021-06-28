@@ -7,7 +7,7 @@ import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../database';
 import reduxStore from '../../createStore';
-import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
+import { addUserActivity, removeUserActivity, clearUserActivity } from '../../../actions/usersActivity';
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
@@ -56,7 +56,7 @@ export default class RoomSubscription {
 				// do nothing
 			}
 		}
-		reduxStore.dispatch(clearUserTyping());
+		reduxStore.dispatch(clearUserActivity('USER_TYPING'));
 		this.removeListener(this.connectedListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
@@ -78,7 +78,7 @@ export default class RoomSubscription {
 	};
 
 	handleConnection = () => {
-		reduxStore.dispatch(clearUserTyping());
+		reduxStore.dispatch(clearUserActivity('USER_TYPING'));
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
 
@@ -87,20 +87,34 @@ export default class RoomSubscription {
 		if (this.rid !== _rid) {
 			return;
 		}
-		if (ev === 'typing') {
+		if (ev === 'user-activity') {
 			const { user } = reduxStore.getState().login;
 			const { UI_Use_Real_Name } = reduxStore.getState().settings;
 			const { rooms } = reduxStore.getState().room;
 			if (rooms[0] !== _rid) {
 				return;
 			}
-			const [name, typing] = ddpMessage.fields.args;
+			const [name, eventActive, activityType] = ddpMessage.fields.args;
+			let activity = 'USER_TYPING';
+			switch (activityType) {
+				case 'user-typing':
+					activity = 'USER_TYPING';
+					break;
+				case 'user-recording':
+					activity = 'USER_RECORDING';
+					break;
+				case 'user-uploading':
+					activity = 'USER_UPLOADING';
+					break;
+				default:
+					'USER_TYPING';
+			}
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
-				if (typing) {
-					reduxStore.dispatch(addUserTyping(name));
+				if (eventActive) {
+					reduxStore.dispatch(addUserActivity(name, activity));
 				} else {
-					reduxStore.dispatch(removeUserTyping(name));
+					reduxStore.dispatch(removeUserActivity(name, activity));
 				}
 			}
 		} else if (ev === 'deleteMessage') {

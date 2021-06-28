@@ -59,3 +59,19 @@ export function userTyping(rid, status = true) {
 		status
 	};
 }
+
+export function userRecording(rid, status = true) {
+	return {
+		type: types.ROOM.USER_RECORDING,
+		rid,
+		status
+	};
+}
+
+export function userUploading(rid, status = true) {
+	return {
+		type: types.ROOM.USER_UPLOADING,
+		rid,
+		status
+	};
+}

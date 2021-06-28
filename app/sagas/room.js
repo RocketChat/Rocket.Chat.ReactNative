@@ -14,18 +14,27 @@ import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
 
-const watchUserTyping = function* watchUserTyping({ rid, status }) {
+const watchUserActivity = function* watchUserActivity({ type, rid, status }) {
+	let activity = 'user-typing';
+	if (type === 'ROOM_USER_TYPING') {
+		activity = 'user-typing';
+	} else if (type === 'ROOM_USER_RECORDING') {
+		activity = 'user-recording';
+	} else if (type === 'ROOM_USER_UPLOADING') {
+		activity = 'user-uploading';
+	}
+
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
 		yield take(types.LOGIN.SUCCESS);
 	}
 
 	try {
-		yield RocketChat.emitTyping(rid, status);
+		yield RocketChat.emitUserActivity(rid, status, activity);
 
 		if (status) {
 			yield delay(5000);
-			yield RocketChat.emitTyping(rid, false);
+			yield RocketChat.emitUserActivity(rid, false, activity);
 		}
 	} catch (e) {
 		log(e);
@@ -150,7 +159,9 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 };
 
 const root = function* root() {
-	yield takeLatest(types.ROOM.USER_TYPING, watchUserTyping);
+	yield takeLatest(types.ROOM.USER_TYPING, watchUserActivity);
+	yield takeLatest(types.ROOM.USER_RECORDING, watchUserActivity);
+	yield takeLatest(types.ROOM.USER_UPLOADING, watchUserActivity);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
 	yield takeLatest(types.ROOM.CLOSE, handleCloseRoom);

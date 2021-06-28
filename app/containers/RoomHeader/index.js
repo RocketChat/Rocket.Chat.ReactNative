@@ -15,7 +15,11 @@ class RoomHeaderContainer extends Component {
 		prid: PropTypes.string,
 		tmid: PropTypes.string,
 		teamMain: PropTypes.bool,
-		usersTyping: PropTypes.string,
+		usersActivity: PropTypes.shape({
+			typing: PropTypes.array,
+			recording: PropTypes.array,
+			uploading: PropTypes.array
+		}),
 		status: PropTypes.string,
 		statusText: PropTypes.string,
 		connecting: PropTypes.bool,
@@ -32,7 +36,7 @@ class RoomHeaderContainer extends Component {
 
 	shouldComponentUpdate(nextProps) {
 		const {
-			type, title, subtitle, status, statusText, connecting, connected, onPress, usersTyping, width, height, teamMain
+			type, title, subtitle, status, statusText, connecting, connected, onPress, usersActivity, width, height, teamMain
 		} = this.props;
 		if (nextProps.type !== type) {
 			return true;
@@ -61,7 +65,7 @@ class RoomHeaderContainer extends Component {
 		if (nextProps.height !== height) {
 			return true;
 		}
-		if (!dequal(nextProps.usersTyping, usersTyping)) {
+		if (!dequal(nextProps.usersActivity, usersActivity)) {
 			return true;
 		}
 		if (nextProps.onPress !== onPress) {
@@ -86,7 +90,7 @@ class RoomHeaderContainer extends Component {
 			statusText,
 			connecting,
 			connected,
-			usersTyping,
+			usersActivity,
 			onPress,
 			roomUserId,
 			width,
@@ -116,7 +120,7 @@ class RoomHeaderContainer extends Component {
 				status={status}
 				width={width}
 				height={height}
-				usersTyping={usersTyping}
+				usersActivity={usersActivity}
 				widthOffset={widthOffset}
 				roomUserId={roomUserId}
 				connecting={connecting}
@@ -147,7 +151,7 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		connecting: state.meteor.connecting || state.server.loading,
 		connected: state.meteor.connected,
-		usersTyping: state.usersTyping,
+		usersActivity: state.usersActivity,
 		status,
 		statusText
 	};

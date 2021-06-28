@@ -13,7 +13,7 @@ import share from './share';
 import crashReport from './crashReport';
 import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
-import usersTyping from './usersTyping';
+import usersActivity from './usersActivity';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
 import enterpriseModules from './enterpriseModules';
@@ -37,7 +37,7 @@ export default combineReducers({
 	crashReport,
 	customEmojis,
 	activeUsers,
-	usersTyping,
+	usersActivity,
 	inviteLinks,
 	createDiscussion,
 	inquiry,

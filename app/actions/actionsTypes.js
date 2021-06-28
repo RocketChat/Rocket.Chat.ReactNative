@@ -33,7 +33,7 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	'OPEN_SEARCH_HEADER',
 	'CLOSE_SEARCH_HEADER'
 ]);
-export const ROOM = createRequestTypes('ROOM', ['SUBSCRIBE', 'UNSUBSCRIBE', 'LEAVE', 'DELETE', 'REMOVED', 'CLOSE', 'FORWARD', 'USER_TYPING']);
+export const ROOM = createRequestTypes('ROOM', ['SUBSCRIBE', 'UNSUBSCRIBE', 'LEAVE', 'DELETE', 'REMOVED', 'CLOSE', 'FORWARD', 'USER_TYPING', 'USER_RECORDING', 'USER_UPLOADING']);
 export const INQUIRY = createRequestTypes('INQUIRY', [...defaultTypes, 'SET_ENABLED', 'RESET', 'QUEUE_ADD', 'QUEUE_UPDATE', 'QUEUE_REMOVE']);
 export const APP = createRequestTypes('APP', ['START', 'READY', 'INIT', 'INIT_LOCAL_SETTINGS', 'SET_MASTER_DETAIL']);
 export const MESSAGES = createRequestTypes('MESSAGES', ['REPLY_BROADCAST']);
@@ -58,6 +58,9 @@ export const TOGGLE_ANALYTICS_EVENTS = 'TOGGLE_ANALYTICS_EVENTS';
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
 export const SET_ACTIVE_USERS = 'SET_ACTIVE_USERS';
 export const USERS_TYPING = createRequestTypes('USERS_TYPING', ['ADD', 'REMOVE', 'CLEAR']);
+export const USERS_RECORDING = createRequestTypes('USERS_RECORDING', ['ADD', 'REMOVE', 'CLEAR']);
+export const USERS_UPLOADING = createRequestTypes('USERS_UPLOADING', ['ADD', 'REMOVE', 'CLEAR']);
+
 export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 	'SET_TOKEN',
 	'SET_PARAMS',
