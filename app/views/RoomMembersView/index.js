@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import { dequal } from 'dequal';
 import * as List from '../../containers/List';
 
 import styles from './styles';
@@ -125,13 +124,6 @@ class RoomMembersView extends React.Component {
 
 		const hasSinglePermission = Object.values(this.permissions).some(p => !!p);
 		if (hasSinglePermission) {
-			this.fetchRoomMembersRoles();
-		}
-	}
-
-	componentDidUpdate(prevProps, prevState) {
-		const { room } = this.state;
-		if (!dequal(prevState.room.roles, room.roles)) {
 			this.fetchRoomMembersRoles();
 		}
 	}
