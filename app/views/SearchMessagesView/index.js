@@ -178,12 +178,11 @@ class SearchMessagesView extends React.Component {
 	}
 
 	onEndReached = () => {
-		const { messagesFromQuery } = this.state;
 		this.count += QUERY_SIZE;
 
-		this.setState({
-			messages: messagesFromQuery.slice(0, this.count)
-		});
+		this.setState(prevState => ({
+			messages: prevState.messagesFromQuery.slice(0, this.count)
+		}));
 	}
 
 	renderEmpty = () => {
