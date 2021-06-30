@@ -542,10 +542,9 @@ const RocketChat = {
 		return this.loginTOTP(params, true);
 	},
 
-	async loginOAuthOrSso(params, loginEmailPassword = false) {
-		// TODO: Rename loginEmailPassword, it's weird.
-		const result = await this.loginTOTP(params, loginEmailPassword);
-		reduxStore.dispatch(loginRequest({ resume: result.token }, false, loginEmailPassword));
+	async loginOAuthOrSso(params, isFromWebView = true) {
+		const result = await this.loginTOTP(params);
+		reduxStore.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
 	},
 
 	async login(credentials, loginEmailPassword) {

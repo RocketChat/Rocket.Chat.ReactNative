@@ -30,15 +30,15 @@ import Navigation from '../lib/Navigation';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
-const loginCall = (credentials, loginEmailPassword) => RocketChat.login(credentials, loginEmailPassword);
+const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, isFromWebView);
 const logoutCall = args => RocketChat.logout(args);
 
-const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, loginEmailPassword = false }) {
+const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
 		let result;
 		if (credentials.resume) {
-			result = yield loginCall(credentials, loginEmailPassword);
+			result = yield loginCall(credentials, isFromWebView);
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
