@@ -4,3 +4,4 @@ coverage
 e2e
 android
 ios
+.eslintrc.js
