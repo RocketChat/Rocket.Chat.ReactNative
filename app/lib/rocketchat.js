@@ -476,10 +476,10 @@ const RocketChat = {
 		return this.post('users.forgotPassword', { email }, false);
 	},
 
-	loginTOTP(params, loginEmailPassword) {
+	loginTOTP(params, loginEmailPassword, isFromWebView) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.login(params, loginEmailPassword);
+				const result = await this.login(params, loginEmailPassword, isFromWebView);
 				return resolve(result);
 			} catch (e) {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
@@ -543,11 +543,11 @@ const RocketChat = {
 	},
 
 	async loginOAuthOrSso(params, isFromWebView = true) {
-		const result = await this.loginTOTP(params);
+		const result = await this.loginTOTP(params, false, isFromWebView);
 		reduxStore.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
 	},
 
-	async login(credentials, loginEmailPassword) {
+	async login(credentials, loginEmailPassword, isFromWebView = false) {
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.64.0
 		await sdk.login(credentials);
@@ -566,6 +566,7 @@ const RocketChat = {
 			roles: result.me.roles,
 			avatarETag: result.me.avatarETag,
 			loginEmailPassword,
+			isFromWebView,
 			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true
 		};
 		return user;

@@ -95,17 +95,6 @@ export default schemaMigrations({
 					]
 				})
 			]
-		},
-		{
-			toVersion: 11,
-			steps: [
-				addColumns({
-					table: 'users',
-					columns: [
-						{ name: 'is_from_webview', type: 'boolean', isOptional: true }
-					]
-				})
-			]
 		}
 	]
 });
