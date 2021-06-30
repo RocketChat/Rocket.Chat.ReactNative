@@ -1,10 +1,11 @@
 import * as types from './actionsTypes';
 
-export function loginRequest(credentials, logoutOnError) {
+export function loginRequest(credentials, logoutOnError, loginEmailPassword) {
 	return {
 		type: types.LOGIN.REQUEST,
 		credentials,
-		logoutOnError
+		logoutOnError,
+		loginEmailPassword
 	};
 }
 

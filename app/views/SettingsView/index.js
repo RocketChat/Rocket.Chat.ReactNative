@@ -5,6 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FastImage from '@rocket.chat/react-native-fast-image';
+import CookieManager from '@react-native-community/cookies';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -30,6 +31,7 @@ import EventEmitter from '../../utils/events';
 import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import SafeAreaView from '../../containers/SafeAreaView';
+import database from '../../lib/database';
 import { isFDroidBuild } from '../../constants/environment';
 import { getUserSelector } from '../../selectors/login';
 
@@ -57,13 +59,40 @@ class SettingsView extends React.Component {
 		appStart: PropTypes.func
 	}
 
+	checkCookiesAndLogout = async() => {
+		const { logout, user } = this.props;
+		const db = database.servers;
+		const usersCollection = db.get('users');
+		try {
+			const userRecord = await usersCollection.find(user.id);
+			if (!userRecord.loginEmailPassword) {
+				showConfirmationAlert({
+					title: I18n.t('Clear_cookies_alert'),
+					message: I18n.t('Clear_cookies_desc'),
+					confirmationText: I18n.t('Clear_cookies_yes'),
+					dismissText: I18n.t('Clear_cookies_no'),
+					onPress: async() => {
+						await CookieManager.clearAll(true);
+						logout();
+					},
+					onCancel: () => {
+						logout();
+					}
+				});
+			} else {
+				logout();
+			}
+		} catch {
+			// Do nothing: user not found
+		}
+	}
+
 	handleLogout = () => {
-		const { logout } = this.props;
 		logEvent(events.SE_LOG_OUT);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			confirmationText: I18n.t('Logout'),
-			onPress: logout
+			onPress: this.checkCookiesAndLogout
 		});
 	}
 

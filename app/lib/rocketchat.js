@@ -542,15 +542,16 @@ const RocketChat = {
 		return this.loginTOTP(params, true);
 	},
 
-	async loginOAuthOrSso(params) {
-		const result = await this.loginTOTP(params);
-		reduxStore.dispatch(loginRequest({ resume: result.token }));
+	async loginOAuthOrSso(params, loginEmailPassword = false) {
+		// TODO: Rename loginEmailPassword, it's weird.
+		const result = await this.loginTOTP(params, loginEmailPassword);
+		reduxStore.dispatch(loginRequest({ resume: result.token }, false, loginEmailPassword));
 	},
 
-	async login(params, loginEmailPassword) {
+	async login(credentials, loginEmailPassword) {
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.64.0
-		await sdk.login(params);
+		await sdk.login(credentials);
 		const { result } = sdk.currentLogin;
 		const user = {
 			id: result.userId,
