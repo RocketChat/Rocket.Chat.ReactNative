@@ -10,7 +10,7 @@ import database from '../lib/database';
 import { isIOS } from './deviceInfo';
 import EventEmitter from './events';
 import {
-	LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY, PASSCODE_KEY, CHANGE_PASSCODE_EMITTER
+	LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY, PASSCODE_KEY, CHANGE_PASSCODE_EMITTER, UNLOCK_FACE_ID
 } from '../constants/localAuthentication';
 import I18n from '../i18n';
 import { setLocalAuthenticated } from '../actions/login';
@@ -49,6 +49,10 @@ const openChangePasscodeModal = ({ force }) => new Promise((resolve, reject) => 
 	});
 });
 
+export const toggleBiometrySetBoolAsync = async(value) => {
+	await UserPreferences.setBoolAsync(UNLOCK_FACE_ID, value);
+};
+
 export const changePasscode = async({ force = false }) => {
 	const passcode = await openChangePasscodeModal({ force });
 	await UserPreferences.setStringAsync(PASSCODE_KEY, sha256(passcode));
@@ -73,6 +77,7 @@ const checkBiometry = async(serverRecord) => {
 			await serverRecord.update((record) => {
 				record.biometry = !!result?.success;
 			});
+			await toggleBiometrySetBoolAsync(!!result?.success);
 		} catch {
 			// Do nothing
 		}
@@ -81,10 +86,13 @@ const checkBiometry = async(serverRecord) => {
 
 export const checkHasPasscode = async({ force = true, serverRecord }) => {
 	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
+	const storedBiometry = await UserPreferences.getBoolAsync(UNLOCK_FACE_ID);
 	if (!storedPasscode) {
 		await changePasscode({ force });
 		await checkBiometry(serverRecord);
 		return Promise.resolve({ newPasscode: true });
+	} else if (storedBiometry) {
+		await checkBiometry(serverRecord);
 	}
 	return Promise.resolve();
 };

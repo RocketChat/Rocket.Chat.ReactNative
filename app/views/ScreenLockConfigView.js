@@ -9,7 +9,9 @@ import { themes, SWITCH_TRACK_COLOR } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
-import { supportedBiometryLabel, changePasscode, checkHasPasscode } from '../utils/localAuthentication';
+import {
+	supportedBiometryLabel, changePasscode, checkHasPasscode, toggleBiometrySetBoolAsync
+} from '../utils/localAuthentication';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';
@@ -133,9 +135,11 @@ class ScreenLockConfigView extends React.Component {
 		});
 	}
 
-	toggleBiometry = () => {
+	toggleBiometry = async() => {
+		const { biometry } = this.state;
 		logEvent(events.SLC_TOGGLE_BIOMETRY);
-		this.setState(({ biometry }) => ({ biometry: !biometry }), () => this.save());
+		await toggleBiometrySetBoolAsync(!biometry);
+		this.setState({ biometry: !biometry }, () => this.save());
 	}
 
 	isSelected = (value) => {
