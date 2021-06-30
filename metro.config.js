@@ -6,7 +6,7 @@
  */
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const blacklist = require('metro-config/src/defaults/blacklist');
+const blocklist = require('metro-config/src/defaults/exclusionList');
 
 module.exports = {
 	transformer: {
@@ -19,7 +19,7 @@ module.exports = {
 	},
 	maxWorkers: 2,
 	resolver: {
-		blacklistRE: blacklist([
+		blocklistRE: blocklist([
 			/ios\/Pods\/JitsiMeetSDK\/Frameworks\/JitsiMeet.framework\/assets\/node_modules\/react-native\/.*/
 		])
 	}

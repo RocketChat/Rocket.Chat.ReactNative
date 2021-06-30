@@ -1,1 +1,0 @@
-../../../../../node_modules/@react-native-firebase/analytics/ios/RNFBAnalytics/RNFBAnalyticsModule.h
