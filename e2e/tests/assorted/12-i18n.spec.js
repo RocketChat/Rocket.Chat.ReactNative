@@ -1,5 +1,5 @@
 const {
-	device, element, by, waitFor
+	device, element, by, waitFor, expect
 } = require('detox');
 const { navigateToLogin, login, sleep } = require('../../helpers/app');
 const { post } = require('../../helpers/data_setup');

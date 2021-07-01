@@ -148,7 +148,6 @@
     "detox": "^18.10.0",
     "emotion-theming": "10.0.27",
     "eslint": "6.8.0",
-    "eslint-plugin-detox": "^1.0.0",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-jsx-a11y": "6.3.1",
     "eslint-plugin-react": "7.20.3",

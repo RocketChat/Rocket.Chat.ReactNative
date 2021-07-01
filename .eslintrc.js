@@ -22,8 +22,7 @@ module.exports = {
 		"jsx-a11y",
         "import",
     	"react-native",
-		"@babel",
-		"detox"
+		"@babel"
 	],
 	"env": {
 		"browser": true,
@@ -31,7 +30,6 @@ module.exports = {
 		"es6": true,
 		"node": true,
 		"jquery": true,
-		"detox/detox": true,
 		"mocha": true
 	},
 	"rules": {
