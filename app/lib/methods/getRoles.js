@@ -5,7 +5,7 @@ import log from '../../utils/log';
 import reduxStore from '../createStore';
 import protectedFunction from './helpers/protectedFunction';
 import {
-	addRoles, removeRoles, setRoles as setRolesAction, updateRoles
+	removeRoles, setRoles as setRolesAction, updateRoles
 } from '../../actions/roles';
 
 export async function setRoles() {

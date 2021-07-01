@@ -11,9 +11,11 @@ export default function permissions(state = initialState, action) {
 				...state,
 				[action.payload.id]: action.payload.desc || action.payload.id
 			};
-		case ROLES.REMOVE:
-			const { [action.payload.id]: roleRemoved, ...newState } = state;
+		case ROLES.REMOVE: {
+			const newState = { ...state };
+			delete newState[action.payload.id];
 			return newState;
+		}
 		default:
 			return state;
 	}
