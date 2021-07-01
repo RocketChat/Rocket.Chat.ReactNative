@@ -23,26 +23,26 @@ export async function onRolesChanged(ddpMessage) {
 		const rolesCollection = db.get('roles');
 		try {
 			const rolesRecord = await rolesCollection.find(_id);
-			await db.action(async() => {
-				try {
+			try {
+				await db.action(async() => {
 					await rolesRecord.update((u) => {
 						u.description = description;
 					});
-				} catch (e) {
-					log(e);
-				}
-			});
+				});
+			} catch (e) {
+				log(e);
+			}
 			reduxStore.dispatch(updateRoles(_id, description));
 		} catch (err) {
-			await db.action(async() => {
-				try {
+			try {
+				await db.action(async() => {
 					await rolesCollection.create((post) => {
 						post._raw = sanitizedRaw({ id: _id, description }, rolesCollection.schema);
 					});
-				} catch (e) {
-					log(e);
-				}
-			});
+				});
+			} catch (e) {
+				log(e);
+			}
 			reduxStore.dispatch(updateRoles(_id, description || _id));
 		}
 	}
