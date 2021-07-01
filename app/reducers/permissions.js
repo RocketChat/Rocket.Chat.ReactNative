@@ -1,8 +1,6 @@
 import { PERMISSIONS } from '../actions/actionsTypes';
 
-const initialState = {
-	permissions: {}
-};
+const initialState = {};
 
 export default function permissions(state = initialState, action) {
 	switch (action.type) {
