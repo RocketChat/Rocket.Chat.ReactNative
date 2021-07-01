@@ -669,5 +669,6 @@
   "invalid-room": "Sala inválida",
   "Left_The_Room_Successfully": "Saiu da sala com sucesso",
   "Deleted_The_Team_Successfully": "Time deletado com sucesso",
-  "Deleted_The_Room_Successfully": "Sala deletada com sucesso"
+  "Deleted_The_Room_Successfully": "Sala deletada com sucesso",
+  "Convert_to_Channel": "Converter para um Canal"
 }

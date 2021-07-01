@@ -765,5 +765,6 @@
   "Load_Older": "Load Older",
   "Left_The_Room_Successfully": "Left the room successfully",
   "Deleted_The_Team_Successfully": "Team deleted successfully",
-  "Deleted_The_Room_Successfully": "Room deleted successfully"
+  "Deleted_The_Room_Successfully": "Room deleted successfully",
+  "Convert_to_Channel": "Convert to Channel"
 }
