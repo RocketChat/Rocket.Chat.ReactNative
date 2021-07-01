@@ -292,11 +292,14 @@ const RocketChat = {
 					const settingsCollection = db.get('settings');
 					try {
 						const settingsRecord = await settingsCollection.find(_id);
-						await db.action(async() => {
-							await settingsRecord.update((u) => {
-								u._raw.value_as_boolean = value;
+						const { type } = defaultSettings[_id];
+						if (type) {
+							await db.action(async() => {
+								await settingsRecord.update((u) => {
+									u[type] = value;
+								});
 							});
-						});
+						}
 						reduxStore.dispatch(updateSettings(_id, value));
 					} catch (e) {
 						log(e);

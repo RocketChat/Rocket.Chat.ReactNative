@@ -146,7 +146,7 @@ export default async function() {
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 
 		reduxStore.dispatch(addSettings(this.parseSettings(filteredSettings)));
-		await RocketChat.subscribe('stream-notify-all', 'public-settings-changed');
+		RocketChat.subscribe('stream-notify-all', 'public-settings-changed');
 
 		// filter server info
 		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
