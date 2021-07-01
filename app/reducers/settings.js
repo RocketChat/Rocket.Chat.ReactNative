@@ -9,6 +9,11 @@ export default (state = initialState, action) => {
 				...state,
 				...action.payload
 			};
+		case SETTINGS.UPDATE:
+			return {
+				...state,
+				[action.payload.id]: action.payload.value
+			};
 		case SETTINGS.CLEAR:
 			return initialState;
 		default:
