@@ -63,6 +63,7 @@ import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
 import { sanitizeLikeString } from './database/utils';
+import { updatePermission } from '../actions/permissions';
 import { TEAM_TYPE } from '../definition/ITeam';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -309,6 +310,21 @@ const RocketChat = {
 						});
 					} catch {
 						// We can't create a new record since we don't receive the user._id
+					}
+				} else if (/permissions-changed/.test(eventName)) {
+					const { _id, roles } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const permissionsCollection = db.get('permissions');
+					try {
+						const permissionsRecord = await permissionsCollection.find(_id);
+						await db.action(async() => {
+							await permissionsRecord.update((u) => {
+								u.roles = roles;
+							});
+						});
+						reduxStore.dispatch(updatePermission(_id, roles));
+					} catch (err) {
+						//
 					}
 				} else if (/Users:NameChanged/.test(eventName)) {
 					const userNameChanged = ddpMessage.fields.args[0];

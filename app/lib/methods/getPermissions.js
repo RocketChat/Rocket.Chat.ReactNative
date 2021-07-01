@@ -6,6 +6,7 @@ import { compareServerVersion, methods } from '../utils';
 import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
+import RocketChat from '../rocketchat';
 import protectedFunction from './helpers/protectedFunction';
 import { setPermissions as setPermissionsAction } from '../../actions/permissions';
 
@@ -128,7 +129,7 @@ export function getPermissions() {
 			const db = database.active;
 			const permissionsCollection = db.get('permissions');
 			const allRecords = await permissionsCollection.query().fetch();
-
+			RocketChat.subscribe('stream-notify-logged', 'permissions-changed');
 			// if server version is lower than 0.73.0, fetches from old api
 			if (compareServerVersion(serverVersion, '0.73.0', methods.lowerThan)) {
 				// RC 0.66.0
