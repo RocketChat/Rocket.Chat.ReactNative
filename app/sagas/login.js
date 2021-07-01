@@ -30,7 +30,7 @@ import Navigation from '../lib/Navigation';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
-const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, isFromWebView);
+const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, false, isFromWebView);
 const logoutCall = args => RocketChat.logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
@@ -147,6 +147,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			statusText: user.statusText,
 			roles: user.roles,
 			loginEmailPassword: user.loginEmailPassword,
+			isFromWebView: user.isFromWebView,
 			showMessageInMainThread: user.showMessageInMainThread,
 			avatarETag: user.avatarETag
 		};

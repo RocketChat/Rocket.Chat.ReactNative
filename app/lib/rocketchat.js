@@ -476,7 +476,7 @@ const RocketChat = {
 		return this.post('users.forgotPassword', { email }, false);
 	},
 
-	loginTOTP(params, loginEmailPassword, isFromWebView) {
+	loginTOTP(params, loginEmailPassword, isFromWebView = false) {
 		return new Promise(async(resolve, reject) => {
 			try {
 				const result = await this.login(params, loginEmailPassword, isFromWebView);
