@@ -65,7 +65,8 @@ class RoomActionsView extends React.Component {
 		viewBroadcastMemberListPermission: PropTypes.array,
 		transferLivechatGuestPermission: PropTypes.array,
 		createTeamPermission: PropTypes.array,
-		addTeamChannelPermission: PropTypes.array
+		addTeamChannelPermission: PropTypes.array,
+		convertTeamPermission: PropTypes.array
 	}
 
 	constructor(props) {
@@ -89,7 +90,8 @@ class RoomActionsView extends React.Component {
 			canEdit: false,
 			canToggleEncryption: false,
 			canCreateTeam: false,
-			canAddChannelToTeam: false
+			canAddChannelToTeam: false,
+			canConvertTeam: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
@@ -140,9 +142,10 @@ class RoomActionsView extends React.Component {
 			const canViewMembers = await this.canViewMembers();
 			const canCreateTeam = await this.canCreateTeam();
 			const canAddChannelToTeam = await this.canAddChannelToTeam();
+			const canConvertTeam = await this.canConvertTeam();
 
 			this.setState({
-				canAutoTranslate, canAddUser, canInviteUser, canEdit, canToggleEncryption, canViewMembers, canCreateTeam, canAddChannelToTeam
+				canAutoTranslate, canAddUser, canInviteUser, canEdit, canToggleEncryption, canViewMembers, canCreateTeam, canAddChannelToTeam, canConvertTeam
 			});
 
 			// livechat permissions
@@ -236,6 +239,16 @@ class RoomActionsView extends React.Component {
 
 		const canAddChannelToTeam = permissions[0];
 		return canAddChannelToTeam;
+	}
+
+	canConvertTeam = async() => {
+		const { room } = this.state;
+		const { convertTeamPermission } = this.props;
+		const { rid } = room;
+		const permissions = await RocketChat.hasPermission([convertTeamPermission], rid);
+
+		const canConvertTeam = permissions[0];
+		return canConvertTeam;
 	}
 
 	canToggleEncryption = async() => {
@@ -799,6 +812,32 @@ class RoomActionsView extends React.Component {
 		);
 	}
 
+	teamToChannelActions = (t, room) => {
+		const { canEdit, canConvertTeam } = this.state;
+		const canConvertTeamToChannel = canEdit && canConvertTeam && !!room?.teamMain;
+
+		return (
+			<>
+				{['c', 'p'].includes(t) && canConvertTeamToChannel
+					? (
+						<>
+							<List.Item
+								title='Convert_to_Channel'
+								onPress={() => this.onPressTouchable({
+									event: this.convertToTeam
+								})}
+								testID='room-actions-convert-to-team'
+								left={() => <List.Icon name='channel-public' />}
+								showActionIndicator
+							/>
+							<List.Separator />
+						</>
+					)
+					: null}
+			</>
+		);
+	}
+
 	render() {
 		const {
 			room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue
@@ -1000,7 +1039,9 @@ class RoomActionsView extends React.Component {
 							)
 							: null}
 
+
 						{ this.teamChannelActions(t, room) }
+						{this.teamToChannelActions(t, room)}
 
 						{['l'].includes(t) && !this.isOmnichannelPreview
 							? (
@@ -1090,7 +1131,8 @@ const mapStateToProps = state => ({
 	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
 	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
 	createTeamPermission: state.permissions['create-team'],
-	addTeamChannelPermission: state.permissions['add-team-channel']
+	addTeamChannelPermission: state.permissions['add-team-channel'],
+	convertTeamPermission: state.permissions['convert-team']
 });
 
 const mapDispatchToProps = dispatch => ({
