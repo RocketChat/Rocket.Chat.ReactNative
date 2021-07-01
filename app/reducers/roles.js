@@ -1,8 +1,6 @@
 import { ROLES } from '../actions/actionsTypes';
 
-const initialState = {
-	roles: {}
-};
+const initialState = {};
 
 export default function permissions(state = initialState, action) {
 	switch (action.type) {
@@ -14,7 +12,8 @@ export default function permissions(state = initialState, action) {
 				[action.payload.id]: action.payload.desc || action.payload.id
 			};
 		case ROLES.REMOVE:
-			return state.filter(role => role.id !== action.payload.id);
+			const { [action.payload.id]: roleRemoved, ...newState } = state;
+			return newState;
 		default:
 			return state;
 	}
