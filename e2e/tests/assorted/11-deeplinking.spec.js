@@ -1,6 +1,3 @@
-const {
-	device, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
 const { tapBack, checkServer, navigateToRegister } = require('../../helpers/app');
 const { get, login } = require('../../helpers/data_setup');

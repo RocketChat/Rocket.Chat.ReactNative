@@ -1,7 +1,3 @@
-/* eslint-disable no-await-in-loop */
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
 const {
 	navigateToLogin, tapBack, login, searchRoom
@@ -66,8 +62,8 @@ describe('Room', () => {
 			try {
 				await expect(element(by.label('249'))).toExist();
 				found = true;
-			// eslint-disable-next-line no-empty
 			} catch {
+				//
 			}
 		}
 		await clearCache();

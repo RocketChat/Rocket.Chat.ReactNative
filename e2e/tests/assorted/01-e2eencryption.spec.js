@@ -1,7 +1,4 @@
 const {
-	expect, element, by, waitFor, device
-} = require('detox');
-const {
 	navigateToLogin, login, sleep, tapBack, mockMessage, searchRoom, logout
 } = require('../../helpers/app');
 

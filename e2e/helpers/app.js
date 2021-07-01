@@ -1,6 +1,3 @@
-const {
-	expect, element, by, waitFor
-} = require('detox');
 const data = require('../data');
 
 async function navigateToWorkspace(server = data.server) {

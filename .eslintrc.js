@@ -152,10 +152,27 @@ module.exports = {
 		"react/state-in-constructor": [0],
 		"no-async-promise-executor": [0],
 		"max-classes-per-file": [0],
-		"no-multiple-empty-lines": [0],
-		"import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.js", "**/*.spec.js", "./e2e/**/**.js"]}]
+		"no-multiple-empty-lines": [0]
 	},
 	"globals": {
 		"__DEV__": true
-	}
+	},
+	overrides: [
+		{
+			files: ['e2e/**'],
+			globals: {
+				by: true,
+				detox: true,
+				device: true,
+				element: true,
+				expect: true,
+				waitFor: true
+			},
+			rules: {
+				'import/no-extraneous-dependencies': 0,
+				'no-await-in-loop': 0,
+				'no-restricted-syntax': 0
+			}
+		}
+	]
 };

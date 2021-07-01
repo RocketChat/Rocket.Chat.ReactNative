@@ -1,5 +1,3 @@
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-syntax */
 const axios = require('axios').default;
 const data = require('../data');
 

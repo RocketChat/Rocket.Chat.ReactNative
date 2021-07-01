@@ -1,8 +1,7 @@
 const detox = require('detox');
+const adapter = require('detox/runners/mocha/adapter');
 const config = require('../../package.json').detox;
 const { setup } = require('../helpers/data_setup');
-// eslint-disable-next-line import/order
-const adapter = require('detox/runners/mocha/adapter');
 
 before(async() => {
 	await Promise.all([setup(), detox.init(config, { launchApp: false })]);

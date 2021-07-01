@@ -1,12 +1,7 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
 const {
 	tapBack, navigateToLogin, login, tryTapping
 } = require('../../helpers/app');
-
-
 
 describe('Create room screen', () => {
 	before(async() => {

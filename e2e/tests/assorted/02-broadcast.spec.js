@@ -1,7 +1,3 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
-
 // const OTP = require('otp.js');
 // const GA = OTP.googleAuthenticator;
 

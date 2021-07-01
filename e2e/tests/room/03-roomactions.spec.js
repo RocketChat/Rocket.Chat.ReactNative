@@ -1,6 +1,3 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
 const {
 	navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage

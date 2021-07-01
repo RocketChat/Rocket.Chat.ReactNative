@@ -1,6 +1,3 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const { navigateToRegister, navigateToLogin } = require('../../helpers/app');
 
 describe('Legal screen', () => {
