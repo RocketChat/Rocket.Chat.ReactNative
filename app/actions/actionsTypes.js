@@ -72,3 +72,4 @@ export const ENTERPRISE_MODULES = createRequestTypes('ENTERPRISE_MODULES', ['CLE
 export const ENCRYPTION = createRequestTypes('ENCRYPTION', ['INIT', 'STOP', 'DECODE_KEY', 'SET', 'SET_BANNER']);
 
 export const PERMISSIONS = createRequestTypes('PERMISSIONS', ['SET', 'UPDATE']);
+export const ROLES = createRequestTypes('ROLES', ['SET', 'UPDATE', 'REMOVE']);
