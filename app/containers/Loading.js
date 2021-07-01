@@ -103,7 +103,7 @@ export default class Loading extends React.PureComponent {
 				transparent
 				onRequestClose={() => {}}
 			>
-				<View style={styles.container}>
+				<View style={styles.container} testID='loading'>
 					<Animated.Image
 						source={require('../static/images/logo.png')}
 						style={[styles.image, {
