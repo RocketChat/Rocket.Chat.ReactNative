@@ -71,4 +71,4 @@ export const APP_STATE = createRequestTypes('APP_STATE', ['FOREGROUND', 'BACKGRO
 export const ENTERPRISE_MODULES = createRequestTypes('ENTERPRISE_MODULES', ['CLEAR', 'SET']);
 export const ENCRYPTION = createRequestTypes('ENCRYPTION', ['INIT', 'STOP', 'DECODE_KEY', 'SET', 'SET_BANNER']);
 
-export const PERMISSIONS = createRequestTypes('PERMISSIONS', ['SET']);
+export const PERMISSIONS = createRequestTypes('PERMISSIONS', ['SET', 'UPDATE']);
