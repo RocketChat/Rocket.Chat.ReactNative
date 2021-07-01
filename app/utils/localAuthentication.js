@@ -84,15 +84,20 @@ const checkBiometry = async(serverRecord) => {
 	});
 };
 
+export const checkHasBiometry = async(serverRecord) => {
+	const storedBiometry = await UserPreferences.getBoolAsync(UNLOCK_FACE_ID);
+	if (storedBiometry) {
+		await checkBiometry(serverRecord);
+	}
+	return Promise.resolve();
+};
+
 export const checkHasPasscode = async({ force = true, serverRecord }) => {
 	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
-	const storedBiometry = await UserPreferences.getBoolAsync(UNLOCK_FACE_ID);
 	if (!storedPasscode) {
 		await changePasscode({ force });
 		await checkBiometry(serverRecord);
 		return Promise.resolve({ newPasscode: true });
-	} else if (storedBiometry) {
-		await checkBiometry(serverRecord);
 	}
 	return Promise.resolve();
 };

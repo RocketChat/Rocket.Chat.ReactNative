@@ -10,7 +10,7 @@ import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
 import {
-	supportedBiometryLabel, changePasscode, checkHasPasscode, toggleBiometrySetBoolAsync
+	supportedBiometryLabel, changePasscode, checkHasPasscode, toggleBiometrySetBoolAsync, checkHasBiometry
 } from '../utils/localAuthentication';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -127,6 +127,7 @@ class ScreenLockConfigView extends React.Component {
 			if (autoLock) {
 				try {
 					await checkHasPasscode({ force: false, serverRecord: this.serverRecord });
+					await checkHasBiometry(this.serverRecord);
 				} catch {
 					this.toggleAutoLock();
 				}
