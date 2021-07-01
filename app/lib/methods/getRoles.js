@@ -43,7 +43,7 @@ export async function onRolesChanged(ddpMessage) {
 					log(e);
 				}
 			});
-			reduxStore.dispatch(addRoles(_id, description || _id));
+			reduxStore.dispatch(updateRoles(_id, description || _id));
 		}
 	}
 	if (/removed/.test(type)) {
