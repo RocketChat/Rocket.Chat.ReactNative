@@ -65,6 +65,7 @@ import EventEmitter from '../utils/events';
 import { sanitizeLikeString } from './database/utils';
 import { updatePermission } from '../actions/permissions';
 import { TEAM_TYPE } from '../definition/ITeam';
+import { updateSettings } from '../actions/settings';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -226,6 +227,14 @@ const RocketChat = {
 				this.usersListener.then(this.stopListener);
 			}
 
+			if (this.notifyAllListener) {
+				this.notifyAllListener.then(this.stopListener);
+			}
+
+			if (this.rolesListener) {
+				this.rolesListener.then(this.stopListener);
+			}
+
 			if (this.notifyLoggedListener) {
 				this.notifyLoggedListener.then(this.stopListener);
 			}
@@ -274,6 +283,29 @@ const RocketChat = {
 			});
 
 			this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
+
+			this.notifyAllListener = this.sdk.onStreamData('stream-notify-all', protectedFunction(async(ddpMessage) => {
+				const { eventName } = ddpMessage.fields;
+				if (/public-settings-changed/.test(eventName)) {
+					const { _id, value } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const settingsCollection = db.get('settings');
+					try {
+						const settingsRecord = await settingsCollection.find(_id);
+						const { type } = defaultSettings[_id];
+						if (type) {
+							await db.action(async() => {
+								await settingsRecord.update((u) => {
+									u[type] = value;
+								});
+							});
+						}
+						reduxStore.dispatch(updateSettings(_id, value));
+					} catch (e) {
+						log(e);
+					}
+				}
+			}));
 
 			this.rolesListener = this.sdk.onStreamData('stream-roles', protectedFunction(ddpMessage => onRolesChanged(ddpMessage)));
 
