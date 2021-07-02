@@ -76,7 +76,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }) => {
 	const { title = name, avatar = name } = notification;
 
 	const onPress = () => {
-		const { prid } = payload;
+		const { prid, _id } = payload;
 		if (!rid) {
 			return;
 		}
@@ -89,7 +89,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }) => {
 		} else {
 			Navigation.navigate('RoomsListView');
 		}
-		goRoom({ item, isMasterDetail });
+		goRoom({ item, isMasterDetail, jumpToMessageId: _id });
 		hideNotification();
 	};
 
