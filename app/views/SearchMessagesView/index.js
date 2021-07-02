@@ -25,10 +25,8 @@ import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
-import { isTablet } from '../../utils/deviceInfo';
 
-const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
-const QUERY_SIZE = 20;
+const QUERY_SIZE = 50;
 
 
 class SearchMessagesView extends React.Component {
@@ -58,7 +56,6 @@ class SearchMessagesView extends React.Component {
 		this.state = {
 			loading: false,
 			messages: [],
-			messagesFromQuery: [],
 			searchText: ''
 		};
 		this.count = 0;
@@ -110,7 +107,7 @@ class SearchMessagesView extends React.Component {
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const result = await RocketChat.searchMessages(this.rid, searchText);
+		const result = await RocketChat.searchMessages(this.rid, searchText, this.count);
 		if (result.success) {
 			return result.messages;
 		}
@@ -123,8 +120,7 @@ class SearchMessagesView extends React.Component {
 		try {
 			const messages = await this.searchMessages(searchText);
 			this.setState({
-				messages: messages.slice(0, this.count) || [],
-				messagesFromQuery: messages || [],
+				messages: messages || [],
 				loading: false
 			});
 		} catch (e) {
@@ -177,14 +173,25 @@ class SearchMessagesView extends React.Component {
 		}
 	}
 
-	onEndReached = () => {
-		this.setState({ loading: true, messages: [] });
-		this.count += QUERY_SIZE;
+	onEndReached = async() => {
+		const { searchText, messages } = this.state;
+		this.setState({ loading: true });
 
-		this.setState(prevState => ({
-			loading: false,
-			messages: prevState.messagesFromQuery.slice(0, this.count)
-		}));
+		if (messages.length < this.count) {
+			return this.setState({ loading: false });
+		}
+
+		try {
+			this.count += QUERY_SIZE;
+			const messagesRequest = await this.searchMessages(searchText);
+			this.setState({
+				messages: messagesRequest || [],
+				loading: false
+			});
+		} catch (e) {
+			this.setState({ loading: false });
+			log(e);
+		}
 	}
 
 	renderEmpty = () => {
@@ -235,8 +242,8 @@ class SearchMessagesView extends React.Component {
 				keyExtractor={item => item._id}
 				onEndReached={this.onEndReached}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
-				onEndReachedThreshold={0.5}
-				initialNumToRender={INITIAL_NUM_TO_RENDER}
+				onEndReachedThreshold={0.75}
+				removeClippedSubviews
 				{...scrollPersistTaps}
 			/>
 		);
