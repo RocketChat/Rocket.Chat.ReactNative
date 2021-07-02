@@ -1,6 +1,6 @@
 __tests__
 node_modules
 coverage
-e2e
+e2e/docker
 android
 ios
