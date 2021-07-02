@@ -762,5 +762,8 @@
   "Move_to_Team_Warning": "After reading the previous intructions about this behavior, do you still want to move this channel to the selected team?",
   "Load_More": "Load More",
   "Load_Newer": "Load Newer",
-  "Load_Older": "Load Older"
+  "Load_Older": "Load Older",
+  "Left_The_Room_Successfully": "Left the room successfully",
+  "Deleted_The_Team_Successfully": "Team deleted successfully",
+  "Deleted_The_Room_Successfully": "Room deleted successfully"
 }
