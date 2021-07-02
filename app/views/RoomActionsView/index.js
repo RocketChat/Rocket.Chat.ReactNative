@@ -886,7 +886,7 @@ class RoomActionsView extends React.Component {
 								onPress={() => this.onPressTouchable({
 									event: this.convertTeamToChannel
 								})}
-								testID='room-actions-convert-to-team'
+								testID='room-actions-convert-channel-to-team'
 								left={() => <List.Icon name='channel-public' />}
 								showActionIndicator
 							/>
