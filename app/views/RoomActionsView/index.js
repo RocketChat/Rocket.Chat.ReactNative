@@ -448,7 +448,7 @@ class RoomActionsView extends React.Component {
 
 	convertTeamToChannel = async() => {
 		const { room } = this.state;
-		const { navigation, leaveRoom } = this.props;
+		const { navigation } = this.props;
 
 		try {
 			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
@@ -463,23 +463,40 @@ class RoomActionsView extends React.Component {
 					title: 'Converting_Team_To_Channel',
 					data: teamChannels,
 					infoText: 'Select_Team_Channels_To_Delete',
-					nextAction: data => leaveRoom('team', room, data),
-					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
+					nextAction: data => this.convertTeam(data)
 				});
 			} else {
-				showConfirmationAlert({
-					message: I18n.t('You_are_converting_the_team'),
-					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('Convert') }),
-					onPress: () => leaveRoom('team', room)
-				});
+				this.convertTeam();
 			}
 		} catch (e) {
-			showConfirmationAlert({
-				message: I18n.t('You_are_converting_the_team'),
-				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('Convert') }),
-				onPress: () => leaveRoom('team', room)
-			});
+			this.convertTeam();
 		}
+	}
+
+	handleConvertTeamToChannel = async(selected) => {
+		logEvent(events.RA_CONVERT_TEAM_TO_CHANNEL);
+		try {
+			const { room } = this.state;
+			const { navigation } = this.props;
+
+			const result = await RocketChat.convertTeamToChannel({ teamId: room.teamId, selected });
+
+			if (result.success) {
+				navigation.navigate('RoomView');
+			}
+		} catch (e) {
+			logEvent(events.RA_CONVERT_TEAM_TO_CHANNEL_F);
+			log(e);
+		}
+	}
+
+	convertTeam = (selected = []) => {
+		showConfirmationAlert({
+			title: I18n.t('Confirmation'),
+			message: I18n.t('You_are_converting_the_team'),
+			confirmationText: I18n.t('Convert'),
+			onPress: () => this.handleConvertTeamToChannel(selected)
+		});
 	}
 
 	leaveTeam = async() => {
