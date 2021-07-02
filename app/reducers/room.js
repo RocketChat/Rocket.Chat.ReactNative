@@ -28,7 +28,7 @@ export default function(state = initialState, action) {
 		case ROOM.DELETE:
 			return {
 				...state,
-				rid: action.rid,
+				rid: action.room.rid,
 				isDeleting: true
 			};
 		case ROOM.CLOSE:

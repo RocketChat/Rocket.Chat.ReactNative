@@ -50,6 +50,8 @@ class RoomActionsView extends React.Component {
 		route: PropTypes.object,
 		leaveRoom: PropTypes.func,
 		jitsiEnabled: PropTypes.bool,
+		jitsiEnableTeams: PropTypes.bool,
+		jitsiEnableChannels: PropTypes.bool,
 		encryptionEnabled: PropTypes.bool,
 		setLoadingInvite: PropTypes.func,
 		closeRoom: PropTypes.func,
@@ -655,10 +657,15 @@ class RoomActionsView extends React.Component {
 
 	renderJitsi = () => {
 		const { room } = this.state;
-		const { jitsiEnabled } = this.props;
-		if (!jitsiEnabled || room.teamMain) {
+		const { jitsiEnabled, jitsiEnableTeams, jitsiEnableChannels } = this.props;
+
+		const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
+		const isJitsiDisabledForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
+
+		if (!jitsiEnabled || isJitsiDisabledForTeams || isJitsiDisabledForChannels) {
 			return null;
 		}
+
 		return (
 			<List.Section>
 				<List.Separator />
@@ -1078,6 +1085,8 @@ class RoomActionsView extends React.Component {
 
 const mapStateToProps = state => ({
 	jitsiEnabled: state.settings.Jitsi_Enabled || false,
+	jitsiEnableTeams: state.settings.Jitsi_Enable_Teams || false,
+	jitsiEnableChannels: state.settings.Jitsi_Enable_Channels || false,
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
