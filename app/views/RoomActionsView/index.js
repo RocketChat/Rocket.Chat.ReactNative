@@ -461,13 +461,13 @@ class RoomActionsView extends React.Component {
 					title: 'Converting_Team_To_Channel',
 					data: teamChannels,
 					infoText: 'Select_Team_Channels_To_Delete',
-					nextAction: data => this.convertTeam(data)
+					nextAction: data => this.convertTeamToChannelConfirmation(data)
 				});
 			} else {
-				this.convertTeam();
+				this.convertTeamToChannelConfirmation();
 			}
 		} catch (e) {
-			this.convertTeam();
+			this.convertTeamToChannelConfirmation();
 		}
 	}
 
@@ -488,7 +488,7 @@ class RoomActionsView extends React.Component {
 		}
 	}
 
-	convertTeam = (selected = []) => {
+	convertTeamToChannelConfirmation = (selected = []) => {
 		showConfirmationAlert({
 			title: I18n.t('Confirmation'),
 			message: I18n.t('You_are_converting_the_team'),
