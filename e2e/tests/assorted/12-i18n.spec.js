@@ -1,12 +1,10 @@
-const {
-	device, element, by, waitFor
-} = require('detox');
 const { navigateToLogin, login, sleep } = require('../../helpers/app');
+const { prepareAndroid } = require('../../helpers/platformFunctions');
 const { post } = require('../../helpers/data_setup');
-const { launchWithLanguage, prepareAndroid } = require('../../helpers/platformFunctions');
 
 const data = require('../../data');
-const testuser = data.users.regular
+
+const testuser = data.users.regular;
 const defaultLaunchArgs = { permissions: { notifications: 'YES' } };
 
 const navToLanguage = async() => {
@@ -21,31 +19,52 @@ const navToLanguage = async() => {
 };
 
 describe('i18n', () => {
+	before(async () => {
+		await prepareAndroid();
+	});
+
 	describe('OS language', () => {
 		it('OS set to \'en\' and proper translate to \'en\'', async() => {
-			await launchWithLanguage('en', "US", {
+			if(device.getPlatform() === "android") return; // Not run on android
+			await device.launchApp({
 				...defaultLaunchArgs,
+				languageAndLocale: {
+					language: 'en',
+					locale: 'en'
+				},
 				delete: true
 			});
-			await prepareAndroid();
 			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 			await expect(element(by.id('join-workspace').and(by.label('Join a workspace')))).toBeVisible();
 			await expect(element(by.id('create-workspace-button').and(by.label('Create a new workspace')))).toBeVisible();
 		});
-	
+
 		it('OS set to unavailable language and fallback to \'en\'', async() => {
-			await launchWithLanguage('es', 'MX');
+			if(device.getPlatform() === "android") return; // Not run on android
+			await device.launchApp({
+				...defaultLaunchArgs,
+				languageAndLocale: {
+					language: 'es-MX',
+					locale: 'es-MX'
+				}
+			});
 			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 			await expect(element(by.id('join-workspace').and(by.label('Join a workspace')))).toBeVisible();
 			await expect(element(by.id('create-workspace-button').and(by.label('Create a new workspace')))).toBeVisible();
 		});
-	
+
 		/**
 		 * This test might become outdated as soon as we support the language
 		 * Although this seems to be a bad approach, that's the intention for having fallback enabled
 		 */
 		// it('OS set to available language and fallback to \'en\' on strings missing translation', async() => {
-		// 	await launchWithLanguage('nl');
+		// 	await device.launchApp({
+		// 		...defaultLaunchArgs,
+		// 		languageAndLocale: {
+		// 			language: "nl",
+		// 			locale: "nl"
+		// 		}
+		// 	});
 		// 	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 		// 	await expect(element(by.id('join-workspace').and(by.label('Word lid van een werkruimte')))).toBeVisible();
 		// 	await expect(element(by.id('create-workspace-button').and(by.label('Een nieuwe werkruimte aanmaken')))).toBeVisible();
@@ -85,7 +104,7 @@ describe('i18n', () => {
 
 		it('should set unsupported language and fallback to \'en\'', async() => {
 			await post('users.setPreferences', { data: { language: 'eo' } }); // Set language to Esperanto
-			await launchWithLanguage("en");
+			await device.launchApp({ ...defaultLaunchArgs, newInstance: true });
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await element(by.id('rooms-list-view-sidebar')).tap();
 			await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
@@ -96,5 +115,5 @@ describe('i18n', () => {
 			await expect(element(by.id('sidebar-settings').withDescendant(by.label('Settings')))).toBeVisible();
 			await post('users.setPreferences', { data: { language: 'en' } }); // Set back to english
 		});
-	})
+	});
 });
