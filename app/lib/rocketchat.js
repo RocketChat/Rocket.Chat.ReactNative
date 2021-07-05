@@ -529,7 +529,7 @@ const RocketChat = {
 	loginTOTP(params, loginEmailPassword, isFromWebView = false) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.login(params, loginEmailPassword, isFromWebView);
+				const result = await this.login(params, isFromWebView);
 				return resolve(result);
 			} catch (e) {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
@@ -597,7 +597,7 @@ const RocketChat = {
 		reduxStore.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
 	},
 
-	async login(credentials, loginEmailPassword, isFromWebView = false) {
+	async login(credentials, isFromWebView = false) {
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.64.0
 		await sdk.login(credentials);
@@ -615,7 +615,6 @@ const RocketChat = {
 			emails: result.me.emails,
 			roles: result.me.roles,
 			avatarETag: result.me.avatarETag,
-			loginEmailPassword,
 			isFromWebView,
 			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true
 		};

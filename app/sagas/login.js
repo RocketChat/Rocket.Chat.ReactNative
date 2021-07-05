@@ -30,7 +30,7 @@ import Navigation from '../lib/Navigation';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
-const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, false, isFromWebView);
+const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, isFromWebView);
 const logoutCall = args => RocketChat.logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
@@ -147,7 +147,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			status: user.status,
 			statusText: user.statusText,
 			roles: user.roles,
-			loginEmailPassword: user.loginEmailPassword,
 			isFromWebView: user.isFromWebView,
 			showMessageInMainThread: user.showMessageInMainThread,
 			avatarETag: user.avatarETag
@@ -155,7 +154,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield serversDB.action(async() => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				u.loginEmailPassword = userRecord?.loginEmailPassword;
 				await userRecord.update((record) => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
