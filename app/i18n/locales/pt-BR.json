@@ -665,5 +665,9 @@
   "Team_not_found": "Time não encontrado",
   "Private_Team": "Equipe Privada",
   "Add_Existing_Channel": "Adicionar Canal Existente",
-  "invalid-room": "Sala inválida"
+  "invalid-room": "Sala inválida",
+  "Left_The_Team_Successfully": "Saiu do time com sucesso",
+  "Left_The_Room_Successfully": "Saiu da sala com sucesso",
+  "Deleted_The_Team_Successfully": "Time deletado com sucesso",
+  "Deleted_The_Room_Successfully": "Sala deletada com sucesso"
 }

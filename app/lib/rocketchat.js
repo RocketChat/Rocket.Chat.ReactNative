@@ -37,7 +37,7 @@ import {
 	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
 } from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
-import getRoles from './methods/getRoles';
+import { getRoles, setRoles, onRolesChanged } from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
 import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/actions';
 
@@ -63,7 +63,9 @@ import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
 import { sanitizeLikeString } from './database/utils';
+import { updatePermission } from '../actions/permissions';
 import { TEAM_TYPE } from '../definition/ITeam';
+import { updateSettings } from '../actions/settings';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -225,6 +227,14 @@ const RocketChat = {
 				this.usersListener.then(this.stopListener);
 			}
 
+			if (this.notifyAllListener) {
+				this.notifyAllListener.then(this.stopListener);
+			}
+
+			if (this.rolesListener) {
+				this.rolesListener.then(this.stopListener);
+			}
+
 			if (this.notifyLoggedListener) {
 				this.notifyLoggedListener.then(this.stopListener);
 			}
@@ -274,6 +284,31 @@ const RocketChat = {
 
 			this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
+			this.notifyAllListener = this.sdk.onStreamData('stream-notify-all', protectedFunction(async(ddpMessage) => {
+				const { eventName } = ddpMessage.fields;
+				if (/public-settings-changed/.test(eventName)) {
+					const { _id, value } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const settingsCollection = db.get('settings');
+					try {
+						const settingsRecord = await settingsCollection.find(_id);
+						const { type } = defaultSettings[_id];
+						if (type) {
+							await db.action(async() => {
+								await settingsRecord.update((u) => {
+									u[type] = value;
+								});
+							});
+						}
+						reduxStore.dispatch(updateSettings(_id, value));
+					} catch (e) {
+						log(e);
+					}
+				}
+			}));
+
+			this.rolesListener = this.sdk.onStreamData('stream-roles', protectedFunction(ddpMessage => onRolesChanged(ddpMessage)));
+
 			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction(async(ddpMessage) => {
 				const { eventName } = ddpMessage.fields;
 				if (/user-status/.test(eventName)) {
@@ -309,6 +344,21 @@ const RocketChat = {
 						});
 					} catch {
 						// We can't create a new record since we don't receive the user._id
+					}
+				} else if (/permissions-changed/.test(eventName)) {
+					const { _id, roles } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const permissionsCollection = db.get('permissions');
+					try {
+						const permissionsRecord = await permissionsCollection.find(_id);
+						await db.action(async() => {
+							await permissionsRecord.update((u) => {
+								u.roles = roles;
+							});
+						});
+						reduxStore.dispatch(updatePermission(_id, roles));
+					} catch (err) {
+						//
 					}
 				} else if (/Users:NameChanged/.test(eventName)) {
 					const userNameChanged = ddpMessage.fields.args[0];
@@ -844,6 +894,7 @@ const RocketChat = {
 	isOmnichannelModuleAvailable,
 	getSlashCommands,
 	getRoles,
+	setRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
 		if (item._id === 'Hide_System_Messages') {
