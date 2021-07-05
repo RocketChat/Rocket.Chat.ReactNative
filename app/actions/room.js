@@ -23,11 +23,12 @@ export function leaveRoom(roomType, room, selected) {
 	};
 }
 
-export function deleteRoom(rid, t) {
+export function deleteRoom(roomType, room, selected) {
 	return {
 		type: types.ROOM.DELETE,
-		rid,
-		t
+		room,
+		roomType,
+		selected
 	};
 }
 
