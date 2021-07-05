@@ -1,10 +1,11 @@
 import * as types from './actionsTypes';
 
-export function loginRequest(credentials, logoutOnError) {
+export function loginRequest(credentials, logoutOnError, isFromWebView) {
 	return {
 		type: types.LOGIN.REQUEST,
 		credentials,
-		logoutOnError
+		logoutOnError,
+		isFromWebView
 	};
 }
 

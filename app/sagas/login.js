@@ -30,15 +30,15 @@ import Navigation from '../lib/Navigation';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
-const loginCall = args => RocketChat.login(args);
+const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, isFromWebView);
 const logoutCall = args => RocketChat.logout(args);
 
-const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false }) {
+const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
 		let result;
 		if (credentials.resume) {
-			result = yield call(loginCall, credentials);
+			result = yield loginCall(credentials, isFromWebView);
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
@@ -68,7 +68,6 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 					log(e);
 				}
 			});
-
 			yield put(loginSuccess(result));
 		}
 	} catch (e) {
@@ -148,14 +147,13 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			status: user.status,
 			statusText: user.statusText,
 			roles: user.roles,
-			loginEmailPassword: user.loginEmailPassword,
+			isFromWebView: user.isFromWebView,
 			showMessageInMainThread: user.showMessageInMainThread,
 			avatarETag: user.avatarETag
 		};
 		yield serversDB.action(async() => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				u.loginEmailPassword = userRecord?.loginEmailPassword;
 				await userRecord.update((record) => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
