@@ -15,6 +15,4 @@ export default class User extends Model {
 	@field('avatar_etag') avatarETag;
 
 	@json('roles', sanitizer) roles;
-
-	@field('is_from_webview') isFromWebView;
 }
