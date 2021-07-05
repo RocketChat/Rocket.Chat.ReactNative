@@ -12,6 +12,7 @@ import database from '../lib/database';
 import I18n from '../i18n';
 import { logEvent, events } from '../utils/log';
 import { goRoom } from '../utils/goRoom';
+import i18nEnJson from '../i18n/locales/en.json';
 
 const createChannel = function createChannel(data) {
 	return RocketChat.createChannel(data);
@@ -110,9 +111,12 @@ const handleSuccess = function* handleSuccess({ data }) {
 
 const handleFailure = function handleFailure({ err, isTeam }) {
 	setTimeout(() => {
-		const msg = (err?.data?.errorType && err?.data?.details?.channel_name)
-			? I18n.t(err?.data?.errorType, { room_name: err?.data?.details?.channel_name })
-			: err?.reason || I18n.t(err?.data?.error || 'There_was_an_error_while_action', { action: isTeam ? I18n.t('creating_team') : I18n.t('creating_channel') });
+		let msg = '';
+		if (err?.data?.errorType && err?.data?.details?.channel_name) {
+			msg = i18nEnJson[err.data.errorType] ? I18n.t(err.data.errorType, { room_name: err.data.details.channel_name }) : err.data.errorType;
+		} else {
+			msg = err?.reason || (i18nEnJson[err?.data?.error] ? I18n.t(err?.data?.error) : err?.data?.error || I18n.t('There_was_an_error_while_action', { action: isTeam ? I18n.t('creating_team') : I18n.t('creating_channel') }));
+		}
 		showErrorAlert(msg, isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel'));
 	}, 300);
 };
