@@ -724,6 +724,7 @@
   "creating_team": "création de l'équipe",
   "team-name-already-exists": "Une équipe portant ce nom existe déjà",
   "Add_Channel_to_Team": "Ajouter un canal à l'équipe",
+  "Left_The_Team_Successfully": "A quitté l'équipe avec succès",
   "Create_New": "Créer un nouveau",
   "Add_Existing": "Ajouter existant",
   "Add_Existing_Channel": "Ajouter un canal existant",
@@ -761,5 +762,8 @@
   "Move_to_Team_Warning": "Après avoir lu les instructions précédentes sur ce comportement, voulez-vous toujours déplacer ce canal vers l'équipe sélectionnée ?",
   "Load_More": "Charger plus",
   "Load_Newer": "Charger plus récent",
-  "Load_Older": "Charger plus ancien"
+  "Load_Older": "Charger plus ancien",
+  "Left_The_Room_Successfully": "A quitté le salon avec succès",
+  "Deleted_The_Team_Successfully": "Equipe supprimée avec succès",
+  "Deleted_The_Room_Successfully": "Salon supprimé avec succès"
 }

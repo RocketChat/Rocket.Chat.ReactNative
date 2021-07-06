@@ -724,6 +724,7 @@
   "creating_team": "team maken",
   "team-name-already-exists": "Er bestaat al een team met die naam",
   "Add_Channel_to_Team": "Kanaal toevoegen aan team",
+  "Left_The_Team_Successfully": "Het team met succes verlaten",
   "Create_New": "Maak nieuw",
   "Add_Existing": "Voeg bestaande",
   "Add_Existing_Channel": "Bestaand kanaal toevoegen",
@@ -761,5 +762,8 @@
   "Move_to_Team_Warning": "Wil je na het lezen van de vorige instructies over dit gedrag, dit kanaal nog steeds naar het geselecteerde team verplaatsen?",
   "Load_More": "Meer laden",
   "Load_Newer": "Nieuwer laden",
-  "Load_Older": "Ouder laden"
+  "Load_Older": "Ouder laden",
+  "Left_The_Room_Successfully": "Heeft kamer met succes verlaten",
+  "Deleted_The_Team_Successfully": "Team succesvol verwijderd",
+  "Deleted_The_Room_Successfully": "Kamer succesvol verwijderd"
 }

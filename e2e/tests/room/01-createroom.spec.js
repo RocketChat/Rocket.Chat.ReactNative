@@ -1,10 +1,7 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
-const { tapBack, sleep, navigateToLogin, login, tryTapping } = require('../../helpers/app');
-
-
+const {
+	tapBack, navigateToLogin, login, tryTapping
+} = require('../../helpers/app');
 
 describe('Create room screen', () => {
 	before(async() => {
@@ -13,30 +10,30 @@ describe('Create room screen', () => {
 		await login(data.users.regular.username, data.users.regular.password);
 	});
 
-	describe('New Message', async() => {
+	describe('New Message', () => {
 		before(async() => {
 			await element(by.id('rooms-list-view-create-channel')).tap();
 		});
 
-		describe('Render', async() => {
+		describe('Render', () => {
 			it('should have new message screen', async() => {
 				await waitFor(element(by.id('new-message-view'))).toBeVisible().withTimeout(2000);
 			});
-	
+
 			it('should have search input', async() => {
 				await waitFor(element(by.id('new-message-view-search'))).toBeVisible().withTimeout(2000);
 			});
-		})
+		});
 
-		describe('Usage', async() => {
+		describe('Usage', () => {
 			it('should back to rooms list', async() => {
 				await waitFor(element(by.id('new-message-view-close'))).toBeVisible().withTimeout(5000);
 				await element(by.id('new-message-view-close')).tap();
 
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(5000);
-				
+
 				await tryTapping(element(by.id('rooms-list-view-create-channel')), 3000);
-				//await element(by.id('rooms-list-view-create-channel')).tap();
+				// await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view'))).toExist().withTimeout(5000);
 			});
 
@@ -56,13 +53,13 @@ describe('Create room screen', () => {
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view'))).toExist().withTimeout(5000);
 			});
-		})
+		});
 	});
 
-	describe('Select Users', async() => {
+	describe('Select Users', () => {
 		it('should search users', async() => {
 			await element(by.id('select-users-view-search')).replaceText('rocket.cat');
-			await waitFor(element(by.id(`select-users-view-item-rocket.cat`))).toBeVisible().withTimeout(10000);
+			await waitFor(element(by.id('select-users-view-item-rocket.cat'))).toBeVisible().withTimeout(10000);
 		});
 
 		it('should select/unselect user', async() => {
@@ -80,27 +77,27 @@ describe('Create room screen', () => {
 			await element(by.id('selected-users-view-submit')).tap();
 			await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(10000);
 		});
-	})
+	});
 
-	describe('Create Channel', async() => {
-		describe('Render', async() => {
+	describe('Create Channel', () => {
+		describe('Render', () => {
 			it('should render all fields', async() => {
 				await expect(element(by.id('create-channel-name'))).toBeVisible();
 				await expect(element(by.id('create-channel-type'))).toBeVisible();
 				await expect(element(by.id('create-channel-readonly'))).toBeVisible();
 				await expect(element(by.id('create-channel-broadcast'))).toBeVisible();
-			})
-		})
+			});
+		});
 
-		describe('Usage', async() => {
+		describe('Usage', () => {
 			it('should get invalid room', async() => {
 				await element(by.id('create-channel-name')).typeText('general');
 				await element(by.id('create-channel-submit')).tap();
-				await waitFor(element(by.text(`A channel with name general exists`))).toExist().withTimeout(60000);
-				await expect(element(by.text(`A channel with name general exists`))).toExist();
+				await waitFor(element(by.text('A channel with name general exists'))).toExist().withTimeout(60000);
+				await expect(element(by.text('A channel with name general exists'))).toExist();
 				await element(by.text('OK')).tap();
 			});
-	
+
 			it('should create public room', async() => {
 				const room = `public${ data.random }`;
 				await element(by.id('create-channel-name')).replaceText('');
@@ -116,7 +113,7 @@ describe('Create room screen', () => {
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(6000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toExist();
 			});
-	
+
 			it('should create private room', async() => {
 				const room = `private${ data.random }`;
 				await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(5000);
@@ -161,6 +158,6 @@ describe('Create room screen', () => {
 				await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toExist().withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${ room }`))).toExist();
 			});
-		})
+		});
 	});
 });
