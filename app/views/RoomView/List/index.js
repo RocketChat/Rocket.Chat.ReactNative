@@ -191,7 +191,7 @@ class ListContainer extends React.Component {
 						messages = [...messages, this.thread];
 					}
 
-					if (compareServerVersion(serverVersion, '3.16.0', methods.lowerThanOrEqualTo)) {
+					if (compareServerVersion(serverVersion, '3.16.0', methods.lowerThan)) {
 						messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
 					}
 
