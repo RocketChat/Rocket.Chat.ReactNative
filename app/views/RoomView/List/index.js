@@ -191,7 +191,11 @@ class ListContainer extends React.Component {
 						messages = [...messages, this.thread];
 					}
 
-					if (compareServerVersion(serverVersion, '3.16.0', methods.lowerThan)) {
+					/**
+					 * Since 3.16.0 server version, the backend don't response with messages if
+					 * hide system message is enabled
+					 */
+					if (compareServerVersion(serverVersion, '3.16.0', methods.lowerThan) || hideSystemMessages.length) {
 						messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
 					}
 
