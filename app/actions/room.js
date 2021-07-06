@@ -52,7 +52,7 @@ export function removedRoom() {
 	};
 }
 
-export function userTyping(rid, status = true, options) {
+export function userTyping(rid, status = true, options = {}) {
 	return {
 		type: types.ROOM.USER_TYPING,
 		rid,
@@ -61,18 +61,20 @@ export function userTyping(rid, status = true, options) {
 	};
 }
 
-export function userRecording(rid, status = true) {
+export function userRecording(rid, status = true, options = {}) {
 	return {
 		type: types.ROOM.USER_RECORDING,
 		rid,
-		status
+		status,
+		options
 	};
 }
 
-export function userUploading(rid, status = true) {
+export function userUploading(rid, status = true, options = {}) {
 	return {
 		type: types.ROOM.USER_UPLOADING,
 		rid,
-		status
+		status,
+		options
 	};
 }

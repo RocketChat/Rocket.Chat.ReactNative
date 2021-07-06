@@ -170,7 +170,7 @@ class ShareView extends Component {
 		try {
 			// Send attachment
 			if (attachments.length) {
-				uploading(room.rid, true);
+				uploading(room.rid, true, { tmid: thread?.id });
 				await Promise.all(attachments.map(({
 					filename: name,
 					mime: type,
@@ -198,14 +198,14 @@ class ShareView extends Component {
 					return Promise.resolve();
 				}));
 
-				uploading(room.rid, false);
+				uploading(room.rid, false, { tmid: thread?.id });
 			// Send text message
 			} else if (text.length) {
 				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
 			}
 		} catch {
 			// Do nothing
-			uploading(room.rid, false);
+			uploading(room.rid, false, { tmid: thread?.id });
 		}
 
 		// if it's share extension this should close
@@ -361,7 +361,7 @@ const mapStateToProps = state => ({
 });
 
 const dispatchToProps = ({
-	uploading: (rid, status) => userUploadingAction(rid, status)
+	uploading: (rid, status, options) => userUploadingAction(rid, status, options)
 });
 
 export default connect(mapStateToProps, dispatchToProps)(withTheme(ShareView));
