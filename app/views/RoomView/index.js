@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { CommonActions } from '@react-navigation/native';
 import { Text, View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
@@ -57,7 +58,6 @@ import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Banner from './Banner';
-import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
@@ -736,9 +736,10 @@ class RoomView extends React.Component {
 	}
 
 	handleRoomRemoved = ({ rid }) => {
+		const { navigation } = this.props;
 		const { room } = this.state;
 		if (rid === this.rid) {
-			Navigation.navigate('RoomsListView');
+			navigation.navigate('RoomsListView');
 			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: RocketChat.getRoomTitle(room) }), I18n.t('Oops'));
 		}
 	}
@@ -850,36 +851,38 @@ class RoomView extends React.Component {
 				});
 			}
 
-			return Navigation.reset({
-				index: 2,
-				routes: [
-					{
-						name: 'RoomsListView'
-					},
-					{
-						name: 'RoomView',
-						params: {
-							rid: this.rid,
-							name: item.name,
-							t: item.t,
-							prid: item.prid,
-							room: item,
-							visitor: item.visitor,
-							roomUserId
-						}
-					},
-					{
-						name: 'RoomView',
-						params: {
-							rid: this.rid,
-							tmid: item.tmid,
-							name,
-							t: 'thread',
-							roomUserId,
-							jumpToMessageId: item.id
-						}
-					}]
-			});
+			return navigation.dispatch(
+				CommonActions.reset({
+					index: 2,
+					routes: [
+						{
+							name: 'RoomsListView'
+						},
+						{
+							name: 'RoomView',
+							params: {
+								rid: this.rid,
+								name: item.name,
+								t: item.t,
+								prid: item.prid,
+								room: item,
+								visitor: item.visitor,
+								roomUserId
+							}
+						},
+						{
+							name: 'RoomView',
+							params: {
+								rid: this.rid,
+								tmid: item.tmid,
+								name,
+								t: 'thread',
+								roomUserId,
+								jumpToMessageId: item.id
+							}
+						}]
+				})
+			);
 		}
 
 		if (item.tlm) {
@@ -899,26 +902,28 @@ class RoomView extends React.Component {
 			});
 		}
 
-		return Navigation.reset({
-			index: 1,
-			routes: [
-				{
-					name: 'RoomsListView'
-				},
-				{
-					name: 'RoomView',
-					params: {
-						rid: roomInfo.rid,
-						name: RocketChat.getRoomTitle(roomInfo),
-						t: roomInfo.t,
-						prid: roomInfo.prid,
-						room: roomInfo,
-						visitor: roomInfo.visitor,
-						roomUserId: RocketChat.getUidDirectMessage(roomInfo),
-						jumpToMessageId: item.id
-					}
-				}]
-		});
+		return navigation.dispatch(
+			CommonActions.reset({
+				index: 1,
+				routes: [
+					{
+						name: 'RoomsListView'
+					},
+					{
+						name: 'RoomView',
+						params: {
+							rid: roomInfo.rid,
+							name: RocketChat.getRoomTitle(roomInfo),
+							t: roomInfo.t,
+							prid: roomInfo.prid,
+							room: roomInfo,
+							visitor: roomInfo.visitor,
+							roomUserId: RocketChat.getUidDirectMessage(roomInfo),
+							jumpToMessageId: item.id
+						}
+					}]
+			})
+		);
 	}
 
 	callJitsi = () => {
