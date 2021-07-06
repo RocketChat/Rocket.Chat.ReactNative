@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import {
 	StyleSheet, View, Modal, Animated
 } from 'react-native';
+import { withTheme } from '../theme';
+import { themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: 'rgba(0, 0, 0, 0.25)'
+		justifyContent: 'center'
 	},
 	image: {
 		width: 100,
@@ -18,9 +19,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class Loading extends React.PureComponent {
+class Loading extends React.PureComponent {
 	static propTypes = {
-		visible: PropTypes.bool.isRequired
+		visible: PropTypes.bool,
+		theme: PropTypes.string
 	}
 
 	state = {
@@ -91,19 +93,22 @@ export default class Loading extends React.PureComponent {
 
 	render() {
 		const { opacity, scale } = this.state;
-		const { visible } = this.props;
+		const { visible, theme } = this.props;
 
 		const scaleAnimation = scale.interpolate({
 			inputRange: [0, 0.5, 1],
 			outputRange: [1, 1.1, 1]
 		});
+
+		const backgroundColor = `rgba(0,0,0,${ themes[theme].backdropOpacity })`;
+
 		return (
 			<Modal
 				visible={visible}
 				transparent
 				onRequestClose={() => {}}
 			>
-				<View style={styles.container} testID='loading'>
+				<View style={[styles.container, { backgroundColor }]} testID='loading'>
 					<Animated.Image
 						source={require('../static/images/logo.png')}
 						style={[styles.image, {
@@ -118,3 +123,5 @@ export default class Loading extends React.PureComponent {
 		);
 	}
 }
+
+export default (withTheme(Loading));
