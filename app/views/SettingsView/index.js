@@ -65,7 +65,7 @@ class SettingsView extends React.Component {
 		const usersCollection = db.get('users');
 		try {
 			const userRecord = await usersCollection.find(user.id);
-			if (!userRecord.loginEmailPassword) {
+			if (userRecord.isFromWebView) {
 				showConfirmationAlert({
 					title: I18n.t('Clear_cookies_alert'),
 					message: I18n.t('Clear_cookies_desc'),
