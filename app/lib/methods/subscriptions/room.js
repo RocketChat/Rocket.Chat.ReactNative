@@ -94,7 +94,9 @@ export default class RoomSubscription {
 			if (rooms[0] !== _rid) {
 				return;
 			}
-			const [name, eventActive, activityType] = ddpMessage.fields.args;
+			const [name, eventActive, activityType, options] = ddpMessage.fields.args;
+			const roomId = options && 'tmid' in options ? options.tmid : _rid;
+
 			let activity = 'USER_TYPING';
 			switch (activityType) {
 				case 'user-typing':
@@ -112,9 +114,9 @@ export default class RoomSubscription {
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
 				if (eventActive) {
-					reduxStore.dispatch(addUserActivity(name, activity));
+					reduxStore.dispatch(addUserActivity(name, activity, roomId));
 				} else {
-					reduxStore.dispatch(removeUserActivity(name, activity));
+					reduxStore.dispatch(removeUserActivity(name, activity, roomId));
 				}
 			}
 		} else if (ev === 'deleteMessage') {

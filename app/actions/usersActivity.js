@@ -12,20 +12,22 @@ function checkUserActionType(actionType) {
 	return type;
 }
 
-export function addUserActivity(username, actionType) {
+export function addUserActivity(username, actionType, roomId) {
 	const action = checkUserActionType(actionType);
 	return {
 		type: action.ADD,
-		username
+		username,
+		roomId
 	};
 }
 
-export function removeUserActivity(username, actionType) {
+export function removeUserActivity(username, actionType, roomId) {
 	const action = checkUserActionType(actionType);
 
 	return {
 		type: action.REMOVE,
-		username
+		username,
+		roomId
 	};
 }
 

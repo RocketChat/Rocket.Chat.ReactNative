@@ -527,7 +527,10 @@ class MessageBox extends Component {
 	}
 
 	handleTyping = (isTyping) => {
-		const { typing, rid, sharing } = this.props;
+		const {
+			typing, rid, sharing, tmid
+		} = this.props;
+
 		if (sharing) {
 			return;
 		}
@@ -536,7 +539,9 @@ class MessageBox extends Component {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			typing(rid, false);
+
+			typing(rid, false, { tmid });
+
 			return;
 		}
 
@@ -545,7 +550,7 @@ class MessageBox extends Component {
 		}
 
 		this.typingTimeout = setTimeout(() => {
-			typing(rid, true);
+			typing(rid, true, { tmid });
 			this.typingTimeout = false;
 		}, 1000);
 	}
@@ -692,9 +697,9 @@ class MessageBox extends Component {
 	}
 
 	recordingCallback = (isRecording) => {
-		const { rid, recording } = this.props;
+		const { rid, recording, tmid } = this.props;
 		this.setState({ recording: isRecording });
-		recording(rid, isRecording);
+		recording(rid, isRecording, { tmid });
 	}
 
 	finishAudioMessage = async(fileInfo) => {
@@ -705,9 +710,9 @@ class MessageBox extends Component {
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					uploading(rid, true);
+					uploading(rid, true, { tmid });
 					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-					uploading(rid, false);
+					uploading(rid, false, { tmid });
 				}
 			} catch (e) {
 				log(e);
@@ -1024,9 +1029,9 @@ const mapStateToProps = state => ({
 });
 
 const dispatchToProps = ({
-	typing: (rid, status) => userTypingAction(rid, status),
-	uploading: (rid, status) => userUploadingAction(rid, status),
-	recording: (rid, status) => userRecordingAction(rid, status)
+	typing: (rid, status, options) => userTypingAction(rid, status, options),
+	uploading: (rid, status, options) => userUploadingAction(rid, status, options),
+	recording: (rid, status, options) => userRecordingAction(rid, status, options)
 });
 
 export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));

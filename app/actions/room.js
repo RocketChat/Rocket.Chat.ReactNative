@@ -52,11 +52,12 @@ export function removedRoom() {
 	};
 }
 
-export function userTyping(rid, status = true) {
+export function userTyping(rid, status = true, options) {
 	return {
 		type: types.ROOM.USER_TYPING,
 		rid,
-		status
+		status,
+		options
 	};
 }
 

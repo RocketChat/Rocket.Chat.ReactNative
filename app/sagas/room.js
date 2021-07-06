@@ -14,7 +14,9 @@ import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
 
-const watchUserActivity = function* watchUserActivity({ type, rid, status }) {
+const watchUserActivity = function* watchUserActivity({
+	type, rid, status, options = {}
+}) {
 	let activity = 'user-typing';
 	if (type === 'ROOM_USER_TYPING') {
 		activity = 'user-typing';
@@ -30,11 +32,11 @@ const watchUserActivity = function* watchUserActivity({ type, rid, status }) {
 	}
 
 	try {
-		yield RocketChat.emitUserActivity(rid, status, activity);
+		yield RocketChat.emitUserActivity(rid, status, activity, options);
 
 		if (status) {
 			yield delay(5000);
-			yield RocketChat.emitUserActivity(rid, false, activity);
+			yield RocketChat.emitUserActivity(rid, false, activity, options);
 		}
 	} catch (e) {
 		log(e);

@@ -12,6 +12,7 @@ class RoomHeaderContainer extends Component {
 		title: PropTypes.string,
 		subtitle: PropTypes.string,
 		type: PropTypes.string,
+		rid: PropTypes.string,
 		prid: PropTypes.string,
 		tmid: PropTypes.string,
 		teamMain: PropTypes.bool,
@@ -82,6 +83,7 @@ class RoomHeaderContainer extends Component {
 			title,
 			subtitle: subtitleProp,
 			type,
+			rid,
 			teamMain,
 			prid,
 			tmid,
@@ -111,6 +113,7 @@ class RoomHeaderContainer extends Component {
 
 		return (
 			<RoomHeader
+				rid={rid}
 				prid={prid}
 				tmid={tmid}
 				title={title}

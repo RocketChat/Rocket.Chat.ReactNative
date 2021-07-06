@@ -3,7 +3,8 @@ import { ROOM } from '../actions/actionsTypes';
 const initialState = {
 	rid: null,
 	isDeleting: false,
-	rooms: []
+	rooms: [],
+	threads: []
 };
 
 export default function(state = initialState, action) {
