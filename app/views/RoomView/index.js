@@ -840,7 +840,6 @@ class RoomView extends React.Component {
 
 	navToThread = async(item) => {
 		const { roomUserId } = this.state;
-		console.log('🚀 ~ file: index.js ~ line 836 ~ RoomView ~ navToThread=async ~ roomUserId', roomUserId);
 		const { navigation, isMasterDetail } = this.props;
 
 		if (item.tmid) {
