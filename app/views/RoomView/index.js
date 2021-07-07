@@ -704,6 +704,12 @@ class RoomView extends React.Component {
 				} else {
 					this.navToThread(message);
 				}
+			} else if (!message.tmid && message.rid === this.rid && this.t === 'thread' && !message.replies) {
+				/**
+				 * Test if the user is within a thread and the message that he is trying to jump
+			 	 * is a message in the same room as a main message
+				 */
+				return this.navToRoom(message);
 			} else {
 				/**
 				 * if it's from server, we don't have it saved locally and so we fetch surroundings
@@ -834,6 +840,7 @@ class RoomView extends React.Component {
 
 	navToThread = async(item) => {
 		const { roomUserId } = this.state;
+		console.log('🚀 ~ file: index.js ~ line 836 ~ RoomView ~ navToThread=async ~ roomUserId', roomUserId);
 		const { navigation, isMasterDetail } = this.props;
 
 		if (item.tmid) {

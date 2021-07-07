@@ -10,7 +10,8 @@ const getMessageInfo = async(messageId) => {
 			id: result.id,
 			rid: result.subscription.id,
 			tmid: result.tmid,
-			msg: result.msg
+			msg: result.msg,
+			replies: result.replies
 		};
 	}
 
@@ -20,7 +21,8 @@ const getMessageInfo = async(messageId) => {
 			id: result.id,
 			rid: result.subscription.id,
 			tmid: result.rid,
-			msg: result.msg
+			msg: result.msg,
+			replies: result.replies
 		};
 	}
 
