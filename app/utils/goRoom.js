@@ -2,10 +2,35 @@ import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
 
 const navigate = ({ item, isMasterDetail, ...props }) => {
-	let navigationMethod = props.navigationMethod ?? Navigation.navigate;
+	const navigationMethod = props.navigationMethod ?? Navigation.navigate;
 
 	if (isMasterDetail) {
-		navigationMethod = Navigation.replace;
+		return Navigation.reset({
+			index: 0,
+			routes: [
+				{
+					name: 'ChatsStackNavigator',
+					state: {
+						routes: [
+							{
+								name: 'RoomView',
+								params: {
+									rid: item.rid,
+									name: RocketChat.getRoomTitle(item),
+									t: item.t,
+									prid: item.prid,
+									room: item,
+									visitor: item.visitor,
+									roomUserId: RocketChat.getUidDirectMessage(item),
+									...props
+								}
+							}
+						]
+					}
+
+				}
+			]
+		});
 	}
 
 	navigationMethod('RoomView', {
