@@ -64,9 +64,6 @@ class Sidebar extends Component {
 		if (nextProps.Site_Name !== Site_Name) {
 			return true;
 		}
-		if (nextProps.Site_Name !== Site_Name) {
-			return true;
-		}
 		if (nextProps.baseUrl !== baseUrl) {
 			return true;
 		}
