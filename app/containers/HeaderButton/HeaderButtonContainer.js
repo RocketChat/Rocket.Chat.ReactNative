@@ -23,7 +23,10 @@ const Container = ({ children, left }) => (
 );
 
 Container.propTypes = {
-	children: PropTypes.arrayOf(PropTypes.element),
+	children: PropTypes.oneOfType([
+		PropTypes.arrayOf(PropTypes.element),
+		PropTypes.object
+	]),
 	left: PropTypes.bool
 };
 

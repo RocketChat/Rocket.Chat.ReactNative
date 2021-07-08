@@ -114,7 +114,7 @@ class RoomsListView extends React.Component {
 			username: PropTypes.string,
 			token: PropTypes.string,
 			statusLivechat: PropTypes.string,
-			roles: PropTypes.object
+			roles: PropTypes.arrayOf(Object)
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,

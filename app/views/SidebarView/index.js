@@ -30,16 +30,16 @@ class Sidebar extends Component {
 		navigation: PropTypes.object,
 		Site_Name: PropTypes.string.isRequired,
 		user: PropTypes.object,
-		state: PropTypes.string,
+		state: PropTypes.object,
 		theme: PropTypes.string,
 		loadingServer: PropTypes.bool,
 		useRealName: PropTypes.bool,
 		allowStatusMessage: PropTypes.bool,
 		isMasterDetail: PropTypes.bool,
-		viewStatisticsPermission: PropTypes.object,
-		viewRoomAdministrationPermission: PropTypes.object,
-		viewUserAdministrationPermission: PropTypes.object,
-		viewPrivilegedSettingPermission: PropTypes.object
+		viewStatisticsPermission: PropTypes.arrayOf(Object),
+		viewRoomAdministrationPermission: PropTypes.arrayOf(Object),
+		viewUserAdministrationPermission: PropTypes.arrayOf(Object),
+		viewPrivilegedSettingPermission: PropTypes.arrayOf(Object)
 	}
 
 	constructor(props) {
