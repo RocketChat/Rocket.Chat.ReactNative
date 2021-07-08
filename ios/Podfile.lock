@@ -375,7 +375,7 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
-  - react-native-simple-crypto (0.4.0):
+  - react-native-simple-crypto (0.5.0):
     - OpenSSL-Universal (= 1.1.180)
     - React
   - react-native-slider (3.0.3):
@@ -911,7 +911,7 @@ SPEC CHECKSUMS:
   react-native-orientation-locker: 998c0744e26624407dac068c04c605b4af7304a2
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
-  react-native-simple-crypto: 55b3d88ba320d6cd72f393c4434765212cdaadab
+  react-native-simple-crypto: 9b358cdfd34169031d384a8d4ac2ffc40b323876
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-webview: 679b6f400176e2ea8a785acf7ae16cf282e7d1eb
   React-perflogger: 25373e382fed75ce768a443822f07098a15ab737

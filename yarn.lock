@@ -13820,9 +13820,9 @@ react-native-scrollable-tab-view@^1.0.0:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
-react-native-simple-crypto@RocketChat/react-native-simple-crypto:
-  version "0.4.0"
-  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/21d36ccc8c75771428239f9dcca19afe0c95e95f"
+react-native-simple-crypto@RocketChat/react-native-simple-crypto#0.5.0:
+  version "0.5.0"
+  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/e4914cb4f5a2227a88e862a8f6029a2c5dd9fdc6"
   dependencies:
     base64-js "^1.3.0"
     hex-lite "^1.5.0"
