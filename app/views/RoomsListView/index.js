@@ -729,8 +729,7 @@ class RoomsListView extends React.Component {
 	goRoom = ({ item, isMasterDetail }) => {
 		logEvent(events.RL_GO_ROOM);
 		const { item: currentItem } = this.state;
-		const { rooms } = this.props;
-		if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
+		if (currentItem?.rid === item.rid) {
 			return;
 		}
 		// Only mark room as focused when in master detail layout
