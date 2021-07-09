@@ -1,55 +1,52 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
 import { connect } from 'react-redux';
 
 import StatusBar from '../../containers/StatusBar';
-import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 
-class GenericWebView extends React.Component {
-	static navigationOptions = ({ isMasterDetail, route }) => ({
-		headerLeft: isMasterDetail ? undefined : route.params?.leftHeaderButton,
-		title: route.params?.title
-	})
+const GenericWebView = ({
+	baseUrl, isMasterDetail, navigation, route
+}) => {
+	const uri = route.params?.uri;
+	const headers = route.params?.headers;
+	const injectedJavaScript = route.params?.injectedJavaScript;
 
-	static propTypes = {
-		baseUrl: PropTypes.string,
-		route: PropTypes.object
+	useEffect(() => {
+		navigation.setOptions({
+			headerLeft: isMasterDetail ? undefined : route.params?.leftHeaderButton,
+			title: route.params?.title
+		});
+	}, []);
+
+
+	if (!baseUrl) {
+		return null;
 	}
+	return (
+		<SafeAreaView>
+			<StatusBar />
+			<WebView
+				// https://github.com/react-native-community/react-native-webview/issues/1311
+				onMessage={() => {}}
+				source={{ uri, headers }}
+				injectedJavaScript={injectedJavaScript}
+			/>
+		</SafeAreaView>
+	);
+};
 
-	constructor(props) {
-		super(props);
-		const { route } = this.props;
-		this.uri = route.params?.uri;
-		this.headers = route.params?.headers;
-		this.injectedJavaScript = route.params?.injectedJavaScript;
-	}
-
-
-	render() {
-		const { baseUrl } = this.props;
-
-
-		if (!baseUrl) {
-			return null;
-		}
-		return (
-			<SafeAreaView>
-				<StatusBar />
-				<WebView
-					// https://github.com/react-native-community/react-native-webview/issues/1311
-					onMessage={() => {}}
-					source={{ uri: this.uri, headers: this.headers }}
-					injectedJavaScript={this.injectedJavaScript}
-				/>
-			</SafeAreaView>
-		);
-	}
-}
+GenericWebView.propTypes = {
+	baseUrl: PropTypes.string,
+	navigation: PropTypes.object,
+	route: PropTypes.object,
+	isMasterDetail: PropTypes.bool
+};
 
 const mapStateToProps = state => ({
-	baseUrl: state.server.server
+	baseUrl: state.server.server,
+	isMasterDetail: state.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(GenericWebView));
+export default connect(mapStateToProps)(GenericWebView);
