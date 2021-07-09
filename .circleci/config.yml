@@ -3,7 +3,7 @@ defaults: &defaults
 
 macos: &macos
   macos:
-    xcode: "12.4.0" # Update to 12.5 after RN is updated
+    xcode: "12.5.0" 
 
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"
