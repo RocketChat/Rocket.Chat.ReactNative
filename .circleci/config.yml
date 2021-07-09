@@ -74,6 +74,22 @@ restore_cache: &restore-gradle-cache
 # COMMANDS
 commands:
 
+  manage-pods:
+    description: "Restore/Get/Save cache of pods libs"
+    steps:
+      - restore_cache:
+          name: Restore pods
+          key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+      - run:
+          name: Install pods libs
+          command: npx pod-install
+      - save_cache:
+          name: Save pods specs and pods cache
+          key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+          paths:
+            - ~/.pods
+            - ios/Pods
+
   android-build:
     description: "Build Android app"
     steps:
@@ -187,6 +203,7 @@ commands:
       - restore_cache: *restore-npm-cache-mac
       - run: *install-npm-modules
       - run: *update-fastlane-ios
+      - manage-pods
       - run:
           name: Set Google Services
           command: |
