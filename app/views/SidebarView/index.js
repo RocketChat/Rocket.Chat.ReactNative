@@ -163,7 +163,7 @@ class Sidebar extends Component {
 					text={I18n.t('Admin_Panel')}
 					left={<CustomIcon name='settings' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate(routeName, navigationParams)}
-					testID='sidebar-settings'
+					testID='sidebar-admin'
 					current={this.currentItemKey === routeName}
 				/>
 			</>
