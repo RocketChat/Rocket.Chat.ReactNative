@@ -46,7 +46,7 @@ GenericWebView.propTypes = {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
-	isMasterDetail: state.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(GenericWebView);
