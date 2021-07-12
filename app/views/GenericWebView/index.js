@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
 import { useSelector } from 'react-redux';
+import { isAndroid } from '../../utils/deviceInfo';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 
@@ -25,14 +26,16 @@ const GenericWebView = ({
 
 
 	const checkLoadRequest = (navigator) => {
+		console.log('🚀 ~ file: index.js ~ line 28 ~ checkLoadRequest ~ navigator', navigator);
 		const url = navigator.url.toLowerCase();
 
 		// TODO: We could implement a save for files and videos
 		if (url.indexOf('.pdf') > -1 || url.indexOf('.doc') > -1) {
-			// On iOS we just return false.
 			// Android requires us to call stopLoading().
-			webView?.current.stopLoading();
-			return false;
+			if (isAndroid) {
+				webView?.current.stopLoading();
+				return false;
+			}
 		}
 
 		return true;
