@@ -31,12 +31,12 @@ const THEMES = [
 		value: 'dark',
 		group: THEME_GROUP
 	}, {
-		label: 'Dark',
-		value: 'dark',
-		group: DARK_GROUP
-	}, {
 		label: 'Black',
 		value: 'black',
+		group: DARK_GROUP
+	}, {
+		label: 'Dark',
+		value: 'dark',
 		group: DARK_GROUP
 	}
 ];
