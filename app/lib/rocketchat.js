@@ -866,6 +866,13 @@ const RocketChat = {
 		};
 		return this.sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
 	},
+	convertTeamToChannel({ teamId, selected }) {
+		const params = {
+			teamId,
+			...(selected.length && { roomsToRemove: selected })
+		};
+		return this.sdk.post('teams.convertToChannel', params);
+	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0

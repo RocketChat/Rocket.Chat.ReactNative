@@ -756,7 +756,7 @@
   "member-does-not-exist": "Member does not exist",
   "Convert": "Convert",
   "Convert_to_Team": "Convert to Team",
-  "Convert_to_Team_Warning": "This can't be undone. Once you convert a channel to a team, you can not turn it back to a channel.",
+  "Convert_to_Team_Warning": "You are converting this Channel to a Team. All Members will be kept.",
   "Move_to_Team": "Move to Team",
   "Move_Channel_Paragraph": "Moving a channel inside a team means that this channel will be added in the team’s context, however, all channel’s members, which are not members of the respective team, will still have access to this channel, but will not be added as team’s members. \n\nAll channel’s management will still be made by the owners of this channel.\n\nTeam’s members and even team’s owners, if not a member of this channel, can not have access to the channel’s content. \n\nPlease notice that the Team’s owner will be able remove members from the Channel.",
   "Move_to_Team_Warning": "After reading the previous intructions about this behavior, do you still want to move this channel to the selected team?",
@@ -765,5 +765,9 @@
   "Load_Older": "Load Older",
   "Left_The_Room_Successfully": "Left the room successfully",
   "Deleted_The_Team_Successfully": "Team deleted successfully",
-  "Deleted_The_Room_Successfully": "Room deleted successfully"
+  "Deleted_The_Room_Successfully": "Room deleted successfully",
+  "Convert_to_Channel": "Convert to Channel",
+  "Converting_Team_To_Channel": "Converting Team to Channel",
+  "Select_Team_Channels_To_Delete": "Select the Team’s Channels you would like to delete, the ones you do not select will be moved to the Workspace. \n\nNotice that public Channels will be public and visible to everyone.",
+  "You_are_converting_the_team": "You are converting this Team to a Channel"
 }

@@ -47,7 +47,8 @@ const PERMISSIONS = [
 	'view-statistics',
 	'view-user-administration',
 	'view-all-teams',
-	'view-all-team-channels'
+	'view-all-team-channels',
+	'convert-team'
 ];
 
 export async function setPermissions() {
