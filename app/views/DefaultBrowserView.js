@@ -62,7 +62,7 @@ class DefaultBrowserView extends React.Component {
 	async componentDidMount() {
 		this.mounted = true;
 		const browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
-		this.setState({ browser: browser || 'systemDefault:' });
+		this.setState({ browser });
 	}
 
 	init = () => {
@@ -83,12 +83,16 @@ class DefaultBrowserView extends React.Component {
 
 	isSelected = (value) => {
 		const { browser } = this.state;
+		if (!browser && value === 'systemDefault:') {
+			return true;
+		}
 		return browser === value;
 	}
 
-	changeDefaultBrowser = async(browser) => {
-		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser });
+	changeDefaultBrowser = async(newBrowser) => {
+		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
 		try {
+			const browser = newBrowser !== 'systemDefault:' ? newBrowser : null;
 			await UserPreferences.setStringAsync(DEFAULT_BROWSER_KEY, browser);
 			this.setState({ browser });
 		} catch {
