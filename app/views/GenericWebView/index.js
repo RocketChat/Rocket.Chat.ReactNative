@@ -25,17 +25,14 @@ const GenericWebView = ({
 	}, []);
 
 
-	const checkLoadRequest = (navigator) => {
+	const checkLoadRequest = () => {
 		// https://github.com/react-native-webview/react-native-webview/blob/master/docs/Reference.md#onshouldstartloadwithrequest
-		const url = navigator.url.toLowerCase();
 
 		// TODO: We could implement a save for files and videos
-		if (url.indexOf('.pdf') > -1 || url.indexOf('.doc') > -1) {
-			// Android requires us to call stopLoading().
-			if (isAndroid) {
+		// Android requires us to call stopLoading().
+		if (isAndroid) {
 				webView?.current.stopLoading();
 				return false;
-			}
 		}
 
 		return true;
