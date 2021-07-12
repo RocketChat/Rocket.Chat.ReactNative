@@ -123,11 +123,9 @@ export const getMessageTranslation = (message, autoTranslateLanguage) => {
 	return null;
 };
 
-export const navigateToGenericWebView = (uri, user, title, baseUrlFile, attachment, injectedJavaScript) => Navigation.navigate('GenericWebView', {
+export const navigateToGenericWebView = (uri, user, title, injectedJavaScript) => Navigation.navigate('GenericWebView', {
 	uri,
 	headers: { 'x-user-id': user.id, 'x-auth-token': user.token },
 	title,
-	baseUrlFile,
-	attachment,
 	injectedJavaScript
 });

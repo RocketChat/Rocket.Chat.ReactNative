@@ -10,7 +10,8 @@ import Markdown from '../markdown';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
-import Navigation from '../../lib/Navigation';
+import openLink from '../../utils/openLink';
+import { navigateToGenericWebView } from './utils';
 
 const styles = StyleSheet.create({
 	button: {
@@ -156,8 +157,9 @@ const Reply = React.memo(({
 			if (!url.startsWith('http')) {
 				url = `${ baseUrl }${ url }`;
 			}
+			return navigateToGenericWebView(url, user, attachment.title);
 		}
-		Navigation.navigate('GenericWebView', { uri: url, headers: { 'x-user-id': user.id, 'x-auth-token': user.token }, title: attachment.title });
+		openLink(url, theme);
 	};
 
 	let { borderColor, chatComponentBackground: backgroundColor } = themes[theme];

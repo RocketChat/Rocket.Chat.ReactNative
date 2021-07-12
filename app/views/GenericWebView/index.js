@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
-import { connect } from 'react-redux';
-
-import StatusBar from '../../containers/StatusBar';
+import { useSelector } from 'react-redux';
 import SafeAreaView from '../../containers/SafeAreaView';
+import StatusBar from '../../containers/StatusBar';
 
 const GenericWebView = ({
-	baseUrl, isMasterDetail, navigation, route
+	navigation, route
 }) => {
+	const webView = useRef(null);
+	const baseUrl = useSelector(state => state.server.server);
+	const isMasterDetail = useSelector(state => state.app.isMasterDetail);
+
 	const uri = route.params?.uri;
 	const headers = route.params?.headers;
 	const injectedJavaScript = route.params?.injectedJavaScript;
@@ -21,6 +24,20 @@ const GenericWebView = ({
 	}, []);
 
 
+	const checkLoadRequest = (navigator) => {
+		const url = navigator.url.toLowerCase();
+
+		// TODO: We could implement a save for files and videos
+		if (url.indexOf('.pdf') > -1 || url.indexOf('.doc') > -1) {
+			// On iOS we just return false.
+			// Android requires us to call stopLoading().
+			webView?.current.stopLoading();
+			return false;
+		}
+
+		return true;
+	};
+
 	if (!baseUrl) {
 		return null;
 	}
@@ -29,24 +46,23 @@ const GenericWebView = ({
 			<StatusBar />
 			<WebView
 				// https://github.com/react-native-community/react-native-webview/issues/1311
+				ref={webView}
 				onMessage={() => {}}
 				source={{ uri, headers }}
 				injectedJavaScript={injectedJavaScript}
+				mixedContentMode='always'
+				mediaPlaybackRequiresUserAction
+				allowFileAccess
+				javaScriptEnabled
+				onShouldStartLoadWithRequest={request => checkLoadRequest(request)}
 			/>
 		</SafeAreaView>
 	);
 };
 
 GenericWebView.propTypes = {
-	baseUrl: PropTypes.string,
 	navigation: PropTypes.object,
-	route: PropTypes.object,
-	isMasterDetail: PropTypes.bool
+	route: PropTypes.object
 };
 
-const mapStateToProps = state => ({
-	baseUrl: state.server.server,
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(GenericWebView);
+export default GenericWebView;

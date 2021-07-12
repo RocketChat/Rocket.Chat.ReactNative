@@ -9,7 +9,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
-import Navigation from '../../lib/Navigation';
+import { navigateToGenericWebView } from './utils';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -37,7 +37,7 @@ const Video = React.memo(({
 			return showAttachment(file);
 		}
 
-		let url = file.title_link || file.video_url;
+		let url = encodeURI(file.video_url);
 		if (!url) {
 			return;
 		}
@@ -45,7 +45,7 @@ const Video = React.memo(({
 			url = `${ baseUrl }${ url }`;
 		}
 
-		Navigation.navigate('GenericWebView', { uri: url, headers: { 'x-user-id': user.id, 'x-auth-token': user.token }, title: file.title });
+		navigateToGenericWebView(url, user, file.title);
 	};
 
 	return (
