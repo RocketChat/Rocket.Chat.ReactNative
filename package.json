@@ -16,11 +16,18 @@
     "precommit": "eslint . && jest",
     "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
     "generate-source-maps-android": "bugsnag-sourcemaps",
-    "postinstall": "patch-package && jetify"
+    "postinstall": "patch-package && jetify",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint", 
+      "jest --bail --findRelatedTests"
+    ]
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run precommit"
+      "pre-commit": "lint-staged"
     }
   },
   "dependencies": {
@@ -66,6 +73,7 @@
     "i18n-js": "3.7.1",
     "js-base64": "2.5.2",
     "js-sha256": "^0.9.0",
+    "lint-staged": "^11.0.0",
     "lodash": "4.17.20",
     "mocha": "7.1.2",
     "moment": "2.27.0",
