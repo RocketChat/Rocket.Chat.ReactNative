@@ -215,7 +215,6 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen
 				name='GenericWebView'
 				component={GenericWebView}
-				options={GenericWebView.navigationOptions}
 			/>
 		</ChatsStack.Navigator>
 	);
