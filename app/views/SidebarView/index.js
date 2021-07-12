@@ -152,7 +152,10 @@ class Sidebar extends Component {
 		}
 		const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
 		const params = {
-			uri: `${ baseUrl }/admin/info?layout=embedded`, injectedJavaScript: `Meteor.loginWithToken('${ user.token }', function() { })`, title: I18n.t('Admin_Panel'), leftHeaderButton: () => <HeaderButton.Drawer navigation={navigation} />
+			uri: `${ baseUrl }/admin/info?layout=embedded`,
+			injectedJavaScript: `Meteor.loginWithToken('${ user.token }', function() { })`,
+			title: I18n.t('Admin_Panel'),
+			leftHeaderButton: () => <HeaderButton.Drawer navigation={navigation} />
 		};
 		const navigationParams = isMasterDetail ? params : { screen: 'AdminPanelView', params };
 
