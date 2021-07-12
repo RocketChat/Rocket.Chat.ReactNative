@@ -26,7 +26,7 @@ const GenericWebView = ({
 
 
 	const checkLoadRequest = (navigator) => {
-		console.log('🚀 ~ file: index.js ~ line 28 ~ checkLoadRequest ~ navigator', navigator);
+		// https://github.com/react-native-webview/react-native-webview/blob/master/docs/Reference.md#onshouldstartloadwithrequest
 		const url = navigator.url.toLowerCase();
 
 		// TODO: We could implement a save for files and videos
