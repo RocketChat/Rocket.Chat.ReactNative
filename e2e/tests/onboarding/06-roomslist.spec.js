@@ -1,15 +1,13 @@
 const {
-	device, expect, element, by, waitFor
-} = require('detox');
-const { login, navigateToLogin, logout, tapBack, sleep, searchRoom } = require('../../helpers/app');
+	login, navigateToLogin, logout, tapBack, searchRoom
+} = require('../../helpers/app');
 const data = require('../../data');
 
 describe('Rooms list screen', () => {
-
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password)
+		await login(data.users.regular.username, data.users.regular.password);
 	});
 
 	describe('Render', () => {
@@ -20,13 +18,13 @@ describe('Rooms list screen', () => {
 		it('should have room item', async() => {
 			await expect(element(by.id('rooms-list-view-item-general'))).toExist();
 		});
-		
+
 		// Render - Header
 		describe('Header', () => {
 			it('should have create channel button', async() => {
 				await expect(element(by.id('rooms-list-view-create-channel'))).toBeVisible();
 			});
-	
+
 			it('should have sidebar button', async() => {
 				await expect(element(by.id('rooms-list-view-sidebar'))).toBeVisible();
 			});
