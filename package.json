@@ -13,7 +13,6 @@
     "android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --variant=experimentalPlayDebug --appId",
     "log-android": "react-native log-android",
     "snyk-protect": "snyk protect",
-    "precommit": "eslint . && jest",
     "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
     "generate-source-maps-android": "bugsnag-sourcemaps",
     "postinstall": "patch-package && jetify",
@@ -27,7 +26,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "jest -u && lint-staged"
+      "pre-commit": "lint-staged"
     }
   },
   "dependencies": {
