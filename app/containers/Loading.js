@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	StyleSheet, View, Modal, Animated
+	StyleSheet, Modal, Animated
 } from 'react-native';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
@@ -100,7 +100,13 @@ class Loading extends React.PureComponent {
 			outputRange: [1, 1.1, 1]
 		});
 
-		const backgroundColor = `rgba(0,0,0,${ themes[theme].backdropOpacity })`;
+		const opacityAnimation = opacity.interpolate({
+			inputRange: [0, themes[theme].backdropOpacity],
+			outputRange: [0, themes[theme].backdropOpacity],
+			extrapolate: 'clamp'
+		});
+
+		const backgroundColor = `${ themes[theme].backdropColor }`;
 
 		return (
 			<Modal
@@ -108,7 +114,7 @@ class Loading extends React.PureComponent {
 				transparent
 				onRequestClose={() => {}}
 			>
-				<View style={[styles.container, { backgroundColor }]} testID='loading'>
+				<Animated.View style={[styles.container, { backgroundColor, opacity: opacityAnimation }]} testID='loading'>
 					<Animated.Image
 						source={require('../static/images/logo.png')}
 						style={[styles.image, {
@@ -118,7 +124,7 @@ class Loading extends React.PureComponent {
 							}]
 						}]}
 					/>
-				</View>
+				</Animated.View>
 			</Modal>
 		);
 	}
