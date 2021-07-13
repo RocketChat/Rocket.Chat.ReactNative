@@ -756,7 +756,7 @@
   "member-does-not-exist": "Lid bestaat niet",
   "Convert": "Converteren",
   "Convert_to_Team": "Converteren naar team",
-  "Convert_to_Team_Warning": "Dit kan niet ongedaan worden gemaakt. Eens je een kanaal naar een team hebt geconverteerd, kun je het niet meer naar een kanaal terugzetten.",
+  "Convert_to_Team_Warning": "Je converteert dit kanaal naar een team. Alle leden blijven behouden.",
   "Move_to_Team": "Verplaats naar team",
   "Move_Channel_Paragraph": "Het verplaatsen van een kanaal binnen een team betekent dat dit kanaal wordt toegevoegd in de context van het team. Maar, alle leden van dit kanaal, die geen lid zijn van het respectieve team, zullen nog steeds toegang hebben tot dit kanaal, maar worden niet als teamleden toegevoegd.\n\nHet volledige beheer van dit kanaal wordt nog steeds door de eigenaren van dit kanaal gedaan.\n\nTeamleden en zelfs teameigenaren, wanneer ze geen lid zijn van dit kanaal, hebben geen toegang tot de content van het kanaal.\n\nHou er rekening mee dat de eigenaar van het team de leden uit het kanaal kan verwijderen.",
   "Move_to_Team_Warning": "Wil je na het lezen van de vorige instructies over dit gedrag, dit kanaal nog steeds naar het geselecteerde team verplaatsen?",
@@ -765,5 +765,9 @@
   "Load_Older": "Ouder laden",
   "Left_The_Room_Successfully": "Heeft kamer met succes verlaten",
   "Deleted_The_Team_Successfully": "Team succesvol verwijderd",
-  "Deleted_The_Room_Successfully": "Kamer succesvol verwijderd"
+  "Deleted_The_Room_Successfully": "Kamer succesvol verwijderd",
+  "Convert_to_Channel": "Converteren naar kanaal",
+  "Converting_Team_To_Channel": "Team converteren naar kanaal",
+  "Select_Team_Channels_To_Delete": "Selecteer de teamkanalen die je wilt verwijderen, de kanalen die u niet selecteert, worden naar de werkruimte verplaatst.\n\nMerk op dat openbare kanalen openbaar en voor iedereen zichtbaar zullen zijn.",
+  "You_are_converting_the_team": "Je converteert dit team naar een kanaal"
 }
