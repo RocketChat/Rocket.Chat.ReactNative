@@ -23,12 +23,11 @@
     "*.{js,ts,tsx}": [
       "eslint", 
       "jest --bail --findRelatedTests"
-    ],
-    "!(*package).json": "eslint"
+    ]
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "jest -u && lint-staged"
     }
   },
   "dependencies": {
