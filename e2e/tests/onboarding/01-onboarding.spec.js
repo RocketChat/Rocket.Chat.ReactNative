@@ -1,6 +1,3 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
 
 describe('Onboarding', () => {
@@ -12,10 +9,10 @@ describe('Onboarding', () => {
 	describe('Render', () => {
 		it('should have onboarding screen', async() => {
 			await expect(element(by.id('onboarding-view'))).toBeVisible();
-    });
+		});
 
 		it('should have "Join a workspace"', async() => {
-      await expect(element(by.id('join-workspace'))).toBeVisible();
+			await expect(element(by.id('join-workspace'))).toBeVisible();
 		});
 
 		it('should have "Create a new workspace"', async() => {
@@ -27,7 +24,7 @@ describe('Onboarding', () => {
 		// it('should navigate to create new workspace', async() => {
 		// 	// webviews are not supported by detox: https://github.com/wix/detox/issues/136#issuecomment-306591554
 		// });
-	
+
 		it('should navigate to join a workspace', async() => {
 			await element(by.id('join-workspace')).tap();
 			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
@@ -50,7 +47,7 @@ describe('Onboarding', () => {
 			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
 			await element(by.id('join-workspace')).tap();
 			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-			await element(by.id('new-server-view-input')).typeText(`${data.server}\n`);
+			await element(by.id('new-server-view-input')).typeText(`${ data.server }\n`);
 			await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
 		});
 	});

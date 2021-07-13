@@ -1,12 +1,9 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
-const { navigateToRegister, sleep } = require('../../helpers/app');
+const { navigateToRegister } = require('../../helpers/app');
 const data = require('../../data');
 
 describe('Create user screen', () => {
 	before(async() => {
-		await device.launchApp({ newInstance: true });
+		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToRegister();
 	});
 
@@ -37,7 +34,6 @@ describe('Create user screen', () => {
 	});
 
 	describe('Usage', () => {
-
 		// FIXME: Detox isn't able to check if it's tappable: https://github.com/wix/Detox/issues/246
 		// it('should submit invalid email and do nothing', async() => {
 		// 	const invalidEmail = 'invalidemail';
