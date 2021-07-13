@@ -259,6 +259,8 @@ export default {
 	RA_LEAVE_TEAM_F: 'ra_leave_team_f',
 	RA_CONVERT_TO_TEAM: 'ra_convert_to_team',
 	RA_CONVERT_TO_TEAM_F: 'ra_convert_to_team_f',
+	RA_CONVERT_TEAM_TO_CHANNEL: 'ra_convert_team_to_channel',
+	RA_CONVERT_TEAM_TO_CHANNEL_F: 'ra_convert_team_to_channel_f',
 	RA_MOVE_TO_TEAM: 'ra_move_to_team',
 	RA_MOVE_TO_TEAM_F: 'ra_move_to_team_f',
 	RA_SEARCH_TEAM: 'ra_search_team',

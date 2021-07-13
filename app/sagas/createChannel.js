@@ -41,10 +41,10 @@ const handleRequest = function* handleRequest({ data }) {
 				encrypted
 			} = data;
 			logEvent(events.CT_CREATE, {
-				type,
-				readOnly,
-				broadcast,
-				encrypted
+				type: `${ type }`,
+				readOnly: `${ readOnly }`,
+				broadcast: `${ broadcast }`,
+				encrypted: `${ encrypted }`
 			});
 			const result = yield call(createTeam, data);
 			sub = {
