@@ -756,7 +756,7 @@
   "member-does-not-exist": "Le membre n'existe pas",
   "Convert": "Convertir",
   "Convert_to_Team": "Convertir en équipe",
-  "Convert_to_Team_Warning": "Ceci ne peut pas être annulé. Une fois que vous avez converti un canal en équipe, vous ne pouvez pas le retransformer en canal.",
+  "Convert_to_Team_Warning": "Vous convertissez ce canal en équipe. Tous les membres seront conservés.",
   "Move_to_Team": "Déplacer vers l'équipe",
   "Move_Channel_Paragraph": "Le déplacement d'un canal dans une équipe signifie que ce canal sera ajouté dans le contexte d'équipe. Cependant, tous les membres du canal, qui ne sont pas membres de l'équipe respective, auront toujours accès à ce canal, mais ne seront pas ajoutés comme membres de l'équipe.\n\nLa gestion de tout le canal sera toujours assurée par les propriétaires de ce canal.\n\nLes membres de l'équipe et même les propriétaires de l'équipe, s'ils ne sont pas membres de ce canal, ne peuvent pas avoir accès au contenu du canal.\n\nVeuillez noter que le propriétaire de l'équipe pourra supprimer des membres du canal.",
   "Move_to_Team_Warning": "Après avoir lu les instructions précédentes sur ce comportement, voulez-vous toujours déplacer ce canal vers l'équipe sélectionnée ?",
@@ -765,5 +765,9 @@
   "Load_Older": "Charger plus ancien",
   "Left_The_Room_Successfully": "A quitté le salon avec succès",
   "Deleted_The_Team_Successfully": "Equipe supprimée avec succès",
-  "Deleted_The_Room_Successfully": "Salon supprimé avec succès"
+  "Deleted_The_Room_Successfully": "Salon supprimé avec succès",
+  "Convert_to_Channel": "Convertir en canal",
+  "Converting_Team_To_Channel": "Conversion de l’équipe en canal",
+  "Select_Team_Channels_To_Delete": "Sélectionnez les canaux de l'équipe que vous souhaitez supprimer, ceux que vous ne sélectionnez pas, seront déplacés vers l'espace de travail. \n\n\nNotez que les canaux publics seront publics et visibles par tous.",
+  "You_are_converting_the_team": "Vous convertissez cette équipe en canal"
 }
