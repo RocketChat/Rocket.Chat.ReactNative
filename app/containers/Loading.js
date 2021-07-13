@@ -38,7 +38,7 @@ class Loading extends React.PureComponent {
 			opacity,
 			{
 				toValue: 1,
-				duration: 1000,
+				duration: 200,
 				useNativeDriver: true
 			}
 		);
@@ -101,12 +101,10 @@ class Loading extends React.PureComponent {
 		});
 
 		const opacityAnimation = opacity.interpolate({
-			inputRange: [0, themes[theme].backdropOpacity],
+			inputRange: [0, 1],
 			outputRange: [0, themes[theme].backdropOpacity],
 			extrapolate: 'clamp'
 		});
-
-		const backgroundColor = `${ themes[theme].backdropColor }`;
 
 		return (
 			<Modal
@@ -114,7 +112,13 @@ class Loading extends React.PureComponent {
 				transparent
 				onRequestClose={() => {}}
 			>
-				<Animated.View style={[styles.container, { backgroundColor, opacity: opacityAnimation }]} testID='loading'>
+				<Animated.View
+					style={[styles.container, {
+						backgroundColor: themes[theme].backdropColor,
+						opacity: opacityAnimation
+					}]}
+					testID='loading'
+				>
 					<Animated.Image
 						source={require('../static/images/logo.png')}
 						style={[styles.image, {
