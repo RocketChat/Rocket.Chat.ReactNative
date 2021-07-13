@@ -20,10 +20,11 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,ts,tsx}": [
       "eslint", 
       "jest --bail --findRelatedTests"
-    ]
+    ],
+    "!(*package).json": "eslint"
   },
   "husky": {
     "hooks": {
