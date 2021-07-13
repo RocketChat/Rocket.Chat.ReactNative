@@ -97,7 +97,7 @@ const fallbackNavigation = function* fallbackNavigation() {
 const handleOAuth = function* handleOAuth({ params }) {
 	const { credentialToken, credentialSecret } = params;
 	try {
-		yield RocketChat.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } });
+		yield RocketChat.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
 	} catch (e) {
 		log(e);
 	}
