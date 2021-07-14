@@ -2,7 +2,7 @@ module.exports = {
 	"settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".ios.js", ".android.js", ".native.js", ".tsx"]
+        "extensions": [".js", ".ios.js", ".android.js", ".native.js", ".ts", ".tsx"],
       }
     }
   },
@@ -34,7 +34,7 @@ module.exports = {
 	},
 	"rules": {
 		"react/jsx-filename-extension": [1, {
-			"extensions": [".js", ".jsx"]
+			"extensions": [".js", ".jsx", ".ts", ".tsx"]
 		}],
 		"react/require-default-props": [0],
 		"react/no-unused-prop-types": [2, {
