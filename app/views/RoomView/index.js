@@ -706,8 +706,8 @@ class RoomView extends React.Component {
 				}
 			} else if (!message.tmid && message.rid === this.rid && this.t === 'thread' && !message.replies) {
 				/**
-				 * Test if the user is within a thread and the message that he is trying to jump
-			 	 * is a message in the same room as a main message
+				 * Test if the user is within a thread and the message that he is trying to jump to,
+			 	 * is a message in the main room
 				 */
 				return this.navToRoom(message);
 			} else {
