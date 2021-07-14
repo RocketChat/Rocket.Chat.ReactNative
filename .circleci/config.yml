@@ -82,7 +82,7 @@ commands:
           key: pods-v1-{{ checksum "ios/Podfile.lock" }}
       - run:
           name: Install pods libs
-          command: pod install --deployment
+          command: bundle exec pod install
           working_directory: ios
       - save_cache:
           name: Save pods specs and pods cache
