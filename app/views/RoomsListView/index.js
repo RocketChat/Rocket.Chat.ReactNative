@@ -168,10 +168,12 @@ class RoomsListView extends React.Component {
 			loading: true,
 			chatsUpdate: [],
 			chats: [],
-			item: {}
+			item: {},
+			isDisabledToCreateRoom: false
 		};
 		this.setHeader();
 		this.getSubscriptions();
+		this.handleHasPermission();
 	}
 
 	componentDidMount() {
@@ -223,7 +225,9 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { chatsUpdate, searching, item } = this.state;
+		const {
+			chatsUpdate, searching, item, isDisabledToCreateRoom
+		} = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -239,6 +243,10 @@ class RoomsListView extends React.Component {
 		}
 
 		if (nextState.searching !== searching) {
+			return true;
+		}
+
+		if (nextState.isDisabledToCreateRoom !== isDisabledToCreateRoom) {
 			return true;
 		}
 
@@ -320,6 +328,7 @@ class RoomsListView extends React.Component {
 			|| createPrivateChannelPermission !== prevProps.createPrivateChannelPermission
 			|| createDirectMessagePermission !== prevProps.createDirectMessagePermission
 			|| createDiscussionPermission !== prevProps.createDiscussionPermission)) {
+			this.handleHasPermission();
 			this.setHeader();
 		}
 	}
@@ -341,27 +350,28 @@ class RoomsListView extends React.Component {
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
-	getHeader = () => {
-		const { searching } = this.state;
+	handleHasPermission = async() => {
 		const {
-			navigation, isMasterDetail, insets, createTeamPermission, user, createDirectMessagePermission, createPublicChannelPermission, createPrivateChannelPermission, createDiscussionPermission
+			createTeamPermission, createDirectMessagePermission, createPublicChannelPermission, createPrivateChannelPermission, createDiscussionPermission
+		} = this.props;
+		const permissions = [
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createTeamPermission,
+			createDirectMessagePermission,
+			createDiscussionPermission
+		];
+		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		const isDisabledToCreateRoom = permissionsToCreate.filter(r => r === true).length > 0;
+		this.setState({ isDisabledToCreateRoom }, () => this.setHeader());
+	}
+
+	getHeader = () => {
+		const { searching, isDisabledToCreateRoom } = this.state;
+		const {
+			navigation, isMasterDetail, insets
 		} = this.props;
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: searching ? 0 : 3 });
-
-		let count = 0;
-
-		const permissionsToCreate = RocketChat.userHasRolePermission(
-			[
-				createPublicChannelPermission,
-				createPrivateChannelPermission,
-				createTeamPermission,
-				createDirectMessagePermission,
-				createDiscussionPermission
-			], user
-		);
-
-		permissionsToCreate.map((val => (val ? count += 1 : null)));
-
 
 		return {
 			headerTitleAlign: 'left',
@@ -388,7 +398,7 @@ class RoomsListView extends React.Component {
 			},
 			headerRight: () => (searching ? null : (
 				<HeaderButton.Container>
-					{count > 0 ? (
+					{isDisabledToCreateRoom ? (
 						<HeaderButton.Item
 							iconName='create'
 							onPress={this.goToNewMessage}

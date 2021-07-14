@@ -79,8 +79,10 @@ class NewMessageView extends React.Component {
 		this.init();
 		this.state = {
 			search: [],
-			chats: []
+			chats: [],
+			permissions: []
 		};
+		this.handleHasPermission();
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -173,47 +175,52 @@ class NewMessageView extends React.Component {
 		Navigation.navigate('CreateDiscussionView');
 	}
 
+	handleHasPermission = async() => {
+		const {
+			createTeamPermission, createDirectMessagePermission, createPublicChannelPermission, createPrivateChannelPermission, createDiscussionPermission
+		} = this.props;
+		const permissions = [
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createTeamPermission,
+			createDirectMessagePermission,
+			createDiscussionPermission
+		];
+		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		this.setState({ permissions: permissionsToCreate });
+	}
+
 	renderHeader = () => {
 		const {
-			maxUsers, theme, serverVersion, createTeamPermission, user, createDirectMessagePermission, createPublicChannelPermission, createPrivateChannelPermission, createDiscussionPermission
+			maxUsers, theme, serverVersion
 		} = this.props;
-
-		const permissionsToCreate = RocketChat.userHasRolePermission(
-			[
-				createPublicChannelPermission,
-				createPrivateChannelPermission,
-				createTeamPermission,
-				createDirectMessagePermission,
-				createDiscussionPermission
-			],
-			user
-		);
+		const { permissions } = this.state;
 
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<View style={styles.buttonContainer}>
-					{(permissionsToCreate[0] || permissionsToCreate[1]) ? this.renderButton({
+					{(permissions[0] || permissions[1]) ? this.renderButton({
 						onPress: this.createChannel,
 						title: I18n.t('Create_Channel'),
 						icon: 'channel-public',
 						testID: 'new-message-view-create-channel',
 						first: true
 					}) : null}
-					{(compareServerVersion(serverVersion, '3.13.0', methods.greaterThanOrEqualTo) && permissionsToCreate[2])
+					{(compareServerVersion(serverVersion, '3.13.0', methods.greaterThanOrEqualTo) && permissions[2])
 						? (this.renderButton({
 							onPress: this.createTeam,
 							title: I18n.t('Create_Team'),
 							icon: 'teams',
 							testID: 'new-message-view-create-team'
 						})) : null}
-					{(maxUsers > 2 && permissionsToCreate[3]) ? this.renderButton({
+					{(maxUsers > 2 && permissions[3]) ? this.renderButton({
 						onPress: this.createGroupChat,
 						title: I18n.t('Create_Direct_Messages'),
 						icon: 'message',
 						testID: 'new-message-view-create-direct-message'
 					}) : null}
-					{permissionsToCreate[4] ? this.renderButton({
+					{permissions[4] ? this.renderButton({
 						onPress: this.createDiscussion,
 						title: I18n.t('Create_Discussion'),
 						icon: 'discussions',

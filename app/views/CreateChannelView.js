@@ -102,14 +102,16 @@ class CreateChannelView extends React.Component {
 			readOnly: false,
 			encrypted: false,
 			broadcast: false,
-			isTeam
+			isTeam,
+			permissions: []
 		};
 		this.setHeader();
+		this.handleHasPermission();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			channelName, type, readOnly, broadcast, encrypted
+			channelName, type, readOnly, broadcast, encrypted, permissions
 		} = this.state;
 		const {
 			users, isFetching, encryptionEnabled, theme
@@ -130,6 +132,9 @@ class CreateChannelView extends React.Component {
 			return true;
 		}
 		if (nextState.broadcast !== broadcast) {
+			return true;
+		}
+		if (nextState.permissions !== permissions) {
 			return true;
 		}
 		if (nextProps.isFetching !== isFetching) {
@@ -216,24 +221,21 @@ class CreateChannelView extends React.Component {
 		);
 	}
 
-	renderType() {
-		const { type, isTeam } = this.state;
-		const { createPublicChannelPermission, createPrivateChannelPermission, user } = this.props;
+	handleHasPermission = async() => {
+		const { createPublicChannelPermission, createPrivateChannelPermission } = this.props;
+		const permissions = [createPublicChannelPermission, createPrivateChannelPermission];
+		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		this.setState({ permissions: permissionsToCreate });
+	}
 
-		let count = 0;
-		const permissionsToCreate = RocketChat.userHasRolePermission(
-			[
-				createPublicChannelPermission,
-				createPrivateChannelPermission
-			],
-			user
-		);
-		permissionsToCreate.map((val => (val ? count += 1 : null)));
+	renderType() {
+		const { type, isTeam, permissions } = this.state;
+		const isDisabled = permissions.filter(r => r === true).length <= 1;
 
 		return this.renderSwitch({
 			id: 'type',
-			value: permissionsToCreate[1] ? type : false,
-			disabled: count <= 1,
+			value: permissions[1] ? type : false,
+			disabled: isDisabled,
 			label: isTeam ? 'Private_Team' : 'Private_Channel',
 			onValueChange: (value) => {
 				logEvent(events.CR_TOGGLE_TYPE);
