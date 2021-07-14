@@ -10,7 +10,7 @@ import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
 import {
-	supportedBiometryLabel, changePasscode, checkHasPasscode, toggleBiometrySetBoolAsync, checkHasBiometry
+	supportedBiometryLabel, changePasscode, checkHasPasscode, saveStatusLocalAuthentication
 } from '../utils/localAuthentication';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -104,7 +104,11 @@ class ScreenLockConfigView extends React.Component {
 
 	save = async() => {
 		logEvent(events.SLC_SAVE_SCREEN_LOCK);
+		const { server } = this.props;
 		const { autoLock, autoLockTime, biometry } = this.state;
+		await saveStatusLocalAuthentication({
+			autoLock, autoLockTime, biometry, server
+		});
 		const serversDB = database.servers;
 		await serversDB.action(async() => {
 			await this.serverRecord?.update((record) => {
@@ -127,7 +131,6 @@ class ScreenLockConfigView extends React.Component {
 			if (autoLock) {
 				try {
 					await checkHasPasscode({ force: false, serverRecord: this.serverRecord });
-					await checkHasBiometry(this.serverRecord);
 				} catch {
 					this.toggleAutoLock();
 				}
@@ -136,10 +139,9 @@ class ScreenLockConfigView extends React.Component {
 		});
 	}
 
-	toggleBiometry = async() => {
+	toggleBiometry = () => {
 		const { biometry } = this.state;
 		logEvent(events.SLC_TOGGLE_BIOMETRY);
-		await toggleBiometrySetBoolAsync(!biometry);
 		this.setState({ biometry: !biometry }, () => this.save());
 	}
 

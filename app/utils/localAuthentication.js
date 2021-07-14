@@ -10,7 +10,14 @@ import database from '../lib/database';
 import { isIOS } from './deviceInfo';
 import EventEmitter from './events';
 import {
-	LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY, PASSCODE_KEY, CHANGE_PASSCODE_EMITTER, UNLOCK_FACE_ID
+	LOCAL_AUTHENTICATE_EMITTER,
+	LOCKED_OUT_TIMER_KEY,
+	ATTEMPTS_KEY,
+	PASSCODE_KEY,
+	CHANGE_PASSCODE_EMITTER,
+	UNLOCK_FACE_ID,
+	AUTO_LOCK,
+	AUTO_LOCK_TIME
 } from '../constants/localAuthentication';
 import I18n from '../i18n';
 import { setLocalAuthenticated } from '../actions/login';
@@ -49,10 +56,6 @@ const openChangePasscodeModal = ({ force }) => new Promise((resolve, reject) => 
 	});
 });
 
-export const toggleBiometrySetBoolAsync = async(value) => {
-	await UserPreferences.setBoolAsync(UNLOCK_FACE_ID, value);
-};
-
 export const changePasscode = async({ force = false }) => {
 	const passcode = await openChangePasscodeModal({ force });
 	await UserPreferences.setStringAsync(PASSCODE_KEY, sha256(passcode));
@@ -77,19 +80,10 @@ const checkBiometry = async(serverRecord) => {
 			await serverRecord.update((record) => {
 				record.biometry = !!result?.success;
 			});
-			await toggleBiometrySetBoolAsync(!!result?.success);
 		} catch {
 			// Do nothing
 		}
 	});
-};
-
-export const checkHasBiometry = async(serverRecord) => {
-	const storedBiometry = await UserPreferences.getBoolAsync(UNLOCK_FACE_ID);
-	if (storedBiometry) {
-		await checkBiometry(serverRecord);
-	}
-	return Promise.resolve();
 };
 
 export const checkHasPasscode = async({ force = true, serverRecord }) => {
@@ -102,13 +96,47 @@ export const checkHasPasscode = async({ force = true, serverRecord }) => {
 	return Promise.resolve();
 };
 
+export const saveStatusLocalAuthentication = async({
+	autoLock, autoLockTime, biometry, server
+}) => {
+	await UserPreferences.setBoolAsync(AUTO_LOCK + server, autoLock);
+	await UserPreferences.setStringAsync(AUTO_LOCK_TIME + server, autoLockTime.toString());
+	await UserPreferences.setBoolAsync(UNLOCK_FACE_ID + server, biometry);
+};
+
+export const checkAutoLockAndTime = async(server) => {
+	const storedAutoLock = await UserPreferences.getBoolAsync(AUTO_LOCK + server);
+	const storedAutoLockTime = await UserPreferences.getStringAsync(AUTO_LOCK_TIME + server);
+	const storedBiometry = await UserPreferences.getBoolAsync(UNLOCK_FACE_ID + server);
+
+	return {
+		storedAutoLock,
+		storedAutoLockTime: Number.parseInt(storedAutoLockTime, 10),
+		storedBiometry
+	};
+};
+
 export const localAuthenticate = async(server) => {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
+	const { Force_Screen_Lock, Force_Screen_Lock_After } = store.getState().settings;
 
 	let serverRecord;
 	try {
 		serverRecord = await serversCollection.find(server);
+
+		const { storedAutoLock, storedAutoLockTime, storedBiometry } = await checkAutoLockAndTime(server);
+		await serversDB.action(async() => {
+			await serverRecord.update((record) => {
+				if (serverRecord.autoLock !== storedAutoLock && !Force_Screen_Lock) {
+					record.autoLock = storedAutoLock;
+				}
+				if (!Force_Screen_Lock || Force_Screen_Lock_After === 0) {
+					record.autoLockTime = storedAutoLockTime;
+				}
+				record.biometry = storedBiometry;
+			});
+		});
 	} catch (error) {
 		return Promise.reject();
 	}

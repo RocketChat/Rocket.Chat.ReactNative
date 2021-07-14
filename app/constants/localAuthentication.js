@@ -1,3 +1,5 @@
+export const AUTO_LOCK = 'kAutoLock';
+export const AUTO_LOCK_TIME = 'kAutoLockTime';
 export const PASSCODE_KEY = 'kPasscode';
 export const LOCKED_OUT_TIMER_KEY = 'kLockedOutTimer';
 export const ATTEMPTS_KEY = 'kAttempts';
