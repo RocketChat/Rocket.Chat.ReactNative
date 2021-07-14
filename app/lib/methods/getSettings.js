@@ -131,6 +131,10 @@ export async function setSettings() {
 	reduxStore.dispatch(addSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
 }
 
+export function subscribeSettings() {
+	return RocketChat.subscribe('stream-notify-all', 'public-settings-changed');
+}
+
 export default async function() {
 	try {
 		const db = database.active;

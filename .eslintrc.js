@@ -29,7 +29,8 @@ module.exports = {
 		"commonjs": true,
 		"es6": true,
 		"node": true,
-		"jquery": true
+		"jquery": true,
+		"mocha": true
 	},
 	"rules": {
 		"react/jsx-filename-extension": [1, {
@@ -155,5 +156,23 @@ module.exports = {
 	},
 	"globals": {
 		"__DEV__": true
-	}
+	},
+	overrides: [
+		{
+			files: ['e2e/**'],
+			globals: {
+				by: true,
+				detox: true,
+				device: true,
+				element: true,
+				expect: true,
+				waitFor: true
+			},
+			rules: {
+				'import/no-extraneous-dependencies': 0,
+				'no-await-in-loop': 0,
+				'no-restricted-syntax': 0
+			}
+		}
+	]
 };
