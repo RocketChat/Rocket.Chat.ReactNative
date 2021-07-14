@@ -73,7 +73,7 @@ describe('i18n', () => {
 
 	describe('Rocket.Chat language', () => {
 		before(async() => {
-			await device.launchApp(defaultLaunchArgs);
+			await device.launchApp({ ...defaultLaunchArgs, newInstance: true });
 			await navigateToLogin();
 			await login(testuser.username, testuser.password);
 		});
