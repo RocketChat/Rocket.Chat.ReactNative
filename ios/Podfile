@@ -33,7 +33,7 @@ target 'ShareRocketChatRN' do
   pod 'UMImageLoaderInterface', :path=> "../node_modules/unimodules-image-loader-interface/ios"
   pod 'UMReactNativeAdapter', :path=> "../node_modules/@unimodules/react-native-adapter/ios"
 
-  use_react_native!(:path => '../node_modules/react-native')
+  use_react_native!(:path => '../node_modules/react-native', :hermes_enabled => true)
 
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
   pod 'RNFBAnalytics', :path => '../node_modules/@react-native-firebase/analytics'
