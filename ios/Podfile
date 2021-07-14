@@ -8,11 +8,8 @@ def all_pods
   use_unimodules!
   use_react_native!(
     :path => config[:reactNativePath],
-    # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => true
   )
-  # use_flipper!({ 'Flipper-Folly' => '2.6.7', 'Flipper-RSocket' => '1.4.3', 'Flipper-DoubleConversion' => '3.1.7', 'Flipper-Glog' => '0.3.9', 'Flipper-PeerTalk' => '0.0.4' })
-  # use_flipper!({ 'Flipper-Folly' => '2.6.7', 'Flipper-RSocket' => '1.4.3' })
   use_flipper!()
 end
 
