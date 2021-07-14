@@ -157,9 +157,6 @@
     "reactotron-redux": "3.1.3",
     "reactotron-redux-saga": "4.2.3"
   },
-  "resolutions": {
-    "react-native/@jest/create-cache-key-function": "^27.0.2"
-  },
   "jest": {
     "testPathIgnorePatterns": [
       "e2e",
