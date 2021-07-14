@@ -82,7 +82,8 @@ commands:
           key: pods-v1-{{ checksum "ios/Podfile.lock" }}
       - run:
           name: Install pods libs
-          command: npx pod-install
+          command: pod install --deployment
+          working_directory: ios
       - save_cache:
           name: Save pods specs and pods cache
           key: pods-v1-{{ checksum "ios/Podfile.lock" }}
