@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-	StyleSheet, View, Text
-} from 'react-native';
-import PropTypes from 'prop-types';
+import { StyleSheet, View, Text } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
 import * as HeaderButton from '../containers/HeaderButton';
@@ -29,7 +26,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-class WithoutServerView extends React.Component {
+class WithoutServerView extends React.Component<any, any> {
 	static navigationOptions = () => ({
 		title: 'Rocket.Chat',
 		headerLeft: () => (
@@ -39,10 +36,6 @@ class WithoutServerView extends React.Component {
 			/>
 		)
 	})
-
-	static propTypes = {
-		theme: PropTypes.string
-	}
 
 	render() {
 		const { theme } = this.props;

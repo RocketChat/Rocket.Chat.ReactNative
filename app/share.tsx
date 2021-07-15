@@ -1,24 +1,16 @@
 import React, { useContext } from 'react';
 import { Dimensions } from 'react-native';
-import PropTypes from 'prop-types';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 
-import {
-	defaultTheme,
-	newThemeState,
-	subscribeTheme,
-	unsubscribeTheme
-} from './utils/theme';
+import { defaultTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
 import UserPreferences from './lib/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { supportSystemTheme } from './utils/deviceInfo';
-import {
-	defaultHeader, themedHeader, getActiveRouteName, navigationTheme
-} from './utils/navigation';
+import { defaultHeader, themedHeader, getActiveRouteName, navigationTheme } from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
@@ -36,6 +28,26 @@ import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
 
+type TDimensions = {
+	width: number,
+	height: number,
+	scale: number,
+	fontScale: number
+}
+interface IProps {}
+interface IState {
+	theme: string,
+	themePreferences: {
+		currentTheme: 'automatic' | 'light',
+		darkLevel: string
+	},
+	root: any;
+	width: number;
+	height: number;
+	scale: number;
+	fontScale: number;
+}
+
 const Inside = createStackNavigator();
 const InsideStack = () => {
 	const { theme } = useContext(ThemeContext);
@@ -44,10 +56,7 @@ const InsideStack = () => {
 		...defaultHeader,
 		...themedHeader(theme)
 	};
-	screenOptions.headerStyle = {
-		...screenOptions.headerStyle,
-		height: 57
-	};
+	screenOptions.headerStyle = {...screenOptions.headerStyle, height: 57};
 
 	return (
 		<Inside.Navigator screenOptions={screenOptions}>
@@ -85,7 +94,7 @@ const OutsideStack = () => {
 
 // App
 const Stack = createStackNavigator();
-export const App = ({ root }) => (
+export const App = ({ root }: any) => (
 	<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 		<>
 			{!root ? (
@@ -110,16 +119,10 @@ export const App = ({ root }) => (
 	</Stack.Navigator>
 );
 
-App.propTypes = {
-	root: PropTypes.string
-};
-
-class Root extends React.Component {
-	constructor(props) {
+class Root extends React.Component<IProps, IState> {
+	constructor(props: any) {
 		super(props);
-		const {
-			width, height, scale, fontScale
-		} = Dimensions.get('screen');
+		const { width, height, scale, fontScale } = Dimensions.get('screen');
 		this.state = {
 			theme: defaultTheme(),
 			themePreferences: {
@@ -141,7 +144,7 @@ class Root extends React.Component {
 	}
 
 	init = async() => {
-		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
+		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(() => this.setTheme());
 
 		const currentServer = await UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
 
@@ -169,29 +172,18 @@ class Root extends React.Component {
 	}
 
 	// Dimensions update fires twice
-	onDimensionsChange = debounce(({
-		window: {
-			width, height, scale, fontScale
-		}
-	}) => {
-		this.setDimensions({
-			width, height, scale, fontScale
-		});
-		this.setMasterDetail(width);
+	onDimensionsChange = debounce(({window: { width, height, scale, fontScale}}: {window: TDimensions}) => {
+		this.setDimensions({ width, height, scale, fontScale });
 	})
 
-	setDimensions = ({
-		width, height, scale, fontScale
-	}) => {
+	setDimensions = ({ width, height, scale, fontScale }: TDimensions) => {
 		this.setState({
 			width, height, scale, fontScale
 		});
 	}
 
 	render() {
-		const {
-			theme, root, width, height, scale, fontScale
-		} = this.state;
+		const { theme, root, width, height, scale, fontScale } = this.state;
 		const navTheme = navigationTheme(theme);
 		return (
 			<AppearanceProvider>

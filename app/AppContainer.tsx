@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
@@ -35,7 +34,7 @@ const SetUsernameStack = () => (
 
 // App
 const Stack = createStackNavigator();
-const App = React.memo(({ root, isMasterDetail }) => {
+const App = React.memo(({ root, isMasterDetail }: {root: string, isMasterDetail: boolean}) => {
 	if (!root) {
 		return null;
 	}
@@ -100,15 +99,10 @@ const App = React.memo(({ root, isMasterDetail }) => {
 		</NavigationContainer>
 	);
 });
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	root: state.app.root,
 	isMasterDetail: state.app.isMasterDetail
 });
-
-App.propTypes = {
-	root: PropTypes.string,
-	isMasterDetail: PropTypes.bool
-};
 
 const AppContainer = connect(mapStateToProps)(App);
 export default AppContainer;

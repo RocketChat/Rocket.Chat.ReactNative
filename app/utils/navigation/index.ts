@@ -16,13 +16,13 @@ export const cardStyle = {
 	backgroundColor: 'rgba(0,0,0,0)'
 };
 
-export const borderBottom = theme => ({
+export const borderBottom: any = (theme: any) => ({
 	borderBottomWidth: StyleSheet.hairlineWidth,
 	borderBottomColor: themes[theme].headerBorder,
 	elevation: 0
 });
 
-export const themedHeader = theme => ({
+export const themedHeader = (theme: any) => ({
 	headerStyle: {
 		...borderBottom(theme),
 		backgroundColor: themes[theme].headerBackground
@@ -31,7 +31,7 @@ export const themedHeader = theme => ({
 	headerTitleStyle: { color: themes[theme].headerTitleColor }
 });
 
-export const navigationTheme = (theme) => {
+export const navigationTheme = (theme: any) => {
 	const defaultNavTheme = theme === 'light' ? DefaultTheme : DarkTheme;
 
 	return {
@@ -45,7 +45,7 @@ export const navigationTheme = (theme) => {
 };
 
 // Gets the current screen from navigation state
-export const getActiveRoute = (state) => {
+export const getActiveRoute: any = (state: any) => {
 	const route = state?.routes[state?.index];
 
 	if (route?.state) {
@@ -56,4 +56,4 @@ export const getActiveRoute = (state) => {
 	return route;
 };
 
-export const getActiveRouteName = state => getActiveRoute(state)?.name;
+export const getActiveRouteName = (state: any) => getActiveRoute(state)?.name;

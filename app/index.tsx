@@ -6,12 +6,7 @@ import { KeyCommandsEmitter } from 'react-native-keycommands';
 import RNScreens from 'react-native-screens';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
-import {
-	defaultTheme,
-	newThemeState,
-	subscribeTheme,
-	unsubscribeTheme
-} from './utils/theme';
+import { defaultTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
 import UserPreferences from './lib/userPreferences';
 import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
@@ -24,9 +19,7 @@ import { ThemeContext } from './theme';
 import { DimensionsContext } from './dimensions';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
-import {
-	isTablet, supportSystemTheme
-} from './utils/deviceInfo';
+import { isTablet, supportSystemTheme } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import AppContainer from './AppContainer';
 import TwoFactor from './containers/TwoFactor';
@@ -40,7 +33,26 @@ import { isFDroidBuild } from './constants/environment';
 
 RNScreens.enableScreens();
 
-const parseDeepLinking = (url) => {
+type TDimensions = {
+	width: number,
+	height: number,
+	scale: number,
+	fontScale: number
+}
+interface IProps {}
+interface IState {
+	theme: string,
+	themePreferences: {
+		currentTheme: 'automatic' | 'light',
+		darkLevel: string
+	},
+	width: number;
+	height: number;
+	scale: number;
+	fontScale: number;
+}
+
+const parseDeepLinking = (url: string) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
 		const regex = /^(room|auth|invite)\?/;
@@ -61,16 +73,17 @@ const parseDeepLinking = (url) => {
 	return null;
 };
 
-export default class Root extends React.Component {
-	constructor(props) {
+export default class Root extends React.Component<IProps, IState> {
+	private listenerTimeout!: NodeJS.Timeout;
+	private onKeyCommands: any;
+
+	constructor(props: IProps) {
 		super(props);
 		this.init();
 		if (!isFDroidBuild) {
 			this.initCrashReport();
 		}
-		const {
-			width, height, scale, fontScale
-		} = Dimensions.get('window');
+		const { width, height, scale, fontScale } = Dimensions.get('window');
 		this.state = {
 			theme: defaultTheme(),
 			themePreferences: {
@@ -111,7 +124,7 @@ export default class Root extends React.Component {
 	}
 
 	init = async() => {
-		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
+		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(() => this.setTheme());
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification
@@ -123,7 +136,7 @@ export default class Root extends React.Component {
 
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();
-		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
+		const parsedDeepLinkingURL = parseDeepLinking(deepLinking!);
 		if (parsedDeepLinkingURL) {
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 			return;
@@ -133,14 +146,14 @@ export default class Root extends React.Component {
 		store.dispatch(appInit());
 	}
 
-	getMasterDetail = (width) => {
+	getMasterDetail = (width: number) => {
 		if (!isTablet) {
 			return false;
 		}
 		return width > MIN_WIDTH_MASTER_DETAIL_LAYOUT;
 	}
 
-	setMasterDetail = (width) => {
+	setMasterDetail = (width: number) => {
 		const isMasterDetail = this.getMasterDetail(width);
 		store.dispatch(setMasterDetailAction(isMasterDetail));
 	};
@@ -150,7 +163,7 @@ export default class Root extends React.Component {
 		window: {
 			width, height, scale, fontScale
 		}
-	}) => {
+	}: {window: TDimensions}) => {
 		this.setDimensions({
 			width, height, scale, fontScale
 		});
@@ -166,12 +179,8 @@ export default class Root extends React.Component {
 		});
 	}
 
-	setDimensions = ({
-		width, height, scale, fontScale
-	}) => {
-		this.setState({
-			width, height, scale, fontScale
-		});
+	setDimensions = ({width, height, scale, fontScale}: TDimensions) => {
+		this.setState({width, height, scale, fontScale});
 	}
 
 	initTablet = () => {
@@ -179,7 +188,7 @@ export default class Root extends React.Component {
 		this.setMasterDetail(width);
 		this.onKeyCommands = KeyCommandsEmitter.addListener(
 			'onKeyCommand',
-			(command) => {
+			(command: unknown) => {
 				EventEmitter.emit(KEY_COMMAND, { event: command });
 			}
 		);
@@ -197,9 +206,7 @@ export default class Root extends React.Component {
 	}
 
 	render() {
-		const {
-			themePreferences, theme, width, height, scale, fontScale
-		} = this.state;
+		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
 		return (
 			<SafeAreaProvider initialMetrics={initialWindowMetrics}>
 				<AppearanceProvider>
