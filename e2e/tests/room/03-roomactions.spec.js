@@ -1,7 +1,9 @@
 const data = require('../../data');
-const { navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage } = require('../../helpers/app');
+const {
+	navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage
+} = require('../../helpers/app');
 const { prepareAndroid } = require('../../helpers/platformFunctions');
-const { sendMessage } = require('../../helpers/data_setup')
+const { sendMessage } = require('../../helpers/data_setup');
 
 const platformTypes = require('../../helpers/platformTypes');
 
@@ -213,14 +215,14 @@ describe('Room actions screen', () => {
 				await element(by.id('room-header')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
 
-				//Go to starred messages
+				// Go to starred messages
 				await element(by.id('room-actions-view')).swipe('up');
 				await waitFor(element(by.id('room-actions-starred'))).toExist();
 				await element(by.id('room-actions-starred')).tap();
 				await waitFor(element(by.id('starred-messages-view'))).toExist().withTimeout(2000);
 				await waitFor(element(by.text(`${ data.random }messageToStar`).withAncestor(by.id('starred-messages-view')))).toExist().withTimeout(60000);
-				
-				//Unstar message
+
+				// Unstar message
 				await element(by.text(`${ data.random }messageToStar`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();

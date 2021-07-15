@@ -34,7 +34,7 @@ describe('Join public room', () => {
 	describe('Render', () => {
 		it('should have room screen', async() => {
 			await expect(element(by.id('room-view'))).toBeVisible();
-		}); 
+		});
 
 		// it('should have messages list', async() => {
 		// 	await expect(element(by.id('room-view-messages'))).toBeVisible();

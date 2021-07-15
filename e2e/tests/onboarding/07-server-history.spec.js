@@ -1,7 +1,9 @@
 const {
 	device, expect, element, by, waitFor
 } = require('detox');
-const { login, navigateToLogin, logout, tapBack } = require('../../helpers/app');
+const {
+	login, navigateToLogin, logout, tapBack
+} = require('../../helpers/app');
 const { prepareAndroid } = require('../../helpers/platformFunctions');
 const data = require('../../data');
 

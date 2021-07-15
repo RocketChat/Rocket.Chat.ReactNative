@@ -38,7 +38,7 @@ async function login(username, password) {
 
 async function logout() {
 	const deviceType = device.getPlatform();
-    const { scrollViewType } = platformTypes[deviceType];
+	const { scrollViewType } = platformTypes[deviceType];
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 	await waitFor(element(by.id('sidebar-settings'))).toBeVisible().withTimeout(2000);
@@ -60,48 +60,48 @@ async function mockMessage(message, isThread = false) {
 	await element(by.id(input)).typeText(`${ data.random }${ message }`);
 	await element(by.id('messagebox-send-message')).tap();
 	await waitFor(element(by.text(`${ data.random }${ message }`))).toExist().withTimeout(60000);
-    await expect(element(by.text(`${ data.random }${ message }`))).toExist();
-    await element(by.text(`${ data.random }${ message }`)).atIndex(0).tap();
-};
-
-async function starMessage(message){
-    const messageLabel = `${ data.random }${ message }`
-    await element(by.text(messageLabel)).atIndex(0).longPress();
-    await expect(element(by.id('action-sheet'))).toExist();
-    await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-    await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-    await element(by.text('Star')).atIndex(0).tap();
-    await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
-};
-
-async function pinMessage(message){
-    const messageLabel = `${ data.random }${ message }`
-    await waitFor(element(by.text(messageLabel)).atIndex(0)).toExist();
-    await element(by.text(messageLabel)).atIndex(0).longPress();
-    await expect(element(by.id('action-sheet'))).toExist();
-    await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-    await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-    await element(by.text('Pin')).atIndex(0).tap();
-    await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
+	await expect(element(by.text(`${ data.random }${ message }`))).toExist();
+	await element(by.text(`${ data.random }${ message }`)).atIndex(0).tap();
 }
 
-async function dismissReviewNag(){
-    const deviceType = device.getPlatform();
-    const { alertButtonType } = platformTypes[deviceType];
-    await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
-    await element(by.text('NO').and(by.type(alertButtonType))).tap(); // Tap `no` on ask for review alert
+async function starMessage(message) {
+	const messageLabel = `${ data.random }${ message }`;
+	await element(by.text(messageLabel)).atIndex(0).longPress();
+	await expect(element(by.id('action-sheet'))).toExist();
+	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+	await element(by.text('Star')).atIndex(0).tap();
+	await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
+}
+
+async function pinMessage(message) {
+	const messageLabel = `${ data.random }${ message }`;
+	await waitFor(element(by.text(messageLabel)).atIndex(0)).toExist();
+	await element(by.text(messageLabel)).atIndex(0).longPress();
+	await expect(element(by.id('action-sheet'))).toExist();
+	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+	await element(by.text('Pin')).atIndex(0).tap();
+	await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
+}
+
+async function dismissReviewNag() {
+	const deviceType = device.getPlatform();
+	const { alertButtonType } = platformTypes[deviceType];
+	await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
+	await element(by.text('NO').and(by.type(alertButtonType))).tap(); // Tap `no` on ask for review alert
 }
 
 async function mockMessageWithNag(message, isThread = false) {
-    let input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
+	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
 	await element(by.id(input)).tap();
 	await element(by.id(input)).typeText(`${ data.random }${ message }`);
 	await element(by.id('messagebox-send-message')).tap();
-    await dismissReviewNag();
+	await dismissReviewNag();
 	await waitFor(element(by.text(`${ data.random }${ message }`))).toExist().withTimeout(60000);
-    await expect(element(by.text(`${ data.random }${ message }`))).toExist();
-    await element(by.text(`${ data.random }${ message }`)).atIndex(0).tap();
-};
+	await expect(element(by.text(`${ data.random }${ message }`))).toExist();
+	await element(by.text(`${ data.random }${ message }`)).atIndex(0).tap();
+}
 
 async function tapBack() {
 	await element(by.id('header-back')).atIndex(0).tap();
@@ -145,25 +145,26 @@ const checkServer = async(server) => {
 };
 
 async function closeKeyboard() {
-    if(device.getPlatform() === 'android')
-    await device.goBack();
+	if (device.getPlatform() === 'android') {
+		await device.goBack();
+	}
 }
 
 module.exports = {
-    navigateToWorkspace,
-    navigateToLogin,
-    navigateToRegister,
-    login,
-    logout,
-    mockMessage,
-    starMessage,
-    pinMessage,
-    dismissReviewNag,
-    tapBack,
-    sleep,
-    searchRoom,
-    tryTapping,
-    checkServer,
-    closeKeyboard,
-    mockMessageWithNag
+	navigateToWorkspace,
+	navigateToLogin,
+	navigateToRegister,
+	login,
+	logout,
+	mockMessage,
+	starMessage,
+	pinMessage,
+	dismissReviewNag,
+	tapBack,
+	sleep,
+	searchRoom,
+	tryTapping,
+	checkServer,
+	closeKeyboard,
+	mockMessageWithNag
 };

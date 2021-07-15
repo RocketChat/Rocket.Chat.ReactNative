@@ -19,13 +19,15 @@ const navToLanguage = async() => {
 };
 
 describe('i18n', () => {
-	before(async () => {
+	before(async() => {
 		await prepareAndroid();
 	});
 
 	describe('OS language', () => {
 		it('OS set to \'en\' and proper translate to \'en\'', async() => {
-			if(device.getPlatform() === "android") return; // Not run on android
+			if (device.getPlatform() === 'android') {
+				return;
+			}
 			await device.launchApp({
 				...defaultLaunchArgs,
 				languageAndLocale: {
@@ -40,7 +42,9 @@ describe('i18n', () => {
 		});
 
 		it('OS set to unavailable language and fallback to \'en\'', async() => {
-			if(device.getPlatform() === "android") return; // Not run on android
+			if (device.getPlatform() === 'android') {
+				return;
+			}
 			await device.launchApp({
 				...defaultLaunchArgs,
 				languageAndLocale: {

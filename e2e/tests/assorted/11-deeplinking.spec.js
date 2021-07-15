@@ -9,7 +9,7 @@ const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
 let amp = '&';
 
 const getDeepLink = (method, server, params) => {
-	const deeplink = `rocketchat://${ method }?host=${ server.replace(/^(http:\/\/|https:\/\/)/, '') }${amp}${params}`;
+	const deeplink = `rocketchat://${ method }?host=${ server.replace(/^(http:\/\/|https:\/\/)/, '') }${ amp }${ params }`;
 	console.log(`Deeplinking to: ${ deeplink }`);
 	return deeplink;
 };
@@ -17,11 +17,13 @@ const getDeepLink = (method, server, params) => {
 describe('Deep linking', () => {
 	let userId;
 	let authToken;
+	let scrollViewType;
+
 	before(async() => {
 		const loginResult = await login(data.users.regular.username, data.users.regular.password);
 		({ userId, authToken } = loginResult);
 		const deviceType = device.getPlatform();
-		amp = deviceType == 'android' ? '\\&' : '&';
+		amp = deviceType === 'android' ? '\\&' : '&';
 		({ scrollViewType } = platformTypes[deviceType]);
 	});
 
@@ -30,7 +32,7 @@ describe('Deep linking', () => {
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
 				delete: true,
-				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=123${amp}token=abc`),
+				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=123${ amp }token=abc`)
 			});
 			await prepareAndroid();
 			await waitFor(element(by.text('You\'ve been logged out by the server. Please log in again.'))).toExist().withTimeout(10000); // TODO: we need to improve this message
@@ -40,7 +42,7 @@ describe('Deep linking', () => {
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
 				newInstance: true,
-				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=${ userId }${amp}token=${ authToken }${amp}path=group/${ data.groups.private.name }`),
+				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=${ userId }${ amp }token=${ authToken }${ amp }path=group/${ data.groups.private.name }`)
 			});
 			await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(30000);
 			await tapBack();
@@ -74,7 +76,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${ data.groups.private.name }`),
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${ data.groups.private.name }`)
 
 				});
 				await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(10000);
@@ -85,7 +87,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `rid=${ roomResult.data.group._id }`),
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `rid=${ roomResult.data.group._id }`)
 
 				});
 				await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(15000);
@@ -104,7 +106,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${ data.groups.private.name }`),
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${ data.groups.private.name }`)
 
 				});
 				await waitFor(element(by.id(`room-view-title-${ data.groups.private.name }`))).toExist().withTimeout(10000);
@@ -114,7 +116,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, 'https://google.com'),
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, 'https://google.com')
 
 				});
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);

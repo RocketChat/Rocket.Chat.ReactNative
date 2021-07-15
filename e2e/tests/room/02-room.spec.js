@@ -187,7 +187,7 @@ describe('Room screen', () => {
 			it('should star message', async() => {
 				await starMessage('message');
 
-				await sleep(1000); //https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/2324
+				await sleep(1000); // https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/2324
 				await element(by.text(`${ data.random }message`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();

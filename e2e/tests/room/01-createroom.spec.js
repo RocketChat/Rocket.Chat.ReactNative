@@ -1,5 +1,7 @@
 const data = require('../../data');
-const { tapBack, navigateToLogin, login, tryTapping } = require('../../helpers/app');
+const {
+	tapBack, navigateToLogin, login, tryTapping
+} = require('../../helpers/app');
 const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 

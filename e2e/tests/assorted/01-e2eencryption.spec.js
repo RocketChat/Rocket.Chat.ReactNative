@@ -20,7 +20,7 @@ const checkServer = async(server) => {
 
 const checkBanner = async() => {
 	await waitFor(element(by.id('listheader-encryption').withDescendant(by.text('Save Your Encryption Password')))).toBeVisible().withTimeout(10000);
-}
+};
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);
@@ -46,7 +46,8 @@ async function navigateSecurityPrivacy() {
 describe('E2E Encryption', () => {
 	const room = `encrypted${ data.random }`;
 	const newPassword = 'abc';
-	let alertButtonType, scrollViewType;
+	let alertButtonType;
+	let scrollViewType;
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -206,7 +207,7 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
 				await login(testuser.username, testuser.password);
 				await waitFor(element(by.id('listheader-encryption').withDescendant(by.text('Save Your Encryption Password')))).toBeVisible().withTimeout(2000);
-			})
+			});
 		});
 	});
 

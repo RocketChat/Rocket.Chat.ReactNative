@@ -7,7 +7,8 @@ const platformTypes = require('../../helpers/platformTypes');
 const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 describe('Delete server', () => {
-	let scrollViewType, alertButtonType;
+	let scrollViewType;
+	let alertButtonType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await prepareAndroid();
@@ -48,7 +49,7 @@ describe('Delete server', () => {
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);
 		await element(by.id(`rooms-list-header-server-${ data.server }`)).longPress(1500);
-		await element(by.text('Delete').and(by.type(alertButtonType))).tap(); 
+		await element(by.text('Delete').and(by.type(alertButtonType))).tap();
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);
 		await waitFor(element(by.id(`rooms-list-header-server-${ data.server }`))).toBeNotVisible().withTimeout(10000);

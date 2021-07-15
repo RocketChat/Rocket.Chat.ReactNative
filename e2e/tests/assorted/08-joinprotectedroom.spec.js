@@ -1,5 +1,7 @@
 const data = require('../../data');
-const { navigateToLogin, login, mockMessage, searchRoom } = require('../../helpers/app');
+const {
+	navigateToLogin, login, mockMessage, searchRoom
+} = require('../../helpers/app');
 const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const testuser = data.users.regular;

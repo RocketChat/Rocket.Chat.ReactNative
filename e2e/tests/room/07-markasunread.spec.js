@@ -3,7 +3,7 @@ const {
 	navigateToLogin, login, searchRoom, sleep
 } = require('../../helpers/app');
 const { prepareAndroid } = require('../../helpers/platformFunctions');
-const { sendMessage } = require('../../helpers/data_setup')
+const { sendMessage } = require('../../helpers/data_setup');
 
 async function navigateToRoom(user) {
 	await searchRoom(`${ user }`);

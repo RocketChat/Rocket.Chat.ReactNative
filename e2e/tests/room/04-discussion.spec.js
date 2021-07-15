@@ -15,7 +15,7 @@ const navigateToRoom = async() => {
 
 describe('Discussion', () => {
 	let scrollViewType;
-	
+
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await prepareAndroid();
@@ -68,7 +68,7 @@ describe('Discussion', () => {
 			const discussionName = `${ data.random }message`;
 			await element(by.text(discussionName)).atIndex(0).longPress();
 			await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(2000);
-			await element(by.text(`Start a Discussion`)).atIndex(0).tap();
+			await element(by.text('Start a Discussion')).atIndex(0).tap();
 			await waitFor(element(by.id('create-discussion-view'))).toExist().withTimeout(2000);
 			await element(by.id('create-discussion-submit')).tap();
 			await waitFor(element(by.id('room-view'))).toExist().withTimeout(10000);

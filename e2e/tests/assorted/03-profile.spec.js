@@ -17,7 +17,8 @@ async function waitForToast() {
 }
 
 describe('Profile screen', () => {
-	let textInputType, scrollViewType;
+	let textInputType;
+	let scrollViewType;
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -94,7 +95,9 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-submit')).tap();
 			await element(by.type(textInputType)).typeText(`${ profileChangeUser.password }\n`);
 			// TODO: Check if this is fine on iOS
-			if(device.getPlatform() === 'android') await element(by.text('SAVE')).tap();
+			if (device.getPlatform() === 'android') {
+				await element(by.text('SAVE')).tap();
+			}
 			await waitForToast();
 		});
 
