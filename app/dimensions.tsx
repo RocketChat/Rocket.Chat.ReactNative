@@ -2,9 +2,9 @@ import React from 'react';
 import { Dimensions } from 'react-native';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
-interface IDimensionsContextProps {
+export interface IDimensionsContextProps {
 	width: number;
-	height: number;
+	height?: number;
 	scale: number;
 	fontScale: number;
 	setDimensions: ({ width, height, scale, fontScale }: { width: number; height: number; scale: number; fontScale: number; }) => void;

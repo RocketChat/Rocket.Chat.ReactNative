@@ -1,13 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text, View } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
-import styles from './styles';
 import { Button } from './Button';
+import styles from './styles';
 
-export const Item = React.memo(({ item, hide, theme }) => {
+interface IActionSheetItem {
+	item: {
+		title: string;
+		icon: string;
+		danger: boolean;
+		testID: string;
+		onPress(): void;
+		right: Function;
+	};
+	theme: string
+	hide(): void;
+}
+
+export const Item = React.memo(({ item, hide, theme }: IActionSheetItem) => {
 	const onPress = () => {
 		hide();
 		item?.onPress();
@@ -37,15 +49,3 @@ export const Item = React.memo(({ item, hide, theme }) => {
 		</Button>
 	);
 });
-Item.propTypes = {
-	item: PropTypes.shape({
-		title: PropTypes.string,
-		icon: PropTypes.string,
-		danger: PropTypes.bool,
-		onPress: PropTypes.func,
-		right: PropTypes.func,
-		testID: PropTypes.string
-	}),
-	hide: PropTypes.func,
-	theme: PropTypes.string
-};

@@ -13,18 +13,18 @@ export const useActionSheet = () => useContext(context);
 
 const { Provider, Consumer } = context;
 
-export const withActionSheet = Component => forwardRef((props, ref) => (
+export const withActionSheet = (Component: any) => forwardRef((props, ref) => (
 	<Consumer>
 		{contexts => <Component {...props} {...contexts} ref={ref} />}
 	</Consumer>
 ));
 
 export const ActionSheetProvider = React.memo(({ children }) => {
-	const ref = useRef();
+	const ref: any = useRef();
 	const { theme } = useTheme();
 
 	const getContext = () => ({
-		showActionSheet: (options) => {
+		showActionSheet: (options: any) => {
 			ref.current?.showActionSheet(options);
 		},
 		hideActionSheet: () => {

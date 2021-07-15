@@ -7,17 +7,11 @@ import React, {
 	useCallback,
 	isValidElement
 } from 'react';
-import PropTypes from 'prop-types';
 import { Keyboard, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
-import Animated, {
-	Extrapolate,
-	interpolate,
-	Value,
-	Easing
-} from 'react-native-reanimated';
+import Animated, { Extrapolate, interpolate, Value, Easing} from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { useBackHandler } from '@react-native-community/hooks';
 
@@ -29,9 +23,16 @@ import styles, { ITEM_HEIGHT } from './styles';
 import { isTablet, isIOS } from '../../utils/deviceInfo';
 import * as List from '../List';
 import I18n from '../../i18n';
-import { useOrientation, useDimensions } from '../../dimensions';
+import { useOrientation, useDimensions, IDimensionsContextProps } from '../../dimensions';
 
-const getItemLayout = (data, index) => ({ length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index });
+type TActionSheetData = {
+	options: any;
+	headerHeight?: number;
+	hasCancel?: boolean;
+	customHeader: any;
+}
+
+const getItemLayout = (data: any, index: number) => ({ length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index });
 
 const HANDLE_HEIGHT = isIOS ? 40 : 56;
 const MAX_SNAP_HEIGHT = 16;
@@ -45,17 +46,17 @@ const ANIMATION_CONFIG = {
 	easing: Easing.bezier(0.645, 0.045, 0.355, 1.0)
 };
 
-const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
-	const bottomSheetRef = useRef();
-	const [data, setData] = useState({});
+const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.Element; theme: string}, ref) => {
+	const bottomSheetRef: any = useRef();
+	const [data, setData] = useState<TActionSheetData>({} as TActionSheetData);
 	const [isVisible, setVisible] = useState(false);
-	const { height } = useDimensions();
+	const { height }: Partial<IDimensionsContextProps> = useDimensions();
 	const { isLandscape } = useOrientation();
 	const insets = useSafeAreaInsets();
 
 	const maxSnap = Math.max(
 		(
-			height
+			height!
 			// Items height
 			- (ITEM_HEIGHT * (data?.options?.length || 0))
 			// Handle height
@@ -77,7 +78,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	 * we'll provide more one snap
 	 * that point 50% of the whole screen
 	*/
-	const snaps = (height - maxSnap > height * 0.6) && !isLandscape ? [maxSnap, height * 0.5, height] : [maxSnap, height];
+	const snaps: any = (height! - maxSnap > height! * 0.6) && !isLandscape ? [maxSnap, height! * 0.5, height] : [maxSnap, height];
 	const openedSnapIndex = snaps.length > 2 ? 1 : 0;
 	const closedSnapIndex = snaps.length - 1;
 
@@ -87,12 +88,12 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		bottomSheetRef.current?.snapTo(closedSnapIndex);
 	};
 
-	const show = (options) => {
+	const show = (options: any) => {
 		setData(options);
 		toggleVisible();
 	};
 
-	const onBackdropPressed = ({ nativeEvent }) => {
+	const onBackdropPressed = ({ nativeEvent }: any) => {
 		if (nativeEvent.oldState === State.ACTIVE) {
 			hide();
 		}
@@ -128,7 +129,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 			<Handle theme={theme} />
 			{isValidElement(data?.customHeader) ? data.customHeader : null}
 		</>
-	));
+	), [theme, data]);
 
 	const renderFooter = useCallback(() => (data?.hasCancel ? (
 		<Button
@@ -140,9 +141,9 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 				{I18n.t('Cancel')}
 			</Text>
 		</Button>
-	) : null));
+	) : null), [theme, data, hide()]);
 
-	const renderItem = useCallback(({ item }) => <Item item={item} hide={hide} theme={theme} />);
+	const renderItem = useCallback(({ item }) => <Item item={item} hide={hide} theme={theme} />, []);
 
 	const animatedPosition = React.useRef(new Value(0));
 	const opacity = interpolate(animatedPosition.current, {
@@ -168,7 +169,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 							]}
 						/>
 					</TapGestureHandler>
-					<ScrollBottomSheet
+					<ScrollBottomSheet<any>
 						testID='action-sheet'
 						ref={bottomSheetRef}
 						componentType='FlatList'
@@ -200,9 +201,5 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 		</>
 	);
 }));
-ActionSheet.propTypes = {
-	children: PropTypes.node,
-	theme: PropTypes.string
-};
 
 export default ActionSheet;
