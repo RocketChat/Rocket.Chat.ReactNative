@@ -1,10 +1,14 @@
-import React, { useRef, useContext, forwardRef } from 'react';
-import PropTypes from 'prop-types';
+import React, {useRef, useContext, forwardRef, ForwardedRef} from 'react';
 
 import ActionSheet from './ActionSheet';
 import { useTheme } from '../../theme';
 
-const context = React.createContext({
+interface IActionSheetProvider {
+	Provider: any;
+	Consumer: any;
+}
+
+const context: IActionSheetProvider = React.createContext({
 	showActionSheet: () => {},
 	hideActionSheet: () => {}
 });
@@ -13,15 +17,15 @@ export const useActionSheet = () => useContext(context);
 
 const { Provider, Consumer } = context;
 
-export const withActionSheet = (Component: any) => forwardRef((props, ref) => (
+export const withActionSheet = (Component: React.FC) => forwardRef((props: any, ref: ForwardedRef<any>) => (
 	<Consumer>
-		{contexts => <Component {...props} {...contexts} ref={ref} />}
+		{(contexts: any) => <Component {...props} {...contexts} ref={ref} />}
 	</Consumer>
 ));
 
-export const ActionSheetProvider = React.memo(({ children }) => {
-	const ref: any = useRef();
-	const { theme } = useTheme();
+export const ActionSheetProvider = React.memo(({ children }: {children: JSX.Element}) => {
+	const ref: ForwardedRef<any> = useRef();
+	const { theme }: any = useTheme();
 
 	const getContext = () => ({
 		showActionSheet: (options: any) => {
@@ -40,6 +44,3 @@ export const ActionSheetProvider = React.memo(({ children }) => {
 		</Provider>
 	);
 });
-ActionSheetProvider.propTypes = {
-	children: PropTypes.node
-};

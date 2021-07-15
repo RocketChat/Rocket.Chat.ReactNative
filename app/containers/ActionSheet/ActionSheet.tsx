@@ -182,7 +182,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.E
 							styles.container,
 							{ backgroundColor: themes[theme].focusedBackground },
 							(isLandscape || isTablet) && styles.bottomSheet
-						]}
+						] as any}
 						animationConfig={ANIMATION_CONFIG}
 						// FlatList props
 						data={data?.options}

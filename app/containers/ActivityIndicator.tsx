@@ -32,10 +32,4 @@ const RCActivityIndicator = ({ theme = 'light', absolute, ...props }: IActivityI
 	/>
 );
 
-
-// TODO - test the app without the theme default
-// RCActivityIndicator.defaultProps = {
-// 	theme: 'light'
-// };
-
 export default RCActivityIndicator;
