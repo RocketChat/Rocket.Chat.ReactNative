@@ -27,12 +27,13 @@ platform :ios do
 
   desc "Submit a new Beta Build to Apple TestFlight"
   lane :beta do |options|
-    api_key = app_store_connect_api_key(
-      key_id: "F296L2294Y",
-      issuer_id: "69a6de8e-75cf-47e3-e053-5b8c7c11a4d1",
-      key_filepath: 'fastlane/app_store_connect_api_key.p8',
-      in_house: false
-    )
+    app_store_connect_api_key
+    # api_key = app_store_connect_api_key(
+    #   key_id: "F296L2294Y",
+    #   issuer_id: "69a6de8e-75cf-47e3-e053-5b8c7c11a4d1",
+    #   key_filepath: 'fastlane/app_store_connect_api_key.p8',
+    #   in_house: false
+    # )
     pilot(
       ipa: 'ios/Rocket.Chat.ipa',
       app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
@@ -43,12 +44,13 @@ platform :ios do
 
   desc "Build Experimental app"
   lane :build_experimental do
-    api_key = app_store_connect_api_key(
-      key_id: "F296L2294Y",
-      issuer_id: "69a6de8e-75cf-47e3-e053-5b8c7c11a4d1",
-      key_filepath: 'fastlane/app_store_connect_api_key.p8',
-      in_house: false
-    )
+    app_store_connect_api_key
+    # api_key = app_store_connect_api_key(
+    #   key_id: "F296L2294Y",
+    #   issuer_id: "69a6de8e-75cf-47e3-e053-5b8c7c11a4d1",
+    #   key_filepath: 'ios/fastlane/app_store_connect_api_key.p8',
+    #   in_house: false
+    # )
     match(type: "appstore")
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension")
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService")
