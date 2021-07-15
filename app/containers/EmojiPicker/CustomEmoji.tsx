@@ -1,8 +1,17 @@
 import React from 'react';
 import FastImage from '@rocket.chat/react-native-fast-image';
-import PropTypes from 'prop-types';
 
-const CustomEmoji = React.memo(({ baseUrl, emoji, style }) => (
+interface ICustomEmoji {
+	baseUrl: string,
+	emoji: {
+		content: any;
+		name: string;
+		extension: any;
+	},
+	style: any
+}
+
+const CustomEmoji = React.memo(({ baseUrl, emoji, style }: ICustomEmoji) => (
 	<FastImage
 		style={style}
 		source={{
@@ -16,11 +25,5 @@ const CustomEmoji = React.memo(({ baseUrl, emoji, style }) => (
 	const nextEmoji = nextProps.emoji.content || nextProps.emoji.name;
 	return prevEmoji === nextEmoji;
 });
-
-CustomEmoji.propTypes = {
-	baseUrl: PropTypes.string.isRequired,
-	emoji: PropTypes.object.isRequired,
-	style: PropTypes.any
-};
 
 export default CustomEmoji;

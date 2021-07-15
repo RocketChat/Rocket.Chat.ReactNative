@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
@@ -7,6 +6,30 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { avatarURL } from '../../utils/avatar';
 import Emoji from '../markdown/Emoji';
+
+export interface IAvatar {
+	server?: string;
+	style?: any,
+	text?: string;
+	avatar?: string;
+	emoji?: string;
+	size?: number;
+	borderRadius?: number;
+	type?: string;
+	children?: JSX.Element;
+	user?: {
+		id: string;
+		token: string;
+	};
+	theme: string;
+	onPress?(): void;
+	getCustomEmoji(): any;
+	avatarETag?: string;
+	isStatic?: boolean;
+	rid?: string;
+	blockUnauthenticatedAccess?: boolean;
+	serverVersion?: string;
+}
 
 const Avatar = React.memo(({
 	text,
@@ -27,7 +50,7 @@ const Avatar = React.memo(({
 	rid,
 	blockUnauthenticatedAccess,
 	serverVersion
-}) => {
+}: Partial<IAvatar>) => {
 	if ((!text && !avatar && !emoji && !rid) || !server) {
 		return null;
 	}
@@ -96,35 +119,11 @@ const Avatar = React.memo(({
 	);
 });
 
-Avatar.propTypes = {
-	server: PropTypes.string,
-	style: PropTypes.any,
-	text: PropTypes.string,
-	avatar: PropTypes.string,
-	emoji: PropTypes.string,
-	size: PropTypes.number,
-	borderRadius: PropTypes.number,
-	type: PropTypes.string,
-	children: PropTypes.object,
-	user: PropTypes.shape({
-		id: PropTypes.string,
-		token: PropTypes.string
-	}),
-	theme: PropTypes.string,
-	onPress: PropTypes.func,
-	getCustomEmoji: PropTypes.func,
-	avatarETag: PropTypes.string,
-	isStatic: PropTypes.bool,
-	rid: PropTypes.string,
-	blockUnauthenticatedAccess: PropTypes.bool,
-	serverVersion: PropTypes.string
-};
-
-Avatar.defaultProps = {
-	text: '',
-	size: 25,
-	type: 'd',
-	borderRadius: 4
-};
+// Avatar.defaultProps = {
+// 	text: '',
+// 	size: 25,
+// 	type: 'd',
+// 	borderRadius: 4
+// };
 
 export default Avatar;
