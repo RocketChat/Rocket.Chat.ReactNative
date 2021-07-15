@@ -160,11 +160,11 @@ class RoomsListView extends React.Component {
 			chats: [],
 			item: {}
 		};
-		this.setHeader();
-		this.getSubscriptions();
 	}
 
 	componentDidMount() {
+		this.setHeader();
+		this.getSubscriptions();
 		const {
 			navigation, closeServerDropdown
 		} = this.props;
