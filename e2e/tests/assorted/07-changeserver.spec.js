@@ -1,6 +1,3 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
 const { navigateToLogin, login, checkServer } = require('../../helpers/app');
 const { prepareAndroid } = require('../../helpers/platformFunctions');
@@ -10,7 +7,7 @@ const reopenAndCheckServer = async(server) => {
 	await device.launchApp({ permissions: { notifications: 'YES' } });
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(6000);
 	await checkServer(server);
-}
+};
 
 describe('Change server', () => {
 	before(async() => {
@@ -27,7 +24,7 @@ describe('Change server', () => {
 		await element(by.id('rooms-list-header-server-add')).tap();
 
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(6000);
-		await element(by.id('new-server-view-input')).typeText(`${data.alternateServer}\n`);
+		await element(by.id('new-server-view-input')).typeText(`${ data.alternateServer }\n`);
 		await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(10000);
 		await reopenAndCheckServer(data.server);
 	});
@@ -67,5 +64,5 @@ describe('Change server', () => {
 
 	it('should reopen the app and show main server', async() => {
 		await reopenAndCheckServer(data.server);
-	})
+	});
 });

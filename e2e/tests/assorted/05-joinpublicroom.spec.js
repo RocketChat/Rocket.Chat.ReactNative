@@ -1,13 +1,12 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const {
+	navigateToLogin, login, mockMessage, tapBack, searchRoom
+} = require('../../helpers/app');
 
 const platformTypes = require('../../helpers/platformTypes');
 const { prepareAndroid } = require('../../helpers/platformFunctions');
 
-const testuser = data.users.regular
+const testuser = data.users.regular;
 const room = data.channels.detoxpublic.name;
 
 async function navigateToRoom() {
@@ -32,7 +31,7 @@ describe('Join public room', () => {
 		await navigateToRoom();
 	});
 
-	describe('Render', async() => {
+	describe('Render', () => {
 		it('should have room screen', async() => {
 			await expect(element(by.id('room-view'))).toBeVisible();
 		}); 
@@ -42,14 +41,14 @@ describe('Join public room', () => {
 		// });
 
 		// Render - Header
-		describe('Header', async() => {
+		describe('Header', () => {
 			it('should have actions button ', async() => {
 				await expect(element(by.id('room-header'))).toBeVisible();
 			});
 		});
 
 		// Render - Join
-		describe('Join', async() => {
+		describe('Join', () => {
 			it('should have join', async() => {
 				await expect(element(by.id('room-view-join'))).toBeVisible();
 			});
@@ -67,7 +66,7 @@ describe('Join public room', () => {
 			});
 		});
 
-		describe('Room Actions', async() => {
+		describe('Room Actions', () => {
 			before(async() => {
 				await navigateToRoomActions();
 			});
@@ -123,11 +122,11 @@ describe('Join public room', () => {
 			after(async() => {
 				await tapBack();
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
-			})
+			});
 		});
 	});
 
-	describe('Usage', async() => {
+	describe('Usage', () => {
 		it('should join room', async() => {
 			await element(by.id('room-view-join-button')).tap();
 			await tapBack();

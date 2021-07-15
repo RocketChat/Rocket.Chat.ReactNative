@@ -1,8 +1,7 @@
-const {
-	device, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
-const { sleep, navigateToLogin, login, checkServer } = require('../../helpers/app');
+const {
+	sleep, navigateToLogin, login, checkServer
+} = require('../../helpers/app');
 
 const platformTypes = require('../../helpers/platformTypes');
 const { prepareAndroid } = require('../../helpers/platformFunctions');
@@ -19,7 +18,7 @@ describe('Delete server', () => {
 
 	it('should be logged in main server', async() => {
 		await checkServer(data.server);
-	})
+	});
 
 	it('should add server', async() => {
 		await sleep(5000);
@@ -28,7 +27,7 @@ describe('Delete server', () => {
 		await element(by.id('rooms-list-header-server-add')).tap();
 
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(10000);
-		await element(by.id('new-server-view-input')).typeText(`${data.alternateServer}\n`);
+		await element(by.id('new-server-view-input')).typeText(`${ data.alternateServer }\n`);
 		await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(10000);
 		await element(by.id('workspace-view-register')).tap();
 		await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);

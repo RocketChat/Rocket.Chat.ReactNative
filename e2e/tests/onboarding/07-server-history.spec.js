@@ -18,7 +18,7 @@ describe('Server history', () => {
 			await logout();
 			await element(by.id('join-workspace')).tap();
 			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-		})
+		});
 
 		it('should show servers history', async() => {
 			await element(by.id('new-server-view-input')).tap();

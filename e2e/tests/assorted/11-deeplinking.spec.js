@@ -1,9 +1,6 @@
-const {
-	device, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
 const { tapBack, checkServer, navigateToRegister } = require('../../helpers/app');
-const { post, get, login } = require('../../helpers/data_setup');
+const { get, login } = require('../../helpers/data_setup');
 const platformTypes = require('../../helpers/platformTypes');
 const { closeKeyboardAndroid, prepareAndroid } = require('../../helpers/platformFunctions');
 
@@ -50,7 +47,7 @@ describe('Deep linking', () => {
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
 			await checkServer(data.server);
 			await waitFor(element(by.id(`rooms-list-view-item-${ data.groups.private.name }`))).toBeVisible().withTimeout(2000);
-		}
+		};
 
 		it('should authenticate and navigate', async() => {
 			await authAndNavigate();
@@ -72,7 +69,7 @@ describe('Deep linking', () => {
 	});
 
 	describe('Room', () => {
-		describe('While logged in', async() => {
+		describe('While logged in', () => {
 			it('should navigate to the room using path', async() => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
@@ -84,7 +81,7 @@ describe('Deep linking', () => {
 			});
 
 			it('should navigate to the room using rid', async() => {
-				const roomResult = await get(`groups.info?roomName=${ data.groups.private.name }`)
+				const roomResult = await get(`groups.info?roomName=${ data.groups.private.name }`);
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
@@ -96,7 +93,7 @@ describe('Deep linking', () => {
 			});
 		});
 
-		describe('Others', async() => {
+		describe('Others', () => {
 			it('should change server', async() => {
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 				await element(by.id('rooms-list-header-server-dropdown-button')).tap();

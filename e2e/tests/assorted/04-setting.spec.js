@@ -1,14 +1,11 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
-const { navigateToLogin, login, tapBack } = require('../../helpers/app');
+const { navigateToLogin, login } = require('../../helpers/app');
 
 const platformTypes = require('../../helpers/platformTypes');
 const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const data = require('../../data');
 
-const testuser = data.users.regular
+const testuser = data.users.regular;
 
 describe('Settings screen', () => {
 	let alertButtonType;
@@ -26,7 +23,7 @@ describe('Settings screen', () => {
 		await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
 	});
 
-	describe('Render', async() => {
+	describe('Render', () => {
 		it('should have settings view', async() => {
 			await expect(element(by.id('settings-view'))).toBeVisible();
 		});
@@ -68,7 +65,7 @@ describe('Settings screen', () => {
 		});
 	});
 
-	describe('Usage', async() => {
+	describe('Usage', () => {
 		it('should tap clear cache and navigate to roomslistview', async() => {
 			await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
 			await element(by.id('settings-view-clear-cache')).tap();
@@ -76,6 +73,6 @@ describe('Settings screen', () => {
 			await element(by.text('Clear').and(by.type(alertButtonType))).tap(); 
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(5000);
 			await waitFor(element(by.id(`rooms-list-view-item-${ data.groups.private.name }`))).toExist().withTimeout(10000);
-		})
+		});
 	});
 });

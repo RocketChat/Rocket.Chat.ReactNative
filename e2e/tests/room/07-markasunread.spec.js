@@ -1,8 +1,7 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, searchRoom, sleep } = require('../../helpers/app');
+const {
+	navigateToLogin, login, searchRoom, sleep
+} = require('../../helpers/app');
 const { prepareAndroid } = require('../../helpers/platformFunctions');
 const { sendMessage } = require('../../helpers/data_setup')
 
@@ -13,7 +12,7 @@ async function navigateToRoom(user) {
 }
 
 describe('Mark as unread', () => {
-	const user = data.users.alternate.username
+	const user = data.users.alternate.username;
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
@@ -23,9 +22,8 @@ describe('Mark as unread', () => {
 		await navigateToRoom(user);
 	});
 
-	// TODO: Fix flakiness. If it fails, run it solo.
-	describe('Usage', async() => {
-		describe('Mark message as unread', async() => {
+	describe('Usage', () => {
+		describe('Mark message as unread', () => {
 			it('should mark message as unread', async() => {
 				const message = `${ data.random }message-mark-as-unread`;
 				const channelName = `@${ data.users.regular.username }`;
@@ -37,7 +35,7 @@ describe('Mark as unread', () => {
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Mark Unread')).atIndex(0).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(5000);
-				await expect(element(by.id(`rooms-list-view-item-${data.users.alternate.username}`))).toExist();
+				await expect(element(by.id(`rooms-list-view-item-${ data.users.alternate.username }`))).toExist();
 			});
 		});
 	});
