@@ -1,11 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
+
+interface IButton {
+	title: string;
+	type: string
+	onPress(): void;
+	disabled: boolean;
+	backgroundColor: string
+	loading: boolean;
+	theme: string
+	color: string
+	fontSize: any
+	style: any
+}
 
 const styles = StyleSheet.create({
 	container: {
@@ -25,27 +37,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class Button extends React.PureComponent {
-	static propTypes = {
-		title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-		type: PropTypes.string,
-		onPress: PropTypes.func,
-		disabled: PropTypes.bool,
-		backgroundColor: PropTypes.string,
-		loading: PropTypes.bool,
-		theme: PropTypes.string,
-		color: PropTypes.string,
-		fontSize: PropTypes.string,
-		style: PropTypes.any
-	}
-
-	static defaultProps = {
-		title: 'Press me!',
-		type: 'primary',
-		onPress: () => alert('It works!'),
-		disabled: false,
-		loading: false
-	}
+export default class Button extends React.PureComponent<IButton, any> {
 
 	render() {
 		const {

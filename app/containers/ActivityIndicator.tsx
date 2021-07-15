@@ -1,7 +1,12 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet } from 'react-native';
-import { PropTypes } from 'prop-types';
+import { ActivityIndicator, ActivityIndicatorProps, StyleSheet } from 'react-native';
 import { themes } from '../constants/colors';
+
+interface IActivityIndicator extends ActivityIndicatorProps{
+	theme?: 'light' | 'dark' | 'black',
+	absolute?: boolean,
+	props?: object
+}
 
 const styles = StyleSheet.create({
 	indicator: {
@@ -19,7 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RCActivityIndicator = ({ theme, absolute, ...props }) => (
+const RCActivityIndicator = ({ theme = 'light', absolute, ...props }: IActivityIndicator) => (
 	<ActivityIndicator
 		style={[styles.indicator, absolute && styles.absolute]}
 		color={themes[theme].auxiliaryText}
@@ -27,14 +32,10 @@ const RCActivityIndicator = ({ theme, absolute, ...props }) => (
 	/>
 );
 
-RCActivityIndicator.propTypes = {
-	theme: PropTypes.string,
-	absolute: PropTypes.bool,
-	props: PropTypes.object
-};
 
-RCActivityIndicator.defaultProps = {
-	theme: 'light'
-};
+// TODO - test the app without the theme default
+// RCActivityIndicator.defaultProps = {
+// 	theme: 'light'
+// };
 
 export default RCActivityIndicator;
