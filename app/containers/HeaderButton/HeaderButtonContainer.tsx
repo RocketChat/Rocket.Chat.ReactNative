@@ -1,6 +1,10 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
+
+interface IHeaderButtonContainer {
+	children: JSX.Element;
+	left?: boolean;
+}
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,20 +20,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Container = ({ children, left }) => (
+const Container = ({ children, left }: IHeaderButtonContainer) => (
 	<View style={[styles.container, left ? styles.left : styles.right]}>
 		{children}
 	</View>
 );
-
-Container.propTypes = {
-	children: PropTypes.arrayOf(PropTypes.element),
-	left: PropTypes.bool
-};
-
-Container.defaultProps = {
-	left: false
-};
 
 Container.displayName = 'HeaderButton.Container';
 

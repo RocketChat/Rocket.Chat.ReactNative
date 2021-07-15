@@ -1,12 +1,20 @@
 import React from 'react';
 import { Text, StyleSheet, Platform } from 'react-native';
-import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
+
+interface IHeaderButtonItem {
+	title: string;
+	iconName: string;
+	onPress(): void;
+	testID: string;
+	theme: string;
+	badge(): void;
+}
 
 export const BUTTON_HIT_SLOP = {
 	top: 5, right: 5, bottom: 5, left: 5
@@ -29,9 +37,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({
-	title, iconName, onPress, testID, theme, badge
-}) => (
+const Item = ({title, iconName, onPress, testID, theme, badge}: IHeaderButtonItem) => (
 	<Touchable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
 		<>
 			{
@@ -43,15 +49,6 @@ const Item = ({
 		</>
 	</Touchable>
 );
-
-Item.propTypes = {
-	onPress: PropTypes.func.isRequired,
-	title: PropTypes.string,
-	iconName: PropTypes.string,
-	testID: PropTypes.string,
-	theme: PropTypes.string,
-	badge: PropTypes.func
-};
 
 Item.displayName = 'HeaderButton.Item';
 

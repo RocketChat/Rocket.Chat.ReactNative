@@ -19,7 +19,7 @@ const mentions = {
 	mentionOtherColor: '#F3BE08'
 };
 
-export const themes = {
+export const themes: any = {
 	light: {
 		backgroundColor: '#ffffff',
 		focusedBackground: '#ffffff',
