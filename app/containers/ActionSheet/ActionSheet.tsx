@@ -141,7 +141,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.E
 				{I18n.t('Cancel')}
 			</Text>
 		</Button>
-	) : null), [theme, data, hide()]);
+	) : null), [theme, data, hide]);
 
 	const renderItem = useCallback(({ item }) => <Item item={item} hide={hide} theme={theme} />, []);
 
