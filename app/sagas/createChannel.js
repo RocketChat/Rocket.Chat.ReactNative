@@ -112,10 +112,11 @@ const handleSuccess = function* handleSuccess({ data }) {
 const handleFailure = function handleFailure({ err, isTeam }) {
 	setTimeout(() => {
 		let msg = '';
+		const actionError = I18n.t('There_was_an_error_while_action', { action: isTeam ? I18n.t('creating_team') : I18n.t('creating_channel') });
 		if (err?.data?.errorType && err?.data?.details?.channel_name) {
-			msg = i18nEnJson[err.data.errorType] ? I18n.t(err.data.errorType, { room_name: err.data.details.channel_name }) : err.data.errorType;
+			msg = i18nEnJson[err.data.errorType] ? I18n.t(err.data.errorType, { room_name: err.data.details.channel_name }) : actionError;
 		} else {
-			msg = err?.reason || (i18nEnJson[err?.data?.error] ? I18n.t(err.data.error) : err.data.error || I18n.t('There_was_an_error_while_action', { action: isTeam ? I18n.t('creating_team') : I18n.t('creating_channel') }));
+			msg = err?.reason || (i18nEnJson[err?.data?.error] ? I18n.t(err.data.error) : err.data.error || actionError);
 		}
 		showErrorAlert(msg, isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel'));
 	}, 300);
