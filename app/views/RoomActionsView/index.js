@@ -974,6 +974,24 @@ class RoomActionsView extends React.Component {
 							)
 							: null}
 
+						{['c', 'p'].includes(t)
+							? (
+								<>
+									<List.Item
+										title='Discussions'
+										onPress={() => this.onPressTouchable({
+											route: 'ThreadMessagesView',
+											params: { rid, t, name: 'Discussions' }
+										})}
+										testID='room-actions-discussions'
+										left={() => <List.Icon name='discussions' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null}
+
 						{['c', 'p', 'd'].includes(t)
 							? (
 								<>
