@@ -634,7 +634,7 @@ class RoomsListView extends React.Component {
 
 	readThreads = async(tunread) => {
 		const result = [];
-		for (let i = 0; i <= tunread.length; i += 1) {
+		for (let i = 0; i < tunread.length; i += 1) {
 			const tmid = tunread[i];
 			try {
 				if (tmid) {
