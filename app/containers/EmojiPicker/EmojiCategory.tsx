@@ -54,6 +54,7 @@ class EmojiCategory extends React.Component<IEmoji> {
 		const marginHorizontal = (width - (numColumns * EMOJI_SIZE)) / 2;
 
 		return (
+			// @ts-ignore
 			<FlatList
 				contentContainerStyle={{ marginHorizontal }}
 				// rerender FlatList in case of width changes

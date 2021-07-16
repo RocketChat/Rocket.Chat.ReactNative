@@ -65,6 +65,7 @@ class AvatarContainer extends React.Component<Partial<IAvatar>, any> {
 				if (this.mounted) {
 					this.setState({ avatarETag });
 				} else {
+				// @ts-ignore
 					this.state.avatarETag = avatarETag;
 				}
 			});
