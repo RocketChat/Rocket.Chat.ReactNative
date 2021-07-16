@@ -632,18 +632,40 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	toggleRead = async(rid, isRead) => {
+	readThreads = async(tunread) => {
+		const result = [];
+		for (let i = 0; i <= tunread.length; i += 1) {
+			const tmid = tunread[i];
+			try {
+				if (tmid) {
+					// eslint-disable-next-line no-await-in-loop
+					const response = await RocketChat.readThreads(tmid);
+					result.push(response.success);
+				}
+			} catch (e) {
+				logEvent(events.RL_TOGGLE_READ_F);
+				log(e);
+			}
+		}
+		return result.every(Boolean);
+	}
+
+	toggleRead = async(rid, isRead, tunread) => {
 		logEvent(isRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleRead(isRead, rid);
-			if (result.success) {
+			const threadResult = tunread?.length > 0 ? await this.readThreads(tunread) : true;
+
+			if (result.success && threadResult) {
 				const subCollection = db.get('subscriptions');
 				await db.action(async() => {
 					try {
 						const subRecord = await subCollection.find(rid);
 						await subRecord.update((sub) => {
 							sub.alert = isRead;
+							sub.unread = 0;
+							sub.tunread = tunread && [];
 						});
 					} catch (e) {
 						log(e);
