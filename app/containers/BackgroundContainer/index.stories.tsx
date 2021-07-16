@@ -24,7 +24,7 @@ stories.add('long text', () => (
 	<BackgroundContainer text={longText} />
 ));
 
-const ThemeStory = ({ theme, ...props }) => (
+const ThemeStory = ({ theme, ...props }: any) => (
 	<ThemeContext.Provider
 		value={{ theme }}
 	>

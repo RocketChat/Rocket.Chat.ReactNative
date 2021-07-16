@@ -1,12 +1,15 @@
 import React from 'react';
-import {
-	ImageBackground, StyleSheet, Text, View, ActivityIndicator
-} from 'react-native';
-import PropTypes from 'prop-types';
+import { ImageBackground, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 
 import { withTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
+
+interface IBackgroundContainer {
+	text: string;
+	theme: string;
+	loading: boolean;
+}
 
 const styles = StyleSheet.create({
 	container: {
@@ -29,17 +32,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const BackgroundContainer = ({ theme, text, loading }) => (
+const BackgroundContainer = ({ theme, text, loading }: IBackgroundContainer) => (
 	<View style={styles.container}>
 		<ImageBackground source={{ uri: `message_empty_${ theme }` }} style={styles.image} />
 		{text ? <Text style={[styles.text, { color: themes[theme].auxiliaryTintColor }]}>{text}</Text> : null}
-		{loading ? <ActivityIndicator style={[styles.text, { color: themes[theme].auxiliaryTintColor }]} /> : null}
+		{/*{loading ? <ActivityIndicator style={[styles.text, { color: themes[theme].auxiliaryTintColor }]} /> : null}*/}
+		{loading ? <ActivityIndicator color={themes[theme].auxiliaryTintColor} style={styles.text} /> : null}
+
 	</View>
 );
 
-BackgroundContainer.propTypes = {
-	text: PropTypes.string,
-	theme: PropTypes.string,
-	loading: PropTypes.bool
-};
 export default withTheme(BackgroundContainer);
