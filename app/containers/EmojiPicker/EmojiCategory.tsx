@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text, TouchableOpacity, FlatList } from 'react-native';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
@@ -7,9 +6,17 @@ import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
-const EMOJI_SIZE = 50;
+const EMOJI_SIZE: number = 50;
 
-const renderEmoji = (emoji, size, baseUrl) => {
+interface IEmoji {
+	baseUrl: string;
+	emojis: any;
+	onEmojiSelected({}: any): void;
+	emojisPerRow: number;
+	width: number;
+}
+
+const renderEmoji = (emoji: any, size: number, baseUrl: string) => {
 	if (emoji && emoji.isCustom) {
 		return <CustomEmoji style={[styles.customCategoryEmoji, { height: size - 16, width: size - 16 }]} emoji={emoji} baseUrl={baseUrl} />;
 	}
@@ -20,16 +27,9 @@ const renderEmoji = (emoji, size, baseUrl) => {
 	);
 };
 
-class EmojiCategory extends React.Component {
-	static propTypes = {
-		baseUrl: PropTypes.string.isRequired,
-		emojis: PropTypes.any,
-		onEmojiSelected: PropTypes.func,
-		emojisPerRow: PropTypes.number,
-		width: PropTypes.number
-	}
+class EmojiCategory extends React.Component<IEmoji> {
 
-	renderItem(emoji) {
+	renderItem(emoji: any) {
 		const { baseUrl, onEmojiSelected } = this.props;
 		return (
 			<TouchableOpacity

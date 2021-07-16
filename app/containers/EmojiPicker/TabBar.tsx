@@ -1,19 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, TouchableOpacity, Text } from 'react-native';
 import styles from './styles';
 import { themes } from '../../constants/colors';
 
-export default class TabBar extends React.Component {
-	static propTypes = {
-		goToPage: PropTypes.func,
-		activeTab: PropTypes.number,
-		tabs: PropTypes.array,
-		tabEmojiStyle: PropTypes.object,
-		theme: PropTypes.string
-	}
+interface ITabBar {
+	goToPage({}): void;
+	activeTab: number,
+	tabs: [],
+	tabEmojiStyle: object,
+	theme: string
+}
 
-	shouldComponentUpdate(nextProps) {
+export default class TabBar extends React.Component<ITabBar> {
+
+	shouldComponentUpdate(nextProps: any) {
 		const { activeTab, theme } = this.props;
 		if (nextProps.activeTab !== activeTab) {
 			return true;
@@ -25,9 +25,7 @@ export default class TabBar extends React.Component {
 	}
 
 	render() {
-		const {
-			tabs, goToPage, tabEmojiStyle, activeTab, theme
-		} = this.props;
+		const { tabs, goToPage, tabEmojiStyle, activeTab, theme } = this.props;
 
 		return (
 			<View style={styles.tabsContainer}>
