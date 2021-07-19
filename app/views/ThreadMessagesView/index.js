@@ -55,6 +55,9 @@ class ThreadMessagesView extends React.Component {
 		this.mounted = false;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
+		this.name = props.route.params?.name;
+		this.isDiscussion = props.route.params?.isDiscussion;
+		this.prid = props.route.params?.prid;
 		this.state = {
 			loading: false,
 			end: false,
@@ -131,7 +134,7 @@ class ThreadMessagesView extends React.Component {
 				/>
 			),
 			headerTitleAlign: 'center',
-			headerTitle: I18n.t('Threads'),
+			headerTitle: this.isDiscussion ? this.name : I18n.t('Threads'),
 			headerTitleContainerStyle: {
 				left: null,
 				right: null
@@ -296,20 +299,33 @@ class ThreadMessagesView extends React.Component {
 
 		this.setState({ loading: true });
 
-		try {
-			const result = await RocketChat.getThreadsList({
-				rid: this.rid, count: API_FETCH_COUNT, offset: messages.length, text: searchText
-			});
-			if (result.success) {
-				this.updateThreads({ update: result.threads, lastThreadSync });
-				this.setState({
-					loading: false,
-					end: result.count < API_FETCH_COUNT
-				});
+		if (this.isDiscussion) {
+			try {
+				const db = database.active;
+				const subCollection = db.get('subscriptions');
+				const discussions = await subCollection.query(
+					Q.where('prid', Q.eq(this.prid))
+				);
+				this.setState({ loading: false, displayingThreads: discussions });
+			} catch (e) {
+				log(e);
 			}
-		} catch (e) {
-			log(e);
-			this.setState({ loading: false, end: true });
+		} else {
+			try {
+				const result = await RocketChat.getThreadsList({
+					rid: this.rid, count: API_FETCH_COUNT, offset: messages.length, text: searchText
+				});
+				if (result.success) {
+					this.updateThreads({ update: result.threads, lastThreadSync });
+					this.setState({
+						loading: false,
+						end: result.count < API_FETCH_COUNT
+					});
+				}
+			} catch (e) {
+				log(e);
+				this.setState({ loading: false, end: true });
+			}
 		}
 	}, 300)
 
@@ -434,7 +450,7 @@ class ThreadMessagesView extends React.Component {
 
 	renderHeader = () => {
 		const { messages, currentFilter } = this.state;
-		if (!messages.length) {
+		if (!messages.length || this.isDiscussion) {
 			return null;
 		}
 
@@ -458,7 +474,7 @@ class ThreadMessagesView extends React.Component {
 			} else if (currentFilter === FILTER.UNREAD) {
 				text = I18n.t('No_threads_unread');
 			} else {
-				text = I18n.t('No_threads');
+				text = this.isDiscussion ? I18n.t('No_discussions') : I18n.t('No_threads');
 			}
 			return (
 				<>

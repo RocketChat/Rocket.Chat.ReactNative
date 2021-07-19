@@ -903,7 +903,7 @@ class RoomActionsView extends React.Component {
 			room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue
 		} = this.state;
 		const {
-			rid, t
+			rid, t, prid
 		} = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
@@ -974,14 +974,20 @@ class RoomActionsView extends React.Component {
 							)
 							: null}
 
-						{['c', 'p'].includes(t)
+						{['c', 'p'].includes(t) && !prid
 							? (
 								<>
 									<List.Item
 										title='Discussions'
 										onPress={() => this.onPressTouchable({
 											route: 'ThreadMessagesView',
-											params: { rid, t, name: 'Discussions' }
+											params: {
+												rid,
+												t,
+												prid,
+												name: 'Discussions',
+												isDiscussion: true
+											}
 										})}
 										testID='room-actions-discussions'
 										left={() => <List.Icon name='discussions' />}
