@@ -291,6 +291,23 @@ commands:
           working_directory: android
 
   # EXPERIMENTAL ONLY
+  upload-to-internal-app-sharing:
+    description: "Upload to Internal App Sharing"
+    steps:
+      - checkout
+      - attach_workspace:
+          at: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run: *update-fastlane-android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android internal_app_sharing
+          working_directory: android
+
+  # EXPERIMENTAL ONLY
   # No plans to do it for Official
   upload-to-google-play-production:
     description: "Upload to Google Play production"
@@ -391,6 +408,14 @@ jobs:
     steps:
       - android-build
 
+  android-internal-app-sharing-experimental:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-28-node
+
+    steps:
+      - upload-to-internal-app-sharing
+
   android-google-play-beta-experimental:
     <<: *defaults
     docker:
@@ -452,13 +477,9 @@ workflows:
       - ios-build-experimental:
           requires:
             - ios-hold-build-experimental
-      - ios-hold-testflight-experimental:
-          type: approval
-          requires:
-            - ios-build-experimental
       - ios-testflight-experimental:
           requires:
-            - ios-hold-testflight-experimental
+            - ios-build-experimental
 
       # iOS Official
       - ios-hold-build-official:
@@ -484,6 +505,9 @@ workflows:
       - android-build-experimental:
           requires:
             - android-hold-build-experimental
+      - android-internal-app-sharing-experimental:
+          requires:
+            - android-build-experimental
       - android-hold-google-play-beta-experimental:
           type: approval
           requires:
