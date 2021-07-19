@@ -39,6 +39,7 @@ class MessageContainer extends React.Component {
 		onEncryptedPress: PropTypes.func,
 		onDiscussionPress: PropTypes.func,
 		onThreadPress: PropTypes.func,
+		onAnswerButtonPress: PropTypes.func,
 		errorActionsShow: PropTypes.func,
 		replyBroadcast: PropTypes.func,
 		reactionInit: PropTypes.func,
@@ -60,6 +61,7 @@ class MessageContainer extends React.Component {
 		onEncryptedPress: () => {},
 		onDiscussionPress: () => {},
 		onThreadPress: () => {},
+		onAnswerButtonPress: () => {},
 		errorActionsShow: () => {},
 		replyBroadcast: () => {},
 		reactionInit: () => {},
@@ -173,6 +175,13 @@ class MessageContainer extends React.Component {
 		const { onThreadPress, item } = this.props;
 		if (onThreadPress) {
 			onThreadPress(item);
+		}
+	}
+
+	onAnswerButtonPress = (msg) => {
+		const { onAnswerButtonPress } = this.props;
+		if (onAnswerButtonPress) {
+			onAnswerButtonPress(msg, undefined, false);
 		}
 	}
 
@@ -347,7 +356,7 @@ class MessageContainer extends React.Component {
 					callJitsi={callJitsi}
 					blockAction={blockAction}
 					theme={theme}
-					user={user}
+					onAnswerButtonPress={this.onAnswerButtonPress} // TODO: this function inside context is failing
 				/>
 			</MessageContext.Provider>
 		);

@@ -1,40 +1,35 @@
 import React from 'react';
 import { dequal } from 'dequal';
 import PropTypes from 'prop-types';
-import { Button, Text } from 'react-native';
+import { Text } from 'react-native';
 
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
 import Reply from './Reply';
-import RocketChat from '../../lib/rocketchat';
-import defaultStyle from '../markdown/styles';
+import Button from '../Button';
+import styles from './styles';
 
-const AttachedActions = ({ user, rid, attachment }) => {
-	const onButtonPress = async(msg) => {
-		try {
-			await RocketChat.sendMessage(rid, msg, undefined, user, false);
-		} catch (e) {
-			// Do nothing
-		}
-	};
+const AttachedActions = ({
+	attachment, theme, onAnswerButtonPress
+}) => {
 	const attachedButtons = attachment.actions.map((element) => {
 		if (element.type === 'button') {
-			return <Button onPress={() => onButtonPress(element.msg)} title={element.text} />;
+			return <Button theme={theme} onPress={() => onAnswerButtonPress(element.msg)} title={element.text} />;
 		}	else {
 			return null;
 		}
 	});
 	return (
 		<>
-			<Text style={defaultStyle.heading6}>{attachment.text}</Text>
+			<Text style={styles.text}>{attachment.text}</Text>
 			{attachedButtons}
 		</>
 	);
 };
 
 const Attachments = React.memo(({
-	attachments, timeFormat, showAttachment, getCustomEmoji, theme, rid, user
+	attachments, timeFormat, showAttachment, getCustomEmoji, theme, onAnswerButtonPress
 }) => {
 	if (!attachments || attachments.length === 0) {
 		return null;
@@ -51,7 +46,7 @@ const Attachments = React.memo(({
 			return <Video key={file.video_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} theme={theme} />;
 		}
 		if (file.actions && file.actions.length > 0) {
-			return <AttachedActions attachment={file} user={user} rid={rid} />;
+			return <AttachedActions attachment={file} theme={theme} onAnswerButtonPress={onAnswerButtonPress} />;
 		}
 
 		// eslint-disable-next-line react/no-array-index-key
@@ -64,13 +59,8 @@ Attachments.propTypes = {
 	timeFormat: PropTypes.string,
 	showAttachment: PropTypes.func,
 	getCustomEmoji: PropTypes.func,
-	theme: PropTypes.string,
-	rid: PropTypes.string,
-	user: PropTypes.shape({
-		id: PropTypes.string.isRequired,
-		username: PropTypes.string.isRequired,
-		token: PropTypes.string.isRequired
-	})
+	onAnswerButtonPress: PropTypes.func,
+	theme: PropTypes.string
 };
 Attachments.displayName = 'MessageAttachments';
 AttachedActions.propTypes = {
@@ -78,12 +68,8 @@ AttachedActions.propTypes = {
 		actions: PropTypes.array,
 		text: PropTypes.string
 	}),
-	user: PropTypes.shape({
-		id: PropTypes.string.isRequired,
-		username: PropTypes.string.isRequired,
-		token: PropTypes.string.isRequired
-	}),
-	rid: PropTypes.string
+	theme: PropTypes.string,
+	onAnswerButtonPress: PropTypes.func
 };
 
 export default Attachments;
