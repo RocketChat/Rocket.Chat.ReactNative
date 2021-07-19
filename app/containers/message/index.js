@@ -9,6 +9,7 @@ import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import messagesStatus from '../../constants/messagesStatus';
 import { withTheme } from '../../theme';
+import openLink from '../../utils/openLink';
 
 class MessageContainer extends React.Component {
 	static propTypes = {
@@ -33,6 +34,7 @@ class MessageContainer extends React.Component {
 		autoTranslateLanguage: PropTypes.string,
 		status: PropTypes.number,
 		isIgnored: PropTypes.bool,
+		highlighted: PropTypes.bool,
 		getCustomEmoji: PropTypes.func,
 		onLongPress: PropTypes.func,
 		onReactionPress: PropTypes.func,
@@ -51,7 +53,9 @@ class MessageContainer extends React.Component {
 		blockAction: PropTypes.func,
 		theme: PropTypes.string,
 		threadBadgeColor: PropTypes.string,
-		toggleFollowThread: PropTypes.func
+		toggleFollowThread: PropTypes.func,
+		jumpToMessage: PropTypes.func,
+		onPress: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -91,8 +95,13 @@ class MessageContainer extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { isManualUnignored } = this.state;
-		const { theme, threadBadgeColor, isIgnored } = this.props;
+		const {
+			theme, threadBadgeColor, isIgnored, highlighted
+		} = this.props;
 		if (nextProps.theme !== theme) {
+			return true;
+		}
+		if (nextProps.highlighted !== highlighted) {
 			return true;
 		}
 		if (nextProps.threadBadgeColor !== threadBadgeColor) {
@@ -114,8 +123,13 @@ class MessageContainer extends React.Component {
 	}
 
 	onPress = debounce(() => {
+		const { onPress } = this.props;
 		if (this.isIgnored) {
 			return this.onIgnoredMessagePress();
+		}
+
+		if (onPress) {
+			return onPress();
 		}
 
 		const { item, isThreadRoom } = this.props;
@@ -274,12 +288,69 @@ class MessageContainer extends React.Component {
 		}
 	}
 
+	onLinkPress = (link) => {
+		const { item, theme, jumpToMessage } = this.props;
+		const isMessageLink = item?.attachments?.findIndex(att => att?.message_link === link) !== -1;
+		if (isMessageLink) {
+			return jumpToMessage(link);
+		}
+		openLink(link, theme);
+	}
+
 	render() {
 		const {
-			item, user, style, archived, baseUrl, useRealName, broadcast, fetchThreadName, showAttachment, timeFormat, isReadReceiptEnabled, autoTranslateRoom, autoTranslateLanguage, navToRoomInfo, getCustomEmoji, isThreadRoom, callJitsi, blockAction, rid, theme, threadBadgeColor, toggleFollowThread
+			item,
+			user,
+			style,
+			archived,
+			baseUrl,
+			useRealName,
+			broadcast,
+			fetchThreadName,
+			showAttachment,
+			timeFormat,
+			isReadReceiptEnabled,
+			autoTranslateRoom,
+			autoTranslateLanguage,
+			navToRoomInfo,
+			getCustomEmoji,
+			isThreadRoom,
+			callJitsi,
+			blockAction,
+			rid,
+			theme,
+			threadBadgeColor,
+			toggleFollowThread,
+			jumpToMessage,
+			highlighted
 		} = this.props;
 		const {
-			id, msg, ts, attachments, urls, reactions, t, avatar, emoji, u, alias, editedBy, role, drid, dcount, dlm, tmid, tcount, tlm, tmsg, mentions, channels, unread, blocks, autoTranslate: autoTranslateMessage, replies
+			id,
+			msg,
+			ts,
+			attachments,
+			urls,
+			reactions,
+			t,
+			avatar,
+			emoji,
+			u,
+			alias,
+			editedBy,
+			role,
+			drid,
+			dcount,
+			dlm,
+			tmid,
+			tcount,
+			tlm,
+			tmsg,
+			mentions,
+			channels,
+			unread,
+			blocks,
+			autoTranslate: autoTranslateMessage,
+			replies
 		} = item;
 
 		let message = msg;
@@ -303,6 +374,8 @@ class MessageContainer extends React.Component {
 					onEncryptedPress: this.onEncryptedPress,
 					onDiscussionPress: this.onDiscussionPress,
 					onReactionLongPress: this.onReactionLongPress,
+					onLinkPress: this.onLinkPress,
+					jumpToMessage,
 					threadBadgeColor,
 					toggleFollowThread,
 					replies
@@ -357,6 +430,7 @@ class MessageContainer extends React.Component {
 					blockAction={blockAction}
 					theme={theme}
 					onAnswerButtonPress={this.onAnswerButtonPress} // TODO: this function inside context is failing
+					highlighted={highlighted}
 				/>
 			</MessageContext.Provider>
 		);

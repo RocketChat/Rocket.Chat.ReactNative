@@ -23,6 +23,8 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
+import getThreadName from '../../lib/methods/getThreadName';
+import getRoomInfo from '../../lib/methods/getRoomInfo';
 
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ navigation, route }) => {
@@ -54,7 +56,12 @@ class SearchMessagesView extends React.Component {
 			searchText: ''
 		};
 		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
 		this.encrypted = props.route.params?.encrypted;
+	}
+
+	async componentDidMount() {
+		this.room = await getRoomInfo(this.rid);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -126,12 +133,39 @@ class SearchMessagesView extends React.Component {
 		return null;
 	}
 
+	showAttachment = (attachment) => {
+		const { navigation } = this.props;
+		navigation.navigate('AttachmentView', { attachment });
+	}
+
 	navToRoomInfo = (navParam) => {
 		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
 		navigation.navigate('RoomInfoView', navParam);
+	}
+
+	jumpToMessage = async({ item }) => {
+		const { navigation } = this.props;
+		let params = {
+			rid: this.rid,
+			jumpToMessageId: item._id,
+			t: this.t,
+			room: this.room
+		};
+		if (item.tmid) {
+			navigation.pop();
+			params = {
+				...params,
+				tmid: item.tmid,
+				name: await getThreadName(this.rid, item.tmid, item._id),
+				t: 'thread'
+			};
+			navigation.push('RoomView', params);
+		} else {
+			navigation.navigate('RoomView', params);
+		}
 	}
 
 	renderEmpty = () => {
@@ -152,13 +186,16 @@ class SearchMessagesView extends React.Component {
 				item={item}
 				baseUrl={baseUrl}
 				user={user}
-				timeFormat='LLL'
+				timeFormat='MMM Do YYYY, h:mm:ss a'
 				isHeader
-				showAttachment={() => {}}
+				isThreadRoom
+				showAttachment={this.showAttachment}
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
 				useRealName={useRealName}
 				theme={theme}
+				onPress={() => this.jumpToMessage({ item })}
+				jumpToMessage={() => this.jumpToMessage({ item })}
 			/>
 		);
 	}

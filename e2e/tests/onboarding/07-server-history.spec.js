@@ -1,7 +1,6 @@
 const {
-	device, expect, element, by, waitFor
-} = require('detox');
-const { login, navigateToLogin, logout, tapBack } = require('../../helpers/app');
+	login, navigateToLogin, logout, tapBack
+} = require('../../helpers/app');
 const data = require('../../data');
 
 describe('Server history', () => {
@@ -16,7 +15,7 @@ describe('Server history', () => {
 			await logout();
 			await element(by.id('join-workspace')).tap();
 			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-		})
+		});
 
 		it('should show servers history', async() => {
 			await element(by.id('new-server-view-input')).tap();
@@ -25,7 +24,7 @@ describe('Server history', () => {
 
 		it('should tap on a server history and navigate to login', async() => {
 			await element(by.id(`server-history-${ data.server }`)).tap();
-			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
+			await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(5000);
 			await expect(element(by.id('login-view-email'))).toHaveText(data.users.regular.username);
 		});
 

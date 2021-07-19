@@ -1,4 +1,5 @@
 export const MENTIONS_TRACKING_TYPE_USERS = '@';
 export const MENTIONS_TRACKING_TYPE_EMOJIS = ':';
 export const MENTIONS_TRACKING_TYPE_COMMANDS = '/';
+export const MENTIONS_TRACKING_TYPE_ROOMS = '#';
 export const MENTIONS_COUNT_TO_DISPLAY = 4;

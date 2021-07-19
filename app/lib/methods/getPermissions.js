@@ -1,12 +1,12 @@
-import lt from 'semver/functions/lt';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
-import coerce from 'semver/functions/coerce';
 import orderBy from 'lodash/orderBy';
 
+import { compareServerVersion, methods } from '../utils';
 import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
+import RocketChat from '../rocketchat';
 import protectedFunction from './helpers/protectedFunction';
 import { setPermissions as setPermissionsAction } from '../../actions/permissions';
 
@@ -14,19 +14,25 @@ const PERMISSIONS = [
 	'add-user-to-any-c-room',
 	'add-user-to-any-p-room',
 	'add-user-to-joined-room',
+	'add-team-channel',
 	'archive-room',
 	'auto-translate',
 	'create-invite-links',
+	'create-team',
 	'delete-c',
 	'delete-message',
 	'delete-p',
+	'delete-team',
 	'edit-message',
 	'edit-room',
+	'edit-team-member',
+	'edit-team-channel',
 	'force-delete-message',
 	'mute-user',
 	'pin-message',
 	'post-readonly',
 	'remove-user',
+	'remove-team-channel',
 	'set-leader',
 	'set-moderator',
 	'set-owner',
@@ -39,7 +45,10 @@ const PERMISSIONS = [
 	'view-privileged-setting',
 	'view-room-administration',
 	'view-statistics',
-	'view-user-administration'
+	'view-user-administration',
+	'view-all-teams',
+	'view-all-team-channels',
+	'convert-team'
 ];
 
 export async function setPermissions() {
@@ -121,9 +130,9 @@ export function getPermissions() {
 			const db = database.active;
 			const permissionsCollection = db.get('permissions');
 			const allRecords = await permissionsCollection.query().fetch();
-
+			RocketChat.subscribe('stream-notify-logged', 'permissions-changed');
 			// if server version is lower than 0.73.0, fetches from old api
-			if (serverVersion && lt(coerce(serverVersion), '0.73.0')) {
+			if (compareServerVersion(serverVersion, '0.73.0', methods.lowerThan)) {
 				// RC 0.66.0
 				const result = await this.sdk.get('permissions.list');
 				if (!result.success) {

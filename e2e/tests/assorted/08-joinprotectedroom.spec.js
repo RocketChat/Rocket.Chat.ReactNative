@@ -1,23 +1,16 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const {
+	navigateToLogin, login, mockMessage, searchRoom
+} = require('../../helpers/app');
 
-const testuser = data.users.regular
-const room = data.channels.detoxpublicprotected.name
-const joinCode = data.channels.detoxpublicprotected.joinCode
+const testuser = data.users.regular;
+const room = data.channels.detoxpublicprotected.name;
+const { joinCode } = data.channels.detoxpublicprotected;
 
 async function navigateToRoom() {
 	await searchRoom(room);
-	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
-}
-
-async function navigateToRoomActions() {
-	await element(by.id('room-view-header-actions')).tap();
-	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 
 async function openJoinCode() {
@@ -25,7 +18,7 @@ async function openJoinCode() {
 	await waitFor(element(by.id('join-code'))).toBeVisible().withTimeout(5000);
 }
 
-describe('Join public room', () => {
+describe('Join protected room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
@@ -33,10 +26,10 @@ describe('Join public room', () => {
 		await navigateToRoom();
 	});
 
-	describe('Usage', async() => {
+	describe('Usage', () => {
 		it('should tap join and ask for join code', async() => {
 			await openJoinCode();
-		})
+		});
 
 		it('should cancel join room', async() => {
 			await element(by.id('join-code-cancel')).tap();

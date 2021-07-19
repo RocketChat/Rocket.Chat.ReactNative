@@ -116,10 +116,14 @@ class CreateChannelView extends React.Component {
 		} = this.state;
 		const { create } = this.props;
 
-		// create discussion
-		create({
-			prid: prid || rid, pmid, t_name, reply, users, encrypted
-		});
+		const params = {
+			prid: prid || rid, pmid, t_name, reply, users
+		};
+		if (this.isEncryptionEnabled) {
+			params.encrypted = encrypted ?? false;
+		}
+
+		create(params);
 	};
 
 	valid = () => {
@@ -145,6 +149,12 @@ class CreateChannelView extends React.Component {
 		this.setState({ users: value });
 	}
 
+	get isEncryptionEnabled() {
+		const { channel } = this.state;
+		const { encryptionEnabled } = this.props;
+		return encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
+	}
+
 	onEncryptedChange = (value) => {
 		logEvent(events.CD_TOGGLE_ENCRY);
 		this.setState({ encrypted: value });
@@ -152,10 +162,10 @@ class CreateChannelView extends React.Component {
 
 	render() {
 		const {
-			name, users, encrypted, channel
+			name, users, encrypted
 		} = this.state;
 		const {
-			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion, encryptionEnabled
+			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion
 		} = this.props;
 		return (
 			<KeyboardView
@@ -179,6 +189,7 @@ class CreateChannelView extends React.Component {
 						/>
 						<TextInput
 							label={I18n.t('Discussion_name')}
+							testID='multi-select-discussion-name'
 							placeholder={I18n.t('A_meaningful_name_for_the_discussion_room')}
 							containerStyle={styles.inputStyle}
 							defaultValue={name}
@@ -195,7 +206,7 @@ class CreateChannelView extends React.Component {
 							serverVersion={serverVersion}
 							theme={theme}
 						/>
-						{encryptionEnabled && E2E_ROOM_TYPES[channel?.t]
+						{this.isEncryptionEnabled
 							? (
 								<>
 									<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>

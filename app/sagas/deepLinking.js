@@ -15,6 +15,8 @@ import {
 } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
+import { loginRequest } from '../actions/login';
+import log from '../utils/log';
 
 const roomTypes = {
 	channel: 'c', direct: 'd', group: 'p', channels: 'l'
@@ -41,9 +43,13 @@ const popToRoot = function popToRoot({ isMasterDetail }) {
 
 const navigate = function* navigate({ params }) {
 	yield put(appStart({ root: ROOT_INSIDE }));
-	if (params.path) {
-		const [type, name] = params.path.split('/');
-		if (type !== 'invite') {
+	if (params.path || params.rid) {
+		let type;
+		let name;
+		if (params.path) {
+			[type, name] = params.path.split('/');
+		}
+		if (type !== 'invite' || params.rid) {
 			const room = yield RocketChat.canOpenRoom(params);
 			if (room) {
 				const item = {
@@ -55,18 +61,19 @@ const navigate = function* navigate({ params }) {
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
 				const focusedRooms = yield select(state => state.room.rooms);
+				const jumpToMessageId = params.messageId;
 
 				if (focusedRooms.includes(room.rid)) {
 					// if there's one room on the list or last room is the one
 					if (focusedRooms.length === 1 || focusedRooms[0] === room.rid) {
-						yield goRoom({ item, isMasterDetail });
+						yield goRoom({ item, isMasterDetail, jumpToMessageId });
 					} else {
 						popToRoot({ isMasterDetail });
-						yield goRoom({ item, isMasterDetail });
+						yield goRoom({ item, isMasterDetail, jumpToMessageId });
 					}
 				} else {
 					popToRoot({ isMasterDetail });
-					yield goRoom({ item, isMasterDetail });
+					yield goRoom({ item, isMasterDetail, jumpToMessageId });
 				}
 
 				if (params.isCall) {
@@ -87,6 +94,15 @@ const fallbackNavigation = function* fallbackNavigation() {
 	yield put(appInit());
 };
 
+const handleOAuth = function* handleOAuth({ params }) {
+	const { credentialToken, credentialSecret } = params;
+	try {
+		yield RocketChat.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+	} catch (e) {
+		log(e);
+	}
+};
+
 const handleOpen = function* handleOpen({ params }) {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
@@ -102,6 +118,11 @@ const handleOpen = function* handleOpen({ params }) {
 		});
 	}
 
+	if (params.type === 'oauth') {
+		yield handleOAuth({ params });
+		return;
+	}
+
 	// If there's no host on the deep link params and the app is opened, just call appInit()
 	if (!host) {
 		yield fallbackNavigation();
@@ -110,7 +131,11 @@ const handleOpen = function* handleOpen({ params }) {
 
 	// If there's host, continue
 	if (!/^(http|https)/.test(host)) {
-		host = `https://${ host }`;
+		if (/^localhost(:\d+)?/.test(host)) {
+			host = `http://${ host }`;
+		} else {
+			host = `https://${ host }`;
+		}
 	} else {
 		// Notification should always come from https
 		host = host.replace('http://', 'https://');
@@ -163,7 +188,7 @@ const handleOpen = function* handleOpen({ params }) {
 
 		if (params.token) {
 			yield take(types.SERVER.SELECT_SUCCESS);
-			yield RocketChat.connect({ server: host, user: { token: params.token } });
+			yield put(loginRequest({ resume: params.token }, true));
 			yield take(types.LOGIN.SUCCESS);
 			yield navigate({ params });
 		} else {

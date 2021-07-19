@@ -17,7 +17,6 @@ import sharedStyles from './Styles';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
-import { animateNextTransition } from '../utils/layoutAnimation';
 import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
 import {
@@ -27,6 +26,9 @@ import {
 } from '../actions/selectedUsers';
 import { showErrorAlert } from '../utils/info';
 import SafeAreaView from '../containers/SafeAreaView';
+
+const ITEM_WIDTH = 250;
+const getItemLayout = (_, index) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
 
 class SelectedUsersView extends React.Component {
 	static propTypes = {
@@ -50,7 +52,7 @@ class SelectedUsersView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
-
+		this.flatlist = React.createRef();
 		const maxUsers = props.route.params?.maxUsers;
 		this.state = {
 			maxUsers,
@@ -151,7 +153,6 @@ class SelectedUsersView extends React.Component {
 			return;
 		}
 
-		animateNextTransition();
 		if (!this.isChecked(user.name)) {
 			if (this.isGroupChat() && users.length === maxUsers) {
 				return showErrorAlert(I18n.t('Max_number_of_users_allowed_is_number', { maxUsers }), I18n.t('Oops'));
@@ -184,15 +185,23 @@ class SelectedUsersView extends React.Component {
 		);
 	}
 
+	setFlatListRef = ref => this.flatlist = ref;
+
+	onContentSizeChange = () => this.flatlist.scrollToEnd({ animated: true });
+
 	renderSelected = () => {
 		const { users, theme } = this.props;
 
 		if (users.length === 0) {
 			return null;
 		}
+
 		return (
 			<FlatList
 				data={users}
+				ref={this.setFlatListRef}
+				onContentSizeChange={this.onContentSizeChange}
+				getItemLayout={getItemLayout}
 				keyExtractor={item => item._id}
 				style={[sharedStyles.separatorTop, { borderColor: themes[theme].separatorColor }]}
 				contentContainerStyle={{ marginVertical: 5 }}

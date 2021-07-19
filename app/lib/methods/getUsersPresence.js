@@ -1,8 +1,7 @@
 import { InteractionManager } from 'react-native';
-import lt from 'semver/functions/lt';
-import gte from 'semver/functions/gte';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
+import { compareServerVersion, methods } from '../utils';
 import reduxStore from '../createStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
@@ -12,7 +11,7 @@ export function subscribeUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
 
 	// if server is lower than 1.1.0
-	if (serverVersion && lt(serverVersion, '1.1.0')) {
+	if (compareServerVersion(serverVersion, '1.1.0', methods.lowerThan)) {
 		if (this.activeUsersSubTimeout) {
 			clearTimeout(this.activeUsersSubTimeout);
 			this.activeUsersSubTimeout = false;
@@ -37,11 +36,11 @@ export default async function getUsersPresence() {
 	const { user: loggedUser } = reduxStore.getState().login;
 
 	// if server is greather than or equal 1.1.0
-	if (serverVersion && gte(serverVersion, '1.1.0')) {
+	if (compareServerVersion(serverVersion, '1.1.0', methods.greaterThanOrEqualTo)) {
 		let params = {};
 
 		// if server is greather than or equal 3.0.0
-		if (serverVersion && gte(serverVersion, '3.0.0')) {
+		if (compareServerVersion(serverVersion, '3.0.0', methods.greaterThanOrEqualTo)) {
 			// if not have any id
 			if (!ids.length) {
 				return;
@@ -56,8 +55,9 @@ export default async function getUsersPresence() {
 			if (result.success) {
 				const { users } = result;
 
-				const activeUsers = users.reduce((ret, item) => {
-					const { _id, status, statusText } = item;
+				const activeUsers = ids.reduce((ret, id) => {
+					const user = users.find(u => u._id === id) ?? { _id: id, status: 'offline' };
+					const { _id, status, statusText } = user;
 
 					if (loggedUser && loggedUser.id === _id) {
 						reduxStore.dispatch(setUser({ status, statusText }));

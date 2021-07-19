@@ -121,6 +121,8 @@ class DirectoryView extends React.Component {
 			logEvent(events.DIRECTORY_SEARCH_USERS);
 		} else if (type === 'channels') {
 			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
+		} else if (type === 'teams') {
+			logEvent(events.DIRECTORY_SEARCH_TEAMS);
 		}
 	}
 
@@ -149,10 +151,14 @@ class DirectoryView extends React.Component {
 			if (result.success) {
 				this.goRoom({ rid: result.room._id, name: item.username, t: 'd' });
 			}
-		} else {
+		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
 			const { room } = await RocketChat.getRoomInfo(item._id);
 			this.goRoom({
-				rid: item._id, name: item.name, joinCodeRequired: room.joinCodeRequired, t: 'c', search: true
+				rid: item._id, name: item.name, joinCodeRequired: room.joinCodeRequired, t: item.t, search: true
+			});
+		} else {
+			this.goRoom({
+				rid: item._id, name: item.name, t: item.t, search: true, teamMain: item.teamMain, teamId: item.teamId
 			});
 		}
 	}
@@ -160,22 +166,35 @@ class DirectoryView extends React.Component {
 	renderHeader = () => {
 		const { type } = this.state;
 		const { theme } = this.props;
+		let text = 'Users';
+		let icon = 'user';
+
+		if (type === 'channels') {
+			text = 'Channels';
+			icon = 'channel-public';
+		}
+
+		if (type === 'teams') {
+			text = 'Teams';
+			icon = 'teams';
+		}
+
 		return (
 			<>
 				<SearchBox
 					onChangeText={this.onSearchChangeText}
 					onSubmitEditing={this.search}
-					testID='federation-view-search'
+					testID='directory-view-search'
 				/>
 				<Touch
 					onPress={this.toggleDropdown}
 					style={styles.dropdownItemButton}
-					testID='federation-view-create-channel'
+					testID='directory-view-dropdown'
 					theme={theme}
 				>
 					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].separatorColor }]}>
-						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={type === 'users' ? 'user' : 'channel-public'} />
-						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{type === 'users' ? I18n.t('Users') : I18n.t('Channels')}</Text>
+						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={icon} />
+						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
 						<CustomIcon name='chevron-down' size={20} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
 					</View>
 				</Touch>
@@ -199,7 +218,7 @@ class DirectoryView extends React.Component {
 			title: item.name,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
-			testID: `federation-view-item-${ item.name }`,
+			testID: `directory-view-item-${ item.name }`.toLowerCase(),
 			style,
 			user,
 			theme,
@@ -217,12 +236,25 @@ class DirectoryView extends React.Component {
 				/>
 			);
 		}
+
+		if (type === 'teams') {
+			return (
+				<DirectoryItem
+					avatar={item.name}
+					description={item.name}
+					rightLabel={I18n.t('N_channels', { n: item.roomsCount })}
+					type={item.t}
+					teamMain={item.teamMain}
+					{...commonProps}
+				/>
+			);
+		}
 		return (
 			<DirectoryItem
 				avatar={item.name}
 				description={item.topic}
 				rightLabel={I18n.t('N_users', { n: item.usersCount })}
-				type='c'
+				type={item.t}
 				{...commonProps}
 			/>
 		);
