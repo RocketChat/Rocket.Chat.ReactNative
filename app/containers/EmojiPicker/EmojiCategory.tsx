@@ -14,6 +14,8 @@ interface IEmoji {
 	onEmojiSelected({}: any): void;
 	emojisPerRow: number;
 	width: number;
+	style: any;
+	tabLabel: string;
 }
 
 const renderEmoji = (emoji: any, size: number, baseUrl: string) => {
@@ -27,7 +29,7 @@ const renderEmoji = (emoji: any, size: number, baseUrl: string) => {
 	);
 };
 
-class EmojiCategory extends React.Component<IEmoji> {
+class EmojiCategory extends React.Component<Partial<IEmoji>> {
 
 	renderItem(emoji: any) {
 		const { baseUrl, onEmojiSelected } = this.props;
@@ -35,10 +37,10 @@ class EmojiCategory extends React.Component<IEmoji> {
 			<TouchableOpacity
 				activeOpacity={0.7}
 				key={emoji && emoji.isCustom ? emoji.content : emoji}
-				onPress={() => onEmojiSelected(emoji)}
+				onPress={() => onEmojiSelected!(emoji)}
 				testID={`reaction-picker-${ emoji && emoji.isCustom ? emoji.content : emoji }`}
 			>
-				{renderEmoji(emoji, EMOJI_SIZE, baseUrl)}
+				{renderEmoji(emoji, EMOJI_SIZE, baseUrl!)}
 			</TouchableOpacity>
 		);
 	}

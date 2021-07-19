@@ -7,14 +7,16 @@ import { themes } from '../../constants/colors';
 
 import styles from './styles';
 
-interface IEmoji {
+export interface IEmoji {
 	literal: string;
 	isMessageContainsOnlyEmoji: boolean;
-	getCustomEmoji?({}: any): string;
+	getCustomEmoji?: Function;
 	baseUrl: string;
-	customEmojis?: boolean;
+	customEmojis?: any;
 	style: object;
 	theme?: string;
+	onEmojiSelected?: Function;
+	tabEmojiStyle?: object;
 }
 
 const Emoji = React.memo(({

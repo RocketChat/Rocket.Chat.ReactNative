@@ -1,4 +1,4 @@
-export const emojisByCategory = {
+export const emojisByCategory: any = {
 	people: [
 		'grinning',
 		'grimacing',

@@ -1,13 +1,10 @@
 import React from 'react';
 import FastImage from '@rocket.chat/react-native-fast-image';
+import {TEmoji} from "./index";
 
 interface ICustomEmoji {
 	baseUrl: string,
-	emoji: {
-		content: any;
-		name: string;
-		extension: any;
-	},
+	emoji: TEmoji,
 	style: any
 }
 

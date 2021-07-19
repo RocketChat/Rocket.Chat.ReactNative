@@ -11,7 +11,7 @@ interface ITabBar {
 	theme: string
 }
 
-export default class TabBar extends React.Component<ITabBar> {
+export default class TabBar extends React.Component<Partial<ITabBar>> {
 
 	shouldComponentUpdate(nextProps: any) {
 		const { activeTab, theme } = this.props;
@@ -29,16 +29,16 @@ export default class TabBar extends React.Component<ITabBar> {
 
 		return (
 			<View style={styles.tabsContainer}>
-				{tabs.map((tab, i) => (
+				{tabs!.map((tab, i) => (
 					<TouchableOpacity
 						activeOpacity={0.7}
 						key={tab}
-						onPress={() => goToPage(i)}
+						onPress={() => goToPage!(i)}
 						style={styles.tab}
 						testID={`reaction-picker-${ tab }`}
 					>
 						<Text style={[styles.tabEmoji, tabEmojiStyle]}>{tab}</Text>
-						{activeTab === i ? <View style={[styles.activeTabLine, { backgroundColor: themes[theme].tintColor }]} /> : <View style={styles.tabLine} />}
+						{activeTab === i ? <View style={[styles.activeTabLine, { backgroundColor: themes[theme!].tintColor }]} /> : <View style={styles.tabLine} />}
 					</TouchableOpacity>
 				))}
 			</View>
