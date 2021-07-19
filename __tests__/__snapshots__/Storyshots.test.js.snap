@@ -11490,7 +11490,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -11593,7 +11593,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -11696,7 +11696,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -11973,7 +11973,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12076,7 +12076,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12179,7 +12179,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12420,7 +12420,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12692,7 +12692,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12795,7 +12795,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12898,7 +12898,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -13175,7 +13175,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -13278,7 +13278,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -13381,7 +13381,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -13622,7 +13622,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -67631,7 +67631,7 @@ Array [
                   "textAlign": "left",
                 },
                 Object {
-                  "color": "#e8ebed",
+                  "color": "#cbced1",
                 },
                 Object {
                   "backgroundColor": "transparent",
@@ -67791,7 +67791,7 @@ Array [
                   "textAlign": "left",
                 },
                 Object {
-                  "color": "#e8ebed",
+                  "color": "#cbced1",
                 },
                 Object {
                   "backgroundColor": "transparent",
@@ -74309,7 +74309,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     "textAlign": "left",
                   },
                   Object {
-                    "color": "#e8ebed",
+                    "color": "#cbced1",
                   },
                   Object {
                     "flex": 1,
@@ -74661,7 +74661,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     "textAlign": "left",
                   },
                   Object {
-                    "color": "#e8ebed",
+                    "color": "#cbced1",
                   },
                   Object {
                     "flex": 1,

@@ -125,6 +125,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		RocketChat.setSettings();
 		RocketChat.setCustomEmojis();
 		RocketChat.setPermissions();
+		RocketChat.setRoles();
 		RocketChat.setEnterpriseModules();
 
 		let serverInfo;

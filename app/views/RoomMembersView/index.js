@@ -49,7 +49,8 @@ class RoomMembersView extends React.Component {
 		room: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			roles: PropTypes.array
 		}),
 		showActionSheet: PropTypes.func,
 		theme: PropTypes.string,
