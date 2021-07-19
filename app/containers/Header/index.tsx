@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, StyleSheet } from 'react-native';
 import { themes } from '../../constants/colors';
@@ -10,7 +9,7 @@ import { withTheme } from '../../theme';
 // Get from https://github.com/react-navigation/react-navigation/blob/master/packages/stack/src/views/Header/HeaderSegment.tsx#L69
 export const headerHeight = isIOS ? 44 : 56;
 
-export const getHeaderHeight = (isLandscape) => {
+export const getHeaderHeight = (isLandscape: boolean) => {
 	if (isIOS) {
 		if (isLandscape && !isTablet) {
 			return 32;
@@ -21,7 +20,15 @@ export const getHeaderHeight = (isLandscape) => {
 	return 56;
 };
 
-export const getHeaderTitlePosition = ({ insets, numIconsRight }) => ({
+type THeaderTitlePosition = {
+	insets: {
+		left: number;
+		right: number;
+	};
+	numIconsRight: number;
+}
+
+export const getHeaderTitlePosition = ({ insets, numIconsRight }: THeaderTitlePosition) => ({
 	left: insets.left + 60,
 	right: insets.right + Math.max(45 * numIconsRight, 15)
 });
@@ -35,9 +42,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = ({
-	theme, headerLeft, headerTitle, headerRight
-}) => (
+interface IHeader {
+	theme: string;
+	headerLeft(): void;
+	headerTitle(): void;
+	headerRight(): void;
+}
+
+const Header = ({ theme, headerLeft, headerTitle, headerRight }: IHeader) => (
 	<SafeAreaView style={{ backgroundColor: themes[theme].headerBackground }} edges={['top', 'left', 'right']}>
 		<View style={[styles.container, { ...themedHeader(theme).headerStyle }]}>
 			{headerLeft ? headerLeft() : null}
@@ -46,12 +58,5 @@ const Header = ({
 		</View>
 	</SafeAreaView>
 );
-
-Header.propTypes = {
-	theme: PropTypes.string,
-	headerLeft: PropTypes.element,
-	headerTitle: PropTypes.element,
-	headerRight: PropTypes.element
-};
 
 export default withTheme(Header);

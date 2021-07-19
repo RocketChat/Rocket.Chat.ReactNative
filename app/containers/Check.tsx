@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { CustomIcon } from '../lib/Icons';
 import { themes } from '../constants/colors';
 
+type TCheck = {
+	style: object,
+	theme: string
+}
 const styles = StyleSheet.create({
 	icon: {
 		width: 22,
@@ -13,11 +16,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Check = React.memo(({ theme, style }) => <CustomIcon style={[styles.icon, style]} color={themes[theme].tintColor} size={22} name='check' />);
-
-Check.propTypes = {
-	style: PropTypes.object,
-	theme: PropTypes.string
-};
+const Check = React.memo(({ theme, style }: TCheck) => <CustomIcon style={[styles.icon, style]} color={themes[theme].tintColor} size={22} name='check' />);
 
 export default Check;

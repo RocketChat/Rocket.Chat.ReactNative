@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
@@ -11,27 +10,32 @@ import AppVersion from './AppVersion';
 import { isTablet } from '../utils/deviceInfo';
 import SafeAreaView from './SafeAreaView';
 
+interface IFormContainer {
+	theme: string;
+	testID: string;
+	children: JSX.Element;
+}
+
 const styles = StyleSheet.create({
 	scrollView: {
 		minHeight: '100%'
 	}
 });
 
-export const FormContainerInner = ({ children }) => (
+export const FormContainerInner = ({ children }: {children: JSX.Element}) => (
 	<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
 		{children}
 	</View>
 );
 
-const FormContainer = ({
-	children, theme, testID, ...props
-}) => (
+const FormContainer = ({ children, theme, testID, ...props }: IFormContainer) => (
 	<KeyboardView
 		style={{ backgroundColor: themes[theme].backgroundColor }}
 		contentContainerStyle={sharedStyles.container}
 		keyboardVerticalOffset={128}
 	>
 		<StatusBar />
+		{/*@ts-ignore*/}
 		<ScrollView
 			style={sharedStyles.container}
 			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
@@ -45,15 +49,5 @@ const FormContainer = ({
 		</ScrollView>
 	</KeyboardView>
 );
-
-FormContainer.propTypes = {
-	theme: PropTypes.string,
-	testID: PropTypes.string,
-	children: PropTypes.element
-};
-
-FormContainerInner.propTypes = {
-	children: PropTypes.element
-};
 
 export default FormContainer;

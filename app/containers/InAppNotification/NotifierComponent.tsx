@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 import { Notifier } from 'react-native-notifier';
@@ -16,10 +15,13 @@ import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
 import { useOrientation } from '../../dimensions';
 
+interface INotifierComponent {
+	notification: object;
+	isMasterDetail: boolean;
+}
+
 const AVATAR_SIZE = 48;
-const BUTTON_HIT_SLOP = {
-	top: 12, right: 12, bottom: 12, left: 12
-};
+const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
 const styles = StyleSheet.create({
 	container: {
@@ -64,16 +66,16 @@ const styles = StyleSheet.create({
 
 const hideNotification = () => Notifier.hideNotification();
 
-const NotifierComponent = React.memo(({ notification, isMasterDetail }) => {
-	const { theme } = useTheme();
+const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
+	const { theme }: any = useTheme();
 	const insets = useSafeAreaInsets();
 	const { isLandscape } = useOrientation();
 
-	const { text, payload } = notification;
+	const { text, payload }: any = notification;
 	const { type, rid } = payload;
 	const name = type === 'd' ? payload.sender.username : payload.name;
 	// if sub is not on local database, title and avatar will be null, so we use payload from notification
-	const { title = name, avatar = name } = notification;
+	const { title = name, avatar = name }: any = notification;
 
 	const onPress = () => {
 		const { prid, _id } = payload;
@@ -129,12 +131,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }) => {
 	);
 });
 
-NotifierComponent.propTypes = {
-	notification: PropTypes.object,
-	isMasterDetail: PropTypes.bool
-};
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 

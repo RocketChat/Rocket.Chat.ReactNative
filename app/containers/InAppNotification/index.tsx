@@ -1,5 +1,4 @@
 import React, { memo, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { NotifierRoot, Notifier, Easing } from 'react-native-notifier';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
@@ -11,8 +10,8 @@ import { getActiveRoute } from '../../utils/navigation';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
-const InAppNotification = memo(({ rooms, appState }) => {
-	const show = (notification) => {
+const InAppNotification = memo(({ rooms, appState }: {rooms: any, appState: string}) => {
+	const show = (notification: any) => {
 		if (appState !== 'foreground') {
 			return;
 		}
@@ -44,14 +43,9 @@ const InAppNotification = memo(({ rooms, appState }) => {
 	return <NotifierRoot />;
 }, (prevProps, nextProps) => dequal(prevProps.rooms, nextProps.rooms));
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	rooms: state.room.rooms,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
 });
-
-InAppNotification.propTypes = {
-	rooms: PropTypes.array,
-	appState: PropTypes.string
-};
 
 export default connect(mapStateToProps)(InAppNotification);

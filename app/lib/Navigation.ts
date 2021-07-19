@@ -4,7 +4,7 @@ import { CommonActions, StackActions, NavigationContainerRef } from '@react-navi
 const navigationRef = React.createRef<NavigationContainerRef>();
 const routeNameRef: React.MutableRefObject<NavigationContainerRef | null> = React.createRef();
 
-function navigate(name: string, params: any) {
+function navigate(name: string, params?: any) {
 	navigationRef.current?.navigate(name, params);
 }
 
