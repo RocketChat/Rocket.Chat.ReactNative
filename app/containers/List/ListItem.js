@@ -10,8 +10,9 @@ import sharedStyles from '../../views/Styles';
 import { withTheme } from '../../theme';
 import I18n from '../../i18n';
 import { Icon } from '.';
-import { BASE_HEIGHT, PADDING_HORIZONTAL } from './constants';
+import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { withDimensions } from '../../dimensions';
+import { CustomIcon } from '../../lib/Icons';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,7 +35,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center'
 	},
+	textAlertContainer: {
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	alertIcon: {
+		paddingLeft: 4
+	},
 	title: {
+		flexShrink: 1,
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},
@@ -50,7 +59,7 @@ const styles = StyleSheet.create({
 });
 
 const Content = React.memo(({
-	title, subtitle, disabled, testID, left, right, color, theme, translateTitle, translateSubtitle, showActionIndicator, fontScale
+	title, subtitle, disabled, testID, left, right, color, theme, translateTitle, translateSubtitle, showActionIndicator, fontScale, alert
 }) => (
 	<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale }]} testID={testID}>
 		{left
@@ -61,7 +70,12 @@ const Content = React.memo(({
 			)
 			: null}
 		<View style={styles.textContainer}>
-			<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>{translateTitle ? I18n.t(title) : title}</Text>
+			<View style={styles.textAlertContainer}>
+				<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>{translateTitle ? I18n.t(title) : title}</Text>
+				{alert ? (
+					<CustomIcon style={[styles.alertIcon, { color: themes[theme].dangerColor }]} size={ICON_SIZE} name='info' />
+				) : null}
+			</View>
 			{subtitle
 				? <Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{translateSubtitle ? I18n.t(subtitle) : subtitle}</Text>
 				: null
@@ -123,7 +137,8 @@ Content.propTypes = {
 	translateTitle: PropTypes.bool,
 	translateSubtitle: PropTypes.bool,
 	showActionIndicator: PropTypes.bool,
-	fontScale: PropTypes.number
+	fontScale: PropTypes.number,
+	alert: PropTypes.bool
 };
 
 Content.defaultProps = {

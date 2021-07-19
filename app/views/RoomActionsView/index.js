@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Alert, Share, Switch
+	View, Text, Share, Switch
 } from 'react-native';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import lt from 'semver/functions/lt';
-import coerce from 'semver/functions/coerce';
+import { Q } from '@nozbe/watermelondb';
 
+import { compareServerVersion, methods } from '../../lib/utils';
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
-import { leaveRoom as leaveRoomAction, closeRoom as closeRoomAction } from '../../actions/room';
+import {
+	leaveRoom as leaveRoomAction, closeRoom as closeRoomAction
+} from '../../actions/room';
 import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
@@ -48,6 +50,8 @@ class RoomActionsView extends React.Component {
 		route: PropTypes.object,
 		leaveRoom: PropTypes.func,
 		jitsiEnabled: PropTypes.bool,
+		jitsiEnableTeams: PropTypes.bool,
+		jitsiEnableChannels: PropTypes.bool,
 		encryptionEnabled: PropTypes.bool,
 		setLoadingInvite: PropTypes.func,
 		closeRoom: PropTypes.func,
@@ -61,7 +65,10 @@ class RoomActionsView extends React.Component {
 		editRoomPermission: PropTypes.array,
 		toggleRoomE2EEncryptionPermission: PropTypes.array,
 		viewBroadcastMemberListPermission: PropTypes.array,
-		transferLivechatGuestPermission: PropTypes.array
+		transferLivechatGuestPermission: PropTypes.array,
+		createTeamPermission: PropTypes.array,
+		addTeamChannelPermission: PropTypes.array,
+		convertTeamPermission: PropTypes.array
 	}
 
 	constructor(props) {
@@ -83,7 +90,10 @@ class RoomActionsView extends React.Component {
 			canForwardGuest: false,
 			canReturnQueue: false,
 			canEdit: false,
-			canToggleEncryption: false
+			canToggleEncryption: false,
+			canCreateTeam: false,
+			canAddChannelToTeam: false,
+			canConvertTeam: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
@@ -126,18 +136,25 @@ class RoomActionsView extends React.Component {
 				this.updateRoomMember();
 			}
 
-			const canAutoTranslate = RocketChat.canAutoTranslate();
-			this.setState({ canAutoTranslate });
+			const canAutoTranslate = await RocketChat.canAutoTranslate();
+			const canAddUser = await this.canAddUser();
+			const canInviteUser = await this.canInviteUser();
+			const canEdit = await this.canEdit();
+			const canToggleEncryption = await this.canToggleEncryption();
+			const canViewMembers = await this.canViewMembers();
+			const canCreateTeam = await this.canCreateTeam();
+			const canAddChannelToTeam = await this.canAddChannelToTeam();
+			const canConvertTeam = await this.canConvertTeam();
 
-			this.canAddUser();
-			this.canInviteUser();
-			this.canEdit();
-			this.canToggleEncryption();
+			this.setState({
+				canAutoTranslate, canAddUser, canInviteUser, canEdit, canToggleEncryption, canViewMembers, canCreateTeam, canAddChannelToTeam, canConvertTeam
+			});
 
 			// livechat permissions
 			if (room.t === 'l') {
-				this.canForwardGuest();
-				this.canReturnQueue();
+				const canForwardGuest = await this.canForwardGuest();
+				const canReturnQueue = await this.canReturnQueue();
+				this.setState({ canForwardGuest, canReturnQueue });
 			}
 		}
 	}
@@ -183,7 +200,7 @@ class RoomActionsView extends React.Component {
 		if (t === 'p' && permissions[2]) {
 			canAddUser = true;
 		}
-		this.setState({ canAddUser });
+		return canAddUser;
 	}
 
 	canInviteUser = async() => {
@@ -193,7 +210,7 @@ class RoomActionsView extends React.Component {
 		const permissions = await RocketChat.hasPermission([createInviteLinksPermission], rid);
 
 		const canInviteUser = permissions[0];
-		this.setState({ canInviteUser });
+		return canInviteUser;
 	}
 
 	canEdit = async() => {
@@ -203,7 +220,37 @@ class RoomActionsView extends React.Component {
 		const permissions = await RocketChat.hasPermission([editRoomPermission], rid);
 
 		const canEdit = permissions[0];
-		this.setState({ canEdit });
+		return canEdit;
+	}
+
+	canCreateTeam = async() => {
+		const { room } = this.state;
+		const { createTeamPermission } = this.props;
+		const { rid } = room;
+		const permissions = await RocketChat.hasPermission([createTeamPermission], rid);
+
+		const canCreateTeam = permissions[0];
+		return canCreateTeam;
+	}
+
+	canAddChannelToTeam = async() => {
+		const { room } = this.state;
+		const { addTeamChannelPermission } = this.props;
+		const { rid } = room;
+		const permissions = await RocketChat.hasPermission([addTeamChannelPermission], rid);
+
+		const canAddChannelToTeam = permissions[0];
+		return canAddChannelToTeam;
+	}
+
+	canConvertTeam = async() => {
+		const { room } = this.state;
+		const { convertTeamPermission } = this.props;
+		const { rid } = room;
+		const permissions = await RocketChat.hasPermission([convertTeamPermission], rid);
+
+		const canConvertTeam = permissions[0];
+		return canConvertTeam;
 	}
 
 	canToggleEncryption = async() => {
@@ -213,7 +260,7 @@ class RoomActionsView extends React.Component {
 		const permissions = await RocketChat.hasPermission([toggleRoomE2EEncryptionPermission], rid);
 
 		const canToggleEncryption = permissions[0];
-		this.setState({ canToggleEncryption });
+		return canToggleEncryption;
 	}
 
 	canViewMembers = async() => {
@@ -230,7 +277,6 @@ class RoomActionsView extends React.Component {
 		// This method is executed only in componentDidMount and returns a value
 		// We save the state to read in render
 		const result = (t === 'c' || t === 'p');
-		this.setState({ canViewMembers: result });
 		return result;
 	}
 
@@ -239,13 +285,13 @@ class RoomActionsView extends React.Component {
 		const { transferLivechatGuestPermission } = this.props;
 		const { rid } = room;
 		const permissions = await RocketChat.hasPermission([transferLivechatGuestPermission], rid);
-		this.setState({ canForwardGuest: permissions[0] });
+		return permissions[0];
 	}
 
 	canReturnQueue = async() => {
 		try {
 			const { returnQueue } = await RocketChat.getRoutingConfig();
-			this.setState({ canReturnQueue: returnQueue });
+			return returnQueue;
 		} catch {
 			// do nothing
 		}
@@ -256,7 +302,7 @@ class RoomActionsView extends React.Component {
 		const { encrypted } = room;
 		const { serverVersion } = this.props;
 		let hasPermission = false;
-		if (serverVersion && lt(coerce(serverVersion), '3.11.0')) {
+		if (compareServerVersion(serverVersion, '3.11.0', methods.lowerThan)) {
 			hasPermission = canEdit;
 		} else {
 			hasPermission = canToggleEncryption;
@@ -393,21 +439,215 @@ class RoomActionsView extends React.Component {
 		const { room } = this.state;
 		const { leaveRoom } = this.props;
 
-		Alert.alert(
-			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
-			[
-				{
-					text: I18n.t('Cancel'),
-					style: 'cancel'
-				},
-				{
-					text: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					style: 'destructive',
-					onPress: () => leaveRoom(room.rid, room.t)
-				}
-			]
-		);
+		showConfirmationAlert({
+			message: I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
+			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+			onPress: () => leaveRoom('channel', room)
+		});
+	}
+
+	convertTeamToChannel = async() => {
+		const { room } = this.state;
+		const { navigation } = this.props;
+
+		try {
+			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
+
+			if (result.rooms?.length) {
+				const teamChannels = result.rooms.map(r => ({
+					rid: r._id,
+					name: r.name,
+					teamId: r.teamId
+				}));
+				navigation.navigate('SelectListView', {
+					title: 'Converting_Team_To_Channel',
+					data: teamChannels,
+					infoText: 'Select_Team_Channels_To_Delete',
+					nextAction: data => this.convertTeamToChannelConfirmation(data)
+				});
+			} else {
+				this.convertTeamToChannelConfirmation();
+			}
+		} catch (e) {
+			this.convertTeamToChannelConfirmation();
+		}
+	}
+
+	handleConvertTeamToChannel = async(selected) => {
+		logEvent(events.RA_CONVERT_TEAM_TO_CHANNEL);
+		try {
+			const { room } = this.state;
+			const { navigation } = this.props;
+
+			const result = await RocketChat.convertTeamToChannel({ teamId: room.teamId, selected });
+
+			if (result.success) {
+				navigation.navigate('RoomView');
+			}
+		} catch (e) {
+			logEvent(events.RA_CONVERT_TEAM_TO_CHANNEL_F);
+			log(e);
+		}
+	}
+
+	convertTeamToChannelConfirmation = (selected = []) => {
+		showConfirmationAlert({
+			title: I18n.t('Confirmation'),
+			message: I18n.t('You_are_converting_the_team'),
+			confirmationText: I18n.t('Convert'),
+			onPress: () => this.handleConvertTeamToChannel(selected)
+		});
+	}
+
+	leaveTeam = async() => {
+		const { room } = this.state;
+		const { navigation, leaveRoom } = this.props;
+
+		try {
+			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
+
+			if (result.rooms?.length) {
+				const teamChannels = result.rooms.map(r => ({
+					rid: r._id,
+					name: r.name,
+					teamId: r.teamId,
+					alert: r.isLastOwner
+				}));
+				navigation.navigate('SelectListView', {
+					title: 'Leave_Team',
+					data: teamChannels,
+					infoText: 'Select_Team_Channels',
+					nextAction: data => leaveRoom('team', room, data),
+					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
+				});
+			} else {
+				showConfirmationAlert({
+					message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
+					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+					onPress: () => leaveRoom('team', room)
+				});
+			}
+		} catch (e) {
+			showConfirmationAlert({
+				message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
+				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+				onPress: () => leaveRoom('team', room)
+			});
+		}
+	}
+
+	handleConvertToTeam = async() => {
+		logEvent(events.RA_CONVERT_TO_TEAM);
+		try {
+			const { room } = this.state;
+			const { navigation } = this.props;
+			const result = await RocketChat.convertChannelToTeam({ rid: room.rid, name: room.name, type: room.t });
+
+			if (result.success) {
+				navigation.navigate('RoomView');
+			}
+		} catch (e) {
+			logEvent(events.RA_CONVERT_TO_TEAM_F);
+			log(e);
+		}
+	}
+
+	convertToTeam = () => {
+		showConfirmationAlert({
+			title: I18n.t('Confirmation'),
+			message: I18n.t('Convert_to_Team_Warning'),
+			confirmationText: I18n.t('Convert'),
+			onPress: () => this.handleConvertToTeam()
+		});
+	}
+
+	handleMoveToTeam = async(selected) => {
+		logEvent(events.RA_MOVE_TO_TEAM);
+		try {
+			const { room } = this.state;
+			const { navigation } = this.props;
+			const result = await RocketChat.addRoomsToTeam({ teamId: selected?.[0], rooms: [room.rid] });
+			if (result.success) {
+				navigation.navigate('RoomView');
+			}
+		} catch (e) {
+			logEvent(events.RA_MOVE_TO_TEAM_F);
+			log(e);
+			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('moving_channel_to_team') }));
+		}
+	}
+
+	moveToTeam = async() => {
+		try {
+			const { navigation } = this.props;
+			const db = database.active;
+			const subCollection = db.get('subscriptions');
+			const teamRooms = await subCollection.query(
+				Q.where('team_main', true)
+			);
+
+			if (teamRooms.length) {
+				const data = teamRooms.map(team => ({
+					rid: team.teamId,
+					t: team.t,
+					name: team.name
+				}));
+				navigation.navigate('SelectListView', {
+					title: 'Move_to_Team',
+					infoText: 'Move_Channel_Paragraph',
+					nextAction: () => {
+						navigation.push('SelectListView', {
+							title: 'Select_Team',
+							data,
+							isRadio: true,
+							isSearch: true,
+							onSearch: onChangeText => this.searchTeam(onChangeText),
+							nextAction: selected => showConfirmationAlert({
+								title: I18n.t('Confirmation'),
+								message: I18n.t('Move_to_Team_Warning'),
+								confirmationText: I18n.t('Yes_action_it', { action: I18n.t('move') }),
+								onPress: () => this.handleMoveToTeam(selected)
+							})
+						});
+					}
+				});
+			}
+		} catch (e) {
+			log(e);
+		}
+	}
+
+	searchTeam = async(onChangeText) => {
+		logEvent(events.RA_SEARCH_TEAM);
+		try {
+			const { addTeamChannelPermission, createTeamPermission } = this.props;
+			const QUERY_SIZE = 50;
+			const db = database.active;
+			const teams = await db.collections
+				.get('subscriptions')
+				.query(
+					Q.where('team_main', true),
+					Q.where('name', Q.like(`%${ onChangeText }%`)),
+					Q.experimentalTake(QUERY_SIZE),
+					Q.experimentalSortBy('room_updated_at', Q.desc)
+				);
+
+			const asyncFilter = async(teamArray) => {
+				const results = await Promise.all(teamArray.map(async(team) => {
+					const permissions = await RocketChat.hasPermission([addTeamChannelPermission, createTeamPermission], team.rid);
+					if (!permissions[0]) {
+						return false;
+					}
+					return true;
+				}));
+
+				return teamArray.filter((_v, index) => results[index]);
+			};
+			const teamsFiltered = await asyncFilter(teams);
+			return teamsFiltered;
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	renderRoomInfo = () => {
@@ -446,14 +686,20 @@ class RoomActionsView extends React.Component {
 							type={t}
 							rid={rid}
 						>
-							{t === 'd' && member._id ? <Status style={sharedStyles.status} id={member._id} /> : null }
+							{t === 'd' && member._id
+								? (
+									<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
+										<Status size={16} id={member._id} />
+									</View>
+								) : null
+							}
 						</Avatar>
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd'
 								? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
 								: (
 									<View style={styles.roomTitleRow}>
-										<RoomTypeIcon type={room.prid ? 'discussion' : room.t} status={room.visitor?.status} theme={theme} />
+										<RoomTypeIcon type={room.prid ? 'discussion' : room.t} teamMain={room.teamMain} status={room.visitor?.status} />
 										<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{RocketChat.getRoomTitle(room)}</Text>
 									</View>
 								)
@@ -477,10 +723,15 @@ class RoomActionsView extends React.Component {
 
 	renderJitsi = () => {
 		const { room } = this.state;
-		const { jitsiEnabled } = this.props;
-		if (!jitsiEnabled) {
+		const { jitsiEnabled, jitsiEnableTeams, jitsiEnableChannels } = this.props;
+
+		const isJitsiDisabledForTeams = room.teamMain && !jitsiEnableTeams;
+		const isJitsiDisabledForChannels = !room.teamMain && (room.t === 'p' || room.t === 'c') && !jitsiEnableChannels;
+
+		if (!jitsiEnabled || isJitsiDisabledForTeams || isJitsiDisabledForChannels) {
 			return null;
 		}
+
 		return (
 			<List.Section>
 				<List.Separator />
@@ -536,7 +787,7 @@ class RoomActionsView extends React.Component {
 			return null;
 		}
 
-		if (t === 'd') {
+		if (t === 'd' && !RocketChat.isGroupChat(room)) {
 			return (
 				<List.Section>
 					<List.Separator />
@@ -560,9 +811,9 @@ class RoomActionsView extends React.Component {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title='Leave_channel'
+						title='Leave'
 						onPress={() => this.onPressTouchable({
-							event: this.leaveChannel
+							event: room.teamMain ? this.leaveTeam : this.leaveChannel
 						})}
 						testID='room-actions-leave-channel'
 						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}
@@ -573,6 +824,78 @@ class RoomActionsView extends React.Component {
 				</List.Section>
 			);
 		}
+
+		return null;
+	}
+
+	teamChannelActions = (t, room) => {
+		const { canEdit, canCreateTeam, canAddChannelToTeam } = this.state;
+		const canConvertToTeam = canEdit && canCreateTeam && !room.teamMain;
+		const canMoveToTeam = canEdit && canAddChannelToTeam && !room.teamId;
+
+		return (
+			<>
+				{['c', 'p'].includes(t) && canConvertToTeam
+					? (
+						<>
+							<List.Item
+								title='Convert_to_Team'
+								onPress={() => this.onPressTouchable({
+									event: this.convertToTeam
+								})}
+								testID='room-actions-convert-to-team'
+								left={() => <List.Icon name='teams' />}
+								showActionIndicator
+							/>
+							<List.Separator />
+						</>
+					)
+					: null}
+
+				{['c', 'p'].includes(t) && canMoveToTeam
+					? (
+						<>
+							<List.Item
+								title='Move_to_Team'
+								onPress={() => this.onPressTouchable({
+									event: this.moveToTeam
+								})}
+								testID='room-actions-move-to-team'
+								left={() => <List.Icon name='channel-move-to-team' />}
+								showActionIndicator
+							/>
+							<List.Separator />
+						</>
+					)
+					: null}
+			</>
+		);
+	}
+
+	teamToChannelActions = (t, room) => {
+		const { canEdit, canConvertTeam } = this.state;
+		const canConvertTeamToChannel = canEdit && canConvertTeam && !!room?.teamMain;
+
+		return (
+			<>
+				{['c', 'p'].includes(t) && canConvertTeamToChannel
+					? (
+						<>
+							<List.Item
+								title='Convert_to_Channel'
+								onPress={() => this.onPressTouchable({
+									event: this.convertTeamToChannel
+								})}
+								testID='room-actions-convert-channel-to-team'
+								left={() => <List.Icon name='channel-public' />}
+								showActionIndicator
+							/>
+							<List.Separator />
+						</>
+					)
+					: null}
+			</>
+		);
 	}
 
 	render() {
@@ -580,13 +903,14 @@ class RoomActionsView extends React.Component {
 			room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue
 		} = this.state;
 		const {
-			rid, t, encrypted
+			rid, t
 		} = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
+
 		return (
 			<SafeAreaView testID='room-actions-view'>
 				<StatusBar />
-				<List.Container>
+				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
 					{this.renderJitsi()}
 					{this.renderE2EEncryption()}
@@ -708,24 +1032,6 @@ class RoomActionsView extends React.Component {
 							? (
 								<>
 									<List.Item
-										title='Search'
-										onPress={() => this.onPressTouchable({
-											route: 'SearchMessagesView',
-											params: { rid, encrypted }
-										})}
-										testID='room-actions-search'
-										left={() => <List.Icon name='search' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
-
-						{['c', 'p', 'd'].includes(t)
-							? (
-								<>
-									<List.Item
 										title='Share'
 										onPress={() => this.onPressTouchable({
 											event: this.handleShare
@@ -792,6 +1098,10 @@ class RoomActionsView extends React.Component {
 								</>
 							)
 							: null}
+
+
+						{ this.teamChannelActions(t, room) }
+						{this.teamToChannelActions(t, room)}
 
 						{['l'].includes(t) && !this.isOmnichannelPreview
 							? (
@@ -869,8 +1179,11 @@ class RoomActionsView extends React.Component {
 
 const mapStateToProps = state => ({
 	jitsiEnabled: state.settings.Jitsi_Enabled || false,
+	jitsiEnableTeams: state.settings.Jitsi_Enable_Teams || false,
+	jitsiEnableChannels: state.settings.Jitsi_Enable_Channels || false,
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
+	isMasterDetail: state.app.isMasterDetail,
 	addUserToJoinedRoomPermission: state.permissions['add-user-to-joined-room'],
 	addUserToAnyCRoomPermission: state.permissions['add-user-to-any-c-room'],
 	addUserToAnyPRoomPermission: state.permissions['add-user-to-any-p-room'],
@@ -878,11 +1191,14 @@ const mapStateToProps = state => ({
 	editRoomPermission: state.permissions['edit-room'],
 	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
 	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
-	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest']
+	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
+	createTeamPermission: state.permissions['create-team'],
+	addTeamChannelPermission: state.permissions['add-team-channel'],
+	convertTeamPermission: state.permissions['convert-team']
 });
 
 const mapDispatchToProps = dispatch => ({
-	leaveRoom: (rid, t) => dispatch(leaveRoomAction(rid, t)),
+	leaveRoom: (roomType, room, selected) => dispatch(leaveRoomAction(roomType, room, selected)),
 	closeRoom: rid => dispatch(closeRoomAction(rid)),
 	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
 });

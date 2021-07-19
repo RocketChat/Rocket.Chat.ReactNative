@@ -2,7 +2,8 @@ export const STATUS_COLORS = {
 	online: '#2de0a5',
 	busy: '#f5455c',
 	away: '#ffd21f',
-	offline: '#cbced1'
+	offline: '#cbced1',
+	loading: '#9ea2a8'
 };
 
 export const SWITCH_TRACK_COLOR = {
@@ -73,7 +74,7 @@ export const themes = {
 		auxiliaryBackground: '#07101e',
 		bannerBackground: '#0e1f38',
 		titleText: '#f9f9f9',
-		bodyText: '#e8ebed',
+		bodyText: '#cbced1',
 		backdropColor: '#000000',
 		dangerColor: '#f5455c',
 		successColor: '#2de0a5',
@@ -120,7 +121,7 @@ export const themes = {
 		auxiliaryBackground: '#080808',
 		bannerBackground: '#1f2329',
 		titleText: '#f9f9f9',
-		bodyText: '#e8ebed',
+		bodyText: '#cbced1',
 		backdropColor: '#000000',
 		dangerColor: '#f5455c',
 		successColor: '#2de0a5',

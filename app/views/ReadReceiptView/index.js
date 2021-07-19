@@ -30,7 +30,7 @@ class ReadReceiptView extends React.Component {
 
 	static propTypes = {
 		route: PropTypes.object,
-		Message_TimeFormat: PropTypes.string,
+		Message_TimeAndDateFormat: PropTypes.string,
 		theme: PropTypes.string
 	}
 
@@ -94,8 +94,8 @@ class ReadReceiptView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { Message_TimeFormat, theme } = this.props;
-		const time = moment(item.ts).format(Message_TimeFormat);
+		const { theme, Message_TimeAndDateFormat } = this.props;
+		const time = moment(item.ts).format(Message_TimeAndDateFormat);
 		if (!item?.user?.username) {
 			return null;
 		}
@@ -156,7 +156,7 @@ class ReadReceiptView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	Message_TimeFormat: state.settings.Message_TimeFormat
+	Message_TimeAndDateFormat: state.settings.Message_TimeAndDateFormat
 });
 
 export default connect(mapStateToProps)(withTheme(ReadReceiptView));

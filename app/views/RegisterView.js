@@ -234,7 +234,7 @@ class RegisterView extends React.Component {
 					<LoginServices navigation={navigation} />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
 					<TextInput
-						label='Name'
+						label={I18n.t('Name')}
 						containerStyle={styles.inputContainer}
 						placeholder={I18n.t('Name')}
 						returnKeyType='next'
@@ -244,7 +244,7 @@ class RegisterView extends React.Component {
 						theme={theme}
 					/>
 					<TextInput
-						label='Username'
+						label={I18n.t('Username')}
 						containerStyle={styles.inputContainer}
 						inputRef={(e) => { this.usernameInput = e; }}
 						placeholder={I18n.t('Username')}
@@ -255,7 +255,7 @@ class RegisterView extends React.Component {
 						theme={theme}
 					/>
 					<TextInput
-						label='Email'
+						label={I18n.t('Email')}
 						containerStyle={styles.inputContainer}
 						inputRef={(e) => { this.emailInput = e; }}
 						placeholder={I18n.t('Email')}
@@ -267,7 +267,7 @@ class RegisterView extends React.Component {
 						theme={theme}
 					/>
 					<TextInput
-						label='Password'
+						label={I18n.t('Password')}
 						containerStyle={styles.inputContainer}
 						inputRef={(e) => { this.passwordInput = e; }}
 						placeholder={I18n.t('Password')}

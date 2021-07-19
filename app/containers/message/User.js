@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'row',
+		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
 	username: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	titleContainer: {
-		flex: 1,
+		flexShrink: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},

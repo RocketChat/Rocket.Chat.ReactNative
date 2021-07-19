@@ -1,15 +1,14 @@
-import lt from 'semver/functions/lt';
-import coerce from 'semver/functions/coerce';
+import { compareServerVersion, methods } from '../lib/utils';
 
 const formatUrl = (url, size, query) => `${ url }?format=png&size=${ size }${ query }`;
 
 export const avatarURL = ({
-	type, text, size, user = {}, avatar, server, avatarETag, rid, blockUnauthenticatedAccess, serverVersion
+	type, text, size = 25, user = {}, avatar, server, avatarETag, rid, blockUnauthenticatedAccess, serverVersion
 }) => {
 	let room;
 	if (type === 'd') {
 		room = text;
-	} else if (rid && !(serverVersion && lt(coerce(serverVersion), '3.6.0'))) {
+	} else if (rid && !(compareServerVersion(serverVersion, '3.6.0', methods.lowerThan))) {
 		room = `room/${ rid }`;
 	} else {
 		room = `@${ text }`;

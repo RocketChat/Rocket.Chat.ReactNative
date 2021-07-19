@@ -80,7 +80,7 @@ const UrlContent = React.memo(({ title, description, theme }) => (
 });
 
 const Url = React.memo(({ url, index, theme }) => {
-	if (!url) {
+	if (!url || url?.ignoreParse) {
 		return null;
 	}
 

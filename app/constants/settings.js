@@ -193,5 +193,14 @@ export default {
 	},
 	Allow_Save_Media_to_Gallery: {
 		type: 'valueAsBoolean'
+	},
+	Accounts_AllowInvisibleStatusOption: {
+		type: 'valueAsString'
+	},
+	Jitsi_Enable_Teams: {
+		type: 'valueAsBoolean'
+	},
+	Jitsi_Enable_Channels: {
+		type: 'valuesAsBoolean'
 	}
 };

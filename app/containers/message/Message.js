@@ -19,6 +19,7 @@ import Discussion from './Discussion';
 import Content from './Content';
 import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
+import { themes } from '../../constants/colors';
 
 const MessageInner = React.memo((props) => {
 	if (props.type === 'discussion-created') {
@@ -120,6 +121,7 @@ const MessageTouchable = React.memo((props) => {
 			onLongPress={onLongPress}
 			onPress={onPress}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp}
+			style={{ backgroundColor: props.highlighted ? themes[props.theme].headerBackground : null }}
 		>
 			<View>
 				<Message {...props} />
@@ -134,7 +136,9 @@ MessageTouchable.propTypes = {
 	isInfo: PropTypes.bool,
 	isThreadReply: PropTypes.bool,
 	isTemp: PropTypes.bool,
-	archived: PropTypes.bool
+	archived: PropTypes.bool,
+	highlighted: PropTypes.bool,
+	theme: PropTypes.string
 };
 
 Message.propTypes = {

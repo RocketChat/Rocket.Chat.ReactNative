@@ -2,11 +2,7 @@ import {
 	put, call, takeLatest, select, take, fork, cancel, race, delay
 } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import moment from 'moment';
-import 'moment/min/locales';
 import { Q } from '@nozbe/watermelondb';
-import { I18nManager } from 'react-native';
-
 import * as types from '../actions/actionsTypes';
 import {
 	appStart, ROOT_SET_USERNAME, ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE
@@ -16,10 +12,9 @@ import {
 	loginFailure, loginSuccess, setUser, logout
 } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
-import { toMomentLocale } from '../utils/moment';
 import RocketChat from '../lib/rocketchat';
 import log, { logEvent, events } from '../utils/log';
-import I18n, { LANGUAGES, isRTL } from '../i18n';
+import I18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
@@ -35,15 +30,15 @@ import Navigation from '../lib/Navigation';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
-const loginCall = args => RocketChat.login(args);
+const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, isFromWebView);
 const logoutCall = args => RocketChat.logout(args);
 
-const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false }) {
+const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
 		let result;
 		if (credentials.resume) {
-			result = yield call(loginCall, credentials);
+			result = yield loginCall(credentials, isFromWebView);
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
@@ -73,7 +68,6 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 					log(e);
 				}
 			});
-
 			yield put(loginSuccess(result));
 		}
 	} catch (e) {
@@ -86,6 +80,10 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 	}
 };
 
+const subscribeSettings = function* subscribeSettings() {
+	yield RocketChat.subscribeSettings();
+};
+
 const fetchPermissions = function* fetchPermissions() {
 	yield RocketChat.getPermissions();
 };
@@ -95,6 +93,7 @@ const fetchCustomEmojis = function* fetchCustomEmojis() {
 };
 
 const fetchRoles = function* fetchRoles() {
+	RocketChat.subscribe('stream-roles', 'roles');
 	yield RocketChat.getRoles();
 };
 
@@ -126,7 +125,6 @@ const fetchRooms = function* fetchRooms() {
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		const adding = yield select(state => state.server.adding);
-		yield UserPreferences.setStringAsync(RocketChat.TOKEN_KEY, user.token);
 
 		RocketChat.getUserPresence(user.id);
 
@@ -139,10 +137,10 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
 		yield fork(fetchEnterpriseModules, { user });
+		yield fork(subscribeSettings);
 		yield put(encryptionInit());
 
-		I18n.locale = user.language;
-		moment.locale(toMomentLocale(user.language));
+		setLanguage(user?.language);
 
 		const serversDB = database.servers;
 		const usersCollection = serversDB.get('users');
@@ -154,14 +152,13 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			status: user.status,
 			statusText: user.statusText,
 			roles: user.roles,
-			loginEmailPassword: user.loginEmailPassword,
+			isFromWebView: user.isFromWebView,
 			showMessageInMainThread: user.showMessageInMainThread,
 			avatarETag: user.avatarETag
 		};
 		yield serversDB.action(async() => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				u.loginEmailPassword = userRecord?.loginEmailPassword;
 				await userRecord.update((record) => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
@@ -247,13 +244,7 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 };
 
 const handleSetUser = function* handleSetUser({ user }) {
-	if (user && user.language) {
-		const locale = LANGUAGES.find(l => l.value.toLowerCase() === user.language)?.value || user.language;
-		I18n.locale = locale;
-		I18nManager.forceRTL(isRTL(locale));
-		I18nManager.swapLeftAndRightInRTL(isRTL(locale));
-		moment.locale(toMomentLocale(locale));
-	}
+	setLanguage(user?.language);
 
 	if (user && user.status) {
 		const userId = yield select(state => state.login.user.id);

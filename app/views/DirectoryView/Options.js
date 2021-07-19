@@ -64,6 +64,11 @@ export default class DirectoryOptions extends PureComponent {
 			icon = 'channel-public';
 		}
 
+		if (itemType === 'teams') {
+			text = 'Teams';
+			icon = 'teams';
+		}
+
 		return (
 			<Touch
 				onPress={() => changeType(itemType)}
@@ -105,6 +110,7 @@ export default class DirectoryOptions extends PureComponent {
 					</Touch>
 					{this.renderItem('channels')}
 					{this.renderItem('users')}
+					{this.renderItem('teams')}
 					{isFederationEnabled
 						? (
 							<>
