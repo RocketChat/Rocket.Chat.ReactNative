@@ -124,7 +124,7 @@ class Root extends React.Component {
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
-				darkLevel: 'dark'
+				darkLevel: 'black'
 			},
 			root: '',
 			width,

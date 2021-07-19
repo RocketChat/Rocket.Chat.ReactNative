@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import UAParser from 'ua-parser-js';
 import isEmpty from 'lodash/isEmpty';
 
-import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
@@ -55,7 +54,8 @@ class RoomInfoView extends React.Component {
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		jitsiEnabled: PropTypes.bool,
-		editRoomPermission: PropTypes.array
+		editRoomPermission: PropTypes.array,
+		roles: PropTypes.array
 	}
 
 	constructor(props) {
@@ -133,18 +133,9 @@ class RoomInfoView extends React.Component {
 		return room.t === 'l';
 	}
 
-	getRoleDescription = async(id) => {
-		const db = database.active;
-		try {
-			const rolesCollection = db.get('roles');
-			const role = await rolesCollection.find(id);
-			if (role) {
-				return role.description;
-			}
-			return null;
-		} catch (e) {
-			return null;
-		}
+	getRoleDescription = (id) => {
+		const { roles } = this.props;
+		return roles[id];
 	};
 
 	loadVisitor = async() => {
@@ -378,7 +369,8 @@ const mapStateToProps = state => ({
 	rooms: state.room.rooms,
 	isMasterDetail: state.app.isMasterDetail,
 	jitsiEnabled: state.settings.Jitsi_Enabled || false,
-	editRoomPermission: state.permissions['edit-room']
+	editRoomPermission: state.permissions['edit-room'],
+	roles: state.roles
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoView));

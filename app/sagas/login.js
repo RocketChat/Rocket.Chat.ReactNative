@@ -29,19 +29,19 @@ import UserPreferences from '../lib/userPreferences';
 
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
-// import Navigation from '../lib/Navigation';
+import Navigation from '../lib/Navigation';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
-const loginCall = args => RocketChat.login(args);
+const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, isFromWebView);
 const logoutCall = args => RocketChat.logout(args);
 
-const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false }) {
+const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
 	try {
 		let result;
 		if (credentials.resume) {
-			result = yield call(loginCall, credentials);
+			result = yield loginCall(credentials, isFromWebView);
 		} else {
 			result = yield call(loginWithPasswordCall, credentials);
 		}
@@ -71,7 +71,6 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 					log(e);
 				}
 			});
-
 			yield put(loginSuccess(result));
 		}
 	} catch (e) {
@@ -84,6 +83,10 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 	}
 };
 
+const subscribeSettings = function* subscribeSettings() {
+	yield RocketChat.subscribeSettings();
+};
+
 const fetchPermissions = function* fetchPermissions() {
 	yield RocketChat.getPermissions();
 };
@@ -93,6 +96,7 @@ const fetchCustomEmojis = function* fetchCustomEmojis() {
 };
 
 const fetchRoles = function* fetchRoles() {
+	RocketChat.subscribe('stream-roles', 'roles');
 	yield RocketChat.getRoles();
 };
 
@@ -136,6 +140,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
 		yield fork(fetchEnterpriseModules, { user });
+		yield fork(subscribeSettings);
 		yield put(encryptionInit());
 
 		setLanguage(user?.language);
@@ -150,14 +155,13 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			status: user.status,
 			statusText: user.statusText,
 			roles: user.roles,
-			loginEmailPassword: user.loginEmailPassword,
+			isFromWebView: user.isFromWebView,
 			showMessageInMainThread: user.showMessageInMainThread,
 			avatarETag: user.avatarETag
 		};
 		yield serversDB.action(async() => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				u.loginEmailPassword = userRecord?.loginEmailPassword;
 				await userRecord.update((record) => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
@@ -212,11 +216,29 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 			// if the user was logged out by the server
 			if (forcedByServer) {
 				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
-				// yield delay(300);
-				// Navigation.navigate('NewServerView');
-				// yield delay(300);
-				// EventEmitter.emit('NewServer', { server });
-				// yield put(serverRequest(appConfig.server));
+				yield delay(300);
+				Navigation.navigate('NewServerView');
+				yield delay(300);
+				EventEmitter.emit('NewServer', { server });
+			} else {
+				const serversDB = database.servers;
+				// all servers
+				const serversCollection = serversDB.get('servers');
+				const servers = yield serversCollection.query().fetch();
+
+				// see if there're other logged in servers and selects first one
+				if (servers.length > 0) {
+					for (let i = 0; i < servers.length; i += 1) {
+						const newServer = servers[i].id;
+						const token = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+						if (token) {
+							yield put(selectServerRequest(newServer));
+							return;
+						}
+					}
+				}
+				// if there's no servers, go outside
+				yield put(appStart({ root: ROOT_OUTSIDE }));
 			}
 		} catch (e) {
 			yield put(appStart({ root: ROOT_OUTSIDE }));

@@ -11490,7 +11490,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -11593,7 +11593,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -11696,7 +11696,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -11973,7 +11973,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12076,7 +12076,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12179,7 +12179,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12420,7 +12420,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12692,7 +12692,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12795,7 +12795,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -12898,7 +12898,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -13175,7 +13175,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -13278,7 +13278,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -13381,7 +13381,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -13622,7 +13622,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#e8ebed",
+                        "color": "#cbced1",
                       },
                     ]
                   }
@@ -14901,6 +14901,15 @@ exports[`Storyshots Markdown Block quote 1`] = `
       }
     />
     <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Object {
           "flex": 1,
@@ -14929,11 +14938,10 @@ exports[`Storyshots Markdown Block quote 1`] = `
           style={
             Array [
               Object {
-                "backgroundColor": "transparent",
-                "fontFamily": "System",
-                "fontSize": 16,
-                "fontWeight": "400",
-                "textAlign": "left",
+                "flexDirection": "column",
+                "paddingHorizontal": 14,
+                "paddingVertical": 4,
+                "width": "100%",
               },
               Array [
                 Object {},
@@ -15618,7 +15626,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
     >
        
     </Text>
-    <View
+    <Text
       style={
         Array [
           Object {
@@ -15705,6 +15713,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
       😃 
     </Text>
     <Text
+      accessibilityLabel=" "
       style={
         Array [
           Object {
@@ -16218,7 +16227,7 @@ exports[`Storyshots Markdown Links 1`] = `
             Object {
               "backgroundColor": "transparent",
               "fontFamily": "System",
-              "fontSize": 16,
+              "fontSize": 30,
               "fontWeight": "400",
               "textAlign": "left",
             },
@@ -18518,13 +18527,21 @@ exports[`Storyshots Message Archived 1`] = `
                   style={
                     Array [
                       Object {
-                        "overflow": "hidden",
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
                       },
-                      Object {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
+                      Array [
+                        Object {},
+                        Object {
+                          "borderLeftWidth": 1,
+                          "borderTopWidth": 1,
+                        },
+                        undefined,
+                        undefined,
+                      ],
                     ]
                   }
                 >
@@ -18554,16 +18571,20 @@ exports[`Storyshots Message Archived 1`] = `
               style={
                 Array [
                   Object {
-                    "flex": 1,
-                    "marginLeft": 46,
+                    "justifyContent": "flex-start",
+                    "paddingHorizontal": 13,
+                    "paddingVertical": 6,
                   },
                   Object {
-                    "marginLeft": 10,
+                    "borderColor": "#e1e5e8",
+                  },
+                  Object {
+                    "width": 100,
                   },
                 ]
               }
             >
-              <View
+              <Text
                 style={
                   Object {
                     "alignItems": "center",
@@ -18635,7 +18656,7 @@ exports[`Storyshots Message Archived 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
+                  accessibilityLabel="Second Header"
                   style={
                     Array [
                       Object {
@@ -18657,12 +18678,10 @@ exports[`Storyshots Message Archived 1`] = `
                     numberOfLines={0}
                     style={
                       Array [
+                        Object {},
                         Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "textAlign": "left",
+                          "borderLeftWidth": 1,
+                          "borderTopWidth": 1,
                         },
                         Array [
                           Object {},
@@ -18681,7 +18700,7 @@ exports[`Storyshots Message Archived 1`] = `
                     This message is inside an archived room
                   </Text>
                 </Text>
-              </View>
+              </Text>
             </View>
           </View>
         </View>
@@ -18733,9 +18752,17 @@ exports[`Storyshots Message Basic 1`] = `
         >
           <View
             style={
-              Object {
-                "flexDirection": "row",
-              }
+              Array [
+                Object {
+                  "flexDirection": "row",
+                },
+                Object {
+                  "borderColor": "#e1e5e8",
+                },
+                Object {
+                  "borderBottomWidth": 1,
+                },
+              ]
             }
           >
             <View
@@ -18850,6 +18877,7 @@ exports[`Storyshots Message Basic 1`] = `
                     numberOfLines={1}
                     style={
                       Array [
+                        Object {},
                         Object {
                           "backgroundColor": "transparent",
                           "fontFamily": "System",
@@ -18889,7 +18917,7 @@ exports[`Storyshots Message Basic 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
+                  accessibilityLabel="Content from cell 2"
                   style={
                     Array [
                       Object {
@@ -18911,12 +18939,10 @@ exports[`Storyshots Message Basic 1`] = `
                     numberOfLines={0}
                     style={
                       Array [
+                        Object {},
                         Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "textAlign": "left",
+                          "borderLeftWidth": 1,
+                          "borderTopWidth": 1,
                         },
                         Array [
                           Object {},
@@ -18935,7 +18961,7 @@ exports[`Storyshots Message Basic 1`] = `
                     Message
                   </Text>
                 </Text>
-              </View>
+              </Text>
             </View>
           </View>
         </View>
@@ -18974,52 +19000,66 @@ exports[`Storyshots Message Basic 1`] = `
         >
           <View
             style={
-              Object {
-                "flexDirection": "row",
-              }
+              Array [
+                Object {
+                  "flexDirection": "row",
+                },
+                Object {
+                  "borderColor": "#e1e5e8",
+                },
+              ]
             }
           >
             <View
               style={
                 Array [
                   Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "justifyContent": "flex-start",
+                    "paddingHorizontal": 13,
+                    "paddingVertical": 6,
                   },
                   Object {
-                    "marginTop": 4,
+                    "borderColor": "#e1e5e8",
+                  },
+                  Object {
+                    "borderRightWidth": 1,
+                  },
+                  Object {
+                    "width": 100,
                   },
                 ]
               }
             >
-              <View
-                accessible={true}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
+              <Text
                 style={
-                  Object {
-                    "opacity": 1,
-                  }
+                  Array [
+                    null,
+                    Object {
+                      "color": "#2f343d",
+                    },
+                  ]
                 }
               >
-                <View
+                <Text
+                  accessibilityLabel="Content in the first column"
                   style={
                     Array [
                       Object {
-                        "overflow": "hidden",
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
                       },
-                      Object {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
+                      Array [
+                        Object {},
+                        Object {
+                          "borderLeftWidth": 1,
+                          "borderTopWidth": 1,
+                        },
+                        undefined,
+                        undefined,
+                      ],
                     ]
                   }
                 >
@@ -19049,16 +19089,20 @@ exports[`Storyshots Message Basic 1`] = `
               style={
                 Array [
                   Object {
-                    "flex": 1,
-                    "marginLeft": 46,
+                    "justifyContent": "flex-start",
+                    "paddingHorizontal": 13,
+                    "paddingVertical": 6,
                   },
                   Object {
-                    "marginLeft": 10,
+                    "borderColor": "#e1e5e8",
+                  },
+                  Object {
+                    "width": 100,
                   },
                 ]
               }
             >
-              <View
+              <Text
                 style={
                   Object {
                     "alignItems": "center",
@@ -19109,23 +19153,29 @@ exports[`Storyshots Message Basic 1`] = `
                   </Text>
                 </View>
                 <Text
+                  accessibilityLabel="Content in the second column"
                   style={
                     Array [
                       Object {
                         "backgroundColor": "transparent",
                         "fontFamily": "System",
-                        "fontSize": 12,
+                        "fontSize": 16,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
-                      Object {
-                        "color": "#9ca2a8",
-                      },
+                      Array [
+                        Object {},
+                        Object {
+                          "borderLeftWidth": 1,
+                          "borderTopWidth": 1,
+                        },
+                        undefined,
+                        undefined,
+                      ],
                     ]
                   }
                 >
-                  10:00 AM
+                  Content in the second column
                 </Text>
               </View>
               <View>
@@ -19468,6 +19518,19 @@ exports[`Storyshots Message Block Quote 1`] = `
         </View>
       </View>
     </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots Message Basic 1`] = `
+<RCTScrollView
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+    }
+  }
+>
+  <View>
     <View
       accessible={true}
       focusable={true}
@@ -20363,6 +20426,20 @@ exports[`Storyshots Message Colored attachments 1`] = `
                 >
                   <View
                     style={
+                      Array [
+                        Object {
+                          "height": "100%",
+                          "marginRight": 5,
+                          "width": 2,
+                        },
+                        Object {
+                          "backgroundColor": "#e1e5e8",
+                        },
+                      ]
+                    }
+                  />
+                  <View
+                    style={
                       Object {
                         "flex": 1,
                         "flexDirection": "row",
@@ -20562,6 +20639,20 @@ exports[`Storyshots Message Colored attachments 1`] = `
                     }
                   }
                 >
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "height": "100%",
+                          "marginRight": 5,
+                          "width": 2,
+                        },
+                        Object {
+                          "backgroundColor": "#e1e5e8",
+                        },
+                      ]
+                    }
+                  />
                   <View
                     style={
                       Object {
@@ -20775,6 +20866,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                     <View
                       style={
                         Array [
+                          Object {},
                           Object {
                             "flexDirection": "column",
                             "padding": 10,
@@ -21218,7 +21310,9 @@ exports[`Storyshots Message Custom fields 1`] = `
                     }
                   }
                 >
-                  <View
+                  <Text
+                    accessibilityLabel="Broadcasted message"
+                    numberOfLines={0}
                     style={
                       Object {
                         "alignItems": "center",
@@ -21230,6 +21324,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                     <Text
                       style={
                         Array [
+                          Object {},
                           Object {
                             "backgroundColor": "transparent",
                             "flex": 1,
@@ -21833,6 +21928,11 @@ exports[`Storyshots Message Custom style 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
+                    "alignSelf": "flex-start",
+                    "backgroundColor": "rgba(255, 0, 0, 0.2)",
+                    "borderColor": "red",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
                     "flex": 1,
                     "flexDirection": "row",
                     "justifyContent": "space-between",
@@ -21840,15 +21940,6 @@ exports[`Storyshots Message Custom style 1`] = `
                 }
               >
                 <View
-                  accessible={true}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
                       "alignItems": "center",
@@ -22087,6 +22178,11 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
+                    "alignSelf": "flex-start",
+                    "backgroundColor": "rgba(0, 128, 0, 0.2)",
+                    "borderColor": "green",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
                     "flex": 1,
                     "flexDirection": "row",
                     "justifyContent": "space-between",
@@ -22094,15 +22190,6 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                 }
               >
                 <View
-                  accessible={true}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
                       "alignItems": "center",
@@ -22688,7 +22775,12 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                 "paddingVertical": 4,
                 "width": "100%",
               },
-              undefined,
+              Array [
+                undefined,
+                Object {
+                  "backgroundColor": "#ddd",
+                },
+              ],
             ]
           }
         >
@@ -22902,6 +22994,19 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
         </View>
       </View>
     </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots Message Date and Unread separators 1`] = `
+<RCTScrollView
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+    }
+  }
+>
+  <View>
     <View
       style={
         Object {
@@ -23112,7 +23217,7 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                       ]
                     }
                   >
-                    diego.mello
+                    rocket.cat
                   </Text>
                 </View>
                 <Text
@@ -23695,7 +23800,7 @@ exports[`Storyshots Message Discussion 1`] = `
                       ]
                     }
                   >
-                    diego.mello
+                    rocket.cat
                   </Text>
                 </View>
                 <Text
@@ -24724,54 +24829,142 @@ exports[`Storyshots Message Edited 1`] = `
                   10:00 AM
                 </Text>
               </View>
-              <View>
-                <Text
-                  numberOfLines={0}
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontStyle": "italic",
+                      "fontWeight": "400",
+                      "marginBottom": 6,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                Started a discussion:
+              </Text>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#2f343d",
+                    },
+                  ]
+                }
+              >
+                This is a discussion
+              </Text>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginTop": 8,
+                  }
+                }
+              >
+                <View
+                  accessible={true}
+                  focusable={true}
+                  hitSlop={
+                    Object {
+                      "bottom": 4,
+                      "left": 4,
+                      "right": 4,
+                      "top": 4,
+                    }
+                  }
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      undefined,
-                      Object {
-                        "color": "#2f343d",
-                      },
-                    ]
+                    Object {
+                      "alignItems": "center",
+                      "backgroundColor": "#1d74f5",
+                      "borderRadius": 2,
+                      "flexDirection": "row",
+                      "justifyContent": "center",
+                      "opacity": 1,
+                      "paddingHorizontal": 12,
+                      "paddingVertical": 8,
+                    }
                   }
                 >
                   <Text
-                    accessibilityLabel="Message"
-                    numberOfLines={0}
+                    allowFontScaling={false}
+                    style={
+                      Array [
+                        Object {
+                          "color": "#ffffff",
+                          "fontSize": 16,
+                        },
+                        Object {
+                          "marginRight": 8,
+                        },
+                        Object {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        Object {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                  <Text
                     style={
                       Array [
                         Object {
                           "backgroundColor": "transparent",
                           "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
+                          "fontSize": 12,
+                          "fontWeight": "600",
                           "textAlign": "left",
                         },
-                        Array [
-                          Object {},
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
-                        ],
+                        Object {
+                          "color": "#ffffff",
+                        },
                       ]
                     }
                   >
-                    Message
+                    No messages yet
                   </Text>
-                </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "marginLeft": 8,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                />
               </View>
             </View>
           </View>
@@ -24978,23 +25171,82 @@ exports[`Storyshots Message Editing 1`] = `
                   10:00 AM
                 </Text>
               </View>
-              <View>
-                <Text
-                  numberOfLines={0}
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontStyle": "italic",
+                      "fontWeight": "400",
+                      "marginBottom": 6,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                Started a discussion:
+              </Text>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#2f343d",
+                    },
+                  ]
+                }
+              >
+                This is a discussion
+              </Text>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginTop": 8,
+                  }
+                }
+              >
+                <View
+                  accessible={true}
+                  focusable={true}
+                  hitSlop={
+                    Object {
+                      "bottom": 4,
+                      "left": 4,
+                      "right": 4,
+                      "top": 4,
+                    }
+                  }
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      undefined,
-                      Object {
-                        "color": "#2f343d",
-                      },
-                    ]
+                    Object {
+                      "alignItems": "center",
+                      "backgroundColor": "#1d74f5",
+                      "borderRadius": 2,
+                      "flexDirection": "row",
+                      "justifyContent": "center",
+                      "opacity": 1,
+                      "paddingHorizontal": 12,
+                      "paddingVertical": 8,
+                    }
                   }
                 >
                   <Text
@@ -25005,26 +25257,37 @@ exports[`Storyshots Message Editing 1`] = `
                         Object {
                           "backgroundColor": "transparent",
                           "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
+                          "fontSize": 12,
+                          "fontWeight": "600",
                           "textAlign": "left",
                         },
-                        Array [
-                          Object {},
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
-                        ],
+                        Object {
+                          "color": "#ffffff",
+                        },
                       ]
                     }
                   >
                     Message being edited
                   </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "marginLeft": 8,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2017
                 </Text>
               </View>
             </View>
@@ -25232,23 +25495,50 @@ exports[`Storyshots Message Emojis 1`] = `
                   10:00 AM
                 </Text>
               </View>
-              <View>
-                <Text
-                  numberOfLines={0}
-                  style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      undefined,
-                      Object {
-                        "color": "#2f343d",
-                      },
-                    ]
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontStyle": "italic",
+                      "fontWeight": "400",
+                      "marginBottom": 6,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                Started a discussion:
+              </Text>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#2f343d",
+                    },
+                  ]
+                }
+              >
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </Text>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginTop": 8,
                   }
                 >
                   <Text
@@ -25285,6 +25575,25 @@ exports[`Storyshots Message Emojis 1`] = `
                   >
                     👊🤙👏
                   </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "marginLeft": 8,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2017
                 </Text>
               </View>
             </View>
@@ -25479,23 +25788,82 @@ exports[`Storyshots Message Emojis 1`] = `
                   10:00 AM
                 </Text>
               </View>
-              <View>
-                <Text
-                  numberOfLines={0}
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontStyle": "italic",
+                      "fontWeight": "400",
+                      "marginBottom": 6,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                Started a discussion:
+              </Text>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#2f343d",
+                    },
+                  ]
+                }
+              >
+                This is a discussion
+              </Text>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginTop": 8,
+                  }
+                }
+              >
+                <View
+                  accessible={true}
+                  focusable={true}
+                  hitSlop={
+                    Object {
+                      "bottom": 4,
+                      "left": 4,
+                      "right": 4,
+                      "top": 4,
+                    }
+                  }
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      undefined,
-                      Object {
-                        "color": "#2f343d",
-                      },
-                    ]
+                    Object {
+                      "alignItems": "center",
+                      "backgroundColor": "#1d74f5",
+                      "borderRadius": 2,
+                      "flexDirection": "row",
+                      "justifyContent": "center",
+                      "opacity": 1,
+                      "paddingHorizontal": 12,
+                      "paddingVertical": 8,
+                    }
                   }
                 >
                   <Text
@@ -25532,6 +25900,25 @@ exports[`Storyshots Message Emojis 1`] = `
                   >
                     👏
                   </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "marginLeft": 8,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2017
                 </Text>
               </View>
             </View>
@@ -25793,13 +26180,7 @@ exports[`Storyshots Message Emojis 1`] = `
                           "textAlign": "left",
                         },
                         Array [
-                          Object {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "System",
-                            "fontSize": 30,
-                            "fontWeight": "400",
-                            "textAlign": "left",
-                          },
+                          Object {},
                           Object {
                             "alignItems": "flex-start",
                             "flexDirection": "row",
@@ -26693,14 +27074,17 @@ exports[`Storyshots Message Emojis 1`] = `
                     style={
                       Array [
                         Object {
-                          "overflow": "hidden",
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         },
                         Array [
                           Object {
                             "height": 20,
                             "width": 20,
                           },
-                          Object {},
                         ],
                       ]
                     }
@@ -27674,54 +28058,94 @@ exports[`Storyshots Message Encrypted 1`] = `
                       ]
                     }
                   >
-                    <View
-                      style={
-                        Array [
-                          Object {
-                            "overflow": "hidden",
-                          },
-                          Object {
-                            "height": 19,
-                            "marginLeft": 7,
-                            "width": 19,
-                          },
-                        ]
-                      }
-                    >
-                      <FastImageView
-                        resizeMode="contain"
-                        source={
-                          Object {
-                            "priority": "high",
-                            "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
-                          }
-                        }
-                        style={
-                          Object {
-                            "bottom": 0,
-                            "left": 0,
-                            "position": "absolute",
-                            "right": 0,
-                            "top": 0,
-                          }
-                        }
-                      />
-                    </View>
                     <Text
+                      numberOfLines={0}
                       style={
                         Array [
                           Object {
                             "backgroundColor": "transparent",
                             "fontFamily": "System",
-                            "fontSize": 14,
-                            "fontWeight": "600",
-                            "marginLeft": 3,
-                            "marginRight": 8.5,
+                            "fontSize": 16,
+                            "fontWeight": "400",
                             "textAlign": "left",
                           },
+                          undefined,
                           Object {
-                            "color": "#1d74f5",
+                            "color": "#2f343d",
                           },
+                        ]
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="Message"
+                        numberOfLines={0}
+                        style={
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "System",
+                              "fontSize": 16,
+                              "fontWeight": "400",
+                              "textAlign": "left",
+                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                            ],
+                          ]
+                        }
+                      >
+                        Message
+                      </Text>
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={false}
+                    hitSlop={
+                      Object {
+                        "bottom": 4,
+                        "left": 4,
+                        "right": 4,
+                        "top": 4,
+                      }
+                    }
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "justifyContent": "center",
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      allowFontScaling={false}
+                      style={
+                        Array [
+                          Object {
+                            "color": "#9ca2a8",
+                            "fontSize": 16,
+                          },
+                          undefined,
+                          Object {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          Object {},
                         ]
                       }
                     >
@@ -27729,24 +28153,63 @@ exports[`Storyshots Message Encrypted 1`] = `
                     </Text>
                   </View>
                 </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": null,
+          "opacity": 1,
+        }
+      }
+    >
+      <View>
+        <View
+          style={
+            Array [
+              Object {
+                "flexDirection": "column",
+                "paddingHorizontal": 14,
+                "paddingVertical": 4,
+                "width": "100%",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "flex": 1,
+                    "marginLeft": 46,
+                  },
+                  false,
+                ]
+              }
+            >
+              <View>
                 <View
-                  accessible={true}
-                  focusable={true}
-                  hitSlop={
-                    Object {
-                      "bottom": 4,
-                      "left": 4,
-                      "right": 4,
-                      "top": 4,
-                    }
-                  }
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
                     Object {
                       "backgroundColor": "#f1f2f4",
@@ -27756,7 +28219,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                       "opacity": 1,
                     }
                   }
-                  testID="message-reaction-:thinking:"
                 >
                   <View
                     style={
@@ -27777,83 +28239,76 @@ exports[`Storyshots Message Encrypted 1`] = `
                     }
                   >
                     <Text
-                      style={
-                        Object {
-                          "color": "#ffffff",
-                          "fontSize": 13,
-                          "marginLeft": 7,
-                        }
-                      }
-                    >
-                      🤔
-                    </Text>
-                    <Text
+                      numberOfLines={0}
                       style={
                         Array [
                           Object {
                             "backgroundColor": "transparent",
                             "fontFamily": "System",
-                            "fontSize": 14,
-                            "fontWeight": "600",
-                            "marginLeft": 3,
-                            "marginRight": 8.5,
+                            "fontSize": 16,
+                            "fontWeight": "400",
                             "textAlign": "left",
                           },
+                          undefined,
                           Object {
-                            "color": "#1d74f5",
+                            "color": "#2f343d",
                           },
                         ]
                       }
                     >
-                      1
+                      <Text
+                        accessibilityLabel="Message Encrypted without Header"
+                        numberOfLines={0}
+                        style={
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "System",
+                              "fontSize": 16,
+                              "fontWeight": "400",
+                              "textAlign": "left",
+                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                            ],
+                          ]
+                        }
+                      >
+                        Message Encrypted without Header
+                      </Text>
                     </Text>
                   </View>
-                </View>
-                <View
-                  accessible={true}
-                  focusable={true}
-                  hitSlop={
-                    Object {
-                      "bottom": 4,
-                      "left": 4,
-                      "right": 4,
-                      "top": 4,
-                    }
-                  }
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
-                  style={
-                    Object {
-                      "backgroundColor": "#ffffff",
-                      "borderRadius": 2,
-                      "marginBottom": 8,
-                      "marginRight": 8,
-                      "opacity": 1,
-                    }
-                  }
-                  testID="message-add-reaction"
-                >
                   <View
+                    accessible={true}
+                    focusable={false}
+                    hitSlop={
+                      Object {
+                        "bottom": 4,
+                        "left": 4,
+                        "right": 4,
+                        "top": 4,
+                      }
+                    }
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
-                      Array [
-                        Object {
-                          "alignItems": "center",
-                          "borderRadius": 2,
-                          "borderWidth": 1,
-                          "flexDirection": "row",
-                          "height": 28,
-                          "justifyContent": "center",
-                          "minWidth": 46.3,
-                        },
-                        Object {
-                          "borderColor": "#e1e5e8",
-                        },
-                      ]
+                      Object {
+                        "justifyContent": "center",
+                        "opacity": 1,
+                      }
                     }
                   >
                     <Text
@@ -27861,8 +28316,8 @@ exports[`Storyshots Message Encrypted 1`] = `
                       style={
                         Array [
                           Object {
-                            "color": "#1d74f5",
-                            "fontSize": 21,
+                            "color": "#9ca2a8",
+                            "fontSize": 16,
                           },
                           undefined,
                           Object {
@@ -27874,7 +28329,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                         ]
                       }
                     >
-                      
+                      
                     </Text>
                   </View>
                 </View>
@@ -29103,21 +29558,32 @@ exports[`Storyshots Message Encrypted 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
+                "marginBottom": 12,
+                "marginTop": 6,
               }
             }
+            testID="message-thread-replied-on-Thread with emoji :) :joy:"
           >
-            <View
+            <Text
+              allowFontScaling={false}
               style={
                 Array [
                   Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "color": "#1d74f5",
+                    "fontSize": 20,
                   },
                   Object {
-                    "marginTop": 4,
+                    "marginLeft": 16,
+                    "marginRight": 10,
                   },
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
                 ]
               }
             >
@@ -29177,16 +29643,43 @@ exports[`Storyshots Message Encrypted 1`] = `
               style={
                 Array [
                   Object {
-                    "flex": 1,
-                    "marginLeft": 46,
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   },
                   Object {
-                    "marginLeft": 10,
+                    "color": "#2f343d",
+                  },
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flex": 1,
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#1d74f5",
                   },
                 ]
               }
             >
-              <View
+              Thread with emoji🙂 😂
+            </Text>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "justifyContent": "center",
+                  "marginLeft": 4,
+                  "marginRight": 4,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
                 style={
                   Object {
                     "alignItems": "center",
@@ -30266,49 +30759,100 @@ exports[`Storyshots Message Full name 1`] = `
                   10:00 AM
                 </Text>
               </View>
-              <View>
-                <Text
-                  numberOfLines={0}
+              <View
+                style={
+                  Object {
+                    "opacity": 0.3,
+                  }
+                }
+              >
+                <View
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      undefined,
-                      Object {
-                        "color": "#2f343d",
-                      },
-                    ]
+                    Object {
+                      "flexDirection": "row",
+                    }
                   }
                 >
                   <Text
                     accessibilityLabel="Message"
                     numberOfLines={0}
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
+                      Object {
+                        "flex": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      numberOfLines={0}
+                      style={
                         Array [
-                          Object {},
                           Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "textAlign": "left",
                           },
-                        ],
-                      ]
+                          undefined,
+                          Object {
+                            "color": "#2f343d",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="Temp message encrypted"
+                        numberOfLines={0}
+                        style={
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "System",
+                              "fontSize": 16,
+                              "fontWeight": "400",
+                              "textAlign": "left",
+                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                            ],
+                          ]
+                        }
+                      >
+                        Temp message encrypted
+                      </Text>
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={false}
+                    hitSlop={
+                      Object {
+                        "bottom": 4,
+                        "left": 4,
+                        "right": 4,
+                        "top": 4,
+                      }
+                    }
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "justifyContent": "center",
+                        "opacity": 1,
+                      }
                     }
                   >
                     Message
@@ -30521,26 +31065,356 @@ exports[`Storyshots Message Grouped messages 1`] = `
                 </Text>
               </View>
               <View>
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <Text
+                    accessibilityLabel="..."
+                    numberOfLines={0}
+                    style={
+                      Object {
+                        "flex": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      numberOfLines={0}
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          },
+                          undefined,
+                          Object {
+                            "color": "#2f343d",
+                          },
+                        ]
+                      }
+                    >
+                      <Text
+                        accessibilityLabel="Message Edited encrypted"
+                        numberOfLines={0}
+                        style={
+                          Array [
+                            Object {
+                              "backgroundColor": "transparent",
+                              "fontFamily": "System",
+                              "fontSize": 16,
+                              "fontWeight": "400",
+                              "textAlign": "left",
+                            },
+                            Array [
+                              Object {},
+                              Object {
+                                "alignItems": "flex-start",
+                                "flexDirection": "row",
+                                "flexWrap": "wrap",
+                                "justifyContent": "flex-start",
+                                "marginBottom": 0,
+                                "marginTop": 0,
+                              },
+                            ],
+                          ]
+                        }
+                      >
+                        Message Edited encrypted
+                      </Text>
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={false}
+                    hitSlop={
+                      Object {
+                        "bottom": 4,
+                        "left": 4,
+                        "right": 4,
+                        "top": 4,
+                      }
+                    }
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "justifyContent": "center",
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      allowFontScaling={false}
+                      style={
+                        Array [
+                          Object {
+                            "color": "#9ca2a8",
+                            "fontSize": 16,
+                          },
+                          undefined,
+                          Object {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          Object {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              focusable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "opacity": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  Array [
+                    Object {
+                      "overflow": "hidden",
+                    },
+                    Object {
+                      "borderRadius": 4,
+                      "height": 36,
+                      "width": 36,
+                    },
+                  ]
+                }
+              >
+                <FastImageView
+                  resizeMode="cover"
+                  source={
+                    Object {
+                      "headers": undefined,
+                      "priority": "high",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
+                    }
+                  }
+                  style={
+                    Object {
+                      "bottom": 0,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexShrink": 1,
+                    "opacity": 1,
+                  }
+                }
+              >
                 <Text
-                  numberOfLines={0}
+                  numberOfLines={1}
                   style={
                     Array [
                       Object {
                         "backgroundColor": "transparent",
                         "fontFamily": "System",
                         "fontSize": 16,
-                        "fontWeight": "400",
+                        "fontWeight": "500",
+                        "lineHeight": 22,
                         "textAlign": "left",
                       },
-                      undefined,
                       Object {
-                        "color": "#2f343d",
+                        "color": "#0d0e12",
                       },
                     ]
                   }
                 >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "marginLeft": 8,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                10:00 AM
+              </Text>
+              <View
+                accessible={true}
+                focusable={true}
+                hitSlop={
+                  Object {
+                    "bottom": 4,
+                    "left": 4,
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                    "paddingLeft": 10,
+                    "paddingVertical": 5,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#f5455c",
+                        "fontSize": 18,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+              </View>
+            </View>
+            <View>
+              <View
+                style={
+                  Object {
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "flex": 1,
+                    }
+                  }
+                >
                   <Text
-                    accessibilityLabel="..."
                     numberOfLines={0}
                     style={
                       Array [
@@ -30551,23 +31425,62 @@ exports[`Storyshots Message Grouped messages 1`] = `
                           "fontWeight": "400",
                           "textAlign": "left",
                         },
-                        Array [
-                          Object {},
-                          Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
-                          },
-                        ],
+                        undefined,
+                        Object {
+                          "color": "#2f343d",
+                        },
                       ]
                     }
                   >
                     ...
                   </Text>
-                </Text>
+                </View>
+                <View
+                  accessible={true}
+                  focusable={false}
+                  hitSlop={
+                    Object {
+                      "bottom": 4,
+                      "left": 4,
+                      "right": 4,
+                      "top": 4,
+                    }
+                  }
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    Object {
+                      "justifyContent": "center",
+                      "opacity": 1,
+                    }
+                  }
+                >
+                  <Text
+                    allowFontScaling={false}
+                    style={
+                      Array [
+                        Object {
+                          "color": "#9ca2a8",
+                          "fontSize": 16,
+                        },
+                        undefined,
+                        Object {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        Object {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -30762,45 +31675,32 @@ exports[`Storyshots Message Grouped messages 1`] = `
                 </Text>
               </View>
               <View>
-                <Text
-                  numberOfLines={0}
+                <View
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      undefined,
-                      Object {
-                        "color": "#2f343d",
-                      },
-                    ]
+                    Object {
+                      "flexDirection": "row",
+                    }
                   }
                 >
                   <Text
                     accessibilityLabel="Different user"
                     numberOfLines={0}
                     style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "textAlign": "left",
-                        },
+                      Object {
+                        "flex": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      numberOfLines={0}
+                      style={
                         Array [
-                          Object {},
                           Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "textAlign": "left",
                           },
                         ],
                       ]
@@ -31063,14 +31963,211 @@ exports[`Storyshots Message Grouped messages 1`] = `
               style={
                 Array [
                   Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "flex": 1,
+                    "marginLeft": 46,
+                  },
+                  false,
+                ]
+              }
+            >
+              <View>
+                <View
+                  style={
+                    Object {
+                      "flexDirection": "row",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "headers": undefined,
+                        "priority": "high",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
+                      }
+                    }
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Object {
+                        "justifyContent": "center",
+                        "opacity": 1,
+                      }
+                    }
+                  >
+                    <Text
+                      allowFontScaling={false}
+                      style={
+                        Array [
+                          Object {
+                            "color": "#9ca2a8",
+                            "fontSize": 16,
+                          },
+                          undefined,
+                          Object {
+                            "fontFamily": "custom",
+                            "fontStyle": "normal",
+                            "fontWeight": "normal",
+                          },
+                          Object {},
+                        ]
+                      }
+                    >
+                      
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#1d74f5",
+                    "fontSize": 15,
                   },
                   Object {
-                    "marginTop": 4,
+                    "lineHeight": 20,
                   },
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
                 ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots Message Error 1`] = `
+<RCTScrollView
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+    }
+  }
+>
+  <View>
+    <View>
+      <View
+        style={
+          Array [
+            Object {
+              "flexDirection": "column",
+              "paddingHorizontal": 14,
+              "paddingVertical": 4,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+                Object {
+                  "marginTop": 4,
+                },
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              focusable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "opacity": 1,
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <FastImageView
+                  resizeMode="cover"
+                  source={
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "opacity": 1,
+                    }
+                  }
+                  style={
+                    Object {
+                      "bottom": 0,
+                      "left": 0,
+                      "position": "absolute",
+                      "right": 0,
+                      "top": 0,
+                    }
+                  }
+                />
+              </View>
+            </View>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flex": 1,
+                  "marginLeft": 46,
+                },
+                Object {
+                  "marginLeft": 10,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
+                }
               }
             >
               <View
@@ -31085,145 +32182,94 @@ exports[`Storyshots Message Grouped messages 1`] = `
                 onStartShouldSetResponder={[Function]}
                 style={
                   Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "flexShrink": 1,
                     "opacity": 1,
                   }
                 }
               >
-                <View
-                  style={
-                    Array [
-                      Object {
-                        "overflow": "hidden",
-                      },
-                      Object {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
-                      },
-                    ]
-                  }
-                >
-                  <FastImageView
-                    resizeMode="cover"
-                    source={
-                      Object {
-                        "headers": undefined,
-                        "priority": "high",
-                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
-                      }
-                    }
-                    style={
-                      Object {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      }
-                    }
-                  />
-                </View>
-              </View>
-            </View>
-            <View
-              style={
-                Array [
-                  Object {
-                    "flex": 1,
-                    "marginLeft": 46,
-                  },
-                  Object {
-                    "marginLeft": 10,
-                  },
-                ]
-              }
-            >
-              <View
-                style={
-                  Object {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                    "justifyContent": "space-between",
-                  }
-                }
-              >
-                <View
-                  accessible={true}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
-                  style={
-                    Object {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "flexShrink": 1,
-                      "opacity": 1,
-                    }
-                  }
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Array [
-                        Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "500",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        Object {
-                          "color": "#0d0e12",
-                        },
-                      ]
-                    }
-                  >
-                    diego.mello
-                  </Text>
-                </View>
                 <Text
-                  style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 12,
-                        "fontWeight": "400",
-                        "marginLeft": 8,
-                        "textAlign": "left",
-                      },
-                      Object {
-                        "color": "#9ca2a8",
-                      },
-                    ]
-                  }
-                >
-                  10:00 AM
-                </Text>
-              </View>
-              <View>
-                <Text
-                  numberOfLines={0}
+                  numberOfLines={1}
                   style={
                     Array [
                       Object {
                         "backgroundColor": "transparent",
                         "fontFamily": "System",
                         "fontSize": 16,
-                        "fontWeight": "400",
+                        "fontWeight": "500",
+                        "lineHeight": 22,
                         "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#0d0e12",
+                      },
+                    ]
+                  }
+                >
+                  diego.mello
+                </Text>
+              </View>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "marginLeft": 8,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#9ca2a8",
+                    },
+                  ]
+                }
+              >
+                10:00 AM
+              </Text>
+              <View
+                accessible={true}
+                focusable={true}
+                hitSlop={
+                  Object {
+                    "bottom": 4,
+                    "left": 4,
+                    "right": 4,
+                    "top": 4,
+                  }
+                }
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                    "paddingLeft": 10,
+                    "paddingVertical": 5,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#f5455c",
+                        "fontSize": 18,
                       },
                       undefined,
                       Object {
-                        "color": "#2f343d",
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
                       },
+                      Object {},
                     ]
                   }
                 >
@@ -31232,12 +32278,14 @@ exports[`Storyshots Message Grouped messages 1`] = `
                     numberOfLines={0}
                     style={
                       Array [
+                        Object {},
                         Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "textAlign": "left",
+                          "alignItems": "flex-start",
+                          "flexDirection": "row",
+                          "flexWrap": "wrap",
+                          "justifyContent": "flex-start",
+                          "marginBottom": 0,
+                          "marginTop": 0,
                         },
                         Array [
                           Object {},
@@ -31256,7 +32304,7 @@ exports[`Storyshots Message Grouped messages 1`] = `
                     This is the first message
                   </Text>
                 </Text>
-              </View>
+              </Text>
             </View>
           </View>
         </View>
@@ -31938,42 +32986,28 @@ exports[`Storyshots Message Lists 1`] = `
               style={
                 Array [
                   Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "flex": 1,
+                    "marginLeft": 46,
                   },
-                  Object {
-                    "marginTop": 4,
-                  },
+                  false,
                 ]
               }
             >
-              <View
-                accessible={true}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
-                style={
-                  Object {
-                    "opacity": 1,
-                  }
-                }
-              >
-                <View
+              <View>
+                <Text
+                  numberOfLines={0}
                   style={
                     Array [
                       Object {
-                        "overflow": "hidden",
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
                       },
+                      undefined,
                       Object {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -31988,18 +33022,75 @@ exports[`Storyshots Message Lists 1`] = `
                       }
                     }
                     style={
-                      Object {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      }
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
+                          },
+                        ],
+                      ]
                     }
-                  />
-                </View>
+                  >
+                    This is the third message
+                  </Text>
+                </Text>
               </View>
             </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": null,
+          "opacity": 1,
+        }
+      }
+    >
+      <View>
+        <View
+          style={
+            Array [
+              Object {
+                "flexDirection": "column",
+                "paddingHorizontal": 14,
+                "paddingVertical": 4,
+                "width": "100%",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
             <View
               style={
                 Array [
@@ -32007,9 +33098,7 @@ exports[`Storyshots Message Lists 1`] = `
                     "flex": 1,
                     "marginLeft": 46,
                   },
-                  Object {
-                    "marginLeft": 10,
-                  },
+                  false,
                 ]
               }
             >
@@ -32064,18 +33153,19 @@ exports[`Storyshots Message Lists 1`] = `
                   </Text>
                 </View>
                 <Text
+                  numberOfLines={0}
                   style={
                     Array [
                       Object {
                         "backgroundColor": "transparent",
                         "fontFamily": "System",
-                        "fontSize": 12,
+                        "fontSize": 16,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
+                      undefined,
                       Object {
-                        "color": "#9ca2a8",
+                        "color": "#2f343d",
                       },
                     ]
                   }
@@ -32215,6 +33305,7 @@ exports[`Storyshots Message Lists 1`] = `
                       numberOfLines={0}
                       style={
                         Array [
+                          Object {},
                           Object {
                             "backgroundColor": "transparent",
                             "fontFamily": "System",
@@ -32751,12 +33842,12 @@ exports[`Storyshots Message Mentions 1`] = `
               style={
                 Array [
                   Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "borderRadius": 2,
+                    "height": 20,
+                    "width": 20,
                   },
                   Object {
-                    "marginTop": 4,
+                    "marginLeft": 16,
                   },
                 ]
               }
@@ -32784,9 +33875,9 @@ exports[`Storyshots Message Mentions 1`] = `
                         "overflow": "hidden",
                       },
                       Object {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
+                        "borderRadius": 2,
+                        "height": 20,
+                        "width": 20,
                       },
                     ]
                   }
@@ -32882,9 +33973,9 @@ exports[`Storyshots Message Mentions 1`] = `
                       Object {
                         "backgroundColor": "transparent",
                         "fontFamily": "System",
-                        "fontSize": 12,
+                        "fontSize": 16,
+                        "fontStyle": "italic",
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
@@ -33412,14 +34503,12 @@ exports[`Storyshots Message Mentions 1`] = `
                           "textAlign": "left",
                         },
                         Array [
-                          Object {},
                           Object {
-                            "alignItems": "flex-start",
-                            "flexDirection": "row",
-                            "flexWrap": "wrap",
-                            "justifyContent": "flex-start",
-                            "marginBottom": 0,
-                            "marginTop": 0,
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "textAlign": "left",
                           },
                         ],
                       ]
@@ -34595,10 +35684,8 @@ exports[`Storyshots Message Message with reply 1`] = `
                 <View
                   style={
                     Object {
-                      "borderRadius": 4,
-                      "flex": 1,
-                      "flexDirection": "column",
-                      "padding": 15,
+                      "alignItems": "flex-start",
+                      "flexDirection": "row",
                     }
                   }
                 >
@@ -34635,15 +35722,11 @@ exports[`Storyshots Message Message with reply 1`] = `
                     style={
                       Array [
                         Object {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "System",
-                          "fontSize": 16,
-                          "fontWeight": "400",
-                          "textAlign": "left",
+                          "width": 16,
                         },
-                        undefined,
                         Object {
-                          "color": "#2f343d",
+                          "alignItems": "flex-end",
+                          "marginRight": 5,
                         },
                       ]
                     }
@@ -34659,23 +35742,16 @@ exports[`Storyshots Message Message with reply 1`] = `
                             "fontWeight": "400",
                             "textAlign": "left",
                           },
-                          Array [
-                            Object {},
-                            Object {
-                              "alignItems": "flex-start",
-                              "flexDirection": "row",
-                              "flexWrap": "wrap",
-                              "justifyContent": "flex-start",
-                              "marginBottom": 0,
-                              "marginTop": 0,
-                            },
-                          ],
+                          undefined,
+                          Object {
+                            "color": "#2f343d",
+                          },
                         ]
                       }
                     >
                       How are you?
                     </Text>
-                  </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -34890,7 +35966,26 @@ exports[`Storyshots Message Message with reply 1`] = `
                   }
                 >
                   <Text
-                    accessibilityLabel="I'm fine!"
+                    onPress={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#F3BE08",
+                        },
+                      ]
+                    }
+                  >
+                    rocket.cat
+                  </Text>
+                  <Text
+                    accessibilityLabel=" "
                     numberOfLines={0}
                     style={
                       Array [
@@ -34915,7 +36010,7 @@ exports[`Storyshots Message Message with reply 1`] = `
                       ]
                     }
                   >
-                    I'm fine!
+                     
                   </Text>
                 </Text>
               </View>
@@ -34984,18 +36079,18 @@ exports[`Storyshots Message Message with reply 1`] = `
                     </Text>
                   </View>
                   <Text
+                    onPress={[Function]}
                     style={
                       Array [
                         Object {
                           "backgroundColor": "transparent",
                           "fontFamily": "System",
                           "fontSize": 16,
-                          "fontWeight": "400",
+                          "fontWeight": "600",
                           "textAlign": "left",
                         },
-                        undefined,
                         Object {
-                          "color": "#2f343d",
+                          "color": "#F5455C",
                         },
                       ]
                     }
@@ -35004,12 +36099,14 @@ exports[`Storyshots Message Message with reply 1`] = `
                       accessibilityLabel="How are you? "
                       style={
                         Array [
+                          Object {},
                           Object {
-                            "backgroundColor": "transparent",
-                            "fontFamily": "System",
-                            "fontSize": 16,
-                            "fontWeight": "400",
-                            "textAlign": "left",
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
                           },
                           Array [
                             Object {},
@@ -35063,7 +36160,118 @@ exports[`Storyshots Message Message with reply 1`] = `
                       />
                     </View>
                   </Text>
-                </View>
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#F38C39",
+                        },
+                      ]
+                    }
+                  >
+                    all
+                  </Text>
+                  <Text
+                    accessibilityLabel=" "
+                    numberOfLines={0}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
+                          },
+                        ],
+                      ]
+                    }
+                  >
+                     
+                  </Text>
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#F38C39",
+                        },
+                      ]
+                    }
+                  >
+                    here
+                  </Text>
+                  <Text
+                    accessibilityLabel=" "
+                    numberOfLines={0}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        Array [
+                          Object {},
+                          Object {
+                            "alignItems": "flex-start",
+                            "flexDirection": "row",
+                            "flexWrap": "wrap",
+                            "justifyContent": "flex-start",
+                            "marginBottom": 0,
+                            "marginTop": 0,
+                          },
+                        ],
+                      ]
+                    }
+                  >
+                     
+                  </Text>
+                  <Text
+                    onPress={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "600",
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#F3BE08",
+                        },
+                      ]
+                    }
+                  >
+                    #general
+                  </Text>
+                </Text>
               </View>
             </View>
           </View>
@@ -35500,6 +36708,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                     <View
                       style={
                         Array [
+                          Object {},
                           Object {
                             "borderRadius": 4,
                             "height": 8,
@@ -37251,6 +38460,15 @@ exports[`Storyshots Message Reactions 1`] = `
                 </Text>
               </View>
               <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   Object {
                     "flexDirection": "row",
@@ -37482,6 +38700,7 @@ exports[`Storyshots Message Reactions 1`] = `
                           "justifyContent": "center",
                           "minWidth": 46.3,
                         },
+                        undefined,
                         Object {
                           "borderColor": "#e1e5e8",
                         },
@@ -39771,12 +40990,12 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
               style={
                 Array [
                   Object {
-                    "borderRadius": 2,
-                    "height": 20,
-                    "width": 20,
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
                   },
                   Object {
-                    "marginLeft": 16,
+                    "marginTop": 4,
                   },
                 ]
               }
@@ -39804,9 +41023,9 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
                         "overflow": "hidden",
                       },
                       Object {
-                        "borderRadius": 2,
-                        "height": 20,
-                        "width": 20,
+                        "borderRadius": 4,
+                        "height": 36,
+                        "width": 36,
                       },
                     ]
                   }
@@ -39846,23 +41065,33 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
                 ]
               }
             >
-              <View>
-                <Text
-                  accessibilityLabel="I'm fine!"
-                  numberOfLines={1}
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessible={true}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      Object {
-                        "color": "#2f343d",
-                      },
-                    ]
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "opacity": 1,
+                    }
                   }
                 >
                   I'm fine!
@@ -39965,32 +41194,24 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
                       }
                     }
                     style={
-                      Object {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      }
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
                     }
-                  />
+                  >
+                    diego.mello
+                  </Text>
                 </View>
-              </View>
-            </View>
-            <View
-              style={
-                Array [
-                  Object {
-                    "flex": 1,
-                    "marginLeft": 46,
-                  },
-                  Object {
-                    "marginLeft": 10,
-                  },
-                ]
-              }
-            >
-              <View>
                 <Text
                   accessibilityLabel="Cool!"
                   numberOfLines={1}
@@ -39999,12 +41220,13 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
                       Object {
                         "backgroundColor": "transparent",
                         "fontFamily": "System",
-                        "fontSize": 16,
+                        "fontSize": 12,
                         "fontWeight": "400",
+                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       Object {
-                        "color": "#2f343d",
+                        "color": "#9ca2a8",
                       },
                     ]
                   }
@@ -40147,6 +41369,7 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
                         "fontWeight": "400",
                         "textAlign": "left",
                       },
+                      undefined,
                       Object {
                         "color": "#2f343d",
                       },
@@ -40214,34 +41437,42 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
               }
             >
               <View
-                accessible={true}
-                focusable={true}
-                onClick={[Function]}
-                onResponderGrant={[Function]}
-                onResponderMove={[Function]}
-                onResponderRelease={[Function]}
-                onResponderTerminate={[Function]}
-                onResponderTerminationRequest={[Function]}
-                onStartShouldSetResponder={[Function]}
                 style={
                   Object {
-                    "opacity": 1,
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                    "marginTop": 8,
                   }
                 }
               >
                 <View
-                  style={
-                    Array [
-                      Object {
-                        "overflow": "hidden",
-                      },
-                      Object {
-                        "borderRadius": 2,
-                        "height": 20,
-                        "width": 20,
-                      },
-                    ]
+                  accessible={true}
+                  focusable={true}
+                  hitSlop={
+                    Object {
+                      "bottom": 4,
+                      "left": 4,
+                      "right": 4,
+                      "top": 4,
+                    }
                   }
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    Object {
+                      "backgroundColor": "#f1f2f4",
+                      "borderRadius": 2,
+                      "marginBottom": 8,
+                      "marginRight": 8,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="message-reaction-:marioparty:"
                 >
                   <FastImageView
                     resizeMode="cover"
@@ -40253,15 +41484,76 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
                       }
                     }
                     style={
-                      Object {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      }
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "borderRadius": 2,
+                          "borderWidth": 1,
+                          "flexDirection": "row",
+                          "height": 28,
+                          "justifyContent": "center",
+                          "minWidth": 46.3,
+                        },
+                        Object {
+                          "borderColor": "#1d74f5",
+                        },
+                      ]
                     }
-                  />
+                  >
+                    <View
+                      style={
+                        Array [
+                          Object {
+                            "overflow": "hidden",
+                          },
+                          Object {
+                            "height": 19,
+                            "marginLeft": 7,
+                            "width": 19,
+                          },
+                        ]
+                      }
+                    >
+                      <FastImageView
+                        resizeMode="contain"
+                        source={
+                          Object {
+                            "priority": "high",
+                            "uri": "https://open.rocket.chat/emoji-custom/marioparty.gif",
+                          }
+                        }
+                        style={
+                          Object {
+                            "bottom": 0,
+                            "left": 0,
+                            "position": "absolute",
+                            "right": 0,
+                            "top": 0,
+                          }
+                        }
+                      />
+                    </View>
+                    <Text
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 14,
+                            "fontWeight": "600",
+                            "marginLeft": 3,
+                            "marginRight": 8.5,
+                            "textAlign": "left",
+                          },
+                          Object {
+                            "color": "#1d74f5",
+                          },
+                        ]
+                      }
+                    >
+                      1
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -40385,6 +41677,23 @@ exports[`Storyshots Message Static avatar 1`] = `
                 }
               >
                 <View
+                  accessible={true}
+                  focusable={true}
+                  hitSlop={
+                    Object {
+                      "bottom": 4,
+                      "left": 4,
+                      "right": 4,
+                      "top": 4,
+                    }
+                  }
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Array [
                       Object {
@@ -40397,6 +41706,7 @@ exports[`Storyshots Message Static avatar 1`] = `
                       },
                     ]
                   }
+                  testID="message-reaction-:react_rocket:"
                 >
                   <FastImageView
                     resizeMode="cover"
@@ -40408,15 +41718,76 @@ exports[`Storyshots Message Static avatar 1`] = `
                       }
                     }
                     style={
-                      Object {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      }
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "borderRadius": 2,
+                          "borderWidth": 1,
+                          "flexDirection": "row",
+                          "height": 28,
+                          "justifyContent": "center",
+                          "minWidth": 46.3,
+                        },
+                        Object {
+                          "borderColor": "#1d74f5",
+                        },
+                      ]
                     }
-                  />
+                  >
+                    <View
+                      style={
+                        Array [
+                          Object {
+                            "overflow": "hidden",
+                          },
+                          Object {
+                            "height": 19,
+                            "marginLeft": 7,
+                            "width": 19,
+                          },
+                        ]
+                      }
+                    >
+                      <FastImageView
+                        resizeMode="contain"
+                        source={
+                          Object {
+                            "priority": "high",
+                            "uri": "https://open.rocket.chat/emoji-custom/react_rocket.png",
+                          }
+                        }
+                        style={
+                          Object {
+                            "bottom": 0,
+                            "left": 0,
+                            "position": "absolute",
+                            "right": 0,
+                            "top": 0,
+                          }
+                        }
+                      />
+                    </View>
+                    <Text
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 14,
+                            "fontWeight": "600",
+                            "marginLeft": 3,
+                            "marginRight": 8.5,
+                            "textAlign": "left",
+                          },
+                          Object {
+                            "color": "#1d74f5",
+                          },
+                        ]
+                      }
+                    >
+                      1
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -40639,18 +42010,33 @@ exports[`Storyshots Message System messages 1`] = `
                 }
               >
                 <View
-                  style={
-                    Array [
-                      Object {
-                        "overflow": "hidden",
-                      },
-                      Object {
-                        "borderRadius": 2,
-                        "height": 20,
-                        "width": 20,
-                      },
-                    ]
+                  accessible={true}
+                  focusable={true}
+                  hitSlop={
+                    Object {
+                      "bottom": 4,
+                      "left": 4,
+                      "right": 4,
+                      "top": 4,
+                    }
                   }
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    Object {
+                      "backgroundColor": "#f1f2f4",
+                      "borderRadius": 2,
+                      "marginBottom": 8,
+                      "marginRight": 8,
+                      "opacity": 1,
+                    }
+                  }
+                  testID="message-reaction-:nyan_rocket:"
                 >
                   <FastImageView
                     resizeMode="cover"
@@ -40662,13 +42048,20 @@ exports[`Storyshots Message System messages 1`] = `
                       }
                     }
                     style={
-                      Object {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      }
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "borderRadius": 2,
+                          "borderWidth": 1,
+                          "flexDirection": "row",
+                          "height": 28,
+                          "justifyContent": "center",
+                          "minWidth": 46.3,
+                        },
+                        Object {
+                          "borderColor": "#1d74f5",
+                        },
+                      ]
                     }
                   />
                 </View>
@@ -40990,17 +42383,47 @@ exports[`Storyshots Message System messages 1`] = `
                         "priority": "high",
                         "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=20",
                       }
-                    }
-                    style={
-                      Object {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
+                    >
+                      <FastImageView
+                        resizeMode="contain"
+                        source={
+                          Object {
+                            "priority": "high",
+                            "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
+                          }
+                        }
+                        style={
+                          Object {
+                            "bottom": 0,
+                            "left": 0,
+                            "position": "absolute",
+                            "right": 0,
+                            "top": 0,
+                          }
+                        }
+                      />
+                    </View>
+                    <Text
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 14,
+                            "fontWeight": "600",
+                            "marginLeft": 3,
+                            "marginRight": 8.5,
+                            "textAlign": "left",
+                          },
+                          Object {
+                            "color": "#1d74f5",
+                          },
+                        ]
                       }
-                    }
-                  />
+                    >
+                      1
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
@@ -41065,6 +42488,19 @@ exports[`Storyshots Message System messages 1`] = `
         </View>
       </View>
     </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots Message Sequential thread messages following thread button 1`] = `
+<RCTScrollView
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+    }
+  }
+>
+  <View>
     <View
       accessible={true}
       focusable={true}
@@ -41936,10 +43372,57 @@ exports[`Storyshots Message System messages 1`] = `
                 rocket.cat was set admin by diego.mello
               </Text>
             </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "flex": 1,
+                    "marginLeft": 46,
+                  },
+                  Object {
+                    "marginLeft": 10,
+                  },
+                ]
+              }
+            >
+              <View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#2f343d",
+                      },
+                    ]
+                  }
+                >
+                  Sent an attachment
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
       </View>
     </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots Message Static avatar 1`] = `
+<RCTScrollView
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+    }
+  }
+>
+  <View>
     <View
       accessible={true}
       focusable={true}
@@ -42224,6 +43707,19 @@ exports[`Storyshots Message System messages 1`] = `
         </View>
       </View>
     </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots Message System messages 1`] = `
+<RCTScrollView
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+    }
+  }
+>
+  <View>
     <View
       accessible={true}
       focusable={true}
@@ -43131,12 +44627,12 @@ exports[`Storyshots Message Temp 1`] = `
               style={
                 Array [
                   Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "borderRadius": 2,
+                    "height": 20,
+                    "width": 20,
                   },
                   Object {
-                    "marginTop": 4,
+                    "marginLeft": 16,
                   },
                 ]
               }
@@ -43164,9 +44660,9 @@ exports[`Storyshots Message Temp 1`] = `
                         "overflow": "hidden",
                       },
                       Object {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
+                        "borderRadius": 2,
+                        "height": 20,
+                        "width": 20,
                       },
                     ]
                   }
@@ -43206,7 +44702,8 @@ exports[`Storyshots Message Temp 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                accessibilityLabel="User rocket.cat added by diego.mello"
                 style={
                   Object {
                     "alignItems": "center",
@@ -43391,12 +44888,12 @@ exports[`Storyshots Message Time format 1`] = `
               style={
                 Array [
                   Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "borderRadius": 2,
+                    "height": 20,
+                    "width": 20,
                   },
                   Object {
-                    "marginTop": 4,
+                    "marginLeft": 16,
                   },
                 ]
               }
@@ -43424,9 +44921,9 @@ exports[`Storyshots Message Time format 1`] = `
                         "overflow": "hidden",
                       },
                       Object {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
+                        "borderRadius": 2,
+                        "height": 20,
+                        "width": 20,
                       },
                     ]
                   }
@@ -43466,7 +44963,8 @@ exports[`Storyshots Message Time format 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                accessibilityLabel="User rocket.cat muted by diego.mello"
                 style={
                   Object {
                     "alignItems": "center",
@@ -43645,12 +45143,12 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
               style={
                 Array [
                   Object {
-                    "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "borderRadius": 2,
+                    "height": 20,
+                    "width": 20,
                   },
                   Object {
-                    "marginTop": 4,
+                    "marginLeft": 16,
                   },
                 ]
               }
@@ -43678,9 +45176,9 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                         "overflow": "hidden",
                       },
                       Object {
-                        "borderRadius": 4,
-                        "height": 36,
-                        "width": 36,
+                        "borderRadius": 2,
+                        "height": 20,
+                        "width": 20,
                       },
                     ]
                   }
@@ -43720,7 +45218,8 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                accessibilityLabel="Room description changed to: new description by diego.mello"
                 style={
                   Object {
                     "alignItems": "center",
@@ -47002,6 +48501,15 @@ exports[`Storyshots Message With file 1`] = `
                 onStartShouldSetResponder={[Function]}
                 style={
                   Object {
+                    "alignItems": "center",
+                    "alignSelf": "flex-start",
+                    "backgroundColor": "#f3f4f5",
+                    "borderColor": "#e1e5e8",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "marginTop": 4,
                     "opacity": 1,
                   }
                 }
@@ -47020,22 +48528,68 @@ exports[`Storyshots Message With file 1`] = `
                     ]
                   }
                 >
-                  <FastImageView
-                    resizeMode="cover"
-                    source={
+                  <View
+                    style={
                       Object {
                         "headers": undefined,
                         "priority": "high",
                         "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
+                    >
+                      rocket.cat
+                    </Text>
+                  </View>
+                  <Text
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        undefined,
+                        Object {
+                          "color": "#2f343d",
+                        },
+                      ]
                     }
+                  >
+                    <Text
+                      accessibilityLabel="Custom fields 2"
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 16,
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          },
+                          Array [
+                            Object {},
+                            Object {
+                              "alignItems": "flex-start",
+                              "flexDirection": "row",
+                              "flexWrap": "wrap",
+                              "justifyContent": "flex-start",
+                              "marginBottom": 0,
+                              "marginTop": 0,
+                            },
+                          ],
+                        ]
+                      }
+                    >
+                      Custom fields 2
+                    </Text>
+                  </Text>
+                  <View
                     style={
                       Object {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
+                        "flex": 1,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
                       }
                     }
                   />
@@ -47589,6 +49143,13 @@ exports[`Storyshots Message With image 1`] = `
                 onStartShouldSetResponder={[Function]}
                 style={
                   Object {
+                    "backgroundColor": "#f3f4f5",
+                    "borderColor": "#e1e5e8",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "flex": 1,
+                    "flexDirection": "column",
+                    "marginTop": 6,
                     "opacity": 1,
                   }
                 }
@@ -47616,16 +49177,28 @@ exports[`Storyshots Message With image 1`] = `
                         "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
+                  >
+                    Google
+                  </Text>
+                  <Text
+                    numberOfLines={2}
                     style={
-                      Object {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      }
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#9ca2a8",
+                        },
+                      ]
                     }
-                  />
+                  >
+                    Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for.
+                  </Text>
                 </View>
               </View>
             </View>
@@ -47892,9 +49465,11 @@ exports[`Storyshots Message With image 1`] = `
                   Object {
                     "marginTop": 4,
                   },
+                  false,
                 ]
               }
             >
+              <View />
               <View
                 accessible={true}
                 focusable={true}
@@ -47907,6 +49482,13 @@ exports[`Storyshots Message With image 1`] = `
                 onStartShouldSetResponder={[Function]}
                 style={
                   Object {
+                    "backgroundColor": "#f3f4f5",
+                    "borderColor": "#e1e5e8",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "flex": 1,
+                    "flexDirection": "column",
+                    "marginTop": 6,
                     "opacity": 1,
                   }
                 }
@@ -47934,16 +49516,28 @@ exports[`Storyshots Message With image 1`] = `
                         "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
                       }
                     }
+                  >
+                    Google
+                  </Text>
+                  <Text
+                    numberOfLines={2}
                     style={
-                      Object {
-                        "bottom": 0,
-                        "left": 0,
-                        "position": "absolute",
-                        "right": 0,
-                        "top": 0,
-                      }
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "400",
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#9ca2a8",
+                        },
+                      ]
                     }
-                  />
+                  >
+                    Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for.
+                  </Text>
                 </View>
               </View>
             </View>
@@ -48373,7 +49967,26 @@ exports[`Storyshots Message With video 1`] = `
                       ]
                     }
                   >
-                    diego.mello
+                    Diego Mello
+                    <Text
+                      style={
+                        Array [
+                          Object {
+                            "backgroundColor": "transparent",
+                            "fontFamily": "System",
+                            "fontSize": 14,
+                            "fontWeight": "400",
+                            "textAlign": "left",
+                          },
+                          Object {
+                            "color": "#9ca2a8",
+                          },
+                        ]
+                      }
+                    >
+                       @
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </Text>
                   </Text>
                 </View>
                 <Text
@@ -48745,7 +50358,6 @@ exports[`Storyshots Message With video 1`] = `
                         "color": "#ffffff",
                         "fontSize": 54,
                       },
-                      undefined,
                       Object {
                         "fontFamily": "custom",
                         "fontStyle": "normal",
@@ -48757,7 +50369,7 @@ exports[`Storyshots Message With video 1`] = `
                 >
                   
                 </Text>
-              </View>
+              </Text>
             </View>
           </View>
         </View>
@@ -48839,7 +50451,7 @@ exports[`Storyshots Message Without header 1`] = `
                       },
                       undefined,
                       Object {
-                        "color": "#2f343d",
+                        "color": "#9ca2a8",
                       },
                     ]
                   }
@@ -49277,6 +50889,86 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   rocket.cat
                 </Text>
               </View>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 16,
+                      "fontWeight": "400",
+                      "textAlign": "left",
+                    },
+                    undefined,
+                    Object {
+                      "color": "#2f343d",
+                    },
+                  ]
+                }
+              >
+                <Text
+                  accessibilityLabel="This is a description "
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      Array [
+                        Object {},
+                        Object {
+                          "alignItems": "flex-start",
+                          "flexDirection": "row",
+                          "flexWrap": "wrap",
+                          "justifyContent": "flex-start",
+                          "marginBottom": 0,
+                          "marginTop": 0,
+                        },
+                      ],
+                    ]
+                  }
+                >
+                  This is a description 
+                </Text>
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "overflow": "hidden",
+                      },
+                      Array [
+                        Object {
+                          "height": 20,
+                          "width": 20,
+                        },
+                        Object {},
+                      ],
+                    ]
+                  }
+                >
+                  <FastImageView
+                    resizeMode="contain"
+                    source={
+                      Object {
+                        "priority": "high",
+                        "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
+                      }
+                    }
+                    style={
+                      Object {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      }
+                    }
+                  />
+                </View>
+              </Text>
             </View>
           </View>
         </View>
@@ -50121,6 +51813,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     numberOfLines={1}
                     style={
                       Array [
+                        Object {},
                         Object {
                           "backgroundColor": "transparent",
                           "fontFamily": "System",
@@ -50132,13 +51825,24 @@ exports[`Storyshots Room Item Alerts 1`] = `
                         Object {
                           "color": "#ffffff",
                         },
-                      ]
+                        Object {},
+                      ],
+                    ]
+                  }
+                >
+                  <FastImageView
+                    resizeMode="contain"
+                    source={
+                      Object {
+                        "priority": "high",
+                        "uri": "https://open.rocket.chat/emoji-custom/nyan_rocket.png",
+                      }
                     }
                   >
                     +999
                   </Text>
                 </View>
-              </View>
+              </Text>
             </View>
           </View>
         </View>
@@ -50568,7 +52272,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   >
                     1
                   </Text>
-                </View>
+                </Text>
               </View>
             </View>
           </View>
@@ -50725,9 +52429,10 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "textAlign": "left",
                   },
                   Object {
-                    "color": "#ffffff",
+                    "translateX": -80,
                   },
-                ]
+                ],
+                "width": 750,
               }
             >
               Favorite
@@ -50876,7 +52581,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 ]
               }
             >
-              <View
+              <Text
+                allowFontScaling={false}
                 style={
                   Array [
                     Object {
@@ -51167,6 +52873,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
           <View
             style={
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "justifyContent": "center",
                 "position": "absolute",
@@ -53650,8 +55357,7 @@ exports[`Storyshots Room Item Basic 1`] = `
                 }
               }
             >
-              <Text
-                allowFontScaling={false}
+              <View
                 style={
                   Array [
                     Object {
@@ -57662,7 +59368,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                         "lineHeight": 20,
                         "textAlign": "left",
                       },
-                      undefined,
                       Object {
                         "color": "#0d0e12",
                       },
@@ -58564,7 +60269,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                         "lineHeight": 20,
                         "textAlign": "left",
                       },
-                      undefined,
                       Object {
                         "color": "#0d0e12",
                       },
@@ -59488,6 +61192,42 @@ exports[`Storyshots Room Item Touch 1`] = `
                 >
                   rocket.cat
                 </Text>
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "alignItems": "center",
+                        "alignSelf": "center",
+                        "borderRadius": 4,
+                        "marginHorizontal": 4,
+                      },
+                      Object {
+                        "backgroundColor": "#e1e5e8",
+                      },
+                    ]
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 13,
+                          "fontWeight": "600",
+                          "paddingHorizontal": 4,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#6d6d72",
+                        },
+                      ]
+                    }
+                  >
+                    Auto-join
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -59877,7 +61617,30 @@ exports[`Storyshots Room Item Type 1`] = `
                         "lineHeight": 20,
                         "textAlign": "left",
                       },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
                       undefined,
+                    ]
+                  }
+                >
+                  10:00
+                </Text>
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="No Message"
+                  numberOfLines={2}
+                  style={
+                    Array [
                       Object {
                         "color": "#0d0e12",
                       },
@@ -59899,6 +61662,7 @@ exports[`Storyshots Room Item Type 1`] = `
           style={
             Array [
               Object {
+                "backgroundColor": "#54585e",
                 "height": 150,
                 "left": 0,
                 "position": "absolute",
@@ -61670,6 +63434,44 @@ exports[`Storyshots Room Item Type 1`] = `
                 />
               </View>
             </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View>
+      <View>
+        <View
+          pointerEvents="box-none"
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "right": 670,
+                "top": 0,
+                "transform": Array [
+                  Object {
+                    "translateX": -80,
+                  },
+                ],
+                "width": 750,
+              }
+            }
+          >
             <View
               style={
                 Array [
@@ -65448,8 +67250,7 @@ Array [
               }
             }
           >
-            <Text
-              allowFontScaling={false}
+            <View
               style={
                 Array [
                   Object {
@@ -65466,11 +67267,8 @@ Array [
                     undefined,
                   ],
                   Object {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
+                    "marginRight": 10,
                   },
-                  Object {},
                 ]
               }
             >
@@ -65849,8 +67647,7 @@ Array [
               }
             }
           >
-            <Text
-              allowFontScaling={false}
+            <View
               style={
                 Array [
                   Object {
@@ -65867,11 +67664,8 @@ Array [
                     undefined,
                   ],
                   Object {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
+                    "marginRight": 10,
                   },
-                  Object {},
                 ]
               }
             >
@@ -66239,8 +68033,7 @@ Array [
               }
             }
           >
-            <Text
-              allowFontScaling={false}
+            <View
               style={
                 Array [
                   Object {
@@ -66269,11 +68062,8 @@ Array [
                     ],
                   ],
                   Object {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
+                    "marginRight": 10,
                   },
-                  Object {},
                 ]
               }
             >
@@ -67631,7 +69421,7 @@ Array [
                   "textAlign": "left",
                 },
                 Object {
-                  "color": "#e8ebed",
+                  "color": "#cbced1",
                 },
                 Object {
                   "backgroundColor": "transparent",
@@ -67791,7 +69581,7 @@ Array [
                   "textAlign": "left",
                 },
                 Object {
-                  "color": "#e8ebed",
+                  "color": "#cbced1",
                 },
                 Object {
                   "backgroundColor": "transparent",
@@ -74309,7 +76099,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     "textAlign": "left",
                   },
                   Object {
-                    "color": "#e8ebed",
+                    "color": "#cbced1",
                   },
                   Object {
                     "flex": 1,
@@ -74661,7 +76451,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     "textAlign": "left",
                   },
                   Object {
-                    "color": "#e8ebed",
+                    "color": "#cbced1",
                   },
                   Object {
                     "flex": 1,

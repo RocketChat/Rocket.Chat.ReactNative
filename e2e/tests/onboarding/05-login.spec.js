@@ -1,7 +1,4 @@
-const {
-	expect, element, by, waitFor
-} = require('detox');
-const { navigateToLogin, tapBack, sleep } = require('../../helpers/app');
+const { navigateToLogin, tapBack } = require('../../helpers/app');
 const data = require('../../data');
 
 describe('Login screen', () => {
@@ -46,13 +43,13 @@ describe('Login screen', () => {
 			await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
 			await tapBack();
 		});
-	
+
 		it('should navigate to forgot password', async() => {
 			await element(by.id('login-view-forgot-password')).tap();
 			await waitFor(element(by.id('forgot-password-view'))).toExist().withTimeout(2000);
 			await tapBack();
 		});
-	
+
 		it('should insert wrong password and get error', async() => {
 			await element(by.id('login-view-email')).replaceText(data.users.regular.username);
 			await element(by.id('login-view-password')).replaceText('NotMyActualPassword');
@@ -60,7 +57,7 @@ describe('Login screen', () => {
 			await waitFor(element(by.text('Your credentials were rejected! Please try again.'))).toBeVisible().withTimeout(10000);
 			await element(by.text('OK')).tap();
 		});
-	
+
 		it('should login with success', async() => {
 			await element(by.id('login-view-password')).replaceText(data.users.regular.password);
 			await element(by.id('login-view-submit')).tap();

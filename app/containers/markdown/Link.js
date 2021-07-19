@@ -7,6 +7,7 @@ import { themes } from '../../constants/colors';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
+import openLink from '../../utils/openLink';
 
 const Link = React.memo(({
 	children, link, theme, onLinkPress
@@ -15,7 +16,10 @@ const Link = React.memo(({
 		if (!link || !onLinkPress) {
 			return;
 		}
-		onLinkPress(link);
+		if (onLinkPress) {
+			return onLinkPress(link);
+		}
+		openLink(link, theme);
 	};
 
 	const childLength = React.Children.toArray(children).filter(o => o).length;

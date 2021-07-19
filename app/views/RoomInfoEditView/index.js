@@ -292,34 +292,11 @@ class RoomInfoEditView extends React.Component {
 		}, 100);
 	}
 
-	handleDeleteTeam = async(selected) => {
-		logEvent(events.RI_EDIT_DELETE_TEAM);
-		const { navigation, isMasterDetail } = this.props;
-		const { room } = this.state;
-		try {
-			const result = await RocketChat.deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
-			if (result.success) {
-				if (isMasterDetail) {
-					navigation.navigate('DrawerNavigator');
-				} else {
-					navigation.navigate('RoomsListView');
-				}
-			}
-		} catch (e) {
-			logEvent(events.RI_EDIT_DELETE_TEAM_F);
-			log(e);
-			showErrorAlert(
-				e.data.error
-					? I18n.t(e.data.error)
-					: I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_team') }),
-				I18n.t('Cannot_delete')
-			);
-		}
-	}
-
 	deleteTeam = async() => {
 		const { room } = this.state;
-		const { navigation } = this.props;
+		const {
+			navigation, deleteCPermission, deletePPermission, deleteRoom
+		} = this.props;
 
 		try {
 			const db = database.active;
@@ -329,16 +306,27 @@ class RoomInfoEditView extends React.Component {
 				Q.where('team_main', Q.notEq(true))
 			);
 
-			if (teamChannels.length) {
+			const teamChannelOwner = [];
+			for (let i = 0; i < teamChannels.length; i += 1) {
+				const permissionType = teamChannels[i].t === 'c' ? deleteCPermission : deletePPermission;
+				// eslint-disable-next-line no-await-in-loop
+				const permissions = await RocketChat.hasPermission([
+					permissionType
+				], teamChannels[i].rid);
+
+				if (permissions[0]) { teamChannelOwner.push(teamChannels[i]); }
+			}
+
+			if (teamChannelOwner.length) {
 				navigation.navigate('SelectListView', {
 					title: 'Delete_Team',
-					data: teamChannels,
+					data: teamChannelOwner,
 					infoText: 'Select_channels_to_delete',
 					nextAction: (selected) => {
 						showConfirmationAlert({
 							message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
 							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-							onPress: () => this.handleDeleteTeam(selected)
+							onPress: () => deleteRoom('team', room, selected)
 						});
 					}
 				});
@@ -346,7 +334,7 @@ class RoomInfoEditView extends React.Component {
 				showConfirmationAlert({
 					message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-					onPress: () => this.handleDeleteTeam()
+					onPress: () => deleteRoom('team', room)
 				});
 			}
 		} catch (e) {
@@ -375,7 +363,7 @@ class RoomInfoEditView extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => deleteRoom(room.rid, room.t)
+					onPress: () => deleteRoom('channel', room)
 				}
 			],
 			{ cancelable: false }
@@ -767,7 +755,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	deleteRoom: (rid, t) => dispatch(deleteRoomAction(rid, t))
+	deleteRoom: (roomType, room, selected) => dispatch(deleteRoomAction(roomType, room, selected))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomInfoEditView));
