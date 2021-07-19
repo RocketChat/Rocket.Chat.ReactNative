@@ -1,6 +1,3 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
 const { navigateToLogin, login } = require('../../helpers/app');
 
@@ -13,7 +10,7 @@ describe('Create team screen', () => {
 		await login(data.users.regular.username, data.users.regular.password);
 	});
 
-	describe('New Message', async() => {
+	describe('New Message', () => {
 		before(async() => {
 			await element(by.id('rooms-list-view-create-channel')).tap();
 		});
@@ -28,17 +25,17 @@ describe('Create team screen', () => {
 		});
 	});
 
-	describe('Select Users', async() => {
+	describe('Select Users', () => {
 		it('should nav to create team', async() => {
 			await element(by.id('selected-users-view-submit')).tap();
 			await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(10000);
 		});
-	})
+	});
 
-	describe('Create Team', async() => {
-		describe('Usage', async() => {
+	describe('Create Team', () => {
+		describe('Usage', () => {
 			it('should get invalid team name', async() => {
-				await element(by.id('create-channel-name')).typeText(`${data.teams.private.name}`);
+				await element(by.id('create-channel-name')).typeText(`${ data.teams.private.name }`);
 				await element(by.id('create-channel-submit')).tap();
 				await element(by.text('OK')).tap();
 			});
@@ -52,10 +49,10 @@ describe('Create team screen', () => {
 				await waitFor(element(by.id(`room-view-title-${ teamName }`))).toExist().withTimeout(6000);
 				await expect(element(by.id(`room-view-title-${ teamName }`))).toExist();
 			});
-		})
+		});
 	});
 
-	describe('Delete Team', async() => {
+	describe('Delete Team', () => {
 		it('should navigate to room info edit view', async() => {
 			await element(by.id('room-header')).tap();
 			await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
