@@ -33,6 +33,16 @@ module.exports = {
 		"mocha": true
 	},
 	"rules": {
+		"import/extensions": [
+			"error",
+			"ignorePackages",
+			{
+				"js": "warning",
+				"jsx": "warning",
+				"ts": "warning",
+				"tsx": "warning"
+			}
+		],
 		"react/jsx-filename-extension": [1, {
 			"extensions": [".js", ".jsx", ".ts", ".tsx"]
 		}],
