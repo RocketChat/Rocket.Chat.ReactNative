@@ -84,7 +84,7 @@ commands:
           name: Install pods libs
           command: |
             bundle exec pod install
-            cat Podfile.lock
+            git diff Podfile.lock
           working_directory: ios
       - save_cache:
           name: Save pods specs and pods cache
@@ -344,6 +344,7 @@ commands:
           at: ios
       - restore_cache: *restore-gems-cache
       - run: *update-fastlane-ios
+      - manage-pods
       - run:
           name: Fastlane Tesflight Upload
           command: |
