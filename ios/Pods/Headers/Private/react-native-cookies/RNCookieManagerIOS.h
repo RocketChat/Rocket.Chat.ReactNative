@@ -1,1 +1,1 @@
-../../../../../node_modules/@react-native-community/cookies/ios/RNCookieManagerIOS/RNCookieManagerIOS.h
+../../../../../node_modules/@react-native-cookies/cookies/ios/RNCookieManagerIOS/RNCookieManagerIOS.h
