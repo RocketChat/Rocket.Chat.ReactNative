@@ -8106,9 +8106,9 @@ flatted@^2.0.0:
   integrity sha512-r5wGx7YeOwNWNlCA0wQ86zKyDLMQr+/RB8xy74M4hTphfmjlijTSSXGuH8rnvKZnfT9i+75zmd8jcKdMR4O6jA==
 
 flow-parser@0.*:
-  version "0.155.0"
-  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.155.0.tgz#bfff4287fa4e8b046937e881851736fbef473b3a"
-  integrity sha512-DegBwxIjw8ZmgLO9Qae/uSDWlioenV7mbfMoPem97y1OZVxlTAXNVHt5JthwrGLwk4kpmHQ3VRcp1Jxj84NcWw==
+  version "0.155.1"
+  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.155.1.tgz#b10267a92f83fc6a2173195b0d111a9a5229d7d4"
+  integrity sha512-EU55hHBilG20Qu80tMYrVjEIqB3FcXPPJwndNcf6UryvhiF74dQ2FX8zPV1LIpuvkW3P13wgZlsnG94oRihgpw==
 
 flow-parser@^0.121.0:
   version "0.121.0"
@@ -13475,9 +13475,9 @@ react-dev-utils@^9.0.0:
     text-table "0.2.0"
 
 react-devtools-core@^4.6.0:
-  version "4.13.5"
-  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.13.5.tgz#803e9ae8f7ab46deaa04129b376f3f21b2eb6ef1"
-  integrity sha512-k+P5VSKM6P22Go9IQ8dJmjj9fbztvKt1iRDI/4wS5oTvd1EnytIJMYB59wZt+D3kgp64jklNX/MRmY42xAQ08g==
+  version "4.14.0"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-4.14.0.tgz#4b9dc50937ed4cf4c04fa293430cac62d829fa8b"
+  integrity sha512-cE7tkSUkGCDxTA79pntDGJCBgzNN/XxA3kgPdXujdfSfEfVhzrItQIEsN0kCN/hJJACDvH2Q8p5+tJb/K4B3qA==
   dependencies:
     shell-quote "^1.6.1"
     ws "^7"
