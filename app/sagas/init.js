@@ -67,8 +67,8 @@ const restore = function* restore() {
 	}
 };
 
-const start = function start() {
-	RNBootSplash.hide();
+const start = function* start() {
+	yield RNBootSplash.hide();
 };
 
 const root = function* root() {

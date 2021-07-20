@@ -103,7 +103,7 @@ export const localAuthenticate = async(server) => {
 	// if screen lock is enabled
 	if (serverRecord?.autoLock) {
 		// Make sure splash screen has been hidden
-		RNBootSplash.hide();
+		await RNBootSplash.hide();
 
 		// Check if the app has passcode
 		const result = await checkHasPasscode({ serverRecord });
