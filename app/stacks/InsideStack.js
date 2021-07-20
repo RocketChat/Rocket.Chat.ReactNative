@@ -74,6 +74,7 @@ import QueueListView from '../ee/omnichannel/views/QueueListView';
 import AddChannelTeamView from '../views/AddChannelTeamView';
 import AddExistingChannelView from '../views/AddExistingChannelView';
 import SelectListView from '../views/SelectListView';
+import DiscussionMessagesView from '../views/DiscussionMessagesView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
@@ -113,6 +114,10 @@ const ChatsStackNavigator = () => {
 				name='RoomMembersView'
 				component={RoomMembersView}
 				options={RoomMembersView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='DiscussionMessagesView'
+				component={DiscussionMessagesView}
 			/>
 			<ChatsStack.Screen
 				name='SearchMessagesView'
