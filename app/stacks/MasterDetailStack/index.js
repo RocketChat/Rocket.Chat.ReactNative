@@ -64,6 +64,7 @@ import QueueListView from '../../ee/omnichannel/views/QueueListView';
 import AddChannelTeamView from '../../views/AddChannelTeamView';
 import AddExistingChannelView from '../../views/AddExistingChannelView';
 import SelectListView from '../../views/SelectListView';
+import DiscussionMessagesView from '../../views/DiscussionMessagesView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
@@ -211,6 +212,10 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 				<ModalStack.Screen
 					name='ThreadMessagesView'
 					component={ThreadMessagesView}
+				/>
+				<ModalStack.Screen
+					name='DiscussionMessagesView'
+					component={DiscussionMessagesView}
 				/>
 				<ModalStack.Screen
 					name='TeamChannelsView'

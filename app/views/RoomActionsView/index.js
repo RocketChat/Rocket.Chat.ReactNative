@@ -980,13 +980,12 @@ class RoomActionsView extends React.Component {
 									<List.Item
 										title='Discussions'
 										onPress={() => this.onPressTouchable({
-											route: 'ThreadMessagesView',
+											route: 'DiscussionMessagesView',
 											params: {
 												rid,
 												t,
 												prid,
-												name: 'Discussions',
-												isDiscussion: true
+												name: 'Discussions'
 											}
 										})}
 										testID='room-actions-discussions'
