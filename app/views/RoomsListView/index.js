@@ -71,7 +71,6 @@ const DISCUSSIONS_HEADER = 'Discussions';
 const TEAMS_HEADER = 'Teams';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
-const GROUPS_HEADER = 'Private_Groups';
 const OMNICHANNEL_HEADER = 'Open_Livechats';
 const QUERY_SIZE = 20;
 
@@ -480,13 +479,11 @@ class RoomsListView extends React.Component {
 			if (groupByType) {
 				const teams = chats.filter(s => filterIsTeam(s));
 				const discussions = chats.filter(s => filterIsDiscussion(s));
-				const channels = chats.filter(s => s.t === 'c' && !filterIsDiscussion(s) && !filterIsTeam(s));
-				const privateGroup = chats.filter(s => s.t === 'p' && !filterIsDiscussion(s) && !filterIsTeam(s));
+				const channels = chats.filter(s => (s.t === 'c' || s.t === 'p') && !filterIsDiscussion(s) && !filterIsTeam(s));
 				const direct = chats.filter(s => s.t === 'd' && !filterIsDiscussion(s) && !filterIsTeam(s));
 				tempChats = this.addRoomsGroup(teams, TEAMS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
-				tempChats = this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
 			} else if (showUnread || showFavorites || isOmnichannelAgent) {
 				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);

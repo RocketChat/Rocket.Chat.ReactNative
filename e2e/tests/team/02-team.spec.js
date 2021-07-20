@@ -1,8 +1,7 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const {
+	navigateToLogin, login, tapBack, sleep, searchRoom
+} = require('../../helpers/app');
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);
@@ -29,7 +28,7 @@ async function backToActions() {
 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
 }
 async function closeActionSheet() {
-  await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
+	await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
 }
 
 async function waitForToast() {
@@ -49,13 +48,13 @@ describe('Team', () => {
 		await navigateToRoom(team);
 	});
 
-  describe('Team Room', async() => {
-		describe('Team Header', async() => {
+	describe('Team Room', () => {
+		describe('Team Header', () => {
 			it('should have actions button ', async() => {
 				await expect(element(by.id('room-header'))).toExist();
 			});
-               
-      it('should have team channels button ', async() => {
+
+			it('should have team channels button ', async() => {
 				await expect(element(by.id('room-view-header-team-channels'))).toExist();
 			});
 
@@ -69,19 +68,19 @@ describe('Team', () => {
 			});
 		});
 
-		describe('Team Header Usage', async() => {
+		describe('Team Header Usage', () => {
 			it('should navigate to team channels view', async() => {
 				await element(by.id('room-view-header-team-channels')).tap();
 				await waitFor(element(by.id('team-channels-view'))).toExist().withTimeout(5000);
 			});
-		})
+		});
 
-    describe('Team Channels Header', async() => {
+		describe('Team Channels Header', () => {
 			it('should have actions button ', async() => {
 				await expect(element(by.id('room-header'))).toExist();
 			});
-               
-      it('should have team channels button ', async() => {
+
+			it('should have team channels button ', async() => {
 				await expect(element(by.id('team-channels-view-create'))).toExist();
 			});
 
@@ -90,10 +89,10 @@ describe('Team', () => {
 			});
 		});
 
-    describe('Team Channels Header Usage', async() => {
+		describe('Team Channels Header Usage', () => {
 			it('should navigate to add team channels view', async() => {
 				await element(by.id('team-channels-view-create')).tap();
-        await waitFor(element(by.id('add-channel-team-view'))).toExist().withTimeout(5000);
+				await waitFor(element(by.id('add-channel-team-view'))).toExist().withTimeout(5000);
 			});
 
 			it('should have create new button', async() => {
@@ -103,11 +102,10 @@ describe('Team', () => {
 			it('should add existing button', async() => {
 				await waitFor(element(by.id('add-channel-team-view-add-existing'))).toExist().withTimeout(5000);
 			});
-		})
+		});
 
-    describe('Channels', async() => {
+		describe('Channels', () => {
 			it('should create new channel for team', async() => {
-
 				await element(by.id('add-channel-team-view-create-channel')).tap();
 
 				await element(by.id('select-users-view-search')).replaceText('rocket.cat');
@@ -138,12 +136,11 @@ describe('Team', () => {
 			});
 
 			it('should add existing channel to team', async() => {
-
 				await element(by.id('team-channels-view-create')).tap();
 				await waitFor(element(by.id('add-channel-team-view'))).toExist().withTimeout(5000);
 
 				await element(by.id('add-channel-team-view-add-existing')).tap();
-				await waitFor(element(by.id('add-existing-channel-view'))).toExist().withTimeout(60000)
+				await waitFor(element(by.id('add-existing-channel-view'))).toExist().withTimeout(60000);
 				await expect(element(by.id(`add-existing-channel-view-item-${ existingRoom }`))).toExist();
 				await element(by.id(`add-existing-channel-view-item-${ existingRoom }`)).tap();
 				await waitFor(element(by.id('add-existing-channel-view-submit'))).toExist().withTimeout(6000);
@@ -174,14 +171,14 @@ describe('Team', () => {
 				await waitFor(element(by.id('auto-join-tag'))).toBeNotVisible().withTimeout(5000);
 				await waitFor(element(by.id(`rooms-list-view-item-${ existingRoom }`))).toExist().withTimeout(6000);
 			});
-		})
+		});
 
-		describe('Team actions', () => {	
+		describe('Team actions', () => {
 			before(async() => {
 				await tapBack();
 				await navigateToRoomActions();
 			});
-	
+
 			it('should add users to the team', async() => {
 				await waitFor(element(by.id('room-actions-add-user'))).toExist().withTimeout(10000);
 				await element(by.id('room-actions-add-user')).tap();
@@ -214,9 +211,9 @@ describe('Team', () => {
 				await element(by.id('room-actions-leave-channel')).tap();
 
 				await waitFor(element(by.id('select-list-view'))).toExist().withTimeout(2000);
-				await waitFor(element(by.id(`select-list-view-item-${room}`))).toExist().withTimeout(2000);
-				await waitFor(element(by.id(`select-list-view-item-${existingRoom}`))).toExist().withTimeout(2000);
-				await element(by.id(`select-list-view-item-${room}`)).tap();
+				await waitFor(element(by.id(`select-list-view-item-${ room }`))).toExist().withTimeout(2000);
+				await waitFor(element(by.id(`select-list-view-item-${ existingRoom }`))).toExist().withTimeout(2000);
+				await element(by.id(`select-list-view-item-${ room }`)).tap();
 
 				await waitFor(element(by.label('You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.'))).toExist().withTimeout(2000);
 				await element(by.text('OK')).tap();
@@ -227,8 +224,8 @@ describe('Team', () => {
 				await tapBack();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
 			});
-	
-			describe('Room Members', async() => {
+
+			describe('Room Members', () => {
 				before(async() => {
 					await element(by.id('room-actions-members')).tap();
 					await waitFor(element(by.id('room-members-view'))).toExist().withTimeout(2000);
@@ -278,9 +275,9 @@ describe('Team', () => {
 					await element(by.id('room-actions-leave-channel')).tap();
 
 					await waitFor(element(by.id('select-list-view'))).toExist().withTimeout(2000);
-					await waitFor(element(by.id(`select-list-view-item-${room}`))).toExist().withTimeout(2000);
-					await waitFor(element(by.id(`select-list-view-item-${existingRoom}`))).toExist().withTimeout(2000);
-					await element(by.id(`select-list-view-item-${room}`)).tap();
+					await waitFor(element(by.id(`select-list-view-item-${ room }`))).toExist().withTimeout(2000);
+					await waitFor(element(by.id(`select-list-view-item-${ existingRoom }`))).toExist().withTimeout(2000);
+					await element(by.id(`select-list-view-item-${ room }`)).tap();
 
 					await waitFor(element(by.label('You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.'))).toExist().withTimeout(2000);
 					await element(by.text('OK')).tap();

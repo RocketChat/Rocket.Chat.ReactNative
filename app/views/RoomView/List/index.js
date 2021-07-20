@@ -269,7 +269,7 @@ class ListContainer extends React.Component {
 		const { listRef } = this.props;
 		const index = messages.findIndex(item => item.id === messageId);
 		if (index > -1) {
-			listRef.current.getNode().scrollToIndex({ index, viewPosition: 0.5 });
+			listRef.current.getNode().scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
 			await new Promise(res => setTimeout(res, 300));
 			if (!this.viewableItems.map(vi => vi.key).includes(messageId)) {
 				if (!this.jumping) {

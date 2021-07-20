@@ -1,12 +1,11 @@
 const {
-	expect, element, by, waitFor
-} = require('detox');
-const { navigateToLogin, login, sleep, tapBack, mockMessage, searchRoom, logout } = require('../../helpers/app');
+	navigateToLogin, login, sleep, tapBack, mockMessage, searchRoom, logout
+} = require('../../helpers/app');
 
 const data = require('../../data');
 
-const testuser = data.users.regular
-const otheruser = data.users.alternate
+const testuser = data.users.regular;
+const otheruser = data.users.alternate;
 
 const checkServer = async(server) => {
 	const label = `Connected to ${ server }`;
@@ -14,11 +13,11 @@ const checkServer = async(server) => {
 	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 	await waitFor(element(by.label(label))).toBeVisible().withTimeout(60000);
 	await element(by.id('sidebar-close-drawer')).tap();
-}
+};
 
 const checkBanner = async() => {
 	await waitFor(element(by.id('listheader-encryption').withDescendant(by.label('Save Your Encryption Password')))).toBeVisible().withTimeout(10000);
-}
+};
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);
@@ -45,36 +44,36 @@ describe('E2E Encryption', () => {
 	const room = `encrypted${ data.random }`;
 	const newPassword = 'abc';
 
-	before(async () => {
+	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 	});
 
-	describe('Banner', async() => {
-		describe('Render', async () => {
-			it('should have encryption badge', async () => {
+	describe('Banner', () => {
+		describe('Render', () => {
+			it('should have encryption badge', async() => {
 				await checkBanner();
 			});
 		});
-	
-		describe('Usage', async () => {
+
+		describe('Usage', () => {
 			it('should tap encryption badge and open save password modal', async() => {
 				await element(by.id('listheader-encryption')).tap();
 				await waitFor(element(by.id('e2e-save-password-view'))).toBeVisible().withTimeout(2000);
 			});
-	
+
 			it('should tap "How it works" and navigate', async() => {
 				await element(by.id('e2e-save-password-view-how-it-works').and(by.label('How It Works'))).tap();
 				await waitFor(element(by.id('e2e-how-it-works-view'))).toBeVisible().withTimeout(2000);
 				await tapBack();
 			});
-			
+
 			it('should tap "Save my password" and close modal', async() => {
 				await element(by.id('e2e-save-password-view-saved-password').and(by.label('I Saved My E2E Password'))).tap();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			});
-	
+
 			it('should create encrypted room', async() => {
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view'))).toBeVisible().withTimeout(2000);
@@ -92,15 +91,15 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 				await waitFor(element(by.id(`room-view-title-${ room }`))).toBeVisible().withTimeout(60000);
 			});
-		
+
 			it('should send message and be able to read it', async() => {
 				await mockMessage('message');
 				await tapBack();
 			});
 		});
-	})
+	});
 
-	describe('Security and Privacy', async() => {
+	describe('Security and Privacy', () => {
 		it('should navigate to security privacy', async() => {
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
 			await element(by.id('rooms-list-view-sidebar')).tap();
@@ -120,7 +119,7 @@ describe('E2E Encryption', () => {
 		});
 	});
 
-	describe('E2E Encryption Security', async() => {
+	describe('E2E Encryption Security', () => {
 		it('should navigate to e2e encryption security', async() => {
 			await element(by.id('security-privacy-view-e2e-encryption')).tap();
 			await waitFor(element(by.id('e2e-encryption-security-view'))).toBeVisible().withTimeout(2000);
@@ -133,9 +132,9 @@ describe('E2E Encryption', () => {
 				await expect(element(by.id('e2e-encryption-security-view-change-password').and(by.label('Save Changes')))).toExist();
 				await expect(element(by.id('e2e-encryption-security-view-reset-key').and(by.label('Reset E2E Key')))).toExist();
 			});
-		})
+		});
 
-		describe('Change password', async() => {
+		describe('Change password', () => {
 			it('should change password', async() => {
 				await element(by.id('e2e-encryption-security-view-password')).typeText(newPassword);
 				await element(by.id('e2e-encryption-security-view-change-password')).tap();
@@ -184,7 +183,7 @@ describe('E2E Encryption', () => {
 			});
 		});
 
-		describe('Reset E2E key', async() => {
+		describe('Reset E2E key', () => {
 			it('should reset e2e key', async() => {
 				await tapBack();
 				await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(2000);
@@ -195,7 +194,7 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(2000);
 				await expect(element(by.text('You\'re going to be logged out.'))).toExist();
 				await element(by.label('Yes, reset it').and(by.type('UILabel'))).tap();
-				await sleep(2000)
+				await sleep(2000);
 				await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(10000);
 				await waitFor(element(by.text('You\'ve been logged out by the server. Please log in again.'))).toExist().withTimeout(2000);
 				await element(by.label('OK').and(by.type('_UIAlertControllerActionView'))).tap();
@@ -203,7 +202,7 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
 				await login(testuser.username, testuser.password);
 				await waitFor(element(by.id('listheader-encryption').withDescendant(by.label('Save Your Encryption Password')))).toBeVisible().withTimeout(2000);
-			})
+			});
 		});
 	});
 
@@ -211,21 +210,21 @@ describe('E2E Encryption', () => {
 		it('check save banner', async() => {
 			await checkServer(data.server);
 			await checkBanner();
-		})
-	
+		});
+
 		it('should add server and create new user', async() => {
 			await sleep(5000);
 			await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 			await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);
 			await element(by.id('rooms-list-header-server-add')).tap();
-	
+
 			// TODO: refactor
 			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-			await element(by.id('new-server-view-input')).typeText(`${data.alternateServer}\n`);
+			await element(by.id('new-server-view-input')).typeText(`${ data.alternateServer }\n`);
 			await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
 			await element(by.id('workspace-view-register')).tap();
 			await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
-	
+
 			// Register new user
 			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
@@ -233,10 +232,10 @@ describe('E2E Encryption', () => {
 			await element(by.id('register-view-password')).typeText(data.registeringUser.password);
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
-	
+
 			await checkServer(data.alternateServer);
 		});
-	
+
 		it('should change back', async() => {
 			await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 			await waitFor(element(by.id('rooms-list-header-server-dropdown'))).toBeVisible().withTimeout(5000);

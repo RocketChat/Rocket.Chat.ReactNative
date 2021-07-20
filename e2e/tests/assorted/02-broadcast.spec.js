@@ -1,13 +1,13 @@
+// const OTP = require('otp.js');
+// const GA = OTP.googleAuthenticator;
+
 const {
-	device, expect, element, by, waitFor
-} = require('detox');
-const OTP = require('otp.js');
-const GA = OTP.googleAuthenticator;
-const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
+	navigateToLogin, login, mockMessage, tapBack, searchRoom
+} = require('../../helpers/app');
 const data = require('../../data');
 
-const testuser = data.users.regular
-const otheruser = data.users.alternate
+const testuser = data.users.regular;
+const otheruser = data.users.alternate;
 
 describe('Broadcast room', () => {
 	before(async() => {
@@ -28,7 +28,7 @@ describe('Broadcast room', () => {
 		await element(by.id('selected-users-view-submit')).tap();
 		await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(5000);
 		await element(by.id('create-channel-name')).replaceText(`broadcast${ data.random }`);
-		await element(by.id('create-channel-broadcast')).longPress(); //https://github.com/facebook/react-native/issues/28032 
+		await element(by.id('create-channel-broadcast')).longPress(); // https://github.com/facebook/react-native/issues/28032
 		await element(by.id('create-channel-submit')).tap();
 		await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(60000);
 		await waitFor(element(by.id(`room-view-title-broadcast${ data.random }`))).toBeVisible().withTimeout(60000);
@@ -54,11 +54,11 @@ describe('Broadcast room', () => {
 		await navigateToLogin();
 		await login(otheruser.username, otheruser.password);
 
-		//await waitFor(element(by.id('two-factor'))).toBeVisible().withTimeout(5000);
-		//await expect(element(by.id('two-factor'))).toBeVisible();
-		//const code = GA.gen(data.alternateUserTOTPSecret);
-		//await element(by.id('two-factor-input')).replaceText(code);
-		//await element(by.id('two-factor-send')).tap();
+		// await waitFor(element(by.id('two-factor'))).toBeVisible().withTimeout(5000);
+		// await expect(element(by.id('two-factor'))).toBeVisible();
+		// const code = GA.gen(data.alternateUserTOTPSecret);
+		// await element(by.id('two-factor-input')).replaceText(code);
+		// await element(by.id('two-factor-send')).tap();
 
 		await searchRoom(`broadcast${ data.random }`);
 		await element(by.id(`rooms-list-view-item-broadcast${ data.random }`)).tap();

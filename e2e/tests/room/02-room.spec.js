@@ -1,8 +1,7 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage, dismissReviewNag, tryTapping, logout } = require('../../helpers/app');
+const {
+	navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage, dismissReviewNag, tryTapping
+} = require('../../helpers/app');
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);
@@ -20,14 +19,14 @@ describe('Room screen', () => {
 		await navigateToRoom(mainRoom);
 	});
 
-	describe('Render', async() => {
+	describe('Render', () => {
 		it('should have room screen', async() => {
 			await expect(element(by.id('room-view'))).toExist();
 			await waitFor(element(by.id(`room-view-title-${ mainRoom }`))).toExist().withTimeout(5000);
 		});
 
 		// Render - Header
-		describe('Header', async() => {
+		describe('Header', () => {
 			it('should have actions button ', async() => {
 				await expect(element(by.id('room-header'))).toExist();
 			});
@@ -38,7 +37,7 @@ describe('Room screen', () => {
 		});
 
 		// Render - Messagebox
-		describe('Messagebox', async() => {
+		describe('Messagebox', () => {
 			it('should have messagebox', async() => {
 				await expect(element(by.id('messagebox'))).toExist();
 			});
@@ -63,15 +62,15 @@ describe('Room screen', () => {
 		});
 	});
 
-	describe('Usage', async() => {
-		describe('Messagebox', async() => {
+	describe('Usage', () => {
+		describe('Messagebox', () => {
 			it('should send message', async() => {
-				await mockMessage('message')
+				await mockMessage('message');
 				await expect(element(by.label(`${ data.random }message`)).atIndex(0)).toExist();
 			});
 
 
-			it('should show/hide emoji keyboard', async () => {
+			it('should show/hide emoji keyboard', async() => {
 				if (device.getPlatform() === 'android') {
 					await element(by.id('messagebox-open-emoji')).tap();
 					await waitFor(element(by.id('messagebox-keyboard-emoji'))).toExist().withTimeout(10000);
@@ -105,20 +104,20 @@ describe('Room screen', () => {
 			it('should not show emoji autocomplete on semicolon in middle of a string', async() => {
 				await element(by.id('messagebox-input')).tap();
 				// await element(by.id('messagebox-input')).replaceText(':');
-				await element(by.id('messagebox-input')).typeText('name:is'); 
+				await element(by.id('messagebox-input')).typeText('name:is');
 				await waitFor(element(by.id('messagebox-container'))).toNotExist().withTimeout(20000);
 				await element(by.id('messagebox-input')).clearText();
 			});
 
 			it('should show and tap on user autocomplete and send mention', async() => {
-				const username = data.users.regular.username
+				const { username } = data.users.regular;
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText(`@${ username }`);
 				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(4000);
-				await waitFor(element(by.id(`mention-item-${ username }`))).toBeVisible().withTimeout(4000)
+				await waitFor(element(by.id(`mention-item-${ username }`))).toBeVisible().withTimeout(4000);
 				await tryTapping(element(by.id(`mention-item-${ username }`)), 2000, true);
 				await expect(element(by.id('messagebox-input'))).toHaveText(`@${ username } `);
-				await tryTapping(element(by.id('messagebox-input')), 2000)
+				await tryTapping(element(by.id('messagebox-input')), 2000);
 				await element(by.id('messagebox-input')).typeText(`${ data.random }mention`);
 				await element(by.id('messagebox-send-message')).tap();
 				// await waitFor(element(by.label(`@${ data.user } ${ data.random }mention`)).atIndex(0)).toExist().withTimeout(60000);
@@ -126,7 +125,7 @@ describe('Room screen', () => {
 
 			it('should not show user autocomplete on @ in the middle of a string', async() => {
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).typeText(`email@gmail`);
+				await element(by.id('messagebox-input')).typeText('email@gmail');
 				await waitFor(element(by.id('messagebox-container'))).toNotExist().withTimeout(4000);
 				await element(by.id('messagebox-input')).clearText();
 			});
@@ -134,9 +133,9 @@ describe('Room screen', () => {
 			it('should show and tap on room autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText('#general');
-				//await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(4000);
+				// await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(4000);
 				await waitFor(element(by.id('mention-item-general'))).toBeVisible().withTimeout(4000);
-				await tryTapping(element(by.id('mention-item-general')), 2000, true)
+				await tryTapping(element(by.id('mention-item-general')), 2000, true);
 				await expect(element(by.id('messagebox-input'))).toHaveText('#general ');
 				await element(by.id('messagebox-input')).clearText();
 			});
@@ -147,7 +146,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('messagebox-container'))).toNotExist().withTimeout(4000);
 				await element(by.id('messagebox-input')).clearText();
 			});
-			it('should draft message', async () => {
+			it('should draft message', async() => {
 				await element(by.id('messagebox-input')).tap();
 				await element(by.id('messagebox-input')).typeText(`${ data.random }draft`);
 				await tapBack();
@@ -159,10 +158,10 @@ describe('Room screen', () => {
 
 				await navigateToRoom(mainRoom);
 				await expect(element(by.id('messagebox-input'))).toHaveText('');
-			});			
+			});
 		});
 
-		describe('Message', async() => {
+		describe('Message', () => {
 			it('should copy permalink', async() => {
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
@@ -184,9 +183,9 @@ describe('Room screen', () => {
 			});
 
 			it('should star message', async() => {
-				await starMessage('message')
+				await starMessage('message');
 
-				await sleep(1000) //https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/2324
+				await sleep(1000); // https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/2324
 				await element(by.label(`${ data.random }message`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
@@ -229,8 +228,8 @@ describe('Room screen', () => {
 			});
 
 			it('should ask for review', async() => {
-				await dismissReviewNag() //TODO: Create a proper test for this elsewhere.
-			})
+				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
+			});
 
 			it('should remove reaction', async() => {
 				await element(by.id('message-reaction-:grinning:')).tap();
@@ -263,8 +262,8 @@ describe('Room screen', () => {
 			});
 
 			it('should pin message', async() => {
-				await mockMessage('pin')
-				await pinMessage('pin')
+				await mockMessage('pin');
+				await pinMessage('pin');
 
 				await waitFor(element(by.label(`${ data.random }pin`)).atIndex(0)).toExist().withTimeout(5000);
 				await waitFor(element(by.label(`${ data.users.regular.username } Message pinned`)).atIndex(0)).toExist().withTimeout(5000);
@@ -277,7 +276,7 @@ describe('Room screen', () => {
 			});
 
 			it('should delete message', async() => {
-				await mockMessage('delete')
+				await mockMessage('delete');
 
 				await waitFor(element(by.label(`${ data.random }delete`)).atIndex(0)).toBeVisible();
 				await element(by.label(`${ data.random }delete`)).atIndex(0).longPress();
