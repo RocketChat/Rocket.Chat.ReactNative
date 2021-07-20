@@ -28,7 +28,7 @@ import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './met
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
-import getSettings, { getLoginSettings, setSettings } from './methods/getSettings';
+import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
 import { setPermissions, getPermissions } from './methods/getPermissions';
@@ -866,6 +866,13 @@ const RocketChat = {
 		};
 		return this.sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
 	},
+	convertTeamToChannel({ teamId, selected }) {
+		const params = {
+			teamId,
+			...(selected.length && { roomsToRemove: selected })
+		};
+		return this.sdk.post('teams.convertToChannel', params);
+	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
@@ -883,6 +890,7 @@ const RocketChat = {
 	getSettings,
 	getLoginSettings,
 	setSettings,
+	subscribeSettings,
 	getPermissions,
 	setPermissions,
 	getCustomEmojis,

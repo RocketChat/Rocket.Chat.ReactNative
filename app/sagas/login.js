@@ -80,6 +80,10 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 	}
 };
 
+const subscribeSettings = function* subscribeSettings() {
+	yield RocketChat.subscribeSettings();
+};
+
 const fetchPermissions = function* fetchPermissions() {
 	yield RocketChat.getPermissions();
 };
@@ -133,6 +137,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
 		yield fork(fetchEnterpriseModules, { user });
+		yield fork(subscribeSettings);
 		yield put(encryptionInit());
 
 		setLanguage(user?.language);
