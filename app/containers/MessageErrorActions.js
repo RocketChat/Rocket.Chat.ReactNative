@@ -95,7 +95,6 @@ const MessageErrorActions = forwardRef(({ tmid }, ref) => {
 	}));
 });
 MessageErrorActions.propTypes = {
-	message: PropTypes.object,
 	tmid: PropTypes.string
 };
 
