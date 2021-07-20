@@ -1,11 +1,11 @@
 {
   "name": "RNBootSplash",
   "dependencies": {
-    "React": [
+    "React-Core": [
 
     ]
   },
-  "version": "2.2.5",
+  "version": "3.2.4",
   "license": "MIT",
   "summary": "Display a bootsplash on your app starts. Hide it when you want.",
   "authors": "Mathieu Acthernoene <zoontek@gmail.com>",
@@ -17,7 +17,7 @@
   "requires_arc": true,
   "source": {
     "git": "https://github.com/zoontek/react-native-bootsplash.git",
-    "tag": "2.2.5"
+    "tag": "3.2.4"
   },
   "source_files": "ios/*.{h,m}"
 }
