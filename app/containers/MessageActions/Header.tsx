@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import {
-	View, Text, FlatList, StyleSheet
-} from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
@@ -13,6 +10,27 @@ import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
+import {TEmoji} from "../EmojiPicker";
+
+interface IHeader {
+	handleReaction: Function;
+	server: string;
+	message: object;
+	isMasterDetail: boolean;
+	theme: string;
+}
+
+interface THeaderItem {
+	item: TEmoji;
+	onReaction: Function;
+	server: string;
+	theme: string;
+}
+
+interface THeaderFooter {
+	onReaction: any;
+	theme: string;
+}
 
 export const HEADER_HEIGHT = 36;
 const ITEM_SIZE = 36;
@@ -43,13 +61,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const keyExtractor = item => item?.id || item;
+const keyExtractor = (item: any) => item?.id || item;
 
 const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face', 'smiley'];
 
-const HeaderItem = React.memo(({
-	item, onReaction, server, theme
-}) => (
+const HeaderItem = React.memo(({ item, onReaction, server, theme }: THeaderItem) => (
 	<Button
 		testID={`message-actions-emoji-${ item.content || item }`}
 		onPress={() => onReaction({ emoji: `:${ item.content || item }:` })}
@@ -65,14 +81,8 @@ const HeaderItem = React.memo(({
 		)}
 	</Button>
 ));
-HeaderItem.propTypes = {
-	item: PropTypes.string,
-	onReaction: PropTypes.func,
-	server: PropTypes.string,
-	theme: PropTypes.string
-};
 
-const HeaderFooter = React.memo(({ onReaction, theme }) => (
+const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
 	<Button
 		testID='add-reaction'
 		onPress={onReaction}
@@ -82,16 +92,10 @@ const HeaderFooter = React.memo(({ onReaction, theme }) => (
 		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
 	</Button>
 ));
-HeaderFooter.propTypes = {
-	onReaction: PropTypes.func,
-	theme: PropTypes.string
-};
 
-const Header = React.memo(({
-	handleReaction, server, message, isMasterDetail, theme
-}) => {
+const Header = React.memo(({ handleReaction, server, message, isMasterDetail, theme }: IHeader) => {
 	const [items, setItems] = useState([]);
-	const { width, height } = useDimensions();
+	const { width, height }: any = useDimensions();
 
 	const setEmojis = async() => {
 		try {
@@ -114,11 +118,11 @@ const Header = React.memo(({
 		setEmojis();
 	}, []);
 
-	const onReaction = ({ emoji }) => handleReaction(emoji, message);
+	const onReaction = ({ emoji }: {emoji: TEmoji}) => handleReaction(emoji, message);
 
-	const renderItem = useCallback(({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme} />);
+	const renderItem = useCallback(({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme} />, []);
 
-	const renderFooter = useCallback(() => <HeaderFooter onReaction={onReaction} theme={theme} />);
+	const renderFooter = useCallback(() => <HeaderFooter onReaction={onReaction} theme={theme} />, []);
 
 	return (
 		<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
@@ -135,11 +139,5 @@ const Header = React.memo(({
 		</View>
 	);
 });
-Header.propTypes = {
-	handleReaction: PropTypes.func,
-	server: PropTypes.string,
-	message: PropTypes.object,
-	isMasterDetail: PropTypes.bool,
-	theme: PropTypes.string
-};
+
 export default withTheme(Header);

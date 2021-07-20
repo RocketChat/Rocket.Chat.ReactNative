@@ -17,6 +17,37 @@ import { useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT } from './Header';
 import events from '../../utils/log/events';
 
+interface IMessageActions {
+	room: {
+		rid: string | number;
+		autoTranslateLanguage: any;
+		autoTranslate: any;
+		reactWhenReadOnly: any;
+	};
+	tmid: string;
+	user: {
+		id: string | number;
+	};
+	editInit: Function;
+	reactionInit: Function;
+	onReactionPress: Function;
+	replyInit: Function;
+	isMasterDetail: boolean;
+	isReadOnly: boolean;
+	Message_AllowDeleting: boolean;
+	Message_AllowDeleting_BlockDeleteInMinutes: number;
+	Message_AllowEditing: boolean;
+	Message_AllowEditing_BlockEditInMinutes: number;
+	Message_AllowPinning: boolean;
+	Message_AllowStarring: boolean;
+	Message_Read_Receipt_Store_Users: boolean;
+	server: string;
+	editMessagePermission: [];
+	deleteMessagePermission: [];
+	forceDeleteMessagePermission: [];
+	pinMessagePermission: [];
+}
+
 const MessageActions = React.memo(forwardRef(({
 	room,
 	tmid,
@@ -39,9 +70,9 @@ const MessageActions = React.memo(forwardRef(({
 	deleteMessagePermission,
 	forceDeleteMessagePermission,
 	pinMessagePermission
-}, ref) => {
-	let permissions = {};
-	const { showActionSheet, hideActionSheet } = useActionSheet();
+}: IMessageActions, ref): any => {
+	let permissions: any = {};
+	const { showActionSheet, hideActionSheet }: any = useActionSheet();
 
 	const getPermissions = async() => {
 		try {
@@ -58,9 +89,9 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const isOwn = message => message.u && message.u._id === user.id;
+	const isOwn = (message: any) => message.u && message.u._id === user.id;
 
-	const allowEdit = (message) => {
+	const allowEdit = (message: any) => {
 		if (isReadOnly) {
 			return false;
 		}
@@ -75,7 +106,7 @@ const MessageActions = React.memo(forwardRef(({
 			if (message.ts != null) {
 				msgTs = moment(message.ts);
 			}
-			let currentTsDiff;
+			let currentTsDiff: any;
 			if (msgTs != null) {
 				currentTsDiff = moment().diff(msgTs, 'minutes');
 			}
@@ -84,7 +115,7 @@ const MessageActions = React.memo(forwardRef(({
 		return true;
 	};
 
-	const allowDelete = (message) => {
+	const allowDelete = (message: any) => {
 		if (isReadOnly) {
 			return false;
 		}
@@ -106,7 +137,7 @@ const MessageActions = React.memo(forwardRef(({
 			if (message.ts != null) {
 				msgTs = moment(message.ts);
 			}
-			let currentTsDiff;
+			let currentTsDiff: any;
 			if (msgTs != null) {
 				currentTsDiff = moment().diff(msgTs, 'minutes');
 			}
@@ -115,19 +146,19 @@ const MessageActions = React.memo(forwardRef(({
 		return true;
 	};
 
-	const getPermalink = message => RocketChat.getPermalinkMessage(message);
+	const getPermalink = (message: any) => RocketChat.getPermalinkMessage(message);
 
-	const handleReply = (message) => {
+	const handleReply = (message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_REPLY);
 		replyInit(message, true);
 	};
 
-	const handleEdit = (message) => {
+	const handleEdit = (message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_EDIT);
 		editInit(message);
 	};
 
-	const handleCreateDiscussion = (message) => {
+	const handleCreateDiscussion = (message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_DISCUSSION);
 		const params = { message, channel: room, showCloseModal: true };
 		if (isMasterDetail) {
@@ -137,7 +168,7 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handleUnread = async(message) => {
+	const handleUnread = async(message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_UNREAD);
 		const { id: messageId, ts } = message;
 		const { rid } = room;
@@ -149,7 +180,7 @@ const MessageActions = React.memo(forwardRef(({
 				const subRecord = await subCollection.find(rid);
 				await db.action(async() => {
 					try {
-						await subRecord.update(sub => sub.lastOpen = ts);
+						await subRecord.update((sub: any) => sub.lastOpen = ts);
 					} catch {
 						// do nothing
 					}
@@ -162,10 +193,10 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handlePermalink = async(message) => {
+	const handlePermalink = async(message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_PERMALINK);
 		try {
-			const permalink = await getPermalink(message);
+			const permalink: any = await getPermalink(message);
 			Clipboard.setString(permalink);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
 		} catch {
@@ -173,28 +204,28 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handleCopy = async(message) => {
+	const handleCopy = async(message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_COPY);
 		await Clipboard.setString(message?.attachments?.[0]?.description || message.msg);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 
-	const handleShare = async(message) => {
+	const handleShare = async(message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_SHARE);
 		try {
-			const permalink = await getPermalink(message);
+			const permalink: any = await getPermalink(message);
 			Share.share({ message: permalink });
 		} catch {
 			logEvent(events.ROOM_MSG_ACTION_SHARE_F);
 		}
 	};
 
-	const handleQuote = (message) => {
+	const handleQuote = (message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_QUOTE);
 		replyInit(message, false);
 	};
 
-	const handleStar = async(message) => {
+	const handleStar = async(message: any) => {
 		logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 		try {
 			await RocketChat.toggleStarMessage(message.id, message.starred);
@@ -205,7 +236,7 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handlePin = async(message) => {
+	const handlePin = async(message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_PIN);
 		try {
 			await RocketChat.togglePinMessage(message.id, message.pinned);
@@ -215,7 +246,7 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handleReaction = (shortname, message) => {
+	const handleReaction = (shortname: any, message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_REACTION);
 		if (shortname) {
 			onReactionPress(shortname, message.id);
@@ -226,7 +257,7 @@ const MessageActions = React.memo(forwardRef(({
 		hideActionSheet();
 	};
 
-	const handleReadReceipt = (message) => {
+	const handleReadReceipt = (message: any) => {
 		if (isMasterDetail) {
 			Navigation.navigate('ModalStackNavigator', { screen: 'ReadReceiptsView', params: { messageId: message.id } });
 		} else {
@@ -234,11 +265,11 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handleToggleTranslation = async(message) => {
+	const handleToggleTranslation = async(message: any) => {
 		try {
 			const db = database.active;
 			await db.action(async() => {
-				await message.update((m) => {
+				await message.update((m: any) => {
 					m.autoTranslate = !m.autoTranslate;
 					m._updatedAt = new Date();
 				});
@@ -258,7 +289,7 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handleReport = async(message) => {
+	const handleReport = async(message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_REPORT);
 		try {
 			await RocketChat.reportMessage(message.id);
@@ -269,7 +300,9 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handleDelete = (message) => {
+	const handleDelete = (message: any) => {
+		// TODO - migrate this function for ts when fix the lint erros
+		// @ts-ignore
 		showConfirmationAlert({
 			message: I18n.t('You_will_not_be_able_to_recover_this_message'),
 			confirmationText: I18n.t('Delete'),
@@ -285,8 +318,8 @@ const MessageActions = React.memo(forwardRef(({
 		});
 	};
 
-	const getOptions = (message) => {
-		let options = [];
+	const getOptions = (message: any) => {
+		let options: any = [];
 
 		// Reply
 		if (!isReadOnly) {
@@ -409,7 +442,7 @@ const MessageActions = React.memo(forwardRef(({
 		return options;
 	};
 
-	const showMessageActions = async(message) => {
+	const showMessageActions = async(message: any) => {
 		logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 		await getPermissions();
 		showActionSheet({
@@ -428,30 +461,8 @@ const MessageActions = React.memo(forwardRef(({
 
 	useImperativeHandle(ref, () => ({ showMessageActions }));
 }));
-MessageActions.propTypes = {
-	room: PropTypes.object,
-	tmid: PropTypes.string,
-	user: PropTypes.object,
-	editInit: PropTypes.func,
-	reactionInit: PropTypes.func,
-	onReactionPress: PropTypes.func,
-	replyInit: PropTypes.func,
-	isReadOnly: PropTypes.bool,
-	Message_AllowDeleting: PropTypes.bool,
-	Message_AllowDeleting_BlockDeleteInMinutes: PropTypes.number,
-	Message_AllowEditing: PropTypes.bool,
-	Message_AllowEditing_BlockEditInMinutes: PropTypes.number,
-	Message_AllowPinning: PropTypes.bool,
-	Message_AllowStarring: PropTypes.bool,
-	Message_Read_Receipt_Store_Users: PropTypes.bool,
-	server: PropTypes.string,
-	editMessagePermission: PropTypes.array,
-	deleteMessagePermission: PropTypes.array,
-	forceDeleteMessagePermission: PropTypes.array,
-	pinMessagePermission: PropTypes.array
-};
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server,
 	Message_AllowDeleting: state.settings.Message_AllowDeleting,
 	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
