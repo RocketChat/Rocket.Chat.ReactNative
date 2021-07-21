@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 import { withTheme } from '../../theme';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
@@ -10,7 +9,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ListContainer = React.memo(({ children, ...props }) => (
+type TListContainer = {
+	children: JSX.Element;
+}
+const ListContainer = React.memo(({ children, ...props }: TListContainer) => (
+	// @ts-ignore
 	<ScrollView
 		contentContainerStyle={styles.container}
 		scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
@@ -20,10 +23,6 @@ const ListContainer = React.memo(({ children, ...props }) => (
 		{children}
 	</ScrollView>
 ));
-
-ListContainer.propTypes = {
-	children: PropTypes.array.isRequired
-};
 
 ListContainer.displayName = 'List.Container';
 

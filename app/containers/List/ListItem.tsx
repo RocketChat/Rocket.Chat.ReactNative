@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-	View, Text, StyleSheet, I18nManager
-} from 'react-native';
-import PropTypes from 'prop-types';
+import { View, Text, StyleSheet, I18nManager } from 'react-native';
 
 import Touch from '../../utils/touch';
 import { themes } from '../../constants/colors';
@@ -58,10 +55,26 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IListItemContent {
+	title?: string;
+	subtitle?: string;
+	left?: Function;
+	right?: Function;
+	disabled?: boolean;
+	testID?: string;
+	theme: string;
+	color?: string;
+	translateTitle?: boolean;
+	translateSubtitle?: boolean;
+	showActionIndicator?: boolean;
+	fontScale?: number;
+	alert?: boolean;
+}
+
 const Content = React.memo(({
-	title, subtitle, disabled, testID, left, right, color, theme, translateTitle, translateSubtitle, showActionIndicator, fontScale, alert
-}) => (
-	<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale }]} testID={testID}>
+	title, subtitle, disabled, testID, left, right, color, theme, fontScale, alert, translateTitle = true, translateSubtitle = true, showActionIndicator = false
+}: IListItemContent) => (
+	<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale! }]} testID={testID}>
 		{left
 			? (
 				<View style={styles.leftContainer}>
@@ -92,9 +105,16 @@ const Content = React.memo(({
 	</View>
 ));
 
-const Button = React.memo(({
-	onPress, backgroundColor, underlayColor, ...props
-}) => (
+interface IListItemButton {
+	title?: string;
+	onPress: Function;
+	disabled?: boolean;
+	theme: string;
+	backgroundColor: string;
+	underlayColor?: string;
+}
+
+const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListItemButton) => (
 	<Touch
 		onPress={() => onPress(props.title)}
 		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
@@ -106,7 +126,13 @@ const Button = React.memo(({
 	</Touch>
 ));
 
-const ListItem = React.memo(({ ...props }) => {
+interface IListItem {
+	onPress: Function;
+	theme: string;
+	backgroundColor: string;
+}
+
+const ListItem = React.memo(({ ...props }: IListItem) => {
 	if (props.onPress) {
 		return <Button {...props} />;
 	}
@@ -117,47 +143,6 @@ const ListItem = React.memo(({ ...props }) => {
 	);
 });
 
-ListItem.propTypes = {
-	onPress: PropTypes.func,
-	theme: PropTypes.string,
-	backgroundColor: PropTypes.string
-};
-
 ListItem.displayName = 'List.Item';
-
-Content.propTypes = {
-	title: PropTypes.string.isRequired,
-	subtitle: PropTypes.string,
-	left: PropTypes.func,
-	right: PropTypes.func,
-	disabled: PropTypes.bool,
-	testID: PropTypes.string,
-	theme: PropTypes.string,
-	color: PropTypes.string,
-	translateTitle: PropTypes.bool,
-	translateSubtitle: PropTypes.bool,
-	showActionIndicator: PropTypes.bool,
-	fontScale: PropTypes.number,
-	alert: PropTypes.bool
-};
-
-Content.defaultProps = {
-	translateTitle: true,
-	translateSubtitle: true,
-	showActionIndicator: false
-};
-
-Button.propTypes = {
-	title: PropTypes.string,
-	onPress: PropTypes.func,
-	disabled: PropTypes.bool,
-	theme: PropTypes.string,
-	backgroundColor: PropTypes.string,
-	underlayColor: PropTypes.string
-};
-
-Button.defaultProps = {
-	disabled: false
-};
 
 export default withTheme(withDimensions(ListItem));

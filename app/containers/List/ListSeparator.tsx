@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
@@ -11,8 +10,12 @@ const styles = StyleSheet.create({
 	}
 });
 
+type TListSeparator = {
+	style: object;
+	theme: string;
+}
 
-const ListSeparator = React.memo(({ style, theme }) => (
+const ListSeparator = React.memo(({ style, theme }: TListSeparator) => (
 	<View
 		style={[
 			styles.separator,
@@ -21,11 +24,6 @@ const ListSeparator = React.memo(({ style, theme }) => (
 		]}
 	/>
 ));
-
-ListSeparator.propTypes = {
-	style: PropTypes.object,
-	theme: PropTypes.string
-};
 
 ListSeparator.displayName = 'List.Separator';
 

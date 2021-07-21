@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
@@ -19,21 +18,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ListHeader = React.memo(({ title, theme, translateTitle }) => (
+interface IListHeader {
+	title: string;
+	theme: string;
+	translateTitle: boolean;
+}
+
+const ListHeader = React.memo(({ title, theme, translateTitle = true }: IListHeader) => (
 	<View style={styles.container}>
 		<Text style={[styles.title, { color: themes[theme].infoText }]} numberOfLines={1}>{translateTitle ? I18n.t(title) : title}</Text>
 	</View>
 ));
-
-ListHeader.propTypes = {
-	title: PropTypes.string,
-	theme: PropTypes.string,
-	translateTitle: PropTypes.bool
-};
-
-ListHeader.defaultProps = {
-	translateTitle: true
-};
 
 ListHeader.displayName = 'List.Header';
 

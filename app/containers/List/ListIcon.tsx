@@ -1,11 +1,18 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
 import { ICON_SIZE } from './constants';
+
+interface IListIcon {
+	theme: string;
+	name: string;
+	color: string;
+	style: object;
+	testID: string;
+}
 
 const styles = StyleSheet.create({
 	icon: {
@@ -14,13 +21,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ListIcon = React.memo(({
-	theme,
-	name,
-	color,
-	style,
-	testID
-}) => (
+const ListIcon = React.memo(({ theme, name, color, style, testID }: IListIcon) => (
 	<View style={[styles.icon, style]}>
 		<CustomIcon
 			name={name}
@@ -30,14 +31,6 @@ const ListIcon = React.memo(({
 		/>
 	</View>
 ));
-
-ListIcon.propTypes = {
-	theme: PropTypes.string,
-	name: PropTypes.string,
-	color: PropTypes.string,
-	style: PropTypes.object,
-	testID: PropTypes.string
-};
 
 ListIcon.displayName = 'List.Icon';
 
