@@ -345,6 +345,7 @@ commands:
       - attach_workspace:
           at: ios
       - restore_cache: *restore-gems-cache
+      - restore_cache: *restore-npm-cache-mac
       - run: *update-fastlane-ios
       - manage-pods
       - run:
