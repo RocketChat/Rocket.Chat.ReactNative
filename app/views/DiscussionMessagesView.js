@@ -22,6 +22,7 @@ import { getHeaderTitlePosition } from '../containers/Header';
 import SearchHeader from './ThreadMessagesView/SearchHeader';
 import { useTheme } from '../theme';
 import Message from '../containers/message';
+import { sanitizeLikeString } from '../lib/database/utils';
 
 const DiscussionMessagesView = ({ navigation, route }) => {
 	const rid = route.params?.rid;
@@ -38,7 +39,6 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 	const [loading, setLoading] = useState(false);
 	const [discussions, setDiscussions] = useState([]);
 	const [isSearching, setIsSearching] = useState(false);
-	const [searchText, setSearchText] = useState('');
 	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
 
@@ -63,13 +63,30 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 		}
 	};
 
-	const onSearchChangeText = debounce((text) => {
-		setSearchText(text);
+	const onSearchChangeText = debounce(async(text) => {
+		try {
+			const db = database.active;
+			const whereClause = [
+				Q.where('rid', Q.eq(rid)),
+				Q.where('drid', Q.notEq(null))
+			];
+
+			if (text?.trim()) {
+				whereClause.push(Q.where('msg', Q.like(`%${ sanitizeLikeString(text?.trim()) }%`)));
+			}
+
+			const discussionsMessages = await db
+				.get('messages')
+				.query(...whereClause);
+			setDiscussions(discussionsMessages);
+		} catch (e) {
+			log(e);
+		}
 	}, 300);
 
 	const onCancelSearchPress = () => {
 		setIsSearching(false);
-		setSearchText('');
+		load();
 	};
 
 	const onSearchPress = () => {
@@ -128,9 +145,12 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 
 	useEffect(() => {
 		load();
+	}, []);
+
+	useEffect(() => {
 		const options = setHeader();
 		navigation.setOptions(options);
-	}, []);
+	}, [navigation, isSearching]);
 
 
 	const onDiscussionPress = debounce((item) => {
@@ -169,6 +189,8 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 			<FlatList
 				data={discussions}
 				renderItem={renderItem}
+				// eslint-disable-next-line react/prop-types
+				keyExtractor={item => item.msg}
 				// style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				// contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
