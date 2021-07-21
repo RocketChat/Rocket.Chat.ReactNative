@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text, Clipboard } from 'react-native';
 
 import styles from './styles';
@@ -9,9 +8,14 @@ import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import openLink from '../../utils/openLink';
 
-const Link = React.memo(({
-	children, link, theme, onLinkPress
-}) => {
+interface ILink {
+	children: JSX.Element;
+	link: string;
+	theme: string;
+	onLinkPress: Function;
+}
+
+const Link = React.memo(({ children, link, theme, onLinkPress }: ILink) => {
 	const handlePress = () => {
 		if (!link) {
 			return;
@@ -39,12 +43,5 @@ const Link = React.memo(({
 		</Text>
 	);
 });
-
-Link.propTypes = {
-	children: PropTypes.node,
-	link: PropTypes.string,
-	theme: PropTypes.string,
-	onLinkPress: PropTypes.func
-};
 
 export default Link;

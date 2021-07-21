@@ -1,11 +1,5 @@
-import { PropTypes } from 'prop-types';
 import React from 'react';
-import {
-	ScrollView,
-	TouchableOpacity,
-	View,
-	Text
-} from 'react-native';
+import { ScrollView, TouchableOpacity, View, Text } from 'react-native';
 
 import { CELL_WIDTH } from './TableCell';
 import styles from './styles';
@@ -13,20 +7,24 @@ import Navigation from '../../lib/Navigation';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 
+interface ITable {
+	children: JSX.Element;
+	numColumns: number;
+	theme: string;
+}
+
 const MAX_HEIGHT = 300;
 
-const Table = React.memo(({
-	children, numColumns, theme
-}) => {
+const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 	const getTableWidth = () => numColumns * CELL_WIDTH;
 
-	const renderRows = (drawExtraBorders = true) => {
+	const renderRows = (drawExtraBorders: boolean = true) => {
 		const tableStyle = [styles.table, { borderColor: themes[theme].borderColor }];
 		if (drawExtraBorders) {
 			tableStyle.push(styles.tableExtraBorders);
 		}
 
-		const rows = React.Children.toArray(children);
+		const rows: any = React.Children.toArray(children);
 		rows[rows.length - 1] = React.cloneElement(rows[rows.length - 1], {
 			isLastRow: true
 		});
@@ -54,11 +52,5 @@ const Table = React.memo(({
 		</TouchableOpacity>
 	);
 });
-
-Table.propTypes = {
-	children: PropTypes.node.isRequired,
-	numColumns: PropTypes.number.isRequired,
-	theme: PropTypes.string
-};
 
 export default Table;

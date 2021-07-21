@@ -1,10 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {
-	StyleSheet,
-	Text,
-	View
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../constants/colors';
 
@@ -22,9 +17,19 @@ const style = StyleSheet.create({
 	}
 });
 
+interface IListItem {
+	children: JSX.Element;
+	bulletWidth: number;
+	level: number;
+	ordered: boolean;
+	continue: boolean;
+	theme: string;
+	index: number;
+}
+
 const ListItem = React.memo(({
 	children, level, bulletWidth, continue: _continue, ordered, index, theme
-}) => {
+}: IListItem) => {
 	let bullet;
 	if (_continue) {
 		bullet = '';
@@ -49,15 +54,5 @@ const ListItem = React.memo(({
 		</View>
 	);
 });
-
-ListItem.propTypes = {
-	children: PropTypes.node,
-	bulletWidth: PropTypes.number,
-	level: PropTypes.number,
-	ordered: PropTypes.bool,
-	continue: PropTypes.bool,
-	theme: PropTypes.string,
-	index: PropTypes.number
-};
 
 export default ListItem;

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from 'react-native';
 
@@ -6,9 +5,20 @@ import { themes } from '../../constants/colors';
 
 import styles from './styles';
 
-const Hashtag = React.memo(({
-	hashtag, channels, navToRoomInfo, style = [], theme
-}) => {
+export type TChannel = {
+	name: string;
+	_id: number;
+}
+
+interface IHashtag {
+	hashtag: string;
+	navToRoomInfo: Function;
+	style: [];
+	theme: string;
+	channels: TChannel[];
+}
+
+const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [], theme }: IHashtag) => {
 	const handlePress = () => {
 		const index = channels.findIndex(channel => channel.name === hashtag);
 		const navParam = {
@@ -39,13 +49,5 @@ const Hashtag = React.memo(({
 		</Text>
 	);
 });
-
-Hashtag.propTypes = {
-	hashtag: PropTypes.string,
-	navToRoomInfo: PropTypes.func,
-	style: PropTypes.array,
-	theme: PropTypes.string,
-	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
-};
 
 export default Hashtag;

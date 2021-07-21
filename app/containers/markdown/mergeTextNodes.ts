@@ -1,6 +1,6 @@
 // TODO: should we add this to our commonmark fork instead?
 // we loop through nodes and try to merge all texts
-export default function mergeTextNodes(ast) {
+export default function mergeTextNodes(ast: any) {
 	// https://github.com/commonmark/commonmark.js/blob/master/lib/node.js#L268
 	const walker = ast.walker();
 	let event;

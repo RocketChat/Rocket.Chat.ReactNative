@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Text, Image } from 'react-native';
 import { Parser, Node } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
-import PropTypes from 'prop-types';
 import removeMarkdown from 'remove-markdown';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
@@ -13,7 +12,7 @@ import MarkdownLink from './Link';
 import MarkdownList from './List';
 import MarkdownListItem from './ListItem';
 import MarkdownAtMention from './AtMention';
-import MarkdownHashtag from './Hashtag';
+import MarkdownHashtag, {TChannel} from './Hashtag';
 import MarkdownBlockQuote from './BlockQuote';
 import MarkdownEmoji from './Emoji';
 import MarkdownTable from './Table';
@@ -24,8 +23,32 @@ import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
 import { isValidURL } from '../../utils/url';
 
+interface IMarkdownProps {
+	msg: string;
+	getCustomEmoji: Function;
+	baseUrl: string;
+	username: string;
+	tmid: string;
+	isEdited: boolean;
+	numberOfLines: number;
+	customEmojis: boolean;
+	useRealName: boolean;
+	channels: TChannel[];
+	mentions: object[];
+	navToRoomInfo: Function;
+	preview: boolean;
+	theme: string;
+	testID: string;
+	style: any;
+	onLinkPress: Function;
+}
+
+type TLiteral = {
+	literal: string;
+}
+
 // Support <http://link|Text>
-const formatText = text => text.replace(
+const formatText = (text: string) => text.replace(
 	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
 	(match, url, title) => `[${ title }](${ url })`
 );
@@ -36,18 +59,18 @@ const emojiRanges = [
 	' |\n' // allow spaces and line breaks
 ].join('|');
 
-const removeSpaces = str => str && str.replace(/\s/g, '');
+const removeSpaces = (str: string) => str && str.replace(/\s/g, '');
 
-const removeAllEmoji = str => str.replace(new RegExp(emojiRanges, 'g'), '');
+const removeAllEmoji = (str: string) => str.replace(new RegExp(emojiRanges, 'g'), '');
 
-const isOnlyEmoji = (str) => {
+const isOnlyEmoji = (str: string) => {
 	str = removeSpaces(str);
 	return !removeAllEmoji(str).length;
 };
 
-const removeOneEmoji = str => str.replace(new RegExp(emojiRanges), '');
+const removeOneEmoji = (str: string) => str.replace(new RegExp(emojiRanges), '');
 
-const emojiCount = (str) => {
+const emojiCount = (str: string) => {
 	str = removeSpaces(str);
 	let oldLength = 0;
 	let counter = 0;
@@ -65,28 +88,11 @@ const emojiCount = (str) => {
 
 const parser = new Parser();
 
-class Markdown extends PureComponent {
-	static propTypes = {
-		msg: PropTypes.string,
-		getCustomEmoji: PropTypes.func,
-		baseUrl: PropTypes.string,
-		username: PropTypes.string,
-		tmid: PropTypes.string,
-		isEdited: PropTypes.bool,
-		numberOfLines: PropTypes.number,
-		customEmojis: PropTypes.bool,
-		useRealName: PropTypes.bool,
-		channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-		mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-		navToRoomInfo: PropTypes.func,
-		preview: PropTypes.bool,
-		theme: PropTypes.string,
-		testID: PropTypes.string,
-		style: PropTypes.array,
-		onLinkPress: PropTypes.func
-	};
+class Markdown extends PureComponent<IMarkdownProps, any> {
+	private renderer: any;
+	private isMessageContainsOnlyEmoji!: boolean;
 
-	constructor(props) {
+	constructor(props: IMarkdownProps) {
 		super(props);
 		this.renderer = this.createRenderer();
 	}
@@ -129,7 +135,7 @@ class Markdown extends PureComponent {
 		renderParagraphsInLists: true
 	});
 
-	editedMessage = (ast) => {
+	editedMessage = (ast: any) => {
 		const { isEdited } = this.props;
 		if (isEdited) {
 			const editIndicatorNode = new Node('edited_indicator');
@@ -144,7 +150,7 @@ class Markdown extends PureComponent {
 		}
 	};
 
-	renderText = ({ context, literal }) => {
+	renderText = ({ context, literal }: {context: []; literal: string}) => {
 		const {
 			numberOfLines, style = []
 		} = this.props;
@@ -163,7 +169,7 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderCodeInline = ({ literal }) => {
+	renderCodeInline = ({ literal }: TLiteral) => {
 		const { theme, style = [] } = this.props;
 		return (
 			<Text
@@ -182,7 +188,7 @@ class Markdown extends PureComponent {
 		);
 	};
 
-	renderCodeBlock = ({ literal }) => {
+	renderCodeBlock = ({ literal }: TLiteral) => {
 		const { theme, style = [] } = this.props;
 		return (
 			<Text
@@ -206,7 +212,7 @@ class Markdown extends PureComponent {
 		return <Text>{tmid ? ' ' : '\n'}</Text>;
 	}
 
-	renderParagraph = ({ children }) => {
+	renderParagraph = ({ children }: any) => {
 		const { numberOfLines, style, theme } = this.props;
 		if (!children || children.length === 0) {
 			return null;
@@ -218,7 +224,7 @@ class Markdown extends PureComponent {
 		);
 	};
 
-	renderLink = ({ children, href }) => {
+	renderLink = ({ children, href }: any) => {
 		const { theme, onLinkPress } = this.props;
 		return (
 			<MarkdownLink
@@ -231,10 +237,8 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderHashtag = ({ hashtag }) => {
-		const {
-			channels, navToRoomInfo, style, theme
-		} = this.props;
+	renderHashtag = ({ hashtag }: {hashtag: string}) => {
+		const { channels, navToRoomInfo, style, theme } = this.props;
 		return (
 			<MarkdownHashtag
 				hashtag={hashtag}
@@ -246,10 +250,8 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderAtMention = ({ mentionName }) => {
-		const {
-			username, mentions, navToRoomInfo, useRealName, style, theme
-		} = this.props;
+	renderAtMention = ({ mentionName }: { mentionName: string }) => {
+		const { username, mentions, navToRoomInfo, useRealName, style, theme } = this.props;
 		return (
 			<MarkdownAtMention
 				mentions={mentions}
@@ -263,10 +265,8 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderEmoji = ({ literal }) => {
-		const {
-			getCustomEmoji, baseUrl, customEmojis, style, theme
-		} = this.props;
+	renderEmoji = ({ literal }: TLiteral) => {
+		const { getCustomEmoji, baseUrl, customEmojis, style, theme } = this.props;
 		return (
 			<MarkdownEmoji
 				literal={literal}
@@ -280,7 +280,7 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderImage = ({ src }) => {
+	renderImage = ({ src }: {src: string}) => {
 		if (!isValidURL(src)) {
 			return null;
 		}
@@ -298,7 +298,7 @@ class Markdown extends PureComponent {
 		return <Text style={[styles.edited, { color: themes[theme].auxiliaryText }]}> ({I18n.t('edited')})</Text>;
 	}
 
-	renderHeading = ({ children, level }) => {
+	renderHeading = ({ children, level }: any) => {
 		const { numberOfLines, theme } = this.props;
 		const textStyle = styles[`heading${ level }Text`];
 		return (
@@ -308,9 +308,7 @@ class Markdown extends PureComponent {
 		);
 	};
 
-	renderList = ({
-		children, start, tight, type
-	}) => {
+	renderList = ({ children, start, tight, type }: any) => {
 		const { numberOfLines } = this.props;
 		return (
 			<MarkdownList
@@ -324,11 +322,9 @@ class Markdown extends PureComponent {
 		);
 	};
 
-	renderListItem = ({
-		children, context, ...otherProps
-	}) => {
+	renderListItem = ({ children, context, ...otherProps }: any) => {
 		const { theme } = this.props;
-		const level = context.filter(type => type === 'list').length;
+		const level = context.filter((type: string) => type === 'list').length;
 
 		return (
 			<MarkdownListItem
@@ -341,7 +337,7 @@ class Markdown extends PureComponent {
 		);
 	};
 
-	renderBlockQuote = ({ children }) => {
+	renderBlockQuote = ({ children }: {children: JSX.Element}) => {
 		const { theme } = this.props;
 		return (
 			<MarkdownBlockQuote theme={theme}>
@@ -350,7 +346,7 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderTable = ({ children, numColumns }) => {
+	renderTable = ({ children, numColumns }: { children: JSX.Element; numColumns: number }) => {
 		const { theme } = this.props;
 		return (
 			<MarkdownTable numColumns={numColumns} theme={theme}>
@@ -359,12 +355,12 @@ class Markdown extends PureComponent {
 		);
 	}
 
-	renderTableRow = (args) => {
+	renderTableRow = (args: any) => {
 		const { theme } = this.props;
 		return <MarkdownTableRow {...args} theme={theme} />;
 	}
 
-	renderTableCell = (args) => {
+	renderTableCell = (args: any) => {
 		const { theme } = this.props;
 		return <MarkdownTableCell {...args} theme={theme} />;
 	}

@@ -1,12 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 
-const List = React.memo(({
-	children, ordered, start, tight, numberOfLines = 0
-}) => {
+interface IList {
+	children: JSX.Element;
+	ordered: boolean;
+	start: number;
+	tight: boolean;
+	numberOfLines: number;
+}
+
+const List = React.memo(({ children, ordered, start = 1, tight, numberOfLines = 0 }: IList) => {
 	let bulletWidth = 15;
 
 	if (ordered) {
+		// @ts-ignore
 		const lastNumber = (start + children.length) - 1;
 		bulletWidth = (9 * lastNumber.toString().length) + 7;
 	}
@@ -17,7 +23,7 @@ const List = React.memo(({
 		items = items.slice(0, numberOfLines);
 	}
 
-	const _children = items.map((child, index) => React.cloneElement(child, {
+	const _children = items.map((child: any, index: number) => React.cloneElement(child, {
 		bulletWidth,
 		ordered,
 		tight,
@@ -30,17 +36,5 @@ const List = React.memo(({
 		</>
 	);
 });
-
-List.propTypes = {
-	children: PropTypes.node,
-	ordered: PropTypes.bool,
-	start: PropTypes.number,
-	tight: PropTypes.bool,
-	numberOfLines: PropTypes.number
-};
-
-List.defaultProps = {
-	start: 1
-};
 
 export default List;

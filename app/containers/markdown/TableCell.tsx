@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Text, View } from 'react-native';
 
@@ -6,11 +5,16 @@ import { themes } from '../../constants/colors';
 
 import styles from './styles';
 
+interface ITableCell {
+	align: '' | 'left' | 'center' | 'right';
+	children: JSX.Element;
+	isLastCell: boolean;
+	theme: string;
+}
+
 export const CELL_WIDTH = 100;
 
-const TableCell = React.memo(({
-	isLastCell, align, children, theme
-}) => {
+const TableCell = React.memo(({ isLastCell, align, children, theme }: ITableCell) => {
 	const cellStyle = [styles.cell, { borderColor: themes[theme].borderColor }];
 	if (!isLastCell) {
 		cellStyle.push(styles.cellRightBorder);
@@ -31,12 +35,5 @@ const TableCell = React.memo(({
 		</View>
 	);
 });
-
-TableCell.propTypes = {
-	align: PropTypes.oneOf(['', 'left', 'center', 'right']),
-	children: PropTypes.node,
-	isLastCell: PropTypes.bool,
-	theme: PropTypes.string
-};
 
 export default TableCell;
