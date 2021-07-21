@@ -1,5 +1,4 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import PropTypes from 'prop-types';
 import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
