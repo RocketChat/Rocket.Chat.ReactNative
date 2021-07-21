@@ -12,12 +12,12 @@
     "android": "npx react-native run-android --variant=experimentalPlayDebug",
     "android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --variant=experimentalPlayDebug --appId",
     "log-android": "react-native log-android",
-    "snyk-protect": "snyk protect",
+    "snyk-protect": "snyk-protect",
     "precommit": "eslint . && jest",
     "generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
     "generate-source-maps-android": "bugsnag-sourcemaps",
     "postinstall": "patch-package && jetify",
-    "prepare": "husky install"
+    "prepare": "yarn run snyk-protect && husky install"
   },
   "dependencies": {
     "@codler/react-native-keyboard-aware-scroll-view": "^1.0.1",
@@ -122,7 +122,8 @@
     "ua-parser-js": "0.7.28",
     "url-parse": "1.5.1",
     "use-deep-compare-effect": "1.6.1",
-    "xregexp": "5.0.2"
+    "xregexp": "5.0.2",
+    "@snyk/protect": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

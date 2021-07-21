@@ -3171,6 +3171,11 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@snyk/protect@^1.664.0":
+  version "1.664.0"
+  resolved "https://registry.yarnpkg.com/@snyk/protect/-/protect-1.664.0.tgz#fbfb640bc8eba513d00b5cc142a049cc10ac64f5"
+  integrity sha512-xN4fazm8EYnuqfeG1yZaec9JJZ7pzB1ZmEqoP7JFq/5g8iueUE64T5nxgXdNG7NAOb4Odj1RGuyhvPNrm62I3w==
+
 "@storybook/addon-storyshots@5.3.21":
   version "5.3.21"
   resolved "https://registry.yarnpkg.com/@storybook/addon-storyshots/-/addon-storyshots-5.3.21.tgz#f9536145642cf590b73151a0187671991a7c0057"
