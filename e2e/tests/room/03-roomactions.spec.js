@@ -226,7 +226,7 @@ describe('Room actions screen', () => {
 				await element(by.text(`${ data.random }messageToStar`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.text('Unstar')).atIndex(0).tap();
+				await element(by.label('Unstar')).atIndex(0).tap();
 
 				await waitFor(element(by.text(`${ data.random }messageToStar`).withAncestor(by.id('starred-messages-view')))).toBeNotVisible().withTimeout(60000);
 				await backToActions();
@@ -252,7 +252,7 @@ describe('Room actions screen', () => {
 
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.text('Unpin')).atIndex(0).tap();
+				await element(by.label('Unpin')).atIndex(0).tap();
 
 				await waitFor(element(by.text(`${ data.random }messageToPin`).withAncestor(by.id('pinned-messages-view')))).not.toExist().withTimeout(6000);
 				await backToActions();
@@ -402,7 +402,7 @@ describe('Room actions screen', () => {
 
 				it('should remove user from room', async() => {
 					await openActionSheet('rocket.cat');
-					await element(by.text('Remove from room')).tap();
+					await element(by.label('Remove from room')).tap();
 					await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(5000);
 					await element(by.text('Yes, remove user!').and(by.type(alertButtonType))).tap();
 					await waitFor(element(by.id('room-members-view-item-rocket.cat'))).toBeNotVisible().withTimeout(60000);
@@ -461,20 +461,20 @@ describe('Room actions screen', () => {
 
 				it('should set/remove as mute', async() => {
 					await openActionSheet(user.username);
-					await element(by.text('Mute')).tap();
+					await element(by.label('Mute')).tap();
 					await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(5000);
 					await element(by.text('Mute').and(by.type(alertButtonType))).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					await element(by.text('Unmute')).tap();
+					await element(by.label('Unmute')).tap();
 					await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(5000);
 					await element(by.text('Unmute').and(by.type(alertButtonType))).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
 					// Tests if Remove as mute worked
-					await waitFor(element(by.text('Mute'))).toExist().withTimeout(5000);
+					await waitFor(element(by.label('Mute'))).toExist().withTimeout(5000);
 					await closeActionSheet();
 				});
 
@@ -520,9 +520,9 @@ describe('Room actions screen', () => {
 				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-block-user'))).toExist();
 				await element(by.id('room-actions-block-user')).tap();
-				await waitFor(element(by.text('Unblock user'))).toExist().withTimeout(60000);
+				await waitFor(element(by.label('Unblock user'))).toExist().withTimeout(60000);
 				await element(by.id('room-actions-block-user')).tap();
-				await waitFor(element(by.text('Block user'))).toExist().withTimeout(60000);
+				await waitFor(element(by.label('Block user'))).toExist().withTimeout(60000);
 			});
 		});
 	});

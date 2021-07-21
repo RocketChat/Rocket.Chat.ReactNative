@@ -200,7 +200,8 @@ describe('E2E Encryption', () => {
 				await element(by.id('e2e-encryption-security-view-reset-key').and(by.label('Reset E2E Key'))).tap();
 				await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(2000);
 				await expect(element(by.text('You\'re going to be logged out.'))).toExist();
-				await element(by.label('Yes, reset it').and(by.type(alertButtonType))).tap();
+				await element(by.text('Yes, reset it').and(by.type(alertButtonType))).tap();
+				await element(by.text('OK').and(by.type(alertButtonType))).tap();
 				await sleep(2000);
 				await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(10000);
 				await element(by.id('workspace-view-login')).tap();
