@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 
 import Touchable from './Touchable';
 import { E2E_MESSAGE_TYPE } from '../../lib/encryption/constants';
@@ -9,7 +8,12 @@ import { BUTTON_HIT_SLOP } from './utils';
 import MessageContext from './Context';
 import styles from './styles';
 
-const Encrypted = React.memo(({ type, theme }) => {
+interface IMessageEncrypted {
+	type: string;
+	theme: string;
+}
+
+const Encrypted = React.memo(({ type, theme }: IMessageEncrypted) => {
 	if (type !== E2E_MESSAGE_TYPE) {
 		return null;
 	}
@@ -21,9 +25,5 @@ const Encrypted = React.memo(({ type, theme }) => {
 		</Touchable>
 	);
 });
-Encrypted.propTypes = {
-	type: PropTypes.string,
-	theme: PropTypes.string
-};
 
 export default Encrypted;

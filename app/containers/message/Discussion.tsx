@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Touchable from './Touchable';
 import { formatMessageCount, BUTTON_HIT_SLOP } from './utils';
@@ -12,9 +11,14 @@ import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { formatDateThreads } from '../../utils/room';
 
-const Discussion = React.memo(({
-	msg, dcount, dlm, theme
-}) => {
+interface IMessageDiscussion {
+	msg: string;
+	dcount: number;
+	dlm: string;
+	theme: string;
+}
+
+const Discussion = React.memo(({ msg, dcount, dlm, theme }: IMessageDiscussion) => {
 	let time;
 	if (dlm) {
 		time = formatDateThreads(dlm);
@@ -57,12 +61,6 @@ const Discussion = React.memo(({
 	return true;
 });
 
-Discussion.propTypes = {
-	msg: PropTypes.string,
-	dcount: PropTypes.number,
-	dlm: PropTypes.string,
-	theme: PropTypes.string
-};
 Discussion.displayName = 'MessageDiscussion';
 
 export default Discussion;

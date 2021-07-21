@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../../views/Styles';
 import { isTablet } from '../../utils/deviceInfo';
 
-export default StyleSheet.create({
+export default StyleSheet.create<any>({
 	root: {
 		flexDirection: 'row'
 	},

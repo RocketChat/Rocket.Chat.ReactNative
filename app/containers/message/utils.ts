@@ -1,7 +1,7 @@
 import I18n from '../../i18n';
 import { DISCUSSION } from './constants';
 
-export const formatMessageCount = (count, type) => {
+export const formatMessageCount = (count: number, type: string) => {
 	const discussion = type === DISCUSSION;
 	let text = discussion ? I18n.t('No_messages_yet') : null;
 	if (count === 1) {
@@ -60,9 +60,13 @@ export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
 	SYSTEM_MESSAGE_TYPES.USER_LEFT_CHANNEL
 ];
 
-export const getInfoMessage = ({
-	type, role, msg, author
-}) => {
+type TInfoMessage = {
+	type: string;
+	role: string;
+	msg: string;
+	author: { username: string };
+}
+export const getInfoMessage = ({type, role, msg, author}: TInfoMessage) => {
 	const { username } = author;
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
@@ -110,13 +114,13 @@ export const getInfoMessage = ({
 	return '';
 };
 
-export const getMessageTranslation = (message, autoTranslateLanguage) => {
+export const getMessageTranslation = (message: {translations: any}, autoTranslateLanguage: string) => {
 	if (!autoTranslateLanguage) {
 		return null;
 	}
 	const { translations } = message;
 	if (translations) {
-		const translation = translations.find(trans => trans.language === autoTranslateLanguage);
+		const translation = translations.find((trans: any) => trans.language === autoTranslateLanguage);
 		return translation && translation.value;
 	}
 	return null;

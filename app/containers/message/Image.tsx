@@ -13,11 +13,28 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 
+type TMessageButton = {
+	children: JSX.Element;
+	onPress: Function;
+	theme: string;
+}
+
+type TMessageImage = {
+	img: string;
+	theme: string;
+}
+
+interface IMessageImage {
+	file: { image_url: string; description: string; };
+	imageUrl: string;
+	showAttachment: Function;
+	theme: string;
+	getCustomEmoji: Function;
+}
+
 const ImageProgress = createImageProgress(FastImage);
 
-const Button = React.memo(({
-	children, onPress, theme
-}) => (
+const Button = React.memo(({children, onPress, theme}: TMessageButton) => (
 	<Touchable
 		onPress={onPress}
 		style={styles.imageContainer}
@@ -27,7 +44,7 @@ const Button = React.memo(({
 	</Touchable>
 ));
 
-export const MessageImage = React.memo(({ img, theme }) => (
+export const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
 	<ImageProgress
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(img) }}
@@ -39,9 +56,7 @@ export const MessageImage = React.memo(({ img, theme }) => (
 	/>
 ));
 
-const ImageContainer = React.memo(({
-	file, imageUrl, showAttachment, getCustomEmoji, theme
-}) => {
+const ImageContainer = React.memo(({file, imageUrl, showAttachment, getCustomEmoji, theme}: IMessageImage) => {
 	const { baseUrl, user } = useContext(MessageContext);
 	const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
@@ -55,6 +70,8 @@ const ImageContainer = React.memo(({
 			<Button theme={theme} onPress={onPress}>
 				<View>
 					<MessageImage img={img} theme={theme} />
+					//TODO - fix the required fields for the Markdown
+					{/*@ts-ignore*/}
 					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 				</View>
 			</Button>
@@ -68,26 +85,8 @@ const ImageContainer = React.memo(({
 	);
 }, (prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
 
-ImageContainer.propTypes = {
-	file: PropTypes.object,
-	imageUrl: PropTypes.string,
-	showAttachment: PropTypes.func,
-	theme: PropTypes.string,
-	getCustomEmoji: PropTypes.func
-};
 ImageContainer.displayName = 'MessageImageContainer';
-
-MessageImage.propTypes = {
-	img: PropTypes.string,
-	theme: PropTypes.string
-};
 ImageContainer.displayName = 'MessageImage';
-
-Button.propTypes = {
-	children: PropTypes.node,
-	onPress: PropTypes.func,
-	theme: PropTypes.string
-};
 ImageContainer.displayName = 'MessageButton';
 
 export default ImageContainer;

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Touchable from './Touchable';
 import { CustomIcon } from '../../lib/Icons';
@@ -11,7 +10,26 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import MessageContext from './Context';
 
-const AddReaction = React.memo(({ theme }) => {
+type TMessageAddReaction = {
+	theme: string
+};
+
+type TMessageReaction = {
+	reaction: {
+		usernames: [];
+		emoji: object;
+	};
+	getCustomEmoji: Function;
+	theme: string;
+};
+
+interface IMessageReactions {
+	reactions: object[];
+	getCustomEmoji: Function;
+	theme: string;
+}
+
+const AddReaction = React.memo(({ theme }: TMessageAddReaction) => {
 	const { reactionInit } = useContext(MessageContext);
 	return (
 		<Touchable
@@ -29,13 +47,9 @@ const AddReaction = React.memo(({ theme }) => {
 	);
 });
 
-const Reaction = React.memo(({
-	reaction, getCustomEmoji, theme
-}) => {
-	const {
-		onReactionPress, onReactionLongPress, baseUrl, user
-	} = useContext(MessageContext);
-	const reacted = reaction.usernames.findIndex(item => item === user.username) !== -1;
+const Reaction = React.memo(({reaction, getCustomEmoji, theme}: TMessageReaction) => {
+	const { onReactionPress, onReactionLongPress, baseUrl, user } = useContext(MessageContext);
+	const reacted = reaction.usernames.findIndex((item: TMessageReaction) => item === user.username) !== -1;
 	return (
 		<Touchable
 			onPress={() => onReactionPress(reaction.emoji)}
@@ -60,15 +74,13 @@ const Reaction = React.memo(({
 	);
 });
 
-const Reactions = React.memo(({
-	reactions, getCustomEmoji, theme
-}) => {
+const Reactions = React.memo(({ reactions, getCustomEmoji, theme }: IMessageReactions) => {
 	if (!Array.isArray(reactions) || reactions.length === 0) {
 		return null;
 	}
 	return (
 		<View style={styles.reactionsContainer}>
-			{reactions.map(reaction => (
+			{reactions.map((reaction: any) => (
 				<Reaction
 					key={reaction.emoji}
 					reaction={reaction}
@@ -81,23 +93,8 @@ const Reactions = React.memo(({
 	);
 });
 
-Reaction.propTypes = {
-	reaction: PropTypes.object,
-	getCustomEmoji: PropTypes.func,
-	theme: PropTypes.string
-};
 Reaction.displayName = 'MessageReaction';
-
-Reactions.propTypes = {
-	reactions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	getCustomEmoji: PropTypes.func,
-	theme: PropTypes.string
-};
 Reactions.displayName = 'MessageReactions';
-
-AddReaction.propTypes = {
-	theme: PropTypes.string
-};
 AddReaction.displayName = 'MessageAddReaction';
 
 export default withTheme(Reactions);
