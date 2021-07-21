@@ -985,7 +985,9 @@ class RoomActionsView extends React.Component {
 												rid,
 												t,
 												prid,
-												name: 'Discussions'
+												canAutoTranslate,
+												autoTranslate: room.autoTranslate,
+												autoTranslateLanguage: room.autoTranslateLanguage
 											}
 										})}
 										testID='room-actions-discussions'
