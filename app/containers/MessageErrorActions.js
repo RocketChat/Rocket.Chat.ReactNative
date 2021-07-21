@@ -93,9 +93,10 @@ const MessageErrorActions = forwardRef(({ tmid }, ref) => {
 	useImperativeHandle(ref, () => ({
 		showMessageErrorActions
 	}));
+
+	return null;
 });
 MessageErrorActions.propTypes = {
-	message: PropTypes.object,
 	tmid: PropTypes.string
 };
 
