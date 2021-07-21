@@ -3,7 +3,7 @@ defaults: &defaults
 
 macos: &macos
   macos:
-    xcode: "12.1.0"
+    xcode: "12.5.0" 
 
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"
@@ -36,15 +36,6 @@ save-npm-cache-mac: &save-npm-cache-mac
   name: Save NPM cache
   paths:
     - ./node_modules
-
-install-node: &install-node
-  name: Install Node
-  command: |
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-    source ~/.nvm/nvm.sh
-    INSTALLED_NODE=`nvm which current`
-    echo "export PATH=\"${INSTALLED_NODE%%/node}:\$PATH\"" >> ~/.bash_profile
-    source ~/.bash_profile
 
 restore-gems-cache: &restore-gems-cache
   name: Restore gems cache
@@ -83,12 +74,31 @@ restore_cache: &restore-gradle-cache
 # COMMANDS
 commands:
 
+  manage-pods:
+    description: "Restore/Get/Save cache of pods libs"
+    steps:
+      - restore_cache:
+          name: Restore pods
+          # TODO: CircleCI isn't caching Podfile.lock correctly, because checksum changes after install
+          # key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+          key: pods-v1-{{ checksum "ios/Podfile" }}
+      - run:
+          name: Install pods libs
+          command: |
+            bundle exec pod install
+          working_directory: ios
+      - save_cache:
+          name: Save pods specs and pods cache
+          # key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+          key: pods-v1-{{ checksum "ios/Podfile" }}
+          paths:
+            - ~/.pods
+            - ios/Pods
+
   android-build:
     description: "Build Android app"
     steps:
       - checkout
-
-      - run: *install-node
 
       - restore_cache: *restore-npm-cache-linux
 
@@ -196,9 +206,9 @@ commands:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
-      - run: *install-node
       - run: *install-npm-modules
       - run: *update-fastlane-ios
+      - manage-pods
       - run:
           name: Set Google Services
           command: |
@@ -231,7 +241,7 @@ commands:
             fi
       - run:
           name: Fastlane Build
-          no_output_timeout: 1200
+          no_output_timeout: 40m
           command: |
             agvtool new-version -all $CIRCLE_BUILD_NUM
             if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
@@ -246,8 +256,8 @@ commands:
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
             fi
 
-            if [[ $APP_STORE_CONNECT_API_KEY ]]; then
-              echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            if [[ $APP_STORE_CONNECT_API_BASE64 ]]; then
+              echo $APP_STORE_CONNECT_API_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
               if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
                 bundle exec fastlane ios build_official
               else
@@ -335,11 +345,13 @@ commands:
       - attach_workspace:
           at: ios
       - restore_cache: *restore-gems-cache
+      - restore_cache: *restore-npm-cache-mac
       - run: *update-fastlane-ios
+      - manage-pods
       - run:
           name: Fastlane Tesflight Upload
           command: |
-            echo $APP_STORE_CONNECT_API_KEY | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            echo $APP_STORE_CONNECT_API_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
             bundle exec fastlane ios beta official:<< parameters.official >>
           working_directory: ios
       - save_cache: *save-gems-cache
@@ -391,7 +403,7 @@ jobs:
   android-build-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: circleci/android:api-29-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -401,7 +413,7 @@ jobs:
   android-build-official:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: circleci/android:api-29-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -419,7 +431,7 @@ jobs:
   android-google-play-beta-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: circleci/android:api-29-node
 
     steps:
       - upload-to-google-play-beta:
@@ -428,14 +440,14 @@ jobs:
   android-google-play-production-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: circleci/android:api-29-node
     steps:
       - upload-to-google-play-production
 
   android-google-play-beta-official:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
+      - image: circleci/android:api-29-node
 
     steps:
       - upload-to-google-play-beta:
