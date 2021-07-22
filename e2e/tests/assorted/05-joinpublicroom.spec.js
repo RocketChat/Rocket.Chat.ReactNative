@@ -135,7 +135,7 @@ describe('Join public room', () => {
 			await mockMessage('message');
 		});
 
-		it('should have disable notifications and leave channel', async() => {
+		it('should have notifications and leave channel', async() => {
 			await navigateToRoomActions();
 			await expect(element(by.id('room-actions-view'))).toBeVisible();
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
@@ -145,7 +145,7 @@ describe('Join public room', () => {
 			await expect(element(by.id('room-actions-files'))).toBeVisible();
 			await expect(element(by.id('room-actions-mentioned'))).toBeVisible();
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
-			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
+			await element(by.id('room-actions-scrollview')).swipe('down');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 			await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			await expect(element(by.id('room-actions-notifications'))).toBeVisible();
