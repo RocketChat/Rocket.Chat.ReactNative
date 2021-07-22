@@ -17,8 +17,11 @@ function checkUserActionType(actionType) {
 
 export function addUserActivity(username, actionType, roomId) {
 	const action = checkUserActionType(actionType);
+	const activity = actionType.split('_')[1].toLowerCase();
+
 	return {
 		type: action.ADD,
+		activity,
 		username,
 		roomId
 	};
@@ -26,9 +29,11 @@ export function addUserActivity(username, actionType, roomId) {
 
 export function removeUserActivity(username, actionType, roomId) {
 	const action = checkUserActionType(actionType);
+	const activity = actionType.split('_')[1].toLowerCase();
 
 	return {
 		type: action.REMOVE,
+		activity,
 		username,
 		roomId
 	};

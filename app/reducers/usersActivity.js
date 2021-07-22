@@ -12,58 +12,38 @@ const initialState = {
 };
 
 export default function usersActivity(state = initialState, action) {
-	switch (action.type) {
+	const {
+		activity,
+		type,
+		roomId,
+		username
+	} = action;
+
+	switch (type) {
 		case USER_TYPING.ADD:
-			if (action.roomId in state.typing) {
-				if (state.typing[action.roomId].includes(action.username)) {
-					return state;
-				}
-				return { ...state, typing: { ...state.typing, [action.roomId]: [...state.typing[action.roomId], action.username] } };
-			} else {
-				return { ...state, typing: { ...state.typing, [action.roomId]: [action.username] } };
-			}
-			// if (!(action.roomId in state.typing) || !(action.username in state.typing[action.roomId])) {
-			// 	const typingUsers = { [action.roomId]: [...state.typing[action.roomId], action.username] };
-			// 	return { ...state, typing: { ...state.typing, ...typingUsers } };
-			// }
 		case USER_RECORDING.ADD:
-			if (action.roomId in state.recording) {
-				if (state.recording[action.roomId].includes(action.username)) {
-					return state;
-				}
-				return { ...state, recording: { ...state.recording, [action.roomId]: [...state.recording[action.roomId], action.username] } };
-			} else {
-				return { ...state, recording: { ...state.recording, [action.roomId]: [action.username] } };
-			}
 		case USER_UPLOADING.ADD:
-			if (action.roomId in state.uploading) {
-				if (state.uploading[action.roomId].includes(action.username)) {
+			if (state[activity]?.[roomId]) {
+				if (state[activity][roomId].includes(username)) {
 					return state;
 				}
-				return { ...state, uploading: { ...state.uploading, [action.roomId]: [...state.uploading[action.roomId], action.username] } };
+				return { ...state, [activity]: { ...state[activity], [roomId]: [...state[activity][roomId], username] } };
 			} else {
-				return { ...state, uploading: { ...state.uploading, [action.roomId]: [action.username] } };
+				return { ...state, [activity]: { ...state[activity], [roomId]: [username] } };
 			}
+
 		case USER_TYPING.REMOVE:
-			if (action.roomId in state.typing) {
-				const filteredUsers = state.typing[action.roomId].filter(username => username !== action.username);
-				return { ...state, typing: { ...state.typing, [action.roomId]: [...filteredUsers] } };
-			}
-			return state;
 		case USER_RECORDING.REMOVE:
-			if (action.roomId in state.recording) {
-				const filteredUsers = state.recording[action.roomId].filter(username => username !== action.username);
-				return { ...state, recording: { ...state.recording, [action.roomId]: [...filteredUsers] } };
-			}
-			return state;
 		case USER_UPLOADING.REMOVE:
-			if (action.roomId in state.uploading) {
-				const filteredUsers = state.uploading[action.roomId].filter(username => username !== action.username);
-				return { ...state, uploading: { ...state.uploading, [action.roomId]: [...filteredUsers] } };
+			if (state[activity]?.[roomId]) {
+				const filteredUsers = state[activity][roomId].filter(u => u !== username);
+				return { ...state, [activity]: { ...state[activity], [roomId]: [...filteredUsers] } };
 			}
 			return state;
+
 		case CLEAR_ALL_USER_ACTIVITY:
 			return { ...initialState };
+
 		default:
 			return state;
 	}

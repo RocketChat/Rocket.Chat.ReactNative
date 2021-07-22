@@ -95,22 +95,10 @@ export default class RoomSubscription {
 				return;
 			}
 			const [name, eventActive, activityType, options] = ddpMessage.fields.args;
-			const roomId = options && 'tmid' in options ? options.tmid : _rid;
+			const roomId = options?.tmid ? options.tmid : _rid;
 
-			let activity = 'USER_TYPING';
-			switch (activityType) {
-				case 'user-typing':
-					activity = 'USER_TYPING';
-					break;
-				case 'user-recording':
-					activity = 'USER_RECORDING';
-					break;
-				case 'user-uploading':
-					activity = 'USER_UPLOADING';
-					break;
-				default:
-					'USER_TYPING';
-			}
+			// activityType will be of the form user-typing, user-recording, user-uploading
+			const activity = activityType.toUpperCase().split('-').join('_') || 'USER_TYPING';
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
 				if (eventActive) {
