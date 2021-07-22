@@ -35,7 +35,6 @@ import { MessageTypeValues } from '../../utils/messageTypes';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Avatar from '../../containers/Avatar';
 import { CustomIcon } from '../../lib/Icons';
-import i18nEnJson from '../../i18n/locales/en.json';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -394,8 +393,6 @@ class RoomInfoEditView extends React.Component {
 						} catch (e) {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);
-							const errorType = e?.data?.errorType || e?.data?.error;
-							showErrorAlert(i18nEnJson[errorType] ? I18n.t(errorType) : errorType);
 						}
 					}
 				}
