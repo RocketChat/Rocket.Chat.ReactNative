@@ -29,7 +29,6 @@ import { isIOS } from '../../utils/deviceInfo';
 
 const QUERY_SIZE = 50;
 
-
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ navigation, route }) => {
 		const options = {
