@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	StyleSheet, Modal, Animated
+	StyleSheet, Modal, Animated, View
 } from 'react-native';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
@@ -112,23 +112,26 @@ class Loading extends React.PureComponent {
 				transparent
 				onRequestClose={() => {}}
 			>
-				<Animated.View
-					style={[styles.container, {
-						backgroundColor: themes[theme].backdropColor,
-						opacity: opacityAnimation
-					}]}
+				<View
+					style={styles.container}
 					testID='loading'
 				>
+					<Animated.View
+						style={[{
+							...StyleSheet.absoluteFill,
+							backgroundColor: themes[theme].backdropColor,
+							opacity: opacityAnimation
+						}]}
+					/>
 					<Animated.Image
 						source={require('../static/images/logo.png')}
 						style={[styles.image, {
-							opacity,
 							transform: [{
 								scale: scaleAnimation
 							}]
 						}]}
 					/>
-				</Animated.View>
+				</View>
 			</Modal>
 		);
 	}
