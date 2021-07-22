@@ -55,6 +55,7 @@ class RoomInfoView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		jitsiEnabled: PropTypes.bool,
 		editRoomPermission: PropTypes.array,
+		editLiveChatPermission: PropTypes.array,
 		roles: PropTypes.array
 	}
 
@@ -184,7 +185,7 @@ class RoomInfoView extends React.Component {
 
 	loadRoom = async() => {
 		const { room: roomState } = this.state;
-		const { route, editRoomPermission } = this.props;
+		const { route, editRoomPermission, editLiveChatPermission } = this.props;
 		let room = route.params?.room;
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
@@ -204,7 +205,9 @@ class RoomInfoView extends React.Component {
 			}
 		}
 
-		const permissions = await RocketChat.hasPermission([editRoomPermission], room.rid);
+		const permissionToEdit = this.isLivechat ? editLiveChatPermission : editRoomPermission;
+
+		const permissions = await RocketChat.hasPermission([permissionToEdit], room.rid);
 		if (permissions[0]) {
 			this.setState({ showEdit: true }, () => this.setHeader());
 		}
@@ -370,6 +373,7 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail,
 	jitsiEnabled: state.settings.Jitsi_Enabled || false,
 	editRoomPermission: state.permissions['edit-room'],
+	editLiveChatPermission: state.permissions['edit-omnichannel-contact'],
 	roles: state.roles
 });
 
