@@ -20,6 +20,7 @@ yarn
 
 Run the app:
 ```sh
+npx pod-install
 yarn ios
 ```
 
