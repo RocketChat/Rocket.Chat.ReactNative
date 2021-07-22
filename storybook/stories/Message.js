@@ -854,3 +854,19 @@ stories.add('Ignored', () => (
 stories.add('Custom style', () => (
 	<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />
 ));
+
+stories.add('Show a button as attachment', () => (
+	<Message
+		attachments={[{
+			text: 'Test Button',
+			actions: [
+				{
+					type: 'button',
+					text: 'Text button',
+					msg: 'Response message',
+					msg_in_chat_window: true
+				}
+			]
+		}]}
+	/>
+));
