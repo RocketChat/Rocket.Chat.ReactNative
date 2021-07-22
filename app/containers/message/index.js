@@ -375,6 +375,7 @@ class MessageContainer extends React.Component {
 					onDiscussionPress: this.onDiscussionPress,
 					onReactionLongPress: this.onReactionLongPress,
 					onLinkPress: this.onLinkPress,
+					onAnswerButtonPress: this.onAnswerButtonPress,
 					jumpToMessage,
 					threadBadgeColor,
 					toggleFollowThread,
@@ -429,7 +430,6 @@ class MessageContainer extends React.Component {
 					callJitsi={callJitsi}
 					blockAction={blockAction}
 					theme={theme}
-					onAnswerButtonPress={this.onAnswerButtonPress} // TODO: this function inside context is failing
 					highlighted={highlighted}
 				/>
 			</MessageContext.Provider>

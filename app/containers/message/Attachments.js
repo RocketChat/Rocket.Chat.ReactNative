@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { dequal } from 'dequal';
 import PropTypes from 'prop-types';
 import { Text } from 'react-native';
@@ -9,10 +9,13 @@ import Video from './Video';
 import Reply from './Reply';
 import Button from '../Button';
 import styles from './styles';
+import MessageContext from './Context';
 
 const AttachedActions = ({
-	attachment, theme, onAnswerButtonPress
+	attachment, theme
 }) => {
+	const { onAnswerButtonPress } = useContext(MessageContext);
+
 	const attachedButtons = attachment.actions.map((element) => {
 		if (element.type === 'button') {
 			return <Button theme={theme} onPress={() => onAnswerButtonPress(element.msg)} title={element.text} />;
@@ -29,7 +32,7 @@ const AttachedActions = ({
 };
 
 const Attachments = React.memo(({
-	attachments, timeFormat, showAttachment, getCustomEmoji, theme, onAnswerButtonPress
+	attachments, timeFormat, showAttachment, getCustomEmoji, theme
 }) => {
 	if (!attachments || attachments.length === 0) {
 		return null;
@@ -46,7 +49,7 @@ const Attachments = React.memo(({
 			return <Video key={file.video_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} theme={theme} />;
 		}
 		if (file.actions && file.actions.length > 0) {
-			return <AttachedActions attachment={file} theme={theme} onAnswerButtonPress={onAnswerButtonPress} />;
+			return <AttachedActions attachment={file} theme={theme} />;
 		}
 
 		// eslint-disable-next-line react/no-array-index-key
@@ -59,7 +62,6 @@ Attachments.propTypes = {
 	timeFormat: PropTypes.string,
 	showAttachment: PropTypes.func,
 	getCustomEmoji: PropTypes.func,
-	onAnswerButtonPress: PropTypes.func,
 	theme: PropTypes.string
 };
 Attachments.displayName = 'MessageAttachments';
@@ -68,8 +70,7 @@ AttachedActions.propTypes = {
 		actions: PropTypes.array,
 		text: PropTypes.string
 	}),
-	theme: PropTypes.string,
-	onAnswerButtonPress: PropTypes.func
+	theme: PropTypes.string
 };
 
 export default Attachments;
