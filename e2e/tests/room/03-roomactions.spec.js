@@ -1,9 +1,8 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage } = require('../../helpers/app');
-const { sendMessage } = require('../../helpers/data_setup')
+const {
+	navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage
+} = require('../../helpers/app');
+const { sendMessage } = require('../../helpers/data_setup');
 
 async function navigateToRoomActions(type) {
 	let room;
@@ -36,15 +35,14 @@ async function waitForToast() {
 }
 
 describe('Room actions screen', () => {
-
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});
-	
-	describe('Render', async() => {
-		describe('Direct', async() => {
+
+	describe('Render', () => {
+		describe('Direct', () => {
 			before(async() => {
 				await navigateToRoomActions('d');
 			});
@@ -52,41 +50,41 @@ describe('Room actions screen', () => {
 			it('should have room actions screen', async() => {
 				await expect(element(by.id('room-actions-view'))).toExist();
 			});
-	
+
 			it('should have info', async() => {
 				await expect(element(by.id('room-actions-info'))).toExist();
 			});
-	
+
 			// it('should have voice', async() => {
 			// 	await expect(element(by.id('room-actions-voice'))).toExist();
 			// });
-	
+
 			// it('should have video', async() => {
 			// 	await expect(element(by.id('room-actions-video'))).toExist();
 			// });
-	
+
 			it('should have files', async() => {
 				await expect(element(by.id('room-actions-files'))).toExist();
 			});
-	
+
 			it('should have mentions', async() => {
 				await expect(element(by.id('room-actions-mentioned'))).toExist();
 			});
-	
+
 			it('should have starred', async() => {
 				await expect(element(by.id('room-actions-starred'))).toExist();
 			});
-	
+
 			it('should have share', async() => {
 				await waitFor(element(by.id('room-actions-share'))).toExist();
 				await expect(element(by.id('room-actions-share'))).toExist();
 			});
-	
+
 			it('should have pinned', async() => {
 				await waitFor(element(by.id('room-actions-pinned'))).toExist();
 				await expect(element(by.id('room-actions-pinned'))).toExist();
 			});
-	
+
 			it('should have notifications', async() => {
 				await waitFor(element(by.id('room-actions-notifications'))).toExist();
 				await expect(element(by.id('room-actions-notifications'))).toExist();
@@ -102,7 +100,7 @@ describe('Room actions screen', () => {
 			});
 		});
 
-		describe('Channel/Group', async() => {
+		describe('Channel/Group', () => {
 			before(async() => {
 				await navigateToRoomActions('c');
 			});
@@ -110,15 +108,15 @@ describe('Room actions screen', () => {
 			it('should have room actions screen', async() => {
 				await expect(element(by.id('room-actions-view'))).toExist();
 			});
-	
+
 			it('should have info', async() => {
 				await expect(element(by.id('room-actions-info'))).toExist();
 			});
-	
+
 			// it('should have voice', async() => {
 			// 	await expect(element(by.id('room-actions-voice'))).toExist();
 			// });
-	
+
 			// it('should have video', async() => {
 			// 	await expect(element(by.id('room-actions-video'))).toExist();
 			// });
@@ -130,34 +128,34 @@ describe('Room actions screen', () => {
 			it('should have add user', async() => {
 				await expect(element(by.id('room-actions-add-user'))).toExist();
 			});
-	
+
 			it('should have files', async() => {
 				await expect(element(by.id('room-actions-files'))).toExist();
 			});
-	
+
 			it('should have mentions', async() => {
 				await expect(element(by.id('room-actions-mentioned'))).toExist();
 			});
-	
+
 			it('should have starred', async() => {
 				await expect(element(by.id('room-actions-starred'))).toExist();
 			});
-	
+
 			it('should have share', async() => {
 				await waitFor(element(by.id('room-actions-share'))).toExist();
 				await expect(element(by.id('room-actions-share'))).toExist();
 			});
-	
+
 			it('should have pinned', async() => {
 				await waitFor(element(by.id('room-actions-pinned'))).toExist();
 				await expect(element(by.id('room-actions-pinned'))).toExist();
 			});
-	
+
 			it('should have notifications', async() => {
 				await waitFor(element(by.id('room-actions-notifications'))).toExist();
 				await expect(element(by.id('room-actions-notifications'))).toExist();
 			});
-	
+
 			it('should have leave channel', async() => {
 				await waitFor(element(by.id('room-actions-leave-channel'))).toExist();
 				await expect(element(by.id('room-actions-leave-channel'))).toExist();
@@ -165,7 +163,7 @@ describe('Room actions screen', () => {
 		});
 	});
 
-	describe('Usage', async() => {
+	describe('Usage', () => {
 		describe('TDB', async() => {
 			// TODO: test into a jitsi call
 			// it('should NOT navigate to voice call', async() => {
@@ -191,7 +189,7 @@ describe('Room actions screen', () => {
 			// });
 		});
 
-		describe('Common', async() => {
+		describe('Common', () => {
 			it('should show mentioned messages', async() => {
 				await element(by.id('room-actions-mentioned')).tap();
 				await waitFor(element(by.id('mentioned-messages-view'))).toExist().withTimeout(2000);
@@ -200,24 +198,23 @@ describe('Room actions screen', () => {
 			});
 
 			it('should show starred message and unstar it', async() => {
-
-				//Go back to room and send a message
+				// Go back to room and send a message
 				await tapBack();
 				await mockMessage('messageToStar');
 
-				//Star the message
-				await starMessage('messageToStar')
+				// Star the message
+				await starMessage('messageToStar');
 
-				//Back into Room Actions
+				// Back into Room Actions
 				await element(by.id('room-header')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
 
-				//Go to starred messages
+				// Go to starred messages
 				await element(by.id('room-actions-starred')).tap();
 				await waitFor(element(by.id('starred-messages-view'))).toExist().withTimeout(2000);
 				await waitFor(element(by.label(`${ data.random }messageToStar`).withAncestor(by.id('starred-messages-view')))).toExist().withTimeout(60000);
-				
-				//Unstar message
+
+				// Unstar message
 				await element(by.label(`${ data.random }messageToStar`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
@@ -228,15 +225,14 @@ describe('Room actions screen', () => {
 			});
 
 			it('should show pinned message and unpin it', async() => {
-
-				//Go back to room and send a message
+				// Go back to room and send a message
 				await tapBack();
 				await mockMessage('messageToPin');
 
-				//Pin the message
-				await pinMessage('messageToPin')
+				// Pin the message
+				await pinMessage('messageToPin');
 
-				//Back into Room Actions
+				// Back into Room Actions
 				await element(by.id('room-header')).tap();
 				await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
 				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
@@ -273,7 +269,7 @@ describe('Room actions screen', () => {
 			// });
 		});
 
-		describe('Notification', async() => {
+		describe('Notification', () => {
 			it('should navigate to notification preference view', async() => {
 				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-notifications'))).toExist().withTimeout(2000);
@@ -318,13 +314,13 @@ describe('Room actions screen', () => {
 			after(async() => {
 				await backToActions();
 			});
-		})
+		});
 
-		describe('Channel/Group', async() => {
+		describe('Channel/Group', () => {
 			// Currently, there's no way to add more owners to the room
 			// So we test only for the 'You are the last owner...' message
 
-			const user = data.users.alternate
+			const user = data.users.alternate;
 
 			it('should tap on leave channel and raise alert', async() => {
 				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
@@ -363,11 +359,23 @@ describe('Room actions screen', () => {
 				await backToActions();
 			});
 
-			describe('Room Members', async() => {
+			describe('Room Members', () => {
 				before(async() => {
 					await element(by.id('room-actions-members')).tap();
 					await waitFor(element(by.id('room-members-view'))).toExist().withTimeout(2000);
 				});
+
+				const openActionSheet = async(username) => {
+					await waitFor(element(by.id(`room-members-view-item-${ username }`))).toExist().withTimeout(5000);
+					await element(by.id(`room-members-view-item-${ username }`)).tap();
+					await sleep(300);
+					await expect(element(by.id('action-sheet'))).toExist();
+					await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+				};
+
+				const closeActionSheet = async() => {
+					await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
+				};
 
 				it('should show all users', async() => {
 					await element(by.id('room-members-view-toggle-status')).tap();
@@ -396,18 +404,6 @@ describe('Room actions screen', () => {
 					await element(by.id('room-members-view-search')).clearText('');
 					await waitFor(element(by.id(`room-members-view-item-${ user.username }`))).toExist().withTimeout(60000);
 				});
-
-				const openActionSheet = async(username) => {
-					await waitFor(element(by.id(`room-members-view-item-${ username }`))).toExist().withTimeout(5000);
-					await element(by.id(`room-members-view-item-${ username }`)).tap();
-					await sleep(300);
-					await expect(element(by.id('action-sheet'))).toExist();
-					await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				}
-
-				const closeActionSheet = async() => {
-					await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
-				}
 
 				it('should set/remove as owner', async() => {
 					await openActionSheet(user.username);
@@ -504,9 +500,9 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.id('rooms-list-view'))).toExist().withTimeout(2000);
 				});
 			});
-		})
+		});
 
-		describe('Direct', async() => {
+		describe('Direct', () => {
 			before(async() => {
 				await navigateToRoomActions('d');
 			});

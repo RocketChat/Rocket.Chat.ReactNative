@@ -5,7 +5,7 @@ import {
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FastImage from '@rocket.chat/react-native-fast-image';
-import CookieManager from '@react-native-community/cookies';
+import CookieManager from '@react-native-cookies/cookies';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -65,7 +65,7 @@ class SettingsView extends React.Component {
 		const usersCollection = db.get('users');
 		try {
 			const userRecord = await usersCollection.find(user.id);
-			if (!userRecord.loginEmailPassword) {
+			if (userRecord.isFromWebView) {
 				showConfirmationAlert({
 					title: I18n.t('Clear_cookies_alert'),
 					message: I18n.t('Clear_cookies_desc'),
