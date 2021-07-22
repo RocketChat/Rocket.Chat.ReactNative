@@ -175,12 +175,11 @@ class SearchMessagesView extends React.Component {
 
 	onEndReached = async() => {
 		const { searchText, messages } = this.state;
-		this.setState({ loading: true });
-
 		if (messages.length < this.count) {
-			return this.setState({ loading: false });
+			return;
 		}
 
+		this.setState({ loading: true });
 		try {
 			this.count += QUERY_SIZE;
 			const messagesRequest = await this.searchMessages(searchText);
