@@ -1,20 +1,27 @@
 import React from 'react';
 import { dequal } from 'dequal';
-import PropTypes from 'prop-types';
 
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
 import Reply from './Reply';
 
+interface IMessageAttachments {
+	attachments: any;
+	timeFormat: string;
+	showAttachment: Function;
+	getCustomEmoji: Function;
+	theme: string;
+}
+
 const Attachments = React.memo(({
 	attachments, timeFormat, showAttachment, getCustomEmoji, theme
-}) => {
+}: IMessageAttachments) => {
 	if (!attachments || attachments.length === 0) {
 		return null;
 	}
 
-	return attachments.map((file, index) => {
+	return attachments.map((file: any, index: number) => {
 		if (file.image_url) {
 			return <Image key={file.image_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} theme={theme} />;
 		}
@@ -30,13 +37,6 @@ const Attachments = React.memo(({
 	});
 }, (prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments) && prevProps.theme === nextProps.theme);
 
-Attachments.propTypes = {
-	attachments: PropTypes.array,
-	timeFormat: PropTypes.string,
-	showAttachment: PropTypes.func,
-	getCustomEmoji: PropTypes.func,
-	theme: PropTypes.string
-};
 Attachments.displayName = 'MessageAttachments';
 
 export default Attachments;

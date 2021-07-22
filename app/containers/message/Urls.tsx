@@ -1,8 +1,5 @@
 import React, { useContext } from 'react';
-import {
-	View, Text, StyleSheet, Clipboard
-} from 'react-native';
-import PropTypes from 'prop-types';
+import { View, Text, StyleSheet, Clipboard } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import { dequal } from 'dequal';
 
@@ -52,7 +49,30 @@ const styles = StyleSheet.create({
 	}
 });
 
-const UrlImage = React.memo(({ image }) => {
+type TMessageUrlContent = {
+	title: string;
+	description: string;
+	theme: string;
+};
+
+type TMessageUrl = {
+	url: {
+		ignoreParse: boolean;
+		url: string;
+		image: string;
+		title: string;
+		description: string;
+	};
+	index: number;
+	theme: string;
+};
+
+interface IMessageUrls {
+	urls: any;
+	theme: string;
+}
+
+const UrlImage = React.memo(({ image }: {image: string}) => {
 	if (!image) {
 		return null;
 	}
@@ -61,7 +81,7 @@ const UrlImage = React.memo(({ image }) => {
 	return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
 }, (prevProps, nextProps) => prevProps.image === nextProps.image);
 
-const UrlContent = React.memo(({ title, description, theme }) => (
+const UrlContent = React.memo(({ title, description, theme }: TMessageUrlContent) => (
 	<View style={styles.textContainer}>
 		{title ? <Text style={[styles.title, { color: themes[theme].tintColor }]} numberOfLines={2}>{title}</Text> : null}
 		{description ? <Text style={[styles.description, { color: themes[theme].auxiliaryText }]} numberOfLines={2}>{description}</Text> : null}
@@ -79,7 +99,7 @@ const UrlContent = React.memo(({ title, description, theme }) => (
 	return true;
 });
 
-const Url = React.memo(({ url, index, theme }) => {
+const Url = React.memo(({ url, index, theme }: TMessageUrl) => {
 	if (!url || url?.ignoreParse) {
 		return null;
 	}
@@ -114,39 +134,19 @@ const Url = React.memo(({ url, index, theme }) => {
 	);
 }, (oldProps, newProps) => dequal(oldProps.url, newProps.url) && oldProps.theme === newProps.theme);
 
-const Urls = React.memo(({ urls, theme }) => {
+const Urls = React.memo(({ urls, theme }: IMessageUrls) => {
 	if (!urls || urls.length === 0) {
 		return null;
 	}
 
-	return urls.map((url, index) => (
+	return urls.map((url: any, index: number) => (
 		<Url url={url} key={url.url} index={index} theme={theme} />
 	));
 }, (oldProps, newProps) => dequal(oldProps.urls, newProps.urls) && oldProps.theme === newProps.theme);
 
-UrlImage.propTypes = {
-	image: PropTypes.string
-};
 UrlImage.displayName = 'MessageUrlImage';
-
-UrlContent.propTypes = {
-	title: PropTypes.string,
-	description: PropTypes.string,
-	theme: PropTypes.string
-};
 UrlContent.displayName = 'MessageUrlContent';
-
-Url.propTypes = {
-	url: PropTypes.object.isRequired,
-	index: PropTypes.number,
-	theme: PropTypes.string
-};
 Url.displayName = 'MessageUrl';
-
-Urls.propTypes = {
-	urls: PropTypes.array,
-	theme: PropTypes.string
-};
 Urls.displayName = 'MessageUrls';
 
 export default withTheme(Urls);

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { dequal } from 'dequal';
 
@@ -13,7 +12,7 @@ import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
-const isTypeSupported = type => SUPPORTED_TYPES.indexOf(type) !== -1;
+const isTypeSupported = (type: any) => SUPPORTED_TYPES.indexOf(type) !== -1;
 
 const styles = StyleSheet.create({
 	button: {
@@ -26,9 +25,18 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Video = React.memo(({
-	file, showAttachment, getCustomEmoji, theme
-}) => {
+interface IMessageVideo {
+	file: {
+		video_type: string;
+		video_url: string;
+		description: string;
+	};
+	showAttachment: Function;
+	getCustomEmoji: Function;
+	theme: string;
+}
+
+const Video = React.memo(({ file, showAttachment, getCustomEmoji, theme }: IMessageVideo) => {
 	const { baseUrl, user } = useContext(MessageContext);
 	if (!baseUrl) {
 		return null;
@@ -54,16 +62,10 @@ const Video = React.memo(({
 					color={themes[theme].buttonText}
 				/>
 			</Touchable>
+			{/*@ts-ignore*/}
 			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 		</>
 	);
 }, (prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
-
-Video.propTypes = {
-	file: PropTypes.object,
-	showAttachment: PropTypes.func,
-	getCustomEmoji: PropTypes.func,
-	theme: PropTypes.string
-};
 
 export default Video;

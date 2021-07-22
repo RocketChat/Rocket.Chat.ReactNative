@@ -1,15 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
 
-const Blocks = React.memo(({
-	blocks, id: mid, rid, blockAction
-}) => {
+interface IMessageBlocks {
+	blocks: any;
+	id: string;
+	rid: string;
+	blockAction: Function;
+}
+
+const Blocks = React.memo(({ blocks, id: mid, rid, blockAction }: IMessageBlocks) => {
 	if (blocks && blocks.length > 0) {
 		const appId = blocks[0]?.appId || '';
 		return React.createElement(
 			messageBlockWithContext({
-				action: async({ actionId, value, blockId }) => {
+				action: async({ actionId, value, blockId }: any) => {
 					await blockAction({
 						actionId,
 						appId,
@@ -27,12 +31,6 @@ const Blocks = React.memo(({
 	return null;
 });
 
-Blocks.propTypes = {
-	blocks: PropTypes.array,
-	id: PropTypes.string,
-	rid: PropTypes.string,
-	blockAction: PropTypes.func
-};
 Blocks.displayName = 'MessageBlocks';
 
 export default Blocks;

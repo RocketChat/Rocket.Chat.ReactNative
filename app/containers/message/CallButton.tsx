@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Touchable from './Touchable';
 import { BUTTON_HIT_SLOP } from './utils';
@@ -9,9 +8,12 @@ import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 
-const CallButton = React.memo(({
-	theme, callJitsi
-}) => (
+interface IMessageCallButton {
+	theme: string;
+	callJitsi: Function;
+}
+
+const CallButton = React.memo(({ theme, callJitsi }: IMessageCallButton) => (
 	<View style={styles.buttonContainer}>
 		<Touchable
 			onPress={callJitsi}
@@ -27,10 +29,6 @@ const CallButton = React.memo(({
 	</View>
 ));
 
-CallButton.propTypes = {
-	theme: PropTypes.string,
-	callJitsi: PropTypes.func
-};
 CallButton.displayName = 'CallButton';
 
 export default CallButton;

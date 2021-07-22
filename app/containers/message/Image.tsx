@@ -25,7 +25,7 @@ type TMessageImage = {
 
 interface IMessageImage {
 	file: { image_url: string; description: string; };
-	imageUrl: string;
+	imageUrl?: string;
 	showAttachment: Function;
 	theme: string;
 	getCustomEmoji: Function;

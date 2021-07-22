@@ -1,8 +1,5 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
-import {
-	View, Text, StyleSheet, TouchableOpacity
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import moment from 'moment';
 
 import { themes } from '../../constants/colors';
@@ -41,9 +38,26 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IMessageUser {
+	isHeader: boolean;
+	hasError: boolean;
+	useRealName: boolean;
+	author: {
+		_id: string;
+		name: string;
+		username: string;
+	};
+	alias: string;
+	ts: Date;
+	timeFormat: string;
+	theme: string;
+	navToRoomInfo: Function;
+	type: string;
+}
+
 const User = React.memo(({
 	isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, type, ...props
-}) => {
+}: IMessageUser) => {
 	if (isHeader || hasError) {
 		const navParam = {
 			t: 'd',
@@ -68,6 +82,7 @@ const User = React.memo(({
 				<Text
 					style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
 					onPress={onUserPress}
+					// @ts-ignore
 					disabled={isDisabled}
 				>
 					{textContent}
@@ -94,18 +109,6 @@ const User = React.memo(({
 	return null;
 });
 
-User.propTypes = {
-	isHeader: PropTypes.bool,
-	hasError: PropTypes.bool,
-	useRealName: PropTypes.bool,
-	author: PropTypes.object,
-	alias: PropTypes.string,
-	ts: PropTypes.instanceOf(Date),
-	timeFormat: PropTypes.string,
-	theme: PropTypes.string,
-	navToRoomInfo: PropTypes.func,
-	type: PropTypes.string
-};
 User.displayName = 'MessageUser';
 
 export default withTheme(User);

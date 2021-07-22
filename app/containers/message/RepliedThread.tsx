@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
@@ -8,9 +7,19 @@ import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import Markdown from '../markdown';
 
+interface IMessageRepliedThread {
+	tmid: string;
+	tmsg: string;
+	id: string;
+	isHeader: boolean;
+	theme: string;
+	fetchThreadName: Function;
+	isEncrypted: boolean;
+}
+
 const RepliedThread = memo(({
 	tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted, theme
-}) => {
+}: IMessageRepliedThread) => {
 	if (!tmid || !isHeader) {
 		return null;
 	}
@@ -34,6 +43,7 @@ const RepliedThread = memo(({
 	return (
 		<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
 			<CustomIcon name='threads' size={20} style={styles.repliedThreadIcon} color={themes[theme].tintColor} />
+			{/*@ts-ignore*/}
 			<Markdown
 				msg={msg}
 				theme={theme}
@@ -52,15 +62,6 @@ const RepliedThread = memo(({
 	);
 });
 
-RepliedThread.propTypes = {
-	tmid: PropTypes.string,
-	tmsg: PropTypes.string,
-	id: PropTypes.string,
-	isHeader: PropTypes.bool,
-	theme: PropTypes.string,
-	fetchThreadName: PropTypes.func,
-	isEncrypted: PropTypes.bool
-};
 RepliedThread.displayName = 'MessageRepliedThread';
 
 export default RepliedThread;

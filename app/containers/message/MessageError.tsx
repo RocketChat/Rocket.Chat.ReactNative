@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 
 import Touchable from './Touchable';
 import { CustomIcon } from '../../lib/Icons';
@@ -8,7 +7,12 @@ import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 
-const MessageError = React.memo(({ hasError, theme }) => {
+interface IMessageError {
+	hasError: boolean;
+	theme: string;
+}
+
+const MessageError = React.memo(({ hasError, theme }: IMessageError) => {
 	if (!hasError) {
 		return null;
 	}
@@ -20,10 +24,6 @@ const MessageError = React.memo(({ hasError, theme }) => {
 	);
 }, (prevProps, nextProps) => prevProps.hasError === nextProps.hasError && prevProps.theme === nextProps.theme);
 
-MessageError.propTypes = {
-	hasError: PropTypes.bool,
-	theme: PropTypes.string
-};
 MessageError.displayName = 'MessageError';
 
 export default MessageError;

@@ -1,13 +1,26 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 
 import Avatar from '../Avatar';
 import styles from './styles';
 import MessageContext from './Context';
 
+interface IMessageAvatar {
+	isHeader: boolean;
+	avatar: string;
+	emoji: string;
+	author: {
+		username: string
+		_id: string;
+	};
+	small: boolean;
+	navToRoomInfo: Function;
+	getCustomEmoji(): void;
+	theme: string;
+}
+
 const MessageAvatar = React.memo(({
 	isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji, theme
-}) => {
+}: IMessageAvatar) => {
 	const { user } = useContext(MessageContext);
 	if (isHeader && author) {
 		const navParam = {
@@ -31,16 +44,6 @@ const MessageAvatar = React.memo(({
 	return null;
 });
 
-MessageAvatar.propTypes = {
-	isHeader: PropTypes.bool,
-	avatar: PropTypes.string,
-	emoji: PropTypes.string,
-	author: PropTypes.obj,
-	small: PropTypes.bool,
-	navToRoomInfo: PropTypes.func,
-	getCustomEmoji: PropTypes.func,
-	theme: PropTypes.string
-};
 MessageAvatar.displayName = 'MessageAvatar';
 
 export default MessageAvatar;

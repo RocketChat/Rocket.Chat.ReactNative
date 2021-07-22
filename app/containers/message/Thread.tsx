@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import styles from './styles';
 import { themes } from '../../constants/colors';
@@ -8,9 +7,16 @@ import MessageContext from './Context';
 import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
 
-const Thread = React.memo(({
-	msg, tcount, tlm, isThreadRoom, theme, id
-}) => {
+interface IMessageThread {
+	msg: string;
+	tcount: number;
+	theme: string;
+	tlm: string;
+	isThreadRoom: boolean;
+	id: string;
+}
+
+const Thread = React.memo(({ msg, tcount, tlm, isThreadRoom, theme, id }: IMessageThread) => {
 	if (!tlm || isThreadRoom || tcount === 0) {
 		return null;
 	}
@@ -50,14 +56,6 @@ const Thread = React.memo(({
 	return true;
 });
 
-Thread.propTypes = {
-	msg: PropTypes.string,
-	tcount: PropTypes.string,
-	theme: PropTypes.string,
-	tlm: PropTypes.string,
-	isThreadRoom: PropTypes.bool,
-	id: PropTypes.string
-};
 Thread.displayName = 'MessageThread';
 
 export default Thread;
