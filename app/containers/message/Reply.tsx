@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
@@ -69,7 +68,49 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Title = React.memo(({ attachment, timeFormat, theme }) => {
+type TAttachment = {
+	author_name: string;
+	message_link: string;
+	ts: string;
+	text: string;
+	title: string;
+	short: boolean;
+	value: string;
+	title_link: string;
+	author_link: string;
+	type: string;
+	color: string;
+	description: string;
+	fields: TAttachment[];
+}
+
+type TMessageTitle = {
+	attachment: Partial<TAttachment>
+	timeFormat: string;
+	theme: string;
+};
+
+type TMessageDescription = {
+	attachment: Partial<TAttachment>
+	getCustomEmoji: Function;
+	theme: string;
+};
+
+type TMessageFields = {
+	attachment: Partial<TAttachment>;
+	theme: string;
+	getCustomEmoji: Function;
+};
+
+interface IMessageReply {
+	attachment: Partial<TAttachment>
+	timeFormat: string;
+	index: number;
+	theme: string;
+	getCustomEmoji: Function;
+}
+
+const Title = React.memo(({ attachment, timeFormat, theme }: TMessageTitle) => {
 	if (!attachment.author_name) {
 		return null;
 	}
@@ -82,15 +123,14 @@ const Title = React.memo(({ attachment, timeFormat, theme }) => {
 	);
 });
 
-const Description = React.memo(({
-	attachment, getCustomEmoji, theme
-}) => {
+const Description = React.memo(({ attachment, getCustomEmoji, theme }: TMessageDescription) => {
 	const text = attachment.text || attachment.title;
 	if (!text) {
 		return null;
 	}
 	const { baseUrl, user } = useContext(MessageContext);
 	return (
+		// @ts-ignore
 		<Markdown
 			msg={text}
 			baseUrl={baseUrl}
@@ -112,7 +152,7 @@ const Description = React.memo(({
 	return true;
 });
 
-const Fields = React.memo(({ attachment, theme, getCustomEmoji }) => {
+const Fields = React.memo(({ attachment, theme, getCustomEmoji }: TMessageFields) => {
 	if (!attachment.fields) {
 		return null;
 	}
@@ -123,6 +163,7 @@ const Fields = React.memo(({ attachment, theme, getCustomEmoji }) => {
 			{attachment.fields.map(field => (
 				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 					<Text style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>{field.title}</Text>
+					{/*@ts-ignore*/}
 					<Markdown
 						msg={field.value}
 						baseUrl={baseUrl}
@@ -136,9 +177,7 @@ const Fields = React.memo(({ attachment, theme, getCustomEmoji }) => {
 	);
 }, (prevProps, nextProps) => dequal(prevProps.attachment.fields, nextProps.attachment.fields) && prevProps.theme === nextProps.theme);
 
-const Reply = React.memo(({
-	attachment, timeFormat, index, getCustomEmoji, theme
-}) => {
+const Reply = React.memo(({ attachment, timeFormat, index, getCustomEmoji, theme }: IMessageReply) => {
 	if (!attachment) {
 		return null;
 	}
@@ -203,8 +242,9 @@ const Reply = React.memo(({
 					/>
 				</View>
 			</Touchable>
+			{/*@ts-ignore*/}
 			<Markdown
-				msg={attachment.description}
+				msg={attachment.description!}
 				baseUrl={baseUrl}
 				username={user.username}
 				getCustomEmoji={getCustomEmoji}
@@ -214,34 +254,9 @@ const Reply = React.memo(({
 	);
 }, (prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme);
 
-Reply.propTypes = {
-	attachment: PropTypes.object,
-	timeFormat: PropTypes.string,
-	index: PropTypes.number,
-	theme: PropTypes.string,
-	getCustomEmoji: PropTypes.func
-};
 Reply.displayName = 'MessageReply';
-
-Title.propTypes = {
-	attachment: PropTypes.object,
-	timeFormat: PropTypes.string,
-	theme: PropTypes.string
-};
 Title.displayName = 'MessageReplyTitle';
-
-Description.propTypes = {
-	attachment: PropTypes.object,
-	getCustomEmoji: PropTypes.func,
-	theme: PropTypes.string
-};
 Description.displayName = 'MessageReplyDescription';
-
-Fields.propTypes = {
-	attachment: PropTypes.object,
-	theme: PropTypes.string,
-	getCustomEmoji: PropTypes.func
-};
 Fields.displayName = 'MessageReplyFields';
 
 export default Reply;
