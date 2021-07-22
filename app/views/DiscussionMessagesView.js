@@ -26,13 +26,10 @@ import { sanitizeLikeString } from '../lib/database/utils';
 
 const DiscussionMessagesView = ({ navigation, route }) => {
 	const rid = route.params?.rid;
-	// const t = route.params?.t;
-	// const prid = route.params?.prid;
 	const canAutoTranslate = route.params?.canAutoTranslate;
 	const autoTranslate = route.params?.autoTranslate;
 	const autoTranslateLanguage = route.params?.autoTranslateLanguage;
 	const baseUrl = useSelector(state => state.server.server);
-	// const user = useSelector(state => getUserSelector(state));
 	const useRealName = useSelector(state => state.settings.UI_Use_Real_Name);
 	const Message_TimeFormat = useSelector(state => state.settings.Message_TimeFormat);
 	const isMasterDetail = useSelector(state => state.app.isMasterDetail);
