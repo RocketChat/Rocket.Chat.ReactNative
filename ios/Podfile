@@ -6,8 +6,11 @@ require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 def all_pods
   config = use_native_modules!
   use_unimodules!
-  use_react_native!(:path => config["reactNativePath"])
-  use_flipper!
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :hermes_enabled => true
+  )
+  use_flipper!()
 end
 
 abstract_target 'defaults' do
@@ -30,7 +33,7 @@ target 'ShareRocketChatRN' do
   pod 'UMImageLoaderInterface', :path=> "../node_modules/unimodules-image-loader-interface/ios"
   pod 'UMReactNativeAdapter', :path=> "../node_modules/@unimodules/react-native-adapter/ios"
 
-  use_react_native!(:path => '../node_modules/react-native')
+  use_react_native!(:path => '../node_modules/react-native', :hermes_enabled => true)
 
   pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
   pod 'RNFBAnalytics', :path => '../node_modules/@react-native-firebase/analytics'
@@ -67,7 +70,8 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
     end
   end
-  flipper_post_install(installer)
+  react_native_post_install(installer)
 end

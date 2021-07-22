@@ -1,1 +1,0 @@
-../../../../../node_modules/@rocket.chat/react-native-fast-image/ios/FastImage/FFFastImageSource.h
