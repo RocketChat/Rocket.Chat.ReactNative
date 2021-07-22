@@ -25,6 +25,7 @@ import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
+import { isIOS } from '../../utils/deviceInfo';
 
 const QUERY_SIZE = 50;
 
@@ -113,10 +114,7 @@ class SearchMessagesView extends React.Component {
 		}
 	}
 
-	search = debounce(async(searchText) => {
-		this.count = QUERY_SIZE;
-		this.setState({ searchText, loading: true, messages: [] });
-
+	getMessages = async(searchText) => {
 		try {
 			const messages = await this.searchMessages(searchText);
 			this.setState({
@@ -127,6 +125,13 @@ class SearchMessagesView extends React.Component {
 			this.setState({ loading: false });
 			log(e);
 		}
+	}
+
+	search = debounce(async(searchText) => {
+		this.count = QUERY_SIZE;
+		this.setState({ searchText, loading: true, messages: [] });
+
+		await this.getMessages(searchText);
 	}, 1000)
 
 	getCustomEmoji = (name) => {
@@ -178,19 +183,10 @@ class SearchMessagesView extends React.Component {
 		if (messages.length < this.count) {
 			return;
 		}
-
 		this.setState({ loading: true });
-		try {
-			this.count += QUERY_SIZE;
-			const messagesRequest = await this.searchMessages(searchText);
-			this.setState({
-				messages: messagesRequest || [],
-				loading: false
-			});
-		} catch (e) {
-			this.setState({ loading: false });
-			log(e);
-		}
+		this.count += QUERY_SIZE;
+
+		await this.getMessages(searchText);
 	}
 
 	renderEmpty = () => {
@@ -241,8 +237,8 @@ class SearchMessagesView extends React.Component {
 				keyExtractor={item => item._id}
 				onEndReached={this.onEndReached}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
-				onEndReachedThreshold={0.75}
-				removeClippedSubviews
+				onEndReachedThreshold={0.5}
+				removeClippedSubviews={isIOS}
 				{...scrollPersistTaps}
 			/>
 		);
