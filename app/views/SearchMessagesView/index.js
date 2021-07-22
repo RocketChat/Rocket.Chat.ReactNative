@@ -92,6 +92,9 @@ class SearchMessagesView extends React.Component {
 
 	// Handle encrypted rooms search messages
 	searchMessages = async(searchText) => {
+		if (!searchText) {
+			return [];
+		}
 		// If it's a encrypted, room we'll search only on the local stored messages
 		if (this.encrypted) {
 			const db = database.active;
@@ -179,7 +182,7 @@ class SearchMessagesView extends React.Component {
 
 	onEndReached = async() => {
 		const { searchText, messages } = this.state;
-		if (messages.length < this.count) {
+		if (messages.length < this.count || this.encrypted) {
 			return;
 		}
 		this.setState({ loading: true });
