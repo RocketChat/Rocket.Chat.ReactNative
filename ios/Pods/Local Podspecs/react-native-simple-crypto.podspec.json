@@ -1,0 +1,24 @@
+{
+  "name": "react-native-simple-crypto",
+  "version": "0.4.0",
+  "summary": "A simpler React-Native crypto library",
+  "authors": "Gary Button <gary.button.public@gmail.com>",
+  "license": "MIT",
+  "requires_arc": true,
+  "homepage": "https://github.com/ghbutton/react-native-simple-crypto",
+  "source": {
+    "git": "git+https://github.com/ghbutton/react-native-simple-crypto.git"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "ios/**/*.{h,m,swift}",
+  "dependencies": {
+    "React": [
+
+    ],
+    "OpenSSL-Universal": [
+
+    ]
+  }
+}

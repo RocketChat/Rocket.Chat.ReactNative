@@ -1,0 +1,25 @@
+{
+  "name": "react-native-mmkv-storage",
+  "version": "0.3.5",
+  "summary": "This library aims to provide a fast & reliable solution for you data storage needs in react-native apps. It uses [MMKV](https://github.com/Tencent/MMKV) by Tencent under the hood on Android and iOS both that is used by their WeChat app(more than 1 Billion users). Unlike other storage solutions for React Native, this library lets you store any kind of data type, in any number of database instances, with or without encryption in a very fast and efficient way.",
+  "homepage": "https://github.com/ammarahm-ed/react-native-mmkv-storage",
+  "license": "MIT",
+  "authors": "Ammar Ahmed for @ammarahm-ed",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/ammarahm-ed/react-native-mmkv-storage",
+    "tag": "V0.3.5"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "requires_arc": true,
+  "dependencies": {
+    "React": [
+
+    ],
+    "MMKV": [
+      "1.2.1"
+    ]
+  }
+}

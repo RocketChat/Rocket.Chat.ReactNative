@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Hmac.h
