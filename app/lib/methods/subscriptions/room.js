@@ -7,7 +7,7 @@ import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../database';
 import reduxStore from '../../createStore';
-import { addUserActivity, removeUserActivity, clearUserActivity } from '../../../actions/usersActivity';
+import { addUserActivity, removeUserActivity, clearAllUserActivities } from '../../../actions/usersActivity';
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
@@ -56,7 +56,7 @@ export default class RoomSubscription {
 				// do nothing
 			}
 		}
-		reduxStore.dispatch(clearUserActivity('USER_TYPING'));
+		reduxStore.dispatch(clearAllUserActivities());
 		this.removeListener(this.connectedListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
@@ -78,7 +78,7 @@ export default class RoomSubscription {
 	};
 
 	handleConnection = () => {
-		reduxStore.dispatch(clearUserActivity('USER_TYPING'));
+		reduxStore.dispatch(clearAllUserActivities());
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
 
