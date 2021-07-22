@@ -17,14 +17,9 @@ import { LISTENER } from '../containers/Toast';
 const watchUserActivity = function* watchUserActivity({
 	type, rid, status, options = {}
 }) {
-	let activity = 'user-typing';
-	if (type === 'ROOM_USER_TYPING') {
-		activity = 'user-typing';
-	} else if (type === 'ROOM_USER_RECORDING') {
-		activity = 'user-recording';
-	} else if (type === 'ROOM_USER_UPLOADING') {
-		activity = 'user-uploading';
-	}
+	// type will be like USER_TYPING, USER_UPLOADING, USER_RECORDING
+	// converted to user-typing, user-uploading, user-recording
+	const activity = type.split('_').slice(1).join('-').toLowerCase();
 
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {

@@ -41,90 +41,70 @@ const styles = StyleSheet.create({
 	}
 });
 
-const UserActivity = React.memo(({ activity, singular, plural }) => {
-	const getUsersText = (action) => {
+const ActivityIndicator = React.memo(({ users, action }) => {
+	const getUsersText = (performingUsers = []) => {
 		let usersText;
-		if (action.length === 2) {
-			usersText = action.join(` ${ I18n.t('and') } `);
+		if (performingUsers.length === 2) {
+			usersText = performingUsers.join(` ${ I18n.t('and') } `);
 		} else {
-			usersText = action.join(', ');
+			usersText = performingUsers.join(', ');
 		}
 		return usersText;
 	};
-	if (!activity.length) {
-		return null;
-	}
 
 	return (
 		<Text>
-			<Text style={styles.typingUsers}>{getUsersText(activity)} </Text>
-			{ activity.length > 1 ? I18n.t(plural) : I18n.t(singular) }...
+			<Text style={[styles.subtitle, styles.typingUsers]}>{getUsersText(users)} </Text>
+			{ users.length > 1 ? I18n.t(`are_${ action }`) : I18n.t(`is_${ action }`) }...
 		</Text>
 	);
 });
 
+ActivityIndicator.propTypes = {
+	action: PropTypes.string,
+	users: PropTypes.array
+};
+
+const UserActivity = React.memo(({ activities, tmid, rid }) => {
+	const { typing, uploading, recording } = activities;
+	const id = !tmid ? rid : tmid;
+
+	let users = typing?.[id] ? typing[id] : [];
+	if (users.length > 0) {
+		return <ActivityIndicator action='typing' users={users} />;
+	}
+
+	users = recording?.[id] ? recording[id] : [];
+	if (users.length > 0) {
+		return <ActivityIndicator action='recording' users={users} />;
+	}
+
+	users = uploading?.[id] ? uploading[id] : [];
+	if (users.length > 0) {
+		return <ActivityIndicator action='uploading' users={users} />;
+	}
+
+	return null;
+});
+
 UserActivity.propTypes = {
-	activity: PropTypes.array,
-	singular: PropTypes.string,
-	plural: PropTypes.string
+	activities: PropTypes.shape({
+		typing: PropTypes.object,
+		recording: PropTypes.object,
+		uploading: PropTypes.object
+	}),
+	tmid: PropTypes.string,
+	rid: PropTypes.string
 };
 
 const SubTitle = React.memo(({
-	usersActivity, subtitle, renderFunc, theme, scale, tmid, rid
+	subtitle, renderFunc, theme, scale
 }) => {
 	const fontSize = getSubTitleSize(scale);
-	const { typing, uploading, recording } = usersActivity;
-
-	let currentlyTypingUsers = [];
-	if (tmid) {
-		currentlyTypingUsers = tmid in typing ? typing[tmid] : [];
-	} else {
-		currentlyTypingUsers = rid in typing ? typing[rid] : [];
-	}
-
-	if (currentlyTypingUsers.length > 0) {
-		return (
-			<Text style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-				<UserActivity activity={currentlyTypingUsers} singular='is_typing' plural='are_typing' />
-			</Text>
-		);
-	}
-
-	let activeRecordingUsers = [];
-	if (tmid) {
-		activeRecordingUsers = tmid in recording ? recording[tmid] : [];
-	} else {
-		activeRecordingUsers = rid in recording ? recording[rid] : [];
-	}
-
-	if (activeRecordingUsers.length > 0) {
-		return (
-			<Text style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-				<UserActivity activity={activeRecordingUsers} singular='is_recording' plural='are_recording' />
-			</Text>
-		);
-	}
-
-	let activeUploadingUsers = [];
-	if (tmid) {
-		activeUploadingUsers = tmid in uploading ? uploading[tmid] : [];
-	} else {
-		activeUploadingUsers = rid in uploading ? uploading[rid] : [];
-	}
-
-	if (activeUploadingUsers.length) {
-		return (
-			<Text style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-				<UserActivity activity={activeUploadingUsers} singular='is_uploading' plural='are_uploading' />
-			</Text>
-		);
-	}
-
 	// renderFunc
 	if (renderFunc) {
 		return renderFunc();
 	}
-
 	// subtitle
 	if (subtitle) {
 		return (
@@ -147,8 +127,6 @@ SubTitle.propTypes = {
 		recording: PropTypes.array,
 		uploading: PropTypes.array
 	}),
-	rid: PropTypes.string,
-	tmid: PropTypes.string,
 	theme: PropTypes.string,
 	subtitle: PropTypes.string,
 	renderFunc: PropTypes.func,
@@ -239,12 +217,13 @@ const Header = React.memo(({
 			<SubTitle
 				tmid={tmid}
 				rid={rid}
-				usersActivity={usersActivity}
+				// usersActivity={usersActivity}
 				subtitle={subtitle}
 				theme={theme}
 				renderFunc={renderFunc}
 				scale={scale}
 			/>
+			<UserActivity activities={usersActivity} tmid={tmid} rid={rid} />
 		</TouchableOpacity>
 	);
 });
