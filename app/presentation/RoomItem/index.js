@@ -16,7 +16,8 @@ const attrs = [
 	'theme',
 	'isFocused',
 	'forceUpdate',
-	'showLastMessage'
+	'showLastMessage',
+	'autoJoin'
 ];
 
 class RoomItemContainer extends React.Component {
@@ -25,6 +26,7 @@ class RoomItemContainer extends React.Component {
 		showLastMessage: PropTypes.bool,
 		id: PropTypes.string,
 		onPress: PropTypes.func,
+		onLongPress: PropTypes.func,
 		username: PropTypes.string,
 		avatarSize: PropTypes.number,
 		width: PropTypes.number,
@@ -41,7 +43,8 @@ class RoomItemContainer extends React.Component {
 		getRoomAvatar: PropTypes.func,
 		getIsGroupChat: PropTypes.func,
 		getIsRead: PropTypes.func,
-		swipeEnabled: PropTypes.bool
+		swipeEnabled: PropTypes.bool,
+		autoJoin: PropTypes.bool
 	};
 
 	static defaultProps = {
@@ -112,6 +115,13 @@ class RoomItemContainer extends React.Component {
 		return onPress(item);
 	}
 
+	onLongPress = () => {
+		const { item, onLongPress } = this.props;
+		if (onLongPress) {
+			return onLongPress(item);
+		}
+	}
+
 	render() {
 		const {
 			item,
@@ -129,7 +139,8 @@ class RoomItemContainer extends React.Component {
 			showLastMessage,
 			username,
 			useRealName,
-			swipeEnabled
+			swipeEnabled,
+			autoJoin
 		} = this.props;
 		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${ name }`;
@@ -160,6 +171,7 @@ class RoomItemContainer extends React.Component {
 				isGroupChat={this.isGroupChat}
 				isRead={isRead}
 				onPress={this.onPress}
+				onLongPress={this.onLongPress}
 				date={date}
 				accessibilityLabel={accessibilityLabel}
 				width={width}
@@ -188,17 +200,19 @@ class RoomItemContainer extends React.Component {
 				tunreadUser={item.tunreadUser}
 				tunreadGroup={item.tunreadGroup}
 				swipeEnabled={swipeEnabled}
+				teamMain={item.teamMain}
+				autoJoin={autoJoin}
 			/>
 		);
 	}
 }
 
 const mapStateToProps = (state, ownProps) => {
-	let status = 'offline';
+	let status = 'loading';
 	const { id, type, visitor = {} } = ownProps;
 	if (state.meteor.connected) {
 		if (type === 'd') {
-			status = state.activeUsers[id]?.status || 'offline';
+			status = state.activeUsers[id]?.status || 'loading';
 		} else if (type === 'l' && visitor?.status) {
 			({ status } = visitor);
 		}

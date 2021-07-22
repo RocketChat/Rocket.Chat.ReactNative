@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 });
 
 const Title = React.memo(({ attachment, timeFormat, theme }) => {
-	const time = attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
+	const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
 	return (
 		<View style={styles.authorContainer}>
 			{attachment.author_name ? <Text style={[styles.author, { color: themes[theme].bodyText }]}>{attachment.author_name}</Text> : null}
@@ -164,10 +164,13 @@ const Reply = React.memo(({
 	if (!attachment) {
 		return null;
 	}
-	const { baseUrl, user } = useContext(MessageContext);
+	const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
 
 	const onPress = () => {
 		let url = attachment.title_link || attachment.author_link;
+		if (attachment.message_link) {
+			return jumpToMessage(attachment.message_link);
+		}
 		if (!url) {
 			return;
 		}
@@ -180,6 +183,16 @@ const Reply = React.memo(({
 		openLink(url, theme);
 	};
 
+	let { borderColor, chatComponentBackground: backgroundColor } = themes[theme];
+	try {
+		if (attachment.color) {
+			backgroundColor = transparentize(attachment.color, 0.80);
+			borderColor = attachment.color;
+		}
+	} catch (e) {
+		// fallback to default
+	}
+
 	return (
 		<>
 			<Touchable
@@ -189,8 +202,7 @@ const Reply = React.memo(({
 					index > 0 && styles.marginTop,
 					attachment.description && styles.marginBottom,
 					{
-						backgroundColor: attachment.color ? transparentize(attachment.color, 0.80) : themes[theme].chatComponentBackground,
-						borderColor: attachment.color || themes[theme].borderColor
+						backgroundColor, borderColor
 					}
 				]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}

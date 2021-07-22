@@ -69,7 +69,8 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 			storedPublicKey = EJSON.parse(storedPublicKey);
 		}
 
-		if (storedPublicKey && storedPrivateKey) {
+
+		if (storedPublicKey && storedPrivateKey && !storedRandomPassword) {
 			// Persist these keys
 			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey);
 			yield put(encryptionSet(true));

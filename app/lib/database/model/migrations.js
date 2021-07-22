@@ -212,6 +212,18 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 13,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'team_id', type: 'string', isIndexed: true },
+						{ name: 'team_main', type: 'boolean', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

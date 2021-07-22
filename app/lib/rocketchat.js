@@ -1,4 +1,5 @@
 import { InteractionManager } from 'react-native';
+import EJSON from 'ejson';
 import {
 	Rocketchat as RocketchatClient,
 	settings as RocketChatSettings
@@ -27,7 +28,7 @@ import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './met
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
-import getSettings, { getLoginSettings, setSettings } from './methods/getSettings';
+import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
 import { setPermissions, getPermissions } from './methods/getPermissions';
@@ -36,11 +37,13 @@ import {
 	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
 } from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
-import getRoles from './methods/getRoles';
+import { getRoles, setRoles, onRolesChanged } from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
 import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/actions';
 
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
+import loadSurroundingMessages from './methods/loadSurroundingMessages';
+import loadNextMessages from './methods/loadNextMessages';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 
@@ -60,6 +63,9 @@ import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
 import { sanitizeLikeString } from './database/utils';
+import { updatePermission } from '../actions/permissions';
+import { TEAM_TYPE } from '../definition/ITeam';
+import { updateSettings } from '../actions/settings';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -94,10 +100,19 @@ const RocketChat = {
 	},
 	canOpenRoom,
 	createChannel({
-		name, users, type, readOnly, broadcast, encrypted
+		name, users, type, readOnly, broadcast, encrypted, teamId
 	}) {
-		// RC 0.51.0
-		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast, encrypted });
+		const params = {
+			name,
+			members: users,
+			readOnly,
+			extraData: {
+				broadcast,
+				encrypted,
+				...(teamId && { teamId })
+			}
+		};
+		return this.post(type ? 'groups.create' : 'channels.create', params);
 	},
 	async getWebsocketInfo({ server }) {
 		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
@@ -178,19 +193,26 @@ const RocketChat = {
 	checkAndReopen() {
 		return this?.sdk?.checkAndReopen();
 	},
+	disconnect() {
+		this.sdk?.disconnect?.();
+		this.sdk = null;
+	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
 			if (this?.sdk?.client?.host === server) {
 				return resolve();
 			} else {
-				this.sdk?.disconnect?.();
-				this.sdk = null;
+				this.disconnect();
 				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
 
 			if (this.connectTimeout) {
 				clearTimeout(this.connectTimeout);
+			}
+
+			if (this.connectingListener) {
+				this.connectingListener.then(this.stopListener);
 			}
 
 			if (this.connectedListener) {
@@ -203,6 +225,14 @@ const RocketChat = {
 
 			if (this.usersListener) {
 				this.usersListener.then(this.stopListener);
+			}
+
+			if (this.notifyAllListener) {
+				this.notifyAllListener.then(this.stopListener);
+			}
+
+			if (this.rolesListener) {
+				this.rolesListener.then(this.stopListener);
 			}
 
 			if (this.notifyLoggedListener) {
@@ -240,7 +270,7 @@ const RocketChat = {
 
 			sdkConnect();
 
-			this.connectedListener = this.sdk.onStreamData('connecting', () => {
+			this.connectingListener = this.sdk.onStreamData('connecting', () => {
 				reduxStore.dispatch(connectRequest());
 			});
 
@@ -253,6 +283,31 @@ const RocketChat = {
 			});
 
 			this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
+
+			this.notifyAllListener = this.sdk.onStreamData('stream-notify-all', protectedFunction(async(ddpMessage) => {
+				const { eventName } = ddpMessage.fields;
+				if (/public-settings-changed/.test(eventName)) {
+					const { _id, value } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const settingsCollection = db.get('settings');
+					try {
+						const settingsRecord = await settingsCollection.find(_id);
+						const { type } = defaultSettings[_id];
+						if (type) {
+							await db.action(async() => {
+								await settingsRecord.update((u) => {
+									u[type] = value;
+								});
+							});
+						}
+						reduxStore.dispatch(updateSettings(_id, value));
+					} catch (e) {
+						log(e);
+					}
+				}
+			}));
+
+			this.rolesListener = this.sdk.onStreamData('stream-roles', protectedFunction(ddpMessage => onRolesChanged(ddpMessage)));
 
 			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction(async(ddpMessage) => {
 				const { eventName } = ddpMessage.fields;
@@ -289,6 +344,21 @@ const RocketChat = {
 						});
 					} catch {
 						// We can't create a new record since we don't receive the user._id
+					}
+				} else if (/permissions-changed/.test(eventName)) {
+					const { _id, roles } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const permissionsCollection = db.get('permissions');
+					try {
+						const permissionsRecord = await permissionsCollection.find(_id);
+						await db.action(async() => {
+							await permissionsRecord.update((u) => {
+								u.roles = roles;
+							});
+						});
+						reduxStore.dispatch(updatePermission(_id, roles));
+					} catch (err) {
+						//
 					}
 				} else if (/Users:NameChanged/.test(eventName)) {
 					const userNameChanged = ddpMessage.fields.args[0];
@@ -456,27 +526,39 @@ const RocketChat = {
 		return this.post('users.forgotPassword', { email }, false);
 	},
 
-	loginTOTP(params, loginEmailPassword) {
+	loginTOTP(params, loginEmailPassword, isFromWebView = false) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.login(params, loginEmailPassword);
+				const result = await this.login(params, isFromWebView);
 				return resolve(result);
 			} catch (e) {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						reduxStore.dispatch(setUser({ username: params.user || params.username }));
-						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
+						const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
 
-						// Force normalized params for 2FA starting RC 3.9.0.
-						const serverVersion = reduxStore.getState().server.version;
-						if (compareServerVersion(serverVersion, '3.9.0', methods.greaterThanOrEqualTo)) {
-							const user = params.user ?? params.username;
-							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-							params = { user, password };
+						if (loginEmailPassword) {
+							reduxStore.dispatch(setUser({ username: params.user || params.username }));
+
+							// Force normalized params for 2FA starting RC 3.9.0.
+							const serverVersion = reduxStore.getState().server.version;
+							if (compareServerVersion(serverVersion, '3.9.0', methods.greaterThanOrEqualTo)) {
+								const user = params.user ?? params.username;
+								const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+								params = { user, password };
+							}
+
+							return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 						}
 
-						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+						return resolve(this.loginTOTP({
+							totp: {
+								login: {
+									...params
+								},
+								code: code?.twoFactorCode
+							}
+						}));
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -510,15 +592,15 @@ const RocketChat = {
 		return this.loginTOTP(params, true);
 	},
 
-	async loginOAuthOrSso(params) {
-		const result = await this.login(params);
-		reduxStore.dispatch(loginRequest({ resume: result.token }));
+	async loginOAuthOrSso(params, isFromWebView = true) {
+		const result = await this.loginTOTP(params, false, isFromWebView);
+		reduxStore.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
 	},
 
-	async login(params, loginEmailPassword) {
+	async login(credentials, isFromWebView = false) {
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.64.0
-		await sdk.login(params);
+		await sdk.login(credentials);
 		const { result } = sdk.currentLogin;
 		const user = {
 			id: result.userId,
@@ -533,7 +615,7 @@ const RocketChat = {
 			emails: result.me.emails,
 			roles: result.me.roles,
 			avatarETag: result.me.avatarETag,
-			loginEmailPassword,
+			isFromWebView,
 			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true
 		};
 		return user;
@@ -595,6 +677,8 @@ const RocketChat = {
 	},
 	loadMissedMessages,
 	loadMessagesForRoom,
+	loadSurroundingMessages,
+	loadNextMessages,
 	loadThreadMessages,
 	sendMessage,
 	getRooms,
@@ -603,9 +687,6 @@ const RocketChat = {
 
 	async localSearch({ text, filterUsers = true, filterRooms = true }) {
 		const searchText = text.trim();
-		if (searchText === '') {
-			return [];
-		}
 		const db = database.active;
 		const likeString = sanitizeLikeString(searchText);
 		let data = await db.get('subscriptions').query(
@@ -631,7 +712,8 @@ const RocketChat = {
 			avatarETag: sub.avatarETag,
 			t: sub.t,
 			encrypted: sub.encrypted,
-			lastMessage: sub.lastMessage
+			lastMessage: sub.lastMessage,
+			...(sub.teamId && { teamId: sub.teamId })
 		}));
 
 		return data;
@@ -642,10 +724,6 @@ const RocketChat = {
 
 		if (this.oldPromise) {
 			this.oldPromise('cancel');
-		}
-
-		if (searchText === '') {
-			return [];
 		}
 
 		const data = await this.localSearch({ text, filterUsers, filterRooms });
@@ -720,7 +798,81 @@ const RocketChat = {
 			prid, pmid, t_name, reply, users, encrypted
 		});
 	},
-
+	createTeam({
+		name, users, type, readOnly, broadcast, encrypted
+	}) {
+		const params = {
+			name,
+			users,
+			type: type ? TEAM_TYPE.PRIVATE : TEAM_TYPE.PUBLIC,
+			room: {
+				readOnly,
+				extraData: {
+					broadcast,
+					encrypted
+				}
+			}
+		};
+		// RC 3.13.0
+		return this.post('teams.create', params);
+	},
+	addRoomsToTeam({ teamId, rooms }) {
+		// RC 3.13.0
+		return this.post('teams.addRooms', { teamId, rooms });
+	},
+	removeTeamRoom({ roomId, teamId }) {
+		// RC 3.13.0
+		return this.post('teams.removeRoom', { roomId, teamId });
+	},
+	leaveTeam({ teamName, rooms }) {
+		// RC 3.13.0
+		return this.post('teams.leave', { teamName, rooms });
+	},
+	removeTeamMember({
+		teamId, teamName, userId, rooms
+	}) {
+		// RC 3.13.0
+		return this.post('teams.removeMember', {
+			teamId, teamName, userId, rooms
+		});
+	},
+	updateTeamRoom({ roomId, isDefault }) {
+		// RC 3.13.0
+		return this.post('teams.updateRoom', { roomId, isDefault });
+	},
+	deleteTeam({ teamId, roomsToRemove }) {
+		// RC 3.13.0
+		return this.post('teams.delete', { teamId, roomsToRemove });
+	},
+	teamListRoomsOfUser({ teamId, userId }) {
+		// RC 3.13.0
+		return this.sdk.get('teams.listRoomsOfUser', { teamId, userId });
+	},
+	getTeamInfo({ teamId }) {
+		// RC 3.13.0
+		return this.sdk.get('teams.info', { teamId });
+	},
+	convertChannelToTeam({ rid, name, type }) {
+		const params = {
+			...(type === 'c'
+				? {
+					channelId: rid,
+					channelName: name
+				}
+				: {
+					roomId: rid,
+					roomName: name
+				})
+		};
+		return this.sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
+	},
+	convertTeamToChannel({ teamId, selected }) {
+		const params = {
+			teamId,
+			...(selected.length && { roomsToRemove: selected })
+		};
+		return this.sdk.post('teams.convertToChannel', params);
+	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
@@ -738,6 +890,7 @@ const RocketChat = {
 	getSettings,
 	getLoginSettings,
 	setSettings,
+	subscribeSettings,
 	getPermissions,
 	setPermissions,
 	getCustomEmojis,
@@ -748,6 +901,7 @@ const RocketChat = {
 	isOmnichannelModuleAvailable,
 	getSlashCommands,
 	getRoles,
+	setRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
 		if (item._id === 'Hide_System_Messages') {
@@ -882,9 +1036,15 @@ const RocketChat = {
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		if (API_Use_REST_For_DDP_Calls) {
-			return this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
+			return this.post(`method.call/${ method }`, { message: EJSON.stringify({ method, params }) });
 		}
-		return this.methodCall(method, ...params);
+		const parsedParams = params.map((param) => {
+			if (param instanceof Date) {
+				return { $date: new Date(param).getTime() };
+			}
+			return param;
+		});
+		return this.methodCall(method, ...parsedParams);
 	},
 
 	getUserRoles() {
@@ -915,6 +1075,19 @@ const RocketChat = {
 	getVisitorInfo(visitorId) {
 		// RC 2.3.0
 		return this.sdk.get('livechat/visitors.info', { visitorId });
+	},
+	getTeamListRoom({
+		teamId, count, offset, type, filter
+	}) {
+		const params = {
+			teamId, count, offset, type
+		};
+
+		if (filter) {
+			params.filter = filter;
+		}
+		// RC 3.13.0
+		return this.sdk.get('teams.listRooms', params);
 	},
 	closeLivechat(rid, comment) {
 		// RC 0.29.0
@@ -1115,7 +1288,7 @@ const RocketChat = {
 	methodCall(...args) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.sdk.methodCall(...args, this.code || '');
+				const result = await this.sdk?.methodCall(...args, this.code || '');
 				return resolve(result);
 			} catch (e) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {

@@ -45,7 +45,7 @@ const Content = React.memo((props) => {
 	} else if (props.isEncrypted) {
 		content = <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{I18n.t('Encrypted_message')}</Text>;
 	} else {
-		const { baseUrl, user } = useContext(MessageContext);
+		const { baseUrl, user, onLinkPress } = useContext(MessageContext);
 		content = (
 			<Markdown
 				msg={props.msg}
@@ -61,6 +61,7 @@ const Content = React.memo((props) => {
 				tmid={props.tmid}
 				useRealName={props.useRealName}
 				theme={props.theme}
+				onLinkPress={onLinkPress}
 			/>
 		);
 	}

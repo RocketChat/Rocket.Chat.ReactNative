@@ -3,12 +3,12 @@ import { Animated, View, Text } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import PropTypes from 'prop-types';
 
-import I18n from '../../i18n';
+import I18n, { isRTL } from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 
-const reverse = new Animated.Value(I18n.isRTL ? -1 : 1);
+const reverse = new Animated.Value(isRTL() ? -1 : 1);
 
 export const LeftActions = React.memo(({
 	theme, transX, isRead, width, onToggleReadPress

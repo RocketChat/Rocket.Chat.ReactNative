@@ -27,10 +27,10 @@ export const MessageTypeValues = [
 		value: 'rm',
 		text: 'Message_HideType_rm'
 	}, {
-		value: 'subscription_role_added',
+		value: 'subscription-role-added',
 		text: 'Message_HideType_subscription_role_added'
 	}, {
-		value: 'subscription_role_removed',
+		value: 'subscription-role-removed',
 		text: 'Message_HideType_subscription_role_removed'
 	}, {
 		value: 'room_archived',

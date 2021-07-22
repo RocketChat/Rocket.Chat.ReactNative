@@ -16,15 +16,12 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	avatarContainer: {
-		minHeight: 240,
+		minHeight: 320,
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 20
-	},
-	avatarContainerDirectRoom: {
-		paddingVertical: 16,
-		minHeight: 320
+		marginBottom: 20,
+		paddingVertical: 8
 	},
 	avatar: {
 		marginHorizontal: 10
@@ -47,11 +44,6 @@ export default StyleSheet.create({
 	roomTitleRow: {
 		flexDirection: 'row',
 		alignItems: 'center'
-	},
-	status: {
-		borderWidth: 4,
-		bottom: -4,
-		right: -4
 	},
 	itemLabel: {
 		marginBottom: 10,

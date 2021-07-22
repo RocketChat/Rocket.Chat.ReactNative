@@ -3,7 +3,7 @@ import { compareServerVersion, methods } from '../lib/utils';
 const formatUrl = (url, size, query) => `${ url }?format=png&size=${ size }${ query }`;
 
 export const avatarURL = ({
-	type, text, size, user = {}, avatar, server, avatarETag, rid, blockUnauthenticatedAccess, serverVersion
+	type, text, size = 25, user = {}, avatar, server, avatarETag, rid, blockUnauthenticatedAccess, serverVersion
 }) => {
 	let room;
 	if (type === 'd') {

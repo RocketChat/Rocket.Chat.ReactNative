@@ -1,18 +1,15 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const { navigateToLogin, login, sleep } = require('../../helpers/app');
 const data = require('../../data');
 
-const profileChangeUser = data.users.profileChanges
+const profileChangeUser = data.users.profileChanges;
 
 const scrollDown = 200;
 
 async function waitForToast() {
-	// await waitFor(element(by.id('toast'))).toBeVisible().withTimeout(10000);
+	// await waitFor(element(by.id('toast'))).toBeVisible().withTimeout(1000);
 	// await expect(element(by.id('toast'))).toBeVisible();
-	// await waitFor(element(by.id('toast'))).toBeNotVisible().withTimeout(10000);
-	// await expect(element(by.id('toast'))).toBeNotVisible();
+	// await waitFor(element(by.id('toast'))).not.toBeNotVisible().withTimeout(1000);
+	// await expect(element(by.id('toast'))).not.toBeVisible();
 	await sleep(300);
 }
 
@@ -28,7 +25,7 @@ describe('Profile screen', () => {
 		await waitFor(element(by.id('profile-view'))).toBeVisible().withTimeout(2000);
 	});
 
-	describe('Render', async() => {
+	describe('Render', () => {
 		it('should have profile view', async() => {
 			await expect(element(by.id('profile-view'))).toBeVisible();
 		});
@@ -56,7 +53,7 @@ describe('Profile screen', () => {
 		it('should have avatar url', async() => {
 			await expect(element(by.id('profile-view-avatar-url'))).toExist();
 		});
-		
+
 		it('should have reset avatar button', async() => {
 			await waitFor(element(by.id('profile-view-reset-avatar'))).toExist().whileElement(by.id('profile-view-list')).scroll(scrollDown, 'down');
 		});
@@ -74,11 +71,10 @@ describe('Profile screen', () => {
 		});
 	});
 
-	describe('Usage', async() => {
+	describe('Usage', () => {
 		it('should change name and username', async() => {
-			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 			await element(by.id('profile-view-name')).replaceText(`${ profileChangeUser.username }new`);
-			await element(by.id('profile-view-username')).replaceText(`${ profileChangeUser.username }new`);
+			await element(by.id('profile-view-username')).typeText(`${ profileChangeUser.username }new`);
 			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
 			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();
@@ -88,9 +84,7 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${ data.random }@rocket.chat`);
 			await element(by.id('profile-view-new-password')).replaceText(`${ profileChangeUser.password }new`);
 			await element(by.id('profile-view-submit')).tap();
-			await element(by.type('_UIAlertControllerTextField')).replaceText(`${ profileChangeUser.password }`)
-			// For some reason, replaceText does some type of submit, which submits the alert for us
-			// await element(by.label('Save').and(by.type('_UIAlertControllerActionView'))).tap();
+			await element(by.type('_UIAlertControllerTextField')).typeText(`${ profileChangeUser.password }\n`);
 			await waitForToast();
 		});
 
