@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
-import PropTypes from 'prop-types';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import { dequal } from 'dequal';
 import { createImageProgress } from 'react-native-image-progress';
@@ -86,7 +85,6 @@ const ImageContainer = React.memo(({file, imageUrl, showAttachment, getCustomEmo
 }, (prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
 
 ImageContainer.displayName = 'MessageImageContainer';
-ImageContainer.displayName = 'MessageImage';
-ImageContainer.displayName = 'MessageButton';
+MessageImage.displayName = 'MessageImage';
 
 export default ImageContainer;
