@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
 import BackgroundTimer from 'react-native-background-timer';
@@ -7,7 +8,6 @@ import { connect } from 'react-redux';
 import RocketChat from '../lib/rocketchat';
 import { getUserSelector } from '../selectors/login';
 
-import sharedStyles from './Styles';
 import { logEvent, events } from '../utils/log';
 
 const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
@@ -94,7 +94,7 @@ class JitsiMeetView extends React.Component {
 			<RNJitsiMeetView
 				onConferenceTerminated={this.onConferenceTerminated}
 				onConferenceJoined={this.onConferenceJoined}
-				style={sharedStyles.container}
+				style={StyleSheet.absoluteFill}
 			/>
 		);
 	}
