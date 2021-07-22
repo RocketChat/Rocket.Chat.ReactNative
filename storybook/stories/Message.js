@@ -855,14 +855,15 @@ stories.add('Custom style', () => (
 	<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />
 ));
 
-{ /* <Separator title='Thumbnail from server' theme={theme} />
-			<Message
-				msg='this is a thumbnail'
-				attachments={[{
-					color: '#FFD700',
-					text: 'Some crazy texts',
-					thumb_url: 'https://images-na.ssl-images-amazon.com/images/I/71jKxPAMFbL._AC_SL1500_.jpg',
-					title: 'Joker',
-					title_link: 'https://www.imdb.com/title/tt7286456/'
-				}]}
-			/> */ }
+stories.add('Thumbnail from server', () => (
+	<Message
+		msg='this is a thumbnail'
+		attachments={[{
+			text: 'Some crazy texts',
+			thumb_url: 'https://images-na.ssl-images-amazon.com/images/I/71jKxPAMFbL._AC_SL1500_.jpg',
+			title: 'Joker',
+			title_link: 'https://www.imdb.com/title/tt7286456/'
+		}]}
+	/>
+));
+
