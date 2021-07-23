@@ -21,7 +21,7 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "eslint", 
+      "eslint",
       "jest --bail --findRelatedTests"
     ]
   },
@@ -48,7 +48,6 @@
     "@rocket.chat/react-native-fast-image": "^8.2.0",
     "@rocket.chat/sdk": "RocketChat/Rocket.Chat.js.SDK#mobile",
     "@rocket.chat/ui-kit": "0.13.0",
-    "bugsnag-react-native": "2.23.10",
     "bytebuffer": "^5.0.1",
     "color2k": "1.2.4",
     "commonmark": "git+https://github.com/RocketChat/commonmark.js.git",
