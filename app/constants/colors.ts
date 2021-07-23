@@ -1,4 +1,4 @@
-export const STATUS_COLORS = {
+export const STATUS_COLORS: any = {
 	online: '#2de0a5',
 	busy: '#f5455c',
 	away: '#ffd21f',

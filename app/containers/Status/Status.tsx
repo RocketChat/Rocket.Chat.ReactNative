@@ -1,11 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { CustomIcon } from '../../lib/Icons';
 import { STATUS_COLORS } from '../../constants/colors';
 
-const Status = React.memo(({
-	status, size, style, ...props
-}) => {
+interface IStatus {
+	status: string;
+	size: number;
+	style: any;
+}
+
+const Status = React.memo(({ status, size, style, ...props }: IStatus) => {
 	const name = `status-${ status }`;
 	const isNameValid = CustomIcon.hasIcon(name);
 	const iconName = isNameValid ? name : 'status-offline';
@@ -23,15 +26,5 @@ const Status = React.memo(({
 		/>
 	);
 });
-
-Status.propTypes = {
-	status: PropTypes.string,
-	size: PropTypes.number,
-	style: PropTypes.any
-};
-Status.defaultProps = {
-	status: 'offline',
-	size: 32
-};
 
 export default Status;
