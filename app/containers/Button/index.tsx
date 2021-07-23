@@ -6,7 +6,7 @@ import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
-interface IButton {
+interface IButtonProps {
 	title: string;
 	type: string
 	onPress(): void;
@@ -17,6 +17,7 @@ interface IButton {
 	color: string
 	fontSize: any
 	style: any
+	testID: string;
 }
 
 const styles = StyleSheet.create({
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class Button extends React.PureComponent<IButton, any> {
+export default class Button extends React.PureComponent<Partial<IButtonProps>, any> {
 
 	render() {
 		const {
@@ -45,7 +46,7 @@ export default class Button extends React.PureComponent<IButton, any> {
 		} = this.props;
 		const isPrimary = type === 'primary';
 
-		let textColor = isPrimary ? themes[theme].buttonText : themes[theme].bodyText;
+		let textColor = isPrimary ? themes[theme!].buttonText : themes[theme!].bodyText;
 		if (color) {
 			textColor = color;
 		}
@@ -58,7 +59,7 @@ export default class Button extends React.PureComponent<IButton, any> {
 					styles.container,
 					backgroundColor
 						? { backgroundColor }
-						: { backgroundColor: isPrimary ? themes[theme].actionTintColor : themes[theme].backgroundColor },
+						: { backgroundColor: isPrimary ? themes[theme!].actionTintColor : themes[theme!].backgroundColor },
 					disabled && styles.disabled,
 					style
 				]}

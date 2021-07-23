@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, InteractionManager } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
-import PropTypes from 'prop-types';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -19,7 +18,12 @@ import styles from './styles';
 
 export const TWO_FACTOR = 'TWO_FACTOR';
 
-const methods = {
+interface ITwoFactor {
+	theme: string;
+	isMasterDetail: boolean;
+}
+
+const methods: any = {
 	totp: {
 		text: 'Open_your_authentication_app_and_enter_the_code',
 		keyboardType: 'numeric'
@@ -36,9 +40,9 @@ const methods = {
 	}
 };
 
-const TwoFactor = React.memo(({ theme, isMasterDetail }) => {
+const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 	const [visible, setVisible] = useState(false);
-	const [data, setData] = useState({});
+	const [data, setData] = useState<any>({});
 	const [code, setCode] = useState('');
 
 	const method = methods[data.method];
@@ -55,7 +59,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }) => {
 		}
 	}, [data]);
 
-	const showTwoFactor = args => setData(args);
+	const showTwoFactor = (args: any) => setData(args);
 
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(TWO_FACTOR, showTwoFactor);
@@ -86,6 +90,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }) => {
 	const color = themes[theme].titleText;
 	return (
 		<Modal
+			//@ts-ignore
 			transparent
 			avoidKeyboard
 			useNativeDriver
@@ -99,7 +104,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }) => {
 					<TextInput
 						value={code}
 						theme={theme}
-						inputRef={e => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
+						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
 						returnKeyType='send'
 						autoCapitalize='none'
 						onChangeText={setCode}
@@ -133,12 +138,8 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }) => {
 		</Modal>
 	);
 });
-TwoFactor.propTypes = {
-	theme: PropTypes.string,
-	isMasterDetail: PropTypes.bool
-};
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
