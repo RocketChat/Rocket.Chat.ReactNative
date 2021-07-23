@@ -1,13 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
 import { CancelEditingButton, ActionsButton } from './buttons';
 import styles from './styles';
 
+interface IMessageBoxLeftButtons {
+	theme: string;
+	showMessageBoxActions(): void;
+	editing: boolean;
+	editCancel(): void;
+	isActionsEnabled: boolean;
+}
+
 const LeftButtons = React.memo(({
 	theme, showMessageBoxActions, editing, editCancel, isActionsEnabled
-}) => {
+}: IMessageBoxLeftButtons) => {
 	if (editing) {
 		return <CancelEditingButton onPress={editCancel} theme={theme} />;
 	}
@@ -16,13 +23,5 @@ const LeftButtons = React.memo(({
 	}
 	return <View style={styles.buttonsWhitespace} />;
 });
-
-LeftButtons.propTypes = {
-	theme: PropTypes.string,
-	showMessageBoxActions: PropTypes.func.isRequired,
-	editing: PropTypes.bool,
-	editCancel: PropTypes.func.isRequired,
-	isActionsEnabled: PropTypes.bool
-};
 
 export default LeftButtons;

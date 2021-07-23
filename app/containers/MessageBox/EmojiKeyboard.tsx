@@ -1,7 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
 import { KeyboardRegistry } from 'react-native-ui-lib/keyboard';
-import PropTypes from 'prop-types';
 
 import store from '../../lib/createStore';
 import EmojiPicker from '../EmojiPicker';
@@ -9,18 +8,19 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 
-export default class EmojiKeyboard extends React.PureComponent {
-	static propTypes = {
-		theme: PropTypes.string
-	};
+interface IMessageBoxEmojiKeyboard {
+	theme: string
+}
+export default class EmojiKeyboard extends React.PureComponent<IMessageBoxEmojiKeyboard, any> {
+	private readonly baseUrl: any;
 
-	constructor(props) {
+	constructor(props: IMessageBoxEmojiKeyboard) {
 		super(props);
 		const state = store.getState();
 		this.baseUrl = state.share.server.server || state.server.server;
 	}
 
-	onEmojiSelected = (emoji) => {
+	onEmojiSelected = (emoji: any) => {
 		KeyboardRegistry.onItemSelected('EmojiKeyboard', { emoji });
 	}
 

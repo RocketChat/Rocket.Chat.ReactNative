@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
@@ -41,9 +40,25 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IMessageBoxReplyPreview {
+	replying: boolean;
+	message: {
+		ts: Date;
+		msg: string;
+		u: any;
+	};
+	Message_TimeFormat: string;
+	close(): void;
+	baseUrl: string;
+	username: string;
+	getCustomEmoji(): void;
+	theme: string;
+	useRealName: boolean;
+}
+
 const ReplyPreview = React.memo(({
 	message, Message_TimeFormat, baseUrl, username, replying, getCustomEmoji, close, theme, useRealName
-}) => {
+}: IMessageBoxReplyPreview) => {
 	if (!replying) {
 		return null;
 	}
@@ -61,6 +76,7 @@ const ReplyPreview = React.memo(({
 					<Text style={[styles.username, { color: themes[theme].tintColor }]}>{useRealName ? message.u?.name : message.u?.username}</Text>
 					<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 				</View>
+				{/*@ts-ignore*/}
 				<Markdown
 					msg={message.msg}
 					baseUrl={baseUrl}
@@ -74,21 +90,9 @@ const ReplyPreview = React.memo(({
 			<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 		</View>
 	);
-}, (prevProps, nextProps) => prevProps.replying === nextProps.replying && prevProps.theme === nextProps.theme && prevProps.message.id === nextProps.message.id);
+}, (prevProps: any, nextProps: any) => prevProps.replying === nextProps.replying && prevProps.theme === nextProps.theme && prevProps.message.id === nextProps.message.id);
 
-ReplyPreview.propTypes = {
-	replying: PropTypes.bool,
-	message: PropTypes.object.isRequired,
-	Message_TimeFormat: PropTypes.string.isRequired,
-	close: PropTypes.func.isRequired,
-	baseUrl: PropTypes.string.isRequired,
-	username: PropTypes.string.isRequired,
-	getCustomEmoji: PropTypes.func,
-	theme: PropTypes.string,
-	useRealName: PropTypes.bool
-};
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	baseUrl: state.server.server,
 	useRealName: state.settings.UI_Use_Real_Name

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { Audio } from 'expo-av';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -11,6 +10,12 @@ import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { logEvent, events } from '../../utils/log';
+
+interface IMessageBoxRecordAudioProps {
+	theme: string;
+	recordingCallback({}): void;
+	onFinish({}): void;
+}
 
 const RECORDING_EXTENSION = '.aac';
 const RECORDING_SETTINGS = {
@@ -41,22 +46,19 @@ const RECORDING_MODE = {
 	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
 };
 
-const formatTime = function(seconds) {
-	let minutes = Math.floor(seconds / 60);
+const formatTime = function(seconds: any) {
+	let minutes: any = Math.floor(seconds / 60);
 	seconds %= 60;
 	if (minutes < 10) { minutes = `0${ minutes }`; }
 	if (seconds < 10) { seconds = `0${ seconds }`; }
 	return `${ minutes }:${ seconds }`;
 };
 
-export default class RecordAudio extends React.PureComponent {
-	static propTypes = {
-		theme: PropTypes.string,
-		recordingCallback: PropTypes.func,
-		onFinish: PropTypes.func
-	}
+export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAudioProps, any> {
+	private isRecorderBusy: boolean;
+	private recording: any;
 
-	constructor(props) {
+	constructor(props: IMessageBoxRecordAudioProps) {
 		super(props);
 		this.isRecorderBusy = false;
 		this.state = {
@@ -96,7 +98,7 @@ export default class RecordAudio extends React.PureComponent {
 		return false;
 	}
 
-	onRecordingStatusUpdate = (status) => {
+	onRecordingStatusUpdate = (status: any) => {
 		this.setState({
 			isRecording: status.isRecording,
 			recordingDurationMillis: status.durationMillis
@@ -183,6 +185,7 @@ export default class RecordAudio extends React.PureComponent {
 					onPress={this.startRecordingAudio}
 					style={styles.actionButton}
 					testID='messagebox-send-audio'
+					// @ts-ignore
 					accessibilityLabel={I18n.t('Send_audio_message')}
 					accessibilityTraits='button'
 				>
@@ -196,6 +199,7 @@ export default class RecordAudio extends React.PureComponent {
 				<View style={styles.textArea}>
 					<BorderlessButton
 						onPress={this.cancelRecordingAudio}
+						// @ts-ignore
 						accessibilityLabel={I18n.t('Cancel_recording')}
 						accessibilityTraits='button'
 						style={styles.actionButton}
@@ -214,6 +218,7 @@ export default class RecordAudio extends React.PureComponent {
 				</View>
 				<BorderlessButton
 					onPress={this.finishRecordingAudio}
+					// @ts-ignore
 					accessibilityLabel={I18n.t('Finish_recording')}
 					accessibilityTraits='button'
 					style={styles.actionButton}

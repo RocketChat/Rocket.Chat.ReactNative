@@ -1,13 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
 import { SendButton, ActionsButton } from './buttons';
 import styles from './styles';
 
+interface IMessageBoxRightButtons {
+	theme: string;
+	showSend: boolean;
+	submit(): void;
+	showMessageBoxActions(): void;
+	isActionsEnabled: boolean;
+}
+
 const RightButtons = React.memo(({
 	theme, showSend, submit, showMessageBoxActions, isActionsEnabled
-}) => {
+}: IMessageBoxRightButtons) => {
 	if (showSend) {
 		return <SendButton onPress={submit} theme={theme} />;
 	}
@@ -17,13 +24,5 @@ const RightButtons = React.memo(({
 
 	return <View style={styles.buttonsWhitespace} />;
 });
-
-RightButtons.propTypes = {
-	theme: PropTypes.string,
-	showSend: PropTypes.bool,
-	submit: PropTypes.func.isRequired,
-	showMessageBoxActions: PropTypes.func.isRequired,
-	isActionsEnabled: PropTypes.bool
-};
 
 export default RightButtons;

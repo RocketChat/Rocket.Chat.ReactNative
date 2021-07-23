@@ -1,11 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import { CancelEditingButton, ToggleEmojiButton } from './buttons';
+
+interface IMessageBoxLeftButtons {
+	theme: string;
+	showEmojiKeyboard: boolean;
+	openEmoji(): void;
+	closeEmoji(): void;
+	editing: boolean;
+	editCancel(): void;
+}
 
 const LeftButtons = React.memo(({
 	theme, showEmojiKeyboard, editing, editCancel, openEmoji, closeEmoji
-}) => {
+}: IMessageBoxLeftButtons) => {
 	if (editing) {
 		return <CancelEditingButton onPress={editCancel} theme={theme} />;
 	}
@@ -18,14 +25,5 @@ const LeftButtons = React.memo(({
 		/>
 	);
 });
-
-LeftButtons.propTypes = {
-	theme: PropTypes.string,
-	showEmojiKeyboard: PropTypes.bool,
-	openEmoji: PropTypes.func.isRequired,
-	closeEmoji: PropTypes.func.isRequired,
-	editing: PropTypes.bool,
-	editCancel: PropTypes.func.isRequired
-};
 
 export default LeftButtons;
