@@ -1,6 +1,5 @@
 import React from 'react';
 import { FlatList, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { dequal } from 'dequal';
 
 import styles from '../styles';
