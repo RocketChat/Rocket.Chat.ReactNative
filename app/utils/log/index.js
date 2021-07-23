@@ -8,14 +8,15 @@ let bugsnag = '';
 let crashlytics;
 
 if (!isFDroidBuild) {
-	const { Client } = require('bugsnag-react-native');
+	// const { Client } = require('bugsnag-react-native');
 	crashlytics = require('@react-native-firebase/crashlytics').default;
-	bugsnag = new Client(config.BUGSNAG_API_KEY);
+	// bugsnag = new Client(config.BUGSNAG_API_KEY);
 }
 
 export { analytics };
 export const loggerConfig = bugsnag.config;
-export const { leaveBreadcrumb } = bugsnag;
+export const leaveBreadcrumb = () => {}
+// export const { leaveBreadcrumb } = bugsnag;
 export { events };
 
 let metadata = {};

@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android'
 
 if (!isFoss) {
     apply plugin: 'com.google.firebase.crashlytics'
-    apply plugin: 'com.bugsnag.android.gradle'
+    // apply plugin: 'com.bugsnag.android.gradle'
 }
 
 import com.android.build.OutputFile
