@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import {
-	View, Alert, Keyboard, NativeModules, Text
-} from 'react-native';
+import { View, Alert, Keyboard, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -24,7 +21,9 @@ import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
 import { themes } from '../../constants/colors';
+// @ts-ignore
 import LeftButtons from './LeftButtons';
+// @ts-ignore
 import RightButtons from './RightButtons';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import { canUploadFile } from '../../utils/media';
@@ -72,54 +71,79 @@ const videoPickerConfig = {
 	mediaType: 'video'
 };
 
-class MessageBox extends Component {
-	static propTypes = {
-		rid: PropTypes.string.isRequired,
-		baseUrl: PropTypes.string.isRequired,
-		message: PropTypes.object,
-		replying: PropTypes.bool,
-		editing: PropTypes.bool,
-		threadsEnabled: PropTypes.bool,
-		isFocused: PropTypes.func,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			username: PropTypes.string,
-			token: PropTypes.string
-		}),
-		roomType: PropTypes.string,
-		tmid: PropTypes.string,
-		replyWithMention: PropTypes.bool,
-		FileUpload_MediaTypeWhiteList: PropTypes.string,
-		FileUpload_MaxFileSize: PropTypes.number,
-		Message_AudioRecorderEnabled: PropTypes.bool,
-		getCustomEmoji: PropTypes.func,
-		editCancel: PropTypes.func.isRequired,
-		editRequest: PropTypes.func.isRequired,
-		onSubmit: PropTypes.func.isRequired,
-		typing: PropTypes.func,
-		theme: PropTypes.string,
-		replyCancel: PropTypes.func,
-		showSend: PropTypes.bool,
-		navigation: PropTypes.object,
-		children: PropTypes.node,
-		isMasterDetail: PropTypes.bool,
-		showActionSheet: PropTypes.func,
-		iOSScrollBehavior: PropTypes.number,
-		sharing: PropTypes.bool,
-		isActionsEnabled: PropTypes.bool
-	}
+interface IMessageBoxProps {
+	rid: string;
+	baseUrl: string;
+	message: {
+		u: {
+			username: string;
+		};
+		id: any;
+	};
+	replying: boolean;
+	editing: boolean;
+	threadsEnabled: boolean;
+	isFocused(): boolean;
+	user: {
+		id: string;
+		username: string;
+		token: string;
+	};
+	roomType: string;
+	tmid: string;
+	replyWithMention: boolean;
+	FileUpload_MediaTypeWhiteList: string;
+	FileUpload_MaxFileSize: number;
+	Message_AudioRecorderEnabled: boolean;
+	getCustomEmoji(): void;
+	editCancel(): void;
+	editRequest({}): void;
+	onSubmit({}, {}?, {}?): void;
+	typing({}, {}): void;
+	theme: string;
+	replyCancel(): void;
+	showSend: boolean;
+	navigation: any;
+	children: JSX.Element;
+	isMasterDetail: boolean;
+	showActionSheet({}): void;
+	iOSScrollBehavior: number;
+	sharing: boolean;
+	isActionsEnabled: boolean;
+}
+interface IMessageBoxState {
+	mentions: any[];
+	showEmojiKeyboard: boolean;
+	showSend: any;
+	recording: boolean;
+	trackingType: string;
+	commandPreview: [];
+	showCommandPreview: boolean;
+	command: {
+		appId?: any
+	};
+	tshow: boolean;
+}
 
-	static defaultProps = {
-		message: {
-			id: ''
-		},
-		sharing: false,
-		iOSScrollBehavior: NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset,
-		isActionsEnabled: true,
-		getCustomEmoji: () => {}
-	}
+class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
-	constructor(props) {
+	private text: string;
+	private selection: { start: number; end: number };
+	private focused: boolean;
+	private options: any;
+	private imagePickerConfig: any;
+	private libraryPickerConfig: any;
+	private videoPickerConfig: any;
+	private room: any;
+	private thread: any;
+	private unsubscribeFocus: any;
+	private trackingTimeout: any;
+	private tracking: any;
+	private unsubscribeBlur: any;
+	private component: any;
+	private typingTimeout: any;
+
+	constructor(props: IMessageBoxProps) {
 		super(props);
 		this.state = {
 			mentions: [],
@@ -170,14 +194,17 @@ class MessageBox extends Component {
 			cropperCancelText: I18n.t('Cancel'),
 			loadingLabelText: I18n.t('Processing')
 		};
+
 		this.imagePickerConfig = {
 			...imagePickerConfig,
 			...libPickerLabels
 		};
+
 		this.libraryPickerConfig = {
 			...libraryPickerConfig,
 			...libPickerLabels
 		};
+
 		this.videoPickerConfig = {
 			...videoPickerConfig,
 			...libPickerLabels
@@ -186,9 +213,7 @@ class MessageBox extends Component {
 
 	async componentDidMount() {
 		const db = database.active;
-		const {
-			rid, tmid, navigation, sharing
-		} = this.props;
+		const { rid, tmid, navigation, sharing } = this.props;
 		let msg;
 		try {
 			const threadsCollection = db.get('threads');
@@ -238,10 +263,8 @@ class MessageBox extends Component {
 		});
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
-		const {
-			isFocused, editing, replying, sharing
-		} = this.props;
+	UNSAFE_componentWillReceiveProps(nextProps: any) {
+		const { isFocused, editing, replying, sharing } = this.props;
 		if (!isFocused?.()) {
 			return;
 		}
@@ -266,7 +289,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: any, nextState: any) {
 		const {
 			showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow
 		} = this.state;
@@ -274,6 +297,7 @@ class MessageBox extends Component {
 		const {
 			roomType, replying, editing, isFocused, message, theme
 		} = this.props;
+
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -341,19 +365,19 @@ class MessageBox extends Component {
 		}
 	}
 
-	onChangeText = (text) => {
+	onChangeText: any = (text: string): void => {
 		const isTextEmpty = text.length === 0;
 		this.setShowSend(!isTextEmpty);
 		this.debouncedOnChangeText(text);
 		this.setInput(text);
 	}
 
-	onSelectionChange = (e) => {
+	onSelectionChange = (e: any) => {
 		this.selection = e.nativeEvent.selection;
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	debouncedOnChangeText = debounce(async(text) => {
+	debouncedOnChangeText = debounce(async(text: any) => {
 		const { sharing } = this.props;
 		const isTextEmpty = text.length === 0;
 		if (isTextEmpty) {
@@ -404,7 +428,7 @@ class MessageBox extends Component {
 		this.closeEmoji();
 	}
 
-	onPressMention = (item) => {
+	onPressMention = (item: any) => {
 		if (!this.component) {
 			return;
 		}
@@ -418,16 +442,18 @@ class MessageBox extends Component {
 			? `${ item.name || item }:`
 			: (item.username || item.name || item.command);
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
+
 		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
 			this.setState({ showCommandPreview: true });
 		}
+
 		const newCursor = cursor + mentionName.length;
 		this.setInput(text, { start: newCursor, end: newCursor });
 		this.focus();
 		requestAnimationFrame(() => this.stopTrackingMention());
 	}
 
-	onPressCommandPreview = (item) => {
+	onPressCommandPreview = (item: any) => {
 		const { command } = this.state;
 		const {
 			rid, tmid, message: { id: messageTmid }, replyCancel
@@ -449,7 +475,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	onEmojiSelected = (keyboardId, params) => {
+	onEmojiSelected = (keyboardId: any, params: any) => {
 		const { text } = this;
 		const { emoji } = params;
 		let newText = '';
@@ -463,7 +489,7 @@ class MessageBox extends Component {
 		this.setShowSend(true);
 	}
 
-	getPermalink = async(message) => {
+	getPermalink = async(message: any) => {
 		try {
 			return await RocketChat.getPermalinkMessage(message);
 		} catch (error) {
@@ -471,8 +497,8 @@ class MessageBox extends Component {
 		}
 	}
 
-	getFixedMentions = (keyword) => {
-		let result = [];
+	getFixedMentions = (keyword: any) => {
+		let result: any = [];
 		if ('all'.indexOf(keyword) !== -1) {
 			result = [{ rid: -1, username: 'all' }];
 		}
@@ -482,7 +508,7 @@ class MessageBox extends Component {
 		return result;
 	}
 
-	getUsers = debounce(async(keyword) => {
+	getUsers = debounce(async(keyword: any) => {
 		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
 		res = [...this.getFixedMentions(keyword), ...res];
 		this.setState({ mentions: res });
@@ -493,7 +519,7 @@ class MessageBox extends Component {
 		this.setState({ mentions: res });
 	}, 300)
 
-	getEmojis = debounce(async(keyword) => {
+	getEmojis = debounce(async(keyword: any) => {
 		const db = database.active;
 		const customEmojisCollection = db.get('custom_emojis');
 		const likeString = sanitizeLikeString(keyword);
@@ -508,7 +534,7 @@ class MessageBox extends Component {
 		this.setState({ mentions: mergedEmojis || [] });
 	}, 300)
 
-	getSlashCommands = debounce(async(keyword) => {
+	getSlashCommands = debounce(async(keyword: any) => {
 		const db = database.active;
 		const commandsCollection = db.get('slash_commands');
 		const likeString = sanitizeLikeString(keyword);
@@ -524,7 +550,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	handleTyping = (isTyping) => {
+	handleTyping = (isTyping: boolean) => {
 		const { typing, rid, sharing } = this.props;
 		if (sharing) {
 			return;
@@ -548,7 +574,7 @@ class MessageBox extends Component {
 		}, 1000);
 	}
 
-	setCommandPreview = async(command, name, params) => {
+	setCommandPreview = async(command: any, name: string, params: any) => {
 		const { rid } = this.props;
 		try	{
 			const { success, preview } = await RocketChat.getCommandPreview(name, rid, params);
@@ -561,7 +587,7 @@ class MessageBox extends Component {
 		this.setState({ commandPreview: [], showCommandPreview: true, command: {} });
 	}
 
-	setInput = (text, selection) => {
+	setInput = (text: any, selection?: any) => {
 		this.text = text;
 		if (selection) {
 			return this.component.setTextAndSelection(text, selection);
@@ -569,7 +595,7 @@ class MessageBox extends Component {
 		this.component.setNativeProps({ text });
 	}
 
-	setShowSend = (showSend) => {
+	setShowSend = (showSend: any) => {
 		const { showSend: prevShowSend } = this.state;
 		const { showSend: propShowSend } = this.props;
 		if (prevShowSend !== showSend && !propShowSend) {
@@ -583,7 +609,7 @@ class MessageBox extends Component {
 		this.setState({ tshow: false });
 	}
 
-	canUploadFile = (file) => {
+	canUploadFile = (file: any) => {
 		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = this.props;
 		const result = canUploadFile(file, FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize);
 		if (result.success) {
@@ -650,7 +676,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	openShareView = (attachments) => {
+	openShareView = (attachments: any) => {
 		const { message, replyCancel, replyWithMention } = this.props;
 		// Start a thread with an attachment
 		let { thread } = this;
@@ -689,11 +715,11 @@ class MessageBox extends Component {
 		this.setState({ showEmojiKeyboard: true });
 	}
 
-	recordingCallback = (recording) => {
+	recordingCallback = (recording: any) => {
 		this.setState({ recording });
 	}
 
-	finishAudioMessage = async(fileInfo) => {
+	finishAudioMessage = async(fileInfo: any) => {
 		const {
 			rid, tmid, baseUrl: server, user
 		} = this.props;
@@ -767,6 +793,7 @@ class MessageBox extends Component {
 		// Edit
 		if (editing) {
 			const { message: editingMessage, editRequest } = this.props;
+			// @ts-ignore
 			const { id, subscription: { id: rid } } = editingMessage;
 			editRequest({ id, msg: message, rid });
 
@@ -798,11 +825,12 @@ class MessageBox extends Component {
 
 		// Normal message
 		} else {
+			// @ts-ignore
 			onSubmit(message, undefined, tshow);
 		}
 	}
 
-	updateMentions = (keyword, type) => {
+	updateMentions = (keyword: any, type: string) => {
 		if (type === MENTIONS_TRACKING_TYPE_USERS) {
 			this.getUsers(keyword);
 		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
@@ -814,7 +842,7 @@ class MessageBox extends Component {
 		}
 	}
 
-	identifyMentionKeyword = (keyword, type) => {
+	identifyMentionKeyword = (keyword: any, type: string) => {
 		this.setState({
 			showEmojiKeyboard: false,
 			trackingType: type
@@ -835,7 +863,7 @@ class MessageBox extends Component {
 		});
 	}
 
-	handleCommands = ({ event }) => {
+	handleCommands = ({ event }: {event: any}) => {
 		if (handleCommandTyping(event)) {
 			if (this.focused) {
 				Keyboard.dismiss();
@@ -896,12 +924,14 @@ class MessageBox extends Component {
 		const commandsPreviewAndMentions = !recording ? (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
+				{/*@ts-ignore*/}
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
 			</>
 		) : null;
 
 		const replyPreview = !recording ? (
 			<ReplyPreview
+				// @ts-ignore
 				message={message}
 				close={replyCancel}
 				username={user.username}
@@ -925,6 +955,7 @@ class MessageBox extends Component {
 				/>
 				<TextInput
 					ref={component => this.component = component}
+					//@ts-ignore
 					style={[styles.textBoxInput, { color: themes[theme].bodyText }]}
 					returnKeyType='default'
 					keyboardType='twitter'
@@ -989,14 +1020,13 @@ class MessageBox extends Component {
 				}}
 			>
 				<KeyboardAccessoryView
-					ref={ref => this.tracking = ref}
+					ref={(ref: any) => this.tracking = ref}
 					renderContent={this.renderContent}
 					kbInputRef={this.component}
 					kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
 					onKeyboardResigned={this.onKeyboardResigned}
 					onItemSelected={this.onEmojiSelected}
 					trackInteractive
-					// revealKeyboardInteractive
 					requiresSameParentToManageScrollView
 					addBottomView
 					bottomViewColor={themes[theme].messageboxBackground}
@@ -1007,7 +1037,7 @@ class MessageBox extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,
@@ -1018,7 +1048,7 @@ const mapStateToProps = state => ({
 });
 
 const dispatchToProps = ({
-	typing: (rid, status) => userTypingAction(rid, status)
+	typing: (rid: any, status: any) => userTypingAction(rid, status)
 });
-
+// @ts-ignore
 export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));
