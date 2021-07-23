@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { View, Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Touchable from './Touchable';
 import { CustomIcon } from '../../lib/Icons';
@@ -10,9 +9,15 @@ import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 
-const Broadcast = React.memo(({
-	author, broadcast, theme
-}) => {
+export interface IMessageBroadcast {
+	author: {
+		_id: string
+	};
+	broadcast: boolean;
+	theme: string
+}
+
+const Broadcast = React.memo(({ author, broadcast, theme }: IMessageBroadcast) => {
 	const { user, replyBroadcast } = useContext(MessageContext);
 	const isOwn = author._id === user.id;
 	if (broadcast && !isOwn) {
@@ -36,11 +41,6 @@ const Broadcast = React.memo(({
 	return null;
 });
 
-Broadcast.propTypes = {
-	author: PropTypes.object,
-	broadcast: PropTypes.bool,
-	theme: PropTypes.string
-};
 Broadcast.displayName = 'MessageBroadcast';
 
 export default Broadcast;

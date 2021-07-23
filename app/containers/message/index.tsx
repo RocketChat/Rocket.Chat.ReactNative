@@ -11,75 +11,62 @@ import messagesStatus from '../../constants/messagesStatus';
 import { withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 
-class MessageContainer extends React.Component {
-	static propTypes = {
-		item: PropTypes.object.isRequired,
-		user: PropTypes.shape({
-			id: PropTypes.string.isRequired,
-			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired
-		}),
-		rid: PropTypes.string,
-		timeFormat: PropTypes.string,
-		style: PropTypes.any,
-		archived: PropTypes.bool,
-		broadcast: PropTypes.bool,
-		previousItem: PropTypes.object,
-		baseUrl: PropTypes.string,
-		Message_GroupingPeriod: PropTypes.number,
-		isReadReceiptEnabled: PropTypes.bool,
-		isThreadRoom: PropTypes.bool,
-		useRealName: PropTypes.bool,
-		autoTranslateRoom: PropTypes.bool,
-		autoTranslateLanguage: PropTypes.string,
-		status: PropTypes.number,
-		isIgnored: PropTypes.bool,
-		highlighted: PropTypes.bool,
-		getCustomEmoji: PropTypes.func,
-		onLongPress: PropTypes.func,
-		onReactionPress: PropTypes.func,
-		onEncryptedPress: PropTypes.func,
-		onDiscussionPress: PropTypes.func,
-		onThreadPress: PropTypes.func,
-		errorActionsShow: PropTypes.func,
-		replyBroadcast: PropTypes.func,
-		reactionInit: PropTypes.func,
-		fetchThreadName: PropTypes.func,
-		showAttachment: PropTypes.func,
-		onReactionLongPress: PropTypes.func,
-		navToRoomInfo: PropTypes.func,
-		callJitsi: PropTypes.func,
-		blockAction: PropTypes.func,
-		theme: PropTypes.string,
-		threadBadgeColor: PropTypes.string,
-		toggleFollowThread: PropTypes.func,
-		jumpToMessage: PropTypes.func,
-		onPress: PropTypes.func
-	}
+interface IMessageContainerProps {
+	item: any;
+	user: {
+		id: string;
+		username: string;
+		token: string;
+	};
+	rid: string;
+	timeFormat: string;
+	style: any;
+	archived: boolean;
+	broadcast: boolean;
+	previousItem: {
+		ts: any;
+		u: any;
+		groupable: any;
+		id: any;
+		tmid: any;
+		status: any
+	};
+	baseUrl: string;
+	Message_GroupingPeriod: number;
+	isReadReceiptEnabled: boolean;
+	isThreadRoom: boolean;
+	useRealName: boolean;
+	autoTranslateRoom: boolean;
+	autoTranslateLanguage: string;
+	status: number;
+	isIgnored: boolean;
+	highlighted: boolean;
+	getCustomEmoji(): void;
+	onLongPress: Function;
+	onReactionPress: Function;
+	onEncryptedPress: Function;
+	onDiscussionPress: Function;
+	onThreadPress: Function;
+	errorActionsShow: Function;
+	replyBroadcast: Function;
+	reactionInit: Function;
+	fetchThreadName: Function;
+	showAttachment: Function;
+	onReactionLongPress: Function;
+	navToRoomInfo: Function;
+	callJitsi: Function;
+	blockAction: Function;
+	theme: string;
+	threadBadgeColor: string;
+	toggleFollowThread: Function;
+	jumpToMessage: Function;
+	onPress: Function;
+}
 
-	static defaultProps = {
-		getCustomEmoji: () => {},
-		onLongPress: () => {},
-		onReactionPress: () => {},
-		onEncryptedPress: () => {},
-		onDiscussionPress: () => {},
-		onThreadPress: () => {},
-		errorActionsShow: () => {},
-		replyBroadcast: () => {},
-		reactionInit: () => {},
-		fetchThreadName: () => {},
-		showAttachment: () => {},
-		onReactionLongPress: () => {},
-		navToRoomInfo: () => {},
-		callJitsi: () => {},
-		blockAction: () => {},
-		archived: false,
-		broadcast: false,
-		isIgnored: false,
-		theme: 'light'
-	}
+class MessageContainer extends React.Component<IMessageContainerProps, any> {
 
 	state = { isManualUnignored: false };
+	private subscription: any;
 
 	componentDidMount() {
 		const { item } = this.props;
@@ -91,7 +78,7 @@ class MessageContainer extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: any, nextState: any) {
 		const { isManualUnignored } = this.state;
 		const {
 			theme, threadBadgeColor, isIgnored, highlighted
@@ -155,7 +142,7 @@ class MessageContainer extends React.Component {
 		}
 	}
 
-	onReactionPress = (emoji) => {
+	onReactionPress = (emoji: any) => {
 		const { onReactionPress, item } = this.props;
 		if (onReactionPress) {
 			onReactionPress(emoji, item.id);
@@ -195,9 +182,7 @@ class MessageContainer extends React.Component {
 	}
 
 	get isHeader() {
-		const {
-			item, previousItem, broadcast, Message_GroupingPeriod
-		} = this.props;
+		const { item, previousItem, broadcast, Message_GroupingPeriod } = this.props;
 		if (this.hasError || (previousItem && previousItem.status === messagesStatus.ERROR)) {
 			return true;
 		}
@@ -218,9 +203,7 @@ class MessageContainer extends React.Component {
 	}
 
 	get isThreadReply() {
-		const {
-			item, previousItem, isThreadRoom
-		} = this.props;
+		const { item, previousItem, isThreadRoom } = this.props;
 		if (isThreadRoom) {
 			return false;
 		}
@@ -279,9 +262,9 @@ class MessageContainer extends React.Component {
 		}
 	}
 
-	onLinkPress = (link) => {
+	onLinkPress = (link: any) => {
 		const { item, theme, jumpToMessage } = this.props;
-		const isMessageLink = item?.attachments?.findIndex(att => att?.message_link === link) !== -1;
+		const isMessageLink = item?.attachments?.findIndex((att: any) => att?.message_link === link) !== -1;
 		if (isMessageLink) {
 			return jumpToMessage(link);
 		}
@@ -372,6 +355,7 @@ class MessageContainer extends React.Component {
 					replies
 				}}
 			>
+				{/*@ts-ignore*/}
 				<Message
 					id={id}
 					msg={message}

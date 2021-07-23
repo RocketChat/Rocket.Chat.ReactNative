@@ -1,7 +1,7 @@
 import React from 'react';
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
 
-interface IMessageBlocks {
+export interface IMessageBlocks {
 	blocks: any;
 	id: string;
 	rid: string;

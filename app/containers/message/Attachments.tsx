@@ -6,7 +6,7 @@ import Audio from './Audio';
 import Video from './Video';
 import Reply from './Reply';
 
-interface IMessageAttachments {
+export interface IMessageAttachments {
 	attachments: any;
 	timeFormat: string;
 	showAttachment: Function;

@@ -1,8 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {
-	View, StyleSheet, Text, Easing
-} from 'react-native';
+import { View, StyleSheet, Text, Easing } from 'react-native';
 import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
@@ -18,6 +15,30 @@ import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
+
+type TButton = {
+	loading: boolean;
+	paused: boolean;
+	theme: string;
+	onPress: Function;
+};
+
+interface IMessageAudioProps {
+	file: {
+		audio_url: string;
+		description: string;
+	};
+	theme: string;
+	getCustomEmoji: Function;
+	scale: number;
+}
+
+interface IMessageAudioState {
+	loading: boolean,
+	currentTime: number,
+	duration: number,
+	paused: boolean
+}
 
 const mode = {
 	allowsRecordingIOS: false,
@@ -57,19 +78,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const formatTime = seconds => moment.utc(seconds * 1000).format('mm:ss');
-const BUTTON_HIT_SLOP = {
-	top: 12, right: 12, bottom: 12, left: 12
-};
+const formatTime = (seconds: number) => moment.utc(seconds * 1000).format('mm:ss');
+
+const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
+
 const sliderAnimationConfig = {
 	duration: 250,
 	easing: Easing.linear,
 	delay: 0
 };
 
-const Button = React.memo(({
-	loading, paused, onPress, theme
-}) => (
+const Button = React.memo(({ loading, paused, onPress, theme }: TButton) => (
 	<Touchable
 		style={styles.playPauseButton}
 		onPress={onPress}
@@ -84,25 +103,13 @@ const Button = React.memo(({
 	</Touchable>
 ));
 
-Button.propTypes = {
-	loading: PropTypes.bool,
-	paused: PropTypes.bool,
-	theme: PropTypes.string,
-	onPress: PropTypes.func
-};
 Button.displayName = 'MessageAudioButton';
 
-class MessageAudio extends React.Component {
+class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
 	static contextType = MessageContext;
+	private sound: any;
 
-	static propTypes = {
-		file: PropTypes.object.isRequired,
-		theme: PropTypes.string,
-		getCustomEmoji: PropTypes.func,
-		scale: PropTypes.number
-	}
-
-	constructor(props) {
+	constructor(props: IMessageAudioProps) {
 		super(props);
 		this.state = {
 			loading: false,
@@ -133,7 +140,7 @@ class MessageAudio extends React.Component {
 		this.setState({ loading: false });
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: any, nextState: any) {
 		const {
 			currentTime, duration, paused, loading
 		} = this.state;
@@ -176,7 +183,7 @@ class MessageAudio extends React.Component {
 		}
 	}
 
-	onPlaybackStatusUpdate = (status) => {
+	onPlaybackStatusUpdate = (status: any) => {
 		if (status) {
 			this.onLoad(status);
 			this.onProgress(status);
@@ -184,12 +191,12 @@ class MessageAudio extends React.Component {
 		}
 	}
 
-	onLoad = (data) => {
+	onLoad = (data: any) => {
 		const duration = data.durationMillis / 1000;
 		this.setState({ duration: duration > 0 ? duration : 0 });
 	}
 
-	onProgress = (data) => {
+	onProgress = (data: any) => {
 		const { duration } = this.state;
 		const currentTime = data.positionMillis / 1000;
 		if (currentTime <= duration) {
@@ -197,7 +204,7 @@ class MessageAudio extends React.Component {
 		}
 	}
 
-	onEnd = async(data) => {
+	onEnd = async(data: any) => {
 		if (data.didJustFinish) {
 			try {
 				await this.sound.stopAsync();
@@ -232,7 +239,7 @@ class MessageAudio extends React.Component {
 		}
 	}
 
-	onValueChange = async(value) => {
+	onValueChange = async(value: any) => {
 		try {
 			this.setState({ currentTime: value });
 			await this.sound.setPositionAsync(value * 1000);
@@ -275,10 +282,12 @@ class MessageAudio extends React.Component {
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
 						onValueChange={this.onValueChange}
+						/*@ts-ignore*/
 						thumbImage={isIOS && { uri: 'audio_thumb', scale }}
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
+				{/*@ts-ignore*/}
 				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 			</>
 		);

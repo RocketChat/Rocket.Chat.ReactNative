@@ -3,7 +3,7 @@ import { ActivityIndicator, ActivityIndicatorProps, StyleSheet } from 'react-nat
 import { themes } from '../constants/colors';
 
 interface IActivityIndicator extends ActivityIndicatorProps{
-	theme?: 'light' | 'dark' | 'black',
+	theme?: 'light' | 'dark' | 'black' | string,
 	absolute?: boolean,
 	props?: object
 }

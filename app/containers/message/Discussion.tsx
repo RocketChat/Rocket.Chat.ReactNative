@@ -11,7 +11,7 @@ import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { formatDateThreads } from '../../utils/room';
 
-interface IMessageDiscussion {
+export interface IMessageDiscussion {
 	msg: string;
 	dcount: number;
 	dlm: string;

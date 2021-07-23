@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { dequal } from 'dequal';
 
 import I18n from '../../i18n';
@@ -12,9 +11,29 @@ import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import Encrypted from './Encrypted';
 import { E2E_MESSAGE_TYPE } from '../../lib/encryption/constants';
+import {TChannel} from "../markdown/Hashtag";
 
-const Content = React.memo((props) => {
+export interface IMessageContent {
+	isTemp: boolean;
+	isInfo: boolean;
+	tmid: string;
+	isThreadRoom: boolean;
+	msg: string;
+	theme: string;
+	isEdited: boolean;
+	isEncrypted: boolean;
+	getCustomEmoji: Function;
+	channels: TChannel[];
+	mentions: object[];
+	navToRoomInfo: Function;
+	useRealName: boolean;
+	isIgnored: boolean;
+	type: string;
+}
+
+const Content = React.memo((props: IMessageContent) => {
 	if (props.isInfo) {
+		// @ts-ignore
 		const infoMessage = getInfoMessage({ ...props });
 
 		const renderMessageContent = (
@@ -37,7 +56,7 @@ const Content = React.memo((props) => {
 		return renderMessageContent;
 	}
 
-	const isPreview = props.tmid && !props.isThreadRoom;
+	const isPreview: any = props.tmid && !props.isThreadRoom;
 	let content = null;
 
 	if (props.tmid && !props.msg) {
@@ -47,6 +66,7 @@ const Content = React.memo((props) => {
 	} else {
 		const { baseUrl, user, onLinkPress } = useContext(MessageContext);
 		content = (
+			// @ts-ignore
 			<Markdown
 				msg={props.msg}
 				baseUrl={baseUrl}
@@ -118,23 +138,6 @@ const Content = React.memo((props) => {
 	return true;
 });
 
-Content.propTypes = {
-	isTemp: PropTypes.bool,
-	isInfo: PropTypes.bool,
-	tmid: PropTypes.string,
-	isThreadRoom: PropTypes.bool,
-	msg: PropTypes.string,
-	theme: PropTypes.string,
-	isEdited: PropTypes.bool,
-	isEncrypted: PropTypes.bool,
-	getCustomEmoji: PropTypes.func,
-	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-	navToRoomInfo: PropTypes.func,
-	useRealName: PropTypes.bool,
-	isIgnored: PropTypes.bool,
-	type: PropTypes.string
-};
 Content.displayName = 'MessageContent';
 
 export default Content;

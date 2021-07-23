@@ -7,7 +7,7 @@ import MessageContext from './Context';
 import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
 
-interface IMessageThread {
+export interface IMessageThread {
 	msg: string;
 	tcount: number;
 	theme: string;

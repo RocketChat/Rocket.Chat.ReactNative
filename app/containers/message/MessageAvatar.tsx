@@ -4,7 +4,7 @@ import Avatar from '../Avatar';
 import styles from './styles';
 import MessageContext from './Context';
 
-interface IMessageAvatar {
+export interface IMessageAvatar {
 	isHeader: boolean;
 	avatar: string;
 	emoji: string;
@@ -12,7 +12,7 @@ interface IMessageAvatar {
 		username: string
 		_id: string;
 	};
-	small: boolean;
+	small?: boolean;
 	navToRoomInfo: Function;
 	getCustomEmoji(): void;
 	theme: string;

@@ -8,7 +8,7 @@ import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 
-interface IMessageCallButton {
+export interface IMessageCallButton {
 	theme: string;
 	callJitsi: Function;
 }

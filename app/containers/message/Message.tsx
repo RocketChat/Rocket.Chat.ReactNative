@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
@@ -7,21 +6,59 @@ import MessageContext from './Context';
 
 import User from './User';
 import styles from './styles';
-import RepliedThread from './RepliedThread';
-import MessageAvatar from './MessageAvatar';
-import Attachments from './Attachments';
+import RepliedThread, {IMessageRepliedThread} from './RepliedThread';
+import MessageAvatar, {IMessageAvatar} from './MessageAvatar';
+import Attachments, {IMessageAttachments} from './Attachments';
 import Urls from './Urls';
-import Thread from './Thread';
-import Blocks from './Blocks';
+import Thread, {IMessageThread} from './Thread';
+import Blocks, {IMessageBlocks} from './Blocks';
 import Reactions from './Reactions';
-import Broadcast from './Broadcast';
-import Discussion from './Discussion';
-import Content from './Content';
+import Broadcast, {IMessageBroadcast} from './Broadcast';
+import Discussion, {IMessageDiscussion} from './Discussion';
+import Content, {IMessageContent} from './Content';
 import ReadReceipt from './ReadReceipt';
-import CallButton from './CallButton';
+import CallButton, {IMessageCallButton} from './CallButton';
 import { themes } from '../../constants/colors';
 
-const MessageInner = React.memo((props) => {
+
+type TMessageInner = {
+	type: string;
+	blocks: [];
+} & IMessageDiscussion & IMessageContent & IMessageCallButton & IMessageBlocks
+	& IMessageThread & IMessageAttachments & IMessageBroadcast;
+
+type TMessage = {
+	isThreadReply: boolean;
+	isThreadSequential: boolean;
+	isInfo: boolean;
+	isTemp: boolean;
+	isHeader: boolean;
+	hasError: boolean;
+	style: any;
+	onLongPress: Function;
+	isReadReceiptEnabled: boolean;
+	unread: boolean;
+	theme: string;
+	isIgnored: boolean;
+} & IMessageRepliedThread & IMessageAvatar & IMessageContent & TMessageInner;
+
+interface IMessageTouchable {
+	hasError: boolean;
+	isInfo: boolean;
+	isThreadReply: boolean;
+	isTemp: boolean;
+	archived: boolean;
+	highlighted: boolean;
+	theme: string;
+	ts?: any
+	urls?: any;
+	reactions?: any;
+	alias?: any;
+	role?: any;
+	drid?: any;
+}
+
+const MessageInner = React.memo((props: TMessageInner) => {
 	if (props.type === 'discussion-created') {
 		return (
 			<>
@@ -63,7 +100,7 @@ const MessageInner = React.memo((props) => {
 });
 MessageInner.displayName = 'MessageInner';
 
-const Message = React.memo((props) => {
+const Message = React.memo((props: TMessage) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		return (
@@ -107,7 +144,7 @@ const Message = React.memo((props) => {
 });
 Message.displayName = 'Message';
 
-const MessageTouchable = React.memo((props) => {
+const MessageTouchable = React.memo((props: IMessageTouchable & TMessage) => {
 	if (props.hasError) {
 		return (
 			<View>
@@ -129,36 +166,7 @@ const MessageTouchable = React.memo((props) => {
 		</Touchable>
 	);
 });
+
 MessageTouchable.displayName = 'MessageTouchable';
-
-MessageTouchable.propTypes = {
-	hasError: PropTypes.bool,
-	isInfo: PropTypes.bool,
-	isThreadReply: PropTypes.bool,
-	isTemp: PropTypes.bool,
-	archived: PropTypes.bool,
-	highlighted: PropTypes.bool,
-	theme: PropTypes.string
-};
-
-Message.propTypes = {
-	isThreadReply: PropTypes.bool,
-	isThreadSequential: PropTypes.bool,
-	isInfo: PropTypes.bool,
-	isTemp: PropTypes.bool,
-	isHeader: PropTypes.bool,
-	hasError: PropTypes.bool,
-	style: PropTypes.any,
-	onLongPress: PropTypes.func,
-	isReadReceiptEnabled: PropTypes.bool,
-	unread: PropTypes.bool,
-	theme: PropTypes.string,
-	isIgnored: PropTypes.bool
-};
-
-MessageInner.propTypes = {
-	type: PropTypes.string,
-	blocks: PropTypes.array
-};
 
 export default MessageTouchable;
