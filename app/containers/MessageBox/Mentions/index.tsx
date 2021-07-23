@@ -7,7 +7,12 @@ import styles from '../styles';
 import MentionItem from './MentionItem';
 import { themes } from '../../../constants/colors';
 
-const Mentions = React.memo(({ mentions, trackingType, theme }) => {
+interface IMessageBoxMentions {
+	mentions: [];
+	trackingType: string;
+	theme: string;
+}
+const Mentions = React.memo(({ mentions, trackingType, theme }: IMessageBoxMentions) => {
 	if (!trackingType) {
 		return null;
 	}
@@ -18,7 +23,7 @@ const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 				data={mentions}
 				extraData={mentions}
 				renderItem={({ item }) => <MentionItem item={item} trackingType={trackingType} theme={theme} />}
-				keyExtractor={item => item.rid || item.name || item.command || item}
+				keyExtractor={(item: any) => item.rid || item.name || item.command || item}
 				keyboardShouldPersistTaps='always'
 			/>
 		</View>
@@ -35,11 +40,5 @@ const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 	}
 	return true;
 });
-
-Mentions.propTypes = {
-	mentions: PropTypes.array,
-	trackingType: PropTypes.string,
-	theme: PropTypes.string
-};
 
 export default Mentions;

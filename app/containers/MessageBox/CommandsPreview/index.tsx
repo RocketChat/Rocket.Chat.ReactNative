@@ -8,7 +8,13 @@ import styles from '../styles';
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
 
-const CommandsPreview = React.memo(({ theme, commandPreview, showCommandPreview }) => {
+interface IMessageBoxCommandsPreview {
+	commandPreview: [];
+	showCommandPreview: boolean;
+	theme: string;
+}
+
+const CommandsPreview = React.memo(({ theme, commandPreview, showCommandPreview }: IMessageBoxCommandsPreview) => {
 	if (!showCommandPreview) {
 		return null;
 	}
@@ -18,7 +24,7 @@ const CommandsPreview = React.memo(({ theme, commandPreview, showCommandPreview 
 			style={[styles.mentionList, { backgroundColor: themes[theme].messageboxBackground }]}
 			data={commandPreview}
 			renderItem={({ item }) => <Item item={item} theme={theme} />}
-			keyExtractor={item => item.id}
+			keyExtractor={(item: any) => item.id}
 			keyboardShouldPersistTaps='always'
 			horizontal
 			showsHorizontalScrollIndicator={false}
@@ -36,11 +42,5 @@ const CommandsPreview = React.memo(({ theme, commandPreview, showCommandPreview 
 	}
 	return true;
 });
-
-CommandsPreview.propTypes = {
-	commandPreview: PropTypes.array,
-	showCommandPreview: PropTypes.bool,
-	theme: PropTypes.string
-};
 
 export default withTheme(CommandsPreview);

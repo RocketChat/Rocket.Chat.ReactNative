@@ -1,9 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import BaseButton from './BaseButton';
 
-const CancelEditingButton = React.memo(({ theme, onPress }) => (
+interface ICancelEditingButton {
+	theme: string;
+	onPress():void;
+}
+
+const CancelEditingButton = React.memo(({ theme, onPress }: ICancelEditingButton) => (
 	<BaseButton
 		onPress={onPress}
 		testID='messagebox-cancel-editing'
@@ -12,10 +15,5 @@ const CancelEditingButton = React.memo(({ theme, onPress }) => (
 		theme={theme}
 	/>
 ));
-
-CancelEditingButton.propTypes = {
-	theme: PropTypes.string,
-	onPress: PropTypes.func.isRequired
-};
 
 export default CancelEditingButton;

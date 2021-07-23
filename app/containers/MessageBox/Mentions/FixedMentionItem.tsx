@@ -1,12 +1,19 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import styles from '../styles';
 import I18n from '../../../i18n';
 import { themes } from '../../../constants/colors';
 
-const FixedMentionItem = ({ item, onPress, theme }) => (
+interface IMessageBoxFixedMentionItem {
+	item: {
+		username: string;
+	};
+	onPress({}): void;
+	theme: string;
+}
+
+const FixedMentionItem = ({ item, onPress, theme }: IMessageBoxFixedMentionItem) => (
 	<TouchableOpacity
 		style={[
 			styles.mentionItem,
@@ -23,11 +30,5 @@ const FixedMentionItem = ({ item, onPress, theme }) => (
 		</Text>
 	</TouchableOpacity>
 );
-
-FixedMentionItem.propTypes = {
-	item: PropTypes.object,
-	onPress: PropTypes.func,
-	theme: PropTypes.string
-};
 
 export default FixedMentionItem;

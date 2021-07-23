@@ -1,10 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import BaseButton from './BaseButton';
 import { themes } from '../../../constants/colors';
 
-const SendButton = React.memo(({ theme, onPress }) => (
+interface ISendButton {
+	theme: string;
+	onPress(): void;
+}
+
+const SendButton = React.memo(({ theme, onPress }: ISendButton) => (
 	<BaseButton
 		onPress={onPress}
 		testID='messagebox-send-message'
@@ -14,10 +17,5 @@ const SendButton = React.memo(({ theme, onPress }) => (
 		color={themes[theme].tintColor}
 	/>
 ));
-
-SendButton.propTypes = {
-	theme: PropTypes.string,
-	onPress: PropTypes.func.isRequired
-};
 
 export default SendButton;

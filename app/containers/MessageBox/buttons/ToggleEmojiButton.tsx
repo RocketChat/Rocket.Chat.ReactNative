@@ -1,11 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import BaseButton from './BaseButton';
 
-const ToggleEmojiButton = React.memo(({
-	theme, show, open, close
-}) => {
+interface IToggleEmojiButton {
+	theme: string;
+	show: boolean;
+	open(): void;
+	close(): void;
+}
+
+const ToggleEmojiButton = React.memo(({ theme, show, open, close }: IToggleEmojiButton) => {
 	if (show) {
 		return (
 			<BaseButton
@@ -27,12 +30,5 @@ const ToggleEmojiButton = React.memo(({
 		/>
 	);
 });
-
-ToggleEmojiButton.propTypes = {
-	theme: PropTypes.string,
-	show: PropTypes.bool,
-	open: PropTypes.func.isRequired,
-	close: PropTypes.func.isRequired
-};
 
 export default ToggleEmojiButton;

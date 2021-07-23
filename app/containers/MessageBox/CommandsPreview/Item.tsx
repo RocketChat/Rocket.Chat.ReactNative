@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
@@ -9,7 +8,16 @@ import { themes } from '../../../constants/colors';
 import MessageboxContext from '../Context';
 import ActivityIndicator from '../../ActivityIndicator';
 
-const Item = ({ item, theme }) => {
+interface IMessageBoxCommandsPreviewItem {
+	item: {
+		type: string;
+		id: string;
+		value: string;
+	};
+	theme: string;
+}
+
+const Item = ({ item, theme }: IMessageBoxCommandsPreviewItem) => {
 	const context = useContext(MessageboxContext);
 	const { onPressCommandPreview } = context;
 	const [loading, setLoading] = useState(true);
@@ -36,11 +44,6 @@ const Item = ({ item, theme }) => {
 			}
 		</TouchableOpacity>
 	);
-};
-
-Item.propTypes = {
-	item: PropTypes.object,
-	theme: PropTypes.string
 };
 
 export default Item;

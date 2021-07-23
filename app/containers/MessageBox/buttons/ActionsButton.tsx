@@ -1,9 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 import BaseButton from './BaseButton';
 
-const ActionsButton = React.memo(({ theme, onPress }) => (
+interface IActionsButton {
+	theme: string;
+	onPress(): void;
+}
+
+const ActionsButton = React.memo(({ theme, onPress }: IActionsButton) => (
 	<BaseButton
 		onPress={onPress}
 		testID='messagebox-actions'
@@ -12,10 +15,5 @@ const ActionsButton = React.memo(({ theme, onPress }) => (
 		theme={theme}
 	/>
 ));
-
-ActionsButton.propTypes = {
-	theme: PropTypes.string,
-	onPress: PropTypes.func.isRequired
-};
 
 export default ActionsButton;

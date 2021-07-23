@@ -1,25 +1,32 @@
 import React, { useContext } from 'react';
 import { TouchableOpacity, Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import styles from '../styles';
 import Avatar from '../../Avatar';
 import MessageboxContext from '../Context';
 import FixedMentionItem from './FixedMentionItem';
 import MentionEmoji from './MentionEmoji';
-import {
-	MENTIONS_TRACKING_TYPE_EMOJIS,
-	MENTIONS_TRACKING_TYPE_COMMANDS
-} from '../constants';
+import { MENTIONS_TRACKING_TYPE_EMOJIS,  MENTIONS_TRACKING_TYPE_COMMANDS } from '../constants';
 import { themes } from '../../../constants/colors';
+import {TEmoji} from "../../EmojiPicker";
 
-const MentionItem = ({
-	item, trackingType, theme
-}) => {
+interface IMessageBoxMentionItem {
+	item: {
+		name: string;
+		command: string;
+		username: string;
+		t: string;
+		id: string;
+	} & TEmoji;
+	trackingType: string;
+	theme: string;
+}
+
+const MentionItem = ({ item, trackingType, theme }: IMessageBoxMentionItem) => {
 	const context = useContext(MessageboxContext);
 	const { onPressMention } = context;
 
-	const defineTestID = (type) => {
+	const defineTestID = (type: string) => {
 		switch (type) {
 			case MENTIONS_TRACKING_TYPE_EMOJIS:
 				return `mention-item-${ item.name || item }`;
@@ -81,12 +88,6 @@ const MentionItem = ({
 			{content}
 		</TouchableOpacity>
 	);
-};
-
-MentionItem.propTypes = {
-	item: PropTypes.object,
-	trackingType: PropTypes.string,
-	theme: PropTypes.string
 };
 
 export default MentionItem;
