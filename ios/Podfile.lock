@@ -1,5 +1,7 @@
 PODS:
   - boost-for-react-native (1.63.0)
+  - BugsnagReactNative (7.10.5):
+    - React-Core
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
   - EXAppleAuthentication (2.2.1):
@@ -576,6 +578,7 @@ PODS:
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
+  - "BugsnagReactNative (from `../node_modules/@bugsnag/react-native`)"
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - EXAV (from `../node_modules/expo-av/ios`)
@@ -728,6 +731,8 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
+  BugsnagReactNative:
+    :path: "../node_modules/@bugsnag/react-native"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXAppleAuthentication:
@@ -920,6 +925,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  BugsnagReactNative: a97b3132c1854fd7bf92350fabd505e3ebdd7829
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   EXAppleAuthentication: 5b3da71bada29e2423d8ea27e5538ef0d75aba62
