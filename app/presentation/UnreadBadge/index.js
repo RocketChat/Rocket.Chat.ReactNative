@@ -34,7 +34,7 @@ const UnreadBadge = React.memo(({
 	theme, unread, userMentions, groupMentions, style, tunread, tunreadUser, tunreadGroup, small
 }) => {
 	if ((!unread || unread <= 0) && (!tunread?.length)) {
-		return;
+		return null;
 	}
 	const { backgroundColor, color } = getUnreadStyle({
 		theme, unread, userMentions, groupMentions, tunread, tunreadUser, tunreadGroup

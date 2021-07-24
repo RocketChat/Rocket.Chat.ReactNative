@@ -112,6 +112,7 @@ describe('Threads', () => {
 			it('should mark send to channel and show on main channel', async() => {
 				const messageText = 'sendToChannel';
 				await element(by.id(`message-thread-button-${ thread }`)).tap();
+				await waitFor(element(by.id('messagebox-input-thread'))).toExist().withTimeout(5000);
 				await element(by.id('messagebox-input-thread')).typeText(messageText);
 				await element(by.id('messagebox-send-to-channel')).tap();
 				await element(by.id('messagebox-send-message')).tap();
@@ -126,6 +127,7 @@ describe('Threads', () => {
 				const messageText = 'navthreadname';
 				await mockMessageWithNag('dummymessagebetweenthethread');
 				await element(by.id(`message-thread-button-${ thread }`)).tap();
+				await waitFor(element(by.id('messagebox-input-thread'))).toExist().withTimeout(5000);
 				await element(by.id('messagebox-input-thread')).typeText(messageText);
 				await element(by.id('messagebox-send-to-channel')).tap();
 				await element(by.id('messagebox-send-message')).tap();
@@ -136,6 +138,7 @@ describe('Threads', () => {
 				await element(by.id(`message-thread-replied-on-${ thread }`)).tap();
 				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
 				await expect(element(by.id(`room-view-title-${ thread }`))).toExist();
+				await sleep(2000);
 				await tapBack();
 			});
 
@@ -143,7 +146,6 @@ describe('Threads', () => {
 				await waitFor(element(by.id('room-view-header-threads'))).toExist().withTimeout(1000);
 				await element(by.id('room-view-header-threads')).tap();
 				await waitFor(element(by.id('thread-messages-view'))).toExist().withTimeout(5000);
-				await expect(element(by.id('thread-messages-view'))).toExist();
 				await element(by.id(`thread-messages-view-${ thread }`)).atIndex(0).tap();
 				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
 				await expect(element(by.id(`room-view-title-${ thread }`))).toExist();

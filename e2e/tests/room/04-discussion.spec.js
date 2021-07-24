@@ -107,6 +107,7 @@ describe('Discussion', () => {
 		});
 
 		it('should have share', async() => {
+			await element(by.id('room-actions-scrollview')).swipe('up');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 		});
 
@@ -123,7 +124,7 @@ describe('Discussion', () => {
 		});
 
 		it('should navigate to RoomActionView', async() => {
-			await element(by.type(scrollViewType)).atIndex(1).swipe('down');
+			await element(by.id('room-actions-scrollview')).swipe('down');
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
 			await element(by.id('room-actions-info')).tap();
 			await waitFor(element(by.id('room-info-view'))).toExist().withTimeout(60000);

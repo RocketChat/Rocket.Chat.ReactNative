@@ -48941,8 +48941,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
   }
 >
   <View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -49331,8 +49335,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -49762,8 +49770,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -50193,8 +50205,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -50624,8 +50640,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -51055,8 +51075,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -51486,8 +51510,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -51917,8 +51945,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -52348,8 +52380,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -52779,8 +52815,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -53210,8 +53250,12 @@ exports[`Storyshots Room Item Alerts 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -53654,8 +53698,12 @@ exports[`Storyshots Room Item Basic 1`] = `
   }
 >
   <View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -54052,8 +54100,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
   }
 >
   <View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -54496,8 +54548,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -54940,8 +54996,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -55384,8 +55444,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -55828,8 +55892,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -56328,8 +56396,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -56828,8 +56900,12 @@ exports[`Storyshots Room Item Last Message 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -57341,8 +57417,12 @@ exports[`Storyshots Room Item Tag 1`] = `
   }
 >
   <View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -57762,8 +57842,12 @@ exports[`Storyshots Room Item Tag 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -58243,8 +58327,12 @@ exports[`Storyshots Room Item Tag 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -58664,8 +58752,12 @@ exports[`Storyshots Room Item Tag 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -59158,8 +59250,12 @@ exports[`Storyshots Room Item Touch 1`] = `
   }
 >
   <View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -59556,8 +59652,12 @@ exports[`Storyshots Room Item Type 1`] = `
   }
 >
   <View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -59941,8 +60041,12 @@ exports[`Storyshots Room Item Type 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -60314,8 +60418,12 @@ exports[`Storyshots Room Item Type 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -60687,8 +60795,12 @@ exports[`Storyshots Room Item Type 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -61060,8 +61172,12 @@ exports[`Storyshots Room Item Type 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -61433,8 +61549,12 @@ exports[`Storyshots Room Item Type 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -61806,8 +61926,12 @@ exports[`Storyshots Room Item Type 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -62192,8 +62316,12 @@ exports[`Storyshots Room Item User 1`] = `
   }
 >
   <View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -62577,8 +62705,12 @@ exports[`Storyshots Room Item User 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -62975,8 +63107,12 @@ exports[`Storyshots Room Item User status 1`] = `
   }
 >
   <View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -63360,8 +63496,12 @@ exports[`Storyshots Room Item User status 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -63745,8 +63885,12 @@ exports[`Storyshots Room Item User status 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -64130,8 +64274,12 @@ exports[`Storyshots Room Item User status 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -64515,8 +64663,12 @@ exports[`Storyshots Room Item User status 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -64900,8 +65052,12 @@ exports[`Storyshots Room Item User status 1`] = `
         </View>
       </View>
     </View>
-    <View>
-      <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
         <View
           pointerEvents="box-none"
           style={
@@ -69459,6 +69615,7 @@ exports[`Storyshots ServerItem content 1`] = `
 Array [
   <View
     accessible={true}
+    collapsable={false}
     focusable={true}
     onBlur={[Function]}
     onClick={[Function]}
@@ -69601,6 +69758,7 @@ Array [
   </View>,
   <View
     accessible={true}
+    collapsable={false}
     focusable={true}
     onBlur={[Function]}
     onClick={[Function]}
@@ -69716,6 +69874,7 @@ Array [
   </View>,
   <View
     accessible={true}
+    collapsable={false}
     focusable={true}
     onBlur={[Function]}
     onClick={[Function]}
@@ -69829,6 +69988,7 @@ exports[`Storyshots ServerItem themes 1`] = `
 Array [
   <View
     accessible={true}
+    collapsable={false}
     focusable={true}
     onBlur={[Function]}
     onClick={[Function]}
@@ -69971,6 +70131,7 @@ Array [
   </View>,
   <View
     accessible={true}
+    collapsable={false}
     focusable={true}
     onBlur={[Function]}
     onClick={[Function]}
@@ -70113,6 +70274,7 @@ Array [
   </View>,
   <View
     accessible={true}
+    collapsable={false}
     focusable={true}
     onBlur={[Function]}
     onClick={[Function]}
@@ -70260,6 +70422,7 @@ exports[`Storyshots ServerItem touchable 1`] = `
 Array [
   <View
     accessible={true}
+    collapsable={false}
     focusable={true}
     onBlur={[Function]}
     onClick={[Function]}
@@ -70375,6 +70538,7 @@ Array [
   </View>,
   <View
     accessible={true}
+    collapsable={false}
     focusable={true}
     onBlur={[Function]}
     onClick={[Function]}
@@ -70490,6 +70654,7 @@ Array [
   </View>,
   <View
     accessible={true}
+    collapsable={false}
     focusable={true}
     onBlur={[Function]}
     onClick={[Function]}
