@@ -5,7 +5,6 @@ const {
 	navigateToLogin, login, mockMessage, tapBack, searchRoom
 } = require('../../helpers/app');
 const data = require('../../data');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const testuser = data.users.regular;
 const otheruser = data.users.alternate;
@@ -13,7 +12,6 @@ const otheruser = data.users.alternate;
 describe('Broadcast room', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 	});

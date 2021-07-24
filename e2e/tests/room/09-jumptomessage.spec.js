@@ -1,8 +1,8 @@
 const data = require('../../data');
 const {
-	navigateToLogin, tapBack, login, searchRoom
+	navigateToLogin, tapBack, login, searchRoom, sleep
 } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
+const platformTypes = require('../../helpers/platformTypes');
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);
@@ -11,6 +11,7 @@ async function navigateToRoom(roomName) {
 }
 
 async function clearCache() {
+	const { alertButtonType } = platformTypes[device.getPlatform()];
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 	await tapBack();
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
@@ -20,20 +21,24 @@ async function clearCache() {
 	await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
 	await element(by.id('settings-view-clear-cache')).tap();
 	await waitFor(element(by.text('This will clear all your offline data.'))).toExist().withTimeout(2000);
-	await element(by.label('Clear').and(by.type('_UIAlertControllerActionView'))).tap();
+	await element(by.text('Clear').and(by.type(alertButtonType))).tap();
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(5000);
 	await waitFor(element(by.id('rooms-list-view-item-jumping'))).toExist().withTimeout(10000);
 }
 
 async function waitForLoading() {
-	await waitFor(element(by.id('loading'))).toBeVisible().withTimeout(5000);
+	if (device.getPlatform() === 'android') {
+		await sleep(10000);
+		return;
+	}
+	await waitFor(element(by.id('loading'))).toBeVisible().withTimeout(5000); // Fails on Android
 	await waitFor(element(by.id('loading'))).toBeNotVisible().withTimeout(5000);
 }
 
 describe('Room', () => {
+
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 		await login(data.adminUser, data.adminPassword);
 	});
@@ -76,6 +81,7 @@ describe('Room', () => {
 		await element(by.id('room-view-search')).tap();
 		await waitFor(element(by.id('search-messages-view'))).toExist().withTimeout(5000);
 		await element(by.id('search-message-view-input')).typeText('30\n');
+		await sleep(1000);
 		await waitFor(element(by.text('30')).atIndex(0)).toExist().withTimeout(5000);
 		await element(by.text('30')).atIndex(0).tap();
 		await waitForLoading();

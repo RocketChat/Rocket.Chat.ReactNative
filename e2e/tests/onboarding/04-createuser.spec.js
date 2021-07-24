@@ -2,13 +2,11 @@ const {
 	device, expect, element, by, waitFor
 } = require('detox');
 const { navigateToRegister } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 const data = require('../../data');
 
 describe('Create user screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		await navigateToRegister();
 	});
 

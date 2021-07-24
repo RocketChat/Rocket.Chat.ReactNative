@@ -4,14 +4,12 @@ const {
 } = require('../../helpers/app');
 
 const platformTypes = require('../../helpers/platformTypes');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 describe('Delete server', () => {
 	let scrollViewType;
 	let alertButtonType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		({ alertButtonType, scrollViewType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);

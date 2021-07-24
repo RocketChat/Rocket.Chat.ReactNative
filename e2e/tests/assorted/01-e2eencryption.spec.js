@@ -5,7 +5,6 @@ const {
 const platformTypes = require('../../helpers/platformTypes');
 
 const data = require('../../data');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const testuser = data.users.regular;
 const otheruser = data.users.alternate;
@@ -51,7 +50,6 @@ describe('E2E Encryption', () => {
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		({ alertButtonType, scrollViewType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);

@@ -1,11 +1,9 @@
 const { navigateToRegister, navigateToLogin } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 describe('Legal screen', () => {
 	describe('From Login', () => {
 		before(async() => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-			await prepareAndroid();
 			await navigateToLogin();
 		});
 

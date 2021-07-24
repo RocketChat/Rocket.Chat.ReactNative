@@ -2,7 +2,6 @@ const data = require('../../data');
 const {
 	navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage
 } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 const { sendMessage } = require('../../helpers/data_setup');
 
 const platformTypes = require('../../helpers/platformTypes');
@@ -41,7 +40,6 @@ describe('Room actions screen', () => {
 	let alertButtonType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		({ alertButtonType } = platformTypes[device.getPlatform()]);
@@ -384,6 +382,8 @@ describe('Room actions screen', () => {
 
 				const closeActionSheet = async() => {
 					await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
+					await waitFor(element(by.id('action-sheet'))).toBeNotVisible().withTimeout(1000);
+					await sleep(100);
 				};
 
 				it('should show all users', async() => {
@@ -520,9 +520,9 @@ describe('Room actions screen', () => {
 				await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 				await waitFor(element(by.id('room-actions-block-user'))).toExist();
 				await element(by.id('room-actions-block-user')).tap();
-				await waitFor(element(by.label('Unblock user'))).toExist().withTimeout(60000);
+				await waitFor(element(by.text('Unblock user'))).toExist().withTimeout(60000);
 				await element(by.id('room-actions-block-user')).tap();
-				await waitFor(element(by.label('Block user'))).toExist().withTimeout(60000);
+				await waitFor(element(by.text('Block user'))).toExist().withTimeout(60000);
 			});
 		});
 	});

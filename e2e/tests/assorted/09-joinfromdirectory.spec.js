@@ -2,7 +2,6 @@ const data = require('../../data');
 const {
 	navigateToLogin, login, tapBack, sleep
 } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const testuser = data.users.regular;
 
@@ -18,7 +17,6 @@ async function navigateToRoom(search) {
 describe('Join room from directory', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 	});

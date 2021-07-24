@@ -1,5 +1,4 @@
 const { navigateToLogin, login, sleep } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 const { post } = require('../../helpers/data_setup');
 
 const data = require('../../data');
@@ -20,7 +19,6 @@ const navToLanguage = async() => {
 
 describe('i18n', () => {
 	before(async() => {
-		await prepareAndroid();
 	});
 
 	describe('OS language', () => {

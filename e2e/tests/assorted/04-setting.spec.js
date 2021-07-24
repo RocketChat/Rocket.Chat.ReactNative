@@ -1,7 +1,6 @@
 const { navigateToLogin, login } = require('../../helpers/app');
 
 const platformTypes = require('../../helpers/platformTypes');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const data = require('../../data');
 
@@ -11,7 +10,6 @@ describe('Settings screen', () => {
 	let alertButtonType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		({ alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);

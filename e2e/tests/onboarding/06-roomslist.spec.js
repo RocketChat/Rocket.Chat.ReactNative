@@ -4,13 +4,11 @@ const {
 const {
 	login, navigateToLogin, logout, tapBack, searchRoom
 } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 const data = require('../../data');
 
 describe('Rooms list screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});

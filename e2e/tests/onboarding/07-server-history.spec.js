@@ -4,13 +4,11 @@ const {
 const {
 	login, navigateToLogin, logout, tapBack
 } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 const data = require('../../data');
 
 describe('Server history', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 	});
 
 	describe('Usage', () => {

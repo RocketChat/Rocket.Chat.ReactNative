@@ -2,14 +2,12 @@ const data = require('../../data');
 const {
 	tapBack, navigateToLogin, login, tryTapping
 } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 
 
 describe('Create room screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});

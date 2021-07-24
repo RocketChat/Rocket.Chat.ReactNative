@@ -1,5 +1,4 @@
 const { navigateToLogin, login, sleep } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const data = require('../../data');
 
@@ -12,7 +11,6 @@ async function waitForToast() {
 describe('Status screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 

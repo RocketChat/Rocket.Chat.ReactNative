@@ -2,7 +2,7 @@ const { navigateToLogin, login, sleep } = require('../../helpers/app');
 const data = require('../../data');
 
 const platformTypes = require('../../helpers/platformTypes');
-const { closeKeyboardAndroid, prepareAndroid } = require('../../helpers/platformFunctions');
+const { closeKeyboardAndroid } = require('../../helpers/platformFunctions');
 
 const profileChangeUser = data.users.profileChanges;
 
@@ -22,7 +22,6 @@ describe('Profile screen', () => {
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		({ textInputType, scrollViewType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(profileChangeUser.username, profileChangeUser.password);

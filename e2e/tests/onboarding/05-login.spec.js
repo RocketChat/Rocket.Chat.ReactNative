@@ -2,13 +2,11 @@ const {
 	expect, element, by, waitFor
 } = require('detox');
 const { navigateToLogin, tapBack } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 const data = require('../../data');
 
 describe('Login screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 	});
 

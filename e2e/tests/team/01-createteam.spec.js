@@ -1,13 +1,11 @@
 const data = require('../../data');
 const { navigateToLogin, login } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const teamName = `team-${ data.random }`;
 
 describe('Create team screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});

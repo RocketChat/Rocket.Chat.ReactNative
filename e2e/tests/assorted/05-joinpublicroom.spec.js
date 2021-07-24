@@ -4,7 +4,6 @@ const {
 } = require('../../helpers/app');
 
 const platformTypes = require('../../helpers/platformTypes');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const testuser = data.users.regular;
 const room = data.channels.detoxpublic.name;
@@ -24,7 +23,6 @@ describe('Join public room', () => {
 	let scrollViewType;
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		({ scrollViewType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);

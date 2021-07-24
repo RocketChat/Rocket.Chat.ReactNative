@@ -2,7 +2,6 @@ const data = require('../../data');
 const {
 	navigateToLogin, login, tapBack, sleep, searchRoom
 } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);
@@ -44,7 +43,6 @@ describe('Team', () => {
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await navigateToRoom(team);
@@ -111,6 +109,7 @@ describe('Team', () => {
 				await element(by.id('add-channel-team-view-create-channel')).tap();
 
 				await element(by.id('select-users-view-search')).replaceText('rocket.cat');
+				await waitFor(element(by.id('select-users-view-item-rocket.cat'))).toBeVisible().withTimeout(2000);
 				await element(by.id('select-users-view-item-rocket.cat')).tap();
 				await waitFor(element(by.id('selected-user-rocket.cat'))).toBeVisible().withTimeout(10000);
 				await element(by.id('selected-users-view-submit')).tap();
@@ -158,7 +157,7 @@ describe('Team', () => {
 
 			it('should activate/deactivate auto-join to channel', async() => {
 				await element(by.id(`rooms-list-view-item-${ existingRoom }`)).atIndex(0).longPress();
-
+				await element(by.id('action-sheet')).swipe('up', 'fast', 0.3);
 				await waitFor(element(by.id('action-sheet-auto-join'))).toBeVisible().withTimeout(5000);
 				await waitFor(element(by.id('auto-join-unchecked'))).toBeVisible().withTimeout(5000);
 				await waitFor(element(by.id('action-sheet-remove-from-team'))).toBeVisible().withTimeout(5000);
@@ -217,7 +216,7 @@ describe('Team', () => {
 				await waitFor(element(by.id(`select-list-view-item-${ existingRoom }`))).toExist().withTimeout(2000);
 				await element(by.id(`select-list-view-item-${ room }`)).tap();
 
-				await waitFor(element(by.label('You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.'))).toExist().withTimeout(2000);
+				await waitFor(element(by.text('You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.'))).toExist().withTimeout(2000);
 				await element(by.text('OK')).tap();
 				await waitFor(element(by.id('select-list-view-submit'))).toExist().withTimeout(2000);
 				await element(by.id('select-list-view-submit')).tap();
@@ -249,6 +248,7 @@ describe('Team', () => {
 
 				it('should remove member from team', async() => {
 					await openActionSheet('rocket.cat');
+					await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 					await element(by.id('action-sheet-remove-from-team')).tap();
 					await waitFor(element(by.id('select-list-view'))).toExist().withTimeout(5000);
 					await waitFor(element(by.id(`select-list-view-item-${ room }`))).toExist().withTimeout(5000);

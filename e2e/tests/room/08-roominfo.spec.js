@@ -2,7 +2,6 @@ const data = require('../../data');
 const {
 	navigateToLogin, login, tapBack, sleep, searchRoom
 } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 const privateRoomName = data.groups.private.name;
 
@@ -33,7 +32,6 @@ async function waitForToast() {
 describe('Room info screen', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});

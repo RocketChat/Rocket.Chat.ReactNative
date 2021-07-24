@@ -2,7 +2,6 @@ const data = require('../../data');
 const {
 	navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom, starMessage, pinMessage, dismissReviewNag, tryTapping
 } = require('../../helpers/app');
-const { prepareAndroid } = require('../../helpers/platformFunctions');
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);
@@ -15,7 +14,6 @@ describe('Room screen', () => {
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await prepareAndroid();
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await navigateToRoom(mainRoom);
@@ -197,6 +195,8 @@ describe('Room screen', () => {
 			});
 
 			it('should react to message', async() => {
+				await waitFor(element(by.id('action-sheet-handle'))).toBeNotVisible();
+				await sleep(300);
 				await element(by.text(`${ data.random }message`)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
@@ -230,9 +230,10 @@ describe('Room screen', () => {
 				await waitFor(element(by.id('message-reaction-:grimacing:'))).toExist().withTimeout(60000);
 			});
 
-			it('should ask for review', async() => {
-				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
-			});
+			// it('should ask for review', async() => {
+			// 	await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
+			// });
+			// Moved in previous test because toExist doesn't detect element while review popup covers it, on Android
 
 			it('should remove reaction', async() => {
 				await element(by.id('message-reaction-:grinning:')).tap();
