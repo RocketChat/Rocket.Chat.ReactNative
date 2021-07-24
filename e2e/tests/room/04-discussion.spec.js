@@ -2,7 +2,6 @@ const {
 	navigateToLogin, login, mockMessage, tapBack, searchRoom
 } = require('../../helpers/app');
 const data = require('../../data');
-const platformTypes = require('../../helpers/platformTypes');
 
 const channel = data.groups.private.name;
 
@@ -13,13 +12,10 @@ const navigateToRoom = async() => {
 };
 
 describe('Discussion', () => {
-	let scrollViewType;
-
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
-		({ scrollViewType } = platformTypes[device.getPlatform()]);
 	});
 
 	it('should create discussion from NewMessageView', async() => {

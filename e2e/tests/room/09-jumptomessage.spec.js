@@ -36,7 +36,6 @@ async function waitForLoading() {
 }
 
 describe('Room', () => {
-
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
