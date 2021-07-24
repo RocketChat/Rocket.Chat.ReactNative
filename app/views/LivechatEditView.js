@@ -54,12 +54,12 @@ const LivechatEditView = ({
 			const visitorCustomFields = result.customFields
 				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
 				.map(field => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
-				.reduce((ret, field) => ({ [field]: field, ...ret }));
+				.reduce((ret, field) => ({ [Object.keys(field)[0]]: Object.values(field)[0], ...ret }));
 
 			const livechatCustomFields = result.customFields
 				.filter(field => field.visibility !== 'hidden' && field.scope === 'room')
 				.map(field => ({ [field._id]: (livechat.livechatData && livechat.livechatData[field._id]) || '' }))
-				.reduce((ret, field) => ({ [field]: field, ...ret }));
+				.reduce((ret, field) => ({ [Object.keys(field)[0]]: Object.values(field)[0], ...ret }));
 
 			return setCustomFields({ visitor: visitorCustomFields, livechat: livechatCustomFields });
 		}
