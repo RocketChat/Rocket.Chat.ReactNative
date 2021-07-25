@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Text, StyleSheet, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
@@ -15,9 +16,9 @@ import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import { getUserSelector } from '../selectors/login';
-import Chips from '../containers/UIKit/MultiSelect/Chips';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
+import { MultiSelect } from '../containers/UIKit/MultiSelect';
 
 const styles = StyleSheet.create({
 	container: {
@@ -27,6 +28,11 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		paddingVertical: 10,
 		...sharedStyles.textMedium
+	},
+	label: {
+		marginBottom: 10,
+		fontSize: 14,
+		...sharedStyles.textSemibold
 	}
 });
 
@@ -44,6 +50,7 @@ const LivechatEditView = ({
 
 	const params = {};
 	const inputs = {};
+	console.log('🚀 ~ file: LivechatEditView.js ~ line 47 ~ inputs', inputs);
 
 	const livechat = route.params?.room ?? {};
 	const visitor = route.params?.roomUser ?? {};
@@ -66,9 +73,10 @@ const LivechatEditView = ({
 	};
 
 	const [tagParam, setTags] = useState(livechat?.tags || []);
+	const [tagParamSelected, setTagParamSelected] = useState(livechat?.tags || []);
 
 	useEffect(() => {
-		setTags([...tagParam, ...availableUserTags]);
+		setTags([...new Set([...tagParam, ...availableUserTags])]);
 	}, [availableUserTags]);
 
 	const getTagsList = async(agentDepartments) => {
@@ -115,7 +123,7 @@ const LivechatEditView = ({
 			roomData.topic = params.topic;
 		}
 
-		roomData.tags = tagParam;
+		roomData.tags = tagParamSelected;
 
 		roomData.livechatData = {};
 		Object.entries(customFields?.livechat || {}).forEach(([key]) => {
@@ -215,32 +223,23 @@ const LivechatEditView = ({
 						theme={theme}
 					/>
 
-					<TextInput
-						inputRef={(e) => { inputs.tags = e; }}
-						label={I18n.t('Tags')}
-						iconRight='add'
-						onIconRightPress={() => {
-							const lastText = inputs.tags._lastNativeText || '';
-							if (lastText.length) {
-								setTags([...tagParam.filter(t => t !== lastText), lastText]);
-								inputs.tags.clear();
-							}
+					<Text
+						style={[
+							styles.label,
+							{ color: themes[theme].titleText }
+						]}
+					>
+						{ I18n.t('Tags') }
+					</Text>
+					<MultiSelect
+						options={tagParam.map(tag => ({ text: { text: tag }, value: tag }))}
+						onChange={({ value }) => {
+							setTagParamSelected([...value]);
 						}}
-						onSubmitEditing={() => {
-							const keys = Object.keys(customFields?.livechat || {});
-							if (keys.length > 0) {
-								const key = keys.pop();
-								inputs[key].focus();
-							} else {
-								submit();
-							}
-						}}
-						theme={theme}
-					/>
-					<Chips
-						items={tagParam.map(tag => ({ text: { text: tag }, value: tag }))}
-						onSelect={tag => setTags(tagParam.filter(t => t !== tag.value) || [])}
-						style={{ backgroundColor: themes[theme].backgroundColor }}
+						placeholder={{ text: I18n.t('Tags') }}
+						value={tagParamSelected}
+						context={BLOCK_CONTEXT.FORM}
+						multiselect
 						theme={theme}
 					/>
 
