@@ -5,7 +5,7 @@ import { CustomIcon } from '../lib/Icons';
 import { themes } from '../constants/colors';
 
 type TCheck = {
-	style: object,
+	style?: object,
 	theme: string
 }
 const styles = StyleSheet.create({

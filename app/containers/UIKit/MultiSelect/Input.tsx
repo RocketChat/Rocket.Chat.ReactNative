@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../../lib/Icons';
@@ -8,9 +7,19 @@ import { themes } from '../../../constants/colors';
 import ActivityIndicator from '../../ActivityIndicator';
 import styles from './styles';
 
+interface IInput {
+	children: JSX.Element;
+	onPress: Function;
+	theme: string;
+	inputStyle: object;
+	disabled: boolean;
+	placeholder: string;
+	loading: boolean;
+}
+
 const Input = ({
 	children, onPress, theme, loading, inputStyle, placeholder, disabled
-}) => (
+}: IInput) => (
 	<Touchable
 		onPress={onPress}
 		style={[{ backgroundColor: themes[theme].backgroundColor }, inputStyle]}
@@ -27,14 +36,5 @@ const Input = ({
 		</View>
 	</Touchable>
 );
-Input.propTypes = {
-	children: PropTypes.node,
-	onPress: PropTypes.func,
-	theme: PropTypes.string,
-	inputStyle: PropTypes.object,
-	disabled: PropTypes.bool,
-	placeholder: PropTypes.string,
-	loading: PropTypes.bool
-};
 
 export default Input;

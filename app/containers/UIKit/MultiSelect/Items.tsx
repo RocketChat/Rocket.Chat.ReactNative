@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, FlatList } from 'react-native';
-import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
@@ -11,12 +10,28 @@ import { themes } from '../../../constants/colors';
 
 import styles from './styles';
 
-const keyExtractor = item => item.value.toString();
+type TItem = {
+	item: {
+		value: { name: string; };
+		text: { text: string; };
+		imageUrl: string;
+	};
+	selected: any;
+	onSelect: Function;
+	theme: string;
+};
+
+interface IItems {
+	items: [];
+	selected: [];
+	onSelect: Function;
+	theme: string;
+}
+
+const keyExtractor = (item: any) => item.value.toString();
 
 // RectButton doesn't work on modal (Android)
-const Item = ({
-	item, selected, onSelect, theme
-}) => {
+const Item = ({ item, selected, onSelect, theme }: TItem) => {
 	const itemName = item.value.name || item.text.text.toLowerCase();
 	return (
 		<Touchable
@@ -36,16 +51,8 @@ const Item = ({
 		</Touchable>
 	);
 };
-Item.propTypes = {
-	item: PropTypes.object,
-	selected: PropTypes.number,
-	onSelect: PropTypes.func,
-	theme: PropTypes.string
-};
 
-const Items = ({
-	items, selected, onSelect, theme
-}) => (
+const Items = ({ items, selected, onSelect, theme }: IItems) => (
 	<FlatList
 		data={items}
 		style={[styles.items, { backgroundColor: themes[theme].backgroundColor }]}
@@ -56,11 +63,5 @@ const Items = ({
 		renderItem={({ item }) => <Item item={item} onSelect={onSelect} theme={theme} selected={selected.find(s => s === item.value)} />}
 	/>
 );
-Items.propTypes = {
-	items: PropTypes.array,
-	selected: PropTypes.array,
-	onSelect: PropTypes.func,
-	theme: PropTypes.string
-};
 
 export default Items;

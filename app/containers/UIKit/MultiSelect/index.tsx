@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
 	View, Text, TouchableWithoutFeedback, Modal, KeyboardAvoidingView, Animated, Easing, StyleSheet
 } from 'react-native';
-import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import Button from '../../Button';
@@ -18,6 +17,21 @@ import Items from './Items';
 import Input from './Input';
 
 import styles from './styles';
+
+interface IMultiSelect {
+	options: [];
+	onChange: Function;
+	placeholder: object;
+	context: number;
+	loading: boolean;
+	multiselect: boolean;
+	onSearch: Function;
+	onClose: Function;
+	inputStyle: object;
+	value: [];
+	disabled: boolean;
+	theme: string;
+}
 
 const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
@@ -42,7 +56,7 @@ export const MultiSelect = React.memo(({
 	disabled,
 	inputStyle,
 	theme
-}) => {
+}: IMultiSelect) => {
 	const [selected, select] = useState(Array.isArray(values) ? values : []);
 	const [open, setOpen] = useState(false);
 	const [search, onSearchChange] = useState('');
@@ -186,20 +200,3 @@ export const MultiSelect = React.memo(({
 		</>
 	);
 });
-MultiSelect.propTypes = {
-	options: PropTypes.array,
-	onChange: PropTypes.func,
-	placeholder: PropTypes.object,
-	context: PropTypes.number,
-	loading: PropTypes.bool,
-	multiselect: PropTypes.bool,
-	onSearch: PropTypes.func,
-	onClose: PropTypes.func,
-	inputStyle: PropTypes.object,
-	value: PropTypes.array,
-	disabled: PropTypes.bool,
-	theme: PropTypes.string
-};
-MultiSelect.defaultProps = {
-	onClose: () => {}
-};

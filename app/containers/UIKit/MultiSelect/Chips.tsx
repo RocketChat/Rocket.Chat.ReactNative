@@ -10,11 +10,28 @@ import { CustomIcon } from '../../../lib/Icons';
 
 import styles from './styles';
 
-const keyExtractor = item => item.value.toString();
+type TChip = {
+	item: {
+		value: string;
+		imageUrl: string;
+		text: string
+	};
+	onSelect: Function;
+	style: object;
+	theme: string;
+}
 
-const Chip = ({
-	item, onSelect, style, theme
-}) => (
+interface IChips {
+	items: [];
+	onSelect: Function;
+	style: object;
+	theme: string;
+}
+
+
+const keyExtractor = (item: any) => item.value.toString();
+
+const Chip = ({ item, onSelect, style, theme }: TChip) => (
 	<Touchable
 		key={item.value}
 		onPress={() => onSelect(item)}
@@ -29,24 +46,13 @@ const Chip = ({
 	</Touchable>
 );
 Chip.propTypes = {
-	item: PropTypes.object,
-	onSelect: PropTypes.func,
-	style: PropTypes.object,
-	theme: PropTypes.string
+
 };
 
-const Chips = ({
-	items, onSelect, style, theme
-}) => (
+const Chips = ({ items, onSelect, style, theme }: IChips) => (
 	<View style={styles.chips}>
 		{items.map(item => <Chip key={keyExtractor(item)} item={item} onSelect={onSelect} style={style} theme={theme} />)}
 	</View>
 );
-Chips.propTypes = {
-	items: PropTypes.array,
-	onSelect: PropTypes.func,
-	style: PropTypes.object,
-	theme: PropTypes.string
-};
 
 export default Chips;
