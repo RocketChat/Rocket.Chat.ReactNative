@@ -293,7 +293,7 @@ LivechatEditView.propTypes = {
 	editLivechatRoomCustomfields: PropTypes.array
 };
 LivechatEditView.navigationOptions = ({
-	title: I18n.t('Livechat_edit')
+	title: I18n.t('Edit')
 });
 
 const mapStateToProps = state => ({
