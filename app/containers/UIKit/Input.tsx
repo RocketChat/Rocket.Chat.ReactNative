@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import sharedStyles from '../../views/Styles';
@@ -32,9 +31,19 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IInput {
+	element: object;
+	parser: any;
+	label: string;
+	description: string;
+	error: string;
+	hint: string;
+	theme: string;
+}
+
 export const Input = ({
 	element, parser, label, description, error, hint, theme
-}) => (
+}: IInput) => (
 	<View style={styles.container}>
 		{label ? <Text style={[styles.label, { color: error ? themes[theme].dangerColor : themes[theme].titleText }]}>{label}</Text> : null}
 		{description ? <Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{description}</Text> : null}
@@ -43,13 +52,3 @@ export const Input = ({
 		{hint ? <Text style={[styles.hint, { color: themes[theme].auxiliaryText }]}>{hint}</Text> : null}
 	</View>
 );
-
-Input.propTypes = {
-	element: PropTypes.object,
-	parser: PropTypes.object,
-	label: PropTypes.string,
-	description: PropTypes.string,
-	error: PropTypes.string,
-	hint: PropTypes.string,
-	theme: PropTypes.string
-};

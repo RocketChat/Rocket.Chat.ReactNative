@@ -10,7 +10,32 @@ import { themes } from '../../constants/colors';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';
 
-const keyExtractor = item => item.value;
+type TOption = {
+	option: {
+		text: string;
+		value: string;
+	};
+	onOptionPress: Function;
+	parser: any;
+	theme: string;
+};
+
+type TOptions = {
+	options: [];
+	onOptionPress: Function;
+	parser: object;
+	theme: string;
+};
+
+interface IOverflow {
+	element: any;
+	action: Function;
+	loading: boolean;
+	parser: object;
+	theme: string;
+}
+
+const keyExtractor = (item: any) => item.value;
 
 const styles = StyleSheet.create({
 	menu: {
@@ -25,9 +50,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Option = ({
-	option: { text, value }, onOptionPress, parser, theme
-}) => (
+const Option = ({ option: { text, value }, onOptionPress, parser, theme }: TOption) => (
 	<Touchable
 		onPress={() => onOptionPress({ value })}
 		background={Touchable.Ripple(themes[theme].bannerBackground)}
@@ -36,16 +59,8 @@ const Option = ({
 		<Text>{parser.text(text)}</Text>
 	</Touchable>
 );
-Option.propTypes = {
-	option: PropTypes.object,
-	onOptionPress: PropTypes.func,
-	parser: PropTypes.object,
-	theme: PropTypes.string
-};
 
-const Options = ({
-	options, onOptionPress, parser, theme
-}) => (
+const Options = ({ options, onOptionPress, parser, theme }: TOptions) => (
 	<FlatList
 		data={options}
 		renderItem={({ item }) => <Option option={item} onOptionPress={onOptionPress} parser={parser} theme={theme} />}
@@ -53,22 +68,14 @@ const Options = ({
 		ItemSeparatorComponent={List.Separator}
 	/>
 );
-Options.propTypes = {
-	options: PropTypes.array,
-	onOptionPress: PropTypes.func,
-	parser: PropTypes.object,
-	theme: PropTypes.string
-};
 
 const touchable = {};
 
-export const Overflow = ({
-	element, loading, action, parser, theme
-}) => {
+export const Overflow = ({ element, loading, action, parser, theme }: IOverflow) => {
 	const { options, blockId } = element;
 	const [show, onShow] = useState(false);
 
-	const onOptionPress = ({ value }) => {
+	const onOptionPress = ({ value }: any) => {
 		onShow(false);
 		action({ value });
 	};
@@ -76,6 +83,7 @@ export const Overflow = ({
 	return (
 		<>
 			<Touchable
+				/*@ts-ignore*/
 				ref={ref => touchable[blockId] = ref}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 				onPress={() => onShow(!show)}
@@ -86,6 +94,7 @@ export const Overflow = ({
 			</Touchable>
 			<Popover
 				isVisible={show}
+				/*@ts-ignore*/
 				fromView={touchable[blockId]}
 				onRequestClose={() => onShow(false)}
 			>
@@ -93,11 +102,4 @@ export const Overflow = ({
 			</Popover>
 		</>
 	);
-};
-Overflow.propTypes = {
-	element: PropTypes.any,
-	action: PropTypes.func,
-	loading: PropTypes.bool,
-	parser: PropTypes.object,
-	theme: PropTypes.string
 };

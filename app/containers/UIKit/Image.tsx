@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
-import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import ImageContainer from '../message/Image';
@@ -16,21 +15,37 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ThumbContext = args => <View style={styles.mediaContext}><Thumb size={20} {...args} /></View>;
+type TThumb = {
+	element: {
+		imageUrl: string;
+	};
+	size?: number;
+};
 
-export const Thumb = ({ element, size = 88 }) => (
+type TMedia = {
+	element: {
+		imageUrl: string;
+	};
+	theme: string;
+};
+
+interface IImage {
+	element: any;
+	context: any;
+	theme: string;
+}
+
+const ThumbContext = (args: any) => <View style={styles.mediaContext}><Thumb size={20} {...args} /></View>;
+
+export const Thumb = ({ element, size = 88 }: TThumb) => (
 	<FastImage
 		style={[{ width: size, height: size }, styles.image]}
 		source={{ uri: element.imageUrl }}
 	/>
 );
-Thumb.propTypes = {
-	element: PropTypes.object,
-	size: PropTypes.number
-};
 
-export const Media = ({ element, theme }) => {
-	const showAttachment = attachment => Navigation.navigate('AttachmentView', { attachment });
+export const Media = ({ element, theme }: TMedia) => {
+	const showAttachment = (attachment: any) => Navigation.navigate('AttachmentView', { attachment });
 	const { imageUrl } = element;
 
 	return (
@@ -42,12 +57,8 @@ export const Media = ({ element, theme }) => {
 		/>
 	);
 };
-Media.propTypes = {
-	element: PropTypes.object,
-	theme: PropTypes.string
-};
 
-const genericImage = (element, context, theme) => {
+const genericImage = (element: any, context: any, theme: string) => {
 	switch (context) {
 		case BLOCK_CONTEXT.SECTION:
 			return <Thumb element={element} />;
@@ -58,4 +69,4 @@ const genericImage = (element, context, theme) => {
 	}
 };
 
-export const Image = ({ element, context, theme }) => genericImage(element, context, theme);
+export const Image = ({ element, context, theme }: IImage) => genericImage(element, context, theme);

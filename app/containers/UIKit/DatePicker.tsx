@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import PropTypes from 'prop-types';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
@@ -37,14 +36,28 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IDatePicker {
+	element: {
+		initial_date: any;
+		placeholder: string;
+	};
+	language: string;
+	action: Function;
+	context: number;
+	loading: boolean;
+	theme: string;
+	value: string;
+	error: string;
+}
+
 export const DatePicker = ({
 	element, language, action, context, theme, loading, value, error
-}) => {
+}: IDatePicker) => {
 	const [show, onShow] = useState(false);
 	const { initial_date, placeholder } = element;
 	const [currentDate, onChangeDate] = useState(new Date(initial_date || value));
 
-	const onChange = ({ nativeEvent: { timestamp } }, date) => {
+	const onChange = ({ nativeEvent: { timestamp } }: any, date: any) => {
 		const newDate = date || new Date(timestamp);
 		onChangeDate(newDate);
 		action({ value: moment(newDate).format('YYYY-MM-DD') });
@@ -104,14 +117,4 @@ export const DatePicker = ({
 			{content}
 		</>
 	);
-};
-DatePicker.propTypes = {
-	element: PropTypes.object,
-	language: PropTypes.string,
-	action: PropTypes.func,
-	context: PropTypes.number,
-	loading: PropTypes.bool,
-	theme: PropTypes.string,
-	value: PropTypes.string,
-	error: PropTypes.string
 };

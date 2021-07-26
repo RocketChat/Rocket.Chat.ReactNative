@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import { themes } from '../../constants/colors';
@@ -24,15 +23,36 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Accessory = ({
-	blockId, appId, element, parser
-}) => parser.renderAccessories(
+type TAccessory = {
+	blockId?: string;
+	appId?: string;
+	element: any;
+	parser: any
+}
+
+type TFields = {
+	fields: any;
+	parser: any;
+	theme: string;
+}
+
+interface ISection {
+	blockId: string;
+	appId: string;
+	text: object;
+	fields: [];
+	accessory: any;
+	theme: string;
+	parser: any;
+}
+
+const Accessory = ({ blockId, appId, element, parser }: TAccessory) => parser.renderAccessories(
 	{ blockId, appId, ...element },
 	BLOCK_CONTEXT.SECTION,
 	parser
 );
 
-const Fields = ({ fields, parser, theme }) => fields.map(field => (
+const Fields = ({ fields, parser, theme }: TFields) => fields.map((field: any) => (
 	<Text style={[styles.text, styles.field, { color: themes[theme].bodyText }]}>
 		{parser.text(field)}
 	</Text>
@@ -40,9 +60,7 @@ const Fields = ({ fields, parser, theme }) => fields.map(field => (
 
 const accessoriesRight = ['image', 'overflow'];
 
-export const Section = ({
-	blockId, appId, text, fields, accessory, parser, theme
-}) => (
+export const Section = ({ blockId, appId, text, fields, accessory, parser, theme }: ISection) => (
 	<View
 		style={[
 			styles.content,
@@ -54,12 +72,3 @@ export const Section = ({
 		{accessory ? <Accessory element={{ blockId, appId, ...accessory }} parser={parser} /> : null}
 	</View>
 );
-Section.propTypes = {
-	blockId: PropTypes.string,
-	appId: PropTypes.string,
-	text: PropTypes.object,
-	fields: PropTypes.array,
-	accessory: PropTypes.any,
-	theme: PropTypes.string,
-	parser: PropTypes.object
-};

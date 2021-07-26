@@ -34,6 +34,19 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface ISelect {
+	options: {
+		text: string;
+		value: string;
+	}[];
+	placeholder: string;
+	onChange: Function;
+	loading: boolean;
+	disabled: boolean;
+	value: [];
+	theme: string;
+}
+
 export const Select = ({
 	options = [],
 	placeholder,
@@ -42,7 +55,7 @@ export const Select = ({
 	disabled,
 	value: initialValue,
 	theme
-}) => {
+}: ISelect) => {
 	const [selected, setSelected] = useState(!Array.isArray(initialValue) && initialValue);
 	const items = options.map(option => ({ label: textParser([option.text]), value: option.value }));
 	const pickerStyle = {
@@ -74,16 +87,8 @@ export const Select = ({
 				inputAndroidContainer: pickerStyle
 			}}
 			Icon={Icon}
+			// @ts-ignore
 			textInputProps={{ style: { ...styles.pickerText, color: selected ? themes[theme].titleText : themes[theme].auxiliaryText } }}
 		/>
 	);
-};
-Select.propTypes = {
-	options: PropTypes.array,
-	placeholder: PropTypes.string,
-	onChange: PropTypes.func,
-	loading: PropTypes.bool,
-	disabled: PropTypes.bool,
-	value: PropTypes.array,
-	theme: PropTypes.string
 };

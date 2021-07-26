@@ -2,10 +2,10 @@
 import React, { useContext, useState } from 'react';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-export const textParser = ([{ text }]) => text;
+export const textParser = ([{ text }]: any) => text;
 
-export const defaultContext = {
-	action: (...args) => console.log(args),
+export const defaultContext: any = {
+	action: (...args: any) => console.log(args),
 	state: console.log,
 	appId: '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz',
 	errors: {}
@@ -15,7 +15,7 @@ export const KitContext = React.createContext(defaultContext);
 
 export const useBlockContext = ({
 	blockId, actionId, appId, initialValue
-}, context) => {
+}: any, context: any) => {
 	const {
 		action, appId: appIdFromContext, viewId, state, language, errors, values = {}
 	} = useContext(KitContext);
@@ -27,7 +27,7 @@ export const useBlockContext = ({
 	if ([BLOCK_CONTEXT.SECTION, BLOCK_CONTEXT.ACTION].includes(context)) {
 		return [{
 			loading, setLoading, error, value, language
-		}, async({ value }) => {
+		}, async({ value }: any) => {
 			setLoading(true);
 			try {
 				await action({
@@ -46,7 +46,7 @@ export const useBlockContext = ({
 
 	return [{
 		loading, setLoading, value, error, language
-	}, async({ value }) => {
+	}, async({ value }: any) => {
 		setLoading(true);
 		try {
 			await state({

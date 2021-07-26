@@ -11,11 +11,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const Context = ({ elements, parser }) => (
+export const Context = ({ elements, parser }: any) => (
 	<View style={styles.container}>
-		{elements.map(element => parser.renderContext(element, BLOCK_CONTEXT.CONTEXT, parser))}
+		{elements.map((element: any) => parser.renderContext(element, BLOCK_CONTEXT.CONTEXT, parser))}
 	</View>
 );
+
 Context.propTypes = {
 	elements: PropTypes.array,
 	parser: PropTypes.object
