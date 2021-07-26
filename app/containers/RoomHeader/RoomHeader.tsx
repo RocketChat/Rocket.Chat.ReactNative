@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Text, StyleSheet, TouchableOpacity
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
@@ -17,7 +15,7 @@ const HIT_SLOP = {
 const TITLE_SIZE = 16;
 const SUBTITLE_SIZE = 12;
 
-const getSubTitleSize = scale => SUBTITLE_SIZE * scale;
+const getSubTitleSize = (scale: number) => SUBTITLE_SIZE * scale;
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,9 +39,42 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SubTitle = React.memo(({
-	usersTyping, subtitle, renderFunc, theme, scale
-}) => {
+type TRoomHeaderSubTitle = {
+	usersTyping: [];
+	theme: string;
+	subtitle: string;
+	renderFunc: any;
+	scale: number;
+};
+
+type TRoomHeaderHeaderTitle = {
+	title: string;
+	tmid: string;
+	prid: string;
+	scale: number;
+	theme: string;
+	testID: string;
+};
+
+interface IRoomHeader {
+	title: string;
+	subtitle: string;
+	type: string;
+	width: number;
+	height: number;
+	prid: string;
+	tmid: string;
+	teamMain: boolean;
+	status: string;
+	theme: string;
+	usersTyping: [];
+	isGroupChat: boolean;
+	parentTitle: string;
+	onPress: Function;
+	testID: string;
+}
+
+const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, theme, scale }: TRoomHeaderSubTitle) => {
 	const fontSize = getSubTitleSize(scale);
 	// typing
 	if (usersTyping.length) {
@@ -69,6 +100,7 @@ const SubTitle = React.memo(({
 	// subtitle
 	if (subtitle) {
 		return (
+			// @ts-ignore
 			<Markdown
 				preview
 				msg={subtitle}
@@ -82,17 +114,7 @@ const SubTitle = React.memo(({
 	return null;
 });
 
-SubTitle.propTypes = {
-	usersTyping: PropTypes.array,
-	theme: PropTypes.string,
-	subtitle: PropTypes.string,
-	renderFunc: PropTypes.func,
-	scale: PropTypes.number
-};
-
-const HeaderTitle = React.memo(({
-	title, tmid, prid, scale, theme, testID
-}) => {
+const HeaderTitle = React.memo(({ title, tmid, prid, scale, theme, testID }: TRoomHeaderHeaderTitle) => {
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor };
 	if (!tmid && !prid) {
 		return (
@@ -107,6 +129,7 @@ const HeaderTitle = React.memo(({
 	}
 
 	return (
+		// @ts-ignore
 		<Markdown
 			preview
 			msg={title}
@@ -118,18 +141,9 @@ const HeaderTitle = React.memo(({
 	);
 });
 
-HeaderTitle.propTypes = {
-	title: PropTypes.string,
-	tmid: PropTypes.string,
-	prid: PropTypes.string,
-	scale: PropTypes.number,
-	theme: PropTypes.string,
-	testID: PropTypes.string
-};
-
 const Header = React.memo(({
 	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, onPress, theme, isGroupChat, teamMain, testID
-}) => {
+}: IRoomHeader) => {
 	const portrait = height > width;
 	let scale = 1;
 
@@ -157,6 +171,7 @@ const Header = React.memo(({
 			accessibilityLabel={title}
 			onPress={handleOnPress}
 			style={styles.container}
+			// @ts-ignore
 			disabled={tmid}
 			hitSlop={HIT_SLOP}
 		>
@@ -181,27 +196,5 @@ const Header = React.memo(({
 		</TouchableOpacity>
 	);
 });
-
-Header.propTypes = {
-	title: PropTypes.string.isRequired,
-	subtitle: PropTypes.string,
-	type: PropTypes.string.isRequired,
-	width: PropTypes.number.isRequired,
-	height: PropTypes.number.isRequired,
-	prid: PropTypes.string,
-	tmid: PropTypes.string,
-	teamMain: PropTypes.bool,
-	status: PropTypes.string,
-	theme: PropTypes.string,
-	usersTyping: PropTypes.array,
-	isGroupChat: PropTypes.bool,
-	parentTitle: PropTypes.string,
-	onPress: PropTypes.func,
-	testID: PropTypes.string
-};
-
-Header.defaultProps = {
-	usersTyping: []
-};
 
 export default withTheme(Header);

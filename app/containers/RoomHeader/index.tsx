@@ -7,30 +7,31 @@ import RoomHeader from './RoomHeader';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 
-class RoomHeaderContainer extends Component {
-	static propTypes = {
-		title: PropTypes.string,
-		subtitle: PropTypes.string,
-		type: PropTypes.string,
-		prid: PropTypes.string,
-		tmid: PropTypes.string,
-		teamMain: PropTypes.bool,
-		usersTyping: PropTypes.string,
-		status: PropTypes.string,
-		statusText: PropTypes.string,
-		connecting: PropTypes.bool,
-		connected: PropTypes.bool,
-		roomUserId: PropTypes.string,
-		widthOffset: PropTypes.number,
-		onPress: PropTypes.func,
-		width: PropTypes.number,
-		height: PropTypes.number,
-		parentTitle: PropTypes.string,
-		isGroupChat: PropTypes.bool,
-		testID: PropTypes.string
-	};
+interface IRoomHeaderContainerProps {
+	title: string;
+	subtitle: string;
+	type: string;
+	prid: string;
+	tmid: string;
+	teamMain: boolean;
+	usersTyping: string;
+	status: string;
+	statusText: string;
+	connecting: boolean;
+	connected: boolean;
+	roomUserId: string;
+	widthOffset: number;
+	onPress(): void;
+	width: number;
+	height: number;
+	parentTitle: string;
+	isGroupChat: boolean;
+	testID: string;
+}
 
-	shouldComponentUpdate(nextProps) {
+class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
+
+	shouldComponentUpdate(nextProps: IRoomHeaderContainerProps) {
 		const {
 			type, title, subtitle, status, statusText, connecting, connected, onPress, usersTyping, width, height, teamMain
 		} = this.props;
@@ -129,12 +130,10 @@ class RoomHeaderContainer extends Component {
 	}
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: any, ownProps: any) => {
 	let statusText;
 	let status = 'offline';
-	const {
-		roomUserId, type, visitor = {}, tmid
-	} = ownProps;
+	const { roomUserId, type, visitor = {}, tmid } = ownProps;
 
 	if (state.meteor.connected) {
 		if ((type === 'd' || (tmid && roomUserId)) && state.activeUsers[roomUserId]) {
