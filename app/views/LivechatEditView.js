@@ -37,10 +37,11 @@ Title.propTypes = {
 };
 
 const LivechatEditView = ({
-	user, navigation, route, theme
+	user, navigation, route, theme, editOmnichannelContact, editLivechatRoomCustomfields
 }) => {
 	const [customFields, setCustomFields] = useState({});
 	const [availableUserTags, setAvailableUserTags] = useState([]);
+	const [permissions, setPermissions] = useState([]);
 
 	const params = {};
 	const inputs = {};
@@ -139,9 +140,15 @@ const LivechatEditView = ({
 
 	const onChangeText = (key, text) => { params[key] = text; };
 
+	const getPermissions = async() => {
+		const permissionsArray = await RocketChat.hasPermission([editOmnichannelContact, editLivechatRoomCustomfields], livechat.rid);
+		setPermissions(permissionsArray);
+	};
+
 	useEffect(() => {
 		getAgentDepartments();
 		getCustomFields();
+		getPermissions();
 	}, []);
 
 	return (
@@ -162,6 +169,7 @@ const LivechatEditView = ({
 						onChangeText={text => onChangeText('name', text)}
 						onSubmitEditing={() => { inputs.name.focus(); }}
 						theme={theme}
+						editable={!!permissions[0]}
 					/>
 					<TextInput
 						label={I18n.t('Email')}
@@ -170,6 +178,7 @@ const LivechatEditView = ({
 						onChangeText={text => onChangeText('email', text)}
 						onSubmitEditing={() => { inputs.phone.focus(); }}
 						theme={theme}
+						editable={!!permissions[0]}
 					/>
 					<TextInput
 						label={I18n.t('Phone')}
@@ -186,6 +195,7 @@ const LivechatEditView = ({
 							}
 						}}
 						theme={theme}
+						editable={!!permissions[0]}
 					/>
 					{Object.entries(customFields?.visitor || {}).map(([key, value], index, array) => (
 						<TextInput
@@ -200,6 +210,7 @@ const LivechatEditView = ({
 								inputs.topic.focus();
 							}}
 							theme={theme}
+							editable={!!permissions[0]}
 						/>
 					))}
 					<Title
@@ -213,6 +224,7 @@ const LivechatEditView = ({
 						onChangeText={text => onChangeText('topic', text)}
 						onSubmitEditing={() => inputs.tags.focus()}
 						theme={theme}
+						editable={!!permissions[1]}
 					/>
 
 					<TextInput
@@ -236,6 +248,7 @@ const LivechatEditView = ({
 							}
 						}}
 						theme={theme}
+						editable={!!permissions[1]}
 					/>
 					<Chips
 						items={tagParam.map(tag => ({ text: { text: tag }, value: tag }))}
@@ -257,6 +270,7 @@ const LivechatEditView = ({
 								submit();
 							}}
 							theme={theme}
+							editable={!!permissions[1]}
 						/>
 					))}
 
@@ -274,7 +288,9 @@ LivechatEditView.propTypes = {
 	user: PropTypes.object,
 	navigation: PropTypes.object,
 	route: PropTypes.object,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	editOmnichannelContact: PropTypes.array,
+	editLivechatRoomCustomfields: PropTypes.array
 };
 LivechatEditView.navigationOptions = ({
 	title: I18n.t('Livechat_edit')
@@ -282,7 +298,9 @@ LivechatEditView.navigationOptions = ({
 
 const mapStateToProps = state => ({
 	server: state.server.server,
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
+	editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields']
 });
 
 export default connect(mapStateToProps)(withTheme(LivechatEditView));
