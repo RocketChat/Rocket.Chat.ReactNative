@@ -6,11 +6,15 @@ import events from './events';
 const analytics = firebaseAnalytics || '';
 let bugsnag = '';
 let crashlytics;
+import Bugsnag from '@bugsnag/react-native'
+Bugsnag.start()
+Bugsnag.notify(new Error('Bad, but not fatal'));
 
 if (!isFDroidBuild) {
 	// const { Client } = require('bugsnag-react-native');
 	crashlytics = require('@react-native-firebase/crashlytics').default;
 	// bugsnag = new Client(config.BUGSNAG_API_KEY);
+	
 }
 
 export { analytics };
@@ -47,13 +51,13 @@ export const setCurrentScreen = (currentScreen) => {
 
 export default (e) => {
 	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
-		bugsnag.notify(e, (report) => {
-			report.metadata = {
-				details: {
-					...metadata
-				}
-			};
-		});
+		// bugsnag.notify(e, (report) => {
+		// 	report.metadata = {
+		// 		details: {
+		// 			...metadata
+		// 		}
+		// 	};
+		// });
 		if (!isFDroidBuild) {
 			crashlytics().recordError(e);
 		}
