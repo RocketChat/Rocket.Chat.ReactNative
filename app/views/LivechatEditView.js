@@ -50,7 +50,6 @@ const LivechatEditView = ({
 
 	const params = {};
 	const inputs = {};
-	console.log('🚀 ~ file: LivechatEditView.js ~ line 47 ~ inputs', inputs);
 
 	const livechat = route.params?.room ?? {};
 	const visitor = route.params?.roomUser ?? {};
@@ -76,7 +75,9 @@ const LivechatEditView = ({
 	const [tagParamSelected, setTagParamSelected] = useState(livechat?.tags || []);
 
 	useEffect(() => {
-		setTags([...new Set([...tagParam, ...availableUserTags])]);
+		const arr = [...tagParam, ...availableUserTags];
+		const uniqueArray = arr.filter((val, i) => arr.indexOf(val) === i);
+		setTags(uniqueArray);
 	}, [availableUserTags]);
 
 	const getTagsList = async(agentDepartments) => {
