@@ -55,7 +55,8 @@ class RoomInfoView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		jitsiEnabled: PropTypes.bool,
 		editRoomPermission: PropTypes.array,
-		editLiveChatPermission: PropTypes.array,
+		editOmnichannelContact: PropTypes.array,
+		editLivechatRoomCustomfields: PropTypes.array,
 		roles: PropTypes.array
 	}
 
@@ -185,7 +186,9 @@ class RoomInfoView extends React.Component {
 
 	loadRoom = async() => {
 		const { room: roomState } = this.state;
-		const { route, editRoomPermission, editLiveChatPermission } = this.props;
+		const {
+			route, editRoomPermission, editOmnichannelContact, editLivechatRoomCustomfields
+		} = this.props;
 		let room = route.params?.room;
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
@@ -205,10 +208,10 @@ class RoomInfoView extends React.Component {
 			}
 		}
 
-		const permissionToEdit = this.isLivechat ? editLiveChatPermission : editRoomPermission;
+		const permissionToEdit = this.isLivechat ? [editOmnichannelContact, editLivechatRoomCustomfields] : [editRoomPermission];
 
-		const permissions = await RocketChat.hasPermission([permissionToEdit], room.rid);
-		if (permissions[0]) {
+		const permissions = await RocketChat.hasPermission(permissionToEdit, room.rid);
+		if (permissions.some(Boolean)) {
 			this.setState({ showEdit: true }, () => this.setHeader());
 		}
 	}
@@ -373,7 +376,8 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail,
 	jitsiEnabled: state.settings.Jitsi_Enabled || false,
 	editRoomPermission: state.permissions['edit-room'],
-	editLiveChatPermission: state.permissions['edit-omnichannel-contact'],
+	editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
+	editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields'],
 	roles: state.roles
 });
 

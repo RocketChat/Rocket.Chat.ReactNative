@@ -49,7 +49,8 @@ const PERMISSIONS = [
 	'view-all-teams',
 	'view-all-team-channels',
 	'convert-team',
-	'edit-omnichannel-contact'
+	'edit-omnichannel-contact',
+	'edit-livechat-room-customfields'
 ];
 
 export async function setPermissions() {
