@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useAsyncStorage } from '@react-native-community/async-storage';
-import PropTypes from 'prop-types';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { sha256 } from 'js-sha256';
@@ -16,17 +15,24 @@ import { getLockedUntil, getDiff } from './utils';
 import UserPreferences from '../../lib/userPreferences';
 import I18n from '../../i18n';
 
-const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
+
+interface IPasscodePasscodeEnter {
+	theme: string;
+	hasBiometry: string;
+	finishProcess: Function;
+}
+
+const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeEnter) => {
 	const ref = useRef(null);
-	let attempts = 0;
-	let lockedUntil = false;
+	let attempts: any = 0;
+	let lockedUntil: any = false;
 	const [passcode, setPasscode] = useState(null);
 	const [status, setStatus] = useState(null);
 	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	const fetchPasscode = async() => {
-		const p = await UserPreferences.getStringAsync(PASSCODE_KEY);
+		const p: any = await UserPreferences.getStringAsync(PASSCODE_KEY);
 		setPasscode(p);
 	};
 
@@ -61,7 +67,7 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
 		readStorage();
 	}, [status]);
 
-	const onEndProcess = (p) => {
+	const onEndProcess = (p: any) => {
 		setTimeout(() => {
 			if (sha256(p) === passcode) {
 				finishProcess();
@@ -72,6 +78,7 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
 					setLockedUntil(new Date().toISOString());
 					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 				} else {
+					// @ts-ignore
 					ref.current.wrongPasscode();
 					setAttempts(attempts?.toString());
 					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
@@ -95,12 +102,6 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }) => {
 			onBiometryPress={biometry}
 		/>
 	);
-};
-
-PasscodeEnter.propTypes = {
-	theme: PropTypes.string,
-	hasBiometry: PropTypes.string,
-	finishProcess: PropTypes.func
 };
 
 export default gestureHandlerRootHOC(PasscodeEnter);

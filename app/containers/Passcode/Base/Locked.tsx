@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Grid } from 'react-native-easy-grid';
 
 import { themes } from '../../../constants/colors';
@@ -12,7 +11,18 @@ import Title from './Title';
 import Subtitle from './Subtitle';
 import LockIcon from './LockIcon';
 
-const Timer = React.memo(({ time, theme, setStatus }) => {
+type TPasscodeTimer = {
+	time: string;
+	theme: string;
+	setStatus: Function;
+};
+
+interface IPasscodeLocked {
+	theme: string;
+	setStatus: Function;
+}
+
+const Timer = React.memo(({ time, theme, setStatus }: TPasscodeTimer) => {
 	const calcTimeLeft = () => {
 		const diff = getDiff(time);
 		if (diff > 0) {
@@ -20,7 +30,7 @@ const Timer = React.memo(({ time, theme, setStatus }) => {
 		}
 	};
 
-	const [timeLeft, setTimeLeft] = useState(calcTimeLeft());
+	const [timeLeft, setTimeLeft] = useState<any>(calcTimeLeft());
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -39,8 +49,8 @@ const Timer = React.memo(({ time, theme, setStatus }) => {
 	return <Subtitle text={I18n.t('Passcode_app_locked_subtitle', { timeLeft })} theme={theme} />;
 });
 
-const Locked = React.memo(({ theme, setStatus }) => {
-	const [lockedUntil, setLockedUntil] = useState(null);
+const Locked = React.memo(({ theme, setStatus }: IPasscodeLocked) => {
+	const [lockedUntil, setLockedUntil] = useState<any>(null);
 
 	const readItemFromStorage = async() => {
 		const l = await getLockedUntil();
@@ -59,16 +69,5 @@ const Locked = React.memo(({ theme, setStatus }) => {
 		</Grid>
 	);
 });
-
-Locked.propTypes = {
-	theme: PropTypes.string,
-	setStatus: PropTypes.func
-};
-
-Timer.propTypes = {
-	time: PropTypes.string,
-	theme: PropTypes.string,
-	setStatus: PropTypes.func
-};
 
 export default Locked;

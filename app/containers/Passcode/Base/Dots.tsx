@@ -1,7 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
 import range from 'lodash/range';
-import PropTypes from 'prop-types';
 
 import styles from './styles';
 import { themes } from '../../../constants/colors';
@@ -9,7 +8,13 @@ import { themes } from '../../../constants/colors';
 const SIZE_EMPTY = 12;
 const SIZE_FULL = 16;
 
-const Dots = React.memo(({ passcode, theme, length }) => (
+interface IPasscodeDots {
+	passcode: string;
+	theme: string;
+	length: number;
+}
+
+const Dots = React.memo(({ passcode, theme, length }: IPasscodeDots) => (
 	<View style={styles.dotsContainer}>
 		{range(length).map((val) => {
 			const lengthSup = (passcode.length >= val + 1);
@@ -41,11 +46,5 @@ const Dots = React.memo(({ passcode, theme, length }) => (
 		})}
 	</View>
 ));
-
-Dots.propTypes = {
-	passcode: PropTypes.string,
-	theme: PropTypes.string,
-	length: PropTypes.string
-};
 
 export default Dots;

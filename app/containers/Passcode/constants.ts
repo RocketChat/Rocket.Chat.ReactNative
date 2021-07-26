@@ -1,4 +1,4 @@
-export const TYPE = {
+export const TYPE: any = {
 	CHOOSE: 'choose',
 	CONFIRM: 'confirm',
 	ENTER: 'enter',

@@ -1,9 +1,6 @@
-import React, {
-	useState, forwardRef, useImperativeHandle, useRef
-} from 'react';
+import React, { useState, forwardRef, useImperativeHandle, useRef } from 'react';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import range from 'lodash/range';
-import PropTypes from 'prop-types';
 import * as Animatable from 'react-native-animatable';
 import * as Haptics from 'expo-haptics';
 
@@ -17,11 +14,23 @@ import LockIcon from './LockIcon';
 import Title from './Title';
 import Subtitle from './Subtitle';
 
+interface IPasscodeBase {
+	theme: string;
+	type: string;
+	previousPasscode: string;
+	title: string;
+	subtitle: string;
+	showBiometry: string;
+	onEndProcess: Function;
+	onError: Function;
+	onBiometryPress(): void;
+}
+
 const Base = forwardRef(({
 	theme, type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress
-}, ref) => {
-	const rootRef = useRef();
-	const dotsRef = useRef();
+}: IPasscodeBase, ref) => {
+	const rootRef = useRef<any>();
+	const dotsRef = useRef<any>();
 	const [passcode, setPasscode] = useState('');
 
 	const clearPasscode = () => setPasscode('');
@@ -32,11 +41,11 @@ const Base = forwardRef(({
 		Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 	};
 
-	const animate = (animation, duration = 500) => {
+	const animate = (animation: string, duration = 500) => {
 		rootRef?.current?.[animation](duration);
 	};
 
-	const onPressNumber = text => setPasscode((p) => {
+	const onPressNumber = (text: string) => setPasscode((p) => {
 		const currentPasscode = p + text;
 		if (currentPasscode?.length === PASSCODE_LENGTH) {
 			switch (type) {
@@ -77,28 +86,28 @@ const Base = forwardRef(({
 			<Grid style={[styles.grid, { backgroundColor: themes[theme].passcodeBackground }]}>
 				<LockIcon theme={theme} />
 				<Title text={title} theme={theme} />
-				<Subtitle text={subtitle} theme={theme} />
+				<Subtitle text={subtitle!} theme={theme} />
 				<Row style={styles.row}>
 					<Animatable.View ref={dotsRef}>
 						<Dots passcode={passcode} theme={theme} length={PASSCODE_LENGTH} />
 					</Animatable.View>
 				</Row>
 				<Row style={[styles.row, styles.buttonRow]}>
-					{range(1, 4).map(i => (
+					{range(1, 4).map((i: any) => (
 						<Col key={i} style={styles.colButton}>
 							<Button text={i} theme={theme} onPress={onPressNumber} />
 						</Col>
 					))}
 				</Row>
 				<Row style={[styles.row, styles.buttonRow]}>
-					{range(4, 7).map(i => (
+					{range(4, 7).map((i: any) => (
 						<Col key={i} style={styles.colButton}>
 							<Button text={i} theme={theme} onPress={onPressNumber} />
 						</Col>
 					))}
 				</Row>
 				<Row style={[styles.row, styles.buttonRow]}>
-					{range(7, 10).map(i => (
+					{range(7, 10).map((i: any) => (
 						<Col key={i} style={styles.colButton}>
 							<Button text={i} theme={theme} onPress={onPressNumber} />
 						</Col>
@@ -123,17 +132,5 @@ const Base = forwardRef(({
 		</Animatable.View>
 	);
 });
-
-Base.propTypes = {
-	theme: PropTypes.string,
-	type: PropTypes.string,
-	previousPasscode: PropTypes.string,
-	title: PropTypes.string,
-	subtitle: PropTypes.string,
-	showBiometry: PropTypes.string,
-	onEndProcess: PropTypes.func,
-	onError: PropTypes.func,
-	onBiometryPress: PropTypes.func
-};
 
 export default Base;

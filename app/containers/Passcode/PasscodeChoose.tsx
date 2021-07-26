@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 import * as Haptics from 'expo-haptics';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
@@ -7,14 +6,20 @@ import Base from './Base';
 import { TYPE } from './constants';
 import I18n from '../../i18n';
 
-const PasscodeChoose = ({ theme, finishProcess, force = false }) => {
-	const chooseRef = useRef(null);
-	const confirmRef = useRef(null);
+interface IPasscodeChoose {
+	theme: string;
+	force: boolean;
+	finishProcess: Function;
+}
+
+const PasscodeChoose = ({ theme, finishProcess, force = false }: IPasscodeChoose) => {
+	const chooseRef = useRef<any>(null);
+	const confirmRef = useRef<any>(null);
 	const [subtitle, setSubtitle] = useState(null);
 	const [status, setStatus] = useState(TYPE.CHOOSE);
-	const [previousPasscode, setPreviouPasscode] = useState(null);
+	const [previousPasscode, setPreviouPasscode] = useState<any>(null);
 
-	const firstStep = (p) => {
+	const firstStep = (p: any) => {
 		setTimeout(() => {
 			setStatus(TYPE.CONFIRM);
 			setPreviouPasscode(p);
@@ -22,7 +27,7 @@ const PasscodeChoose = ({ theme, finishProcess, force = false }) => {
 		}, 200);
 	};
 
-	const changePasscode = p => finishProcess && finishProcess(p);
+	const changePasscode = (p: string) => finishProcess && finishProcess(p);
 
 	const onError = () => {
 		setTimeout(() => {
@@ -36,6 +41,7 @@ const PasscodeChoose = ({ theme, finishProcess, force = false }) => {
 
 	if (status === TYPE.CONFIRM) {
 		return (
+			// @ts-ignore
 			<Base
 				ref={confirmRef}
 				theme={theme}
@@ -49,6 +55,7 @@ const PasscodeChoose = ({ theme, finishProcess, force = false }) => {
 	}
 
 	return (
+		// @ts-ignore
 		<Base
 			ref={chooseRef}
 			theme={theme}
@@ -58,12 +65,6 @@ const PasscodeChoose = ({ theme, finishProcess, force = false }) => {
 			subtitle={subtitle || (force ? I18n.t('Passcode_choose_force_set') : null)}
 		/>
 	);
-};
-
-PasscodeChoose.propTypes = {
-	theme: PropTypes.string,
-	force: PropTypes.bool,
-	finishProcess: PropTypes.func
 };
 
 export default gestureHandlerRootHOC(PasscodeChoose);
