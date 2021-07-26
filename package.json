@@ -23,7 +23,7 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "eslint", 
+      "eslint",
       "jest --bail --findRelatedTests"
     ]
   },

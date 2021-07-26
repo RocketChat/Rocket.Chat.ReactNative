@@ -10,7 +10,7 @@ async function navigateToRoom(search) {
 	await waitFor(element(by.id(`directory-view-item-${ search }`))).toBeVisible().withTimeout(10000);
 	await sleep(300); // app takes some time to animate
 	await element(by.id(`directory-view-item-${ search }`)).tap();
-	await waitFor(element(by.id('room-view'))).toExist().withTimeout(5000);
+	await waitFor(element(by.id('room-view')).atIndex(0)).toExist().withTimeout(5000);
 	await waitFor(element(by.id(`room-view-title-${ search }`))).toExist().withTimeout(5000);
 }
 

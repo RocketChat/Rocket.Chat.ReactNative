@@ -76,7 +76,7 @@ describe('Move/Convert Team', () => {
 			await waitFor(element(by.id('select-list-view'))).toExist().withTimeout(2000);
 			await element(by.id('select-list-view-submit')).tap();
 			await sleep(2000);
-			await waitFor(element(by.id('select-list-view'))).toExist().withTimeout(2000);
+			await waitFor(element(by.id('select-list-view')).atIndex(0)).toExist().withTimeout(2000);
 			await waitFor(element(by.id(`select-list-view-item-${ toBeConverted }`))).toExist().withTimeout(2000);
 			await element(by.id(`select-list-view-item-${ toBeConverted }`)).tap();
 			await element(by.id('select-list-view-submit')).atIndex(0).tap();
@@ -98,7 +98,7 @@ describe('Move/Convert Team', () => {
 			await waitFor(element(by.id('room-actions-convert-channel-to-team'))).toExist().withTimeout(2000);
 			await element(by.id('room-actions-convert-channel-to-team')).tap();
 			await sleep(2000);
-			await waitFor(element(by.id('select-list-view'))).toExist().withTimeout(2000);
+			await waitFor(element(by.id('select-list-view')).atIndex(0)).toExist().withTimeout(2000);
 			await waitFor(element(by.id(`select-list-view-item-${ toBeMoved }`))).toExist().withTimeout(2000);
 			await element(by.id(`select-list-view-item-${ toBeMoved }`)).tap();
 			await waitFor(element(by.id('select-list-view-submit'))).toExist().withTimeout(2000);

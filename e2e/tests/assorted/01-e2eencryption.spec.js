@@ -4,6 +4,8 @@ const {
 
 const platformTypes = require('../../helpers/platformTypes');
 
+const { closeKeyboardAndroid } = require('../../helpers/platformFunctions');
+
 const data = require('../../data');
 
 const testuser = data.users.regular;
@@ -199,6 +201,7 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(2000);
 				await expect(element(by.text('You\'re going to be logged out.'))).toExist();
 				await element(by.text('Yes, reset it').and(by.type(alertButtonType))).tap();
+				await waitFor(element(by.text('OK'))).toBeVisible().withTimeout(5000);
 				await element(by.text('OK').and(by.type(alertButtonType))).tap();
 				await sleep(2000);
 				await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(10000);
@@ -234,6 +237,7 @@ describe('E2E Encryption', () => {
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).typeText(data.registeringUser.password);
+			await closeKeyboardAndroid();
 			element(by.type(scrollViewType)).atIndex(1).scrollTo('bottom');
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
