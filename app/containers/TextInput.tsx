@@ -51,29 +51,27 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IRCTextInputProps {
+	label: string;
+	error: {
+		error: any;
+		reason: any;
+	};
+	loading: boolean;
+	secureTextEntry: boolean;
+	containerStyle: any;
+	inputStyle: object;
+	inputRef: any;
+	testID: string;
+	iconLeft: string;
+	iconRight: string;
+	placeholder: string;
+	left: JSX.Element;
+	onIconRightPress(): void;
+	theme: string;
+}
 
-export default class RCTextInput extends React.PureComponent {
-	static propTypes = {
-		label: PropTypes.string,
-		error: PropTypes.object,
-		loading: PropTypes.bool,
-		secureTextEntry: PropTypes.bool,
-		containerStyle: PropTypes.any,
-		inputStyle: PropTypes.object,
-		inputRef: PropTypes.func,
-		testID: PropTypes.string,
-		iconLeft: PropTypes.string,
-		iconRight: PropTypes.string,
-		placeholder: PropTypes.string,
-		left: PropTypes.element,
-		onIconRightPress: PropTypes.func,
-		theme: PropTypes.string
-	}
-
-	static defaultProps = {
-		error: {},
-		theme: 'light'
-	}
+export default class RCTextInput extends React.PureComponent<IRCTextInputProps, any> {
 
 	state = {
 		showPassword: false
@@ -121,11 +119,12 @@ export default class RCTextInput extends React.PureComponent {
 
 	get loading() {
 		const { theme } = this.props;
+		// @ts-ignore
 		return <ActivityIndicator style={[styles.iconContainer, styles.iconRight, { color: themes[theme].bodyText }]} />;
 	}
 
 	tooglePassword = () => {
-		this.setState(prevState => ({ showPassword: !prevState.showPassword }));
+		this.setState((prevState: any) => ({ showPassword: !prevState.showPassword }));
 	}
 
 	render() {
@@ -139,6 +138,7 @@ export default class RCTextInput extends React.PureComponent {
 				{label ? (
 					<Text
 						contentDescription={null}
+						// @ts-ignore
 						accessibilityLabel={null}
 						style={[
 							styles.label,
@@ -151,6 +151,7 @@ export default class RCTextInput extends React.PureComponent {
 				) : null}
 				<View style={styles.wrap}>
 					<TextInput
+						/*@ts-ignore*/
 						style={[
 							styles.input,
 							iconLeft && styles.inputIconLeft,

@@ -40,6 +40,21 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IThreadDetails {
+	item: {
+		tcount: number | string;
+		replies: any;
+		id: string;
+	};
+	user: {
+		id: string
+	};
+	badgeColor: string;
+	toggleFollowThread: Function;
+	style: object;
+	theme: string;
+}
+
 const ThreadDetails = ({
 	item,
 	user,
@@ -47,7 +62,7 @@ const ThreadDetails = ({
 	toggleFollowThread,
 	style,
 	theme
-}) => {
+}: IThreadDetails) => {
 	let { tcount } = item;
 	if (tcount >= 1000) {
 		tcount = '+999';
@@ -62,7 +77,7 @@ const ThreadDetails = ({
 		replies = '+99';
 	}
 
-	const isFollowing = item.replies?.find(u => u === user?.id);
+	const isFollowing = item.replies?.find((u: any) => u === user?.id);
 
 	return (
 		<View style={[styles.container, style]}>
@@ -90,14 +105,6 @@ const ThreadDetails = ({
 			</View>
 		</View>
 	);
-};
-ThreadDetails.propTypes = {
-	item: PropTypes.object,
-	user: PropTypes.object,
-	badgeColor: PropTypes.string,
-	toggleFollowThread: PropTypes.func,
-	style: PropTypes.object,
-	theme: PropTypes.string
 };
 
 export default withTheme(ThreadDetails);

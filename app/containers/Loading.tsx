@@ -1,8 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {
-	StyleSheet, View, Modal, Animated
-} from 'react-native';
+import { StyleSheet, View, Modal, Animated } from 'react-native';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,15 +15,18 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default class Loading extends React.PureComponent {
-	static propTypes = {
-		visible: PropTypes.bool.isRequired
-	}
+interface ILoadingProps {
+	visible: boolean;
+}
+
+export default class Loading extends React.PureComponent<ILoadingProps, any> {
 
 	state = {
 		scale: new Animated.Value(1),
 		opacity: new Animated.Value(0)
 	}
+	private opacityAnimation: any;
+	private scaleAnimation: any;
 
 	componentDidMount() {
 		const { opacity, scale } = this.state;
@@ -64,7 +64,7 @@ export default class Loading extends React.PureComponent {
 		}
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps: any) {
 		const { visible } = this.props;
 		if (visible && visible !== prevProps.visible) {
 			this.startAnimations();

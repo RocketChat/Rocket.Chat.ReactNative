@@ -1,11 +1,16 @@
 import React from 'react';
 import { StatusBar as StatusBarRN } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 
-const StatusBar = React.memo(({ theme, barStyle, backgroundColor }) => {
+interface IStatusBar {
+	theme: string;
+	barStyle: any;
+	backgroundColor: string;
+}
+
+const StatusBar = React.memo(({ theme, barStyle, backgroundColor }: IStatusBar) => {
 	if (!barStyle) {
 		barStyle = 'light-content';
 		if (theme === 'light') {
@@ -14,11 +19,5 @@ const StatusBar = React.memo(({ theme, barStyle, backgroundColor }) => {
 	}
 	return <StatusBarRN backgroundColor={backgroundColor ?? themes[theme].headerBackground} barStyle={barStyle} animated />;
 });
-
-StatusBar.propTypes = {
-	theme: PropTypes.string,
-	barStyle: PropTypes.string,
-	backgroundColor: PropTypes.string
-};
 
 export default withTheme(StatusBar);

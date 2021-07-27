@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
-import PropTypes from 'prop-types';
 
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
@@ -22,16 +21,19 @@ const styles = StyleSheet.create({
 
 export const LISTENER = 'Toast';
 
-class Toast extends React.Component {
-	static propTypes = {
-		theme: PropTypes.string
-	}
+interface IToastProps {
+	theme: string;
+}
+
+class Toast extends React.Component<IToastProps, any> {
+	private listener: any;
+	private toast: any;
 
 	componentDidMount() {
 		this.listener = EventEmitter.addEventListener(LISTENER, this.showToast);
 	}
 
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps: any) {
 		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -43,9 +45,9 @@ class Toast extends React.Component {
 		EventEmitter.removeListener(LISTENER, this.listener);
 	}
 
-	getToastRef = toast => this.toast = toast;
+	getToastRef = (toast: any) => this.toast = toast;
 
-	showToast = ({ message }) => {
+	showToast = ({ message }: any) => {
 		if (this.toast && this.toast.show) {
 			this.toast.show(message, 1000);
 		}
@@ -56,6 +58,7 @@ class Toast extends React.Component {
 		return (
 			<EasyToast
 				ref={this.getToastRef}
+				// @ts-ignore
 				position='center'
 				style={[styles.toast, { backgroundColor: themes[theme].toastBackground }]}
 				textStyle={[styles.text, { color: themes[theme].buttonText }]}

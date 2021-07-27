@@ -12,9 +12,19 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IRoomTypeIcon {
+	theme: string;
+	type: string;
+	isGroupChat: boolean;
+	teamMain: boolean;
+	status: string;
+	size: number;
+	style: any;
+}
+
 const RoomTypeIcon = React.memo(({
 	type, size, isGroupChat, status, style, theme, teamMain
-}) => {
+}: IRoomTypeIcon) => {
 	if (!type) {
 		return null;
 	}
@@ -56,19 +66,5 @@ const RoomTypeIcon = React.memo(({
 		/>
 	);
 });
-
-RoomTypeIcon.propTypes = {
-	theme: PropTypes.string,
-	type: PropTypes.string,
-	isGroupChat: PropTypes.bool,
-	teamMain: PropTypes.bool,
-	status: PropTypes.string,
-	size: PropTypes.number,
-	style: PropTypes.object
-};
-
-RoomTypeIcon.defaultProps = {
-	size: 16
-};
 
 export default withTheme(RoomTypeIcon);
