@@ -12,7 +12,7 @@
 #import <React/RCTRootView.h>
 #import <MMKV/MMKV.h>
 #import <Firebase.h>
-//#import <Bugsnag/Bugsnag.h>
+#import <Bugsnag/Bugsnag.h>
 
 #import <React/RCTBridgeDelegate.h>
 #import <UMCore/UMModuleRegistry.h>
@@ -33,7 +33,7 @@ RCT_EXPORT_MODULE();
   if(![FIRApp defaultApp]){
     [FIRApp configure];
   }
-//  [Bugsnag start];
+  [Bugsnag start];
   
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
