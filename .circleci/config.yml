@@ -229,29 +229,6 @@ commands:
             fi
           working_directory: ios
       - run:
-          name: Upload sourcemaps to Bugsnag
-          command: |
-            if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
-              yarn generate-source-maps-ios
-              curl https://upload.bugsnag.com/react-native-source-map \
-                -F apiKey=$BUGSNAG_KEY_OFFICIAL \
-                -F appBundleVersion=$CIRCLE_BUILD_NUM \
-                -F dev=false \
-                -F platform=ios \
-                -F sourceMap=@ios-release.bundle.map \
-                -F bundle=@ios-release.bundle
-            fi
-            if [[ $CIRCLE_JOB == "ios-build-experimental" ]]; then
-              yarn generate-source-maps-ios
-              curl https://upload.bugsnag.com/react-native-source-map \
-                -F apiKey=$BUGSNAG_KEY \
-                -F appBundleVersion=$CIRCLE_BUILD_NUM \
-                -F dev=false \
-                -F platform=ios \
-                -F sourceMap=@ios-release.bundle.map \
-                -F bundle=@ios-release.bundle
-            fi
-      - run:
           name: Fastlane Build
           no_output_timeout: 40m
           command: |
