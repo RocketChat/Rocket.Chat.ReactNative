@@ -632,32 +632,13 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	readThreads = async(tunread) => {
-		const result = [];
-		for (let i = 0; i < tunread.length; i += 1) {
-			const tmid = tunread[i];
-			try {
-				if (tmid) {
-					// eslint-disable-next-line no-await-in-loop
-					const response = await RocketChat.readThreads(tmid);
-					result.push(response.success);
-				}
-			} catch (e) {
-				logEvent(events.RL_TOGGLE_READ_F);
-				log(e);
-			}
-		}
-		return result.every(Boolean);
-	}
-
-	toggleRead = async(rid, isRead, tunread) => {
+	toggleRead = async(rid, isRead) => {
 		logEvent(isRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleRead(isRead, rid);
-			const threadResult = tunread?.length > 0 ? await this.readThreads(tunread) : true;
 
-			if (result.success && threadResult) {
+			if (result.success) {
 				const subCollection = db.get('subscriptions');
 				await db.action(async() => {
 					try {
@@ -665,7 +646,6 @@ class RoomsListView extends React.Component {
 						await subRecord.update((sub) => {
 							sub.alert = isRead;
 							sub.unread = 0;
-							sub.tunread = tunread && [];
 						});
 					} catch (e) {
 						log(e);

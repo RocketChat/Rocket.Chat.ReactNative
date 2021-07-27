@@ -59,7 +59,6 @@ const RoomItem = ({
 		toggleFav={toggleFav}
 		isRead={isRead}
 		rid={rid}
-		tunread={tunread}
 		toggleRead={toggleRead}
 		hideChannel={hideChannel}
 		testID={testID}

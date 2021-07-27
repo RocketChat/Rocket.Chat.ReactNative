@@ -25,7 +25,6 @@ class Touchable extends React.Component {
 		favorite: PropTypes.bool,
 		isRead: PropTypes.bool,
 		rid: PropTypes.string,
-		tunread: PropTypes.array,
 		toggleFav: PropTypes.func,
 		toggleRead: PropTypes.func,
 		hideChannel: PropTypes.func,
@@ -178,12 +177,10 @@ class Touchable extends React.Component {
 		};
 
 		toggleRead = () => {
-			const {
-				toggleRead, rid, isRead, tunread
-			} = this.props;
+			const { toggleRead, rid, isRead } = this.props;
 
 			if (toggleRead) {
-				toggleRead(rid, isRead, tunread);
+				toggleRead(rid, isRead);
 			}
 		};
 
