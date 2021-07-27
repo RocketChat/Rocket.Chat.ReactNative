@@ -6,8 +6,11 @@
 	<false/>
 	<key>AppGroup</key>
 	<string>group.ios.chat.rocket</string>
-	<key>BugsnagAPIKey</key>
-	<string></string>
+	<key>bugsnag</key>
+	<dict>
+		<key>apiKey</key>
+		<string>apiKeyValue</string>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
