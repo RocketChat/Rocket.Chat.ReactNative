@@ -21,14 +21,16 @@ import styles from './styles';
 interface IMultiSelect {
 	options: [];
 	onChange: Function;
-	placeholder: object;
+	placeholder: {
+		text: string;
+	};
 	context: number;
 	loading: boolean;
 	multiselect: boolean;
 	onSearch: Function;
 	onClose: Function;
 	inputStyle: object;
-	value: [];
+	value: {text: any}[];
 	disabled: boolean;
 	theme: string;
 }
@@ -57,7 +59,7 @@ export const MultiSelect = React.memo(({
 	inputStyle,
 	theme
 }: IMultiSelect) => {
-	const [selected, select] = useState(Array.isArray(values) ? values : []);
+	const [selected, select] = useState<any>(Array.isArray(values) ? values : []);
 	const [open, setOpen] = useState(false);
 	const [search, onSearchChange] = useState('');
 	const [currentValue, setCurrentValue] = useState('');
@@ -101,14 +103,14 @@ export const MultiSelect = React.memo(({
 		).start(() => setShowContent(false));
 	};
 
-	const onSelect = (item) => {
+	const onSelect = (item: any) => {
 		const { value, text: { text } } = item;
 		if (multiselect) {
 			let newSelect = [];
 			if (!selected.includes(value)) {
 				newSelect = [...selected, value];
 			} else {
-				newSelect = selected.filter(s => s !== value);
+				newSelect = selected.filter((s: any) => s !== value);
 			}
 			select(newSelect);
 			onChange({ value: newSelect });
@@ -120,7 +122,7 @@ export const MultiSelect = React.memo(({
 	};
 
 	const renderContent = () => {
-		const items = onSearch ? options : options.filter(option => textParser([option.text]).toLowerCase().includes(search.toLowerCase()));
+		const items: any = onSearch ? options : options.filter((option: any) => textParser([option.text]).toLowerCase().includes(search.toLowerCase()));
 
 		return (
 			<View style={[styles.modal, { backgroundColor: themes[theme].backgroundColor }]}>
@@ -150,6 +152,7 @@ export const MultiSelect = React.memo(({
 			theme={theme}
 		/>
 	) : (
+		// @ts-ignore
 		<Input
 			onPress={onShow}
 			theme={theme}
@@ -162,8 +165,9 @@ export const MultiSelect = React.memo(({
 	);
 
 	if (context === BLOCK_CONTEXT.FORM) {
-		const items = options.filter(option => selected.includes(option.value));
+		const items: any = options.filter((option: any) => selected.includes(option.value));
 		button = (
+			// @ts-ignore
 			<Input
 				onPress={onShow}
 				theme={theme}
@@ -171,6 +175,7 @@ export const MultiSelect = React.memo(({
 				disabled={disabled}
 				inputStyle={inputStyle}
 			>
+				{/*@ts-ignore*/}
 				{items.length ? <Chips items={items} onSelect={onSelect} theme={theme} /> : <Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{placeholder.text}</Text>}
 			</Input>
 		);
@@ -187,7 +192,9 @@ export const MultiSelect = React.memo(({
 			>
 				<TouchableWithoutFeedback onPress={onHide}>
 					<View style={styles.container}>
+						{/*@ts-ignore*/}
 						<View style={{ ...StyleSheet.absoluteFill, opacity: themes[theme].backdropOpacity, backgroundColor: themes[theme].backdropColor }} />
+						{/*@ts-ignore*/}
 						<KeyboardAvoidingView style={styles.keyboardView} behavior={behavior}>
 							<Animated.View style={[styles.animatedContent, { transform: [{ translateY }] }]}>
 								{showContent ? renderContent() : null}

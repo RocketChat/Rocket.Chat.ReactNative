@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Text, FlatList, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 import Popover from 'react-native-popover-view';
 import Touchable from 'react-native-platform-touchable';
 
@@ -33,6 +32,7 @@ interface IOverflow {
 	loading: boolean;
 	parser: object;
 	theme: string;
+	context: any;
 }
 
 const keyExtractor = (item: any) => item.value;
