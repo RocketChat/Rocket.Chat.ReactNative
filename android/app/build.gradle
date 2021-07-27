@@ -8,6 +8,9 @@ if (!isFoss) {
     apply plugin: 'com.google.firebase.crashlytics'
     apply plugin: 'com.bugsnag.android.gradle'
 }
+
+import com.android.build.OutputFile
+
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
@@ -234,7 +237,7 @@ android {
             // For each separate APK per architecture, set a unique version code as described here:
             // https://developer.android.com/studio/build/configure-apk-splits.html
             def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-            def abi = output.getFilter(com.android.build.OutputFile.ABI)
+            def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
