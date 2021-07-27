@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 import { SafeAreaView as SafeAreaContext } from 'react-native-safe-area-context';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';

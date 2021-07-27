@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 import RNPickerSelect from 'react-native-picker-select';
 
 import sharedStyles from '../../views/Styles';

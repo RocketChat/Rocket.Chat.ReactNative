@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-	View, Text, FlatList, StyleSheet
-} from 'react-native';
-import PropTypes from 'prop-types';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 

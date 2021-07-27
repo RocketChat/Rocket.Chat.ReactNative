@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 import { CustomIcon } from '../lib/Icons';
 import { STATUS_COLORS, themes } from '../constants/colors';
 import Status from './Status/Status';
