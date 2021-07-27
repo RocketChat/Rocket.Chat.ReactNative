@@ -459,6 +459,8 @@ const MessageActions = React.memo(forwardRef(({
 	};
 
 	useImperativeHandle(ref, () => ({ showMessageActions }));
+
+	return null;
 }));
 
 const mapStateToProps = (state: any) => ({

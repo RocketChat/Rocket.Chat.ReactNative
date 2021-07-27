@@ -26,7 +26,7 @@ async function clearCache() {
 
 async function waitForLoading() {
 	await waitFor(element(by.id('loading'))).toBeVisible().withTimeout(5000);
-	await waitFor(element(by.id('loading'))).toBeNotVisible().withTimeout(5000);
+	await waitFor(element(by.id('loading'))).toBeNotVisible().withTimeout(10000);
 }
 
 describe('Room', () => {
@@ -41,7 +41,7 @@ describe('Room', () => {
 		await waitFor(element(by.label('Quote first message'))).toExist().withTimeout(5000);
 		await element(by.label('1')).atIndex(0).tap();
 		await waitForLoading();
-		await expect(element(by.label('1')).atIndex(0)).toExist();
+		await waitFor(element(by.label('1')).atIndex(0)).toExist().withTimeout(10000);
 		await expect(element(by.label('2'))).toExist();
 	});
 
@@ -84,7 +84,7 @@ describe('Room', () => {
 
 	it('should load newer and older messages', async() => {
 		await element(by.id('room-view-messages')).atIndex(0).swipe('down', 'fast', 0.8);
-		await waitFor(element(by.label('5'))).toExist().withTimeout(5000);
+		await waitFor(element(by.label('5'))).toExist().withTimeout(10000);
 		await waitFor(element(by.label('Load Older'))).toExist().withTimeout(5000);
 		await element(by.label('Load Older')).atIndex(0).tap();
 		await waitFor(element(by.label('4'))).toExist().withTimeout(5000);

@@ -92,6 +92,8 @@ const MessageErrorActions = forwardRef(({ tmid }: any, ref): any => {
 	useImperativeHandle(ref, () => ({
 		showMessageErrorActions
 	}));
+
+	return null;
 });
 
 export default MessageErrorActions;
