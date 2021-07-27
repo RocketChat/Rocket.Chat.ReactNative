@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
 import TextInput from '../presentation/TextInput';
@@ -45,7 +44,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const CancelButton = (onCancelPress, theme) => (
+interface ISearchBox {
+	onChangeText: Function;
+	onSubmitEditing: Function;
+	hasCancel: boolean;
+	onCancelPress: Function;
+	theme: string;
+	inputRef: any;
+	testID?: string;
+}
+
+const CancelButton = (onCancelPress: Function, theme: string) => (
 	<Touchable onPress={onCancelPress} style={styles.cancel}>
 		<Text style={[styles.cancelText, { color: themes[theme].headerTintColor }]}>{I18n.t('Cancel')}</Text>
 	</Touchable>
@@ -53,7 +62,7 @@ const CancelButton = (onCancelPress, theme) => (
 
 const SearchBox = ({
 	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, inputRef, theme, ...props
-}) => (
+}: ISearchBox) => (
 	<View
 		style={[
 			styles.container,
@@ -64,6 +73,7 @@ const SearchBox = ({
 			<CustomIcon name='search' size={14} color={themes[theme].auxiliaryText} />
 			<TextInput
 				ref={inputRef}
+				/*@ts-ignore*/
 				autoCapitalize='none'
 				autoCorrect={false}
 				blurOnSubmit
@@ -82,15 +92,5 @@ const SearchBox = ({
 		{ hasCancel ? CancelButton(onCancelPress, theme) : null }
 	</View>
 );
-
-SearchBox.propTypes = {
-	onChangeText: PropTypes.func.isRequired,
-	onSubmitEditing: PropTypes.func,
-	hasCancel: PropTypes.bool,
-	onCancelPress: PropTypes.func,
-	theme: PropTypes.string,
-	inputRef: PropTypes.func,
-	testID: PropTypes.string
-};
 
 export default withTheme(SearchBox);

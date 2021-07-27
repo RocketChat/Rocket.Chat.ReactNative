@@ -1,5 +1,4 @@
 import { useImperativeHandle, forwardRef } from 'react';
-import PropTypes from 'prop-types';
 
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
@@ -8,17 +7,17 @@ import { useActionSheet } from './ActionSheet';
 import I18n from '../i18n';
 import log from '../utils/log';
 
-const MessageErrorActions = forwardRef(({ tmid }, ref) => {
-	const { showActionSheet } = useActionSheet();
+const MessageErrorActions = forwardRef(({ tmid }: any, ref): any => {
+	const { showActionSheet }: any = useActionSheet();
 
-	const handleResend = protectedFunction(async(message) => {
+	const handleResend = protectedFunction(async(message: any) => {
 		await RocketChat.resendMessage(message, tmid);
 	});
 
-	const handleDelete = async(message) => {
+	const handleDelete = async(message: any) => {
 		try {
 			const db = database.active;
-			const deleteBatch = [];
+			const deleteBatch: any = [];
 			const msgCollection = db.get('messages');
 			const threadCollection = db.get('threads');
 
@@ -39,7 +38,7 @@ const MessageErrorActions = forwardRef(({ tmid }, ref) => {
 					const msg = await msgCollection.find(tmid);
 					if (msg.tcount <= 1) {
 						deleteBatch.push(
-							msg.prepareUpdate((m) => {
+							msg.prepareUpdate((m: any) => {
 								m.tcount = null;
 								m.tlm = null;
 							})
@@ -54,7 +53,7 @@ const MessageErrorActions = forwardRef(({ tmid }, ref) => {
 						}
 					} else {
 						deleteBatch.push(
-							msg.prepareUpdate((m) => {
+							msg.prepareUpdate((m: any) => {
 								m.tcount -= 1;
 							})
 						);
@@ -71,7 +70,7 @@ const MessageErrorActions = forwardRef(({ tmid }, ref) => {
 		}
 	};
 
-	const showMessageErrorActions = (message) => {
+	const showMessageErrorActions = (message: any) => {
 		showActionSheet({
 			options: [
 				{
@@ -94,8 +93,5 @@ const MessageErrorActions = forwardRef(({ tmid }, ref) => {
 		showMessageErrorActions
 	}));
 });
-MessageErrorActions.propTypes = {
-	tmid: PropTypes.string
-};
 
 export default MessageErrorActions;

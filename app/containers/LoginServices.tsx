@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-	View, StyleSheet, Text, Animated, Easing, Linking
-} from 'react-native';
-import PropTypes from 'prop-types';
+import { View, StyleSheet, Text, Animated, Easing, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -60,21 +57,41 @@ const styles = StyleSheet.create({
 	}
 });
 
-class LoginServices extends React.PureComponent {
-	static propTypes = {
-		navigation: PropTypes.object,
-		server: PropTypes.string,
-		services: PropTypes.object,
-		Gitlab_URL: PropTypes.string,
-		CAS_enabled: PropTypes.bool,
-		CAS_login_url: PropTypes.string,
-		separator: PropTypes.bool,
-		theme: PropTypes.string
-	}
+type TOpenOAuth = {
+	url?: string;
+	ssoToken?: string;
+	authType?: string;
+}
 
-	static defaultProps = {
-		separator: true
-	}
+type TService = {
+	name: string;
+	service: string;
+	authType: string;
+	buttonColor: string;
+	buttonLabelColor: string;
+};
+
+interface ILoginServicesProps {
+	navigation: any;
+	server: string;
+	services: {
+		facebook: {clientId: string;};
+		github: {clientId: string;};
+		gitlab: {clientId: string;};
+		google: {clientId: string;};
+		linkedin: {clientId: string;};
+		'meteor-developer': {clientId: string;};
+		wordpress: {clientId: string; serverURL: string;};
+	};
+	Gitlab_URL: string;
+	CAS_enabled: boolean;
+	CAS_login_url: string;
+	separator: boolean;
+	theme: string;
+}
+
+class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
+	private _animation: any;
 
 	state = {
 		collapsed: true,
@@ -173,7 +190,7 @@ class LoginServices extends React.PureComponent {
 		this.openOAuth({ url: `${ endpoint }${ params }` });
 	}
 
-	onPressCustomOAuth = (loginService) => {
+	onPressCustomOAuth = (loginService: any) => {
 		logEvent(events.ENTER_WITH_CUSTOM_OAUTH);
 		const { server } = this.props;
 		const {
@@ -188,7 +205,7 @@ class LoginServices extends React.PureComponent {
 		this.openOAuth({ url });
 	}
 
-	onPressSaml = (loginService) => {
+	onPressSaml = (loginService: any) => {
 		logEvent(events.ENTER_WITH_SAML);
 		const { server } = this.props;
 		const {	clientConfig } = loginService;
@@ -224,7 +241,7 @@ class LoginServices extends React.PureComponent {
 
 	getOAuthState = (loginStyle = LOGIN_STYPE_POPUP) => {
 		const credentialToken = random(43);
-		let obj = { loginStyle, credentialToken, isCordova: true };
+		let obj: any = { loginStyle, credentialToken, isCordova: true };
 		if (loginStyle === LOGIN_STYPE_REDIRECT) {
 			obj = {
 				...obj,
@@ -234,19 +251,21 @@ class LoginServices extends React.PureComponent {
 		return Base64.encodeURI(JSON.stringify(obj));
 	}
 
-	openOAuth = ({ url, ssoToken, authType = 'oauth' }) => {
+	openOAuth = ({ url, ssoToken, authType = 'oauth' }: TOpenOAuth) => {
 		const { navigation } = this.props;
 		navigation.navigate('AuthenticationWebView', { url, authType, ssoToken });
 	}
 
-	transitionServicesTo = (height) => {
+	transitionServicesTo = (height: number) => {
 		const { servicesHeight } = this.state;
 		if (this._animation) {
 			this._animation.stop();
 		}
+		// @ts-ignore
 		this._animation = Animated.timing(servicesHeight, {
 			toValue: height,
 			duration: 300,
+			// @ts-ignore
 			easing: Easing.easeOutCubic
 		}).start();
 	}
@@ -260,11 +279,11 @@ class LoginServices extends React.PureComponent {
 		} else {
 			this.transitionServicesTo(SERVICES_COLLAPSED_HEIGHT);
 		}
-		this.setState(prevState => ({ collapsed: !prevState.collapsed }));
+		this.setState((prevState: any) => ({ collapsed: !prevState.collapsed }));
 	}
 
-	getSocialOauthProvider = (name) => {
-		const oauthProviders = {
+	getSocialOauthProvider = (name: string) => {
+		const oauthProviders: any = {
 			facebook: this.onPressFacebook,
 			github: this.onPressGithub,
 			gitlab: this.onPressGitlab,
@@ -303,7 +322,7 @@ class LoginServices extends React.PureComponent {
 		return null;
 	}
 
-	renderItem = (service) => {
+	renderItem = (service: TService) => {
 		const { CAS_enabled, theme } = this.props;
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
@@ -380,7 +399,7 @@ class LoginServices extends React.PureComponent {
 			return (
 				<>
 					<Animated.View style={style}>
-						{Object.values(services).map(service => this.renderItem(service))}
+						{Object.values(services).map((service: any) => this.renderItem(service))}
 					</Animated.View>
 					{this.renderServicesSeparator()}
 				</>
@@ -388,14 +407,14 @@ class LoginServices extends React.PureComponent {
 		}
 		return (
 			<>
-				{Object.values(services).map(service => this.renderItem(service))}
+				{Object.values(services).map((service: any) => this.renderItem(service))}
 				{this.renderServicesSeparator()}
 			</>
 		);
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server,
 	Gitlab_URL: state.settings.API_Gitlab_URL,
 	CAS_enabled: state.settings.CAS_enabled,
