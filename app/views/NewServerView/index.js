@@ -19,7 +19,7 @@ import OrSeparator from '../../containers/OrSeparator';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
-import log, { logEvent, events, logServerVersion } from '../../utils/log';
+import { logEvent, events } from '../../utils/log';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { setBasicAuth, BASIC_AUTH_KEY } from '../../utils/fetch';
@@ -91,10 +91,7 @@ class NewServerView extends React.Component {
 	}
 
 	componentDidMount() {
-		// this.queryServerHistory();
-		logServerVersion('CI Tester');
-		// const func = (a) => a.b.c()
-		log(new Error('Testing CI only'));
+		this.queryServerHistory();
 	}
 
 	componentDidUpdate(prevProps) {

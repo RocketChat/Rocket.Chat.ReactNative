@@ -119,7 +119,7 @@ commands:
 
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
-              echo -e "BugsnagAPIKey=$BUGSNAG_KEY_TEMP" >> ./gradle.properties
+              echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
               echo $CHAT_ROCKET_ANDROID_STORE_FILE_BASE64_JKS | base64 --decode > ./app/$KEYSTORE_OFFICIAL
               echo -e "KEYSTORE=$KEYSTORE_OFFICIAL" >> ./gradle.properties
               echo -e "KEYSTORE_PASSWORD=$CHAT_ROCKET_ANDROID_STORE_PASSWORD" >> ./gradle.properties
@@ -127,7 +127,7 @@ commands:
               echo -e "KEY_PASSWORD=$CHAT_ROCKET_ANDROID_KEY_PASSWORD" >> ./gradle.properties
             else
               echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
-              echo -e "BugsnagAPIKey=$BUGSNAG_KEY_TEMP" >> ./gradle.properties
+              echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
               echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
               echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
               echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
@@ -163,7 +163,7 @@ commands:
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               npx bugsnag-source-maps upload-react-native \
-                --api-key=$BUGSNAG_KEY_TEMP \
+                --api-key=$BUGSNAG_KEY_OFFICIAL \
                 --app-version-code=$CIRCLE_BUILD_NUM \
                 --platform android \
                 --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
@@ -171,7 +171,7 @@ commands:
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
               npx bugsnag-source-maps upload-react-native \
-                --api-key=$BUGSNAG_KEY_TEMP \
+                --api-key=$BUGSNAG_KEY \
                 --app-version-code=$CIRCLE_BUILD_NUM \
                 --platform android \
                 --source-map=android/app/build/generated/sourcemaps/react/experimentalPlay/release/app.bundle.map \
@@ -212,14 +212,14 @@ commands:
           command: |
             agvtool new-version -all $CIRCLE_BUILD_NUM
             if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_TEMP" ./RocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_TEMP" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
             else
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_TEMP" ./RocketChatRN/Info.plist
-              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_TEMP" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
