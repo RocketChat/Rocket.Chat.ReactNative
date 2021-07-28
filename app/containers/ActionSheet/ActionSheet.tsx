@@ -169,7 +169,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.E
 							]}
 						/>
 					</TapGestureHandler>
-					<ScrollBottomSheet<any>
+					<ScrollBottomSheet
 						testID='action-sheet'
 						ref={bottomSheetRef}
 						componentType='FlatList'
@@ -187,7 +187,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.E
 						// FlatList props
 						data={data?.options}
 						renderItem={renderItem}
-						keyExtractor={item => item.title}
+						keyExtractor={(item: any) => item.title}
 						style={{ backgroundColor: themes[theme].focusedBackground }}
 						contentContainerStyle={styles.content}
 						ItemSeparatorComponent={List.Separator}

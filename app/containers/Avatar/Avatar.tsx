@@ -119,11 +119,4 @@ const Avatar = React.memo(({
 	);
 });
 
-// Avatar.defaultProps = {
-// 	text: '',
-// 	size: 25,
-// 	type: 'd',
-// 	borderRadius: 4
-// };
-
 export default Avatar;

@@ -33,9 +33,7 @@ const OrSeparator = React.memo(({ theme }: IOrSeparator) => {
 	return (
 		<View style={styles.container}>
 			<View style={[styles.line, line]} />
-			{/*TODO - see if this line is wrong, probably the correct is styles.text.marginRight*/}
-			{/*@ts-ignore*/}
-			<Text style={[styles.text, styles.marginRight, styles.marginLeft, text]}>{I18n.t('OR')}</Text>
+			<Text style={[styles.text, text]}>{I18n.t('OR')}</Text>
 			<View style={[styles.line, line]} />
 		</View>
 	);
