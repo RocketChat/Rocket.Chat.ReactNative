@@ -3,7 +3,8 @@ defaults: &defaults
 
 macos: &macos
   macos:
-    xcode: "12.5.0" 
+    xcode: "12.5.0"
+  resource_class: large
 
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"
