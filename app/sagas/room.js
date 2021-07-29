@@ -14,11 +14,20 @@ import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
 
+const timeoutTimer = 10000;
+const renewTimer = 4000;
+
+const activityRenews = {};
+
 const watchUserActivity = function* watchUserActivity({
 	type, rid, status, options = {}
 }) {
-	// type will be like USER_TYPING, USER_UPLOADING, USER_RECORDING
-	// converted to user-typing, user-uploading, user-recording
+	const id = options?.tmid ? options.tmid : rid;
+
+	if (id in activityRenews && status === true) {
+		yield delay(2000);
+	}
+
 	const activity = type.split('_').slice(1).join('-').toLowerCase();
 
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -27,10 +36,20 @@ const watchUserActivity = function* watchUserActivity({
 	}
 
 	try {
+		if (status === true) {
+			activityRenews[id] = setTimeout(() => {
+				clearTimeout(activityRenews[id]);
+				delete activityRenews[id];
+			}, renewTimer);
+		} else {
+			clearTimeout(activityRenews[id]);
+			delete activityRenews[id];
+		}
+
 		yield RocketChat.emitUserActivity(rid, status, activity, options);
 
 		if (status) {
-			yield delay(5000);
+			yield delay(timeoutTimer);
 			yield RocketChat.emitUserActivity(rid, false, activity, options);
 		}
 	} catch (e) {
