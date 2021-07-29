@@ -2,7 +2,7 @@ import { themes } from '../../constants/colors';
 
 export const getUnreadStyle = ({
 	unread, userMentions, groupMentions, theme, tunread, tunreadUser, tunreadGroup
-}) => {
+}: any) => {
 	if ((!unread || unread <= 0) && (!tunread?.length)) {
 		return {};
 	}
