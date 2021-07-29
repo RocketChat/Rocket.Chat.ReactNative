@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-	Text, View, StyleSheet, Pressable
-} from 'react-native';
-import PropTypes from 'prop-types';
+// @ts-ignore
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 
 import Avatar from '../containers/Avatar';
 import { CustomIcon } from '../lib/Icons';
@@ -41,9 +39,20 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IUserItem {
+	name: string;
+	username: string;
+	onPress(): void;
+	testID: string;
+	onLongPress(): void;
+	style: any;
+	icon: string;
+	theme: string;
+}
+
 const UserItem = ({
 	name, username, onPress, testID, onLongPress, style, icon, theme
-}) => (
+}: IUserItem) => (
 	<Pressable
 		onPress={onPress}
 		onLongPress={onLongPress}
@@ -51,7 +60,7 @@ const UserItem = ({
 		android_ripple={{
 			color: themes[theme].bannerBackground
 		}}
-		style={({ pressed }) => ({
+		style={({ pressed }: any) => ({
 			backgroundColor: isIOS && pressed
 				? themes[theme].bannerBackground
 				: 'transparent'
@@ -67,16 +76,5 @@ const UserItem = ({
 		</View>
 	</Pressable>
 );
-
-UserItem.propTypes = {
-	name: PropTypes.string.isRequired,
-	username: PropTypes.string.isRequired,
-	onPress: PropTypes.func.isRequired,
-	testID: PropTypes.string.isRequired,
-	onLongPress: PropTypes.func,
-	style: PropTypes.any,
-	icon: PropTypes.string,
-	theme: PropTypes.string
-};
 
 export default UserItem;
