@@ -7,7 +7,10 @@ module.exports = {
     }
   },
 	"parser": "@babel/eslint-parser",
-	"extends": "airbnb",
+	"extends": [
+		"@rocket.chat/eslint-config",
+		// 'plugin:react/recommended'
+	],
 	"parserOptions": {
 		"sourceType": "module",
 		"ecmaVersion": 2017,
@@ -157,7 +160,7 @@ module.exports = {
 		}],
 		"react/static-property-placement": [0],
 		"arrow-parens": ["error", "as-needed", { requireForBlockBody: true }],
-		"react/jsx-props-no-spreading": [1],
+		// "react/jsx-props-no-spreading": [1],
 		"react/jsx-curly-newline": [0],
 		"react/state-in-constructor": [0],
 		"no-async-promise-executor": [0],
@@ -182,6 +185,90 @@ module.exports = {
 				'import/no-extraneous-dependencies': 0,
 				'no-await-in-loop': 0,
 				'no-restricted-syntax': 0
+			}
+		},
+		{
+			"files": [
+				"**/*.ts",
+				"**/*.tsx"
+			],
+			"extends": [
+				// 'plugin:react/recommended',
+				"plugin:@typescript-eslint/recommended",
+				"plugin:@typescript-eslint/eslint-recommended",
+				"@rocket.chat/eslint-config"
+			],
+			"parser": "@typescript-eslint/parser",
+			"parserOptions": {
+				"sourceType": "module",
+				"ecmaVersion": 2018,
+				"warnOnUnsupportedTypeScriptVersion": false,
+				"ecmaFeatures": {
+					"experimentalObjectRestSpread": true,
+					"legacyDecorators": true
+				}
+			},
+			"plugins": [
+				"react",
+				"@typescript-eslint"
+			],
+			"rules": {
+				"@typescript-eslint/ban-types": [0],
+				"func-call-spacing": "off",
+				"jsx-quotes": [
+					"error",
+					"prefer-single"
+				],
+				"indent": "off",
+				"no-dupe-class-members": "off",
+				"no-extra-parens": "off",
+				"no-spaced-func": "off",
+				"no-unused-vars": "off",
+				"no-useless-constructor": "off",
+				"no-use-before-define": "off",
+				"react/jsx-uses-react": "error",
+				"react/jsx-uses-vars": "error",
+				"react/jsx-no-undef": "error",
+				"react/jsx-fragments": [
+					"error",
+					"syntax"
+				],
+				"@typescript-eslint/ban-ts-comment": "off",
+				"@typescript-eslint/indent": [
+					"error",
+					"tab",
+					{
+						"SwitchCase": 1
+					}
+				],
+				"@typescript-eslint/no-extra-parens": [
+					"error",
+					"all",
+					{
+						"conditionalAssign": true,
+						"nestedBinaryExpressions": false,
+						"returnAssign": true,
+						"ignoreJSX": "all",
+						"enforceForArrowConditionals": false
+					}
+				],
+				"@typescript-eslint/no-dupe-class-members": "error",
+				"@typescript-eslint/no-explicit-any": "off",
+				"@typescript-eslint/no-unused-vars": ["error", {
+					"argsIgnorePattern": "^_",
+					"ignoreRestSiblings": true
+				}]
+			},
+			"settings": {
+				"import/resolver": {
+					"node": {
+						"extensions": [
+							".js",
+							".ts",
+							".tsx"
+						]
+					}
+				},
 			}
 		}
 	]
