@@ -9,6 +9,33 @@ import RoomItem from './RoomItem';
 
 export { ROW_HEIGHT };
 
+
+interface IRoomItemContainerProps {
+	item: any;
+	showLastMessage: boolean;
+	id: string;
+	onPress({}?): void;
+	onLongPress({}?): void;
+	username: string;
+	avatarSize: number;
+	width: number;
+	status: string;
+	toggleFav(): void;
+	toggleRead(): void;
+	hideChannel(): void;
+	useRealName: boolean;
+	getUserPresence: Function;
+	connected: boolean;
+	theme: string;
+	isFocused: boolean;
+	getRoomTitle: Function;
+	getRoomAvatar: Function;
+	getIsGroupChat: Function;
+	getIsRead: Function;
+	swipeEnabled: boolean;
+	autoJoin: boolean;
+}
+
 const attrs = [
 	'width',
 	'status',
@@ -20,45 +47,11 @@ const attrs = [
 	'autoJoin'
 ];
 
-class RoomItemContainer extends React.Component {
-	static propTypes = {
-		item: PropTypes.object.isRequired,
-		showLastMessage: PropTypes.bool,
-		id: PropTypes.string,
-		onPress: PropTypes.func,
-		onLongPress: PropTypes.func,
-		username: PropTypes.string,
-		avatarSize: PropTypes.number,
-		width: PropTypes.number,
-		status: PropTypes.string,
-		toggleFav: PropTypes.func,
-		toggleRead: PropTypes.func,
-		hideChannel: PropTypes.func,
-		useRealName: PropTypes.bool,
-		getUserPresence: PropTypes.func,
-		connected: PropTypes.bool,
-		theme: PropTypes.string,
-		isFocused: PropTypes.bool,
-		getRoomTitle: PropTypes.func,
-		getRoomAvatar: PropTypes.func,
-		getIsGroupChat: PropTypes.func,
-		getIsRead: PropTypes.func,
-		swipeEnabled: PropTypes.bool,
-		autoJoin: PropTypes.bool
-	};
+class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
+	private mounted: boolean;
+	private roomSubscription: any;
 
-	static defaultProps = {
-		avatarSize: 48,
-		status: 'offline',
-		getUserPresence: () => {},
-		getRoomTitle: () => 'title',
-		getRoomAvatar: () => '',
-		getIsGroupChat: () => false,
-		getIsRead: () => false,
-		swipeEnabled: true
-	}
-
-	constructor(props) {
+	constructor(props: IRoomItemContainerProps) {
 		super(props);
 		this.mounted = false;
 		this.init();
@@ -72,12 +65,12 @@ class RoomItemContainer extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps) {
-		const { props } = this;
+	shouldComponentUpdate(nextProps: any) {
+		const { props }: any = this;
 		return !attrs.every(key => props[key] === nextProps[key]);
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps: any) {
 		const { connected, getUserPresence, id } = this.props;
 		if (prevProps.connected !== connected && connected && this.isDirect) {
 			getUserPresence(id);
@@ -96,7 +89,7 @@ class RoomItemContainer extends React.Component {
 	}
 
 	get isDirect() {
-		const { item: { t }, id } = this.props;
+		const { item: { t }, id }: any = this.props;
 		return t === 'd' && id && !this.isGroupChat;
 	}
 
@@ -165,6 +158,7 @@ class RoomItemContainer extends React.Component {
 		}
 
 		return (
+			// @ts-ignore
 			<RoomItem
 				name={name}
 				avatar={avatar}
@@ -207,7 +201,7 @@ class RoomItemContainer extends React.Component {
 	}
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: any, ownProps: any) => {
 	let status = 'loading';
 	const { id, type, visitor = {} } = ownProps;
 	if (state.meteor.connected) {

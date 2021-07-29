@@ -1,13 +1,17 @@
 import React from 'react';
 import { Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import styles from './styles';
 import { themes } from '../../constants/colors';
 
-const Title = React.memo(({
-	name, theme, hideUnreadStatus, alert
-}) => (
+interface ITitle {
+	name: string;
+	theme: string;
+	hideUnreadStatus: boolean;
+	alert: boolean;
+}
+
+const Title = React.memo(({ name, theme, hideUnreadStatus, alert }: ITitle) => (
 	<Text
 		style={[
 			styles.title,
@@ -20,12 +24,5 @@ const Title = React.memo(({
 		{name}
 	</Text>
 ));
-
-Title.propTypes = {
-	name: PropTypes.string,
-	theme: PropTypes.string,
-	hideUnreadStatus: PropTypes.bool,
-	alert: PropTypes.bool
-};
 
 export default Title;

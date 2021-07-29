@@ -1,18 +1,34 @@
 import React from 'react';
 import { Animated, View, Text } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
-import PropTypes from 'prop-types';
 
 import I18n, { isRTL } from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 
+interface ILeftActions {
+	theme: string;
+	transX: any;
+	isRead: boolean;
+	width: number;
+	onToggleReadPress(): void;
+}
+
+interface IRightActions {
+	theme: string;
+	transX: any;
+	favorite: boolean;
+	width: number;
+	toggleFav(): void;
+	onHidePress(): void;
+}
+
 const reverse = new Animated.Value(isRTL() ? -1 : 1);
 
 export const LeftActions = React.memo(({
 	theme, transX, isRead, width, onToggleReadPress
-}) => {
+}: ILeftActions) => {
 	const translateX = Animated.multiply(
 		transX.interpolate({
 			inputRange: [0, ACTION_WIDTH],
@@ -51,7 +67,7 @@ export const LeftActions = React.memo(({
 
 export const RightActions = React.memo(({
 	transX, favorite, width, toggleFav, onHidePress, theme
-}) => {
+}: IRightActions) => {
 	const translateXFav = Animated.multiply(
 		transX.interpolate({
 			inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
@@ -113,20 +129,3 @@ export const RightActions = React.memo(({
 		</View>
 	);
 });
-
-LeftActions.propTypes = {
-	theme: PropTypes.string,
-	transX: PropTypes.object,
-	isRead: PropTypes.bool,
-	width: PropTypes.number,
-	onToggleReadPress: PropTypes.func
-};
-
-RightActions.propTypes = {
-	theme: PropTypes.string,
-	transX: PropTypes.object,
-	favorite: PropTypes.bool,
-	width: PropTypes.number,
-	toggleFav: PropTypes.func,
-	onHidePress: PropTypes.func
-};

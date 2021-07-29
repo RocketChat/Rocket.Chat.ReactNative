@@ -15,26 +15,34 @@ import { isRTL } from '../../i18n';
 import { themes } from '../../constants/colors';
 import { LeftActions, RightActions } from './Actions';
 
-class Touchable extends React.Component {
-	static propTypes = {
-		type: PropTypes.string.isRequired,
-		onPress: PropTypes.func,
-		onLongPress: PropTypes.func,
-		testID: PropTypes.string,
-		width: PropTypes.number,
-		favorite: PropTypes.bool,
-		isRead: PropTypes.bool,
-		rid: PropTypes.string,
-		toggleFav: PropTypes.func,
-		toggleRead: PropTypes.func,
-		hideChannel: PropTypes.func,
-		children: PropTypes.element,
-		theme: PropTypes.string,
-		isFocused: PropTypes.bool,
-		swipeEnabled: PropTypes.bool
-	}
+interface ITouchableProps {
+	children: JSX.Element;
+	type: string;
+	onPress(): void;
+	onLongPress(): void;
+	testID: string;
+	width: number;
+	favorite: boolean;
+	isRead: boolean;
+	rid: string;
+	toggleFav({}?, {}?): void;
+	toggleRead({}?, {}?): void;
+	hideChannel({}?, {}?): void;
+	theme: string;
+	isFocused: boolean;
+	swipeEnabled: boolean;
+}
 
-	constructor(props) {
+class Touchable extends React.Component<ITouchableProps, any> {
+	private dragX: Animated.Value;
+	private rowOffSet: Animated.Value;
+	private reverse: Animated.Value;
+	private transX: Animated.AnimatedAddition;
+	private transXReverse: Animated.AnimatedMultiplication;
+	private _onGestureEvent: (...args: any[]) => void;
+	private _value: number;
+
+	constructor(props: ITouchableProps) {
 		super(props);
 		this.dragX = new Animated.Value(0);
 		this.rowOffSet = new Animated.Value(0);
@@ -56,20 +64,20 @@ class Touchable extends React.Component {
 		this._value = 0;
 	}
 
-		_onHandlerStateChange = ({ nativeEvent }) => {
+		_onHandlerStateChange = ({ nativeEvent }: any) => {
 			if (nativeEvent.oldState === State.ACTIVE) {
 				this._handleRelease(nativeEvent);
 			}
 		}
 
-		onLongPressHandlerStateChange = ({ nativeEvent }) => {
+		onLongPressHandlerStateChange = ({ nativeEvent }: any) => {
 			if (nativeEvent.state === State.ACTIVE) {
 				this.onLongPress();
 			}
 		}
 
 
-		_handleRelease = (nativeEvent) => {
+		_handleRelease = (nativeEvent: any) => {
 			const { translationX } = nativeEvent;
 			const { rowState } = this.state;
 			this._value += translationX;
@@ -152,7 +160,7 @@ class Touchable extends React.Component {
 			this._animateRow(toValue);
 		}
 
-		_animateRow = (toValue) => {
+		_animateRow = (toValue: any) => {
 			this.rowOffSet.setValue(this._value);
 			this._value = toValue;
 			this.dragX.setValue(0);

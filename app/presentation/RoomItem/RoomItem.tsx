@@ -13,6 +13,53 @@ import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
 
+interface IRoomItem {
+	rid: string;
+	type: string;
+	prid: string;
+	name: string;
+	avatar: string;
+	showLastMessage: boolean;
+	username: string;
+	avatarSize: number;
+	testID: string;
+	width: number;
+	status: string;
+	useRealName: boolean;
+	theme: string;
+	isFocused: boolean;
+	isGroupChat: boolean;
+	isRead: boolean;
+	teamMain: boolean;
+	date: string;
+	accessibilityLabel: string;
+	lastMessage: {
+		u: any;
+		pinned: boolean;
+		t: string;
+		attachments: any;
+		msg: string;
+		e2e: string;
+	};
+	favorite: boolean;
+	alert: boolean;
+	hideUnreadStatus: boolean;
+	unread: number;
+	userMentions: number;
+	groupMentions: number;
+	tunread: [];
+	tunreadUser: [];
+	tunreadGroup: [];
+	swipeEnabled: boolean;
+	toggleFav(): void;
+	toggleRead(): void;
+	onPress(): void;
+	onLongPress(): void;
+	hideChannel(): void;
+	autoJoin: boolean;
+	size?: number;
+}
+
 const RoomItem = ({
 	rid,
 	type,
@@ -50,7 +97,7 @@ const RoomItem = ({
 	hideChannel,
 	teamMain,
 	autoJoin
-}) => (
+}: IRoomItem) => (
 	<Touchable
 		onPress={onPress}
 		onLongPress={onLongPress}
@@ -157,50 +204,5 @@ const RoomItem = ({
 		</Wrapper>
 	</Touchable>
 );
-
-RoomItem.propTypes = {
-	rid: PropTypes.string.isRequired,
-	type: PropTypes.string.isRequired,
-	prid: PropTypes.string,
-	name: PropTypes.string.isRequired,
-	avatar: PropTypes.string.isRequired,
-	showLastMessage: PropTypes.bool,
-	username: PropTypes.string,
-	avatarSize: PropTypes.number,
-	testID: PropTypes.string,
-	width: PropTypes.number,
-	status: PropTypes.string,
-	useRealName: PropTypes.bool,
-	theme: PropTypes.string,
-	isFocused: PropTypes.bool,
-	isGroupChat: PropTypes.bool,
-	isRead: PropTypes.bool,
-	teamMain: PropTypes.bool,
-	date: PropTypes.string,
-	accessibilityLabel: PropTypes.string,
-	lastMessage: PropTypes.object,
-	favorite: PropTypes.bool,
-	alert: PropTypes.bool,
-	hideUnreadStatus: PropTypes.bool,
-	unread: PropTypes.number,
-	userMentions: PropTypes.number,
-	groupMentions: PropTypes.number,
-	tunread: PropTypes.array,
-	tunreadUser: PropTypes.array,
-	tunreadGroup: PropTypes.array,
-	swipeEnabled: PropTypes.bool,
-	toggleFav: PropTypes.func,
-	toggleRead: PropTypes.func,
-	onPress: PropTypes.func,
-	onLongPress: PropTypes.func,
-	hideChannel: PropTypes.func,
-	autoJoin: PropTypes.bool
-};
-
-RoomItem.defaultProps = {
-	avatarSize: 48,
-	status: 'offline',
-	swipeEnabled: true
-};
 
 export default RoomItem;
