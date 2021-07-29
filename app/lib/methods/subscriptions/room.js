@@ -13,8 +13,9 @@ import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
 
-const WINDOW_TIME = 1000;
 
+const WINDOW_TIME = 1000;
+const TIME_OUT = 15000;
 export default class RoomSubscription {
 	constructor(rid) {
 		this.rid = rid;
@@ -24,6 +25,7 @@ export default class RoomSubscription {
 		this.messagesBatch = {};
 		this.threadsBatch = {};
 		this.threadMessagesBatch = {};
+		this.actionTimeouts = {};
 	}
 
 	subscribe = async() => {
@@ -97,15 +99,25 @@ export default class RoomSubscription {
 			const [name, eventActive, activityType, options] = ddpMessage.fields.args;
 			const roomId = options?.tmid ? options.tmid : _rid;
 
+			if (this.actionTimeouts?.[roomId]) {
+				clearTimeout(this.actionTimeouts[roomId]);
+				delete this.actionTimeouts[roomId];
+			}
+
 			// activityType will be of the form user-typing, user-recording, user-uploading
 			const activity = activityType.toUpperCase().split('-').join('_') || 'USER_TYPING';
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
-				if (eventActive) {
+				if (eventActive === true) {
 					reduxStore.dispatch(addUserActivity(name, activity, roomId));
 				} else {
 					reduxStore.dispatch(removeUserActivity(name, activity, roomId));
 				}
+				this.actionTimeouts[roomId] = setTimeout(() => {
+					reduxStore.dispatch(removeUserActivity(name, activity, roomId));
+					clearTimeout(this.actionTimeouts[roomId]);
+					delete this.actionTimeouts[roomId];
+				}, TIME_OUT);
 			}
 		} else if (ev === 'deleteMessage') {
 			InteractionManager.runAfterInteractions(async() => {
