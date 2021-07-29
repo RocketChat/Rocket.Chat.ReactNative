@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { ImageComponent } from './ImageComponent';
 import { themes } from '../../constants/colors';
@@ -15,12 +14,21 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IImageViewer {
+	uri: string;
+	imageComponentType: string;
+	width: number;
+	height: number;
+	theme: string;
+}
+
 export const ImageViewer = ({
 	uri, imageComponentType, theme, width, height, ...props
-}) => {
+}: IImageViewer) => {
 	const backgroundColor = themes[theme].previewBackground;
 	const Component = ImageComponent(imageComponentType);
 	return (
+		// @ts-ignore
 		<ScrollView
 			style={{ backgroundColor }}
 			contentContainerStyle={[
@@ -40,12 +48,4 @@ export const ImageViewer = ({
 			/>
 		</ScrollView>
 	);
-};
-
-ImageViewer.propTypes = {
-	uri: PropTypes.string,
-	imageComponentType: PropTypes.string,
-	width: PropTypes.number,
-	height: PropTypes.number,
-	theme: PropTypes.string
 };
