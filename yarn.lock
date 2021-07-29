@@ -15462,6 +15462,11 @@ slide@^1.1.5:
   resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
   integrity sha1-VusCfWW00tzmyy4tMsTUr8nh1wc=
 
+slug@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/slug/-/slug-5.1.0.tgz#8a7e30ca1c3a6dc40cf74e269750913a865edb0b"
+  integrity sha512-IS39jKR6m+puU8zWgH6ruwx1sfzFNJ6Ai5PKIlUqd0X8C3ca7PB49Cvm0uayqgEt1jgaojO2wWEsQJngnh7fDA==
+
 snapdragon-node@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/snapdragon-node/-/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"

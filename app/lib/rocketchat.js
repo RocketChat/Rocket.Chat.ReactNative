@@ -62,7 +62,7 @@ import { useSsl } from '../utils/url';
 import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
-import { sanitizeLikeString } from './database/utils';
+import { sanitizeLikeString, slugifyLikeString } from './database/utils';
 import { updatePermission } from '../actions/permissions';
 import { TEAM_TYPE } from '../definition/ITeam';
 import { updateSettings } from '../actions/settings';
@@ -689,10 +689,12 @@ const RocketChat = {
 		const searchText = text.trim();
 		const db = database.active;
 		const likeString = sanitizeLikeString(searchText);
+		const slugifiedString = slugifyLikeString(searchText);
 		let data = await db.get('subscriptions').query(
 			Q.or(
 				Q.where('name', Q.like(`%${ likeString }%`)),
-				Q.where('fname', Q.like(`%${ likeString }%`))
+				Q.where('fname', Q.like(`%${ likeString }%`)),
+				Q.where('name', Q.like(`%${ slugifiedString }%`))
 			),
 			Q.experimentalSortBy('room_updated_at', Q.desc)
 		).fetch();
