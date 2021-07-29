@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Touch from '../../utils/touch';
 import Avatar from '../../containers/Avatar';

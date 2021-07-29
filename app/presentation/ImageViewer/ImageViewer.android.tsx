@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { PanGestureHandler, State, PinchGestureHandler } from 'react-native-gesture-handler';
 import Animated, { Easing } from 'react-native-reanimated';
 import { ImageComponent } from './ImageComponent';
@@ -256,10 +255,11 @@ function bouncy(
 const WIDTH = 300;
 const HEIGHT = 300;
 
-class Image extends React.PureComponent {
-	static propTypes = {
-		imageComponentType: PropTypes.string
-	}
+interface IImageProps {
+	imageComponentType: string
+}
+
+class Image extends React.PureComponent<IImageProps, any> {
 
 	render() {
 		const { imageComponentType }: any = this.props;
