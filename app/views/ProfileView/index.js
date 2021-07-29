@@ -31,6 +31,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import SwitchContainer from '../RoomInfoEditView/SwitchContainer';
 
 class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -54,22 +55,28 @@ class ProfileView extends React.Component {
 		Accounts_AllowRealNameChange: PropTypes.bool,
 		Accounts_AllowUserAvatarChange: PropTypes.bool,
 		Accounts_AllowUsernameChange: PropTypes.bool,
+		Accounts_enableMessageParserEarlyAdoption: PropTypes.bool,
 		Accounts_CustomFields: PropTypes.string,
 		setUser: PropTypes.func,
 		theme: PropTypes.string
 	}
 
-	state = {
-		saving: false,
-		name: null,
-		username: null,
-		email: null,
-		newPassword: null,
-		currentPassword: null,
-		avatarUrl: null,
-		avatar: {},
-		avatarSuggestions: {},
-		customFields: {}
+	constructor(props) {
+		super(props);
+		const { Accounts_enableMessageParserEarlyAdoption } = this.props;
+		this.state = {
+			saving: false,
+			name: null,
+			username: null,
+			email: null,
+			newPassword: null,
+			currentPassword: null,
+			avatarUrl: null,
+			avatar: {},
+			avatarSuggestions: {},
+			customFields: {},
+			enableMessageParser: Accounts_enableMessageParserEarlyAdoption
+		};
 	}
 
 	async componentDidMount() {
@@ -166,7 +173,7 @@ class ProfileView extends React.Component {
 		this.setState({ saving: true });
 
 		const {
-			name, username, email, newPassword, currentPassword, avatar, customFields
+			name, username, email, newPassword, currentPassword, avatar, customFields, enableMessageParser
 		} = this.state;
 		const { user, setUser } = this.props;
 		const params = {};
@@ -423,6 +430,11 @@ class ProfileView extends React.Component {
 		}
 	}
 
+	toggleEnableMessageParserEarlyAdoption = (value) => {
+		// logEvent(events.RI_EDIT_TOGGLE_SYSTEM_MSG);
+		this.setState({ enableMessageParser: value });
+	}
+
 	logoutOtherLocations = () => {
 		logEvent(events.PL_OTHER_LOCATIONS);
 		showConfirmationAlert({
@@ -442,7 +454,7 @@ class ProfileView extends React.Component {
 
 	render() {
 		const {
-			name, username, email, newPassword, avatarUrl, customFields, avatar, saving
+			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, enableMessageParser
 		} = this.state;
 		const {
 			user,
@@ -452,7 +464,8 @@ class ProfileView extends React.Component {
 			Accounts_AllowRealNameChange,
 			Accounts_AllowUserAvatarChange,
 			Accounts_AllowUsernameChange,
-			Accounts_CustomFields
+			Accounts_CustomFields,
+			Accounts_enableMessageParserEarlyAdoption
 		} = this.props;
 
 		return (
@@ -538,6 +551,16 @@ class ProfileView extends React.Component {
 							testID='profile-view-new-password'
 							theme={theme}
 						/>
+						<SwitchContainer
+							value={enableMessageParser}
+							leftLabelPrimary={I18n.t('Enable_Message_Parser_Early_Adoption')}
+							// leftLabelSecondary={Accounts_enableMessageParserEarlyAdoption ? I18n.t('Overwrites_the_server_configuration_and_use_room_config') : I18n.t('Uses_server_configuration')}
+							theme={theme}
+							testID='profile-switch-message-parser-early-adoption'
+							onValueChange={value => this.setState({ enableMessageParser: value })}
+							labelContainerStyle={styles.hideSystemMessages}
+							leftLabelStyle={styles.systemMessagesLabel}
+						/>
 						{this.renderCustomFields()}
 						<RCTextInput
 							editable={Accounts_AllowUserAvatarChange}
@@ -586,6 +609,7 @@ const mapStateToProps = state => ({
 	Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange,
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
+	Accounts_enableMessageParserEarlyAdoption: state.settings.Accounts_Default_User_Preferences_enableMessageParserEarlyAdoption,
 	baseUrl: state.server.server
 });
 

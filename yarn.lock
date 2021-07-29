@@ -3215,6 +3215,11 @@
   resolved "https://registry.yarnpkg.com/@redux-saga/types/-/types-1.1.0.tgz#0e81ce56b4883b4b2a3001ebe1ab298b84237204"
   integrity sha512-afmTuJrylUU/0OtqzaRkbyYFFNgCF73Bvel/sw90pvGrWIZ+vyoIJqA6eMSoA6+nb443kTmulmBtC9NerXboNg==
 
+"@rocket.chat/message-parser@^0.27.0":
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/@rocket.chat/message-parser/-/message-parser-0.27.0.tgz#55a07887da649bffb9277aa11ae843a0f5d22895"
+  integrity sha512-CJxV1N4aSOrTeGKPX+685EeYiG7AMivp8N23SHMZpmbxF36IoVsrdFlxlLRw11Dq8ZMkz4TXAyVk0i4Pvu/psA==
+
 "@rocket.chat/react-native-fast-image@^8.2.0":
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/@rocket.chat/react-native-fast-image/-/react-native-fast-image-8.2.0.tgz#4f48858f95f40afcb10b39cee9b1239c150d6c51"
