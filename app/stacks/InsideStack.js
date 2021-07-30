@@ -39,6 +39,9 @@ import ProfileView from '../views/ProfileView';
 import UserPreferencesView from '../views/UserPreferencesView';
 import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 
+// Display Preferences View
+import DisplayPrefsView from '../views/DisplayPrefsView';
+
 // Settings Stack
 import SettingsView from '../views/SettingsView';
 import SecurityPrivacyView from '../views/SecurityPrivacyView';
@@ -308,6 +311,21 @@ const AdminPanelStackNavigator = () => {
 	);
 };
 
+// DisplayPreferenceNavigator
+const DisplayPrefStack = createStackNavigator();
+const DisplayPrefStackNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+
+	return (
+		<DisplayPrefStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<DisplayPrefStack.Screen
+				name='DisplayPrefsView'
+				component={DisplayPrefsView}
+			/>
+		</DisplayPrefStack.Navigator>
+	);
+};
+
 // DrawerNavigator
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
@@ -325,6 +343,7 @@ const DrawerNavigator = () => {
 			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
 			<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />
+			<Drawer.Screen name='DisplayPrefStackNavigator' component={DisplayPrefStackNavigator} />
 		</Drawer.Navigator>
 	);
 };
