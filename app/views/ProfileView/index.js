@@ -61,23 +61,19 @@ class ProfileView extends React.Component {
 		theme: PropTypes.string
 	}
 
-	constructor(props) {
-		super(props);
-		const { Accounts_enableMessageParserEarlyAdoption } = this.props;
-		this.state = {
-			saving: false,
-			name: null,
-			username: null,
-			email: null,
-			newPassword: null,
-			currentPassword: null,
-			avatarUrl: null,
-			avatar: {},
-			avatarSuggestions: {},
-			customFields: {},
-			enableMessageParser: Accounts_enableMessageParserEarlyAdoption
-		};
-	}
+	state = {
+		saving: false,
+		enableMessageParserEarlyAdoption: false,
+		name: null,
+		username: null,
+		email: null,
+		newPassword: null,
+		currentPassword: null,
+		avatarUrl: null,
+		avatar: {},
+		avatarSuggestions: {},
+		customFields: {}
+	};
 
 	async componentDidMount() {
 		this.init();
@@ -116,7 +112,7 @@ class ProfileView extends React.Component {
 	init = (user) => {
 		const { user: userProps } = this.props;
 		const {
-			name, username, emails, customFields
+			name, username, emails, customFields, enableMessageParserEarlyAdoption
 		} = user || userProps;
 
 		this.setState({
@@ -127,13 +123,14 @@ class ProfileView extends React.Component {
 			currentPassword: null,
 			avatarUrl: null,
 			avatar: {},
-			customFields: customFields || {}
+			customFields: customFields || {},
+			enableMessageParserEarlyAdoption
 		});
 	}
 
 	formIsChanged = () => {
 		const {
-			name, username, email, newPassword, avatar, customFields
+			name, username, email, newPassword, avatar, customFields, enableMessageParserEarlyAdoption
 		} = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
@@ -149,6 +146,7 @@ class ProfileView extends React.Component {
 
 		return !(user.name === name
 			&& user.username === username
+			&& user.enableMessageParserEarlyAdoption === enableMessageParserEarlyAdoption
 			&& !newPassword
 			&& (user.emails && user.emails[0].address === email)
 			&& !avatar.data
@@ -173,7 +171,7 @@ class ProfileView extends React.Component {
 		this.setState({ saving: true });
 
 		const {
-			name, username, email, newPassword, currentPassword, avatar, customFields, enableMessageParser
+			name, username, email, newPassword, currentPassword, avatar, customFields, enableMessageParserEarlyAdoption
 		} = this.state;
 		const { user, setUser } = this.props;
 		const params = {};
@@ -201,6 +199,11 @@ class ProfileView extends React.Component {
 		// currentPassword
 		if (currentPassword) {
 			params.currentPassword = SHA256(currentPassword);
+		}
+
+		// MessageParser
+		if (user.enableMessageParserEarlyAdoption !== enableMessageParserEarlyAdoption) {
+			params.enableMessageParserEarlyAdoption = enableMessageParserEarlyAdoption;
 		}
 
 		const requirePassword = !!params.email || newPassword;

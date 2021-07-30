@@ -26,6 +26,9 @@ export default {
 	Accounts_CustomFields: {
 		type: 'valueAsString'
 	},
+	Accounts_Default_User_Preferences_enableMessageParserEarlyAdoption: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_EmailOrUsernamePlaceholder: {
 		type: 'valueAsString'
 	},
@@ -202,8 +205,5 @@ export default {
 	},
 	Jitsi_Enable_Channels: {
 		type: 'valuesAsBoolean'
-	},
-	Accounts_Default_User_Preferences_enableMessageParserEarlyAdoption: {
-		type: 'valueAsBoolean'
 	}
 };
