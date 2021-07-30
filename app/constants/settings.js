@@ -155,6 +155,9 @@ export default {
 	UI_Use_Real_Name: {
 		type: 'valueAsBoolean'
 	},
+	Use_New_Action_Indicator: {
+		type: 'valueAsBoolean'
+	},
 	Assets_favicon_512: {
 		type: null
 	},

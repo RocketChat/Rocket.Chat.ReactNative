@@ -89,9 +89,10 @@ export default class RoomSubscription {
 		if (this.rid !== _rid) {
 			return;
 		}
-		if (ev === 'user-activity') {
+
+		const { UI_Use_Real_Name, Use_New_Action_Indicator } = reduxStore.getState().settings;
+		if (ev === 'user-activity' || (Use_New_Action_Indicator === false && ev === 'typing')) {
 			const { user } = reduxStore.getState().login;
-			const { UI_Use_Real_Name } = reduxStore.getState().settings;
 			const { rooms } = reduxStore.getState().room;
 			if (rooms[0] !== _rid) {
 				return;
@@ -104,7 +105,7 @@ export default class RoomSubscription {
 				delete this.actionTimeouts[roomId];
 			}
 
-			// activityType will be of the form user-typing, user-recording, user-uploading
+			// activityType will be of the form user-typing, user-recording, user-uploading, "" if Use_New_action_Indicator = false
 			const activity = activityType.toUpperCase().split('-').join('_') || 'USER_TYPING';
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
