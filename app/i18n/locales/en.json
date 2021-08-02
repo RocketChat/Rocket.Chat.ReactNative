@@ -771,5 +771,8 @@
   "You_are_converting_the_team": "You are converting this Team to a Channel",
   "Display_Preference": "Display Preference",
   "Display": "Display",
-  "Avatars": "Avatars"
+  "Avatars": "Avatars",
+  "Sort_by": "Sort by",
+  "Group_by": "Group by",
+  "Types": "Types"
 }
