@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'react-native';
 
 import { RadioButton } from 'react-native-ui-lib';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPreference } from '../actions/sortPreferences';
+import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
 import I18n from '../i18n';
 import * as List from '../containers/List';
-import Loading from '../containers/Loading';
 
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
@@ -14,21 +16,19 @@ import { themes } from '../constants/colors';
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ICON_SIZE } from '../containers/List/constants';
+import log, { events, logEvent } from '../utils/log';
 
 const DisplayPrefsView = (props) => {
 	const { theme } = props;
-	const [loading] = useState(false);
 
-
-
-	// constructor(props) {
-	// 	super(props);
-
-	// 	const { statusText } = props.user;
-	// 	this.state = { statusText: statusText || '', loading: false };
-	// 	this.setHeader();
-	// }
-
+	const {
+		sortBy,
+		groupByType,
+		showFavorites,
+		showUnread,
+		showAvatar
+	} = useSelector(state => state.sortPreferences);
+	const dispatch = useDispatch();
 
 	const setHeader = () => {
 		const { navigation, isMasterDetail } = props;
@@ -46,42 +46,51 @@ const DisplayPrefsView = (props) => {
 		setHeader();
 	}, []);
 
+	const setSortPreference = (param) => {
+		try {
+			dispatch(setPreference(param));
+			RocketChat.saveSortPreference(param);
+		} catch (e) {
+			logEvent(events.RL_SORT_CHANNELS_F);
+			log(e);
+		}
+	};
+
 	const sortByName = () => {
-		// logEvent(events.RL_SORT_CHANNELS_BY_NAME);
-		// this.setSortPreference({ sortBy: 'alphabetical' });
-		// this.close();
+		logEvent(events.RL_SORT_CHANNELS_BY_NAME);
+		setSortPreference({ sortBy: 'alphabetical' });
 	};
 
 	const sortByActivity = () => {
-		// logEvent(events.RL_SORT_CHANNELS_BY_ACTIVITY);
-		// this.setSortPreference({ sortBy: 'activity' });
-		// this.close();
+		logEvent(events.RL_SORT_CHANNELS_BY_ACTIVITY);
+		setSortPreference({ sortBy: 'activity' });
 	};
 
 	const toggleGroupByType = () => {
-		// logEvent(events.RL_GROUP_CHANNELS_BY_TYPE);
-		// const { groupByType } = this.props;
-		// this.setSortPreference({ groupByType: !groupByType });
+		logEvent(events.RL_GROUP_CHANNELS_BY_TYPE);
+		setSortPreference({ groupByType: !groupByType });
 	};
 
 	const toggleGroupByFavorites = () => {
-		// logEvent(events.RL_GROUP_CHANNELS_BY_FAVORITE);
-		// const { showFavorites } = this.props;
-		// this.setSortPreference({ showFavorites: !showFavorites });
+		logEvent(events.RL_GROUP_CHANNELS_BY_FAVORITE);
+		setSortPreference({ showFavorites: !showFavorites });
 	};
 
 	const toggleUnread = () => {
-		// logEvent(events.RL_GROUP_CHANNELS_BY_UNREAD);
-		// const { showUnread } = this.props;
-		// this.setSortPreference({ showUnread: !showUnread });
+		logEvent(events.RL_GROUP_CHANNELS_BY_UNREAD);
+		setSortPreference({ showUnread: !showUnread });
+	};
+
+	const toggleAvatar = () => {
+		setSortPreference({ showAvatar: !showAvatar });
 	};
 
 	const renderCheckBox = value => (
 		value ? <List.Icon name='checkbox-checked' color={themes[theme].actionTintColor} /> : <List.Icon name='checkbox-unchecked' />
 	);
 
-	const renderAvatarSwitch = () => (
-		<Switch />
+	const renderAvatarSwitch = value => (
+		<Switch value={value} onValueChange={() => toggleAvatar()} />
 	);
 
 	const renderRadio = value => (
@@ -91,7 +100,6 @@ const DisplayPrefsView = (props) => {
 			size={ICON_SIZE}
 		/>
 	);
-
 
 	return (
 		<SafeAreaView testID='status-view'>
@@ -105,7 +113,7 @@ const DisplayPrefsView = (props) => {
 					<List.Item
 						left={() => <List.Icon name='avatar' />}
 						title='Avatars'
-						right={() => renderAvatarSwitch()}
+						right={() => renderAvatarSwitch(showAvatar)}
 					/>
 				</List.Section>
 
@@ -117,13 +125,13 @@ const DisplayPrefsView = (props) => {
 						title='Activity'
 						left={() => <List.Icon name='clock' />}
 						onPress={sortByActivity}
-						right={() => (renderRadio(true))}
+						right={() => (renderRadio(sortBy === 'activity'))}
 					/>
 					<List.Item
 						title='Name'
 						left={() => <List.Icon name='sort-az' />}
 						onPress={sortByName}
-						right={() => (renderRadio())}
+						right={() => (renderRadio(sortBy === 'alphabetical'))}
 					/>
 				</List.Section>
 
@@ -135,36 +143,27 @@ const DisplayPrefsView = (props) => {
 						title='Unread_on_top'
 						left={() => <List.Icon name='unread-on-top-disabled' />}
 						onPress={toggleUnread}
-						right={() => (renderCheckBox(true))}
+						right={() => (renderCheckBox(showUnread))}
 					/>
 					<List.Item
 						title='Favorites'
 						left={() => <List.Icon name='star' />}
 						onPress={toggleGroupByFavorites}
-						right={() => (renderCheckBox(true))}
+						right={() => (renderCheckBox(showFavorites))}
 					/>
 					<List.Item
 						title='Types'
 						left={() => <List.Icon name='group-by-type' />}
 						onPress={toggleGroupByType}
-						right={() => (renderCheckBox())}
+						right={() => (renderCheckBox(groupByType))}
 					/>
 				</List.Section>
-
-
 			</List.Container>
-
-			<Loading visible={loading} />
 		</SafeAreaView>
 	);
 };
 
 DisplayPrefsView.propTypes = {
-	user: PropTypes.shape({
-		id: PropTypes.string,
-		status: PropTypes.string,
-		statusText: PropTypes.string
-	}),
 	theme: PropTypes.string,
 	navigation: PropTypes.object,
 	isMasterDetail: PropTypes.bool

@@ -181,7 +181,7 @@ class Sidebar extends Component {
 				/>
 				<SidebarItem
 					text={I18n.t('Display')}
-					left={<CustomIcon name='cross' size={20} color={themes[theme].titleText} />}
+					left={<CustomIcon name='sort' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
 					testID='sidebar-display'
 					current={this.currentItemKey === 'DisplayPrefStackNavigator'}
