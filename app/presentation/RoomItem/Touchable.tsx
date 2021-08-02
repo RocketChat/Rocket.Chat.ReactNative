@@ -24,9 +24,9 @@ interface ITouchableProps {
 	favorite: boolean;
 	isRead: boolean;
 	rid: string;
-	toggleFav({}?, {}?): void;
-	toggleRead({}?, {}?): void;
-	hideChannel({}?, {}?): void;
+	toggleFav: Function;
+	toggleRead: Function;
+	hideChannel: Function;
 	theme: string;
 	isFocused: boolean;
 	swipeEnabled: boolean;

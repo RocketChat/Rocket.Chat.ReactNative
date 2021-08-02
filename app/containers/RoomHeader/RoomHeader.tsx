@@ -76,9 +76,9 @@ interface IRoomHeader {
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, theme, scale }: TRoomHeaderSubTitle) => {
 	const fontSize = getSubTitleSize(scale);
 	// typing
-	if (usersTyping.length) {
+	if (usersTyping?.length) {
 		let usersText;
-		if (usersTyping.length === 2) {
+		if (usersTyping?.length === 2) {
 			usersText = usersTyping.join(` ${ I18n.t('and') } `);
 		} else {
 			usersText = usersTyping.join(', ');
@@ -147,7 +147,7 @@ const Header = React.memo(({
 	let scale = 1;
 
 	if (!portrait && !tmid) {
-		if (usersTyping.length > 0 || subtitle) {
+		if (usersTyping?.length > 0 || subtitle) {
 			scale = 0.8;
 		}
 	}
