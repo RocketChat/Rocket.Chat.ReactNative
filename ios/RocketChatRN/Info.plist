@@ -6,8 +6,11 @@
 	<false/>
 	<key>AppGroup</key>
 	<string>group.ios.chat.rocket</string>
-	<key>BugsnagAPIKey</key>
-	<string></string>
+	<key>bugsnag</key>
+	<dict>
+		<key>apiKey</key>
+		<string>apiKeyValue</string>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -23,7 +26,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.18.0</string>
+	<string>4.19.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
