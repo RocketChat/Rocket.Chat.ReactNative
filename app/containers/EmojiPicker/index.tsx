@@ -17,18 +17,24 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import {IEmoji} from "../markdown/Emoji";
+
+import {TEmoji} from "./types";
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
 	keyboardDismissMode: 'none'
 };
 
-export type TEmoji = {
-	content: any;
-	name: string;
-	extension: any;
-	isCustom: boolean;
+interface IEmojiPickerProps {
+	literal: string;
+	isMessageContainsOnlyEmoji: boolean;
+	getCustomEmoji?: Function;
+	baseUrl: string;
+	customEmojis?: any;
+	style: object;
+	theme?: string;
+	onEmojiSelected?: Function;
+	tabEmojiStyle?: object;
 }
 
 interface IEmojiPickerState {
@@ -38,9 +44,9 @@ interface IEmojiPickerState {
 	width: number | null;
 }
 
-class EmojiPicker extends Component<IEmoji, IEmojiPickerState> {
+class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 
-	constructor(props: IEmoji) {
+	constructor(props: IEmojiPickerProps) {
 		super(props);
 		const customEmojis = Object.keys(props.customEmojis)
 			.filter(item => item === props.customEmojis[item].name)
@@ -192,7 +198,7 @@ class EmojiPicker extends Component<IEmoji, IEmojiPickerState> {
 	}
 }
 
-const mapStateToProps = (state: IEmojiPickerState) => ({
+const mapStateToProps = (state: any) => ({
 	customEmojis: state.customEmojis
 });
 

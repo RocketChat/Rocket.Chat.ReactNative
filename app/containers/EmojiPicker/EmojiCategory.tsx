@@ -5,20 +5,11 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import {TEmoji, TEmojiCategory} from "./types";
 
 const EMOJI_SIZE: number = 50;
 
-interface IEmoji {
-	baseUrl: string;
-	emojis: any;
-	onEmojiSelected({}: any): void;
-	emojisPerRow: number;
-	width: number;
-	style: any;
-	tabLabel: string;
-}
-
-const renderEmoji = (emoji: any, size: number, baseUrl: string) => {
+const renderEmoji = (emoji: TEmoji, size: number, baseUrl: string) => {
 	if (emoji && emoji.isCustom) {
 		return <CustomEmoji style={[styles.customCategoryEmoji, { height: size - 16, width: size - 16 }]} emoji={emoji} baseUrl={baseUrl} />;
 	}
@@ -29,7 +20,7 @@ const renderEmoji = (emoji: any, size: number, baseUrl: string) => {
 	);
 };
 
-class EmojiCategory extends React.Component<Partial<IEmoji>> {
+class EmojiCategory extends React.Component<Partial<TEmojiCategory>> {
 
 	renderItem(emoji: any) {
 		const { baseUrl, onEmojiSelected } = this.props;
