@@ -774,5 +774,7 @@
   "Avatars": "Avatars",
   "Sort_by": "Sort by",
   "Group_by": "Group by",
-  "Types": "Types"
+  "Types": "Types",
+  "Expanded": "Expanded",
+  "Condensed": "Condensed"
 }

@@ -26,7 +26,8 @@ const DisplayPrefsView = (props) => {
 		groupByType,
 		showFavorites,
 		showUnread,
-		showAvatar
+		showAvatar,
+		displayType
 	} = useSelector(state => state.sortPreferences);
 	const dispatch = useDispatch();
 
@@ -85,12 +86,24 @@ const DisplayPrefsView = (props) => {
 		setSortPreference({ showAvatar: !showAvatar });
 	};
 
+	const displayExpanded = () => {
+		setSortPreference({ displayType: 'expanded' });
+	};
+
+	const displayCondensed = () => {
+		setSortPreference({ displayType: 'condensed' });
+	};
+
 	const renderCheckBox = value => (
 		value ? <List.Icon name='checkbox-checked' color={themes[theme].actionTintColor} /> : <List.Icon name='checkbox-unchecked' />
 	);
 
 	const renderAvatarSwitch = value => (
-		<Switch value={value} onValueChange={() => toggleAvatar()} />
+		<Switch
+			value={value}
+			onValueChange={() => toggleAvatar()}
+			trackColor={{ true: themes[theme].actionTintColor }}
+		/>
 	);
 
 	const renderRadio = value => (
@@ -109,6 +122,18 @@ const DisplayPrefsView = (props) => {
 					<List.Separator />
 					<List.Item
 						title='Display'
+					/>
+					<List.Item
+						left={() => <List.Icon name='view-extended' />}
+						title='Expanded'
+						right={() => renderRadio(displayType === 'expanded')}
+						onPress={displayExpanded}
+					/>
+					<List.Item
+						left={() => <List.Icon name='view-medium' />}
+						title='Condensed'
+						right={() => renderRadio(displayType === 'condensed')}
+						onPress={displayCondensed}
 					/>
 					<List.Item
 						left={() => <List.Icon name='avatar' />}

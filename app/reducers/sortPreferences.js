@@ -5,7 +5,8 @@ const initialState = {
 	groupByType: false,
 	showFavorites: false,
 	showUnread: false,
-	showAvatar: true
+	showAvatar: true,
+	displayType: 'expanded'
 };
 
 
