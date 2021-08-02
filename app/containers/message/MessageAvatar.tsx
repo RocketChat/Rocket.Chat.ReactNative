@@ -3,24 +3,11 @@ import React, { useContext } from 'react';
 import Avatar from '../Avatar';
 import styles from './styles';
 import MessageContext from './Context';
-
-export interface IMessageAvatar {
-	isHeader: boolean;
-	avatar: string;
-	emoji: string;
-	author: {
-		username: string
-		_id: string;
-	};
-	small?: boolean;
-	navToRoomInfo: Function;
-	getCustomEmoji(): void;
-	theme: string;
-}
+import {TMessageAvatar} from "./types";
 
 const MessageAvatar = React.memo(({
 	isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji, theme
-}: IMessageAvatar) => {
+}: TMessageAvatar) => {
 	const { user } = useContext(MessageContext);
 	if (isHeader && author) {
 		const navParam = {

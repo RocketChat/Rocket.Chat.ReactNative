@@ -6,17 +6,9 @@ import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
+import {TMessageThread} from "./types";
 
-export interface IMessageThread {
-	msg: string;
-	tcount: number;
-	theme: string;
-	tlm: string;
-	isThreadRoom: boolean;
-	id: string;
-}
-
-const Thread = React.memo(({ msg, tcount, tlm, isThreadRoom, theme, id }: IMessageThread) => {
+const Thread = React.memo(({ msg, tcount, tlm, isThreadRoom, theme, id }: TMessageThread) => {
 	if (!tlm || isThreadRoom || tcount === 0) {
 		return null;
 	}

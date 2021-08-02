@@ -1,14 +1,8 @@
 import React from 'react';
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
+import {TMessageBlocks} from "./types";
 
-export interface IMessageBlocks {
-	blocks: any;
-	id: string;
-	rid: string;
-	blockAction: Function;
-}
-
-const Blocks = React.memo(({ blocks, id: mid, rid, blockAction }: IMessageBlocks) => {
+const Blocks = React.memo(({ blocks, id: mid, rid, blockAction }: TMessageBlocks) => {
 	if (blocks && blocks.length > 0) {
 		const appId = blocks[0]?.appId || '';
 		return React.createElement(

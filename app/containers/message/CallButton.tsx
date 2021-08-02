@@ -7,13 +7,9 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
+import {TMessageCallButton} from "./types";
 
-export interface IMessageCallButton {
-	theme: string;
-	callJitsi: Function;
-}
-
-const CallButton = React.memo(({ theme, callJitsi }: IMessageCallButton) => (
+const CallButton = React.memo(({ theme, callJitsi }: TMessageCallButton) => (
 	<View style={styles.buttonContainer}>
 		<Touchable
 			onPress={callJitsi}

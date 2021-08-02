@@ -6,41 +6,20 @@ import MessageContext from './Context';
 
 import User from './User';
 import styles from './styles';
-import RepliedThread, {IMessageRepliedThread} from './RepliedThread';
-import MessageAvatar, {IMessageAvatar} from './MessageAvatar';
-import Attachments, {IMessageAttachments} from './Attachments';
+import RepliedThread from './RepliedThread';
+import MessageAvatar from './MessageAvatar';
+import Attachments from './Attachments';
 import Urls from './Urls';
-import Thread, {IMessageThread} from './Thread';
-import Blocks, {IMessageBlocks} from './Blocks';
+import Thread from './Thread';
+import Blocks from './Blocks';
 import Reactions from './Reactions';
-import Broadcast, {IMessageBroadcast} from './Broadcast';
-import Discussion, {IMessageDiscussion} from './Discussion';
-import Content, {IMessageContent} from './Content';
+import Broadcast from './Broadcast';
+import Discussion from './Discussion';
+import Content from './Content';
 import ReadReceipt from './ReadReceipt';
-import CallButton, {IMessageCallButton} from './CallButton';
+import CallButton from './CallButton';
 import { themes } from '../../constants/colors';
-
-
-type TMessageInner = {
-	type: string;
-	blocks: [];
-} & IMessageDiscussion & IMessageContent & IMessageCallButton & IMessageBlocks
-	& IMessageThread & IMessageAttachments & IMessageBroadcast;
-
-type TMessage = {
-	isThreadReply: boolean;
-	isThreadSequential: boolean;
-	isInfo: boolean;
-	isTemp: boolean;
-	isHeader: boolean;
-	hasError: boolean;
-	style: any;
-	onLongPress: Function;
-	isReadReceiptEnabled: boolean;
-	unread: boolean;
-	theme: string;
-	isIgnored: boolean;
-} & IMessageRepliedThread & IMessageAvatar & IMessageContent & TMessageInner;
+import {TMessage, TMessageInner} from "./types";
 
 interface IMessageTouchable {
 	hasError: boolean;
