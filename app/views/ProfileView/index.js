@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Keyboard } from 'react-native';
+import {
+	View, ScrollView, Keyboard, Switch
+} from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
@@ -19,6 +21,7 @@ import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
+import * as List from '../../containers/List';
 import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
@@ -27,11 +30,10 @@ import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { themes } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import SwitchContainer from '../RoomInfoEditView/SwitchContainer';
 
 class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -63,7 +65,7 @@ class ProfileView extends React.Component {
 
 	state = {
 		saving: false,
-		enableMessageParserEarlyAdoption: false,
+		enableMessageParser: false,
 		name: null,
 		username: null,
 		email: null,
@@ -72,7 +74,8 @@ class ProfileView extends React.Component {
 		avatarUrl: null,
 		avatar: {},
 		avatarSuggestions: {},
-		customFields: {}
+		customFields: {},
+		preferences: []
 	};
 
 	async componentDidMount() {
@@ -109,11 +112,14 @@ class ProfileView extends React.Component {
 		this.setState({ avatar });
 	}
 
-	init = (user) => {
+	init = async(user) => {
 		const { user: userProps } = this.props;
 		const {
-			name, username, emails, customFields, enableMessageParserEarlyAdoption
+			name, username, emails, customFields, id
 		} = user || userProps;
+
+		const result = await RocketChat.getUserPreferences(id);
+		const { preferences } = result;
 
 		this.setState({
 			name,
@@ -124,13 +130,14 @@ class ProfileView extends React.Component {
 			avatarUrl: null,
 			avatar: {},
 			customFields: customFields || {},
-			enableMessageParserEarlyAdoption
+			enableMessageParser: preferences?.enableMessageParserEarlyAdoption || false,
+			preferences
 		});
 	}
 
 	formIsChanged = () => {
 		const {
-			name, username, email, newPassword, avatar, customFields, enableMessageParserEarlyAdoption
+			name, username, email, newPassword, avatar, customFields, enableMessageParser, preferences
 		} = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
@@ -146,7 +153,7 @@ class ProfileView extends React.Component {
 
 		return !(user.name === name
 			&& user.username === username
-			&& user.enableMessageParserEarlyAdoption === enableMessageParserEarlyAdoption
+			&& preferences.enableMessageParserEarlyAdoption === enableMessageParser
 			&& !newPassword
 			&& (user.emails && user.emails[0].address === email)
 			&& !avatar.data
@@ -171,7 +178,7 @@ class ProfileView extends React.Component {
 		this.setState({ saving: true });
 
 		const {
-			name, username, email, newPassword, currentPassword, avatar, customFields, enableMessageParserEarlyAdoption
+			name, username, email, newPassword, currentPassword, avatar, customFields
 		} = this.state;
 		const { user, setUser } = this.props;
 		const params = {};
@@ -199,11 +206,6 @@ class ProfileView extends React.Component {
 		// currentPassword
 		if (currentPassword) {
 			params.currentPassword = SHA256(currentPassword);
-		}
-
-		// MessageParser
-		if (user.enableMessageParserEarlyAdoption !== enableMessageParserEarlyAdoption) {
-			params.enableMessageParserEarlyAdoption = enableMessageParserEarlyAdoption;
 		}
 
 		const requirePassword = !!params.email || newPassword;
@@ -433,7 +435,18 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	toggleEnableMessageParserEarlyAdoption = (value) => {
+	renderMessageParserSwitch = () => {
+		const { enableMessageParser } = this.state;
+		return (
+			<Switch
+				value={enableMessageParser}
+				trackColor={SWITCH_TRACK_COLOR}
+				onValueChange={this.toggleEnableMessageParser}
+			/>
+		);
+	}
+
+	toggleEnableMessageParser = (value) => {
 		// logEvent(events.RI_EDIT_TOGGLE_SYSTEM_MSG);
 		this.setState({ enableMessageParser: value });
 	}
@@ -457,7 +470,7 @@ class ProfileView extends React.Component {
 
 	render() {
 		const {
-			name, username, email, newPassword, avatarUrl, customFields, avatar, saving, enableMessageParser
+			name, username, email, newPassword, avatarUrl, customFields, avatar, saving
 		} = this.state;
 		const {
 			user,
@@ -554,16 +567,16 @@ class ProfileView extends React.Component {
 							testID='profile-view-new-password'
 							theme={theme}
 						/>
-						<SwitchContainer
-							value={enableMessageParser}
-							leftLabelPrimary={I18n.t('Enable_Message_Parser_Early_Adoption')}
-							// leftLabelSecondary={Accounts_enableMessageParserEarlyAdoption ? I18n.t('Overwrites_the_server_configuration_and_use_room_config') : I18n.t('Uses_server_configuration')}
-							theme={theme}
-							testID='profile-switch-message-parser-early-adoption'
-							onValueChange={value => this.setState({ enableMessageParser: value })}
-							labelContainerStyle={styles.hideSystemMessages}
-							leftLabelStyle={styles.systemMessagesLabel}
-						/>
+						<List.Separator />
+						{Accounts_enableMessageParserEarlyAdoption
+							? (
+								<List.Item
+									title='Enable_Message_Parser'
+									testID='profile-view-enable-message-parser'
+									right={() => this.renderMessageParserSwitch()}
+								/>
+							) : null}
+						<List.Separator />
 						{this.renderCustomFields()}
 						<RCTextInput
 							editable={Accounts_AllowUserAvatarChange}

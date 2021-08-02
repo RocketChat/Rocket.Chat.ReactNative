@@ -48,6 +48,7 @@ const Content = React.memo((props) => {
 		const { baseUrl, user, onLinkPress } = useContext(MessageContext);
 		content = (
 			<Markdown
+				md={props.md}
 				msg={props.msg}
 				baseUrl={baseUrl}
 				getCustomEmoji={props.getCustomEmoji}
@@ -124,6 +125,7 @@ Content.propTypes = {
 	tmid: PropTypes.string,
 	isThreadRoom: PropTypes.bool,
 	msg: PropTypes.string,
+	md: PropTypes.string,
 	theme: PropTypes.string,
 	isEdited: PropTypes.bool,
 	isEncrypted: PropTypes.bool,

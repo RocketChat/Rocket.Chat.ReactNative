@@ -68,6 +68,7 @@ const parser = new Parser();
 class Markdown extends PureComponent {
 	static propTypes = {
 		msg: PropTypes.string,
+		md: PropTypes.string,
 		getCustomEmoji: PropTypes.func,
 		baseUrl: PropTypes.string,
 		username: PropTypes.string,
