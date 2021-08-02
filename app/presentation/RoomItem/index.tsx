@@ -50,6 +50,17 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 	private mounted: boolean;
 	private roomSubscription: any;
 
+	static defaultProps = {
+		avatarSize: 48,
+		status: 'offline',
+		getUserPresence: () => {},
+		getRoomTitle: () => 'title',
+		getRoomAvatar: () => '',
+		getIsGroupChat: () => false,
+		getIsRead: () => false,
+		swipeEnabled: true
+	}
+
 	constructor(props: IRoomItemContainerProps) {
 		super(props);
 		this.mounted = false;

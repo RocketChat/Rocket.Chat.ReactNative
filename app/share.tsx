@@ -86,6 +86,7 @@ const OutsideStack = () => {
 			<Outside.Screen
 				name='WithoutServersView'
 				component={WithoutServersView}
+				/*@ts-ignore*/
 				options={WithoutServersView.navigationOptions}
 			/>
 		</Outside.Navigator>

@@ -9,13 +9,9 @@ import Emoji from '../markdown/Emoji';
 import {TAvatar} from "./types";
 
 const Avatar = React.memo(({
-	text,
-	size,
 	server,
-	borderRadius,
-	style,
+    style,
 	avatar,
-	type,
 	children,
 	user,
 	onPress,
@@ -26,8 +22,13 @@ const Avatar = React.memo(({
 	isStatic,
 	rid,
 	blockUnauthenticatedAccess,
-	serverVersion
+	serverVersion,
+    text = '',
+    size = 25,
+    borderRadius = 4,
+    type = 'd',
 }: Partial<TAvatar>) => {
+
 	if ((!text && !avatar && !emoji && !rid) || !server) {
 		return null;
 	}

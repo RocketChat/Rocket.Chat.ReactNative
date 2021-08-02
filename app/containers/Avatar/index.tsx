@@ -12,6 +12,11 @@ class AvatarContainer extends React.Component<Partial<TAvatar>, any> {
 	private mounted: boolean;
 	private subscription!: any;
 
+	static defaultProps = {
+		text: '',
+		type: 'd'
+	};
+
 	constructor(props: Partial<TAvatar>) {
 		super(props);
 		this.mounted = false;

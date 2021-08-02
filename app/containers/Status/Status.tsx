@@ -8,7 +8,7 @@ interface IStatus {
 	style: any;
 }
 
-const Status = React.memo(({ status, size, style, ...props }: IStatus) => {
+const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: IStatus) => {
 	const name = `status-${ status }`;
 	const isNameValid = CustomIcon.hasIcon(name);
 	const iconName = isNameValid ? name : 'status-offline';

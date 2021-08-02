@@ -141,7 +141,7 @@ const HeaderTitle = React.memo(({ title, tmid, prid, scale, theme, testID }: TRo
 });
 
 const Header = React.memo(({
-	title, subtitle, parentTitle, type, status, usersTyping, width, height, prid, tmid, onPress, theme, isGroupChat, teamMain, testID
+	title, subtitle, parentTitle, type, status, width, height, prid, tmid, onPress, theme, isGroupChat, teamMain, testID, usersTyping = []
 }: IRoomHeader) => {
 	const portrait = height > width;
 	let scale = 1;

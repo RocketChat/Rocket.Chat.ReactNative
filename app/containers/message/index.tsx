@@ -64,6 +64,28 @@ interface IMessageContainerProps {
 
 class MessageContainer extends React.Component<IMessageContainerProps, any> {
 
+	static defaultProps = {
+		getCustomEmoji: () => {},
+		onLongPress: () => {},
+		onReactionPress: () => {},
+		onEncryptedPress: () => {},
+		onDiscussionPress: () => {},
+		onThreadPress: () => {},
+		errorActionsShow: () => {},
+		replyBroadcast: () => {},
+		reactionInit: () => {},
+		fetchThreadName: () => {},
+		showAttachment: () => {},
+		onReactionLongPress: () => {},
+		navToRoomInfo: () => {},
+		callJitsi: () => {},
+		blockAction: () => {},
+		archived: false,
+		broadcast: false,
+		isIgnored: false,
+		theme: 'light'
+	}
+
 	state = { isManualUnignored: false };
 	private subscription: any;
 

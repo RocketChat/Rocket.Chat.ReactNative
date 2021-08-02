@@ -93,6 +93,10 @@ interface ILoginServicesProps {
 class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 	private _animation: any;
 
+	static defaultProps = {
+		separator: true
+	}
+
 	state = {
 		collapsed: true,
 		servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)

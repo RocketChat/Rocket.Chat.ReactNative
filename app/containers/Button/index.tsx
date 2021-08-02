@@ -40,6 +40,14 @@ const styles = StyleSheet.create({
 
 export default class Button extends React.PureComponent<Partial<IButtonProps>, any> {
 
+	static defaultProps = {
+		title: 'Press me!',
+		type: 'primary',
+		onPress: () => alert('It works!'),
+		disabled: false,
+		loading: false
+	}
+
 	render() {
 		const {
 			title, type, onPress, disabled, backgroundColor, color, loading, style, theme, fontSize, ...otherProps
