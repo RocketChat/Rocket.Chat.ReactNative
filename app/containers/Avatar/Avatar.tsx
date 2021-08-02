@@ -6,30 +6,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { avatarURL } from '../../utils/avatar';
 import Emoji from '../markdown/Emoji';
-
-export interface IAvatar {
-	server?: string;
-	style?: any,
-	text?: string;
-	avatar?: string;
-	emoji?: string;
-	size?: number;
-	borderRadius?: number;
-	type?: string;
-	children?: JSX.Element;
-	user?: {
-		id: string;
-		token: string;
-	};
-	theme: string;
-	onPress?(): void;
-	getCustomEmoji(): any;
-	avatarETag?: string;
-	isStatic?: boolean;
-	rid?: string;
-	blockUnauthenticatedAccess?: boolean;
-	serverVersion?: string;
-}
+import {TAvatar} from "./types";
 
 const Avatar = React.memo(({
 	text,
@@ -50,7 +27,7 @@ const Avatar = React.memo(({
 	rid,
 	blockUnauthenticatedAccess,
 	serverVersion
-}: Partial<IAvatar>) => {
+}: Partial<TAvatar>) => {
 	if ((!text && !avatar && !emoji && !rid) || !server) {
 		return null;
 	}

@@ -4,13 +4,15 @@ import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import Avatar, {IAvatar} from './Avatar';
+import Avatar from './Avatar';
+import {TAvatar} from "./types";
 
-class AvatarContainer extends React.Component<Partial<IAvatar>, any> {
+
+class AvatarContainer extends React.Component<Partial<TAvatar>, any> {
 	private mounted: boolean;
 	private subscription!: any;
 
-	constructor(props: Partial<IAvatar>) {
+	constructor(props: Partial<TAvatar>) {
 		super(props);
 		this.mounted = false;
 		this.state = { avatarETag: '' };
