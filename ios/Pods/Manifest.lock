@@ -160,7 +160,7 @@ PODS:
   - GoogleUtilities/UserDefaults (6.7.1):
     - GoogleUtilities/Logger
   - hermes-engine (0.7.2)
-  - JitsiMeetSDK (2.10.2)
+  - JitsiMeetSDK (3.7.0)
   - KeyCommands (2.0.3):
     - React
   - libevent (2.1.12)
@@ -403,8 +403,8 @@ PODS:
     - React-Core
   - react-native-document-picker (5.2.0):
     - React-Core
-  - react-native-jitsi-meet (2.4.0):
-    - JitsiMeetSDK
+  - react-native-jitsi-meet (3.7.0):
+    - JitsiMeetSDK (= 3.7.0)
     - React
   - react-native-mmkv-storage (0.3.5):
     - MMKV (= 1.2.1)
@@ -614,7 +614,6 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (~> 0.75.1)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (~> 0.7.2)
-  - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`)
   - KeyCommands (from `../node_modules/react-native-keycommands`)
   - libevent (~> 2.1.12)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -718,6 +717,7 @@ SPEC REPOS:
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
     - hermes-engine
+    - JitsiMeetSDK
     - libevent
     - libwebp
     - MMKV
@@ -763,8 +763,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
-  JitsiMeetSDK:
-    :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
   KeyCommands:
     :path: "../node_modules/react-native-keycommands"
   RCT-Folly:
@@ -918,11 +916,6 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
-CHECKOUT OPTIONS:
-  JitsiMeetSDK:
-    :commit: 34660a3a34798fe28fcfd340f9ad30184b9fa0d1
-    :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
-
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BugsnagReactNative: a97b3132c1854fd7bf92350fabd505e3ebdd7829
@@ -960,7 +953,7 @@ SPEC CHECKSUMS:
   GoogleDataTransportCCTSupport: 489c1265d2c85b68187a83a911913d190012158d
   GoogleUtilities: e121a3867449ce16b0e35ddf1797ea7a389ffdf2
   hermes-engine: 7d97ba46a1e29bacf3e3c61ecb2804a5ddd02d4f
-  JitsiMeetSDK: ef6dd5cfa6d9badf009c7dba1a2c1365bfaae6b0
+  JitsiMeetSDK: 1bedd99910a335035fbee5045379d8444f134f79
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
@@ -986,7 +979,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 88f4e62d9ecd0e1f253abe4f685474f2ea14bfa2
   react-native-cookies: 2cb6ef472da68610dfcf0eaee68464c244943abd
   react-native-document-picker: f1b5398801b332c77bc62ae0eae2116f49bdff26
-  react-native-jitsi-meet: f2407aca85566e031ee7b222e497ee5ecb6623de
+  react-native-jitsi-meet: c59c8f7c766101e1a7ed5c17a8fe205be29113de
   react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
@@ -1049,6 +1042,6 @@ SPEC CHECKSUMS:
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 70acbdf88ff07173b5e52fdbfd3825f5b6a07b83
+PODFILE CHECKSUM: 5c90e76e169db622ff6f699930680f3a473af9a4
 
 COCOAPODS: 1.10.1
