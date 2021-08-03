@@ -606,6 +606,7 @@ class RoomsListView extends React.Component {
 		}
 	}
 
+	// Appear the dropdown sort
 	toggleSort = () => {
 		logEvent(events.RL_TOGGLE_SORT_DROPDOWN);
 		const { toggleSortDropdown } = this.props;
@@ -862,13 +863,11 @@ class RoomsListView extends React.Component {
 	renderListHeader = () => {
 		const { searching } = this.state;
 		const {
-			sortBy, queueSize, inquiryEnabled, encryptionBanner, user
+			queueSize, inquiryEnabled, encryptionBanner, user
 		} = this.props;
 		return (
 			<ListHeader
 				searching={searching}
-				sortBy={sortBy}
-				toggleSort={this.toggleSort}
 				goEncryption={this.goEncryption}
 				goQueue={this.goQueue}
 				queueSize={queueSize}
