@@ -9,7 +9,7 @@ import { themes } from '../../constants/colors';
 
 export { ROW_HEIGHT };
 
-type TDirectoryItemLabel = {
+interface IDirectoryItemLabel {
 	text: string;
 	theme: string;
 }
@@ -28,7 +28,7 @@ interface IDirectoryItem {
 	teamMain: boolean;
 }
 
-const DirectoryItemLabel = React.memo(({ text, theme }: TDirectoryItemLabel) => {
+const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => {
 	if (!text) {
 		return null;
 	}

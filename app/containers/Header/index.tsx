@@ -20,7 +20,7 @@ export const getHeaderHeight = (isLandscape: boolean) => {
 	return 56;
 };
 
-type THeaderTitlePosition = {
+interface IHeaderTitlePosition {
 	insets: {
 		left: number;
 		right: number;
@@ -28,7 +28,7 @@ type THeaderTitlePosition = {
 	numIconsRight: number;
 }
 
-export const getHeaderTitlePosition = ({ insets, numIconsRight }: THeaderTitlePosition) => ({
+export const getHeaderTitlePosition = ({ insets, numIconsRight }: IHeaderTitlePosition) => ({
 	left: insets.left + 60,
 	right: insets.right + Math.max(45 * numIconsRight, 15)
 });

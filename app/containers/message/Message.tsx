@@ -19,25 +19,9 @@ import Content from './Content';
 import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
 import { themes } from '../../constants/colors';
-import {TMessage, TMessageInner} from "./types";
+import {IMessage, IMessageInner, IMessageTouchable} from "./interfaces";
 
-interface IMessageTouchable {
-	hasError: boolean;
-	isInfo: boolean;
-	isThreadReply: boolean;
-	isTemp: boolean;
-	archived: boolean;
-	highlighted: boolean;
-	theme: string;
-	ts?: any
-	urls?: any;
-	reactions?: any;
-	alias?: any;
-	role?: any;
-	drid?: any;
-}
-
-const MessageInner = React.memo((props: TMessageInner) => {
+const MessageInner = React.memo((props: IMessageInner) => {
 	if (props.type === 'discussion-created') {
 		return (
 			<>
@@ -79,7 +63,7 @@ const MessageInner = React.memo((props: TMessageInner) => {
 });
 MessageInner.displayName = 'MessageInner';
 
-const Message = React.memo((props: TMessage) => {
+const Message = React.memo((props: IMessage) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		return (
@@ -123,7 +107,7 @@ const Message = React.memo((props: TMessage) => {
 });
 Message.displayName = 'Message';
 
-const MessageTouchable = React.memo((props: IMessageTouchable & TMessage) => {
+const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	if (props.hasError) {
 		return (
 			<View>

@@ -10,7 +10,7 @@ import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
-import {TEmoji} from "../EmojiPicker";
+import {IEmoji} from "../EmojiPicker/interfaces";
 
 interface IHeader {
 	handleReaction: Function;
@@ -21,7 +21,7 @@ interface IHeader {
 }
 
 interface THeaderItem {
-	item: TEmoji;
+	item: IEmoji;
 	onReaction: Function;
 	server: string;
 	theme: string;
@@ -118,7 +118,7 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 		setEmojis();
 	}, []);
 
-	const onReaction = ({ emoji }: {emoji: TEmoji}) => handleReaction(emoji, message);
+	const onReaction = ({ emoji }: {emoji: IEmoji}) => handleReaction(emoji, message);
 
 	const renderItem = useCallback(({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme} />, []);
 

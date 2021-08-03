@@ -29,6 +29,7 @@ export const FormContainerInner = ({ children }: {children: JSX.Element}) => (
 );
 
 const FormContainer = ({ children, theme, testID, ...props }: IFormContainer) => (
+	// @ts-ignore
 	<KeyboardView
 		style={{ backgroundColor: themes[theme].backgroundColor }}
 		contentContainerStyle={sharedStyles.container}

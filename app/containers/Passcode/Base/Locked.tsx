@@ -11,18 +11,18 @@ import Title from './Title';
 import Subtitle from './Subtitle';
 import LockIcon from './LockIcon';
 
-type TPasscodeTimer = {
+interface IPasscodeTimer {
 	time: string;
 	theme: string;
 	setStatus: Function;
-};
+}
 
 interface IPasscodeLocked {
 	theme: string;
 	setStatus: Function;
 }
 
-const Timer = React.memo(({ time, theme, setStatus }: TPasscodeTimer) => {
+const Timer = React.memo(({ time, theme, setStatus }: IPasscodeTimer) => {
 	const calcTimeLeft = () => {
 		const diff = getDiff(time);
 		if (diff > 0) {
@@ -62,6 +62,8 @@ const Locked = React.memo(({ theme, setStatus }: IPasscodeLocked) => {
 	}, []);
 
 	return (
+		//TODO - verify if this 'r' it's correct
+		// @ts-ignore
 		<Grid style={[styles.grid, { backgroundColor: themes[theme].passcodeBackground }]} r>
 			<LockIcon theme={theme} />
 			<Title text={I18n.t('Passcode_app_locked_title')} theme={theme} />

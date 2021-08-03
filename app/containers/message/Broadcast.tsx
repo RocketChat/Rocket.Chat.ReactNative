@@ -8,9 +8,9 @@ import { BUTTON_HIT_SLOP } from './utils';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
-import {TMessageBroadcast} from "./types";
+import {IMessageBroadcast} from "./interfaces";
 
-const Broadcast = React.memo(({ author, broadcast, theme }: TMessageBroadcast) => {
+const Broadcast = React.memo(({ author, broadcast, theme }: IMessageBroadcast) => {
 	const { user, replyBroadcast } = useContext(MessageContext);
 	const isOwn = author._id === user.id;
 	if (broadcast && !isOwn) {

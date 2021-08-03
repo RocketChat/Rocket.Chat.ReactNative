@@ -111,6 +111,7 @@ interface IMessageBoxProps {
 	sharing: boolean;
 	isActionsEnabled: boolean;
 }
+
 interface IMessageBoxState {
 	mentions: any[];
 	showEmojiKeyboard: boolean;

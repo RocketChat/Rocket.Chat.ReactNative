@@ -8,7 +8,6 @@ import RoomItem from './RoomItem';
 
 export { ROW_HEIGHT };
 
-
 interface IRoomItemContainerProps {
 	item: any;
 	showLastMessage: boolean;

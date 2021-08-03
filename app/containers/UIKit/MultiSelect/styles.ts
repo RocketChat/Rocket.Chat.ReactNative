@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../../views/Styles';
 
-export default StyleSheet.create({
+export default StyleSheet.create<any>({
 	container: {
 		flex: 1,
 		alignItems: 'center',

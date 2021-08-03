@@ -6,7 +6,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { avatarURL } from '../../utils/avatar';
 import Emoji from '../markdown/Emoji';
-import {TAvatar} from "./types";
+import {IAvatar} from "./interfaces";
 
 const Avatar = React.memo(({
 	server,
@@ -27,7 +27,7 @@ const Avatar = React.memo(({
     size = 25,
     borderRadius = 4,
     type = 'd',
-}: Partial<TAvatar>) => {
+}: Partial<IAvatar>) => {
 
 	if ((!text && !avatar && !emoji && !rid) || !server) {
 		return null;

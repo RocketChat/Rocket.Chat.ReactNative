@@ -1,6 +1,4 @@
-import {TChannel} from "../markdown/Hashtag";
-
-export type TMessageAttachments = {
+export interface IMessageAttachments {
     attachments: any;
     timeFormat: string;
     showAttachment: Function;
@@ -8,7 +6,7 @@ export type TMessageAttachments = {
     theme: string;
 }
 
-export type TMessageAvatar = {
+export interface IMessageAvatar {
     isHeader: boolean;
     avatar: string;
     emoji: string;
@@ -22,14 +20,14 @@ export type TMessageAvatar = {
     theme: string;
 }
 
-export type TMessageBlocks = {
+export interface IMessageBlocks {
     blocks: any;
     id: string;
     rid: string;
     blockAction: Function;
 }
 
-export type TMessageBroadcast = {
+export interface IMessageBroadcast {
     author: {
         _id: string
     };
@@ -37,12 +35,12 @@ export type TMessageBroadcast = {
     theme: string
 }
 
-export type TMessageCallButton = {
+export interface IMessageCallButton {
     theme: string;
     callJitsi: Function;
 }
 
-export type TMessageContent = {
+export interface IMessageContent {
     isTemp: boolean;
     isInfo: boolean;
     tmid: string;
@@ -52,7 +50,10 @@ export type TMessageContent = {
     isEdited: boolean;
     isEncrypted: boolean;
     getCustomEmoji: Function;
-    channels: TChannel[];
+    channels: {
+        name: string;
+        _id: number;
+    }[];
     mentions: object[];
     navToRoomInfo: Function;
     useRealName: boolean;
@@ -60,14 +61,22 @@ export type TMessageContent = {
     type: string;
 }
 
-export type TMessageDiscussion = {
+export interface IMessageDiscussion {
     msg: string;
     dcount: number;
     dlm: string;
     theme: string;
 }
 
-export type TMessageThread = {
+export interface IMessageEmoji {
+    content: any;
+    baseUrl: string;
+    standardEmojiStyle: object;
+    customEmojiStyle: object;
+    getCustomEmoji: Function;
+}
+
+export interface IMessageThread {
     msg: string;
     tcount: number;
     theme: string;
@@ -76,7 +85,23 @@ export type TMessageThread = {
     id: string;
 }
 
-export type TMessageRepliedThread = {
+export interface IMessageTouchable {
+    hasError: boolean;
+    isInfo: boolean;
+    isThreadReply: boolean;
+    isTemp: boolean;
+    archived: boolean;
+    highlighted: boolean;
+    theme: string;
+    ts?: any
+    urls?: any;
+    reactions?: any;
+    alias?: any;
+    role?: any;
+    drid?: any;
+}
+
+export interface IMessageRepliedThread {
     tmid: string;
     tmsg: string;
     id: string;
@@ -86,13 +111,13 @@ export type TMessageRepliedThread = {
     isEncrypted: boolean;
 }
 
-export type TMessageInner = {
+export interface IMessageInner extends IMessageDiscussion, IMessageContent, IMessageCallButton, IMessageBlocks,
+    IMessageThread, IMessageAttachments, IMessageBroadcast {
     type: string;
     blocks: [];
-} & TMessageDiscussion & TMessageContent & TMessageCallButton & TMessageBlocks
-    & TMessageThread & TMessageAttachments & TMessageBroadcast;
+}
 
-export type TMessage = {
+export interface IMessage extends IMessageRepliedThread, IMessageInner {
     isThreadReply: boolean;
     isThreadSequential: boolean;
     isInfo: boolean;
@@ -105,4 +130,4 @@ export type TMessage = {
     unread: boolean;
     theme: string;
     isIgnored: boolean;
-} & TMessageRepliedThread & TMessageAvatar & TMessageContent & TMessageInner;
+}

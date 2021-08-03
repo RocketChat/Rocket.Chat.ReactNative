@@ -11,9 +11,9 @@ import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import Encrypted from './Encrypted';
 import { E2E_MESSAGE_TYPE } from '../../lib/encryption/constants';
-import {TMessageContent} from "./types";
+import {IMessageContent} from "./interfaces";
 
-const Content = React.memo((props: TMessageContent) => {
+const Content = React.memo((props: IMessageContent) => {
 	if (props.isInfo) {
 		// @ts-ignore
 		const infoMessage = getInfoMessage({ ...props });

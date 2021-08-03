@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 const standardEmojiStyle = { fontSize: 20 };
 const customEmojiStyle = { width: 20, height: 20 };
 
-type TItem = {
+interface IItem {
 	item: {
 		usernames: any;
 		emoji: string;
@@ -68,15 +68,15 @@ type TItem = {
 	baseUrl?: string;
 	getCustomEmoji?: Function;
 	theme?: string;
-};
+}
 
-type TModalContent = {
+interface IModalContent {
 	message: {
 		reactions: any
 	};
 	onClose: Function;
 	theme: string;
-};
+}
 
 interface IReactionsModal {
 	isVisible: boolean;
@@ -84,7 +84,7 @@ interface IReactionsModal {
 	theme: string;
 }
 
-const Item = React.memo(({ item, user, baseUrl, getCustomEmoji, theme }: TItem) => {
+const Item = React.memo(({ item, user, baseUrl, getCustomEmoji, theme }: IItem) => {
 	const count = item.usernames.length;
 	let usernames = item.usernames.slice(0, 3)
 		.map((username: any) => (username === user?.username ? I18n.t('you') : username)).join(', ');
@@ -114,7 +114,7 @@ const Item = React.memo(({ item, user, baseUrl, getCustomEmoji, theme }: TItem) 
 	);
 });
 
-const ModalContent = React.memo(({ message, onClose, ...props }: TModalContent) => {
+const ModalContent = React.memo(({ message, onClose, ...props }: IModalContent) => {
 	if (message && message.reactions) {
 		return (
 			<SafeAreaView style={styles.safeArea}>

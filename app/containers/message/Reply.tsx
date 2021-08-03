@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TAttachment = {
+interface IMessageReplyAttachment {
 	author_name: string;
 	message_link: string;
 	ts: string;
@@ -81,36 +81,36 @@ type TAttachment = {
 	type: string;
 	color: string;
 	description: string;
-	fields: TAttachment[];
+	fields: IMessageReplyAttachment[];
 }
 
-type TMessageTitle = {
-	attachment: Partial<TAttachment>
+interface IMessageTitle {
+	attachment: Partial<IMessageReplyAttachment>
 	timeFormat: string;
 	theme: string;
-};
+}
 
-type TMessageDescription = {
-	attachment: Partial<TAttachment>
+interface IMessageDescription {
+	attachment: Partial<IMessageReplyAttachment>
 	getCustomEmoji: Function;
 	theme: string;
-};
+}
 
-type TMessageFields = {
-	attachment: Partial<TAttachment>;
+interface IMessageFields {
+	attachment: Partial<IMessageReplyAttachment>;
 	theme: string;
 	getCustomEmoji: Function;
-};
+}
 
 interface IMessageReply {
-	attachment: Partial<TAttachment>
+	attachment: Partial<IMessageReplyAttachment>
 	timeFormat: string;
 	index: number;
 	theme: string;
 	getCustomEmoji: Function;
 }
 
-const Title = React.memo(({ attachment, timeFormat, theme }: TMessageTitle) => {
+const Title = React.memo(({ attachment, timeFormat, theme }: IMessageTitle) => {
 	if (!attachment.author_name) {
 		return null;
 	}
@@ -123,7 +123,7 @@ const Title = React.memo(({ attachment, timeFormat, theme }: TMessageTitle) => {
 	);
 });
 
-const Description = React.memo(({ attachment, getCustomEmoji, theme }: TMessageDescription) => {
+const Description = React.memo(({ attachment, getCustomEmoji, theme }: IMessageDescription) => {
 	const text = attachment.text || attachment.title;
 	if (!text) {
 		return null;
@@ -152,7 +152,7 @@ const Description = React.memo(({ attachment, getCustomEmoji, theme }: TMessageD
 	return true;
 });
 
-const Fields = React.memo(({ attachment, theme, getCustomEmoji }: TMessageFields) => {
+const Fields = React.memo(({ attachment, theme, getCustomEmoji }: IMessageFields) => {
 	if (!attachment.fields) {
 		return null;
 	}

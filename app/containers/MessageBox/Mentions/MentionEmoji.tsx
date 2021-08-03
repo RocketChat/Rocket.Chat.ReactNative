@@ -6,10 +6,10 @@ import shortnameToUnicode from '../../../utils/shortnameToUnicode';
 import styles from '../styles';
 import MessageboxContext from '../Context';
 import CustomEmoji from '../../EmojiPicker/CustomEmoji';
-import {TEmoji} from "../../EmojiPicker";
+import {IEmoji} from "../../EmojiPicker/interfaces";
 
 interface IMessageBoxMentionEmoji {
-	item: TEmoji;
+	item: IEmoji;
 }
 
 const MentionEmoji = ({ item }: IMessageBoxMentionEmoji) => {

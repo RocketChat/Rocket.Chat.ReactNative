@@ -10,12 +10,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TListSeparator = {
+interface IListSeparator {
 	style: object;
 	theme: string;
 }
 
-const ListSeparator = React.memo(({ style, theme }: TListSeparator) => (
+const ListSeparator = React.memo(({ style, theme }: IListSeparator) => (
 	<View
 		style={[
 			styles.separator,

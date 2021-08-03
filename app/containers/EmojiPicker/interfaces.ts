@@ -1,19 +1,19 @@
-export type TEmoji = {
+export interface IEmoji {
     content: any;
     name: string;
     extension: any;
     isCustom: boolean;
 }
 
-export type TCustomEmoji = {
+export interface ICustomEmoji {
     baseUrl: string,
-    emoji: TEmoji,
+    emoji: IEmoji,
     style: any
 }
 
-export type TEmojiCategory = {
+export interface IEmojiCategory {
     baseUrl: string;
-    emojis: TEmoji[];
+    emojis: IEmoji[];
     onEmojiSelected({}: any): void;
     emojisPerRow: number;
     width: number;

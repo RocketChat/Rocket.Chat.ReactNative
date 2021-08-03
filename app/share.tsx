@@ -28,12 +28,13 @@ import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
 
-type TDimensions = {
+interface IDimensions {
 	width: number,
 	height: number,
 	scale: number,
 	fontScale: number
 }
+
 interface IProps {}
 interface IState {
 	theme: string,
@@ -173,11 +174,11 @@ class Root extends React.Component<IProps, IState> {
 	}
 
 	// Dimensions update fires twice
-	onDimensionsChange = debounce(({window: { width, height, scale, fontScale}}: {window: TDimensions}) => {
+	onDimensionsChange = debounce(({window: { width, height, scale, fontScale}}: {window: IDimensions}) => {
 		this.setDimensions({ width, height, scale, fontScale });
 	})
 
-	setDimensions = ({ width, height, scale, fontScale }: TDimensions) => {
+	setDimensions = ({ width, height, scale, fontScale }: IDimensions) => {
 		this.setState({
 			width, height, scale, fontScale
 		});

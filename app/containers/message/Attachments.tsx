@@ -1,7 +1,7 @@
 import React from 'react';
 import { dequal } from 'dequal';
 
-import {TMessageAttachments} from "./types";
+import {IMessageAttachments} from "./interfaces";
 
 import Image from './Image';
 import Audio from './Audio';
@@ -10,7 +10,7 @@ import Reply from './Reply';
 
 const Attachments = React.memo(({
 	attachments, timeFormat, showAttachment, getCustomEmoji, theme
-}: TMessageAttachments) => {
+}: IMessageAttachments) => {
 	if (!attachments || attachments.length === 0) {
 		return null;
 	}

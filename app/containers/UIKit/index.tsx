@@ -236,6 +236,7 @@ class ModalParser extends UiKitParserModal {
 				inputStyle={multiline && styles.multiline}
 				containerStyle={styles.input}
 				value={value}
+				// @ts-ignore
 				error={{ error }}
 				theme={theme}
 			/>

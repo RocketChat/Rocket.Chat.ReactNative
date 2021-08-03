@@ -11,6 +11,7 @@ interface IMessageBoxMentions {
 	trackingType: string;
 	theme: string;
 }
+
 const Mentions = React.memo(({ mentions, trackingType, theme }: IMessageBoxMentions) => {
 	if (!trackingType) {
 		return null;

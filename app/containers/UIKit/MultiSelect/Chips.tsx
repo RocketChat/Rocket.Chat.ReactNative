@@ -9,7 +9,7 @@ import { CustomIcon } from '../../../lib/Icons';
 
 import styles from './styles';
 
-type TChip = {
+interface IChip {
 	item: {
 		value: string;
 		imageUrl: string;
@@ -30,7 +30,7 @@ interface IChips {
 
 const keyExtractor = (item: any) => item.value.toString();
 
-const Chip = ({ item, onSelect, style, theme }: TChip) => (
+const Chip = ({ item, onSelect, style, theme }: IChip) => (
 	<Touchable
 		key={item.value}
 		onPress={() => onSelect(item)}

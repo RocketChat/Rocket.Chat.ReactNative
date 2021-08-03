@@ -43,7 +43,7 @@ const methods: any = {
 const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<any>({});
-	const [code, setCode] = useState('');
+	const [code, setCode] = useState<any>('');
 
 	const method = methods[data.method];
 	const isEmail = data.method === 'email';
@@ -102,6 +102,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 					<TextInput
+						/*@ts-ignore*/
 						value={code}
 						theme={theme}
 						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}

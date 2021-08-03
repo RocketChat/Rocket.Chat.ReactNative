@@ -25,7 +25,7 @@ import * as List from '../List';
 import I18n from '../../i18n';
 import { useOrientation, useDimensions, IDimensionsContextProps } from '../../dimensions';
 
-type TActionSheetData = {
+interface IActionSheetData {
 	options: any;
 	headerHeight?: number;
 	hasCancel?: boolean;
@@ -48,7 +48,7 @@ const ANIMATION_CONFIG = {
 
 const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.Element; theme: string}, ref) => {
 	const bottomSheetRef: any = useRef();
-	const [data, setData] = useState<TActionSheetData>({} as TActionSheetData);
+	const [data, setData] = useState<IActionSheetData>({} as IActionSheetData);
 	const [isVisible, setVisible] = useState(false);
 	const { height }: Partial<IDimensionsContextProps> = useDimensions();
 	const { isLandscape } = useOrientation();

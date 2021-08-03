@@ -5,17 +5,15 @@ import { themes } from '../../constants/colors';
 
 import styles from './styles';
 
-export type TChannel = {
-	name: string;
-	_id: number;
-}
-
 interface IHashtag {
 	hashtag: string;
 	navToRoomInfo: Function;
 	style: [];
 	theme: string;
-	channels: TChannel[];
+	channels: {
+		name: string;
+		_id: number;
+	}[];
 }
 
 const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [], theme }: IHashtag) => {

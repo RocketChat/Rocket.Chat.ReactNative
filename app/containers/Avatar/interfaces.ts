@@ -1,4 +1,4 @@
-export type TAvatar = {
+export interface IAvatar {
     server: string;
     style: any,
     text: string;

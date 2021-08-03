@@ -4,9 +4,9 @@ import { StyleSheet } from 'react-native';
 import { CustomIcon } from '../lib/Icons';
 import { themes } from '../constants/colors';
 
-type TCheck = {
-	style?: object,
-	theme: string
+interface ICheck {
+	style?: object;
+	theme: string;
 }
 const styles = StyleSheet.create({
 	icon: {
@@ -16,6 +16,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Check = React.memo(({ theme, style }: TCheck) => <CustomIcon style={[styles.icon, style]} color={themes[theme].tintColor} size={22} name='check' />);
+const Check = React.memo(({ theme, style }: ICheck) => <CustomIcon style={[styles.icon, style]} color={themes[theme].tintColor} size={22} name='check' />);
 
 export default Check;

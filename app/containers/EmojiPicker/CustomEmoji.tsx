@@ -1,8 +1,8 @@
 import React from 'react';
 import FastImage from '@rocket.chat/react-native-fast-image';
-import {TCustomEmoji} from "./types";
+import {ICustomEmoji} from "./interfaces";
 
-const CustomEmoji = React.memo(({ baseUrl, emoji, style }: TCustomEmoji) => (
+const CustomEmoji = React.memo(({ baseUrl, emoji, style }: ICustomEmoji) => (
 	<FastImage
 		style={style}
 		source={{

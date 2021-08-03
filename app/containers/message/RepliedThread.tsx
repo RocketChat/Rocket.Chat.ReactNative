@@ -6,12 +6,11 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import Markdown from '../markdown';
-import {TMessageRepliedThread} from "./types";
-
+import {IMessageRepliedThread} from "./interfaces";
 
 const RepliedThread = memo(({
 	tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted, theme
-}: TMessageRepliedThread) => {
+}: IMessageRepliedThread) => {
 	if (!tmid || !isHeader) {
 		return null;
 	}
