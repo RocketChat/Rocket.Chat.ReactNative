@@ -17,7 +17,9 @@ const attrs = [
 	'isFocused',
 	'forceUpdate',
 	'showLastMessage',
-	'autoJoin'
+	'autoJoin',
+	'showAvatar',
+	'displayType'
 ];
 
 class RoomItemContainer extends React.Component {
@@ -44,7 +46,9 @@ class RoomItemContainer extends React.Component {
 		getIsGroupChat: PropTypes.func,
 		getIsRead: PropTypes.func,
 		swipeEnabled: PropTypes.bool,
-		autoJoin: PropTypes.bool
+		autoJoin: PropTypes.bool,
+		showAvatar: PropTypes.bool,
+		displayType: PropTypes.string
 	};
 
 	static defaultProps = {
@@ -140,7 +144,9 @@ class RoomItemContainer extends React.Component {
 			username,
 			useRealName,
 			swipeEnabled,
-			autoJoin
+			autoJoin,
+			showAvatar,
+			displayType
 		} = this.props;
 		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${ name }`;
@@ -202,6 +208,8 @@ class RoomItemContainer extends React.Component {
 				swipeEnabled={swipeEnabled}
 				teamMain={item.teamMain}
 				autoJoin={autoJoin}
+				showAvatar={showAvatar}
+				displayType={displayType}
 			/>
 		);
 	}

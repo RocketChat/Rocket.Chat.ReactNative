@@ -89,6 +89,8 @@ const shouldUpdateProps = [
 	'groupByType',
 	'showFavorites',
 	'showUnread',
+	'showAvatar',
+	'displayType',
 	'useRealName',
 	'StoreLastMessage',
 	'theme',
@@ -141,7 +143,9 @@ class RoomsListView extends React.Component {
 		insets: PropTypes.object,
 		queueSize: PropTypes.number,
 		inquiryEnabled: PropTypes.bool,
-		encryptionBanner: PropTypes.string
+		encryptionBanner: PropTypes.string,
+		showAvatar: PropTypes.bool,
+		displayType: PropTypes.string
 	};
 
 	constructor(props) {
@@ -277,7 +281,9 @@ class RoomsListView extends React.Component {
 			showUnread,
 			rooms,
 			isMasterDetail,
-			insets
+			insets,
+			showAvatar,
+			displayType
 		} = this.props;
 		const { item } = this.state;
 
@@ -287,6 +293,8 @@ class RoomsListView extends React.Component {
 				&& prevProps.groupByType === groupByType
 				&& prevProps.showFavorites === showFavorites
 				&& prevProps.showUnread === showUnread
+				&& prevProps.showAvatar === showAvatar
+				&& prevProps.displayType === displayType
 			)
 		) {
 			this.getSubscriptions();
@@ -898,7 +906,9 @@ class RoomsListView extends React.Component {
 			useRealName,
 			theme,
 			isMasterDetail,
-			width
+			width,
+			showAvatar,
+			displayType
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
 
@@ -923,6 +933,8 @@ class RoomsListView extends React.Component {
 				getIsRead={this.isRead}
 				visitor={item.visitor}
 				isFocused={currentItem?.rid === item.rid}
+				showAvatar={showAvatar}
+				displayType={displayType}
 			/>
 		);
 	};
@@ -1025,7 +1037,9 @@ const mapStateToProps = state => ({
 	rooms: state.room.rooms,
 	queueSize: getInquiryQueueSelector(state).length,
 	inquiryEnabled: state.inquiry.enabled,
-	encryptionBanner: state.encryption.banner
+	encryptionBanner: state.encryption.banner,
+	showAvatar: state.sortPreferences.showAvatar,
+	displayType: state.sortPreferences.displayType
 });
 
 const mapDispatchToProps = dispatch => ({
