@@ -26,9 +26,6 @@ export default {
 	Accounts_CustomFields: {
 		type: 'valueAsString'
 	},
-	Accounts_Default_User_Preferences_enableMessageParserEarlyAdoption: {
-		type: 'valueAsBoolean'
-	},
 	Accounts_EmailOrUsernamePlaceholder: {
 		type: 'valueAsString'
 	},

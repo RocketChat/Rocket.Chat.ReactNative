@@ -57,7 +57,6 @@ class ProfileView extends React.Component {
 		Accounts_AllowRealNameChange: PropTypes.bool,
 		Accounts_AllowUserAvatarChange: PropTypes.bool,
 		Accounts_AllowUsernameChange: PropTypes.bool,
-		Accounts_enableMessageParserEarlyAdoption: PropTypes.bool,
 		Accounts_CustomFields: PropTypes.string,
 		setUser: PropTypes.func,
 		theme: PropTypes.string
@@ -74,8 +73,7 @@ class ProfileView extends React.Component {
 		avatarUrl: null,
 		avatar: {},
 		avatarSuggestions: {},
-		customFields: {},
-		preferences: []
+		customFields: {}
 	};
 
 	async componentDidMount() {
@@ -112,14 +110,11 @@ class ProfileView extends React.Component {
 		this.setState({ avatar });
 	}
 
-	init = async(user) => {
+	init = (user) => {
 		const { user: userProps } = this.props;
 		const {
-			name, username, emails, customFields, id
+			name, username, emails, customFields, enableMessageParserEarlyAdoption
 		} = user || userProps;
-
-		const result = await RocketChat.getUserPreferences(id);
-		const { preferences } = result;
 
 		this.setState({
 			name,
@@ -130,14 +125,13 @@ class ProfileView extends React.Component {
 			avatarUrl: null,
 			avatar: {},
 			customFields: customFields || {},
-			enableMessageParser: preferences?.enableMessageParserEarlyAdoption || false,
-			preferences
+			enableMessageParser: enableMessageParserEarlyAdoption || false
 		});
 	}
 
 	formIsChanged = () => {
 		const {
-			name, username, email, newPassword, avatar, customFields, enableMessageParser, preferences
+			name, username, email, newPassword, avatar, customFields, enableMessageParser
 		} = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
@@ -153,7 +147,7 @@ class ProfileView extends React.Component {
 
 		return !(user.name === name
 			&& user.username === username
-			&& preferences.enableMessageParserEarlyAdoption === enableMessageParser
+			&& user.enableMessageParserEarlyAdoption === enableMessageParser
 			&& !newPassword
 			&& (user.emails && user.emails[0].address === email)
 			&& !avatar.data
@@ -480,8 +474,7 @@ class ProfileView extends React.Component {
 			Accounts_AllowRealNameChange,
 			Accounts_AllowUserAvatarChange,
 			Accounts_AllowUsernameChange,
-			Accounts_CustomFields,
-			Accounts_enableMessageParserEarlyAdoption
+			Accounts_CustomFields
 		} = this.props;
 
 		return (
@@ -568,14 +561,11 @@ class ProfileView extends React.Component {
 							theme={theme}
 						/>
 						<List.Separator />
-						{Accounts_enableMessageParserEarlyAdoption
-							? (
-								<List.Item
-									title='Enable_Message_Parser'
-									testID='profile-view-enable-message-parser'
-									right={() => this.renderMessageParserSwitch()}
-								/>
-							) : null}
+						<List.Item
+							title='Enable_Message_Parser'
+							testID='profile-view-enable-message-parser'
+							right={() => this.renderMessageParserSwitch()}
+						/>
 						<List.Separator />
 						{this.renderCustomFields()}
 						<RCTextInput
@@ -625,7 +615,6 @@ const mapStateToProps = state => ({
 	Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange,
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
-	Accounts_enableMessageParserEarlyAdoption: state.settings.Accounts_Default_User_Preferences_enableMessageParserEarlyAdoption,
 	baseUrl: state.server.server
 });
 

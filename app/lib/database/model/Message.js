@@ -84,5 +84,5 @@ export default class Message extends Model {
 
 	@field('tshow') tshow;
 
-	@field('md') md;
+	@json('md', sanitizer) md;
 }
