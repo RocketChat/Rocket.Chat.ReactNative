@@ -30,6 +30,8 @@ const RoomItem = props => (
 		baseUrl={baseUrl}
 		width={width}
 		theme={_theme}
+		showAvatar
+		displayType='expanded'
 		{...updatedAt}
 		{...props}
 	/>
@@ -150,6 +152,49 @@ stories.add('Last Message', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
+		/>
+	</>
+));
+
+stories.add('Condensed Room Item', () => (
+	<RoomItem
+		showLastMessage
+		alert
+		tunread={[1]}
+		lastMessage={lastMessage}
+		displayType='condensed'
+	/>
+));
+
+stories.add('Condensed Room Item without Avatar', () => (
+	<RoomItem
+		showLastMessage
+		alert
+		tunread={[1]}
+		lastMessage={lastMessage}
+		displayType='condensed'
+		showAvatar={false}
+	/>
+));
+
+stories.add('Expanded Room Item without Avatar', () => (
+	<>
+		<RoomItem
+			showLastMessage
+			alert
+			tunread={[1]}
+			lastMessage={lastMessage}
+			displayType='expanded'
+			showAvatar={false}
+		/>
+		<RoomItem
+			status='online'
+			showLastMessage
+			alert
+			tunread={[1]}
+			lastMessage={lastMessage}
+			displayType='expanded'
+			showAvatar={false}
 		/>
 	</>
 ));
