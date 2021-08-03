@@ -2,7 +2,6 @@ const { navigateToLogin, login, sleep } = require('../../helpers/app');
 const data = require('../../data');
 
 const platformTypes = require('../../helpers/platformTypes');
-const { closeKeyboardAndroid } = require('../../helpers/platformFunctions');
 
 const profileChangeUser = data.users.profileChanges;
 
@@ -81,8 +80,7 @@ describe('Profile screen', () => {
 	describe('Usage', () => {
 		it('should change name and username', async() => {
 			await element(by.id('profile-view-name')).replaceText(`${ profileChangeUser.username }new`);
-			await element(by.id('profile-view-username')).typeText(`${ profileChangeUser.username }new`);
-			await closeKeyboardAndroid();
+			await element(by.id('profile-view-username')).replaceText(`${ profileChangeUser.username }new`);
 			await element(by.type(scrollViewType)).atIndex(1).swipe('up');
 			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();
@@ -92,11 +90,8 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${ data.random }@rocket.chat`);
 			await element(by.id('profile-view-new-password')).replaceText(`${ profileChangeUser.password }new`);
 			await element(by.id('profile-view-submit')).tap();
-			await element(by.type(textInputType)).typeText(`${ profileChangeUser.password }\n`);
-			// TODO: Check if this is fine on iOS
-			if (device.getPlatform() === 'android') {
-				await element(by.text('SAVE')).tap();
-			}
+			await element(by.type(textInputType)).replaceText(`${ profileChangeUser.password }`);
+			await element(by.text('SAVE')).tap();
 			await waitForToast();
 		});
 

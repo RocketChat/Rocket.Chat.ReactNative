@@ -72,7 +72,7 @@ describe('Threads', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Reply in Thread')).atIndex(0).tap();
-				await element(by.id('messagebox-input')).typeText('replied');
+				await element(by.id('messagebox-input')).replaceText('replied');
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.id(`message-thread-button-${ thread }`))).toExist().withTimeout(5000);
 				await expect(element(by.id(`message-thread-button-${ thread }`))).toExist();
@@ -113,7 +113,7 @@ describe('Threads', () => {
 				const messageText = 'sendToChannel';
 				await element(by.id(`message-thread-button-${ thread }`)).tap();
 				await waitFor(element(by.id('messagebox-input-thread'))).toExist().withTimeout(5000);
-				await element(by.id('messagebox-input-thread')).typeText(messageText);
+				await element(by.id('messagebox-input-thread')).replaceText(messageText);
 				await element(by.id('messagebox-send-to-channel')).tap();
 				await element(by.id('messagebox-send-message')).tap();
 				await tapBack();
@@ -128,7 +128,7 @@ describe('Threads', () => {
 				await mockMessageWithNag('dummymessagebetweenthethread');
 				await element(by.id(`message-thread-button-${ thread }`)).tap();
 				await waitFor(element(by.id('messagebox-input-thread'))).toExist().withTimeout(5000);
-				await element(by.id('messagebox-input-thread')).typeText(messageText);
+				await element(by.id('messagebox-input-thread')).replaceText(messageText);
 				await element(by.id('messagebox-send-to-channel')).tap();
 				await element(by.id('messagebox-send-message')).tap();
 				await tapBack();
@@ -158,7 +158,7 @@ describe('Threads', () => {
 			it('should draft thread message', async() => {
 				await element(by.id(`message-thread-button-${ thread }`)).tap();
 				await waitFor(element(by.id(`room-view-title-${ thread }`))).toExist().withTimeout(5000);
-				await element(by.id('messagebox-input-thread')).typeText(`${ thread }draft`);
+				await element(by.id('messagebox-input-thread')).replaceText(`${ thread }draft`);
 				await tapBack();
 
 				await element(by.id(`message-thread-button-${ thread }`)).tap();

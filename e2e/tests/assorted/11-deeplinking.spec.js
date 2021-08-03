@@ -2,7 +2,6 @@ const data = require('../../data');
 const { tapBack, checkServer, navigateToRegister } = require('../../helpers/app');
 const { get, login } = require('../../helpers/data_setup');
 const platformTypes = require('../../helpers/platformTypes');
-const { closeKeyboardAndroid } = require('../../helpers/platformFunctions');
 
 const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
 
@@ -34,7 +33,7 @@ describe('Deep linking', () => {
 				delete: true,
 				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=123${ amp }token=abc`)
 			});
-			await waitFor(element(by.text('You\'ve been logged out by the server. Please log in again.'))).toExist().withTimeout(10000); // TODO: we need to improve this message
+			await waitFor(element(by.text('You\'ve been logged out by the server. Please log in again.'))).toExist().withTimeout(20000); // TODO: we need to improve this message
 		});
 
 		const authAndNavigate = async() => {
@@ -60,8 +59,7 @@ describe('Deep linking', () => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser4.username);
 			await element(by.id('register-view-username')).replaceText(data.registeringUser4.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser4.email);
-			await element(by.id('register-view-password')).typeText(data.registeringUser4.password);
-			await closeKeyboardAndroid();
+			await element(by.id('register-view-password')).replaceText(data.registeringUser4.password);
 			await element(by.type(scrollViewType)).atIndex(0).scrollTo('bottom');
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);

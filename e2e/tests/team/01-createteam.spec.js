@@ -35,7 +35,7 @@ describe('Create team screen', () => {
 	describe('Create Team', () => {
 		describe('Usage', () => {
 			it('should get invalid team name', async() => {
-				await element(by.id('create-channel-name')).typeText(`${ data.teams.private.name }`);
+				await element(by.id('create-channel-name')).replaceText(`${ data.teams.private.name }`);
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.text('OK'))).toBeVisible().withTimeout(5000);
 				await element(by.text('OK')).tap();
@@ -43,7 +43,7 @@ describe('Create team screen', () => {
 
 			it('should create private team', async() => {
 				await element(by.id('create-channel-name')).replaceText('');
-				await element(by.id('create-channel-name')).typeText(teamName);
+				await element(by.id('create-channel-name')).replaceText(teamName);
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.id('room-view'))).toExist().withTimeout(20000);
 				await expect(element(by.id('room-view'))).toExist();

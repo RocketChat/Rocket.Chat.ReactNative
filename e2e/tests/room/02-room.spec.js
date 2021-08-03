@@ -93,7 +93,7 @@ describe('Room screen', () => {
 
 			it('should show and tap on emoji autocomplete', async() => {
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).replaceText(':');
+				await element(by.id('messagebox-input')).typeText(':');
 				await element(by.id('messagebox-input')).typeText('joy'); // workaround for number keyboard
 				await waitFor(element(by.id('messagebox-container'))).toExist().withTimeout(10000);
 				await element(by.id('mention-item-joy')).tap();
@@ -103,7 +103,7 @@ describe('Room screen', () => {
 
 			it('should not show emoji autocomplete on semicolon in middle of a string', async() => {
 				await element(by.id('messagebox-input')).tap();
-				// await element(by.id('messagebox-input')).replaceText(':');
+				// await element(by.id('messagebox-input')).typeText(':');
 				await element(by.id('messagebox-input')).typeText('name:is');
 				await waitFor(element(by.id('messagebox-container'))).toNotExist().withTimeout(20000);
 				await element(by.id('messagebox-input')).clearText();
@@ -148,7 +148,7 @@ describe('Room screen', () => {
 			});
 			it('should draft message', async() => {
 				await element(by.id('messagebox-input')).tap();
-				await element(by.id('messagebox-input')).typeText(`${ data.random }draft`);
+				await element(by.id('messagebox-input')).replaceText(`${ data.random }draft`);
 				await tapBack();
 
 				await navigateToRoom(mainRoom);
@@ -249,7 +249,7 @@ describe('Room screen', () => {
 				await element(by.text('Edit')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).replaceText(`${ data.random }edited`);
 				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.text(`${ data.random }edited (edited)`)).atIndex(0)).toExist().withTimeout(60000);
+				await waitFor(element(by.text(`${ data.random }edited (edited)`)).atIndex(0)).toExist().withTimeout(60000); // Failing on android
 			});
 
 			it('should quote message', async() => {
@@ -259,7 +259,7 @@ describe('Room screen', () => {
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.text('Quote')).atIndex(0).tap();
-				await element(by.id('messagebox-input')).typeText(`${ data.random }quoted`);
+				await element(by.id('messagebox-input')).replaceText(`${ data.random }quoted`);
 				await element(by.id('messagebox-send-message')).tap();
 
 				// TODO: test if quote was sent
@@ -270,7 +270,7 @@ describe('Room screen', () => {
 				await pinMessage('pin');
 
 				await waitFor(element(by.text(`${ data.random }pin`)).atIndex(0)).toExist().withTimeout(5000);
-				await waitFor(element(by.text(`${ data.users.regular.username } Message pinned`)).atIndex(0)).toExist().withTimeout(5000);
+				await waitFor(element(by.text(`${ data.users.regular.username } Message pinned`)).atIndex(0)).toExist().withTimeout(5000); // Failing on android
 				await element(by.text(`${ data.random }pin`)).atIndex(0).longPress();
 				await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(1000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();

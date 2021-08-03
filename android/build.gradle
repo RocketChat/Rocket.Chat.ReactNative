@@ -34,7 +34,7 @@ buildscript {
         if (isPlay) {
             classpath 'com.google.gms:google-services:4.2.0'
             classpath 'com.google.firebase:firebase-crashlytics-gradle:2.0.0'
-            classpath 'com.bugsnag:bugsnag-android-gradle-plugin:5.7.7' // 5.7.8+ breaks the build by requiring the @bugsnag/react-native package instead of bugsnag-react-native that is being used currently.
+            classpath 'com.bugsnag:bugsnag-android-gradle-plugin:5+'
         }
         classpath 'com.android.tools.build:gradle:4.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

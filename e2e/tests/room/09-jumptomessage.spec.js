@@ -91,7 +91,7 @@ describe('Room', () => {
 		await navigateToRoom('jumping');
 		await element(by.id('room-view-search')).tap();
 		await waitFor(element(by.id('search-messages-view'))).toExist().withTimeout(5000);
-		await element(by.id('search-message-view-input')).typeText('30\n');
+		await element(by.id('search-message-view-input')).replaceText('30');
 		await waitFor(element(by.text('30')).atIndex(1)).toExist().withTimeout(5000);
 		await element(by.text('30')).atIndex(1).tap();
 		await waitForLoading();
@@ -166,7 +166,7 @@ describe('Threads', () => {
 		await waitFor(element(by.id('room-view-title-jumping-thread'))).toExist().withTimeout(5000);
 		await element(by.id('room-view-search')).atIndex(0).tap();
 		await waitFor(element(by.id('search-messages-view'))).toExist().withTimeout(5000);
-		await element(by.id('search-message-view-input')).typeText('to be searched\n');
+		await element(by.id('search-message-view-input')).replaceText('to be searched');
 		await waitFor(element(by.text('to be searched')).atIndex(1)).toExist().withTimeout(5000);
 		await element(by.text('to be searched')).atIndex(1).tap();
 		await expectThreadMessages('to be searched');

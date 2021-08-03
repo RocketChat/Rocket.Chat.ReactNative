@@ -8,7 +8,8 @@ async function navigateToWorkspace(server = data.server) {
 	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(10000);
 	await element(by.id('join-workspace')).tap();
 	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-	await element(by.id('new-server-view-input')).typeText(`${ server }\n`);
+	await element(by.id('new-server-view-input')).replaceText(`${ server }`);
+	await element(by.text('Connect')).tap();
 	await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
 	await expect(element(by.id('workspace-view'))).toBeVisible();
 }
@@ -57,7 +58,7 @@ async function logout() {
 async function mockMessage(message, isThread = false) {
 	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
 	await element(by.id(input)).tap();
-	await element(by.id(input)).typeText(`${ data.random }${ message }`);
+	await element(by.id(input)).replaceText(`${ data.random }${ message }`);
 	await element(by.id('messagebox-send-message')).tap();
 	await waitFor(element(by.text(`${ data.random }${ message }`))).toExist().withTimeout(60000);
 	await expect(element(by.text(`${ data.random }${ message }`))).toExist();
@@ -95,7 +96,7 @@ async function dismissReviewNag() {
 async function mockMessageWithNag(message, isThread = false) {
 	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
 	await element(by.id(input)).tap();
-	await element(by.id(input)).typeText(`${ data.random }${ message }`);
+	await element(by.id(input)).replaceText(`${ data.random }${ message }`);
 	await element(by.id('messagebox-send-message')).tap();
 	await dismissReviewNag();
 	await waitFor(element(by.text(`${ data.random }${ message }`))).toExist().withTimeout(60000);
@@ -115,7 +116,7 @@ async function searchRoom(room) {
 	await element(by.id('rooms-list-view-search')).tap();
 	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
 	await waitFor(element(by.id('rooms-list-view-search-input'))).toExist().withTimeout(5000);
-	await element(by.id('rooms-list-view-search-input')).typeText(room);
+	await element(by.id('rooms-list-view-search-input')).replaceText(room);
 	await sleep(300);
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 }
@@ -144,12 +145,6 @@ const checkServer = async(server) => {
 	await element(by.id('sidebar-close-drawer')).tap();
 };
 
-async function closeKeyboard() {
-	if (device.getPlatform() === 'android') {
-		await device.goBack();
-	}
-}
-
 module.exports = {
 	navigateToWorkspace,
 	navigateToLogin,
@@ -165,6 +160,5 @@ module.exports = {
 	searchRoom,
 	tryTapping,
 	checkServer,
-	closeKeyboard,
 	mockMessageWithNag
 };

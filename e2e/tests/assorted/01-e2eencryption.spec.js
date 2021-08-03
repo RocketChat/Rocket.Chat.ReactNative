@@ -4,8 +4,6 @@ const {
 
 const platformTypes = require('../../helpers/platformTypes');
 
-const { closeKeyboardAndroid } = require('../../helpers/platformFunctions');
-
 const data = require('../../data');
 
 const testuser = data.users.regular;
@@ -143,7 +141,7 @@ describe('E2E Encryption', () => {
 
 		describe('Change password', () => {
 			it('should change password', async() => {
-				await element(by.id('e2e-encryption-security-view-password')).typeText(newPassword);
+				await element(by.id('e2e-encryption-security-view-password')).replaceText(newPassword);
 				await element(by.id('e2e-encryption-security-view-change-password')).tap();
 				await waitFor(element(by.text('Are you sure?'))).toExist().withTimeout(2000);
 				await expect(element(by.text('Make sure you\'ve saved it carefully somewhere else.'))).toExist();
@@ -182,7 +180,7 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.id('listheader-encryption').withDescendant(by.text('Enter Your E2E Password')))).toBeVisible().withTimeout(2000);
 				await element(by.id('listheader-encryption').withDescendant(by.text('Enter Your E2E Password'))).tap();
 				await waitFor(element(by.id('e2e-enter-your-password-view'))).toBeVisible().withTimeout(2000);
-				await element(by.id('e2e-enter-your-password-view-password')).typeText(newPassword);
+				await element(by.id('e2e-enter-your-password-view-password')).replaceText(newPassword);
 				await element(by.id('e2e-enter-your-password-view-confirm')).tap();
 				await waitFor(element(by.id('listheader-encryption'))).not.toExist().withTimeout(10000);
 				await navigateToRoom(room);
@@ -227,7 +225,8 @@ describe('E2E Encryption', () => {
 
 			// TODO: refactor
 			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-			await element(by.id('new-server-view-input')).typeText(`${ data.alternateServer }\n`);
+			await element(by.id('new-server-view-input')).replaceText(`${ data.alternateServer }`);
+			await element(by.text('Connect')).tap();
 			await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
 			await element(by.id('workspace-view-register')).tap();
 			await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
@@ -236,8 +235,7 @@ describe('E2E Encryption', () => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
-			await element(by.id('register-view-password')).typeText(data.registeringUser.password);
-			await closeKeyboardAndroid();
+			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 			element(by.type(scrollViewType)).atIndex(1).scrollTo('bottom');
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);

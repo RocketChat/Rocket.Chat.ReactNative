@@ -13,7 +13,7 @@ const createChannel = async(room) => {
 	await waitFor(element(by.id('select-users-view'))).toExist().withTimeout(5000);
 	await element(by.id('selected-users-view-submit')).tap();
 	await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(10000);
-	await element(by.id('create-channel-name')).typeText(room);
+	await element(by.id('create-channel-name')).replaceText(room);
 	await element(by.id('create-channel-submit')).tap();
 	await waitFor(element(by.id('room-view'))).toExist().withTimeout(60000);
 	await waitFor(element(by.id(`room-view-title-${ room }`))).toExist().withTimeout(60000);

@@ -132,7 +132,7 @@ describe('Team', () => {
 
 				await waitFor(element(by.id('create-channel-view'))).toExist().withTimeout(10000);
 				await element(by.id('create-channel-name')).replaceText('');
-				await element(by.id('create-channel-name')).typeText(room);
+				await element(by.id('create-channel-name')).replaceText(room);
 				await element(by.id('create-channel-submit')).tap();
 
 				await waitFor(element(by.id('room-view'))).toExist().withTimeout(20000);

@@ -31,7 +31,8 @@ describe('Onboarding', () => {
 		});
 
 		it('should enter an invalid server and get error', async() => {
-			await element(by.id('new-server-view-input')).typeText('invalidtest\n');
+			await element(by.id('new-server-view-input')).replaceText('invalidtest');
+			await element(by.text('Connect')).tap();
 			const errorText = 'Oops!';
 			await waitFor(element(by.text(errorText))).toBeVisible().withTimeout(60000);
 			await element(by.text('OK')).tap();
@@ -47,7 +48,8 @@ describe('Onboarding', () => {
 			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(2000);
 			await element(by.id('join-workspace')).tap();
 			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-			await element(by.id('new-server-view-input')).typeText(`${ data.server }\n`);
+			await element(by.id('new-server-view-input')).replaceText(`${ data.server }`);
+			await element(by.text('Connect')).tap();
 			await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
 		});
 	});
