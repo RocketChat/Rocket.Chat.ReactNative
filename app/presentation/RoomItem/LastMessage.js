@@ -54,6 +54,7 @@ const LastMessage = React.memo(({
 		msg={formatMsg({
 			lastMessage, type, showLastMessage, username, useRealName
 		})}
+		md={lastMessage?.md}
 		style={[styles.markdownText, { color: alert ? themes[theme].bodyText : themes[theme].auxiliaryText }]}
 		customEmojis={false}
 		useRealName={useRealName}

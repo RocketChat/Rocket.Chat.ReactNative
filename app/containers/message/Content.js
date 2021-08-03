@@ -98,6 +98,9 @@ const Content = React.memo((props) => {
 	if (prevProps.msg !== nextProps.msg) {
 		return false;
 	}
+	if (prevProps.md !== nextProps.md) {
+		return false;
+	}
 	if (prevProps.type !== nextProps.type) {
 		return false;
 	}
