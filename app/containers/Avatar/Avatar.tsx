@@ -6,7 +6,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { avatarURL } from '../../utils/avatar';
 import Emoji from '../markdown/Emoji';
-import {IAvatar} from "./interfaces";
+import {IAvatar} from './interfaces';
 
 const Avatar = React.memo(({
 	server,
@@ -23,7 +23,7 @@ const Avatar = React.memo(({
 	rid,
 	blockUnauthenticatedAccess,
 	serverVersion,
-    text = '',
+    text,
     size = 25,
     borderRadius = 4,
     type = 'd',

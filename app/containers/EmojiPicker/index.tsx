@@ -25,7 +25,6 @@ const scrollProps = {
 };
 
 interface IEmojiPickerProps {
-	literal: string;
 	isMessageContainsOnlyEmoji: boolean;
 	getCustomEmoji?: Function;
 	baseUrl: string;

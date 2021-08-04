@@ -7,7 +7,6 @@ import { themes } from '../../constants/colors';
 
 import styles from './styles';
 
-// TODO this interface it's duplicated with 'app/containers/EmojiPicker/index.tsx'
 interface IEmoji {
 	literal: string;
 	isMessageContainsOnlyEmoji: boolean;

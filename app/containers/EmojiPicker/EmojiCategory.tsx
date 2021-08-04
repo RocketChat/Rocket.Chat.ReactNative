@@ -7,7 +7,7 @@ import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import {IEmoji, IEmojiCategory} from "./interfaces";
 
-const EMOJI_SIZE: number = 50;
+const EMOJI_SIZE = 50;
 
 const renderEmoji = (emoji: IEmoji, size: number, baseUrl: string) => {
 	if (emoji && emoji.isCustom) {
