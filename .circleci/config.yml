@@ -153,6 +153,7 @@ commands:
 
       - run:
           name: Build App
+          no_output_timeout: 30m
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               ./gradlew bundleOfficialPlayRelease
