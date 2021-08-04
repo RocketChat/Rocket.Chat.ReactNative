@@ -62,7 +62,7 @@ describe('Create team screen', () => {
 		});
 
 		it('should delete team', async() => {
-			if(device.getPlatform() === 'android') {
+			if (device.getPlatform() === 'android') {
 				return; // Failing on android
 			}
 			await element(by.id('room-info-view-edit-button')).tap();

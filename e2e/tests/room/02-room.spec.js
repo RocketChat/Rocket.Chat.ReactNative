@@ -241,7 +241,7 @@ describe('Room screen', () => {
 			});
 
 			it('should edit message', async() => {
-				if(device.getPlatform() === 'android') {
+				if (device.getPlatform() === 'android') {
 					return; // Failing on android
 				}
 				await mockMessage('edit');
@@ -269,7 +269,7 @@ describe('Room screen', () => {
 			});
 
 			it('should pin message', async() => {
-				if(device.getPlatform() === 'android') {
+				if (device.getPlatform() === 'android') {
 					return; // Failing on android
 				}
 				await mockMessage('pin');

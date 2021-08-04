@@ -231,7 +231,7 @@ describe('Room actions screen', () => {
 			});
 
 			it('should show pinned message and unpin it', async() => {
-				if(device.getPlatform() === 'android') {
+				if (device.getPlatform() === 'android') {
 					return; // Failing on android
 				}
 				// Go back to room and send a message
