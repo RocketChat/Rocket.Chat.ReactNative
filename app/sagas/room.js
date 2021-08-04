@@ -22,7 +22,7 @@ const activityRenews = {};
 const watchUserActivity = function* watchUserActivity({
 	type, rid, status, options = {}
 }) {
-	const id = options?.tmid ? options.tmid : rid;
+	const id = options?.tmid || rid;
 
 	if (id in activityRenews && status === true) {
 		yield delay(2000);

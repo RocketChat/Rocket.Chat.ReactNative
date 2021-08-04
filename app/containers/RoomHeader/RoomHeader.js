@@ -67,16 +67,14 @@ ActivityIndicator.propTypes = {
 
 const UserActivity = React.memo(({ activities, tmid, rid }) => {
 	const { typing, uploading, recording } = activities;
-	const id = !tmid ? rid : tmid;
+	const id = tmid || rid;
 
-	let users = typing?.[id] ? typing[id] : [];
-	if (users.length > 0) {
-		return <ActivityIndicator action='typing' users={users} />;
+	if ( typing?.[id]?.length) {
+		return <ActivityIndicator action='typing' users={typing[id]} />;
 	}
 
-	users = recording?.[id] ? recording[id] : [];
-	if (users.length > 0) {
-		return <ActivityIndicator action='recording' users={users} />;
+	if (recording?.[id]?.length) {
+		return <ActivityIndicator action='recording' users={recording[id]} />;
 	}
 
 	users = uploading?.[id] ? uploading[id] : [];
