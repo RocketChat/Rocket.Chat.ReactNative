@@ -145,6 +145,13 @@ commands:
           working_directory: android/app
 
       - run:
+          name: Metro Settings
+          command: |
+            if [[ $CIRCLE_JOB == "android-build-e2e" ]]; then
+              echo $METRO_CONFIG | base64 --decode > ./metro.config.js
+            fi
+
+      - run:
           name: Build App
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
