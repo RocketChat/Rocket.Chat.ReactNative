@@ -69,17 +69,16 @@ const UserActivity = React.memo(({ activities, tmid, rid }) => {
 	const { typing, uploading, recording } = activities;
 	const id = tmid || rid;
 
-	if ( typing?.[id]?.length) {
+	if (typing?.[id]?.length > 0) {
 		return <ActivityIndicator action='typing' users={typing[id]} />;
 	}
 
-	if (recording?.[id]?.length) {
+	if (recording?.[id]?.length > 0) {
 		return <ActivityIndicator action='recording' users={recording[id]} />;
 	}
 
-	users = uploading?.[id] ? uploading[id] : [];
-	if (users.length > 0) {
-		return <ActivityIndicator action='uploading' users={users} />;
+	if (uploading?.[id]?.length > 0) {
+		return <ActivityIndicator action='uploading' users={uploading[id]} />;
 	}
 
 	return null;
@@ -120,11 +119,6 @@ const SubTitle = React.memo(({
 });
 
 SubTitle.propTypes = {
-	usersActivity: PropTypes.shape({
-		typing: PropTypes.array,
-		recording: PropTypes.array,
-		uploading: PropTypes.array
-	}),
 	theme: PropTypes.string,
 	subtitle: PropTypes.string,
 	renderFunc: PropTypes.func,
@@ -175,7 +169,8 @@ const Header = React.memo(({
 	let scale = 1;
 
 	if (!portrait && !tmid) {
-		if (usersActivity.typing.length > 0 || subtitle) {
+		const { typing, recording, uploading } = UserActivity;
+		if (typing.length || recording.length || uploading.length || subtitle) {
 			scale = 0.8;
 		}
 	}
@@ -215,7 +210,6 @@ const Header = React.memo(({
 			<SubTitle
 				tmid={tmid}
 				rid={rid}
-				// usersActivity={usersActivity}
 				subtitle={subtitle}
 				theme={theme}
 				renderFunc={renderFunc}

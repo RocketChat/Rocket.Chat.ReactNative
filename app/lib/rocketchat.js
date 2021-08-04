@@ -934,13 +934,13 @@ const RocketChat = {
 	onStreamData(...args) {
 		return this.sdk.onStreamData(...args);
 	},
-	emitUserActivity(room, typing = true, activityType, extras = {}) {
+	emitUserActivity(room, activated = true, activityType, extras = {}) {
 		const { login, settings } = reduxStore.getState();
-		const { UI_Use_Real_Name, Use_New_Activity_Indicators } = settings;
+		const { UI_Use_Real_Name, Fire_Old_Typing_Event } = settings;
 		const { user } = login;
 		const name = UI_Use_Real_Name ? user.name : user.username;
-		const stream = Use_New_Activity_Indicators ? 'user-activity' : 'typing';
-		return this.methodCall('stream-notify-room', `${ room }/${ stream }`, name, typing, activityType, extras);
+		const stream = Fire_Old_Typing_Event ? 'typing' : 'user-activity';
+		return this.methodCall('stream-notify-room', `${ room }/${ stream }`, name, activated, activityType, extras);
 	},
 	setUserPresenceAway() {
 		return this.methodCall('UserPresence:away');
