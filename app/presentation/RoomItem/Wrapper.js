@@ -51,7 +51,6 @@ const Wrapper = ({
 		}
 	};
 
-
 	return (
 		<View
 			style={styles.container}

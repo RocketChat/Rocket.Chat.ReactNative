@@ -20,10 +20,8 @@ import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
 import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
-import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import {
-	toggleSortDropdown as toggleSortDropdownAction,
 	openSearchHeader as openSearchHeaderAction,
 	closeSearchHeader as closeSearchHeaderAction,
 	roomsRequest as roomsRequestAction,
@@ -84,7 +82,6 @@ const shouldUpdateProps = [
 	'searchText',
 	'loadingServer',
 	'showServerDropdown',
-	'showSortDropdown',
 	'sortBy',
 	'groupByType',
 	'showFavorites',
@@ -122,7 +119,6 @@ class RoomsListView extends React.Component {
 		changingServer: PropTypes.bool,
 		loadingServer: PropTypes.bool,
 		showServerDropdown: PropTypes.bool,
-		showSortDropdown: PropTypes.bool,
 		sortBy: PropTypes.string,
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
@@ -130,7 +126,6 @@ class RoomsListView extends React.Component {
 		refreshing: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		theme: PropTypes.string,
-		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
@@ -606,17 +601,6 @@ class RoomsListView extends React.Component {
 		}
 	}
 
-	// Appear the dropdown sort
-	toggleSort = () => {
-		logEvent(events.RL_TOGGLE_SORT_DROPDOWN);
-		const { toggleSortDropdown } = this.props;
-
-		this.scrollToTop();
-		setTimeout(() => {
-			toggleSortDropdown();
-		}, 100);
-	};
-
 	toggleFav = async(rid, favorite) => {
 		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
@@ -987,12 +971,7 @@ class RoomsListView extends React.Component {
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			sortBy,
-			groupByType,
-			showFavorites,
-			showUnread,
 			showServerDropdown,
-			showSortDropdown,
 			theme,
 			navigation
 		} = this.props;
@@ -1002,15 +981,6 @@ class RoomsListView extends React.Component {
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				{showSortDropdown ? (
-					<SortDropdown
-						close={this.toggleSort}
-						sortBy={sortBy}
-						groupByType={groupByType}
-						showFavorites={showFavorites}
-						showUnread={showUnread}
-					/>
-				) : null}
 				{showServerDropdown ? <ServerDropdown navigation={navigation} /> : null}
 			</SafeAreaView>
 		);
@@ -1025,7 +995,6 @@ const mapStateToProps = state => ({
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
-	showSortDropdown: state.rooms.showSortDropdown,
 	refreshing: state.rooms.refreshing,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
@@ -1042,7 +1011,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	roomsRequest: params => dispatch(roomsRequestAction(params)),

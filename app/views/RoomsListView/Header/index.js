@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
-	toggleServerDropdown, closeServerDropdown, closeSortDropdown, setSearch as setSearchAction
+	toggleServerDropdown, closeServerDropdown, setSearch as setSearchAction
 } from '../../../actions/rooms';
 import Header from './Header';
 import { withTheme } from '../../../theme';
@@ -15,7 +15,6 @@ import { logEvent, events } from '../../../utils/log';
 class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
 		showServerDropdown: PropTypes.bool,
-		showSortDropdown: PropTypes.bool,
 		showSearchHeader: PropTypes.bool,
 		serverName: PropTypes.string,
 		connecting: PropTypes.bool,
@@ -25,7 +24,6 @@ class RoomsListHeaderView extends PureComponent {
 		server: PropTypes.string,
 		open: PropTypes.func,
 		close: PropTypes.func,
-		closeSort: PropTypes.func,
 		setSearch: PropTypes.func
 	}
 
@@ -56,15 +54,10 @@ class RoomsListHeaderView extends PureComponent {
 	onPress = () => {
 		logEvent(events.RL_TOGGLE_SERVER_DROPDOWN);
 		const {
-			showServerDropdown, showSortDropdown, close, open, closeSort
+			showServerDropdown, close, open
 		} = this.props;
 		if (showServerDropdown) {
 			close();
-		} else if (showSortDropdown) {
-			closeSort();
-			setTimeout(() => {
-				open();
-			}, 300);
 		} else {
 			open();
 		}
@@ -94,7 +87,6 @@ class RoomsListHeaderView extends PureComponent {
 
 const mapStateToProps = state => ({
 	showServerDropdown: state.rooms.showServerDropdown,
-	showSortDropdown: state.rooms.showSortDropdown,
 	showSearchHeader: state.rooms.showSearchHeader,
 	connecting: state.meteor.connecting || state.server.loading,
 	connected: state.meteor.connected,
@@ -106,7 +98,6 @@ const mapStateToProps = state => ({
 const mapDispatchtoProps = dispatch => ({
 	close: () => dispatch(closeServerDropdown()),
 	open: () => dispatch(toggleServerDropdown()),
-	closeSort: () => dispatch(closeSortDropdown()),
 	setSearch: searchText => dispatch(setSearchAction(searchText))
 });
 
