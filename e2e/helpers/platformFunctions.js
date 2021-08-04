@@ -21,6 +21,9 @@ exports.prepareAndroid = async() => {
 	}
 	await runCommand('adb shell settings put secure spell_checker_enabled 0');
 	await runCommand('adb shell settings put secure autofill_service null');
+	await runCommand('adb shell settings put global window_animation_scale 0.0');
+	await runCommand('adb shell settings put global transition_animation_scale 0.0');
+	await runCommand('adb shell settings put global animator_duration_scale 0.0');
 };
 
 exports.closeKeyboardAndroid = async() => {

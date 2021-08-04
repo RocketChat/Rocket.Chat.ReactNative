@@ -18,10 +18,11 @@ async function waitForToast() {
 describe('Profile screen', () => {
 	let textInputType;
 	let scrollViewType;
+	let alertButtonType;
 
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ textInputType, scrollViewType } = platformTypes[device.getPlatform()]);
+		({ textInputType, scrollViewType, alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(profileChangeUser.username, profileChangeUser.password);
 		await element(by.id('rooms-list-view-sidebar')).tap();
@@ -91,7 +92,7 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-new-password')).replaceText(`${ profileChangeUser.password }new`);
 			await element(by.id('profile-view-submit')).tap();
 			await element(by.type(textInputType)).replaceText(`${ profileChangeUser.password }`);
-			await element(by.text('SAVE')).tap();
+			await element(by.text('SAVE').and(by.type(alertButtonType))).tap();
 			await waitForToast();
 		});
 

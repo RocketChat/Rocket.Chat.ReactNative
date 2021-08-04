@@ -11,7 +11,7 @@ const room = data.channels.detoxpublic.name;
 async function navigateToRoom() {
 	await searchRoom(room);
 	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
-	await waitFor(element(by.id('room-view')).atIndex(0)).toBeVisible().withTimeout(5000);
+	await waitFor(element(by.id('room-view')).atIndex(0)).toExist().withTimeout(5000);
 }
 
 async function navigateToRoomActions() {
