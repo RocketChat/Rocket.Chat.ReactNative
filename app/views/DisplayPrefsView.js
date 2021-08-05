@@ -103,6 +103,7 @@ const DisplayPrefsView = (props) => {
 			value={value}
 			onValueChange={() => toggleAvatar()}
 			trackColor={{ true: themes[theme].actionTintColor }}
+			testID='avatar-switch'
 		/>
 	);
 
@@ -126,18 +127,21 @@ const DisplayPrefsView = (props) => {
 					<List.Item
 						left={() => <List.Icon name='view-extended' />}
 						title='Expanded'
+						testID='expanded-display-pref'
 						right={() => renderRadio(displayType === 'expanded')}
 						onPress={displayExpanded}
 					/>
 					<List.Item
 						left={() => <List.Icon name='view-medium' />}
 						title='Condensed'
+						testID='condensed-display-pref'
 						right={() => renderRadio(displayType === 'condensed')}
 						onPress={displayCondensed}
 					/>
 					<List.Item
 						left={() => <List.Icon name='avatar' />}
 						title='Avatars'
+						testID='avatars-display-pref'
 						right={() => renderAvatarSwitch(showAvatar)}
 					/>
 				</List.Section>
@@ -148,12 +152,14 @@ const DisplayPrefsView = (props) => {
 					/>
 					<List.Item
 						title='Activity'
+						testID='activity-display-pref'
 						left={() => <List.Icon name='clock' />}
 						onPress={sortByActivity}
 						right={() => (renderRadio(sortBy === 'activity'))}
 					/>
 					<List.Item
 						title='Name'
+						testID='name-display-pref'
 						left={() => <List.Icon name='sort-az' />}
 						onPress={sortByName}
 						right={() => (renderRadio(sortBy === 'alphabetical'))}
@@ -166,18 +172,21 @@ const DisplayPrefsView = (props) => {
 					/>
 					<List.Item
 						title='Unread_on_top'
+						testID='unread-display-pref'
 						left={() => <List.Icon name='unread-on-top-disabled' />}
 						onPress={toggleUnread}
 						right={() => (renderCheckBox(showUnread))}
 					/>
 					<List.Item
 						title='Favorites'
+						testID='favorites-display-pref'
 						left={() => <List.Icon name='star' />}
 						onPress={toggleGroupByFavorites}
 						right={() => (renderCheckBox(showFavorites))}
 					/>
 					<List.Item
 						title='Types'
+						testID='types-display-pref'
 						left={() => <List.Icon name='group-by-type' />}
 						onPress={toggleGroupByType}
 						right={() => (renderCheckBox(groupByType))}

@@ -114,7 +114,7 @@ const RoomItem = ({
 								alert={alert}
 							/>
 						</View>
-						<View style={styles.row}>
+						<View style={styles.row} testID='last-message-room-list'>
 							<LastMessage
 								lastMessage={lastMessage}
 								type={type}
