@@ -49,7 +49,7 @@ class JitsiMeetView extends React.Component {
 				displayName,
 				avatar
 			};
-			const url = route.params?.url;
+			const url = 'https://meet.jit.si/pitelola' // route.params?.url;
 			const onlyAudio = route.params?.onlyAudio ?? false;
 			if (onlyAudio) {
 				JitsiMeet.audioCall(url, userInfo);

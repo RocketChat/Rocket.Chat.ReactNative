@@ -54,7 +54,7 @@ allprojects {
         }
 
         maven {
-            url jitsi_url
+            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
         }
 
         google()
