@@ -35,7 +35,7 @@ const Wrapper = ({
 			);
 		}
 
-		if (!showAvatar && displayType === 'expanded') {
+		if (displayType === 'expanded') {
 			return (
 				<View style={styles.typeIcon}>
 					<TypeIcon
