@@ -49,7 +49,9 @@ const RoomItem = ({
 	toggleRead,
 	hideChannel,
 	teamMain,
-	autoJoin
+	autoJoin,
+	showAvatar,
+	displayType
 }) => (
 	<Touchable
 		onPress={onPress}
@@ -74,19 +76,28 @@ const RoomItem = ({
 			type={type}
 			theme={theme}
 			rid={rid}
+			prid={prid}
+			status={status}
+			isGroupChat={isGroupChat}
+			teamMain={teamMain}
+			displayType={displayType}
+			showAvatar={showAvatar}
 		>
-			{showLastMessage
+			{showLastMessage && displayType === 'expanded'
 				? (
 					<>
 						<View style={styles.titleContainer}>
-							<TypeIcon
-								type={type}
-								prid={prid}
-								status={status}
-								isGroupChat={isGroupChat}
-								theme={theme}
-								teamMain={teamMain}
-							/>
+							{ showAvatar
+							&& (
+								<TypeIcon
+									type={type}
+									prid={prid}
+									status={status}
+									isGroupChat={isGroupChat}
+									theme={theme}
+									teamMain={teamMain}
+								/>
+							) }
 							<Title
 								name={name}
 								theme={theme}
@@ -103,7 +114,7 @@ const RoomItem = ({
 								alert={alert}
 							/>
 						</View>
-						<View style={styles.row}>
+						<View style={styles.row} testID='last-message-room-list'>
 							<LastMessage
 								lastMessage={lastMessage}
 								type={type}
@@ -143,14 +154,22 @@ const RoomItem = ({
 						{
 							autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null
 						}
-						<UnreadBadge
-							unread={unread}
-							userMentions={userMentions}
-							groupMentions={groupMentions}
-							tunread={tunread}
-							tunreadUser={tunreadUser}
-							tunreadGroup={tunreadGroup}
-						/>
+						<View style={styles.column}>
+							<UpdatedAt
+								date={date}
+								theme={theme}
+								hideUnreadStatus={hideUnreadStatus}
+								alert={alert}
+							/>
+							<UnreadBadge
+								unread={unread}
+								userMentions={userMentions}
+								groupMentions={groupMentions}
+								tunread={tunread}
+								tunreadUser={tunreadUser}
+								tunreadGroup={tunreadGroup}
+							/>
+						</View>
 					</View>
 				)
 			}
@@ -194,7 +213,9 @@ RoomItem.propTypes = {
 	onPress: PropTypes.func,
 	onLongPress: PropTypes.func,
 	hideChannel: PropTypes.func,
-	autoJoin: PropTypes.bool
+	autoJoin: PropTypes.bool,
+	showAvatar: PropTypes.bool,
+	displayType: PropTypes.string
 };
 
 RoomItem.defaultProps = {

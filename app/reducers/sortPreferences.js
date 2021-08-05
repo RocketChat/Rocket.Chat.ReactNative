@@ -4,7 +4,9 @@ const initialState = {
 	sortBy: 'activity',
 	groupByType: false,
 	showFavorites: false,
-	showUnread: false
+	showUnread: false,
+	showAvatar: true,
+	displayType: 'expanded'
 };
 
 

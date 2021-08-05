@@ -37,6 +37,10 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'flex-start'
 	},
+	column: {
+		flex: 1,
+		alignItems: 'flex-end'
+	},
 	titleContainer: {
 		width: '100%',
 		flexDirection: 'row',
@@ -107,5 +111,10 @@ export default StyleSheet.create({
 		fontSize: 13,
 		paddingHorizontal: 4,
 		...sharedStyles.textSemibold
+	},
+	typeIcon: {
+		height: ROW_HEIGHT,
+		justifyContent: 'center',
+		paddingBottom: 10
 	}
 });

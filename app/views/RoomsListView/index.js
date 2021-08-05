@@ -20,10 +20,8 @@ import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
 import styles from './styles';
 import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
-import SortDropdown from './SortDropdown';
 import ServerDropdown from './ServerDropdown';
 import {
-	toggleSortDropdown as toggleSortDropdownAction,
 	openSearchHeader as openSearchHeaderAction,
 	closeSearchHeader as closeSearchHeaderAction,
 	roomsRequest as roomsRequestAction,
@@ -84,11 +82,12 @@ const shouldUpdateProps = [
 	'searchText',
 	'loadingServer',
 	'showServerDropdown',
-	'showSortDropdown',
 	'sortBy',
 	'groupByType',
 	'showFavorites',
 	'showUnread',
+	'showAvatar',
+	'displayType',
 	'useRealName',
 	'StoreLastMessage',
 	'theme',
@@ -120,7 +119,6 @@ class RoomsListView extends React.Component {
 		changingServer: PropTypes.bool,
 		loadingServer: PropTypes.bool,
 		showServerDropdown: PropTypes.bool,
-		showSortDropdown: PropTypes.bool,
 		sortBy: PropTypes.string,
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
@@ -128,7 +126,6 @@ class RoomsListView extends React.Component {
 		refreshing: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		theme: PropTypes.string,
-		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
@@ -141,7 +138,9 @@ class RoomsListView extends React.Component {
 		insets: PropTypes.object,
 		queueSize: PropTypes.number,
 		inquiryEnabled: PropTypes.bool,
-		encryptionBanner: PropTypes.string
+		encryptionBanner: PropTypes.string,
+		showAvatar: PropTypes.bool,
+		displayType: PropTypes.string
 	};
 
 	constructor(props) {
@@ -277,7 +276,9 @@ class RoomsListView extends React.Component {
 			showUnread,
 			rooms,
 			isMasterDetail,
-			insets
+			insets,
+			showAvatar,
+			displayType
 		} = this.props;
 		const { item } = this.state;
 
@@ -287,6 +288,8 @@ class RoomsListView extends React.Component {
 				&& prevProps.groupByType === groupByType
 				&& prevProps.showFavorites === showFavorites
 				&& prevProps.showUnread === showUnread
+				&& prevProps.showAvatar === showAvatar
+				&& prevProps.displayType === displayType
 			)
 		) {
 			this.getSubscriptions();
@@ -598,16 +601,6 @@ class RoomsListView extends React.Component {
 		}
 	}
 
-	toggleSort = () => {
-		logEvent(events.RL_TOGGLE_SORT_DROPDOWN);
-		const { toggleSortDropdown } = this.props;
-
-		this.scrollToTop();
-		setTimeout(() => {
-			toggleSortDropdown();
-		}, 100);
-	};
-
 	toggleFav = async(rid, favorite) => {
 		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
@@ -854,13 +847,11 @@ class RoomsListView extends React.Component {
 	renderListHeader = () => {
 		const { searching } = this.state;
 		const {
-			sortBy, queueSize, inquiryEnabled, encryptionBanner, user
+			queueSize, inquiryEnabled, encryptionBanner, user
 		} = this.props;
 		return (
 			<ListHeader
 				searching={searching}
-				sortBy={sortBy}
-				toggleSort={this.toggleSort}
 				goEncryption={this.goEncryption}
 				goQueue={this.goQueue}
 				queueSize={queueSize}
@@ -898,7 +889,9 @@ class RoomsListView extends React.Component {
 			useRealName,
 			theme,
 			isMasterDetail,
-			width
+			width,
+			showAvatar,
+			displayType
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
 
@@ -923,6 +916,8 @@ class RoomsListView extends React.Component {
 				getIsRead={this.isRead}
 				visitor={item.visitor}
 				isFocused={currentItem?.rid === item.rid}
+				showAvatar={showAvatar}
+				displayType={displayType}
 			/>
 		);
 	};
@@ -976,12 +971,7 @@ class RoomsListView extends React.Component {
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
 		const {
-			sortBy,
-			groupByType,
-			showFavorites,
-			showUnread,
 			showServerDropdown,
-			showSortDropdown,
 			theme,
 			navigation
 		} = this.props;
@@ -991,15 +981,6 @@ class RoomsListView extends React.Component {
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				{showSortDropdown ? (
-					<SortDropdown
-						close={this.toggleSort}
-						sortBy={sortBy}
-						groupByType={groupByType}
-						showFavorites={showFavorites}
-						showUnread={showUnread}
-					/>
-				) : null}
 				{showServerDropdown ? <ServerDropdown navigation={navigation} /> : null}
 			</SafeAreaView>
 		);
@@ -1014,7 +995,6 @@ const mapStateToProps = state => ({
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
-	showSortDropdown: state.rooms.showSortDropdown,
 	refreshing: state.rooms.refreshing,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
@@ -1025,11 +1005,12 @@ const mapStateToProps = state => ({
 	rooms: state.room.rooms,
 	queueSize: getInquiryQueueSelector(state).length,
 	inquiryEnabled: state.inquiry.enabled,
-	encryptionBanner: state.encryption.banner
+	encryptionBanner: state.encryption.banner,
+	showAvatar: state.sortPreferences.showAvatar,
+	displayType: state.sortPreferences.displayType
 });
 
 const mapDispatchToProps = dispatch => ({
-	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	roomsRequest: params => dispatch(roomsRequestAction(params)),
