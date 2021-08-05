@@ -573,6 +573,8 @@ class RoomsListView extends React.Component {
 
 	isRead = item => RocketChat.isRead(item)
 
+	isSwipeEnabled = item => RocketChat.isSwipeEnabled(item)
+
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
@@ -901,6 +903,7 @@ class RoomsListView extends React.Component {
 			width
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
+		const swipeEnabled = this.isSwipeEnabled(item);
 
 		return (
 			<RoomItem
@@ -923,6 +926,7 @@ class RoomsListView extends React.Component {
 				getIsRead={this.isRead}
 				visitor={item.visitor}
 				isFocused={currentItem?.rid === item.rid}
+				swipeEnabled={swipeEnabled}
 			/>
 		);
 	};
