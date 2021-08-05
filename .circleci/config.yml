@@ -202,6 +202,65 @@ commands:
           paths:
             - android/app/build/outputs
 
+  android-build-e2e:
+    description: "Build Android app"
+    steps:
+      - checkout
+
+      - restore_cache: *restore-npm-cache-linux
+
+      - run: *install-npm-modules
+
+      - run:
+          name: Configure Gradle
+          command: |
+            echo -e "" > ./gradle.properties
+            # echo -e "android.enableAapt2=false" >> ./gradle.properties
+            echo -e "android.useAndroidX=true" >> ./gradle.properties
+            echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+            echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
+            echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
+            echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
+            echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
+            echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+            echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
+            echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+          working_directory: android
+
+      - run:
+          name: Set Google Services
+          command: |
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
+            fi
+          working_directory: android/app
+
+      - run:
+          name: Metro Settings
+          command: |
+              echo $METRO_CONFIG | base64 --decode > ./metro.config.js
+
+      - run:
+          name: Build App
+          no_output_timeout: 30m
+          command: |
+              ./gradlew app:assembleE2ePlayRelease app:assembleE2ePlayReleaseAndroidTest -DtestBuildType=release
+          working_directory: android
+
+      - store_artifacts:
+          path: android/app/build/outputs
+
+      - save_cache: *save-npm-cache-linux
+
+      - save_cache: *save-gradle-cache
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - android/app/build/outputs
+
   android-e2e-test:
     description: "End-to-End testing for Android using detox"
     steps:
@@ -436,12 +495,12 @@ jobs:
   android-build-e2e:
     <<: *defaults
     docker:
-      - image: circleci/android:api-29-node
+      - image: circleci/android:api-31-node
     environment:
       <<: *android-env
       <<: *bash-env
     steps:
-      - android-build
+      - android-build-e2e
   
   android-e2e-test:
     <<: *defaults
