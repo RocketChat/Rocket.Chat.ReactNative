@@ -47791,7 +47791,6 @@ exports[`Storyshots Message With image 1`] = `
                       />
                     </View>
                   </View>
-                  //TODO - fix the required fields for the Markdown
                   <Text
                     style={
                       Array [
@@ -48110,7 +48109,6 @@ exports[`Storyshots Message With image 1`] = `
                       />
                     </View>
                   </View>
-                  //TODO - fix the required fields for the Markdown
                   <Text
                     style={
                       Array [
