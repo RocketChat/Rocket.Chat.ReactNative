@@ -495,7 +495,7 @@ jobs:
   android-build-e2e:
     <<: *defaults
     docker:
-      - image: circleci/android:api-31-node
+      - image: circleci/android:api-30-node
     environment:
       <<: *android-env
       <<: *bash-env
