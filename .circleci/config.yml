@@ -162,8 +162,8 @@ commands:
               ./gradlew bundleExperimentalPlayRelease
             fi
             if [[ $CIRCLE_JOB == "android-build-e2e" ]]; then
-              cd .. && npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd android
-              ./gradlew app:assembleE2ePlayRelease -x bundleE2ePlayReleaseJsAndAssets app:assembleE2ePlayReleaseAndroidTest -DtestBuildType=release
+              ./gradlew app:assembleE2ePlayRelease -DtestBuildType=release
+              ./gradlew app:assembleE2ePlayRelease app:assembleE2ePlayReleaseAndroidTest -DtestBuildType=release
             fi
             if [[ ! $KEYSTORE ]]; then
               ./gradlew assembleExperimentalPlayDebug
