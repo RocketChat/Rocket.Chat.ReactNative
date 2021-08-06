@@ -102,8 +102,8 @@ const DisplayPrefsView = (props) => {
 		<Switch
 			value={value}
 			onValueChange={() => toggleAvatar()}
-			trackColor={{ true: themes[theme].actionTintColor }}
 			testID='avatar-switch'
+			style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
 		/>
 	);
 
@@ -131,6 +131,7 @@ const DisplayPrefsView = (props) => {
 						right={() => renderRadio(displayType === 'expanded')}
 						onPress={displayExpanded}
 					/>
+					<List.Separator />
 					<List.Item
 						left={() => <List.Icon name='view-medium' />}
 						title='Condensed'
@@ -138,6 +139,7 @@ const DisplayPrefsView = (props) => {
 						right={() => renderRadio(displayType === 'condensed')}
 						onPress={displayCondensed}
 					/>
+					<List.Separator />
 					<List.Item
 						left={() => <List.Icon name='avatar' />}
 						title='Avatars'
@@ -157,6 +159,7 @@ const DisplayPrefsView = (props) => {
 						onPress={sortByActivity}
 						right={() => (renderRadio(sortBy === 'activity'))}
 					/>
+					<List.Separator />
 					<List.Item
 						title='Name'
 						testID='name-display-pref'
@@ -177,6 +180,7 @@ const DisplayPrefsView = (props) => {
 						onPress={toggleUnread}
 						right={() => (renderCheckBox(showUnread))}
 					/>
+					<List.Separator />
 					<List.Item
 						title='Favorites'
 						testID='favorites-display-pref'
@@ -184,6 +188,7 @@ const DisplayPrefsView = (props) => {
 						onPress={toggleGroupByFavorites}
 						right={() => (renderCheckBox(showFavorites))}
 					/>
+					<List.Separator />
 					<List.Item
 						title='Types'
 						testID='types-display-pref'
