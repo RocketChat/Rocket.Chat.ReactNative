@@ -3,6 +3,7 @@ import { StyleSheet, PixelRatio } from 'react-native';
 import sharedStyles from '../../views/Styles';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+export const ROW_HEIGHT_CONDENSED = 60 * PixelRatio.getFontScale();
 export const ACTION_WIDTH = 80;
 export const SMALL_SWIPE = ACTION_WIDTH / 2;
 export const LONG_SWIPE = ACTION_WIDTH * 3;
@@ -16,6 +17,9 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		paddingLeft: 14,
 		height: ROW_HEIGHT
+	},
+	containerCondensed: {
+		height: ROW_HEIGHT_CONDENSED
 	},
 	centerContainer: {
 		flex: 1,

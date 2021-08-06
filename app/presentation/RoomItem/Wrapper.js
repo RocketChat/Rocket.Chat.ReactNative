@@ -45,6 +45,7 @@ const Wrapper = ({
 						isGroupChat={isGroupChat}
 						theme={theme}
 						teamMain={teamMain}
+						size={18}
 					/>
 				</View>
 			);
@@ -53,7 +54,10 @@ const Wrapper = ({
 
 	return (
 		<View
-			style={styles.container}
+			style={[
+				styles.container,
+				displayType === 'condensed' && styles.containerCondensed
+			]}
 			accessibilityLabel={accessibilityLabel}
 		>
 			{iconOrAvatar()}
