@@ -82,6 +82,7 @@ const RoomItem = ({
 			teamMain={teamMain}
 			displayType={displayType}
 			showAvatar={showAvatar}
+			showLastMessage={showLastMessage}
 		>
 			{showLastMessage && displayType === 'expanded'
 				? (

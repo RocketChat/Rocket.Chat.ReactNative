@@ -20,7 +20,8 @@ const Wrapper = ({
 	prid,
 	status,
 	isGroupChat,
-	teamMain
+	teamMain,
+	showLastMessage
 }) => {
 	const iconOrAvatar = () => {
 		if (showAvatar) {
@@ -35,7 +36,7 @@ const Wrapper = ({
 			);
 		}
 
-		if (displayType === 'expanded') {
+		if (displayType === 'expanded' && showLastMessage) {
 			return (
 				<View style={styles.typeIcon}>
 					<TypeIcon
@@ -88,7 +89,8 @@ Wrapper.propTypes = {
 	prid: PropTypes.string,
 	status: PropTypes.string,
 	isGroupChat: PropTypes.bool,
-	teamMain: PropTypes.bool
+	teamMain: PropTypes.bool,
+	showLastMessage: PropTypes.bool
 };
 
 export default Wrapper;
