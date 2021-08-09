@@ -14,6 +14,7 @@ import {
 } from '../constants/localAuthentication';
 import I18n from '../i18n';
 import { setLocalAuthenticated } from '../actions/login';
+import { events, logEvent } from './log';
 
 export const saveLastLocalAuthenticationSession = async(server, serverRecord) => {
 	const serversDB = database.servers;
@@ -106,7 +107,7 @@ export const localAuthenticate = async(server) => {
 		try {
 			await RNBootSplash.hide();
 		} catch (error) {
-			//something went wrong
+			logEvent(events.LC_SERVER_RECORD_BOOT_SPLASH_HIDE_ERROR);
 		}
 
 		// Check if the app has passcode
