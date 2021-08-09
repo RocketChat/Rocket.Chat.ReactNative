@@ -82,7 +82,6 @@ class NewMessageView extends React.Component {
 			chats: [],
 			permissions: []
 		};
-		this.handleHasPermission();
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -101,6 +100,28 @@ class NewMessageView extends React.Component {
 			this.setState({ chats });
 		} catch (e) {
 			log(e);
+		}
+	}
+
+	componentDidMount() {
+		this.handleHasPermission();
+	}
+
+	componentDidUpdate(prevProps) {
+		const {
+			createTeamPermission,
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createDirectMessagePermission,
+			createDiscussionPermission
+		} = this.props;
+
+		if ((createTeamPermission !== prevProps.createTeamPermission
+			|| createPublicChannelPermission !== prevProps.createPublicChannelPermission
+			|| createPrivateChannelPermission !== prevProps.createPrivateChannelPermission
+			|| createDirectMessagePermission !== prevProps.createDirectMessagePermission
+			|| createDiscussionPermission !== prevProps.createDiscussionPermission)) {
+			this.handleHasPermission();
 		}
 	}
 
