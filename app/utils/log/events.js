@@ -345,5 +345,5 @@ export default {
 	TC_TOGGLE_AUTOJOIN_F: 'tc_toggle_autojoin_f',
 
 	// LOCAL AUTHENTICATION
-	LC_SERVER_RECORD_BOOT_SPLASH_HIDE_ERROR: 'lc_server_record_boot_splash_hide_ERROR'
+	LC_SERVER_RECORD_BOOT_SPLASH_HIDE_ERROR: 'lc_server_record_boot_splash_hide_error'
 };
