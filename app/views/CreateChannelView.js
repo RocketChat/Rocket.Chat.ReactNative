@@ -108,16 +108,12 @@ class CreateChannelView extends React.Component {
 		this.setHeader();
 	}
 
-	componentDidMount() {
-		this.handleHasPermission();
-	}
-
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
 			channelName, type, readOnly, broadcast, encrypted, permissions
 		} = this.state;
 		const {
-			users, isFetching, encryptionEnabled, theme
+			users, isFetching, encryptionEnabled, theme, createPublicChannelPermission, createPrivateChannelPermission
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -146,10 +142,27 @@ class CreateChannelView extends React.Component {
 		if (nextProps.encryptionEnabled !== encryptionEnabled) {
 			return true;
 		}
+		if (nextProps.createPublicChannelPermission !== createPublicChannelPermission) {
+			return true;
+		}
+		if (nextProps.createPrivateChannelPermission !== createPrivateChannelPermission) {
+			return true;
+		}
 		if (!dequal(nextProps.users, users)) {
 			return true;
 		}
 		return false;
+	}
+
+	componentDidUpdate(prevProps) {
+		const {
+			createPublicChannelPermission, createPrivateChannelPermission
+		} = this.props;
+		if ((createPublicChannelPermission !== prevProps.createPublicChannelPermission
+			|| createPrivateChannelPermission !== prevProps.createPrivateChannelPermission
+		)) {
+			this.handleHasPermission();
+		}
 	}
 
 	setHeader = () => {
@@ -233,6 +246,7 @@ class CreateChannelView extends React.Component {
 
 	renderType() {
 		const { type, isTeam, permissions } = this.state;
+		console.log('🚀 ~ file: CreateChannelView.js ~ line 240 ~ CreateChannelView ~ renderType ~ permissions', permissions);
 		const isDisabled = permissions.filter(r => r === true).length <= 1;
 
 		return this.renderSwitch({
