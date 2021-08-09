@@ -246,7 +246,6 @@ class CreateChannelView extends React.Component {
 
 	renderType() {
 		const { type, isTeam, permissions } = this.state;
-		console.log('🚀 ~ file: CreateChannelView.js ~ line 240 ~ CreateChannelView ~ renderType ~ permissions', permissions);
 		const isDisabled = permissions.filter(r => r === true).length <= 1;
 
 		return this.renderSwitch({
