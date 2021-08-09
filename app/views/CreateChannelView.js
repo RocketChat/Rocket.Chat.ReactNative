@@ -106,6 +106,9 @@ class CreateChannelView extends React.Component {
 			permissions: []
 		};
 		this.setHeader();
+	}
+
+	componentDidMount() {
 		this.handleHasPermission();
 	}
 

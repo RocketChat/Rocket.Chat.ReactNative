@@ -169,7 +169,7 @@ class RoomsListView extends React.Component {
 			chatsUpdate: [],
 			chats: [],
 			item: {},
-			isDisabledToCreateRoom: false
+			canCreateRoom: false
 		};
 		this.setHeader();
 		this.getSubscriptions();
@@ -226,7 +226,7 @@ class RoomsListView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			chatsUpdate, searching, item, isDisabledToCreateRoom
+			chatsUpdate, searching, item, canCreateRoom
 		} = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
@@ -246,7 +246,7 @@ class RoomsListView extends React.Component {
 			return true;
 		}
 
-		if (nextState.isDisabledToCreateRoom !== isDisabledToCreateRoom) {
+		if (nextState.canCreateRoom !== canCreateRoom) {
 			return true;
 		}
 
@@ -362,12 +362,12 @@ class RoomsListView extends React.Component {
 			createDiscussionPermission
 		];
 		const permissionsToCreate = await RocketChat.hasPermission(permissions);
-		const isDisabledToCreateRoom = permissionsToCreate.filter(r => r === true).length > 0;
-		this.setState({ isDisabledToCreateRoom }, () => this.setHeader());
+		const canCreateRoom = permissionsToCreate.filter(r => r === true).length > 0;
+		this.setState({ canCreateRoom }, () => this.setHeader());
 	}
 
 	getHeader = () => {
-		const { searching, isDisabledToCreateRoom } = this.state;
+		const { searching, canCreateRoom } = this.state;
 		const {
 			navigation, isMasterDetail, insets
 		} = this.props;
@@ -398,7 +398,7 @@ class RoomsListView extends React.Component {
 			},
 			headerRight: () => (searching ? null : (
 				<HeaderButton.Container>
-					{isDisabledToCreateRoom ? (
+					{canCreateRoom ? (
 						<HeaderButton.Item
 							iconName='create'
 							onPress={this.goToNewMessage}
