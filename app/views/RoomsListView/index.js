@@ -173,13 +173,13 @@ class RoomsListView extends React.Component {
 		};
 		this.setHeader();
 		this.getSubscriptions();
-		this.handleHasPermission();
 	}
 
 	componentDidMount() {
 		const {
 			navigation, closeServerDropdown
 		} = this.props;
+		this.handleHasPermission();
 		this.mounted = true;
 
 		if (isTablet) {
