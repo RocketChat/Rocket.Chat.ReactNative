@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Switch } from 'react-native';
+import { StyleSheet, Switch, Text } from 'react-native';
 
 import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,16 +10,26 @@ import StatusBar from '../containers/StatusBar';
 import I18n from '../i18n';
 import * as List from '../containers/List';
 
-import { withTheme } from '../theme';
+import { useTheme } from '../theme';
 import { themes } from '../constants/colors';
 
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ICON_SIZE } from '../containers/List/constants';
 import log, { events, logEvent } from '../utils/log';
+import sharedStyles from './Styles';
+
+const styles = StyleSheet.create({
+	title: {
+		flexShrink: 1,
+		fontSize: 16,
+		...sharedStyles.textMedium
+	}
+});
+
 
 const DisplayPrefsView = (props) => {
-	const { theme } = props;
+	const { theme } = useTheme();
 
 	const {
 		sortBy,
@@ -31,7 +41,7 @@ const DisplayPrefsView = (props) => {
 	} = useSelector(state => state.sortPreferences);
 	const dispatch = useDispatch();
 
-	const setHeader = () => {
+	useEffect(() => {
 		const { navigation, isMasterDetail } = props;
 		navigation.setOptions({
 			title: I18n.t('Display'),
@@ -41,10 +51,6 @@ const DisplayPrefsView = (props) => {
 				<HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />
 			))
 		});
-	};
-
-	useEffect(() => {
-		setHeader();
 	}, []);
 
 	const setSortPreference = (param) => {
@@ -52,50 +58,56 @@ const DisplayPrefsView = (props) => {
 			dispatch(setPreference(param));
 			RocketChat.saveSortPreference(param);
 		} catch (e) {
-			logEvent(events.RL_SORT_CHANNELS_F);
+			logEvent(events.DP_SORT_CHANNELS_F);
 			log(e);
 		}
 	};
 
 	const sortByName = () => {
-		logEvent(events.RL_SORT_CHANNELS_BY_NAME);
+		logEvent(events.DP_SORT_CHANNELS_BY_NAME);
 		setSortPreference({ sortBy: 'alphabetical' });
 	};
 
 	const sortByActivity = () => {
-		logEvent(events.RL_SORT_CHANNELS_BY_ACTIVITY);
+		logEvent(events.DP_SORT_CHANNELS_BY_ACTIVITY);
 		setSortPreference({ sortBy: 'activity' });
 	};
 
 	const toggleGroupByType = () => {
-		logEvent(events.RL_GROUP_CHANNELS_BY_TYPE);
+		logEvent(events.DP_GROUP_CHANNELS_BY_TYPE);
 		setSortPreference({ groupByType: !groupByType });
 	};
 
 	const toggleGroupByFavorites = () => {
-		logEvent(events.RL_GROUP_CHANNELS_BY_FAVORITE);
+		logEvent(events.DP_GROUP_CHANNELS_BY_FAVORITE);
 		setSortPreference({ showFavorites: !showFavorites });
 	};
 
 	const toggleUnread = () => {
-		logEvent(events.RL_GROUP_CHANNELS_BY_UNREAD);
+		logEvent(events.DP_GROUP_CHANNELS_BY_UNREAD);
 		setSortPreference({ showUnread: !showUnread });
 	};
 
 	const toggleAvatar = () => {
+		logEvent(events.DP_TOGGLE_AVATAR);
 		setSortPreference({ showAvatar: !showAvatar });
 	};
 
 	const displayExpanded = () => {
+		logEvent(events.DP_DISPLAY_EXPANDED);
 		setSortPreference({ displayType: 'expanded' });
 	};
 
 	const displayCondensed = () => {
+		logEvent(events.DP_DISPLAY_CONDENSED);
 		setSortPreference({ displayType: 'condensed' });
 	};
 
 	const renderCheckBox = value => (
-		value ? <List.Icon name='checkbox-checked' color={themes[theme].actionTintColor} /> : <List.Icon name='checkbox-unchecked' />
+		<List.Icon
+			name={value ? 'checkbox-checked' : 'checkbox-unchecked'}
+			color={value ? themes[theme].actionTintColor : null}
+		/>
 	);
 
 	const renderAvatarSwitch = value => (
@@ -103,7 +115,7 @@ const DisplayPrefsView = (props) => {
 			value={value}
 			onValueChange={() => toggleAvatar()}
 			testID='avatar-switch'
-			style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
+			style={{ transform: [{ scale: 0.8 }] }}
 		/>
 	);
 
@@ -116,13 +128,19 @@ const DisplayPrefsView = (props) => {
 	);
 
 	return (
-		<SafeAreaView testID='status-view'>
+		<SafeAreaView>
 			<StatusBar />
 			<List.Container testID='display-view-list'>
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title='Display'
+						left={() => (
+							<Text
+								style={[styles.title, { color: themes[theme].titleText }]}
+								numberOfLines={1}
+							>{I18n.t('Display')}
+							</Text>
+						)}
 					/>
 					<List.Item
 						left={() => <List.Icon name='view-extended' />}
@@ -150,7 +168,13 @@ const DisplayPrefsView = (props) => {
 
 				<List.Section>
 					<List.Item
-						title='Sort_by'
+						left={() => (
+							<Text
+								style={[styles.title, { color: themes[theme].titleText }]}
+								numberOfLines={1}
+							>{I18n.t('Sort_by')}
+							</Text>
+						)}
 					/>
 					<List.Item
 						title='Activity'
@@ -171,7 +195,13 @@ const DisplayPrefsView = (props) => {
 
 				<List.Section>
 					<List.Item
-						title='Group_by'
+						left={() => (
+							<Text
+								style={[styles.title, { color: themes[theme].titleText }]}
+								numberOfLines={1}
+							>{I18n.t('Group_by')}
+							</Text>
+						)}
 					/>
 					<List.Item
 						title='Unread_on_top'
@@ -203,9 +233,8 @@ const DisplayPrefsView = (props) => {
 };
 
 DisplayPrefsView.propTypes = {
-	theme: PropTypes.string,
 	navigation: PropTypes.object,
 	isMasterDetail: PropTypes.bool
 };
 
-export default (withTheme(DisplayPrefsView));
+export default (DisplayPrefsView);
