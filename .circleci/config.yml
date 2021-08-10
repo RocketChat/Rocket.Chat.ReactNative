@@ -626,6 +626,18 @@ workflows:
       - android-build-e2e:
           requires:
             - android-hold-e2e
-      - android-e2e-test:
+      - android-e2e-test-assorted:
+          requires:
+            - android-build-e2e
+
+      - android-e2e-test-onboarding:
+          requires:
+            - android-build-e2e
+
+      - android-e2e-test-room:
+          requires:
+            - android-build-e2e
+
+      - android-e2e-test-team:
           requires:
             - android-build-e2e
