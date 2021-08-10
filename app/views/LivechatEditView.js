@@ -255,6 +255,7 @@ const LivechatEditView = ({
 						multiselect
 						theme={theme}
 						disabled={!permissions[1]}
+						inputStyle={{ marginBottom: 10 }}
 					/>
 
 					{Object.entries(customFields?.livechat || {}).map(([key, value], index, array) => (
