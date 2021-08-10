@@ -6,12 +6,15 @@ import {
 } from './actionsTypes';
 
 function checkUserActionType(actionType) {
-	if (actionType === 'USER_TYPING') {
-		return USER_TYPING;
-	} else if (actionType === 'USER_RECORDING') {
-		return USER_RECORDING;
-	} else {
-		return USER_UPLOADING;
+	switch (actionType) {
+		case 'USER_TYPING':
+			return USER_TYPING;
+		case 'USER_RECORDING':
+			return USER_RECORDING;
+		case 'USER_UPLOADING':
+			return USER_UPLOADING;
+		default:
+			return USER_TYPING;
 	}
 }
 

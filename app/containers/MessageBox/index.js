@@ -358,11 +358,11 @@ class MessageBox extends Component {
 	debouncedOnChangeText = debounce(async(text) => {
 		const { sharing } = this.props;
 		const isTextEmpty = text.length === 0;
+		this.handleTyping(!isTextEmpty);
 		if (isTextEmpty) {
 			this.stopTrackingMention();
 			return;
 		}
-		this.handleTyping(!isTextEmpty);
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
 		const txt = cursor < text.length ? text.substr(0, cursor).split(' ') : text.split(' ');

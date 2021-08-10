@@ -166,11 +166,13 @@ const Header = React.memo(({
 	title, subtitle, parentTitle, type, status, usersActivity, width, height, rid, prid, tmid, onPress, theme, isGroupChat, teamMain, testID
 }) => {
 	const portrait = height > width;
+	const { typing, recording, uploading } = usersActivity;
+	const id = tmid || rid;
+	const activityPerformingUsers = typing[id]?.length || recording[id]?.length || uploading[id]?.length;
 	let scale = 1;
 
 	if (!portrait && !tmid) {
-		const { typing, recording, uploading } = UserActivity;
-		if (typing.length || recording.length || uploading.length || subtitle) {
+		if (subtitle || activityPerformingUsers > 0) {
 			scale = 0.8;
 		}
 	}
@@ -184,6 +186,23 @@ const Header = React.memo(({
 			</View>
 		);
 	}
+
+	let channelDescription;
+	if (activityPerformingUsers > 0) {
+		channelDescription = <UserActivity activities={usersActivity} tmid={tmid} rid={rid} />;
+	} else {
+		channelDescription = (
+			<SubTitle
+				tmid={tmid}
+				rid={rid}
+				subtitle={subtitle}
+				theme={theme}
+				renderFunc={renderFunc}
+				scale={scale}
+			/>
+		);
+	}
+
 
 	const handleOnPress = useCallback(() => onPress(), []);
 
@@ -207,15 +226,7 @@ const Header = React.memo(({
 					testID={testID}
 				/>
 			</View>
-			<SubTitle
-				tmid={tmid}
-				rid={rid}
-				subtitle={subtitle}
-				theme={theme}
-				renderFunc={renderFunc}
-				scale={scale}
-			/>
-			<UserActivity activities={usersActivity} tmid={tmid} rid={rid} />
+			{channelDescription}
 		</TouchableOpacity>
 	);
 });
