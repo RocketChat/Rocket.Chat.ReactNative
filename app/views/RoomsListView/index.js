@@ -82,12 +82,6 @@ const shouldUpdateProps = [
 	'searchText',
 	'loadingServer',
 	'showServerDropdown',
-	'sortBy',
-	'groupByType',
-	'showFavorites',
-	'showUnread',
-	'showAvatar',
-	'displayType',
 	'useRealName',
 	'StoreLastMessage',
 	'theme',
@@ -97,6 +91,16 @@ const shouldUpdateProps = [
 	'inquiryEnabled',
 	'encryptionBanner'
 ];
+
+const displayPropsShouldUpdate = [
+	'sortBy',
+	'groupByType',
+	'showFavorites',
+	'showUnread',
+	'showAvatar',
+	'displayType'
+];
+
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
 	offset: ROW_HEIGHT * index,
@@ -216,6 +220,14 @@ class RoomsListView extends React.Component {
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
+			return true;
+		}
+
+		// check if some display props are changed to force update when focus this view again
+		// eslint-disable-next-line react/destructuring-assignment
+		const displayUpdated = displayPropsShouldUpdate.some(key => nextProps[key] !== this.props[key]);
+		if (displayUpdated) {
+			this.shouldUpdate = true;
 			return true;
 		}
 
