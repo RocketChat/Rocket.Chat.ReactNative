@@ -24,7 +24,7 @@ describe('i18n', () => {
 	describe('OS language', () => {
 		it('OS set to \'en\' and proper translate to \'en\'', async() => {
 			if (device.getPlatform() === 'android') {
-				return;
+				return; // FIXME: Passing language with launch parameters doesn't work with Android
 			}
 			await device.launchApp({
 				...defaultLaunchArgs,
@@ -41,7 +41,7 @@ describe('i18n', () => {
 
 		it('OS set to unavailable language and fallback to \'en\'', async() => {
 			if (device.getPlatform() === 'android') {
-				return;
+				return; // FIXME: Passing language with launch parameters doesn't work with Android
 			}
 			await device.launchApp({
 				...defaultLaunchArgs,

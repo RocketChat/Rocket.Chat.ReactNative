@@ -232,7 +232,7 @@ describe('Room actions screen', () => {
 
 			it('should show pinned message and unpin it', async() => {
 				if (device.getPlatform() === 'android') {
-					return; // Failing on android
+					return; // FIXME: Failing on android
 				}
 				// Go back to room and send a message
 				await tapBack();
