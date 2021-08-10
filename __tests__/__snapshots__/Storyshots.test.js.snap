@@ -69039,40 +69039,6 @@ Array [
               title
             </Text>
           </View>
-          <Text
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "System",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                Object {
-                  "color": "#9ca2a8",
-                  "fontSize": 12,
-                },
-              ]
-            }
-          >
-            <Text
-              style={
-                Object {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "System",
-                  "fontWeight": "600",
-                  "textAlign": "left",
-                }
-              }
-            >
-              user 1
-               
-            </Text>
-            is typing
-            ...
-          </Text>
         </View>
       </View>
     </View>
@@ -69202,40 +69168,6 @@ Array [
               title
             </Text>
           </View>
-          <Text
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "System",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                Object {
-                  "color": "#9ca2a8",
-                  "fontSize": 12,
-                },
-              ]
-            }
-          >
-            <Text
-              style={
-                Object {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "System",
-                  "fontWeight": "600",
-                  "textAlign": "left",
-                }
-              }
-            >
-              user 1 and user 2
-               
-            </Text>
-            are typing
-            ...
-          </Text>
         </View>
       </View>
     </View>
@@ -69365,40 +69297,6 @@ Array [
               title
             </Text>
           </View>
-          <Text
-            numberOfLines={1}
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "flexShrink": 1,
-                  "fontFamily": "System",
-                  "fontWeight": "400",
-                  "textAlign": "left",
-                },
-                Object {
-                  "color": "#9ca2a8",
-                  "fontSize": 12,
-                },
-              ]
-            }
-          >
-            <Text
-              style={
-                Object {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "System",
-                  "fontWeight": "600",
-                  "textAlign": "left",
-                }
-              }
-            >
-              user 1, user 2, user 3, user 4, user 5
-               
-            </Text>
-            are typing
-            ...
-          </Text>
         </View>
       </View>
     </View>
