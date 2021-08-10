@@ -3,7 +3,8 @@ defaults: &defaults
 
 macos: &macos
   macos:
-    xcode: "12.5.0" 
+    xcode: "12.5.0"
+  resource_class: large
 
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"
@@ -144,15 +145,6 @@ commands:
           working_directory: android/app
 
       - run:
-          name: Config variables
-          command: |
-            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-              echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY_OFFICIAL' };" > ./config.js
-            else
-              echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
-            fi
-
-      - run:
           name: Build App
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
@@ -170,22 +162,20 @@ commands:
           name: Upload sourcemaps to Bugsnag
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-              yarn generate-source-maps-android upload \
+              npx bugsnag-source-maps upload-react-native \
                 --api-key=$BUGSNAG_KEY_OFFICIAL \
-                --app-version=$CIRCLE_BUILD_NUM \
-                --minifiedFile=android/app/build/generated/assets/react/officialPlay/release/app.bundle \
+                --app-version-code=$CIRCLE_BUILD_NUM \
+                --platform android \
                 --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
-                --minified-url=app.bundle \
-                --upload-sources
+                --bundle android/app/build/generated/assets/react/officialPlay/release/app.bundle
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
-              yarn generate-source-maps-android upload \
+              npx bugsnag-source-maps upload-react-native \
                 --api-key=$BUGSNAG_KEY \
-                --app-version=$CIRCLE_BUILD_NUM \
-                --minifiedFile=android/app/build/generated/assets/react/experimentalPlay/release/app.bundle \
+                --app-version-code=$CIRCLE_BUILD_NUM \
+                --platform android \
                 --source-map=android/app/build/generated/sourcemaps/react/experimentalPlay/release/app.bundle.map \
-                --minified-url=app.bundle \
-                --upload-sources
+                --bundle android/app/build/generated/assets/react/experimentalPlay/release/app.bundle
             fi
 
       - store_artifacts:
@@ -217,40 +207,19 @@ commands:
             fi
           working_directory: ios
       - run:
-          name: Upload sourcemaps to Bugsnag
-          command: |
-            if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
-              yarn generate-source-maps-ios
-              curl https://upload.bugsnag.com/react-native-source-map \
-                -F apiKey=$BUGSNAG_KEY_OFFICIAL \
-                -F appBundleVersion=$CIRCLE_BUILD_NUM \
-                -F dev=false \
-                -F platform=ios \
-                -F sourceMap=@ios-release.bundle.map \
-                -F bundle=@ios-release.bundle
-            fi
-            if [[ $CIRCLE_JOB == "ios-build-experimental" ]]; then
-              yarn generate-source-maps-ios
-              curl https://upload.bugsnag.com/react-native-source-map \
-                -F apiKey=$BUGSNAG_KEY \
-                -F appBundleVersion=$CIRCLE_BUILD_NUM \
-                -F dev=false \
-                -F platform=ios \
-                -F sourceMap=@ios-release.bundle.map \
-                -F bundle=@ios-release.bundle
-            fi
-      - run:
           name: Fastlane Build
           no_output_timeout: 40m
           command: |
             agvtool new-version -all $CIRCLE_BUILD_NUM
             if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
-              /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
             else
-              /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
