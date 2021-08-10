@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		fontSize: 14,
 		...sharedStyles.textSemibold
+	},
+	multiSelect: {
+		marginBottom: 10
 	}
 });
 
@@ -255,7 +258,7 @@ const LivechatEditView = ({
 						multiselect
 						theme={theme}
 						disabled={!permissions[1]}
-						inputStyle={{ marginBottom: 10 }}
+						inputStyle={styles.multiSelect}
 					/>
 
 					{Object.entries(customFields?.livechat || {}).map(([key, value], index, array) => (
