@@ -21,9 +21,11 @@ import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	title: {
-		flexShrink: 1,
 		fontSize: 16,
-		...sharedStyles.textMedium
+		letterSpacing: 0.27,
+		lineHeight: 24,
+		flexShrink: 1,
+		...sharedStyles.textBold
 	}
 });
 
@@ -164,9 +166,11 @@ const DisplayPrefsView = (props) => {
 						testID='avatars-display-pref'
 						right={() => renderAvatarSwitch(showAvatar)}
 					/>
+					<List.Separator />
 				</List.Section>
 
 				<List.Section>
+					<List.Separator />
 					<List.Item
 						left={() => (
 							<Text
@@ -191,9 +195,11 @@ const DisplayPrefsView = (props) => {
 						onPress={sortByName}
 						right={() => (renderRadio(sortBy === 'alphabetical'))}
 					/>
+					<List.Separator />
 				</List.Section>
 
 				<List.Section>
+					<List.Separator />
 					<List.Item
 						left={() => (
 							<Text
@@ -226,6 +232,7 @@ const DisplayPrefsView = (props) => {
 						onPress={toggleGroupByType}
 						right={() => (renderCheckBox(groupByType))}
 					/>
+					<List.Separator />
 				</List.Section>
 			</List.Container>
 		</SafeAreaView>

@@ -4,14 +4,14 @@ import { RectButton } from 'react-native-gesture-handler';
 import PropTypes from 'prop-types';
 
 import I18n, { isRTL } from '../../i18n';
-import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
+import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 
 const reverse = new Animated.Value(isRTL() ? -1 : 1);
 
 export const LeftActions = React.memo(({
-	theme, transX, isRead, width, onToggleReadPress
+	theme, transX, isRead, width, onToggleReadPress, displayType
 }) => {
 	const translateX = Animated.multiply(
 		transX.interpolate({
@@ -36,7 +36,7 @@ export const LeftActions = React.memo(({
 					}
 				]}
 			>
-				<View style={styles.actionLeftButtonContainer}>
+				<View style={[styles.actionLeftButtonContainer, (displayType === 'condensed' && { height: ROW_HEIGHT_CONDENSED })]}>
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
 						<>
 							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
@@ -50,7 +50,7 @@ export const LeftActions = React.memo(({
 });
 
 export const RightActions = React.memo(({
-	transX, favorite, width, toggleFav, onHidePress, theme
+	transX, favorite, width, toggleFav, onHidePress, theme, displayType
 }) => {
 	const translateXFav = Animated.multiply(
 		transX.interpolate({
@@ -84,7 +84,8 @@ export const RightActions = React.memo(({
 						width,
 						transform: [{ translateX: translateXFav }],
 						backgroundColor: themes[theme].hideBackground
-					}
+					},
+					(displayType === 'condensed' && { height: ROW_HEIGHT_CONDENSED })
 				]}
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>
@@ -100,7 +101,8 @@ export const RightActions = React.memo(({
 					{
 						width,
 						transform: [{ translateX: translateXHide }]
-					}
+					},
+					(displayType === 'condensed' && { height: ROW_HEIGHT_CONDENSED })
 				]}
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].hideBackground }]} onPress={onHidePress}>
@@ -119,7 +121,8 @@ LeftActions.propTypes = {
 	transX: PropTypes.object,
 	isRead: PropTypes.bool,
 	width: PropTypes.number,
-	onToggleReadPress: PropTypes.func
+	onToggleReadPress: PropTypes.func,
+	displayType: PropTypes.string
 };
 
 RightActions.propTypes = {
@@ -128,5 +131,6 @@ RightActions.propTypes = {
 	favorite: PropTypes.bool,
 	width: PropTypes.number,
 	toggleFav: PropTypes.func,
-	onHidePress: PropTypes.func
+	onHidePress: PropTypes.func,
+	displayType: PropTypes.string
 };

@@ -61,7 +61,9 @@ class TeamChannelsView extends React.Component {
 		deleteCPermission: PropTypes.array,
 		deletePPermission: PropTypes.array,
 		showActionSheet: PropTypes.func,
-		deleteRoom: PropTypes.func
+		deleteRoom: PropTypes.func,
+		showAvatar: PropTypes.bool,
+		displayType: PropTypes.string
 	}
 
 	constructor(props) {
@@ -429,7 +431,9 @@ class TeamChannelsView extends React.Component {
 			StoreLastMessage,
 			useRealName,
 			theme,
-			width
+			width,
+			showAvatar,
+			displayType
 		} = this.props;
 		return (
 			<RoomItem
@@ -445,6 +449,8 @@ class TeamChannelsView extends React.Component {
 				getRoomAvatar={this.getRoomAvatar}
 				swipeEnabled={false}
 				autoJoin={item.teamDefault}
+				showAvatar={showAvatar}
+				displayType={displayType}
 			/>
 		);
 	};
@@ -509,7 +515,9 @@ const mapStateToProps = state => ({
 	editTeamChannelPermission: state.permissions[PERMISSION_EDIT_TEAM_CHANNEL],
 	removeTeamChannelPermission: state.permissions[PERMISSION_REMOVE_TEAM_CHANNEL],
 	deleteCPermission: state.permissions[PERMISSION_DELETE_C],
-	deletePPermission: state.permissions[PERMISSION_DELETE_P]
+	deletePPermission: state.permissions[PERMISSION_DELETE_P],
+	showAvatar: state.sortPreferences.showAvatar,
+	displayType: state.sortPreferences.displayType
 });
 
 const mapDispatchToProps = dispatch => ({

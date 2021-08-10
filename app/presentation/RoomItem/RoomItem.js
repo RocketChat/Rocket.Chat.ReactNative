@@ -68,6 +68,7 @@ const RoomItem = ({
 		theme={theme}
 		isFocused={isFocused}
 		swipeEnabled={swipeEnabled}
+		displayType={displayType}
 	>
 		<Wrapper
 			accessibilityLabel={accessibilityLabel}
