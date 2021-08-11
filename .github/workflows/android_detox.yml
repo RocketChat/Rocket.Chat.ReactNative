@@ -117,15 +117,15 @@ jobs:
     - run: brew tap wix/brew
 
     - name: Android Emulator Runner
-        uses: ReactiveCircus/android-emulator-runner@v2.19.1
-        with:
-          api-level: 28
-          arch: x86_64
-          profile: Pixel
-          ram-size: 2048M
-          avd-name: Pixel_API_28_AOSP
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
+      uses: ReactiveCircus/android-emulator-runner@v2.19.1
+      with:
+        api-level: 28
+        arch: x86_64
+        profile: Pixel
+        ram-size: 2048M
+        avd-name: Pixel_API_28_AOSP
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
   
     - run: yarn detox test e2e/tests/room --configuration and.emu.release --cleanup
 
@@ -186,15 +186,15 @@ jobs:
     - run: brew tap wix/brew
 
     - name: Android Emulator Runner
-        uses: ReactiveCircus/android-emulator-runner@v2.19.1
-        with:
-          api-level: 28
-          arch: x86_64
-          profile: Pixel
-          ram-size: 2048M
-          avd-name: Pixel_API_28_AOSP
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
+      uses: ReactiveCircus/android-emulator-runner@v2.19.1
+      with:
+        api-level: 28
+        arch: x86_64
+        profile: Pixel
+        ram-size: 2048M
+        avd-name: Pixel_API_28_AOSP
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
   
     - run: yarn detox test e2e/tests/assorted --configuration and.emu.release --cleanup
 
@@ -255,15 +255,15 @@ jobs:
     - run: brew tap wix/brew
 
     - name: Android Emulator Runner
-        uses: ReactiveCircus/android-emulator-runner@v2.19.1
-        with:
-          api-level: 28
-          arch: x86_64
-          profile: Pixel
-          ram-size: 2048M
-          avd-name: Pixel_API_28_AOSP
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
+      uses: ReactiveCircus/android-emulator-runner@v2.19.1
+      with:
+        api-level: 28
+        arch: x86_64
+        profile: Pixel
+        ram-size: 2048M
+        avd-name: Pixel_API_28_AOSP
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
   
     - run: yarn detox test e2e/tests/onboarding --configuration and.emu.release --cleanup
 
@@ -324,15 +324,15 @@ detox-test-team:
     - run: brew tap wix/brew
 
     - name: Android Emulator Runner
-        uses: ReactiveCircus/android-emulator-runner@v2.19.1
-        with:
-          api-level: 28
-          arch: x86_64
-          profile: Pixel
-          ram-size: 2048M
-          avd-name: Pixel_API_28_AOSP
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
+      uses: ReactiveCircus/android-emulator-runner@v2.19.1
+      with:
+        api-level: 28
+        arch: x86_64
+        profile: Pixel
+        ram-size: 2048M
+        avd-name: Pixel_API_28_AOSP
+        emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+        disable-animations: true
   
     - run: yarn detox test e2e/tests/team --configuration and.emu.release --cleanup
 
