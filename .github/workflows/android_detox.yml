@@ -30,6 +30,8 @@ jobs:
     - name: Node
       if: steps.detoxappcache.outputs.cache-hit != 'true'
       uses: actions/setup-node@v1
+      with:
+        node-version: '14'
 
     - name: Cache node modules
       if: steps.detoxappcache.outputs.cache-hit != 'true'
@@ -98,6 +100,8 @@ jobs:
 
     - name: Node
       uses: actions/setup-node@v1
+      with:
+        node-version: '14'
 
     - name: Cache node modules
       uses: actions/cache@v1
@@ -167,6 +171,8 @@ jobs:
 
     - name: Node
       uses: actions/setup-node@v1
+      with:
+        node-version: '14'
 
     - name: Cache node modules
       uses: actions/cache@v1
@@ -236,6 +242,8 @@ jobs:
 
     - name: Node
       uses: actions/setup-node@v1
+      with:
+        node-version: '14'
 
     - name: Cache node modules
       uses: actions/cache@v1
@@ -305,6 +313,8 @@ jobs:
 
     - name: Node
       uses: actions/setup-node@v1
+      with:
+        node-version: '14'
 
     - name: Cache node modules
       uses: actions/cache@v1
