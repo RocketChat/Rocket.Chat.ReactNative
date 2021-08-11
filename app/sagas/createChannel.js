@@ -13,15 +13,6 @@ import I18n from '../i18n';
 import { logEvent, events } from '../utils/log';
 import { goRoom } from '../utils/goRoom';
 
-const errorArray = [
-	'room-name-already-exists',
-	'error-team-creation',
-	'unauthorized',
-	'error-duplicate-channel-name',
-	'error-invalid-room-name',
-	'team-name-already-exists'
-];
-
 const createChannel = function createChannel(data) {
 	return RocketChat.createChannel(data);
 };
@@ -118,6 +109,15 @@ const handleSuccess = function* handleSuccess({ data }) {
 };
 
 const handleFailure = function handleFailure({ err, isTeam }) {
+	const errorArray = [
+		'room-name-already-exists',
+		'error-team-creation',
+		'unauthorized',
+		'error-duplicate-channel-name',
+		'error-invalid-room-name',
+		'team-name-already-exists'
+	];
+
 	setTimeout(() => {
 		let msg = '';
 		const actionError = I18n.t('There_was_an_error_while_action', { action: isTeam ? I18n.t('creating_team') : I18n.t('creating_channel') });
