@@ -70,6 +70,7 @@ jobs:
         echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
         echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
         echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+        ./gradlew clean
 
     - run: yarn detox build e2e --configuration and.emu.release
       if: steps.detoxappcache.outputs.cache-hit != 'true'
