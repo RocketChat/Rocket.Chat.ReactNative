@@ -58,7 +58,7 @@ class SearchMessagesView extends React.Component {
 			messages: [],
 			searchText: ''
 		};
-		this.count = 0;
+		this.offset = 0;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.encrypted = props.route.params?.encrypted;
@@ -110,7 +110,7 @@ class SearchMessagesView extends React.Component {
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const result = await RocketChat.searchMessages(this.rid, searchText, this.count);
+		const result = await RocketChat.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
 		if (result.success) {
 			return result.messages;
 		}
@@ -119,10 +119,10 @@ class SearchMessagesView extends React.Component {
 	getMessages = async(searchText) => {
 		try {
 			const messages = await this.searchMessages(searchText);
-			this.setState({
-				messages: messages || [],
+			this.setState(prevState => ({
+				messages: [...prevState.messages, ...messages],
 				loading: false
-			});
+			}));
 		} catch (e) {
 			this.setState({ loading: false });
 			log(e);
@@ -130,7 +130,7 @@ class SearchMessagesView extends React.Component {
 	}
 
 	search = debounce(async(searchText) => {
-		this.count = QUERY_SIZE;
+		this.offset = 0;
 		this.setState({ searchText, loading: true, messages: [] });
 
 		await this.getMessages(searchText);
@@ -182,11 +182,11 @@ class SearchMessagesView extends React.Component {
 
 	onEndReached = async() => {
 		const { searchText, messages } = this.state;
-		if (messages.length < this.count || this.encrypted) {
+		if (messages.length < this.offset || this.encrypted) {
 			return;
 		}
 		this.setState({ loading: true });
-		this.count += QUERY_SIZE;
+		this.offset += QUERY_SIZE;
 
 		await this.getMessages(searchText);
 	}

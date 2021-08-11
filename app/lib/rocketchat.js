@@ -1500,12 +1500,13 @@ const RocketChat = {
 			messageId
 		});
 	},
-	searchMessages(roomId, searchText, count) {
+	searchMessages(roomId, searchText, count, offset) {
 		// RC 0.60.0
 		return this.sdk.get('chat.search', {
 			roomId,
 			searchText,
-			count
+			count,
+			offset
 		});
 	},
 	toggleFollowMessage(mid, follow) {
