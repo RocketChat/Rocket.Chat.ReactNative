@@ -132,7 +132,7 @@ jobs:
       with:
         api-level: 28
         arch: x86_64
-        profile: Pixel
+        profile: pixel
         ram-size: 2048M
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -202,7 +202,7 @@ jobs:
       with:
         api-level: 28
         arch: x86_64
-        profile: Pixel
+        profile: pixel
         ram-size: 2048M
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -272,7 +272,7 @@ jobs:
       with:
         api-level: 28
         arch: x86_64
-        profile: Pixel
+        profile: pixel
         ram-size: 2048M
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -342,7 +342,7 @@ jobs:
       with:
         api-level: 28
         arch: x86_64
-        profile: Pixel
+        profile: pixel
         ram-size: 2048M
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
