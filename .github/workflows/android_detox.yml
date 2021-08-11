@@ -126,7 +126,7 @@ jobs:
 
     - run: brew tap wix/brew
 
-    - name: Android Emulator Runner
+    - name: Run tests
       uses: ReactiveCircus/android-emulator-runner@v2.19.1
       with:
         api-level: 28
@@ -136,9 +136,8 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
+        script: yarn detox test e2e/tests/room --configuration and.emu.release --cleanup
   
-    - run: yarn detox test e2e/tests/room --configuration and.emu.release --cleanup
-
     - name: Upload test artifacts
       if: ${{ failure() }}
       uses: actions/upload-artifact@v2
@@ -197,7 +196,7 @@ jobs:
 
     - run: brew tap wix/brew
 
-    - name: Android Emulator Runner
+    - name: Run tests
       uses: ReactiveCircus/android-emulator-runner@v2.19.1
       with:
         api-level: 28
@@ -207,9 +206,8 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
+        script: yarn detox test e2e/tests/assorted --configuration and.emu.release --cleanup
   
-    - run: yarn detox test e2e/tests/assorted --configuration and.emu.release --cleanup
-
     - name: Upload test artifacts
       if: ${{ failure() }}
       uses: actions/upload-artifact@v2
@@ -268,7 +266,7 @@ jobs:
 
     - run: brew tap wix/brew
 
-    - name: Android Emulator Runner
+    - name: Run tests
       uses: ReactiveCircus/android-emulator-runner@v2.19.1
       with:
         api-level: 28
@@ -278,9 +276,8 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
+        script: yarn detox test e2e/tests/onboarding --configuration and.emu.release --cleanup
   
-    - run: yarn detox test e2e/tests/onboarding --configuration and.emu.release --cleanup
-
     - name: Upload test artifacts
       if: ${{ failure() }}
       uses: actions/upload-artifact@v2
@@ -339,7 +336,7 @@ jobs:
 
     - run: brew tap wix/brew
 
-    - name: Android Emulator Runner
+    - name: Ruun tests
       uses: ReactiveCircus/android-emulator-runner@v2.19.1
       with:
         api-level: 28
@@ -349,9 +346,8 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
+        script: yarn detox test e2e/tests/team --configuration and.emu.release --cleanup
   
-    - run: yarn detox test e2e/tests/team --configuration and.emu.release --cleanup
-
     - name: Upload test artifacts
       if: ${{ failure() }}
       uses: actions/upload-artifact@v2
