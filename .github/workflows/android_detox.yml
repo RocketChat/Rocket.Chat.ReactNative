@@ -56,6 +56,7 @@ jobs:
 
     - name: Gradle config
       working-directory: android
+      if: steps.detoxappcache.outputs.cache-hit != 'true'
       run: |
         echo -e "" > ./gradle.properties
         # echo -e "android.enableAapt2=false" >> ./gradle.properties
