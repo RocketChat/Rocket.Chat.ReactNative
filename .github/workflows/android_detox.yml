@@ -274,7 +274,7 @@ jobs:
         name: artifacts
         path: artifacts
 
-detox-test-team:
+  detox-test-team:
     needs: detox-build
     runs-on: macos-latest
     timeout-minutes: 60
