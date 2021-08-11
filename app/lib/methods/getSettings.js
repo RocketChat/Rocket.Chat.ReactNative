@@ -140,7 +140,7 @@ export default async function() {
 		const db = database.active;
 		const settingsParams = Object.keys(settings).filter(key => !loginSettings.includes(key));
 		// RC 0.60.0
-		const result = await fetch(`${ this.sdk.client.host }/api/v1/settings.public?query={"_id":{"$in":${ JSON.stringify(settingsParams) }}}&count=${ settingsParams.length }`)
+		const result = await fetch(`${ this.sdk.client.host }/api/v1/settings.public?count=100&query={"_id":{"$in":${ JSON.stringify(settingsParams) }}}&count=${ settingsParams.length }`)
 			.then(response => response.json());
 
 		if (!result.success) {
