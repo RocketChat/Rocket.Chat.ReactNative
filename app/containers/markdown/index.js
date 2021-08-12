@@ -4,6 +4,7 @@ import { Parser, Node } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import PropTypes from 'prop-types';
 import removeMarkdown from 'remove-markdown';
+import { connect } from 'react-redux';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import I18n from '../../i18n';
@@ -23,6 +24,8 @@ import mergeTextNodes from './mergeTextNodes';
 
 import styles from './styles';
 import { isValidURL } from '../../utils/url';
+import { getUserSelector } from '../../selectors/login';
+import MessageBody from './MessageBody';
 
 // Support <http://link|Text>
 const formatText = text => text.replace(
@@ -69,6 +72,7 @@ class Markdown extends PureComponent {
 	static propTypes = {
 		msg: PropTypes.string,
 		md: PropTypes.string,
+		user: PropTypes.object,
 		getCustomEmoji: PropTypes.func,
 		baseUrl: PropTypes.string,
 		username: PropTypes.string,
@@ -372,11 +376,15 @@ class Markdown extends PureComponent {
 
 	render() {
 		const {
-			msg, numberOfLines, preview = false, theme, style = [], testID
+			msg, md, numberOfLines, preview = false, theme, style = [], testID, user, mentions
 		} = this.props;
 
 		if (!msg) {
 			return null;
+		}
+
+		if (user.enableMessageParserEarlyAdoption && md) {
+			return <MessageBody tokens={md} theme={theme} style={style} mentions={mentions} />;
 		}
 
 		let m = formatText(msg);
@@ -406,4 +414,8 @@ class Markdown extends PureComponent {
 	}
 }
 
-export default Markdown;
+const mapStateToProps = state => ({
+	user: getUserSelector(state)
+});
+
+export default connect(mapStateToProps)(Markdown);

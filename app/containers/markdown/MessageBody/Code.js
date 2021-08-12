@@ -1,5 +1,6 @@
 import React from 'react';
-import { PropTypes, Text } from 'react-native';
+import { Text } from 'react-native';
+import PropTypes from 'prop-types';
 import { themes } from '../../../constants/colors';
 import { useTheme } from '../../../theme';
 
@@ -11,7 +12,7 @@ const Code = ({
 		<Text
 			style={[
 				{
-					...(type === 'CODE_INLINE' ? styles.codeInline : styles.codeBlock),
+					...(type === 'INLINE_CODE' ? styles.codeInline : styles.codeBlock),
 					color: themes[theme].bodyText,
 					backgroundColor: themes[theme].bannerBackground,
 					borderColor: themes[theme].bannerBackground

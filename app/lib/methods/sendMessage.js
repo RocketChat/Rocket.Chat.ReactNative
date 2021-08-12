@@ -19,10 +19,10 @@ const changeMessageStatus = async(id, tmid, status, message) => {
 			if (message) {
 				m.mentions = message.mentions;
 				m.channels = message.channels;
-			}
 
-			if (message.md) {
-				m.md = message.md;
+				if (message.md) {
+					m.md = message.md;
+				}
 			}
 		})
 	);
@@ -35,6 +35,10 @@ const changeMessageStatus = async(id, tmid, status, message) => {
 				if (message) {
 					tm.mentions = message.mentions;
 					tm.channels = message.channels;
+
+					if (message.md) {
+						tm.md = message.md;
+					}
 				}
 			})
 		);
