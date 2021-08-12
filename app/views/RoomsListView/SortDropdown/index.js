@@ -192,7 +192,7 @@ class Sort extends PureComponent {
 					/>
 					<List.Item
 						title='Unread_on_top'
-						left={() => <List.Icon name='unread-on-top-disabled' />}
+						left={() => <List.Icon name='flag' />}
 						color={themes[theme].auxiliaryText}
 						onPress={this.toggleUnread}
 						right={() => (showUnread ? this.renderCheck() : null)}
