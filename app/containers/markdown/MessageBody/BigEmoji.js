@@ -7,7 +7,7 @@ import Emoji from './Emoji';
 
 const BigEmoji = ({ value }) => (
 	<>
-		{value.map((block, index) => <Emoji key={index} value={block.value.value} isBigEmoji />)}
+		{value.map((block, index) => <Emoji key={index} emojiHandle={`:${ block.value.value }:`} isBigEmoji />)}
 	</>
 );
 
