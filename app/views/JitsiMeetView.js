@@ -9,6 +9,7 @@ import RocketChat from '../lib/rocketchat';
 import { getUserSelector } from '../selectors/login';
 
 import { logEvent, events } from '../utils/log';
+import { isAndroid, isIOS } from '../utils/deviceInfo';
 
 const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 	`${ baseUrl }/avatar/${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
@@ -30,39 +31,45 @@ class JitsiMeetView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.rid = props.route.params?.rid;
-		this.onConferenceTerminated = this.onConferenceTerminated.bind(this);
-		this.onConferenceJoined = this.onConferenceJoined.bind(this);
+		this.url = props.route.params?.url;
 		this.jitsiTimeout = null;
-	}
 
-	componentDidMount() {
-		const { route, user, baseUrl } = this.props;
+		const { user, baseUrl } = props;
 		const {
 			name: displayName, id: userId, token, username
 		} = user;
-
 		const avatarAuthURLFragment = `&rc_token=${ token }&rc_uid=${ userId }`;
 		const avatar = formatUrl(username, baseUrl, 100, avatarAuthURLFragment);
-
-		setTimeout(() => {
-			const userInfo = {
+		this.state = {
+			userInfo: {
 				displayName,
 				avatar
-			};
-			const url = 'https://meet.jit.si/pitelola' // route.params?.url;
-			const onlyAudio = route.params?.onlyAudio ?? false;
-			if (onlyAudio) {
-				JitsiMeet.audioCall(url, userInfo);
-			} else {
-				JitsiMeet.call(url, userInfo);
 			}
-		}, 1000);
+		};
+	}
+
+	componentDidMount() {
+		const { route } = this.props;
+		const { userInfo } = this.state;
+
+		if (isIOS) {
+			setTimeout(() => {
+				const onlyAudio = route.params?.onlyAudio ?? false;
+				if (onlyAudio) {
+					JitsiMeet.audioCall(this.url, userInfo);
+				} else {
+					JitsiMeet.call(this.url, userInfo);
+				}
+			}, 1000);
+		}
 	}
 
 	componentWillUnmount() {
 		logEvent(events.JM_CONFERENCE_TERMINATE);
 		if (this.jitsiTimeout) {
 			BackgroundTimer.clearInterval(this.jitsiTimeout);
+			this.jitsiTimeout = null;
+			BackgroundTimer.stopBackgroundTimer();
 		}
 		JitsiMeet.endCall();
 	}
@@ -74,6 +81,8 @@ class JitsiMeetView extends React.Component {
 		RocketChat.updateJitsiTimeout(this.rid).catch(e => console.log(e));
 		if (this.jitsiTimeout) {
 			BackgroundTimer.clearInterval(this.jitsiTimeout);
+			BackgroundTimer.stopBackgroundTimer();
+			this.jitsiTimeout = null;
 		}
 		this.jitsiTimeout = BackgroundTimer.setInterval(() => {
 			RocketChat.updateJitsiTimeout(this.rid).catch(e => console.log(e));
@@ -83,18 +92,20 @@ class JitsiMeetView extends React.Component {
 	onConferenceTerminated = () => {
 		logEvent(events.JM_CONFERENCE_TERMINATE);
 		const { navigation } = this.props;
-		if (this.jitsiTimeout) {
-			BackgroundTimer.clearInterval(this.jitsiTimeout);
-		}
 		navigation.pop();
 	}
 
 	render() {
+		const { userInfo } = this.state;
+		const { route } = this.props;
+		const onlyAudio = route.params?.onlyAudio ?? false;
+		const options = isAndroid ? { url: this.url, userInfo, audioOnly: onlyAudio } : null;
 		return (
 			<RNJitsiMeetView
 				onConferenceTerminated={this.onConferenceTerminated}
 				onConferenceJoined={this.onConferenceJoined}
 				style={StyleSheet.absoluteFill}
+				options={options}
 			/>
 		);
 	}
