@@ -58,9 +58,9 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }) => {
 	const showTwoFactor = args => setData(args);
 
 	useEffect(() => {
-		EventEmitter.addEventListener(TWO_FACTOR, showTwoFactor);
+		const listener = EventEmitter.addEventListener(TWO_FACTOR, showTwoFactor);
 
-		return () => EventEmitter.removeListener(TWO_FACTOR);
+		return () => EventEmitter.removeListener(TWO_FACTOR, listener);
 	}, []);
 
 	const onCancel = () => {

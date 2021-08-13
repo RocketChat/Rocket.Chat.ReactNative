@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import {
 	View, Text, Switch, ScrollView, StyleSheet, FlatList
 } from 'react-native';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
+import * as List from '../containers/List';
 
 import TextInput from '../presentation/TextInput';
 import Loading from '../containers/Loading';
@@ -30,12 +31,6 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		width: '100%'
-	},
-	separator: {
-		marginLeft: 60
-	},
-	formSeparator: {
-		marginLeft: 15
 	},
 	input: {
 		height: 54,
@@ -73,12 +68,9 @@ const styles = StyleSheet.create({
 });
 
 class CreateChannelView extends React.Component {
-	static navigationOptions = () => ({
-		title: I18n.t('Create_Channel')
-	});
-
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		baseUrl: PropTypes.string,
 		create: PropTypes.func.isRequired,
 		removeUser: PropTypes.func.isRequired,
@@ -91,15 +83,24 @@ class CreateChannelView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		}),
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		teamId: PropTypes.string
 	};
 
-	state = {
-		channelName: '',
-		type: true,
-		readOnly: false,
-		encrypted: false,
-		broadcast: false
+	constructor(props) {
+		super(props);
+		const { route } = this.props;
+		const isTeam = route?.params?.isTeam || false;
+		this.teamId = route?.params?.teamId;
+		this.state = {
+			channelName: '',
+			type: true,
+			readOnly: false,
+			encrypted: false,
+			broadcast: false,
+			isTeam
+		};
+		this.setHeader();
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -133,10 +134,19 @@ class CreateChannelView extends React.Component {
 		if (nextProps.encryptionEnabled !== encryptionEnabled) {
 			return true;
 		}
-		if (!equal(nextProps.users, users)) {
+		if (!dequal(nextProps.users, users)) {
 			return true;
 		}
 		return false;
+	}
+
+	setHeader = () => {
+		const { navigation } = this.props;
+		const { isTeam } = this.state;
+
+		navigation.setOptions({
+			title: isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel')
+		});
 	}
 
 	toggleRightButton = (channelName) => {
@@ -157,9 +167,11 @@ class CreateChannelView extends React.Component {
 
 	submit = () => {
 		const {
-			channelName, type, readOnly, broadcast, encrypted
+			channelName, type, readOnly, broadcast, encrypted, isTeam
 		} = this.state;
-		const { users: usersProps, isFetching, create } = this.props;
+		const {
+			users: usersProps, isFetching, create
+		} = this.props;
 
 		if (!channelName.trim() || isFetching) {
 			return;
@@ -168,16 +180,16 @@ class CreateChannelView extends React.Component {
 		// transform users object into array of usernames
 		const users = usersProps.map(user => user.name);
 
-		// create channel
+		// create channel or team
 		create({
-			name: channelName, users, type, readOnly, broadcast, encrypted
+			name: channelName, users, type, readOnly, broadcast, encrypted, isTeam, teamId: this.teamId
 		});
 
 		Review.pushPositiveEvent();
 	}
 
 	removeUser = (user) => {
-		logEvent(events.CREATE_CHANNEL_REMOVE_USER);
+		logEvent(events.CR_REMOVE_USER);
 		const { removeUser } = this.props;
 		removeUser(user);
 	}
@@ -201,13 +213,14 @@ class CreateChannelView extends React.Component {
 	}
 
 	renderType() {
-		const { type } = this.state;
+		const { type, isTeam } = this.state;
+
 		return this.renderSwitch({
 			id: 'type',
 			value: type,
-			label: 'Private_Channel',
+			label: isTeam ? 'Private_Team' : 'Private_Channel',
 			onValueChange: (value) => {
-				logEvent(events.CREATE_CHANNEL_TOGGLE_TYPE);
+				logEvent(events.CR_TOGGLE_TYPE);
 				// If we set the channel as public, encrypted status should be false
 				this.setState(({ encrypted }) => ({ type: value, encrypted: value && encrypted }));
 			}
@@ -215,13 +228,14 @@ class CreateChannelView extends React.Component {
 	}
 
 	renderReadOnly() {
-		const { readOnly, broadcast } = this.state;
+		const { readOnly, broadcast, isTeam } = this.state;
+
 		return this.renderSwitch({
 			id: 'readonly',
 			value: readOnly,
-			label: 'Read_Only_Channel',
+			label: isTeam ? 'Read_Only_Team' : 'Read_Only_Channel',
 			onValueChange: (value) => {
-				logEvent(events.CREATE_CHANNEL_TOGGLE_READ_ONLY);
+				logEvent(events.CR_TOGGLE_READ_ONLY);
 				this.setState({ readOnly: value });
 			},
 			disabled: broadcast
@@ -241,7 +255,7 @@ class CreateChannelView extends React.Component {
 			value: encrypted,
 			label: 'Encrypted',
 			onValueChange: (value) => {
-				logEvent(events.CREATE_CHANNEL_TOGGLE_ENCRYPTED);
+				logEvent(events.CR_TOGGLE_ENCRYPTED);
 				this.setState({ encrypted: value });
 			},
 			disabled: !type
@@ -249,26 +263,20 @@ class CreateChannelView extends React.Component {
 	}
 
 	renderBroadcast() {
-		const { broadcast, readOnly } = this.state;
+		const { broadcast, readOnly, isTeam } = this.state;
+
 		return this.renderSwitch({
 			id: 'broadcast',
 			value: broadcast,
-			label: 'Broadcast_Channel',
+			label: isTeam ? 'Broadcast_Team' : 'Broadcast_Channel',
 			onValueChange: (value) => {
-				logEvent(events.CREATE_CHANNEL_TOGGLE_BROADCAST);
+				logEvent(events.CR_TOGGLE_BROADCAST);
 				this.setState({
 					broadcast: value,
 					readOnly: value ? true : readOnly
 				});
 			}
 		});
-	}
-
-	renderSeparator = () => <View style={[sharedStyles.separator, styles.separator]} />
-
-	renderFormSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.formSeparator, { backgroundColor: themes[theme].separatorColor }]} />;
 	}
 
 	renderItem = ({ item }) => {
@@ -305,7 +313,7 @@ class CreateChannelView extends React.Component {
 					}
 				]}
 				renderItem={this.renderItem}
-				ItemSeparatorComponent={this.renderSeparator}
+				ItemSeparatorComponent={List.Separator}
 				enableEmptySections
 				keyboardShouldPersistTaps='always'
 			/>
@@ -313,8 +321,10 @@ class CreateChannelView extends React.Component {
 	}
 
 	render() {
-		const { channelName } = this.state;
-		const { users, isFetching, theme } = this.props;
+		const { channelName, isTeam } = this.state;
+		const {
+			users, isFetching, theme
+		} = this.props;
 		const userCount = users.length;
 
 		return (
@@ -330,10 +340,10 @@ class CreateChannelView extends React.Component {
 							<TextInput
 								autoFocus
 								style={[styles.input, { backgroundColor: themes[theme].backgroundColor }]}
-								label={I18n.t('Channel_Name')}
+								label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 								value={channelName}
 								onChangeText={this.onChangeText}
-								placeholder={I18n.t('Channel_Name')}
+								placeholder={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 								returnKeyType='done'
 								testID='create-channel-name'
 								autoCorrect={false}
@@ -341,13 +351,13 @@ class CreateChannelView extends React.Component {
 								theme={theme}
 								underlineColorAndroid='transparent'
 							/>
-							{this.renderFormSeparator()}
+							<List.Separator />
 							{this.renderType()}
-							{this.renderFormSeparator()}
+							<List.Separator />
 							{this.renderReadOnly()}
-							{this.renderFormSeparator()}
+							<List.Separator />
 							{this.renderEncrypted()}
-							{this.renderFormSeparator()}
+							<List.Separator />
 							{this.renderBroadcast()}
 						</View>
 						<View style={styles.invitedHeader}>

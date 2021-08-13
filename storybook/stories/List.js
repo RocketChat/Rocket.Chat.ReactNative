@@ -23,6 +23,20 @@ stories.add('title and subtitle', () => (
 	</List.Container>
 ));
 
+stories.add('alert', () => (
+	<List.Container>
+		<List.Separator />
+		<List.Item title='Chats' alert />
+		<List.Separator />
+		<List.Item title={longText} translateTitle={false} translateSubtitle={false} alert />
+		<List.Separator />
+		<List.Item title='Chats' right={() => <List.Icon name='emoji' />} alert />
+		<List.Separator />
+		<List.Item title={longText} translateTitle={false} translateSubtitle={false} right={() => <List.Icon name='emoji' />} alert />
+		<List.Separator />
+	</List.Container>
+));
+
 stories.add('pressable', () => (
 	<List.Container>
 		<List.Separator />

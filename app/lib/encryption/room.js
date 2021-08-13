@@ -49,7 +49,7 @@ export default class EncryptionRoom {
 		}
 
 		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
+		const subCollection = db.get('subscriptions');
 		try {
 			// Find the subscription
 			const subscription = await subCollection.find(this.roomId);

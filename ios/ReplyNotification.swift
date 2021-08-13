@@ -48,6 +48,9 @@ class ReplyNotification: RNNotificationEventHandler {
           }
         }
       }
+    } else {
+      let body = RNNotificationParser.parseNotificationResponse(response)
+      RNEventEmitter.sendEvent(RNNotificationOpened, body: body)
     }
   }
 }

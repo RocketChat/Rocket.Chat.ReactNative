@@ -147,7 +147,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 	const animatedPosition = React.useRef(new Value(0));
 	const opacity = interpolate(animatedPosition.current, {
 		inputRange: [0, 1],
-		outputRange: [0, 0.7],
+		outputRange: [0, themes[theme].backdropOpacity],
 		extrapolate: Extrapolate.CLAMP
 	});
 

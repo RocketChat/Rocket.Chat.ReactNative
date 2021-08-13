@@ -6,8 +6,12 @@ import log from '../../utils/log';
 import database from '../database';
 import protectedFunction from './helpers/protectedFunction';
 import { Encryption } from '../encryption';
+import { MESSAGE_TYPE_ANY_LOAD } from '../../constants/messageTypeLoad';
+import { generateLoadMoreId } from '../utils';
 
-export default function updateMessages({ rid, update = [], remove = [] }) {
+export default function updateMessages({
+	rid, update = [], remove = [], loaderItem
+}) {
 	try {
 		if (!((update && update.length) || (remove && remove.length))) {
 			return;
@@ -16,7 +20,7 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 		return db.action(async() => {
 			// Decrypt these messages
 			update = await Encryption.decryptMessages(update);
-			const subCollection = db.collections.get('subscriptions');
+			const subCollection = db.get('subscriptions');
 			let sub;
 			try {
 				sub = await subCollection.find(rid);
@@ -26,11 +30,17 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 			}
 
 			const messagesIds = [...update.map(m => m._id), ...remove.map(m => m._id)];
-			const msgCollection = db.collections.get('messages');
-			const threadCollection = db.collections.get('threads');
-			const threadMessagesCollection = db.collections.get('thread_messages');
+			const msgCollection = db.get('messages');
+			const threadCollection = db.get('threads');
+			const threadMessagesCollection = db.get('thread_messages');
 			const allMessagesRecords = await msgCollection
-				.query(Q.where('rid', rid), Q.where('id', Q.oneOf(messagesIds)))
+				.query(
+					Q.where('rid', rid),
+					Q.or(
+						Q.where('id', Q.oneOf(messagesIds)),
+						Q.where('t', Q.oneOf(MESSAGE_TYPE_ANY_LOAD))
+					)
+				)
 				.fetch();
 			const allThreadsRecords = await threadCollection
 				.query(Q.where('rid', rid), Q.where('id', Q.oneOf(messagesIds)))
@@ -54,6 +64,9 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 			const allThreadMessages = update.filter(m => m.tmid);
 			let threadMessagesToCreate = allThreadMessages.filter(i1 => !allThreadMessagesRecords.find(i2 => i1._id === i2.id));
 			let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 => allThreadMessages.find(i2 => i1.id === i2._id));
+
+			// filter loaders to delete
+			let loadersToDelete = allMessagesRecords.filter(i1 => update.find(i2 => i1.id === generateLoadMoreId(i2._id)));
 
 			// Create
 			msgsToCreate = msgsToCreate.map(message => msgCollection.prepareCreate(protectedFunction((m) => {
@@ -121,6 +134,12 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 				threadMessagesToDelete = threadMessagesToDelete.map(tm => tm.prepareDestroyPermanently());
 			}
 
+			// Delete loaders
+			loadersToDelete = loadersToDelete.map(m => m.prepareDestroyPermanently());
+			if (loaderItem) {
+				loadersToDelete.push(loaderItem.prepareDestroyPermanently());
+			}
+
 			const allRecords = [
 				...msgsToCreate,
 				...msgsToUpdate,
@@ -130,7 +149,8 @@ export default function updateMessages({ rid, update = [], remove = [] }) {
 				...threadsToDelete,
 				...threadMessagesToCreate,
 				...threadMessagesToUpdate,
-				...threadMessagesToDelete
+				...threadMessagesToDelete,
+				...loadersToDelete
 			];
 
 			try {

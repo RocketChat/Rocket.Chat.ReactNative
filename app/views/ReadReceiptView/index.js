@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import * as List from '../../containers/List';
 
 import Avatar from '../../containers/Avatar';
 import styles from './styles';
@@ -29,7 +30,7 @@ class ReadReceiptView extends React.Component {
 
 	static propTypes = {
 		route: PropTypes.object,
-		Message_TimeFormat: PropTypes.string,
+		Message_TimeAndDateFormat: PropTypes.string,
 		theme: PropTypes.string
 	}
 
@@ -55,7 +56,7 @@ class ReadReceiptView extends React.Component {
 		if (nextState.loading !== loading) {
 			return true;
 		}
-		if (!equal(nextState.receipts, receipts)) {
+		if (!dequal(nextState.receipts, receipts)) {
 			return true;
 		}
 		return false;
@@ -93,8 +94,8 @@ class ReadReceiptView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { Message_TimeFormat, theme } = this.props;
-		const time = moment(item.ts).format(Message_TimeFormat);
+		const { theme, Message_TimeAndDateFormat } = this.props;
+		const time = moment(item.ts).format(Message_TimeAndDateFormat);
 		if (!item?.user?.username) {
 			return null;
 		}
@@ -121,11 +122,6 @@ class ReadReceiptView extends React.Component {
 		);
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
-
 	render() {
 		const { receipts, loading } = this.state;
 		const { theme } = this.props;
@@ -143,7 +139,7 @@ class ReadReceiptView extends React.Component {
 						<FlatList
 							data={receipts}
 							renderItem={this.renderItem}
-							ItemSeparatorComponent={this.renderSeparator}
+							ItemSeparatorComponent={List.Separator}
 							style={[
 								styles.list,
 								{
@@ -160,7 +156,7 @@ class ReadReceiptView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	Message_TimeFormat: state.settings.Message_TimeFormat
+	Message_TimeAndDateFormat: state.settings.Message_TimeAndDateFormat
 });
 
 export default connect(mapStateToProps)(withTheme(ReadReceiptView));

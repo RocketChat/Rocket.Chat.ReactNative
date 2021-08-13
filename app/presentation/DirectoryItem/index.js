@@ -18,7 +18,7 @@ const DirectoryItemLabel = React.memo(({ text, theme }) => {
 });
 
 const DirectoryItem = ({
-	title, description, avatar, onPress, testID, style, rightLabel, type, rid, theme
+	title, description, avatar, onPress, testID, style, rightLabel, type, rid, theme, teamMain
 }) => (
 	<Touch
 		onPress={onPress}
@@ -36,7 +36,7 @@ const DirectoryItem = ({
 			/>
 			<View style={styles.directoryItemTextContainer}>
 				<View style={styles.directoryItemTextTitle}>
-					<RoomTypeIcon type={type} theme={theme} />
+					<RoomTypeIcon type={type} teamMain={teamMain} theme={theme} />
 					<Text style={[styles.directoryItemName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
 				</View>
 				{ description ? <Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{description}</Text> : null }
@@ -56,7 +56,8 @@ DirectoryItem.propTypes = {
 	style: PropTypes.any,
 	rightLabel: PropTypes.string,
 	rid: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	teamMain: PropTypes.bool
 };
 
 DirectoryItemLabel.propTypes = {

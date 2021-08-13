@@ -94,7 +94,7 @@ class LanguageView extends React.Component {
 			setUser({ language: params.language });
 
 			const serversDB = database.servers;
-			const usersCollection = serversDB.collections.get('users');
+			const usersCollection = serversDB.get('users');
 			await serversDB.action(async() => {
 				try {
 					const userRecord = await usersCollection.find(user.id);

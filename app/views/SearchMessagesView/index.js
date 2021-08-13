@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, FlatList, Text } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -23,6 +23,8 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
+import getThreadName from '../../lib/methods/getThreadName';
+import getRoomInfo from '../../lib/methods/getRoomInfo';
 
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ navigation, route }) => {
@@ -42,7 +44,8 @@ class SearchMessagesView extends React.Component {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		useRealName: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -53,7 +56,12 @@ class SearchMessagesView extends React.Component {
 			searchText: ''
 		};
 		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
 		this.encrypted = props.route.params?.encrypted;
+	}
+
+	async componentDidMount() {
+		this.room = await getRoomInfo(this.rid);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -68,7 +76,7 @@ class SearchMessagesView extends React.Component {
 		if (nextState.searchText !== searchText) {
 			return true;
 		}
-		if (!equal(nextState.messages, messages)) {
+		if (!dequal(nextState.messages, messages)) {
 			return true;
 		}
 		return false;
@@ -83,7 +91,7 @@ class SearchMessagesView extends React.Component {
 		// If it's a encrypted, room we'll search only on the local stored messages
 		if (this.encrypted) {
 			const db = database.active;
-			const messagesCollection = db.collections.get('messages');
+			const messagesCollection = db.get('messages');
 			const likeString = sanitizeLikeString(searchText);
 			return messagesCollection
 				.query(
@@ -125,12 +133,39 @@ class SearchMessagesView extends React.Component {
 		return null;
 	}
 
+	showAttachment = (attachment) => {
+		const { navigation } = this.props;
+		navigation.navigate('AttachmentView', { attachment });
+	}
+
 	navToRoomInfo = (navParam) => {
 		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
 		navigation.navigate('RoomInfoView', navParam);
+	}
+
+	jumpToMessage = async({ item }) => {
+		const { navigation } = this.props;
+		let params = {
+			rid: this.rid,
+			jumpToMessageId: item._id,
+			t: this.t,
+			room: this.room
+		};
+		if (item.tmid) {
+			navigation.pop();
+			params = {
+				...params,
+				tmid: item.tmid,
+				name: await getThreadName(this.rid, item.tmid, item._id),
+				t: 'thread'
+			};
+			navigation.push('RoomView', params);
+		} else {
+			navigation.navigate('RoomView', params);
+		}
 	}
 
 	renderEmpty = () => {
@@ -143,18 +178,24 @@ class SearchMessagesView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, useRealName
+		} = this.props;
 		return (
 			<Message
 				item={item}
 				baseUrl={baseUrl}
 				user={user}
-				timeFormat='LLL'
+				timeFormat='MMM Do YYYY, h:mm:ss a'
 				isHeader
-				showAttachment={() => {}}
+				isThreadRoom
+				showAttachment={this.showAttachment}
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
+				useRealName={useRealName}
 				theme={theme}
+				onPress={() => this.jumpToMessage({ item })}
+				jumpToMessage={() => this.jumpToMessage({ item })}
 			/>
 		);
 	}
@@ -206,6 +247,7 @@ class SearchMessagesView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
+	useRealName: state.settings.UI_Use_Real_Name,
 	customEmojis: state.customEmojis
 });
 

@@ -4,22 +4,20 @@ import {
 	Text, View, ScrollView, TouchableOpacity, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import ImagePicker from 'react-native-image-crop-picker';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
-import lt from 'semver/functions/lt';
-import coerce from 'semver/functions/coerce';
+import { Q } from '@nozbe/watermelondb';
 
-
+import { compareServerVersion, methods } from '../../lib/utils';
 import database from '../../lib/database';
 import { deleteRoom as deleteRoomAction } from '../../actions/room';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
@@ -44,14 +42,7 @@ const PERMISSION_ARCHIVE = 'archive-room';
 const PERMISSION_UNARCHIVE = 'unarchive-room';
 const PERMISSION_DELETE_C = 'delete-c';
 const PERMISSION_DELETE_P = 'delete-p';
-const PERMISSIONS_ARRAY = [
-	PERMISSION_SET_READONLY,
-	PERMISSION_SET_REACT_WHEN_READONLY,
-	PERMISSION_ARCHIVE,
-	PERMISSION_UNARCHIVE,
-	PERMISSION_DELETE_C,
-	PERMISSION_DELETE_P
-];
+const PERMISSION_DELETE_TEAM = 'delete-team';
 
 class RoomInfoEditView extends React.Component {
 	static navigationOptions = () => ({
@@ -59,11 +50,20 @@ class RoomInfoEditView extends React.Component {
 	})
 
 	static propTypes = {
+		navigation: PropTypes.object,
 		route: PropTypes.object,
 		deleteRoom: PropTypes.func,
 		serverVersion: PropTypes.string,
 		encryptionEnabled: PropTypes.bool,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		setReadOnlyPermission: PropTypes.array,
+		setReactWhenReadOnlyPermission: PropTypes.array,
+		archiveRoomPermission: PropTypes.array,
+		unarchiveRoomPermission: PropTypes.array,
+		deleteCPermission: PropTypes.array,
+		deletePPermission: PropTypes.array,
+		deleteTeamPermission: PropTypes.array,
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -90,16 +90,6 @@ class RoomInfoEditView extends React.Component {
 		this.loadRoom();
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (!equal(nextState, this.state)) {
-			return true;
-		}
-		if (!equal(nextProps, this.props)) {
-			return true;
-		}
-		return false;
-	}
-
 	componentWillUnmount() {
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
@@ -108,14 +98,23 @@ class RoomInfoEditView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	loadRoom = async() => {
-		const { route } = this.props;
+		const {
+			route,
+			setReadOnlyPermission,
+			setReactWhenReadOnlyPermission,
+			archiveRoomPermission,
+			unarchiveRoomPermission,
+			deleteCPermission,
+			deletePPermission,
+			deleteTeamPermission
+		} = this.props;
 		const rid = route.params?.rid;
 		if (!rid) {
 			return;
 		}
 		try {
 			const db = database.active;
-			const sub = await db.collections.get('subscriptions').find(rid);
+			const sub = await db.get('subscriptions').find(rid);
 			const observable = sub.observe();
 
 			this.querySubscription = observable.subscribe((data) => {
@@ -123,8 +122,27 @@ class RoomInfoEditView extends React.Component {
 				this.init(this.room);
 			});
 
-			const permissions = await RocketChat.hasPermission(PERMISSIONS_ARRAY, rid);
-			this.setState({ permissions });
+			const result = await RocketChat.hasPermission([
+				setReadOnlyPermission,
+				setReactWhenReadOnlyPermission,
+				archiveRoomPermission,
+				unarchiveRoomPermission,
+				deleteCPermission,
+				deletePPermission,
+				...(this.room.teamMain ? [deleteTeamPermission] : [])
+			], rid);
+
+			this.setState({
+				permissions: {
+					[PERMISSION_SET_READONLY]: result[0],
+					[PERMISSION_SET_REACT_WHEN_READONLY]: result[1],
+					[PERMISSION_ARCHIVE]: result[2],
+					[PERMISSION_UNARCHIVE]: result[3],
+					[PERMISSION_DELETE_C]: result[4],
+					[PERMISSION_DELETE_P]: result[5],
+					...(this.room.teamMain && { [PERMISSION_DELETE_TEAM]: result[6] })
+				}
+			});
 		} catch (e) {
 			log(e);
 		}
@@ -179,7 +197,7 @@ class RoomInfoEditView extends React.Component {
 			&& room.t === 'p' === t
 			&& room.ro === ro
 			&& room.reactWhenReadOnly === reactWhenReadOnly
-			&& isEqual(room.sysMes, systemMessages)
+			&& dequal(room.sysMes, systemMessages)
 			&& enableSysMes === (room.sysMes && room.sysMes.length > 0)
 			&& room.encrypted === encrypted
 			&& isEmpty(avatar)
@@ -239,7 +257,7 @@ class RoomInfoEditView extends React.Component {
 			params.reactWhenReadOnly = reactWhenReadOnly;
 		}
 
-		if (!isEqual(room.sysMes, systemMessages)) {
+		if (!dequal(room.sysMes, systemMessages)) {
 			params.systemMessages = systemMessages;
 		}
 
@@ -274,6 +292,62 @@ class RoomInfoEditView extends React.Component {
 		}, 100);
 	}
 
+	deleteTeam = async() => {
+		const { room } = this.state;
+		const {
+			navigation, deleteCPermission, deletePPermission, deleteRoom
+		} = this.props;
+
+		try {
+			const db = database.active;
+			const subCollection = db.get('subscriptions');
+			const teamChannels = await subCollection.query(
+				Q.where('team_id', room.teamId),
+				Q.where('team_main', Q.notEq(true))
+			);
+
+			const teamChannelOwner = [];
+			for (let i = 0; i < teamChannels.length; i += 1) {
+				const permissionType = teamChannels[i].t === 'c' ? deleteCPermission : deletePPermission;
+				// eslint-disable-next-line no-await-in-loop
+				const permissions = await RocketChat.hasPermission([
+					permissionType
+				], teamChannels[i].rid);
+
+				if (permissions[0]) { teamChannelOwner.push(teamChannels[i]); }
+			}
+
+			if (teamChannelOwner.length) {
+				navigation.navigate('SelectListView', {
+					title: 'Delete_Team',
+					data: teamChannelOwner,
+					infoText: 'Select_channels_to_delete',
+					nextAction: (selected) => {
+						showConfirmationAlert({
+							message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
+							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
+							onPress: () => deleteRoom('team', room, selected)
+						});
+					}
+				});
+			} else {
+				showConfirmationAlert({
+					message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
+					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
+					onPress: () => deleteRoom('team', room)
+				});
+			}
+		} catch (e) {
+			log(e);
+			showErrorAlert(
+				e.data.error
+					? I18n.t(e.data.error)
+					: I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_team') }),
+				I18n.t('Cannot_delete')
+			);
+		}
+	}
+
 	delete = () => {
 		const { room } = this.state;
 		const { deleteRoom } = this.props;
@@ -289,7 +363,7 @@ class RoomInfoEditView extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => deleteRoom(room.rid, room.t)
+					onPress: () => deleteRoom('channel', room)
 				}
 			],
 			{ cancelable: false }
@@ -329,9 +403,16 @@ class RoomInfoEditView extends React.Component {
 
 	hasDeletePermission = () => {
 		const { room, permissions } = this.state;
-		return (
-			room.t === 'p' ? permissions[PERMISSION_DELETE_P] : permissions[PERMISSION_DELETE_C]
-		);
+
+		if (room.teamMain) {
+			return permissions[PERMISSION_DELETE_TEAM];
+		}
+
+		if (room.t === 'p') {
+			return permissions[PERMISSION_DELETE_P];
+		}
+
+		return permissions[PERMISSION_DELETE_C];
 	}
 
 	hasArchivePermission = () => {
@@ -407,11 +488,6 @@ class RoomInfoEditView extends React.Component {
 		this.setState({ encrypted: value });
 	}
 
-	isServerVersionLowerThan = (version) => {
-		const { serverVersion } = this.props;
-		return serverVersion && lt(coerce(serverVersion), version);
-	}
-
 	render() {
 		const {
 			name, nameError, description, topic, announcement, t, ro, reactWhenReadOnly, room, joinCode, saving, permissions, archived, enableSysMes, encrypted, avatar
@@ -438,7 +514,7 @@ class RoomInfoEditView extends React.Component {
 						<TouchableOpacity
 							style={styles.avatarContainer}
 							onPress={this.changeAvatar}
-							disabled={this.isServerVersionLowerThan('3.6.0')}
+							disabled={compareServerVersion(serverVersion, '3.6.0', methods.lowerThan)}
 						>
 							<Avatar
 								type={room.t}
@@ -448,7 +524,7 @@ class RoomInfoEditView extends React.Component {
 								rid={isEmpty(avatar) && room.rid}
 								size={100}
 							>
-								{this.isServerVersionLowerThan('3.6.0')
+								{compareServerVersion(serverVersion, '3.6.0', methods.lowerThan)
 									? null
 									: (
 										<TouchableOpacity style={[styles.resetButton, { backgroundColor: themes[theme].dangerColor }]} onPress={this.resetAvatar}>
@@ -508,9 +584,9 @@ class RoomInfoEditView extends React.Component {
 						<SwitchContainer
 							value={t}
 							leftLabelPrimary={I18n.t('Public')}
-							leftLabelSecondary={I18n.t('Everyone_can_access_this_channel')}
+							leftLabelSecondary={room.teamMain ? I18n.t('Everyone_can_access_this_team') : I18n.t('Everyone_can_access_this_channel')}
 							rightLabelPrimary={I18n.t('Private')}
-							rightLabelSecondary={I18n.t('Just_invited_people_can_access_this_channel')}
+							rightLabelSecondary={room.teamMain ? I18n.t('Just_invited_people_can_access_this_team') : I18n.t('Just_invited_people_can_access_this_channel')}
 							onValueChange={this.toggleRoomType}
 							theme={theme}
 							testID='room-info-edit-view-t'
@@ -518,7 +594,7 @@ class RoomInfoEditView extends React.Component {
 						<SwitchContainer
 							value={ro}
 							leftLabelPrimary={I18n.t('Collaborative')}
-							leftLabelSecondary={I18n.t('All_users_in_the_channel_can_write_new_messages')}
+							leftLabelSecondary={room.teamMain ? I18n.t('All_users_in_the_team_can_write_new_messages') : I18n.t('All_users_in_the_channel_can_write_new_messages')}
 							rightLabelPrimary={I18n.t('Read_Only')}
 							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
 							onValueChange={this.toggleReadOnly}
@@ -549,7 +625,7 @@ class RoomInfoEditView extends React.Component {
 							]
 							: null
 						}
-						{serverVersion && !lt(serverVersion, '3.0.0') ? (
+						{!compareServerVersion(serverVersion, '3.0.0', methods.lowerThan) ? (
 							<SwitchContainer
 								value={enableSysMes}
 								leftLabelPrimary={I18n.t('Hide_System_Messages')}
@@ -642,7 +718,7 @@ class RoomInfoEditView extends React.Component {
 								{ borderColor: dangerColor },
 								!this.hasDeletePermission() && sharedStyles.opacity5
 							]}
-							onPress={this.delete}
+							onPress={room.teamMain ? this.deleteTeam : this.delete}
 							disabled={!this.hasDeletePermission()}
 							testID='room-info-edit-view-delete'
 						>
@@ -666,12 +742,20 @@ class RoomInfoEditView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	serverVersion: state.share.server.version || state.server.version,
-	encryptionEnabled: state.encryption.enabled
+	serverVersion: state.server.version,
+	encryptionEnabled: state.encryption.enabled,
+	setReadOnlyPermission: state.permissions[PERMISSION_SET_READONLY],
+	setReactWhenReadOnlyPermission: state.permissions[PERMISSION_SET_REACT_WHEN_READONLY],
+	archiveRoomPermission: state.permissions[PERMISSION_ARCHIVE],
+	unarchiveRoomPermission: state.permissions[PERMISSION_UNARCHIVE],
+	deleteCPermission: state.permissions[PERMISSION_DELETE_C],
+	deletePPermission: state.permissions[PERMISSION_DELETE_P],
+	deleteTeamPermission: state.permissions[PERMISSION_DELETE_TEAM],
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const mapDispatchToProps = dispatch => ({
-	deleteRoom: (rid, t) => dispatch(deleteRoomAction(rid, t))
+	deleteRoom: (roomType, room, selected) => dispatch(deleteRoomAction(roomType, room, selected))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomInfoEditView));

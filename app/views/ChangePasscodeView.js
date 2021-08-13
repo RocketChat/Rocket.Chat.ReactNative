@@ -63,12 +63,12 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 		if (!isTablet) {
 			Orientation.lockToPortrait();
 		}
-		EventEmitter.addEventListener(CHANGE_PASSCODE_EMITTER, showChangePasscode);
+		const listener = EventEmitter.addEventListener(CHANGE_PASSCODE_EMITTER, showChangePasscode);
 		return (() => {
 			if (!isTablet) {
 				Orientation.unlockAllOrientations();
 			}
-			EventEmitter.removeListener(CHANGE_PASSCODE_EMITTER);
+			EventEmitter.removeListener(CHANGE_PASSCODE_EMITTER, listener);
 		});
 	}, []);
 

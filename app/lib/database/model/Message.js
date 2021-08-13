@@ -5,8 +5,10 @@ import {
 
 import { sanitizer } from '../utils';
 
+export const TABLE_NAME = 'messages';
+
 export default class Message extends Model {
-	static table = 'messages';
+	static table = TABLE_NAME;
 
 	static associations = {
 		subscriptions: { type: 'belongs_to', key: 'rid' }

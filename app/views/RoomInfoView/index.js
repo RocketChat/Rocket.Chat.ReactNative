@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import UAParser from 'ua-parser-js';
 import isEmpty from 'lodash/isEmpty';
 
-import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
@@ -31,7 +30,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
 
-const PERMISSION_EDIT_ROOM = 'edit-room';
 const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
 	? (
 		<>
@@ -42,7 +40,7 @@ const getRoomTitle = (room, type, name, username, statusText, theme) => (type ==
 	)
 	: (
 		<View style={styles.roomTitleRow}>
-			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} key='room-info-type' status={room.visitor?.status} theme={theme} />
+			<RoomTypeIcon type={room.prid ? 'discussion' : room.t} teamMain={room.teamMain} key='room-info-type' status={room.visitor?.status} />
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>{RocketChat.getRoomTitle(room)}</Text>
 		</View>
 	)
@@ -55,7 +53,9 @@ class RoomInfoView extends React.Component {
 		rooms: PropTypes.array,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
-		jitsiEnabled: PropTypes.bool
+		jitsiEnabled: PropTypes.bool,
+		editRoomPermission: PropTypes.array,
+		roles: PropTypes.array
 	}
 
 	constructor(props) {
@@ -133,18 +133,9 @@ class RoomInfoView extends React.Component {
 		return room.t === 'l';
 	}
 
-	getRoleDescription = async(id) => {
-		const db = database.active;
-		try {
-			const rolesCollection = db.collections.get('roles');
-			const role = await rolesCollection.find(id);
-			if (role) {
-				return role.description;
-			}
-			return null;
-		} catch (e) {
-			return null;
-		}
+	getRoleDescription = (id) => {
+		const { roles } = this.props;
+		return roles[id];
 	};
 
 	loadVisitor = async() => {
@@ -193,7 +184,7 @@ class RoomInfoView extends React.Component {
 
 	loadRoom = async() => {
 		const { room: roomState } = this.state;
-		const { route } = this.props;
+		const { route, editRoomPermission } = this.props;
 		let room = route.params?.room;
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
@@ -213,8 +204,8 @@ class RoomInfoView extends React.Component {
 			}
 		}
 
-		const permissions = await RocketChat.hasPermission([PERMISSION_EDIT_ROOM], room.rid);
-		if (permissions[PERMISSION_EDIT_ROOM] && !room.prid) {
+		const permissions = await RocketChat.hasPermission([editRoomPermission], room.rid);
+		if (permissions[0]) {
 			this.setState({ showEdit: true }, () => this.setHeader());
 		}
 	}
@@ -276,7 +267,7 @@ class RoomInfoView extends React.Component {
 
 	videoCall = () => {
 		const { room } = this.state;
-		RocketChat.callJitsi(room.rid);
+		RocketChat.callJitsi(room);
 	}
 
 	renderAvatar = (room, roomUser) => {
@@ -290,7 +281,13 @@ class RoomInfoView extends React.Component {
 				size={100}
 				rid={room?.rid}
 			>
-				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
+				{this.t === 'd' && roomUser._id
+					? (
+						<View style={[sharedStyles.status, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+							<Status size={20} id={roomUser._id} />
+						</View>
+					)
+					: null}
 			</Avatar>
 		);
 	}
@@ -300,7 +297,9 @@ class RoomInfoView extends React.Component {
 
 		const onActionPress = async() => {
 			try {
-				await this.createDirect();
+				if (this.isDirect) {
+					await this.createDirect();
+				}
 				onPress();
 			} catch {
 				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
@@ -327,7 +326,7 @@ class RoomInfoView extends React.Component {
 		return (
 			<View style={styles.roomButtonsContainer}>
 				{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
-				{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
+				{jitsiEnabled && this.isDirect ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
 			</View>
 		);
 	}
@@ -354,10 +353,10 @@ class RoomInfoView extends React.Component {
 					style={{ backgroundColor: themes[theme].backgroundColor }}
 					testID='room-info-view'
 				>
-					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+					<View style={[styles.avatarContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser)}
 						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, roomUser?.name, roomUser?.username, roomUser?.statusText, theme) }</View>
-						{this.isDirect ? this.renderButtons() : null}
+						{this.renderButtons()}
 					</View>
 					{this.renderContent()}
 				</SafeAreaView>
@@ -369,7 +368,9 @@ class RoomInfoView extends React.Component {
 const mapStateToProps = state => ({
 	rooms: state.room.rooms,
 	isMasterDetail: state.app.isMasterDetail,
-	jitsiEnabled: state.settings.Jitsi_Enabled || false
+	jitsiEnabled: state.settings.Jitsi_Enabled || false,
+	editRoomPermission: state.permissions['edit-room'],
+	roles: state.roles
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoView));

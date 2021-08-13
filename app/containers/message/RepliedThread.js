@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -8,22 +8,27 @@ import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import Markdown from '../markdown';
 
-const RepliedThread = React.memo(({
+const RepliedThread = memo(({
 	tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted, theme
 }) => {
 	if (!tmid || !isHeader) {
 		return null;
 	}
 
-	if (!tmsg) {
-		fetchThreadName(tmid, id);
+	const [msg, setMsg] = useState(isEncrypted ? I18n.t('Encrypted_message') : tmsg);
+	const fetch = async() => {
+		const threadName = await fetchThreadName(tmid, id);
+		setMsg(threadName);
+	};
+
+	useEffect(() => {
+		if (!msg) {
+			fetch();
+		}
+	}, []);
+
+	if (!msg) {
 		return null;
-	}
-
-	let msg = tmsg;
-
-	if (isEncrypted) {
-		msg = I18n.t('Encrypted_message');
 	}
 
 	return (
@@ -45,23 +50,6 @@ const RepliedThread = React.memo(({
 			</View>
 		</View>
 	);
-}, (prevProps, nextProps) => {
-	if (prevProps.tmid !== nextProps.tmid) {
-		return false;
-	}
-	if (prevProps.tmsg !== nextProps.tmsg) {
-		return false;
-	}
-	if (prevProps.isEncrypted !== nextProps.isEncrypted) {
-		return false;
-	}
-	if (prevProps.isHeader !== nextProps.isHeader) {
-		return false;
-	}
-	if (prevProps.theme !== nextProps.theme) {
-		return false;
-	}
-	return true;
 });
 
 RepliedThread.propTypes = {

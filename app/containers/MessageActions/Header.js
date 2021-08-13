@@ -96,7 +96,7 @@ const Header = React.memo(({
 	const setEmojis = async() => {
 		try {
 			const db = database.active;
-			const freqEmojiCollection = db.collections.get('frequently_used_emojis');
+			const freqEmojiCollection = db.get('frequently_used_emojis');
 			let freqEmojis = await freqEmojiCollection.query().fetch();
 
 			const isLandscape = width > height;

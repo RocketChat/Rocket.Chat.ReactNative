@@ -82,7 +82,8 @@ class Markdown extends PureComponent {
 		preview: PropTypes.bool,
 		theme: PropTypes.string,
 		testID: PropTypes.string,
-		style: PropTypes.array
+		style: PropTypes.array,
+		onLinkPress: PropTypes.func
 	};
 
 	constructor(props) {
@@ -218,11 +219,12 @@ class Markdown extends PureComponent {
 	};
 
 	renderLink = ({ children, href }) => {
-		const { theme } = this.props;
+		const { theme, onLinkPress } = this.props;
 		return (
 			<MarkdownLink
 				link={href}
 				theme={theme}
+				onLinkPress={onLinkPress}
 			>
 				{children}
 			</MarkdownLink>
@@ -380,7 +382,7 @@ class Markdown extends PureComponent {
 
 		// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
 		// Return: 'Test'
-		m = m.replace(/^\[([\s]]*)\]\(([^)]*)\)\s/, '').trim();
+		m = m.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
 
 		if (preview) {
 			m = shortnameToUnicode(m);

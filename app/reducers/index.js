@@ -18,6 +18,8 @@ import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
 import enterpriseModules from './enterpriseModules';
 import encryption from './encryption';
+import permissions from './permissions';
+import roles from './roles';
 
 import inquiry from '../ee/omnichannel/reducers/inquiry';
 
@@ -41,5 +43,7 @@ export default combineReducers({
 	createDiscussion,
 	inquiry,
 	enterpriseModules,
-	encryption
+	encryption,
+	permissions,
+	roles
 });

@@ -6,7 +6,7 @@ import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 import omit from 'lodash/omit';
 
 import Touch from '../../utils/touch';
@@ -91,19 +91,9 @@ class ProfileView extends React.Component {
 		 * it's resetting the avatar right after
 		 * select some image from gallery.
 		 */
-		if (!isEqual(omit(user, ['status']), omit(nextProps.user, ['status']))) {
+		if (!dequal(omit(user, ['status']), omit(nextProps.user, ['status']))) {
 			this.init(nextProps.user);
 		}
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		if (!isEqual(nextState, this.state)) {
-			return true;
-		}
-		if (!isEqual(nextProps, this.props)) {
-			return true;
-		}
-		return false;
 	}
 
 	setAvatar = (avatar) => {
@@ -434,7 +424,7 @@ class ProfileView extends React.Component {
 	}
 
 	logoutOtherLocations = () => {
-		logEvent(events.PROFILE_LOGOUT_OTHER_LOCATIONS);
+		logEvent(events.PL_OTHER_LOCATIONS);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_from_other_locations'),
 			confirmationText: I18n.t('Logout'),
@@ -443,7 +433,7 @@ class ProfileView extends React.Component {
 					await RocketChat.logoutOtherLocations();
 					EventEmitter.emit(LISTENER, { message: I18n.t('Logged_out_of_other_clients_successfully') });
 				} catch {
-					logEvent(events.PROFILE_LOGOUT_OTHER_LOCATIONS_F);
+					logEvent(events.PL_OTHER_LOCATIONS_F);
 					EventEmitter.emit(LISTENER, { message: I18n.t('Logout_failed') });
 				}
 			}

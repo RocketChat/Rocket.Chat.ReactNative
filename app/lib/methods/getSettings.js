@@ -44,7 +44,7 @@ const loginSettings = [
 const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	const serversDB = database.servers;
 	const serverId = reduxStore.getState().server.server;
-	const serversCollection = serversDB.collections.get('servers');
+	const serversCollection = serversDB.get('servers');
 	const server = await serversCollection.find(serverId);
 
 	let info = serverInfo.reduce((allSettings, setting) => {
@@ -118,7 +118,7 @@ export async function getLoginSettings({ server }) {
 
 export async function setSettings() {
 	const db = database.active;
-	const settingsCollection = db.collections.get('settings');
+	const settingsCollection = db.get('settings');
 	const settingsRecords = await settingsCollection.query().fetch();
 	const parsed = Object.values(settingsRecords).map(item => ({
 		_id: item.id,
@@ -131,12 +131,17 @@ export async function setSettings() {
 	reduxStore.dispatch(addSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
 }
 
+export function subscribeSettings() {
+	return RocketChat.subscribe('stream-notify-all', 'public-settings-changed');
+}
+
 export default async function() {
 	try {
 		const db = database.active;
-		const settingsParams = JSON.stringify(Object.keys(settings).filter(key => !loginSettings.includes(key)));
+		const settingsParams = Object.keys(settings).filter(key => !loginSettings.includes(key));
 		// RC 0.60.0
-		const result = await fetch(`${ this.sdk.client.host }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
+		const result = await fetch(`${ this.sdk.client.host }/api/v1/settings.public?query={"_id":{"$in":${ JSON.stringify(settingsParams) }}}&count=${ settingsParams.length }`)
+			.then(response => response.json());
 
 		if (!result.success) {
 			return;
@@ -157,7 +162,7 @@ export default async function() {
 		}
 
 		await db.action(async() => {
-			const settingsCollection = db.collections.get('settings');
+			const settingsCollection = db.get('settings');
 			const allSettingsRecords = await settingsCollection
 				.query(Q.where('id', Q.oneOf(filteredSettingsIds)))
 				.fetch();

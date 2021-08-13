@@ -95,7 +95,7 @@ class ShareView extends Component {
 	getServerInfo = async() => {
 		const { server } = this.props;
 		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
+		const serversCollection = serversDB.get('servers');
 		try {
 			this.serverInfo = await serversCollection.find(server);
 		} catch (error) {
@@ -235,7 +235,9 @@ class ShareView extends Component {
 				newSelected = attachments[selectedIndex - 1] || {};
 			}
 		}
-		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected });
+		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected }, () => {
+			this.messagebox?.current?.forceUpdate?.();
+		});
 	}
 
 	onChangeText = (text) => {

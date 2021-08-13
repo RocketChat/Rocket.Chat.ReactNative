@@ -124,13 +124,13 @@ class Sort extends PureComponent {
 			inputRange: [0, 1],
 			outputRange: [-326, heightDestination]
 		});
-		const backdropOpacity = this.animatedValue.interpolate({
-			inputRange: [0, 1],
-			outputRange: [0, 0.3]
-		});
 		const {
 			sortBy, groupByType, showFavorites, showUnread, theme
 		} = this.props;
+		const backdropOpacity = this.animatedValue.interpolate({
+			inputRange: [0, 1],
+			outputRange: [0, themes[theme].backdropOpacity]
+		});
 
 		return (
 			<>

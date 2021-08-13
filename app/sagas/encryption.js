@@ -30,7 +30,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 
 		// Fetch server info to check E2E enable
 		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
+		const serversCollection = serversDB.get('servers');
 		let serverInfo;
 		try {
 			serverInfo = yield serversCollection.find(server);
@@ -69,7 +69,8 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 			storedPublicKey = EJSON.parse(storedPublicKey);
 		}
 
-		if (storedPublicKey && storedPrivateKey) {
+
+		if (storedPublicKey && storedPrivateKey && !storedRandomPassword) {
 			// Persist these keys
 			yield Encryption.persistKeys(server, storedPublicKey, storedPrivateKey);
 			yield put(encryptionSet(true));

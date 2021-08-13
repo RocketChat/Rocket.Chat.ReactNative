@@ -29,8 +29,10 @@ import ForwardLivechatView from '../views/ForwardLivechatView';
 import LivechatEditView from '../views/LivechatEditView';
 import PickerView from '../views/PickerView';
 import ThreadMessagesView from '../views/ThreadMessagesView';
+import TeamChannelsView from '../views/TeamChannelsView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
+import { themes } from '../constants/colors';
 
 // Profile Stack
 import ProfileView from '../views/ProfileView';
@@ -69,6 +71,9 @@ import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
 
 import QueueListView from '../ee/omnichannel/views/QueueListView';
+import AddChannelTeamView from '../views/AddChannelTeamView';
+import AddExistingChannelView from '../views/AddExistingChannelView';
+import SelectListView from '../views/SelectListView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
@@ -88,6 +93,11 @@ const ChatsStackNavigator = () => {
 				name='RoomActionsView'
 				component={RoomActionsView}
 				options={RoomActionsView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='SelectListView'
+				component={SelectListView}
+				options={SelectListView.navigationOptions}
 			/>
 			<ChatsStack.Screen
 				name='RoomInfoView'
@@ -166,6 +176,26 @@ const ChatsStackNavigator = () => {
 				name='ThreadMessagesView'
 				component={ThreadMessagesView}
 				options={ThreadMessagesView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='TeamChannelsView'
+				component={TeamChannelsView}
+				options={TeamChannelsView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='CreateChannelView'
+				component={CreateChannelView}
+				options={CreateChannelView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='AddChannelTeamView'
+				component={AddChannelTeamView}
+				options={AddChannelTeamView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='AddExistingChannelView'
+				component={AddExistingChannelView}
+				options={AddExistingChannelView.navigationOptions}
 			/>
 			<ChatsStack.Screen
 				name='MarkdownTableView'
@@ -280,19 +310,24 @@ const AdminPanelStackNavigator = () => {
 
 // DrawerNavigator
 const Drawer = createDrawerNavigator();
-const DrawerNavigator = () => (
-	<Drawer.Navigator
-		drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
-		drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
-		screenOptions={{ swipeEnabled: false }}
-		drawerType='back'
-	>
-		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
-		<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
-		<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
-		<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />
-	</Drawer.Navigator>
-);
+const DrawerNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+
+	return (
+		<Drawer.Navigator
+			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
+			drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
+			screenOptions={{ swipeEnabled: false }}
+			drawerType='back'
+			overlayColor={`rgba(0,0,0,${ themes[theme].backdropOpacity })`}
+		>
+			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
+			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
+			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
+			<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />
+		</Drawer.Navigator>
+	);
+};
 
 // NewMessageStackNavigator
 const NewMessageStack = createStackNavigator();

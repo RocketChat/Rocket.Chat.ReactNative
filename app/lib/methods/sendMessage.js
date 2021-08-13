@@ -9,8 +9,8 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
 
 const changeMessageStatus = async(id, tmid, status, message) => {
 	const db = database.active;
-	const msgCollection = db.collections.get('messages');
-	const threadMessagesCollection = db.collections.get('thread_messages');
+	const msgCollection = db.get('messages');
+	const threadMessagesCollection = db.get('thread_messages');
 	const successBatch = [];
 	const messageRecord = await msgCollection.find(id);
 	successBatch.push(
@@ -89,10 +89,10 @@ export async function resendMessage(message, tmid) {
 export default async function(rid, msg, tmid, user, tshow) {
 	try {
 		const db = database.active;
-		const subsCollection = db.collections.get('subscriptions');
-		const msgCollection = db.collections.get('messages');
-		const threadCollection = db.collections.get('threads');
-		const threadMessagesCollection = db.collections.get('thread_messages');
+		const subsCollection = db.get('subscriptions');
+		const msgCollection = db.get('messages');
+		const threadCollection = db.get('threads');
+		const threadMessagesCollection = db.get('thread_messages');
 		const messageId = random(17);
 		const batch = [];
 
@@ -151,7 +151,8 @@ export default async function(rid, msg, tmid, user, tshow) {
 						tm.status = messagesStatus.TEMP;
 						tm.u = {
 							_id: user.id || '1',
-							username: user.username
+							username: user.username,
+							name: user.name
 						};
 						tm.t = message.t;
 						if (message.t === E2E_MESSAGE_TYPE) {
@@ -175,7 +176,8 @@ export default async function(rid, msg, tmid, user, tshow) {
 				m.status = messagesStatus.TEMP;
 				m.u = {
 					_id: user.id || '1',
-					username: user.username
+					username: user.username,
+					name: user.name
 				};
 				if (tmid && tMessageRecord) {
 					m.tmid = tmid;

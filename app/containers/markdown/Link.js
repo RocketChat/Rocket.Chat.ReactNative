@@ -4,17 +4,20 @@ import { Text, Clipboard } from 'react-native';
 
 import styles from './styles';
 import { themes } from '../../constants/colors';
-import openLink from '../../utils/openLink';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
+import openLink from '../../utils/openLink';
 
 const Link = React.memo(({
-	children, link, theme
+	children, link, theme, onLinkPress
 }) => {
 	const handlePress = () => {
 		if (!link) {
 			return;
+		}
+		if (onLinkPress) {
+			return onLinkPress(link);
 		}
 		openLink(link, theme);
 	};
@@ -40,7 +43,8 @@ const Link = React.memo(({
 Link.propTypes = {
 	children: PropTypes.node,
 	link: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	onLinkPress: PropTypes.func
 };
 
 export default Link;

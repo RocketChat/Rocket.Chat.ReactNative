@@ -9,12 +9,6 @@ export default StyleSheet.create({
 	safeAreaView: {
 		flex: 1
 	},
-	list: {
-		flex: 1
-	},
-	contentContainer: {
-		paddingTop: 10
-	},
 	readOnly: {
 		justifyContent: 'flex-end',
 		alignItems: 'center',

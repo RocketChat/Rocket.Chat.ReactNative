@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect, batch } from 'react-redux';
-import equal from 'deep-equal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import * as List from '../../containers/List';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
@@ -73,24 +73,6 @@ class ServerDropdown extends Component {
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const { servers } = this.state;
-		const { closeServerDropdown, server, theme } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (nextProps.closeServerDropdown !== closeServerDropdown) {
-			return true;
-		}
-		if (nextProps.server !== server) {
-			return true;
-		}
-		if (!equal(nextState.servers, servers)) {
-			return true;
-		}
-		return false;
 	}
 
 	componentDidUpdate(prevProps) {
@@ -193,11 +175,6 @@ class ServerDropdown extends Component {
 		}
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[styles.serverSeparator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
-
 	renderServer = ({ item }) => {
 		const { server, theme } = this.props;
 
@@ -225,7 +202,7 @@ class ServerDropdown extends Component {
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, 0.6]
+			outputRange: [0, themes[theme].backdropOpacity]
 		});
 		return (
 			<>
@@ -266,7 +243,7 @@ class ServerDropdown extends Component {
 						data={servers}
 						keyExtractor={item => item.id}
 						renderItem={this.renderServer}
-						ItemSeparatorComponent={this.renderSeparator}
+						ItemSeparatorComponent={List.Separator}
 						keyboardShouldPersistTaps='always'
 					/>
 				</Animated.View>

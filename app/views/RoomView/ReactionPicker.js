@@ -7,6 +7,8 @@ import Modal from 'react-native-modal';
 import EmojiPicker from '../../containers/EmojiPicker';
 import styles from './styles';
 import { isAndroid } from '../../utils/deviceInfo';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 
 const margin = isAndroid ? 40 : 20;
 const maxSize = 400;
@@ -20,7 +22,8 @@ class ReactionPicker extends React.Component {
 		reactionClose: PropTypes.func,
 		onEmojiSelected: PropTypes.func,
 		width: PropTypes.number,
-		height: PropTypes.number
+		height: PropTypes.number,
+		theme: PropTypes.string
 	};
 
 	shouldComponentUpdate(nextProps) {
@@ -38,7 +41,7 @@ class ReactionPicker extends React.Component {
 
 	render() {
 		const {
-			width, height, show, baseUrl, reactionClose, isMasterDetail
+			width, height, show, baseUrl, reactionClose, isMasterDetail, theme
 		} = this.props;
 
 		let widthStyle = width - margin;
@@ -58,6 +61,7 @@ class ReactionPicker extends React.Component {
 					onBackButtonPress={reactionClose}
 					animationIn='fadeIn'
 					animationOut='fadeOut'
+					backdropOpacity={themes[theme].backdropOpacity}
 				>
 					<View
 						style={[
@@ -87,4 +91,4 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(ReactionPicker);
+export default connect(mapStateToProps)(withTheme(ReactionPicker));

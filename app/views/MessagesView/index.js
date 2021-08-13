@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import styles from './styles';
 import Message from '../../containers/message';
@@ -16,6 +16,7 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
+import getThreadName from '../../lib/methods/getThreadName';
 
 class MessagesView extends React.Component {
 	static propTypes = {
@@ -26,7 +27,8 @@ class MessagesView extends React.Component {
 		customEmojis: PropTypes.object,
 		theme: PropTypes.string,
 		showActionSheet: PropTypes.func,
-		useRealName: PropTypes.bool
+		useRealName: PropTypes.bool,
+		isMasterDetail: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -57,7 +59,7 @@ class MessagesView extends React.Component {
 		if (nextState.loading !== loading) {
 			return true;
 		}
-		if (!equal(nextState.messages, messages)) {
+		if (!dequal(nextState.messages, messages)) {
 			return true;
 		}
 		if (fileLoading !== nextState.fileLoading) {
@@ -81,6 +83,32 @@ class MessagesView extends React.Component {
 		navigation.navigate('RoomInfoView', navParam);
 	}
 
+	jumpToMessage = async({ item }) => {
+		const { navigation, isMasterDetail } = this.props;
+		let params = {
+			rid: this.rid,
+			jumpToMessageId: item._id,
+			t: this.t,
+			room: this.room
+		};
+		if (item.tmid) {
+			if (isMasterDetail) {
+				navigation.navigate('DrawerNavigator');
+			} else {
+				navigation.pop(2);
+			}
+			params = {
+				...params,
+				tmid: item.tmid,
+				name: await getThreadName(this.rid, item.tmid, item._id),
+				t: 'thread'
+			};
+			navigation.push('RoomView', params);
+		} else {
+			navigation.navigate('RoomView', params);
+		}
+	}
+
 	defineMessagesViewContent = (name) => {
 		const {
 			user, baseUrl, theme, useRealName
@@ -93,11 +121,13 @@ class MessagesView extends React.Component {
 			timeFormat: 'MMM Do YYYY, h:mm:ss a',
 			isEdited: !!item.editedAt,
 			isHeader: true,
+			isThreadRoom: true,
 			attachments: item.attachments || [],
 			useRealName,
 			showAttachment: this.showAttachment,
 			getCustomEmoji: this.getCustomEmoji,
-			navToRoomInfo: this.navToRoomInfo
+			navToRoomInfo: this.navToRoomInfo,
+			onPress: () => this.jumpToMessage({ item })
 		});
 
 		return ({
@@ -315,7 +345,8 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	customEmojis: state.customEmojis,
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(MessagesView)));

@@ -1,7 +1,5 @@
 import { InteractionManager } from 'react-native';
-import lt from 'semver/functions/lt';
-import gte from 'semver/functions/gte';
-import coerce from 'semver/functions/coerce';
+import EJSON from 'ejson';
 import {
 	Rocketchat as RocketchatClient,
 	settings as RocketChatSettings
@@ -11,6 +9,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNFetchBlob from 'rn-fetch-blob';
 
+import { compareServerVersion, methods } from './utils';
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
 import database from './database';
@@ -29,20 +28,22 @@ import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './met
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
-import getSettings, { getLoginSettings, setSettings } from './methods/getSettings';
+import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
-import getPermissions from './methods/getPermissions';
+import { setPermissions, getPermissions } from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
 import {
 	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
 } from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
-import getRoles from './methods/getRoles';
+import { getRoles, setRoles, onRolesChanged } from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
 import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/actions';
 
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
+import loadSurroundingMessages from './methods/loadSurroundingMessages';
+import loadNextMessages from './methods/loadNextMessages';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 
@@ -62,6 +63,9 @@ import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
 import { sanitizeLikeString } from './database/utils';
+import { updatePermission } from '../actions/permissions';
+import { TEAM_TYPE } from '../definition/ITeam';
+import { updateSettings } from '../actions/settings';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -70,7 +74,6 @@ const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
-const returnAnArray = obj => obj || [];
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
 const STATUSES = ['offline', 'online', 'away', 'busy'];
@@ -97,10 +100,19 @@ const RocketChat = {
 	},
 	canOpenRoom,
 	createChannel({
-		name, users, type, readOnly, broadcast, encrypted
+		name, users, type, readOnly, broadcast, encrypted, teamId
 	}) {
-		// RC 0.51.0
-		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast, encrypted });
+		const params = {
+			name,
+			members: users,
+			readOnly,
+			extraData: {
+				broadcast,
+				encrypted,
+				...(teamId && { teamId })
+			}
+		};
+		return this.post(type ? 'groups.create' : 'channels.create', params);
 	},
 	async getWebsocketInfo({ server }) {
 		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
@@ -134,7 +146,7 @@ const RocketChat = {
 						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 					};
 				}
-				if (lt(jsonRes.version, MIN_ROCKETCHAT_VERSION)) {
+				if (compareServerVersion(jsonRes.version, MIN_ROCKETCHAT_VERSION, methods.lowerThan)) {
 					return {
 						success: false,
 						message: I18n.t('Invalid_server_version', {
@@ -178,15 +190,29 @@ const RocketChat = {
 		}
 		this.controller = new AbortController();
 	},
+	checkAndReopen() {
+		return this?.sdk?.checkAndReopen();
+	},
+	disconnect() {
+		this.sdk?.disconnect?.();
+		this.sdk = null;
+	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
-			if (!this.sdk || this.sdk.client.host !== server) {
+			if (this?.sdk?.client?.host === server) {
+				return resolve();
+			} else {
+				this.disconnect();
 				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
 
 			if (this.connectTimeout) {
 				clearTimeout(this.connectTimeout);
+			}
+
+			if (this.connectingListener) {
+				this.connectingListener.then(this.stopListener);
 			}
 
 			if (this.connectedListener) {
@@ -201,6 +227,14 @@ const RocketChat = {
 				this.usersListener.then(this.stopListener);
 			}
 
+			if (this.notifyAllListener) {
+				this.notifyAllListener.then(this.stopListener);
+			}
+
+			if (this.rolesListener) {
+				this.rolesListener.then(this.stopListener);
+			}
+
 			if (this.notifyLoggedListener) {
 				this.notifyLoggedListener.then(this.stopListener);
 			}
@@ -208,11 +242,6 @@ const RocketChat = {
 			this.unsubscribeRooms();
 
 			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
-
-			if (this.sdk) {
-				this.sdk.disconnect();
-				this.sdk = null;
-			}
 
 			if (this.code) {
 				this.code = null;
@@ -241,6 +270,10 @@ const RocketChat = {
 
 			sdkConnect();
 
+			this.connectingListener = this.sdk.onStreamData('connecting', () => {
+				reduxStore.dispatch(connectRequest());
+			});
+
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
 			});
@@ -250,6 +283,31 @@ const RocketChat = {
 			});
 
 			this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
+
+			this.notifyAllListener = this.sdk.onStreamData('stream-notify-all', protectedFunction(async(ddpMessage) => {
+				const { eventName } = ddpMessage.fields;
+				if (/public-settings-changed/.test(eventName)) {
+					const { _id, value } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const settingsCollection = db.get('settings');
+					try {
+						const settingsRecord = await settingsCollection.find(_id);
+						const { type } = defaultSettings[_id];
+						if (type) {
+							await db.action(async() => {
+								await settingsRecord.update((u) => {
+									u[type] = value;
+								});
+							});
+						}
+						reduxStore.dispatch(updateSettings(_id, value));
+					} catch (e) {
+						log(e);
+					}
+				}
+			}));
+
+			this.rolesListener = this.sdk.onStreamData('stream-roles', protectedFunction(ddpMessage => onRolesChanged(ddpMessage)));
 
 			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction(async(ddpMessage) => {
 				const { eventName } = ddpMessage.fields;
@@ -276,7 +334,7 @@ const RocketChat = {
 				} else if (/updateAvatar/.test(eventName)) {
 					const { username, etag } = ddpMessage.fields.args[0];
 					const db = database.active;
-					const userCollection = db.collections.get('users');
+					const userCollection = db.get('users');
 					try {
 						const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
 						await db.action(async() => {
@@ -287,10 +345,25 @@ const RocketChat = {
 					} catch {
 						// We can't create a new record since we don't receive the user._id
 					}
+				} else if (/permissions-changed/.test(eventName)) {
+					const { _id, roles } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const permissionsCollection = db.get('permissions');
+					try {
+						const permissionsRecord = await permissionsCollection.find(_id);
+						await db.action(async() => {
+							await permissionsRecord.update((u) => {
+								u.roles = roles;
+							});
+						});
+						reduxStore.dispatch(updatePermission(_id, roles));
+					} catch (err) {
+						//
+					}
 				} else if (/Users:NameChanged/.test(eventName)) {
 					const userNameChanged = ddpMessage.fields.args[0];
 					const db = database.active;
-					const userCollection = db.collections.get('users');
+					const userCollection = db.get('users');
 					try {
 						const userRecord = await userCollection.find(userNameChanged._id);
 						await db.action(async() => {
@@ -334,7 +407,7 @@ const RocketChat = {
 		// set Server
 		const currentServer = { server };
 		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
+		const serversCollection = serversDB.get('servers');
 		try {
 			const serverRecord = await serversCollection.find(server);
 			currentServer.version = serverRecord.version;
@@ -349,7 +422,7 @@ const RocketChat = {
 			// set Settings
 			const settings = ['Accounts_AvatarBlockUnauthenticatedAccess'];
 			const db = database.active;
-			const settingsCollection = db.collections.get('settings');
+			const settingsCollection = db.get('settings');
 			const settingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(settings))).fetch();
 			const parsed = Object.values(settingsRecords).map(item => ({
 				_id: item.id,
@@ -363,7 +436,7 @@ const RocketChat = {
 
 			// set User info
 			const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			const userCollections = serversDB.collections.get('users');
+			const userCollections = serversDB.get('users');
 			let user = null;
 			if (userId) {
 				const userRecord = await userCollections.find(userId);
@@ -453,27 +526,39 @@ const RocketChat = {
 		return this.post('users.forgotPassword', { email }, false);
 	},
 
-	loginTOTP(params, loginEmailPassword) {
+	loginTOTP(params, loginEmailPassword, isFromWebView = false) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.login(params, loginEmailPassword);
+				const result = await this.login(params, isFromWebView);
 				return resolve(result);
 			} catch (e) {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						reduxStore.dispatch(setUser({ username: params.user || params.username }));
-						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
+						const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
 
-						// Force normalized params for 2FA starting RC 3.9.0.
-						const serverVersion = reduxStore.getState().server.version;
-						if (serverVersion && gte(coerce(serverVersion), '3.9.0')) {
-							const user = params.user ?? params.username;
-							const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-							params = { user, password };
+						if (loginEmailPassword) {
+							reduxStore.dispatch(setUser({ username: params.user || params.username }));
+
+							// Force normalized params for 2FA starting RC 3.9.0.
+							const serverVersion = reduxStore.getState().server.version;
+							if (compareServerVersion(serverVersion, '3.9.0', methods.greaterThanOrEqualTo)) {
+								const user = params.user ?? params.username;
+								const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+								params = { user, password };
+							}
+
+							return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 						}
 
-						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+						return resolve(this.loginTOTP({
+							totp: {
+								login: {
+									...params
+								},
+								code: code?.twoFactorCode
+							}
+						}));
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -507,15 +592,15 @@ const RocketChat = {
 		return this.loginTOTP(params, true);
 	},
 
-	async loginOAuthOrSso(params) {
-		const result = await this.login(params);
-		reduxStore.dispatch(loginRequest({ resume: result.token }));
+	async loginOAuthOrSso(params, isFromWebView = true) {
+		const result = await this.loginTOTP(params, false, isFromWebView);
+		reduxStore.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
 	},
 
-	async login(params, loginEmailPassword) {
+	async login(credentials, isFromWebView = false) {
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.64.0
-		await sdk.login(params);
+		await sdk.login(credentials);
 		const { result } = sdk.currentLogin;
 		const user = {
 			id: result.userId,
@@ -530,7 +615,7 @@ const RocketChat = {
 			emails: result.me.emails,
 			roles: result.me.roles,
 			avatarETag: result.me.avatarETag,
-			loginEmailPassword,
+			isFromWebView,
 			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true
 		};
 		return user;
@@ -545,7 +630,7 @@ const RocketChat = {
 		try {
 			const serversDB = database.servers;
 			await serversDB.action(async() => {
-				const serverCollection = serversDB.collections.get('servers');
+				const serverCollection = serversDB.get('servers');
 				const serverRecord = await serverCollection.find(server);
 				await serverRecord.update((s) => {
 					s.roomsUpdatedAt = null;
@@ -592,6 +677,8 @@ const RocketChat = {
 	},
 	loadMissedMessages,
 	loadMessagesForRoom,
+	loadSurroundingMessages,
+	loadNextMessages,
 	loadThreadMessages,
 	sendMessage,
 	getRooms,
@@ -600,12 +687,9 @@ const RocketChat = {
 
 	async localSearch({ text, filterUsers = true, filterRooms = true }) {
 		const searchText = text.trim();
-		if (searchText === '') {
-			return [];
-		}
 		const db = database.active;
 		const likeString = sanitizeLikeString(searchText);
-		let data = await db.collections.get('subscriptions').query(
+		let data = await db.get('subscriptions').query(
 			Q.or(
 				Q.where('name', Q.like(`%${ likeString }%`)),
 				Q.where('fname', Q.like(`%${ likeString }%`))
@@ -621,19 +705,16 @@ const RocketChat = {
 
 		data = data.slice(0, 7);
 
-		data = data.map((sub) => {
-			if (sub.t !== 'd') {
-				return {
-					rid: sub.rid,
-					name: sub.name,
-					fname: sub.fname,
-					avatarETag: sub.avatarETag,
-					t: sub.t,
-					encrypted: sub.encrypted
-				};
-			}
-			return sub;
-		});
+		data = data.map(sub => ({
+			rid: sub.rid,
+			name: sub.name,
+			fname: sub.fname,
+			avatarETag: sub.avatarETag,
+			t: sub.t,
+			encrypted: sub.encrypted,
+			lastMessage: sub.lastMessage,
+			...(sub.teamId && { teamId: sub.teamId })
+		}));
 
 		return data;
 	},
@@ -643,10 +724,6 @@ const RocketChat = {
 
 		if (this.oldPromise) {
 			this.oldPromise('cancel');
-		}
-
-		if (searchText === '') {
-			return [];
 		}
 
 		const data = await this.localSearch({ text, filterUsers, filterRooms });
@@ -721,7 +798,81 @@ const RocketChat = {
 			prid, pmid, t_name, reply, users, encrypted
 		});
 	},
-
+	createTeam({
+		name, users, type, readOnly, broadcast, encrypted
+	}) {
+		const params = {
+			name,
+			users,
+			type: type ? TEAM_TYPE.PRIVATE : TEAM_TYPE.PUBLIC,
+			room: {
+				readOnly,
+				extraData: {
+					broadcast,
+					encrypted
+				}
+			}
+		};
+		// RC 3.13.0
+		return this.post('teams.create', params);
+	},
+	addRoomsToTeam({ teamId, rooms }) {
+		// RC 3.13.0
+		return this.post('teams.addRooms', { teamId, rooms });
+	},
+	removeTeamRoom({ roomId, teamId }) {
+		// RC 3.13.0
+		return this.post('teams.removeRoom', { roomId, teamId });
+	},
+	leaveTeam({ teamName, rooms }) {
+		// RC 3.13.0
+		return this.post('teams.leave', { teamName, rooms });
+	},
+	removeTeamMember({
+		teamId, teamName, userId, rooms
+	}) {
+		// RC 3.13.0
+		return this.post('teams.removeMember', {
+			teamId, teamName, userId, rooms
+		});
+	},
+	updateTeamRoom({ roomId, isDefault }) {
+		// RC 3.13.0
+		return this.post('teams.updateRoom', { roomId, isDefault });
+	},
+	deleteTeam({ teamId, roomsToRemove }) {
+		// RC 3.13.0
+		return this.post('teams.delete', { teamId, roomsToRemove });
+	},
+	teamListRoomsOfUser({ teamId, userId }) {
+		// RC 3.13.0
+		return this.sdk.get('teams.listRoomsOfUser', { teamId, userId });
+	},
+	getTeamInfo({ teamId }) {
+		// RC 3.13.0
+		return this.sdk.get('teams.info', { teamId });
+	},
+	convertChannelToTeam({ rid, name, type }) {
+		const params = {
+			...(type === 'c'
+				? {
+					channelId: rid,
+					channelName: name
+				}
+				: {
+					roomId: rid,
+					roomName: name
+				})
+		};
+		return this.sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
+	},
+	convertTeamToChannel({ teamId, selected }) {
+		const params = {
+			teamId,
+			...(selected.length && { roomsToRemove: selected })
+		};
+		return this.sdk.post('teams.convertToChannel', params);
+	},
 	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
@@ -739,7 +890,9 @@ const RocketChat = {
 	getSettings,
 	getLoginSettings,
 	setSettings,
+	subscribeSettings,
 	getPermissions,
+	setPermissions,
 	getCustomEmojis,
 	setCustomEmojis,
 	getEnterpriseModules,
@@ -748,6 +901,7 @@ const RocketChat = {
 	isOmnichannelModuleAvailable,
 	getSlashCommands,
 	getRoles,
+	setRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
 		if (item._id === 'Hide_System_Messages') {
@@ -796,7 +950,7 @@ const RocketChat = {
 	async getRoom(rid) {
 		try {
 			const db = database.active;
-			const room = await db.collections.get('subscriptions').find(rid);
+			const room = await db.get('subscriptions').find(rid);
 			return Promise.resolve(room);
 		} catch (error) {
 			return Promise.reject(new Error('Room not found'));
@@ -882,9 +1036,15 @@ const RocketChat = {
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		if (API_Use_REST_For_DDP_Calls) {
-			return this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
+			return this.post(`method.call/${ method }`, { message: EJSON.stringify({ method, params }) });
 		}
-		return this.methodCall(method, ...params);
+		const parsedParams = params.map((param) => {
+			if (param instanceof Date) {
+				return { $date: new Date(param).getTime() };
+			}
+			return param;
+		});
+		return this.methodCall(method, ...parsedParams);
 	},
 
 	getUserRoles() {
@@ -915,6 +1075,19 @@ const RocketChat = {
 	getVisitorInfo(visitorId) {
 		// RC 2.3.0
 		return this.sdk.get('livechat/visitors.info', { visitorId });
+	},
+	getTeamListRoom({
+		teamId, count, offset, type, filter
+	}) {
+		const params = {
+			teamId, count, offset, type
+		};
+
+		if (filter) {
+			params.filter = filter;
+		}
+		// RC 3.13.0
+		return this.sdk.get('teams.listRooms', params);
 	},
 	closeLivechat(rid, comment) {
 		// RC 0.29.0
@@ -1115,7 +1288,7 @@ const RocketChat = {
 	methodCall(...args) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.sdk.methodCall(...args, this.code || '');
+				const result = await this.sdk?.methodCall(...args, this.code || '');
 				return resolve(result);
 			} catch (e) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
@@ -1172,10 +1345,13 @@ const RocketChat = {
 		// RC 0.65.0
 		return this.sdk.get(`${ this.roomTypeToApiType(type) }.roles`, { roomId });
 	},
+	/**
+	 * Permissions: array of permissions' roles from redux. Example: [['owner', 'admin'], ['leader']]
+	 * Returns an array of boolean for each permission from permissions arg
+	 */
 	async hasPermission(permissions, rid) {
 		const db = database.active;
-		const subsCollection = db.collections.get('subscriptions');
-		const permissionsCollection = db.collections.get('permissions');
+		const subsCollection = db.get('subscriptions');
 		let roomRoles = [];
 		try {
 			// get the room from database
@@ -1184,31 +1360,16 @@ const RocketChat = {
 			roomRoles = room.roles || [];
 		} catch (error) {
 			console.log('hasPermission -> Room not found');
-			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				return result;
-			}, {});
+			return permissions.map(() => false);
 		}
-		// get permissions from database
+
 		try {
-			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
 			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
-			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-
-			// return permissions in object format
-			// e.g. { 'edit-room': true, 'set-readonly': false }
-			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				const permissionFound = permissionsFiltered.find(p => p.id === permission);
-				if (permissionFound) {
-					result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r));
-				}
-				return result;
-			}, {});
+			return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
 		} catch (e) {
 			log(e);
 		}
@@ -1374,7 +1535,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (serverVersion && gte(coerce(serverVersion), '3.4.0')) {
+		if (compareServerVersion(serverVersion, '3.4.0', methods.greaterThanOrEqualTo)) {
 			// RC 3.4.0
 			return this.methodCallWrapper('readThreads', tmid);
 		}
@@ -1438,17 +1599,15 @@ const RocketChat = {
 			query, count, offset, sort
 		});
 	},
-	async canAutoTranslate() {
-		const db = database.active;
+	canAutoTranslate() {
 		try {
-			const AutoTranslate_Enabled = reduxStore.getState().settings && reduxStore.getState().settings.AutoTranslate_Enabled;
+			const { AutoTranslate_Enabled } = reduxStore.getState().settings;
 			if (!AutoTranslate_Enabled) {
 				return false;
 			}
-			const permissionsCollection = db.collections.get('permissions');
-			const autoTranslatePermission = await permissionsCollection.find('auto-translate');
-			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
-			return autoTranslatePermission.roles.some(role => userRoles.includes(role));
+			const autoTranslatePermission = reduxStore.getState().permissions['auto-translate'];
+			const userRoles = (reduxStore.getState().login?.user?.roles) ?? [];
+			return autoTranslatePermission?.some(role => userRoles.includes(role));
 		} catch (e) {
 			log(e);
 			return false;

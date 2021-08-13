@@ -5,7 +5,7 @@ import database from '../../database';
 export default async(subscriptions = [], rooms = []) => {
 	try {
 		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
+		const subCollection = db.get('subscriptions');
 
 		const roomIds = rooms.filter(r => !subscriptions.find(s => s.rid === r._id)).map(r => r._id);
 		let existingSubs = await subCollection.query(Q.where('rid', Q.oneOf(roomIds))).fetch();

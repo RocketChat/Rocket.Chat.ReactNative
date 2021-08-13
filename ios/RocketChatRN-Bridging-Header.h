@@ -7,6 +7,8 @@
 #import <react-native-notifications/RNNotificationEventHandler.h>
 #import <react-native-notifications/RNNotificationCenter.h>
 #import <react-native-notifications/RCTConvert+RNNotifications.h>
+#import <react-native-notifications/RNEventEmitter.h>
+#import <react-native-notifications/RNNotificationParser.h>
 #import <react-native-simple-crypto/Aes.h>
 #import <react-native-simple-crypto/Rsa.h>
 #import <react-native-simple-crypto/Shared.h>

@@ -31,12 +31,12 @@ const ScreenLockedView = ({ theme }) => {
 		if (!isTablet) {
 			Orientation.lockToPortrait();
 		}
-		EventEmitter.addEventListener(LOCAL_AUTHENTICATE_EMITTER, showScreenLock);
+		const listener = EventEmitter.addEventListener(LOCAL_AUTHENTICATE_EMITTER, showScreenLock);
 		return (() => {
 			if (!isTablet) {
 				Orientation.unlockAllOrientations();
 			}
-			EventEmitter.removeListener(LOCAL_AUTHENTICATE_EMITTER);
+			EventEmitter.removeListener(LOCAL_AUTHENTICATE_EMITTER, listener);
 		});
 	}, []);
 

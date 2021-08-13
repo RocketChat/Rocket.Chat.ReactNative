@@ -90,6 +90,10 @@ export default class RoomSubscription {
 		if (ev === 'typing') {
 			const { user } = reduxStore.getState().login;
 			const { UI_Use_Real_Name } = reduxStore.getState().settings;
+			const { rooms } = reduxStore.getState().room;
+			if (rooms[0] !== _rid) {
+				return;
+			}
 			const [name, typing] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
@@ -105,9 +109,9 @@ export default class RoomSubscription {
 					try {
 						const { _id } = ddpMessage.fields.args[0];
 						const db = database.active;
-						const msgCollection = db.collections.get('messages');
-						const threadsCollection = db.collections.get('threads');
-						const threadMessagesCollection = db.collections.get('thread_messages');
+						const msgCollection = db.get('messages');
+						const threadsCollection = db.get('threads');
+						const threadMessagesCollection = db.get('thread_messages');
 						let deleteMessage;
 						let deleteThread;
 						let deleteThreadMessage;
@@ -155,13 +159,13 @@ export default class RoomSubscription {
 	updateMessage = message => (
 		new Promise(async(resolve) => {
 			if (this.rid !== message.rid) {
-				return;
+				return resolve();
 			}
 
 			const db = database.active;
-			const msgCollection = db.collections.get('messages');
-			const threadsCollection = db.collections.get('threads');
-			const threadMessagesCollection = db.collections.get('thread_messages');
+			const msgCollection = db.get('messages');
+			const threadsCollection = db.get('threads');
+			const threadMessagesCollection = db.get('thread_messages');
 
 			// Decrypt the message if necessary
 			message = await Encryption.decryptMessage(message);
