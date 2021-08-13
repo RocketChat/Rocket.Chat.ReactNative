@@ -51,7 +51,9 @@ class QueueListView extends React.Component {
 		server: PropTypes.string,
 		useRealName: PropTypes.bool,
 		navigation: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		showAvatar: PropTypes.bool,
+		displayType: PropTypes.string
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -99,7 +101,9 @@ class QueueListView extends React.Component {
 			useRealName,
 			theme,
 			isMasterDetail,
-			width
+			width,
+			showAvatar,
+			displayType
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
 
@@ -121,6 +125,8 @@ class QueueListView extends React.Component {
 				getRoomAvatar={this.getRoomAvatar}
 				visitor={item.v}
 				swipeEnabled={false}
+				showAvatar={showAvatar}
+				displayType={displayType}
 			/>
 		);
 	}
@@ -155,6 +161,8 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,
 	useRealName: state.settings.UI_Use_Real_Name,
-	queued: getInquiryQueueSelector(state)
+	queued: getInquiryQueueSelector(state),
+	showAvatar: state.sortPreferences.showAvatar,
+	displayType: state.sortPreferences.displayType
 });
 export default connect(mapStateToProps)(withDimensions(withTheme(QueueListView)));
