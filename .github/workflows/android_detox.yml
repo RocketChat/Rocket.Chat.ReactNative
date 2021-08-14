@@ -348,7 +348,7 @@ jobs:
 
     - run: brew tap wix/brew
 
-    - name: Ruun tests
+    - name: Run tests
       uses: ReactiveCircus/android-emulator-runner@v2.19.1
       with:
         api-level: 28
