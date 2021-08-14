@@ -142,7 +142,14 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: yarn detox test e2e/tests/room --configuration and.emu.release --cleanup
+        script: |
+          n=0
+          until [ "$n" -ge 2 ]
+          do
+            yarn detox test e2e/tests/room --configuration and.emu.release --cleanup && break  # substitute your command here
+            n=$((n+1)) 
+            sleep 15
+          done
   
     - name: Upload test artifacts
       if: ${{ failure() }}
@@ -214,8 +221,15 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: yarn detox test e2e/tests/assorted --configuration and.emu.release --cleanup
-  
+        script: |
+          n=0
+          until [ "$n" -ge 2 ]
+          do
+            yarn detox test e2e/tests/assorted --configuration and.emu.release --cleanup && break  # substitute your command here
+            n=$((n+1)) 
+            sleep 15
+          done
+
     - name: Upload test artifacts
       if: ${{ failure() }}
       uses: actions/upload-artifact@v2
@@ -286,7 +300,14 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: yarn detox test e2e/tests/onboarding --configuration and.emu.release --cleanup
+        script: |
+          n=0
+          until [ "$n" -ge 2 ]
+          do
+            yarn detox test e2e/tests/onboarding --configuration and.emu.release --cleanup && break  # substitute your command here
+            n=$((n+1)) 
+            sleep 15
+          done
   
     - name: Upload test artifacts
       if: ${{ failure() }}
@@ -358,7 +379,14 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: yarn detox test e2e/tests/team --configuration and.emu.release --cleanup
+        script: |
+          n=0
+          until [ "$n" -ge 2 ]
+          do
+            yarn detox test e2e/tests/team --configuration and.emu.release --cleanup && break  # substitute your command here
+            n=$((n+1)) 
+            sleep 15
+          done
   
     - name: Upload test artifacts
       if: ${{ failure() }}
