@@ -148,7 +148,8 @@ jobs:
           do
           yarn detox test e2e/tests/room --configuration and.emu.release --cleanup && break
           n=$((n+1)) 
-          if [ "$n" -ge 2 ] do
+          if [ "$n" -ge 2 ]
+          do
           exit 1
           done
           sleep 15
