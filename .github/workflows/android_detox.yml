@@ -32,7 +32,7 @@ jobs:
         path: |
           android/app/build/outputs/apk/e2ePlay/release
           android/app/build/outputs/apk/androidTest/e2ePlay/release
-        key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Node
       if: steps.detoxappcache.outputs.cache-hit != 'true'
@@ -103,7 +103,7 @@ jobs:
         path: |
           android/app/build/outputs/apk/e2ePlay/release
           android/app/build/outputs/apk/androidTest/e2ePlay/release
-        key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
       if: steps.detoxappcache.outputs.cache-hit != 'true'
@@ -175,7 +175,7 @@ jobs:
         path: |
           android/app/build/outputs/apk/e2ePlay/release
           android/app/build/outputs/apk/androidTest/e2ePlay/release
-        key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
       if: steps.detoxappcache.outputs.cache-hit != 'true'
@@ -247,7 +247,7 @@ jobs:
         path: |
           android/app/build/outputs/apk/e2ePlay/release
           android/app/build/outputs/apk/androidTest/e2ePlay/release
-        key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
       if: steps.detoxappcache.outputs.cache-hit != 'true'
@@ -319,7 +319,7 @@ jobs:
         path: |
           android/app/build/outputs/apk/e2ePlay/release
           android/app/build/outputs/apk/androidTest/e2ePlay/release
-        key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
       if: steps.detoxappcache.outputs.cache-hit != 'true'
