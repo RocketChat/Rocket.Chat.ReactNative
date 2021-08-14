@@ -376,7 +376,7 @@ class Markdown extends PureComponent {
 
 	render() {
 		const {
-			msg, md, numberOfLines, preview = false, theme, style = [], testID, user, mentions
+			msg, md, numberOfLines, preview = false, theme, style = [], testID, user, mentions, navToRoomInfo
 		} = this.props;
 
 		if (!msg) {
@@ -384,7 +384,7 @@ class Markdown extends PureComponent {
 		}
 
 		if (user.enableMessageParserEarlyAdoption && md) {
-			return <MessageBody tokens={md} theme={theme} style={style} mentions={mentions} />;
+			return <MessageBody tokens={md} theme={theme} style={style} mentions={mentions} navToRoomInfo={navToRoomInfo} />;
 		}
 
 		let m = formatText(msg);

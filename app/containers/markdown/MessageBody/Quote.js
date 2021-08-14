@@ -6,7 +6,7 @@ import { useTheme } from '../../../theme';
 import styles from '../styles';
 
 const Quote = ({ value }) => {
-	const theme = useTheme();
+	const { theme } = useTheme();
 	return (
 		<>
 			<View style={styles.container}>

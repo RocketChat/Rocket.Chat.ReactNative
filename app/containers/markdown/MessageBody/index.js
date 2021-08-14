@@ -9,14 +9,14 @@ import Heading from './Heading';
 import Code from './Code';
 import Link from './Link';
 import BigEmoji from './BigEmoji';
-import { useTheme } from '../../../theme';
 
 const isBigEmoji = tokens => tokens.length === 1 && tokens[0].type === 'BIG_EMOJI';
 
-const Body = ({ tokens, mentions }) => {
-	const { theme } = useTheme();
+const Body = ({
+	tokens, mentions, navToRoomInfo, style
+}) => {
 	if (isBigEmoji(tokens)) {
-		return <BigEmoji value={tokens[0].value} theme={theme} />;
+		return <BigEmoji value={tokens[0].value} />;
 	}
 
 	return (
@@ -32,9 +32,9 @@ const Body = ({ tokens, mentions }) => {
 					case 'QUOTE':
 						return <Quote key={index} value={block.value} />;
 					case 'PARAGRAPH':
-						return <Paragraph key={index} value={block.value} mentions={mentions} />;
+						return <Paragraph key={index} value={block.value} navToRoomInfo={navToRoomInfo} mentions={mentions} style={style} />;
 					case 'CODE':
-						return <Code key={index} value={block.value} />;
+						return <Code key={index} value={block.value} style={style} />;
 					case 'LINK':
 						// eslint-disable-next-line jsx-a11y/anchor-is-valid
 						return <Link key={index} value={block.value} />;
@@ -50,7 +50,9 @@ const Body = ({ tokens, mentions }) => {
 
 Body.propTypes = {
 	tokens: PropTypes.array,
-	mentions: PropTypes.array
+	mentions: PropTypes.array,
+	navToRoomInfo: PropTypes.func,
+	style: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
 export default Body;

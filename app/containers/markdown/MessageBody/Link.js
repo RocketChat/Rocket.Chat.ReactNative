@@ -32,7 +32,6 @@ const Link = ({ value }) => {
 		<Text
 			onPress={handlePress}
 			onLongPress={onLongPress}
-			o
 			style={{ ...styles.link, color: themes[theme].actionTintColor }}
 		>
 			{((block) => {
