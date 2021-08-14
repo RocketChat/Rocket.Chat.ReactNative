@@ -77,6 +77,7 @@ jobs:
 
     - run: ./gradlew app:assembleE2ePlayRelease app:assembleE2ePlayReleaseAndroidTest -DtestBuildType=release
       if: steps.detoxappcache.outputs.cache-hit != 'true'
+      working-directory: android
 
   detox-test-rooms:
     needs: detox-build
