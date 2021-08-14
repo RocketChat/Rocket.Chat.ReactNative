@@ -376,9 +376,9 @@ describe('Room actions screen', () => {
 
 				const openActionSheet = async(username) => {
 					await waitFor(element(by.id(`room-members-view-item-${ username }`))).toExist().withTimeout(5000);
-					await element(by.id(`room-members-view-item-${ username }`)).tap();
 					await sleep(300);
-					await expect(element(by.id('action-sheet'))).toExist();
+					await element(by.id(`room-members-view-item-${ username }`)).tap();
+					await expect(element(by.id('action-sheet'))).toExist().withTimeout(5000);
 					await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 					await element(by.id('action-sheet-handle')).swipe('up');
 				};
