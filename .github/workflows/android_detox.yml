@@ -26,11 +26,12 @@ jobs:
       run: echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
 
     - name: Cache Detox app
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: detoxappcache
       with:
         path: |
-          android/app/build/outputs/apk
+          android/app/build/outputs/apk/e2ePlay/release
+          android/app/build/outputs/apk/androidTest/e2ePlay/release
         key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Node
@@ -41,7 +42,7 @@ jobs:
 
     - name: Cache node modules
       if: steps.detoxappcache.outputs.cache-hit != 'true'
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: npmcache
       with:
         path: node_modules
@@ -96,11 +97,12 @@ jobs:
       run: echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
 
     - name: Cache Detox app
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: detoxappcache
       with:
         path: |
-          android/app/build/outputs/apk
+          android/app/build/outputs/apk/e2ePlay/release
+          android/app/build/outputs/apk/androidTest/e2ePlay/release
         key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
@@ -113,7 +115,7 @@ jobs:
         node-version: '14'
 
     - name: Cache node modules
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: npmcache
       with:
         path: node_modules
@@ -167,11 +169,12 @@ jobs:
       run: echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
 
     - name: Cache Detox app
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: detoxappcache
       with:
         path: |
-          android/app/build/outputs/apk
+          android/app/build/outputs/apk/e2ePlay/release
+          android/app/build/outputs/apk/androidTest/e2ePlay/release
         key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
@@ -184,7 +187,7 @@ jobs:
         node-version: '14'
 
     - name: Cache node modules
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: npmcache
       with:
         path: node_modules
@@ -238,11 +241,12 @@ jobs:
       run: echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
 
     - name: Cache Detox app
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: detoxappcache
       with:
         path: |
-          android/app/build/outputs/apk
+          android/app/build/outputs/apk/e2ePlay/release
+          android/app/build/outputs/apk/androidTest/e2ePlay/release
         key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
@@ -255,7 +259,7 @@ jobs:
         node-version: '14'
 
     - name: Cache node modules
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: npmcache
       with:
         path: node_modules
@@ -309,11 +313,12 @@ jobs:
       run: echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
 
     - name: Cache Detox app
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: detoxappcache
       with:
         path: |
-          android/app/build/outputs/apk
+          android/app/build/outputs/apk/e2ePlay/release
+          android/app/build/outputs/apk/androidTest/e2ePlay/release
         key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
@@ -326,7 +331,7 @@ jobs:
         node-version: '14'
 
     - name: Cache node modules
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       id: npmcache
       with:
         path: node_modules
