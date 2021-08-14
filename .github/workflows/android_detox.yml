@@ -29,7 +29,7 @@ jobs:
       uses: actions/cache@v1
       id: detoxappcache
       with:
-        path: android/app/build/outputs/apk/e2ePlay/release
+        path: android/app/build/outputs/apk
         key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Node
@@ -98,7 +98,7 @@ jobs:
       uses: actions/cache@v1
       id: detoxappcache
       with:
-        path: android/app/build/outputs/apk/e2ePlay/release
+        path: android/app/build/outputs/apk
         key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
@@ -168,7 +168,7 @@ jobs:
       uses: actions/cache@v1
       id: detoxappcache
       with:
-        path: android/app/build/outputs/apk/e2ePlay/release
+        path: android/app/build/outputs/apk
         key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
@@ -238,7 +238,7 @@ jobs:
       uses: actions/cache@v1
       id: detoxappcache
       with:
-        path: android/app/build/outputs/apk/e2ePlay/release
+        path: android/app/build/outputs/apk
         key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
@@ -308,7 +308,7 @@ jobs:
       uses: actions/cache@v1
       id: detoxappcache
       with:
-        path: android/app/build/outputs/apk/e2ePlay/release
+        path: android/app/build/outputs/apk
         key: AndroidDetoxRelease-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
