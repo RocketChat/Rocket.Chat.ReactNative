@@ -142,7 +142,7 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: yarn detox test e2e/tests/room --configuration and.emu.release --cleanup || yarn detox test e2e/tests/room --configuration and.emu.release --cleanup
+        script: yarn detox test e2e/tests/room --configuration and.emu.release || yarn detox test e2e/tests/room --configuration and.emu.release
   
     - name: Upload test artifacts
       if: ${{ failure() }}
@@ -214,7 +214,7 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: yarn detox test e2e/tests/assorted --configuration and.emu.release --cleanup || yarn detox test e2e/tests/assorted --configuration and.emu.release --cleanup
+        script: yarn detox test e2e/tests/assorted --configuration and.emu.release || yarn detox test e2e/tests/assorted --configuration and.emu.release
 
     - name: Upload test artifacts
       if: ${{ failure() }}
@@ -286,7 +286,7 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: yarn detox test e2e/tests/onboarding --configuration and.emu.release --cleanup || yarn detox test e2e/tests/onboarding --configuration and.emu.release --cleanup
+        script: yarn detox test e2e/tests/onboarding --configuration and.emu.release || yarn detox test e2e/tests/onboarding --configuration and.emu.release
   
     - name: Upload test artifacts
       if: ${{ failure() }}
@@ -358,7 +358,7 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: yarn detox test e2e/tests/team --configuration and.emu.release --cleanup || yarn detox test e2e/tests/team --configuration and.emu.release --cleanup
+        script: yarn detox test e2e/tests/team --configuration and.emu.release || yarn detox test e2e/tests/team --configuration and.emu.release
   
     - name: Upload test artifacts
       if: ${{ failure() }}
