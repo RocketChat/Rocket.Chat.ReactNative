@@ -7,9 +7,10 @@ import { connect } from 'react-redux';
 
 import RocketChat from '../lib/rocketchat';
 import { getUserSelector } from '../selectors/login';
-
+import ActivityIndicator from '../containers/ActivityIndicator';
 import { logEvent, events } from '../utils/log';
 import { isAndroid, isIOS } from '../utils/deviceInfo';
+import { withTheme } from '../theme';
 
 const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
 	`${ baseUrl }/avatar/${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
@@ -20,6 +21,7 @@ class JitsiMeetView extends React.Component {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
 		baseUrl: PropTypes.string,
+		theme: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
@@ -44,7 +46,8 @@ class JitsiMeetView extends React.Component {
 			userInfo: {
 				displayName,
 				avatar
-			}
+			},
+			loading: true
 		};
 	}
 
@@ -74,6 +77,10 @@ class JitsiMeetView extends React.Component {
 		JitsiMeet.endCall();
 	}
 
+	onConferenceWillJoin = () => {
+		this.setState({ loading: false });
+	}
+
 	// Jitsi Update Timeout needs to be called every 10 seconds to make sure
 	// call is not ended and is available to web users.
 	onConferenceJoined = () => {
@@ -96,17 +103,21 @@ class JitsiMeetView extends React.Component {
 	}
 
 	render() {
-		const { userInfo } = this.state;
-		const { route } = this.props;
+		const { userInfo, loading } = this.state;
+		const { route, theme } = this.props;
 		const onlyAudio = route.params?.onlyAudio ?? false;
 		const options = isAndroid ? { url: this.url, userInfo, audioOnly: onlyAudio } : null;
 		return (
-			<RNJitsiMeetView
-				onConferenceTerminated={this.onConferenceTerminated}
-				onConferenceJoined={this.onConferenceJoined}
-				style={StyleSheet.absoluteFill}
-				options={options}
-			/>
+			<>
+				<RNJitsiMeetView
+					onConferenceWillJoin={this.onConferenceWillJoin}
+					onConferenceTerminated={this.onConferenceTerminated}
+					onConferenceJoined={this.onConferenceJoined}
+					style={StyleSheet.absoluteFill}
+					options={options}
+				/>
+				<ActivityIndicator theme={theme} animating={loading} />
+			</>
 		);
 	}
 }
@@ -116,4 +127,4 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server
 });
 
-export default connect(mapStateToProps)(JitsiMeetView);
+export default connect(mapStateToProps)(withTheme(JitsiMeetView));
