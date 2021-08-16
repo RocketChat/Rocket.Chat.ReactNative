@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Modal, Animated } from 'react-native';
+import { StyleSheet,  Modal, Animated , View } from 'react-native';
+import { withTheme } from '../theme';
+import { themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: 'rgba(0, 0, 0, 0.25)'
+		justifyContent: 'center'
 	},
 	image: {
 		width: 100,
@@ -17,9 +18,10 @@ const styles = StyleSheet.create({
 
 interface ILoadingProps {
 	visible: boolean;
+	theme: string;
 }
 
-export default class Loading extends React.PureComponent<ILoadingProps, any> {
+class Loading extends React.PureComponent<ILoadingProps, any> {
 
 	state = {
 		scale: new Animated.Value(1),
@@ -36,7 +38,7 @@ export default class Loading extends React.PureComponent<ILoadingProps, any> {
 			opacity,
 			{
 				toValue: 1,
-				duration: 1000,
+				duration: 200,
 				useNativeDriver: true
 			}
 		);
@@ -91,23 +93,40 @@ export default class Loading extends React.PureComponent<ILoadingProps, any> {
 
 	render() {
 		const { opacity, scale } = this.state;
-		const { visible } = this.props;
+		const { visible, theme } = this.props;
 
 		const scaleAnimation = scale.interpolate({
 			inputRange: [0, 0.5, 1],
 			outputRange: [1, 1.1, 1]
 		});
+
+		const opacityAnimation = opacity.interpolate({
+			inputRange: [0, 1],
+			outputRange: [0, themes[theme].backdropOpacity],
+			extrapolate: 'clamp'
+		});
+
 		return (
 			<Modal
 				visible={visible}
 				transparent
 				onRequestClose={() => {}}
 			>
-				<View style={styles.container} testID='loading'>
+				<View
+					style={styles.container}
+					testID='loading'
+				>
+					<Animated.View
+						style={[{
+							// @ts-ignore
+							...StyleSheet.absoluteFill,
+							backgroundColor: themes[theme].backdropColor,
+							opacity: opacityAnimation
+						}]}
+					/>
 					<Animated.Image
 						source={require('../static/images/logo.png')}
 						style={[styles.image, {
-							opacity,
 							transform: [{
 								scale: scaleAnimation
 							}]
@@ -118,3 +137,5 @@ export default class Loading extends React.PureComponent<ILoadingProps, any> {
 		);
 	}
 }
+
+export default (withTheme(Loading));
