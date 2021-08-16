@@ -174,16 +174,6 @@ const post = (endpoint, body) => {
 	return rocketchat.post(endpoint, body);
 };
 
-const get = (endpoint) => {
-    console.log(`GET /${ endpoint }`)
-    return rocketchat.get(endpoint);
-}
-
-const post = (endpoint, body) => {
-    console.log(`POST /${ endpoint } ${ JSON.stringify(body) }`)
-    return rocketchat.post(endpoint, body);
-}
-
 module.exports = {
 	setup, sendMessage, get, post, login
 };
