@@ -116,7 +116,7 @@ class JitsiMeetView extends React.Component {
 					style={StyleSheet.absoluteFill}
 					options={options}
 				/>
-				<ActivityIndicator theme={theme} animating={loading} />
+				{loading ? <ActivityIndicator theme={theme} /> : null}
 			</>
 		);
 	}
