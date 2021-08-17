@@ -1,7 +1,11 @@
 const data = require('../../data');
-const { tapBack, checkServer, navigateToRegister } = require('../../helpers/app');
+const {
+	tapBack,
+	checkServer,
+	navigateToRegister,
+	platformTypes
+} = require('../../helpers/app');
 const { get, login } = require('../../helpers/data_setup');
-const platformTypes = require('../../helpers/platformTypes');
 
 const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
 

@@ -1,10 +1,8 @@
 const data = require('../../data');
 const {
-	navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage
+	navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage, platformTypes
 } = require('../../helpers/app');
 const { sendMessage } = require('../../helpers/data_setup');
-
-const platformTypes = require('../../helpers/platformTypes');
 
 async function navigateToRoomActions(type) {
 	let room;
@@ -376,11 +374,19 @@ describe('Room actions screen', () => {
 
 				const openActionSheet = async(username) => {
 					await waitFor(element(by.id(`room-members-view-item-${ username }`))).toExist().withTimeout(5000);
-					await element(by.id(`room-members-view-item-${ username }`)).tap();
-					await sleep(300);
-					await expect(element(by.id('action-sheet'))).toExist();
-					await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-					await element(by.id('action-sheet-handle')).swipe('up');
+					let n = 0;
+					while (n < 3) {
+						// Max tries three times, in case it does not register the click
+						try {
+							await element(by.id(`room-members-view-item-${ username }`)).tap();
+							await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(5000);
+							await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+							await element(by.id('action-sheet-handle')).swipe('up');
+							return;
+						} catch (e) {
+							n += 1;
+						}
+					}
 				};
 
 				const closeActionSheet = async() => {
