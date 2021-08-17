@@ -83,7 +83,7 @@ jobs:
     needs: detox-build
     runs-on: macos-latest
     timeout-minutes: 60
-    stratergy:
+    strategy:
       matrix:
         folder: ["room", "assorted", "onboarding", "team"]
 
