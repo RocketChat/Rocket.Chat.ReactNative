@@ -1,10 +1,8 @@
 const data = require('../../data');
 const {
-	navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage
+	navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage, platformTypes
 } = require('../../helpers/app');
 const { sendMessage } = require('../../helpers/data_setup');
-
-const platformTypes = require('../../helpers/platformTypes');
 
 async function navigateToRoomActions(type) {
 	let room;

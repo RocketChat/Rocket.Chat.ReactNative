@@ -1,8 +1,7 @@
 const data = require('../../data');
 const {
-	navigateToLogin, tapBack, login, searchRoom, sleep
+	navigateToLogin, tapBack, login, searchRoom, sleep, platformTypes
 } = require('../../helpers/app');
-const platformTypes = require('../../helpers/platformTypes');
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);

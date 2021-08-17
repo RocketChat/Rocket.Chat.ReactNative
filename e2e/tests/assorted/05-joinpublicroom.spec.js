@@ -1,9 +1,7 @@
 const data = require('../../data');
 const {
-	navigateToLogin, login, mockMessage, tapBack, searchRoom
+	navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes
 } = require('../../helpers/app');
-
-const platformTypes = require('../../helpers/platformTypes');
 
 const testuser = data.users.regular;
 const room = data.channels.detoxpublic.name;

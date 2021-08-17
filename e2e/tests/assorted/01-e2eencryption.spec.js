@@ -1,8 +1,6 @@
 const {
-	navigateToLogin, login, sleep, tapBack, mockMessage, searchRoom, logout
+	navigateToLogin, login, sleep, tapBack, mockMessage, searchRoom, logout, platformTypes
 } = require('../../helpers/app');
-
-const platformTypes = require('../../helpers/platformTypes');
 
 const data = require('../../data');
 

@@ -2,7 +2,7 @@ const detox = require('detox');
 const adapter = require('detox/runners/mocha/adapter');
 const config = require('../../package.json').detox;
 const { setup } = require('../helpers/data_setup');
-const { prepareAndroid } = require('../helpers/platformFunctions');
+const { prepareAndroid } = require('../helpers/app');
 
 before(async() => {
 	await Promise.all([setup(), detox.init(config, { launchApp: false })]);

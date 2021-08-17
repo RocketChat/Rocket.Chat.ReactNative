@@ -1,7 +1,10 @@
-const { navigateToLogin, login, sleep } = require('../../helpers/app');
+const {
+	navigateToLogin,
+	login,
+	sleep,
+	platformTypes
+} = require('../../helpers/app');
 const data = require('../../data');
-
-const platformTypes = require('../../helpers/platformTypes');
 
 const profileChangeUser = data.users.profileChanges;
 

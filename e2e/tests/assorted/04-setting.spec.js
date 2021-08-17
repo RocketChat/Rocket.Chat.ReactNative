@@ -1,6 +1,5 @@
-const { navigateToLogin, login } = require('../../helpers/app');
+const { navigateToLogin, login, platformTypes } = require('../../helpers/app');
 
-const platformTypes = require('../../helpers/platformTypes');
 
 const data = require('../../data');
 
