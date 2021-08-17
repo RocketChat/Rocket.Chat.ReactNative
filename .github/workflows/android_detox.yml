@@ -84,6 +84,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 60
     strategy:
+      fail-fast: false
       matrix:
         folder: ["room", "assorted", "onboarding", "team"]
 
