@@ -166,7 +166,7 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: yarn detox test e2e/tests/{{ matrix.folder }} --configuration and.emu.release || yarn detox test e2e/tests/{{ matrix.folder }} --configuration and.emu.release
+        script: yarn detox test e2e/tests/${{ matrix.folder }} --configuration and.emu.release || yarn detox test e2e/tests/${{ matrix.folder }} --configuration and.emu.release
 
     - name: Save run status
       if: steps.last_run_status.outputs.last_run_status != 'success'
