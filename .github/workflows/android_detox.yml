@@ -92,17 +92,40 @@ jobs:
       GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
 
     steps:
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:%S')"
+
+    - name: Set default run status
+      run: echo "::set-output name=last_run_status::default" > last_run_status
+
+    - name: Restore last run status
+      id: last_run
+      uses: actions/cache@v2
+      with:
+        path: |
+          last_run_status
+        key: ${{ github.run_id }}-${{ matrix.folder }}-${{ steps.date.outputs.date }}
+        restore-keys: |
+          ${{ github.run_id }}-${{ matrix.folder }}-
+
+    - name: Set last run status
+      id: last_run_status
+      run: cat last_run_status
+
     - name: Checkout
       uses: actions/checkout@v1
       with:
         fetch-depth: 1
-
+      
     - name: Generate Detox app cache key
+      if: steps.last_run_status.outputs.last_run_status != 'success'
       run: echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
 
     - name: Cache Detox app
       uses: actions/cache@v2
       id: detoxappcache
+      if: steps.last_run_status.outputs.last_run_status != 'success'
       with:
         path: |
           android/app/build/outputs/apk/e2ePlay/release
@@ -110,29 +133,31 @@ jobs:
         key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
-      if: steps.detoxappcache.outputs.cache-hit != 'true'
+      if: ${{ steps.detoxappcache.outputs.cache-hit != 'true' && steps.last_run_status.outputs.last_run_status != 'success' }}
       run: exit 1
 
     - name: Node
       uses: actions/setup-node@v1
+      if: steps.last_run_status.outputs.last_run_status != 'success'
       with:
         node-version: '14'
 
     - name: Cache node modules
       uses: actions/cache@v2
+      if: steps.last_run_status.outputs.last_run_status != 'success'
       id: npmcache
       with:
         path: node_modules
         key: node-modules-${{ hashFiles('**/yarn.lock') }}
 
     - name: Install Dependencies
-      if: steps.npmcache.outputs.cache-hit != 'true'
+      if: ${{ steps.npmcache.outputs.cache-hit != 'true' && steps.last_run_status.outputs.last_run_status != 'success' }}
       run: yarn install
-
-    - run: brew tap wix/brew
 
     - name: Run tests
       uses: ReactiveCircus/android-emulator-runner@v2.19.1
+      if: steps.last_run_status.outputs.last_run_status != 'success'
+      id: testrun
       with:
         api-level: 28
         arch: x86_64
@@ -142,7 +167,11 @@ jobs:
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         script: yarn detox test e2e/tests/{{ matrix.folder }} --configuration and.emu.release || yarn detox test e2e/tests/{{ matrix.folder }} --configuration and.emu.release
-  
+
+    - name: Save run status
+      if: steps.last_run_status.outputs.last_run_status != 'success'
+      run: echo "::set-output name=last_run_status::${{ steps.testrun.outcome }}" > last_run_status
+
     - name: Upload test artifacts
       if: ${{ failure() }}
       uses: actions/upload-artifact@v2
