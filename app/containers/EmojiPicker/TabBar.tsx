@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import styles from './styles';
 import { themes } from '../../constants/colors';
 
-interface ITabBar {
+interface ITabBarProps {
 	goToPage({}): void;
 	activeTab: number,
 	tabs: [],
@@ -11,7 +11,7 @@ interface ITabBar {
 	theme: string
 }
 
-export default class TabBar extends React.Component<Partial<ITabBar>> {
+export default class TabBar extends React.Component<Partial<ITabBarProps>> {
 
 	shouldComponentUpdate(nextProps: any) {
 		const { activeTab, theme } = this.props;

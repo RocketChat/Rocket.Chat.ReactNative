@@ -16,12 +16,12 @@ import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 
-type TButton = {
+interface IButton {
 	loading: boolean;
 	paused: boolean;
 	theme: string;
 	onPress: Function;
-};
+}
 
 interface IMessageAudioProps {
 	file: {
@@ -88,7 +88,7 @@ const sliderAnimationConfig = {
 	delay: 0
 };
 
-const Button = React.memo(({ loading, paused, onPress, theme }: TButton) => (
+const Button = React.memo(({ loading, paused, onPress, theme }: IButton) => (
 	<Touchable
 		style={styles.playPauseButton}
 		onPress={onPress}

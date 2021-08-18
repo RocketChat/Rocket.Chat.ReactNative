@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { dequal } from 'dequal';
 
 import I18n from '../../i18n';
@@ -8,9 +7,27 @@ import Markdown from '../../containers/markdown';
 import { themes } from '../../constants/colors';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
+interface ILastMessage {
+	theme: string;
+	lastMessage: {
+		u: any;
+		pinned: boolean;
+		t: string;
+		attachments: any;
+		msg: string;
+		e2e: string;
+
+	};
+	type: string;
+	showLastMessage: boolean;
+	username: string;
+	useRealName: boolean;
+	alert: boolean;
+}
+
 const formatMsg = ({
 	lastMessage, type, showLastMessage, username, useRealName
-}) => {
+}: Partial<ILastMessage>) => {
 	if (!showLastMessage) {
 		return '';
 	}
@@ -45,11 +62,12 @@ const formatMsg = ({
 	return `${ prefix }${ lastMessage.msg }`;
 };
 
-const arePropsEqual = (oldProps, newProps) => dequal(oldProps, newProps);
+const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);
 
 const LastMessage = React.memo(({
 	lastMessage, type, showLastMessage, username, alert, useRealName, theme
-}) => (
+}: ILastMessage) => (
+	// @ts-ignore
 	<Markdown
 		msg={formatMsg({
 			lastMessage, type, showLastMessage, username, useRealName
@@ -62,15 +80,5 @@ const LastMessage = React.memo(({
 		theme={theme}
 	/>
 ), arePropsEqual);
-
-LastMessage.propTypes = {
-	theme: PropTypes.string,
-	lastMessage: PropTypes.object,
-	type: PropTypes.string,
-	showLastMessage: PropTypes.bool,
-	username: PropTypes.string,
-	useRealName: PropTypes.bool,
-	alert: PropTypes.bool
-};
 
 export default LastMessage;

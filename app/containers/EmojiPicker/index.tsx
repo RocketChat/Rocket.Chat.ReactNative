@@ -17,18 +17,22 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import {IEmoji} from "../markdown/Emoji";
+import {IEmoji} from "./interfaces";
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
 	keyboardDismissMode: 'none'
 };
 
-export type TEmoji = {
-	content: any;
-	name: string;
-	extension: any;
-	isCustom: boolean;
+interface IEmojiPickerProps {
+	isMessageContainsOnlyEmoji: boolean;
+	getCustomEmoji?: Function;
+	baseUrl: string;
+	customEmojis?: any;
+	style: object;
+	theme?: string;
+	onEmojiSelected?: Function;
+	tabEmojiStyle?: object;
 }
 
 interface IEmojiPickerState {
@@ -38,9 +42,9 @@ interface IEmojiPickerState {
 	width: number | null;
 }
 
-class EmojiPicker extends Component<IEmoji, IEmojiPickerState> {
+class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 
-	constructor(props: IEmoji) {
+	constructor(props: IEmojiPickerProps) {
 		super(props);
 		const customEmojis = Object.keys(props.customEmojis)
 			.filter(item => item === props.customEmojis[item].name)
@@ -80,7 +84,7 @@ class EmojiPicker extends Component<IEmoji, IEmojiPickerState> {
 		return false;
 	}
 
-	onEmojiSelected = (emoji: TEmoji) => {
+	onEmojiSelected = (emoji: IEmoji) => {
 		try {
 			const { onEmojiSelected } = this.props;
 			if (emoji.isCustom) {
@@ -100,7 +104,7 @@ class EmojiPicker extends Component<IEmoji, IEmojiPickerState> {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	_addFrequentlyUsed = protectedFunction(async(emoji: TEmoji) => {
+	_addFrequentlyUsed = protectedFunction(async(emoji: IEmoji) => {
 		const db = database.active;
 		const freqEmojiCollection = db.get('frequently_used_emojis');
 		let freqEmojiRecord: any;
@@ -129,7 +133,7 @@ class EmojiPicker extends Component<IEmoji, IEmojiPickerState> {
 		const db = database.active;
 		const frequentlyUsedRecords = await db.get('frequently_used_emojis').query().fetch();
 		let frequentlyUsed: any = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
-		frequentlyUsed = frequentlyUsed.map((item: TEmoji) => {
+		frequentlyUsed = frequentlyUsed.map((item: IEmoji) => {
 			if (item.isCustom) {
 				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
 			}
@@ -192,7 +196,7 @@ class EmojiPicker extends Component<IEmoji, IEmojiPickerState> {
 	}
 }
 
-const mapStateToProps = (state: IEmojiPickerState) => ({
+const mapStateToProps = (state: any) => ({
 	customEmojis: state.customEmojis
 });
 

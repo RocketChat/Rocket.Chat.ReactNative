@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Alert, Keyboard, Text } from 'react-native';
+import {View, Alert, Keyboard, Text, NativeModules} from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -111,6 +111,7 @@ interface IMessageBoxProps {
 	sharing: boolean;
 	isActionsEnabled: boolean;
 }
+
 interface IMessageBoxState {
 	mentions: any[];
 	showEmojiKeyboard: boolean;
@@ -142,6 +143,16 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	private unsubscribeBlur: any;
 	private component: any;
 	private typingTimeout: any;
+
+	static defaultProps = {
+		message: {
+			id: ''
+		},
+		sharing: false,
+		iOSScrollBehavior: NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset,
+		isActionsEnabled: true,
+		getCustomEmoji: () => {}
+	}
 
 	constructor(props: IMessageBoxProps) {
 		super(props);
@@ -958,6 +969,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					//@ts-ignore
 					style={[styles.textBoxInput, { color: themes[theme].bodyText }]}
 					returnKeyType='default'
+					//@ts-ignore
 					keyboardType='twitter'
 					blurOnSubmit={false}
 					placeholder={I18n.t('New_Message')}

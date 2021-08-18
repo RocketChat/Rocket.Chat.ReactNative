@@ -1,10 +1,19 @@
 import React from 'react';
 import { View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import styles from './styles';
 import { themes } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
+
+interface IWrapper {
+	accessibilityLabel: string;
+	avatar: string;
+	avatarSize: number;
+	type: string;
+	theme: string;
+	rid: string;
+	children: JSX.Element;
+}
 
 const Wrapper = ({
 	accessibilityLabel,
@@ -14,7 +23,7 @@ const Wrapper = ({
 	theme,
 	rid,
 	children
-}) => (
+}: IWrapper) => (
 	<View
 		style={styles.container}
 		accessibilityLabel={accessibilityLabel}
@@ -38,15 +47,5 @@ const Wrapper = ({
 		</View>
 	</View>
 );
-
-Wrapper.propTypes = {
-	accessibilityLabel: PropTypes.string,
-	avatar: PropTypes.string,
-	avatarSize: PropTypes.number,
-	type: PropTypes.string,
-	theme: PropTypes.string,
-	rid: PropTypes.string,
-	children: PropTypes.element
-};
 
 export default Wrapper;

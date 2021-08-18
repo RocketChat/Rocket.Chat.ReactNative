@@ -1,11 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
-import {
-	PanGestureHandler,
-	State,
-	PinchGestureHandler
-} from 'react-native-gesture-handler';
+import { PanGestureHandler, State, PinchGestureHandler } from 'react-native-gesture-handler';
 import Animated, { Easing } from 'react-native-reanimated';
 import { ImageComponent } from './ImageComponent';
 import { themes } from '../../constants/colors';
@@ -44,13 +39,13 @@ const {
 	event
 } = Animated;
 
-function scaleDiff(value) {
+function scaleDiff(value: any) {
 	const tmp = new Value(1);
 	const prev = new Value(1);
 	return [set(tmp, divide(value, prev)), set(prev, value), tmp];
 }
 
-function dragDiff(value, updating) {
+function dragDiff(value: any, updating: any) {
 	const tmp = new Value(0);
 	const prev = new Value(0);
 	return cond(
@@ -63,7 +58,7 @@ function dragDiff(value, updating) {
 // returns linear friction coeff. When `value` is 0 coeff is 1 (no friction), then
 // it grows linearly until it reaches `MAX_FRICTION` when `value` is equal
 // to `MAX_VALUE`
-function friction(value) {
+function friction(value: any) {
 	const MAX_FRICTION = 5;
 	const MAX_VALUE = 100;
 	return max(
@@ -72,7 +67,7 @@ function friction(value) {
 	);
 }
 
-function speed(value) {
+function speed(value: any) {
 	const clock = new Clock();
 	const dt = diff(clock);
 	return cond(lessThan(dt, 1), 0, multiply(1000, divide(diff(value), dt)));
@@ -81,7 +76,7 @@ function speed(value) {
 const MIN_SCALE = 1;
 const MAX_SCALE = 2;
 
-function scaleRest(value) {
+function scaleRest(value: any) {
 	return cond(
 		lessThan(value, MIN_SCALE),
 		MIN_SCALE,
@@ -89,7 +84,7 @@ function scaleRest(value) {
 	);
 }
 
-function scaleFriction(value, rest, delta) {
+function scaleFriction(value: any, rest: any, delta: any) {
 	const MAX_FRICTION = 20;
 	const MAX_VALUE = 0.5;
 	const res = multiply(value, delta);
@@ -105,7 +100,7 @@ function scaleFriction(value, rest, delta) {
 	);
 }
 
-function runTiming(clock, value, dest, startStopClock = true) {
+function runTiming(clock: any, value: any, dest: any, startStopClock: any = true) {
 	const state = {
 		finished: new Value(0),
 		position: new Value(0),
@@ -134,7 +129,7 @@ function runTiming(clock, value, dest, startStopClock = true) {
 	];
 }
 
-function runDecay(clock, value, velocity) {
+function runDecay(clock: any, value: any, velocity: any) {
 	const state = {
 		finished: new Value(0),
 		velocity: new Value(0),
@@ -160,13 +155,13 @@ function runDecay(clock, value, velocity) {
 }
 
 function bouncyPinch(
-	value,
-	gesture,
-	gestureActive,
-	focalX,
-	displacementX,
-	focalY,
-	displacementY
+	value: any,
+	gesture: any,
+	gestureActive: any,
+	focalX: any,
+	displacementX: any,
+	focalY: any,
+	displacementY: any
 ) {
 	const clock = new Clock();
 
@@ -212,12 +207,12 @@ function bouncyPinch(
 }
 
 function bouncy(
-	value,
-	gestureDiv,
-	gestureActive,
-	lowerBound,
-	upperBound,
-	f
+	value: any,
+	gestureDiv: any,
+	gestureActive: any,
+	lowerBound: any,
+	upperBound: any,
+	f: any
 ) {
 	const timingClock = new Clock();
 	const decayClock = new Clock();
@@ -260,13 +255,14 @@ function bouncy(
 const WIDTH = 300;
 const HEIGHT = 300;
 
-class Image extends React.PureComponent {
-	static propTypes = {
-		imageComponentType: PropTypes.string
-	}
+interface IImageProps {
+	imageComponentType: string
+}
+
+class Image extends React.PureComponent<IImageProps, any> {
 
 	render() {
-		const { imageComponentType } = this.props;
+		const { imageComponentType }: any = this.props;
 
 		const Component = ImageComponent(imageComponentType);
 
@@ -277,16 +273,25 @@ const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 // it was picked from https://github.com/software-mansion/react-native-reanimated/tree/master/Example/imageViewer
 // and changed to use FastImage animated component
-export class ImageViewer extends React.Component {
-	static propTypes = {
-		uri: PropTypes.string,
-		width: PropTypes.number,
-		height: PropTypes.number,
-		theme: PropTypes.string,
-		imageComponentType: PropTypes.string
-	}
 
-	constructor(props) {
+interface IImageViewerProps {
+	uri: string;
+	width: number;
+	height: number;
+	theme: string;
+	imageComponentType: string;
+}
+
+export class ImageViewer extends React.Component<IImageViewerProps, any> {
+	private _onPinchEvent: any;
+	private _focalDisplacementX: any;
+	private _focalDisplacementY: any;
+	private _scale: any;
+	private _onPanEvent: any;
+	private _panTransX: any;
+	private _panTransY: any;
+
+	constructor(props: IImageViewerProps) {
 		super(props);
 
 		// DECLARE TRANSX
@@ -351,7 +356,7 @@ export class ImageViewer extends React.Component {
 		]);
 
 		const panActive = eq(panState, State.ACTIVE);
-		const panFriction = value => friction(value);
+		const panFriction = (value: any) => friction(value);
 
 		// X
 		const panUpX = cond(

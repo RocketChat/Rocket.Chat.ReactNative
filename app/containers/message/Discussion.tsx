@@ -10,13 +10,8 @@ import { DISCUSSION } from './constants';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { formatDateThreads } from '../../utils/room';
+import {IMessageDiscussion} from "./interfaces";
 
-export interface IMessageDiscussion {
-	msg: string;
-	dcount: number;
-	dlm: string;
-	theme: string;
-}
 
 const Discussion = React.memo(({ msg, dcount, dlm, theme }: IMessageDiscussion) => {
 	let time;

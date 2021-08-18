@@ -72,6 +72,11 @@ interface IRCTextInputProps {
 
 export default class RCTextInput extends React.PureComponent<IRCTextInputProps, any> {
 
+	static defaultProps = {
+		error: {},
+		theme: 'light'
+	}
+
 	state = {
 		showPassword: false
 	}
@@ -167,6 +172,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 							inputStyle
 						]}
 						ref={inputRef}
+						/*@ts-ignore*/
 						autoCorrect={false}
 						autoCapitalize='none'
 						underlineColorAndroid='transparent'

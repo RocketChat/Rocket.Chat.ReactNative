@@ -49,13 +49,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TMessageUrlContent = {
+interface IMessageUrlContent {
 	title: string;
 	description: string;
 	theme: string;
-};
+}
 
-type TMessageUrl = {
+interface IMessageUrl {
 	url: {
 		ignoreParse: boolean;
 		url: string;
@@ -65,7 +65,7 @@ type TMessageUrl = {
 	};
 	index: number;
 	theme: string;
-};
+}
 
 interface IMessageUrls {
 	urls: any;
@@ -81,7 +81,7 @@ const UrlImage = React.memo(({ image }: {image: string}) => {
 	return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
 }, (prevProps, nextProps) => prevProps.image === nextProps.image);
 
-const UrlContent = React.memo(({ title, description, theme }: TMessageUrlContent) => (
+const UrlContent = React.memo(({ title, description, theme }: IMessageUrlContent) => (
 	<View style={styles.textContainer}>
 		{title ? <Text style={[styles.title, { color: themes[theme].tintColor }]} numberOfLines={2}>{title}</Text> : null}
 		{description ? <Text style={[styles.description, { color: themes[theme].auxiliaryText }]} numberOfLines={2}>{description}</Text> : null}
@@ -99,7 +99,7 @@ const UrlContent = React.memo(({ title, description, theme }: TMessageUrlContent
 	return true;
 });
 
-const Url = React.memo(({ url, index, theme }: TMessageUrl) => {
+const Url = React.memo(({ url, index, theme }: IMessageUrl) => {
 	if (!url || url?.ignoreParse) {
 		return null;
 	}

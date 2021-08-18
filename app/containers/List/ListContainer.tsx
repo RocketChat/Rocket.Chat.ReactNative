@@ -9,10 +9,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TListContainer = {
+interface IListContainer {
 	children: JSX.Element;
 }
-const ListContainer = React.memo(({ children, ...props }: TListContainer) => (
+const ListContainer = React.memo(({ children, ...props }: IListContainer) => (
 	// @ts-ignore
 	<ScrollView
 		contentContainerStyle={styles.container}

@@ -2,10 +2,12 @@ import React from 'react';
 import { ActivityIndicator, ActivityIndicatorProps, StyleSheet } from 'react-native';
 import { themes } from '../constants/colors';
 
+type TTheme = 'light' | 'dark' | 'black' | string;
+
 interface IActivityIndicator extends ActivityIndicatorProps{
-	theme?: 'light' | 'dark' | 'black' | string,
-	absolute?: boolean,
-	props?: object
+	theme?: TTheme;
+	absolute?: boolean;
+	props?: object;
 }
 
 const styles = StyleSheet.create({

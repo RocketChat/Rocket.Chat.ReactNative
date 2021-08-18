@@ -11,7 +11,7 @@ import { ThemeContext } from '../../theme';
 const stories = storiesOf('RoomHeader', module);
 
 // TODO: refactor after react-navigation v6
-const HeaderExample = ({ title }: any) => (
+const HeaderExample = ({ title }) => (
 	<Header
 		headerTitle={() => (
 			<View style={{ flex: 1, paddingHorizontal: 12 }}>
@@ -77,7 +77,7 @@ stories.add('thread', () => (
 	</>
 ));
 
-const ThemeStory = ({ theme }: any) => (
+const ThemeStory = ({ theme }) => (
 	<ThemeContext.Provider
 		value={{ theme }}
 	>

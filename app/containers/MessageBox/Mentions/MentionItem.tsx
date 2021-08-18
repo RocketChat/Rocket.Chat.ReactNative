@@ -8,7 +8,7 @@ import FixedMentionItem from './FixedMentionItem';
 import MentionEmoji from './MentionEmoji';
 import { MENTIONS_TRACKING_TYPE_EMOJIS,  MENTIONS_TRACKING_TYPE_COMMANDS } from '../constants';
 import { themes } from '../../../constants/colors';
-import {TEmoji} from "../../EmojiPicker";
+import {IEmoji} from "../../EmojiPicker/interfaces";
 
 interface IMessageBoxMentionItem {
 	item: {
@@ -17,7 +17,7 @@ interface IMessageBoxMentionItem {
 		username: string;
 		t: string;
 		id: string;
-	} & TEmoji;
+	} & IEmoji;
 	trackingType: string;
 	theme: string;
 }

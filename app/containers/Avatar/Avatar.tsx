@@ -6,39 +6,12 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { avatarURL } from '../../utils/avatar';
 import Emoji from '../markdown/Emoji';
-
-export interface IAvatar {
-	server?: string;
-	style?: any,
-	text?: string;
-	avatar?: string;
-	emoji?: string;
-	size?: number;
-	borderRadius?: number;
-	type?: string;
-	children?: JSX.Element;
-	user?: {
-		id: string;
-		token: string;
-	};
-	theme: string;
-	onPress?(): void;
-	getCustomEmoji(): any;
-	avatarETag?: string;
-	isStatic?: boolean;
-	rid?: string;
-	blockUnauthenticatedAccess?: boolean;
-	serverVersion?: string;
-}
+import {IAvatar} from './interfaces';
 
 const Avatar = React.memo(({
-	text,
-	size,
 	server,
-	borderRadius,
-	style,
+    style,
 	avatar,
-	type,
 	children,
 	user,
 	onPress,
@@ -49,8 +22,13 @@ const Avatar = React.memo(({
 	isStatic,
 	rid,
 	blockUnauthenticatedAccess,
-	serverVersion
+	serverVersion,
+    text,
+    size = 25,
+    borderRadius = 4,
+    type = 'd',
 }: Partial<IAvatar>) => {
+
 	if ((!text && !avatar && !emoji && !rid) || !server) {
 		return null;
 	}

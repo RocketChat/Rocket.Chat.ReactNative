@@ -33,12 +33,13 @@ import { isFDroidBuild } from './constants/environment';
 
 RNScreens.enableScreens();
 
-type TDimensions = {
+interface IDimensions {
 	width: number,
 	height: number,
 	scale: number,
 	fontScale: number
 }
+
 interface IProps {}
 interface IState {
 	theme: string,
@@ -163,7 +164,7 @@ export default class Root extends React.Component<IProps, IState> {
 		window: {
 			width, height, scale, fontScale
 		}
-	}: {window: TDimensions}) => {
+	}: {window: IDimensions}) => {
 		this.setDimensions({
 			width, height, scale, fontScale
 		});
@@ -179,7 +180,7 @@ export default class Root extends React.Component<IProps, IState> {
 		});
 	}
 
-	setDimensions = ({width, height, scale, fontScale}: TDimensions) => {
+	setDimensions = ({width, height, scale, fontScale}: IDimensions) => {
 		this.setState({width, height, scale, fontScale});
 	}
 

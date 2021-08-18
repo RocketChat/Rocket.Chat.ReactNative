@@ -12,7 +12,7 @@ import MarkdownLink from './Link';
 import MarkdownList from './List';
 import MarkdownListItem from './ListItem';
 import MarkdownAtMention from './AtMention';
-import MarkdownHashtag, {TChannel} from './Hashtag';
+import MarkdownHashtag from './Hashtag';
 import MarkdownBlockQuote from './BlockQuote';
 import MarkdownEmoji from './Emoji';
 import MarkdownTable from './Table';
@@ -33,7 +33,10 @@ interface IMarkdownProps {
 	numberOfLines: number;
 	customEmojis: boolean;
 	useRealName: boolean;
-	channels: TChannel[];
+	channels: {
+		name: string;
+		_id: number;
+	}[];
 	mentions: object[];
 	navToRoomInfo: Function;
 	preview: boolean;

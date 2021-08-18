@@ -6,16 +6,7 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import Markdown from '../markdown';
-
-export interface IMessageRepliedThread {
-	tmid: string;
-	tmsg: string;
-	id: string;
-	isHeader: boolean;
-	theme: string;
-	fetchThreadName: Function;
-	isEncrypted: boolean;
-}
+import {IMessageRepliedThread} from "./interfaces";
 
 const RepliedThread = memo(({
 	tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted, theme

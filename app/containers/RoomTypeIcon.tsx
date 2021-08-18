@@ -22,7 +22,7 @@ interface IRoomTypeIcon {
 }
 
 const RoomTypeIcon = React.memo(({
-	type, size, isGroupChat, status, style, theme, teamMain
+	type, isGroupChat, status, style, theme, teamMain, size = 16
 }: IRoomTypeIcon) => {
 	if (!type) {
 		return null;

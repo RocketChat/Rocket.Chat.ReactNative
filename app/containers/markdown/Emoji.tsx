@@ -7,7 +7,7 @@ import { themes } from '../../constants/colors';
 
 import styles from './styles';
 
-export interface IEmoji {
+interface IEmoji {
 	literal: string;
 	isMessageContainsOnlyEmoji: boolean;
 	getCustomEmoji?: Function;

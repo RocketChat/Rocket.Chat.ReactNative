@@ -69,7 +69,6 @@ const ImageContainer = React.memo(({file, imageUrl, showAttachment, getCustomEmo
 			<Button theme={theme} onPress={onPress}>
 				<View>
 					<MessageImage img={img} theme={theme} />
-					//TODO - fix the required fields for the Markdown
 					{/*@ts-ignore*/}
 					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 				</View>

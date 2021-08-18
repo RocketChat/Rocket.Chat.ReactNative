@@ -4693,7 +4693,7 @@ exports[`Storyshots List pressable 1`] = `
             "justifyContent": "center",
             "paddingHorizontal": 12,
           },
-          false,
+          undefined,
           Object {
             "height": 92,
           },
@@ -6211,7 +6211,7 @@ exports[`Storyshots List with bigger font 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 69,
               },
@@ -6625,7 +6625,7 @@ exports[`Storyshots List with bigger font 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 69,
               },
@@ -7080,7 +7080,7 @@ exports[`Storyshots List with black theme 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 92,
               },
@@ -7494,7 +7494,7 @@ exports[`Storyshots List with black theme 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 92,
               },
@@ -7972,7 +7972,7 @@ exports[`Storyshots List with custom colors 1`] = `
             "justifyContent": "center",
             "paddingHorizontal": 12,
           },
-          false,
+          undefined,
           Object {
             "height": 92,
           },
@@ -8129,7 +8129,7 @@ exports[`Storyshots List with dark theme 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 92,
               },
@@ -8543,7 +8543,7 @@ exports[`Storyshots List with dark theme 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 92,
               },
@@ -10410,7 +10410,7 @@ exports[`Storyshots List with small font 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 36.800000000000004,
               },
@@ -10824,7 +10824,7 @@ exports[`Storyshots List with small font 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 36.800000000000004,
               },

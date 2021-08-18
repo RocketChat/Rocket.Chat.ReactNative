@@ -15,19 +15,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TThumb = {
+interface IThumb {
 	element: {
 		imageUrl: string;
 	};
 	size?: number;
-};
+}
 
-type TMedia = {
+interface IMedia {
 	element: {
 		imageUrl: string;
 	};
 	theme: string;
-};
+}
 
 interface IImage {
 	element: any;
@@ -37,14 +37,14 @@ interface IImage {
 
 const ThumbContext = (args: any) => <View style={styles.mediaContext}><Thumb size={20} {...args} /></View>;
 
-export const Thumb = ({ element, size = 88 }: TThumb) => (
+export const Thumb = ({ element, size = 88 }: IThumb) => (
 	<FastImage
 		style={[{ width: size, height: size }, styles.image]}
 		source={{ uri: element.imageUrl }}
 	/>
 );
 
-export const Media = ({ element, theme }: TMedia) => {
+export const Media = ({ element, theme }: IMedia) => {
 	const showAttachment = (attachment: any) => Navigation.navigate('AttachmentView', { attachment });
 	const { imageUrl } = element;
 

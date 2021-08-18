@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
@@ -30,9 +29,21 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IUnreadBadge {
+	theme: string;
+	unread: number;
+	userMentions: number;
+	groupMentions: number;
+	style: object;
+	tunread: [];
+	tunreadUser: [];
+	tunreadGroup: [];
+	small: boolean;
+}
+
 const UnreadBadge = React.memo(({
 	theme, unread, userMentions, groupMentions, style, tunread, tunreadUser, tunreadGroup, small
-}) => {
+}: IUnreadBadge) => {
 	if ((!unread || unread <= 0) && (!tunread?.length)) {
 		return null;
 	}
@@ -43,7 +54,7 @@ const UnreadBadge = React.memo(({
 	if (!backgroundColor) {
 		return null;
 	}
-	let text = unread || tunread?.length;
+	let text: any = unread || tunread?.length;
 	if (small && text >= 100) {
 		text = '+99';
 	}
@@ -77,17 +88,5 @@ const UnreadBadge = React.memo(({
 		</View>
 	);
 });
-
-UnreadBadge.propTypes = {
-	theme: PropTypes.string,
-	unread: PropTypes.number,
-	userMentions: PropTypes.number,
-	groupMentions: PropTypes.number,
-	style: PropTypes.object,
-	tunread: PropTypes.array,
-	tunreadUser: PropTypes.array,
-	tunreadGroup: PropTypes.array,
-	small: PropTypes.bool
-};
 
 export default withTheme(UnreadBadge);

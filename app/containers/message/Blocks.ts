@@ -1,12 +1,6 @@
 import React from 'react';
 import { messageBlockWithContext } from '../UIKit/MessageBlock';
-
-export interface IMessageBlocks {
-	blocks: any;
-	id: string;
-	rid: string;
-	blockAction: Function;
-}
+import {IMessageBlocks} from "./interfaces";
 
 const Blocks = React.memo(({ blocks, id: mid, rid, blockAction }: IMessageBlocks) => {
 	if (blocks && blocks.length > 0) {

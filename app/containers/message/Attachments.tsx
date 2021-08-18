@@ -1,18 +1,12 @@
 import React from 'react';
 import { dequal } from 'dequal';
 
+import {IMessageAttachments} from "./interfaces";
+
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
 import Reply from './Reply';
-
-export interface IMessageAttachments {
-	attachments: any;
-	timeFormat: string;
-	showAttachment: Function;
-	getCustomEmoji: Function;
-	theme: string;
-}
 
 const Attachments = React.memo(({
 	attachments, timeFormat, showAttachment, getCustomEmoji, theme

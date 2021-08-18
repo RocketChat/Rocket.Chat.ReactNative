@@ -10,18 +10,18 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import MessageContext from './Context';
 
-type TMessageAddReaction = {
+interface IMessageAddReaction {
 	theme: string
-};
+}
 
-type TMessageReaction = {
+interface IMessageReaction {
 	reaction: {
 		usernames: [];
 		emoji: object;
 	};
 	getCustomEmoji: Function;
 	theme: string;
-};
+}
 
 interface IMessageReactions {
 	reactions: object[];
@@ -29,7 +29,7 @@ interface IMessageReactions {
 	theme: string;
 }
 
-const AddReaction = React.memo(({ theme }: TMessageAddReaction) => {
+const AddReaction = React.memo(({ theme }: IMessageAddReaction) => {
 	const { reactionInit } = useContext(MessageContext);
 	return (
 		<Touchable
@@ -47,9 +47,9 @@ const AddReaction = React.memo(({ theme }: TMessageAddReaction) => {
 	);
 });
 
-const Reaction = React.memo(({reaction, getCustomEmoji, theme}: TMessageReaction) => {
+const Reaction = React.memo(({reaction, getCustomEmoji, theme}: IMessageReaction) => {
 	const { onReactionPress, onReactionLongPress, baseUrl, user } = useContext(MessageContext);
-	const reacted = reaction.usernames.findIndex((item: TMessageReaction) => item === user.username) !== -1;
+	const reacted = reaction.usernames.findIndex((item: IMessageReaction) => item === user.username) !== -1;
 	return (
 		<Touchable
 			onPress={() => onReactionPress(reaction.emoji)}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Touch from '../../utils/touch';
 import Avatar from '../../containers/Avatar';
@@ -10,7 +9,26 @@ import { themes } from '../../constants/colors';
 
 export { ROW_HEIGHT };
 
-const DirectoryItemLabel = React.memo(({ text, theme }) => {
+interface IDirectoryItemLabel {
+	text: string;
+	theme: string;
+}
+
+interface IDirectoryItem {
+	title: string;
+	description: string;
+	avatar: string;
+	type: string;
+	onPress(): void;
+	testID: string;
+	style: any;
+	rightLabel: string;
+	rid: string;
+	theme: string;
+	teamMain: boolean;
+}
+
+const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => {
 	if (!text) {
 		return null;
 	}
@@ -19,7 +37,7 @@ const DirectoryItemLabel = React.memo(({ text, theme }) => {
 
 const DirectoryItem = ({
 	title, description, avatar, onPress, testID, style, rightLabel, type, rid, theme, teamMain
-}) => (
+}: IDirectoryItem) => (
 	<Touch
 		onPress={onPress}
 		style={{ backgroundColor: themes[theme].backgroundColor }}
@@ -45,24 +63,5 @@ const DirectoryItem = ({
 		</View>
 	</Touch>
 );
-
-DirectoryItem.propTypes = {
-	title: PropTypes.string.isRequired,
-	description: PropTypes.string,
-	avatar: PropTypes.string,
-	type: PropTypes.string,
-	onPress: PropTypes.func.isRequired,
-	testID: PropTypes.string.isRequired,
-	style: PropTypes.any,
-	rightLabel: PropTypes.string,
-	rid: PropTypes.string,
-	theme: PropTypes.string,
-	teamMain: PropTypes.bool
-};
-
-DirectoryItemLabel.propTypes = {
-	text: PropTypes.string,
-	theme: PropTypes.string
-};
 
 export default DirectoryItem;

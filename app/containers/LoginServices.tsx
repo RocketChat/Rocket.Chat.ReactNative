@@ -57,19 +57,19 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TOpenOAuth = {
+interface IOpenOAuth {
 	url?: string;
 	ssoToken?: string;
 	authType?: string;
 }
 
-type TService = {
+interface IService {
 	name: string;
 	service: string;
 	authType: string;
 	buttonColor: string;
 	buttonLabelColor: string;
-};
+}
 
 interface ILoginServicesProps {
 	navigation: any;
@@ -92,6 +92,10 @@ interface ILoginServicesProps {
 
 class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 	private _animation: any;
+
+	static defaultProps = {
+		separator: true
+	}
 
 	state = {
 		collapsed: true,
@@ -251,7 +255,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		return Base64.encodeURI(JSON.stringify(obj));
 	}
 
-	openOAuth = ({ url, ssoToken, authType = 'oauth' }: TOpenOAuth) => {
+	openOAuth = ({ url, ssoToken, authType = 'oauth' }: IOpenOAuth) => {
 		const { navigation } = this.props;
 		navigation.navigate('AuthenticationWebView', { url, authType, ssoToken });
 	}
@@ -322,7 +326,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		return null;
 	}
 
-	renderItem = (service: TService) => {
+	renderItem = (service: IService) => {
 		const { CAS_enabled, theme } = this.props;
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;

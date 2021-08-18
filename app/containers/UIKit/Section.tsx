@@ -23,14 +23,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TAccessory = {
+interface IAccessory {
 	blockId?: string;
 	appId?: string;
 	element: any;
 	parser: any
 }
 
-type TFields = {
+interface IFields {
 	fields: any;
 	parser: any;
 	theme: string;
@@ -46,13 +46,13 @@ interface ISection {
 	parser: any;
 }
 
-const Accessory = ({ blockId, appId, element, parser }: TAccessory) => parser.renderAccessories(
+const Accessory = ({ blockId, appId, element, parser }: IAccessory) => parser.renderAccessories(
 	{ blockId, appId, ...element },
 	BLOCK_CONTEXT.SECTION,
 	parser
 );
 
-const Fields = ({ fields, parser, theme }: TFields) => fields.map((field: any) => (
+const Fields = ({ fields, parser, theme }: IFields) => fields.map((field: any) => (
 	<Text style={[styles.text, styles.field, { color: themes[theme].bodyText }]}>
 		{parser.text(field)}
 	</Text>

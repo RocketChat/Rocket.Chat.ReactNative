@@ -54,7 +54,7 @@ export const MultiSelect = React.memo(({
 	value: values,
 	multiselect = false,
 	onSearch,
-	onClose,
+	onClose = () => {},
 	disabled,
 	inputStyle,
 	theme
@@ -129,6 +129,7 @@ export const MultiSelect = React.memo(({
 				<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
 					<TextInput
 						testID='multi-select-search'
+						/*@ts-ignore*/
 						onChangeText={onSearch || onSearchChange}
 						placeholder={I18n.t('Search')}
 						theme={theme}

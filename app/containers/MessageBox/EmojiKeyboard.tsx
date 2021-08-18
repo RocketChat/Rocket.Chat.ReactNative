@@ -11,6 +11,7 @@ import { withTheme } from '../../theme';
 interface IMessageBoxEmojiKeyboard {
 	theme: string
 }
+
 export default class EmojiKeyboard extends React.PureComponent<IMessageBoxEmojiKeyboard, any> {
 	private readonly baseUrl: any;
 

@@ -10,7 +10,7 @@ import { themes } from '../../../constants/colors';
 
 import styles from './styles';
 
-type TItem = {
+interface IItem {
 	item: {
 		value: { name: string; };
 		text: { text: string; };
@@ -19,7 +19,7 @@ type TItem = {
 	selected: any;
 	onSelect: Function;
 	theme: string;
-};
+}
 
 interface IItems {
 	items: [];
@@ -31,7 +31,7 @@ interface IItems {
 const keyExtractor = (item: any) => item.value.toString();
 
 // RectButton doesn't work on modal (Android)
-const Item = ({ item, selected, onSelect, theme }: TItem) => {
+const Item = ({ item, selected, onSelect, theme }: IItem) => {
 	const itemName = item.value.name || item.text.text.toLowerCase();
 	return (
 		<Touchable

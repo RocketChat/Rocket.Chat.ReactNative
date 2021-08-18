@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// @ts-ignore
 import { View, Text, Pressable } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
@@ -11,11 +11,23 @@ import { withTheme } from '../../theme';
 
 export { ROW_HEIGHT };
 
+interface IServerItem {
+	item: {
+		id: string;
+		iconURL: string;
+		name: string;
+	};
+	onPress(): void;
+	onLongPress(): void;
+	hasCheck: boolean;
+	theme: string;
+}
+
 const defaultLogo = require('../../static/images/logo.png');
 
 const ServerItem = React.memo(({
 	item, onPress, onLongPress, hasCheck, theme
-}) => (
+}: IServerItem) => (
 	<Pressable
 		onPress={onPress}
 		onLongPress={() => onLongPress?.()}
@@ -23,7 +35,7 @@ const ServerItem = React.memo(({
 		android_ripple={{
 			color: themes[theme].bannerBackground
 		}}
-		style={({ pressed }) => ({
+		style={({ pressed }: any) => ({
 			backgroundColor: isIOS && pressed
 				? themes[theme].bannerBackground
 				: themes[theme].backgroundColor
@@ -37,6 +49,7 @@ const ServerItem = React.memo(({
 							uri: item.iconURL,
 							priority: FastImage.priority.high
 						}}
+						// @ts-ignore
 						defaultSource={defaultLogo}
 						style={styles.serverIcon}
 						onError={() => console.log('err_loading_server_icon')}
@@ -57,13 +70,5 @@ const ServerItem = React.memo(({
 		</View>
 	</Pressable>
 ));
-
-ServerItem.propTypes = {
-	item: PropTypes.object.isRequired,
-	onPress: PropTypes.func.isRequired,
-	onLongPress: PropTypes.func,
-	hasCheck: PropTypes.bool,
-	theme: PropTypes.string
-};
 
 export default withTheme(ServerItem);

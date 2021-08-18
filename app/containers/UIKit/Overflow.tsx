@@ -9,7 +9,7 @@ import { themes } from '../../constants/colors';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';
 
-type TOption = {
+interface IOption {
 	option: {
 		text: string;
 		value: string;
@@ -17,14 +17,14 @@ type TOption = {
 	onOptionPress: Function;
 	parser: any;
 	theme: string;
-};
+}
 
-type TOptions = {
+interface IOptions {
 	options: [];
 	onOptionPress: Function;
 	parser: object;
 	theme: string;
-};
+}
 
 interface IOverflow {
 	element: any;
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Option = ({ option: { text, value }, onOptionPress, parser, theme }: TOption) => (
+const Option = ({ option: { text, value }, onOptionPress, parser, theme }: IOption) => (
 	<Touchable
 		onPress={() => onOptionPress({ value })}
 		background={Touchable.Ripple(themes[theme].bannerBackground)}
@@ -60,7 +60,7 @@ const Option = ({ option: { text, value }, onOptionPress, parser, theme }: TOpti
 	</Touchable>
 );
 
-const Options = ({ options, onOptionPress, parser, theme }: TOptions) => (
+const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
 	<FlatList
 		data={options}
 		renderItem={({ item }) => <Option option={item} onOptionPress={onOptionPress} parser={parser} theme={theme} />}

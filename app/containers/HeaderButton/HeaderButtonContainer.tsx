@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Container = ({ children, left }: IHeaderButtonContainer) => (
+const Container = ({ children, left = false }: IHeaderButtonContainer) => (
 	<View style={[styles.container, left ? styles.left : styles.right]}>
 		{children}
 	</View>

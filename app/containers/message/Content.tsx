@@ -11,25 +11,7 @@ import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import Encrypted from './Encrypted';
 import { E2E_MESSAGE_TYPE } from '../../lib/encryption/constants';
-import {TChannel} from "../markdown/Hashtag";
-
-export interface IMessageContent {
-	isTemp: boolean;
-	isInfo: boolean;
-	tmid: string;
-	isThreadRoom: boolean;
-	msg: string;
-	theme: string;
-	isEdited: boolean;
-	isEncrypted: boolean;
-	getCustomEmoji: Function;
-	channels: TChannel[];
-	mentions: object[];
-	navToRoomInfo: Function;
-	useRealName: boolean;
-	isIgnored: boolean;
-	type: string;
-}
+import {IMessageContent} from "./interfaces";
 
 const Content = React.memo((props: IMessageContent) => {
 	if (props.isInfo) {

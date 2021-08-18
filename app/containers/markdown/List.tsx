@@ -8,7 +8,7 @@ interface IList {
 	numberOfLines: number;
 }
 
-const List = React.memo(({ children, ordered, start = 1, tight, numberOfLines = 0 }: IList) => {
+const List = React.memo(({ children, ordered, tight, start = 1, numberOfLines = 0 }: IList) => {
 	let bulletWidth = 15;
 
 	if (ordered) {

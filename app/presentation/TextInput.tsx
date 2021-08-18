@@ -1,6 +1,5 @@
 import React from 'react';
 import { TextInput, StyleSheet, I18nManager } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { themes } from '../constants/colors';
 
@@ -12,7 +11,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ThemedTextInput = React.forwardRef(({ style, theme, ...props }, ref) => (
+interface IThemedTextInput {
+	style: object;
+	theme: string;
+}
+
+const ThemedTextInput = React.forwardRef(({ style, theme, ...props }: IThemedTextInput, ref: any) => (
 	<TextInput
 		ref={ref}
 		style={[{ color: themes[theme].titleText }, style, styles.input]}
@@ -21,10 +25,5 @@ const ThemedTextInput = React.forwardRef(({ style, theme, ...props }, ref) => (
 		{...props}
 	/>
 ));
-
-ThemedTextInput.propTypes = {
-	style: PropTypes.object,
-	theme: PropTypes.string
-};
 
 export default ThemedTextInput;

@@ -225,6 +225,7 @@ class ModalParser extends UiKitParserModal {
 		const { theme } = useContext(ThemeContext);
 		const { multiline, actionId, placeholder } = element;
 		return (
+			// @ts-ignore
 			<TextInput
 				id={actionId}
 				placeholder={plainText(placeholder)}
@@ -235,6 +236,7 @@ class ModalParser extends UiKitParserModal {
 				inputStyle={multiline && styles.multiline}
 				containerStyle={styles.input}
 				value={value}
+				// @ts-ignore
 				error={{ error }}
 				theme={theme}
 			/>

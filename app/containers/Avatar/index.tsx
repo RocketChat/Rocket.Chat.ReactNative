@@ -4,11 +4,18 @@ import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import Avatar, {IAvatar} from './Avatar';
+import Avatar from './Avatar';
+import {IAvatar} from "./interfaces";
+
 
 class AvatarContainer extends React.Component<Partial<IAvatar>, any> {
 	private mounted: boolean;
 	private subscription!: any;
+
+	static defaultProps = {
+		text: '',
+		type: 'd'
+	};
 
 	constructor(props: Partial<IAvatar>) {
 		super(props);
