@@ -9,7 +9,6 @@ module.exports = {
 	"parser": "@babel/eslint-parser",
 	"extends": [
 		"@rocket.chat/eslint-config",
-		// 'plugin:react/recommended'
 	],
 	"parserOptions": {
 		"sourceType": "module",
@@ -50,14 +49,15 @@ module.exports = {
 			"extensions": [".js", ".jsx", ".ts", ".tsx"]
 		}],
 		"react/require-default-props": [0],
-		"react/no-unused-prop-types": [2, {
-			"skipShapeProps": true
-		}],
+		"ordered-imports": [0],
+		// "react/no-unused-prop-types": [2, {
+		// 	"skipShapeProps": true
+		// }],
 		"react/no-did-mount-set-state": 0,
 		"react/no-multi-comp": [0],
 		"react/jsx-indent": [2, "tab"],
 		"react/jsx-indent-props": [2, "tab"],
-		"react/forbid-prop-types": 0,
+		// "react/forbid-prop-types": 0,
 		"jsx-quotes": [2, "prefer-single"],
 		"jsx-a11y/href-no-hash": 0,
 		"jsx-a11y/aria-role": 0,
@@ -104,10 +104,7 @@ module.exports = {
 		"no-undef": 2,
 		"no-unreachable": 2,
 		"no-unused-expressions": 0,
-		"no-unused-vars": [2, {
-			"vars": "all",
-			"args": "after-used"
-		}],
+		"no-unused-vars": "off",
 		"max-len": 0,
 		"react/jsx-uses-vars": 2,
 		"no-void": 2,
@@ -133,7 +130,7 @@ module.exports = {
 		"block-scoped-var": 2,
 		"curly": [2, "all"],
 		"eqeqeq": [2, "allow-null"],
-		"new-cap":  [2],
+		"new-cap":  "off",
 		"use-isnan": 2,
 		"valid-typeof": 2,
 		"linebreak-style": 0,
@@ -193,7 +190,6 @@ module.exports = {
 				"**/*.tsx"
 			],
 			"extends": [
-				// 'plugin:react/recommended',
 				"plugin:@typescript-eslint/recommended",
 				"plugin:@typescript-eslint/eslint-recommended",
 				"@rocket.chat/eslint-config"
@@ -257,7 +253,11 @@ module.exports = {
 				"@typescript-eslint/no-unused-vars": ["error", {
 					"argsIgnorePattern": "^_",
 					"ignoreRestSiblings": true
-				}]
+				}],
+				"new-cap":  "off",
+			},
+			"globals": {
+				"JSX": true,
 			},
 			"settings": {
 				"import/resolver": {
