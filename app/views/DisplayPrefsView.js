@@ -212,7 +212,7 @@ const DisplayPrefsView = (props) => {
 					<List.Item
 						title='Unread_on_top'
 						testID='unread-display-pref'
-						left={() => <List.Icon name='unread-on-top-disabled' />}
+						left={() => <List.Icon name='flag' />}
 						onPress={toggleUnread}
 						right={() => (renderCheckBox(showUnread))}
 					/>
