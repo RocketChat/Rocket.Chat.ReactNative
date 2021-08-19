@@ -63,6 +63,12 @@ module.exports = {
 		"jsx-a11y/aria-role": 0,
 		"import/prefer-default-export": 0,
 		"import/no-cycle": 0,
+		"import/order":[
+			"error",
+			{
+				"newlines-between": "ignore",
+			}
+		],
 		"camelcase": 0,
 		"no-underscore-dangle": 0,
 		"no-return-assign": 0,
@@ -146,23 +152,14 @@ module.exports = {
 		"react/jsx-one-expression-per-line": 0,
 		"require-await": 2,
 		"func-names": 0,
-		"react/sort-comp": ["error", {
-			"order": [
-				"static-variables",
-				"static-methods",
-				"lifecycle",
-				"everything-else",
-				"render"
-			]
-		}],
 		"react/static-property-placement": [0],
 		"arrow-parens": ["error", "as-needed", { requireForBlockBody: true }],
-		// "react/jsx-props-no-spreading": [1],
 		"react/jsx-curly-newline": [0],
 		"react/state-in-constructor": [0],
 		"no-async-promise-executor": [0],
 		"max-classes-per-file": [0],
-		"no-multiple-empty-lines": [0]
+		"no-multiple-empty-lines": [0],
+		"no-sequences": "off",
 	},
 	"globals": {
 		"__DEV__": true
@@ -209,6 +206,8 @@ module.exports = {
 				"@typescript-eslint"
 			],
 			"rules": {
+				"@typescript-eslint/no-var-requires": "off",
+				"@typescript-eslint/no-empty-function": [0],
 				"@typescript-eslint/ban-types": [0],
 				"func-call-spacing": "off",
 				"jsx-quotes": [
@@ -216,6 +215,7 @@ module.exports = {
 					"prefer-single"
 				],
 				"indent": "off",
+				"no-return-assign": 0,
 				"no-dupe-class-members": "off",
 				"no-extra-parens": "off",
 				"no-spaced-func": "off",
