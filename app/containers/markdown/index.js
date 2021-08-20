@@ -238,14 +238,13 @@ class Markdown extends PureComponent {
 
 	renderHashtag = ({ hashtag }) => {
 		const {
-			channels, navToRoomInfo, style, theme
+			channels, navToRoomInfo, style
 		} = this.props;
 		return (
 			<MarkdownHashtag
 				hashtag={hashtag}
 				channels={channels}
 				navToRoomInfo={navToRoomInfo}
-				theme={theme}
 				style={style}
 			/>
 		);
@@ -376,7 +375,7 @@ class Markdown extends PureComponent {
 
 	render() {
 		const {
-			msg, md, numberOfLines, preview = false, theme, style = [], testID, user, mentions, navToRoomInfo
+			msg, md, numberOfLines, preview = false, theme, style = [], testID, user, mentions, channels, navToRoomInfo
 		} = this.props;
 
 		if (!msg) {
@@ -384,7 +383,7 @@ class Markdown extends PureComponent {
 		}
 
 		if (user.enableMessageParserEarlyAdoption && md) {
-			return <MessageBody tokens={md} theme={theme} style={style} mentions={mentions} navToRoomInfo={navToRoomInfo} />;
+			return <MessageBody tokens={md} style={style} mentions={mentions} channels={channels} navToRoomInfo={navToRoomInfo} />;
 		}
 
 		let m = formatText(msg);

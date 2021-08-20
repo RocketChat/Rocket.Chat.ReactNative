@@ -3,12 +3,14 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import { themes } from '../../constants/colors';
+import { useTheme } from '../../theme';
 
 import styles from './styles';
 
 const Hashtag = React.memo(({
-	hashtag, channels, navToRoomInfo, style = [], theme
+	hashtag, channels, navToRoomInfo, style = []
 }) => {
+	const { theme } = useTheme();
 	const handlePress = () => {
 		const index = channels.findIndex(channel => channel.name === hashtag);
 		const navParam = {
@@ -44,7 +46,6 @@ Hashtag.propTypes = {
 	hashtag: PropTypes.string,
 	navToRoomInfo: PropTypes.func,
 	style: PropTypes.array,
-	theme: PropTypes.string,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 

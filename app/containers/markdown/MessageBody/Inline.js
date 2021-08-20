@@ -10,9 +10,11 @@ import Italic from './Italic';
 import Emoji from './Emoji';
 import Mention from './Mention';
 import InlineCode from './InlineCode';
+import Hashtag from '../Hashtag';
+
 
 const Inline = ({
-	value, mentions, navToRoomInfo, style
+	value, mentions, channels, navToRoomInfo, style
 }) => (
 	<Text>
 		{value.map((block) => {
@@ -33,8 +35,7 @@ const Inline = ({
 				case 'EMOJI':
 					return <Emoji emojiHandle={`:${ block.value.value }:`} />;
 				case 'MENTION_CHANNEL':
-					// case 'COLOR':
-					return <Plain value={`${ block.value.value }`} />;
+					return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} style={style} />;
 				case 'INLINE_CODE':
 					return <InlineCode value={block.value} style={style} />;
 				default:
@@ -47,6 +48,7 @@ const Inline = ({
 Inline.propTypes = {
 	value: PropTypes.object,
 	mentions: PropTypes.array,
+	channels: PropTypes.array,
 	navToRoomInfo: PropTypes.func,
 	style: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };

@@ -2,9 +2,10 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
-import Plain from './Plain';
+
 import Strike from './Strike';
 import Italic from './Italic';
+import Plain from './Plain';
 
 const styles = StyleSheet.create({
 	text: {
@@ -17,7 +18,7 @@ const Bold = ({ value }) => (
 		{value.map((block, index) => {
 			switch (block.type) {
 				case 'PLAIN_TEXT':
-					return <Plain key={index} value={block.value} />;
+					return <Plain value={block.value} />;
 				case 'STRIKE':
 					return <Strike key={index} value={block.value} />;
 				case 'ITALIC':

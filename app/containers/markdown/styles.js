@@ -73,7 +73,9 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular,
 		...codeFontFamily,
 		borderWidth: 1,
-		borderRadius: 4
+		borderRadius: 4,
+		paddingLeft: 2,
+		paddingTop: 2
 	},
 	codeBlock: {
 		...sharedStyles.textRegular,

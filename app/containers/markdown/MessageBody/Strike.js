@@ -3,9 +3,9 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Plain from './Plain';
 import Bold from './Bold';
 import Italic from './Italic';
+import Plain from './Plain';
 
 const styles = StyleSheet.create({
 	text: {

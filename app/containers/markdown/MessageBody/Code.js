@@ -21,7 +21,7 @@ const Code = ({
 					...styles.codeBlock,
 					color: themes[theme].bodyText,
 					backgroundColor: themes[theme].bannerBackground,
-					borderColor: themes[theme].bannerBackground
+					borderColor: themes[theme].borderColor
 				},
 				...style
 			]}

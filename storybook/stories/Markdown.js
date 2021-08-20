@@ -152,7 +152,6 @@ stories.add('Hashtag', () => (
 	<View style={styles.container}>
 		<Markdown
 			msg='#test-channel #unknown'
-			theme={theme}
 			channels={[{ _id: '123', name: 'test-channel' }]}
 		/>
 	</View>
