@@ -53,7 +53,6 @@ export const setCurrentScreen = (currentScreen) => {
 };
 
 export const toggleBugsnagReport = (value) => {
-	console.log('🚀 ~ file: index.js ~ line 56 ~ toggleBugsnagReport ~ value', value);
 	try {
 		value.toString();
 		return reportErrorToBugsnag = value;
@@ -63,7 +62,6 @@ export const toggleBugsnagReport = (value) => {
 };
 
 export const toggleAnalyticsReport = (value) => {
-	console.log('🚀 ~ file: index.js ~ line 65 ~ toggleAnalyticsReport ~ value', value);
 	try {
 		value.toString();
 		analytics().setAnalyticsCollectionEnabled(value);
@@ -74,8 +72,7 @@ export const toggleAnalyticsReport = (value) => {
 };
 
 export default (e) => {
-	// LEMBRAR DE TROCAR A CONDITION e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__
-	if (e instanceof Error && bugsnag && e.message !== 'Aborted') {
+	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
 		bugsnag.notify(e, (event) => {
 			event.addMetadata('details', { ...metadata });
 		});
