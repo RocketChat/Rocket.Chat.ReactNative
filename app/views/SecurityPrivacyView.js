@@ -10,16 +10,15 @@ import * as List from '../containers/List';
 import I18n from '../i18n';
 import { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../lib/rocketchat';
 import {
-	logEvent, events, toggleBugsnagReport, toggleAnalyticsReport, getReportErrorToBugsnag, getReportToAnalytics
+	logEvent, events, toggleCrashErrorsReport, toggleAnalyticsEventsReport, getReportCrashErrorsValue, getReportAnalyticsEventsValue
 } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import { isFDroidBuild } from '../constants/environment';
 
-const SecurityPrivacyView = (props) => {
-	const [allowCrashReport, setAllowCrashReport] = useState(getReportErrorToBugsnag());
-	const [allowAnalyticsEvents, setAllowAnalyticsEvents] = useState(getReportToAnalytics());
+const SecurityPrivacyView = ({ navigation }) => {
+	const [allowCrashReport, setCrashReportState] = useState(getReportCrashErrorsValue());
+	const [allowAnalyticsEvents, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 
-	const { navigation } = props;
 	const { e2eEnabled } = useSelector(state => state.settings);
 
 	useEffect(() => {
@@ -31,37 +30,21 @@ const SecurityPrivacyView = (props) => {
 	const toggleCrashReport = (value) => {
 		logEvent(events.SE_TOGGLE_CRASH_REPORT);
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
-		setAllowCrashReport(value);
-		toggleBugsnagReport(value);
+		setCrashReportState(value);
+		toggleCrashErrorsReport(value);
 	};
 
 	const toggleAnalyticsEvents = (value) => {
 		logEvent(events.SE_TOGGLE_ANALYTICS_EVENTS);
 		AsyncStorage.setItem(ANALYTICS_EVENTS_KEY, JSON.stringify(value));
-		setAllowAnalyticsEvents(value);
-		toggleAnalyticsReport(value);
+		setAnalyticsEventsState(value);
+		toggleAnalyticsEventsReport(value);
 	};
 
 	const navigateToScreen = (screen) => {
 		logEvent(events[`SP_GO_${ screen.replace('View', '').toUpperCase() }`]);
 		navigation.navigate(screen);
 	};
-
-	const renderCrashReportSwitch = () => (
-		<Switch
-			value={allowCrashReport}
-			trackColor={SWITCH_TRACK_COLOR}
-			onValueChange={toggleCrashReport}
-		/>
-	);
-
-	const renderAnalyticsEventsSwitch = () => (
-		<Switch
-			value={allowAnalyticsEvents}
-			trackColor={SWITCH_TRACK_COLOR}
-			onValueChange={toggleAnalyticsEvents}
-		/>
-	);
 
 	return (
 		<SafeAreaView testID='security-privacy-view'>
@@ -99,13 +82,25 @@ const SecurityPrivacyView = (props) => {
 							<List.Item
 								title='Log_analytics_events'
 								testID='security-privacy-view-analytics-events'
-								right={() => renderAnalyticsEventsSwitch()}
+								right={() => (
+									<Switch
+										value={allowAnalyticsEvents}
+										trackColor={SWITCH_TRACK_COLOR}
+										onValueChange={toggleAnalyticsEvents}
+									/>
+								)}
 							/>
 							<List.Separator />
 							<List.Item
 								title='Send_crash_report'
 								testID='security-privacy-view-crash-report'
-								right={() => renderCrashReportSwitch()}
+								right={() => (
+									<Switch
+										value={allowCrashReport}
+										trackColor={SWITCH_TRACK_COLOR}
+										onValueChange={toggleCrashReport}
+									/>
+								)}
 							/>
 							<List.Separator />
 							<List.Info info='Crash_report_disclaimer' />
