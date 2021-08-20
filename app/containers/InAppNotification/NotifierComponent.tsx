@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { connect } from 'react-redux';
 import { Notifier } from 'react-native-notifier';
@@ -32,36 +32,36 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		marginHorizontal: 10,
 		borderWidth: StyleSheet.hairlineWidth,
-		borderRadius: 4
+		borderRadius: 4,
 	},
 	content: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	inner: {
-		flex: 1
+		flex: 1,
 	},
 	avatar: {
-		marginRight: 10
+		marginRight: 10,
 	},
 	roomName: {
 		fontSize: 17,
 		lineHeight: 20,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
 	},
 	message: {
 		fontSize: 14,
 		lineHeight: 17,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	close: {
-		marginLeft: 10
+		marginLeft: 10,
 	},
 	small: {
 		width: '50%',
-		alignSelf: 'center'
-	}
+		alignSelf: 'center',
+	},
 });
 
 const hideNotification = () => Notifier.hideNotification();
@@ -83,7 +83,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 			return;
 		}
 		const item = {
-			rid, name: title, t: type, prid
+			rid, name: title, t: type, prid,
 		};
 
 		if (isMasterDetail) {
@@ -102,8 +102,8 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 			{
 				backgroundColor: themes[theme].focusedBackground,
 				borderColor: themes[theme].separatorColor,
-				marginTop: insets.top
-			}
+				marginTop: insets.top,
+			},
 		]}
 		>
 			<Touchable
@@ -132,7 +132,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 });
 
 const mapStateToProps = (state: any) => ({
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
 });
 
 export default connect(mapStateToProps)(NotifierComponent);

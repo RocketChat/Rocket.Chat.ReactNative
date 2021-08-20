@@ -6,14 +6,11 @@ import { connect } from 'react-redux';
 
 import RocketChat from '../lib/rocketchat';
 import { getUserSelector } from '../selectors/login';
-
+import { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
-import { logEvent, events } from '../utils/log';
 
-const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
-	`${ baseUrl }/avatar/${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
-);
-
+const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) =>
+	`${ baseUrl }/avatar/${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`;
 class JitsiMeetView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,

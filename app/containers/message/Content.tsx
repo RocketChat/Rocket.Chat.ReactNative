@@ -6,12 +6,12 @@ import I18n from '../../i18n';
 import styles from './styles';
 import Markdown from '../markdown';
 import User from './User';
-import { getInfoMessage, SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
+import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME, getInfoMessage } from './utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import Encrypted from './Encrypted';
 import { E2E_MESSAGE_TYPE } from '../../lib/encryption/constants';
-import {IMessageContent} from "./interfaces";
+import { IMessageContent } from './interfaces';
 
 const Content = React.memo((props: IMessageContent) => {
 	if (props.isInfo) {

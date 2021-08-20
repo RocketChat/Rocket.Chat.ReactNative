@@ -1,19 +1,20 @@
 import {
-	put, call, takeLatest, select, take, fork, cancel, race, delay
+	call, cancel, delay, fork, put, race, select, take, takeLatest
 } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
+
 import * as types from '../actions/actionsTypes';
 import {
-	appStart, ROOT_SET_USERNAME, ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE
+	ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE, ROOT_SET_USERNAME, appStart
 } from '../actions/app';
-import { serverFinishAdd, selectServerRequest } from '../actions/server';
+import { selectServerRequest, serverFinishAdd } from '../actions/server';
 import {
-	loginFailure, loginSuccess, setUser, logout
+	loginFailure, loginSuccess, logout, setUser
 } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import RocketChat from '../lib/rocketchat';
-import log, { logEvent, events } from '../utils/log';
+import log, { events, logEvent } from '../utils/log';
 import I18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../utils/events';
@@ -23,7 +24,6 @@ import { localAuthenticate } from '../utils/localAuthentication';
 import { setActiveUsers } from '../actions/activeUsers';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
 import UserPreferences from '../lib/userPreferences';
-
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import Navigation from '../lib/Navigation';

@@ -1,12 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types, react/destructuring-assignment */
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
-import RoomHeaderComponent from './RoomHeader';
 import Header from '../Header';
 import { longText } from '../../../storybook/utils';
 import { ThemeContext } from '../../theme';
+import RoomHeaderComponent from './RoomHeader';
 
 const stories = storiesOf('RoomHeader', module);
 

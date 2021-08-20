@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import Touchable from './Touchable';
 import { CustomIcon } from '../../lib/Icons';
@@ -47,7 +47,7 @@ const AddReaction = React.memo(({ theme }: IMessageAddReaction) => {
 	);
 });
 
-const Reaction = React.memo(({reaction, getCustomEmoji, theme}: IMessageReaction) => {
+const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) => {
 	const { onReactionPress, onReactionLongPress, baseUrl, user } = useContext(MessageContext);
 	const reacted = reaction.usernames.findIndex((item: IMessageReaction) => item === user.username) !== -1;
 	return (

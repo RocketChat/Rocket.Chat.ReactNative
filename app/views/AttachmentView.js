@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, PermissionsAndroid } from 'react-native';
+import { PermissionsAndroid, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CameraRoll from '@react-native-community/cameraroll';

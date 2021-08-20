@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, View, StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
 import SearchBox from '../../../containers/SearchBox';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import { themes } from '../../../constants/colors';
-
 import sharedStyles from '../../Styles';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 

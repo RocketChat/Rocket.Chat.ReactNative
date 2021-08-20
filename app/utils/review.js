@@ -1,12 +1,12 @@
 import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { isIOS } from './deviceInfo';
 import I18n from '../i18n';
-import { showErrorAlert } from './info';
 import { STORE_REVIEW_LINK } from '../constants/links';
 import { isFDroidBuild } from '../constants/environment';
-import { logEvent, events } from './log';
+import { showErrorAlert } from './info';
+import { isIOS } from './deviceInfo';
+import { events, logEvent } from './log';
 
 const store = isIOS ? 'App Store' : 'Play Store';
 

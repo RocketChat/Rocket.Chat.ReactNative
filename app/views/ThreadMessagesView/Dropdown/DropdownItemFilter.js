@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import DropdownItem from './DropdownItem';
 import I18n from '../../../i18n';
+import DropdownItem from './DropdownItem';
 
 const DropdownItemFilter = ({ currentFilter, value, onPress }) => (
 	<DropdownItem

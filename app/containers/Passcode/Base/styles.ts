@@ -4,22 +4,22 @@ import sharedStyles from '../../../views/Styles';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
 	},
 	titleView: {
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	subtitleView: {
 		justifyContent: 'center',
-		height: 32
+		height: 32,
 	},
 	row: {
 		flex: 0,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	buttonRow: {
-		height: 102
+		height: 102,
 	},
 	colButton: {
 		flex: 0,
@@ -27,44 +27,44 @@ export default StyleSheet.create({
 		marginRight: 12,
 		alignItems: 'center',
 		width: 78,
-		height: 78
+		height: 78,
 	},
 	buttonText: {
 		fontSize: 28,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	buttonView: {
 		alignItems: 'center',
 		justifyContent: 'center',
 		width: 78,
 		height: 78,
-		borderRadius: 4
+		borderRadius: 4,
 	},
 	textTitle: {
 		fontSize: 22,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	textSubtitle: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
 	},
 	dotsContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: 24,
-		marginBottom: 40
+		marginBottom: 40,
 	},
 	dotsView: {
 		justifyContent: 'center',
 		alignItems: 'center',
-		height: 16
+		height: 16,
 	},
 	grid: {
 		justifyContent: 'center',
-		flexDirection: 'column'
+		flexDirection: 'column',
 	},
 	iconView: {
-		marginVertical: 16
-	}
+		marginVertical: 16,
+	},
 });

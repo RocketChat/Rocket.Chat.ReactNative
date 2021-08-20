@@ -5,7 +5,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../theme';
 import {
-	defaultHeader, themedHeader, ModalAnimation, StackAnimation
+	ModalAnimation, StackAnimation, defaultHeader, themedHeader
 } from '../utils/navigation';
 import Sidebar from '../views/SidebarView';
 
@@ -33,7 +33,6 @@ import TeamChannelsView from '../views/TeamChannelsView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
 import { themes } from '../constants/colors';
-
 // Profile Stack
 import ProfileView from '../views/ProfileView';
 import UserPreferencesView from '../views/UserPreferencesView';
@@ -69,7 +68,6 @@ import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
-
 import QueueListView from '../ee/omnichannel/views/QueueListView';
 import AddChannelTeamView from '../views/AddChannelTeamView';
 import AddExistingChannelView from '../views/AddExistingChannelView';

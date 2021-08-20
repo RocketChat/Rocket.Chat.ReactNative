@@ -11,7 +11,7 @@ interface IPasscodeButton {
 	icon: string;
 	theme: string;
 	disabled: boolean;
-	onPress({}?): void;
+	onPress: Function;
 }
 
 const Button = React.memo(({ text, disabled, theme, onPress, icon }: Partial<IPasscodeButton>) => {

@@ -1,12 +1,13 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+
 import { withTheme } from '../../theme';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 
 const styles = StyleSheet.create({
 	container: {
-		paddingVertical: 16
-	}
+		paddingVertical: 16,
+	},
 });
 
 interface IListContainer {

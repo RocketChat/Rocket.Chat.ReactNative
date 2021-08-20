@@ -3,8 +3,8 @@ import moment from 'moment';
 import { MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
-import updateMessages from './updateMessages';
 import { generateLoadMoreId } from '../utils';
+import updateMessages from './updateMessages';
 
 const COUNT = 50;
 

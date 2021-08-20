@@ -68,12 +68,12 @@ const MessageActions = React.memo(forwardRef(({
 	editMessagePermission,
 	deleteMessagePermission,
 	forceDeleteMessagePermission,
-	pinMessagePermission
+	pinMessagePermission,
 }: IMessageActions, ref): any => {
 	let permissions: any = {};
 	const { showActionSheet, hideActionSheet }: any = useActionSheet();
 
-	const getPermissions = async() => {
+	const getPermissions = async () => {
 		try {
 			const permission = [editMessagePermission, deleteMessagePermission, forceDeleteMessagePermission, pinMessagePermission];
 			const result = await RocketChat.hasPermission(permission, room.rid);
@@ -81,7 +81,7 @@ const MessageActions = React.memo(forwardRef(({
 				hasEditPermission: result[0],
 				hasDeletePermission: result[1],
 				hasForceDeletePermission: result[2],
-				hasPinPermission: result[3]
+				hasPinPermission: result[3],
 			};
 		} catch {
 			// Do nothing
@@ -167,7 +167,7 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handleUnread = async(message: any) => {
+	const handleUnread = async (message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_UNREAD);
 		const { id: messageId, ts } = message;
 		const { rid } = room;
@@ -177,7 +177,7 @@ const MessageActions = React.memo(forwardRef(({
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
 				const subRecord = await subCollection.find(rid);
-				await db.action(async() => {
+				await db.action(async () => {
 					try {
 						await subRecord.update((sub: any) => sub.lastOpen = ts);
 					} catch {
@@ -192,7 +192,7 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handlePermalink = async(message: any) => {
+	const handlePermalink = async (message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_PERMALINK);
 		try {
 			const permalink: any = await getPermalink(message);
@@ -203,13 +203,13 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handleCopy = async(message: any) => {
+	const handleCopy = async (message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_COPY);
 		await Clipboard.setString(message?.attachments?.[0]?.description || message.msg);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 
-	const handleShare = async(message: any) => {
+	const handleShare = async (message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_SHARE);
 		try {
 			const permalink: any = await getPermalink(message);
@@ -224,7 +224,7 @@ const MessageActions = React.memo(forwardRef(({
 		replyInit(message, false);
 	};
 
-	const handleStar = async(message: any) => {
+	const handleStar = async (message: any) => {
 		logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 		try {
 			await RocketChat.toggleStarMessage(message.id, message.starred);
@@ -235,7 +235,7 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handlePin = async(message: any) => {
+	const handlePin = async (message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_PIN);
 		try {
 			await RocketChat.togglePinMessage(message.id, message.pinned);
@@ -264,10 +264,10 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handleToggleTranslation = async(message: any) => {
+	const handleToggleTranslation = async (message: any) => {
 		try {
 			const db = database.active;
-			await db.action(async() => {
+			await db.action(async () => {
 				await message.update((m: any) => {
 					m.autoTranslate = !m.autoTranslate;
 					m._updatedAt = new Date();
@@ -279,7 +279,7 @@ const MessageActions = React.memo(forwardRef(({
 					_id: message.id,
 					rid: message.subscription.id,
 					u: message.u,
-					msg: message.msg
+					msg: message.msg,
 				};
 				await RocketChat.translateMessage(m, room.autoTranslateLanguage);
 			}
@@ -288,7 +288,7 @@ const MessageActions = React.memo(forwardRef(({
 		}
 	};
 
-	const handleReport = async(message: any) => {
+	const handleReport = async (message: any) => {
 		logEvent(events.ROOM_MSG_ACTION_REPORT);
 		try {
 			await RocketChat.reportMessage(message.id);
@@ -305,7 +305,7 @@ const MessageActions = React.memo(forwardRef(({
 		showConfirmationAlert({
 			message: I18n.t('You_will_not_be_able_to_recover_this_message'),
 			confirmationText: I18n.t('Delete'),
-			onPress: async() => {
+			onPress: async () => {
 				try {
 					logEvent(events.ROOM_MSG_ACTION_DELETE);
 					await RocketChat.deleteMessage(message.id, message.subscription.id);
@@ -313,7 +313,7 @@ const MessageActions = React.memo(forwardRef(({
 					logEvent(events.ROOM_MSG_ACTION_DELETE_F);
 					log(e);
 				}
-			}
+			},
 		});
 	};
 
@@ -325,7 +325,7 @@ const MessageActions = React.memo(forwardRef(({
 			options = [{
 				title: I18n.t('Reply_in_Thread'),
 				icon: 'threads',
-				onPress: () => handleReply(message)
+				onPress: () => handleReply(message),
 			}];
 		}
 
@@ -334,7 +334,7 @@ const MessageActions = React.memo(forwardRef(({
 			options.push({
 				title: I18n.t('Quote'),
 				icon: 'quote',
-				onPress: () => handleQuote(message)
+				onPress: () => handleQuote(message),
 			});
 		}
 
@@ -343,7 +343,7 @@ const MessageActions = React.memo(forwardRef(({
 			options.push({
 				title: I18n.t('Edit'),
 				icon: 'edit',
-				onPress: () => handleEdit(message)
+				onPress: () => handleEdit(message),
 			});
 		}
 
@@ -351,14 +351,14 @@ const MessageActions = React.memo(forwardRef(({
 		options.push({
 			title: I18n.t('Permalink'),
 			icon: 'link',
-			onPress: () => handlePermalink(message)
+			onPress: () => handlePermalink(message),
 		});
 
 		// Create Discussion
 		options.push({
 			title: I18n.t('Start_a_Discussion'),
 			icon: 'discussions',
-			onPress: () => handleCreateDiscussion(message)
+			onPress: () => handleCreateDiscussion(message),
 		});
 
 		// Mark as unread
@@ -366,7 +366,7 @@ const MessageActions = React.memo(forwardRef(({
 			options.push({
 				title: I18n.t('Mark_unread'),
 				icon: 'flag',
-				onPress: () => handleUnread(message)
+				onPress: () => handleUnread(message),
 			});
 		}
 
@@ -374,14 +374,14 @@ const MessageActions = React.memo(forwardRef(({
 		options.push({
 			title: I18n.t('Copy'),
 			icon: 'copy',
-			onPress: () => handleCopy(message)
+			onPress: () => handleCopy(message),
 		});
 
 		// Share
 		options.push({
 			title: I18n.t('Share'),
 			icon: 'share',
-			onPress: () => handleShare(message)
+			onPress: () => handleShare(message),
 		});
 
 		// Star
@@ -389,7 +389,7 @@ const MessageActions = React.memo(forwardRef(({
 			options.push({
 				title: I18n.t(message.starred ? 'Unstar' : 'Star'),
 				icon: message.starred ? 'star-filled' : 'star',
-				onPress: () => handleStar(message)
+				onPress: () => handleStar(message),
 			});
 		}
 
@@ -398,7 +398,7 @@ const MessageActions = React.memo(forwardRef(({
 			options.push({
 				title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
 				icon: 'pin',
-				onPress: () => handlePin(message)
+				onPress: () => handlePin(message),
 			});
 		}
 
@@ -407,7 +407,7 @@ const MessageActions = React.memo(forwardRef(({
 			options.push({
 				title: I18n.t('Read_Receipt'),
 				icon: 'info',
-				onPress: () => handleReadReceipt(message)
+				onPress: () => handleReadReceipt(message),
 			});
 		}
 
@@ -416,7 +416,7 @@ const MessageActions = React.memo(forwardRef(({
 			options.push({
 				title: I18n.t(message.autoTranslate ? 'View_Original' : 'Translate'),
 				icon: 'language',
-				onPress: () => handleToggleTranslation(message)
+				onPress: () => handleToggleTranslation(message),
 			});
 		}
 
@@ -425,7 +425,7 @@ const MessageActions = React.memo(forwardRef(({
 			title: I18n.t('Report'),
 			icon: 'warning',
 			danger: true,
-			onPress: () => handleReport(message)
+			onPress: () => handleReport(message),
 		});
 
 		// Delete
@@ -434,27 +434,27 @@ const MessageActions = React.memo(forwardRef(({
 				title: I18n.t('Delete'),
 				icon: 'delete',
 				danger: true,
-				onPress: () => handleDelete(message)
+				onPress: () => handleDelete(message),
 			});
 		}
 
 		return options;
 	};
 
-	const showMessageActions = async(message: any) => {
+	const showMessageActions = async (message: any) => {
 		logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 		await getPermissions();
 		showActionSheet({
 			options: getOptions(message),
 			headerHeight: HEADER_HEIGHT,
-			customHeader: (!isReadOnly || room.reactWhenReadOnly ? (
+			customHeader: !isReadOnly || room.reactWhenReadOnly ? (
 				<Header
 					server={server}
 					handleReaction={handleReaction}
 					isMasterDetail={isMasterDetail}
 					message={message}
 				/>
-			) : null)
+			) : null,
 		});
 	};
 
@@ -476,7 +476,7 @@ const mapStateToProps = (state: any) => ({
 	editMessagePermission: state.permissions['edit-message'],
 	deleteMessagePermission: state.permissions['delete-message'],
 	forceDeleteMessagePermission: state.permissions['force-delete-message'],
-	pinMessagePermission: state.permissions['pin-message']
+	pinMessagePermission: state.permissions['pin-message'],
 });
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);

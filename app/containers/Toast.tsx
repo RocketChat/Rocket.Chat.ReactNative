@@ -10,13 +10,13 @@ import { withTheme } from '../theme';
 const styles = StyleSheet.create({
 	toast: {
 		maxWidth: 300,
-		padding: 10
+		padding: 10,
 	},
 	text: {
 		fontSize: 14,
 		...sharedStyles.textRegular,
-		...sharedStyles.textAlignCenter
-	}
+		...sharedStyles.textAlignCenter,
+	},
 });
 
 export const LISTENER = 'Toast';
@@ -27,6 +27,7 @@ interface IToastProps {
 
 class Toast extends React.Component<IToastProps, any> {
 	private listener: any;
+
 	private toast: any;
 
 	componentDidMount() {

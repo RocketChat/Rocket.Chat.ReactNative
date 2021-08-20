@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import styles from './styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
-import {IMessageThread} from "./interfaces";
+import { IMessageThread } from './interfaces';
 
 const Thread = React.memo(({ msg, tcount, tlm, isThreadRoom, theme, id }: IMessageThread) => {
 	if (!tlm || isThreadRoom || tcount === 0) {
@@ -14,7 +14,7 @@ const Thread = React.memo(({ msg, tcount, tlm, isThreadRoom, theme, id }: IMessa
 	}
 
 	const {
-		threadBadgeColor, toggleFollowThread, user, replies
+		threadBadgeColor, toggleFollowThread, user, replies,
 	} = useContext(MessageContext);
 	return (
 		<View style={styles.buttonContainer}>
@@ -29,7 +29,7 @@ const Thread = React.memo(({ msg, tcount, tlm, isThreadRoom, theme, id }: IMessa
 					tcount,
 					replies,
 					tlm,
-					id
+					id,
 				}}
 				user={user}
 				badgeColor={threadBadgeColor}

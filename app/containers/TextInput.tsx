@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import sharedStyles from '../views/Styles';
@@ -11,15 +11,15 @@ import ActivityIndicator from './ActivityIndicator';
 const styles = StyleSheet.create({
 	error: {
 		...sharedStyles.textAlignCenter,
-		paddingTop: 5
+		paddingTop: 5,
 	},
 	inputContainer: {
-		marginBottom: 10
+		marginBottom: 10,
 	},
 	label: {
 		marginBottom: 10,
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
 	},
 	input: {
 		...sharedStyles.textRegular,
@@ -27,27 +27,27 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		paddingHorizontal: 14,
 		borderWidth: StyleSheet.hairlineWidth,
-		borderRadius: 2
+		borderRadius: 2,
 	},
 	inputIconLeft: {
-		paddingLeft: 45
+		paddingLeft: 45,
 	},
 	inputIconRight: {
-		paddingRight: 45
+		paddingRight: 45,
 	},
 	wrap: {
-		position: 'relative'
+		position: 'relative',
 	},
 	iconContainer: {
 		position: 'absolute',
-		top: 14
+		top: 14,
 	},
 	iconLeft: {
-		left: 15
+		left: 15,
 	},
 	iconRight: {
-		right: 15
-	}
+		right: 15,
+	},
 });
 
 interface IRCTextInputProps {
@@ -71,14 +71,13 @@ interface IRCTextInputProps {
 }
 
 export default class RCTextInput extends React.PureComponent<IRCTextInputProps, any> {
-
 	static defaultProps = {
 		error: {},
-		theme: 'light'
+		theme: 'light',
 	}
 
 	state = {
-		showPassword: false
+		showPassword: false,
 	}
 
 	get iconLeft() {
@@ -147,7 +146,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 						style={[
 							styles.label,
 							{ color: themes[theme].titleText },
-							error.error && { color: dangerColor }
+							error.error && { color: dangerColor },
 						]}
 					>
 						{label}
@@ -155,7 +154,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 				) : null}
 				<View style={styles.wrap}>
 					<TextInput
-						/*@ts-ignore*/
+						/* @ts-ignore*/
 						style={[
 							styles.input,
 							iconLeft && styles.inputIconLeft,
@@ -163,16 +162,16 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 							{
 								backgroundColor: themes[theme].backgroundColor,
 								borderColor: themes[theme].separatorColor,
-								color: themes[theme].titleText
+								color: themes[theme].titleText,
 							},
 							error.error && {
 								color: dangerColor,
-								borderColor: dangerColor
+								borderColor: dangerColor,
 							},
-							inputStyle
+							inputStyle,
 						]}
 						ref={inputRef}
-						/*@ts-ignore*/
+						/* @ts-ignore*/
 						autoCorrect={false}
 						autoCapitalize='none'
 						underlineColorAndroid='transparent'

@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import prompt from 'react-native-prompt-android';
 import {
-	takeLatest, take, select, delay, race, put
+	delay, put, race, select, take, takeLatest
 } from 'redux-saga/effects';
 
 import EventEmitter from '../utils/events';
@@ -9,7 +9,7 @@ import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { removedRoom } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
-import log, { logEvent, events } from '../utils/log';
+import log, { events, logEvent } from '../utils/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
@@ -66,7 +66,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 		if (roomType === 'channel') {
 			result = yield RocketChat.leaveRoom(room.rid, room.t);
 		} else if (roomType === 'team') {
-			result = yield RocketChat.leaveTeam({ teamName: room.name, ...(selected && { rooms: selected }) });
+			result = yield RocketChat.leaveTeam({ teamName: room.name, ...selected && { rooms: selected } });
 		}
 
 		if (result?.success) {
@@ -92,7 +92,7 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 		if (roomType === 'channel') {
 			result = yield RocketChat.deleteRoom(room.rid, room.t);
 		} else if (roomType === 'team') {
-			result = yield RocketChat.deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
+			result = yield RocketChat.deleteTeam({ teamId: room.teamId, ...selected && { roomsToRemove: selected } });
 		}
 
 		if (result?.success) {

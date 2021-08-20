@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, ImageBackground, StyleSheet, Text, View } from 'react-native';
 
 import { withTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
@@ -13,12 +13,12 @@ interface IBackgroundContainer {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
 	},
 	image: {
 		width: '100%',
 		height: '100%',
-		position: 'absolute'
+		position: 'absolute',
 	},
 	text: {
 		position: 'absolute',
@@ -28,15 +28,15 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		paddingHorizontal: 24,
 		...sharedStyles.textRegular,
-		...sharedStyles.textAlignCenter
-	}
+		...sharedStyles.textAlignCenter,
+	},
 });
 
 const BackgroundContainer = ({ theme, text, loading }: IBackgroundContainer) => (
 	<View style={styles.container}>
 		<ImageBackground source={{ uri: `message_empty_${ theme }` }} style={styles.image} />
 		{text ? <Text style={[styles.text, { color: themes[theme].auxiliaryTintColor }]}>{text}</Text> : null}
-		{/*@ts-ignore*/}
+		{/* @ts-ignore*/}
 		{loading ? <ActivityIndicator style={[styles.text, { color: themes[theme].auxiliaryTintColor }]} /> : null}
 	</View>
 );

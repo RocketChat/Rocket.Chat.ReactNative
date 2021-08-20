@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, StyleSheet, Text
+	FlatList, StyleSheet, Text, View
 } from 'react-native';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import debounce from '../utils/debounce';
-import sharedStyles from './Styles';
-
 import * as List from '../containers/List';
 import SearchBox from '../containers/SearchBox';
 import SafeAreaView from '../containers/SafeAreaView';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	search: {

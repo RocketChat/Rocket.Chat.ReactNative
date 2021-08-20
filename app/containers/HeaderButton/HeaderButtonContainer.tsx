@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 interface IHeaderButtonContainer {
 	children: JSX.Element;
@@ -10,14 +10,14 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	left: {
-		marginLeft: 5
+		marginLeft: 5,
 	},
 	right: {
-		marginRight: 5
-	}
+		marginRight: 5,
+	},
 });
 
 const Container = ({ children, left = false }: IHeaderButtonContainer) => (

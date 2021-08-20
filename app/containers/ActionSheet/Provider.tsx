@@ -1,4 +1,4 @@
-import React, {useRef, useContext, forwardRef, ForwardedRef} from 'react';
+import React, { ForwardedRef, forwardRef, useContext, useRef } from 'react';
 
 import ActionSheet from './ActionSheet';
 import { useTheme } from '../../theme';
@@ -10,7 +10,7 @@ interface IActionSheetProvider {
 
 const context: IActionSheetProvider = React.createContext({
 	showActionSheet: () => {},
-	hideActionSheet: () => {}
+	hideActionSheet: () => {},
 });
 
 export const useActionSheet = () => useContext(context);
@@ -33,7 +33,7 @@ export const ActionSheetProvider = React.memo(({ children }: {children: JSX.Elem
 		},
 		hideActionSheet: () => {
 			ref.current?.hideActionSheet();
-		}
+		},
 	});
 
 	return (

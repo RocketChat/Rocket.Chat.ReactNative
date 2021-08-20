@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import TextInput from '../../../containers/TextInput';
 import * as List from '../../../containers/List';
 import { themes } from '../../../constants/colors';
-import Item from './Item';
 import I18n from '../../../i18n';
+import Item from './Item';
 
 const styles = StyleSheet.create({
 	container: {

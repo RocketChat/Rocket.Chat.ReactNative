@@ -1,26 +1,26 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	content: {
-		marginBottom: 8
+		marginBottom: 8,
 	},
 	row: {
-		flexDirection: 'row'
+		flexDirection: 'row',
 	},
 	column: {
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	text: {
 		flex: 1,
-		padding: 4
+		padding: 4,
 	},
 	field: {
-		marginVertical: 6
-	}
+		marginVertical: 6,
+	},
 });
 
 interface IAccessory {
@@ -49,7 +49,7 @@ interface ISection {
 const Accessory = ({ blockId, appId, element, parser }: IAccessory) => parser.renderAccessories(
 	{ blockId, appId, ...element },
 	BLOCK_CONTEXT.SECTION,
-	parser
+	parser,
 );
 
 const Fields = ({ fields, parser, theme }: IFields) => fields.map((field: any) => (
@@ -64,7 +64,7 @@ export const Section = ({ blockId, appId, text, fields, accessory, parser, theme
 	<View
 		style={[
 			styles.content,
-			accessory && accessoriesRight.includes(accessory.type) ? styles.row : styles.column
+			accessory && accessoriesRight.includes(accessory.type) ? styles.row : styles.column,
 		]}
 	>
 		{text ? <View style={styles.text}>{parser.text(text)}</View> : null}

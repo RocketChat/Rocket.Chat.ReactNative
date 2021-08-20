@@ -7,5 +7,5 @@ export {
 	CancelEditingButton,
 	ToggleEmojiButton,
 	SendButton,
-	ActionsButton
+	ActionsButton,
 };

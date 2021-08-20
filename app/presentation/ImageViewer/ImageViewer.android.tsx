@@ -1,17 +1,18 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { PanGestureHandler, State, PinchGestureHandler } from 'react-native-gesture-handler';
+import { PanGestureHandler, PinchGestureHandler, State } from 'react-native-gesture-handler';
 import Animated, { Easing } from 'react-native-reanimated';
+
 import { ImageComponent } from './ImageComponent';
 import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	flex: {
-		flex: 1
+		flex: 1,
 	},
 	image: {
-		backgroundColor: 'transparent'
-	}
+		backgroundColor: 'transparent',
+	},
 });
 
 const {
@@ -36,7 +37,7 @@ const {
 	clockRunning,
 	Value,
 	Clock,
-	event
+	event,
 } = Animated;
 
 function scaleDiff(value: any) {
@@ -51,7 +52,7 @@ function dragDiff(value: any, updating: any) {
 	return cond(
 		updating,
 		[set(tmp, sub(value, prev)), set(prev, value), tmp],
-		set(prev, 0)
+		set(prev, 0),
 	);
 }
 
@@ -63,7 +64,7 @@ function friction(value: any) {
 	const MAX_VALUE = 100;
 	return max(
 		1,
-		min(MAX_FRICTION, add(1, multiply(value, (MAX_FRICTION - 1) / MAX_VALUE)))
+		min(MAX_FRICTION, add(1, multiply(value, (MAX_FRICTION - 1) / MAX_VALUE))),
 	);
 }
 
@@ -80,7 +81,7 @@ function scaleRest(value: any) {
 	return cond(
 		lessThan(value, MIN_SCALE),
 		MIN_SCALE,
-		cond(lessThan(MAX_SCALE, value), MAX_SCALE, value)
+		cond(lessThan(MAX_SCALE, value), MAX_SCALE, value),
 	);
 }
 
@@ -91,12 +92,12 @@ function scaleFriction(value: any, rest: any, delta: any) {
 	const howFar = abs(sub(rest, value));
 	const f = max(
 		1,
-		min(MAX_FRICTION, add(1, multiply(howFar, (MAX_FRICTION - 1) / MAX_VALUE)))
+		min(MAX_FRICTION, add(1, multiply(howFar, (MAX_FRICTION - 1) / MAX_VALUE))),
 	);
 	return cond(
 		lessThan(0, howFar),
 		multiply(value, add(1, divide(add(delta, -1), f))),
-		res
+		res,
 	);
 }
 
@@ -105,13 +106,13 @@ function runTiming(clock: any, value: any, dest: any, startStopClock: any = true
 		finished: new Value(0),
 		position: new Value(0),
 		frameTime: new Value(0),
-		time: new Value(0)
+		time: new Value(0),
 	};
 
 	const config = {
 		toValue: new Value(0),
 		duration: 300,
-		easing: Easing.inOut(Easing.cubic)
+		easing: Easing.inOut(Easing.cubic),
 	};
 
 	return [
@@ -121,11 +122,11 @@ function runTiming(clock: any, value: any, dest: any, startStopClock: any = true
 			set(state.time, 0),
 			set(state.position, value),
 			set(config.toValue, dest),
-			startStopClock && startClock(clock)
+			startStopClock && startClock(clock),
 		]),
 		timing(clock, state, config),
 		cond(state.finished, startStopClock && stopClock(clock)),
-		state.position
+		state.position,
 	];
 }
 
@@ -134,7 +135,7 @@ function runDecay(clock: any, value: any, velocity: any) {
 		finished: new Value(0),
 		velocity: new Value(0),
 		position: new Value(0),
-		time: new Value(0)
+		time: new Value(0),
 	};
 
 	const config = { deceleration: 0.99 };
@@ -145,12 +146,12 @@ function runDecay(clock: any, value: any, velocity: any) {
 			set(state.velocity, velocity),
 			set(state.position, value),
 			set(state.time, 0),
-			startClock(clock)
+			startClock(clock),
 		]),
 		set(state.position, value),
 		decay(clock, state, config),
 		cond(state.finished, stopClock(clock)),
-		state.position
+		state.position,
 	];
 }
 
@@ -161,7 +162,7 @@ function bouncyPinch(
 	focalX: any,
 	displacementX: any,
 	focalY: any,
-	displacementY: any
+	displacementY: any,
 ) {
 	const clock = new Clock();
 
@@ -170,12 +171,12 @@ function bouncyPinch(
 	const focalXRest = cond(
 		lessThan(value, 1),
 		0,
-		sub(displacementX, multiply(focalX, add(-1, divide(rest, value))))
+		sub(displacementX, multiply(focalX, add(-1, divide(rest, value)))),
 	);
 	const focalYRest = cond(
 		lessThan(value, 1),
 		0,
-		sub(displacementY, multiply(focalY, add(-1, divide(rest, value))))
+		sub(displacementY, multiply(focalY, add(-1, divide(rest, value)))),
 	);
 	const nextScale = new Value(1);
 
@@ -186,23 +187,23 @@ function bouncyPinch(
 			set(nextScale, scaleFriction(value, rest, delta)),
 			set(
 				displacementX,
-				sub(displacementX, multiply(focalX, add(-1, divide(nextScale, value))))
+				sub(displacementX, multiply(focalX, add(-1, divide(nextScale, value)))),
 			),
 			set(
 				displacementY,
-				sub(displacementY, multiply(focalY, add(-1, divide(nextScale, value))))
+				sub(displacementY, multiply(focalY, add(-1, divide(nextScale, value)))),
 			),
-			nextScale
+			nextScale,
 		],
 		cond(
 			or(clockRunning(clock), not(eq(rest, value))),
 			[
 				set(displacementX, runTiming(clock, displacementX, focalXRest, false)),
 				set(displacementY, runTiming(clock, displacementY, focalYRest, false)),
-				runTiming(clock, value, rest)
+				runTiming(clock, value, rest),
 			],
-			value
-		)
+			value,
+		),
 	);
 }
 
@@ -212,7 +213,7 @@ function bouncy(
 	gestureActive: any,
 	lowerBound: any,
 	upperBound: any,
-	f: any
+	f: any,
 ) {
 	const timingClock = new Clock();
 	const decayClock = new Clock();
@@ -222,13 +223,13 @@ function bouncy(
 	// did value go beyond the limits (lower, upper)
 	const isOutOfBounds = or(
 		lessThan(value, lowerBound),
-		lessThan(upperBound, value)
+		lessThan(upperBound, value),
 	);
 	// position to snap to (upper or lower is beyond or the current value elsewhere)
 	const rest = cond(
 		lessThan(value, lowerBound),
 		lowerBound,
-		cond(lessThan(upperBound, value), upperBound, value)
+		cond(lessThan(upperBound, value), upperBound, value),
 	);
 	// how much the value exceeds the bounds, this is used to calculate friction
 	const outOfBounds = abs(sub(rest, value));
@@ -238,7 +239,7 @@ function bouncy(
 		[
 			stopClock(timingClock),
 			stopClock(decayClock),
-			add(value, divide(gestureDiv, f(outOfBounds)))
+			add(value, divide(gestureDiv, f(outOfBounds))),
 		],
 		cond(
 			or(clockRunning(timingClock), isOutOfBounds),
@@ -246,9 +247,9 @@ function bouncy(
 			cond(
 				or(clockRunning(decayClock), lessThan(5, abs(velocity))),
 				runDecay(decayClock, value, velocity),
-				value
-			)
-		)
+				value,
+			),
+		),
 	);
 }
 
@@ -260,7 +261,6 @@ interface IImageProps {
 }
 
 class Image extends React.PureComponent<IImageProps, any> {
-
 	render() {
 		const { imageComponentType }: any = this.props;
 
@@ -284,11 +284,17 @@ interface IImageViewerProps {
 
 export class ImageViewer extends React.Component<IImageViewerProps, any> {
 	private _onPinchEvent: any;
+
 	private _focalDisplacementX: any;
+
 	private _focalDisplacementY: any;
+
 	private _scale: any;
+
 	private _onPanEvent: any;
+
 	private _panTransX: any;
+
 	private _panTransY: any;
 
 	constructor(props: IImageViewerProps) {
@@ -310,9 +316,9 @@ export class ImageViewer extends React.Component<IImageViewerProps, any> {
 					state: pinchState,
 					scale: pinchScale,
 					focalX: pinchFocalX,
-					focalY: pinchFocalY
-				}
-			}
+					focalY: pinchFocalY,
+				},
+			},
 		]);
 
 		// SCALE
@@ -321,12 +327,12 @@ export class ImageViewer extends React.Component<IImageViewerProps, any> {
 		this._focalDisplacementX = new Value(0);
 		const relativeFocalX = sub(
 			pinchFocalX,
-			add(panTransX, this._focalDisplacementX)
+			add(panTransX, this._focalDisplacementX),
 		);
 		this._focalDisplacementY = new Value(0);
 		const relativeFocalY = sub(
 			pinchFocalY,
-			add(panTransY, this._focalDisplacementY)
+			add(panTransY, this._focalDisplacementY),
 		);
 		this._scale = set(
 			scale,
@@ -337,8 +343,8 @@ export class ImageViewer extends React.Component<IImageViewerProps, any> {
 				relativeFocalX,
 				this._focalDisplacementX,
 				relativeFocalY,
-				this._focalDisplacementY
-			)
+				this._focalDisplacementY,
+			),
 		);
 
 		// PAN
@@ -350,9 +356,9 @@ export class ImageViewer extends React.Component<IImageViewerProps, any> {
 				nativeEvent: {
 					translationX: dragX,
 					translationY: dragY,
-					state: panState
-				}
-			}
+					state: panState,
+				},
+			},
 		]);
 
 		const panActive = eq(panState, State.ACTIVE);
@@ -362,7 +368,7 @@ export class ImageViewer extends React.Component<IImageViewerProps, any> {
 		const panUpX = cond(
 			lessThan(this._scale, 1),
 			0,
-			multiply(-1, this._focalDisplacementX)
+			multiply(-1, this._focalDisplacementX),
 		);
 		const panLowX = add(panUpX, multiply(-WIDTH, add(max(1, this._scale), -1)));
 		this._panTransX = set(
@@ -373,19 +379,19 @@ export class ImageViewer extends React.Component<IImageViewerProps, any> {
 				or(panActive, pinchActive),
 				panLowX,
 				panUpX,
-				panFriction
-			)
+				panFriction,
+			),
 		);
 
 		// Y
 		const panUpY = cond(
 			lessThan(this._scale, 1),
 			0,
-			multiply(-1, this._focalDisplacementY)
+			multiply(-1, this._focalDisplacementY),
 		);
 		const panLowY = add(
 			panUpY,
-			multiply(-HEIGHT, add(max(1, this._scale), -1))
+			multiply(-HEIGHT, add(max(1, this._scale), -1)),
 		);
 		this._panTransY = set(
 			panTransY,
@@ -395,8 +401,8 @@ export class ImageViewer extends React.Component<IImageViewerProps, any> {
 				or(panActive, pinchActive),
 				panLowY,
 				panUpY,
-				panFriction
-			)
+				panFriction,
+			),
 		);
 	}
 
@@ -438,7 +444,7 @@ export class ImageViewer extends React.Component<IImageViewerProps, any> {
 									styles.image,
 									{
 										width,
-										height: '100%'
+										height: '100%',
 									},
 									{
 										transform: [
@@ -448,9 +454,9 @@ export class ImageViewer extends React.Component<IImageViewerProps, any> {
 											{ translateY: this._focalDisplacementY },
 											{ translateX: scaleTopLeftFixX },
 											{ translateY: scaleTopLeftFixY },
-											{ scale: this._scale }
-										]
-									}
+											{ scale: this._scale },
+										],
+									},
 								]}
 								imageComponentType={imageComponentType}
 								resizeMode='contain'

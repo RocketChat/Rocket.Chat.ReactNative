@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Easing } from 'react-native';
+import { Easing, StyleSheet, Text, View } from 'react-native';
 import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
@@ -47,7 +47,7 @@ const mode = {
 	shouldDuckAndroid: true,
 	playThroughEarpieceAndroid: false,
 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
 };
 
 const styles = StyleSheet.create({
@@ -58,24 +58,24 @@ const styles = StyleSheet.create({
 		height: 56,
 		borderWidth: 1,
 		borderRadius: 4,
-		marginBottom: 6
+		marginBottom: 6,
 	},
 	playPauseButton: {
 		marginHorizontal: 10,
 		alignItems: 'center',
-		backgroundColor: 'transparent'
+		backgroundColor: 'transparent',
 	},
 	audioLoading: {
-		marginHorizontal: 8
+		marginHorizontal: 8,
 	},
 	slider: {
-		flex: 1
+		flex: 1,
 	},
 	duration: {
 		marginHorizontal: 12,
 		fontSize: 14,
-		...sharedStyles.textRegular
-	}
+		...sharedStyles.textRegular,
+	},
 });
 
 const formatTime = (seconds: number) => moment.utc(seconds * 1000).format('mm:ss');
@@ -85,7 +85,7 @@ const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 const sliderAnimationConfig = {
 	duration: 250,
 	easing: Easing.linear,
-	delay: 0
+	delay: 0,
 };
 
 const Button = React.memo(({ loading, paused, onPress, theme }: IButton) => (
@@ -107,6 +107,7 @@ Button.displayName = 'MessageAudioButton';
 
 class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
 	static contextType = MessageContext;
+
 	private sound: any;
 
 	constructor(props: IMessageAudioProps) {
@@ -115,7 +116,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			loading: false,
 			currentTime: 0,
 			duration: 0,
-			paused: true
+			paused: true,
 		};
 
 		this.sound = new Audio.Sound();
@@ -142,7 +143,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	shouldComponentUpdate(nextProps: any, nextState: any) {
 		const {
-			currentTime, duration, paused, loading
+			currentTime, duration, paused, loading,
 		} = this.state;
 		const { file, theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -204,7 +205,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	}
 
-	onEnd = async(data: any) => {
+	onEnd = async (data: any) => {
 		if (data.didJustFinish) {
 			try {
 				await this.sound.stopAsync();
@@ -225,7 +226,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		this.setState({ paused: !paused }, this.playPause);
 	}
 
-	playPause = async() => {
+	playPause = async () => {
 		const { paused } = this.state;
 		try {
 			if (paused) {
@@ -239,7 +240,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	}
 
-	onValueChange = async(value: any) => {
+	onValueChange = async (value: any) => {
 		try {
 			this.setState({ currentTime: value });
 			await this.sound.setPositionAsync(value * 1000);
@@ -250,10 +251,10 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	render() {
 		const {
-			loading, paused, currentTime, duration
+			loading, paused, currentTime, duration,
 		} = this.state;
 		const {
-			file, getCustomEmoji, theme, scale
+			file, getCustomEmoji, theme, scale,
 		} = this.props;
 		const { description } = file;
 		const { baseUrl, user } = this.context;
@@ -267,7 +268,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 				<View
 					style={[
 						styles.audioContainer,
-						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
+						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor },
 					]}
 				>
 					<Button loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
@@ -282,12 +283,12 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
 						onValueChange={this.onValueChange}
-						/*@ts-ignore*/
+						/* @ts-ignore*/
 						thumbImage={isIOS && { uri: 'audio_thumb', scale }}
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
-				{/*@ts-ignore*/}
+				{/* @ts-ignore*/}
 				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 			</>
 		);

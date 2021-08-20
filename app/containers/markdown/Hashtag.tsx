@@ -2,7 +2,6 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import { themes } from '../../constants/colors';
-
 import styles from './styles';
 
 interface IHashtag {
@@ -18,21 +17,21 @@ interface IHashtag {
 
 const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [], theme }: IHashtag) => {
 	const handlePress = () => {
-		const index = channels.findIndex(channel => channel.name === hashtag);
+		const index = channels.findIndex((channel) => channel.name === hashtag);
 		const navParam = {
 			t: 'c',
-			rid: channels[index]._id
+			rid: channels[index]._id,
 		};
 		navToRoomInfo(navParam);
 	};
 
-	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {
+	if (channels && channels.length && channels.findIndex((channel) => channel.name === hashtag) !== -1) {
 		return (
 			<Text
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].mentionOtherColor
+						color: themes[theme].mentionOtherColor,
 					},
 					...style]}
 				onPress={handlePress}

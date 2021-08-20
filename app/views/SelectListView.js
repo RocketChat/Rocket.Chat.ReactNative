@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text
+	FlatList, StyleSheet, Text, View
 } from 'react-native';
 import { connect } from 'react-redux';
 import { RadioButton } from 'react-native-ui-lib';
 
 import log from '../utils/log';
 import * as List from '../containers/List';
-import sharedStyles from './Styles';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
@@ -18,6 +17,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
+import sharedStyles from './Styles';
 
 
 const styles = StyleSheet.create({

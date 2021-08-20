@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
-	toggleServerDropdown, closeServerDropdown, closeSortDropdown, setSearch as setSearchAction
+	closeServerDropdown, closeSortDropdown, setSearch as setSearchAction, toggleServerDropdown
 } from '../../../actions/rooms';
-import Header from './Header';
 import { withTheme } from '../../../theme';
 import EventEmitter from '../../../utils/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown } from '../../../commands';
 import { isTablet } from '../../../utils/deviceInfo';
-import { logEvent, events } from '../../../utils/log';
+import { events, logEvent } from '../../../utils/log';
+import Header from './Header';
 
 class RoomsListHeaderView extends PureComponent {
 	static propTypes = {

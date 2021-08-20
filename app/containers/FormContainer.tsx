@@ -18,8 +18,8 @@ interface IFormContainer {
 
 const styles = StyleSheet.create({
 	scrollView: {
-		minHeight: '100%'
-	}
+		minHeight: '100%',
+	},
 });
 
 export const FormContainerInner = ({ children }: {children: JSX.Element}) => (
@@ -36,7 +36,7 @@ const FormContainer = ({ children, theme, testID, ...props }: IFormContainer) =>
 		keyboardVerticalOffset={128}
 	>
 		<StatusBar />
-		{/*@ts-ignore*/}
+		{/* @ts-ignore*/}
 		<ScrollView
 			style={sharedStyles.container}
 			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}

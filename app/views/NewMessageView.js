@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, StyleSheet, FlatList, Text
+	FlatList, StyleSheet, Text, View
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import * as List from '../containers/List';
 
+import * as List from '../containers/List';
 import Touch from '../utils/touch';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
-import sharedStyles from './Styles';
 import I18n from '../i18n';
-import log, { logEvent, events } from '../utils/log';
+import log, { events, logEvent } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import { CustomIcon } from '../lib/Icons';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -26,6 +25,7 @@ import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
 import SafeAreaView from '../containers/SafeAreaView';
 import { compareServerVersion, methods } from '../lib/utils';
+import sharedStyles from './Styles';
 
 const QUERY_SIZE = 50;
 
@@ -181,12 +181,12 @@ class NewMessageView extends React.Component {
 						first: true
 					})}
 					{compareServerVersion(serverVersion, '3.13.0', methods.greaterThanOrEqualTo)
-						? (this.renderButton({
+						? this.renderButton({
 							onPress: this.createTeam,
 							title: I18n.t('Create_Team'),
 							icon: 'teams',
 							testID: 'new-message-view-create-team'
-						})) : null}
+						}) : null}
 					{maxUsers > 2 ? this.renderButton({
 						onPress: this.createGroupChat,
 						title: I18n.t('Create_Direct_Messages'),

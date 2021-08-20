@@ -33,7 +33,7 @@ interface IMessageImage {
 
 const ImageProgress = createImageProgress(FastImage);
 
-const Button = React.memo(({children, onPress, theme}: TMessageButton) => (
+const Button = React.memo(({ children, onPress, theme }: TMessageButton) => (
 	<Touchable
 		onPress={onPress}
 		style={styles.imageContainer}
@@ -50,12 +50,12 @@ export const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
 		resizeMode={FastImage.resizeMode.cover}
 		indicator={Progress.Pie}
 		indicatorProps={{
-			color: themes[theme].actionTintColor
+			color: themes[theme].actionTintColor,
 		}}
 	/>
 ));
 
-const ImageContainer = React.memo(({file, imageUrl, showAttachment, getCustomEmoji, theme}: IMessageImage) => {
+const ImageContainer = React.memo(({ file, imageUrl, showAttachment, getCustomEmoji, theme }: IMessageImage) => {
 	const { baseUrl, user } = useContext(MessageContext);
 	const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 	if (!img) {
@@ -69,7 +69,7 @@ const ImageContainer = React.memo(({file, imageUrl, showAttachment, getCustomEmo
 			<Button theme={theme} onPress={onPress}>
 				<View>
 					<MessageImage img={img} theme={theme} />
-					{/*@ts-ignore*/}
+					{/* @ts-ignore*/}
 					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 				</View>
 			</Button>

@@ -1,6 +1,6 @@
 import moment from 'moment';
-import { themes } from '../constants/colors';
 
+import { themes } from '../constants/colors';
 import I18n from '../i18n';
 
 export const isBlocked = (room) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import sharedStyles from '../../views/Styles';

@@ -7,7 +7,7 @@ import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../database';
 import reduxStore from '../../createStore';
-import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actions/usersTyping';
+import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
@@ -156,7 +156,7 @@ export default class RoomSubscription {
 		RocketChat.readMessages(this.rid, lastOpen);
 	}, 300);
 
-	updateMessage = message => (
+	updateMessage = message =>
 		new Promise(async(resolve) => {
 			if (this.rid !== message.rid) {
 				return resolve();
@@ -234,7 +234,7 @@ export default class RoomSubscription {
 
 			return resolve();
 		})
-	)
+
 
 	handleMessageReceived = (ddpMessage) => {
 		if (!this.timer) {

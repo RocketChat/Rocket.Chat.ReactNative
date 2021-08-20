@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { ScrollView, BorderlessButton } from 'react-native-gesture-handler';
+import { BorderlessButton, ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 
 import Markdown from '../../containers/markdown';
-
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import styles from './styles';

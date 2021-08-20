@@ -7,13 +7,13 @@ import { sha256 } from 'js-sha256';
 import UserPreferences from '../lib/userPreferences';
 import store from '../lib/createStore';
 import database from '../lib/database';
-import { isIOS } from './deviceInfo';
-import EventEmitter from './events';
 import {
-	LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY, PASSCODE_KEY, CHANGE_PASSCODE_EMITTER
+	ATTEMPTS_KEY, CHANGE_PASSCODE_EMITTER, LOCAL_AUTHENTICATE_EMITTER, LOCKED_OUT_TIMER_KEY, PASSCODE_KEY
 } from '../constants/localAuthentication';
 import I18n from '../i18n';
 import { setLocalAuthenticated } from '../actions/login';
+import EventEmitter from './events';
+import { isIOS } from './deviceInfo';
 
 export const saveLastLocalAuthenticationSession = async(server, serverRecord) => {
 	const serversDB = database.servers;

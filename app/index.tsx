@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linking, Dimensions } from 'react-native';
+import { Dimensions, Linking } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
@@ -14,7 +14,7 @@ import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
-import { loggerConfig, analytics } from './utils/log';
+import { analytics, loggerConfig } from './utils/log';
 import { ThemeContext } from './theme';
 import { DimensionsContext } from './dimensions';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
@@ -40,7 +40,6 @@ interface IDimensions {
 	fontScale: number
 }
 
-interface IProps {}
 interface IState {
 	theme: string,
 	themePreferences: {
@@ -74,11 +73,12 @@ const parseDeepLinking = (url: string) => {
 	return null;
 };
 
-export default class Root extends React.Component<IProps, IState> {
-	private listenerTimeout!: NodeJS.Timeout;
+export default class Root extends React.Component<{}, IState> {
+	private listenerTimeout!: any;
+
 	private onKeyCommands: any;
 
-	constructor(props: IProps) {
+	constructor(props: any) {
 		super(props);
 		this.init();
 		if (!isFDroidBuild) {
@@ -89,12 +89,12 @@ export default class Root extends React.Component<IProps, IState> {
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
-				darkLevel: 'black'
+				darkLevel: 'black',
 			},
 			width,
 			height,
 			scale,
-			fontScale
+			fontScale,
 		};
 		if (isTablet) {
 			this.initTablet();
@@ -124,7 +124,7 @@ export default class Root extends React.Component<IProps, IState> {
 		}
 	}
 
-	init = async() => {
+	init = async () => {
 		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(() => this.setTheme());
 		store.dispatch(appInitLocalSettings());
 
@@ -162,26 +162,26 @@ export default class Root extends React.Component<IProps, IState> {
 	// Dimensions update fires twice
 	onDimensionsChange = debounce(({
 		window: {
-			width, height, scale, fontScale
-		}
+			width, height, scale, fontScale,
+		},
 	}: {window: IDimensions}) => {
 		this.setDimensions({
-			width, height, scale, fontScale
+			width, height, scale, fontScale,
 		});
 		this.setMasterDetail(width);
 	})
 
 	setTheme = (newTheme = {}) => {
 		// change theme state
-		this.setState(prevState => newThemeState(prevState, newTheme), () => {
+		this.setState((prevState) => newThemeState(prevState, newTheme), () => {
 			const { themePreferences } = this.state;
 			// subscribe to Appearance changes
 			subscribeTheme(themePreferences, this.setTheme);
 		});
 	}
 
-	setDimensions = ({width, height, scale, fontScale}: IDimensions) => {
-		this.setState({width, height, scale, fontScale});
+	setDimensions = ({ width, height, scale, fontScale }: IDimensions) => {
+		this.setState({ width, height, scale, fontScale });
 	}
 
 	initTablet = () => {
@@ -191,7 +191,7 @@ export default class Root extends React.Component<IProps, IState> {
 			'onKeyCommand',
 			(command: unknown) => {
 				EventEmitter.emit(KEY_COMMAND, { event: command });
-			}
+			},
 		);
 	}
 
@@ -216,7 +216,7 @@ export default class Root extends React.Component<IProps, IState> {
 							value={{
 								theme,
 								themePreferences,
-								setTheme: this.setTheme
+								setTheme: this.setTheme,
 							}}
 						>
 							<DimensionsContext.Provider
@@ -225,7 +225,7 @@ export default class Root extends React.Component<IProps, IState> {
 									height,
 									scale,
 									fontScale,
-									setDimensions: this.setDimensions
+									setDimensions: this.setDimensions,
 								}}
 							>
 								<ActionSheetProvider>

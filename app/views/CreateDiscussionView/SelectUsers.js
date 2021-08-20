@@ -10,9 +10,8 @@ import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-
-import styles from './styles';
 import { themes } from '../../constants/colors';
+import styles from './styles';
 
 const SelectUsers = ({
 	server, token, userId, selected, onUserSelect, blockUnauthenticatedAccess, serverVersion, theme

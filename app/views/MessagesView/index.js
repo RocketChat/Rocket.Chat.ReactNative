@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import styles from './styles';
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -17,6 +16,7 @@ import { getUserSelector } from '../../selectors/login';
 import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
+import styles from './styles';
 
 class MessagesView extends React.Component {
 	static propTypes = {
@@ -130,7 +130,7 @@ class MessagesView extends React.Component {
 			onPress: () => this.jumpToMessage({ item })
 		});
 
-		return ({
+		return {
 			// Files Messages Screen
 			Files: {
 				name: I18n.t('Files'),
@@ -225,7 +225,7 @@ class MessagesView extends React.Component {
 				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
 				handleActionPress: message => RocketChat.togglePinMessage(message._id, message.pinned)
 			}
-		}[name]);
+		}[name];
 	}
 
 	load = async() => {

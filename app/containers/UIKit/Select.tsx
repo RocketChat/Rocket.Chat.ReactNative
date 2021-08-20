@@ -12,25 +12,25 @@ import ActivityIndicator from '../ActivityIndicator';
 const styles = StyleSheet.create({
 	iosPadding: {
 		height: 48,
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	viewContainer: {
 		marginBottom: 16,
 		paddingHorizontal: 16,
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	pickerText: {
 		...sharedStyles.textRegular,
-		fontSize: 16
+		fontSize: 16,
 	},
 	icon: {
-		right: 16
+		right: 16,
 	},
 	loading: {
-		padding: 0
-	}
+		padding: 0,
+	},
 });
 
 interface ISelect {
@@ -53,15 +53,15 @@ export const Select = ({
 	loading,
 	disabled,
 	value: initialValue,
-	theme
+	theme,
 }: ISelect) => {
 	const [selected, setSelected] = useState(!Array.isArray(initialValue) && initialValue);
-	const items = options.map(option => ({ label: textParser([option.text]), value: option.value }));
+	const items = options.map((option) => ({ label: textParser([option.text]), value: option.value }));
 	const pickerStyle = {
 		...styles.viewContainer,
-		...(isIOS ? styles.iosPadding : {}),
+		...isIOS ? styles.iosPadding : {},
 		borderColor: themes[theme].separatorColor,
-		backgroundColor: themes[theme].backgroundColor
+		backgroundColor: themes[theme].backgroundColor,
 	};
 
 	const Icon = () => (
@@ -83,7 +83,7 @@ export const Select = ({
 			}}
 			style={{
 				viewContainer: pickerStyle,
-				inputAndroidContainer: pickerStyle
+				inputAndroidContainer: pickerStyle,
 			}}
 			Icon={Icon}
 			// @ts-ignore

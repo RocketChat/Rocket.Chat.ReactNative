@@ -8,8 +8,8 @@ import database, { getDatabase } from '../database';
 import RocketChat from '../rocketchat';
 import { useSsl } from '../../utils/url';
 import {
-	E2E_PUBLIC_KEY,
 	E2E_PRIVATE_KEY,
+	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY
 } from '../encryption/constants';
 import UserPreferences from '../userPreferences';

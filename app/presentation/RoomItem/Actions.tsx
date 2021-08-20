@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, View, Text } from 'react-native';
+import { Animated, Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 import I18n, { isRTL } from '../../i18n';
@@ -27,14 +27,14 @@ interface IRightActions {
 const reverse = new Animated.Value(isRTL() ? -1 : 1);
 
 export const LeftActions = React.memo(({
-	theme, transX, isRead, width, onToggleReadPress
+	theme, transX, isRead, width, onToggleReadPress,
 }: ILeftActions) => {
 	const translateX = Animated.multiply(
 		transX.interpolate({
 			inputRange: [0, ACTION_WIDTH],
-			outputRange: [-ACTION_WIDTH, 0]
+			outputRange: [-ACTION_WIDTH, 0],
 		}),
-		reverse
+		reverse,
 	);
 	return (
 		<View
@@ -48,8 +48,8 @@ export const LeftActions = React.memo(({
 						right: width - ACTION_WIDTH,
 						width,
 						transform: [{ translateX }],
-						backgroundColor: themes[theme].tintColor
-					}
+						backgroundColor: themes[theme].tintColor,
+					},
 				]}
 			>
 				<View style={styles.actionLeftButtonContainer}>
@@ -66,21 +66,21 @@ export const LeftActions = React.memo(({
 });
 
 export const RightActions = React.memo(({
-	transX, favorite, width, toggleFav, onHidePress, theme
+	transX, favorite, width, toggleFav, onHidePress, theme,
 }: IRightActions) => {
 	const translateXFav = Animated.multiply(
 		transX.interpolate({
 			inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
-			outputRange: [width / 2, width - ACTION_WIDTH * 2, width]
+			outputRange: [width / 2, width - ACTION_WIDTH * 2, width],
 		}),
-		reverse
+		reverse,
 	);
 	const translateXHide = Animated.multiply(
 		transX.interpolate({
 			inputRange: [-width, -LONG_SWIPE, -ACTION_WIDTH * 2, 0],
-			outputRange: [0, width - LONG_SWIPE, width - ACTION_WIDTH, width]
+			outputRange: [0, width - LONG_SWIPE, width - ACTION_WIDTH, width],
 		}),
-		reverse
+		reverse,
 	);
 	return (
 		<View
@@ -89,7 +89,7 @@ export const RightActions = React.memo(({
 				left: 0,
 				right: 0,
 				height: 75,
-				flexDirection: 'row'
+				flexDirection: 'row',
 			}}
 			pointerEvents='box-none'
 		>
@@ -99,8 +99,8 @@ export const RightActions = React.memo(({
 					{
 						width,
 						transform: [{ translateX: translateXFav }],
-						backgroundColor: themes[theme].hideBackground
-					}
+						backgroundColor: themes[theme].hideBackground,
+					},
 				]}
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>
@@ -115,8 +115,8 @@ export const RightActions = React.memo(({
 					styles.actionRightButtonContainer,
 					{
 						width,
-						transform: [{ translateX: translateXHide }]
-					}
+						transform: [{ translateX: translateXHide }],
+					},
 				]}
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].hideBackground }]} onPress={onHidePress}>

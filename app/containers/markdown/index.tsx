@@ -1,13 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Text, Image } from 'react-native';
-import { Parser, Node } from 'commonmark';
+import { Image, Text } from 'react-native';
+import { Node, Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import removeMarkdown from 'remove-markdown';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
-
 import MarkdownLink from './Link';
 import MarkdownList from './List';
 import MarkdownListItem from './ListItem';
@@ -19,7 +18,6 @@ import MarkdownTable from './Table';
 import MarkdownTableRow from './TableRow';
 import MarkdownTableCell from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
-
 import styles from './styles';
 import { isValidURL } from '../../utils/url';
 
@@ -53,13 +51,13 @@ type TLiteral = {
 // Support <http://link|Text>
 const formatText = (text: string) => text.replace(
 	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
-	(match, url, title) => `[${ title }](${ url })`
+	(match, url, title) => `[${ title }](${ url })`,
 );
 
 const emojiRanges = [
 	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
 	':.{1,40}:', // custom emoji
-	' |\n' // allow spaces and line breaks
+	' |\n', // allow spaces and line breaks
 ].join('|');
 
 const removeSpaces = (str: string) => str && str.replace(/\s/g, '');
@@ -93,6 +91,7 @@ const parser = new Parser();
 
 class Markdown extends PureComponent<IMarkdownProps, any> {
 	private renderer: any;
+
 	private isMessageContainsOnlyEmoji!: boolean;
 
 	constructor(props: IMarkdownProps) {
@@ -133,9 +132,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			table_row: this.renderTableRow,
 			table_cell: this.renderTableCell,
 
-			editedIndicator: this.renderEditedIndicator
+			editedIndicator: this.renderEditedIndicator,
 		},
-		renderParagraphsInLists: true
+		renderParagraphsInLists: true,
 	});
 
 	editedMessage = (ast: any) => {
@@ -155,11 +154,11 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	renderText = ({ context, literal }: {context: []; literal: string}) => {
 		const {
-			numberOfLines, style = []
+			numberOfLines, style = [],
 		} = this.props;
 		const defaultStyle = [
 			this.isMessageContainsOnlyEmoji ? styles.textBig : {},
-			...context.map(type => styles[type])
+			...context.map((type) => styles[type]),
 		];
 		return (
 			<Text
@@ -181,9 +180,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 						...styles.codeInline,
 						color: themes[theme].bodyText,
 						backgroundColor: themes[theme].bannerBackground,
-						borderColor: themes[theme].bannerBackground
+						borderColor: themes[theme].bannerBackground,
 					},
-					...style
+					...style,
 				]}
 			>
 				{literal}
@@ -200,9 +199,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 						...styles.codeBlock,
 						color: themes[theme].bodyText,
 						backgroundColor: themes[theme].bannerBackground,
-						borderColor: themes[theme].bannerBackground
+						borderColor: themes[theme].bannerBackground,
 					},
-					...style
+					...style,
 				]}
 			>
 				{literal}
@@ -370,7 +369,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	render() {
 		const {
-			msg, numberOfLines, preview = false, theme, style = [], testID
+			msg, numberOfLines, preview = false, theme, style = [], testID,
 		} = this.props;
 
 		if (!msg) {

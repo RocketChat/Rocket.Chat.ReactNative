@@ -12,8 +12,8 @@ const styles = StyleSheet.create({
 	icon: {
 		width: 22,
 		height: 22,
-		marginHorizontal: 15
-	}
+		marginHorizontal: 15,
+	},
 });
 
 const Check = React.memo(({ theme, style }: ICheck) => <CustomIcon style={[styles.icon, style]} color={themes[theme].tintColor} size={22} name='check' />);

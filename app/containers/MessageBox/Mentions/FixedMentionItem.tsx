@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 
 import styles from '../styles';
 import I18n from '../../../i18n';
@@ -9,7 +9,7 @@ interface IMessageBoxFixedMentionItem {
 	item: {
 		username: string;
 	};
-	onPress({}): void;
+	onPress: Function;
 	theme: string;
 }
 
@@ -19,8 +19,8 @@ const FixedMentionItem = ({ item, onPress, theme }: IMessageBoxFixedMentionItem)
 			styles.mentionItem,
 			{
 				backgroundColor: themes[theme].auxiliaryBackground,
-				borderTopColor: themes[theme].separatorColor
-			}
+				borderTopColor: themes[theme].separatorColor,
+			},
 		]}
 		onPress={() => onPress(item)}
 	>

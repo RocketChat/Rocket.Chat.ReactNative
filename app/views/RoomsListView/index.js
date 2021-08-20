@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View,
-	FlatList,
 	BackHandler,
-	Text,
+	FlatList,
 	Keyboard,
-	RefreshControl
+	RefreshControl,
+	Text,
+	View
 } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
@@ -17,25 +17,20 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
-import styles from './styles';
-import log, { logEvent, events } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
-import SortDropdown from './SortDropdown';
-import ServerDropdown from './ServerDropdown';
 import {
-	toggleSortDropdown as toggleSortDropdownAction,
-	openSearchHeader as openSearchHeaderAction,
 	closeSearchHeader as closeSearchHeaderAction,
+	closeServerDropdown as closeServerDropdownAction,
+	openSearchHeader as openSearchHeaderAction,
 	roomsRequest as roomsRequestAction,
-	closeServerDropdown as closeServerDropdownAction
+	toggleSortDropdown as toggleSortDropdownAction
 } from '../../actions/rooms';
 import debounce from '../../utils/debounce';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
-import RoomsListHeaderView from './Header';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import ListHeader from './ListHeader';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
@@ -43,13 +38,13 @@ import { themes } from '../../constants/colors';
 import EventEmitter from '../../utils/events';
 import {
 	KEY_COMMAND,
-	handleCommandShowPreferences,
+	handleCommandAddNewServer,
+	handleCommandNextRoom,
+	handleCommandPreviousRoom,
 	handleCommandSearching,
 	handleCommandSelectRoom,
-	handleCommandPreviousRoom,
-	handleCommandNextRoom,
 	handleCommandShowNewMessage,
-	handleCommandAddNewServer
+	handleCommandShowPreferences
 } from '../../commands';
 import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 import { getUserSelector } from '../../selectors/login';
@@ -57,11 +52,15 @@ import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
-import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
-
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
+import ListHeader from './ListHeader';
+import RoomsListHeaderView from './Header';
+import ServerDropdown from './ServerDropdown';
+import SortDropdown from './SortDropdown';
+import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -849,7 +848,7 @@ class RoomsListView extends React.Component {
 		}
 	}
 
-	getScrollRef = ref => (this.scroll = ref);
+	getScrollRef = ref => this.scroll = ref;
 
 	renderListHeader = () => {
 		const { searching } = this.state;

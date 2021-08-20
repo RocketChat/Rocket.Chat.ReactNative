@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
@@ -11,33 +11,33 @@ import { themes } from '../../constants/colors';
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		paddingTop: 10
+		paddingTop: 10,
 	},
 	messageContainer: {
 		flex: 1,
 		marginHorizontal: 10,
 		paddingHorizontal: 15,
 		paddingVertical: 10,
-		borderRadius: 4
+		borderRadius: 4,
 	},
 	header: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	username: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
 	},
 	time: {
 		fontSize: 12,
 		lineHeight: 16,
 		marginLeft: 6,
 		...sharedStyles.textRegular,
-		fontWeight: '300'
+		fontWeight: '300',
 	},
 	close: {
-		marginRight: 10
-	}
+		marginRight: 10,
+	},
 });
 
 interface IMessageBoxReplyPreview {
@@ -51,13 +51,13 @@ interface IMessageBoxReplyPreview {
 	close(): void;
 	baseUrl: string;
 	username: string;
-	getCustomEmoji(): void;
+	getCustomEmoji: Function;
 	theme: string;
 	useRealName: boolean;
 }
 
 const ReplyPreview = React.memo(({
-	message, Message_TimeFormat, baseUrl, username, replying, getCustomEmoji, close, theme, useRealName
+	message, Message_TimeFormat, baseUrl, username, replying, getCustomEmoji, close, theme, useRealName,
 }: IMessageBoxReplyPreview) => {
 	if (!replying) {
 		return null;
@@ -68,7 +68,7 @@ const ReplyPreview = React.memo(({
 		<View
 			style={[
 				styles.container,
-				{ backgroundColor: themes[theme].messageboxBackground }
+				{ backgroundColor: themes[theme].messageboxBackground },
 			]}
 		>
 			<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>
@@ -76,7 +76,7 @@ const ReplyPreview = React.memo(({
 					<Text style={[styles.username, { color: themes[theme].tintColor }]}>{useRealName ? message.u?.name : message.u?.username}</Text>
 					<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 				</View>
-				{/*@ts-ignore*/}
+				{/* @ts-ignore*/}
 				<Markdown
 					msg={message.msg}
 					baseUrl={baseUrl}
@@ -95,7 +95,7 @@ const ReplyPreview = React.memo(({
 const mapStateToProps = (state: any) => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	baseUrl: state.server.server,
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name,
 });
 
 export default connect(mapStateToProps)(ReplyPreview);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
 import * as HeaderButton from '../containers/HeaderButton';
@@ -13,17 +13,17 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		padding: 15
+		padding: 15,
 	},
 	title: {
 		fontSize: 18,
-		...sharedStyles.textBold
+		...sharedStyles.textBold,
 	},
 	content: {
 		fontSize: 14,
 		...sharedStyles.textRegular,
-		...sharedStyles.textAlignCenter
-	}
+		...sharedStyles.textAlignCenter,
+	},
 });
 
 class WithoutServerView extends React.Component<any, any> {
@@ -34,7 +34,7 @@ class WithoutServerView extends React.Component<any, any> {
 				onPress={ShareExtension.close}
 				testID='share-extension-close'
 			/>
-		)
+		),
 	})
 
 	render() {

@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 
 import EmojiPicker from '../../containers/EmojiPicker';
-import styles from './styles';
 import { isAndroid } from '../../utils/deviceInfo';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import styles from './styles';
 
 const margin = isAndroid ? 40 : 20;
 const maxSize = 400;
@@ -52,7 +52,7 @@ class ReactionPicker extends React.Component {
 			heightStyle = maxSize;
 		}
 
-		return (show
+		return show
 			? (
 				<Modal
 					isVisible={show}
@@ -81,8 +81,7 @@ class ReactionPicker extends React.Component {
 					</View>
 				</Modal>
 			)
-			: null
-		);
+			: null;
 	}
 }
 

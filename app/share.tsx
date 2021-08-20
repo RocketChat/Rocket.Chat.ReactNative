@@ -10,15 +10,13 @@ import UserPreferences from './lib/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { supportSystemTheme } from './utils/deviceInfo';
-import { defaultHeader, themedHeader, getActiveRouteName, navigationTheme } from './utils/navigation';
+import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
 import ScreenLockedView from './views/ScreenLockedView';
-
 // Outside Stack
 import WithoutServersView from './views/WithoutServersView';
-
 // Inside Stack
 import ShareListView from './views/ShareListView';
 import ShareView from './views/ShareView';
@@ -35,7 +33,6 @@ interface IDimensions {
 	fontScale: number
 }
 
-interface IProps {}
 interface IState {
 	theme: string,
 	themePreferences: {
@@ -55,9 +52,9 @@ const InsideStack = () => {
 
 	const screenOptions = {
 		...defaultHeader,
-		...themedHeader(theme)
+		...themedHeader(theme),
 	};
-	screenOptions.headerStyle = {...screenOptions.headerStyle, height: 57};
+	screenOptions.headerStyle = { ...screenOptions.headerStyle, height: 57 };
 
 	return (
 		<Inside.Navigator screenOptions={screenOptions}>
@@ -87,7 +84,7 @@ const OutsideStack = () => {
 			<Outside.Screen
 				name='WithoutServersView'
 				component={WithoutServersView}
-				/*@ts-ignore*/
+				/* @ts-ignore*/
 				options={WithoutServersView.navigationOptions}
 			/>
 		</Outside.Navigator>
@@ -121,7 +118,7 @@ export const App = ({ root }: any) => (
 	</Stack.Navigator>
 );
 
-class Root extends React.Component<IProps, IState> {
+class Root extends React.Component<{}, IState> {
 	constructor(props: any) {
 		super(props);
 		const { width, height, scale, fontScale } = Dimensions.get('screen');
@@ -129,13 +126,13 @@ class Root extends React.Component<IProps, IState> {
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
-				darkLevel: 'black'
+				darkLevel: 'black',
 			},
 			root: '',
 			width,
 			height,
 			scale,
-			fontScale
+			fontScale,
 		};
 		this.init();
 	}
@@ -145,7 +142,7 @@ class Root extends React.Component<IProps, IState> {
 		unsubscribeTheme();
 	}
 
-	init = async() => {
+	init = async () => {
 		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(() => this.setTheme());
 
 		const currentServer = await UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
@@ -166,7 +163,7 @@ class Root extends React.Component<IProps, IState> {
 
 	setTheme = (newTheme = {}) => {
 		// change theme state
-		this.setState(prevState => newThemeState(prevState, newTheme), () => {
+		this.setState((prevState) => newThemeState(prevState, newTheme), () => {
 			const { themePreferences } = this.state;
 			// subscribe to Appearance changes
 			subscribeTheme(themePreferences, this.setTheme);
@@ -174,13 +171,13 @@ class Root extends React.Component<IProps, IState> {
 	}
 
 	// Dimensions update fires twice
-	onDimensionsChange = debounce(({window: { width, height, scale, fontScale}}: {window: IDimensions}) => {
+	onDimensionsChange = debounce(({ window: { width, height, scale, fontScale } }: {window: IDimensions}) => {
 		this.setDimensions({ width, height, scale, fontScale });
 	})
 
 	setDimensions = ({ width, height, scale, fontScale }: IDimensions) => {
 		this.setState({
-			width, height, scale, fontScale
+			width, height, scale, fontScale,
 		});
 	}
 
@@ -197,7 +194,7 @@ class Root extends React.Component<IProps, IState> {
 								height,
 								scale,
 								fontScale,
-								setDimensions: this.setDimensions
+								setDimensions: this.setDimensions,
 							}}
 						>
 							<NavigationContainer

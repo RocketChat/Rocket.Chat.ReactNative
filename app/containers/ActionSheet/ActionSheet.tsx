@@ -1,17 +1,17 @@
 import React, {
+	forwardRef,
+	isValidElement,
+	useCallback,
+	useEffect,
+	useImperativeHandle,
 	useRef,
 	useState,
-	useEffect,
-	forwardRef,
-	useImperativeHandle,
-	useCallback,
-	isValidElement
 } from 'react';
 import { Keyboard, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { TapGestureHandler, State } from 'react-native-gesture-handler';
+import { State, TapGestureHandler } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
-import Animated, { Extrapolate, interpolate, Value, Easing} from 'react-native-reanimated';
+import Animated, { Easing, Extrapolate, Value, interpolate } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { useBackHandler } from '@react-native-community/hooks';
 
@@ -20,10 +20,10 @@ import { Handle } from './Handle';
 import { Button } from './Button';
 import { themes } from '../../constants/colors';
 import styles, { ITEM_HEIGHT } from './styles';
-import { isTablet, isIOS } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../utils/deviceInfo';
 import * as List from '../List';
 import I18n from '../../i18n';
-import { useOrientation, useDimensions, IDimensionsContextProps } from '../../dimensions';
+import { IDimensionsContextProps, useDimensions, useOrientation } from '../../dimensions';
 
 interface IActionSheetData {
 	options: any;
@@ -43,7 +43,7 @@ const ANIMATION_DURATION = 250;
 const ANIMATION_CONFIG = {
 	duration: ANIMATION_DURATION,
 	// https://easings.net/#easeInOutCubic
-	easing: Easing.bezier(0.645, 0.045, 0.355, 1.0)
+	easing: Easing.bezier(0.645, 0.045, 0.355, 1.0),
 };
 
 const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.Element; theme: string}, ref) => {
@@ -55,8 +55,8 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.E
 	const insets = useSafeAreaInsets();
 
 	const maxSnap = Math.max(
-		(
-			height!
+
+		height!
 			// Items height
 			- (ITEM_HEIGHT * (data?.options?.length || 0))
 			// Handle height
@@ -67,8 +67,8 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.E
 			- insets.bottom
 			// Cancel button height
 			- (data?.hasCancel ? CANCEL_HEIGHT : 0)
-		),
-		MAX_SNAP_HEIGHT
+		,
+		MAX_SNAP_HEIGHT,
 	);
 
 	/*
@@ -121,7 +121,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.E
 
 	useImperativeHandle(ref, () => ({
 		showActionSheet: show,
-		hideActionSheet: hide
+		hideActionSheet: hide,
 	}));
 
 	const renderHandle = useCallback(() => (
@@ -149,7 +149,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.E
 	const opacity = interpolate(animatedPosition.current, {
 		inputRange: [0, 1],
 		outputRange: [0, themes[theme].backdropOpacity],
-		extrapolate: Extrapolate.CLAMP
+		extrapolate: Extrapolate.CLAMP,
 	});
 
 	return (
@@ -164,8 +164,8 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.E
 								styles.backdrop,
 								{
 									backgroundColor: themes[theme].backdropColor,
-									opacity
-								}
+									opacity,
+								},
 							]}
 						/>
 					</TapGestureHandler>
@@ -176,12 +176,12 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }: {children: JSX.E
 						snapPoints={snaps}
 						initialSnapIndex={closedSnapIndex}
 						renderHandle={renderHandle}
-						onSettle={index => (index === closedSnapIndex) && toggleVisible()}
+						onSettle={(index) => (index === closedSnapIndex) && toggleVisible()}
 						animatedPosition={animatedPosition.current}
 						containerStyle={[
 							styles.container,
 							{ backgroundColor: themes[theme].focusedBackground },
-							(isLandscape || isTablet) && styles.bottomSheet
+							(isLandscape || isTablet) && styles.bottomSheet,
 						] as any}
 						animationConfig={ANIMATION_CONFIG}
 						// FlatList props

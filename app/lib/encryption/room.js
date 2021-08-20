@@ -2,23 +2,23 @@ import EJSON from 'ejson';
 import { Base64 } from 'js-base64';
 import SimpleCrypto from 'react-native-simple-crypto';
 
-import {
-	toString,
-	b64ToBuffer,
-	bufferToUtf8,
-	bufferToB64,
-	bufferToB64URI,
-	utf8ToBuffer,
-	splitVectorData,
-	joinVectorData
-} from './utils';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
 import RocketChat from '../rocketchat';
 import Deferred from '../../utils/deferred';
 import debounce from '../../utils/debounce';
-import { Encryption } from './index';
 import database from '../database';
 import log from '../../utils/log';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
+import {
+	b64ToBuffer,
+	bufferToB64,
+	bufferToB64URI,
+	bufferToUtf8,
+	joinVectorData,
+	splitVectorData,
+	toString,
+	utf8ToBuffer
+} from './utils';
+import { Encryption } from './index';
 
 export default class EncryptionRoom {
 	constructor(roomId, userId) {

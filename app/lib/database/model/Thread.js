@@ -1,6 +1,6 @@
 import { Model } from '@nozbe/watermelondb';
 import {
-	field, relation, date, json
+	date, field, json, relation
 } from '@nozbe/watermelondb/decorators';
 
 import { sanitizer } from '../utils';

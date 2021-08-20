@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, Alert, FlatList } from 'react-native';
+import { Alert, FlatList, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import StatusBar from '../containers/StatusBar';
 import RoomHeader from '../containers/RoomHeader';
 import { withTheme } from '../theme';
-import SearchHeader from './ThreadMessagesView/SearchHeader';
 import log, { events, logEvent } from '../utils/log';
 import database from '../lib/database';
 import { getUserSelector } from '../selectors/login';
@@ -29,6 +28,7 @@ import { withActionSheet } from '../containers/ActionSheet';
 import { deleteRoom as deleteRoomAction } from '../actions/room';
 import { CustomIcon } from '../lib/Icons';
 import { themes } from '../constants/colors';
+import SearchHeader from './ThreadMessagesView/SearchHeader';
 
 const API_FETCH_COUNT = 25;
 const PERMISSION_DELETE_C = 'delete-c';

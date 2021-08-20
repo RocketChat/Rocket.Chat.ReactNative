@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
@@ -19,53 +19,53 @@ const styles = StyleSheet.create({
 		marginTop: 6,
 		alignSelf: 'flex-start',
 		borderWidth: 1,
-		borderRadius: 4
+		borderRadius: 4,
 	},
 	attachmentContainer: {
 		flex: 1,
 		borderRadius: 4,
 		flexDirection: 'column',
-		padding: 15
+		padding: 15,
 	},
 	authorContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	author: {
 		flex: 1,
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
 	},
 	time: {
 		fontSize: 12,
 		marginLeft: 10,
 		...sharedStyles.textRegular,
-		fontWeight: '300'
+		fontWeight: '300',
 	},
 	fieldsContainer: {
 		flex: 1,
 		flexWrap: 'wrap',
-		flexDirection: 'row'
+		flexDirection: 'row',
 	},
 	fieldContainer: {
 		flexDirection: 'column',
-		padding: 10
+		padding: 10,
 	},
 	fieldTitle: {
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
 	},
 	fieldValue: {
 		fontSize: 14,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	marginTop: {
-		marginTop: 4
+		marginTop: 4,
 	},
 	marginBottom: {
-		marginBottom: 4
-	}
+		marginBottom: 4,
+	},
 });
 
 interface IMessageReplyAttachment {
@@ -160,10 +160,10 @@ const Fields = React.memo(({ attachment, theme, getCustomEmoji }: IMessageFields
 	const { baseUrl, user } = useContext(MessageContext);
 	return (
 		<View style={styles.fieldsContainer}>
-			{attachment.fields.map(field => (
+			{attachment.fields.map((field) => (
 				<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 					<Text style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>{field.title}</Text>
-					{/*@ts-ignore*/}
+					{/* @ts-ignore*/}
 					<Markdown
 						msg={field.value}
 						baseUrl={baseUrl}
@@ -219,8 +219,8 @@ const Reply = React.memo(({ attachment, timeFormat, index, getCustomEmoji, theme
 					index > 0 && styles.marginTop,
 					attachment.description && styles.marginBottom,
 					{
-						backgroundColor, borderColor
-					}
+						backgroundColor, borderColor,
+					},
 				]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
@@ -242,7 +242,7 @@ const Reply = React.memo(({ attachment, timeFormat, index, getCustomEmoji, theme
 					/>
 				</View>
 			</Touchable>
-			{/*@ts-ignore*/}
+			{/* @ts-ignore*/}
 			<Markdown
 				msg={attachment.description!}
 				baseUrl={baseUrl}

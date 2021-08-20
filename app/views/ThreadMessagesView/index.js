@@ -7,8 +7,6 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton } from '@react-navigation/stack';
 
-import styles from './styles';
-import Item from './Item';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
@@ -25,16 +23,18 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
-import Dropdown from './Dropdown';
-import DropdownItemHeader from './Dropdown/DropdownItemHeader';
-import { FILTER } from './filters';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { isIOS } from '../../utils/deviceInfo';
 import { getBadgeColor, makeThreadName } from '../../utils/room';
 import { getHeaderTitlePosition } from '../../containers/Header';
-import SearchHeader from './SearchHeader';
 import EventEmitter from '../../utils/events';
 import { LISTENER } from '../../containers/Toast';
+import SearchHeader from './SearchHeader';
+import { FILTER } from './filters';
+import DropdownItemHeader from './Dropdown/DropdownItemHeader';
+import Dropdown from './Dropdown';
+import Item from './Item';
+import styles from './styles';
 
 const API_FETCH_COUNT = 50;
 

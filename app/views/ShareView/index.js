@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, NativeModules } from 'react-native';
+import { NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
-import styles from './styles';
 import Loading from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
-import Header from './Header';
 import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
-import Preview from './Preview';
-import Thumbs from './Thumbs';
 import MessageBox from '../../containers/MessageBox';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
@@ -24,6 +20,10 @@ import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
 import { canUploadFile } from '../../utils/media';
 import { isAndroid } from '../../utils/deviceInfo';
+import Thumbs from './Thumbs';
+import Preview from './Preview';
+import Header from './Header';
+import styles from './styles';
 
 class ShareView extends Component {
 	constructor(props) {

@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import {IMessageEmoji} from "./interfaces";
+import { IMessageEmoji } from './interfaces';
 
 const Emoji = React.memo(({ content, baseUrl, standardEmojiStyle, customEmojiStyle, getCustomEmoji }: IMessageEmoji) => {
 	const parsedContent = content.replace(/^:|:$/g, '');

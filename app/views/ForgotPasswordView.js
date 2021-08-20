@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
-import sharedStyles from './Styles';
 import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
 import I18n from '../i18n';
@@ -12,7 +11,8 @@ import RocketChat from '../lib/rocketchat';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
+import sharedStyles from './Styles';
 
 class ForgotPasswordView extends React.Component {
 	static navigationOptions = ({ route }) => ({

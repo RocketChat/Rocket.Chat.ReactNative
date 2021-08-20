@@ -26,26 +26,25 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		height: 48,
 		borderRadius: 2,
-		marginBottom: 12
+		marginBottom: 12,
 	},
 	text: {
 		fontSize: 16,
 		...sharedStyles.textMedium,
-		...sharedStyles.textAlignCenter
+		...sharedStyles.textAlignCenter,
 	},
 	disabled: {
-		opacity: 0.3
-	}
+		opacity: 0.3,
+	},
 });
 
 export default class Button extends React.PureComponent<Partial<IButtonProps>, any> {
-
 	static defaultProps = {
 		title: 'Press me!',
 		type: 'primary',
 		onPress: () => alert('It works!'),
 		disabled: false,
-		loading: false
+		loading: false,
 	}
 
 	render() {
@@ -69,7 +68,7 @@ export default class Button extends React.PureComponent<Partial<IButtonProps>, a
 						? { backgroundColor }
 						: { backgroundColor: isPrimary ? themes[theme!].actionTintColor : themes[theme!].backgroundColor },
 					disabled && styles.disabled,
-					style
+					style,
 				]}
 				{...otherProps}
 			>
@@ -81,7 +80,7 @@ export default class Button extends React.PureComponent<Partial<IButtonProps>, a
 								style={[
 									styles.text,
 									{ color: textColor },
-									fontSize && { fontSize }
+									fontSize && { fontSize },
 								]}
 								accessibilityLabel={title}
 							>

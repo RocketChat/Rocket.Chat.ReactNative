@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../lib/Icons';
@@ -11,32 +11,32 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	detailsContainer: {
 		flex: 1,
-		flexDirection: 'row'
+		flexDirection: 'row',
 	},
 	detailContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginRight: 8
+		marginRight: 8,
 	},
 	detailText: {
 		fontSize: 10,
 		marginLeft: 2,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
 	},
 	badgeContainer: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	badge: {
 		width: 8,
 		height: 8,
 		borderRadius: 4,
-		marginRight: 8
-	}
+		marginRight: 8,
+	},
 });
 
 interface IThreadDetails {
@@ -60,7 +60,7 @@ const ThreadDetails = ({
 	badgeColor,
 	toggleFollowThread,
 	style,
-	theme
+	theme,
 }: IThreadDetails) => {
 	let { tcount } = item;
 	if (tcount >= 1000) {

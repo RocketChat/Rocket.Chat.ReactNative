@@ -63,7 +63,6 @@ interface IMessageContainerProps {
 }
 
 class MessageContainer extends React.Component<IMessageContainerProps, any> {
-
 	static defaultProps = {
 		getCustomEmoji: () => {},
 		onLongPress: () => {},
@@ -83,10 +82,11 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		archived: false,
 		broadcast: false,
 		isIgnored: false,
-		theme: 'light'
+		theme: 'light',
 	}
 
 	state = { isManualUnignored: false };
+
 	private subscription: any;
 
 	componentDidMount() {
@@ -102,7 +102,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 	shouldComponentUpdate(nextProps: any, nextState: any) {
 		const { isManualUnignored } = this.state;
 		const {
-			theme, threadBadgeColor, isIgnored, highlighted
+			theme, threadBadgeColor, isIgnored, highlighted,
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -141,7 +141,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		const { item, isThreadRoom } = this.props;
 		Keyboard.dismiss();
 
-		if (((item.tlm || item.tmid) && !isThreadRoom)) {
+		if ((item.tlm || item.tmid) && !isThreadRoom) {
 			this.onThreadPress();
 		}
 	}, 300, true);
@@ -317,7 +317,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 			threadBadgeColor,
 			toggleFollowThread,
 			jumpToMessage,
-			highlighted
+			highlighted,
 		} = this.props;
 		const {
 			id,
@@ -345,7 +345,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 			unread,
 			blocks,
 			autoTranslate: autoTranslateMessage,
-			replies
+			replies,
 		} = item;
 
 		let message = msg;
@@ -373,10 +373,10 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 					jumpToMessage,
 					threadBadgeColor,
 					toggleFollowThread,
-					replies
+					replies,
 				}}
 			>
-				{/*@ts-ignore*/}
+				{/* @ts-ignore*/}
 				<Message
 					id={id}
 					msg={message}

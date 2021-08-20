@@ -15,7 +15,7 @@ export const ThemeContext = React.createContext<Partial<IThemeContextProps>>({ t
 export function withTheme(Component: any) {
 	const ThemedComponent = (props: any) => (
 		<ThemeContext.Consumer>
-			{contexts => <Component {...props} {...contexts} />}
+			{(contexts) => <Component {...props} {...contexts} />}
 		</ThemeContext.Consumer>
 	);
 	hoistNonReactStatics(ThemedComponent, Component);

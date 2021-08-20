@@ -3,10 +3,10 @@ import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 
 import log from '../../utils/log';
-import updateMessages from './updateMessages';
 import { getMessageById } from '../database/services/Message';
 import { MESSAGE_TYPE_LOAD_NEXT_CHUNK } from '../../constants/messageTypeLoad';
 import { generateLoadMoreId } from '../utils';
+import updateMessages from './updateMessages';
 
 const COUNT = 50;
 

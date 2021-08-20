@@ -2,9 +2,8 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import { themes } from '../../constants/colors';
-
 import styles from './styles';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 
 interface IAtMention {
 	mention: string;
@@ -17,7 +16,7 @@ interface IAtMention {
 }
 
 const AtMention = React.memo(({
-	mention, mentions, username, navToRoomInfo, style = [], useRealName, theme
+	mention, mentions, username, navToRoomInfo, style = [], useRealName, theme,
 }: IAtMention) => {
 	if (mention === 'all' || mention === 'here') {
 		return (
@@ -25,9 +24,9 @@ const AtMention = React.memo(({
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].mentionGroupColor
+						color: themes[theme].mentionGroupColor,
 					},
-					...style
+					...style,
 				]}
 			>{mention}
 			</Text>
@@ -37,11 +36,11 @@ const AtMention = React.memo(({
 	let mentionStyle = {};
 	if (mention === username) {
 		mentionStyle = {
-			color: themes[theme].mentionMeColor
+			color: themes[theme].mentionMeColor,
 		};
 	} else {
 		mentionStyle = {
-			color: themes[theme].mentionOtherColor
+			color: themes[theme].mentionOtherColor,
 		};
 	}
 
@@ -51,7 +50,7 @@ const AtMention = React.memo(({
 		logEvent(events.ROOM_MENTION_GO_USER_INFO);
 		const navParam = {
 			t: 'd',
-			rid: user && user._id
+			rid: user && user._id,
 		};
 		navToRoomInfo(navParam);
 	};

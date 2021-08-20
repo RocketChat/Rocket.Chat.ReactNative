@@ -15,7 +15,7 @@ export const DimensionsContext = React.createContext<Partial<IDimensionsContextP
 export function withDimensions(Component: any) {
 	const DimensionsComponent = (props: any) => (
 		<DimensionsContext.Consumer>
-			{contexts => <Component {...props} {...contexts} />}
+			{(contexts) => <Component {...props} {...contexts} />}
 		</DimensionsContext.Consumer>
 	);
 	hoistNonReactStatics(DimensionsComponent, Component);
@@ -29,6 +29,6 @@ export const useOrientation = () => {
 	const isPortrait = (height)! > (width)!;
 	return {
 		isPortrait,
-		isLandscape: !isPortrait
+		isLandscape: !isPortrait,
 	};
 };

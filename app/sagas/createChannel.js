@@ -1,16 +1,16 @@
 import {
-	select, put, call, take, takeLatest
+	call, put, select, take, takeLatest
 } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
-import { createChannelSuccess, createChannelFailure } from '../actions/createChannel';
+import { createChannelFailure, createChannelSuccess } from '../actions/createChannel';
 import { showErrorAlert } from '../utils/info';
 import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/Navigation';
 import database from '../lib/database';
 import I18n from '../i18n';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
 import { goRoom } from '../utils/goRoom';
 
 const createChannel = function createChannel(data) {

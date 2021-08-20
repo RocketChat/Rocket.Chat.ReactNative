@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Alert, Keyboard, Text, NativeModules} from 'react-native';
+import { Alert, Keyboard, NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -15,33 +15,35 @@ import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
 import { emojis } from '../../emojis';
-import log, { logEvent, events } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
 import { themes } from '../../constants/colors';
 // @ts-ignore
+// eslint-disable-next-line import/extensions,import/no-unresolved
 import LeftButtons from './LeftButtons';
 // @ts-ignore
+// eslint-disable-next-line import/extensions,import/no-unresolved
 import RightButtons from './RightButtons';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import { canUploadFile } from '../../utils/media';
 import EventEmiter from '../../utils/events';
 import {
 	KEY_COMMAND,
-	handleCommandTyping,
+	handleCommandShowUpload,
 	handleCommandSubmit,
-	handleCommandShowUpload
+	handleCommandTyping,
 } from '../../commands';
 import Mentions from './Mentions';
 import MessageboxContext from './Context';
 import {
-	MENTIONS_TRACKING_TYPE_EMOJIS,
-	MENTIONS_TRACKING_TYPE_COMMANDS,
 	MENTIONS_COUNT_TO_DISPLAY,
+	MENTIONS_TRACKING_TYPE_COMMANDS,
+	MENTIONS_TRACKING_TYPE_EMOJIS,
+	MENTIONS_TRACKING_TYPE_ROOMS,
 	MENTIONS_TRACKING_TYPE_USERS,
-	MENTIONS_TRACKING_TYPE_ROOMS
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
@@ -58,17 +60,17 @@ const imagePickerConfig = {
 	cropping: true,
 	compressImageQuality: 0.8,
 	avoidEmptySpaceAroundImage: false,
-	freeStyleCropEnabled: true
+	freeStyleCropEnabled: true,
 };
 
 const libraryPickerConfig = {
 	multiple: true,
 	compressVideoPreset: 'Passthrough',
-	mediaType: 'any'
+	mediaType: 'any',
 };
 
 const videoPickerConfig = {
-	mediaType: 'video'
+	mediaType: 'video',
 };
 
 interface IMessageBoxProps {
@@ -95,18 +97,18 @@ interface IMessageBoxProps {
 	FileUpload_MediaTypeWhiteList: string;
 	FileUpload_MaxFileSize: number;
 	Message_AudioRecorderEnabled: boolean;
-	getCustomEmoji(): void;
-	editCancel(): void;
-	editRequest({}): void;
-	onSubmit({}, {}?, {}?): void;
-	typing({}, {}): void;
+	getCustomEmoji: Function;
+	editCancel: Function;
+	editRequest: Function;
+	onSubmit: Function;
+	typing: Function;
 	theme: string;
 	replyCancel(): void;
 	showSend: boolean;
 	navigation: any;
 	children: JSX.Element;
 	isMasterDetail: boolean;
-	showActionSheet({}): void;
+	showActionSheet: Function;
 	iOSScrollBehavior: number;
 	sharing: boolean;
 	isActionsEnabled: boolean;
@@ -127,31 +129,44 @@ interface IMessageBoxState {
 }
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
-
 	private text: string;
+
 	private selection: { start: number; end: number };
+
 	private focused: boolean;
+
 	private options: any;
+
 	private imagePickerConfig: any;
+
 	private libraryPickerConfig: any;
+
 	private videoPickerConfig: any;
+
 	private room: any;
+
 	private thread: any;
+
 	private unsubscribeFocus: any;
+
 	private trackingTimeout: any;
+
 	private tracking: any;
+
 	private unsubscribeBlur: any;
+
 	private component: any;
+
 	private typingTimeout: any;
 
 	static defaultProps = {
 		message: {
-			id: ''
+			id: '',
 		},
 		sharing: false,
 		iOSScrollBehavior: NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset,
 		isActionsEnabled: true,
-		getCustomEmoji: () => {}
+		getCustomEmoji: () => {},
 	}
 
 	constructor(props: IMessageBoxProps) {
@@ -165,7 +180,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {},
-			tshow: false
+			tshow: false,
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -176,49 +191,49 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			{
 				title: I18n.t('Take_a_photo'),
 				icon: 'camera-photo',
-				onPress: this.takePhoto
+				onPress: this.takePhoto,
 			},
 			{
 				title: I18n.t('Take_a_video'),
 				icon: 'camera',
-				onPress: this.takeVideo
+				onPress: this.takeVideo,
 			},
 			{
 				title: I18n.t('Choose_from_library'),
 				icon: 'image',
-				onPress: this.chooseFromLibrary
+				onPress: this.chooseFromLibrary,
 			},
 			{
 				title: I18n.t('Choose_file'),
 				icon: 'attach',
-				onPress: this.chooseFile
+				onPress: this.chooseFile,
 			},
 			{
 				title: I18n.t('Create_Discussion'),
 				icon: 'discussions',
-				onPress: this.createDiscussion
-			}
+				onPress: this.createDiscussion,
+			},
 		];
 
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
-			loadingLabelText: I18n.t('Processing')
+			loadingLabelText: I18n.t('Processing'),
 		};
 
 		this.imagePickerConfig = {
 			...imagePickerConfig,
-			...libPickerLabels
+			...libPickerLabels,
 		};
 
 		this.libraryPickerConfig = {
 			...libraryPickerConfig,
-			...libPickerLabels
+			...libPickerLabels,
 		};
 
 		this.videoPickerConfig = {
 			...videoPickerConfig,
-			...libPickerLabels
+			...libPickerLabels,
 		};
 	}
 
@@ -302,11 +317,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	shouldComponentUpdate(nextProps: any, nextState: any) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow
+			showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow,
 		} = this.state;
 
 		const {
-			roomType, replying, editing, isFocused, message, theme
+			roomType, replying, editing, isFocused, message, theme,
 		} = this.props;
 
 		if (nextProps.theme !== theme) {
@@ -388,7 +403,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	debouncedOnChangeText = debounce(async(text: any) => {
+	debouncedOnChangeText = debounce(async (text: any) => {
 		const { sharing } = this.props;
 		const isTextEmpty = text.length === 0;
 		if (isTextEmpty) {
@@ -424,15 +439,14 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				}
 			}
 			return this.identifyMentionKeyword(command, MENTIONS_TRACKING_TYPE_COMMANDS);
-		} else if (channelMention) {
+		} if (channelMention) {
 			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_ROOMS);
-		} else if (userMention) {
+		} if (userMention) {
 			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_USERS);
-		} else if (emojiMention) {
+		} if (emojiMention) {
 			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_EMOJIS);
-		} else {
-			return this.stopTrackingMention();
 		}
+		return this.stopTrackingMention();
 	}, 100)
 
 	onKeyboardResigned = () => {
@@ -451,7 +465,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const result = msg.substr(0, cursor).replace(regexp, '');
 		const mentionName = trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
 			? `${ item.name || item }:`
-			: (item.username || item.name || item.command);
+			: item.username || item.name || item.command;
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
 
 		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
@@ -467,7 +481,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	onPressCommandPreview = (item: any) => {
 		const { command } = this.state;
 		const {
-			rid, tmid, message: { id: messageTmid }, replyCancel
+			rid, tmid, message: { id: messageTmid }, replyCancel,
 		} = this.props;
 		const { text } = this;
 		const name = text.substr(0, text.indexOf(' ')).slice(1);
@@ -500,7 +514,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setShowSend(true);
 	}
 
-	getPermalink = async(message: any) => {
+	getPermalink = async (message: any) => {
 		try {
 			return await RocketChat.getPermalinkMessage(message);
 		} catch (error) {
@@ -519,18 +533,18 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		return result;
 	}
 
-	getUsers = debounce(async(keyword: any) => {
+	getUsers = debounce(async (keyword: any) => {
 		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
 		res = [...this.getFixedMentions(keyword), ...res];
 		this.setState({ mentions: res });
 	}, 300)
 
-	getRooms = debounce(async(keyword = '') => {
+	getRooms = debounce(async (keyword = '') => {
 		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
 		this.setState({ mentions: res });
 	}, 300)
 
-	getEmojis = debounce(async(keyword: any) => {
+	getEmojis = debounce(async (keyword: any) => {
 		const db = database.active;
 		const customEmojisCollection = db.get('custom_emojis');
 		const likeString = sanitizeLikeString(keyword);
@@ -540,17 +554,17 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 		let customEmojis = await customEmojisCollection.query(...whereClause).fetch();
 		customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
-		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
+		const filteredEmojis = emojis.filter((emoji) => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		this.setState({ mentions: mergedEmojis || [] });
 	}, 300)
 
-	getSlashCommands = debounce(async(keyword: any) => {
+	getSlashCommands = debounce(async (keyword: any) => {
 		const db = database.active;
 		const commandsCollection = db.get('slash_commands');
 		const likeString = sanitizeLikeString(keyword);
 		const commands = await commandsCollection.query(
-			Q.where('id', Q.like(`${ likeString }%`))
+			Q.where('id', Q.like(`${ likeString }%`)),
 		).fetch();
 		this.setState({ mentions: commands || [] });
 	}, 300)
@@ -585,7 +599,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}, 1000);
 	}
 
-	setCommandPreview = async(command: any, name: string, params: any) => {
+	setCommandPreview = async (command: any, name: string, params: any) => {
 		const { rid } = this.props;
 		try	{
 			const { success, preview } = await RocketChat.getCommandPreview(name, rid, params);
@@ -630,7 +644,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		return false;
 	}
 
-	takePhoto = async() => {
+	takePhoto = async () => {
 		logEvent(events.ROOM_BOX_ACTION_PHOTO);
 		try {
 			const image = await ImagePicker.openCamera(this.imagePickerConfig);
@@ -642,7 +656,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	}
 
-	takeVideo = async() => {
+	takeVideo = async () => {
 		logEvent(events.ROOM_BOX_ACTION_VIDEO);
 		try {
 			const video = await ImagePicker.openCamera(this.videoPickerConfig);
@@ -654,7 +668,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	}
 
-	chooseFromLibrary = async() => {
+	chooseFromLibrary = async () => {
 		logEvent(events.ROOM_BOX_ACTION_LIBRARY);
 		try {
 			const attachments = await ImagePicker.openPicker(this.libraryPickerConfig);
@@ -664,17 +678,17 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	}
 
-	chooseFile = async() => {
+	chooseFile = async () => {
 		logEvent(events.ROOM_BOX_ACTION_FILE);
 		try {
 			const res = await DocumentPicker.pick({
-				type: [DocumentPicker.types.allFiles]
+				type: [DocumentPicker.types.allFiles],
 			});
 			const file = {
 				filename: res.name,
 				size: res.size,
 				mime: res.type,
-				path: res.uri
+				path: res.uri,
 			};
 			if (this.canUploadFile(file)) {
 				this.openShareView([file]);
@@ -730,9 +744,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ recording });
 	}
 
-	finishAudioMessage = async(fileInfo: any) => {
+	finishAudioMessage = async (fileInfo: any) => {
 		const {
-			rid, tmid, baseUrl: server, user
+			rid, tmid, baseUrl: server, user,
 		} = this.props;
 
 		if (fileInfo) {
@@ -750,10 +764,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ showEmojiKeyboard: false });
 	}
 
-	submit = async() => {
+	submit = async () => {
 		const { tshow } = this.state;
 		const {
-			onSubmit, rid: roomId, tmid, showSend, sharing
+			onSubmit, rid: roomId, tmid, showSend, sharing,
 		} = this.props;
 		const message = this.text;
 
@@ -773,7 +787,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 
 		const {
-			editing, replying, message: { id: messageTmid }, replyCancel
+			editing, replying, message: { id: messageTmid }, replyCancel,
 		} = this.props;
 
 		// Slash command
@@ -783,7 +797,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			const command = message.replace(/ .*/, '').slice(1);
 			const likeString = sanitizeLikeString(command);
 			const slashCommand = await commandsCollection.query(
-				Q.where('id', Q.like(`${ likeString }%`))
+				Q.where('id', Q.like(`${ likeString }%`)),
 			).fetch();
 			if (slashCommand.length > 0) {
 				logEvent(events.COMMAND_RUN);
@@ -811,7 +825,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		// Reply
 		} else if (replying) {
 			const {
-				message: replyingMessage, threadsEnabled, replyWithMention
+				message: replyingMessage, threadsEnabled, replyWithMention,
 			} = this.props;
 
 			// Thread
@@ -856,7 +870,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	identifyMentionKeyword = (keyword: any, type: string) => {
 		this.setState({
 			showEmojiKeyboard: false,
-			trackingType: type
+			trackingType: type,
 		});
 		this.updateMentions(keyword, type);
 	}
@@ -870,7 +884,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			mentions: [],
 			trackingType: '',
 			commandPreview: [],
-			showCommandPreview: false
+			showCommandPreview: false,
 		});
 	}
 
@@ -912,16 +926,16 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	renderContent = () => {
 		const {
-			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
+			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview,
 		} = this.state;
 		const {
-			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled, tmid
+			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled, tmid,
 		} = this.props;
 
 		const isAndroidTablet = isTablet && isAndroid ? {
 			multiline: false,
 			onSubmitEditing: this.submit,
-			returnKeyType: 'send'
+			returnKeyType: 'send',
 		} : {};
 
 		const recordAudio = showSend || !Message_AudioRecorderEnabled ? null : (
@@ -935,7 +949,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const commandsPreviewAndMentions = !recording ? (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-				{/*@ts-ignore*/}
+				{/* @ts-ignore*/}
 				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
 			</>
 		) : null;
@@ -965,11 +979,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					isActionsEnabled={isActionsEnabled}
 				/>
 				<TextInput
-					ref={component => this.component = component}
-					//@ts-ignore
+					ref={(component) => this.component = component}
+					// @ts-ignore
 					style={[styles.textBoxInput, { color: themes[theme].bodyText }]}
 					returnKeyType='default'
-					//@ts-ignore
+					// @ts-ignore
 					keyboardType='twitter'
 					blurOnSubmit={false}
 					placeholder={I18n.t('New_Message')}
@@ -1002,7 +1016,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 						style={[
 							styles.textArea,
 							{ backgroundColor: themes[theme].messageboxBackground },
-							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
+							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground },
 						]}
 						testID='messagebox'
 					>
@@ -1020,7 +1034,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		console.count(`${ this.constructor.name }.render calls`);
 		const { showEmojiKeyboard } = this.state;
 		const {
-			user, baseUrl, theme, iOSScrollBehavior
+			user, baseUrl, theme, iOSScrollBehavior,
 		} = this.props;
 		return (
 			<MessageboxContext.Provider
@@ -1028,7 +1042,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					user,
 					baseUrl,
 					onPressMention: this.onPressMention,
-					onPressCommandPreview: this.onPressCommandPreview
+					onPressCommandPreview: this.onPressCommandPreview,
 				}}
 			>
 				<KeyboardAccessoryView
@@ -1056,11 +1070,11 @@ const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state),
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
-	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled
+	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
 });
 
-const dispatchToProps = ({
-	typing: (rid: any, status: any) => userTypingAction(rid, status)
-});
+const dispatchToProps = {
+	typing: (rid: any, status: any) => userTypingAction(rid, status),
+};
 // @ts-ignore
 export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));

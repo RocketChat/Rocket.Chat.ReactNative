@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, Text
+	FlatList, Text, View
 } from 'react-native';
 import { connect } from 'react-redux';
-import * as List from '../../containers/List';
 
+import * as List from '../../containers/List';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
@@ -17,14 +17,14 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
-import log, { logEvent, events } from '../../utils/log';
-import Options from './Options';
+import log, { events, logEvent } from '../../utils/log';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
-import styles from './styles';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
+import styles from './styles';
+import Options from './Options';
 
 class DirectoryView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -93,7 +93,7 @@ class DirectoryView extends React.Component {
 				query,
 				offset: data.length,
 				count: 50,
-				sort: (type === 'users') ? { username: 1 } : { usersCount: -1 }
+				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
 			});
 			if (directories.success) {
 				this.setState({

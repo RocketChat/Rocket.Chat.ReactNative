@@ -8,7 +8,6 @@ import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../constants/colors';
-
 import styles from './styles';
 
 const SelectChannel = ({

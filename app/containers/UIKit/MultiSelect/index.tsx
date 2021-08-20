@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-	View, Text, TouchableWithoutFeedback, Modal, KeyboardAvoidingView, Animated, Easing, StyleSheet
+	Animated, Easing, KeyboardAvoidingView, Modal, StyleSheet, Text, TouchableWithoutFeedback, View,
 } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import Button from '../../Button';
 import TextInput from '../../TextInput';
-
 import { textParser } from '../utils';
 import { themes } from '../../../constants/colors';
 import I18n from '../../../i18n';
 import { isIOS } from '../../../utils/deviceInfo';
-
 import Chips from './Chips';
 import Items from './Items';
 import Input from './Input';
-
 import styles from './styles';
 
 interface IMultiSelect {
@@ -39,7 +36,7 @@ const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
 	duration: ANIMATION_DURATION,
 	easing: Easing.inOut(Easing.quad),
-	useNativeDriver: true
+	useNativeDriver: true,
 };
 const animatedValue = new Animated.Value(0);
 
@@ -57,7 +54,7 @@ export const MultiSelect = React.memo(({
 	onClose = () => {},
 	disabled,
 	inputStyle,
-	theme
+	theme,
 }: IMultiSelect) => {
 	const [selected, select] = useState<any>(Array.isArray(values) ? values : []);
 	const [open, setOpen] = useState(false);
@@ -86,8 +83,8 @@ export const MultiSelect = React.memo(({
 			animatedValue,
 			{
 				toValue: 1,
-				...ANIMATION_PROPS
-			}
+				...ANIMATION_PROPS,
+			},
 		).start();
 		setShowContent(true);
 	};
@@ -98,8 +95,8 @@ export const MultiSelect = React.memo(({
 			animatedValue,
 			{
 				toValue: 0,
-				...ANIMATION_PROPS
-			}
+				...ANIMATION_PROPS,
+			},
 		).start(() => setShowContent(false));
 	};
 
@@ -129,7 +126,7 @@ export const MultiSelect = React.memo(({
 				<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
 					<TextInput
 						testID='multi-select-search'
-						/*@ts-ignore*/
+						/* @ts-ignore*/
 						onChangeText={onSearch || onSearchChange}
 						placeholder={I18n.t('Search')}
 						theme={theme}
@@ -142,7 +139,7 @@ export const MultiSelect = React.memo(({
 
 	const translateY = animatedValue.interpolate({
 		inputRange: [0, 1],
-		outputRange: [600, 0]
+		outputRange: [600, 0],
 	});
 
 	let button = multiselect ? (
@@ -176,7 +173,7 @@ export const MultiSelect = React.memo(({
 				disabled={disabled}
 				inputStyle={inputStyle}
 			>
-				{/*@ts-ignore*/}
+				{/* @ts-ignore*/}
 				{items.length ? <Chips items={items} onSelect={onSelect} theme={theme} /> : <Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{placeholder.text}</Text>}
 			</Input>
 		);
@@ -193,9 +190,9 @@ export const MultiSelect = React.memo(({
 			>
 				<TouchableWithoutFeedback onPress={onHide}>
 					<View style={styles.container}>
-						{/*@ts-ignore*/}
+						{/* @ts-ignore*/}
 						<View style={{ ...StyleSheet.absoluteFill, opacity: themes[theme].backdropOpacity, backgroundColor: themes[theme].backdropColor }} />
-						{/*@ts-ignore*/}
+						{/* @ts-ignore*/}
 						<KeyboardAvoidingView style={styles.keyboardView} behavior={behavior}>
 							<Animated.View style={[styles.animatedContent, { transform: [{ translateY }] }]}>
 								{showContent ? renderContent() : null}

@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet,  Modal, Animated , View } from 'react-native';
+import { Animated, Modal, StyleSheet, View } from 'react-native';
+
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 
@@ -7,13 +8,13 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	image: {
 		width: 100,
 		height: 100,
-		resizeMode: 'contain'
-	}
+		resizeMode: 'contain',
+	},
 });
 
 interface ILoadingProps {
@@ -22,12 +23,13 @@ interface ILoadingProps {
 }
 
 class Loading extends React.PureComponent<ILoadingProps, any> {
-
 	state = {
 		scale: new Animated.Value(1),
-		opacity: new Animated.Value(0)
+		opacity: new Animated.Value(0),
 	}
+
 	private opacityAnimation: any;
+
 	private scaleAnimation: any;
 
 	componentDidMount() {
@@ -39,8 +41,8 @@ class Loading extends React.PureComponent<ILoadingProps, any> {
 			{
 				toValue: 1,
 				duration: 200,
-				useNativeDriver: true
-			}
+				useNativeDriver: true,
+			},
 		);
 		this.scaleAnimation = Animated.loop(Animated.sequence([
 			Animated.timing(
@@ -48,17 +50,17 @@ class Loading extends React.PureComponent<ILoadingProps, any> {
 				{
 					toValue: 0,
 					duration: 1000,
-					useNativeDriver: true
-				}
+					useNativeDriver: true,
+				},
 			),
 			Animated.timing(
 				scale,
 				{
 					toValue: 1,
 					duration: 1000,
-					useNativeDriver: true
-				}
-			)
+					useNativeDriver: true,
+				},
+			),
 		]));
 
 		if (visible) {
@@ -97,13 +99,13 @@ class Loading extends React.PureComponent<ILoadingProps, any> {
 
 		const scaleAnimation = scale.interpolate({
 			inputRange: [0, 0.5, 1],
-			outputRange: [1, 1.1, 1]
+			outputRange: [1, 1.1, 1],
 		});
 
 		const opacityAnimation = opacity.interpolate({
 			inputRange: [0, 1],
 			outputRange: [0, themes[theme].backdropOpacity],
-			extrapolate: 'clamp'
+			extrapolate: 'clamp',
 		});
 
 		return (
@@ -121,15 +123,15 @@ class Loading extends React.PureComponent<ILoadingProps, any> {
 							// @ts-ignore
 							...StyleSheet.absoluteFill,
 							backgroundColor: themes[theme].backdropColor,
-							opacity: opacityAnimation
+							opacity: opacityAnimation,
 						}]}
 					/>
 					<Animated.Image
 						source={require('../static/images/logo.png')}
 						style={[styles.image, {
 							transform: [{
-								scale: scaleAnimation
-							}]
+								scale: scaleAnimation,
+							}],
 						}]}
 					/>
 				</View>
@@ -138,4 +140,4 @@ class Loading extends React.PureComponent<ILoadingProps, any> {
 	}
 }
 
-export default (withTheme(Loading));
+export default withTheme(Loading);

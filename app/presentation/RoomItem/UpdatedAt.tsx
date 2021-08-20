@@ -23,16 +23,16 @@ const UpdatedAt = React.memo(({ date, theme, hideUnreadStatus, alert }: IUpdated
 				{
 					color:
 						themes[theme]
-							.auxiliaryText
+							.auxiliaryText,
 				},
 				alert && !hideUnreadStatus && [
 					styles.updateAlert,
 					{
 						color:
 							themes[theme]
-								.tintColor
-					}
-				]
+								.tintColor,
+					},
+				],
 			]}
 			ellipsizeMode='tail'
 			numberOfLines={1}

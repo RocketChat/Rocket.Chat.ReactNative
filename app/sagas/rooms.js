@@ -1,11 +1,11 @@
 import {
-	put, select, race, take, fork, cancel, delay
+	cancel, delay, fork, put, race, select, take
 } from 'redux-saga/effects';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import * as types from '../actions/actionsTypes';
-import { roomsSuccess, roomsFailure, roomsRefresh } from '../actions/rooms';
+import { roomsFailure, roomsRefresh, roomsSuccess } from '../actions/rooms';
 import database from '../lib/database';
 import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';

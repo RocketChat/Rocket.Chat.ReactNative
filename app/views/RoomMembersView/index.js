@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import * as List from '../../containers/List';
 
-import styles from './styles';
+import * as List from '../../containers/List';
 import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
@@ -27,6 +26,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { CustomIcon } from '../../lib/Icons';
+import styles from './styles';
 
 const PAGE_SIZE = 25;
 
@@ -106,7 +106,7 @@ class RoomMembersView extends React.Component {
 		} = this.props;
 
 		const result = await RocketChat.hasPermission([
-			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission, ...(room.teamMain ? [editTeamMemberPermission, viewAllTeamChannelsPermission, viewAllTeamsPermission] : [])
+			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission, ...room.teamMain ? [editTeamMemberPermission, viewAllTeamChannelsPermission, viewAllTeamsPermission] : []
 		], room.rid);
 
 		this.permissions = {
@@ -115,11 +115,11 @@ class RoomMembersView extends React.Component {
 			[PERMISSION_SET_OWNER]: result[2],
 			[PERMISSION_SET_MODERATOR]: result[3],
 			[PERMISSION_REMOVE_USER]: result[4],
-			...(room.teamMain ? {
+			...room.teamMain ? {
 				[PERMISSION_EDIT_TEAM_MEMBER]: result[5],
 				[PERMISSION_VIEW_ALL_TEAM_CHANNELS]: result[6],
 				[PERMISION_VIEW_ALL_TEAMS]: result[7]
-			} : {})
+			} : {}
 		};
 
 		const hasSinglePermission = Object.values(this.permissions).some(p => !!p);
@@ -225,7 +225,7 @@ class RoomMembersView extends React.Component {
 				teamId: room.teamId,
 				teamName: room.name,
 				userId,
-				...(selected && { rooms: selected })
+				...selected && { rooms: selected }
 			});
 			if (result.success) {
 				const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });

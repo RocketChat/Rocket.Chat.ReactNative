@@ -1,6 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+
 import { themes } from '../../constants/colors';
 import { themedHeader } from '../../utils/navigation';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
@@ -13,9 +14,8 @@ export const getHeaderHeight = (isLandscape: boolean) => {
 	if (isIOS) {
 		if (isLandscape && !isTablet) {
 			return 32;
-		} else {
-			return 44;
 		}
+		return 44;
 	}
 	return 56;
 };
@@ -30,7 +30,7 @@ interface IHeaderTitlePosition {
 
 export const getHeaderTitlePosition = ({ insets, numIconsRight }: IHeaderTitlePosition) => ({
 	left: insets.left + 60,
-	right: insets.right + Math.max(45 * numIconsRight, 15)
+	right: insets.right + Math.max(45 * numIconsRight, 15),
 });
 
 const styles = StyleSheet.create({
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
 		height: headerHeight,
 		flexDirection: 'row',
 		justifyContent: 'center',
-		elevation: 4
-	}
+		elevation: 4,
+	},
 });
 
 interface IHeader {

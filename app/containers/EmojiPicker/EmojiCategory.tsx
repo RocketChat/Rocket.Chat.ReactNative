@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text, TouchableOpacity, FlatList } from 'react-native';
+import { FlatList, Text, TouchableOpacity } from 'react-native';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import {IEmoji, IEmojiCategory} from "./interfaces";
+import { IEmoji, IEmojiCategory } from './interfaces';
 
 const EMOJI_SIZE = 50;
 
@@ -21,7 +21,6 @@ const renderEmoji = (emoji: IEmoji, size: number, baseUrl: string) => {
 };
 
 class EmojiCategory extends React.Component<Partial<IEmojiCategory>> {
-
 	renderItem(emoji: any) {
 		const { baseUrl, onEmojiSelected } = this.props;
 		return (
@@ -52,7 +51,7 @@ class EmojiCategory extends React.Component<Partial<IEmojiCategory>> {
 				contentContainerStyle={{ marginHorizontal }}
 				// rerender FlatList in case of width changes
 				key={`emoji-category-${ width }`}
-				keyExtractor={item => (item && item.isCustom && item.content) || item}
+				keyExtractor={(item) => (item && item.isCustom && item.content) || item}
 				data={emojis}
 				extraData={this.props}
 				renderItem={({ item }) => this.renderItem(item)}

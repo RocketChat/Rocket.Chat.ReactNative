@@ -11,7 +11,7 @@ import { DEFAULT_BROWSER_KEY } from '../utils/openLink';
 import { isIOS } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
 
 const DEFAULT_BROWSERS = [
 	{

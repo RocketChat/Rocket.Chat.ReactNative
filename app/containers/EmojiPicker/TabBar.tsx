@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+
 import styles from './styles';
 import { themes } from '../../constants/colors';
 
 interface ITabBarProps {
-	goToPage({}): void;
+	goToPage: Function;
 	activeTab: number,
 	tabs: [],
 	tabEmojiStyle: object,
@@ -12,7 +13,6 @@ interface ITabBarProps {
 }
 
 export default class TabBar extends React.Component<Partial<ITabBarProps>> {
-
 	shouldComponentUpdate(nextProps: any) {
 		const { activeTab, theme } = this.props;
 		if (nextProps.activeTab !== activeTab) {

@@ -5,16 +5,16 @@ import { Q } from '@nozbe/watermelondb';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
-import {IAvatar} from "./interfaces";
-
+import { IAvatar } from './interfaces';
 
 class AvatarContainer extends React.Component<Partial<IAvatar>, any> {
 	private mounted: boolean;
+
 	private subscription!: any;
 
 	static defaultProps = {
 		text: '',
-		type: 'd'
+		type: 'd',
 	};
 
 	constructor(props: Partial<IAvatar>) {
@@ -46,7 +46,7 @@ class AvatarContainer extends React.Component<Partial<IAvatar>, any> {
 		return type === 'd';
 	}
 
-	init = async() => {
+	init = async () => {
 		const db = database.active;
 		const usersCollection = db.get('users');
 		const subsCollection = db.get('subscriptions');
@@ -99,6 +99,6 @@ const mapStateToProps = (state: any) => ({
 	blockUnauthenticatedAccess:
 		state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess
 		?? state.settings.Accounts_AvatarBlockUnauthenticatedAccess
-		?? true
+		?? true,
 });
 export default connect(mapStateToProps)(AvatarContainer);

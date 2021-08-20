@@ -79,8 +79,8 @@ class SelectServerView extends React.Component {
 	}
 }
 
-const mapStateToProps = (({ share }) => ({
+const mapStateToProps = ({ share }) => ({
 	server: share.server.server
-}));
+});
 
 export default connect(mapStateToProps)(SelectServerView);

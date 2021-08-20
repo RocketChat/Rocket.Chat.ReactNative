@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
@@ -8,11 +8,11 @@ import Navigation from '../../lib/Navigation';
 
 const styles = StyleSheet.create({
 	image: {
-		borderRadius: 2
+		borderRadius: 2,
 	},
 	mediaContext: {
-		marginRight: 8
-	}
+		marginRight: 8,
+	},
 });
 
 interface IThumb {

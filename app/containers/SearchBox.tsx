@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import TextInput from '../presentation/TextInput';
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		flex: 1
+		flex: 1,
 	},
 	searchBox: {
 		alignItems: 'center',
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 		margin: 16,
 		marginVertical: 10,
 		paddingHorizontal: 10,
-		flex: 1
+		flex: 1,
 	},
 	input: {
 		flex: 1,
@@ -33,15 +33,15 @@ const styles = StyleSheet.create({
 		marginLeft: 8,
 		paddingTop: 0,
 		paddingBottom: 0,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	cancel: {
-		marginRight: 15
+		marginRight: 15,
 	},
 	cancelText: {
 		...sharedStyles.textRegular,
-		fontSize: 17
-	}
+		fontSize: 17,
+	},
 });
 
 interface ISearchBox {
@@ -66,14 +66,14 @@ const SearchBox = ({
 	<View
 		style={[
 			styles.container,
-			{ backgroundColor: isIOS ? themes[theme].headerBackground : themes[theme].headerSecondaryBackground }
+			{ backgroundColor: isIOS ? themes[theme].headerBackground : themes[theme].headerSecondaryBackground },
 		]}
 	>
 		<View style={[styles.searchBox, { backgroundColor: themes[theme].searchboxBackground }]}>
 			<CustomIcon name='search' size={14} color={themes[theme].auxiliaryText} />
 			<TextInput
 				ref={inputRef}
-				/*@ts-ignore*/
+				/* @ts-ignore*/
 				autoCapitalize='none'
 				autoCorrect={false}
 				blurOnSubmit

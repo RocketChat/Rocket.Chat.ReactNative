@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, InteractionManager } from 'react-native';
+import { InteractionManager, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
@@ -26,18 +26,18 @@ interface ITwoFactor {
 const methods: any = {
 	totp: {
 		text: 'Open_your_authentication_app_and_enter_the_code',
-		keyboardType: 'numeric'
+		keyboardType: 'numeric',
 	},
 	email: {
 		text: 'Verify_your_email_for_the_code_we_sent',
-		keyboardType: 'numeric'
+		keyboardType: 'numeric',
 	},
 	password: {
 		title: 'Please_enter_your_password',
 		text: 'For_your_security_you_must_enter_your_current_password_to_continue',
 		secureTextEntry: true,
-		keyboardType: 'default'
-	}
+		keyboardType: 'default',
+	},
 };
 
 const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
@@ -90,7 +90,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 	const color = themes[theme].titleText;
 	return (
 		<Modal
-			//@ts-ignore
+			// @ts-ignore
 			transparent
 			avoidKeyboard
 			useNativeDriver
@@ -102,7 +102,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 					<TextInput
-						/*@ts-ignore*/
+						/* @ts-ignore*/
 						value={code}
 						theme={theme}
 						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
@@ -141,7 +141,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 });
 
 const mapStateToProps = (state: any) => ({
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
 });
 
 export default connect(mapStateToProps)(withTheme(TwoFactor));

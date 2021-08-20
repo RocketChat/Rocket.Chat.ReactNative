@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	FlatList, Image, View, StyleSheet
+	FlatList, Image, StyleSheet, View
 } from 'react-native';
-import { RectButton, TouchableOpacity, TouchableNativeFeedback } from 'react-native-gesture-handler';
+import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 import { themes } from '../../constants/colors';

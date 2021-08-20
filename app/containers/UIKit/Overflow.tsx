@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Text } from 'react-native';
 import Popover from 'react-native-popover-view';
 import Touchable from 'react-native-platform-touchable';
 
@@ -39,15 +39,15 @@ const keyExtractor = (item: any) => item.value;
 
 const styles = StyleSheet.create({
 	menu: {
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	option: {
 		padding: 8,
-		minHeight: 32
+		minHeight: 32,
 	},
 	loading: {
-		padding: 0
-	}
+		padding: 0,
+	},
 });
 
 const Option = ({ option: { text, value }, onOptionPress, parser, theme }: IOption) => (
@@ -83,8 +83,8 @@ export const Overflow = ({ element, loading, action, parser, theme }: IOverflow)
 	return (
 		<>
 			<Touchable
-				/*@ts-ignore*/
-				ref={ref => touchable[blockId] = ref}
+				/* @ts-ignore*/
+				ref={(ref) => touchable[blockId] = ref}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 				onPress={() => onShow(!show)}
 				hitSlop={BUTTON_HIT_SLOP}
@@ -94,7 +94,7 @@ export const Overflow = ({ element, loading, action, parser, theme }: IOverflow)
 			</Touchable>
 			<Popover
 				isVisible={show}
-				/*@ts-ignore*/
+				/* @ts-ignore*/
 				fromView={touchable[blockId]}
 				onRequestClose={() => onShow(false)}
 			>

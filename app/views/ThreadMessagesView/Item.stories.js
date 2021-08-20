@@ -5,10 +5,10 @@ import { ScrollView } from 'react-native';
 import { combineReducers, createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-import Item from './Item';
 import * as List from '../../containers/List';
 import { themes } from '../../constants/colors';
 import { ThemeContext } from '../../theme';
+import Item from './Item';
 
 const author = {
 	_id: 'userid',

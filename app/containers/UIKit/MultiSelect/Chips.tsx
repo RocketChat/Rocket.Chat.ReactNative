@@ -6,7 +6,6 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 import { themes } from '../../../constants/colors';
 import { textParser } from '../utils';
 import { CustomIcon } from '../../../lib/Icons';
-
 import styles from './styles';
 
 interface IChip {
@@ -50,7 +49,7 @@ Chip.propTypes = {
 
 const Chips = ({ items, onSelect, style, theme }: IChips) => (
 	<View style={styles.chips}>
-		{items.map(item => <Chip key={keyExtractor(item)} item={item} onSelect={onSelect} style={style} theme={theme} />)}
+		{items.map((item) => <Chip key={keyExtractor(item)} item={item} onSelect={onSelect} style={style} theme={theme} />)}
 	</View>
 );
 

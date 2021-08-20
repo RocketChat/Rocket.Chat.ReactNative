@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, I18nManager } from 'react-native';
+import { I18nManager, StyleSheet, Text, View } from 'react-native';
 
 import Touch from '../../utils/touch';
 import { themes } from '../../constants/colors';
@@ -17,42 +17,42 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingHorizontal: PADDING_HORIZONTAL
+		paddingHorizontal: PADDING_HORIZONTAL,
 	},
 	leftContainer: {
-		paddingRight: PADDING_HORIZONTAL
+		paddingRight: PADDING_HORIZONTAL,
 	},
 	rightContainer: {
-		paddingLeft: PADDING_HORIZONTAL
+		paddingLeft: PADDING_HORIZONTAL,
 	},
 	disabled: {
-		opacity: 0.3
+		opacity: 0.3,
 	},
 	textContainer: {
 		flex: 1,
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	textAlertContainer: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	alertIcon: {
-		paddingLeft: 4
+		paddingLeft: 4,
 	},
 	title: {
 		flexShrink: 1,
 		fontSize: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	subtitle: {
 		fontSize: 14,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	actionIndicator: {
 		...I18nManager.isRTL
 			? { transform: [{ rotate: '180deg' }] }
-			: {}
-	}
+			: {},
+	},
 });
 
 interface IListItemContent {
@@ -72,7 +72,7 @@ interface IListItemContent {
 }
 
 const Content = React.memo(({
-	title, subtitle, disabled, testID, left, right, color, theme, fontScale, alert, translateTitle = true, translateSubtitle = true, showActionIndicator = false
+	title, subtitle, disabled, testID, left, right, color, theme, fontScale, alert, translateTitle = true, translateSubtitle = true, showActionIndicator = false,
 }: IListItemContent) => (
 	<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale! }]} testID={testID}>
 		{left

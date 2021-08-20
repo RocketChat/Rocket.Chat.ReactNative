@@ -22,7 +22,7 @@ const Wrapper = ({
 	type,
 	theme,
 	rid,
-	children
+	children,
 }: IWrapper) => (
 	<View
 		style={styles.container}
@@ -39,8 +39,8 @@ const Wrapper = ({
 			style={[
 				styles.centerContainer,
 				{
-					borderColor: themes[theme].separatorColor
-				}
+					borderColor: themes[theme].separatorColor,
+				},
 			]}
 		>
 			{children}

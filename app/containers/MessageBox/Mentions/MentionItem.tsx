@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 
 import styles from '../styles';
 import Avatar from '../../Avatar';
 import MessageboxContext from '../Context';
 import FixedMentionItem from './FixedMentionItem';
 import MentionEmoji from './MentionEmoji';
-import { MENTIONS_TRACKING_TYPE_EMOJIS,  MENTIONS_TRACKING_TYPE_COMMANDS } from '../constants';
+import { MENTIONS_TRACKING_TYPE_COMMANDS, MENTIONS_TRACKING_TYPE_EMOJIS } from '../constants';
 import { themes } from '../../../constants/colors';
-import {IEmoji} from "../../EmojiPicker/interfaces";
+import { IEmoji } from '../../EmojiPicker/interfaces';
 
 interface IMessageBoxMentionItem {
 	item: {
@@ -79,8 +79,8 @@ const MentionItem = ({ item, trackingType, theme }: IMessageBoxMentionItem) => {
 				styles.mentionItem,
 				{
 					backgroundColor: themes[theme].auxiliaryBackground,
-					borderTopColor: themes[theme].separatorColor
-				}
+					borderTopColor: themes[theme].separatorColor,
+				},
 			]}
 			onPress={() => onPressMention(item)}
 			testID={testID}

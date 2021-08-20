@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Share, ScrollView } from 'react-native';
+import { ScrollView, Share, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
 import {
-	inviteLinksCreate as inviteLinksCreateAction,
-	inviteLinksClear as inviteLinksClearAction
+	inviteLinksClear as inviteLinksClearAction,
+	inviteLinksCreate as inviteLinksCreateAction
 } from '../../actions/inviteLinks';
 import RCTextInput from '../../containers/TextInput';
-import styles from './styles';
 import Markdown from '../../containers/markdown';
 import Button from '../../containers/Button';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -18,7 +17,8 @@ import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
+import styles from './styles';
 
 class InviteUsersView extends React.Component {
 	static navigationOptions = () => ({

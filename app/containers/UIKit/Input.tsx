@@ -7,28 +7,28 @@ import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({
 	container: {
-		marginBottom: 16
+		marginBottom: 16,
 	},
 	label: {
 		fontSize: 14,
 		marginVertical: 10,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
 	},
 	description: {
 		marginBottom: 10,
 		fontSize: 15,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	error: {
 		marginTop: 8,
 		fontSize: 14,
 		...sharedStyles.textRegular,
-		...sharedStyles.textAlignCenter
+		...sharedStyles.textAlignCenter,
 	},
 	hint: {
 		fontSize: 14,
-		...sharedStyles.textRegular
-	}
+		...sharedStyles.textRegular,
+	},
 });
 
 interface IInput {
@@ -42,7 +42,7 @@ interface IInput {
 }
 
 export const Input = ({
-	element, parser, label, description, error, hint, theme
+	element, parser, label, description, error, hint, theme,
 }: IInput) => (
 	<View style={styles.container}>
 		{label ? <Text style={[styles.label, { color: error ? themes[theme].dangerColor : themes[theme].titleText }]}>{label}</Text> : null}

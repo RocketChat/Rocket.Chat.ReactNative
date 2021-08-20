@@ -7,5 +7,5 @@ const routeNameRef: React.MutableRefObject<NavigationContainerRef | null> = Reac
 
 export default {
 	navigationRef,
-	routeNameRef
+	routeNameRef,
 };

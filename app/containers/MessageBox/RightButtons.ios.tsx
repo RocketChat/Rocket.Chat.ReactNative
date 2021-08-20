@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { SendButton } from './buttons';
 
 interface IMessageBoxRightButtons {

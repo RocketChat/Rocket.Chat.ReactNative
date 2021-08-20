@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
@@ -13,20 +13,20 @@ const styles = StyleSheet.create({
 		borderRadius: 10.5,
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginLeft: 10
+		marginLeft: 10,
 	},
 	unreadNumberContainerSmall: {
 		borderRadius: 10.5,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	unreadText: {
 		fontSize: 13,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
 	},
 	textSmall: {
-		fontSize: 10
-	}
+		fontSize: 10,
+	},
 });
 
 interface IUnreadBadge {
@@ -42,13 +42,13 @@ interface IUnreadBadge {
 }
 
 const UnreadBadge = React.memo(({
-	theme, unread, userMentions, groupMentions, style, tunread, tunreadUser, tunreadGroup, small
+	theme, unread, userMentions, groupMentions, style, tunread, tunreadUser, tunreadGroup, small,
 }: IUnreadBadge) => {
-	if ((!unread || unread <= 0) && (!tunread?.length)) {
+	if ((!unread || unread <= 0) && !tunread?.length) {
 		return null;
 	}
 	const { backgroundColor, color } = getUnreadStyle({
-		theme, unread, userMentions, groupMentions, tunread, tunreadUser, tunreadGroup
+		theme, unread, userMentions, groupMentions, tunread, tunreadUser, tunreadGroup,
 	});
 
 	if (!backgroundColor) {
@@ -73,14 +73,14 @@ const UnreadBadge = React.memo(({
 			style={[
 				small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
 				{ backgroundColor, minWidth },
-				style
+				style,
 			]}
 		>
 			<Text
 				style={[
 					styles.unreadText,
 					small && styles.textSmall,
-					{ color }
+					{ color },
 				]}
 				numberOfLines={1}
 			>{text}

@@ -4,8 +4,8 @@
 
 import {
 	byteLength,
-	toByteArray,
-	fromByteArray
+	fromByteArray,
+	toByteArray
 } from './index';
 
 const map = (arr, callback) => {
@@ -14,7 +14,7 @@ const map = (arr, callback) => {
 	let mappedValue;
 
 	for (let k = 0, len = arr.length; k < len; k += 1) {
-		if ((typeof arr === 'string' && !!arr.charAt(k))) {
+		if (typeof arr === 'string' && !!arr.charAt(k)) {
 			kValue = arr.charAt(k);
 			mappedValue = callback(kValue, k, arr);
 			res[k] = mappedValue;

@@ -1,6 +1,6 @@
-import subscribeInquiry from './subscriptions/inquiry';
 import RocketChat from '../../../lib/rocketchat';
 import EventEmitter from '../../../utils/events';
+import subscribeInquiry from './subscriptions/inquiry';
 
 export const isOmnichannelStatusAvailable = user => user?.statusLivechat === 'available';
 

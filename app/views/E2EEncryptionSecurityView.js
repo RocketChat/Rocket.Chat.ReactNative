@@ -1,19 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import I18n from '../i18n';
-import log, { logEvent, events } from '../utils/log';
+import log, { events, logEvent } from '../utils/log';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import { getUserSelector } from '../selectors/login';
 import { PADDING_HORIZONTAL } from '../containers/List/constants';
-import sharedStyles from './Styles';
 import { themes } from '../constants/colors';
 import { Encryption } from '../lib/encryption';
 import RocketChat from '../lib/rocketchat';
@@ -22,6 +21,7 @@ import { showConfirmationAlert, showErrorAlert } from '../utils/info';
 import EventEmitter from '../utils/events';
 import { LISTENER } from '../containers/Toast';
 import debounce from '../utils/debounce';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CommonActions, StackActions, NavigationContainerRef } from '@react-navigation/native';
+import { CommonActions, NavigationContainerRef, StackActions } from '@react-navigation/native';
 
 const navigationRef = React.createRef<NavigationContainerRef>();
 const routeNameRef: React.MutableRefObject<NavigationContainerRef | null> = React.createRef();
@@ -21,5 +21,5 @@ export default {
 	routeNameRef,
 	navigate,
 	back,
-	replace
+	replace,
 };

@@ -1,7 +1,6 @@
 const {
 	navigateToLogin, login, sleep, tapBack, mockMessage, searchRoom, logout
 } = require('../../helpers/app');
-
 const data = require('../../data');
 
 const testuser = data.users.regular;

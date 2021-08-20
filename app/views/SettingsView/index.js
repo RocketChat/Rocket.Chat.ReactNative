@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	Linking, Share, Clipboard
+	Clipboard, Linking, Share
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -16,19 +16,19 @@ import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import {
-	getReadableVersion, getDeviceModel, isAndroid
+	getDeviceModel, getReadableVersion, isAndroid
 } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
-import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
-import { logEvent, events } from '../../utils/log';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import { events, logEvent } from '../../utils/log';
 import {
-	PLAY_MARKET_LINK, FDROID_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK
+	APP_STORE_LINK, FDROID_MARKET_LINK, LICENSE_LINK, PLAY_MARKET_LINK
 } from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
-import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
+import { ROOT_LOADING, appStart as appStartAction } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import SafeAreaView from '../../containers/SafeAreaView';
 import database from '../../lib/database';

@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import Touchable from './Touchable';
-import { formatMessageCount, BUTTON_HIT_SLOP } from './utils';
+import { BUTTON_HIT_SLOP, formatMessageCount } from './utils';
 import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
@@ -10,7 +10,7 @@ import { DISCUSSION } from './constants';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { formatDateThreads } from '../../utils/room';
-import {IMessageDiscussion} from "./interfaces";
+import { IMessageDiscussion } from './interfaces';
 
 
 const Discussion = React.memo(({ msg, dcount, dlm, theme }: IMessageDiscussion) => {

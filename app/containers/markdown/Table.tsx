@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, TouchableOpacity, View, Text } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import { CELL_WIDTH } from './TableCell';
 import styles from './styles';
@@ -18,7 +18,7 @@ const MAX_HEIGHT = 300;
 const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 	const getTableWidth = () => numColumns * CELL_WIDTH;
 
-	const renderRows = (drawExtraBorders: boolean = true) => {
+	const renderRows = (drawExtraBorders = true) => {
 		const tableStyle = [styles.table, { borderColor: themes[theme].borderColor }];
 		if (drawExtraBorders) {
 			tableStyle.push(styles.tableExtraBorders);
@@ -26,7 +26,7 @@ const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 
 		const rows: any = React.Children.toArray(children);
 		rows[rows.length - 1] = React.cloneElement(rows[rows.length - 1], {
-			isLastRow: true
+			isLastRow: true,
 		});
 
 		return (

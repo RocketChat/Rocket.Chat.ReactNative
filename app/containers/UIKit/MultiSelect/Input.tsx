@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../../lib/Icons';
@@ -18,7 +18,7 @@ interface IInput {
 }
 
 const Input = ({
-	children, onPress, theme, loading, inputStyle, placeholder, disabled
+	children, onPress, theme, loading, inputStyle, placeholder, disabled,
 }: IInput) => (
 	<Touchable
 		onPress={onPress}

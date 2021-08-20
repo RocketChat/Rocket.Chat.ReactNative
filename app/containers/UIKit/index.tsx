@@ -2,21 +2,19 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import {
-	uiKitMessage,
+	BLOCK_CONTEXT,
 	UiKitParserMessage,
-	uiKitModal,
 	UiKitParserModal,
-	BLOCK_CONTEXT
+	uiKitMessage,
+	uiKitModal,
 } from '@rocket.chat/ui-kit';
 
 import Markdown from '../markdown';
 import Button from '../Button';
 import TextInput from '../TextInput';
-
-import { useBlockContext, textParser } from './utils';
+import { textParser, useBlockContext } from './utils';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
-
 import { Divider } from './Divider';
 import { Section } from './Section';
 import { Actions } from './Actions';
@@ -31,20 +29,20 @@ import { ThemeContext } from '../../theme';
 
 const styles = StyleSheet.create({
 	input: {
-		marginBottom: 0
+		marginBottom: 0,
 	},
 	multiline: {
-		height: 130
+		height: 130,
 	},
 	button: {
-		marginBottom: 16
+		marginBottom: 16,
 	},
 	text: {
 		fontSize: 16,
 		lineHeight: 22,
 		textAlignVertical: 'center',
-		...sharedStyles.textRegular
-	}
+		...sharedStyles.textRegular,
+	},
 });
 
 const plainText = ({ text } = { text: '' }) => text;
@@ -117,7 +115,7 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	datePicker(element: any, context: any) {
-		const [{loading, value, error, language}, action]: any = useBlockContext(element, context);
+		const [{ loading, value, error, language }, action]: any = useBlockContext(element, context);
 		const { theme }: any = useContext(ThemeContext);
 		return (
 			<DatePicker
@@ -198,7 +196,7 @@ class ModalParser extends UiKitParserModal {
 	}
 
 	input({
-		element, blockId, appId, label, description, hint
+		element, blockId, appId, label, description, hint,
 	}: any, context: any) {
 		const [{ error }]: any = useBlockContext({ ...element, appId, blockId }, context);
 		const { theme }: any = useContext(ThemeContext);

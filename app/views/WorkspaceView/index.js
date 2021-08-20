@@ -1,16 +1,16 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
-import styles from './styles';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import ServerAvatar from './ServerAvatar';
 import { getShowLoginButton } from '../../selectors/login';
+import ServerAvatar from './ServerAvatar';
+import styles from './styles';
 
 class WorkspaceView extends React.Component {
 	static navigationOptions = () => ({

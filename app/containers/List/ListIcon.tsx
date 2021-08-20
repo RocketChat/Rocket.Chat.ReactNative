@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
@@ -17,8 +17,8 @@ interface IListIcon {
 const styles = StyleSheet.create({
 	icon: {
 		alignItems: 'center',
-		justifyContent: 'center'
-	}
+		justifyContent: 'center',
+	},
 });
 
 const ListIcon = React.memo(({ theme, name, color, style, testID }: IListIcon) => (

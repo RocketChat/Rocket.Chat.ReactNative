@@ -8,7 +8,7 @@ export const avatarURL = ({
 	let room;
 	if (type === 'd') {
 		room = text;
-	} else if (rid && !(compareServerVersion(serverVersion, '3.6.0', methods.lowerThan))) {
+	} else if (rid && !compareServerVersion(serverVersion, '3.6.0', methods.lowerThan)) {
 		room = `room/${ rid }`;
 	} else {
 		room = `@${ text }`;

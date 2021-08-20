@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 import { storiesOf } from '@storybook/react-native';
 // import moment from 'moment';
@@ -9,7 +9,6 @@ import MessageComponent from '../../app/containers/message/Message';
 import messagesStatus from '../../app/constants/messagesStatus';
 import MessageSeparator from '../../app/views/RoomView/Separator';
 import MessageContext from '../../app/containers/message/Context';
-
 import { themes } from '../../app/constants/colors';
 import { store } from './index';
 

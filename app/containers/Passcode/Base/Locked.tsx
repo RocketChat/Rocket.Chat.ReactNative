@@ -4,7 +4,7 @@ import { Grid } from 'react-native-easy-grid';
 import { themes } from '../../../constants/colors';
 import { resetAttempts } from '../../../utils/localAuthentication';
 import { TYPE } from '../constants';
-import { getLockedUntil, getDiff } from '../utils';
+import { getDiff, getLockedUntil } from '../utils';
 import I18n from '../../../i18n';
 import styles from './styles';
 import Title from './Title';
@@ -52,7 +52,7 @@ const Timer = React.memo(({ time, theme, setStatus }: IPasscodeTimer) => {
 const Locked = React.memo(({ theme, setStatus }: IPasscodeLocked) => {
 	const [lockedUntil, setLockedUntil] = useState<any>(null);
 
-	const readItemFromStorage = async() => {
+	const readItemFromStorage = async () => {
 		const l = await getLockedUntil();
 		setLockedUntil(l);
 	};
@@ -62,7 +62,7 @@ const Locked = React.memo(({ theme, setStatus }: IPasscodeLocked) => {
 	}, []);
 
 	return (
-		//TODO - verify if this 'r' it's correct
+		// TODO - verify if this 'r' it's correct
 		// @ts-ignore
 		<Grid style={[styles.grid, { backgroundColor: themes[theme].passcodeBackground }]} r>
 			<LockIcon theme={theme} />

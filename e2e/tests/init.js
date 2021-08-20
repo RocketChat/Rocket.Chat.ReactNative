@@ -1,5 +1,6 @@
 const detox = require('detox');
 const adapter = require('detox/runners/mocha/adapter');
+
 const config = require('../../package.json').detox;
 const { setup } = require('../helpers/data_setup');
 

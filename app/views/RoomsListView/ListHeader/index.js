@@ -6,7 +6,6 @@ import I18n from '../../../i18n';
 import * as List from '../../../containers/List';
 import { E2E_BANNER_TYPE } from '../../../lib/encryption/constants';
 import { themes } from '../../../constants/colors';
-
 import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelStatus';
 
 const ListHeader = React.memo(({

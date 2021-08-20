@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Share, Switch
+	Share, Switch, Text, View
 } from 'react-native';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
@@ -11,19 +11,18 @@ import { compareServerVersion, methods } from '../../lib/utils';
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
 import {
-	leaveRoom as leaveRoomAction, closeRoom as closeRoomAction
+	closeRoom as closeRoomAction, leaveRoom as leaveRoomAction
 } from '../../actions/room';
-import styles from './styles';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
 import * as List from '../../containers/List';
 import RocketChat from '../../lib/rocketchat';
-import log, { logEvent, events } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import { themes, SWITCH_TRACK_COLOR } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import * as HeaderButton from '../../containers/HeaderButton';
 import Markdown from '../../containers/markdown';
@@ -33,6 +32,7 @@ import { E2E_ROOM_TYPES } from '../../lib/encryption/constants';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import database from '../../lib/database';
 import { withDimensions } from '../../dimensions';
+import styles from './styles';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -276,7 +276,7 @@ class RoomActionsView extends React.Component {
 
 		// This method is executed only in componentDidMount and returns a value
 		// We save the state to read in render
-		const result = (t === 'c' || t === 'p');
+		const result = t === 'c' || t === 'p';
 		return result;
 	}
 

@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react';
-import { NotifierRoot, Notifier, Easing } from 'react-native-notifier';
+import { Easing, Notifier, NotifierRoot } from 'react-native-notifier';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
@@ -27,8 +27,8 @@ const InAppNotification = memo(({ rooms, appState }: {rooms: any, appState: stri
 				showEasing: Easing.inOut(Easing.quad),
 				Component: NotifierComponent,
 				componentProps: {
-					notification
-				}
+					notification,
+				},
 			});
 		}
 	};
@@ -45,7 +45,7 @@ const InAppNotification = memo(({ rooms, appState }: {rooms: any, appState: stri
 
 const mapStateToProps = (state: any) => ({
 	rooms: state.room.rooms,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
+	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 });
 
 export default connect(mapStateToProps)(InAppNotification);

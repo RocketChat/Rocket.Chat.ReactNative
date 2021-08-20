@@ -1,206 +1,206 @@
 export default {
 	Accounts_AllowEmailChange: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_AllowPasswordChange: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_AllowRealNameChange: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_AllowUserAvatarChange: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_AllowUserProfileChange: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_AllowUserStatusMessageChange: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_AllowUsernameChange: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_AvatarBlockUnauthenticatedAccess: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_CustomFields: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Accounts_EmailOrUsernamePlaceholder: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Accounts_EmailVerification: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_NamePlaceholder: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Accounts_PasswordPlaceholder: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Accounts_PasswordReset: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_RegistrationForm: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Accounts_RegistrationForm_LinkReplacementText: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Accounts_ShowFormLogin: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_ManuallyApproveNewUsers: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	API_Use_REST_For_DDP_Calls: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_iframe_enabled: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_Iframe_api_url: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Accounts_Iframe_api_method: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	CROWD_Enable: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	DirectMesssage_maxUsers: {
-		type: 'valueAsNumber'
+		type: 'valueAsNumber',
 	},
 	E2E_Enable: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_Directory_DefaultView: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	FEDERATION_Enabled: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Hide_System_Messages: {
-		type: 'valueAsArray'
+		type: 'valueAsArray',
 	},
 	LDAP_Enable: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Livechat_request_comment_when_closing_conversation: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Jitsi_Enabled: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Jitsi_SSL: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Jitsi_Domain: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Jitsi_Enabled_TokenAuth: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Jitsi_URL_Room_Hash: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Jitsi_URL_Room_Prefix: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Message_AllowDeleting: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Message_AllowDeleting_BlockDeleteInMinutes: {
-		type: 'valueAsNumber'
+		type: 'valueAsNumber',
 	},
 	Message_AllowEditing: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Message_AllowEditing_BlockEditInMinutes: {
-		type: 'valueAsNumber'
+		type: 'valueAsNumber',
 	},
 	Message_AllowPinning: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Message_AllowStarring: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Message_AudioRecorderEnabled: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Message_GroupingPeriod: {
-		type: 'valueAsNumber'
+		type: 'valueAsNumber',
 	},
 	Message_TimeFormat: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Message_TimeAndDateFormat: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Site_Name: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Site_Url: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Store_Last_Message: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	uniqueID: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	UI_Allow_room_names_with_special_chars: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	UI_Use_Real_Name: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Assets_favicon_512: {
-		type: null
+		type: null,
 	},
 	Message_Read_Receipt_Enabled: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Message_Read_Receipt_Store_Users: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Threads_enabled: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	FileUpload_MediaTypeWhiteList: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	FileUpload_MaxFileSize: {
-		type: 'valueAsNumber'
+		type: 'valueAsNumber',
 	},
 	API_Gitlab_URL: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	AutoTranslate_Enabled: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	CAS_enabled: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	CAS_login_url: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Force_Screen_Lock: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Force_Screen_Lock_After: {
-		type: 'valueAsNumber'
+		type: 'valueAsNumber',
 	},
 	Allow_Save_Media_to_Gallery: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Accounts_AllowInvisibleStatusOption: {
-		type: 'valueAsString'
+		type: 'valueAsString',
 	},
 	Jitsi_Enable_Teams: {
-		type: 'valueAsBoolean'
+		type: 'valueAsBoolean',
 	},
 	Jitsi_Enable_Channels: {
-		type: 'valuesAsBoolean'
-	}
+		type: 'valuesAsBoolean',
+	},
 };

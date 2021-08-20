@@ -1,8 +1,9 @@
 import EJSON from 'ejson';
-import PushNotification from './push';
+
 import store from '../../lib/createStore';
 import { deepLinkingOpen } from '../../actions/deepLinking';
 import { isFDroidBuild } from '../../constants/environment';
+import PushNotification from './push';
 
 export const onNotification = (notification) => {
 	if (notification) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, FlatList } from 'react-native';
+import { FlatList, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
@@ -7,7 +7,6 @@ import Check from '../../Check';
 import * as List from '../../List';
 import { textParser } from '../utils';
 import { themes } from '../../../constants/colors';
-
 import styles from './styles';
 
 interface IItem {
@@ -40,7 +39,7 @@ const Item = ({ item, selected, onSelect, theme }: IItem) => {
 			onPress={() => onSelect(item)}
 			style={[
 				styles.item,
-				{ backgroundColor: themes[theme].backgroundColor }
+				{ backgroundColor: themes[theme].backgroundColor },
 			]}
 		>
 			<>
@@ -60,7 +59,7 @@ const Items = ({ items, selected, onSelect, theme }: IItems) => (
 		keyboardShouldPersistTaps='always'
 		ItemSeparatorComponent={List.Separator}
 		keyExtractor={keyExtractor}
-		renderItem={({ item }) => <Item item={item} onSelect={onSelect} theme={theme} selected={selected.find(s => s === item.value)} />}
+		renderItem={({ item }) => <Item item={item} onSelect={onSelect} theme={theme} selected={selected.find((s) => s === item.value)} />}
 	/>
 );
 

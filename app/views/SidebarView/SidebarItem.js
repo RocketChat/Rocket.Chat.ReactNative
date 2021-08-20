@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import styles from './styles';
 import Touch from '../../utils/touch';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import styles from './styles';
 
 const Item = React.memo(({
 	left, right, text, onPress, testID, current, theme

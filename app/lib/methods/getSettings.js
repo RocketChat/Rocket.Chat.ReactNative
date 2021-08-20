@@ -7,9 +7,9 @@ import reduxStore from '../createStore';
 import settings from '../../constants/settings';
 import log from '../../utils/log';
 import database from '../database';
-import protectedFunction from './helpers/protectedFunction';
 import fetch from '../../utils/fetch';
 import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
+import protectedFunction from './helpers/protectedFunction';
 
 const serverInfoKeys = [
 	'Site_Name',

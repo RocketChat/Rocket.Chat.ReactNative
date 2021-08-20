@@ -2,8 +2,8 @@ import { Appearance } from 'react-native-appearance';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import setRootViewColor from 'rn-root-view';
 
-import { isAndroid } from './deviceInfo';
 import { themes } from '../constants/colors';
+import { isAndroid } from './deviceInfo';
 
 let themeListener;
 

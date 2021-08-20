@@ -8,7 +8,7 @@ import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
 import { withTheme } from '../theme';
-import { isTablet, hasNotch } from '../utils/deviceInfo';
+import { hasNotch, isTablet } from '../utils/deviceInfo';
 import { TYPE } from '../containers/Passcode/constants';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../utils/events';
@@ -64,12 +64,12 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 			Orientation.lockToPortrait();
 		}
 		const listener = EventEmitter.addEventListener(CHANGE_PASSCODE_EMITTER, showChangePasscode);
-		return (() => {
+		return () => {
 			if (!isTablet) {
 				Orientation.unlockAllOrientations();
 			}
 			EventEmitter.removeListener(CHANGE_PASSCODE_EMITTER, listener);
-		});
+		};
 	}, []);
 
 	return (

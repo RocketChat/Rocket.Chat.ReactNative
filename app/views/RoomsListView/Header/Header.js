@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	Text, View, TouchableOpacity, StyleSheet
+	StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -9,7 +9,7 @@ import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
-import { isTablet, isIOS } from '../../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { useOrientation } from '../../../dimensions';
 
 const styles = StyleSheet.create({

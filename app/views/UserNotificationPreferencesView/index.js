@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -10,10 +10,10 @@ import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { OPTIONS } from './options';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';
 import sharedStyles from '../Styles';
+import { OPTIONS } from './options';
 
 const styles = StyleSheet.create({
 	pickerText: {

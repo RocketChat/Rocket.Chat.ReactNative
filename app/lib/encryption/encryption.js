@@ -3,29 +3,29 @@ import SimpleCrypto from 'react-native-simple-crypto';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
-import {
-	toString,
-	utf8ToBuffer,
-	splitVectorData,
-	joinVectorData,
-	randomPassword
-} from './utils';
-import {
-	E2E_PUBLIC_KEY,
-	E2E_PRIVATE_KEY,
-	E2E_RANDOM_PASSWORD_KEY,
-	E2E_STATUS,
-	E2E_MESSAGE_TYPE,
-	E2E_BANNER_TYPE
-} from './constants';
 import RocketChat from '../rocketchat';
-import { EncryptionRoom } from './index';
 import UserPreferences from '../userPreferences';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import Deferred from '../../utils/deferred';
 import log from '../../utils/log';
 import store from '../createStore';
+import {
+	E2E_BANNER_TYPE,
+	E2E_MESSAGE_TYPE,
+	E2E_PRIVATE_KEY,
+	E2E_PUBLIC_KEY,
+	E2E_RANDOM_PASSWORD_KEY,
+	E2E_STATUS
+} from './constants';
+import {
+	joinVectorData,
+	randomPassword,
+	splitVectorData,
+	toString,
+	utf8ToBuffer
+} from './utils';
+import { EncryptionRoom } from './index';
 
 class Encryption {
 	constructor() {
@@ -292,12 +292,12 @@ class Encryption {
 			// If we select only encrypted rooms we can miss some room that changed their encrypted status
 			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null))).fetch();
 			// We can't do this on database level since lastMessage is not a database object
-			const subsToDecrypt = subsEncrypted.filter(sub => (
+			const subsToDecrypt = subsEncrypted.filter(sub =>
 				// Encrypted message
 				sub?.lastMessage?.t === E2E_MESSAGE_TYPE
 				// Message pending decrypt
 				&& sub?.lastMessage?.e2e === E2E_STATUS.PENDING
-			));
+			);
 			await Promise.all(subsToDecrypt.map(async(sub) => {
 				const { rid, lastMessage } = sub;
 				const newSub = await this.decryptSubscription({ rid, lastMessage });

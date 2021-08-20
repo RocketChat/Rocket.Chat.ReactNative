@@ -1,7 +1,7 @@
 import { settings } from '@rocket.chat/sdk';
 
-import EventEmitter from './events';
 import { TWO_FACTOR } from '../containers/TwoFactor';
+import EventEmitter from './events';
 
 export const twoFactor = ({ method, invalid }) => new Promise((resolve, reject) => {
 	EventEmitter.emit(TWO_FACTOR, {

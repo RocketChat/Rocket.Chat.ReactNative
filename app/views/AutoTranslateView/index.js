@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Switch, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Switch } from 'react-native';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
@@ -9,7 +9,7 @@ import * as List from '../../containers/List';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 
 const styles = StyleSheet.create({
 	list: {

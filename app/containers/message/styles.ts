@@ -5,44 +5,44 @@ import { isTablet } from '../../utils/deviceInfo';
 
 export default StyleSheet.create<any>({
 	root: {
-		flexDirection: 'row'
+		flexDirection: 'row',
 	},
 	container: {
 		paddingVertical: 4,
 		width: '100%',
 		paddingHorizontal: 14,
-		flexDirection: 'column'
+		flexDirection: 'column',
 	},
 	contentContainer: {
-		flex: 1
+		flex: 1,
 	},
 	messageContent: {
 		flex: 1,
-		marginLeft: 46
+		marginLeft: 46,
 	},
 	messageContentWithHeader: {
-		marginLeft: 10
+		marginLeft: 10,
 	},
 	messageContentWithError: {
-		marginLeft: 0
+		marginLeft: 0,
 	},
 	flex: {
-		flexDirection: 'row'
+		flexDirection: 'row',
 		// flex: 1
 	},
 	temp: { opacity: 0.3 },
 	marginTop: {
-		marginTop: 6
+		marginTop: 6,
 	},
 	reactionsContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginTop: 8
+		marginTop: 8,
 	},
 	reactionButton: {
 		marginRight: 8,
 		marginBottom: 8,
-		borderRadius: 2
+		borderRadius: 2,
 	},
 	reactionContainer: {
 		flexDirection: 'row',
@@ -51,38 +51,38 @@ export default StyleSheet.create<any>({
 		borderRadius: 2,
 		borderWidth: 1,
 		height: 28,
-		minWidth: 46.3
+		minWidth: 46.3,
 	},
 	reactionCount: {
 		fontSize: 14,
 		marginLeft: 3,
 		marginRight: 8.5,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
 	},
 	reactionEmoji: {
 		fontSize: 13,
 		marginLeft: 7,
-		color: '#ffffff'
+		color: '#ffffff',
 	},
 	reactionCustomEmoji: {
 		width: 19,
 		height: 19,
-		marginLeft: 7
+		marginLeft: 7,
 	},
 	avatar: {
-		marginTop: 4
+		marginTop: 4,
 	},
 	avatarSmall: {
-		marginLeft: 16
+		marginLeft: 16,
 	},
 	errorButton: {
 		paddingLeft: 10,
-		paddingVertical: 5
+		paddingVertical: 5,
 	},
 	buttonContainer: {
 		marginTop: 8,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	button: {
 		paddingHorizontal: 12,
@@ -90,19 +90,19 @@ export default StyleSheet.create<any>({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: 2
+		borderRadius: 2,
 	},
 	buttonIcon: {
-		marginRight: 8
+		marginRight: 8,
 	},
 	buttonText: {
 		fontSize: 12,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
 	},
 	imageContainer: {
 		// flex: 1,
 		flexDirection: 'column',
-		borderRadius: 4
+		borderRadius: 4,
 	},
 	image: {
 		width: '100%',
@@ -110,75 +110,75 @@ export default StyleSheet.create<any>({
 		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
 		borderWidth: 1,
-		overflow: 'hidden'
+		overflow: 'hidden',
 	},
 	imagePressed: {
-		opacity: 0.5
+		opacity: 0.5,
 	},
 	inlineImage: {
 		width: 300,
 		height: 300,
-		resizeMode: 'contain'
+		resizeMode: 'contain',
 	},
 	text: {
 		fontSize: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	textInfo: {
 		fontStyle: 'italic',
 		fontSize: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	startedDiscussion: {
 		fontStyle: 'italic',
 		fontSize: 16,
 		marginBottom: 6,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	time: {
 		fontSize: 12,
 		marginLeft: 8,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	repliedThread: {
 		flexDirection: 'row',
 		// flex: 1,
 		alignItems: 'center',
 		marginTop: 6,
-		marginBottom: 12
+		marginBottom: 12,
 	},
 	repliedThreadIcon: {
 		marginRight: 10,
-		marginLeft: 16
+		marginLeft: 16,
 	},
 	repliedThreadName: {
 		fontSize: 16,
 		flex: 1,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	repliedThreadDisclosure: {
 		marginLeft: 4,
 		marginRight: 4,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	threadBadge: {
 		width: 8,
 		height: 8,
 		borderRadius: 4,
-		marginLeft: 8
+		marginLeft: 8,
 	},
 	threadBell: {
-		marginLeft: 8
+		marginLeft: 8,
 	},
 	readReceipt: {
-		lineHeight: 20
+		lineHeight: 20,
 	},
 	encrypted: {
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	threadDetails: {
 		flex: 1,
-		marginLeft: 12
-	}
+		marginLeft: 12,
+	},
 });

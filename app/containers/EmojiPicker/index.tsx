@@ -17,11 +17,11 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import {IEmoji} from "./interfaces";
+import { IEmoji } from './interfaces';
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
-	keyboardDismissMode: 'none'
+	keyboardDismissMode: 'none',
 };
 
 interface IEmojiPickerProps {
@@ -43,21 +43,20 @@ interface IEmojiPickerState {
 }
 
 class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
-
 	constructor(props: IEmojiPickerProps) {
 		super(props);
 		const customEmojis = Object.keys(props.customEmojis)
-			.filter(item => item === props.customEmojis[item].name)
-			.map(item => ({
+			.filter((item) => item === props.customEmojis[item].name)
+			.map((item) => ({
 				content: props.customEmojis[item].name,
 				extension: props.customEmojis[item].extension,
-				isCustom: true
+				isCustom: true,
 			}));
 		this.state = {
 			frequentlyUsed: [],
 			customEmojis,
 			show: false,
-			width: null
+			width: null,
 		};
 	}
 
@@ -89,7 +88,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 			const { onEmojiSelected } = this.props;
 			if (emoji.isCustom) {
 				this._addFrequentlyUsed({
-					content: emoji.content, extension: emoji.extension, isCustom: true
+					content: emoji.content, extension: emoji.extension, isCustom: true,
 				});
 				onEmojiSelected!(`:${ emoji.content }:`);
 			} else {
@@ -104,7 +103,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	_addFrequentlyUsed = protectedFunction(async(emoji: IEmoji) => {
+	_addFrequentlyUsed = protectedFunction(async (emoji: IEmoji) => {
 		const db = database.active;
 		const freqEmojiCollection = db.get('frequently_used_emojis');
 		let freqEmojiRecord: any;
@@ -114,7 +113,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 			// Do nothing
 		}
 
-		await db.action(async() => {
+		await db.action(async () => {
 			if (freqEmojiRecord) {
 				await freqEmojiRecord.update((f: any) => {
 					f.count += 1;
@@ -129,7 +128,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 		});
 	})
 
-	updateFrequentlyUsed = async() => {
+	updateFrequentlyUsed = async () => {
 		const db = database.active;
 		const frequentlyUsedRecords = await db.get('frequently_used_emojis').query().fetch();
 		let frequentlyUsed: any = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
@@ -159,7 +158,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 		return (
 			<EmojiCategory
 				emojis={emojis}
-				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
+				onEmojiSelected={(emoji) => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
 				width={width!}
 				baseUrl={baseUrl}
@@ -179,16 +178,15 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 			<View onLayout={this.onLayout} style={{ flex: 1 }}>
 				<ScrollableTabView
 					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} theme={theme} />}
-					/*@ts-ignore*/
+					/* @ts-ignore*/
 					contentProps={scrollProps}
 					style={{ backgroundColor: themes[theme!].focusedBackground }}
 				>
 					{
 						categories.tabs.map((tab, i) => (
-							(i === 0 && frequentlyUsed.length === 0) ? null // when no frequentlyUsed don't show the tab
-								: (
-									this.renderCategory(tab.category, i, tab.tabLabel)
-								)))
+							i === 0 && frequentlyUsed.length === 0 ? null // when no frequentlyUsed don't show the tab
+								: 									this.renderCategory(tab.category, i, tab.tabLabel)
+						))
 					}
 				</ScrollableTabView>
 			</View>
@@ -197,7 +195,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 }
 
 const mapStateToProps = (state: any) => ({
-	customEmojis: state.customEmojis
+	customEmojis: state.customEmojis,
 });
 
 export default connect(mapStateToProps)(withTheme(EmojiPicker));

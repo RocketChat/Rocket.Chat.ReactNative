@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, ScrollView, TouchableOpacity, Keyboard, Alert
+	Alert, Keyboard, ScrollView, Text, TouchableOpacity, View
 } from 'react-native';
 import { connect } from 'react-redux';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
@@ -15,7 +15,6 @@ import database from '../../lib/database';
 import { deleteRoom as deleteRoomAction } from '../../actions/room';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
-import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { LISTENER } from '../../containers/Toast';
@@ -23,9 +22,8 @@ import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import Loading from '../../containers/Loading';
-import SwitchContainer from './SwitchContainer';
 import random from '../../utils/random';
-import log, { logEvent, events } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
@@ -35,6 +33,8 @@ import { MessageTypeValues } from '../../utils/messageTypes';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Avatar from '../../containers/Avatar';
 import { CustomIcon } from '../../lib/Icons';
+import SwitchContainer from './SwitchContainer';
+import styles from './styles';
 
 const PERMISSION_SET_READONLY = 'set-readonly';
 const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
@@ -129,7 +129,7 @@ class RoomInfoEditView extends React.Component {
 				unarchiveRoomPermission,
 				deleteCPermission,
 				deletePPermission,
-				...(this.room.teamMain ? [deleteTeamPermission] : [])
+				...this.room.teamMain ? [deleteTeamPermission] : []
 			], rid);
 
 			this.setState({
@@ -140,7 +140,7 @@ class RoomInfoEditView extends React.Component {
 					[PERMISSION_UNARCHIVE]: result[3],
 					[PERMISSION_DELETE_C]: result[4],
 					[PERMISSION_DELETE_P]: result[5],
-					...(this.room.teamMain && { [PERMISSION_DELETE_TEAM]: result[6] })
+					...this.room.teamMain && { [PERMISSION_DELETE_TEAM]: result[6] }
 				}
 			});
 		} catch (e) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-	View, Text, StyleSheet, TouchableOpacity, ScrollView
+	ScrollView, StyleSheet, Text, TouchableOpacity, View
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';

@@ -13,9 +13,9 @@ import EmptyRoom from '../EmptyRoom';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { themes } from '../../../constants/colors';
+import debounce from '../../../utils/debounce';
 import List from './List';
 import NavBottomFAB from './NavBottomFAB';
-import debounce from '../../../utils/debounce';
 
 const QUERY_SIZE = 50;
 

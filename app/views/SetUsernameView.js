@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, ScrollView, StyleSheet
+	ScrollView, StyleSheet, Text
 } from 'react-native';
 import { connect } from 'react-redux';
 import Orientation from 'react-native-orientation-locker';
@@ -10,7 +10,6 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import KeyboardView from '../presentation/KeyboardView';
-import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
@@ -21,6 +20,7 @@ import { isTablet } from '../utils/deviceInfo';
 import { getUserSelector } from '../selectors/login';
 import { showErrorAlert } from '../utils/info';
 import SafeAreaView from '../containers/SafeAreaView';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	loginTitle: {

@@ -6,7 +6,7 @@ import { dequal } from 'dequal';
 import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 import { isTeamRoom } from '../../utils/room';
 
 class RightButtonsContainer extends Component {

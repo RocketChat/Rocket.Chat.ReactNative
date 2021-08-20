@@ -1,7 +1,8 @@
 import { Model } from '@nozbe/watermelondb';
 import {
-	field, date, json, children
+	children, date, field, json
 } from '@nozbe/watermelondb/decorators';
+
 import { sanitizer } from '../utils';
 
 export const TABLE_NAME = 'subscriptions';

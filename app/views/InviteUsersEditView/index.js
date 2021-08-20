@@ -5,18 +5,18 @@ import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
 import {
-	inviteLinksSetParams as inviteLinksSetParamsAction,
-	inviteLinksCreate as inviteLinksCreateAction
+	inviteLinksCreate as inviteLinksCreateAction,
+	inviteLinksSetParams as inviteLinksSetParamsAction
 } from '../../actions/inviteLinks';
 import * as List from '../../containers/List';
-import styles from './styles';
 import Button from '../../containers/Button';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
+import styles from './styles';
 
 const OPTIONS = {
 	days: [{

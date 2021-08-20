@@ -27,7 +27,7 @@ const List = React.memo(({ children, ordered, tight, start = 1, numberOfLines = 
 		bulletWidth,
 		ordered,
 		tight,
-		index: start + index
+		index: start + index,
 	}));
 
 	return (

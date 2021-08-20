@@ -4,7 +4,6 @@ import { Text } from 'react-native';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import { themes } from '../../constants/colors';
-
 import styles from './styles';
 
 interface IEmoji {
@@ -20,7 +19,7 @@ interface IEmoji {
 }
 
 const Emoji = React.memo(({
-	literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis = true, style = {}, theme
+	literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis = true, style = {}, theme,
 }: IEmoji) => {
 	const emojiUnicode = shortnameToUnicode(literal);
 	const emoji: any = getCustomEmoji && getCustomEmoji(literal.replace(/:/g, ''));
@@ -30,7 +29,7 @@ const Emoji = React.memo(({
 				baseUrl={baseUrl}
 				style={[
 					isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji,
-					style
+					style,
 				]}
 				emoji={emoji}
 			/>
@@ -41,7 +40,7 @@ const Emoji = React.memo(({
 			style={[
 				{ color: themes[theme!].bodyText },
 				isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
-				style
+				style,
 			]}
 		>
 			{emojiUnicode}

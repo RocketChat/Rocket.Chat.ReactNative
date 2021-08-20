@@ -1,6 +1,5 @@
 const { navigateToLogin, login, sleep } = require('../../helpers/app');
 const { post } = require('../../helpers/data_setup');
-
 const data = require('../../data');
 
 const testuser = data.users.regular;

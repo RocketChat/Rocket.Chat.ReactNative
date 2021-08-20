@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { CancelEditingButton, ToggleEmojiButton } from './buttons';
 
 interface IMessageBoxLeftButtons {
@@ -11,7 +12,7 @@ interface IMessageBoxLeftButtons {
 }
 
 const LeftButtons = React.memo(({
-	theme, showEmojiKeyboard, editing, editCancel, openEmoji, closeEmoji
+	theme, showEmojiKeyboard, editing, editCancel, openEmoji, closeEmoji,
 }: IMessageBoxLeftButtons) => {
 	if (editing) {
 		return <CancelEditingButton onPress={editCancel} theme={theme} />;

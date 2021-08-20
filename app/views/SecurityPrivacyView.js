@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { toggleCrashReport as toggleCrashReportAction, toggleAnalyticsEvents as toggleAnalyticsEventsAction } from '../actions/crashReport';
+import { toggleAnalyticsEvents as toggleAnalyticsEventsAction, toggleCrashReport as toggleCrashReportAction } from '../actions/crashReport';
 import { SWITCH_TRACK_COLOR } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import I18n from '../i18n';
-import { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../lib/rocketchat';
+import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/rocketchat';
 import {
-	loggerConfig, analytics, logEvent, events
+	analytics, events, logEvent, loggerConfig
 } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import { isFDroidBuild } from '../constants/environment';

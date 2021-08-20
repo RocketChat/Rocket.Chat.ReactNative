@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-	Text,
-	View,
 	Clipboard,
 	ScrollView,
-	StyleSheet
+	StyleSheet,
+	Text,
+	View
 } from 'react-native';
 
 import { encryptionSetBanner as encryptionSetBannerAction } from '../actions/encryption';
@@ -15,15 +15,15 @@ import * as HeaderButton from '../containers/HeaderButton';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
 import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
 import { themes } from '../constants/colors';
 import EventEmitter from '../utils/events';
 import Button from '../containers/Button';
 import { withTheme } from '../theme';
-import sharedStyles from './Styles';
 import I18n from '../i18n';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
@@ -7,8 +7,8 @@ const styles = StyleSheet.create({
 	container: {
 		minHeight: 36,
 		alignItems: 'center',
-		flexDirection: 'row'
-	}
+		flexDirection: 'row',
+	},
 });
 
 export const Context = ({ elements, parser }: any) => (
@@ -19,5 +19,5 @@ export const Context = ({ elements, parser }: any) => (
 
 Context.propTypes = {
 	elements: PropTypes.array,
-	parser: PropTypes.object
+	parser: PropTypes.object,
 };

@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, View, InteractionManager } from 'react-native';
+import { InteractionManager, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
-
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
@@ -14,32 +13,24 @@ import Touch from '../../utils/touch';
 import {
 	replyBroadcast as replyBroadcastAction
 } from '../../actions/messages';
-import List from './List';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
 import MessageBox from '../../containers/MessageBox';
-import ReactionPicker from './ReactionPicker';
-import UploadProgress from './UploadProgress';
-import JoinCode from './JoinCode';
-import styles from './styles';
-import log, { logEvent, events } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
-import LeftButtons from './LeftButtons';
-import RightButtons from './RightButtons';
 import StatusBar from '../../containers/StatusBar';
-import Separator from './Separator';
 import { themes } from '../../constants/colors';
 import { MESSAGE_TYPE_ANY_LOAD, MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import {
-	getBadgeColor, isBlocked, makeThreadName, isTeamRoom
+	getBadgeColor, isBlocked, isTeamRoom, makeThreadName
 } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
@@ -47,29 +38,36 @@ import { showErrorAlert } from '../../utils/info';
 import { withTheme } from '../../theme';
 import {
 	KEY_COMMAND,
-	handleCommandScroll,
+	handleCommandReplyLatest,
 	handleCommandRoomActions,
-	handleCommandSearchMessages,
-	handleCommandReplyLatest
+	handleCommandScroll,
+	handleCommandSearchMessages
 } from '../../commands';
 import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
 import { CONTAINER_TYPES } from '../../lib/methods/actions';
-import Banner from './Banner';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
-
 import { takeInquiry } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
-import LoadMore from './LoadMore';
-import RoomServices from './services';
 import { goRoom } from '../../utils/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
+import RoomServices from './services';
+import LoadMore from './LoadMore';
+import Banner from './Banner';
+import Separator from './Separator';
+import RightButtons from './RightButtons';
+import LeftButtons from './LeftButtons';
+import styles from './styles';
+import JoinCode from './JoinCode';
+import UploadProgress from './UploadProgress';
+import ReactionPicker from './ReactionPicker';
+import List from './List';
 
 const stateAttrsUpdate = [
 	'joined',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
@@ -10,12 +10,12 @@ import I18n from '../../i18n';
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: 8,
-		paddingHorizontal: PADDING_HORIZONTAL
+		paddingHorizontal: PADDING_HORIZONTAL,
 	},
 	text: {
 		fontSize: 14,
-		...sharedStyles.textRegular
-	}
+		...sharedStyles.textRegular,
+	},
 });
 
 interface IListHeader {

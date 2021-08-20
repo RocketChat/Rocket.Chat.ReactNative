@@ -2,9 +2,9 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 
-import BackgroundContainer from '.';
 import { ThemeContext } from '../../theme';
 import { longText } from '../../../storybook/utils';
+import BackgroundContainer from '.';
 
 const stories = storiesOf('BackgroundContainer', module);
 

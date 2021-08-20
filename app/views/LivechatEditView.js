@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Text, StyleSheet, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import { withTheme } from '../theme';
@@ -9,8 +9,6 @@ import TextInput from '../containers/TextInput';
 import KeyboardView from '../presentation/KeyboardView';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
-
-import sharedStyles from './Styles';
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -18,6 +16,7 @@ import { getUserSelector } from '../selectors/login';
 import Chips from '../containers/UIKit/MultiSelect/Chips';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -276,9 +275,9 @@ LivechatEditView.propTypes = {
 	route: PropTypes.object,
 	theme: PropTypes.string
 };
-LivechatEditView.navigationOptions = ({
+LivechatEditView.navigationOptions = {
 	title: I18n.t('Livechat_edit')
-});
+};
 
 const mapStateToProps = state => ({
 	server: state.server.server,

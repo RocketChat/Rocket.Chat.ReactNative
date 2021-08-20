@@ -1,5 +1,5 @@
-import { Easing, Animated } from 'react-native';
-import { TransitionPresets, HeaderStyleInterpolators } from '@react-navigation/stack';
+import { Animated, Easing } from 'react-native';
+import { HeaderStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
 
 import { isAndroid } from '../deviceInfo';
 import conditional from './conditional';

@@ -21,7 +21,7 @@ export const Actions = ({ blockId, appId, elements, parser, theme }: IActions) =
 
 	return (
 		<>
-			{/*@ts-ignore*/}
+			{/* @ts-ignore*/}
 			<Elements />
 			{showMoreVisible && (<Button theme={theme} title={I18n.t('Show_more')} onPress={() => setShowMoreVisible(false)} />)}
 		</>

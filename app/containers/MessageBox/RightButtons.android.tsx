@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { SendButton, ActionsButton } from './buttons';
+import { ActionsButton, SendButton } from './buttons';
 import styles from './styles';
 
 interface IMessageBoxRightButtons {
@@ -13,7 +13,7 @@ interface IMessageBoxRightButtons {
 }
 
 const RightButtons = React.memo(({
-	theme, showSend, submit, showMessageBoxActions, isActionsEnabled
+	theme, showSend, submit, showMessageBoxActions, isActionsEnabled,
 }: IMessageBoxRightButtons) => {
 	if (showSend) {
 		return <SendButton onPress={submit} theme={theme} />;

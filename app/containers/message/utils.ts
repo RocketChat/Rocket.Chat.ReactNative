@@ -15,7 +15,7 @@ export const formatMessageCount = (count: number, type: string) => {
 };
 
 export const BUTTON_HIT_SLOP = {
-	top: 4, right: 4, bottom: 4, left: 4
+	top: 4, right: 4, bottom: 4, left: 4,
 };
 
 export const SYSTEM_MESSAGES = [
@@ -39,7 +39,7 @@ export const SYSTEM_MESSAGES = [
 	'message_snippeted',
 	'thread-created',
 	'room_e2e_enabled',
-	'room_e2e_disabled'
+	'room_e2e_disabled',
 ];
 
 export const SYSTEM_MESSAGE_TYPES = {
@@ -48,7 +48,7 @@ export const SYSTEM_MESSAGE_TYPES = {
 	MESSAGE_SNIPPETED: 'message_snippeted',
 	USER_JOINED_CHANNEL: 'uj',
 	USER_JOINED_DISCUSSION: 'ut',
-	USER_LEFT_CHANNEL: 'ul'
+	USER_LEFT_CHANNEL: 'ul',
 };
 
 export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
@@ -57,7 +57,7 @@ export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
 	SYSTEM_MESSAGE_TYPES.MESSAGE_SNIPPETED,
 	SYSTEM_MESSAGE_TYPES.USER_JOINED_CHANNEL,
 	SYSTEM_MESSAGE_TYPES.USER_JOINED_DISCUSSION,
-	SYSTEM_MESSAGE_TYPES.USER_LEFT_CHANNEL
+	SYSTEM_MESSAGE_TYPES.USER_LEFT_CHANNEL,
 ];
 
 type TInfoMessage = {
@@ -66,49 +66,49 @@ type TInfoMessage = {
 	msg: string;
 	author: { username: string };
 }
-export const getInfoMessage = ({type, role, msg, author}: TInfoMessage) => {
+export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage) => {
 	const { username } = author;
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
-	} else if (type === 'uj') {
+	} if (type === 'uj') {
 		return I18n.t('Has_joined_the_channel');
-	} else if (type === 'ut') {
+	} if (type === 'ut') {
 		return I18n.t('Has_joined_the_conversation');
-	} else if (type === 'r') {
+	} if (type === 'r') {
 		return I18n.t('Room_name_changed', { name: msg, userBy: username });
-	} else if (type === 'message_pinned') {
+	} if (type === 'message_pinned') {
 		return I18n.t('Message_pinned');
-	} else if (type === 'jitsi_call_started') {
+	} if (type === 'jitsi_call_started') {
 		return I18n.t('Started_call', { userBy: username });
-	} else if (type === 'ul') {
+	} if (type === 'ul') {
 		return I18n.t('Has_left_the_channel');
-	} else if (type === 'ru') {
+	} if (type === 'ru') {
 		return I18n.t('User_removed_by', { userRemoved: msg, userBy: username });
-	} else if (type === 'au') {
+	} if (type === 'au') {
 		return I18n.t('User_added_by', { userAdded: msg, userBy: username });
-	} else if (type === 'user-muted') {
+	} if (type === 'user-muted') {
 		return I18n.t('User_muted_by', { userMuted: msg, userBy: username });
-	} else if (type === 'user-unmuted') {
+	} if (type === 'user-unmuted') {
 		return I18n.t('User_unmuted_by', { userUnmuted: msg, userBy: username });
-	} else if (type === 'subscription-role-added') {
+	} if (type === 'subscription-role-added') {
 		return `${ msg } was set ${ role } by ${ username }`;
-	} else if (type === 'subscription-role-removed') {
+	} if (type === 'subscription-role-removed') {
 		return `${ msg } is no longer ${ role } by ${ username }`;
-	} else if (type === 'room_changed_description') {
+	} if (type === 'room_changed_description') {
 		return I18n.t('Room_changed_description', { description: msg, userBy: username });
-	} else if (type === 'room_changed_announcement') {
+	} if (type === 'room_changed_announcement') {
 		return I18n.t('Room_changed_announcement', { announcement: msg, userBy: username });
-	} else if (type === 'room_changed_topic') {
+	} if (type === 'room_changed_topic') {
 		return I18n.t('Room_changed_topic', { topic: msg, userBy: username });
-	} else if (type === 'room_changed_privacy') {
+	} if (type === 'room_changed_privacy') {
 		return I18n.t('Room_changed_privacy', { type: msg, userBy: username });
-	} else if (type === 'room_changed_avatar') {
+	} if (type === 'room_changed_avatar') {
 		return I18n.t('Room_changed_avatar', { userBy: username });
-	} else if (type === 'message_snippeted') {
+	} if (type === 'message_snippeted') {
 		return I18n.t('Created_snippet');
-	} else if (type === 'room_e2e_disabled') {
+	} if (type === 'room_e2e_disabled') {
 		return I18n.t('This_room_encryption_has_been_disabled_by__username_', { username });
-	} else if (type === 'room_e2e_enabled') {
+	} if (type === 'room_e2e_enabled') {
 		return I18n.t('This_room_encryption_has_been_enabled_by__username_', { username });
 	}
 	return '';

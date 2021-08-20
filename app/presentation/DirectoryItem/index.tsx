@@ -36,7 +36,7 @@ const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => 
 });
 
 const DirectoryItem = ({
-	title, description, avatar, onPress, testID, style, rightLabel, type, rid, theme, teamMain
+	title, description, avatar, onPress, testID, style, rightLabel, type, rid, theme, teamMain,
 }: IDirectoryItem) => (
 	<Touch
 		onPress={onPress}

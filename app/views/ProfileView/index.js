@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Keyboard } from 'react-native';
+import { Keyboard, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
@@ -12,14 +12,13 @@ import omit from 'lodash/omit';
 import Touch from '../../utils/touch';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
-import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
-import log, { logEvent, events } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
@@ -31,6 +30,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import styles from './styles';
 
 class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {

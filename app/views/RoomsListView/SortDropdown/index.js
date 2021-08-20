@@ -10,7 +10,7 @@ import styles from '../styles';
 import * as List from '../../../containers/List';
 import RocketChat from '../../../lib/rocketchat';
 import { setPreference } from '../../../actions/sortPreferences';
-import log, { logEvent, events } from '../../../utils/log';
+import log, { events, logEvent } from '../../../utils/log';
 import I18n from '../../../i18n';
 import { withTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';

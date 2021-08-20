@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import I18n from '../../i18n';
 import {
-	logEvent, events
+	events, logEvent
 } from '../../utils/log';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';

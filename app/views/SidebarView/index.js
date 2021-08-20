@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-	ScrollView, Text, View, TouchableWithoutFeedback
+	ScrollView, Text, TouchableWithoutFeedback, View
 } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
-import styles from './styles';
-import SidebarItem from './SidebarItem';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/Navigation';
+import SidebarItem from './SidebarItem';
+import styles from './styles';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {

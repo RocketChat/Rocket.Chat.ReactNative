@@ -1,31 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
-import * as List from '../containers/List';
 
+import * as List from '../containers/List';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import Loading from '../containers/Loading';
 import I18n from '../i18n';
-import log, { logEvent, events } from '../utils/log';
+import log, { events, logEvent } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
-import sharedStyles from './Styles';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
 import {
-	reset as resetAction,
 	addUser as addUserAction,
-	removeUser as removeUserAction
+	removeUser as removeUserAction,
+	reset as resetAction
 } from '../actions/selectedUsers';
 import { showErrorAlert } from '../utils/info';
 import SafeAreaView from '../containers/SafeAreaView';
+import sharedStyles from './Styles';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_, index) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
@@ -92,13 +92,13 @@ class SelectedUsersView extends React.Component {
 		const nextAction = route.params?.nextAction ?? (() => {});
 		const options = {
 			title,
-			headerRight: () => (
+			headerRight: () =>
 				(!maxUsers || showButton) && (
 					<HeaderButton.Container>
 						<HeaderButton.Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
 					</HeaderButton.Container>
 				)
-			)
+
 		};
 		navigation.setOptions(options);
 	}

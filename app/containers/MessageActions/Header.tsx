@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
@@ -10,7 +10,7 @@ import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
-import {IEmoji} from "../EmojiPicker/interfaces";
+import { IEmoji } from '../EmojiPicker/interfaces';
 
 interface IHeader {
 	handleReaction: Function;
@@ -40,7 +40,7 @@ const ITEM_MARGIN = 8;
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
-		marginHorizontal: CONTAINER_MARGIN
+		marginHorizontal: CONTAINER_MARGIN,
 	},
 	headerItem: {
 		height: ITEM_SIZE,
@@ -48,17 +48,17 @@ const styles = StyleSheet.create({
 		borderRadius: ITEM_SIZE / 2,
 		marginHorizontal: ITEM_MARGIN,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	headerIcon: {
 		...sharedStyles.textAlignCenter,
 		fontSize: 20,
-		color: '#fff'
+		color: '#fff',
 	},
 	customEmoji: {
 		height: 20,
-		width: 20
-	}
+		width: 20,
+	},
 });
 
 const keyExtractor = (item: any) => item?.id || item;
@@ -97,7 +97,7 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 	const [items, setItems] = useState([]);
 	const { width, height }: any = useDimensions();
 
-	const setEmojis = async() => {
+	const setEmojis = async () => {
 		try {
 			const db = database.active;
 			const freqEmojiCollection = db.get('frequently_used_emojis');

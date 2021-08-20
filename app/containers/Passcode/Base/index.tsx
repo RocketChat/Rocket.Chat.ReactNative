@@ -1,5 +1,5 @@
-import React, { useState, forwardRef, useImperativeHandle, useRef } from 'react';
-import { Col, Row, Grid } from 'react-native-easy-grid';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { Col, Grid, Row } from 'react-native-easy-grid';
 import range from 'lodash/range';
 import * as Animatable from 'react-native-animatable';
 import * as Haptics from 'expo-haptics';
@@ -27,7 +27,7 @@ interface IPasscodeBase {
 }
 
 const Base = forwardRef(({
-	theme, type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress
+	theme, type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress,
 }: IPasscodeBase, ref) => {
 	const rootRef = useRef<any>();
 	const dotsRef = useRef<any>();
@@ -78,7 +78,7 @@ const Base = forwardRef(({
 	});
 
 	useImperativeHandle(ref, () => ({
-		wrongPasscode, animate, clearPasscode
+		wrongPasscode, animate, clearPasscode,
 	}));
 
 	return (

@@ -7,13 +7,13 @@ import RNRestart from 'react-native-restart';
 import RocketChat from '../../lib/rocketchat';
 import I18n, { LANGUAGES, isRTL } from '../../i18n';
 import { showErrorAlert } from '../../utils/info';
-import log, { logEvent, events } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { appStart as appStartAction, ROOT_LOADING, ROOT_INSIDE } from '../../actions/app';
+import { ROOT_INSIDE, ROOT_LOADING, appStart as appStartAction } from '../../actions/app';
 import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -54,7 +54,7 @@ class LanguageView extends React.Component {
 
 	formIsChanged = (language) => {
 		const { user } = this.props;
-		return (user.language !== language);
+		return user.language !== language;
 	}
 
 	submit = async(language) => {

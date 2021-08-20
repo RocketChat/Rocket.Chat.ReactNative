@@ -1,4 +1,5 @@
 import React from 'react';
+
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 interface ITypeIcon {
@@ -11,7 +12,7 @@ interface ITypeIcon {
 }
 
 const TypeIcon = React.memo(({
-	type, prid, status, isGroupChat, teamMain
+	type, prid, status, isGroupChat, teamMain,
 }: ITypeIcon) => <RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />);
 
 export default TypeIcon;

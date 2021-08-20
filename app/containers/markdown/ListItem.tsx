@@ -6,15 +6,15 @@ import { themes } from '../../constants/colors';
 const style = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
 	},
 	bullet: {
 		alignItems: 'flex-end',
-		marginRight: 5
+		marginRight: 5,
 	},
 	contents: {
-		flex: 1
-	}
+		flex: 1,
+	},
 });
 
 interface IListItem {
@@ -28,7 +28,7 @@ interface IListItem {
 }
 
 const ListItem = React.memo(({
-	children, level, bulletWidth, continue: _continue, ordered, index, theme
+	children, level, bulletWidth, continue: _continue, ordered, index, theme,
 }: IListItem) => {
 	let bullet;
 	if (_continue) {

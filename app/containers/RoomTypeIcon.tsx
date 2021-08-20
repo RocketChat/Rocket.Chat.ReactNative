@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+
 import { CustomIcon } from '../lib/Icons';
 import { STATUS_COLORS, themes } from '../constants/colors';
 import Status from './Status/Status';
@@ -7,8 +8,8 @@ import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	icon: {
-		marginRight: 4
-	}
+		marginRight: 4,
+	},
 });
 
 interface IRoomTypeIcon {
@@ -22,7 +23,7 @@ interface IRoomTypeIcon {
 }
 
 const RoomTypeIcon = React.memo(({
-	type, isGroupChat, status, style, theme, teamMain, size = 16
+	type, isGroupChat, status, style, theme, teamMain, size = 16,
 }: IRoomTypeIcon) => {
 	if (!type) {
 		return null;
@@ -32,7 +33,7 @@ const RoomTypeIcon = React.memo(({
 	const iconStyle = [
 		styles.icon,
 		{ color },
-		style
+		style,
 	];
 
 	if (type === 'd' && !isGroupChat) {

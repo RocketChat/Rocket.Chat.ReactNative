@@ -6,15 +6,12 @@ import { connect } from 'react-redux';
 import Navigation from './lib/Navigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './utils/navigation';
 import {
-	ROOT_LOADING, ROOT_OUTSIDE, ROOT_NEW_SERVER, ROOT_INSIDE, ROOT_SET_USERNAME
+	ROOT_INSIDE, ROOT_LOADING, ROOT_NEW_SERVER, ROOT_OUTSIDE, ROOT_SET_USERNAME,
 } from './actions/app';
-
 // Stacks
 import AuthLoadingView from './views/AuthLoadingView';
-
 // SetUsername Stack
 import SetUsernameView from './views/SetUsernameView';
-
 import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
@@ -101,7 +98,7 @@ const App = React.memo(({ root, isMasterDetail }: {root: string, isMasterDetail:
 });
 const mapStateToProps = (state: any) => ({
 	root: state.app.root,
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
 });
 
 const AppContainer = connect(mapStateToProps)(App);

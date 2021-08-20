@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import styles from './styles';
 import Markdown from '../../containers/markdown';
 import { themes } from '../../constants/colors';
+import styles from './styles';
 
 const Item = ({
 	label, content, theme, testID

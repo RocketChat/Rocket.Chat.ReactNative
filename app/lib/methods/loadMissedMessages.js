@@ -29,7 +29,7 @@ async function load({ rid: roomId, lastOpen }) {
 export default function loadMissedMessages(args) {
 	return new Promise(async(resolve, reject) => {
 		try {
-			const data = (await load.call(this, { rid: args.rid, lastOpen: args.lastOpen }));
+			const data = await load.call(this, { rid: args.rid, lastOpen: args.lastOpen });
 
 			if (data) {
 				const { updated, deleted } = data;

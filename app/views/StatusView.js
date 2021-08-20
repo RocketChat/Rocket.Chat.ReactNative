@@ -11,8 +11,7 @@ import EventEmitter from '../utils/events';
 import { showErrorAlert } from '../utils/info';
 import Loading from '../containers/Loading';
 import RocketChat from '../lib/rocketchat';
-import log, { logEvent, events } from '../utils/log';
-
+import log, { events, logEvent } from '../utils/log';
 import { LISTENER } from '../containers/Toast';
 import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';

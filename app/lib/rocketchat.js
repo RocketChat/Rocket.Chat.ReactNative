@@ -1,71 +1,63 @@
 import { InteractionManager } from 'react-native';
 import EJSON from 'ejson';
 import {
-	Rocketchat as RocketchatClient,
-	settings as RocketChatSettings
+	settings as RocketChatSettings,
+	Rocketchat as RocketchatClient
 } from '@rocket.chat/sdk';
 import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNFetchBlob from 'rn-fetch-blob';
 
-import { compareServerVersion, methods } from './utils';
-import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
-import database from './database';
 import log from '../utils/log';
-import { isIOS, getBundleId } from '../utils/deviceInfo';
+import { getBundleId, isIOS } from '../utils/deviceInfo';
 import fetch from '../utils/fetch';
 import SSLPinning from '../utils/sslPinning';
-
 import { encryptionInit } from '../actions/encryption';
-import { setUser, setLoginServices, loginRequest } from '../actions/login';
-import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
-import { shareSelectServer, shareSetUser, shareSetSettings } from '../actions/share';
-
-import subscribeRooms from './methods/subscriptions/rooms';
-import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
-
-import protectedFunction from './methods/helpers/protectedFunction';
-import readMessages from './methods/readMessages';
-import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
-
-import getRooms from './methods/getRooms';
-import { setPermissions, getPermissions } from './methods/getPermissions';
-import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
-import {
-	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
-} from './methods/enterpriseModules';
-import getSlashCommands from './methods/getSlashCommands';
-import { getRoles, setRoles, onRolesChanged } from './methods/getRoles';
-import canOpenRoom from './methods/canOpenRoom';
-import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/actions';
-
-import loadMessagesForRoom from './methods/loadMessagesForRoom';
-import loadSurroundingMessages from './methods/loadSurroundingMessages';
-import loadNextMessages from './methods/loadNextMessages';
-import loadMissedMessages from './methods/loadMissedMessages';
-import loadThreadMessages from './methods/loadThreadMessages';
-
-import sendMessage, { resendMessage } from './methods/sendMessage';
-import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
-
-import callJitsi from './methods/callJitsi';
-import logout, { removeServer } from './methods/logout';
-
+import { loginRequest, setLoginServices, setUser } from '../actions/login';
+import { connectRequest, connectSuccess, disconnect } from '../actions/connect';
+import { shareSelectServer, shareSetSettings, shareSetUser } from '../actions/share';
 import { getDeviceToken } from '../notifications/push';
 import { setActiveUsers } from '../actions/activeUsers';
 import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
-import UserPreferences from './userPreferences';
-import { Encryption } from './encryption';
 import EventEmitter from '../utils/events';
-import { sanitizeLikeString } from './database/utils';
 import { updatePermission } from '../actions/permissions';
 import { TEAM_TYPE } from '../definition/ITeam';
 import { updateSettings } from '../actions/settings';
+import { compareServerVersion, methods } from './utils';
+import reduxStore from './createStore';
+import database from './database';
+import subscribeRooms from './methods/subscriptions/rooms';
+import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
+import protectedFunction from './methods/helpers/protectedFunction';
+import readMessages from './methods/readMessages';
+import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
+import getRooms from './methods/getRooms';
+import { getPermissions, setPermissions } from './methods/getPermissions';
+import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
+import {
+	getEnterpriseModules, hasLicense, isOmnichannelModuleAvailable, setEnterpriseModules
+} from './methods/enterpriseModules';
+import getSlashCommands from './methods/getSlashCommands';
+import { getRoles, onRolesChanged, setRoles } from './methods/getRoles';
+import canOpenRoom from './methods/canOpenRoom';
+import triggerBlockAction, { triggerCancel, triggerSubmitView } from './methods/actions';
+import loadMessagesForRoom from './methods/loadMessagesForRoom';
+import loadSurroundingMessages from './methods/loadSurroundingMessages';
+import loadNextMessages from './methods/loadNextMessages';
+import loadMissedMessages from './methods/loadMissedMessages';
+import loadThreadMessages from './methods/loadThreadMessages';
+import sendMessage, { resendMessage } from './methods/sendMessage';
+import { cancelUpload, isUploadActive, sendFileMessage } from './methods/sendFileMessage';
+import callJitsi from './methods/callJitsi';
+import logout, { removeServer } from './methods/logout';
+import UserPreferences from './userPreferences';
+import { Encryption } from './encryption';
+import { sanitizeLikeString } from './database/utils';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -109,7 +101,7 @@ const RocketChat = {
 			extraData: {
 				broadcast,
 				encrypted,
-				...(teamId && { teamId })
+				...teamId && { teamId }
 			}
 		};
 		return this.post(type ? 'groups.create' : 'channels.create', params);
@@ -140,7 +132,7 @@ const RocketChat = {
 			try {
 				// Try to resolve as json
 				const jsonRes = response.json();
-				if (!(jsonRes?.success)) {
+				if (!jsonRes?.success) {
 					return {
 						success: false,
 						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
@@ -713,7 +705,7 @@ const RocketChat = {
 			t: sub.t,
 			encrypted: sub.encrypted,
 			lastMessage: sub.lastMessage,
-			...(sub.teamId && { teamId: sub.teamId })
+			...sub.teamId && { teamId: sub.teamId }
 		}));
 
 		return data;
@@ -854,7 +846,7 @@ const RocketChat = {
 	},
 	convertChannelToTeam({ rid, name, type }) {
 		const params = {
-			...(type === 'c'
+			...type === 'c'
 				? {
 					channelId: rid,
 					channelName: name
@@ -862,14 +854,14 @@ const RocketChat = {
 				: {
 					roomId: rid,
 					roomName: name
-				})
+				}
 		};
 		return this.sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
 	},
 	convertTeamToChannel({ teamId, selected }) {
 		const params = {
 			teamId,
-			...(selected.length && { roomsToRemove: selected })
+			...selected.length && { roomsToRemove: selected }
 		};
 		return this.sdk.post('teams.convertToChannel', params);
 	},
@@ -1606,7 +1598,7 @@ const RocketChat = {
 				return false;
 			}
 			const autoTranslatePermission = reduxStore.getState().permissions['auto-translate'];
-			const userRoles = (reduxStore.getState().login?.user?.roles) ?? [];
+			const userRoles = reduxStore.getState().login?.user?.roles ?? [];
 			return autoTranslatePermission?.some(role => userRoles.includes(role));
 		} catch (e) {
 			log(e);

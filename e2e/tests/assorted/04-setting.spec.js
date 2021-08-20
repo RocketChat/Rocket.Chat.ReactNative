@@ -1,5 +1,4 @@
 const { navigateToLogin, login } = require('../../helpers/app');
-
 const data = require('../../data');
 
 const testuser = data.users.regular;

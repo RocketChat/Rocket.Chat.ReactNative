@@ -1,14 +1,14 @@
 import EJSON from 'ejson';
-import { takeLatest, select, put } from 'redux-saga/effects';
+import { put, select, takeLatest } from 'redux-saga/effects';
 
 import { ENCRYPTION } from '../actions/actionsTypes';
 import { encryptionSet } from '../actions/encryption';
 import { Encryption } from '../lib/encryption';
 import Navigation from '../lib/Navigation';
 import {
-	E2E_PUBLIC_KEY,
-	E2E_PRIVATE_KEY,
 	E2E_BANNER_TYPE,
+	E2E_PRIVATE_KEY,
+	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY
 } from '../lib/encryption/constants';
 import database from '../lib/database';

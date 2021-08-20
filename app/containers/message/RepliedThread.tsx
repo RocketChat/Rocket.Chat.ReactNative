@@ -6,17 +6,17 @@ import styles from './styles';
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import Markdown from '../markdown';
-import {IMessageRepliedThread} from "./interfaces";
+import { IMessageRepliedThread } from './interfaces';
 
 const RepliedThread = memo(({
-	tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted, theme
+	tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted, theme,
 }: IMessageRepliedThread) => {
 	if (!tmid || !isHeader) {
 		return null;
 	}
 
 	const [msg, setMsg] = useState(isEncrypted ? I18n.t('Encrypted_message') : tmsg);
-	const fetch = async() => {
+	const fetch = async () => {
 		const threadName = await fetchThreadName(tmid, id);
 		setMsg(threadName);
 	};
@@ -34,7 +34,7 @@ const RepliedThread = memo(({
 	return (
 		<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
 			<CustomIcon name='threads' size={20} style={styles.repliedThreadIcon} color={themes[theme].tintColor} />
-			{/*@ts-ignore*/}
+			{/* @ts-ignore*/}
 			<Markdown
 				msg={msg}
 				theme={theme}

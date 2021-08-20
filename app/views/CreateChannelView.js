@@ -2,16 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Switch, ScrollView, StyleSheet, FlatList
+	FlatList, ScrollView, StyleSheet, Switch, Text, View
 } from 'react-native';
 import { dequal } from 'dequal';
-import * as List from '../containers/List';
 
+import * as List from '../containers/List';
 import TextInput from '../presentation/TextInput';
 import Loading from '../containers/Loading';
 import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';
 import { removeUser as removeUserAction } from '../actions/selectedUsers';
-import sharedStyles from './Styles';
 import KeyboardView from '../presentation/KeyboardView';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
@@ -22,8 +21,9 @@ import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {

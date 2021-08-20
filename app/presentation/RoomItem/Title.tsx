@@ -16,7 +16,7 @@ const Title = React.memo(({ name, theme, hideUnreadStatus, alert }: ITitle) => (
 		style={[
 			styles.title,
 			alert && !hideUnreadStatus && styles.alert,
-			{ color: themes[theme].titleText }
+			{ color: themes[theme].titleText },
 		]}
 		ellipsizeMode='tail'
 		numberOfLines={1}

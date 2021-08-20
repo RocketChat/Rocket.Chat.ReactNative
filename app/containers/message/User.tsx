@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-
 import MessageError from './MessageError';
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
@@ -16,26 +15,26 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	username: {
 		fontSize: 16,
 		lineHeight: 22,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
 	},
 	usernameInfoMessage: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
 	},
 	titleContainer: {
 		flexShrink: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	alias: {
 		fontSize: 14,
-		...sharedStyles.textRegular
-	}
+		...sharedStyles.textRegular,
+	},
 });
 
 interface IMessageUser {
@@ -61,7 +60,7 @@ const User = React.memo(({
 	if (isHeader || hasError) {
 		const navParam = {
 			t: 'd',
-			rid: author._id
+			rid: author._id,
 		};
 		const { user } = useContext(MessageContext);
 		const username = (useRealName && author.name) || author.username;

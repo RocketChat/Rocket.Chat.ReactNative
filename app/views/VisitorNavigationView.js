@@ -8,9 +8,9 @@ import { themes } from '../constants/colors';
 import openLink from '../utils/openLink';
 import I18n from '../i18n';
 import debounce from '../utils/debounce';
-import sharedStyles from './Styles';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	noResult: {

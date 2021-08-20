@@ -1,9 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { ScrollView, StyleSheet, SafeAreaView } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
-import { UiKitModal, UiKitComponent } from '../../app/containers/UIKit';
+import { UiKitComponent, UiKitModal } from '../../app/containers/UIKit';
 import { KitContext, defaultContext } from '../../app/containers/UIKit/utils';
 import MessageContext from '../../app/containers/message/Context';
 import { themes } from '../../app/constants/colors';

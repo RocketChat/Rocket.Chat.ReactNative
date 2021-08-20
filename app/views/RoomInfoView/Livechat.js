@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
-import CustomFields from './CustomFields';
-import Item from './Item';
-import Timezone from './Timezone';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
+import CustomFields from './CustomFields';
+import Item from './Item';
+import Timezone from './Timezone';
 
 const styles = StyleSheet.create({
 	title: {

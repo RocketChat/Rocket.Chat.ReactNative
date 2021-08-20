@@ -1,17 +1,17 @@
 import {
-	takeLatest, take, select, put, all, delay
+	all, delay, put, select, take, takeLatest
 } from 'redux-saga/effects';
 
 import UserPreferences from '../lib/userPreferences';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
 import { selectServerRequest, serverInitAdd } from '../actions/server';
-import { inviteLinksSetToken, inviteLinksRequest } from '../actions/inviteLinks';
+import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
 import {
-	appStart, ROOT_INSIDE, ROOT_NEW_SERVER, appInit
+	ROOT_INSIDE, ROOT_NEW_SERVER, appInit, appStart
 } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';

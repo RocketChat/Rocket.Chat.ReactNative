@@ -7,11 +7,11 @@ import { themes } from '../../constants/colors';
 const styles = StyleSheet.create({
 	scrollContent: {
 		width: '100%',
-		height: '100%'
+		height: '100%',
 	},
 	image: {
-		flex: 1
-	}
+		flex: 1,
+	},
 });
 
 interface IImageViewer {
@@ -34,7 +34,7 @@ export const ImageViewer = ({
 			contentContainerStyle={[
 				styles.scrollContent,
 				width && { width },
-				height && { height }
+				height && { height },
 			]}
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}

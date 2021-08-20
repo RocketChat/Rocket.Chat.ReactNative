@@ -2,11 +2,11 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import EJSON from 'ejson';
 
-import buildMessage from './helpers/buildMessage';
 import database from '../database';
 import log from '../../utils/log';
-import protectedFunction from './helpers/protectedFunction';
 import { Encryption } from '../encryption';
+import protectedFunction from './helpers/protectedFunction';
+import buildMessage from './helpers/buildMessage';
 
 async function load({ tmid }) {
 	try {

@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
-
 import User from './User';
 import styles from './styles';
 import RepliedThread from './RepliedThread';
@@ -19,7 +18,7 @@ import Content from './Content';
 import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
 import { themes } from '../../constants/colors';
-import {IMessage, IMessageInner, IMessageTouchable} from "./interfaces";
+import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	if (props.type === 'discussion-created') {
@@ -74,7 +73,7 @@ const Message = React.memo((props: IMessage) => {
 					<View
 						style={[
 							styles.messageContent,
-							props.isHeader && styles.messageContentWithHeader
+							props.isHeader && styles.messageContentWithHeader,
 						]}
 					>
 						<Content {...props} />
@@ -91,7 +90,7 @@ const Message = React.memo((props: IMessage) => {
 				<View
 					style={[
 						styles.messageContent,
-						props.isHeader && styles.messageContentWithHeader
+						props.isHeader && styles.messageContentWithHeader,
 					]}
 				>
 					<MessageInner {...props} />

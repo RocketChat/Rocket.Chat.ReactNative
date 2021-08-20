@@ -1,20 +1,20 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { Audio } from 'expo-av';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { getInfoAsync } from 'expo-file-system';
-import { deactivateKeepAwake, activateKeepAwake } from 'expo-keep-awake';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 
 import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 
 interface IMessageBoxRecordAudioProps {
 	theme: string;
-	recordingCallback({}): void;
-	onFinish({}): void;
+	recordingCallback: Function;
+	onFinish: Function;
 }
 
 const RECORDING_EXTENSION = '.aac';
@@ -25,7 +25,7 @@ const RECORDING_SETTINGS = {
 		audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
 		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.sampleRate,
 		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.numberOfChannels,
-		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.bitRate
+		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.bitRate,
 	},
 	ios: {
 		extension: RECORDING_EXTENSION,
@@ -33,8 +33,8 @@ const RECORDING_SETTINGS = {
 		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.sampleRate,
 		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.numberOfChannels,
 		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.bitRate,
-		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC
-	}
+		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC,
+	},
 };
 const RECORDING_MODE = {
 	allowsRecordingIOS: true,
@@ -43,7 +43,7 @@ const RECORDING_MODE = {
 	shouldDuckAndroid: true,
 	playThroughEarpieceAndroid: false,
 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
 };
 
 const formatTime = function(seconds: any) {
@@ -56,6 +56,7 @@ const formatTime = function(seconds: any) {
 
 export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAudioProps, any> {
 	private isRecorderBusy: boolean;
+
 	private recording: any;
 
 	constructor(props: IMessageBoxRecordAudioProps) {
@@ -63,7 +64,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 		this.isRecorderBusy = false;
 		this.state = {
 			isRecording: false,
-			recordingDurationMillis: 0
+			recordingDurationMillis: 0,
 		};
 	}
 
@@ -85,7 +86,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 		return formatTime(Math.floor(recordingDurationMillis / 1000));
 	}
 
-	isRecordingPermissionGranted = async() => {
+	isRecordingPermissionGranted = async () => {
 		try {
 			const permission = await Audio.getPermissionsAsync();
 			if (permission.status === 'granted') {
@@ -101,11 +102,11 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 	onRecordingStatusUpdate = (status: any) => {
 		this.setState({
 			isRecording: status.isRecording,
-			recordingDurationMillis: status.durationMillis
+			recordingDurationMillis: status.durationMillis,
 		});
 	}
 
-	startRecordingAudio = async() => {
+	startRecordingAudio = async () => {
 		logEvent(events.ROOM_AUDIO_RECORD);
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;
@@ -130,7 +131,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 		}
 	};
 
-	finishRecordingAudio = async() => {
+	finishRecordingAudio = async () => {
 		logEvent(events.ROOM_AUDIO_FINISH);
 		if (!this.isRecorderBusy) {
 			const { onFinish } = this.props;
@@ -147,7 +148,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 					type: 'audio/aac',
 					store: 'Uploads',
 					path: fileURI,
-					size: fileData.size
+					size: fileData.size,
 				};
 
 				onFinish(fileInfo);
@@ -160,7 +161,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 		}
 	};
 
-	cancelRecordingAudio = async() => {
+	cancelRecordingAudio = async () => {
 		logEvent(events.ROOM_AUDIO_CANCEL);
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;

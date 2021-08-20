@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, StyleSheet, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import I18n from '../i18n';
-import sharedStyles from './Styles';
 import { withTheme } from '../theme';
 import Button from '../containers/Button';
 import { themes } from '../constants/colors';
@@ -15,7 +14,8 @@ import { encryptionDecodeKey as encryptionDecodeKeyAction } from '../actions/enc
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import KeyboardView from '../presentation/KeyboardView';
 import StatusBar from '../containers/StatusBar';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {

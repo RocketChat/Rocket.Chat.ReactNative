@@ -1,10 +1,10 @@
-import { NativeModules, Platform, Alert } from 'react-native';
+import { Alert, NativeModules, Platform } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import * as FileSystem from 'expo-file-system';
 
-import { extractHostname } from './server';
 import UserPreferences from '../lib/userPreferences';
 import I18n from '../i18n';
+import { extractHostname } from './server';
 
 const { SSLPinning } = NativeModules;
 

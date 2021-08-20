@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Clipboard } from 'react-native';
+import { Clipboard, StyleSheet, Text, View } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import { dequal } from 'dequal';
 
@@ -15,38 +15,38 @@ import MessageContext from './Context';
 
 const styles = StyleSheet.create({
 	button: {
-		marginTop: 6
+		marginTop: 6,
 	},
 	container: {
 		flex: 1,
 		flexDirection: 'column',
 		borderRadius: 4,
-		borderWidth: 1
+		borderWidth: 1,
 	},
 	textContainer: {
 		flex: 1,
 		flexDirection: 'column',
 		padding: 15,
 		justifyContent: 'flex-start',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
 	},
 	title: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
 	},
 	description: {
 		fontSize: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	marginTop: {
-		marginTop: 4
+		marginTop: 4,
 	},
 	image: {
 		width: '100%',
 		height: 150,
 		borderTopLeftRadius: 4,
-		borderTopRightRadius: 4
-	}
+		borderTopRightRadius: 4,
+	},
 });
 
 interface IMessageUrlContent {
@@ -121,8 +121,8 @@ const Url = React.memo(({ url, index, theme }: IMessageUrl) => {
 				styles.container,
 				{
 					backgroundColor: themes[theme].chatComponentBackground,
-					borderColor: themes[theme].borderColor
-				}
+					borderColor: themes[theme].borderColor,
+				},
 			]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 		>

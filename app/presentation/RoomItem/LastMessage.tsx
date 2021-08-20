@@ -26,7 +26,7 @@ interface ILastMessage {
 }
 
 const formatMsg = ({
-	lastMessage, type, showLastMessage, username, useRealName
+	lastMessage, type, showLastMessage, username, useRealName,
 }: Partial<ILastMessage>) => {
 	if (!showLastMessage) {
 		return '';
@@ -65,12 +65,12 @@ const formatMsg = ({
 const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);
 
 const LastMessage = React.memo(({
-	lastMessage, type, showLastMessage, username, alert, useRealName, theme
+	lastMessage, type, showLastMessage, username, alert, useRealName, theme,
 }: ILastMessage) => (
 	// @ts-ignore
 	<Markdown
 		msg={formatMsg({
-			lastMessage, type, showLastMessage, username, useRealName
+			lastMessage, type, showLastMessage, username, useRealName,
 		})}
 		style={[styles.markdownText, { color: alert ? themes[theme].bodyText : themes[theme].auxiliaryText }]}
 		customEmojis={false}

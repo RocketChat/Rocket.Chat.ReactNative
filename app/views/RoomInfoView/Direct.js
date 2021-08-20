@@ -1,13 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
-
 import Timezone from './Timezone';
 import CustomFields from './CustomFields';
-
 import styles from './styles';
 
 const Roles = ({ roles, theme }) => (roles && roles.length ? (

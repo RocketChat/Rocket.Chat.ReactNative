@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	separator: {
-		height: StyleSheet.hairlineWidth
-	}
+		height: StyleSheet.hairlineWidth,
+	},
 });
 
 interface IListSeparator {
@@ -20,7 +20,7 @@ const ListSeparator = React.memo(({ style, theme }: IListSeparator) => (
 		style={[
 			styles.separator,
 			style,
-			{ backgroundColor: themes[theme].separatorColor }
+			{ backgroundColor: themes[theme].separatorColor },
 		]}
 	/>
 ));

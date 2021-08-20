@@ -8,10 +8,10 @@ import Base from './Base';
 import Locked from './Base/Locked';
 import { TYPE } from './constants';
 import {
-	ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, PASSCODE_KEY, MAX_ATTEMPTS
+	ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY,
 } from '../../constants/localAuthentication';
-import { resetAttempts, biometryAuth } from '../../utils/localAuthentication';
-import { getLockedUntil, getDiff } from './utils';
+import { biometryAuth, resetAttempts } from '../../utils/localAuthentication';
+import { getDiff, getLockedUntil } from './utils';
 import UserPreferences from '../../lib/userPreferences';
 import I18n from '../../i18n';
 
@@ -31,12 +31,12 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeE
 	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
-	const fetchPasscode = async() => {
+	const fetchPasscode = async () => {
 		const p: any = await UserPreferences.getStringAsync(PASSCODE_KEY);
 		setPasscode(p);
 	};
 
-	const biometry = async() => {
+	const biometry = async () => {
 		if (hasBiometry && status === TYPE.ENTER) {
 			const result = await biometryAuth();
 			if (result?.success) {
@@ -45,7 +45,7 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeE
 		}
 	};
 
-	const readStorage = async() => {
+	const readStorage = async () => {
 		lockedUntil = await getLockedUntil();
 		if (lockedUntil) {
 			const diff = getDiff(lockedUntil);

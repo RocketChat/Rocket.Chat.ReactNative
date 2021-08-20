@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
@@ -9,7 +9,7 @@ import RoomTypeIcon from '../RoomTypeIcon';
 import { withTheme } from '../../theme';
 
 const HIT_SLOP = {
-	top: 5, right: 5, bottom: 5, left: 5
+	top: 5, right: 5, bottom: 5, left: 5,
 };
 const TITLE_SIZE = 16;
 const SUBTITLE_SIZE = 12;
@@ -19,23 +19,23 @@ const getSubTitleSize = (scale: number) => SUBTITLE_SIZE * scale;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	titleContainer: {
 		alignItems: 'center',
-		flexDirection: 'row'
+		flexDirection: 'row',
 	},
 	title: {
 		flexShrink: 1,
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
 	},
 	subtitle: {
 		flexShrink: 1,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	typingUsers: {
-		...sharedStyles.textSemibold
-	}
+		...sharedStyles.textSemibold,
+	},
 });
 
 type TRoomHeaderSubTitle = {
@@ -141,7 +141,7 @@ const HeaderTitle = React.memo(({ title, tmid, prid, scale, theme, testID }: TRo
 });
 
 const Header = React.memo(({
-	title, subtitle, parentTitle, type, status, width, height, prid, tmid, onPress, theme, isGroupChat, teamMain, testID, usersTyping = []
+	title, subtitle, parentTitle, type, status, width, height, prid, tmid, onPress, theme, isGroupChat, teamMain, testID, usersTyping = [],
 }: IRoomHeader) => {
 	const portrait = height > width;
 	let scale = 1;

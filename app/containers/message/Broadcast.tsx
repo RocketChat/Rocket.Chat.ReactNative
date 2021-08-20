@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import Touchable from './Touchable';
 import { CustomIcon } from '../../lib/Icons';
@@ -8,7 +8,7 @@ import { BUTTON_HIT_SLOP } from './utils';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
-import {IMessageBroadcast} from "./interfaces";
+import { IMessageBroadcast } from './interfaces';
 
 const Broadcast = React.memo(({ author, broadcast, theme }: IMessageBroadcast) => {
 	const { user, replyBroadcast } = useContext(MessageContext);

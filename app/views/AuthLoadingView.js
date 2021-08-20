@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Text, StyleSheet, ActivityIndicator
+	ActivityIndicator, StyleSheet, Text, View
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -9,7 +9,6 @@ import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
-
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({

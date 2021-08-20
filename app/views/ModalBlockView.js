@@ -11,11 +11,10 @@ import * as HeaderButton from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
-import { MODAL_ACTIONS, CONTAINER_TYPES } from '../lib/methods/actions';
-
-import sharedStyles from './Styles';
+import { CONTAINER_TYPES, MODAL_ACTIONS } from '../lib/methods/actions';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/Navigation';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {

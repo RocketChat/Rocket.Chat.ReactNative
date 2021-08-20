@@ -1,6 +1,6 @@
 import React from 'react';
 // @ts-ignore
-import { View, Text, Pressable } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
 import Check from '../../containers/Check';
@@ -26,19 +26,19 @@ interface IServerItem {
 const defaultLogo = require('../../static/images/logo.png');
 
 const ServerItem = React.memo(({
-	item, onPress, onLongPress, hasCheck, theme
+	item, onPress, onLongPress, hasCheck, theme,
 }: IServerItem) => (
 	<Pressable
 		onPress={onPress}
 		onLongPress={() => onLongPress?.()}
 		testID={`rooms-list-header-server-${ item.id }`}
 		android_ripple={{
-			color: themes[theme].bannerBackground
+			color: themes[theme].bannerBackground,
 		}}
 		style={({ pressed }: any) => ({
 			backgroundColor: isIOS && pressed
 				? themes[theme].bannerBackground
-				: themes[theme].backgroundColor
+				: themes[theme].backgroundColor,
 		})}
 	>
 		<View style={styles.serverItemContainer}>
@@ -47,7 +47,7 @@ const ServerItem = React.memo(({
 					<FastImage
 						source={{
 							uri: item.iconURL,
-							priority: FastImage.priority.high
+							priority: FastImage.priority.high,
 						}}
 						// @ts-ignore
 						defaultSource={defaultLogo}

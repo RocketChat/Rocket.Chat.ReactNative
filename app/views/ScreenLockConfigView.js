@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
-import { themes, SWITCH_TRACK_COLOR } from '../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
-import { supportedBiometryLabel, changePasscode, checkHasPasscode } from '../utils/localAuthentication';
+import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../utils/localAuthentication';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';

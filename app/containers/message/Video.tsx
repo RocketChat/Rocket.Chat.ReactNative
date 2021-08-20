@@ -11,7 +11,7 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 
-const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
+const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...isIOS ? [] : ['video/3gp', 'video/mkv']];
 const isTypeSupported = (type: any) => SUPPORTED_TYPES.indexOf(type) !== -1;
 
 const styles = StyleSheet.create({
@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
 		height: 150,
 		marginBottom: 6,
 		alignItems: 'center',
-		justifyContent: 'center'
-	}
+		justifyContent: 'center',
+	},
 });
 
 interface IMessageVideo {
@@ -62,7 +62,7 @@ const Video = React.memo(({ file, showAttachment, getCustomEmoji, theme }: IMess
 					color={themes[theme].buttonText}
 				/>
 			</Touchable>
-			{/*@ts-ignore*/}
+			{/* @ts-ignore*/}
 			<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 		</>
 	);

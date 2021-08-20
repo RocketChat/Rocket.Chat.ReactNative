@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { ThemeContext } from '../theme';
 import {
-	defaultHeader, themedHeader, StackAnimation, ModalAnimation
+	ModalAnimation, StackAnimation, defaultHeader, themedHeader
 } from '../utils/navigation';
 
 // Outside Stack

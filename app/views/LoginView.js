@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, StyleSheet, Keyboard, Alert
+	Alert, Keyboard, StyleSheet, Text, View
 } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -16,6 +15,7 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import LoginServices from '../containers/LoginServices';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	registerDisabled: {

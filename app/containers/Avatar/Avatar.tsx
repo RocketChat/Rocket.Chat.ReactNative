@@ -6,11 +6,11 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { avatarURL } from '../../utils/avatar';
 import Emoji from '../markdown/Emoji';
-import {IAvatar} from './interfaces';
+import { IAvatar } from './interfaces';
 
 const Avatar = React.memo(({
 	server,
-    style,
+	style,
 	avatar,
 	children,
 	user,
@@ -23,12 +23,11 @@ const Avatar = React.memo(({
 	rid,
 	blockUnauthenticatedAccess,
 	serverVersion,
-    text,
-    size = 25,
-    borderRadius = 4,
-    type = 'd',
+	text,
+	size = 25,
+	borderRadius = 4,
+	type = 'd',
 }: Partial<IAvatar>) => {
-
 	if ((!text && !avatar && !emoji && !rid) || !server) {
 		return null;
 	}
@@ -36,7 +35,7 @@ const Avatar = React.memo(({
 	const avatarStyle = {
 		width: size,
 		height: size,
-		borderRadius
+		borderRadius,
 	};
 
 	let image;
@@ -64,7 +63,7 @@ const Avatar = React.memo(({
 				avatarETag,
 				serverVersion,
 				rid,
-				blockUnauthenticatedAccess
+				blockUnauthenticatedAccess,
 			});
 		}
 
@@ -74,7 +73,7 @@ const Avatar = React.memo(({
 				source={{
 					uri,
 					headers: RocketChatSettings.customHeaders,
-					priority: FastImage.priority.high
+					priority: FastImage.priority.high,
 				}}
 			/>
 		);

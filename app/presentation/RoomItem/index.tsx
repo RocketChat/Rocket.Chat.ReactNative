@@ -12,8 +12,8 @@ interface IRoomItemContainerProps {
 	item: any;
 	showLastMessage: boolean;
 	id: string;
-	onPress({}?): void;
-	onLongPress({}?): void;
+	onPress: Function;
+	onLongPress: Function;
 	username: string;
 	avatarSize: number;
 	width: number;
@@ -42,11 +42,12 @@ const attrs = [
 	'isFocused',
 	'forceUpdate',
 	'showLastMessage',
-	'autoJoin'
+	'autoJoin',
 ];
 
 class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 	private mounted: boolean;
+
 	private roomSubscription: any;
 
 	static defaultProps = {
@@ -57,7 +58,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 		getRoomAvatar: () => '',
 		getIsGroupChat: () => false,
 		getIsRead: () => false,
-		swipeEnabled: true
+		swipeEnabled: true,
 	}
 
 	constructor(props: IRoomItemContainerProps) {
@@ -76,7 +77,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 
 	shouldComponentUpdate(nextProps: any) {
 		const { props }: any = this;
-		return !attrs.every(key => props[key] === nextProps[key]);
+		return !attrs.every((key) => props[key] === nextProps[key]);
 	}
 
 	componentDidUpdate(prevProps: any) {
@@ -142,14 +143,14 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 			username,
 			useRealName,
 			swipeEnabled,
-			autoJoin
+			autoJoin,
 		} = this.props;
 		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${ name }`;
 		const avatar = getRoomAvatar(item);
 		const isRead = getIsRead(item);
 		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt);
-		const alert = (item.alert || item.tunread?.length);
+		const alert = item.alert || item.tunread?.length;
 
 		let accessibilityLabel = name;
 		if (item.unread === 1) {
@@ -222,7 +223,7 @@ const mapStateToProps = (state: any, ownProps: any) => {
 	}
 	return {
 		connected: state.meteor.connected,
-		status
+		status,
 	};
 };
 

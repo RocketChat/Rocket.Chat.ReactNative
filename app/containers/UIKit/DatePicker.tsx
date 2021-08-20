@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
@@ -8,7 +8,6 @@ import moment from 'moment';
 import Button from '../Button';
 import { textParser } from './utils';
 import { themes } from '../../constants/colors';
-
 import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../../lib/Icons';
 import { isAndroid } from '../../utils/deviceInfo';
@@ -21,19 +20,19 @@ const styles = StyleSheet.create({
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,
 		alignItems: 'center',
-		flexDirection: 'row'
+		flexDirection: 'row',
 	},
 	inputText: {
 		...sharedStyles.textRegular,
-		fontSize: 14
+		fontSize: 14,
 	},
 	icon: {
 		right: 16,
-		position: 'absolute'
+		position: 'absolute',
 	},
 	loading: {
-		padding: 0
-	}
+		padding: 0,
+	},
 });
 
 interface IDatePicker {
@@ -51,7 +50,7 @@ interface IDatePicker {
 }
 
 export const DatePicker = ({
-	element, language, action, context, theme, loading, value, error
+	element, language, action, context, theme, loading, value, error,
 }: IDatePicker) => {
 	const [show, onShow] = useState(false);
 	const { initial_date, placeholder } = element;
@@ -86,7 +85,7 @@ export const DatePicker = ({
 					<Text
 						style={[
 							styles.inputText,
-							{ color: error ? themes[theme].dangerColor : themes[theme].titleText }
+							{ color: error ? themes[theme].dangerColor : themes[theme].titleText },
 						]}
 					>
 						{currentDate.toLocaleDateString(language)}

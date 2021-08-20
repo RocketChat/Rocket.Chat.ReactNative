@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import UAParser from 'ua-parser-js';
@@ -9,26 +9,25 @@ import isEmpty from 'lodash/isEmpty';
 import { CustomIcon } from '../../lib/Icons';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
-import styles from './styles';
 import sharedStyles from '../Styles';
 import RocketChat from '../../lib/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import log, { logEvent, events } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import Markdown from '../../containers/markdown';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
-
-import Livechat from './Livechat';
-import Channel from './Channel';
-import Direct from './Direct';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
+import Livechat from './Livechat';
+import Channel from './Channel';
+import Direct from './Direct';
+import styles from './styles';
 
 const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
 	? (

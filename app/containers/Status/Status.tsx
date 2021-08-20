@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { CustomIcon } from '../../lib/Icons';
 import { STATUS_COLORS } from '../../constants/colors';
 
@@ -13,7 +14,7 @@ const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: I
 	const isNameValid = CustomIcon.hasIcon(name);
 	const iconName = isNameValid ? name : 'status-offline';
 	const calculatedStyle = [{
-		width: size, height: size, textAlignVertical: 'center'
+		width: size, height: size, textAlignVertical: 'center',
 	}, style];
 
 	return (

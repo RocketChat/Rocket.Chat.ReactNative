@@ -1,13 +1,13 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
-import buildMessage from './helpers/buildMessage';
 import log from '../../utils/log';
 import database from '../database';
-import protectedFunction from './helpers/protectedFunction';
 import { Encryption } from '../encryption';
 import { MESSAGE_TYPE_ANY_LOAD } from '../../constants/messageTypeLoad';
 import { generateLoadMoreId } from '../utils';
+import protectedFunction from './helpers/protectedFunction';
+import buildMessage from './helpers/buildMessage';
 
 export default function updateMessages({
 	rid, update = [], remove = [], loaderItem

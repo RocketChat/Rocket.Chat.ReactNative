@@ -29,10 +29,9 @@ interface IRoomHeaderContainerProps {
 }
 
 class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
-
 	shouldComponentUpdate(nextProps: IRoomHeaderContainerProps) {
 		const {
-			type, title, subtitle, status, statusText, connecting, connected, onPress, usersTyping, width, height, teamMain
+			type, title, subtitle, status, statusText, connecting, connected, onPress, usersTyping, width, height, teamMain,
 		} = this.props;
 		if (nextProps.type !== type) {
 			return true;
@@ -93,7 +92,7 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 			height,
 			parentTitle,
 			isGroupChat,
-			testID
+			testID,
 		} = this.props;
 
 		let subtitle;
@@ -147,7 +146,7 @@ const mapStateToProps = (state: any, ownProps: any) => {
 		connected: state.meteor.connected,
 		usersTyping: state.usersTyping,
 		status,
-		statusText
+		statusText,
 	};
 };
 

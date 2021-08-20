@@ -7,7 +7,7 @@ import { dequal } from 'dequal';
 import I18n from '../../../i18n';
 import RoomItem, { ROW_HEIGHT } from '../../../presentation/RoomItem';
 import { MAX_SIDEBAR_WIDTH } from '../../../constants/tablet';
-import { isTablet, isIOS } from '../../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { getUserSelector } from '../../../selectors/login';
 import { withTheme } from '../../../theme';
 import { withDimensions } from '../../../dimensions';
@@ -17,7 +17,7 @@ import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../utils/goRoom';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import RocketChat from '../../../lib/rocketchat';
-import { logEvent, events } from '../../../utils/log';
+import { events, logEvent } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;

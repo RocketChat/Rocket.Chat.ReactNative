@@ -7,8 +7,8 @@ import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
 import RocketChat from '../rocketchat';
-import protectedFunction from './helpers/protectedFunction';
 import { setPermissions as setPermissionsAction } from '../../actions/permissions';
+import protectedFunction from './helpers/protectedFunction';
 
 const PERMISSIONS = [
 	'add-user-to-any-c-room',

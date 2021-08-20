@@ -1,14 +1,14 @@
 import React, {
-	useState,
 	forwardRef,
-	useImperativeHandle
+	useImperativeHandle,
+	useState
 } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View,
-	Text,
+	InteractionManager,
 	StyleSheet,
-	InteractionManager
+	Text,
+	View
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
@@ -18,7 +18,6 @@ import Button from '../../containers/Button';
 import TextInput from '../../containers/TextInput';
 import RocketChat from '../../lib/rocketchat';
 import sharedStyles from '../Styles';
-
 import { themes } from '../../constants/colors';
 
 const styles = StyleSheet.create({

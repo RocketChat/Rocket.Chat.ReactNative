@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { CancelEditingButton, ActionsButton } from './buttons';
+import { ActionsButton, CancelEditingButton } from './buttons';
 import styles from './styles';
 
 interface IMessageBoxLeftButtons {
@@ -13,7 +13,7 @@ interface IMessageBoxLeftButtons {
 }
 
 const LeftButtons = React.memo(({
-	theme, showMessageBoxActions, editing, editCancel, isActionsEnabled
+	theme, showMessageBoxActions, editing, editCancel, isActionsEnabled,
 }: IMessageBoxLeftButtons) => {
 	if (editing) {
 		return <CancelEditingButton onPress={editCancel} theme={theme} />;

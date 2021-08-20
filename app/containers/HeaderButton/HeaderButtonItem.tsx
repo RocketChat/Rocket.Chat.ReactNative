@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, Platform } from 'react-native';
+import { Platform, StyleSheet, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../lib/Icons';
@@ -17,27 +17,27 @@ interface IHeaderButtonItem {
 }
 
 export const BUTTON_HIT_SLOP = {
-	top: 5, right: 5, bottom: 5, left: 5
+	top: 5, right: 5, bottom: 5, left: 5,
 };
 
 const styles = StyleSheet.create({
 	container: {
-		marginHorizontal: 6
+		marginHorizontal: 6,
 	},
 	title: {
 		...Platform.select({
 			android: {
-				fontSize: 14
+				fontSize: 14,
 			},
 			default: {
-				fontSize: 17
-			}
+				fontSize: 17,
+			},
 		}),
-		...sharedStyles.textRegular
-	}
+		...sharedStyles.textRegular,
+	},
 });
 
-const Item = ({title, iconName, onPress, testID, theme, badge}: IHeaderButtonItem) => (
+const Item = ({ title, iconName, onPress, testID, theme, badge }: IHeaderButtonItem) => (
 	<Touchable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
 		<>
 			{

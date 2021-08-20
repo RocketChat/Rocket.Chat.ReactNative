@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Switch, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import database from '../../lib/database';
@@ -12,8 +12,8 @@ import { withTheme } from '../../theme';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
 import log, { events, logEvent } from '../../utils/log';
-import { OPTIONS } from './options';
 import sharedStyles from '../Styles';
+import { OPTIONS } from './options';
 
 const styles = StyleSheet.create({
 	pickerText: {

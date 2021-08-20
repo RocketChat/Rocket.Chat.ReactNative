@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import {
-	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList
+	Animated, Easing, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback, View
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { connect, batch } from 'react-redux';
+import { batch, connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
-import * as List from '../../containers/List';
 
+import * as List from '../../containers/List';
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
-import { appStart as appStartAction, ROOT_NEW_SERVER } from '../../actions/app';
-import styles from './styles';
+import { ROOT_NEW_SERVER, appStart as appStartAction } from '../../actions/app';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
@@ -22,10 +21,11 @@ import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
 import UserPreferences from '../../lib/userPreferences';
+import styles from './styles';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -182,7 +182,7 @@ class ServerDropdown extends Component {
 			<ServerItem
 				item={item}
 				onPress={() => this.select(item.id, item.version)}
-				onLongPress={() => (item.id === server || this.remove(item.id))}
+				onLongPress={() => item.id === server || this.remove(item.id)}
 				hasCheck={item.id === server}
 				theme={theme}
 			/>

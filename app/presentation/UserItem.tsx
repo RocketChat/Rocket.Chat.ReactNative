@@ -1,6 +1,6 @@
 import React from 'react';
 // @ts-ignore
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import Avatar from '../containers/Avatar';
 import { CustomIcon } from '../lib/Icons';
@@ -10,33 +10,33 @@ import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	button: {
-		height: 54
+		height: 54,
 	},
 	container: {
-		flexDirection: 'row'
+		flexDirection: 'row',
 	},
 	avatar: {
 		marginHorizontal: 15,
-		marginVertical: 12
+		marginVertical: 12,
 	},
 	textContainer: {
 		flex: 1,
 		flexDirection: 'column',
 		justifyContent: 'center',
-		marginRight: 15
+		marginRight: 15,
 	},
 	name: {
 		fontSize: 17,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
 	},
 	username: {
 		fontSize: 14,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	icon: {
 		marginHorizontal: 15,
-		alignSelf: 'center'
-	}
+		alignSelf: 'center',
+	},
 });
 
 interface IUserItem {
@@ -51,19 +51,19 @@ interface IUserItem {
 }
 
 const UserItem = ({
-	name, username, onPress, testID, onLongPress, style, icon, theme
+	name, username, onPress, testID, onLongPress, style, icon, theme,
 }: IUserItem) => (
 	<Pressable
 		onPress={onPress}
 		onLongPress={onLongPress}
 		testID={testID}
 		android_ripple={{
-			color: themes[theme].bannerBackground
+			color: themes[theme].bannerBackground,
 		}}
 		style={({ pressed }: any) => ({
 			backgroundColor: isIOS && pressed
 				? themes[theme].bannerBackground
-				: 'transparent'
+				: 'transparent',
 		})}
 	>
 		<View style={[styles.container, styles.button, style]}>

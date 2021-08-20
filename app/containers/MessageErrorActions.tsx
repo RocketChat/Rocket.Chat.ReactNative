@@ -1,4 +1,4 @@
-import { useImperativeHandle, forwardRef } from 'react';
+import { forwardRef, useImperativeHandle } from 'react';
 
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
@@ -10,11 +10,11 @@ import log from '../utils/log';
 const MessageErrorActions = forwardRef(({ tmid }: any, ref): any => {
 	const { showActionSheet }: any = useActionSheet();
 
-	const handleResend = protectedFunction(async(message: any) => {
+	const handleResend = protectedFunction(async (message: any) => {
 		await RocketChat.resendMessage(message, tmid);
 	});
 
-	const handleDelete = async(message: any) => {
+	const handleDelete = async (message: any) => {
 		try {
 			const db = database.active;
 			const deleteBatch: any = [];
@@ -41,7 +41,7 @@ const MessageErrorActions = forwardRef(({ tmid }: any, ref): any => {
 							msg.prepareUpdate((m: any) => {
 								m.tcount = null;
 								m.tlm = null;
-							})
+							}),
 						);
 
 						try {
@@ -55,14 +55,14 @@ const MessageErrorActions = forwardRef(({ tmid }: any, ref): any => {
 						deleteBatch.push(
 							msg.prepareUpdate((m: any) => {
 								m.tcount -= 1;
-							})
+							}),
 						);
 					}
 				} catch {
 					// Do nothing: message not found
 				}
 			}
-			await db.action(async() => {
+			await db.action(async () => {
 				await db.batch(...deleteBatch);
 			});
 		} catch (e) {
@@ -76,21 +76,21 @@ const MessageErrorActions = forwardRef(({ tmid }: any, ref): any => {
 				{
 					title: I18n.t('Resend'),
 					icon: 'send',
-					onPress: () => handleResend(message)
+					onPress: () => handleResend(message),
 				},
 				{
 					title: I18n.t('Delete'),
 					icon: 'delete',
 					danger: true,
-					onPress: () => handleDelete(message)
-				}
+					onPress: () => handleDelete(message),
+				},
 			],
-			hasCancel: true
+			hasCancel: true,
 		});
 	};
 
 	useImperativeHandle(ref, () => ({
-		showMessageErrorActions
+		showMessageErrorActions,
 	}));
 
 	return null;

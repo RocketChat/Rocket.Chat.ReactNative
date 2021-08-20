@@ -6,9 +6,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../../theme';
 import {
-	defaultHeader, themedHeader, StackAnimation, FadeFromCenterModal
+	FadeFromCenterModal, StackAnimation, defaultHeader, themedHeader
 } from '../../utils/navigation';
-import { ModalContainer } from './ModalContainer';
 
 // Chats Stack
 import RoomView from '../../views/RoomView';
@@ -56,14 +55,13 @@ import CreateDiscussionView from '../../views/CreateDiscussionView';
 import E2ESaveYourPasswordView from '../../views/E2ESaveYourPasswordView';
 import E2EHowItWorksView from '../../views/E2EHowItWorksView';
 import E2EEnterYourPasswordView from '../../views/E2EEnterYourPasswordView';
-
-import { setKeyCommands, deleteKeyCommands } from '../../commands';
+import { deleteKeyCommands, setKeyCommands } from '../../commands';
 import ShareView from '../../views/ShareView';
-
 import QueueListView from '../../ee/omnichannel/views/QueueListView';
 import AddChannelTeamView from '../../views/AddChannelTeamView';
 import AddExistingChannelView from '../../views/AddExistingChannelView';
 import SelectListView from '../../views/SelectListView';
+import { ModalContainer } from './ModalContainer';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();

@@ -95,7 +95,7 @@ const RoomItem = ({
 	toggleRead,
 	hideChannel,
 	teamMain,
-	autoJoin
+	autoJoin,
 }: IRoomItem) => (
 	<Touchable
 		onPress={onPress}

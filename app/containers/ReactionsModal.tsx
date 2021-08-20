@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
@@ -13,48 +13,48 @@ import SafeAreaView from './SafeAreaView';
 
 const styles = StyleSheet.create({
 	safeArea: {
-		backgroundColor: 'transparent'
+		backgroundColor: 'transparent',
 	},
 	titleContainer: {
 		alignItems: 'center',
-		paddingVertical: 10
+		paddingVertical: 10,
 	},
 	title: {
 		fontSize: 16,
 		...sharedStyles.textSemibold,
-		...sharedStyles.textAlignCenter
+		...sharedStyles.textAlignCenter,
 	},
 	reactCount: {
 		fontSize: 13,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
 	},
 	peopleReacted: {
 		fontSize: 14,
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
 	},
 	peopleItemContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	emojiContainer: {
 		width: 50,
 		height: 50,
 		alignItems: 'center',
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	itemContainer: {
 		height: 50,
-		flexDirection: 'row'
+		flexDirection: 'row',
 	},
 	listContainer: {
-		flex: 1
+		flex: 1,
 	},
 	closeButton: {
 		position: 'absolute',
 		left: 0,
-		top: 10
-	}
+		top: 10,
+	},
 });
 const standardEmojiStyle = { fontSize: 20 };
 const customEmojiStyle = { width: 20, height: 20 };
@@ -132,7 +132,7 @@ const ModalContent = React.memo(({ message, onClose, ...props }: IModalContent) 
 					style={styles.listContainer}
 					data={message.reactions}
 					renderItem={({ item }) => <Item item={item} {...props} />}
-					keyExtractor={item => item.emoji}
+					keyExtractor={(item) => item.emoji}
 				/>
 			</SafeAreaView>
 		);
@@ -149,7 +149,7 @@ const ReactionsModal = React.memo(({ isVisible, onClose, theme, ...props }: IRea
 		onSwipeComplete={onClose}
 		swipeDirection={['up', 'left', 'right', 'down']}
 	>
-		{/*@ts-ignore*/}
+		{/* @ts-ignore*/}
 		<ModalContent onClose={onClose} theme={theme} {...props} />
 	</Modal>
 ), (prevProps, nextProps) => prevProps.isVisible === nextProps.isVisible && prevProps.theme === nextProps.theme);

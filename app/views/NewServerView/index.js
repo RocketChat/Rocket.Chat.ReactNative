@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, View, BackHandler
+	BackHandler, Keyboard, StyleSheet, Text, View
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 import { Q } from '@nozbe/watermelondb';
-
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import UserPreferences from '../../lib/userPreferences';
 import EventEmitter from '../../utils/events';
 import { selectServerRequest, serverRequest } from '../../actions/server';
@@ -19,17 +19,17 @@ import OrSeparator from '../../containers/OrSeparator';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
-import { setBasicAuth, BASIC_AUTH_KEY } from '../../utils/fetch';
+import { BASIC_AUTH_KEY, setBasicAuth } from '../../utils/fetch';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { showConfirmationAlert } from '../../utils/info';
 import database from '../../lib/database';
-import ServerInput from './ServerInput';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import SSLPinning from '../../utils/sslPinning';
 import RocketChat from '../../lib/rocketchat';
+import ServerInput from './ServerInput';
 
 const styles = StyleSheet.create({
 	title: {

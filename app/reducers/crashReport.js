@@ -1,4 +1,4 @@
-import { TOGGLE_CRASH_REPORT, TOGGLE_ANALYTICS_EVENTS } from '../actions/actionsTypes';
+import { TOGGLE_ANALYTICS_EVENTS, TOGGLE_CRASH_REPORT } from '../actions/actionsTypes';
 
 const initialState = {
 	allowCrashReport: false,

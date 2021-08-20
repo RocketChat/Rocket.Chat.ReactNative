@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, FlatList, Keyboard, BackHandler, PermissionsAndroid, ScrollView
+	BackHandler, FlatList, Keyboard, PermissionsAndroid, ScrollView, Text, View
 } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
@@ -11,21 +11,21 @@ import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
-import { isIOS, isAndroid } from '../../utils/deviceInfo';
+import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
 import * as HeaderButton from '../../containers/HeaderButton';
-import ShareListHeader from './Header';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
-import styles from './styles';
 import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import RocketChat from '../../lib/rocketchat';
 import { sanitizeLikeString } from '../../lib/database/utils';
+import styles from './styles';
+import ShareListHeader from './Header';
 
 const permission = {
 	title: I18n.t('Read_External_Permission'),
@@ -452,10 +452,10 @@ class ShareListView extends React.Component {
 	}
 }
 
-const mapStateToProps = (({ share }) => ({
+const mapStateToProps = ({ share }) => ({
 	userId: share.user && share.user.id,
 	token: share.user && share.user.token,
 	server: share.server.server
-}));
+});
 
 export default connect(mapStateToProps)(withTheme(ShareListView));

@@ -1,10 +1,10 @@
 import EJSON from 'ejson';
 
-import normalizeMessage from './normalizeMessage';
-import findSubscriptionsRooms from './findSubscriptionsRooms';
 import { Encryption } from '../../encryption';
 import reduxStore from '../../createStore';
 import { compareServerVersion, methods } from '../../utils';
+import findSubscriptionsRooms from './findSubscriptionsRooms';
+import normalizeMessage from './normalizeMessage';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {

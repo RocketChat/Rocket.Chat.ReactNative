@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, Switch } from 'react-native';
+import { Switch, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import styles from './styles';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import styles from './styles';
 
 const SwitchContainer = React.memo(({
 	children, value, disabled, onValueChange, leftLabelPrimary, leftLabelSecondary, rightLabelPrimary, rightLabelSecondary, theme, testID, labelContainerStyle, leftLabelStyle

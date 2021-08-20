@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, View, StyleSheet, Keyboard
+	Keyboard, StyleSheet, Text, View
 } from 'react-native';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
-import log, { logEvent, events } from '../utils/log';
-import sharedStyles from './Styles';
+import log, { events, logEvent } from '../utils/log';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -22,6 +21,7 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import openLink from '../utils/openLink';
 import LoginServices from '../containers/LoginServices';
 import { getShowLoginButton } from '../selectors/login';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	title: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Animated, Easing, Linking } from 'react-native';
+import { Animated, Easing, Linking, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -12,7 +12,7 @@ import OrSeparator from './OrSeparator';
 import Touch from '../utils/touch';
 import I18n from '../i18n';
 import random from '../utils/random';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
 import RocketChat from '../lib/rocketchat';
 import { CustomIcon } from '../lib/Icons';
 
@@ -27,7 +27,7 @@ const LOGIN_STYPE_REDIRECT = 'redirect';
 const styles = StyleSheet.create({
 	serviceButton: {
 		borderRadius: BORDER_RADIUS,
-		marginBottom: 10
+		marginBottom: 10,
 	},
 	serviceButtonContainer: {
 		borderRadius: BORDER_RADIUS,
@@ -36,25 +36,25 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingHorizontal: 15
+		paddingHorizontal: 15,
 	},
 	serviceIcon: {
 		position: 'absolute',
 		left: 15,
 		top: 12,
 		width: 24,
-		height: 24
+		height: 24,
 	},
 	serviceText: {
 		...sharedStyles.textRegular,
-		fontSize: 16
+		fontSize: 16,
 	},
 	serviceName: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
 	},
 	options: {
-		marginBottom: 0
-	}
+		marginBottom: 0,
+	},
 });
 
 interface IOpenOAuth {
@@ -94,12 +94,12 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 	private _animation: any;
 
 	static defaultProps = {
-		separator: true
+		separator: true,
 	}
 
 	state = {
 		collapsed: true,
-		servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT)
+		servicesHeight: new Animated.Value(SERVICES_COLLAPSED_HEIGHT),
 	}
 
 	onPressFacebook = () => {
@@ -198,7 +198,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		logEvent(events.ENTER_WITH_CUSTOM_OAUTH);
 		const { server } = this.props;
 		const {
-			serverURL, authorizePath, clientId, scope, service
+			serverURL, authorizePath, clientId, scope, service,
 		} = loginService;
 		const redirectUri = `${ server }/_oauth/${ service }`;
 		const state = this.getOAuthState();
@@ -227,14 +227,14 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		this.openOAuth({ url, ssoToken, authType: 'cas' });
 	}
 
-	onPressAppleLogin = async() => {
+	onPressAppleLogin = async () => {
 		logEvent(events.ENTER_WITH_APPLE);
 		try {
 			const { fullName, email, identityToken } = await AppleAuthentication.signInAsync({
 				requestedScopes: [
 					AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-					AppleAuthentication.AppleAuthenticationScope.EMAIL
-				]
+					AppleAuthentication.AppleAuthenticationScope.EMAIL,
+				],
 			});
 
 			await RocketChat.loginOAuthOrSso({ fullName, email, identityToken });
@@ -249,7 +249,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		if (loginStyle === LOGIN_STYPE_REDIRECT) {
 			obj = {
 				...obj,
-				redirectUrl: 'rocketchat://auth'
+				redirectUrl: 'rocketchat://auth',
 			};
 		}
 		return Base64.encodeURI(JSON.stringify(obj));
@@ -270,7 +270,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 			toValue: height,
 			duration: 300,
 			// @ts-ignore
-			easing: Easing.easeOutCubic
+			easing: Easing.easeOutCubic,
 		}).start();
 	}
 
@@ -295,7 +295,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 			linkedin: this.onPressLinkedin,
 			'meteor-developer': this.onPressMeteor,
 			twitter: this.onPressTwitter,
-			wordpress: this.onPressWordpress
+			wordpress: this.onPressWordpress,
 		};
 		return oauthProviders[name];
 	}
@@ -396,7 +396,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		const { length } = Object.values(services);
 		const style = {
 			overflow: 'hidden',
-			height: servicesHeight
+			height: servicesHeight,
 		};
 
 		if (length > 3 && separator) {
@@ -423,7 +423,7 @@ const mapStateToProps = (state: any) => ({
 	Gitlab_URL: state.settings.API_Gitlab_URL,
 	CAS_enabled: state.settings.CAS_enabled,
 	CAS_login_url: state.settings.CAS_login_url,
-	services: state.login.services
+	services: state.login.services,
 });
 
 export default connect(mapStateToProps)(withTheme(LoginServices));

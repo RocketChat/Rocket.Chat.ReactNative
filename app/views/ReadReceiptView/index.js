@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import * as List from '../../containers/List';
 
+import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
-import styles from './styles';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import I18n from '../../i18n';
@@ -16,6 +15,7 @@ import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
+import styles from './styles';
 
 class ReadReceiptView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
