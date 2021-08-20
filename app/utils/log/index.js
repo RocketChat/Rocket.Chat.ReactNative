@@ -52,18 +52,10 @@ export const setCurrentScreen = (currentScreen) => {
 	}
 };
 
-export const toggleBugsnagReport = (value) => {
-	try {
-		value.toString();
-		return reportErrorToBugsnag = value;
-	} catch (e) {
-		console.log(e);
-	}
-};
+export const toggleBugsnagReport = value => reportErrorToBugsnag = value;
 
 export const toggleAnalyticsReport = (value) => {
 	try {
-		value.toString();
 		analytics().setAnalyticsCollectionEnabled(value);
 		return reportToAnalytics = value;
 	} catch (e) {
