@@ -16,8 +16,8 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { isFDroidBuild } from '../constants/environment';
 
 const SecurityPrivacyView = ({ navigation }) => {
-	const [allowCrashReport, setCrashReportState] = useState(getReportCrashErrorsValue());
-	const [allowAnalyticsEvents, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
+	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
+	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 
 	const { e2eEnabled } = useSelector(state => state.settings);
 
@@ -84,7 +84,7 @@ const SecurityPrivacyView = ({ navigation }) => {
 								testID='security-privacy-view-analytics-events'
 								right={() => (
 									<Switch
-										value={allowAnalyticsEvents}
+										value={analyticsEventsState}
 										trackColor={SWITCH_TRACK_COLOR}
 										onValueChange={toggleAnalyticsEvents}
 									/>
@@ -96,7 +96,7 @@ const SecurityPrivacyView = ({ navigation }) => {
 								testID='security-privacy-view-crash-report'
 								right={() => (
 									<Switch
-										value={allowCrashReport}
+										value={crashReportState}
 										trackColor={SWITCH_TRACK_COLOR}
 										onValueChange={toggleCrashReport}
 									/>
