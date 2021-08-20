@@ -15,7 +15,11 @@ export const getReportToAnalytics = () => reportToAnalytics;
 if (!isFDroidBuild) {
 	bugsnag = require('@bugsnag/react-native').default;
 	bugsnag.start({
-		onError() {
+		onBreadcrumb() {
+			return reportToAnalytics;
+		},
+		onError(error) {
+			if (!reportToAnalytics) { error.breadcrumbs = []; }
 			return reportErrorToBugsnag;
 		}
 	});
@@ -52,15 +56,14 @@ export const setCurrentScreen = (currentScreen) => {
 	}
 };
 
-export const toggleBugsnagReport = value => reportErrorToBugsnag = value;
+export const toggleBugsnagReport = (value) => {
+	crashlytics().setCrashlyticsCollectionEnabled(value);
+	return reportErrorToBugsnag = value;
+};
 
 export const toggleAnalyticsReport = (value) => {
-	try {
-		analytics().setAnalyticsCollectionEnabled(value);
-		return reportToAnalytics = value;
-	} catch (e) {
-		console.log(e);
-	}
+	analytics().setAnalyticsCollectionEnabled(value);
+	return reportToAnalytics = value;
 };
 
 export default (e) => {
