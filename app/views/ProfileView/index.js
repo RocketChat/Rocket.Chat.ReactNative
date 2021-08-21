@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, ScrollView, Keyboard, Switch
-} from 'react-native';
+import { View, ScrollView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
@@ -21,7 +19,6 @@ import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
-import * as List from '../../containers/List';
 import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
@@ -30,7 +27,7 @@ import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -64,7 +61,6 @@ class ProfileView extends React.Component {
 
 	state = {
 		saving: false,
-		enableMessageParser: false,
 		name: null,
 		username: null,
 		email: null,
@@ -113,7 +109,7 @@ class ProfileView extends React.Component {
 	init = (user) => {
 		const { user: userProps } = this.props;
 		const {
-			name, username, emails, customFields, enableMessageParserEarlyAdoption
+			name, username, emails, customFields
 		} = user || userProps;
 
 		this.setState({
@@ -124,14 +120,13 @@ class ProfileView extends React.Component {
 			currentPassword: null,
 			avatarUrl: null,
 			avatar: {},
-			customFields: customFields || {},
-			enableMessageParser: enableMessageParserEarlyAdoption || false
+			customFields: customFields || {}
 		});
 	}
 
 	formIsChanged = () => {
 		const {
-			name, username, email, newPassword, avatar, customFields, enableMessageParser
+			name, username, email, newPassword, avatar, customFields
 		} = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
@@ -147,7 +142,6 @@ class ProfileView extends React.Component {
 
 		return !(user.name === name
 			&& user.username === username
-			&& user.enableMessageParserEarlyAdoption === enableMessageParser
 			&& !newPassword
 			&& (user.emails && user.emails[0].address === email)
 			&& !avatar.data
@@ -429,22 +423,6 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	renderMessageParserSwitch = () => {
-		const { enableMessageParser } = this.state;
-		return (
-			<Switch
-				value={enableMessageParser}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleEnableMessageParser}
-			/>
-		);
-	}
-
-	toggleEnableMessageParser = (value) => {
-		// logEvent(events.RI_EDIT_TOGGLE_SYSTEM_MSG);
-		this.setState({ enableMessageParser: value });
-	}
-
 	logoutOtherLocations = () => {
 		logEvent(events.PL_OTHER_LOCATIONS);
 		showConfirmationAlert({
@@ -560,13 +538,6 @@ class ProfileView extends React.Component {
 							testID='profile-view-new-password'
 							theme={theme}
 						/>
-						<List.Separator />
-						<List.Item
-							title='Enable_Message_Parser'
-							testID='profile-view-enable-message-parser'
-							right={() => this.renderMessageParserSwitch()}
-						/>
-						<List.Separator />
 						{this.renderCustomFields()}
 						<RCTextInput
 							editable={Accounts_AllowUserAvatarChange}
