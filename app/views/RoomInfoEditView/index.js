@@ -415,11 +415,6 @@ class RoomInfoEditView extends React.Component {
 		return permissions[PERMISSION_DELETE_C];
 	}
 
-	hasArchivePermission = () => {
-		const { permissions } = this.state;
-		return (permissions[PERMISSION_ARCHIVE] || permissions[PERMISSION_UNARCHIVE]);
-	};
-
 	renderSystemMessages = () => {
 		const { systemMessages, enableSysMes } = this.state;
 		const { theme } = this.props;
@@ -691,11 +686,11 @@ class RoomInfoEditView extends React.Component {
 								style={[
 									styles.buttonInverted,
 									styles.buttonContainer_inverted,
-									!this.hasArchivePermission() && sharedStyles.opacity5,
+									archived ? !permissions[PERMISSION_UNARCHIVE] && sharedStyles.opacity5 : !permissions[PERMISSION_ARCHIVE] && sharedStyles.opacity5,
 									{ flex: 1, marginLeft: 10, borderColor: dangerColor }
 								]}
 								onPress={this.toggleArchive}
-								disabled={!this.hasArchivePermission()}
+								disabled={archived ? !permissions[PERMISSION_UNARCHIVE] : !permissions[PERMISSION_ARCHIVE]}
 								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}
 							>
 								<Text
