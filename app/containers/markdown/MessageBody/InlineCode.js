@@ -8,7 +8,7 @@ import { useTheme } from '../../../theme';
 
 const InlineCode = ({ value, style }) => {
 	const { theme } = useTheme();
-	console.log({ value: value.value });
+
 	return (
 		<Text style={[
 			{
@@ -20,7 +20,14 @@ const InlineCode = ({ value, style }) => {
 			...style
 		]}
 		>
-			{value.type === 'PLAIN_TEXT' && value.value}
+			{((block) => {
+				switch (block.type) {
+					case 'PLAIN_TEXT':
+						return block.value;
+					default:
+						return null;
+				}
+			})(value)}
 		</Text>
 	);
 };

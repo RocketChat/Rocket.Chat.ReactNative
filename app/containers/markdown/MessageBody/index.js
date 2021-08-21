@@ -31,7 +31,6 @@ const Body = ({
 					case 'TASK':
 						return <OrderedList key={index} value={block.value} />;
 					case 'QUOTE':
-						console.log({ block });
 						return <Quote key={index} value={block.value} />;
 					case 'PARAGRAPH':
 						return (

@@ -476,6 +476,52 @@ stories.add('Headers', () => (
 	</View>
 ));
 
+const inlineCodeToken = [
+	{
+		type: 'PARAGRAPH',
+		value: [
+			{
+				type: 'INLINE_CODE',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'inline code'
+				}
+			}
+		]
+	}
+];
+
+const multilineCodeToken = [
+	{
+		type: 'CODE',
+		language: 'none',
+		value: [
+			{
+				type: 'CODE_LINE',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'Multi line '
+				}
+			},
+			{
+				type: 'CODE_LINE',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'Code'
+				}
+			}
+		]
+	}
+];
+
+
+stories.add('Code', () => (
+	<View style={styles.container}>
+		<MessageBody tokens={inlineCodeToken} style={[]} />
+		<MessageBody tokens={multilineCodeToken} style={[]} />
+	</View>
+));
+
 const unorederedListToken = [
 	{
 		type: 'UNORDERED_LIST',
