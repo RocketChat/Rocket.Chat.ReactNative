@@ -1,9 +1,7 @@
 const data = require('../../data');
 const {
-	sleep, navigateToLogin, login, checkServer
+	sleep, navigateToLogin, login, checkServer, platformTypes
 } = require('../../helpers/app');
-
-const platformTypes = require('../../helpers/platformTypes');
 
 describe('Delete server', () => {
 	let scrollViewType;

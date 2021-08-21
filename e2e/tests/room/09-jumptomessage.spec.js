@@ -1,8 +1,7 @@
 const data = require('../../data');
 const {
-	navigateToLogin, tapBack, login, searchRoom, sleep
+	navigateToLogin, tapBack, login, searchRoom, sleep, platformTypes
 } = require('../../helpers/app');
-const platformTypes = require('../../helpers/platformTypes');
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${ roomName }`);
@@ -29,7 +28,7 @@ async function clearCache() {
 async function waitForLoading() {
 	if (device.getPlatform() === 'android') {
 		await sleep(10000);
-		return;
+		return; // Loading indicator doesn't animate properly on android
 	}
 	await waitFor(element(by.id('loading'))).toBeVisible().withTimeout(5000); // Fails on Android
 	await waitFor(element(by.id('loading'))).toBeNotVisible().withTimeout(10000);
@@ -56,7 +55,7 @@ describe('Room', () => {
 
 	it('should tap FAB and scroll to bottom', async() => {
 		if (device.getPlatform() === 'android') {
-			return;
+			return; // 'Room' tests don't work well on Android currently
 		}
 		await waitFor(element(by.id('nav-jump-to-bottom'))).toExist().withTimeout(5000);
 		await element(by.id('nav-jump-to-bottom')).tap();
@@ -66,7 +65,7 @@ describe('Room', () => {
 
 	it('should load messages on scroll', async() => {
 		if (device.getPlatform() === 'android') {
-			return;
+			return; // 'Room' tests don't work well on Android currently
 		}
 		await navigateToRoom('jumping');
 		await waitFor(element(by.id('room-view-messages'))).toExist().withTimeout(5000);
@@ -86,7 +85,7 @@ describe('Room', () => {
 
 	it('should search for old message and load its surroundings', async() => {
 		if (device.getPlatform() === 'android') {
-			return;
+			return; // 'Room' tests don't work well on Android currently
 		}
 		await navigateToRoom('jumping');
 		await element(by.id('room-view-search')).tap();
@@ -103,7 +102,7 @@ describe('Room', () => {
 
 	it('should load newer and older messages', async() => {
 		if (device.getPlatform() === 'android') {
-			return;
+			return; // 'Room' tests don't work well on Android currently
 		}
 		await element(by.id('room-view-messages')).atIndex(0).swipe('down', 'fast', 0.8);
 		await waitFor(element(by.text('5'))).toExist().withTimeout(10000);

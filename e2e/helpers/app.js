@@ -1,8 +1,24 @@
 const {
 	expect, element, by, waitFor
 } = require('detox');
+const { exec } = require('child_process');
 const data = require('../data');
-const platformTypes = require('./platformTypes');
+
+const platformTypes = {
+	android: {
+		// Android types
+		alertButtonType: 'android.widget.Button',
+		scrollViewType: 'android.widget.ScrollView',
+		textInputType: 'android.widget.EditText'
+	},
+	ios: {
+		// iOS types
+		alertButtonType: '_UIAlertControllerActionView',
+		scrollViewType: 'UIScrollView',
+		textInputType: '_UIAlertControllerTextField'
+	}
+};
+
 
 async function navigateToWorkspace(server = data.server) {
 	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(10000);
@@ -145,6 +161,29 @@ const checkServer = async(server) => {
 	await element(by.id('sidebar-close-drawer')).tap();
 };
 
+function runCommand(command) {
+	return new Promise((resolve, reject) => {
+		exec(command, (error, stdout, stderr) => {
+			if (error) {
+				reject(new Error(`exec error: ${ stderr }`));
+				return;
+			}
+			resolve();
+		});
+	});
+}
+
+async function prepareAndroid() {
+	if (device.getPlatform() !== 'android') {
+		return;
+	}
+	await runCommand('adb shell settings put secure spell_checker_enabled 0');
+	await runCommand('adb shell settings put secure autofill_service null');
+	await runCommand('adb shell settings put global window_animation_scale 0.0');
+	await runCommand('adb shell settings put global transition_animation_scale 0.0');
+	await runCommand('adb shell settings put global animator_duration_scale 0.0');
+}
+
 module.exports = {
 	navigateToWorkspace,
 	navigateToLogin,
@@ -160,5 +199,7 @@ module.exports = {
 	searchRoom,
 	tryTapping,
 	checkServer,
-	mockMessageWithNag
+	mockMessageWithNag,
+	platformTypes,
+	prepareAndroid
 };
