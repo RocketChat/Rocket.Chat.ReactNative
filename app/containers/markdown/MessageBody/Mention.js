@@ -22,9 +22,7 @@ const Mention = ({
 			},
 			...style
 		];
-	}
-
-	if (mention === mentionedUser) {
+	} else if (mention === mentionedUser) {
 		mentionStyle = {
 			color: themes[theme].mentionMeColor
 		};
