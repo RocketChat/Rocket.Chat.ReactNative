@@ -741,7 +741,7 @@ class RoomView extends React.Component {
 		const { room } = this.state;
 		if (rid === this.rid) {
 			Navigation.navigate('RoomsListView');
-			showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: RocketChat.getRoomTitle(room) }), I18n.t('Oops'));
+			!this.isOmnichannel && showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: RocketChat.getRoomTitle(room) }), I18n.t('Oops'));
 		}
 	}
 
@@ -788,6 +788,7 @@ class RoomView extends React.Component {
 
 			if (this.isOmnichannel) {
 				await takeInquiry(room._id);
+				this.onJoin();
 			} else {
 				const { joinCodeRequired } = room;
 				if (joinCodeRequired) {
