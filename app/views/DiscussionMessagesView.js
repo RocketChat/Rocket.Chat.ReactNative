@@ -188,8 +188,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 				renderItem={renderItem}
 				// eslint-disable-next-line react/prop-types
 				keyExtractor={item => item.msg}
-				// style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
-				// contentContainerStyle={styles.contentContainer}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
 				windowSize={10}
@@ -197,7 +196,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 				removeClippedSubviews={isIOS}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
-				scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
+				scrollIndicatorInsets={{ right: 1 }}
 			/>
 		</SafeAreaView>
 	);
