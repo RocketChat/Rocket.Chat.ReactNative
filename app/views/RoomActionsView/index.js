@@ -974,7 +974,7 @@ class RoomActionsView extends React.Component {
 							)
 							: null}
 
-						{['c', 'p'].includes(t) && !prid
+						{['c', 'p', 'd'].includes(t) && !prid
 							? (
 								<>
 									<List.Item
