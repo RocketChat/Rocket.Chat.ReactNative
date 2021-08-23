@@ -6,10 +6,24 @@ import events from './events';
 const analytics = firebaseAnalytics || '';
 let bugsnag = '';
 let crashlytics;
+let reportCrashErrors = true;
+let reportAnalyticsEvents = true;
+
+export const getReportCrashErrorsValue = () => reportCrashErrors;
+export const getReportAnalyticsEventsValue = () => reportAnalyticsEvents;
+
 
 if (!isFDroidBuild) {
 	bugsnag = require('@bugsnag/react-native').default;
-	bugsnag.start();
+	bugsnag.start({
+		onBreadcrumb() {
+			return reportAnalyticsEvents;
+		},
+		onError(error) {
+			if (!reportAnalyticsEvents) { error.breadcrumbs = []; }
+			return reportCrashErrors;
+		}
+	});
 	crashlytics = require('@react-native-firebase/crashlytics').default;
 }
 
@@ -41,6 +55,16 @@ export const setCurrentScreen = (currentScreen) => {
 		analytics().setCurrentScreen(currentScreen);
 		bugsnag.leaveBreadcrumb(currentScreen, { type: 'navigation' });
 	}
+};
+
+export const toggleCrashErrorsReport = (value) => {
+	crashlytics().setCrashlyticsCollectionEnabled(value);
+	return reportCrashErrors = value;
+};
+
+export const toggleAnalyticsEventsReport = (value) => {
+	analytics().setAnalyticsCollectionEnabled(value);
+	return reportAnalyticsEvents = value;
 };
 
 export default (e) => {
