@@ -11,7 +11,6 @@ import KeyboardView from '../presentation/KeyboardView';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 
-import sharedStyles from './Styles';
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -19,6 +18,7 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -296,9 +296,9 @@ LivechatEditView.propTypes = {
 	editOmnichannelContact: PropTypes.array,
 	editLivechatRoomCustomfields: PropTypes.array
 };
-LivechatEditView.navigationOptions = ({
+LivechatEditView.navigationOptions = {
 	title: I18n.t('Edit')
-});
+};
 
 const mapStateToProps = state => ({
 	server: state.server.server,
