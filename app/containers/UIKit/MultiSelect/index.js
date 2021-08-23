@@ -157,7 +157,7 @@ export const MultiSelect = React.memo(({
 				disabled={disabled}
 				inputStyle={inputStyle}
 			>
-				{items.length ? <Chips items={items} onSelect={onSelect} theme={theme} /> : <Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{placeholder.text}</Text>}
+				{items.length ? <Chips items={items} onSelect={item => (disabled ? {} : onSelect(item))} theme={theme} /> : <Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{placeholder.text}</Text>}
 			</Input>
 		);
 	}
