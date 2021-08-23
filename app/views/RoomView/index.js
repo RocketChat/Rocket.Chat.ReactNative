@@ -786,6 +786,7 @@ class RoomView extends React.Component {
 
 			if (this.isOmnichannel) {
 				await takeInquiry(room._id);
+				this.onJoin();
 			} else {
 				const { joinCodeRequired } = room;
 				if (joinCodeRequired) {
