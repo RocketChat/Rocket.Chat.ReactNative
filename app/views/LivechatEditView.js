@@ -55,12 +55,12 @@ const LivechatEditView = ({
 			const visitorCustomFields = result.customFields
 				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
 				.map(field => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
-				.reduce((ret, field) => ({ [field]: field, ...ret }));
+				.reduce((ret, field) => ({ ...field, ...ret }));
 
 			const livechatCustomFields = result.customFields
 				.filter(field => field.visibility !== 'hidden' && field.scope === 'room')
 				.map(field => ({ [field._id]: (livechat.livechatData && livechat.livechatData[field._id]) || '' }))
-				.reduce((ret, field) => ({ [field]: field, ...ret }));
+				.reduce((ret, field) => ({ ...field, ...ret }));
 
 			return setCustomFields({ visitor: visitorCustomFields, livechat: livechatCustomFields });
 		}
@@ -188,7 +188,7 @@ const LivechatEditView = ({
 						onSubmitEditing={() => {
 							const keys = Object.keys(customFields?.visitor || {});
 							if (keys.length > 0) {
-								const key = keys.pop();
+								const key = keys[0];
 								inputs[key].focus();
 							} else {
 								inputs.topic.focus();
@@ -205,7 +205,7 @@ const LivechatEditView = ({
 							onChangeText={text => onChangeText(key, text)}
 							onSubmitEditing={() => {
 								if (array.length - 1 > index) {
-									return inputs[array[index + 1]].focus();
+									return inputs[array[index + 1][0]].focus();
 								}
 								inputs.topic.focus();
 							}}
