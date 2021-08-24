@@ -108,6 +108,10 @@ class CreateChannelView extends React.Component {
 		this.setHeader();
 	}
 
+	componentDidMount() {
+		this.handleHasPermission();
+	}
+
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
 			channelName, type, readOnly, broadcast, encrypted, permissions
