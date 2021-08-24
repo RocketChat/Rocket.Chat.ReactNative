@@ -1,0 +1,6 @@
+module react_native_simple_crypto {
+  umbrella header "react-native-simple-crypto-umbrella.h"
+
+  export *
+  module * { export * }
+}

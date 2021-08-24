@@ -16,21 +16,29 @@
 default_platform(:android)
 
 platform :android do
-  desc "Build App for development"
-  lane :build do
-    gradle(task: "assembleDebug")
+  desc "Upload App to Play Store Internal"
+  lane :beta do |options|
+    if options[:official]
+      upload_to_play_store(
+        package_name: 'chat.rocket.android',
+        track: 'internal',
+        aab: 'android/app/build/outputs/bundle/officialPlayRelease/app-official-play-release.aab'
+      )
+    else
+      upload_to_play_store(
+        package_name: 'chat.rocket.reactnative',
+        track: 'internal',
+        aab: 'android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab'
+      )
+    end
   end
 
-  desc "Build App for release"
-  lane :release do
-    gradle(task: "bundleRelease")
-  end
-
-  desc "Upload App to Play store"
-  lane :alpha do
+  desc "Upload App to Play Store Production"
+  lane :production do |options|
     upload_to_play_store(
-      track: 'alpha', 
-      aab: 'android/app/build/outputs/bundle/release/app-release.aab'
+      package_name: 'chat.rocket.reactnative',
+      track: 'production',
+      aab: 'android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab'
     )
   end
 end

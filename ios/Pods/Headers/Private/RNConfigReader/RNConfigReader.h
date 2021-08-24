@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-config-reader/ios/RNConfigReader.h

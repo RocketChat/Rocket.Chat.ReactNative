@@ -21,6 +21,10 @@ const createGroupChat = function createGroupChat() {
 	return RocketChat.createGroupChat();
 };
 
+const createTeam = function createTeam(data) {
+	return RocketChat.createTeam(data);
+};
+
 const handleRequest = function* handleRequest({ data }) {
 	try {
 		const auth = yield select(state => state.login.isAuthenticated);
@@ -29,21 +33,57 @@ const handleRequest = function* handleRequest({ data }) {
 		}
 
 		let sub;
-		if (data.group) {
+		if (data.isTeam) {
+			const {
+				type,
+				readOnly,
+				broadcast,
+				encrypted
+			} = data;
+			logEvent(events.CT_CREATE, {
+				type: `${ type }`,
+				readOnly: `${ readOnly }`,
+				broadcast: `${ broadcast }`,
+				encrypted: `${ encrypted }`
+			});
+			const result = yield call(createTeam, data);
+			sub = {
+				rid: result?.team?.roomId,
+				...result.team,
+				t: result.team.type ? 'p' : 'c'
+			};
+		} else if (data.group) {
 			logEvent(events.SELECTED_USERS_CREATE_GROUP);
 			const result = yield call(createGroupChat);
 			if (result.success) {
-				({ room: sub } = result);
+				sub = {
+					rid: result.room?._id,
+					...result.room
+				};
 			}
 		} else {
-			const { type, readOnly, broadcast } = data;
-			logEvent(events.CREATE_CHANNEL_CREATE, { type: type ? 'private' : 'public', readOnly, broadcast });
-			sub = yield call(createChannel, data);
+			const {
+				type,
+				readOnly,
+				broadcast,
+				encrypted
+			} = data;
+			logEvent(events.CR_CREATE, {
+				type: type ? 'private' : 'public',
+				readOnly,
+				broadcast,
+				encrypted
+			});
+			const result = yield call(createChannel, data);
+			sub = {
+				rid: result?.channel?._id || result?.group?._id,
+				...result?.channel,
+				...result?.group
+			};
 		}
-
 		try {
 			const db = database.active;
-			const subCollection = db.collections.get('subscriptions');
+			const subCollection = db.get('subscriptions');
 			yield db.action(async() => {
 				await subCollection.create((s) => {
 					s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
@@ -53,11 +93,10 @@ const handleRequest = function* handleRequest({ data }) {
 		} catch {
 			// do nothing
 		}
-
 		yield put(createChannelSuccess(sub));
 	} catch (err) {
-		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CREATE_CHANNEL_CREATE_F']);
-		yield put(createChannelFailure(err));
+		logEvent(events[data.group ? 'SELECTED_USERS_CREATE_GROUP_F' : 'CR_CREATE_F']);
+		yield put(createChannelFailure(err, data.isTeam));
 	}
 };
 
@@ -69,10 +108,10 @@ const handleSuccess = function* handleSuccess({ data }) {
 	goRoom({ item: data, isMasterDetail });
 };
 
-const handleFailure = function handleFailure({ err }) {
+const handleFailure = function handleFailure({ err, isTeam }) {
 	setTimeout(() => {
-		const msg = err.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
-		showErrorAlert(msg);
+		const msg = err.data.errorType ? I18n.t(err.data.errorType, { room_name: err.data.details.channel_name }) : err.reason || I18n.t('There_was_an_error_while_action', { action: isTeam ? I18n.t('creating_team') : I18n.t('creating_channel') });
+		showErrorAlert(msg, isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel'));
 	}, 300);
 };
 

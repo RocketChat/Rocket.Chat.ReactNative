@@ -2,9 +2,9 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import moment from 'moment';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-community/async-storage';
-import RNUserDefaults from 'rn-user-defaults';
 import { sha256 } from 'js-sha256';
 
+import UserPreferences from '../lib/userPreferences';
 import store from '../lib/createStore';
 import database from '../lib/database';
 import { isIOS } from './deviceInfo';
@@ -17,7 +17,7 @@ import { setLocalAuthenticated } from '../actions/login';
 
 export const saveLastLocalAuthenticationSession = async(server, serverRecord) => {
 	const serversDB = database.servers;
-	const serversCollection = serversDB.collections.get('servers');
+	const serversCollection = serversDB.get('servers');
 	await serversDB.action(async() => {
 		try {
 			if (!serverRecord) {
@@ -51,7 +51,7 @@ const openChangePasscodeModal = ({ force }) => new Promise((resolve, reject) => 
 
 export const changePasscode = async({ force = false }) => {
 	const passcode = await openChangePasscodeModal({ force });
-	await RNUserDefaults.set(PASSCODE_KEY, sha256(passcode));
+	await UserPreferences.setStringAsync(PASSCODE_KEY, sha256(passcode));
 };
 
 export const biometryAuth = force => LocalAuthentication.authenticateAsync({
@@ -80,7 +80,7 @@ const checkBiometry = async(serverRecord) => {
 };
 
 export const checkHasPasscode = async({ force = true, serverRecord }) => {
-	const storedPasscode = await RNUserDefaults.get(PASSCODE_KEY);
+	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
 	if (!storedPasscode) {
 		await changePasscode({ force });
 		await checkBiometry(serverRecord);
@@ -91,7 +91,7 @@ export const checkHasPasscode = async({ force = true, serverRecord }) => {
 
 export const localAuthenticate = async(server) => {
 	const serversDB = database.servers;
-	const serversCollection = serversDB.collections.get('servers');
+	const serversCollection = serversDB.get('servers');
 
 	let serverRecord;
 	try {
@@ -102,9 +102,6 @@ export const localAuthenticate = async(server) => {
 
 	// if screen lock is enabled
 	if (serverRecord?.autoLock) {
-		// set isLocalAuthenticated to false
-		store.dispatch(setLocalAuthenticated(false));
-
 		// Make sure splash screen has been hidden
 		RNBootSplash.hide();
 
@@ -118,6 +115,9 @@ export const localAuthenticate = async(server) => {
 
 			// if last authenticated session is older than configured auto lock time, authentication is required
 			if (diffToLastSession >= serverRecord?.autoLockTime) {
+				// set isLocalAuthenticated to false
+				store.dispatch(setLocalAuthenticated(false));
+
 				let hasBiometry = false;
 
 				// if biometry is enabled on the app

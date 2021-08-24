@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import { ThemeContext } from '../theme';
 import {
@@ -21,7 +20,7 @@ import AuthenticationWebView from '../views/AuthenticationWebView';
 
 // Outside
 const Outside = createStackNavigator();
-const _OutsideStack = (/*{ root }*/) => {
+const _OutsideStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -70,10 +69,6 @@ const _OutsideStack = (/*{ root }*/) => {
 const mapStateToProps = state => ({
 	root: state.app.root
 });
-
-_OutsideStack.propTypes = {
-	root: PropTypes.string
-};
 
 const OutsideStack = connect(mapStateToProps)(_OutsideStack);
 

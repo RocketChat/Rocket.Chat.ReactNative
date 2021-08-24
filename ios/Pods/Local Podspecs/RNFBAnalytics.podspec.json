@@ -1,0 +1,30 @@
+{
+  "name": "RNFBAnalytics",
+  "version": "7.3.1",
+  "description": "React Native Firebase - The analytics module provides out of the box support with Google Analytics for Firebase. Integration with the Android & iOS allows for in-depth analytical insight reporting, such as device information, location, user actions and more.",
+  "summary": "A well tested feature rich Firebase implementation for React Native, supporting iOS & Android.",
+  "homepage": "http://invertase.io/oss/react-native-firebase",
+  "license": "Apache-2.0",
+  "authors": "Invertase Limited",
+  "source": {
+    "git": "https://github.com/invertase/react-native-firebase.git",
+    "tag": "v7.3.1"
+  },
+  "social_media_url": "http://twitter.com/invertaseio",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ],
+    "RNFBApp": [
+
+    ],
+    "Firebase/Analytics": [
+      "~> 6.27.0"
+    ]
+  },
+  "static_framework": false
+}

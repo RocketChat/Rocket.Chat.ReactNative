@@ -3,31 +3,63 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 
-def find_and_replace(dir, findstr, replacestr)
-  Dir[dir].each do |name|
-      text = File.read(name)
-      replace = text.gsub(findstr,replacestr)
-      if text != replace
-          puts "Fix: " + name
-          File.open(name, "w") { |file| file.puts replace }
-          STDOUT.flush
-      end
-  end
-  Dir[dir + '*/'].each(&method(:find_and_replace))
-end
-
 def all_pods
   config = use_native_modules!
   use_unimodules!
   use_react_native!(:path => config["reactNativePath"])
-  #use_flipper!
+  use_flipper!
 end
 
-target :'RocketChatRN' do
+abstract_target 'defaults' do
+  # force use our own JitsiMeetSDK
+  pod 'JitsiMeetSDK', :git => 'https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git'
+
   all_pods
+
+  target 'RocketChatRN' # Experimental app
+  target 'Rocket.Chat' # Official app
 end
 
-target :'ShareRocketChatRN' do
+target 'ShareRocketChatRN' do
+  pod 'EXAppleAuthentication', :path=> "../node_modules/expo-apple-authentication/ios"
+  pod 'EXAV', :path=> "../node_modules/expo-av/ios"
+  pod 'EXFileSystem', :path=> "../node_modules/expo-file-system/ios"
+  pod 'EXHaptics', :path=> "../node_modules/expo-haptics/ios"
+  pod 'EXImageLoader', :path=> "../node_modules/expo-image-loader/ios"
+  pod 'UMCore', :path=> "../node_modules/@unimodules/core/ios"
+  pod 'UMImageLoaderInterface', :path=> "../node_modules/unimodules-image-loader-interface/ios"
+  pod 'UMReactNativeAdapter', :path=> "../node_modules/@unimodules/react-native-adapter/ios"
+
+  use_react_native!(:path => '../node_modules/react-native')
+
+  pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
+  pod 'RNFBAnalytics', :path => '../node_modules/@react-native-firebase/analytics'
+  pod 'RNFBCrashlytics', :path => '../node_modules/@react-native-firebase/crashlytics'
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+  pod 'RNCMaskedView', :path => '../node_modules/@react-native-community/masked-view'
+  pod 'RNFastImage', :path => '../node_modules/@rocket.chat/react-native-fast-image'
+  pod 'BugsnagReactNative', :path => '../node_modules/bugsnag-react-native'
+  pod 'react-native-appearance', :path => '../node_modules/react-native-appearance'
+  pod 'RNConfigReader', :path => '../node_modules/react-native-config-reader'
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+  pod 'RNLocalize', :path => '../node_modules/react-native-localize'
+  pod 'react-native-mmkv-storage', :path => '../node_modules/react-native-mmkv-storage'
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+  pod 'react-native-simple-crypto', :path => '../node_modules/react-native-simple-crypto'
+  pod 'ReactNativeUiLib', :path => '../node_modules/react-native-ui-lib/lib'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  pod 'rn-extensions-share', :path => '../node_modules/rn-extensions-share'
+  pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
+  pod 'RNRootView', :path => '../node_modules/rn-root-view'
+  pod 'react-native-orientation-locker', :path => '../node_modules/react-native-orientation-locker'
+end
+
+# used to get user credentials
+target 'NotificationService' do
   all_pods
 end
 
@@ -37,13 +69,5 @@ post_install do |installer|
       config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
     end
   end
-  #flipper_post_install(installer)
-
-  ## Fix for Flipper-Folly on iOS 14.5
-  find_and_replace("Pods/Flipper-Folly/folly/synchronization/DistributedMutex-inl.h",
-    "atomic_notify_one(state)", "folly::atomic_notify_one(state)")
-
-  find_and_replace("Pods/Flipper-Folly/folly/synchronization/DistributedMutex-inl.h",
-    "atomic_wait_until(&state, previous | data, deadline)", "folly::atomic_wait_until(&state, previous | data, deadline)")
-
+  flipper_post_install(installer)
 end

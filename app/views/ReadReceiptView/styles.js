@@ -29,7 +29,6 @@ export default StyleSheet.create({
 		padding: 10
 	},
 	list: {
-		...sharedStyles.separatorVertical,
-		marginVertical: 10
+		...sharedStyles.separatorVertical
 	}
 });

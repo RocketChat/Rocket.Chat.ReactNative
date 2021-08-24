@@ -6,7 +6,7 @@ module.exports = {
       }
     }
   },
-	"parser": "babel-eslint",
+	"parser": "@babel/eslint-parser",
 	"extends": "airbnb",
 	"parserOptions": {
 		"sourceType": "module",
@@ -21,14 +21,16 @@ module.exports = {
 		"react",
 		"jsx-a11y",
         "import",
-    	"react-native"
+    	"react-native",
+		"@babel"
 	],
 	"env": {
 		"browser": true,
 		"commonjs": true,
 		"es6": true,
 		"node": true,
-		"jquery": true
+		"jquery": true,
+		"mocha": true
 	},
 	"rules": {
 		"react/jsx-filename-extension": [1, {
@@ -45,6 +47,7 @@ module.exports = {
 		"react/forbid-prop-types": 0,
 		"jsx-quotes": [2, "prefer-single"],
 		"jsx-a11y/href-no-hash": 0,
+		"jsx-a11y/aria-role": 0,
 		"import/prefer-default-export": 0,
 		"import/no-cycle": 0,
 		"camelcase": 0,
@@ -148,9 +151,28 @@ module.exports = {
 		"react/jsx-curly-newline": [0],
 		"react/state-in-constructor": [0],
 		"no-async-promise-executor": [0],
-		"max-classes-per-file": [0]
+		"max-classes-per-file": [0],
+		"no-multiple-empty-lines": [0]
 	},
 	"globals": {
 		"__DEV__": true
-	}
+	},
+	overrides: [
+		{
+			files: ['e2e/**'],
+			globals: {
+				by: true,
+				detox: true,
+				device: true,
+				element: true,
+				expect: true,
+				waitFor: true
+			},
+			rules: {
+				'import/no-extraneous-dependencies': 0,
+				'no-await-in-loop': 0,
+				'no-restricted-syntax': 0
+			}
+		}
+	]
 };

@@ -1,0 +1,68 @@
+diff --git a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
+index 43f2c9c..e24a24f 100644
+--- a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
++++ b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
+@@ -1,14 +1,14 @@
+ import Foundation
+ 
+-class Database {
+-    typealias SQL = String
+-    typealias TableName = String
+-    typealias QueryArgs = [Any]
++public class Database {
++    public typealias SQL = String
++    public typealias TableName = String
++    public typealias QueryArgs = [Any]
+ 
+     private let fmdb: FMDatabase
+     private let path: String
+ 
+-    init(path: String) {
++    public init(path: String) {
+         self.path = path
+         fmdb = FMDatabase(path: path)
+         open()
+@@ -53,7 +53,7 @@ class Database {
+         }
+     }
+ 
+-    func queryRaw(_ query: SQL, _ args: QueryArgs = []) throws -> AnyIterator<FMResultSet> {
++    public func queryRaw(_ query: SQL, _ args: QueryArgs = []) throws -> AnyIterator<FMResultSet> {
+         let resultSet = try fmdb.executeQuery(query, values: args)
+ 
+         return AnyIterator {
+diff --git a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt b/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
+index 2217222..5b2eb73 100644
+--- a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
++++ b/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
+@@ -5,7 +5,7 @@ import android.database.Cursor
+ import android.database.sqlite.SQLiteDatabase
+ import java.io.File
+ 
+-class Database(private val name: String, private val context: Context) {
++public class Database(private val name: String, private val context: Context) {
+ 
+     private val db: SQLiteDatabase by lazy {
+         SQLiteDatabase.openOrCreateDatabase(
+@@ -41,7 +41,7 @@ class Database(private val name: String, private val context: Context) {
+ 
+     fun delete(query: SQL, args: QueryArgs) = db.execSQL(query, args)
+ 
+-    fun rawQuery(query: SQL, args: RawQueryArgs = emptyArray()): Cursor = db.rawQuery(query, args)
++    public fun rawQuery(query: SQL, args: RawQueryArgs = emptyArray()): Cursor = db.rawQuery(query, args)
+ 
+     fun count(query: SQL, args: RawQueryArgs = emptyArray()): Int =
+             rawQuery(query, args).use {
+diff --git a/node_modules/@nozbe/watermelondb/decorators/date/index.js b/node_modules/@nozbe/watermelondb/decorators/date/index.js
+index 65690af..ce71aa0 100644
+--- a/node_modules/@nozbe/watermelondb/decorators/date/index.js
++++ b/node_modules/@nozbe/watermelondb/decorators/date/index.js
+@@ -44,7 +44,7 @@ var dateDecorator = (0, _makeDecorator.default)(function (columnName) {
+         var rawValue = date ? +new Date(date) : null;
+ 
+         if (rawValue && date) {
+-          cache.set(rawValue, date);
++          cache.set(rawValue, new Date(date));
+         }
+ 
+         this.asModel._setRaw(columnName, rawValue);

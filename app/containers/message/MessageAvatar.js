@@ -8,7 +8,7 @@ import MessageContext from './Context';
 const MessageAvatar = React.memo(({
 	isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji, theme
 }) => {
-	const { baseUrl, user } = useContext(MessageContext);
+	const { user } = useContext(MessageContext);
 	if (isHeader && author) {
 		const navParam = {
 			t: 'd',
@@ -24,9 +24,6 @@ const MessageAvatar = React.memo(({
 				getCustomEmoji={getCustomEmoji}
 				avatar={avatar}
 				emoji={emoji}
-				baseUrl={baseUrl}
-				userId={user.id}
-				token={user.token}
 				theme={theme}
 			/>
 		);

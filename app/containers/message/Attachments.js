@@ -1,5 +1,5 @@
 import React from 'react';
-import isEqual from 'lodash/isEqual';
+import { dequal } from 'dequal';
 import PropTypes from 'prop-types';
 
 import Image from './Image';
@@ -28,7 +28,7 @@ const Attachments = React.memo(({
 		// eslint-disable-next-line react/no-array-index-key
 		return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} theme={theme} />;
 	});
-}, (prevProps, nextProps) => isEqual(prevProps.attachments, nextProps.attachments) && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments) && prevProps.theme === nextProps.theme);
 
 Attachments.propTypes = {
 	attachments: PropTypes.array,

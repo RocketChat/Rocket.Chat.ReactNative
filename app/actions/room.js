@@ -14,19 +14,21 @@ export function unsubscribeRoom(rid) {
 	};
 }
 
-export function leaveRoom(rid, t) {
+export function leaveRoom(roomType, room, selected) {
 	return {
 		type: types.ROOM.LEAVE,
-		rid,
-		t
+		room,
+		roomType,
+		selected
 	};
 }
 
-export function deleteRoom(rid, t) {
+export function deleteRoom(roomType, room, selected) {
 	return {
 		type: types.ROOM.DELETE,
-		rid,
-		t
+		room,
+		roomType,
+		selected
 	};
 }
 

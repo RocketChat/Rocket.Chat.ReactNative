@@ -1,0 +1,25 @@
+{
+  "name": "RNConfigReader",
+  "version": "1.0.0",
+  "summary": "RNConfigReader",
+  "description": "RNConfigReader",
+  "homepage": "https://github.com/csath/react-native-config-reader",
+  "license": "MIT",
+  "authors": {
+    "author": "author@domain.cn"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source": {
+    "git": "https://github.com/author/RNConfigReader.git",
+    "tag": "master"
+  },
+  "source_files": "ios/**/*",
+  "requires_arc": true,
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

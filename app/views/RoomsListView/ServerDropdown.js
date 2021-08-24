@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import {
-	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Image, Pressable
+	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect, batch } from 'react-redux';
-import equal from 'deep-equal';
-import RNUserDefaults from 'rn-user-defaults';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import * as List from '../../containers/List';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
@@ -15,17 +14,18 @@ import styles from './styles';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
-import Check from '../../containers/Check';
+import ServerItem from '../../presentation/ServerItem';
 import database from '../../lib/database';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
-import { isTablet, isIOS } from '../../utils/deviceInfo';
+import { isTablet } from '../../utils/deviceInfo';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
 import { logEvent, events } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
+import UserPreferences from '../../lib/userPreferences';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
@@ -73,24 +73,6 @@ class ServerDropdown extends Component {
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		const { servers } = this.state;
-		const { closeServerDropdown, server, theme } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (nextProps.closeServerDropdown !== closeServerDropdown) {
-			return true;
-		}
-		if (nextProps.server !== server) {
-			return true;
-		}
-		if (!equal(nextState.servers, servers)) {
-			return true;
-		}
-		return false;
 	}
 
 	componentDidUpdate(prevProps) {
@@ -143,14 +125,14 @@ class ServerDropdown extends Component {
 		}, ANIMATION_DURATION);
 	}
 
-	select = async(server) => {
+	select = async(server, version) => {
 		const {
 			server: currentServer, selectServerRequest, isMasterDetail
 		} = this.props;
 		this.close();
 		if (currentServer !== server) {
 			logEvent(events.RL_CHANGE_SERVER);
-			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
 			if (isMasterDetail) {
 				goRoom({ item: {}, isMasterDetail });
 			}
@@ -163,14 +145,14 @@ class ServerDropdown extends Component {
 				}, ANIMATION_DURATION);
 			} else {
 				await localAuthenticate(server);
-				selectServerRequest(server);
+				selectServerRequest(server, version);
 			}
 		}
 	}
 
 	remove = server => showConfirmationAlert({
 		message: I18n.t('This_will_remove_all_data_from_this_server'),
-		callToAction: I18n.t('Delete'),
+		confirmationText: I18n.t('Delete'),
 		onPress: async() => {
 			this.close();
 			try {
@@ -193,52 +175,17 @@ class ServerDropdown extends Component {
 		}
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[styles.serverSeparator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
-
 	renderServer = ({ item }) => {
 		const { server, theme } = this.props;
 
 		return (
-			<Pressable
-				onPress={() => this.select(item.id)}
+			<ServerItem
+				item={item}
+				onPress={() => this.select(item.id, item.version)}
 				onLongPress={() => (item.id === server || this.remove(item.id))}
-				testID={`rooms-list-header-server-${ item.id }`}
-				android_ripple={{
-					color: themes[theme].bannerBackground
-				}}
-				style={({ pressed }) => ({
-					backgroundColor: isIOS && pressed
-						? themes[theme].bannerBackground
-						: 'transparent'
-				})}
-			>
-				<View style={styles.serverItemContainer}>
-					{item.iconURL
-						? (
-							<Image
-								source={{ uri: item.iconURL }}
-								defaultSource={{ uri: 'logo' }}
-								style={styles.serverIcon}
-								onError={() => console.warn('error loading serverIcon')}
-							/>
-						)
-						: (
-							<Image
-								source={{ uri: 'logo' }}
-								style={styles.serverIcon}
-							/>
-						)
-					}
-					<View style={styles.serverTextContainer}>
-						<Text style={[styles.serverName, { color: themes[theme].titleText }]} numberOfLines={1}>{item.name || item.id}</Text>
-						<Text style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{item.id}</Text>
-					</View>
-					{item.id === server ? <Check theme={theme} /> : null}
-				</View>
-			</Pressable>
+				hasCheck={item.id === server}
+				theme={theme}
+			/>
 		);
 	}
 
@@ -255,7 +202,7 @@ class ServerDropdown extends Component {
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, 0.6]
+			outputRange: [0, themes[theme].backdropOpacity]
 		});
 		return (
 			<>
@@ -296,7 +243,7 @@ class ServerDropdown extends Component {
 						data={servers}
 						keyExtractor={item => item.id}
 						renderItem={this.renderServer}
-						ItemSeparatorComponent={this.renderSeparator}
+						ItemSeparatorComponent={List.Separator}
 						keyboardShouldPersistTaps='always'
 					/>
 				</Animated.View>
@@ -313,7 +260,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
+	selectServerRequest: (server, version) => dispatch(selectServerRequestAction(server, version, true, true)),
 	appStart: params => dispatch(appStartAction(params)),
 	initAdd: previousServer => dispatch(serverInitAddAction(previousServer))
 });

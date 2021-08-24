@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { KeyboardRegistry } from 'react-native-keyboard-input';
+import { KeyboardRegistry } from 'react-native-ui-lib/keyboard';
 import PropTypes from 'prop-types';
 
 import store from '../../lib/createStore';
@@ -17,7 +17,7 @@ export default class EmojiKeyboard extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		const state = store.getState();
-		this.baseUrl = state.share.server || state.server.server;
+		this.baseUrl = state.share.server.server || state.server.server;
 	}
 
 	onEmojiSelected = (emoji) => {

@@ -13,6 +13,9 @@ export default StyleSheet.create({
 		paddingHorizontal: 14,
 		flexDirection: 'column'
 	},
+	contentContainer: {
+		flex: 1
+	},
 	messageContent: {
 		flex: 1,
 		marginLeft: 46
@@ -22,9 +25,6 @@ export default StyleSheet.create({
 	},
 	messageContentWithError: {
 		marginLeft: 0
-	},
-	center: {
-		alignItems: 'center'
 	},
 	flex: {
 		flexDirection: 'row'
@@ -37,11 +37,11 @@ export default StyleSheet.create({
 	reactionsContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginTop: 6
+		marginTop: 8
 	},
 	reactionButton: {
-		marginRight: 6,
-		marginBottom: 6,
+		marginRight: 8,
+		marginBottom: 8,
 		borderRadius: 2
 	},
 	reactionContainer: {
@@ -80,27 +80,24 @@ export default StyleSheet.create({
 		paddingVertical: 5
 	},
 	buttonContainer: {
-		marginTop: 6,
+		marginTop: 8,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	button: {
-		paddingHorizontal: 15,
-		height: 44,
+		paddingHorizontal: 12,
+		paddingVertical: 8,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
 		borderRadius: 2
 	},
-	smallButton: {
-		height: 30
-	},
 	buttonIcon: {
-		marginRight: 6
+		marginRight: 8
 	},
 	buttonText: {
-		fontSize: 14,
-		...sharedStyles.textMedium
+		fontSize: 12,
+		...sharedStyles.textSemibold
 	},
 	imageContainer: {
 		// flex: 1,
@@ -140,10 +137,8 @@ export default StyleSheet.create({
 	},
 	time: {
 		fontSize: 12,
-		paddingLeft: 10,
-		lineHeight: 22,
-		...sharedStyles.textRegular,
-		fontWeight: '300'
+		marginLeft: 8,
+		...sharedStyles.textRegular
 	},
 	repliedThread: {
 		flexDirection: 'row',
@@ -161,7 +156,29 @@ export default StyleSheet.create({
 		flex: 1,
 		...sharedStyles.textRegular
 	},
+	repliedThreadDisclosure: {
+		marginLeft: 4,
+		marginRight: 4,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	threadBadge: {
+		width: 8,
+		height: 8,
+		borderRadius: 4,
+		marginLeft: 8
+	},
+	threadBell: {
+		marginLeft: 8
+	},
 	readReceipt: {
 		lineHeight: 20
+	},
+	encrypted: {
+		justifyContent: 'center'
+	},
+	threadDetails: {
+		flex: 1,
+		marginLeft: 12
 	}
 });

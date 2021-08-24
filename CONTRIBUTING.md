@@ -20,18 +20,22 @@ yarn
 
 Run the app:
 ```sh
-npx react-native run-ios
+yarn ios
 ```
 
 or
 
 ```sh
-npx react-native run-android
+yarn android
 ```
 
 At this point, the app should be running on the simulator or on your device!
 
 *Note: npm won't work on this project*
+
+### How to inspect the app
+
+We use [Reactotron](https://github.com/infinitered/reactotron) to inspect logs, redux state, redux-sagas, HTTP requests, etc.
 
 ## Issues needing help
 

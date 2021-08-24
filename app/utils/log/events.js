@@ -5,9 +5,8 @@ export default {
 	ONBOARD_CREATE_NEW_WORKSPACE_F: 'onboard_create_new_workspace_f',
 
 	// NEW SERVER VIEW
-	NEWSERVER_CONNECT_TO_WORKSPACE: 'newserver_connect_to_workspace',
-	NEWSERVER_CONNECT_TO_WORKSPACE_F: 'newserver_connect_to_workspace_f',
-	NEWSERVER_JOIN_OPEN_WORKSPACE: 'newserver_join_open_workspace',
+	NS_CONNECT_TO_WORKSPACE: 'ns_connect_to_workspace',
+	NS_JOIN_OPEN_WORKSPACE: 'ns_join_open_workspace',
 
 	// LOGIN VIEW
 	LOGIN_DEFAULT_LOGIN: 'login_default_login',
@@ -52,12 +51,14 @@ export default {
 	STATUS_F: 'status_f',
 	STATUS_CUSTOM: 'status_custom',
 	STATUS_CUSTOM_F: 'status_custom_f',
+	SET_STATUS_FAIL: 'set_status_fail',
 
 	// ROOMS LIST VIEW
 	RL_TOGGLE_SERVER_DROPDOWN: 'rl_toggle_server_dropdown',
 	RL_ADD_SERVER: 'rl_add_server',
 	RL_CHANGE_SERVER: 'rl_change_server',
 	RL_GO_NEW_MSG: 'rl_go_new_msg',
+	RL_GO_E2E_SAVE_PASSWORD: 'rl_go_e2e_save_password',
 	RL_SEARCH: 'rl_search',
 	RL_GO_DIRECTORY: 'rl_go_directory',
 	RL_GO_QUEUE: 'rl_go_queue',
@@ -87,6 +88,7 @@ export default {
 
 	// NEW MESSAGE VIEW
 	NEW_MSG_CREATE_CHANNEL: 'new_msg_create_channel',
+	NEW_MSG_CREATE_TEAM: 'new_msg_create_team',
 	NEW_MSG_CREATE_GROUP_CHAT: 'new_msg_create_group_chat',
 	NEW_MSG_CREATE_DISCUSSION: 'new_msg_create_discussion',
 	NEW_MSG_CHAT_WITH_USER: 'new_msg_chat_with_user',
@@ -97,19 +99,29 @@ export default {
 	SELECTED_USERS_CREATE_GROUP: 'selected_users_create_group',
 	SELECTED_USERS_CREATE_GROUP_F: 'selected_users_create_group_f',
 
+	// ADD EXISTING CHANNEL VIEW
+	AEC_ADD_CHANNEL: 'aec_add_channel',
+	AEC_REMOVE_CHANNEL: 'aec_remove_channel',
+
 	// CREATE CHANNEL VIEW
-	CREATE_CHANNEL_CREATE: 'create_channel_create',
-	CREATE_CHANNEL_CREATE_F: 'create_channel_create_f',
-	CREATE_CHANNEL_TOGGLE_TYPE: 'create_channel_toggle_type',
-	CREATE_CHANNEL_TOGGLE_READ_ONLY: 'create_channel_toggle_read_only',
-	CREATE_CHANNEL_TOGGLE_BROADCAST: 'create_channel_toggle_broadcast',
-	CREATE_CHANNEL_REMOVE_USER: 'create_channel_remove_user',
+	CR_CREATE: 'cr_create',
+	CT_CREATE: 'ct_create',
+	CR_CREATE_F: 'cr_create_f',
+	CT_CREATE_F: 'ct_create_f',
+	CR_TOGGLE_TYPE: 'cr_toggle_type',
+	CR_TOGGLE_READ_ONLY: 'cr_toggle_read_only',
+	CR_TOGGLE_BROADCAST: 'cr_toggle_broadcast',
+	CR_TOGGLE_ENCRYPTED: 'cr_toggle_encrypted',
+	CR_REMOVE_USER: 'cr_remove_user',
+	CT_ADD_ROOM_TO_TEAM: 'ct_add_room_to_team',
+	CT_ADD_ROOM_TO_TEAM_F: 'ct_add_room_to_team_f',
 
 	// CREATE DISCUSSION VIEW
-	CREATE_DISCUSSION_CREATE: 'create_discussion_create',
-	CREATE_DISCUSSION_CREATE_F: 'create_discussion_create_f',
-	CREATE_DISCUSSION_SELECT_CHANNEL: 'create_discussion_select_channel',
-	CREATE_DISCUSSION_SELECT_USERS: 'create_discussion_select_users',
+	CD_CREATE: 'cd_create',
+	CD_CREATE_F: 'cd_create_f',
+	CD_SELECT_CHANNEL: 'cd_select_channel',
+	CD_SELECT_USERS: 'cd_select_users',
+	CD_TOGGLE_ENCRY: 'cd_toggle_encry',
 
 	// PROFILE VIEW
 	PROFILE_PICK_AVATAR: 'profile_pick_avatar',
@@ -119,6 +131,9 @@ export default {
 	PROFILE_SAVE_AVATAR_F: 'profile_save_avatar_f',
 	PROFILE_SAVE_CHANGES: 'profile_save_changes',
 	PROFILE_SAVE_CHANGES_F: 'profile_save_changes_f',
+	// PROFILE LOGOUT
+	PL_OTHER_LOCATIONS: 'pl_other_locations',
+	PL_OTHER_LOCATIONS_F: 'pl_other_locations_f',
 
 	// SETTINGS VIEW
 	SE_CONTACT_US: 'se_contact_us',
@@ -129,14 +144,19 @@ export default {
 	SE_SHARE_THIS_APP: 'se_share_this_app',
 	SE_GO_DEFAULTBROWSER: 'se_go_default_browser',
 	SE_GO_THEME: 'se_go_theme',
-	SE_GO_SCREENLOCKCONFIG: 'se_go_screen_lock_cfg',
 	SE_GO_PROFILE: 'se_go_profile',
+	SE_GO_SECURITYPRIVACY: 'se_go_securityprivacy',
 	SE_READ_LICENSE: 'se_read_license',
 	SE_COPY_APP_VERSION: 'se_copy_app_version',
 	SE_COPY_SERVER_VERSION: 'se_copy_server_version',
-	SE_TOGGLE_CRASH_REPORT: 'se_toggle_crash_report',
 	SE_CLEAR_LOCAL_SERVER_CACHE: 'se_clear_local_server_cache',
 	SE_LOG_OUT: 'se_log_out',
+
+	// SECURITY PRIVACY VIEW
+	SP_GO_E2EENCRYPTIONSECURITY: 'sp_go_e2e_encryption_security',
+	SP_GO_SCREENLOCKCONFIG: 'sp_go_screen_lock_cfg',
+	SP_TOGGLE_CRASH_REPORT: 'sp_toggle_crash_report',
+	SP_TOGGLE_ANALYTICS_EVENTS: 'sp_toggle_analytics_events',
 
 	// LANGUAGE VIEW
 	LANG_SET_LANGUAGE: 'lang_set_language',
@@ -159,6 +179,7 @@ export default {
 
 	// ROOM VIEW
 	ROOM_SEND_MESSAGE: 'room_send_message',
+	ROOM_ENCRYPTED_PRESS: 'room_encrypted_press',
 	ROOM_OPEN_EMOJI: 'room_open_emoji',
 	ROOM_AUDIO_RECORD: 'room_audio_record',
 	ROOM_AUDIO_RECORD_F: 'room_audio_record_f',
@@ -201,6 +222,7 @@ export default {
 	ROOM_JOIN: 'room_join',
 	ROOM_GO_RA: 'room_go_ra',
 	ROOM_TOGGLE_FOLLOW_THREADS: 'room_toggle_follow_threads',
+	ROOM_GO_TEAM_CHANNELS: 'room_go_team_channels',
 	ROOM_GO_SEARCH: 'room_go_search',
 	ROOM_GO_THREADS: 'room_go_threads',
 	ROOM_GO_ROOM_INFO: 'room_go_room_info',
@@ -231,6 +253,17 @@ export default {
 	RA_LEAVE_F: 'ra_leave_f',
 	RA_TOGGLE_BLOCK_USER: 'ra_toggle_block_user',
 	RA_TOGGLE_BLOCK_USER_F: 'ra_toggle_block_user_f',
+	RA_TOGGLE_ENCRYPTED: 'ra_toggle_encrypted',
+	RA_TOGGLE_ENCRYPTED_F: 'ra_toggle_encrypted_f',
+	RA_LEAVE_TEAM: 'ra_leave_team',
+	RA_LEAVE_TEAM_F: 'ra_leave_team_f',
+	RA_CONVERT_TO_TEAM: 'ra_convert_to_team',
+	RA_CONVERT_TO_TEAM_F: 'ra_convert_to_team_f',
+	RA_CONVERT_TEAM_TO_CHANNEL: 'ra_convert_team_to_channel',
+	RA_CONVERT_TEAM_TO_CHANNEL_F: 'ra_convert_team_to_channel_f',
+	RA_MOVE_TO_TEAM: 'ra_move_to_team',
+	RA_MOVE_TO_TEAM_F: 'ra_move_to_team_f',
+	RA_SEARCH_TEAM: 'ra_search_team',
 
 	// ROOM INFO VIEW
 	RI_GO_RI_EDIT: 'ri_go_ri_edit',
@@ -242,6 +275,7 @@ export default {
 	RI_EDIT_TOGGLE_READ_ONLY: 'ri_edit_toggle_read_only',
 	RI_EDIT_TOGGLE_REACTIONS: 'ri_edit_toggle_reactions',
 	RI_EDIT_TOGGLE_SYSTEM_MSG: 'ri_edit_toggle_system_msg',
+	RI_EDIT_TOGGLE_ENCRYPTED: 'ri_edit_toggle_encrypted',
 	RI_EDIT_SAVE: 'ri_edit_save',
 	RI_EDIT_SAVE_F: 'ri_edit_save_f',
 	RI_EDIT_RESET: 'ri_edit_reset',
@@ -249,6 +283,8 @@ export default {
 	RI_EDIT_TOGGLE_ARCHIVE_F: 'ri_edit_toggle_archive_f',
 	RI_EDIT_DELETE: 'ri_edit_delete',
 	RI_EDIT_DELETE_F: 'ri_edit_delete_f',
+	RI_EDIT_DELETE_TEAM: 'ri_edit_delete_team',
+	RI_EDIT_DELETE_TEAM_F: 'ri_edit_delete_team_f',
 
 	// JITSI MEET VIEW
 	JM_CONFERENCE_JOIN: 'jm_conference_join',
@@ -283,8 +319,28 @@ export default {
 	NP_AUDIONOTIFICATIONS_F: 'np_audio_notifications_f',
 	NP_AUDIONOTIFICATIONVALUE: 'np_audio_notification_value',
 	NP_AUDIONOTIFICATIONVALUE_F: 'np_audio_notification_value_f',
-	NP_DESKTOPNOTIFICATIONDURATION: 'np_desktopnotificationduration',
-	NP_DESKTOPNOTIFICATIONDURATION_F: 'np_desktopnotificationduration_f',
 	NP_EMAILNOTIFICATIONS: 'np_email_notifications',
-	NP_EMAILNOTIFICATIONS_F: 'np_email_notifications_f'
+	NP_EMAILNOTIFICATIONS_F: 'np_email_notifications_f',
+
+	// E2E SAVE YOUR PASSWORD VIEW
+	E2E_SAVE_PW_SAVED: 'e2e_save_pw_saved',
+	E2E_SAVE_PW_COPY: 'e2e_save_pw_copy',
+	E2E_SAVE_PW_HOW_IT_WORKS: 'e2e_save_pw_how_it_works',
+
+	// E2E ENTER YOUR PASSWORD VIEW
+	E2E_ENTER_PW_SUBMIT: 'e2e_enter_pw_submit',
+
+	// E2E ENCRYPTION SECURITY VIEW
+	E2E_SEC_CHANGE_PASSWORD: 'e2e_sec_change_password',
+	E2E_SEC_RESET_OWN_KEY: 'e2e_sec_reset_own_key',
+
+	// TEAM CHANNELS VIEW
+	TC_SEARCH: 'tc_search',
+	TC_CANCEL_SEARCH: 'tc_cancel_search',
+	TC_GO_ACTIONS: 'tc_go_actions',
+	TC_GO_ROOM: 'tc_go_room',
+	TC_DELETE_ROOM: 'tc_delete_room',
+	TC_DELETE_ROOM_F: 'tc_delete_room_f',
+	TC_TOGGLE_AUTOJOIN: 'tc_toggle_autojoin',
+	TC_TOGGLE_AUTOJOIN_F: 'tc_toggle_autojoin_f'
 };

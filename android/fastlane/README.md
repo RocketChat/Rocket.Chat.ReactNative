@@ -16,19 +16,24 @@ or alternatively using `brew cask install fastlane`
 
 # Available Actions
 ## Android
-### android build
+### android playBuild
 ```
-fastlane android build
+fastlane android playBuild
 ```
-Build App for development
-### android release
+Play build for development
+### android fossRelease
 ```
-fastlane android release
+fastlane android fossRelease
 ```
-Build App for release
-### android alpha
+Foss build for release
+### android playRelease
 ```
-fastlane android alpha
+fastlane android playRelease
+```
+Play build for release
+### android playAlpha
+```
+fastlane android playAlpha
 ```
 Upload App to Play store
 

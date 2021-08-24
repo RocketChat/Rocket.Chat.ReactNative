@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 });
 
 const UserItem = ({
-	name, username, onPress, testID, onLongPress, style, icon, baseUrl, user, theme
+	name, username, onPress, testID, onLongPress, style, icon, theme
 }) => (
 	<Pressable
 		onPress={onPress}
@@ -58,7 +58,7 @@ const UserItem = ({
 		})}
 	>
 		<View style={[styles.container, styles.button, style]}>
-			<Avatar text={username} size={30} type='d' style={styles.avatar} baseUrl={baseUrl} userId={user.id} token={user.token} />
+			<Avatar text={username} size={30} style={styles.avatar} />
 			<View style={styles.textContainer}>
 				<Text style={[styles.name, { color: themes[theme].titleText }]} numberOfLines={1}>{name}</Text>
 				<Text style={[styles.username, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>@{username}</Text>
@@ -71,11 +71,6 @@ const UserItem = ({
 UserItem.propTypes = {
 	name: PropTypes.string.isRequired,
 	username: PropTypes.string.isRequired,
-	user: PropTypes.shape({
-		id: PropTypes.string,
-		token: PropTypes.string
-	}),
-	baseUrl: PropTypes.string.isRequired,
 	onPress: PropTypes.func.isRequired,
 	testID: PropTypes.string.isRequired,
 	onLongPress: PropTypes.func,

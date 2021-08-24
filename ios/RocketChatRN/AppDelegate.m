@@ -20,6 +20,7 @@
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
+#import <MMKV/MMKV.h>
 
 #if DEBUG
 //#import <FlipperKit/FlipperClient.h>
@@ -64,6 +65,11 @@ static void InitializeFlipper(UIApplication *application) {
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
     [RNNotifications startMonitorNotifications];
+    [ReplyNotification configure];
+  
+    // AppGroup MMKV
+    NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
+    [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
 
     return YES;
 }

@@ -57,7 +57,7 @@ async function open({ type, rid, name }) {
 export default async function canOpenRoom({ rid, path, isCall }) {
 	try {
 		const db = database.active;
-		const subsCollection = db.collections.get('subscriptions');
+		const subsCollection = db.get('subscriptions');
 
 		if (isCall && !rid) {
 			// Extract rid from a Jitsi URL
@@ -75,7 +75,8 @@ export default async function canOpenRoom({ rid, path, isCall }) {
 					name: room.name,
 					fname: room.fname,
 					prid: room.prid,
-					uids: room.uids
+					uids: room.uids,
+					usernames: room.usernames
 				};
 			} catch (e) {
 				// Do nothing

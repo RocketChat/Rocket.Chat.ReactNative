@@ -1,14 +1,13 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 
 import { withTheme } from '../theme';
 import EventEmitter from '../utils/events';
 import { themes } from '../constants/colors';
-import { CustomHeaderButtons, Item } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
@@ -94,17 +93,6 @@ class ModalBlockView extends React.Component {
 		EventEmitter.addEventListener(viewId, this.handleUpdate);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (!isEqual(nextProps, this.props)) {
-			return true;
-		}
-		if (!isEqual(nextState, this.state)) {
-			return true;
-		}
-
-		return false;
-	}
-
 	componentDidUpdate(prevProps) {
 		const { navigation, route } = this.props;
 		const oldData = prevProps.route.params?.data ?? {};
@@ -128,24 +116,24 @@ class ModalBlockView extends React.Component {
 		navigation.setOptions({
 			title: textParser([title]),
 			headerLeft: close ? () => (
-				<CustomHeaderButtons>
-					<Item
+				<HeaderButton.Container>
+					<HeaderButton.Item
 						title={textParser([close.text])}
 						style={styles.submit}
 						onPress={this.cancel}
 						testID='close-modal-uikit'
 					/>
-				</CustomHeaderButtons>
+				</HeaderButton.Container>
 			) : null,
 			headerRight: submit ? () => (
-				<CustomHeaderButtons>
-					<Item
+				<HeaderButton.Container>
+					<HeaderButton.Item
 						title={textParser([submit.text])}
 						style={styles.submit}
 						onPress={this.submit}
 						testID='submit-modal-uikit'
 					/>
-				</CustomHeaderButtons>
+				</HeaderButton.Container>
 			) : null
 		});
 	}

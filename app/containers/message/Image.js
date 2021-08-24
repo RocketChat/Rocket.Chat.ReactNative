@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import FastImage from '@rocket.chat/react-native-fast-image';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 
@@ -66,7 +66,7 @@ const ImageContainer = React.memo(({
 			<MessageImage img={img} theme={theme} />
 		</Button>
 	);
-}, (prevProps, nextProps) => equal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
+}, (prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
 
 ImageContainer.propTypes = {
 	file: PropTypes.object,
