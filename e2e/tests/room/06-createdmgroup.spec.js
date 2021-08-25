@@ -4,7 +4,6 @@ const {
 } = require('../../helpers/app');
 
 
-
 describe('Group DM', () => {
 	before(async() => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });

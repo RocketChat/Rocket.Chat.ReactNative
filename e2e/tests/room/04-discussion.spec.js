@@ -25,7 +25,7 @@ describe('Discussion', () => {
 		await element(by.label('Create Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view'))).toExist().withTimeout(60000);
 		await expect(element(by.id('create-discussion-view'))).toExist();
-		await element(by.label('Select a Channel...')).tap();
+		await element(by.text('Select a Channel...')).tap();
 		await element(by.id('multi-select-search')).replaceText(`${ channel }`);
 		await waitFor(element(by.id(`multi-select-item-${ channel }`))).toExist().withTimeout(10000);
 		await element(by.id(`multi-select-item-${ channel }`)).tap();
@@ -43,7 +43,7 @@ describe('Discussion', () => {
 		await navigateToRoom();
 		await element(by.id('messagebox-actions')).tap();
 		await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(2000);
-		await element(by.label('Create Discussion')).atIndex(0).tap();
+		await element(by.text('Create Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view'))).toExist().withTimeout(2000);
 		await element(by.id('multi-select-discussion-name')).replaceText(discussionName);
 		await waitFor(element(by.id('create-discussion-submit'))).toExist().withTimeout(10000);
@@ -60,9 +60,9 @@ describe('Discussion', () => {
 
 		it('should create discussion', async() => {
 			const discussionName = `${ data.random }message`;
-			await element(by.label(discussionName)).atIndex(0).longPress();
+			await element(by.text(discussionName)).atIndex(0).longPress();
 			await waitFor(element(by.id('action-sheet'))).toExist().withTimeout(2000);
-			await element(by.label('Start a Discussion')).atIndex(0).tap();
+			await element(by.text('Start a Discussion')).atIndex(0).tap();
 			await waitFor(element(by.id('create-discussion-view'))).toExist().withTimeout(2000);
 			await element(by.id('create-discussion-submit')).tap();
 			await waitFor(element(by.id('room-view'))).toExist().withTimeout(10000);
@@ -98,6 +98,7 @@ describe('Discussion', () => {
 		});
 
 		it('should have starred', async() => {
+			await element(by.id('room-actions-view')).swipe('up');
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
 		});
 

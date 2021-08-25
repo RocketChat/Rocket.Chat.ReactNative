@@ -2,6 +2,7 @@ const data = require('../../data');
 const { navigateToLogin, login, checkServer } = require('../../helpers/app');
 
 const reopenAndCheckServer = async(server) => {
+	await device.terminateApp();
 	await device.launchApp({ permissions: { notifications: 'YES' } });
 	await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(6000);
 	await checkServer(server);
@@ -21,7 +22,8 @@ describe('Change server', () => {
 		await element(by.id('rooms-list-header-server-add')).tap();
 
 		await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(6000);
-		await element(by.id('new-server-view-input')).typeText(`${ data.alternateServer }\n`);
+		await element(by.id('new-server-view-input')).replaceText(`${ data.alternateServer }`);
+		await element(by.text('Connect')).tap();
 		await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(10000);
 		await reopenAndCheckServer(data.server);
 	});

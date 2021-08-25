@@ -1,10 +1,31 @@
+const {
+	expect, element, by, waitFor
+} = require('detox');
+const { exec } = require('child_process');
 const data = require('../data');
+
+const platformTypes = {
+	android: {
+		// Android types
+		alertButtonType: 'android.widget.Button',
+		scrollViewType: 'android.widget.ScrollView',
+		textInputType: 'android.widget.EditText'
+	},
+	ios: {
+		// iOS types
+		alertButtonType: '_UIAlertControllerActionView',
+		scrollViewType: 'UIScrollView',
+		textInputType: '_UIAlertControllerTextField'
+	}
+};
+
 
 async function navigateToWorkspace(server = data.server) {
 	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(10000);
 	await element(by.id('join-workspace')).tap();
 	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
-	await element(by.id('new-server-view-input')).typeText(`${ server }\n`);
+	await element(by.id('new-server-view-input')).replaceText(`${ server }`);
+	await element(by.text('Connect')).tap();
 	await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
 	await expect(element(by.id('workspace-view'))).toBeVisible();
 }
@@ -33,12 +54,14 @@ async function login(username, password) {
 }
 
 async function logout() {
+	const deviceType = device.getPlatform();
+	const { scrollViewType } = platformTypes[deviceType];
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view'))).toBeVisible().withTimeout(2000);
 	await waitFor(element(by.id('sidebar-settings'))).toBeVisible().withTimeout(2000);
 	await element(by.id('sidebar-settings')).tap();
 	await waitFor(element(by.id('settings-view'))).toBeVisible().withTimeout(2000);
-	await element(by.type('UIScrollView')).atIndex(1).scrollTo('bottom');
+	await element(by.type(scrollViewType)).atIndex(1).scrollTo('bottom');
 	await element(by.id('settings-logout')).tap();
 	const logoutAlertMessage = 'You will be logged out of this application.';
 	await waitFor(element(by.text(logoutAlertMessage)).atIndex(0)).toExist().withTimeout(10000);
@@ -51,37 +74,50 @@ async function logout() {
 async function mockMessage(message, isThread = false) {
 	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
 	await element(by.id(input)).tap();
-	await element(by.id(input)).typeText(`${ data.random }${ message }`);
+	await element(by.id(input)).replaceText(`${ data.random }${ message }`);
 	await element(by.id('messagebox-send-message')).tap();
-	await waitFor(element(by.label(`${ data.random }${ message }`))).toExist().withTimeout(60000);
-	await expect(element(by.label(`${ data.random }${ message }`))).toExist();
-	await element(by.label(`${ data.random }${ message }`)).atIndex(0).tap();
+	await waitFor(element(by.text(`${ data.random }${ message }`))).toExist().withTimeout(60000);
+	await expect(element(by.text(`${ data.random }${ message }`))).toExist();
+	await element(by.text(`${ data.random }${ message }`)).atIndex(0).tap();
 }
 
 async function starMessage(message) {
 	const messageLabel = `${ data.random }${ message }`;
-	await element(by.label(messageLabel)).atIndex(0).longPress();
+	await element(by.text(messageLabel)).atIndex(0).longPress();
 	await expect(element(by.id('action-sheet'))).toExist();
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by.label('Star')).atIndex(0).tap();
+	await element(by.text('Star')).atIndex(0).tap();
 	await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
 }
 
 async function pinMessage(message) {
 	const messageLabel = `${ data.random }${ message }`;
-	await waitFor(element(by.label(messageLabel)).atIndex(0)).toExist();
-	await element(by.label(messageLabel)).atIndex(0).longPress();
+	await waitFor(element(by.text(messageLabel)).atIndex(0)).toExist();
+	await element(by.text(messageLabel)).atIndex(0).longPress();
 	await expect(element(by.id('action-sheet'))).toExist();
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by.label('Pin')).atIndex(0).tap();
+	await element(by.text('Pin')).atIndex(0).tap();
 	await waitFor(element(by.id('action-sheet'))).not.toExist().withTimeout(5000);
 }
 
 async function dismissReviewNag() {
+	const deviceType = device.getPlatform();
+	const { alertButtonType } = platformTypes[deviceType];
 	await waitFor(element(by.text('Are you enjoying this app?'))).toExist().withTimeout(60000);
-	await element(by.label('No').and(by.type('_UIAlertControllerActionView'))).tap(); // Tap `no` on ask for review alert
+	await element(by.text('NO').and(by.type(alertButtonType))).tap(); // Tap `no` on ask for review alert
+}
+
+async function mockMessageWithNag(message, isThread = false) {
+	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
+	await element(by.id(input)).tap();
+	await element(by.id(input)).replaceText(`${ data.random }${ message }`);
+	await element(by.id('messagebox-send-message')).tap();
+	await dismissReviewNag();
+	await waitFor(element(by.text(`${ data.random }${ message }`))).toExist().withTimeout(60000);
+	await expect(element(by.text(`${ data.random }${ message }`))).toExist();
+	await element(by.text(`${ data.random }${ message }`)).atIndex(0).tap();
 }
 
 async function tapBack() {
@@ -96,7 +132,7 @@ async function searchRoom(room) {
 	await element(by.id('rooms-list-view-search')).tap();
 	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
 	await waitFor(element(by.id('rooms-list-view-search-input'))).toExist().withTimeout(5000);
-	await element(by.id('rooms-list-view-search-input')).typeText(room);
+	await element(by.id('rooms-list-view-search-input')).replaceText(room);
 	await sleep(300);
 	await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeVisible().withTimeout(60000);
 }
@@ -125,6 +161,29 @@ const checkServer = async(server) => {
 	await element(by.id('sidebar-close-drawer')).tap();
 };
 
+function runCommand(command) {
+	return new Promise((resolve, reject) => {
+		exec(command, (error, stdout, stderr) => {
+			if (error) {
+				reject(new Error(`exec error: ${ stderr }`));
+				return;
+			}
+			resolve();
+		});
+	});
+}
+
+async function prepareAndroid() {
+	if (device.getPlatform() !== 'android') {
+		return;
+	}
+	await runCommand('adb shell settings put secure spell_checker_enabled 0');
+	await runCommand('adb shell settings put secure autofill_service null');
+	await runCommand('adb shell settings put global window_animation_scale 0.0');
+	await runCommand('adb shell settings put global transition_animation_scale 0.0');
+	await runCommand('adb shell settings put global animator_duration_scale 0.0');
+}
+
 module.exports = {
 	navigateToWorkspace,
 	navigateToLogin,
@@ -139,5 +198,8 @@ module.exports = {
 	sleep,
 	searchRoom,
 	tryTapping,
-	checkServer
+	checkServer,
+	mockMessageWithNag,
+	platformTypes,
+	prepareAndroid
 };

@@ -34,7 +34,7 @@ buildscript {
         if (isPlay) {
             classpath 'com.google.gms:google-services:4.2.0'
             classpath 'com.google.firebase:firebase-crashlytics-gradle:2.0.0'
-            classpath 'com.bugsnag:bugsnag-android-gradle-plugin:5.+'
+            classpath 'com.bugsnag:bugsnag-android-gradle-plugin:5+'
         }
         classpath 'com.android.tools.build:gradle:4.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -51,6 +51,10 @@ allprojects {
         maven {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
+        }
+
+        maven {
+            url "$rootDir/../node_modules/detox/Detox-android"
         }
 
         maven {

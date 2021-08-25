@@ -26,9 +26,9 @@ describe('Mark as unread', () => {
 				const message = `${ data.random }message-mark-as-unread`;
 				const channelName = `@${ data.users.regular.username }`;
 				await sendMessage(data.users.alternate, channelName, message);
-				await waitFor(element(by.label(message)).atIndex(0)).toExist().withTimeout(30000);
+				await waitFor(element(by.text(message)).atIndex(0)).toExist().withTimeout(30000);
 				await sleep(300);
-				await element(by.label(message)).atIndex(0).longPress();
+				await element(by.text(message)).atIndex(0).longPress();
 				await waitFor(element(by.id('action-sheet-handle'))).toBeVisible().withTimeout(3000);
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Mark Unread')).atIndex(0).tap();

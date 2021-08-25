@@ -135,6 +135,7 @@ const ActionSheet = React.memo(forwardRef(({ children, theme }, ref) => {
 			onPress={hide}
 			style={[styles.button, { backgroundColor: themes[theme].auxiliaryBackground }]}
 			theme={theme}
+			accessibilityLabel={I18n.t('Cancel')}
 		>
 			<Text style={[styles.text, { color: themes[theme].bodyText }]}>
 				{I18n.t('Cancel')}
