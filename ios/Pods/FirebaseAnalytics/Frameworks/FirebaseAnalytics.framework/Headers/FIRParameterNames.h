@@ -22,6 +22,17 @@
 static NSString *const kFIRParameterAchievementID NS_SWIFT_NAME(AnalyticsParameterAchievementID) =
     @"achievement_id";
 
+/// The ad format (e.g. Banner, Interstitial, Rewarded, Native, Rewarded Interstitial, Instream).
+/// (NSString).
+/// <pre>
+///     NSDictionary *params = @{
+///       kFIRParameterAdFormat : @"Banner",
+///       // ...
+///     };
+/// </pre>
+static NSString *const kFIRParameterAdFormat NS_SWIFT_NAME(AnalyticsParameterAdFormat) =
+    @"ad_format";
+
 /// Ad Network Click ID (NSString). Used for network-specific click IDs which vary in format.
 /// <pre>
 ///     NSDictionary *params = @{
@@ -31,6 +42,36 @@ static NSString *const kFIRParameterAchievementID NS_SWIFT_NAME(AnalyticsParamet
 /// </pre>
 static NSString *const kFIRParameterAdNetworkClickID
     NS_SWIFT_NAME(AnalyticsParameterAdNetworkClickID) = @"aclid";
+
+/// The ad platform (e.g. MoPub, IronSource) (NSString).
+/// <pre>
+///     NSDictionary *params = @{
+///       kFIRParameterAdPlatform : @"MoPub",
+///       // ...
+///     };
+/// </pre>
+static NSString *const kFIRParameterAdPlatform NS_SWIFT_NAME(AnalyticsParameterAdPlatform) =
+    @"ad_platform";
+
+/// The ad source (e.g. AdColony) (NSString).
+/// <pre>
+///     NSDictionary *params = @{
+///       kFIRParameterAdSource : @"AdColony",
+///       // ...
+///     };
+/// </pre>
+static NSString *const kFIRParameterAdSource NS_SWIFT_NAME(AnalyticsParameterAdSource) =
+    @"ad_source";
+
+/// The ad unit name (e.g. Banner_03) (NSString).
+/// <pre>
+///     NSDictionary *params = @{
+///       kFIRParameterAdUnitName : @"Banner_03",
+///       // ...
+///     };
+/// </pre>
+static NSString *const kFIRParameterAdUnitName NS_SWIFT_NAME(AnalyticsParameterAdUnitName) =
+    @"ad_unit_name";
 
 /// A product affiliation to designate a supplying company or brick and mortar store location
 /// (NSString). <pre>
@@ -367,6 +408,26 @@ static NSString *const kFIRParameterQuantity NS_SWIFT_NAME(AnalyticsParameterQua
 ///     };
 /// </pre>
 static NSString *const kFIRParameterScore NS_SWIFT_NAME(AnalyticsParameterScore) = @"score";
+
+/// Current screen class, such as the class name of the UIViewController, logged with screen_view
+/// event and added to every event (NSString). <pre>
+///     NSDictionary *params = @{
+///       kFIRParameterScreenClass : @"LoginViewController",
+///       // ...
+///     };
+/// </pre>
+static NSString *const kFIRParameterScreenClass NS_SWIFT_NAME(AnalyticsParameterScreenClass) =
+    @"screen_class";
+
+/// Current screen name, such as the name of the UIViewController, logged with screen_view event and
+/// added to every event (NSString). <pre>
+///     NSDictionary *params = @{
+///       kFIRParameterScreenName : @"LoginView",
+///       // ...
+///     };
+/// </pre>
+static NSString *const kFIRParameterScreenName NS_SWIFT_NAME(AnalyticsParameterScreenName) =
+    @"screen_name";
 
 /// The search string/keywords used (NSString).
 /// <pre>

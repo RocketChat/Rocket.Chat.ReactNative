@@ -19,7 +19,9 @@
 */
 
 #include "CodedInputDataCrypt.h"
+#include "MMKVLog.h"
 #include "PBUtility.h"
+#include <cassert>
 #include <cerrno>
 #include <cstring>
 #include <stdexcept>

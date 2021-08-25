@@ -22,7 +22,7 @@
 #import <AppKit/AppKit.h>
 #endif
 
-#import "FirebaseCore/Sources/Public/FIRApp.h"
+#import "FirebaseCore/Sources/Public/FirebaseCore/FIRApp.h"
 
 #import "FirebaseCore/Sources/FIRAnalyticsConfiguration.h"
 #import "FirebaseCore/Sources/FIRBundleUtil.h"
@@ -35,7 +35,7 @@
 #import "FirebaseCore/Sources/Private/FIRLogger.h"
 #import "FirebaseCore/Sources/Private/FIROptionsInternal.h"
 
-#import <GoogleUtilities/GULAppEnvironmentUtil.h>
+#import "GoogleUtilities/Environment/Private/GULAppEnvironmentUtil.h"
 
 #import <objc/runtime.h>
 

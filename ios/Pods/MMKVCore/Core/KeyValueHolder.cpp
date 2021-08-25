@@ -65,13 +65,19 @@ KeyValueHolderCrypt::KeyValueHolderCrypt(MMBuffer &&data) {
         paddedSize = static_cast<uint8_t>(data.length());
         memcpy(paddedValue, data.getPtr(), data.length());
     } else {
-#    ifdef MMKV_APPLE
-        assert(data.m_data == nil);
-#    endif
         type = KeyValueHolderType_Memory;
         memSize = static_cast<uint32_t>(data.length());
+#    ifdef MMKV_APPLE
+        if (data.m_data != nil) {
+            memPtr = malloc(memSize);
+            if (!memPtr) {
+                throw std::runtime_error(strerror(errno));
+            }
+            memcpy(memPtr, data.getPtr(), memSize);
+            return;
+        }
+#    endif
         memPtr = data.getPtr();
-
         data.detach();
     }
 }
@@ -111,9 +117,21 @@ KeyValueHolderCrypt::~KeyValueHolderCrypt() {
     }
 }
 
+uint32_t KeyValueHolderCrypt::realValueSize() const {
+    switch (type) {
+        case KeyValueHolderType_Direct:
+            return paddedSize;
+        case KeyValueHolderType_Offset:
+            return valueSize;
+        case KeyValueHolderType_Memory:
+            return memSize;
+    }
+    return 0;
+}
+
 // get decrypt data with [position, -1)
 static MMBuffer decryptBuffer(AESCrypt &crypter, const MMBuffer &inputBuffer, size_t position) {
-    static uint8_t smallBuffer[16];
+    static size_t smallBuffer[16 / sizeof(size_t)];
     auto basePtr = (uint8_t *) inputBuffer.getPtr();
     auto ptr = basePtr;
     for (size_t index = sizeof(smallBuffer); index < position; index += sizeof(smallBuffer)) {
@@ -153,7 +171,7 @@ MMBuffer KeyValueHolderCrypt::toMMBuffer(const void *basePtr, const AESCrypt *cr
 
 } // namespace mmkv
 
-#if !defined(MMKV_DISABLE_CRYPT) && !defined(NDEBUG)
+#if !defined(MMKV_DISABLE_CRYPT) && defined(MMKV_DEBUG)
 #    include "CodedInputData.h"
 #    include "CodedOutputData.h"
 #    include "MMKVLog.h"
@@ -209,6 +227,8 @@ void KeyValueHolderCrypt::testAESToMMBuffer() {
 #    endif
     MMKVInfo("MMBuffer::SmallBufferSize() = %u, KeyValueHolderCrypt::SmallBufferSize() = %u",
              MMBuffer::SmallBufferSize(), KeyValueHolderCrypt::SmallBufferSize());
+
+    delete[] encryptText;
 }
 
 } // namespace mmkv

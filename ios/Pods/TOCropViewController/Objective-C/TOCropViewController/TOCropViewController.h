@@ -175,6 +175,25 @@
 @property (nullable, nonatomic, copy) NSString *cancelButtonTitle;
 
 /**
+ If true, button icons are visible in portairt instead button text.
+
+ Default is NO.
+ */
+@property (nonatomic, assign) BOOL showOnlyIcons;
+
+/**
+ Color for the 'Done' button.
+ Setting this will override the default color.
+ */
+@property (null_resettable, nonatomic, copy) UIColor *doneButtonColor;
+
+/**
+ Color for the 'Cancel' button.
+ Setting this will override the default color.
+ */
+@property (nullable, nonatomic, copy) UIColor *cancelButtonColor;
+
+/**
  Shows a confirmation dialog when the user hits 'Cancel' and there are pending changes.
  (Default is NO)
  */
@@ -345,6 +364,11 @@
  @param image The image that will be cropped
  */
 - (nonnull instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(nonnull UIImage *)image NS_SWIFT_NAME(init(croppingStyle:image:));
+
+/**
+ Commits the crop action as if user pressed done button in the bottom bar themself
+ */
+- (void)commitCurrentCrop;
 
 /**
  Resets object of TOCropViewController class as if user pressed reset button in the bottom bar themself

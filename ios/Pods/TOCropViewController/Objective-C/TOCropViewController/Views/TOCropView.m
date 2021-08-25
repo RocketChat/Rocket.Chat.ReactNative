@@ -20,8 +20,6 @@
 //  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 //  IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include <math.h>
-
 #import "TOCropView.h"
 #import "TOCropOverlayView.h"
 #import "TOCropScrollView.h"
@@ -31,7 +29,6 @@
 static const CGFloat kTOCropViewPadding = 14.0f;
 static const NSTimeInterval kTOCropTimerDuration = 0.8f;
 static const CGFloat kTOCropViewMinimumBoxSize = 42.0f;
-static const CGFloat kTOCropViewCircularPathRadius = 300.0f;
 static const CGFloat kTOMaximumZoomScale = 15.0f;
 
 /* When the user taps down to resize the box, this state is used
@@ -63,7 +60,6 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 @property (nonatomic, strong) UIView *translucencyView;             /* A blur view that is made visible when the user isn't interacting with the crop view */
 @property (nonatomic, strong) id translucencyEffect;                /* The dark blur visual effect applied to the visual effect view. */
 @property (nonatomic, strong, readwrite) TOCropOverlayView *gridOverlayView;   /* A grid view overlaid on top of the foreground image view's container. */
-@property (nonatomic, strong) CAShapeLayer *circularMaskLayer;      /* Managing the clipping of the foreground container into a circle */
 
 /* Gesture Recognizers */
 @property (nonatomic, strong) UIPanGestureRecognizer *gridPanGestureRecognizer; /* The gesture recognizer in charge of controlling the resizing of the crop view */
@@ -226,14 +222,7 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     }
     
     // The following setup isn't needed during circular cropping
-    if (circularMode) {
-        UIBezierPath *circlePath = [UIBezierPath bezierPathWithOvalInRect:(CGRect){0,0,kTOCropViewCircularPathRadius, kTOCropViewCircularPathRadius}];
-        self.circularMaskLayer = [[CAShapeLayer alloc] init];
-        self.circularMaskLayer.path = circlePath.CGPath;
-        self.foregroundContainerView.layer.mask = self.circularMaskLayer;
-        
-        return;
-    }
+    if (circularMode) { return; }
     
     // The white grid overlay view
     self.gridOverlayView = [[TOCropOverlayView alloc] initWithFrame:self.foregroundContainerView.frame];
@@ -320,8 +309,8 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     //Set the crop box to the size we calculated and align in the middle of the screen
     CGRect frame = CGRectZero;
     frame.size = self.hasAspectRatio ? cropBoxSize : scaledSize;
-    frame.origin.x = bounds.origin.x + floorf((CGRectGetWidth(bounds) - frame.size.width) * 0.5f);
-    frame.origin.y = bounds.origin.y + floorf((CGRectGetHeight(bounds) - frame.size.height) * 0.5f);
+    frame.origin.x = floorf(bounds.origin.x + floorf((CGRectGetWidth(bounds) - frame.size.width) * 0.5f));
+    frame.origin.y = floorf(bounds.origin.y + floorf((CGRectGetHeight(bounds) - frame.size.height) * 0.5f));
     self.cropBoxFrame = frame;
     
     //set the fully zoomed out state initially
@@ -416,7 +405,9 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
         return;
     
     //We can't simply match the frames since if the images are rotated, the frame property becomes unusable
-    self.foregroundImageView.frame = [self.backgroundContainerView.superview convertRect:self.backgroundContainerView.frame toView:self.foregroundContainerView];
+    self.foregroundImageView.frame = [self.backgroundContainerView.superview
+                                      convertRect:self.backgroundContainerView.frame
+                                      toView:self.foregroundContainerView];
 }
 
 - (void)updateCropBoxFrameWithGesturePoint:(CGPoint)point
@@ -781,20 +772,23 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     
     // Zoom into the scroll view to the appropriate size
     self.scrollView.zoomScale = self.scrollView.minimumZoomScale * scale;
-    
+
+    CGSize contentSize = self.scrollView.contentSize;
+    self.scrollView.contentSize = CGSizeMake(floorf(contentSize.width), floorf(contentSize.height));
+
     // Work out the size and offset of the upscaled crop box
     CGRect frame = CGRectZero;
-    frame.size = (CGSize){scaledCropSize.width * scale, scaledCropSize.height * scale};
+    frame.size = (CGSize){floorf(scaledCropSize.width * scale), floorf(scaledCropSize.height * scale)};
     
     //set the crop box
     CGRect cropBoxFrame = CGRectZero;
     cropBoxFrame.size = frame.size;
-    cropBoxFrame.origin.x = CGRectGetMidX(bounds) - (frame.size.width * 0.5f);
-    cropBoxFrame.origin.y = CGRectGetMidY(bounds) - (frame.size.height * 0.5f);
+    cropBoxFrame.origin.x = floorf(CGRectGetMidX(bounds) - (frame.size.width * 0.5f));
+    cropBoxFrame.origin.y = floorf(CGRectGetMidY(bounds) - (frame.size.height * 0.5f));
     self.cropBoxFrame = cropBoxFrame;
     
-    frame.origin.x = (scaledOffset.x * scale) - self.scrollView.contentInset.left;
-    frame.origin.y = (scaledOffset.y * scale) - self.scrollView.contentInset.top;
+    frame.origin.x = ceilf((scaledOffset.x * scale) - self.scrollView.contentInset.left);
+    frame.origin.y = ceilf((scaledOffset.y * scale) - self.scrollView.contentInset.top);
     self.scrollView.contentOffset = frame.origin;
 }
 
@@ -1015,9 +1009,9 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     self.gridOverlayView.frame = _cropBoxFrame; //set the new overlay view to match the same region
     
     // If the mask layer is present, adjust its transform to fit the new container view size
-    if (self.circularMaskLayer) {
-        CGFloat scale = _cropBoxFrame.size.width / kTOCropViewCircularPathRadius;
-        self.circularMaskLayer.transform = CATransform3DScale(CATransform3DIdentity, scale, scale, 1.0f);
+    if (self.croppingStyle == TOCropViewCroppingStyleCircular) {
+        CGFloat halfWidth = self.foregroundContainerView.frame.size.width * 0.5f;
+        self.foregroundContainerView.layer.cornerRadius = halfWidth;
     }
     
     //reset the scroll view insets to match the region of the new crop rect

@@ -1,1 +1,1 @@
-../../../GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Public/GDTCOREvent.h
+../../../GoogleDataTransport/GoogleDataTransport/GDTCORLibrary/Public/GoogleDataTransport/GDTCOREvent.h

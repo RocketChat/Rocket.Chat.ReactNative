@@ -1,1 +1,1 @@
-../../../FirebaseInstallations/FirebaseInstallations/Source/Library/Public/FIRInstallationsVersion.h
+../../../FirebaseInstallations/FirebaseInstallations/Source/Library/Public/FirebaseInstallations/FIRInstallationsVersion.h

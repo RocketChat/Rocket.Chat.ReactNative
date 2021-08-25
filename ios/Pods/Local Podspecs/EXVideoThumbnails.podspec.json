@@ -1,6 +1,6 @@
 {
   "name": "EXVideoThumbnails",
-  "version": "5.0.0",
+  "version": "5.2.1",
   "summary": "ExpoVideoThumbnails standalone module",
   "description": "ExpoVideoThumbnails standalone module",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "UMCore": [
 
     ],
-    "UMFileSystemInterface": [
+    "ExpoModulesCore": [
 
     ]
   },

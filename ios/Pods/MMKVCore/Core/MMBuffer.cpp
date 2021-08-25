@@ -23,6 +23,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <utility>
+#include <stdexcept>
 
 #ifdef MMKV_APPLE
 #    if __has_feature(objc_arc)
@@ -156,7 +157,7 @@ MMBuffer &MMBuffer::operator=(MMBuffer &&other) noexcept {
 }
 
 MMBuffer::~MMBuffer() {
-    if (type == MMBufferType_Small) {
+    if (isStoredOnStack()) {
         return;
     }
 

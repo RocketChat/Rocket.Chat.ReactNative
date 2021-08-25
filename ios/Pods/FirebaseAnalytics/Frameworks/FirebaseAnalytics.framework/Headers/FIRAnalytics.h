@@ -39,7 +39,6 @@ NS_SWIFT_NAME(Analytics)
 ///     <li>notification_open</li>
 ///     <li>notification_receive</li>
 ///     <li>os_update</li>
-///     <li>screen_view</li>
 ///     <li>session_start</li>
 ///     <li>user_engagement</li>
 /// </ul>
@@ -49,7 +48,7 @@ NS_SWIFT_NAME(Analytics)
 ///     reserved. See FIREventNames.h for the list of reserved event names. The "firebase_",
 ///     "google_", and "ga_" prefixes are reserved and should not be used. Note that event names are
 ///     case-sensitive and that logging two events whose names differ only in case will result in
-///     two distinct events.
+///     two distinct events. To manually log screen view events, use the `screen_view` event name.
 /// @param parameters The dictionary of event parameters. Passing nil indicates that the event has
 ///     no parameters. Parameter names can be up to 40 characters long and must start with an
 ///     alphabetic character and contain only alphanumeric characters and underscores. Only NSString
@@ -85,6 +84,8 @@ NS_SWIFT_NAME(Analytics)
 ///     non-empty and no more than 256 characters long. Setting userID to nil removes the user ID.
 + (void)setUserID:(nullable NSString *)userID;
 
+/// This method was deprecated in Firebase 6.29.0.
+///
 /// Sets the current screen name, which specifies the current visual context in your app. This helps
 /// identify the areas in your app where users spend their time and how they interact with your app.
 /// Must be called on the main thread.
@@ -110,7 +111,9 @@ NS_SWIFT_NAME(Analytics)
 ///     default this is the class name of the current UIViewController. Set to nil to revert to the
 ///     default class name.
 + (void)setScreenName:(nullable NSString *)screenName
-          screenClass:(nullable NSString *)screenClassOverride;
+          screenClass:(nullable NSString *)screenClassOverride
+    DEPRECATED_MSG_ATTRIBUTE(
+        "Use +[FIRAnalytics logEventWithName:kFIREventScreenView parameters:] instead.");
 
 /// Sets whether analytics collection is enabled for this app on this device. This setting is
 /// persisted across app sessions. By default it is enabled.
@@ -131,6 +134,20 @@ NS_SWIFT_NAME(Analytics)
 /// Clears all analytics data for this instance from the device and resets the app instance ID.
 /// FIRAnalyticsConfiguration values will be reset to the default values.
 + (void)resetAnalyticsData;
+
+/// Adds parameters that will be set on every event logged from the SDK, including automatic ones.
+/// The values passed in the parameters dictionary will be added to the dictionary of default event
+/// parameters. These parameters persist across app runs. They are of lower precedence than event
+/// parameters, so if an event parameter and a parameter set using this API have the same name, the
+/// value of the event parameter will be used. The same limitations on event parameters apply to
+/// default event parameters.
+///
+/// @param parameters Parameters to be added to the dictionary of parameters added to every event.
+///     They will be added to the dictionary of default event parameters, replacing any existing
+///     parameter with the same name. Valid parameters are NSString and NSNumber (signed 64-bit
+///     integer and 64-bit floating-point number). Setting a key's value to [NSNull null] will clear
+///     that parameter. Passing in a nil dictionary will clear all parameters.
++ (void)setDefaultEventParameters:(nullable NSDictionary<NSString *, id> *)parameters;
 
 @end
 

@@ -97,11 +97,6 @@ void MMKV::minimalInit(MMKVPath_t defaultRootDir) {
     // crc32 instruction requires A10 chip, aka iPhone 7 or iPad 6th generation
     int device = 0, version = 0;
     GetAppleMachineInfo(device, version);
-#    ifdef MMKV_USE_ARMV8_CRC32
-    if ((device == iPhone && version >= 9) || (device == iPad && version >= 7)) {
-        CRC32 = mmkv::armv8_crc32;
-    }
-#    endif
     MMKVInfo("Apple Device:%d, version:%d", device, version);
 
     g_rootDir = defaultRootDir;
@@ -119,6 +114,12 @@ void MMKV::setIsInBackground(bool isInBackground) {
 
     g_isInBackground = isInBackground;
     MMKVInfo("g_isInBackground:%d", g_isInBackground);
+}
+
+bool MMKV::isInBackground() {
+    SCOPED_LOCK(g_instanceLock);
+
+    return g_isInBackground;
 }
 
 pair<bool, MLockPtr> guardForBackgroundWriting(void *ptr, size_t size) {
@@ -249,8 +250,9 @@ void MMKV::removeValuesForKeys(NSArray *arrKeys) {
         for (NSString *key in arrKeys) {
             auto itr = m_dicCrypt->find(key);
             if (itr != m_dicCrypt->end()) {
-                [itr->first release];
+                auto oldKey = itr->first;
                 m_dicCrypt->erase(itr);
+                [oldKey release];
                 deleteCount++;
             }
         }
@@ -258,8 +260,9 @@ void MMKV::removeValuesForKeys(NSArray *arrKeys) {
         for (NSString *key in arrKeys) {
             auto itr = m_dic->find(key);
             if (itr != m_dic->end()) {
-                [itr->first release];
+                auto oldKey = itr->first;
                 m_dic->erase(itr);
+                [oldKey release];
                 deleteCount++;
             }
         }
@@ -301,14 +304,25 @@ void MMKV::enumerateKeys(EnumerateBlock block) {
 
 MMKV_NAMESPACE_END
 
+#    include <sys/sysctl.h>
+
 static void GetAppleMachineInfo(int &device, int &version) {
     device = UnKnown;
     version = 0;
 
+#    if 0
     struct utsname systemInfo = {};
     uname(&systemInfo);
-
     std::string machine(systemInfo.machine);
+#    else
+    size_t size;
+    sysctlbyname("hw.machine", nullptr, &size, nullptr, 0);
+    char *answer = (char *) malloc(size);
+    sysctlbyname("hw.machine", answer, &size, nullptr, 0);
+    std::string machine(answer);
+    free(answer);
+#    endif
+
     if (machine.find("PowerMac") != std::string::npos || machine.find("Power Macintosh") != std::string::npos) {
         device = PowerMac;
     } else if (machine.find("Mac") != std::string::npos || machine.find("Macintosh") != std::string::npos) {

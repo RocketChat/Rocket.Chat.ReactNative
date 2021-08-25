@@ -34,13 +34,20 @@ uLong crc32(uLong crc, const Bytef *buf, z_size_t len);
 
 } // namespace zlib
 
-#    define CRC32(crc, buf, len) zlib::crc32(crc, buf, len)
+#    define ZLIB_CRC32(crc, buf, len) zlib::crc32(crc, buf, len)
 
 #else // MMKV_EMBED_ZLIB
 
-#    ifdef __aarch64__
+#    include <zlib.h>
 
-#        define MMKV_USE_ARMV8_CRC32
+#    define ZLIB_CRC32(crc, buf, len) ::crc32(crc, buf, static_cast<uInt>(len))
+
+#endif // MMKV_EMBED_ZLIB
+
+
+#if defined(__aarch64__) && defined(__linux__)
+
+#    define MMKV_USE_ARMV8_CRC32
 
 namespace mmkv {
 uint32_t armv8_crc32(uint32_t crc, const uint8_t *buf, size_t len);
@@ -50,15 +57,11 @@ uint32_t armv8_crc32(uint32_t crc, const uint8_t *buf, size_t len);
 typedef uint32_t (*CRC32_Func_t)(uint32_t crc, const uint8_t *buf, size_t len);
 extern CRC32_Func_t CRC32;
 
-#    else // __aarch64__
+#else // defined(__aarch64__) && defined(__linux__)
 
-#        include <zlib.h>
+#    define CRC32(crc, buf, len) ZLIB_CRC32(crc, buf, len)
 
-#        define CRC32(crc, buf, len) ::crc32(crc, buf, static_cast<uInt>(len))
-
-#    endif // __aarch64__
-
-#endif // MMKV_EMBED_ZLIB
+#endif // defined(__aarch64__) && defined(__linux__)
 
 #endif // __cplusplus
 #endif // CHECKSUM_H

@@ -51,6 +51,10 @@ class MMKV {
     std::string m_mmapKey;
     MMKV(const std::string &mmapID, MMKVMode mode, std::string *cryptKey, MMKVPath_t *rootPath);
 #else // defined(MMKV_ANDROID)
+    mmkv::FileLock *m_fileModeLock;
+    mmkv::InterProcessLock *m_sharedProcessModeLock;
+    mmkv::InterProcessLock *m_exclusiveProcessModeLock;
+
     MMKV(const std::string &mmapID, int size, MMKVMode mode, std::string *cryptKey, MMKVPath_t *rootPath);
 
     MMKV(const std::string &mmapID, int ashmemFD, int ashmemMetaFd, std::string *cryptKey = nullptr);
@@ -182,17 +186,18 @@ public:
 
     int ashmemMetaFD();
 
+    bool checkProcessMode();
 #endif // MMKV_ANDROID
 
     // you can call this on application termination, it's totally fine if you don't call
     static void onExit();
 
-    const std::string &mmapID();
+    const std::string &mmapID() const;
 
     const bool m_isInterProcess;
 
 #ifndef MMKV_DISABLE_CRYPT
-    std::string cryptKey();
+    std::string cryptKey() const;
 
     // transform plain text into encrypted text, or vice versa with empty cryptKey
     // you can change existing crypt key with different cryptKey
@@ -238,6 +243,8 @@ public:
 
     mmkv::MMBuffer getBytes(MMKVKey_t key);
 
+    bool getBytes(MMKVKey_t key, mmkv::MMBuffer &result);
+
     bool getVector(MMKVKey_t key, std::vector<std::string> &result);
 #endif // MMKV_APPLE
 
@@ -281,6 +288,7 @@ public:
 
 #    ifdef MMKV_IOS
     static void setIsInBackground(bool isInBackground);
+    static bool isInBackground();
 #    endif
 #else  // !defined(MMKV_APPLE)
     std::vector<std::string> allKeys();
@@ -314,7 +322,7 @@ public:
     void unlock();
     bool try_lock();
 
-    // check if content changed by other process
+    // check if content been changed by other process
     void checkContentChanged();
 
     // called when content is changed by other process
@@ -336,6 +344,8 @@ public:
     static void registerLogHandler(mmkv::LogHandler handler);
     static void unRegisterLogHandler();
 
+    // detect if the MMKV file is valid or not
+    // Note: Don't use this to check the existence of the instance, the return value is undefined if the file was never created.
     static bool isFileValid(const std::string &mmapID, MMKVPath_t *relatePath = nullptr);
 
     // just forbid it for possibly misuse

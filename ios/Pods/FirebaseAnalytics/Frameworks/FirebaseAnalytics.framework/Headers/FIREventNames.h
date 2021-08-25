@@ -52,6 +52,21 @@ static NSString *const kFIREventAddToCart NS_SWIFT_NAME(AnalyticsEventAddToCart)
 static NSString *const kFIREventAddToWishlist NS_SWIFT_NAME(AnalyticsEventAddToWishlist) =
     @"add_to_wishlist";
 
+/// Ad Impression event. This event signifies when a user sees an ad impression. Note: If you supply
+/// the @c kFIRParameterValue parameter, you must also supply the @c kFIRParameterCurrency parameter
+/// so that revenue metrics can be computed accurately. Params:
+///
+/// <ul>
+///     <li>@c kFIRParameterAdPlatform (NSString) (optional)</li>
+///     <li>@c kFIRParameterAdFormat (NSString) (optional)</li>
+///     <li>@c kFIRParameterAdSource (NSString) (optional)</li>
+///     <li>@c kFIRParameterAdUnitName (NSString) (optional)</li>
+///     <li>@c kFIRParameterCurrency (NSString) (optional)</li>
+///     <li>@c kFIRParameterValue (double as NSNumber) (optional)</li>
+/// </ul>
+static NSString *const kFIREventAdImpression NS_SWIFT_NAME(AnalyticsEventAdImpression) =
+    @"ad_impression";
+
 /// App Open event. By logging this event when an App becomes active, developers can understand how
 /// often users leave and return during the course of a Session. Although Sessions are automatically
 /// reported, this event can provide further clarification around the continuous engagement of
@@ -245,6 +260,15 @@ static NSString *const kFIREventPurchaseRefund NS_SWIFT_NAME(AnalyticsEventPurch
 /// </ul>
 static NSString *const kFIREventRemoveFromCart NS_SWIFT_NAME(AnalyticsEventRemoveFromCart) =
     @"remove_from_cart";
+
+/// Screen View event. This event signifies a screen view. Use this when a screen transition occurs.
+/// This event can be logged irrespective of whether automatic screen tracking is enabled. Params:
+///
+/// <ul>
+///     <li>@c kFIRParameterScreenClass (NSString) (optional)</li>
+///     <li>@c kFIRParameterScreenName (NSString) (optional)</li>
+/// </ul>
+static NSString *const kFIREventScreenView NS_SWIFT_NAME(AnalyticsEventScreenView) = @"screen_view";
 
 /// Search event. Apps that support search features can use this event to contextualize search
 /// operations by supplying the appropriate, corresponding parameters. This event can help you

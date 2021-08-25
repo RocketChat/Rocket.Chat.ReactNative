@@ -35,6 +35,7 @@
 #include "aes/openssl/openssl_md5.h"
 #include "crc32/Checksum.h"
 #include <algorithm>
+#include <cassert>
 #include <cstring>
 
 #ifdef MMKV_IOS
@@ -125,11 +126,8 @@ void MMKV::loadFromFile() {
                 writeActualSize(0, 0, nullptr, KeepSequence);
             }
         }
-        if (m_crypter) {
-            MMKVInfo("loaded [%s] with %zu values", m_mmapID.c_str(), m_dicCrypt->size());
-        } else {
-            MMKVInfo("loaded [%s] with %zu values", m_mmapID.c_str(), m_dic->size());
-        }
+        auto count = m_crypter ? m_dicCrypt->size() : m_dic->size();
+        MMKVInfo("loaded [%s] with %zu key-values", m_mmapID.c_str(), count);
     }
 
     m_needLoadFromFile = false;
@@ -166,11 +164,8 @@ void MMKV::partialLoadFromFile() {
                     m_output->seek(addedSize);
                     m_hasFullWriteback = false;
 
-                    if (m_crypter) {
-                        MMKVDebug("partial loaded [%s] with %zu values", m_mmapID.c_str(), m_dicCrypt->size());
-                    } else {
-                        MMKVDebug("partial loaded [%s] with %zu values", m_mmapID.c_str(), m_dic->size());
-                    }
+                    auto count = m_crypter ? m_dicCrypt->size() : m_dic->size();
+                    MMKVDebug("partial loaded [%s] with %zu values", m_mmapID.c_str(), count);
                     return;
                 } else {
                     MMKVError("m_crcDigest[%u] != m_metaInfo->m_crcDigest[%u]", m_crcDigest, m_metaInfo->m_crcDigest);
@@ -304,7 +299,7 @@ void MMKV::checkLoadData() {
 constexpr uint32_t ItemSizeHolder = 0x00ffffff;
 constexpr uint32_t ItemSizeHolderSize = 4;
 
-static pair<MMBuffer, size_t> prepareEncode(const mmkv::MMKVMap &dic) {
+static pair<MMBuffer, size_t> prepareEncode(const MMKVMap &dic) {
     // make some room for placeholder
     size_t totalSize = ItemSizeHolderSize;
     for (auto &itr : dic) {
@@ -315,7 +310,7 @@ static pair<MMBuffer, size_t> prepareEncode(const mmkv::MMKVMap &dic) {
 }
 
 #ifndef MMKV_DISABLE_CRYPT
-static pair<MMBuffer, size_t> prepareEncode(const mmkv::MMKVMapCrypt &dic) {
+static pair<MMBuffer, size_t> prepareEncode(const MMKVMapCrypt &dic) {
     MMKVVector vec;
     size_t totalSize = 0;
     // make some room for placeholder
@@ -584,15 +579,17 @@ bool MMKV::removeDataForKey(MMKVKey_t key) {
             static MMBuffer nan;
 #    ifdef MMKV_APPLE
             auto ret = appendDataWithKey(nan, key, itr->second);
+            if (ret.first) {
+                auto oldKey = itr->first;
+                m_dicCrypt->erase(itr);
+                [oldKey release];
+            }
 #    else
             auto ret = appendDataWithKey(nan, key);
-#    endif
             if (ret.first) {
-#    ifdef MMKV_APPLE
-                [itr->first release];
-#    endif
                 m_dicCrypt->erase(itr);
             }
+#    endif
             return ret.first;
         }
     } else
@@ -605,9 +602,12 @@ bool MMKV::removeDataForKey(MMKVKey_t key) {
             auto ret = appendDataWithKey(nan, itr->second);
             if (ret.first) {
 #ifdef MMKV_APPLE
-                [itr->first release];
-#endif
+                auto oldKey = itr->first;
                 m_dic->erase(itr);
+                [oldKey release];
+#else
+                m_dic->erase(itr);
+#endif
             }
             return ret.first;
         }
@@ -954,15 +954,19 @@ bool MMKV::reKey(const string &cryptKey) {
                 // change encryption key
                 MMKVInfo("reKey with new aes key");
                 auto newCrypt = new AESCrypt(cryptKey.data(), cryptKey.length());
+                m_hasFullWriteback = false;
                 ret = fullWriteback(newCrypt);
                 if (ret) {
                     delete m_crypter;
                     m_crypter = newCrypt;
+                } else {
+                    delete newCrypt;
                 }
             }
         } else {
             // decryption to plain text
             MMKVInfo("reKey to no aes key");
+            m_hasFullWriteback = false;
             ret = fullWriteback(InvalidCryptPtr);
             if (ret) {
                 delete m_crypter;
@@ -976,6 +980,7 @@ bool MMKV::reKey(const string &cryptKey) {
         if (cryptKey.length() > 0) {
             // transform plain text to encrypted text
             MMKVInfo("reKey to a aes key");
+            m_hasFullWriteback = false;
             auto newCrypt = new AESCrypt(cryptKey.data(), cryptKey.length());
             ret = fullWriteback(newCrypt);
             if (ret) {
@@ -983,6 +988,8 @@ bool MMKV::reKey(const string &cryptKey) {
                 if (!m_dicCrypt) {
                     m_dicCrypt = new MMKVMapCrypt();
                 }
+            } else {
+                delete newCrypt;
             }
         } else {
             return true;

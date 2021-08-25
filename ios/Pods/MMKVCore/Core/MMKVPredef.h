@@ -23,6 +23,7 @@
 
 // disable encryption & decryption to reduce some code
 //#define MMKV_DISABLE_CRYPT
+//#define MMKV_DISABLE_FLUTTER
 
 // using POSIX implementation
 //#define FORCE_POSIX
@@ -33,10 +34,22 @@
 #include <vector>
 #include <unordered_map>
 
-constexpr auto MMKV_VERSION = "v1.2.1";
+constexpr auto MMKV_VERSION = "v1.2.10";
+
+#ifdef DEBUG
+#    define MMKV_DEBUG
+#endif
+
+#ifdef NDEBUG
+#    undef MMKV_DEBUG
+#endif
 
 #ifdef __ANDROID__
-#    define MMKV_ANDROID
+#    ifdef FORCE_POSIX
+#        define MMKV_POSIX
+#    else
+#        define MMKV_ANDROID
+#    endif
 #elif __APPLE__
 #    ifdef FORCE_POSIX
 #        define MMKV_POSIX
@@ -186,7 +199,7 @@ constexpr size_t AES_KEY_BITSET_LEN = 128;
 
 } // namespace mmkv
 
-#ifndef NDEBUG
+#ifdef MMKV_DEBUG
 #    include <cassert>
 #    define MMKV_ASSERT(var) assert(var)
 #else
@@ -194,5 +207,37 @@ constexpr size_t AES_KEY_BITSET_LEN = 128;
 #endif
 
 #endif //cplus-plus
+
+#if defined(__arm__)
+  #if defined(__ARM_ARCH_7A__)
+    #if defined(__ARM_NEON__)
+      #if defined(__ARM_PCS_VFP)
+        #define MMKV_ABI "armeabi-v7a/NEON (hard-float)"
+      #else
+        #define MMKV_ABI "armeabi-v7a/NEON"
+      #endif
+    #else
+      #if defined(__ARM_PCS_VFP)
+        #define MMKV_ABI "armeabi-v7a (hard-float)"
+      #else
+        #define MMKV_ABI "armeabi-v7a"
+      #endif
+    #endif
+  #else
+   #define MMKV_ABI "armeabi"
+  #endif
+#elif defined(__i386__)
+  #define MMKV_ABI "x86"
+#elif defined(__x86_64__)
+  #define MMKV_ABI "x86_64"
+#elif defined(__mips64)
+  #define MMKV_ABI "mips64"
+#elif defined(__mips__)
+  #define MMKV_ABI "mips"
+#elif defined(__aarch64__)
+  #define MMKV_ABI "arm64-v8a"
+#else
+  #define MMKV_ABI "unknown"
+#endif
 
 #endif //MMKV_SRC_MMKVPREDEF_H
