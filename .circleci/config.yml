@@ -217,12 +217,6 @@ commands:
             echo "no" | avdmanager --verbose create avd -n "Pixel_API_28_AOSP" -k "$SYSTEM_IMAGES" -d "pixel"
 
       - run:
-          name: Launch emulator
-          command: |
-            emulator -avd "Pixel_API_28_AOSP" -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-          background: true
-
-      - run:
           name: Run the test
           command: |
             yarn detox test <<parameters.folder>> -c and.emu.release --cleanup
