@@ -155,7 +155,7 @@ commands:
               ./gradlew bundleExperimentalPlayRelease
             fi
             if [[ $CIRCLE_JOB == "android-build-e2e" ]]; then
-              ./gradlew app:assembleE2ePlayRelease app:assembleE2ePlayReleaseAndroidTest -DtestBuildType=release
+              ./gradlew clean app:assembleE2ePlayRelease app:assembleE2ePlayReleaseAndroidTest -DtestBuildType=release
             fi
             if [[ ! $KEYSTORE ]]; then
               ./gradlew assembleExperimentalPlayDebug
