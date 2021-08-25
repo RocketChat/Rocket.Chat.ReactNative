@@ -203,9 +203,6 @@ commands:
     steps:
       - checkout
 
-      - node/install:
-          install-yarn: true
-
       - restore_cache: *restore-npm-cache-linux
 
       - run: *install-npm-modules
