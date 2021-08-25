@@ -214,12 +214,12 @@ commands:
           command: |
             SYSTEM_IMAGES="system-images;android-28;default;x86"
             sdkmanager "$SYSTEM_IMAGES"
-            echo "no" | avdmanager --verbose create avd -n "PIXEL_API_28_AOSP" -k "$SYSTEM_IMAGES" -d "pixel"
+            echo "no" | avdmanager --verbose create avd -n "Pixel_API_28_AOSP" -k "$SYSTEM_IMAGES" -d "pixel"
 
       - run:
           name: Launch emulator
           command: |
-            emulator -avd "PIXEL_API_28_AOSP" -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+            emulator -avd "Pixel_API_28_AOSP" -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           background: true
 
       - run:
