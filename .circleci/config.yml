@@ -205,6 +205,8 @@ commands:
 
       - restore_cache: *restore-npm-cache-linux
 
+      - run: npm install -g yarn
+
       - run: *install-npm-modules
 
       - run:
