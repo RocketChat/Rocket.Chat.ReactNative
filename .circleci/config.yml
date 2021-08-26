@@ -28,8 +28,6 @@ save-npm-cache-linux: &save-npm-cache-linux
   paths:
     - ./node_modules
 
-
-
 restore-npm-cache-mac: &restore-npm-cache-mac
   name: Restore NPM cache
   key: node-v1-mac-{{ checksum "yarn.lock" }}
@@ -206,7 +204,7 @@ commands:
       - checkout
       
       - attach_workspace:
-          at: android
+          at: ./
 
       - restore_cache: *restore-npm-cache-linux
 
