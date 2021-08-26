@@ -1032,7 +1032,27 @@ const RocketChat = {
 		// RC 0.42.0
 		return this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
 	},
+	getMembers(rid, roomType, type, debouncedText, start = 0, end = 10) {
+		const params = {
+			roomId: rid,
+			offset: start,
+			count: end,
+			...(debouncedText && { filter: debouncedText }),
+			...(type !== 'all' && { status: [type] })
+		};
+		// RC 3.16.0
+		if (roomType === 'd') {
+			return this.post('im.members', params);
+		}
 
+		if (roomType === 'p') {
+			return this.post('groups.members', params);
+		}
+
+		if (roomType === 'c') {
+			return this.post('channels.members', params);
+		}
+	},
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		if (API_Use_REST_For_DDP_Calls) {
