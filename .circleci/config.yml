@@ -212,6 +212,8 @@ commands:
 
       - run: *install-npm-modules
 
+      - save_cache: *save-npm-cache-linux
+      
       - run:
           name: Create avd
           command: |
