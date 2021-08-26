@@ -11,7 +11,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.nozbe.watermelondb.WatermelonDBPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
-import org.wonday.orientation.OrientationActivityLifecycle;
 
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
@@ -68,6 +67,5 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-    registerActivityLifecycleCallbacks(OrientationActivityLifecycle.getInstance());
   }
 }
