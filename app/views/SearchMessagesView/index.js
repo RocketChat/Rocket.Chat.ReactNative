@@ -116,11 +116,11 @@ class SearchMessagesView extends React.Component {
 		}
 	}
 
-	getMessages = async(searchText) => {
+	getMessages = async(searchText, debounced) => {
 		try {
 			const messages = await this.searchMessages(searchText);
 			this.setState(prevState => ({
-				messages: [...prevState.messages, ...messages],
+				messages: debounced ? messages : [...prevState.messages, ...messages],
 				loading: false
 			}));
 		} catch (e) {
@@ -129,12 +129,15 @@ class SearchMessagesView extends React.Component {
 		}
 	}
 
-	search = debounce(async(searchText) => {
+	search = (searchText) => {
 		this.offset = 0;
 		this.setState({ searchText, loading: true, messages: [] });
+		this.searchDebounced(searchText);
+	}
 
-		await this.getMessages(searchText);
-	}, 1000)
+	searchDebounced = debounce(async(searchText) => {
+		await this.getMessages(searchText, true);
+	}, 1000);
 
 	getCustomEmoji = (name) => {
 		const { customEmojis } = this.props;
