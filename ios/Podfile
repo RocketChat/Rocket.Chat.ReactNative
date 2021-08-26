@@ -15,7 +15,7 @@ end
 
 abstract_target 'defaults' do
   # force use our own JitsiMeetSDK
-  pod 'JitsiMeetSDK', :git => 'https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git', :branch => '3.7'
+  pod 'JitsiMeetSDK', :git => 'https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git', :branch => '3.6'
 
   all_pods
 
