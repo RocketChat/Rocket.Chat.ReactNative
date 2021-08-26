@@ -116,6 +116,8 @@ class InviteUsersView extends React.Component {
 							theme={theme}
 							value={invite && invite.url}
 							editable={false}
+							style={{ margin: 1 }}
+							multiline
 						/>
 						{this.renderExpiration()}
 						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
