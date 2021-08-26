@@ -1167,7 +1167,7 @@ const RocketChat = {
 	},
 
 	isSwipeEnabled(item) {
-		return !(item?.joinCodeRequired || item?.outside);
+		return !(item?.search || item?.joinCodeRequired || item?.outside);
 	},
 
 	isGroupChat(room) {
