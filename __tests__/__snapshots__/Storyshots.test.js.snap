@@ -40334,6 +40334,268 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
 </RCTScrollView>
 `;
 
+exports[`Storyshots Message Show a button as attachment 1`] = `
+<RCTScrollView
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+    }
+  }
+>
+  <View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": null,
+          "opacity": 1,
+        }
+      }
+    >
+      <View>
+        <View
+          style={
+            Array [
+              Object {
+                "flexDirection": "column",
+                "paddingHorizontal": 14,
+                "paddingVertical": 4,
+                "width": "100%",
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "borderRadius": 4,
+                    "height": 36,
+                    "width": 36,
+                  },
+                  Object {
+                    "marginTop": 4,
+                  },
+                ]
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "overflow": "hidden",
+                      },
+                      Object {
+                        "borderRadius": 4,
+                        "height": 36,
+                        "width": 36,
+                      },
+                    ]
+                  }
+                >
+                  <FastImageView
+                    resizeMode="cover"
+                    source={
+                      Object {
+                        "headers": undefined,
+                        "priority": "high",
+                        "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=36",
+                      }
+                    }
+                    style={
+                      Object {
+                        "bottom": 0,
+                        "left": 0,
+                        "position": "absolute",
+                        "right": 0,
+                        "top": 0,
+                      }
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "flex": 1,
+                    "marginLeft": 46,
+                  },
+                  Object {
+                    "marginLeft": 10,
+                  },
+                ]
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "justifyContent": "space-between",
+                  }
+                }
+              >
+                <View
+                  accessible={true}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "flexDirection": "row",
+                      "flexShrink": 1,
+                      "opacity": 1,
+                    }
+                  }
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontSize": 16,
+                          "fontWeight": "500",
+                          "lineHeight": 22,
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#0d0e12",
+                        },
+                      ]
+                    }
+                  >
+                    diego.mello
+                  </Text>
+                </View>
+                <Text
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 12,
+                        "fontWeight": "400",
+                        "marginLeft": 8,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  10:00 AM
+                </Text>
+              </View>
+              <View />
+              <Text
+                style={
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Test Button
+              </Text>
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "backgroundColor": "#1d74f5",
+                    "borderRadius": 2,
+                    "height": 48,
+                    "justifyContent": "center",
+                    "marginBottom": 12,
+                    "opacity": 1,
+                    "paddingHorizontal": 14,
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="Text button"
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "500",
+                        "textAlign": "center",
+                      },
+                      Object {
+                        "color": "#ffffff",
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  Text button
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
 exports[`Storyshots Message Static avatar 1`] = `
 <RCTScrollView
   style={
@@ -43674,7 +43936,7 @@ exports[`Storyshots Message Thumbnail from server 1`] = `
                         ]
                       }
                     >
-                      Joker
+                      Title
                     </Text>
                   </View>
                   <View
@@ -43730,7 +43992,7 @@ exports[`Storyshots Message Thumbnail from server 1`] = `
                     }
                   >
                     <Text
-                      accessibilityLabel="Some crazy texts"
+                      accessibilityLabel="Image text"
                       style={
                         Array [
                           Object {
@@ -43754,7 +44016,7 @@ exports[`Storyshots Message Thumbnail from server 1`] = `
                         ]
                       }
                     >
-                      Some crazy texts
+                      Image text
                     </Text>
                   </Text>
                 </View>

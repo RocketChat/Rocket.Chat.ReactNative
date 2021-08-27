@@ -855,14 +855,30 @@ stories.add('Custom style', () => (
 	<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />
 ));
 
+stories.add('Show a button as attachment', () => (
+	<Message
+		attachments={[{
+			text: 'Test Button',
+			actions: [
+				{
+					type: 'button',
+					text: 'Text button',
+					msg: 'Response message',
+					msg_in_chat_window: true
+				}
+			]
+		}]}
+	/>
+));
+
 stories.add('Thumbnail from server', () => (
 	<Message
 		msg='this is a thumbnail'
 		attachments={[{
-			text: 'Some crazy texts',
+			text: 'Image text',
 			thumb_url: 'https://images-na.ssl-images-amazon.com/images/I/71jKxPAMFbL._AC_SL1500_.jpg',
-			title: 'Joker',
-			title_link: 'https://www.imdb.com/title/tt7286456/'
+			title: 'Title',
+			title_link: 'https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/2975'
 		}]}
 	/>
 ));
