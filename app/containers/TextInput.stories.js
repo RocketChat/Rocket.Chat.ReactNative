@@ -2,10 +2,16 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 
-import { View } from 'react-native';
-import TextInput from '../../app/containers/TextInput';
+import { View, StyleSheet } from 'react-native';
+import TextInput from './TextInput';
 
-const stories = storiesOf('AssortedItems', module);
+const styles = StyleSheet.create({
+	paddingHorizontal: {
+		paddingHorizontal: 14
+	}
+});
+
+const stories = storiesOf('Text Input', module);
 
 const item = {
 	name: 'Rocket.Chat',
@@ -15,9 +21,9 @@ const item = {
 const theme = 'light';
 
 
-stories.add('Text input', () => (
+stories.add('Short and Long Text', () => (
 	<>
-		<View style={{ paddingHorizontal: 14 }}>
+		<View style={styles.paddingHorizontal}>
 			<TextInput
 				label='Short Text'
 				placeholder='placeholder'
