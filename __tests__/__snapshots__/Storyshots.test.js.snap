@@ -50021,9 +50021,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -50099,7 +50096,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -50463,9 +50459,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -50541,7 +50534,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -50946,9 +50938,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -51024,7 +51013,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -51429,9 +51417,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -51507,7 +51492,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -51912,9 +51896,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -51990,7 +51971,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -52395,9 +52375,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -52473,7 +52450,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -52878,9 +52854,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -52956,7 +52929,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -53360,9 +53332,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "width": "100%",
-                    },
-                    Object {
-                      "flex": 1,
                     },
                   ]
                 }
@@ -53439,7 +53408,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -53844,9 +53812,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -53922,7 +53887,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -54327,9 +54291,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -54405,7 +54366,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -54810,9 +54770,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -54888,7 +54845,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -55306,9 +55262,6 @@ exports[`Storyshots Room Item Basic 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -55379,7 +55332,6 @@ exports[`Storyshots Room Item Basic 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -55750,9 +55702,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -55828,7 +55777,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -56200,9 +56148,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -56278,7 +56223,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -56766,7 +56710,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                     "flexDirection": "row",
                   }
                 }
-                testID="last-message-room-list"
               >
                 <Text
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
@@ -56797,6 +56740,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                       },
                     ]
                   }
+                  testID="room-list-view-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -57238,7 +57182,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                     "flexDirection": "row",
                   }
                 }
-                testID="last-message-room-list"
               >
                 <Text
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
@@ -57269,6 +57212,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                       },
                     ]
                   }
+                  testID="room-list-view-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -57748,7 +57692,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "flexDirection": "row",
                   }
                 }
-                testID="last-message-room-list"
               >
                 <Text
                   accessibilityLabel="No Message"
@@ -57779,6 +57722,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
+                  testID="room-list-view-last-message"
                 >
                   No Message
                 </Text>
@@ -58204,7 +58148,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "flexDirection": "row",
                   }
                 }
-                testID="last-message-room-list"
               >
                 <Text
                   accessibilityLabel="2"
@@ -58235,6 +58178,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
+                  testID="room-list-view-last-message"
                 >
                   2
                 </Text>
@@ -58660,7 +58604,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "flexDirection": "row",
                   }
                 }
-                testID="last-message-room-list"
               >
                 <Text
                   accessibilityLabel="You: 1"
@@ -58691,6 +58634,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
+                  testID="room-list-view-last-message"
                 >
                   You: 1
                 </Text>
@@ -59116,7 +59060,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "flexDirection": "row",
                   }
                 }
-                testID="last-message-room-list"
               >
                 <Text
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
@@ -59147,6 +59090,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
+                  testID="room-list-view-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -59587,7 +59531,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "flexDirection": "row",
                   }
                 }
-                testID="last-message-room-list"
               >
                 <Text
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
@@ -59618,6 +59561,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
+                  testID="room-list-view-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -60099,7 +60043,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "flexDirection": "row",
                   }
                 }
-                testID="last-message-room-list"
               >
                 <Text
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
@@ -60130,6 +60073,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
+                  testID="room-list-view-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -60611,7 +60555,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "flexDirection": "row",
                   }
                 }
-                testID="last-message-room-list"
               >
                 <Text
                   accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
@@ -60642,6 +60585,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
+                  testID="room-list-view-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -61026,9 +60970,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -61135,7 +61076,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -61621,7 +61561,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                     "flexDirection": "row",
                   }
                 }
-                testID="last-message-room-list"
               >
                 <Text
                   accessibilityLabel="No Message"
@@ -61652,6 +61591,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                       },
                     ]
                   }
+                  testID="room-list-view-last-message"
                 >
                   No Message
                 </Text>
@@ -61982,9 +61922,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -62091,7 +62028,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -62577,7 +62513,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                     "flexDirection": "row",
                   }
                 }
-                testID="last-message-room-list"
               >
                 <Text
                   accessibilityLabel="No Message"
@@ -62608,6 +62543,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                       },
                     ]
                   }
+                  testID="room-list-view-last-message"
                 >
                   No Message
                 </Text>
@@ -62951,9 +62887,6 @@ exports[`Storyshots Room Item Touch 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -63024,7 +62957,6 @@ exports[`Storyshots Room Item Touch 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -63391,9 +63323,6 @@ exports[`Storyshots Room Item Type 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -63464,7 +63393,6 @@ exports[`Storyshots Room Item Type 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -63817,9 +63745,6 @@ exports[`Storyshots Room Item Type 1`] = `
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "width": "100%",
-                    },
-                    Object {
-                      "flex": 1,
                     },
                   ]
                 }
@@ -63879,7 +63804,6 @@ exports[`Storyshots Room Item Type 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -64232,9 +64156,6 @@ exports[`Storyshots Room Item Type 1`] = `
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "width": "100%",
-                    },
-                    Object {
-                      "flex": 1,
                     },
                   ]
                 }
@@ -64294,7 +64215,6 @@ exports[`Storyshots Room Item Type 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -64647,9 +64567,6 @@ exports[`Storyshots Room Item Type 1`] = `
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "width": "100%",
-                    },
-                    Object {
-                      "flex": 1,
                     },
                   ]
                 }
@@ -64709,7 +64626,6 @@ exports[`Storyshots Room Item Type 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -65063,9 +64979,6 @@ exports[`Storyshots Room Item Type 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -65124,7 +65037,6 @@ exports[`Storyshots Room Item Type 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -65478,9 +65390,6 @@ exports[`Storyshots Room Item Type 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -65539,7 +65448,6 @@ exports[`Storyshots Room Item Type 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -65893,9 +65801,6 @@ exports[`Storyshots Room Item Type 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -65954,7 +65859,6 @@ exports[`Storyshots Room Item Type 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -66321,9 +66225,6 @@ exports[`Storyshots Room Item User 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -66394,7 +66295,6 @@ exports[`Storyshots Room Item User 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -66748,9 +66648,6 @@ exports[`Storyshots Room Item User 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -66821,7 +66718,6 @@ exports[`Storyshots Room Item User 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -67188,9 +67084,6 @@ exports[`Storyshots Room Item User status 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -67261,7 +67154,6 @@ exports[`Storyshots Room Item User status 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -67614,9 +67506,6 @@ exports[`Storyshots Room Item User status 1`] = `
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "width": "100%",
-                    },
-                    Object {
-                      "flex": 1,
                     },
                   ]
                 }
@@ -67688,7 +67577,6 @@ exports[`Storyshots Room Item User status 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -68041,9 +67929,6 @@ exports[`Storyshots Room Item User status 1`] = `
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "width": "100%",
-                    },
-                    Object {
-                      "flex": 1,
                     },
                   ]
                 }
@@ -68115,7 +68000,6 @@ exports[`Storyshots Room Item User status 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -68468,9 +68352,6 @@ exports[`Storyshots Room Item User status 1`] = `
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "width": "100%",
-                    },
-                    Object {
-                      "flex": 1,
                     },
                   ]
                 }
@@ -68542,7 +68423,6 @@ exports[`Storyshots Room Item User status 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -68895,9 +68775,6 @@ exports[`Storyshots Room Item User status 1`] = `
                       "flexDirection": "row",
                       "justifyContent": "center",
                       "width": "100%",
-                    },
-                    Object {
-                      "flex": 1,
                     },
                   ]
                 }
@@ -68969,7 +68846,6 @@ exports[`Storyshots Room Item User status 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >
@@ -69323,9 +69199,6 @@ exports[`Storyshots Room Item User status 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
-                    Object {
-                      "flex": 1,
-                    },
                   ]
                 }
               >
@@ -69396,7 +69269,6 @@ exports[`Storyshots Room Item User status 1`] = `
                   style={
                     Object {
                       "alignItems": "flex-end",
-                      "flex": 1,
                     }
                   }
                 >

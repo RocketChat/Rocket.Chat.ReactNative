@@ -104,7 +104,7 @@ const DisplayPrefsView = (props) => {
 		<Switch
 			value={value}
 			onValueChange={() => toggleAvatar()}
-			testID='avatar-switch'
+			testID='display-pref-view-avatar-switch'
 			style={{ transform: [{ scale: 0.8 }] }}
 		/>
 	);
@@ -127,7 +127,7 @@ const DisplayPrefsView = (props) => {
 					<List.Item
 						left={() => <List.Icon name='view-extended' />}
 						title='Expanded'
-						testID='expanded-display-pref'
+						testID='display-pref-view-expanded'
 						right={() => renderRadio(displayType === 'expanded')}
 						onPress={displayExpanded}
 					/>
@@ -135,7 +135,7 @@ const DisplayPrefsView = (props) => {
 					<List.Item
 						left={() => <List.Icon name='view-medium' />}
 						title='Condensed'
-						testID='condensed-display-pref'
+						testID='display-pref-view-condensed'
 						right={() => renderRadio(displayType === 'condensed')}
 						onPress={displayCondensed}
 					/>
@@ -143,7 +143,7 @@ const DisplayPrefsView = (props) => {
 					<List.Item
 						left={() => <List.Icon name='avatar' />}
 						title='Avatars'
-						testID='avatars-display-pref'
+						testID='display-pref-view-avatars'
 						right={() => renderAvatarSwitch(showAvatar)}
 					/>
 					<List.Separator />
@@ -154,7 +154,7 @@ const DisplayPrefsView = (props) => {
 					<List.Item title='Sort_by' />
 					<List.Item
 						title='Activity'
-						testID='activity-display-pref'
+						testID='display-pref-view-activity'
 						left={() => <List.Icon name='clock' />}
 						onPress={sortByActivity}
 						right={() => (renderRadio(sortBy === 'activity'))}
@@ -162,7 +162,7 @@ const DisplayPrefsView = (props) => {
 					<List.Separator />
 					<List.Item
 						title='Name'
-						testID='name-display-pref'
+						testID='display-pref-view-name'
 						left={() => <List.Icon name='sort-az' />}
 						onPress={sortByName}
 						right={() => (renderRadio(sortBy === 'alphabetical'))}
@@ -175,7 +175,7 @@ const DisplayPrefsView = (props) => {
 					<List.Item title='Group_by' />
 					<List.Item
 						title='Unread_on_top'
-						testID='unread-display-pref'
+						testID='display-pref-view-unread'
 						left={() => <List.Icon name='flag' />}
 						onPress={toggleUnread}
 						right={() => (renderCheckBox(showUnread))}
@@ -183,7 +183,7 @@ const DisplayPrefsView = (props) => {
 					<List.Separator />
 					<List.Item
 						title='Favorites'
-						testID='favorites-display-pref'
+						testID='display-pref-view-favorites'
 						left={() => <List.Icon name='star' />}
 						onPress={toggleGroupByFavorites}
 						right={() => (renderCheckBox(showFavorites))}
@@ -191,7 +191,7 @@ const DisplayPrefsView = (props) => {
 					<List.Separator />
 					<List.Item
 						title='Types'
-						testID='types-display-pref'
+						testID='display-pref-view-types'
 						left={() => <List.Icon name='group-by-type' />}
 						onPress={toggleGroupByType}
 						right={() => (renderCheckBox(groupByType))}

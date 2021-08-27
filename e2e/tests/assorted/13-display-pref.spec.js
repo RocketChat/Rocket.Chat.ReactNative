@@ -49,35 +49,35 @@ describe('Rooms list screen', () => {
 			});
 
 			it('should have Displays button, expanded, condensed, avatars', async() => {
-				await expect(element(by.id('expanded-display-pref'))).toBeVisible();
-				await expect(element(by.id('condensed-display-pref'))).toBeVisible();
-				await expect(element(by.id('avatars-display-pref'))).toBeVisible();
+				await expect(element(by.id('display-pref-view-expanded'))).toBeVisible();
+				await expect(element(by.id('display-pref-view-condensed'))).toBeVisible();
+				await expect(element(by.id('display-pref-view-avatars'))).toBeVisible();
 			});
 
 			it('should have Sort By button', async() => {
-				await expect(element(by.id('activity-display-pref'))).toBeVisible();
-				await expect(element(by.id('name-display-pref'))).toBeVisible();
+				await expect(element(by.id('display-pref-view-activity'))).toBeVisible();
+				await expect(element(by.id('display-pref-view-name'))).toBeVisible();
 			});
 
 			it('should have Group by button', async() => {
-				await expect(element(by.id('unread-display-pref'))).toBeVisible();
-				await expect(element(by.id('favorites-display-pref'))).toBeVisible();
-				await expect(element(by.id('types-display-pref'))).toBeVisible();
+				await expect(element(by.id('display-pref-view-unread'))).toBeVisible();
+				await expect(element(by.id('display-pref-view-favorites'))).toBeVisible();
+				await expect(element(by.id('display-pref-view-types'))).toBeVisible();
 			});
 		});
 
 		describe('Change display', () => {
 			it('should appear the last message in RoomList when is Expanded', async() => {
-				await element(by.id('expanded-display-pref')).tap();
+				await element(by.id('display-pref-view-expanded')).tap();
 				await goToRoomList();
-				await expect(element(by.id('last-message-room-list')).atIndex(0)).toBeVisible();
+				await expect(element(by.id('room-list-view-last-message')).atIndex(0)).toBeVisible();
 			});
 
 			it('should not appear the last message in RoomList when is Condensed', async() => {
 				await goToDisplayPref();
-				await element(by.id('condensed-display-pref')).tap();
+				await element(by.id('display-pref-view-condensed')).tap();
 				await goToRoomList();
-				await expect(element(by.id('last-message-room-list'))).not.toBeVisible();
+				await expect(element(by.id('room-list-view-last-message'))).not.toBeVisible();
 			});
 		});
 
@@ -88,8 +88,8 @@ describe('Rooms list screen', () => {
 
 			it('should hide the avatar', async() => {
 				await goToDisplayPref();
-				await expect(element(by.id('avatar-switch'))).toBeVisible();
-				await element(by.id('avatar-switch')).tap();
+				await expect(element(by.id('display-pref-view-avatar-switch'))).toBeVisible();
+				await element(by.id('display-pref-view-avatar-switch')).tap();
 				await goToRoomList();
 				await expect(element(by.id('avatar'))).not.toBeVisible();
 			});

@@ -118,7 +118,7 @@ const RoomItem = ({
 						</View>
 						<View style={styles.row}>
 							<LastMessage
-								testID='last-message-room-list'
+								testID='room-list-view-last-message'
 								lastMessage={lastMessage}
 								type={type}
 								showLastMessage={showLastMessage}
