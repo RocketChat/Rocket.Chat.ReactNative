@@ -48,7 +48,6 @@ const DisplayPrefsView = (props) => {
 			dispatch(setPreference(param));
 			RocketChat.saveSortPreference(param);
 		} catch (e) {
-			logEvent(events.DP_SORT_CHANNELS_F);
 			log(e);
 		}
 	};
@@ -105,7 +104,6 @@ const DisplayPrefsView = (props) => {
 			value={value}
 			onValueChange={() => toggleAvatar()}
 			testID='display-pref-view-avatar-switch'
-			style={{ transform: [{ scale: 0.8 }] }}
 		/>
 	);
 

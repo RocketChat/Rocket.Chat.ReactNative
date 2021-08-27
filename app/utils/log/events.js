@@ -76,7 +76,6 @@ export default {
 	// DISPLAY PREFERENCES VIEW
 	DP_SORT_CHANNELS_BY_NAME: 'dp_sort_channels_by_name',
 	DP_SORT_CHANNELS_BY_ACTIVITY: 'dp_sort_channels_by_activity',
-	DP_SORT_CHANNELS_F: 'dp_sort_channels_f',
 	DP_GROUP_CHANNELS_BY_TYPE: 'dp_group_channels_by_type',
 	DP_GROUP_CHANNELS_BY_FAVORITE: 'dp_group_channels_by_favorite',
 	DP_GROUP_CHANNELS_BY_UNREAD: 'dp_group_channels_by_unread',
