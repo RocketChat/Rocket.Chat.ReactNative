@@ -762,6 +762,9 @@
   "Load_More": "Load More",
   "Load_Newer": "Load Newer",
   "Load_Older": "Load Older",
+  "room-name-already-exists": "Room name already exists",
+  "error-team-creation": "Error team creation",
+  "unauthorized": "Unauthorized",
   "Left_The_Room_Successfully": "Left the room successfully",
   "Deleted_The_Team_Successfully": "Team deleted successfully",
   "Deleted_The_Room_Successfully": "Room deleted successfully",
@@ -776,5 +779,6 @@
   "Group_by": "Group by",
   "Types": "Types",
   "Expanded": "Expanded",
-  "Condensed": "Condensed"
+  "Condensed": "Condensed",
+  "creating_discussion": "creating discussion"
 }

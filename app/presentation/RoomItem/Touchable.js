@@ -179,6 +179,7 @@ class Touchable extends React.Component {
 
 		toggleRead = () => {
 			const { toggleRead, rid, isRead } = this.props;
+
 			if (toggleRead) {
 				toggleRead(rid, isRead);
 			}
