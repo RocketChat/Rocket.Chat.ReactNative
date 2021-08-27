@@ -323,11 +323,11 @@ class RoomsListView extends React.Component {
 			this.setHeader();
 		}
 
-		if ((createTeamPermission !== prevProps.createTeamPermission
-			|| createPublicChannelPermission !== prevProps.createPublicChannelPermission
-			|| createPrivateChannelPermission !== prevProps.createPrivateChannelPermission
-			|| createDirectMessagePermission !== prevProps.createDirectMessagePermission
-			|| createDiscussionPermission !== prevProps.createDiscussionPermission)) {
+		if ((!dequal(createTeamPermission, prevProps.createTeamPermission)
+			|| !dequal(createPublicChannelPermission, prevProps.createPublicChannelPermission)
+			|| !dequal(createPrivateChannelPermission, prevProps.createPrivateChannelPermission)
+			|| !dequal(createDirectMessagePermission, prevProps.createDirectMessagePermission)
+			|| !dequal(createDiscussionPermission, prevProps.createDiscussionPermission))) {
 			this.handleHasPermission();
 			this.setHeader();
 		}

@@ -146,10 +146,10 @@ class CreateChannelView extends React.Component {
 		if (nextProps.encryptionEnabled !== encryptionEnabled) {
 			return true;
 		}
-		if (nextProps.createPublicChannelPermission !== createPublicChannelPermission) {
+		if (!dequal(nextProps.createPublicChannelPermission, createPublicChannelPermission)) {
 			return true;
 		}
-		if (nextProps.createPrivateChannelPermission !== createPrivateChannelPermission) {
+		if (!dequal(nextProps.createPrivateChannelPermission, createPrivateChannelPermission)) {
 			return true;
 		}
 		if (!dequal(nextProps.users, users)) {
@@ -162,8 +162,8 @@ class CreateChannelView extends React.Component {
 		const {
 			createPublicChannelPermission, createPrivateChannelPermission
 		} = this.props;
-		if ((createPublicChannelPermission !== prevProps.createPublicChannelPermission
-			|| createPrivateChannelPermission !== prevProps.createPrivateChannelPermission
+		if ((!dequal(createPublicChannelPermission, prevProps.createPublicChannelPermission)
+			|| !dequal(createPrivateChannelPermission, prevProps.createPrivateChannelPermission)
 		)) {
 			this.handleHasPermission();
 		}

@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import { dequal } from 'dequal';
 import * as List from '../containers/List';
 
 import Touch from '../utils/touch';
@@ -116,11 +117,11 @@ class NewMessageView extends React.Component {
 			createDiscussionPermission
 		} = this.props;
 
-		if ((createTeamPermission !== prevProps.createTeamPermission
-			|| createPublicChannelPermission !== prevProps.createPublicChannelPermission
-			|| createPrivateChannelPermission !== prevProps.createPrivateChannelPermission
-			|| createDirectMessagePermission !== prevProps.createDirectMessagePermission
-			|| createDiscussionPermission !== prevProps.createDiscussionPermission)) {
+		if ((!dequal(createTeamPermission, prevProps.createTeamPermission)
+			|| !dequal(createPublicChannelPermission, prevProps.createPublicChannelPermission)
+			|| !dequal(createPrivateChannelPermission, prevProps.createPrivateChannelPermission)
+			|| !dequal(createDirectMessagePermission, prevProps.createDirectMessagePermission)
+			|| !dequal(createDiscussionPermission, prevProps.createDiscussionPermission))) {
 			this.handleHasPermission();
 		}
 	}
