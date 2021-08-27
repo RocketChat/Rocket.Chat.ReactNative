@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Switch, Text } from 'react-native';
+import { Switch } from 'react-native';
 
 import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,18 +17,6 @@ import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ICON_SIZE } from '../containers/List/constants';
 import log, { events, logEvent } from '../utils/log';
-import sharedStyles from './Styles';
-
-const styles = StyleSheet.create({
-	title: {
-		fontSize: 16,
-		letterSpacing: 0.27,
-		lineHeight: 24,
-		flexShrink: 1,
-		...sharedStyles.textBold
-	}
-});
-
 
 const DisplayPrefsView = (props) => {
 	const { theme } = useTheme();
@@ -135,15 +123,7 @@ const DisplayPrefsView = (props) => {
 			<List.Container testID='display-view-list'>
 				<List.Section>
 					<List.Separator />
-					<List.Item
-						left={() => (
-							<Text
-								style={[styles.title, { color: themes[theme].titleText }]}
-								numberOfLines={1}
-							>{I18n.t('Display')}
-							</Text>
-						)}
-					/>
+					<List.Item title='Display' />
 					<List.Item
 						left={() => <List.Icon name='view-extended' />}
 						title='Expanded'
@@ -171,15 +151,7 @@ const DisplayPrefsView = (props) => {
 
 				<List.Section>
 					<List.Separator />
-					<List.Item
-						left={() => (
-							<Text
-								style={[styles.title, { color: themes[theme].titleText }]}
-								numberOfLines={1}
-							>{I18n.t('Sort_by')}
-							</Text>
-						)}
-					/>
+					<List.Item title='Sort_by' />
 					<List.Item
 						title='Activity'
 						testID='activity-display-pref'
@@ -200,15 +172,7 @@ const DisplayPrefsView = (props) => {
 
 				<List.Section>
 					<List.Separator />
-					<List.Item
-						left={() => (
-							<Text
-								style={[styles.title, { color: themes[theme].titleText }]}
-								numberOfLines={1}
-							>{I18n.t('Group_by')}
-							</Text>
-						)}
-					/>
+					<List.Item title='Group_by' />
 					<List.Item
 						title='Unread_on_top'
 						testID='unread-display-pref'
