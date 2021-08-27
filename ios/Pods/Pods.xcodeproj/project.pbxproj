@@ -795,7 +795,6 @@
 		24B0BD3E25A251C7961DFCF239F7B73A /* glog-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A235A975FFA925CF1A128115C1D9A2 /* glog-dummy.m */; };
 		24EA3B2522D9DF4FB974E36ADBD39160 /* RelaxedConcurrentPriorityQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 430CB77D6D03E7480CD6EDB29C7352B3 /* RelaxedConcurrentPriorityQueue.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		24F696A8C818E37AD166CEEBF8F06EF8 /* RecordIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 60F3BCBDD6A323B314E65E8E2810E3C2 /* RecordIO.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_HAVE_PTHREAD=1 -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_LIBGFLAGS=0 -DFOLLY_HAVE_LIBJEMALLOC=0 -DFOLLY_HAVE_PREADV=0 -DFOLLY_HAVE_PWRITEV=0 -DFOLLY_HAVE_TFO=0 -DFOLLY_USE_SYMBOLIZER=0\n    -frtti\n    -fexceptions\n    -std=c++14\n    -Wno-error\n    -Wno-unused-local-typedefs\n    -Wno-unused-variable\n    -Wno-sign-compare\n    -Wno-comment\n    -Wno-return-type\n    -Wno-global-constructors"; }; };
-		252A150408A553D4807BFECE84C73499 /* react-native-orientation-locker-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CFEFB3F1120ED65335C3CA7E6A4ED3 /* react-native-orientation-locker-dummy.m */; };
 		255447FD8F368F6EB92DB38A97451348 /* MMKV_OSX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 162726B5507F0F382038F5353E150133 /* MMKV_OSX.cpp */; settings = {COMPILER_FLAGS = "-x objective-c++ -fno-objc-arc"; }; };
 		255F950E8099EED4CECC91F825B3B86A /* FIRCLSBinaryImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 302BF3C74637C7DB351858B047839178 /* FIRCLSBinaryImage.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		25713931BC02A60B534F4C57EBE12C09 /* CustomizationPoint.h in Headers */ = {isa = PBXBuildFile; fileRef = F3F9C7E6CC836240AC4DBF3C75028666 /* CustomizationPoint.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -1539,7 +1538,6 @@
 		57AE6A667AE3E31259478DA2B963E25F /* SingletonStackTrace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EFC7499F43B3972E69F26C8E148364C0 /* SingletonStackTrace.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_PTHREAD=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-documentation"; }; };
 		57B0B7CAAE8B64CB2AF282C5A17ECCE1 /* MicroLock.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EB7532A0A3B8B481335D17280B270C0 /* MicroLock.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		57CF0CB81F3E48E9695F434EA8B59C81 /* IPAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = EB7F915F146B38A65846A157B7FB3EC6 /* IPAddress.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		57D78F83991F15800B0EF39A76C40A7C /* Orientation.h in Headers */ = {isa = PBXBuildFile; fileRef = 94BE9A0B11F10DD46B5AEFD4178E116F /* Orientation.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		57DACB6BFE6D9F716A6C63829E2D5092 /* symbolize.cc in Sources */ = {isa = PBXBuildFile; fileRef = 09548D9C5FD0A5969D3B8EF8CA6B4A54 /* symbolize.cc */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
 		57EA197249DC5CC52EFE8F17C9427B3A /* FIRCLSRecordBase.h in Headers */ = {isa = PBXBuildFile; fileRef = BF67BBDCA673E1FB5C1DD2309AF4CB54 /* FIRCLSRecordBase.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		57EB48C7BE5514E3950296F43F3EF2C8 /* it.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 54C880A4BF84B88F1F9DADFB3F064F43 /* it.lproj */; };
@@ -2498,7 +2496,6 @@
 		97820CECBF02578BAA97E7F7B3824294 /* RCTShadowView+Internal.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DFE6F4142248275D50E279C9D26E398 /* RCTShadowView+Internal.m */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-documentation"; }; };
 		97919395DEC54FC4BC7D8864BC623766 /* PThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 42E3DD27E3C62F7A40FD2F65470B1589 /* PThread.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		97A6D729C81E9204F4393CCEEEA7CC96 /* ManualExecutor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F6E45DC830E5CA7848322A1858380CD /* ManualExecutor.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_PTHREAD=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-documentation"; }; };
-		97DF42D60D472C78ABB42974C4672803 /* Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A8005D412C799A8395E4C8BA76C5D6 /* Orientation.m */; };
 		97DF8743DAB1BBB352B32BB3AD1A77F4 /* RCTAnimationUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 275B06783B4CBD407AB1C9906AB4FC35 /* RCTAnimationUtils.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		97E4C2CB1757FB580F1396F94B1646A7 /* MessageInterfaces.h in Headers */ = {isa = PBXBuildFile; fileRef = F71DB06084160D809A34D0F0449453D5 /* MessageInterfaces.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		981161FD3F202C634F438C067D922A8F /* KeyboardTrackingViewTempManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 05C1523679D85B2912D83941C003FF06 /* KeyboardTrackingViewTempManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -2573,6 +2570,7 @@
 		9C0C52960C0A73443BD28E0AA31235FC /* RNJitsiMeetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 30CB0B977F5A73E7AFE59076D674E06D /* RNJitsiMeetView.m */; };
 		9C331B40E87CFA819D35555693DDE35C /* FBLPromise+Await.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E88485AF27879EA1753CBF403408C7A /* FBLPromise+Await.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		9C343751A882417695152B3EE4D212B3 /* RCTInspectorDevServerHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3A45D48E274BFCE3C858D392D9F949CA /* RCTInspectorDevServerHelper.mm */; settings = {COMPILER_FLAGS = "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32 -Wno-documentation"; }; };
+		9C3AAE2CE6C20E58D34CA4960A855159 /* Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 00A8005D412C799A8395E4C8BA76C5D6 /* Orientation.m */; };
 		9C4F857EE33490DDAF8F64624CB89334 /* MapUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 485C781CBCAEAD3D09B21CB983E20236 /* MapUtil.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		9C7D6F99CF240719DB4609D8680EF70F /* strtod.h in Headers */ = {isa = PBXBuildFile; fileRef = 35D047C1E86408DCC29C1953F2CF1AC9 /* strtod.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		9C805678F5165F588DE03BD1325DD1DD /* FIRComponent.h in Headers */ = {isa = PBXBuildFile; fileRef = 779A992D4CEE8008A2CEE3910FEF2805 /* FIRComponent.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -3251,6 +3249,7 @@
 		C799D50AF668B26893FFCA305D8833C6 /* react-native-netinfo-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 97EEA106B8FDE670E90842205BDC5135 /* react-native-netinfo-dummy.m */; };
 		C79DA87A08D4B20BB5BCE3EEB056EB35 /* AtomicUnorderedMapUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = F308F629276CE5EA8D6AC34229F4156C /* AtomicUnorderedMapUtils.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C7A8454E5AF2F4AE893EDD450EC30FF0 /* Fingerprint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC33911EFC3CBBE0C2DBB62F33FEE78B /* Fingerprint.cpp */; settings = {COMPILER_FLAGS = "-DFOLLY_HAVE_PTHREAD=1 -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -DFOLLY_HAVE_LIBGFLAGS=0 -DFOLLY_HAVE_LIBJEMALLOC=0 -DFOLLY_HAVE_PREADV=0 -DFOLLY_HAVE_PWRITEV=0 -DFOLLY_HAVE_TFO=0 -DFOLLY_USE_SYMBOLIZER=0\n    -frtti\n    -fexceptions\n    -std=c++14\n    -Wno-error\n    -Wno-unused-local-typedefs\n    -Wno-unused-variable\n    -Wno-sign-compare\n    -Wno-comment\n    -Wno-return-type\n    -Wno-global-constructors"; }; };
+		C7B2415A54F8C2320CCAB9738B2418EF /* react-native-orientation-locker-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CFEFB3F1120ED65335C3CA7E6A4ED3 /* react-native-orientation-locker-dummy.m */; };
 		C7C1574B8782249D7BA1D934090957F8 /* dwarf.h in Headers */ = {isa = PBXBuildFile; fileRef = 74B062219A682207723A6303E2CA31A6 /* dwarf.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C7F308C78C338F122701BB6A918721FE /* FirebaseCoreInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 5029C3F1FAC79F19E9E6338F44DB533D /* FirebaseCoreInternal.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C7F45CF7EE923B3B03A6ED3019040191 /* YGNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 2EFE75415A489ABB03321806F54AB213 /* YGNode.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -3641,6 +3640,7 @@
 		E12A5DA02DAAED067B7D62596133CAF6 /* BSGOnErrorSentBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D6A7D1051A44C58772B267CE3C0CB9D /* BSGOnErrorSentBlock.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E130BDA5A728FB1624154E19747F60D3 /* F14MapFallback.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D72FDDBC60397E485A899802B6F59BA /* F14MapFallback.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E15C4287051D4CD97F4A85D08A653E74 /* FBLPromise+Any.h in Headers */ = {isa = PBXBuildFile; fileRef = C3F26F9B4FA2A351DDE03859A88225A7 /* FBLPromise+Any.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		E15D45C4250BCFBD0DFD7E8CDD401DB0 /* Orientation.h in Headers */ = {isa = PBXBuildFile; fileRef = 94BE9A0B11F10DD46B5AEFD4178E116F /* Orientation.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E1721A2CA9E2F8E0A07ACF6F63792BE4 /* RSocketConnectionEvents.h in Headers */ = {isa = PBXBuildFile; fileRef = A93E8BB7D84136FC86255E9EA99F0019 /* RSocketConnectionEvents.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E1722426B5E9C6F18030F1874864BB27 /* FBLPromise+Race.h in Headers */ = {isa = PBXBuildFile; fileRef = 335D89C0A9606E132F58F72559506EDF /* FBLPromise+Race.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		E177AAB66D07CC723954CED5F838CC44 /* RCTBackedTextInputDelegateAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 009BC89DA592B58B06F9C36A0827E973 /* RCTBackedTextInputDelegateAdapter.m */; };
@@ -5631,13 +5631,6 @@
 			remoteGlobalIDString = 680299219D3A48D42A648AF6706275A9;
 			remoteInfo = "React-RCTSettings";
 		};
-		4D5B0203A774C107A3730039B2172856 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7ACAA9BE580DD31A5CB9D97C45D9492D;
-			remoteInfo = "React-Core";
-		};
 		4D9A3D4B75EFEFFF9B32F527C084C57F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
@@ -7387,6 +7380,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 869CED37B4B77AAE35DF8B6E70788BBC;
 			remoteInfo = EXLocalAuthentication;
+		};
+		A29B514C08513A55A978B396EA942DAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1BEE828C124E6416179B904A9F66D794;
+			remoteInfo = React;
 		};
 		A2EF6E1BD1F7DE461657A015A4A7A3F9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -14153,13 +14153,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		69A0383AD8A04476A5A9064F72FC29E5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		6D3F3F360FA5C616E90D10D7023B96E8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -14175,6 +14168,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		77C80530E33066C48B8F1786292AE688 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7BB626B790CF2AA6D8D33B15059F2E75 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -24600,6 +24600,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5DDF77478785A2461C4794672DDADF72 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E15D45C4250BCFBD0DFD7E8CDD401DB0 /* Orientation.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		627AB77CCF28FE754C1EFDB4F4B322DD /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -25749,14 +25757,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D668AE690E131614FA3DE58298639726 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				57D78F83991F15800B0EF39A76C40A7C /* Orientation.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D6F9FA10A749F2A4B2BAF84840D8AAE9 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -26622,16 +26622,16 @@
 		};
 		1092C13E1E1172209537C28D0C8D4D3C /* react-native-orientation-locker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 21C8A748BDBE10D9C1976FBAC9039CC2 /* Build configuration list for PBXNativeTarget "react-native-orientation-locker" */;
+			buildConfigurationList = 4F2FB82AFA2F38BFE71111FB0ED8A4ED /* Build configuration list for PBXNativeTarget "react-native-orientation-locker" */;
 			buildPhases = (
-				D668AE690E131614FA3DE58298639726 /* Headers */,
-				FB568A1351C383766730DC82C2A26433 /* Sources */,
-				69A0383AD8A04476A5A9064F72FC29E5 /* Frameworks */,
+				5DDF77478785A2461C4794672DDADF72 /* Headers */,
+				EE57EB95507742185D15C51CCF7BA4C9 /* Sources */,
+				7BB626B790CF2AA6D8D33B15059F2E75 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				278DF17C0E66DAA41350B2D781BE8FF8 /* PBXTargetDependency */,
+				F5F4A968D8F144A9889E1792B4A0E9C9 /* PBXTargetDependency */,
 			);
 			name = "react-native-orientation-locker";
 			productName = "react-native-orientation-locker";
@@ -31615,6 +31615,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EE57EB95507742185D15C51CCF7BA4C9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C3AAE2CE6C20E58D34CA4960A855159 /* Orientation.m in Sources */,
+				C7B2415A54F8C2320CCAB9738B2418EF /* react-native-orientation-locker-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EE677DEB0818C5AF1142B26C6F07EB02 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -31683,15 +31692,6 @@
 				1CD926C38B9D682652CF356C84A96426 /* RCTTransformAnimatedNode.m in Sources */,
 				CDB5149ECD304A3698777D14B856C628 /* RCTValueAnimatedNode.m in Sources */,
 				3743E8894A915DE9B04A6F37907EB78B /* React-RCTAnimation-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FB568A1351C383766730DC82C2A26433 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				97DF42D60D472C78ABB42974C4672803 /* Orientation.m in Sources */,
-				252A150408A553D4807BFECE84C73499 /* react-native-orientation-locker-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32327,12 +32327,6 @@
 			name = "React-Core";
 			target = 7ACAA9BE580DD31A5CB9D97C45D9492D /* React-Core */;
 			targetProxy = 18842EC7B403F48B3282B01EDFCDDBF6 /* PBXContainerItemProxy */;
-		};
-		278DF17C0E66DAA41350B2D781BE8FF8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "React-Core";
-			target = 7ACAA9BE580DD31A5CB9D97C45D9492D /* React-Core */;
-			targetProxy = 4D5B0203A774C107A3730039B2172856 /* PBXContainerItemProxy */;
 		};
 		281F085A0A500C7B0C6D7F6C0A11BFD4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -35958,6 +35952,12 @@
 			target = D2B5E7DCCBBFB32341D857D01211A1A3 /* nanopb */;
 			targetProxy = BB0A7E4D1605412A2D607CDC3EC72D4D /* PBXContainerItemProxy */;
 		};
+		F5F4A968D8F144A9889E1792B4A0E9C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = React;
+			target = 1BEE828C124E6416179B904A9F66D794 /* React */;
+			targetProxy = A29B514C08513A55A978B396EA942DAA /* PBXContainerItemProxy */;
+		};
 		F72783087733189CF714C174F5894D52 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = YogaKit;
@@ -36423,32 +36423,6 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
-		};
-		135C691B9CBC76093532F63552917B4B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0559FF4F31D9F39593DA553690AC4BBF /* react-native-orientation-locker.release.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/react-native-orientation-locker/react-native-orientation-locker-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = react_native_orientation_locker;
-				PRODUCT_NAME = "react-native-orientation-locker";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
 		};
 		13AAE680D4026978B5773BABA3FB5283 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -38500,6 +38474,32 @@
 			};
 			name = Release;
 		};
+		68FAB721F64C522FC5EEA31CF17C4C70 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0559FF4F31D9F39593DA553690AC4BBF /* react-native-orientation-locker.release.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/react-native-orientation-locker/react-native-orientation-locker-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = react_native_orientation_locker;
+				PRODUCT_NAME = "react-native-orientation-locker";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		6B4C52F1AFE0E00483D4A30B4A7E02CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C7CA2A8556A16B3C49FF1B41CC0AE811 /* GoogleDataTransportCCTSupport.release.xcconfig */;
@@ -38643,31 +38643,6 @@
 				PRIVATE_HEADERS_FOLDER_PATH = "";
 				PRODUCT_MODULE_NAME = RNCPicker;
 				PRODUCT_NAME = RNCPicker;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		711124276934A48C61CF80232B1C533A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7B2B988372B94744CFCB043C04181A2F /* react-native-orientation-locker.debug.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/react-native-orientation-locker/react-native-orientation-locker-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = react_native_orientation_locker;
-				PRODUCT_NAME = "react-native-orientation-locker";
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -42437,6 +42412,31 @@
 			};
 			name = Debug;
 		};
+		FC72C0A673AF17C65572F6ADE9BEEB33 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B2B988372B94744CFCB043C04181A2F /* react-native-orientation-locker.debug.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/react-native-orientation-locker/react-native-orientation-locker-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = react_native_orientation_locker;
+				PRODUCT_NAME = "react-native-orientation-locker";
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		FE4B38325DD3D448DD190F0F730C53EE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B3D315E54667C3E03E9D6864813B0E38 /* React-RCTLinking.debug.xcconfig */;
@@ -42679,15 +42679,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		21C8A748BDBE10D9C1976FBAC9039CC2 /* Build configuration list for PBXNativeTarget "react-native-orientation-locker" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				711124276934A48C61CF80232B1C533A /* Debug */,
-				135C691B9CBC76093532F63552917B4B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		230406E6F70AD940547D38A7F4CFCC83 /* Build configuration list for PBXAggregateTarget "RCTRequired" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -42873,6 +42864,15 @@
 			buildConfigurations = (
 				8CA1DE9BFBB61F496E3B8E4C85CE2DA9 /* Debug */,
 				8D5BD426E074C7F2E3DA68DAC734929C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4F2FB82AFA2F38BFE71111FB0ED8A4ED /* Build configuration list for PBXNativeTarget "react-native-orientation-locker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC72C0A673AF17C65572F6ADE9BEEB33 /* Debug */,
+				68FAB721F64C522FC5EEA31CF17C4C70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
