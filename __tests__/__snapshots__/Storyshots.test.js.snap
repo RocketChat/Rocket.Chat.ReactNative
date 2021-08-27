@@ -71430,6 +71430,189 @@ Array [
 ]
 `;
 
+exports[`Storyshots Text Input Short and Long Text 1`] = `
+<View
+  style={
+    Object {
+      "paddingHorizontal": 14,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "marginBottom": 10,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel={null}
+      contentDescription={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "fontFamily": "System",
+            "fontSize": 14,
+            "fontWeight": "600",
+            "marginBottom": 10,
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Short Text
+    </Text>
+    <View
+      style={
+        Object {
+          "position": "relative",
+        }
+      }
+    >
+      <TextInput
+        accessibilityLabel="placeholder"
+        allowFontScaling={true}
+        autoCapitalize="none"
+        autoCorrect={false}
+        contentDescription="placeholder"
+        keyboardAppearance="light"
+        placeholder="placeholder"
+        placeholderTextColor="#9ca2a8"
+        rejectResponderTermination={true}
+        style={
+          Array [
+            Object {
+              "color": "#0d0e12",
+            },
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "borderRadius": 2,
+                "borderWidth": 0.5,
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "height": 48,
+                "padding": 14,
+                "textAlign": "left",
+              },
+              undefined,
+              undefined,
+              Object {
+                "backgroundColor": "#ffffff",
+                "borderColor": "#cbcbcc",
+                "color": "#0d0e12",
+              },
+              undefined,
+              undefined,
+            ],
+            Object {
+              "textAlign": "auto",
+            },
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value="Rocket.Chat"
+      />
+    </View>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "marginBottom": 10,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessibilityLabel={null}
+      contentDescription={null}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "fontFamily": "System",
+            "fontSize": 14,
+            "fontWeight": "600",
+            "marginBottom": 10,
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#0d0e12",
+          },
+          undefined,
+        ]
+      }
+    >
+      Long Text
+    </Text>
+    <View
+      style={
+        Object {
+          "position": "relative",
+        }
+      }
+    >
+      <TextInput
+        accessibilityLabel="placeholder"
+        allowFontScaling={true}
+        autoCapitalize="none"
+        autoCorrect={false}
+        contentDescription="placeholder"
+        keyboardAppearance="light"
+        placeholder="placeholder"
+        placeholderTextColor="#9ca2a8"
+        rejectResponderTermination={true}
+        style={
+          Array [
+            Object {
+              "color": "#0d0e12",
+            },
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "borderRadius": 2,
+                "borderWidth": 0.5,
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "height": 48,
+                "padding": 14,
+                "textAlign": "left",
+              },
+              undefined,
+              undefined,
+              Object {
+                "backgroundColor": "#ffffff",
+                "borderColor": "#cbcbcc",
+                "color": "#0d0e12",
+              },
+              undefined,
+              undefined,
+            ],
+            Object {
+              "textAlign": "auto",
+            },
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value="https://open.rocket.chat/images/logo/android-chrome-512x512.png"
+      />
+    </View>
+  </View>
+</View>
+`;
+
 exports[`Storyshots Thread Messages.Item badge 1`] = `
 <RCTScrollView>
   <View>
