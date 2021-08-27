@@ -13324,9 +13324,9 @@ react-native-iphone-x-helper@^1.3.0:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
 
-react-native-jitsi-meet@RocketChat/react-native-jitsi-meet#update-lib:
+react-native-jitsi-meet@RocketChat/react-native-jitsi-meet:
   version "3.6.0"
-  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/4cf8e6924b8b85913192ab0687ca411e751b1998"
+  resolved "https://codeload.github.com/RocketChat/react-native-jitsi-meet/tar.gz/90bae9b9d779c13829d7dc618e31d11dba60140d"
 
 react-native-keycommands@2.0.3:
   version "2.0.3"

@@ -87,7 +87,7 @@
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker",
     "react-native-image-progress": "^1.1.1",
-    "react-native-jitsi-meet": "RocketChat/react-native-jitsi-meet#update-lib",
+    "react-native-jitsi-meet": "RocketChat/react-native-jitsi-meet",
     "react-native-keycommands": "2.0.3",
     "react-native-localize": "2.1.1",
     "react-native-mime-types": "2.3.0",

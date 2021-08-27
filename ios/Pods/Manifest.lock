@@ -614,7 +614,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (~> 0.75.1)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (~> 0.7.2)
-  - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`, branch `3.6`)
+  - JitsiMeetSDK (from `https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git`)
   - KeyCommands (from `../node_modules/react-native-keycommands`)
   - libevent (~> 2.1.12)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -764,7 +764,6 @@ EXTERNAL SOURCES:
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   JitsiMeetSDK:
-    :branch: '3.6'
     :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
   KeyCommands:
     :path: "../node_modules/react-native-keycommands"
@@ -921,7 +920,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   JitsiMeetSDK:
-    :commit: bd7310abcb5764878b4d31672b783629628d0044
+    :commit: d2143b119a23dfaee2978b17e0029f7c4838d670
     :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
 
 SPEC CHECKSUMS:
@@ -1050,6 +1049,6 @@ SPEC CHECKSUMS:
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 17dc9e4213901cc3d33b9c8a25628cd697c70575
+PODFILE CHECKSUM: 70acbdf88ff07173b5e52fdbfd3825f5b6a07b83
 
 COCOAPODS: 1.10.1
