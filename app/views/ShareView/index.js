@@ -3,17 +3,12 @@ import PropTypes from 'prop-types';
 import { View, Text, NativeModules } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
-import * as VideoThumbnails from 'expo-video-thumbnails';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import styles from './styles';
 import Loading from '../../containers/Loading';
-import {
-	Item,
-	CloseModalButton,
-	CustomHeaderButtons
-} from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
@@ -28,6 +23,7 @@ import { getUserSelector } from '../../selectors/login';
 import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
 import { canUploadFile } from '../../utils/media';
+import { isAndroid } from '../../utils/deviceInfo';
 
 class ShareView extends Component {
 	constructor(props) {
@@ -75,18 +71,18 @@ class ShareView extends Component {
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
 		}
 
 		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
-				<CustomHeaderButtons>
-					<Item
+				<HeaderButton.Container>
+					<HeaderButton.Item
 						title={I18n.t('Send')}
 						onPress={this.send}
 						buttonStyle={[styles.send, { color: themes[theme].previewTintColor }]}
 					/>
-				</CustomHeaderButtons>
+				</HeaderButton.Container>
 			);
 		}
 
@@ -99,7 +95,7 @@ class ShareView extends Component {
 	getServerInfo = async() => {
 		const { server } = this.props;
 		const serversDB = database.servers;
-		const serversCollection = serversDB.collections.get('servers');
+		const serversCollection = serversDB.get('servers');
 		try {
 			this.serverInfo = await serversCollection.find(server);
 		} catch (error) {
@@ -123,8 +119,9 @@ class ShareView extends Component {
 			item.error = error;
 
 			// get video thumbnails
-			if (item.mime?.match?.(/video/)) {
+			if (isAndroid && this.files.length > 1 && item.mime?.match?.(/video/)) {
 				try {
+					const VideoThumbnails = require('expo-video-thumbnails');
 					const { uri } = await VideoThumbnails.getThumbnailAsync(item.path);
 					item.uri = uri;
 				} catch {
@@ -238,7 +235,9 @@ class ShareView extends Component {
 				newSelected = attachments[selectedIndex - 1] || {};
 			}
 		}
-		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected });
+		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected }, () => {
+			this.messagebox?.current?.forceUpdate?.();
+		});
 	}
 
 	onChangeText = (text) => {
@@ -324,7 +323,6 @@ class ShareView extends Component {
 		return (
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
-				theme={theme}
 			>
 				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{this.renderContent()}
@@ -350,7 +348,7 @@ ShareView.propTypes = {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
-	server: state.share.server || state.server.server,
+	server: state.share.server.server || state.server.server,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });

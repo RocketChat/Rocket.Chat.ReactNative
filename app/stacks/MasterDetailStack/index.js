@@ -30,6 +30,7 @@ import ForwardLivechatView from '../../views/ForwardLivechatView';
 import LivechatEditView from '../../views/LivechatEditView';
 import PickerView from '../../views/PickerView';
 import ThreadMessagesView from '../../views/ThreadMessagesView';
+import TeamChannelsView from '../../views/TeamChannelsView';
 import MarkdownTableView from '../../views/MarkdownTableView';
 import ReadReceiptsView from '../../views/ReadReceiptView';
 import ProfileView from '../../views/ProfileView';
@@ -41,7 +42,10 @@ import ScreenLockConfigView from '../../views/ScreenLockConfigView';
 import AdminPanelView from '../../views/AdminPanelView';
 import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
-import QueueListView from '../../views/QueueListView';
+import UserPreferencesView from '../../views/UserPreferencesView';
+import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
+import SecurityPrivacyView from '../../views/SecurityPrivacyView';
+import E2EEncryptionSecurityView from '../../views/E2EEncryptionSecurityView';
 
 // InsideStackNavigator
 import AttachmentView from '../../views/AttachmentView';
@@ -49,9 +53,17 @@ import ModalBlockView from '../../views/ModalBlockView';
 import JitsiMeetView from '../../views/JitsiMeetView';
 import StatusView from '../../views/StatusView';
 import CreateDiscussionView from '../../views/CreateDiscussionView';
+import E2ESaveYourPasswordView from '../../views/E2ESaveYourPasswordView';
+import E2EHowItWorksView from '../../views/E2EHowItWorksView';
+import E2EEnterYourPasswordView from '../../views/E2EEnterYourPasswordView';
 
 import { setKeyCommands, deleteKeyCommands } from '../../commands';
 import ShareView from '../../views/ShareView';
+
+import QueueListView from '../../ee/omnichannel/views/QueueListView';
+import AddChannelTeamView from '../../views/AddChannelTeamView';
+import AddExistingChannelView from '../../views/AddExistingChannelView';
+import SelectListView from '../../views/SelectListView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
@@ -109,6 +121,11 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					options={RoomInfoView.navigationOptions}
 				/>
 				<ModalStack.Screen
+					name='SelectListView'
+					component={SelectListView}
+					options={SelectListView.navigationOptions}
+				/>
+				<ModalStack.Screen
 					name='RoomInfoEditView'
 					component={RoomInfoEditView}
 					options={RoomInfoEditView.navigationOptions}
@@ -131,6 +148,16 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					name='InviteUsersView'
 					component={InviteUsersView}
 					options={InviteUsersView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='AddChannelTeamView'
+					component={AddChannelTeamView}
+					options={AddChannelTeamView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='AddExistingChannelView'
+					component={AddExistingChannelView}
+					options={AddExistingChannelView.navigationOptions}
 				/>
 				<ModalStack.Screen
 					name='InviteUsersEditView'
@@ -184,7 +211,11 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 				<ModalStack.Screen
 					name='ThreadMessagesView'
 					component={ThreadMessagesView}
-					options={props => ThreadMessagesView.navigationOptions({ ...props, isMasterDetail: true })}
+				/>
+				<ModalStack.Screen
+					name='TeamChannelsView'
+					component={TeamChannelsView}
+					options={TeamChannelsView.navigationOptions}
 				/>
 				<ModalStack.Screen
 					name='MarkdownTableView'
@@ -252,6 +283,41 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 				<ModalStack.Screen
 					name='CreateDiscussionView'
 					component={CreateDiscussionView}
+				/>
+				<ModalStack.Screen
+					name='E2ESaveYourPasswordView'
+					component={E2ESaveYourPasswordView}
+					options={E2ESaveYourPasswordView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='E2EHowItWorksView'
+					component={E2EHowItWorksView}
+					options={E2EHowItWorksView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='E2EEnterYourPasswordView'
+					component={E2EEnterYourPasswordView}
+					options={E2EEnterYourPasswordView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='UserPreferencesView'
+					component={UserPreferencesView}
+					options={UserPreferencesView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='UserNotificationPrefView'
+					component={UserNotificationPrefView}
+					options={UserNotificationPrefView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='SecurityPrivacyView'
+					component={SecurityPrivacyView}
+					options={SecurityPrivacyView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='E2EEncryptionSecurityView'
+					component={E2EEncryptionSecurityView}
+					options={E2EEncryptionSecurityView.navigationOptions}
 				/>
 			</ModalStack.Navigator>
 		</ModalContainer>

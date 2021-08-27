@@ -1,45 +1,53 @@
 import { InteractionManager } from 'react-native';
-import semver from 'semver';
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
-import RNUserDefaults from 'rn-user-defaults';
+import EJSON from 'ejson';
+import {
+	Rocketchat as RocketchatClient,
+	settings as RocketChatSettings
+} from '@rocket.chat/sdk';
 import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import RNFetchBlob from 'rn-fetch-blob';
 
+import { compareServerVersion, methods } from './utils';
 import reduxStore from './createStore';
 import defaultSettings from '../constants/settings';
-import messagesStatus from '../constants/messagesStatus';
 import database from './database';
 import log from '../utils/log';
 import { isIOS, getBundleId } from '../utils/deviceInfo';
 import fetch from '../utils/fetch';
+import SSLPinning from '../utils/sslPinning';
 
+import { encryptionInit } from '../actions/encryption';
 import { setUser, setLoginServices, loginRequest } from '../actions/login';
 import { disconnect, connectSuccess, connectRequest } from '../actions/connect';
-import {
-	shareSelectServer, shareSetUser
-} from '../actions/share';
+import { shareSelectServer, shareSetUser, shareSetSettings } from '../actions/share';
 
 import subscribeRooms from './methods/subscriptions/rooms';
-import subscribeInquiry from './methods/subscriptions/inquiry';
 import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
-import getSettings, { getLoginSettings, setSettings } from './methods/getSettings';
+import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
 
 import getRooms from './methods/getRooms';
-import getPermissions from './methods/getPermissions';
+import { setPermissions, getPermissions } from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
+import {
+	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
+} from './methods/enterpriseModules';
 import getSlashCommands from './methods/getSlashCommands';
-import getRoles from './methods/getRoles';
+import { getRoles, setRoles, onRolesChanged } from './methods/getRoles';
 import canOpenRoom from './methods/canOpenRoom';
 import triggerBlockAction, { triggerSubmitView, triggerCancel } from './methods/actions';
 
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
+import loadSurroundingMessages from './methods/loadSurroundingMessages';
+import loadNextMessages from './methods/loadNextMessages';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 
-import sendMessage, { sendMessageCall } from './methods/sendMessage';
+import sendMessage, { resendMessage } from './methods/sendMessage';
 import { sendFileMessage, cancelUpload, isUploadActive } from './methods/sendFileMessage';
 
 import callJitsi from './methods/callJitsi';
@@ -51,18 +59,29 @@ import I18n from '../i18n';
 import { twoFactor } from '../utils/twoFactor';
 import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
+import UserPreferences from './userPreferences';
+import { Encryption } from './encryption';
+import EventEmitter from '../utils/events';
+import { sanitizeLikeString } from './database/utils';
+import { updatePermission } from '../actions/permissions';
+import { TEAM_TYPE } from '../definition/ITeam';
+import { updateSettings } from '../actions/settings';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
+const CURRENT_SERVER = 'currentServer';
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
+const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
-const returnAnArray = obj => obj || [];
+export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 const MIN_ROCKETCHAT_VERSION = '0.70.0';
 
 const STATUSES = ['offline', 'online', 'away', 'busy'];
 
 const RocketChat = {
 	TOKEN_KEY,
+	CURRENT_SERVER,
+	CERTIFICATE_KEY,
 	callJitsi,
 	async subscribeRooms() {
 		if (!this.roomsSub) {
@@ -73,28 +92,27 @@ const RocketChat = {
 			}
 		}
 	},
-	async subscribeInquiry() {
-		if (!this.inquirySub) {
-			try {
-				this.inquirySub = await subscribeInquiry.call(this);
-			} catch (e) {
-				log(e);
-			}
+	unsubscribeRooms() {
+		if (this.roomsSub) {
+			this.roomsSub.stop();
+			this.roomsSub = null;
 		}
 	},
 	canOpenRoom,
 	createChannel({
-		name, users, type, readOnly, broadcast
+		name, users, type, readOnly, broadcast, encrypted, teamId
 	}) {
-		// RC 0.51.0
-		return this.methodCallWrapper(type ? 'createPrivateGroup' : 'createChannel', name, users, readOnly, {}, { broadcast });
-	},
-	async getUserToken() {
-		try {
-			return await RNUserDefaults.get(TOKEN_KEY);
-		} catch (error) {
-			console.warn(`RNUserDefaults error: ${ error.message }`);
-		}
+		const params = {
+			name,
+			members: users,
+			readOnly,
+			extraData: {
+				broadcast,
+				encrypted,
+				...(teamId && { teamId })
+			}
+		};
+		return this.post(type ? 'groups.create' : 'channels.create', params);
 	},
 	async getWebsocketInfo({ server }) {
 		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
@@ -105,10 +123,7 @@ const RocketChat = {
 			if (err.message && err.message.includes('400')) {
 				return {
 					success: false,
-					message: 'Websocket_disabled',
-					messageOptions: {
-						contact: I18n.t('Contact_your_server_admin')
-					}
+					message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
 				};
 			}
 		}
@@ -120,52 +135,46 @@ const RocketChat = {
 		};
 	},
 	async getServerInfo(server) {
-		const notRCServer = {
-			success: false,
-			message: 'Not_RC_Server',
-			messageOptions: {
-				contact: I18n.t('Contact_your_server_admin')
-			}
-		};
 		try {
-			const result = await fetch(`${ server }/api/info`).then(async(response) => {
-				let res = notRCServer;
-				try {
-					res = await response.json();
-					if (!(res && res.success)) {
-						return notRCServer;
-					}
-				} catch (e) {
-					// do nothing
-				}
-				return res;
-			});
-			if (result.success) {
-				if (semver.lt(result.version, MIN_ROCKETCHAT_VERSION)) {
+			const response = await RNFetchBlob.fetch('GET', `${ server }/api/info`, { ...RocketChatSettings.customHeaders });
+			try {
+				// Try to resolve as json
+				const jsonRes = response.json();
+				if (!(jsonRes?.success)) {
 					return {
 						success: false,
-						message: 'Invalid_server_version',
-						messageOptions: {
-							currentVersion: result.version,
-							minVersion: MIN_ROCKETCHAT_VERSION
-						}
+						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 					};
 				}
+				if (compareServerVersion(jsonRes.version, MIN_ROCKETCHAT_VERSION, methods.lowerThan)) {
+					return {
+						success: false,
+						message: I18n.t('Invalid_server_version', {
+							currentVersion: jsonRes.version,
+							minVersion: MIN_ROCKETCHAT_VERSION
+						})
+					};
+				}
+				return jsonRes;
+			} catch (error) {
+				// Request is successful, but response isn't a json
 			}
-			return result;
 		} catch (e) {
-			if (e.message === 'Aborted') {
-				reduxStore.dispatch(selectServerFailure());
-				throw e;
+			if (e?.message) {
+				if (e.message === 'Aborted') {
+					reduxStore.dispatch(selectServerFailure());
+					throw e;
+				}
+				return {
+					success: false,
+					message: e.message
+				};
 			}
-			log(e);
 		}
+
 		return {
 			success: false,
-			message: 'The_URL_is_invalid',
-			messageOptions: {
-				contact: I18n.t('Contact_your_server_admin')
-			}
+			message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 		};
 	},
 	stopListener(listener) {
@@ -181,15 +190,29 @@ const RocketChat = {
 		}
 		this.controller = new AbortController();
 	},
+	checkAndReopen() {
+		return this?.sdk?.checkAndReopen();
+	},
+	disconnect() {
+		this.sdk?.disconnect?.();
+		this.sdk = null;
+	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise((resolve) => {
-			if (!this.sdk || this.sdk.client.host !== server) {
+			if (this?.sdk?.client?.host === server) {
+				return resolve();
+			} else {
+				this.disconnect();
 				database.setActiveDB(server);
 			}
 			reduxStore.dispatch(connectRequest());
 
 			if (this.connectTimeout) {
 				clearTimeout(this.connectTimeout);
+			}
+
+			if (this.connectingListener) {
+				this.connectingListener.then(this.stopListener);
 			}
 
 			if (this.connectedListener) {
@@ -204,24 +227,21 @@ const RocketChat = {
 				this.usersListener.then(this.stopListener);
 			}
 
+			if (this.notifyAllListener) {
+				this.notifyAllListener.then(this.stopListener);
+			}
+
+			if (this.rolesListener) {
+				this.rolesListener.then(this.stopListener);
+			}
+
 			if (this.notifyLoggedListener) {
 				this.notifyLoggedListener.then(this.stopListener);
 			}
 
-			if (this.roomsSub) {
-				this.roomsSub.stop();
-				this.roomsSub = null;
-			}
+			this.unsubscribeRooms();
 
-			if (this.inquirySub) {
-				this.inquirySub.stop();
-				this.inquirySub = null;
-			}
-
-			if (this.sdk) {
-				this.sdk.disconnect();
-				this.sdk = null;
-			}
+			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 			if (this.code) {
 				this.code = null;
@@ -250,6 +270,10 @@ const RocketChat = {
 
 			sdkConnect();
 
+			this.connectingListener = this.sdk.onStreamData('connecting', () => {
+				reduxStore.dispatch(connectRequest());
+			});
+
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
 				reduxStore.dispatch(connectSuccess());
 			});
@@ -260,9 +284,34 @@ const RocketChat = {
 
 			this.usersListener = this.sdk.onStreamData('users', protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage)));
 
-			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction((ddpMessage) => {
+			this.notifyAllListener = this.sdk.onStreamData('stream-notify-all', protectedFunction(async(ddpMessage) => {
 				const { eventName } = ddpMessage.fields;
-				if (eventName === 'user-status') {
+				if (/public-settings-changed/.test(eventName)) {
+					const { _id, value } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const settingsCollection = db.get('settings');
+					try {
+						const settingsRecord = await settingsCollection.find(_id);
+						const { type } = defaultSettings[_id];
+						if (type) {
+							await db.action(async() => {
+								await settingsRecord.update((u) => {
+									u[type] = value;
+								});
+							});
+						}
+						reduxStore.dispatch(updateSettings(_id, value));
+					} catch (e) {
+						log(e);
+					}
+				}
+			}));
+
+			this.rolesListener = this.sdk.onStreamData('stream-roles', protectedFunction(ddpMessage => onRolesChanged(ddpMessage)));
+
+			this.notifyLoggedListener = this.sdk.onStreamData('stream-notify-logged', protectedFunction(async(ddpMessage) => {
+				const { eventName } = ddpMessage.fields;
+				if (/user-status/.test(eventName)) {
 					this.activeUsers = this.activeUsers || {};
 					if (!this._setUserTimer) {
 						this._setUserTimer = setTimeout(() => {
@@ -282,6 +331,55 @@ const RocketChat = {
 					if (loggedUser && loggedUser.id === id) {
 						reduxStore.dispatch(setUser({ status: STATUSES[status], statusText }));
 					}
+				} else if (/updateAvatar/.test(eventName)) {
+					const { username, etag } = ddpMessage.fields.args[0];
+					const db = database.active;
+					const userCollection = db.get('users');
+					try {
+						const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
+						await db.action(async() => {
+							await userRecord.update((u) => {
+								u.avatarETag = etag;
+							});
+						});
+					} catch {
+						// We can't create a new record since we don't receive the user._id
+					}
+				} else if (/permissions-changed/.test(eventName)) {
+					const { _id, roles } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const permissionsCollection = db.get('permissions');
+					try {
+						const permissionsRecord = await permissionsCollection.find(_id);
+						await db.action(async() => {
+							await permissionsRecord.update((u) => {
+								u.roles = roles;
+							});
+						});
+						reduxStore.dispatch(updatePermission(_id, roles));
+					} catch (err) {
+						//
+					}
+				} else if (/Users:NameChanged/.test(eventName)) {
+					const userNameChanged = ddpMessage.fields.args[0];
+					const db = database.active;
+					const userCollection = db.get('users');
+					try {
+						const userRecord = await userCollection.find(userNameChanged._id);
+						await db.action(async() => {
+							await userRecord.update((u) => {
+								Object.assign(u, userNameChanged);
+							});
+						});
+					} catch {
+						// User not found
+						await db.action(async() => {
+							await userCollection.create((u) => {
+								u._raw = sanitizedRaw({ id: userNameChanged._id }, userCollection.schema);
+								Object.assign(u, userNameChanged);
+							});
+						});
+					}
 				}
 			}));
 
@@ -292,6 +390,13 @@ const RocketChat = {
 	async shareExtensionInit(server) {
 		database.setShareDB(server);
 
+		try {
+			const certificate = await UserPreferences.getStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`);
+			await SSLPinning.setCertificate(certificate, server);
+		} catch {
+			// Do nothing
+		}
+
 		if (this.shareSDK) {
 			this.shareSDK.disconnect();
 			this.shareSDK = null;
@@ -300,15 +405,38 @@ const RocketChat = {
 		this.shareSDK = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 
 		// set Server
+		const currentServer = { server };
 		const serversDB = database.servers;
-		reduxStore.dispatch(shareSelectServer(server));
+		const serversCollection = serversDB.get('servers');
+		try {
+			const serverRecord = await serversCollection.find(server);
+			currentServer.version = serverRecord.version;
+		} catch {
+			// Record not found
+		}
+		reduxStore.dispatch(shareSelectServer(currentServer));
 
 		RocketChat.setCustomEmojis();
 
-		// set User info
 		try {
-			const userId = await RNUserDefaults.get(`${ RocketChat.TOKEN_KEY }-${ server }`);
-			const userCollections = serversDB.collections.get('users');
+			// set Settings
+			const settings = ['Accounts_AvatarBlockUnauthenticatedAccess'];
+			const db = database.active;
+			const settingsCollection = db.get('settings');
+			const settingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(settings))).fetch();
+			const parsed = Object.values(settingsRecords).map(item => ({
+				_id: item.id,
+				valueAsString: item.valueAsString,
+				valueAsBoolean: item.valueAsBoolean,
+				valueAsNumber: item.valueAsNumber,
+				valueAsArray: item.valueAsArray,
+				_updatedAt: item._updatedAt
+			}));
+			reduxStore.dispatch(shareSetSettings(this.parseSettings(parsed)));
+
+			// set User info
+			const userId = await UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+			const userCollections = serversDB.get('users');
 			let user = null;
 			if (userId) {
 				const userRecord = await userCollections.find(userId);
@@ -321,6 +449,7 @@ const RocketChat = {
 			}
 			reduxStore.dispatch(shareSetUser(user));
 			await RocketChat.login({ resume: user.token });
+			reduxStore.dispatch(encryptionInit());
 		} catch (e) {
 			log(e);
 		}
@@ -332,7 +461,54 @@ const RocketChat = {
 		}
 		database.share = null;
 
+		reduxStore.dispatch(shareSelectServer({}));
 		reduxStore.dispatch(shareSetUser({}));
+		reduxStore.dispatch(shareSetSettings({}));
+	},
+
+	async e2eFetchMyKeys() {
+		// RC 0.70.0
+		const sdk = this.shareSDK || this.sdk;
+		const result = await sdk.get('e2e.fetchMyKeys');
+		// snake_case -> camelCase
+		if (result.success) {
+			return {
+				success: result.success,
+				publicKey: result.public_key,
+				privateKey: result.private_key
+			};
+		}
+		return result;
+	},
+	e2eSetUserPublicAndPrivateKeys(public_key, private_key) {
+		// RC 2.2.0
+		return this.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
+	},
+	e2eRequestSubscriptionKeys() {
+		// RC 0.72.0
+		return this.methodCallWrapper('e2e.requestSubscriptionKeys');
+	},
+	e2eGetUsersOfRoomWithoutKey(rid) {
+		// RC 0.70.0
+		return this.sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
+	},
+	e2eSetRoomKeyID(rid, keyID) {
+		// RC 0.70.0
+		return this.post('e2e.setRoomKeyID', { rid, keyID });
+	},
+	e2eUpdateGroupKey(uid, rid, key) {
+		// RC 0.70.0
+		return this.post('e2e.updateGroupKey', { uid, rid, key });
+	},
+	e2eRequestRoomKey(rid, e2eKeyId) {
+		// RC 0.70.0
+		return this.methodCallWrapper('stream-notify-room-users', `${ rid }/e2ekeyRequest`, rid, e2eKeyId);
+	},
+	e2eResetOwnKey() {
+		this.unsubscribeRooms();
+
+		// RC 0.72.0
+		return this.methodCallWrapper('e2e.resetOwnE2EKey');
 	},
 
 	updateJitsiTimeout(roomId) {
@@ -350,18 +526,39 @@ const RocketChat = {
 		return this.post('users.forgotPassword', { email }, false);
 	},
 
-	loginTOTP(params) {
+	loginTOTP(params, loginEmailPassword, isFromWebView = false) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.login(params);
+				const result = await this.login(params, isFromWebView);
 				return resolve(result);
 			} catch (e) {
 				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 					const { details } = e.data;
 					try {
-						reduxStore.dispatch(setUser({ username: params.user || params.username }));
-						const code = await twoFactor({ method: details?.method || 'totp', invalid: e.data.error === 'totp-invalid' });
-						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }));
+						const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
+
+						if (loginEmailPassword) {
+							reduxStore.dispatch(setUser({ username: params.user || params.username }));
+
+							// Force normalized params for 2FA starting RC 3.9.0.
+							const serverVersion = reduxStore.getState().server.version;
+							if (compareServerVersion(serverVersion, '3.9.0', methods.greaterThanOrEqualTo)) {
+								const user = params.user ?? params.username;
+								const password = params.password ?? params.ldapPass ?? params.crowdPassword;
+								params = { user, password };
+							}
+
+							return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+						}
+
+						return resolve(this.loginTOTP({
+							totp: {
+								login: {
+									...params
+								},
+								code: code?.twoFactorCode
+							}
+						}));
 					} catch {
 						// twoFactor was canceled
 						return reject();
@@ -392,18 +589,18 @@ const RocketChat = {
 			};
 		}
 
-		return this.loginTOTP(params);
+		return this.loginTOTP(params, true);
 	},
 
-	async loginOAuthOrSso(params) {
-		const result = await this.login(params);
-		reduxStore.dispatch(loginRequest({ resume: result.token }));
+	async loginOAuthOrSso(params, isFromWebView = true) {
+		const result = await this.loginTOTP(params, false, isFromWebView);
+		reduxStore.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
 	},
 
-	async login(params) {
+	async login(credentials, isFromWebView = false) {
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.64.0
-		await sdk.login(params);
+		await sdk.login(credentials);
 		const { result } = sdk.currentLogin;
 		const user = {
 			id: result.userId,
@@ -416,17 +613,24 @@ const RocketChat = {
 			customFields: result.me.customFields,
 			statusLivechat: result.me.statusLivechat,
 			emails: result.me.emails,
-			roles: result.me.roles
+			roles: result.me.roles,
+			avatarETag: result.me.avatarETag,
+			isFromWebView,
+			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true
 		};
 		return user;
 	},
 	logout,
+	logoutOtherLocations() {
+		const { id: userId } = reduxStore.getState().login.user;
+		return this.sdk.post('users.removeOtherTokens', { userId });
+	},
 	removeServer,
 	async clearCache({ server }) {
 		try {
 			const serversDB = database.servers;
 			await serversDB.action(async() => {
-				const serverCollection = serversDB.collections.get('servers');
+				const serverCollection = serversDB.get('servers');
 				const serverRecord = await serverCollection.find(server);
 				await serverRecord.update((s) => {
 					s.roomsUpdatedAt = null;
@@ -473,33 +677,46 @@ const RocketChat = {
 	},
 	loadMissedMessages,
 	loadMessagesForRoom,
+	loadSurroundingMessages,
+	loadNextMessages,
 	loadThreadMessages,
 	sendMessage,
 	getRooms,
 	readMessages,
-	async resendMessage(message, tmid) {
+	resendMessage,
+
+	async localSearch({ text, filterUsers = true, filterRooms = true }) {
+		const searchText = text.trim();
 		const db = database.active;
-		try {
-			await db.action(async() => {
-				await message.update((m) => {
-					m.status = messagesStatus.TEMP;
-				});
-			});
-			let m = {
-				id: message.id,
-				msg: message.msg,
-				subscription: { id: message.subscription.id }
-			};
-			if (tmid) {
-				m = {
-					...m,
-					tmid
-				};
-			}
-			await sendMessageCall.call(this, m);
-		} catch (e) {
-			log(e);
+		const likeString = sanitizeLikeString(searchText);
+		let data = await db.get('subscriptions').query(
+			Q.or(
+				Q.where('name', Q.like(`%${ likeString }%`)),
+				Q.where('fname', Q.like(`%${ likeString }%`))
+			),
+			Q.experimentalSortBy('room_updated_at', Q.desc)
+		).fetch();
+
+		if (filterUsers && !filterRooms) {
+			data = data.filter(item => item.t === 'd' && !RocketChat.isGroupChat(item));
+		} else if (!filterUsers && filterRooms) {
+			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
 		}
+
+		data = data.slice(0, 7);
+
+		data = data.map(sub => ({
+			rid: sub.rid,
+			name: sub.name,
+			fname: sub.fname,
+			avatarETag: sub.avatarETag,
+			t: sub.t,
+			encrypted: sub.encrypted,
+			lastMessage: sub.lastMessage,
+			...(sub.teamId && { teamId: sub.teamId })
+		}));
+
+		return data;
 	},
 
 	async search({ text, filterUsers = true, filterRooms = true }) {
@@ -509,35 +726,7 @@ const RocketChat = {
 			this.oldPromise('cancel');
 		}
 
-		if (searchText === '') {
-			delete this.oldPromise;
-			return [];
-		}
-
-		const db = database.active;
-		let data = await db.collections.get('subscriptions').query(
-			Q.where('name', Q.like(`%${ Q.sanitizeLikeString(searchText) }%`))
-		).fetch();
-
-		if (filterUsers && !filterRooms) {
-			data = data.filter(item => item.t === 'd' && !RocketChat.isGroupChat(item));
-		} else if (!filterUsers && filterRooms) {
-			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
-		}
-		data = data.slice(0, 7);
-
-		data = data.map((sub) => {
-			if (sub.t !== 'd') {
-				return ({
-					rid: sub.rid,
-					name: sub.name,
-					fname: sub.fname,
-					t: sub.t,
-					search: true
-				});
-			}
-			return sub;
-		});
+		const data = await this.localSearch({ text, filterUsers, filterRooms });
 
 		const usernames = data.map(sub => sub.name);
 		try {
@@ -547,13 +736,18 @@ const RocketChat = {
 					new Promise((resolve, reject) => this.oldPromise = reject)
 				]);
 				if (filterUsers) {
-					data = data.concat(users.map(user => ({
-						...user,
-						rid: user.username,
-						name: user.username,
-						t: 'd',
-						search: true
-					})));
+					users
+						.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
+						.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
+						.forEach((user) => {
+							data.push({
+								...user,
+								rid: user.username,
+								name: user.username,
+								t: 'd',
+								search: true
+							});
+						});
 				}
 				if (filterRooms) {
 					rooms.forEach((room) => {
@@ -597,21 +791,95 @@ const RocketChat = {
 	},
 
 	createDiscussion({
-		prid, pmid, t_name, reply, users
+		prid, pmid, t_name, reply, users, encrypted
 	}) {
 		// RC 1.0.0
 		return this.post('rooms.createDiscussion', {
-			prid, pmid, t_name, reply, users
+			prid, pmid, t_name, reply, users, encrypted
 		});
 	},
-
-	joinRoom(roomId, type) {
+	createTeam({
+		name, users, type, readOnly, broadcast, encrypted
+	}) {
+		const params = {
+			name,
+			users,
+			type: type ? TEAM_TYPE.PRIVATE : TEAM_TYPE.PUBLIC,
+			room: {
+				readOnly,
+				extraData: {
+					broadcast,
+					encrypted
+				}
+			}
+		};
+		// RC 3.13.0
+		return this.post('teams.create', params);
+	},
+	addRoomsToTeam({ teamId, rooms }) {
+		// RC 3.13.0
+		return this.post('teams.addRooms', { teamId, rooms });
+	},
+	removeTeamRoom({ roomId, teamId }) {
+		// RC 3.13.0
+		return this.post('teams.removeRoom', { roomId, teamId });
+	},
+	leaveTeam({ teamName, rooms }) {
+		// RC 3.13.0
+		return this.post('teams.leave', { teamName, rooms });
+	},
+	removeTeamMember({
+		teamId, teamName, userId, rooms
+	}) {
+		// RC 3.13.0
+		return this.post('teams.removeMember', {
+			teamId, teamName, userId, rooms
+		});
+	},
+	updateTeamRoom({ roomId, isDefault }) {
+		// RC 3.13.0
+		return this.post('teams.updateRoom', { roomId, isDefault });
+	},
+	deleteTeam({ teamId, roomsToRemove }) {
+		// RC 3.13.0
+		return this.post('teams.delete', { teamId, roomsToRemove });
+	},
+	teamListRoomsOfUser({ teamId, userId }) {
+		// RC 3.13.0
+		return this.sdk.get('teams.listRoomsOfUser', { teamId, userId });
+	},
+	getTeamInfo({ teamId }) {
+		// RC 3.13.0
+		return this.sdk.get('teams.info', { teamId });
+	},
+	convertChannelToTeam({ rid, name, type }) {
+		const params = {
+			...(type === 'c'
+				? {
+					channelId: rid,
+					channelName: name
+				}
+				: {
+					roomId: rid,
+					roomName: name
+				})
+		};
+		return this.sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
+	},
+	convertTeamToChannel({ teamId, selected }) {
+		const params = {
+			teamId,
+			...(selected.length && { roomsToRemove: selected })
+		};
+		return this.sdk.post('teams.convertToChannel', params);
+	},
+	joinRoom(roomId, joinCode, type) {
 		// TODO: join code
 		// RC 0.48.0
 		if (type === 'p') {
 			return this.methodCallWrapper('joinRoom', roomId);
 		}
-		return this.post('channels.join', { roomId });
+		return this.post('channels.join', { roomId, joinCode });
 	},
 	triggerBlockAction,
 	triggerSubmitView,
@@ -622,11 +890,18 @@ const RocketChat = {
 	getSettings,
 	getLoginSettings,
 	setSettings,
+	subscribeSettings,
 	getPermissions,
+	setPermissions,
 	getCustomEmojis,
 	setCustomEmojis,
+	getEnterpriseModules,
+	setEnterpriseModules,
+	hasLicense,
+	isOmnichannelModuleAvailable,
 	getSlashCommands,
 	getRoles,
+	setRoles,
 	parseSettings: settings => settings.reduce((ret, item) => {
 		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
 		if (item._id === 'Hide_System_Messages') {
@@ -645,10 +920,10 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.post('chat.delete', { msgId: messageId, roomId: rid });
 	},
-	editMessage(message) {
-		const { id, msg, rid } = message;
+	async editMessage(message) {
+		const { rid, msg } = await Encryption.encryptMessage(message);
 		// RC 0.49.0
-		return this.post('chat.update', { roomId: rid, msgId: id, text: msg });
+		return this.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
 	},
 	markAsUnread({ messageId }) {
 		return this.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
@@ -675,7 +950,7 @@ const RocketChat = {
 	async getRoom(rid) {
 		try {
 			const db = database.active;
-			const room = await db.collections.get('subscriptions').find(rid);
+			const room = await db.get('subscriptions').find(rid);
 			return Promise.resolve(room);
 		} catch (error) {
 			return Promise.reject(new Error('Room not found'));
@@ -731,6 +1006,10 @@ const RocketChat = {
 	setUserPresenceOnline() {
 		return this.methodCall('UserPresence:online');
 	},
+	setUserPreferences(userId, data) {
+		// RC 0.62.0
+		return this.sdk.post('users.setPreferences', { userId, data });
+	},
 	setUserStatus(status, message) {
 		// RC 1.2.0
 		return this.post('users.setStatus', { status, message });
@@ -754,14 +1033,18 @@ const RocketChat = {
 		return this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
 	},
 
-	async methodCallWrapper(method, ...params) {
+	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		if (API_Use_REST_For_DDP_Calls) {
-			const data = await this.post(`method.call/${ method }`, { message: JSON.stringify({ method, params }) });
-			const { result } = JSON.parse(data.message);
-			return result;
+			return this.post(`method.call/${ method }`, { message: EJSON.stringify({ method, params }) });
 		}
-		return this.methodCall(method, ...params);
+		const parsedParams = params.map((param) => {
+			if (param instanceof Date) {
+				return { $date: new Date(param).getTime() };
+			}
+			return param;
+		});
+		return this.methodCall(method, ...parsedParams);
 	},
 
 	getUserRoles() {
@@ -780,6 +1063,10 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.sdk.get('users.info', { userId });
 	},
+	getUserPreferences(userId) {
+		// RC 0.62.0
+		return this.sdk.get('users.getPreferences', { userId });
+	},
 	getRoomInfo(roomId) {
 		// RC 0.72.0
 		return this.sdk.get('rooms.info', { roomId });
@@ -788,6 +1075,19 @@ const RocketChat = {
 	getVisitorInfo(visitorId) {
 		// RC 2.3.0
 		return this.sdk.get('livechat/visitors.info', { visitorId });
+	},
+	getTeamListRoom({
+		teamId, count, offset, type, filter
+	}) {
+		const params = {
+			teamId, count, offset, type
+		};
+
+		if (filter) {
+			params.filter = filter;
+		}
+		// RC 3.13.0
+		return this.sdk.get('teams.listRooms', params);
 	},
 	closeLivechat(rid, comment) {
 		// RC 0.29.0
@@ -837,26 +1137,16 @@ const RocketChat = {
 		// RC 2.2.0
 		return this.sdk.get('livechat/custom-fields');
 	},
-	changeLivechatStatus() {
-		// RC 0.26.0
-		return this.methodCallWrapper('livechat:changeLivechatStatus');
-	},
-	getInquiriesQueued() {
-		// RC 2.4.0
-		return this.sdk.get('livechat/inquiries.queued');
-	},
-	takeInquiry(inquiryId) {
-		// this inquiry is added to the db by the subscriptions stream
-		// and will be removed by the queue stream
-		// RC 2.4.0
-		return this.methodCallWrapper('livechat:takeInquiry', inquiryId);
-	},
 
 	getUidDirectMessage(room) {
 		const { id: userId } = reduxStore.getState().login.user;
 
+		if (!room) {
+			return false;
+		}
+
 		// legacy method
-		if (!room.uids && room.rid && room.t === 'd') {
+		if (!room?.uids && room.rid && room.t === 'd') {
 			return room.rid.replace(userId, '').trim();
 		}
 
@@ -864,8 +1154,8 @@ const RocketChat = {
 			return false;
 		}
 
-		const me = room && room.uids && room.uids.find(uid => uid === userId);
-		const other = room && room.uids && room.uids.filter(uid => uid !== userId);
+		const me = room.uids?.find(uid => uid === userId);
+		const other = room.uids?.filter(uid => uid !== userId);
 
 		return other && other.length ? other[0] : me;
 	},
@@ -904,6 +1194,45 @@ const RocketChat = {
 		// RC 0.51.0
 		return this.methodCallWrapper('unmuteUserInRoom', { rid, username });
 	},
+	toggleRoomOwner({
+		roomId, t, userId, isOwner
+	}) {
+		if (isOwner) {
+			// RC 0.49.4
+			return this.post(`${ this.roomTypeToApiType(t) }.addOwner`, { roomId, userId });
+		}
+		// RC 0.49.4
+		return this.post(`${ this.roomTypeToApiType(t) }.removeOwner`, { roomId, userId });
+	},
+	toggleRoomLeader({
+		roomId, t, userId, isLeader
+	}) {
+		if (isLeader) {
+			// RC 0.58.0
+			return this.post(`${ this.roomTypeToApiType(t) }.addLeader`, { roomId, userId });
+		}
+		// RC 0.58.0
+		return this.post(`${ this.roomTypeToApiType(t) }.removeLeader`, { roomId, userId });
+	},
+	toggleRoomModerator({
+		roomId, t, userId, isModerator
+	}) {
+		if (isModerator) {
+			// RC 0.49.4
+			return this.post(`${ this.roomTypeToApiType(t) }.addModerator`, { roomId, userId });
+		}
+		// RC 0.49.4
+		return this.post(`${ this.roomTypeToApiType(t) }.removeModerator`, { roomId, userId });
+	},
+	removeUserFromRoom({
+		roomId, t, userId
+	}) {
+		// RC 0.48.0
+		return this.post(`${ this.roomTypeToApiType(t) }.kick`, { roomId, userId });
+	},
+	ignoreUser({ rid, userId, ignore }) {
+		return this.sdk.get('chat.ignoreUser', { rid, userId, ignore });
+	},
 	toggleArchiveRoom(roomId, t, archive) {
 		if (archive) {
 			// RC 0.48.0
@@ -921,14 +1250,30 @@ const RocketChat = {
 	},
 	post(...args) {
 		return new Promise(async(resolve, reject) => {
+			const isMethodCall = args[0]?.startsWith('method.call/');
 			try {
 				const result = await this.sdk.post(...args);
+
+				/**
+				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
+				 * responses have a different object structure
+				 */
+				if (isMethodCall) {
+					const response = JSON.parse(result.message);
+					if (response?.error) {
+						throw response.error;
+					}
+					return resolve(response.result);
+				}
 				return resolve(result);
 			} catch (e) {
-				if (e.data && (e.data.errorType === 'totp-required' || e.data.errorType === 'totp-invalid')) {
-					const { details } = e.data;
+				const errorType = isMethodCall ? e?.error : e?.data?.errorType;
+				const totpInvalid = 'totp-invalid';
+				const totpRequired = 'totp-required';
+				if ([totpInvalid, totpRequired].includes(errorType)) {
+					const { details } = isMethodCall ? e : e?.data;
 					try {
-						await twoFactor({ method: details?.method, invalid: e.data.errorType === 'totp-invalid' });
+						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
 						return resolve(this.post(...args));
 					} catch {
 						// twoFactor was canceled
@@ -943,7 +1288,7 @@ const RocketChat = {
 	methodCall(...args) {
 		return new Promise(async(resolve, reject) => {
 			try {
-				const result = await this.sdk.methodCall(...args, this.code || '');
+				const result = await this.sdk?.methodCall(...args, this.code || '');
 				return resolve(result);
 			} catch (e) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
@@ -996,10 +1341,17 @@ const RocketChat = {
 
 		return userRoles.indexOf(r => r === role) > -1;
 	},
+	getRoomRoles(roomId, type) {
+		// RC 0.65.0
+		return this.sdk.get(`${ this.roomTypeToApiType(type) }.roles`, { roomId });
+	},
+	/**
+	 * Permissions: array of permissions' roles from redux. Example: [['owner', 'admin'], ['leader']]
+	 * Returns an array of boolean for each permission from permissions arg
+	 */
 	async hasPermission(permissions, rid) {
 		const db = database.active;
-		const subsCollection = db.collections.get('subscriptions');
-		const permissionsCollection = db.collections.get('permissions');
+		const subsCollection = db.get('subscriptions');
 		let roomRoles = [];
 		try {
 			// get the room from database
@@ -1008,31 +1360,16 @@ const RocketChat = {
 			roomRoles = room.roles || [];
 		} catch (error) {
 			console.log('hasPermission -> Room not found');
-			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				return result;
-			}, {});
+			return permissions.map(() => false);
 		}
-		// get permissions from database
+
 		try {
-			const permissionsFiltered = await permissionsCollection.query(Q.where('id', Q.oneOf(permissions))).fetch();
 			const shareUser = reduxStore.getState().share.user;
 			const loginUser = reduxStore.getState().login.user;
 			// get user roles on the server from redux
 			const userRoles = (shareUser?.roles || loginUser?.roles) || [];
-			// merge both roles
 			const mergedRoles = [...new Set([...roomRoles, ...userRoles])];
-
-			// return permissions in object format
-			// e.g. { 'edit-room': true, 'set-readonly': false }
-			return permissions.reduce((result, permission) => {
-				result[permission] = false;
-				const permissionFound = permissionsFiltered.find(p => p.id === permission);
-				if (permissionFound) {
-					result[permission] = returnAnArray(permissionFound.roles).some(r => mergedRoles.includes(r));
-				}
-				return result;
-			}, {});
+			return permissions.map(permission => permission?.some(r => mergedRoles.includes(r) ?? false));
 		} catch (e) {
 			log(e);
 		}
@@ -1056,18 +1393,21 @@ const RocketChat = {
 		}
 		return JSON.parse(allowCrashReport);
 	},
+	async getAllowAnalyticsEvents() {
+		const allowAnalyticsEvents = await AsyncStorage.getItem(ANALYTICS_EVENTS_KEY);
+		if (allowAnalyticsEvents === null) {
+			return true;
+		}
+		return JSON.parse(allowAnalyticsEvents);
+	},
 	async getSortPreferences() {
-		const prefs = await RNUserDefaults.objectForKey(SORT_PREFS_KEY);
+		const prefs = await UserPreferences.getMapAsync(SORT_PREFS_KEY);
 		return prefs;
 	},
 	async saveSortPreference(param) {
-		try {
-			let prefs = await RocketChat.getSortPreferences();
-			prefs = { ...prefs, ...param };
-			return await RNUserDefaults.setObjectForKey(SORT_PREFS_KEY, prefs);
-		} catch (error) {
-			console.warn(error);
-		}
+		let prefs = await RocketChat.getSortPreferences();
+		prefs = { ...prefs, ...param };
+		return UserPreferences.setMapAsync(SORT_PREFS_KEY, prefs);
 	},
 	async getLoginServices(server) {
 		try {
@@ -1174,11 +1514,18 @@ const RocketChat = {
 		}
 		return this.post('chat.unfollowMessage', { mid });
 	},
-	getThreadsList({ rid, count, offset }) {
-		// RC 1.0
-		return this.sdk.get('chat.getThreadsList', {
+	getThreadsList({
+		rid, count, offset, text
+	}) {
+		const params = {
 			rid, count, offset, sort: { ts: -1 }
-		});
+		};
+		if (text) {
+			params.text = text;
+		}
+
+		// RC 1.0
+		return this.sdk.get('chat.getThreadsList', params);
 	},
 	getSyncThreadsList({ rid, updatedSince }) {
 		// RC 1.0
@@ -1188,7 +1535,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (serverVersion && semver.gte(semver.coerce(serverVersion), '3.4.0')) {
+		if (compareServerVersion(serverVersion, '3.4.0', methods.greaterThanOrEqualTo)) {
 			// RC 3.4.0
 			return this.methodCallWrapper('readThreads', tmid);
 		}
@@ -1252,17 +1599,15 @@ const RocketChat = {
 			query, count, offset, sort
 		});
 	},
-	async canAutoTranslate() {
-		const db = database.active;
+	canAutoTranslate() {
 		try {
-			const AutoTranslate_Enabled = reduxStore.getState().settings && reduxStore.getState().settings.AutoTranslate_Enabled;
+			const { AutoTranslate_Enabled } = reduxStore.getState().settings;
 			if (!AutoTranslate_Enabled) {
 				return false;
 			}
-			const permissionsCollection = db.collections.get('permissions');
-			const autoTranslatePermission = await permissionsCollection.find('auto-translate');
-			const userRoles = (reduxStore.getState().login.user && reduxStore.getState().login.user.roles) || [];
-			return autoTranslatePermission.roles.some(role => userRoles.includes(role));
+			const autoTranslatePermission = reduxStore.getState().permissions['auto-translate'];
+			const userRoles = (reduxStore.getState().login?.user?.roles) ?? [];
+			return autoTranslatePermission?.some(role => userRoles.includes(role));
 		} catch (e) {
 			log(e);
 			return false;
@@ -1278,6 +1623,10 @@ const RocketChat = {
 	},
 	translateMessage(message, targetLanguage) {
 		return this.methodCallWrapper('autoTranslate.translateMessage', message, targetLanguage);
+	},
+	getSenderName(sender) {
+		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
+		return useRealName ? sender.name : sender.username;
 	},
 	getRoomTitle(room) {
 		const { UI_Use_Real_Name: useRealName, UI_Allow_room_names_with_special_chars: allowSpecialChars } = reduxStore.getState().settings;

@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, FlatList, Text } from 'react-native';
+import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -19,7 +20,11 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { CloseModalButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
+import database from '../../lib/database';
+import { sanitizeLikeString } from '../../lib/database/utils';
+import getThreadName from '../../lib/methods/getThreadName';
+import getRoomInfo from '../../lib/methods/getRoomInfo';
 
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ navigation, route }) => {
@@ -28,7 +33,7 @@ class SearchMessagesView extends React.Component {
 		};
 		const showCloseModal = route.params?.showCloseModal;
 		if (showCloseModal) {
-			options.headerLeft = () => <CloseModalButton navigation={navigation} />;
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
 		}
 		return options;
 	}
@@ -39,7 +44,8 @@ class SearchMessagesView extends React.Component {
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
 		customEmojis: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		useRealName: PropTypes.bool
 	}
 
 	constructor(props) {
@@ -50,6 +56,12 @@ class SearchMessagesView extends React.Component {
 			searchText: ''
 		};
 		this.rid = props.route.params?.rid;
+		this.t = props.route.params?.t;
+		this.encrypted = props.route.params?.encrypted;
+	}
+
+	async componentDidMount() {
+		this.room = await getRoomInfo(this.rid);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -64,28 +76,48 @@ class SearchMessagesView extends React.Component {
 		if (nextState.searchText !== searchText) {
 			return true;
 		}
-		if (!equal(nextState.messages, messages)) {
+		if (!dequal(nextState.messages, messages)) {
 			return true;
 		}
 		return false;
 	}
 
 	componentWillUnmount() {
-		this.search.stop();
+		this.search?.stop?.();
 	}
 
-	// eslint-disable-next-line react/sort-comp
+	// Handle encrypted rooms search messages
+	searchMessages = async(searchText) => {
+		// If it's a encrypted, room we'll search only on the local stored messages
+		if (this.encrypted) {
+			const db = database.active;
+			const messagesCollection = db.get('messages');
+			const likeString = sanitizeLikeString(searchText);
+			return messagesCollection
+				.query(
+					// Messages of this room
+					Q.where('rid', this.rid),
+					// Message content is like the search text
+					Q.where('msg', Q.like(`%${ likeString }%`))
+				)
+				.fetch();
+		}
+		// If it's not a encrypted room, search messages on the server
+		const result = await RocketChat.searchMessages(this.rid, searchText);
+		if (result.success) {
+			return result.messages;
+		}
+	}
+
 	search = debounce(async(searchText) => {
 		this.setState({ searchText, loading: true, messages: [] });
 
 		try {
-			const result = await RocketChat.searchMessages(this.rid, searchText);
-			if (result.success) {
-				this.setState({
-					messages: result.messages || [],
-					loading: false
-				});
-			}
+			const messages = await this.searchMessages(searchText);
+			this.setState({
+				messages: messages || [],
+				loading: false
+			});
 		} catch (e) {
 			this.setState({ loading: false });
 			log(e);
@@ -101,12 +133,39 @@ class SearchMessagesView extends React.Component {
 		return null;
 	}
 
+	showAttachment = (attachment) => {
+		const { navigation } = this.props;
+		navigation.navigate('AttachmentView', { attachment });
+	}
+
 	navToRoomInfo = (navParam) => {
 		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
 			return;
 		}
 		navigation.navigate('RoomInfoView', navParam);
+	}
+
+	jumpToMessage = async({ item }) => {
+		const { navigation } = this.props;
+		let params = {
+			rid: this.rid,
+			jumpToMessageId: item._id,
+			t: this.t,
+			room: this.room
+		};
+		if (item.tmid) {
+			navigation.pop();
+			params = {
+				...params,
+				tmid: item.tmid,
+				name: await getThreadName(this.rid, item.tmid, item._id),
+				t: 'thread'
+			};
+			navigation.push('RoomView', params);
+		} else {
+			navigation.navigate('RoomView', params);
+		}
 	}
 
 	renderEmpty = () => {
@@ -119,7 +178,9 @@ class SearchMessagesView extends React.Component {
 	}
 
 	renderItem = ({ item }) => {
-		const { user, baseUrl, theme } = this.props;
+		const {
+			user, baseUrl, theme, useRealName
+		} = this.props;
 		return (
 			<Message
 				item={item}
@@ -127,10 +188,14 @@ class SearchMessagesView extends React.Component {
 				user={user}
 				timeFormat='MMM Do YYYY, h:mm:ss a'
 				isHeader
-				showAttachment={() => {}}
+				isThreadRoom
+				showAttachment={this.showAttachment}
 				getCustomEmoji={this.getCustomEmoji}
 				navToRoomInfo={this.navToRoomInfo}
+				useRealName={useRealName}
 				theme={theme}
+				onPress={() => this.jumpToMessage({ item })}
+				jumpToMessage={() => this.jumpToMessage({ item })}
 			/>
 		);
 	}
@@ -159,8 +224,8 @@ class SearchMessagesView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='search-messages-view' theme={theme}>
-				<StatusBar theme={theme} />
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='search-messages-view'>
+				<StatusBar />
 				<View style={styles.searchContainer}>
 					<RCTextInput
 						autoFocus
@@ -182,6 +247,7 @@ class SearchMessagesView extends React.Component {
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
+	useRealName: state.settings.UI_Use_Real_Name,
 	customEmojis: state.customEmojis
 });
 

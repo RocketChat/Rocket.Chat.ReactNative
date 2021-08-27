@@ -4,12 +4,12 @@ import {
 	Text, View, StyleSheet, Keyboard, Alert
 } from 'react-native';
 import { connect } from 'react-redux';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import I18n from '../i18n';
-import { LegalButton } from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/HeaderButton';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
@@ -51,11 +51,12 @@ const styles = StyleSheet.create({
 class LoginView extends React.Component {
 	static navigationOptions = ({ route, navigation }) => ({
 		title: route.params?.title ?? 'Rocket.Chat',
-		headerRight: () => <LegalButton testID='login-view-more' navigation={navigation} />
+		headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
 	})
 
 	static propTypes = {
 		navigation: PropTypes.object,
+		route: PropTypes.object,
 		Site_Name: PropTypes.string,
 		Accounts_RegistrationForm: PropTypes.string,
 		Accounts_RegistrationForm_LinkReplacementText: PropTypes.string,
@@ -74,14 +75,14 @@ class LoginView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: '',
+			user: props.route.params?.username ?? '',
 			password: ''
 		};
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { error } = this.props;
-		if (nextProps.failure && !equal(error, nextProps.error)) {
+		if (nextProps.failure && !dequal(error, nextProps.error)) {
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
 		}
 	}
@@ -123,6 +124,7 @@ class LoginView extends React.Component {
 	}
 
 	renderUserForm = () => {
+		const { user } = this.state;
 		const {
 			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, Accounts_RegistrationForm_LinkReplacementText, isFetching, theme, Accounts_ShowFormLogin
 		} = this.props;
@@ -135,7 +137,7 @@ class LoginView extends React.Component {
 			<>
 				<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Login')}</Text>
 				<TextInput
-					label='Email or username'
+					label={I18n.t('Username_or_email')}
 					containerStyle={styles.inputContainer}
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
 					keyboardType='email-address'
@@ -146,9 +148,10 @@ class LoginView extends React.Component {
 					textContentType='username'
 					autoCompleteType='username'
 					theme={theme}
+					value={user}
 				/>
 				<TextInput
-					label='Password'
+					label={I18n.t('Password')}
 					containerStyle={styles.inputContainer}
 					inputRef={(e) => { this.passwordInput = e; }}
 					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}

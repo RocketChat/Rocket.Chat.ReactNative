@@ -3,6 +3,7 @@ import { StatusBar as StatusBarRN } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../constants/colors';
+import { withTheme } from '../theme';
 
 const StatusBar = React.memo(({ theme, barStyle, backgroundColor }) => {
 	if (!barStyle) {
@@ -20,4 +21,4 @@ StatusBar.propTypes = {
 	backgroundColor: PropTypes.string
 };
 
-export default StatusBar;
+export default withTheme(StatusBar);

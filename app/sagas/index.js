@@ -10,7 +10,9 @@ import state from './state';
 import deepLinking from './deepLinking';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
-import inquiry from './inquiry';
+import encryption from './encryption';
+
+import inquiry from '../ee/omnichannel/sagas/inquiry';
 
 const root = function* root() {
 	yield all([
@@ -25,7 +27,8 @@ const root = function* root() {
 		deepLinking(),
 		inviteLinks(),
 		createDiscussion(),
-		inquiry()
+		inquiry(),
+		encryption()
 	]);
 };
 

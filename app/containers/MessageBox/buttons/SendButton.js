@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import BaseButton from './BaseButton';
+import { themes } from '../../../constants/colors';
 
 const SendButton = React.memo(({ theme, onPress }) => (
 	<BaseButton
@@ -10,6 +11,7 @@ const SendButton = React.memo(({ theme, onPress }) => (
 		accessibilityLabel='Send_message'
 		icon='send-filled'
 		theme={theme}
+		color={themes[theme].tintColor}
 	/>
 ));
 

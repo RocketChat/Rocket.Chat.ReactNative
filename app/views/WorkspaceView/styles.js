@@ -15,8 +15,8 @@ export default StyleSheet.create({
 	},
 	registrationText: {
 		fontSize: 14,
-		...sharedStyles.textAlignCenter,
-		...sharedStyles.textRegular
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter
 	},
 	alignItemsCenter: {
 		alignItems: 'center'

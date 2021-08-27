@@ -5,7 +5,7 @@ import database from '../../database';
 export default async(subscriptions = [], rooms = []) => {
 	try {
 		const db = database.active;
-		const subCollection = db.collections.get('subscriptions');
+		const subCollection = db.get('subscriptions');
 
 		const roomIds = rooms.filter(r => !subscriptions.find(s => s.rid === r._id)).map(r => r._id);
 		let existingSubs = await subCollection.query(Q.where('rid', Q.oneOf(roomIds))).fetch();
@@ -49,7 +49,11 @@ export default async(subscriptions = [], rooms = []) => {
 			departmentId: s.departmentId,
 			servedBy: s.servedBy,
 			livechatData: s.livechatData,
-			tags: s.tags
+			tags: s.tags,
+			encrypted: s.encrypted,
+			e2eKeyId: s.e2eKeyId,
+			E2EKey: s.E2EKey,
+			avatarETag: s.avatarETag
 		}));
 		subscriptions = subscriptions.concat(existingSubs);
 
@@ -75,7 +79,10 @@ export default async(subscriptions = [], rooms = []) => {
 			departmentId: r.departmentId,
 			servedBy: r.servedBy,
 			livechatData: r.livechatData,
-			tags: r.tags
+			tags: r.tags,
+			encrypted: r.encrypted,
+			e2eKeyId: r.e2eKeyId,
+			avatarETag: r.avatarETag
 		}));
 		rooms = rooms.concat(existingRooms);
 	} catch {

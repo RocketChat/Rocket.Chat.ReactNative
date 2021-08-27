@@ -3,23 +3,23 @@ import { Animated, View, Text } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import PropTypes from 'prop-types';
 
-import I18n from '../../i18n';
+import I18n, { isRTL } from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 
+const reverse = new Animated.Value(isRTL() ? -1 : 1);
+
 export const LeftActions = React.memo(({
 	theme, transX, isRead, width, onToggleReadPress
 }) => {
-	const translateX = transX.interpolate({
-		inputRange: [0, ACTION_WIDTH],
-		outputRange: [-ACTION_WIDTH, 0]
-	});
-	const translateXIcon = transX.interpolate({
-		inputRange: [0, ACTION_WIDTH, LONG_SWIPE - 2, LONG_SWIPE],
-		outputRange: [0, 0, -LONG_SWIPE + ACTION_WIDTH + 2, 0],
-		extrapolate: 'clamp'
-	});
+	const translateX = Animated.multiply(
+		transX.interpolate({
+			inputRange: [0, ACTION_WIDTH],
+			outputRange: [-ACTION_WIDTH, 0]
+		}),
+		reverse
+	);
 	return (
 		<View
 			style={[styles.actionsContainer, styles.actionLeftContainer]}
@@ -36,22 +36,14 @@ export const LeftActions = React.memo(({
 					}
 				]}
 			>
-				<Animated.View
-					style={[
-						styles.actionLeftButtonContainer,
-						{
-							right: 0,
-							transform: [{ translateX: translateXIcon }]
-						}
-					]}
-				>
+				<View style={styles.actionLeftButtonContainer}>
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
 						<>
 							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
 							<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
 						</>
 					</RectButton>
-				</Animated.View>
+				</View>
 			</Animated.View>
 		</View>
 	);
@@ -60,14 +52,20 @@ export const LeftActions = React.memo(({
 export const RightActions = React.memo(({
 	transX, favorite, width, toggleFav, onHidePress, theme
 }) => {
-	const translateXFav = transX.interpolate({
-		inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
-		outputRange: [width / 2, width - ACTION_WIDTH * 2, width]
-	});
-	const translateXHide = transX.interpolate({
-		inputRange: [-width, -LONG_SWIPE, -ACTION_WIDTH * 2, 0],
-		outputRange: [0, width - LONG_SWIPE, width - ACTION_WIDTH, width]
-	});
+	const translateXFav = Animated.multiply(
+		transX.interpolate({
+			inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
+			outputRange: [width / 2, width - ACTION_WIDTH * 2, width]
+		}),
+		reverse
+	);
+	const translateXHide = Animated.multiply(
+		transX.interpolate({
+			inputRange: [-width, -LONG_SWIPE, -ACTION_WIDTH * 2, 0],
+			outputRange: [0, width - LONG_SWIPE, width - ACTION_WIDTH, width]
+		}),
+		reverse
+	);
 	return (
 		<View
 			style={{

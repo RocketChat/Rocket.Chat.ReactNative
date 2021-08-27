@@ -18,6 +18,7 @@ export const LOGIN = createRequestTypes('LOGIN', [
 export const SHARE = createRequestTypes('SHARE', [
 	'SELECT_SERVER',
 	'SET_USER',
+	'SET_SETTINGS',
 	'SET_SERVER_INFO'
 ]);
 export const USER = createRequestTypes('USER', ['SET']);
@@ -53,6 +54,7 @@ export const SNIPPETED_MESSAGES = createRequestTypes('SNIPPETED_MESSAGES', ['OPE
 export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
 export const TOGGLE_CRASH_REPORT = 'TOGGLE_CRASH_REPORT';
+export const TOGGLE_ANALYTICS_EVENTS = 'TOGGLE_ANALYTICS_EVENTS';
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
 export const SET_ACTIVE_USERS = 'SET_ACTIVE_USERS';
 export const USERS_TYPING = createRequestTypes('USERS_TYPING', ['ADD', 'REMOVE', 'CLEAR']);
@@ -64,5 +66,10 @@ export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 	'CLEAR',
 	...defaultTypes
 ]);
-export const SETTINGS = createRequestTypes('SETTINGS', ['CLEAR', 'ADD']);
+export const SETTINGS = createRequestTypes('SETTINGS', ['CLEAR', 'ADD', 'UPDATE']);
 export const APP_STATE = createRequestTypes('APP_STATE', ['FOREGROUND', 'BACKGROUND']);
+export const ENTERPRISE_MODULES = createRequestTypes('ENTERPRISE_MODULES', ['CLEAR', 'SET']);
+export const ENCRYPTION = createRequestTypes('ENCRYPTION', ['INIT', 'STOP', 'DECODE_KEY', 'SET', 'SET_BANNER']);
+
+export const PERMISSIONS = createRequestTypes('PERMISSIONS', ['SET', 'UPDATE']);
+export const ROLES = createRequestTypes('ROLES', ['SET', 'UPDATE', 'REMOVE']);

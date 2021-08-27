@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -8,15 +8,13 @@ import {
 	inviteLinksSetParams as inviteLinksSetParamsAction,
 	inviteLinksCreate as inviteLinksCreateAction
 } from '../../actions/inviteLinks';
-import ListItem from '../../containers/ListItem';
+import * as List from '../../containers/List';
 import styles from './styles';
 import Button from '../../containers/Button';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import Separator from '../../containers/Separator';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { logEvent, events } from '../../utils/log';
 
@@ -62,7 +60,6 @@ class InviteUsersView extends React.Component {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
 		theme: PropTypes.string,
-		timeDateFormat: PropTypes.string,
 		createInviteLink: PropTypes.func,
 		inviteLinksSetParams: PropTypes.func
 	}
@@ -110,29 +107,23 @@ class InviteUsersView extends React.Component {
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} theme={theme}>
-				<ScrollView
-					{...scrollPersistTaps}
-					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-					contentContainerStyle={styles.contentContainer}
-					showsVerticalScrollIndicator={false}
-				>
-					<StatusBar theme={theme} />
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Expiration_Days')}
-						right={() => this.renderPicker('days', 'Never')}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
-					<ListItem
-						title={I18n.t('Max_number_of_uses')}
-						right={() => this.renderPicker('maxUses', 'No_limit')}
-						theme={theme}
-					/>
-					<Separator theme={theme} />
+			<SafeAreaView>
+				<List.Container>
+					<StatusBar />
+					<List.Section>
+						<List.Separator />
+						<List.Item
+							title='Expiration_Days'
+							right={() => this.renderPicker('days', 'Never')}
+						/>
+						<List.Separator />
+						<List.Item
+							title='Max_number_of_uses'
+							right={() => this.renderPicker('maxUses', 'No_limit')}
+						/>
+						<List.Separator />
+					</List.Section>
 					<View style={styles.innerContainer}>
-						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 						<Button
 							title={I18n.t('Generate_New_Link')}
 							type='primary'
@@ -140,7 +131,7 @@ class InviteUsersView extends React.Component {
 							theme={theme}
 						/>
 					</View>
-				</ScrollView>
+				</List.Container>
 			</SafeAreaView>
 		);
 	}

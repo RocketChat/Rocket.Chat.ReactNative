@@ -1,0 +1,157 @@
+diff --git a/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/StorageGetters.java b/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/StorageGetters.java
+index 568e369..229b911 100644
+--- a/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/StorageGetters.java
++++ b/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/StorageGetters.java
+@@ -52,8 +52,12 @@ public class StorageGetters {
+                     case Constants.DATA_TYPE_MAP:
+                     case Constants.DATA_TYPE_ARRAY:
+                         Bundle bundle = kv.decodeParcelable(key, Bundle.class);
+-                        WritableMap map = Arguments.fromBundle(bundle);
+-                        callback.invoke(null, map);
++                        if (bundle == null) {
++                            callback.invoke(null, null);
++                        } else {
++                            WritableMap map = Arguments.fromBundle(bundle);
++                            callback.invoke(null, map);
++                        }
+                         break;
+                     
+                 }
+diff --git a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
+index 70f3a01..30d7251 100644
+--- a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
++++ b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
+@@ -46,7 +46,6 @@ - (void) setSecureKey: (NSString *)key value:(NSString *)value
+ - (NSString *) getSecureKey:(NSString *)key
+                    callback:(RCTResponseSenderBlock)callback
+ {
+-    
+     @try {
+         [self handleAppUninstallation];
+         NSString *value = [self searchKeychainCopyMatching:key];
+@@ -130,7 +129,8 @@ - (void) removeSecureKey:(NSString *)key
+ 
+ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
+     NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
+-    serviceName = [[NSBundle mainBundle] bundleIdentifier];
++    // this value is shared by main app and extensions, so, is the best to be used here
++    serviceName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+     
+     [searchDictionary setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
+     
+@@ -139,6 +139,9 @@ - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
+     [searchDictionary setObject:encodedIdentifier forKey:(id)kSecAttrAccount];
+     [searchDictionary setObject:serviceName forKey:(id)kSecAttrService];
+     
++    NSString *keychainGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"KeychainGroup"];
++    [searchDictionary setObject:keychainGroup forKey:(id)kSecAttrAccessGroup];
++    
+     return searchDictionary;
+ }
+ 
+@@ -240,10 +243,13 @@ - (void)clearSecureKeyStore
+ 
+ - (void)handleAppUninstallation
+ {
+-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"RnSksIsAppInstalled"]) {
++    // use app group user defaults to prevent clear when it's share extension
++    NSString *suiteName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
++    NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:suiteName];
++    if (![userDefaults boolForKey:@"RnSksIsAppInstalled"]) {
+         [self clearSecureKeyStore];
+-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"RnSksIsAppInstalled"];
+-        [[NSUserDefaults standardUserDefaults] synchronize];
++        [userDefaults setBool:YES forKey:@"RnSksIsAppInstalled"];
++        [userDefaults synchronize];
+     }
+ }
+ 
+diff --git a/node_modules/react-native-mmkv-storage/ios/StorageGetters.m b/node_modules/react-native-mmkv-storage/ios/StorageGetters.m
+index 909d056..d62814a 100644
+--- a/node_modules/react-native-mmkv-storage/ios/StorageGetters.m
++++ b/node_modules/react-native-mmkv-storage/ios/StorageGetters.m
+@@ -38,8 +38,13 @@ +(void) getItem:(NSString *)ID
+         if ([kv containsKey:key]) {
+             switch (type.integerValue) {
+                 case 1:
+-                    
+-                    callback(@[[NSNull null], [kv getObjectOfClass:NSString.class forKey:key]]);
++                    {
++                        NSString* string = [kv getObjectOfClass:NSString.class forKey:key];
++                        if (!string) {
++                            string = (NSString *)[NSNull null];
++                        }
++                        callback(@[[NSNull null], string]);
++                    }
+                     break;
+                 case 2:
+                     
+diff --git a/node_modules/react-native-mmkv-storage/ios/StorageIndexer.m b/node_modules/react-native-mmkv-storage/ios/StorageIndexer.m
+index e7c914b..891cf93 100644
+--- a/node_modules/react-native-mmkv-storage/ios/StorageIndexer.m
++++ b/node_modules/react-native-mmkv-storage/ios/StorageIndexer.m
+@@ -58,7 +58,11 @@ + (void) removeKeyFromIndexer:(MMKV *)kv
+     if (index != NULL && [index containsObject:key]) {
+         
+         [index removeObject:key];
+-        [kv setObject:index forKey:stringsIndexKey];
++        if (!index || [index count] == 0) {
++            [kv removeValueForKey:stringsIndexKey];
++        } else {
++            [kv setObject:index forKey:stringsIndexKey];
++        }
+         return;
+     }
+     
+@@ -67,7 +71,11 @@ + (void) removeKeyFromIndexer:(MMKV *)kv
+     if (index != NULL && [index containsObject:key]) {
+         
+         [index removeObject:key];
+-        [kv setObject:index forKey:intIndexKey];
++        if (!index || [index count] == 0) {
++            [kv removeValueForKey:intIndexKey];
++        } else {
++            [kv setObject:index forKey:intIndexKey];
++        }
+         return;
+     }
+     
+@@ -76,7 +84,11 @@ + (void) removeKeyFromIndexer:(MMKV *)kv
+     if (index != NULL && [index containsObject:key]) {
+         
+         [index removeObject:key];
+-        [kv setObject:index forKey:boolIndexKey];
++        if (!index || [index count] == 0) {
++            [kv removeValueForKey:boolIndexKey];
++        } else {
++            [kv setObject:index forKey:boolIndexKey];
++        }
+         return;
+     }
+     
+@@ -85,7 +97,11 @@ + (void) removeKeyFromIndexer:(MMKV *)kv
+     if (index != NULL && [index containsObject:key]) {
+         
+         [index removeObject:key];
+-        [kv setObject:index forKey:mapIndexKey];
++        if (!index || [index count] == 0) {
++            [kv removeValueForKey:mapIndexKey];
++        } else {
++            [kv setObject:index forKey:mapIndexKey];
++        }
+         return;
+     }
+     
+@@ -94,7 +110,11 @@ + (void) removeKeyFromIndexer:(MMKV *)kv
+     if (index != NULL && [index containsObject:key]) {
+         
+         [index removeObject:key];
+-        [kv setObject:index forKey:arrayIndexKey];
++        if (!index || [index count] == 0) {
++            [kv removeValueForKey:arrayIndexKey];
++        } else {
++            [kv setObject:index forKey:arrayIndexKey];
++        }
+         return;
+     }
+     

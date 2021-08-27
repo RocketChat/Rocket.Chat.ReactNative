@@ -52,9 +52,7 @@ export default StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	status: {
-		marginLeft: 4,
-		marginRight: 7,
-		marginTop: 3
+		marginRight: 2
 	},
 	markdownText: {
 		flex: 1,
@@ -84,7 +82,8 @@ export default StyleSheet.create({
 		position: 'absolute',
 		height: ROW_HEIGHT,
 		justifyContent: 'center',
-		top: 0
+		top: 0,
+		right: 0
 	},
 	actionRightButtonContainer: {
 		position: 'absolute',
@@ -97,5 +96,16 @@ export default StyleSheet.create({
 		height: '100%',
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	tagContainer: {
+		alignSelf: 'center',
+		alignItems: 'center',
+		borderRadius: 4,
+		marginHorizontal: 4
+	},
+	tagText: {
+		fontSize: 13,
+		paddingHorizontal: 4,
+		...sharedStyles.textSemibold
 	}
 });

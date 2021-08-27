@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 
-import Separator from '../Separator';
+import * as List from '../List';
 
 const styles = StyleSheet.create({
 	separator: {
@@ -12,7 +11,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const Divider = ({ theme }) => <Separator style={styles.separator} theme={theme} />;
-Divider.propTypes = {
-	theme: PropTypes.string
-};
+export const Divider = () => <List.Separator style={styles.separator} />;

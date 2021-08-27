@@ -5,10 +5,10 @@ import Popover from 'react-native-popover-view';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../lib/Icons';
-import Separator from '../Separator';
 import ActivityIndicator from '../ActivityIndicator';
 import { themes } from '../../constants/colors';
 import { BUTTON_HIT_SLOP } from '../message/utils';
+import * as List from '../List';
 
 const keyExtractor = item => item.value;
 
@@ -50,7 +50,7 @@ const Options = ({
 		data={options}
 		renderItem={({ item }) => <Option option={item} onOptionPress={onOptionPress} parser={parser} theme={theme} />}
 		keyExtractor={keyExtractor}
-		ItemSeparatorComponent={() => <Separator theme={theme} />}
+		ItemSeparatorComponent={List.Separator}
 	/>
 );
 Options.propTypes = {

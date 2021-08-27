@@ -20,15 +20,16 @@
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
+#import <MMKV/MMKV.h>
 
 #if DEBUG
-//#import <FlipperKit/FlipperClient.h>
-//#import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
-//#import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
-//#import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
-//#import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
-//#import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-/*
+#import <FlipperKit/FlipperClient.h>
+#import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
+#import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
+#import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
+#import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
+#import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
+
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
   SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
@@ -37,7 +38,7 @@ static void InitializeFlipper(UIApplication *application) {
   [client addPlugin:[FlipperKitReactPlugin new]];
   [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
   [client start];
-}*/
+}
 #endif
 
 @implementation AppDelegate
@@ -64,6 +65,11 @@ static void InitializeFlipper(UIApplication *application) {
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
     [RNNotifications startMonitorNotifications];
+    [ReplyNotification configure];
+  
+    // AppGroup MMKV
+    NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
+    [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
 
     return YES;
 }
