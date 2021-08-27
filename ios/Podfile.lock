@@ -413,8 +413,8 @@ PODS:
     - React-Core
   - react-native-notifications (2.1.7):
     - React
-  - react-native-orientation-locker (1.3.1):
-    - React-Core
+  - react-native-orientation-locker (1.1.8):
+    - React
   - react-native-restart (0.0.22):
     - React-Core
   - react-native-safe-area-context (3.2.0):
@@ -990,7 +990,7 @@ SPEC CHECKSUMS:
   react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
-  react-native-orientation-locker: 998c0744e26624407dac068c04c605b4af7304a2
+  react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-simple-crypto: 9b358cdfd34169031d384a8d4ac2ffc40b323876
