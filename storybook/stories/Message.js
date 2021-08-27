@@ -854,3 +854,16 @@ stories.add('Ignored', () => (
 stories.add('Custom style', () => (
 	<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />
 ));
+
+stories.add('Thumbnail from server', () => (
+	<Message
+		msg='this is a thumbnail'
+		attachments={[{
+			text: 'Some crazy texts',
+			thumb_url: 'https://images-na.ssl-images-amazon.com/images/I/71jKxPAMFbL._AC_SL1500_.jpg',
+			title: 'Joker',
+			title_link: 'https://www.imdb.com/title/tt7286456/'
+		}]}
+	/>
+));
+
