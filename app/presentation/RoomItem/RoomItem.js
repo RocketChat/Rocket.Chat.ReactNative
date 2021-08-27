@@ -139,7 +139,7 @@ const RoomItem = ({
 					</>
 				)
 				: (
-					<View style={[styles.titleContainer, styles.flex]}>
+					<View style={[styles.titleContainer]}>
 						<TypeIcon
 							type={type}
 							prid={prid}
@@ -157,7 +157,7 @@ const RoomItem = ({
 						{
 							autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null
 						}
-						<View style={styles.column}>
+						<View style={styles.wrapUpdatedAndBadge}>
 							<UpdatedAt
 								date={date}
 								theme={theme}

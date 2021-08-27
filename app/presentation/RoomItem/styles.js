@@ -41,8 +41,7 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'flex-start'
 	},
-	column: {
-		flex: 1,
+	wrapUpdatedAndBadge: {
 		alignItems: 'flex-end'
 	},
 	titleContainer: {
