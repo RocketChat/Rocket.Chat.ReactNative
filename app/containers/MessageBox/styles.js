@@ -41,16 +41,24 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		marginTop: 8
 	},
-	loadingMentionHeader: {
+	wrapMentionHeaderListRow: {
 		height: MENTION_HEIGHT,
 		flexDirection: 'row',
-		alignItems: 'center',
+		alignItems: 'center'
+	},
+	loadingPaddingHeader: {
 		paddingLeft: 12
 	},
 	mentionHeaderList: {
 		fontSize: 12,
 		paddingLeft: 12,
 		...sharedStyles.textSemibold
+	},
+	mentionChevronMargin: {
+		marginRight: 20
+	},
+	mentionNoMatchHeader: {
+		justifyContent: 'space-between'
 	},
 	mentionList: {
 		maxHeight: MENTION_HEIGHT * 4

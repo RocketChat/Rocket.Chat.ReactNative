@@ -270,7 +270,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow, mentionLoading
+			showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow, mentionLoading, trackingType
 		} = this.state;
 
 		const {
@@ -292,6 +292,9 @@ class MessageBox extends Component {
 			return true;
 		}
 		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+			return true;
+		}
+		if (nextState.trackingType !== trackingType) {
 			return true;
 		}
 		if (nextState.mentionLoading !== mentionLoading) {
