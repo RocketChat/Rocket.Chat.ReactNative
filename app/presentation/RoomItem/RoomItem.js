@@ -90,16 +90,16 @@ const RoomItem = ({
 					<>
 						<View style={styles.titleContainer}>
 							{ showAvatar
-							&& (
-								<TypeIcon
-									type={type}
-									prid={prid}
-									status={status}
-									isGroupChat={isGroupChat}
-									theme={theme}
-									teamMain={teamMain}
-								/>
-							) }
+								? (
+									<TypeIcon
+										type={type}
+										prid={prid}
+										status={status}
+										isGroupChat={isGroupChat}
+										theme={theme}
+										teamMain={teamMain}
+									/>
+								) : null }
 							<Title
 								name={name}
 								theme={theme}
@@ -116,8 +116,9 @@ const RoomItem = ({
 								alert={alert}
 							/>
 						</View>
-						<View style={styles.row} testID='last-message-room-list'>
+						<View style={styles.row}>
 							<LastMessage
+								testID='last-message-room-list'
 								lastMessage={lastMessage}
 								type={type}
 								showLastMessage={showLastMessage}
