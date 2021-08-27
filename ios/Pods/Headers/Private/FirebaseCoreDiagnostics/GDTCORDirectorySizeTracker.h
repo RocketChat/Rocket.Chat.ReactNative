@@ -1,1 +1,0 @@
-../../../FirebaseCoreDiagnostics/GoogleDataTransport/GDTCORLibrary/Internal/GDTCORDirectorySizeTracker.h
