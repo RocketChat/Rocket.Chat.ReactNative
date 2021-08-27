@@ -690,6 +690,7 @@ class RoomsListView extends React.Component {
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleRead(isRead, rid);
+
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
 				await db.action(async() => {
@@ -697,6 +698,7 @@ class RoomsListView extends React.Component {
 						const subRecord = await subCollection.find(rid);
 						await subRecord.update((sub) => {
 							sub.alert = isRead;
+							sub.unread = 0;
 						});
 					} catch (e) {
 						log(e);
