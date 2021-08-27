@@ -42,7 +42,8 @@ import {
 	MENTIONS_TRACKING_TYPE_COMMANDS,
 	MENTIONS_COUNT_TO_DISPLAY,
 	MENTIONS_TRACKING_TYPE_USERS,
-	MENTIONS_TRACKING_TYPE_ROOMS
+	MENTIONS_TRACKING_TYPE_ROOMS,
+	MENTIONS_TRACKING_TYPE_CANNED
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
@@ -130,7 +131,8 @@ class MessageBox extends Component {
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {},
-			tshow: false
+			tshow: false,
+			mentionLoading: false
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -268,7 +270,7 @@ class MessageBox extends Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const {
-			showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow
+			showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow, mentionLoading
 		} = this.state;
 
 		const {
@@ -290,6 +292,9 @@ class MessageBox extends Component {
 			return true;
 		}
 		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
+			return true;
+		}
+		if (nextState.mentionLoading !== mentionLoading) {
 			return true;
 		}
 		if (nextState.showSend !== showSend) {
@@ -371,6 +376,7 @@ class MessageBox extends Component {
 		const channelMention = lastWord.match(/^#/);
 		const userMention = lastWord.match(/^@/);
 		const emojiMention = lastWord.match(/^:/);
+		const cannedMention = lastWord.match(/^!/);
 
 		if (commandMention && !sharing) {
 			const command = text.substr(1);
@@ -395,6 +401,8 @@ class MessageBox extends Component {
 			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_USERS);
 		} else if (emojiMention) {
 			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_EMOJIS);
+		} else if (cannedMention) {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_CANNED);
 		} else {
 			return this.stopTrackingMention();
 		}
@@ -485,12 +493,12 @@ class MessageBox extends Component {
 	getUsers = debounce(async(keyword) => {
 		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
 		res = [...this.getFixedMentions(keyword), ...res];
-		this.setState({ mentions: res });
+		this.setState({ mentions: res, mentionLoading: false });
 	}, 300)
 
 	getRooms = debounce(async(keyword = '') => {
 		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
-		this.setState({ mentions: res });
+		this.setState({ mentions: res, mentionLoading: false });
 	}, 300)
 
 	getEmojis = debounce(async(keyword) => {
@@ -505,7 +513,7 @@ class MessageBox extends Component {
 		customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
-		this.setState({ mentions: mergedEmojis || [] });
+		this.setState({ mentions: mergedEmojis || [], mentionLoading: false });
 	}, 300)
 
 	getSlashCommands = debounce(async(keyword) => {
@@ -515,7 +523,17 @@ class MessageBox extends Component {
 		const commands = await commandsCollection.query(
 			Q.where('id', Q.like(`${ likeString }%`))
 		).fetch();
-		this.setState({ mentions: commands || [] });
+		this.setState({ mentions: commands || [], mentionLoading: false });
+	}, 300)
+
+	getCannedResponses = debounce(async(keyword) => {
+		const db = database.active;
+		const commandsCollection = db.get('slash_commands');
+		const likeString = sanitizeLikeString(keyword);
+		const commands = await commandsCollection.query(
+			Q.where('id', Q.like(`${ likeString }%`))
+		).fetch();
+		this.setState({ mentions: commands || [], mentionLoading: false });
 	}, 300)
 
 	focus = () => {
@@ -809,6 +827,8 @@ class MessageBox extends Component {
 			this.getEmojis(keyword);
 		} else if (type === MENTIONS_TRACKING_TYPE_COMMANDS) {
 			this.getSlashCommands(keyword);
+		} else if (type === MENTIONS_TRACKING_TYPE_CANNED) {
+			this.getCannedResponses(keyword);
 		} else {
 			this.getRooms(keyword);
 		}
@@ -817,7 +837,8 @@ class MessageBox extends Component {
 	identifyMentionKeyword = (keyword, type) => {
 		this.setState({
 			showEmojiKeyboard: false,
-			trackingType: type
+			trackingType: type,
+			mentionLoading: true
 		});
 		this.updateMentions(keyword, type);
 	}
@@ -873,7 +894,7 @@ class MessageBox extends Component {
 
 	renderContent = () => {
 		const {
-			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview
+			recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, mentionLoading
 		} = this.state;
 		const {
 			editing, message, replying, replyCancel, user, getCustomEmoji, theme, Message_AudioRecorderEnabled, children, isActionsEnabled, tmid
@@ -896,7 +917,7 @@ class MessageBox extends Component {
 		const commandsPreviewAndMentions = !recording ? (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
+				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} mentionLoading={mentionLoading} />
 			</>
 		) : null;
 

@@ -9,7 +9,8 @@ import FixedMentionItem from './FixedMentionItem';
 import MentionEmoji from './MentionEmoji';
 import {
 	MENTIONS_TRACKING_TYPE_EMOJIS,
-	MENTIONS_TRACKING_TYPE_COMMANDS
+	MENTIONS_TRACKING_TYPE_COMMANDS,
+	MENTIONS_TRACKING_TYPE_CANNED
 } from '../constants';
 import { themes } from '../../../constants/colors';
 
@@ -24,6 +25,8 @@ const MentionItem = ({
 			case MENTIONS_TRACKING_TYPE_EMOJIS:
 				return `mention-item-${ item.name || item }`;
 			case MENTIONS_TRACKING_TYPE_COMMANDS:
+				return `mention-item-${ item.command || item }`;
+			case MENTIONS_TRACKING_TYPE_CANNED:
 				return `mention-item-${ item.command || item }`;
 			default:
 				return `mention-item-${ item.username || item.name || item }`;
@@ -62,6 +65,15 @@ const MentionItem = ({
 			<>
 				<Text style={[styles.slash, { backgroundColor: themes[theme].borderColor, color: themes[theme].tintColor }]}>/</Text>
 				<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{item.id}</Text>
+			</>
+		);
+	}
+
+	if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
+		content = (
+			<>
+				<Text style={[styles.cannedItem, { color: themes[theme].titleText }]}>!{item.id}</Text>
+				<Text numberOfLines={1} style={[styles.cannedMentionText, { color: themes[theme].auxiliaryTintColor }]}>Buenos Dias {'{Contact.Name}'}! Welcom...</Text>
 			</>
 		);
 	}

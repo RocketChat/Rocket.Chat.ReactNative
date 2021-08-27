@@ -36,6 +36,22 @@ export default StyleSheet.create({
 		width: 60,
 		height: 48
 	},
+	wrapMentionHeaderList: {
+		height: MENTION_HEIGHT,
+		justifyContent: 'center',
+		marginTop: 8
+	},
+	loadingMentionHeader: {
+		height: MENTION_HEIGHT,
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingLeft: 12
+	},
+	mentionHeaderList: {
+		fontSize: 12,
+		paddingLeft: 12,
+		...sharedStyles.textSemibold
+	},
 	mentionList: {
 		maxHeight: MENTION_HEIGHT * 4
 	},
@@ -66,6 +82,18 @@ export default StyleSheet.create({
 	mentionText: {
 		fontSize: 14,
 		...sharedStyles.textRegular
+	},
+	cannedMentionText: {
+		flex: 1,
+		fontSize: 14,
+		paddingRight: 12,
+		...sharedStyles.textRegular
+	},
+	cannedItem: {
+		fontSize: 14,
+		...sharedStyles.textBold,
+		paddingLeft: 12,
+		paddingRight: 8
 	},
 	emojiKeyboardContainer: {
 		flex: 1,

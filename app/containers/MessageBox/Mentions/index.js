@@ -5,9 +5,12 @@ import { dequal } from 'dequal';
 
 import styles from '../styles';
 import MentionItem from './MentionItem';
+import MentionHeaderList from './MentionHeaderList';
 import { themes } from '../../../constants/colors';
 
-const Mentions = React.memo(({ mentions, trackingType, theme }) => {
+const Mentions = React.memo(({
+	mentions, trackingType, theme, mentionLoading
+}) => {
 	if (!trackingType) {
 		return null;
 	}
@@ -15,6 +18,7 @@ const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 		<View testID='messagebox-container'>
 			<FlatList
 				style={[styles.mentionList, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				ListHeaderComponent={() => <MentionHeaderList trackingType={trackingType} hasMentions={mentions.length > 0} theme={theme} mentionLoading={mentionLoading} />}
 				data={mentions}
 				extraData={mentions}
 				renderItem={({ item }) => <MentionItem item={item} trackingType={trackingType} theme={theme} />}
@@ -24,6 +28,9 @@ const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 		</View>
 	);
 }, (prevProps, nextProps) => {
+	if (prevProps.mentionLoading !== nextProps.mentionLoading) {
+		return false;
+	}
 	if (prevProps.theme !== nextProps.theme) {
 		return false;
 	}
@@ -39,7 +46,8 @@ const Mentions = React.memo(({ mentions, trackingType, theme }) => {
 Mentions.propTypes = {
 	mentions: PropTypes.array,
 	trackingType: PropTypes.string,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	mentionLoading: PropTypes.bool
 };
 
 export default Mentions;
