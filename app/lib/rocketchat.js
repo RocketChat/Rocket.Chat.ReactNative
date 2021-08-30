@@ -1600,8 +1600,8 @@ const RocketChat = {
 		});
 	},
 	getProfileLibrary({
-											query, count, offset, sort
-										}) {
+		query, count, offset, sort
+	}) {
 		// RC 1.0
 		return this.sdk.get('profile_library', {
 			query, count, offset, sort

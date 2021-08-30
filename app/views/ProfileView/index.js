@@ -69,7 +69,7 @@ class ProfileView extends React.Component {
 		avatarUrl: null,
 		avatar: {},
 		avatarSuggestions: {},
-		customFields: '',
+		customFields: ''
 	}
 
 	async componentDidMount() {
@@ -411,10 +411,10 @@ class ProfileView extends React.Component {
 								if (array.length - 1 > index) {
 									return this[array[index + 1]].focus();
 								}
-								this.avatarUrl.focus();	
+								this.avatarUrl.focus();
 							}}
 							theme={theme}
-							keyboardType="decimal-pad"
+							keyboardType='decimal-pad'
 						/>
 					);
 				}

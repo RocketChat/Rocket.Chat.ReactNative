@@ -132,7 +132,7 @@ class RegisterView extends React.Component {
 		} = this.props;
 
 		try {
-			customFields['peer_supported_assigned'] = false;
+			customFields.peer_supported_assigned = false;
 
 			await RocketChat.register({
 				name, email, pass: password, username, ...customFields

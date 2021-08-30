@@ -62,7 +62,7 @@ import E2EHowItWorksView from '../views/E2EHowItWorksView';
 // E2EEnterYourPassword Stack
 import E2EEnterYourPasswordView from '../views/E2EEnterYourPasswordView';
 
-//Profile Library Stack
+// Profile Library Stack
 import ProfileLibraryView from '../views/ProfileLibrary';
 
 // InsideStackNavigator
@@ -316,13 +316,13 @@ const ProfileLibraryStack = createStackNavigator();
 const ProfileLibraryStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
-			<ProfileStack.Screen
+		<ProfileLibraryStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<ProfileLibraryStack.Screen
 				name='ProfileLibraryView'
 				component={ProfileLibraryView}
 				options={ProfileLibraryView.navigationOptions}
 			/>
-		</ProfileStack.Navigator>
+		</ProfileLibraryStack.Navigator>
 	);
 };
 
