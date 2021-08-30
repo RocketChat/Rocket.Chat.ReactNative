@@ -117,7 +117,6 @@ export default StyleSheet.create({
 	},
 	typeIcon: {
 		height: ROW_HEIGHT,
-		justifyContent: 'center',
-		paddingBottom: 10
+		justifyContent: 'center'
 	}
 });
