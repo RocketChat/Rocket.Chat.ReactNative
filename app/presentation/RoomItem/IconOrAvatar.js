@@ -6,6 +6,7 @@ import Avatar from '../../containers/Avatar';
 import TypeIcon from './TypeIcon';
 
 import styles from './styles';
+import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from './constantDisplayMode';
 
 const IconOrAvatar = ({
 	avatar,
@@ -24,7 +25,7 @@ const IconOrAvatar = ({
 		return (
 			<Avatar
 				text={avatar}
-				size={displayMode === 'condensed' ? 36 : 48}
+				size={displayMode === DISPLAY_MODE_CONDENSED ? 36 : 48}
 				type={type}
 				style={styles.avatar}
 				rid={rid}
@@ -32,7 +33,7 @@ const IconOrAvatar = ({
 		);
 	}
 
-	if (displayMode === 'expanded' && showLastMessage) {
+	if (displayMode === DISPLAY_MODE_EXPANDED && showLastMessage) {
 		return (
 			<View style={styles.typeIcon}>
 				<TypeIcon

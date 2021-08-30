@@ -8,6 +8,7 @@ import { themes } from '../../app/constants/colors';
 import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
 import { longText } from '../utils';
 import { store } from './index';
+import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../../app/presentation/RoomItem/constantDisplayMode';
 
 const baseUrl = 'https://open.rocket.chat';
 const { width } = Dimensions.get('window');
@@ -31,7 +32,7 @@ const RoomItem = props => (
 		width={width}
 		theme={_theme}
 		showAvatar
-		displayMode='expanded'
+		displayMode={DISPLAY_MODE_EXPANDED}
 		{...updatedAt}
 		{...props}
 	/>
@@ -163,17 +164,17 @@ stories.add('Condensed Room Item', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
-			displayMode='condensed'
+			displayMode={DISPLAY_MODE_CONDENSED}
 		/>
 		<RoomItem
 			showLastMessage
 			alert
 			name='unread'
 			unread={1000}
-			displayMode='condensed'
+			displayMode={DISPLAY_MODE_CONDENSED}
 		/>
 
-		<RoomItem type='c' displayMode='condensed' autoJoin />
+		<RoomItem type='c' displayMode={DISPLAY_MODE_CONDENSED} autoJoin />
 	</>
 
 ));
@@ -185,14 +186,14 @@ stories.add('Condensed Room Item without Avatar', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
-			displayMode='condensed'
+			displayMode={DISPLAY_MODE_CONDENSED}
 			showAvatar={false}
 		/>
-		<RoomItem type='p' displayMode='condensed' showAvatar={false} />
+		<RoomItem type='p' displayMode={DISPLAY_MODE_CONDENSED} showAvatar={false} />
 		<RoomItem
 			name={longText}
 			autoJoin
-			displayMode='condensed'
+			displayMode={DISPLAY_MODE_CONDENSED}
 			showAvatar={false}
 		/>
 	</>
@@ -205,7 +206,7 @@ stories.add('Expanded Room Item without Avatar', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
-			displayMode='expanded'
+			displayMode={DISPLAY_MODE_EXPANDED}
 			showAvatar={false}
 		/>
 		<RoomItem
@@ -214,7 +215,7 @@ stories.add('Expanded Room Item without Avatar', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
-			displayMode='expanded'
+			displayMode={DISPLAY_MODE_EXPANDED}
 			showAvatar={false}
 		/>
 	</>

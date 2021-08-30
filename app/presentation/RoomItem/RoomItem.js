@@ -12,6 +12,7 @@ import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
+import { DISPLAY_MODE_EXPANDED } from './constantDisplayMode';
 
 const RoomItem = ({
 	rid,
@@ -85,7 +86,7 @@ const RoomItem = ({
 			showAvatar={showAvatar}
 			showLastMessage={showLastMessage}
 		>
-			{showLastMessage && displayMode === 'expanded'
+			{showLastMessage && displayMode === DISPLAY_MODE_EXPANDED
 				? (
 					<>
 						<View style={styles.titleContainer}>

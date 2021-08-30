@@ -1,4 +1,5 @@
 import { SORT_PREFERENCES } from '../actions/actionsTypes';
+import { DISPLAY_MODE_EXPANDED } from '../presentation/RoomItem/constantDisplayMode';
 
 const initialState = {
 	sortBy: 'activity',
@@ -6,7 +7,7 @@ const initialState = {
 	showFavorites: false,
 	showUnread: false,
 	showAvatar: true,
-	displayMode: 'expanded'
+	displayMode: DISPLAY_MODE_EXPANDED
 };
 
 

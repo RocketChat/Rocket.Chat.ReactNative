@@ -7,6 +7,7 @@ import I18n, { isRTL } from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
+import { DISPLAY_MODE_CONDENSED } from './constantDisplayMode';
 
 const reverse = new Animated.Value(isRTL() ? -1 : 1);
 
@@ -36,7 +37,7 @@ export const LeftActions = React.memo(({
 					}
 				]}
 			>
-				<View style={[styles.actionLeftButtonContainer, (displayMode === 'condensed' && { height: ROW_HEIGHT_CONDENSED })]}>
+				<View style={[styles.actionLeftButtonContainer, (displayMode === DISPLAY_MODE_CONDENSED && { height: ROW_HEIGHT_CONDENSED })]}>
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
 						<>
 							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
@@ -85,7 +86,7 @@ export const RightActions = React.memo(({
 						transform: [{ translateX: translateXFav }],
 						backgroundColor: themes[theme].hideBackground
 					},
-					(displayMode === 'condensed' && { height: ROW_HEIGHT_CONDENSED })
+					(displayMode === DISPLAY_MODE_CONDENSED && { height: ROW_HEIGHT_CONDENSED })
 				]}
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>
@@ -102,7 +103,7 @@ export const RightActions = React.memo(({
 						width,
 						transform: [{ translateX: translateXHide }]
 					},
-					(displayMode === 'condensed' && { height: ROW_HEIGHT_CONDENSED })
+					(displayMode === DISPLAY_MODE_CONDENSED && { height: ROW_HEIGHT_CONDENSED })
 				]}
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].hideBackground }]} onPress={onHidePress}>

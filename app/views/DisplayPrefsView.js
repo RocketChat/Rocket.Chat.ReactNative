@@ -17,6 +17,7 @@ import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ICON_SIZE } from '../containers/List/constants';
 import log, { events, logEvent } from '../utils/log';
+import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../presentation/RoomItem/constantDisplayMode';
 
 const DisplayPrefsView = (props) => {
 	const { theme } = useTheme();
@@ -84,12 +85,12 @@ const DisplayPrefsView = (props) => {
 
 	const displayExpanded = () => {
 		logEvent(events.DP_DISPLAY_EXPANDED);
-		setSortPreference({ displayMode: 'expanded' });
+		setSortPreference({ displayMode: DISPLAY_MODE_EXPANDED });
 	};
 
 	const displayCondensed = () => {
 		logEvent(events.DP_DISPLAY_CONDENSED);
-		setSortPreference({ displayMode: 'condensed' });
+		setSortPreference({ displayMode: DISPLAY_MODE_CONDENSED });
 	};
 
 	const renderCheckBox = value => (
@@ -126,7 +127,7 @@ const DisplayPrefsView = (props) => {
 						left={() => <List.Icon name='view-extended' />}
 						title='Expanded'
 						testID='display-pref-view-expanded'
-						right={() => renderRadio(displayMode === 'expanded')}
+						right={() => renderRadio(displayMode === DISPLAY_MODE_EXPANDED)}
 						onPress={displayExpanded}
 					/>
 					<List.Separator />
@@ -134,7 +135,7 @@ const DisplayPrefsView = (props) => {
 						left={() => <List.Icon name='view-medium' />}
 						title='Condensed'
 						testID='display-pref-view-condensed'
-						right={() => renderRadio(displayMode === 'condensed')}
+						right={() => renderRadio(displayMode === DISPLAY_MODE_CONDENSED)}
 						onPress={displayCondensed}
 					/>
 					<List.Separator />

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './styles';
 import { themes } from '../../constants/colors';
 import IconOrAvatar from './IconOrAvatar';
+import { DISPLAY_MODE_CONDENSED } from './constantDisplayMode';
 
 const Wrapper = ({
 	accessibilityLabel,
@@ -16,7 +17,7 @@ const Wrapper = ({
 	<View
 		style={[
 			styles.container,
-			displayMode === 'condensed' && styles.containerCondensed
+			displayMode === DISPLAY_MODE_CONDENSED && styles.containerCondensed
 		]}
 		accessibilityLabel={accessibilityLabel}
 	>
