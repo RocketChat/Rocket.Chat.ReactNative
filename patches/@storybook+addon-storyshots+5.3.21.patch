@@ -1,0 +1,17 @@
+diff --git a/node_modules/@storybook/addon-storyshots/dist/frameworks/react-native/loader.js b/node_modules/@storybook/addon-storyshots/dist/frameworks/react-native/loader.js
+index eab3d1d..99f8613 100644
+--- a/node_modules/@storybook/addon-storyshots/dist/frameworks/react-native/loader.js
++++ b/node_modules/@storybook/addon-storyshots/dist/frameworks/react-native/loader.js
+@@ -17,10 +17,10 @@ function configure(options, storybook) {
+         return;
+     }
+     var resolvedConfigPath = path_1.default.resolve(configPath);
+-    require.requireActual(resolvedConfigPath);
++    jest.requireActual(resolvedConfigPath);
+ }
+ function load(options) {
+-    var storybook = require.requireActual('@storybook/react-native');
++    var storybook = jest.requireActual('@storybook/react-native');
+     configure(options, storybook);
+     return {
+         renderTree: require('../react/renderTree').default,
