@@ -394,6 +394,29 @@ class ProfileView extends React.Component {
 							/>
 						</RNPickerSelect>
 					);
+				} else if (parsedCustomFields[key].type === 'numeric') {
+					return (
+						<RCTextInput
+							inputRef={(e) => { this[key] = e; }}
+							key={key}
+							label={key}
+							placeholder={key}
+							value={customFields[key]}
+							onChangeText={(value) => {
+								const newValue = {};
+								newValue[key] = value;
+								this.setState({ customFields: { ...customFields, ...newValue } });
+							}}
+							onSubmitEditing={() => {
+								if (array.length - 1 > index) {
+									return this[array[index + 1]].focus();
+								}
+								this.avatarUrl.focus();	
+							}}
+							theme={theme}
+							keyboardType="decimal-pad"
+						/>
+					);
 				}
 
 				return (

@@ -67,7 +67,8 @@ export default class RCTextInput extends React.PureComponent {
 		placeholder: PropTypes.string,
 		left: PropTypes.element,
 		onIconRightPress: PropTypes.func,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		keyboardType: PropTypes.string
 	}
 
 	static defaultProps = {
@@ -131,9 +132,10 @@ export default class RCTextInput extends React.PureComponent {
 	render() {
 		const { showPassword } = this.state;
 		const {
-			label, left, error, loading, secureTextEntry, containerStyle, inputRef, iconLeft, iconRight, inputStyle, testID, placeholder, theme, ...inputProps
+			label, left, error, loading, secureTextEntry, containerStyle, inputRef, iconLeft, iconRight, inputStyle, testID, placeholder, theme, keyboardType, ...inputProps
 		} = this.props;
 		const { dangerColor } = themes[theme];
+
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
 				{label ? (
@@ -172,6 +174,7 @@ export default class RCTextInput extends React.PureComponent {
 						underlineColorAndroid='transparent'
 						secureTextEntry={secureTextEntry && !showPassword}
 						testID={testID}
+						keyboardType={keyboardType}
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
 						contentDescription={placeholder}

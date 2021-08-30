@@ -62,6 +62,9 @@ import E2EHowItWorksView from '../views/E2EHowItWorksView';
 // E2EEnterYourPassword Stack
 import E2EEnterYourPasswordView from '../views/E2EEnterYourPasswordView';
 
+//Profile Library Stack
+import ProfileLibraryView from '../views/ProfileLibrary';
+
 // InsideStackNavigator
 import AttachmentView from '../views/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
@@ -308,6 +311,21 @@ const AdminPanelStackNavigator = () => {
 	);
 };
 
+// ProfileStackNavigator
+const ProfileLibraryStack = createStackNavigator();
+const ProfileLibraryStackNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+	return (
+		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<ProfileStack.Screen
+				name='ProfileLibraryView'
+				component={ProfileLibraryView}
+				options={ProfileLibraryView.navigationOptions}
+			/>
+		</ProfileStack.Navigator>
+	);
+};
+
 // DrawerNavigator
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
@@ -322,6 +340,7 @@ const DrawerNavigator = () => {
 			overlayColor={`rgba(0,0,0,${ themes[theme].backdropOpacity })`}
 		>
 			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
+			<Drawer.Screen name='ProfileLibraryNavigator' component={ProfileLibraryStackNavigator} />
 			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
 			<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />
