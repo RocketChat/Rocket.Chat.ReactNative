@@ -210,7 +210,6 @@ class RoomItemContainer extends React.Component {
 				autoJoin={autoJoin}
 				showAvatar={showAvatar}
 				displayType={displayType}
-				avatarSize={displayType === 'condensed' ? 36 : 48}
 			/>
 		);
 	}

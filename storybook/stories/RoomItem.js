@@ -157,24 +157,45 @@ stories.add('Last Message', () => (
 ));
 
 stories.add('Condensed Room Item', () => (
-	<RoomItem
-		showLastMessage
-		alert
-		tunread={[1]}
-		lastMessage={lastMessage}
-		displayType='condensed'
-	/>
+	<>
+		<RoomItem
+			showLastMessage
+			alert
+			tunread={[1]}
+			lastMessage={lastMessage}
+			displayType='condensed'
+		/>
+		<RoomItem
+			showLastMessage
+			alert
+			name='unread'
+			unread={1000}
+			displayType='condensed'
+		/>
+
+		<RoomItem type='c' displayType='condensed' autoJoin />
+	</>
+
 ));
 
 stories.add('Condensed Room Item without Avatar', () => (
-	<RoomItem
-		showLastMessage
-		alert
-		tunread={[1]}
-		lastMessage={lastMessage}
-		displayType='condensed'
-		showAvatar={false}
-	/>
+	<>
+		<RoomItem
+			showLastMessage
+			alert
+			tunread={[1]}
+			lastMessage={lastMessage}
+			displayType='condensed'
+			showAvatar={false}
+		/>
+		<RoomItem type='p' displayType='condensed' showAvatar={false} />
+		<RoomItem
+			name={longText}
+			autoJoin
+			displayType='condensed'
+			showAvatar={false}
+		/>
+	</>
 ));
 
 stories.add('Expanded Room Item without Avatar', () => (

@@ -9,7 +9,6 @@ import styles from './styles';
 
 const IconOrAvatar = ({
 	avatar,
-	avatarSize,
 	type,
 	rid,
 	showAvatar,
@@ -25,7 +24,7 @@ const IconOrAvatar = ({
 		return (
 			<Avatar
 				text={avatar}
-				size={avatarSize}
+				size={displayType === 'condensed' ? 36 : 48}
 				type={type}
 				style={styles.avatar}
 				rid={rid}
@@ -54,7 +53,6 @@ const IconOrAvatar = ({
 
 IconOrAvatar.propTypes = {
 	avatar: PropTypes.string,
-	avatarSize: PropTypes.number,
 	type: PropTypes.string,
 	theme: PropTypes.string,
 	rid: PropTypes.string,
