@@ -53,7 +53,7 @@ class QueueListView extends React.Component {
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
 		showAvatar: PropTypes.bool,
-		displayType: PropTypes.string
+		displayMode: PropTypes.string
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -103,7 +103,7 @@ class QueueListView extends React.Component {
 			isMasterDetail,
 			width,
 			showAvatar,
-			displayType
+			displayMode
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
 
@@ -126,7 +126,7 @@ class QueueListView extends React.Component {
 				visitor={item.v}
 				swipeEnabled={false}
 				showAvatar={showAvatar}
-				displayType={displayType}
+				displayMode={displayMode}
 			/>
 		);
 	}
@@ -163,6 +163,6 @@ const mapStateToProps = state => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	queued: getInquiryQueueSelector(state),
 	showAvatar: state.sortPreferences.showAvatar,
-	displayType: state.sortPreferences.displayType
+	displayMode: state.sortPreferences.displayMode
 });
 export default connect(mapStateToProps)(withDimensions(withTheme(QueueListView)));

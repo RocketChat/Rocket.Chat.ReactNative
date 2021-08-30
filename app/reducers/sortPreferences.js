@@ -6,7 +6,7 @@ const initialState = {
 	showFavorites: false,
 	showUnread: false,
 	showAvatar: true,
-	displayType: 'expanded'
+	displayMode: 'expanded'
 };
 
 

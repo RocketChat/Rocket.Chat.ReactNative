@@ -11,7 +11,7 @@ import { themes } from '../../constants/colors';
 const reverse = new Animated.Value(isRTL() ? -1 : 1);
 
 export const LeftActions = React.memo(({
-	theme, transX, isRead, width, onToggleReadPress, displayType
+	theme, transX, isRead, width, onToggleReadPress, displayMode
 }) => {
 	const translateX = Animated.multiply(
 		transX.interpolate({
@@ -36,7 +36,7 @@ export const LeftActions = React.memo(({
 					}
 				]}
 			>
-				<View style={[styles.actionLeftButtonContainer, (displayType === 'condensed' && { height: ROW_HEIGHT_CONDENSED })]}>
+				<View style={[styles.actionLeftButtonContainer, (displayMode === 'condensed' && { height: ROW_HEIGHT_CONDENSED })]}>
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
 						<>
 							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
@@ -50,7 +50,7 @@ export const LeftActions = React.memo(({
 });
 
 export const RightActions = React.memo(({
-	transX, favorite, width, toggleFav, onHidePress, theme, displayType
+	transX, favorite, width, toggleFav, onHidePress, theme, displayMode
 }) => {
 	const translateXFav = Animated.multiply(
 		transX.interpolate({
@@ -85,7 +85,7 @@ export const RightActions = React.memo(({
 						transform: [{ translateX: translateXFav }],
 						backgroundColor: themes[theme].hideBackground
 					},
-					(displayType === 'condensed' && { height: ROW_HEIGHT_CONDENSED })
+					(displayMode === 'condensed' && { height: ROW_HEIGHT_CONDENSED })
 				]}
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>
@@ -102,7 +102,7 @@ export const RightActions = React.memo(({
 						width,
 						transform: [{ translateX: translateXHide }]
 					},
-					(displayType === 'condensed' && { height: ROW_HEIGHT_CONDENSED })
+					(displayMode === 'condensed' && { height: ROW_HEIGHT_CONDENSED })
 				]}
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].hideBackground }]} onPress={onHidePress}>
@@ -122,7 +122,7 @@ LeftActions.propTypes = {
 	isRead: PropTypes.bool,
 	width: PropTypes.number,
 	onToggleReadPress: PropTypes.func,
-	displayType: PropTypes.string
+	displayMode: PropTypes.string
 };
 
 RightActions.propTypes = {
@@ -132,5 +132,5 @@ RightActions.propTypes = {
 	width: PropTypes.number,
 	toggleFav: PropTypes.func,
 	onHidePress: PropTypes.func,
-	displayType: PropTypes.string
+	displayMode: PropTypes.string
 };

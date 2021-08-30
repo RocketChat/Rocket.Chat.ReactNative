@@ -51,7 +51,7 @@ const RoomItem = ({
 	teamMain,
 	autoJoin,
 	showAvatar,
-	displayType
+	displayMode
 }) => (
 	<Touchable
 		onPress={onPress}
@@ -68,7 +68,7 @@ const RoomItem = ({
 		theme={theme}
 		isFocused={isFocused}
 		swipeEnabled={swipeEnabled}
-		displayType={displayType}
+		displayMode={displayMode}
 	>
 		<Wrapper
 			accessibilityLabel={accessibilityLabel}
@@ -81,11 +81,11 @@ const RoomItem = ({
 			status={status}
 			isGroupChat={isGroupChat}
 			teamMain={teamMain}
-			displayType={displayType}
+			displayMode={displayMode}
 			showAvatar={showAvatar}
 			showLastMessage={showLastMessage}
 		>
-			{showLastMessage && displayType === 'expanded'
+			{showLastMessage && displayMode === 'expanded'
 				? (
 					<>
 						<View style={styles.titleContainer}>
@@ -218,7 +218,7 @@ RoomItem.propTypes = {
 	hideChannel: PropTypes.func,
 	autoJoin: PropTypes.bool,
 	showAvatar: PropTypes.bool,
-	displayType: PropTypes.string
+	displayMode: PropTypes.string
 };
 
 RoomItem.defaultProps = {

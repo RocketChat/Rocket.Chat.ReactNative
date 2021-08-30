@@ -10,19 +10,19 @@ const Wrapper = ({
 	accessibilityLabel,
 	theme,
 	children,
-	displayType,
+	displayMode,
 	...props
 }) => (
 	<View
 		style={[
 			styles.container,
-			displayType === 'condensed' && styles.containerCondensed
+			displayMode === 'condensed' && styles.containerCondensed
 		]}
 		accessibilityLabel={accessibilityLabel}
 	>
 		<IconOrAvatar
 			theme={theme}
-			displayType={displayType}
+			displayMode={displayMode}
 			{...props}
 		/>
 		<View
@@ -47,7 +47,7 @@ Wrapper.propTypes = {
 	rid: PropTypes.string,
 	children: PropTypes.element,
 	showAvatar: PropTypes.bool,
-	displayType: PropTypes.string,
+	displayMode: PropTypes.string,
 	prid: PropTypes.string,
 	status: PropTypes.string,
 	isGroupChat: PropTypes.bool,

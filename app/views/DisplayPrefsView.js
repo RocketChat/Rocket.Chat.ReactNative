@@ -27,7 +27,7 @@ const DisplayPrefsView = (props) => {
 		showFavorites,
 		showUnread,
 		showAvatar,
-		displayType
+		displayMode
 	} = useSelector(state => state.sortPreferences);
 	const dispatch = useDispatch();
 
@@ -84,12 +84,12 @@ const DisplayPrefsView = (props) => {
 
 	const displayExpanded = () => {
 		logEvent(events.DP_DISPLAY_EXPANDED);
-		setSortPreference({ displayType: 'expanded' });
+		setSortPreference({ displayMode: 'expanded' });
 	};
 
 	const displayCondensed = () => {
 		logEvent(events.DP_DISPLAY_CONDENSED);
-		setSortPreference({ displayType: 'condensed' });
+		setSortPreference({ displayMode: 'condensed' });
 	};
 
 	const renderCheckBox = value => (
@@ -126,7 +126,7 @@ const DisplayPrefsView = (props) => {
 						left={() => <List.Icon name='view-extended' />}
 						title='Expanded'
 						testID='display-pref-view-expanded'
-						right={() => renderRadio(displayType === 'expanded')}
+						right={() => renderRadio(displayMode === 'expanded')}
 						onPress={displayExpanded}
 					/>
 					<List.Separator />
@@ -134,7 +134,7 @@ const DisplayPrefsView = (props) => {
 						left={() => <List.Icon name='view-medium' />}
 						title='Condensed'
 						testID='display-pref-view-condensed'
-						right={() => renderRadio(displayType === 'condensed')}
+						right={() => renderRadio(displayMode === 'condensed')}
 						onPress={displayCondensed}
 					/>
 					<List.Separator />

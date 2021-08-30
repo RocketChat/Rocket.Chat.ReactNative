@@ -19,7 +19,7 @@ const attrs = [
 	'showLastMessage',
 	'autoJoin',
 	'showAvatar',
-	'displayType'
+	'displayMode'
 ];
 
 class RoomItemContainer extends React.Component {
@@ -48,7 +48,7 @@ class RoomItemContainer extends React.Component {
 		swipeEnabled: PropTypes.bool,
 		autoJoin: PropTypes.bool,
 		showAvatar: PropTypes.bool,
-		displayType: PropTypes.string
+		displayMode: PropTypes.string
 	};
 
 	static defaultProps = {
@@ -146,7 +146,7 @@ class RoomItemContainer extends React.Component {
 			swipeEnabled,
 			autoJoin,
 			showAvatar,
-			displayType
+			displayMode
 		} = this.props;
 		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${ name }`;
@@ -209,7 +209,7 @@ class RoomItemContainer extends React.Component {
 				teamMain={item.teamMain}
 				autoJoin={autoJoin}
 				showAvatar={showAvatar}
-				displayType={displayType}
+				displayMode={displayMode}
 			/>
 		);
 	}

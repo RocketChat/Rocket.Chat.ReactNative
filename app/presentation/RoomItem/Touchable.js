@@ -32,7 +32,7 @@ class Touchable extends React.Component {
 		theme: PropTypes.string,
 		isFocused: PropTypes.bool,
 		swipeEnabled: PropTypes.bool,
-		displayType: PropTypes.string
+		displayMode: PropTypes.string
 	}
 
 	constructor(props) {
@@ -229,7 +229,7 @@ class Touchable extends React.Component {
 
 		render() {
 			const {
-				testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled, displayType
+				testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled, displayMode
 			} = this.props;
 
 			return (
@@ -248,7 +248,7 @@ class Touchable extends React.Component {
 									width={width}
 									onToggleReadPress={this.onToggleReadPress}
 									theme={theme}
-									displayType={displayType}
+									displayMode={displayMode}
 								/>
 								<RightActions
 									transX={this.transXReverse}
@@ -257,7 +257,7 @@ class Touchable extends React.Component {
 									toggleFav={this.toggleFav}
 									onHidePress={this.onHidePress}
 									theme={theme}
-									displayType={displayType}
+									displayMode={displayMode}
 								/>
 								<Animated.View
 									style={{

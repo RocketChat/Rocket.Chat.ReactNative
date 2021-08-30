@@ -31,7 +31,7 @@ const RoomItem = props => (
 		width={width}
 		theme={_theme}
 		showAvatar
-		displayType='expanded'
+		displayMode='expanded'
 		{...updatedAt}
 		{...props}
 	/>
@@ -163,17 +163,17 @@ stories.add('Condensed Room Item', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
-			displayType='condensed'
+			displayMode='condensed'
 		/>
 		<RoomItem
 			showLastMessage
 			alert
 			name='unread'
 			unread={1000}
-			displayType='condensed'
+			displayMode='condensed'
 		/>
 
-		<RoomItem type='c' displayType='condensed' autoJoin />
+		<RoomItem type='c' displayMode='condensed' autoJoin />
 	</>
 
 ));
@@ -185,14 +185,14 @@ stories.add('Condensed Room Item without Avatar', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
-			displayType='condensed'
+			displayMode='condensed'
 			showAvatar={false}
 		/>
-		<RoomItem type='p' displayType='condensed' showAvatar={false} />
+		<RoomItem type='p' displayMode='condensed' showAvatar={false} />
 		<RoomItem
 			name={longText}
 			autoJoin
-			displayType='condensed'
+			displayMode='condensed'
 			showAvatar={false}
 		/>
 	</>
@@ -205,7 +205,7 @@ stories.add('Expanded Room Item without Avatar', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
-			displayType='expanded'
+			displayMode='expanded'
 			showAvatar={false}
 		/>
 		<RoomItem
@@ -214,7 +214,7 @@ stories.add('Expanded Room Item without Avatar', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
-			displayType='expanded'
+			displayMode='expanded'
 			showAvatar={false}
 		/>
 	</>

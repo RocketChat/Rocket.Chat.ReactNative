@@ -18,13 +18,13 @@ const IconOrAvatar = ({
 	teamMain,
 	showLastMessage,
 	theme,
-	displayType
+	displayMode
 }) => {
 	if (showAvatar) {
 		return (
 			<Avatar
 				text={avatar}
-				size={displayType === 'condensed' ? 36 : 48}
+				size={displayMode === 'condensed' ? 36 : 48}
 				type={type}
 				style={styles.avatar}
 				rid={rid}
@@ -32,7 +32,7 @@ const IconOrAvatar = ({
 		);
 	}
 
-	if (displayType === 'expanded' && showLastMessage) {
+	if (displayMode === 'expanded' && showLastMessage) {
 		return (
 			<View style={styles.typeIcon}>
 				<TypeIcon
@@ -57,7 +57,7 @@ IconOrAvatar.propTypes = {
 	theme: PropTypes.string,
 	rid: PropTypes.string,
 	showAvatar: PropTypes.bool,
-	displayType: PropTypes.string,
+	displayMode: PropTypes.string,
 	prid: PropTypes.string,
 	status: PropTypes.string,
 	isGroupChat: PropTypes.bool,
