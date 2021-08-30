@@ -92,11 +92,14 @@ const shouldUpdateProps = [
 	'encryptionBanner'
 ];
 
-const displayPropsShouldUpdate = [
+const sortPreferencesShouldUpdate = [
 	'sortBy',
 	'groupByType',
 	'showFavorites',
-	'showUnread',
+	'showUnread'
+];
+
+const displayPropsShouldUpdate = [
 	'showAvatar',
 	'displayMode'
 ];
@@ -179,6 +182,11 @@ class RoomsListView extends React.Component {
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			Orientation.unlockAllOrientations();
 			this.animated = true;
+			// Check if there were changes with sort preference, then call getSubscription to remount the list
+			if (this.sortPreferencesChanged) {
+				this.getSubscriptions();
+				this.sortPreferencesChanged = false;
+			}
 			// Check if there were changes while not focused (it's set on sCU)
 			if (this.shouldUpdate) {
 				this.forceUpdate();
@@ -228,7 +236,13 @@ class RoomsListView extends React.Component {
 		const displayUpdated = displayPropsShouldUpdate.some(key => nextProps[key] !== this.props[key]);
 		if (displayUpdated) {
 			this.shouldUpdate = true;
-			return true;
+		}
+
+		// check if some sort preferences are changed to getSubscription() when focus this view again
+		// eslint-disable-next-line react/destructuring-assignment
+		const sortPreferencesUpdate = sortPreferencesShouldUpdate.some(key => nextProps[key] !== this.props[key]);
+		if (sortPreferencesUpdate) {
+			this.sortPreferencesChanged = true;
 		}
 
 		// Compare changes only once
