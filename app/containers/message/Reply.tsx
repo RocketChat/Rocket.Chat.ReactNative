@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
+import FastImage from '@rocket.chat/react-native-fast-image';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -66,6 +67,20 @@ const styles = StyleSheet.create({
 	marginBottom: {
 		marginBottom: 4,
 	},
+	image: {
+		width: null,
+		height: 200,
+		flex: 1,
+		borderTopLeftRadius: 4,
+		borderTopRightRadius: 4,
+		marginBottom: 1
+	},
+	title: {
+		flex: 1,
+		fontSize: 16,
+		marginBottom: 3,
+		...sharedStyles.textMedium
+	}
 });
 
 interface IMessageReplyAttachment {
@@ -111,13 +126,11 @@ interface IMessageReply {
 }
 
 const Title = React.memo(({ attachment, timeFormat, theme }: IMessageTitle) => {
-	if (!attachment.author_name) {
-		return null;
-	}
 	const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
 	return (
 		<View style={styles.authorContainer}>
 			{attachment.author_name ? <Text style={[styles.author, { color: themes[theme].bodyText }]}>{attachment.author_name}</Text> : null}
+			{attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
 			{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{ time }</Text> : null}
 		</View>
 	);
@@ -151,6 +164,15 @@ const Description = React.memo(({ attachment, getCustomEmoji, theme }: IMessageD
 	}
 	return true;
 });
+
+const UrlImage = React.memo(({ image }) => {
+	if (!image) {
+		return null;
+	}
+	const { baseUrl, user } = useContext(MessageContext);
+	image = image.includes('http') ? image : `${ baseUrl }/${ image }?rc_uid=${ user.id }&rc_token=${ user.token }`;
+	return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
+}, (prevProps, nextProps) => prevProps.image === nextProps.image);
 
 const Fields = React.memo(({ attachment, theme, getCustomEmoji }: IMessageFields) => {
 	if (!attachment.fields) {
@@ -230,6 +252,7 @@ const Reply = React.memo(({ attachment, timeFormat, index, getCustomEmoji, theme
 						timeFormat={timeFormat}
 						theme={theme}
 					/>
+					<UrlImage image={attachment.thumb_url} />
 					<Description
 						attachment={attachment}
 						getCustomEmoji={getCustomEmoji}

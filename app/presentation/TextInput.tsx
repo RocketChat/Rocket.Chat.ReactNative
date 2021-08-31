@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
 	input: {
 		...I18nManager.isRTL
 			? { textAlign: 'right' }
-			: { textAlign: 'left' },
+			: { textAlign: 'auto' },
 	},
 });
 

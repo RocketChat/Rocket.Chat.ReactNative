@@ -70,6 +70,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		onEncryptedPress: () => {},
 		onDiscussionPress: () => {},
 		onThreadPress: () => {},
+		onAnswerButtonPress: () => {},
 		errorActionsShow: () => {},
 		replyBroadcast: () => {},
 		reactionInit: () => {},
@@ -195,6 +196,13 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		const { onThreadPress, item } = this.props;
 		if (onThreadPress) {
 			onThreadPress(item);
+		}
+	}
+
+	onAnswerButtonPress = (msg) => {
+		const { onAnswerButtonPress } = this.props;
+		if (onAnswerButtonPress) {
+			onAnswerButtonPress(msg, undefined, false);
 		}
 	}
 
@@ -370,6 +378,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 					onDiscussionPress: this.onDiscussionPress,
 					onReactionLongPress: this.onReactionLongPress,
 					onLinkPress: this.onLinkPress,
+					onAnswerButtonPress: this.onAnswerButtonPress,
 					jumpToMessage,
 					threadBadgeColor,
 					toggleFollowThread,
