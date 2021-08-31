@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import { dequal } from 'dequal';
-import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 
-import { IMessageAttachments } from './interfaces';
+import { IMessageAttachments, IMessageAttachedActions } from './interfaces';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
@@ -13,16 +12,15 @@ import styles from './styles';
 import MessageContext from './Context';
 
 const AttachedActions = ({
-	attachment, theme
-}) => {
+	attachment, theme,
+}: IMessageAttachedActions) => {
 	const { onAnswerButtonPress } = useContext(MessageContext);
 
-	const attachedButtons = attachment.actions.map((element) => {
+	const attachedButtons = attachment.actions.map((element: {type: string; msg: string; text: string}) => {
 		if (element.type === 'button') {
 			return <Button theme={theme} onPress={() => onAnswerButtonPress(element.msg)} title={element.text} />;
-		}	else {
-			return null;
 		}
+		return null;
 	});
 	return (
 		<>
@@ -59,12 +57,5 @@ const Attachments = React.memo(({
 }, (prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments) && prevProps.theme === nextProps.theme);
 
 Attachments.displayName = 'MessageAttachments';
-AttachedActions.propTypes = {
-	attachment: PropTypes.shape({
-		actions: PropTypes.array,
-		text: PropTypes.string
-	}),
-	theme: PropTypes.string
-};
 
 export default Attachments;

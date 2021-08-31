@@ -55,6 +55,7 @@ interface IMessageContainerProps {
 	navToRoomInfo: Function;
 	callJitsi: Function;
 	blockAction: Function;
+	onAnswerButtonPress: Function;
 	theme: string;
 	threadBadgeColor: string;
 	toggleFollowThread: Function;
@@ -199,7 +200,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		}
 	}
 
-	onAnswerButtonPress = (msg) => {
+	onAnswerButtonPress = (msg: string) => {
 		const { onAnswerButtonPress } = this.props;
 		if (onAnswerButtonPress) {
 			onAnswerButtonPress(msg, undefined, false);
@@ -385,7 +386,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 					replies,
 				}}
 			>
-				{/* @ts-ignore*/}
 				<Message
 					id={id}
 					msg={message}
@@ -398,6 +398,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 					urls={urls}
 					reactions={reactions}
 					alias={alias}
+					/* @ts-ignore*/
 					avatar={avatar}
 					emoji={emoji}
 					timeFormat={timeFormat}

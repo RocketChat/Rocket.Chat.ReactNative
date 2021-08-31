@@ -68,19 +68,18 @@ const styles = StyleSheet.create({
 		marginBottom: 4,
 	},
 	image: {
-		width: null,
 		height: 200,
 		flex: 1,
 		borderTopLeftRadius: 4,
 		borderTopRightRadius: 4,
-		marginBottom: 1
+		marginBottom: 1,
 	},
 	title: {
 		flex: 1,
 		fontSize: 16,
 		marginBottom: 3,
-		...sharedStyles.textMedium
-	}
+		...sharedStyles.textMedium,
+	},
 });
 
 interface IMessageReplyAttachment {
@@ -97,6 +96,7 @@ interface IMessageReplyAttachment {
 	color: string;
 	description: string;
 	fields: IMessageReplyAttachment[];
+	thumb_url: string;
 }
 
 interface IMessageTitle {
@@ -165,7 +165,7 @@ const Description = React.memo(({ attachment, getCustomEmoji, theme }: IMessageD
 	return true;
 });
 
-const UrlImage = React.memo(({ image }) => {
+const UrlImage = React.memo(({ image }: any) => {
 	if (!image) {
 		return null;
 	}

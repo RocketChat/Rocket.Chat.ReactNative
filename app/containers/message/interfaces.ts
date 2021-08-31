@@ -6,6 +6,14 @@ export interface IMessageAttachments {
 	theme: string;
 }
 
+export interface IMessageAttachedActions {
+	attachment: {
+		actions: [],
+		text: string,
+	},
+	theme: string,
+}
+
 export interface IMessageAvatar {
 	isHeader: boolean;
 	avatar: string;
