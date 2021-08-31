@@ -15,6 +15,7 @@ import Role from './model/Role';
 import Permission from './model/Permission';
 import SlashCommand from './model/SlashCommand';
 import User from './model/User';
+import CannedResponses from './model/CannedResponses';
 
 import LoggedUser from './model/servers/User';
 import Server from './model/servers/Server';
@@ -63,7 +64,8 @@ export const getDatabase = (database = '') => {
 			Role,
 			Permission,
 			SlashCommand,
-			User
+			User,
+			CannedResponses
 		],
 		actionsEnabled: true
 	});
@@ -120,7 +122,8 @@ class DB {
 				CustomEmoji,
 				FrequentlyUsedEmoji,
 				Setting,
-				User
+				User,
+				CannedResponses
 			],
 			actionsEnabled: true
 		});

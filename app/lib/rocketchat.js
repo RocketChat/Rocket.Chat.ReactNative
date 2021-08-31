@@ -33,6 +33,7 @@ import getSettings, { getLoginSettings, setSettings, subscribeSettings } from '.
 import getRooms from './methods/getRooms';
 import { setPermissions, getPermissions } from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
+import { getCannedResponses } from './methods/getCannedResponses';
 import {
 	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
 } from './methods/enterpriseModules';
@@ -894,6 +895,7 @@ const RocketChat = {
 	getPermissions,
 	setPermissions,
 	getCustomEmojis,
+	getCannedResponses,
 	setCustomEmojis,
 	getEnterpriseModules,
 	setEnterpriseModules,
@@ -1350,17 +1352,19 @@ const RocketChat = {
 	 * Returns an array of boolean for each permission from permissions arg
 	 */
 	async hasPermission(permissions, rid) {
-		const db = database.active;
-		const subsCollection = db.get('subscriptions');
 		let roomRoles = [];
-		try {
+		if (rid) {
+			const db = database.active;
+			const subsCollection = db.get('subscriptions');
+			try {
 			// get the room from database
-			const room = await subsCollection.find(rid);
-			// get room roles
-			roomRoles = room.roles || [];
-		} catch (error) {
-			console.log('hasPermission -> Room not found');
-			return permissions.map(() => false);
+				const room = await subsCollection.find(rid);
+				// get room roles
+				roomRoles = room.roles || [];
+			} catch (error) {
+				console.log('hasPermission -> Room not found');
+				return permissions.map(() => false);
+			}
 		}
 
 		try {
