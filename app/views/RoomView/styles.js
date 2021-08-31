@@ -25,10 +25,14 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
+	bannerModalTitle: {
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	},
 	bannerText: {
 		flex: 1
 	},
-	bannerModalTitle: {
+	bannerModalTitleText: {
 		fontSize: 16,
 		...sharedStyles.textMedium
 	},
