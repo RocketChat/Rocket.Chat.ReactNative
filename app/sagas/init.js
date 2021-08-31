@@ -6,7 +6,6 @@ import { selectServerRequest, serverRequest } from '../actions/server';
 // import { selectServerRequest } from '../actions/server';
 import UserPreferences from '../lib/userPreferences';
 import { setAllPreferences } from '../actions/sortPreferences';
-import { toggleCrashReport, toggleAnalyticsEvents } from '../actions/crashReport';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
@@ -18,12 +17,6 @@ import { appStart, ROOT_OUTSIDE, appReady } from '../actions/app';
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
-
-	const allowCrashReport = yield RocketChat.getAllowCrashReport();
-	yield put(toggleCrashReport(allowCrashReport));
-
-	const allowAnalyticsEvents = yield RocketChat.getAllowAnalyticsEvents();
-	yield put(toggleAnalyticsEvents(allowAnalyticsEvents));
 };
 
 const restore = function* restore() {
@@ -59,8 +52,8 @@ const restore = function* restore() {
 	}
 };
 
-const start = function start() {
-	RNBootSplash.hide();
+const start = function* start() {
+	yield RNBootSplash.hide();
 };
 
 const root = function* root() {
