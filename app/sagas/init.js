@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, all } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 
 // import * as actions from '../actions';
