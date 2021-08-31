@@ -37,6 +37,7 @@ describe('Create team screen', () => {
 			it('should get invalid team name', async() => {
 				await element(by.id('create-channel-name')).typeText(`${ data.teams.private.name }`);
 				await element(by.id('create-channel-submit')).tap();
+				await waitFor(element(by.text('OK'))).toBeVisible().withTimeout(5000);
 				await element(by.text('OK')).tap();
 			});
 
