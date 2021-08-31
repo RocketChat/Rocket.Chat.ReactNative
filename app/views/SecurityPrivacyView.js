@@ -19,7 +19,7 @@ const SecurityPrivacyView = ({ navigation }) => {
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 
-	const { e2eEnabled } = useSelector(state => state.settings);
+	const e2eEnabled = useSelector(state => state.settings.E2E_Enable);
 
 	useEffect(() => {
 		navigation.setOptions({
