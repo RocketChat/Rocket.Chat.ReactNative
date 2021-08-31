@@ -636,7 +636,7 @@ class RoomView extends React.Component {
 	onDiscussionPress = debounce((item) => {
 		const { navigation } = this.props;
 		navigation.push('RoomView', {
-			rid: item.drid, prid: item.rid, name: item.msg, t: 'p'
+			rid: item.drid, prid: item.rid, name: item.msg, t: this.t
 		});
 	}, 1000, true)
 
