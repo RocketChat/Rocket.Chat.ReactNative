@@ -424,10 +424,17 @@ class MessageBox extends Component {
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
 		const regexp = /([a-z0-9._-]+)$/im;
-		const result = msg.substr(0, cursor).replace(regexp, '');
+
+		let result = msg.substr(0, cursor).replace(regexp, '');
+		// Remove the ! after select the canned response
+		if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
+			const lastIndexOfExclamation = msg.lastIndexOf('!', cursor);
+			result = msg.substr(0, lastIndexOfExclamation).replace(regexp, '');
+		}
+
 		const mentionName = trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
 			? `${ item.name || item }:`
-			: (item.username || item.name || item.command);
+			: (item.username || item.name || item.command || item.text);
 		const text = `${ result }${ mentionName } ${ msg.slice(cursor) }`;
 		if ((trackingType === MENTIONS_TRACKING_TYPE_COMMANDS) && item.providesPreview) {
 			this.setState({ showCommandPreview: true });
@@ -531,7 +538,7 @@ class MessageBox extends Component {
 
 	getCannedResponses = debounce(async(keyword) => {
 		const db = database.active;
-		const commandsCollection = db.get('slash_commands');
+		const commandsCollection = db.get('canned_responses');
 		const likeString = sanitizeLikeString(keyword);
 		const commands = await commandsCollection.query(
 			Q.where('id', Q.like(`${ likeString }%`))

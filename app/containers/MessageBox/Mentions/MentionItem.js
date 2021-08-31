@@ -73,7 +73,7 @@ const MentionItem = ({
 		content = (
 			<>
 				<Text style={[styles.cannedItem, { color: themes[theme].titleText }]}>!{item.id}</Text>
-				<Text numberOfLines={1} style={[styles.cannedMentionText, { color: themes[theme].auxiliaryTintColor }]}>Buenos Dias {'{Contact.Name}'}! Welcom...</Text>
+				<Text numberOfLines={1} style={[styles.cannedMentionText, { color: themes[theme].auxiliaryTintColor }]}>{item.text}</Text>
 			</>
 		);
 	}
