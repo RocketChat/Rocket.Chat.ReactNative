@@ -362,7 +362,7 @@ class MessageBox extends Component {
 
 	// eslint-disable-next-line react/sort-comp
 	debouncedOnChangeText = debounce(async(text) => {
-		const { sharing } = this.props;
+		const { sharing, roomType } = this.props;
 		const isTextEmpty = text.length === 0;
 		if (isTextEmpty) {
 			this.stopTrackingMention();
@@ -404,7 +404,7 @@ class MessageBox extends Component {
 			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_USERS);
 		} else if (emojiMention) {
 			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_EMOJIS);
-		} else if (cannedMention) {
+		} else if (cannedMention && roomType === 'l') {
 			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_CANNED);
 		} else {
 			return this.stopTrackingMention();
