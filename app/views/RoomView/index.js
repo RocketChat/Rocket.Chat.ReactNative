@@ -974,6 +974,7 @@ class RoomView extends React.Component {
 					onEncryptedPress={this.onEncryptedPress}
 					onDiscussionPress={this.onDiscussionPress}
 					onThreadPress={this.onThreadPress}
+					onAnswerButtonPress={this.sendMessage}
 					showAttachment={this.showAttachment}
 					reactionInit={this.onReactionInit}
 					replyBroadcast={this.replyBroadcast}
