@@ -7,7 +7,7 @@ def all_pods
   config = use_native_modules!
   use_unimodules!
   use_react_native!(:path => config["reactNativePath"])
- use_flipper!
+#   use_flipper!
 end
 
 abstract_target 'defaults' do
@@ -68,6 +68,9 @@ post_install do |installer|
     target.build_configurations.each do |config|
       config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
     end
+    installer.pods_project.build_configurations.each do |config|
+      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    end
   end
-  flipper_post_install(installer)
+#   flipper_post_install(installer)
 end
