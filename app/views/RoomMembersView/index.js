@@ -395,6 +395,7 @@ class RoomMembersView extends React.Component {
 		} = this.state;
 		const { serverVersion } = this.props;
 		const { t } = room;
+		let newMembers;
 		if (isLoading || end) {
 			return;
 		}
@@ -403,21 +404,16 @@ class RoomMembersView extends React.Component {
 		try {
 			if (compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)) {
 				const membersResult = await RocketChat.getMembers(rid, t, allUsers ? 'all' : 'online', filtering, members.length, PAGE_SIZE);
-				const newMembers = membersResult.members;
-				this.setState({
-					members: members.concat(newMembers || []),
-					isLoading: false,
-					end: newMembers.length < PAGE_SIZE
-				});
+				newMembers = membersResult.members;
 			} else {
 				const membersResult = await RocketChat.getRoomMembers(rid, allUsers, members.length, PAGE_SIZE);
-				const newMembers = membersResult.records;
-				this.setState({
-					members: members.concat(newMembers || []),
-					isLoading: false,
-					end: newMembers.length < PAGE_SIZE
-				});
+				newMembers = membersResult.records;
 			}
+			this.setState({
+				members: members.concat(newMembers || []),
+				isLoading: false,
+				end: newMembers.length < PAGE_SIZE
+			});
 			this.setHeader();
 		} catch (e) {
 			log(e);
