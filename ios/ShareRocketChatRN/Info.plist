@@ -4,6 +4,13 @@
 <dict>
 	<key>AppGroup</key>
 	<string>group.com.t1dreachout.app</string>
+	<key>IS_OFFICIAL</key>
+    <false/>
+    <key>bugsnag</key>
+    <dict>
+        <key>apiKey</key>
+        <string>apiKeyValue</string>
+    </dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
