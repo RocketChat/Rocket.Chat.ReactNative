@@ -68,7 +68,8 @@ class RoomActionsView extends React.Component {
 		transferLivechatGuestPermission: PropTypes.array,
 		createTeamPermission: PropTypes.array,
 		addTeamChannelPermission: PropTypes.array,
-		convertTeamPermission: PropTypes.array
+		convertTeamPermission: PropTypes.array,
+		viewCannedResponsesPermission: PropTypes.array
 	}
 
 	constructor(props) {
@@ -93,7 +94,8 @@ class RoomActionsView extends React.Component {
 			canToggleEncryption: false,
 			canCreateTeam: false,
 			canAddChannelToTeam: false,
-			canConvertTeam: false
+			canConvertTeam: false,
+			canViewCannedResponse: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
@@ -154,7 +156,8 @@ class RoomActionsView extends React.Component {
 			if (room.t === 'l') {
 				const canForwardGuest = await this.canForwardGuest();
 				const canReturnQueue = await this.canReturnQueue();
-				this.setState({ canForwardGuest, canReturnQueue });
+				const canViewCannedResponse = await this.canViewCannedResponse();
+				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse });
 			}
 		}
 	}
@@ -285,6 +288,12 @@ class RoomActionsView extends React.Component {
 		const { transferLivechatGuestPermission } = this.props;
 		const { rid } = room;
 		const permissions = await RocketChat.hasPermission([transferLivechatGuestPermission], rid);
+		return permissions[0];
+	}
+
+	canViewCannedResponse = async() => {
+		const { viewCannedResponsesPermission } = this.props;
+		const permissions = await RocketChat.hasPermission([viewCannedResponsesPermission]);
 		return permissions[0];
 	}
 
@@ -900,7 +909,7 @@ class RoomActionsView extends React.Component {
 
 	render() {
 		const {
-			room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue
+			room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue, canViewCannedResponse
 		} = this.state;
 		const {
 			rid, t
@@ -1103,6 +1112,23 @@ class RoomActionsView extends React.Component {
 						{ this.teamChannelActions(t, room) }
 						{this.teamToChannelActions(t, room)}
 
+						{['l'].includes(t) && !this.isOmnichannelPreview && canViewCannedResponse
+							? (
+								<>
+									<List.Item
+										title='Canned_Responses'
+										onPress={() => this.onPressTouchable({
+											event: this.closeLivechat
+										})}
+										left={() => <List.Icon name='canned-response' />}
+										showActionIndicator
+									/>
+									<List.Separator />
+								</>
+							)
+							: null
+						}
+
 						{['l'].includes(t) && !this.isOmnichannelPreview
 							? (
 								<>
@@ -1194,7 +1220,8 @@ const mapStateToProps = state => ({
 	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
 	createTeamPermission: state.permissions['create-team'],
 	addTeamChannelPermission: state.permissions['add-team-channel'],
-	convertTeamPermission: state.permissions['convert-team']
+	convertTeamPermission: state.permissions['convert-team'],
+	viewCannedResponsesPermission: state.permissions['view-canned-responses']
 });
 
 const mapDispatchToProps = dispatch => ({

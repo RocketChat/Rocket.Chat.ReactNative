@@ -19,7 +19,7 @@ const MentionHeaderList = ({
 		if (hasMentions) {
 			content = (
 				<View style={styles.wrapMentionHeaderList}>
-					<Text style={[styles.mentionHeaderList, { color: themes[theme].bodyText }]}>{i18n.t('CANNED_RESPONSE')}</Text>
+					<Text style={[styles.mentionHeaderList, { color: themes[theme].bodyText }]}>{i18n.t('CANNED_RESPONSES')}</Text>
 				</View>
 			);
 		} else {
