@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
@@ -29,6 +30,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 	const canAutoTranslate = route.params?.canAutoTranslate;
 	const autoTranslate = route.params?.autoTranslate;
 	const autoTranslateLanguage = route.params?.autoTranslateLanguage;
+	const user = useSelector(state => state.login?.user);
 	const baseUrl = useSelector(state => state.server.server);
 	const useRealName = useSelector(state => state.settings.UI_Use_Real_Name);
 	const Message_TimeFormat = useSelector(state => state.settings.Message_TimeFormat);
@@ -69,7 +71,8 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 			];
 
 			if (text?.trim()) {
-				whereClause.push(Q.where('msg', Q.like(`%${ sanitizeLikeString(text?.trim()) }%`)));
+				whereClause.push(Q.where('msg', Q.like(`%${ sanitizeLikeString(text?.trim()) }%`)),
+					Q.where('username', Q.like(`%${ sanitizeLikeString(text?.trim()) }%`)));
 			}
 
 			const discussionsMessages = await db
@@ -156,13 +159,12 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 		});
 	}, 1000, true);
 
-	// eslint-disable-next-line react/prop-types
 	const renderItem = ({ item }) => (
 		<Message
 			item={item}
-			// eslint-disable-next-line react/prop-types
-			user={item.id}
+			user={user}
 			rid={rid}
+			navToRoomInfo={() => {}}
 			onDiscussionPress={onDiscussionPress}
 			baseUrl={baseUrl}
 			timeFormat={Message_TimeFormat}
@@ -186,7 +188,6 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 			<FlatList
 				data={discussions}
 				renderItem={renderItem}
-				// eslint-disable-next-line react/prop-types
 				keyExtractor={item => item.msg}
 				style={{ backgroundColor: themes[theme].backgroundColor }}
 				onEndReachedThreshold={0.5}
