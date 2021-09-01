@@ -160,7 +160,7 @@ PODS:
   - GoogleUtilities/UserDefaults (6.7.1):
     - GoogleUtilities/Logger
   - hermes-engine (0.7.2)
-  - JitsiMeetSDK (2.10.2)
+  - JitsiMeetSDK (3.6.0)
   - KeyCommands (2.0.3):
     - React
   - libevent (2.1.12)
@@ -403,8 +403,8 @@ PODS:
     - React-Core
   - react-native-document-picker (5.2.0):
     - React-Core
-  - react-native-jitsi-meet (2.4.0):
-    - JitsiMeetSDK
+  - react-native-jitsi-meet (3.6.0):
+    - JitsiMeetSDK (= 3.6.0)
     - React
   - react-native-mmkv-storage (0.3.5):
     - MMKV (= 1.2.1)
@@ -413,8 +413,8 @@ PODS:
     - React-Core
   - react-native-notifications (2.1.7):
     - React
-  - react-native-orientation-locker (1.3.1):
-    - React-Core
+  - react-native-orientation-locker (1.1.8):
+    - React
   - react-native-restart (0.0.22):
     - React-Core
   - react-native-safe-area-context (3.2.0):
@@ -920,7 +920,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   JitsiMeetSDK:
-    :commit: 34660a3a34798fe28fcfd340f9ad30184b9fa0d1
+    :commit: 23797290da02324c09998a63781cd1fe0047211d
     :git: https://github.com/RocketChat/jitsi-meet-ios-sdk-releases.git
 
 SPEC CHECKSUMS:
@@ -960,7 +960,7 @@ SPEC CHECKSUMS:
   GoogleDataTransportCCTSupport: 489c1265d2c85b68187a83a911913d190012158d
   GoogleUtilities: e121a3867449ce16b0e35ddf1797ea7a389ffdf2
   hermes-engine: 7d97ba46a1e29bacf3e3c61ecb2804a5ddd02d4f
-  JitsiMeetSDK: ef6dd5cfa6d9badf009c7dba1a2c1365bfaae6b0
+  JitsiMeetSDK: 476329f72a866f714d2802bafe1729de6d644ccf
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
@@ -986,11 +986,11 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 88f4e62d9ecd0e1f253abe4f685474f2ea14bfa2
   react-native-cookies: 2cb6ef472da68610dfcf0eaee68464c244943abd
   react-native-document-picker: f1b5398801b332c77bc62ae0eae2116f49bdff26
-  react-native-jitsi-meet: f2407aca85566e031ee7b222e497ee5ecb6623de
+  react-native-jitsi-meet: 3e3ac5d0445091154119f94342efd55c8b1124ce
   react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
-  react-native-orientation-locker: 998c0744e26624407dac068c04c605b4af7304a2
+  react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-simple-crypto: 9b358cdfd34169031d384a8d4ac2ffc40b323876
