@@ -1037,20 +1037,20 @@ const RocketChat = {
 			roomId: rid,
 			offset: start,
 			count: end,
-			...(debouncedText && { filter: debouncedText }),
-			...(type !== 'all' && { status: [type] })
+			...(type !== 'all' && { 'status[]': type }),
+			...(debouncedText && { filter: debouncedText })
 		};
 		// RC 3.16.0
 		if (roomType === 'd') {
-			return this.post('im.members', params);
+			return this.sdk.get('im.members', params);
 		}
 
 		if (roomType === 'p') {
-			return this.post('groups.members', params);
+			return this.sdk.get('groups.members', params);
 		}
 
 		if (roomType === 'c') {
-			return this.post('channels.members', params);
+			return this.sdk.get('channels.members', params);
 		}
 	},
 	methodCallWrapper(method, ...params) {

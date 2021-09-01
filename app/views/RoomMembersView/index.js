@@ -27,6 +27,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { CustomIcon } from '../../lib/Icons';
+import { compareServerVersion, methods } from '../../lib/utils';
 
 const PAGE_SIZE = 25;
 
@@ -56,6 +57,7 @@ class RoomMembersView extends React.Component {
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		useRealName: PropTypes.bool,
+		serverVersion: PropTypes.string,
 		muteUserPermission: PropTypes.array,
 		setLeaderPermission: PropTypes.array,
 		setOwnerPermission: PropTypes.array,
@@ -389,21 +391,33 @@ class RoomMembersView extends React.Component {
 
 	fetchMembers = async() => {
 		const {
-			rid, members, isLoading, allUsers, end
+			rid, members, isLoading, allUsers, end, room, filtering
 		} = this.state;
+		const { serverVersion } = this.props;
+		const { t } = room;
 		if (isLoading || end) {
 			return;
 		}
 
 		this.setState({ isLoading: true });
 		try {
-			const membersResult = await RocketChat.getRoomMembers(rid, allUsers, members.length, PAGE_SIZE);
-			const newMembers = membersResult.records;
-			this.setState({
-				members: members.concat(newMembers || []),
-				isLoading: false,
-				end: newMembers.length < PAGE_SIZE
-			});
+			if (compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)) {
+				const membersResult = await RocketChat.getMembers(rid, t, allUsers ? 'all' : 'online', filtering, members.length, PAGE_SIZE);
+				const newMembers = membersResult.members;
+				this.setState({
+					members: members.concat(newMembers || []),
+					isLoading: false,
+					end: newMembers.length < PAGE_SIZE
+				});
+			} else {
+				const membersResult = await RocketChat.getRoomMembers(rid, allUsers, members.length, PAGE_SIZE);
+				const newMembers = membersResult.records;
+				this.setState({
+					members: members.concat(newMembers || []),
+					isLoading: false,
+					end: newMembers.length < PAGE_SIZE
+				});
+			}
 			this.setHeader();
 		} catch (e) {
 			log(e);
@@ -579,6 +593,7 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	useRealName: state.settings.UI_Use_Real_Name,
+	serverVersion: state.server.version,
 	muteUserPermission: state.permissions[PERMISSION_MUTE_USER],
 	setLeaderPermission: state.permissions[PERMISSION_SET_LEADER],
 	setOwnerPermission: state.permissions[PERMISSION_SET_OWNER],
