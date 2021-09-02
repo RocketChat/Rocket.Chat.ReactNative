@@ -217,6 +217,7 @@ module.exports = {
 				"indent": "off",
 				"no-return-assign": 0,
 				"no-dupe-class-members": "off",
+				"lines-between-class-members": "off",
 				"no-extra-parens": "off",
 				"no-spaced-func": "off",
 				"no-unused-vars": "off",
