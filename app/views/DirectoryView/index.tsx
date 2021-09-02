@@ -1,8 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {
-	FlatList, Text, View
-} from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as List from '../../containers/List';
@@ -26,10 +23,23 @@ import { goRoom } from '../../utils/goRoom';
 import styles from './styles';
 import Options from './Options';
 
-class DirectoryView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => {
-		const options = {
-			title: I18n.t('Directory')
+interface IDirectoryViewProps {
+	navigation: object;
+	baseUrl: string;
+	isFederationEnabled: boolean;
+	user: {
+		id: string;
+		token: string;
+	}
+	theme: string;
+	directoryDefaultView: string;
+	isMasterDetail: boolean;
+}
+
+class DirectoryView extends React.Component<IDirectoryViewProps, any> {
+	static navigationOptions = ({ navigation, isMasterDetail }: any) => {
+		const options: any = {
+			title: I18n.t('Directory'),
 		};
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
@@ -37,20 +47,7 @@ class DirectoryView extends React.Component {
 		return options;
 	}
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		baseUrl: PropTypes.string,
-		isFederationEnabled: PropTypes.bool,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string
-		}),
-		theme: PropTypes.string,
-		directoryDefaultView: PropTypes.string,
-		isMasterDetail: PropTypes.bool
-	};
-
-	constructor(props) {
+	constructor(props: IDirectoryViewProps) {
 		super(props);
 		this.state = {
 			data: [],
@@ -59,7 +56,7 @@ class DirectoryView extends React.Component {
 			total: -1,
 			showOptionsDropdown: false,
 			globalUsers: true,
-			type: props.directoryDefaultView
+			type: props.directoryDefaultView,
 		};
 	}
 
@@ -67,18 +64,18 @@ class DirectoryView extends React.Component {
 		this.load({});
 	}
 
-	onSearchChangeText = (text) => {
+	onSearchChangeText = (text: string) => {
 		this.setState({ text }, this.search);
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	load = debounce(async({ newSearch = false }) => {
+	load = debounce(async ({ newSearch = false }) => {
 		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
 		}
 
 		const {
-			loading, text, total, data: { length }
+			loading, text, total, data: { length },
 		} = this.state;
 		if (loading || length === total) {
 			return;
@@ -93,13 +90,13 @@ class DirectoryView extends React.Component {
 				query,
 				offset: data.length,
 				count: 50,
-				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
+				sort: type === 'users' ? { username: 1 } : { usersCount: -1 },
 			});
 			if (directories.success) {
 				this.setState({
 					data: [...data, ...directories.result],
 					loading: false,
-					total: directories.total
+					total: directories.total,
 				});
 			} else {
 				this.setState({ loading: false });
@@ -114,7 +111,7 @@ class DirectoryView extends React.Component {
 		this.load({ newSearch: true });
 	}
 
-	changeType = (type) => {
+	changeType = (type: string) => {
 		this.setState({ type, data: [] }, () => this.search());
 
 		if (type === 'users') {
@@ -122,20 +119,21 @@ class DirectoryView extends React.Component {
 		} else if (type === 'channels') {
 			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
 		} else if (type === 'teams') {
+			// TODO - this event don't exist on events list.
 			logEvent(events.DIRECTORY_SEARCH_TEAMS);
 		}
 	}
 
 	toggleWorkspace = () => {
-		this.setState(({ globalUsers }) => ({ globalUsers: !globalUsers, data: [] }), () => this.search());
+		this.setState(({ globalUsers }: any) => ({ globalUsers: !globalUsers, data: [] }), () => this.search());
 	}
 
 	toggleDropdown = () => {
-		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
+		this.setState(({ showOptionsDropdown }: any) => ({ showOptionsDropdown: !showOptionsDropdown }));
 	}
 
-	goRoom = (item) => {
-		const { navigation, isMasterDetail } = this.props;
+	goRoom = (item: any) => {
+		const { navigation, isMasterDetail }: any = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('DrawerNavigator');
 		} else {
@@ -144,7 +142,7 @@ class DirectoryView extends React.Component {
 		goRoom({ item, isMasterDetail });
 	}
 
-	onPressItem = async(item) => {
+	onPressItem = async (item: any) => {
 		const { type } = this.state;
 		if (type === 'users') {
 			const result = await RocketChat.createDirectMessage(item.username);
@@ -154,11 +152,11 @@ class DirectoryView extends React.Component {
 		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
 			const { room } = await RocketChat.getRoomInfo(item._id);
 			this.goRoom({
-				rid: item._id, name: item.name, joinCodeRequired: room.joinCodeRequired, t: item.t, search: true
+				rid: item._id, name: item.name, joinCodeRequired: room.joinCodeRequired, t: item.t, search: true,
 			});
 		} else {
 			this.goRoom({
-				rid: item._id, name: item.name, t: item.t, search: true, teamMain: item.teamMain, teamId: item.teamId
+				rid: item._id, name: item.name, t: item.t, search: true, teamMain: item.teamMain, teamId: item.teamId,
 			});
 		}
 	}
@@ -202,7 +200,7 @@ class DirectoryView extends React.Component {
 		);
 	}
 
-	renderItem = ({ item, index }) => {
+	renderItem = ({ item, index }: any) => {
 		const { data, type } = this.state;
 		const { baseUrl, user, theme } = this.props;
 
@@ -210,7 +208,7 @@ class DirectoryView extends React.Component {
 		if (index === data.length - 1) {
 			style = {
 				...sharedStyles.separatorBottom,
-				borderColor: themes[theme].separatorColor
+				borderColor: themes[theme].separatorColor,
 			};
 		}
 
@@ -222,11 +220,12 @@ class DirectoryView extends React.Component {
 			style,
 			user,
 			theme,
-			rid: item._id
+			rid: item._id,
 		};
 
 		if (type === 'users') {
 			return (
+				// @ts-ignore
 				<DirectoryItem
 					avatar={item.username}
 					description={item.username}
@@ -250,6 +249,7 @@ class DirectoryView extends React.Component {
 			);
 		}
 		return (
+			// @ts-ignore
 			<DirectoryItem
 				avatar={item.name}
 				description={item.topic}
@@ -262,7 +262,7 @@ class DirectoryView extends React.Component {
 
 	render = () => {
 		const {
-			data, loading, showOptionsDropdown, type, globalUsers
+			data, loading, showOptionsDropdown, type, globalUsers,
 		} = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
@@ -276,7 +276,7 @@ class DirectoryView extends React.Component {
 					style={styles.list}
 					contentContainerStyle={styles.listContainer}
 					extraData={this.state}
-					keyExtractor={item => item._id}
+					keyExtractor={(item) => item._id}
 					ListHeaderComponent={this.renderHeader}
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={List.Separator}
@@ -302,12 +302,12 @@ class DirectoryView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	isFederationEnabled: state.settings.FEDERATION_Enabled,
 	directoryDefaultView: state.settings.Accounts_Directory_DefaultView,
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
 });
 
 export default connect(mapStateToProps)(withTheme(DirectoryView));

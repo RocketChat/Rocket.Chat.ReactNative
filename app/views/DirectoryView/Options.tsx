@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import {
-	Animated, Easing, Switch, Text, TouchableWithoutFeedback, View
+	Animated, Easing, Switch, Text, TouchableWithoutFeedback, View,
 } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Touch from '../../utils/touch';
 import { CustomIcon } from '../../lib/Icons';
@@ -15,21 +14,23 @@ const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
 	duration: ANIMATION_DURATION,
 	easing: Easing.inOut(Easing.quad),
-	useNativeDriver: true
+	useNativeDriver: true,
 };
 
-export default class DirectoryOptions extends PureComponent {
-	static propTypes = {
-		type: PropTypes.string,
-		globalUsers: PropTypes.bool,
-		isFederationEnabled: PropTypes.bool,
-		close: PropTypes.func,
-		changeType: PropTypes.func,
-		toggleWorkspace: PropTypes.func,
-		theme: PropTypes.string
-	}
+interface IDirectoryOptionsProps {
+	type: string;
+	globalUsers: boolean;
+	isFederationEnabled: boolean;
+	close: Function;
+	changeType: Function;
+	toggleWorkspace(): void;
+	theme: string;
+}
 
-	constructor(props) {
+export default class DirectoryOptions extends PureComponent<IDirectoryOptionsProps, any> {
+	private animatedValue: Animated.Value;
+
+	constructor(props: IDirectoryOptionsProps) {
 		super(props);
 		this.animatedValue = new Animated.Value(0);
 	}
@@ -39,8 +40,8 @@ export default class DirectoryOptions extends PureComponent {
 			this.animatedValue,
 			{
 				toValue: 1,
-				...ANIMATION_PROPS
-			}
+				...ANIMATION_PROPS,
+			},
 		).start();
 	}
 
@@ -50,12 +51,12 @@ export default class DirectoryOptions extends PureComponent {
 			this.animatedValue,
 			{
 				toValue: 0,
-				...ANIMATION_PROPS
-			}
+				...ANIMATION_PROPS,
+			},
 		).start(() => close());
 	}
 
-	renderItem = (itemType) => {
+	renderItem = (itemType: string) => {
 		const { changeType, type: propType, theme } = this.props;
 		let text = 'Users';
 		let icon = 'user';
@@ -87,14 +88,14 @@ export default class DirectoryOptions extends PureComponent {
 	render() {
 		const translateY = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [-326, 0]
+			outputRange: [-326, 0],
 		});
 		const {
-			globalUsers, toggleWorkspace, isFederationEnabled, theme
+			globalUsers, toggleWorkspace, isFederationEnabled, theme,
 		} = this.props;
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, themes[theme].backdropOpacity]
+			outputRange: [0, themes[theme].backdropOpacity],
 		});
 		return (
 			<>
