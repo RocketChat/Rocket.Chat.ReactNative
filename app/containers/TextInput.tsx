@@ -67,7 +67,9 @@ interface IRCTextInputProps {
 	placeholder: string;
 	left: JSX.Element;
 	onIconRightPress(): void;
+	onChangeText?: Function;
 	theme: string;
+	defaultValue?: string;
 }
 
 export default class RCTextInput extends React.PureComponent<IRCTextInputProps, any> {

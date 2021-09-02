@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import debounce from '../../utils/debounce';
 import { avatarURL } from '../../utils/avatar';
@@ -9,13 +8,14 @@ import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../constants/colors';
 import styles from './styles';
+import { ICreateDiscussionViewSelectChannel } from './interfaces';
 
 const SelectChannel = ({
-	server, token, userId, onChannelSelect, initial, blockUnauthenticatedAccess, serverVersion, theme
-}) => {
+	server, token, userId, onChannelSelect, initial, blockUnauthenticatedAccess, serverVersion, theme,
+}: ICreateDiscussionViewSelectChannel) => {
 	const [channels, setChannels] = useState([]);
 
-	const getChannels = debounce(async(keyword = '') => {
+	const getChannels = debounce(async (keyword = '') => {
 		try {
 			const res = await RocketChat.localSearch({ text: keyword });
 			setChannels(res);
@@ -24,7 +24,9 @@ const SelectChannel = ({
 		}
 	}, 300);
 
-	const getAvatar = item => avatarURL({
+	// TODO - remove this ts-ignore when migrate the file: app/utils/avatar.js
+	// @ts-ignore
+	const getAvatar = (item) => avatarURL({
 		text: RocketChat.getRoomAvatar(item),
 		type: item.t,
 		user: { id: userId, token },
@@ -32,7 +34,7 @@ const SelectChannel = ({
 		avatarETag: item.avatarETag,
 		rid: item.rid,
 		blockUnauthenticatedAccess,
-		serverVersion
+		serverVersion,
 	});
 
 	return (
@@ -44,27 +46,18 @@ const SelectChannel = ({
 				onChange={onChannelSelect}
 				onSearch={getChannels}
 				value={initial && [initial]}
+				/* @ts-ignore*/
 				disabled={initial}
-				options={channels.map(channel => ({
+				options={channels.map((channel) => ({
 					value: channel,
 					text: { text: RocketChat.getRoomTitle(channel) },
-					imageUrl: getAvatar(channel)
+					imageUrl: getAvatar(channel),
 				}))}
 				onClose={() => setChannels([])}
 				placeholder={{ text: `${ I18n.t('Select_a_Channel') }...` }}
 			/>
 		</>
 	);
-};
-SelectChannel.propTypes = {
-	server: PropTypes.string,
-	token: PropTypes.string,
-	userId: PropTypes.string,
-	initial: PropTypes.object,
-	onChannelSelect: PropTypes.func,
-	blockUnauthenticatedAccess: PropTypes.bool,
-	serverVersion: PropTypes.string,
-	theme: PropTypes.string
 };
 
 export default SelectChannel;

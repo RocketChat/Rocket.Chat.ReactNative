@@ -7,8 +7,8 @@ import Item from './HeaderButtonItem';
 
 interface IHeaderButtonCommon {
 	navigation: any;
-	onPress(): void;
-	testID: string;
+	onPress?(): void;
+	testID?: string;
 }
 
 // Left

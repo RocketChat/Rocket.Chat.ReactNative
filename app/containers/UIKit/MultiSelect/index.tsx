@@ -16,7 +16,7 @@ import Input from './Input';
 import styles from './styles';
 
 interface IMultiSelect {
-	options: [];
+	options: any[];
 	onChange: Function;
 	placeholder: {
 		text: string;
@@ -27,7 +27,7 @@ interface IMultiSelect {
 	onSearch: Function;
 	onClose: Function;
 	inputStyle: object;
-	value: {text: any}[];
+	value: any[];
 	disabled: boolean;
 	theme: string;
 }
