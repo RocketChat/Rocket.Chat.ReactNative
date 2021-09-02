@@ -1142,6 +1142,19 @@ const RocketChat = {
 		return this.sdk.get('livechat/custom-fields');
 	},
 
+	getListCannedResponse({
+		scope, departmentId, offset, count
+	}) {
+		const params = {
+			offset,
+			count,
+			...(departmentId && { departmentId }),
+			...(scope && { scope })
+		};
+
+		return this.sdk.get('canned-responses', params);
+	},
+
 	getUidDirectMessage(room) {
 		const { id: userId } = reduxStore.getState().login.user;
 

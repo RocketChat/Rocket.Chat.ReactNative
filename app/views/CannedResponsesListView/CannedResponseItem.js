@@ -9,13 +9,15 @@ import Button from '../../containers/Button';
 import { CustomIcon } from '../../lib/Icons';
 import I18n from '../../i18n';
 
-const CannedResponseItem = ({ theme }) => (
-	<Touchable onPress={() => {}} style={[styles.wrapCannedItem, { backgroundColor: themes[theme].messageboxBackground }]}>
+const CannedResponseItem = ({
+	theme, onPressDetail, shortcut, scope, onPressUse, text, tags
+}) => (
+	<Touchable onPress={onPressDetail} style={[styles.wrapCannedItem, { backgroundColor: themes[theme].messageboxBackground }]}>
 		<>
 			<View style={styles.cannedRow}>
 				<View style={styles.cannedWrapShortcutScope}>
-					<Text style={[styles.cannedShortcut, { color: themes[theme].titleText }]}>!welcomes</Text>
-					<Text style={[styles.cannedScope, { color: themes[theme].auxiliaryTintColor }]}>Public</Text>
+					<Text style={[styles.cannedShortcut, { color: themes[theme].titleText }]}>!{shortcut}</Text>
+					<Text style={[styles.cannedScope, { color: themes[theme].auxiliaryTintColor }]}>{scope}</Text>
 				</View>
 
 				<Button
@@ -24,6 +26,7 @@ const CannedResponseItem = ({ theme }) => (
 					color={themes[theme].titleText}
 					style={[styles.cannedUseButton, { backgroundColor: themes[theme].headerBackground }]}
 					theme={theme}
+					onPress={onPressUse}
 				/>
 
 				<CustomIcon
@@ -34,19 +37,37 @@ const CannedResponseItem = ({ theme }) => (
 
 			</View>
 
-			<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>“Buenos Dias! Welcome to Rocket.Chat. What can I help you with today?”</Text>
+			<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>“{text}”</Text>
 
 			<View style={styles.cannedTagContainer}>
-				<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>
-					<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryTintColor }]}>sales</Text>
-				</View>
+				{
+					tags?.length > 0
+						? (
+							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>
+								<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryTintColor }]}>sales</Text>
+							</View>
+						)
+						: null
+				}
+
 			</View>
 		</>
 	</Touchable>
 );
 
 CannedResponseItem.propTypes = {
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	onPressDetail: PropTypes.func,
+	shortcut: PropTypes.string,
+	scope: PropTypes.string,
+	onPressUse: PropTypes.func,
+	text: PropTypes.string,
+	tags: PropTypes.array
+};
+
+CannedResponseItem.defaultProps = {
+	onPressDetail: () => {},
+	onPressUse: () => {}
 };
 
 export default CannedResponseItem;
