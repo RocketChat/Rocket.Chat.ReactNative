@@ -9,12 +9,12 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 import I18n from '../../i18n';
 
-const HeaderCanned = ({ theme }) => (
+const HeaderCanned = ({ theme, onChangeText, onDepartmentSelect }) => (
 	<View style={[styles.containerHeader, { backgroundColor: themes[theme].messageboxBackground }]}>
 		<Text style={[{ color: themes[theme].auxiliaryTintColor }]}>{I18n.t('Type_!_Canned_Response')}</Text>
 
 		<View style={styles.containerRow}>
-			<CannedSearchBox onChangeText={() => {}} />
+			<CannedSearchBox onChangeText={onChangeText} />
 			<SelectDepartment
 				initial={
 					{
@@ -23,16 +23,21 @@ const HeaderCanned = ({ theme }) => (
 					}
 				}
 				theme={theme}
-				onDepartmentSelect={(item) => { console.log('🔥🔥🔥', item); }}
+				onDepartmentSelect={onDepartmentSelect}
 			/>
 		</View>
 	</View>
 );
 
 HeaderCanned.propTypes = {
+	onChangeText: PropTypes.func,
+	theme: PropTypes.string,
+	onDepartmentSelect: PropTypes.func
+};
 
-	theme: PropTypes.string
-
+HeaderCanned.defaultProps = {
+	onChangeText: () => {},
+	onDepartmentSelect: () => {}
 };
 
 export default HeaderCanned;

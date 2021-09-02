@@ -11,9 +11,13 @@ import HeaderCanned from './HeaderCanned';
 import CannedResponseItem from './CannedResponseItem';
 import RocketChat from '../../lib/rocketchat';
 
+const COUNT = 25;
+
 const CannedResponsesListView = (props) => {
 	const [cannedResponses, setCannedResponses] = useState([]);
 	const { theme } = useTheme();
+
+	const offset = 0;
 
 	useEffect(() => {
 		const { navigation } = props;
@@ -23,17 +27,18 @@ const CannedResponsesListView = (props) => {
 		});
 	}, []);
 
-	const getListCannedResponse = async() => {
+	const getListCannedResponse = async(text) => {
 		try {
 			const res = await RocketChat.getListCannedResponse({
-				offset: 0, count: 80, scope: 'department', departmentId: 'qajzu7WaBRoQBpq6Z'
+				text,
+				offset,
+				count: COUNT
 			});
 			if (res.success) {
 				setCannedResponses(res.cannedResponses);
 			}
-			console.log('🚀 ~ file: index.js ~ line 29 ~ getListCannedResponse ~ res', res);
 		} catch (e) {
-			console.log('🚀 ~ file: index.js ~ line 32 ~ getListCannedResponse ~ e', e);
+			// do nothing
 		}
 	};
 
