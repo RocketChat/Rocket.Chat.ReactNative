@@ -10,15 +10,20 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 
-class AdminPanelView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => ({
+interface IAdminPanelViewProps {
+	baseUrl: string;
+	token: string;
+}
+
+class AdminPanelView extends React.Component<IAdminPanelViewProps, any> {
+	static navigationOptions = ({ navigation, isMasterDetail }: any) => ({
 		headerLeft: isMasterDetail ? undefined : () => <HeaderButton.Drawer navigation={navigation} />,
-		title: I18n.t('Admin_Panel')
+		title: I18n.t('Admin_Panel'),
 	})
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
-		token: PropTypes.string
+		token: PropTypes.string,
 	}
 
 	render() {
@@ -40,9 +45,9 @@ class AdminPanelView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	baseUrl: state.server.server,
-	token: getUserSelector(state).token
+	token: getUserSelector(state).token,
 });
 
 export default connect(mapStateToProps)(withTheme(AdminPanelView));
