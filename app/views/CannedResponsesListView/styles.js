@@ -42,5 +42,63 @@ export default StyleSheet.create({
 		paddingTop: 0,
 		paddingBottom: 0,
 		...sharedStyles.textRegular
+	},
+	wrapCannedItem: {
+		minHeight: 117,
+		maxHeight: 141,
+		padding: 16
+	},
+	cannedRow: {
+		flexDirection: 'row',
+		height: 36
+	},
+	cannedWrapShortcutScope: {
+		flex: 1
+	},
+	cannedShortcut: {
+		flex: 1,
+		fontSize: 14,
+		lineHeight: 20,
+		paddingTop: 0,
+		paddingBottom: 0,
+		...sharedStyles.textMedium
+	},
+	cannedScope: {
+		flex: 1,
+		fontSize: 12,
+		lineHeight: 16,
+		paddingTop: 0,
+		paddingBottom: 0,
+		...sharedStyles.textRegular
+	},
+	cannedText: {
+		marginTop: 8,
+		fontSize: 14,
+		lineHeight: 20,
+		paddingTop: 0,
+		paddingBottom: 0,
+		...sharedStyles.textRegular
+	},
+	cannedTagContainer: {
+		flexDirection: 'row'
+	},
+	cannedTagWrap: {
+		borderRadius: 4,
+		marginRight: 4,
+		marginTop: 8
+	},
+	cannedTag: {
+		fontSize: 12,
+		lineHeight: 16,
+		paddingTop: 0,
+		paddingBottom: 0,
+		paddingHorizontal: 4,
+		...sharedStyles.textRegular
+	},
+	cannedUseButton: {
+		height: 28,
+		width: 56,
+		marginRight: 32,
+		marginLeft: 8
 	}
 });

@@ -7,6 +7,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { useTheme } from '../../theme';
 import HeaderCanned from './HeaderCanned';
+import CannedResponseItem from './CannedResponseItem';
 
 const CannedResponsesListView = (props) => {
 	const { theme } = useTheme();
@@ -22,9 +23,10 @@ const CannedResponsesListView = (props) => {
 	return (
 		<SafeAreaView>
 			<StatusBar />
-			<HeaderCanned theme={theme} />
 
-			<List.Container />
+			<HeaderCanned theme={theme} />
+			<CannedResponseItem theme={theme} />
+			<List.Separator />
 
 		</SafeAreaView>
 	);
