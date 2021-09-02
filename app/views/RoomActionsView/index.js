@@ -78,6 +78,7 @@ class RoomActionsView extends React.Component {
 		const member = props.route.params?.member;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
+		this.navToRoomInfo = props.route.params?.navToRoomInfo;
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,
@@ -987,7 +988,8 @@ class RoomActionsView extends React.Component {
 												prid,
 												canAutoTranslate,
 												autoTranslate: room.autoTranslate,
-												autoTranslateLanguage: room.autoTranslateLanguage
+												autoTranslateLanguage: room.autoTranslateLanguage,
+												navToRoomInfo: navParam => this.navToRoomInfo(navParam)
 											}
 										})}
 										testID='room-actions-discussions'

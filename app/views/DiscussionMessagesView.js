@@ -30,6 +30,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 	const canAutoTranslate = route.params?.canAutoTranslate;
 	const autoTranslate = route.params?.autoTranslate;
 	const autoTranslateLanguage = route.params?.autoTranslateLanguage;
+	const navToRoomInfo = route.params?.navToRoomInfo;
 	const user = useSelector(state => state.login?.user);
 	const baseUrl = useSelector(state => state.server.server);
 	const useRealName = useSelector(state => state.settings.UI_Use_Real_Name);
@@ -164,7 +165,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 			item={item}
 			user={user}
 			rid={rid}
-			navToRoomInfo={() => {}}
+			navToRoomInfo={navToRoomInfo}
 			onDiscussionPress={onDiscussionPress}
 			baseUrl={baseUrl}
 			timeFormat={Message_TimeFormat}
@@ -173,7 +174,6 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 			autoTranslateLanguage={autoTranslateLanguage}
 		/>
 	);
-
 	if (!discussions?.length) {
 		return (
 			<>
