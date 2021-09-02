@@ -33,6 +33,7 @@ import Direct from './Direct';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
+import { getUserSelector } from '../../selectors/login';
 
 const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
 	? (
@@ -517,7 +518,8 @@ const mapStateToProps = state => ({
 	editRoomPermission: state.permissions['edit-room'],
 	editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
 	editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields'],
-	roles: state.roles
+	roles: state.roles,
+	user: getUserSelector(state)
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoView));
