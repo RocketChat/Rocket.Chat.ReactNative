@@ -9,7 +9,7 @@ import ActivityIndicator from '../../ActivityIndicator';
 import styles from './styles';
 
 const Input = ({
-	children, onPress, theme, loading, inputStyle, placeholder, disabled
+	children, onPress, theme, loading, inputStyle, placeholder, disabled, wrapInputStyle
 }) => (
 	<Touchable
 		onPress={onPress}
@@ -17,7 +17,7 @@ const Input = ({
 		background={Touchable.Ripple(themes[theme].bannerBackground)}
 		disabled={disabled}
 	>
-		<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
+		<View style={[styles.input, { borderColor: themes[theme].separatorColor }, wrapInputStyle]}>
 			{placeholder ? <Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{placeholder}</Text> : children}
 			{
 				loading
@@ -32,6 +32,7 @@ Input.propTypes = {
 	onPress: PropTypes.func,
 	theme: PropTypes.string,
 	inputStyle: PropTypes.object,
+	wrapInputStyle: PropTypes.object,
 	disabled: PropTypes.bool,
 	placeholder: PropTypes.string,
 	loading: PropTypes.bool

@@ -41,7 +41,8 @@ export const MultiSelect = React.memo(({
 	onClose,
 	disabled,
 	inputStyle,
-	theme
+	theme,
+	wrapInputStyle
 }) => {
 	const [selected, select] = useState(Array.isArray(values) ? values : []);
 	const [open, setOpen] = useState(false);
@@ -142,6 +143,7 @@ export const MultiSelect = React.memo(({
 			loading={loading}
 			disabled={disabled}
 			inputStyle={inputStyle}
+			wrapInputStyle={wrapInputStyle}
 		>
 			<Text style={[styles.pickerText, { color: currentValue ? themes[theme].titleText : themes[theme].auxiliaryText }]}>{currentValue || placeholder.text}</Text>
 		</Input>
@@ -156,6 +158,7 @@ export const MultiSelect = React.memo(({
 				loading={loading}
 				disabled={disabled}
 				inputStyle={inputStyle}
+				wrapInputStyle={wrapInputStyle}
 			>
 				{items.length ? <Chips items={items} onSelect={item => (disabled ? {} : onSelect(item))} theme={theme} /> : <Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{placeholder.text}</Text>}
 			</Input>
@@ -196,6 +199,7 @@ MultiSelect.propTypes = {
 	onSearch: PropTypes.func,
 	onClose: PropTypes.func,
 	inputStyle: PropTypes.object,
+	wrapInputStyle: PropTypes.object,
 	value: PropTypes.array,
 	disabled: PropTypes.bool,
 	theme: PropTypes.string

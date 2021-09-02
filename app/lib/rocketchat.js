@@ -1115,9 +1115,11 @@ const RocketChat = {
 		// RC 2.2.0
 		return this.sdk.get(`livechat/department/${ departmentId }?includeAgents=false`);
 	},
-	getDepartments() {
+	getDepartments(text = '') {
 		// RC 2.2.0
-		return this.sdk.get('livechat/department');
+		const params = { text };
+
+		return this.sdk.get('livechat/department', params);
 	},
 	usersAutoComplete(selector) {
 		// RC 2.4.0

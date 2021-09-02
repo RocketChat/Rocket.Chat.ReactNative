@@ -773,5 +773,6 @@
   "CANNED_RESPONSES": "CANNED RESPONSES",
   "No_match_found": "No match found {{action}}",
   "Check_canned_responses": "Check on canned responses",
-  "Searching": "Searching"
+  "Searching": "Searching",
+  "Type_!_Canned_Response": "Type ! when replying to use canned response"
 }

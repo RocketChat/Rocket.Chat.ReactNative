@@ -1117,9 +1117,7 @@ class RoomActionsView extends React.Component {
 								<>
 									<List.Item
 										title='Canned_Responses'
-										onPress={() => this.onPressTouchable({
-											event: this.closeLivechat
-										})}
+										onPress={() => this.onPressTouchable({ route: 'CannedResponsesListView', params: { rid, room } })}
 										left={() => <List.Icon name='canned-response' />}
 										showActionIndicator
 									/>

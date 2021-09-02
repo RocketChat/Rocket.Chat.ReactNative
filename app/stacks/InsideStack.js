@@ -32,6 +32,7 @@ import ThreadMessagesView from '../views/ThreadMessagesView';
 import TeamChannelsView from '../views/TeamChannelsView';
 import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
+import CannedResponsesListView from '../views/CannedResponsesListView';
 import { themes } from '../constants/colors';
 
 // Profile Stack
@@ -211,6 +212,11 @@ const ChatsStackNavigator = () => {
 				name='QueueListView'
 				component={QueueListView}
 				options={QueueListView.navigationOptions}
+			/>
+			<ChatsStack.Screen
+				name='CannedResponsesListView'
+				component={CannedResponsesListView}
+				options={CannedResponsesListView.navigationOptions}
 			/>
 		</ChatsStack.Navigator>
 	);

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { MENTIONS_TRACKING_TYPE_CANNED } from '../constants';
 
 import styles from '../styles';
-import i18n from '../../../i18n';
+import I18n from '../../../i18n';
 import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 
@@ -19,14 +19,14 @@ const MentionHeaderList = ({
 		if (hasMentions) {
 			content = (
 				<View style={styles.wrapMentionHeaderList}>
-					<Text style={[styles.mentionHeaderList, { color: themes[theme].bodyText }]}>{i18n.t('CANNED_RESPONSES')}</Text>
+					<Text style={[styles.mentionHeaderList, { color: themes[theme].bodyText }]}>{I18n.t('CANNED_RESPONSES')}</Text>
 				</View>
 			);
 		} else {
 			content = (
 				<TouchableOpacity style={[styles.wrapMentionHeaderListRow, styles.mentionNoMatchHeader]} onPress={() => { /** AJEITAR A FUNCTION PELO CONTEXT */ }}>
 					<Text style={[styles.mentionHeaderList, { color: themes[theme].auxiliaryText }]}>
-						{i18n.t('No_match_found', { action: i18n.t('Check_canned_responses') })}
+						{I18n.t('No_match_found', { action: I18n.t('Check_canned_responses') })}
 					</Text>
 					<CustomIcon name='chevron-right' size={20} style={styles.mentionChevronMargin} />
 				</TouchableOpacity>
@@ -37,7 +37,7 @@ const MentionHeaderList = ({
 	const searchingIndicator = (
 		<View style={styles.wrapMentionHeaderListRow}>
 			<ActivityIndicator style={styles.loadingPaddingHeader} size='small' color={themes[theme].actionTintColor} />
-			<Text style={[styles.mentionHeaderList, { color: themes[theme].auxiliaryText }]}>{i18n.t('Searching')}</Text>
+			<Text style={[styles.mentionHeaderList, { color: themes[theme].auxiliaryText }]}>{I18n.t('Searching')}</Text>
 		</View>
 	);
 
