@@ -3,13 +3,11 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Q } from '@nozbe/watermelondb';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton } from '@react-navigation/stack';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
 import I18n from '../i18n';
-import database from '../lib/database';
 import StatusBar from '../containers/StatusBar';
 import log from '../utils/log';
 import debounce from '../utils/debounce';
@@ -23,7 +21,9 @@ import { getHeaderTitlePosition } from '../containers/Header';
 import SearchHeader from './ThreadMessagesView/SearchHeader';
 import { useTheme } from '../theme';
 import Message from '../containers/message';
-import { sanitizeLikeString } from '../lib/database/utils';
+import RocketChat from '../lib/rocketchat';
+
+const API_FETCH_COUNT = 25;
 
 const DiscussionMessagesView = ({ navigation, route }) => {
 	const rid = route.params?.rid;
@@ -38,6 +38,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 	const isMasterDetail = useSelector(state => state.app.isMasterDetail);
 	const [loading, setLoading] = useState(false);
 	const [discussions, setDiscussions] = useState([]);
+	const [search, setSearch] = useState([]);
 	const [isSearching, setIsSearching] = useState(false);
 	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
@@ -48,39 +49,43 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 		}
 
 		setLoading(true);
-
 		try {
-			const db = database.active;
-			const subCollection = db.get('messages');
-			const subDiscussions = await subCollection.query(
-				Q.where('rid', Q.eq(rid)),
-				Q.where('drid', Q.notEq(null))
-			);
-			setDiscussions(subDiscussions);
+			const result = await RocketChat.getDiscussions({
+				roomId: rid,
+				offset: discussions.length,
+				count: API_FETCH_COUNT
+			});
+
+			if (result.success) {
+				if (isSearching) {
+					setSearch(result.messages);
+				} else {
+					setDiscussions(result.messages);
+				}
+			}
 			setLoading(false);
 		} catch (e) {
 			log(e);
+			setLoading(false);
 		}
 	};
 
 	const onSearchChangeText = debounce(async(text) => {
+		setLoading(true);
 		try {
-			const db = database.active;
-			const whereClause = [
-				Q.where('rid', Q.eq(rid)),
-				Q.where('drid', Q.notEq(null))
-			];
-
-			if (text?.trim()) {
-				whereClause.push(Q.where('msg', Q.like(`%${ sanitizeLikeString(text?.trim()) }%`)));
+			const result = await RocketChat.getDiscussions({
+				roomId: rid,
+				offset: search.length,
+				count: API_FETCH_COUNT,
+				text
+			});
+			if (result.success) {
+				setSearch(result.messages);
 			}
-
-			const discussionsMessages = await db
-				.get('messages')
-				.query(...whereClause);
-			setDiscussions(discussionsMessages);
+			setLoading(false);
 		} catch (e) {
 			log(e);
+			setLoading(false);
 		}
 	}, 300);
 
@@ -106,7 +111,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 						/>
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader placeholder='Search by first message' onSearchChangeText={onSearchChangeText} />,
+				headerTitle: () => <SearchHeader placeholder='Search Messages' onSearchChangeText={onSearchChangeText} />,
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right
@@ -185,7 +190,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 		<SafeAreaView testID='discussion-messages-view'>
 			<StatusBar />
 			<FlatList
-				data={discussions}
+				data={isSearching ? search : discussions}
 				renderItem={renderItem}
 				keyExtractor={item => item.msg}
 				style={{ backgroundColor: themes[theme].backgroundColor }}
@@ -194,6 +199,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 				windowSize={10}
 				initialNumToRender={7}
 				removeClippedSubviews={isIOS}
+				onEndReached={() => discussions.length > 25 ?? load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				scrollIndicatorInsets={{ right: 1 }}
