@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { withTheme } from '../../theme';
+import { useTheme, withTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
 import TextInput from '../../presentation/TextInput';
@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
 });
 
 // TODO: it might be useful to refactor this component for reusage
-const SearchHeader = ({ theme, onSearchChangeText }) => {
+const SearchHeader = ({ onSearchChangeText, placeholder }) => {
+	const { theme } = useTheme();
 	const titleColorStyle = { color: themes[theme].headerTitleColor };
 	const isLight = theme === 'light';
 	const { isLandscape } = useOrientation();
@@ -33,7 +34,7 @@ const SearchHeader = ({ theme, onSearchChangeText }) => {
 			<TextInput
 				autoFocus
 				style={[styles.title, isLight && titleColorStyle, { fontSize: titleFontSize }]}
-				placeholder='Search'
+				placeholder={placeholder || 'Search'}
 				onChangeText={onSearchChangeText}
 				theme={theme}
 				testID='thread-messages-view-search-header'
@@ -43,7 +44,7 @@ const SearchHeader = ({ theme, onSearchChangeText }) => {
 };
 
 SearchHeader.propTypes = {
-	theme: PropTypes.string,
-	onSearchChangeText: PropTypes.func
+	onSearchChangeText: PropTypes.func,
+	placeholder: PropTypes.string
 };
 export default withTheme(SearchHeader);

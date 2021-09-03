@@ -72,8 +72,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 			];
 
 			if (text?.trim()) {
-				whereClause.push(Q.where('msg', Q.like(`%${ sanitizeLikeString(text?.trim()) }%`)),
-					Q.where('username', Q.like(`%${ sanitizeLikeString(text?.trim()) }%`)));
+				whereClause.push(Q.where('msg', Q.like(`%${ sanitizeLikeString(text?.trim()) }%`)));
 			}
 
 			const discussionsMessages = await db
@@ -107,7 +106,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 						/>
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader onSearchChangeText={onSearchChangeText} />,
+				headerTitle: () => <SearchHeader placeholder='Search by first message' onSearchChangeText={onSearchChangeText} />,
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right
