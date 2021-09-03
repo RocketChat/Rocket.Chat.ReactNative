@@ -119,7 +119,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 		} else if (type === 'channels') {
 			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
 		} else if (type === 'teams') {
-			// TODO - this event don't exist on events list.
 			logEvent(events.DIRECTORY_SEARCH_TEAMS);
 		}
 	}

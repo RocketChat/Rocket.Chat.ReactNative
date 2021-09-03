@@ -85,6 +85,7 @@ export default {
 	// DIRECTORY VIEW
 	DIRECTORY_SEARCH_USERS: 'directory_search_users',
 	DIRECTORY_SEARCH_CHANNELS: 'directory_search_channels',
+	DIRECTORY_SEARCH_TEAMS: 'directory_search_teams',
 
 	// NEW MESSAGE VIEW
 	NEW_MSG_CREATE_CHANNEL: 'new_msg_create_channel',
