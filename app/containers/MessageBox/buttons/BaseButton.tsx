@@ -22,8 +22,7 @@ const BaseButton = React.memo(({ onPress, testID, accessibilityLabel, icon, them
 		testID={testID}
 		// @ts-ignore
 		accessibilityLabel={I18n.t(accessibilityLabel)}
-		accessibilityTraits='button'
-	>
+		accessibilityTraits='button'>
 		<CustomIcon name={icon} size={24} color={color ?? themes[theme!].auxiliaryTintColor} />
 	</BorderlessButton>
 ));

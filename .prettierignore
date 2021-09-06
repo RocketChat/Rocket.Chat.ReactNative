@@ -17,6 +17,9 @@ scripts/
 .gitignore
 .snyk
 .watchmanconfig
+CONTRIBUTING.md
+README.md
+SECURITY.md
 npm-debug.log
 yarn-error.log
 

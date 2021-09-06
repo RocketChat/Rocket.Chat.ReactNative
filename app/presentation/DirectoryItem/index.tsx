@@ -36,28 +36,33 @@ const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => 
 });
 
 const DirectoryItem = ({
-	title, description, avatar, onPress, testID, style, rightLabel, type, rid, theme, teamMain,
+	title,
+	description,
+	avatar,
+	onPress,
+	testID,
+	style,
+	rightLabel,
+	type,
+	rid,
+	theme,
+	teamMain
 }: IDirectoryItem) => (
-	<Touch
-		onPress={onPress}
-		style={{ backgroundColor: themes[theme].backgroundColor }}
-		testID={testID}
-		theme={theme}
-	>
+	<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID} theme={theme}>
 		<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
-			<Avatar
-				text={avatar}
-				size={30}
-				type={type}
-				rid={rid}
-				style={styles.directoryItemAvatar}
-			/>
+			<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
 			<View style={styles.directoryItemTextContainer}>
 				<View style={styles.directoryItemTextTitle}>
 					<RoomTypeIcon type={type} teamMain={teamMain} theme={theme} />
-					<Text style={[styles.directoryItemName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
+					<Text style={[styles.directoryItemName, { color: themes[theme].titleText }]} numberOfLines={1}>
+						{title}
+					</Text>
 				</View>
-				{ description ? <Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{description}</Text> : null }
+				{description ? (
+					<Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+						{description}
+					</Text>
+				) : null}
 			</View>
 			<DirectoryItemLabel text={rightLabel} theme={theme} />
 		</View>

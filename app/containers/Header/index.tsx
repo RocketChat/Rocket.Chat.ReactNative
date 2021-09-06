@@ -30,7 +30,7 @@ interface IHeaderTitlePosition {
 
 export const getHeaderTitlePosition = ({ insets, numIconsRight }: IHeaderTitlePosition) => ({
 	left: insets.left + 60,
-	right: insets.right + Math.max(45 * numIconsRight, 15),
+	right: insets.right + Math.max(45 * numIconsRight, 15)
 });
 
 const styles = StyleSheet.create({
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
 		height: headerHeight,
 		flexDirection: 'row',
 		justifyContent: 'center',
-		elevation: 4,
-	},
+		elevation: 4
+	}
 });
 
 interface IHeader {

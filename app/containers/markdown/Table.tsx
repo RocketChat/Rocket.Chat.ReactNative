@@ -26,14 +26,10 @@ const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 
 		const rows: any = React.Children.toArray(children);
 		rows[rows.length - 1] = React.cloneElement(rows[rows.length - 1], {
-			isLastRow: true,
+			isLastRow: true
 		});
 
-		return (
-			<View style={tableStyle}>
-				{rows}
-			</View>
-		);
+		return <View style={tableStyle}>{rows}</View>;
 	};
 
 	const onPress = () => Navigation.navigate('MarkdownTableView', { renderRows, tableWidth: getTableWidth() });
@@ -44,8 +40,10 @@ const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 				contentContainerStyle={{ width: getTableWidth() }}
 				scrollEnabled={false}
 				showsVerticalScrollIndicator={false}
-				style={[styles.containerTable, { maxWidth: getTableWidth(), maxHeight: MAX_HEIGHT, borderColor: themes[theme].borderColor }]}
-			>
+				style={[
+					styles.containerTable,
+					{ maxWidth: getTableWidth(), maxHeight: MAX_HEIGHT, borderColor: themes[theme].borderColor }
+				]}>
 				{renderRows(false)}
 			</ScrollView>
 			<Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]}>{I18n.t('Full_table')}</Text>

@@ -15,34 +15,16 @@ interface IWrapper {
 	children: JSX.Element;
 }
 
-const Wrapper = ({
-	accessibilityLabel,
-	avatar,
-	avatarSize,
-	type,
-	theme,
-	rid,
-	children,
-}: IWrapper) => (
-	<View
-		style={styles.container}
-		accessibilityLabel={accessibilityLabel}
-	>
-		<Avatar
-			text={avatar}
-			size={avatarSize}
-			type={type}
-			style={styles.avatar}
-			rid={rid}
-		/>
+const Wrapper = ({ accessibilityLabel, avatar, avatarSize, type, theme, rid, children }: IWrapper) => (
+	<View style={styles.container} accessibilityLabel={accessibilityLabel}>
+		<Avatar text={avatar} size={avatarSize} type={type} style={styles.avatar} rid={rid} />
 		<View
 			style={[
 				styles.centerContainer,
 				{
-					borderColor: themes[theme].separatorColor,
-				},
-			]}
-		>
+					borderColor: themes[theme].separatorColor
+				}
+			]}>
 			{children}
 		</View>
 	</View>

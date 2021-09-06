@@ -1,6 +1,4 @@
-import {
-	call, put, select, take, takeLatest
-} from 'redux-saga/effects';
+import { call, put, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CREATE_DISCUSSION, LOGIN } from '../actions/actionsTypes';
@@ -28,8 +26,8 @@ const handleRequest = function* handleRequest({ data }) {
 			try {
 				const db = database.active;
 				const subCollection = db.get('subscriptions');
-				yield db.action(async() => {
-					await subCollection.create((s) => {
+				yield db.action(async () => {
+					await subCollection.create(s => {
 						s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
 						Object.assign(s, sub);
 					});

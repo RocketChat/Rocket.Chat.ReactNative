@@ -18,14 +18,12 @@ interface IFormContainer {
 
 const styles = StyleSheet.create({
 	scrollView: {
-		minHeight: '100%',
-	},
+		minHeight: '100%'
+	}
 });
 
-export const FormContainerInner = ({ children }: {children: JSX.Element}) => (
-	<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
-		{children}
-	</View>
+export const FormContainerInner = ({ children }: { children: JSX.Element }) => (
+	<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>{children}</View>
 );
 
 const FormContainer = ({ children, theme, testID, ...props }: IFormContainer) => (
@@ -33,16 +31,14 @@ const FormContainer = ({ children, theme, testID, ...props }: IFormContainer) =>
 	<KeyboardView
 		style={{ backgroundColor: themes[theme].backgroundColor }}
 		contentContainerStyle={sharedStyles.container}
-		keyboardVerticalOffset={128}
-	>
+		keyboardVerticalOffset={128}>
 		<StatusBar />
 		{/* @ts-ignore*/}
 		<ScrollView
 			style={sharedStyles.container}
 			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
 			{...scrollPersistTaps}
-			{...props}
-		>
+			{...props}>
 			<SafeAreaView testID={testID} style={{ backgroundColor: themes[theme].backgroundColor }}>
 				{children}
 				<AppVersion theme={theme} />

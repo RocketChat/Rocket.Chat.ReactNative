@@ -3,12 +3,12 @@ export const STATUS_COLORS: any = {
 	busy: '#f5455c',
 	away: '#ffd21f',
 	offline: '#cbced1',
-	loading: '#9ea2a8',
+	loading: '#9ea2a8'
 };
 
 export const SWITCH_TRACK_COLOR = {
 	false: '#f5455c',
-	true: '#2de0a5',
+	true: '#2de0a5'
 };
 
 const mentions = {
@@ -16,7 +16,7 @@ const mentions = {
 	tunreadColor: '#1d74f5',
 	mentionMeColor: '#F5455C',
 	mentionGroupColor: '#F38C39',
-	mentionOtherColor: '#F3BE08',
+	mentionOtherColor: '#F3BE08'
 };
 
 export const themes: any = {
@@ -65,7 +65,7 @@ export const themes: any = {
 		previewBackground: '#1F2329',
 		previewTintColor: '#ffffff',
 		backdropOpacity: 0.3,
-		...mentions,
+		...mentions
 	},
 	dark: {
 		backgroundColor: '#030b1b',
@@ -112,7 +112,7 @@ export const themes: any = {
 		previewBackground: '#030b1b',
 		previewTintColor: '#ffffff',
 		backdropOpacity: 0.9,
-		...mentions,
+		...mentions
 	},
 	black: {
 		backgroundColor: '#000000',
@@ -159,6 +159,6 @@ export const themes: any = {
 		previewBackground: '#000000',
 		previewTintColor: '#ffffff',
 		backdropOpacity: 0.9,
-		...mentions,
-	},
+		...mentions
+	}
 };

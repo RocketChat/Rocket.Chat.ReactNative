@@ -11,7 +11,7 @@ import updateMessages from './updateMessages';
 const COUNT = 50;
 
 export default function loadSurroundingMessages({ messageId, rid }) {
-	return new Promise(async(resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await this.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);
 			let messages = EJSON.fromJSONValue(data?.messages);

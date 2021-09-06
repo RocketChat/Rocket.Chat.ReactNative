@@ -6,10 +6,10 @@ import { themes } from '../../constants/colors';
 
 interface ITabBarProps {
 	goToPage: Function;
-	activeTab: number,
-	tabs: [],
-	tabEmojiStyle: object,
-	theme: string
+	activeTab: number;
+	tabs: [];
+	tabEmojiStyle: object;
+	theme: string;
 }
 
 export default class TabBar extends React.Component<Partial<ITabBarProps>> {
@@ -35,10 +35,13 @@ export default class TabBar extends React.Component<Partial<ITabBarProps>> {
 						key={tab}
 						onPress={() => goToPage!(i)}
 						style={styles.tab}
-						testID={`reaction-picker-${ tab }`}
-					>
+						testID={`reaction-picker-${tab}`}>
 						<Text style={[styles.tabEmoji, tabEmojiStyle]}>{tab}</Text>
-						{activeTab === i ? <View style={[styles.activeTabLine, { backgroundColor: themes[theme!].tintColor }]} /> : <View style={styles.tabLine} />}
+						{activeTab === i ? (
+							<View style={[styles.activeTabLine, { backgroundColor: themes[theme!].tintColor }]} />
+						) : (
+							<View style={styles.tabLine} />
+						)}
 					</TouchableOpacity>
 				))}
 			</View>

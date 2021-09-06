@@ -13,33 +13,36 @@ interface IMessageBoxCommandsPreview {
 	theme: string;
 }
 
-const CommandsPreview = React.memo(({ theme, commandPreview, showCommandPreview }: IMessageBoxCommandsPreview) => {
-	if (!showCommandPreview) {
-		return null;
+const CommandsPreview = React.memo(
+	({ theme, commandPreview, showCommandPreview }: IMessageBoxCommandsPreview) => {
+		if (!showCommandPreview) {
+			return null;
+		}
+		return (
+			<FlatList
+				testID='commandbox-container'
+				style={[styles.mentionList, { backgroundColor: themes[theme].messageboxBackground }]}
+				data={commandPreview}
+				renderItem={({ item }) => <Item item={item} theme={theme} />}
+				keyExtractor={(item: any) => item.id}
+				keyboardShouldPersistTaps='always'
+				horizontal
+				showsHorizontalScrollIndicator={false}
+			/>
+		);
+	},
+	(prevProps, nextProps) => {
+		if (prevProps.theme !== nextProps.theme) {
+			return false;
+		}
+		if (prevProps.showCommandPreview !== nextProps.showCommandPreview) {
+			return false;
+		}
+		if (!dequal(prevProps.commandPreview, nextProps.commandPreview)) {
+			return false;
+		}
+		return true;
 	}
-	return (
-		<FlatList
-			testID='commandbox-container'
-			style={[styles.mentionList, { backgroundColor: themes[theme].messageboxBackground }]}
-			data={commandPreview}
-			renderItem={({ item }) => <Item item={item} theme={theme} />}
-			keyExtractor={(item: any) => item.id}
-			keyboardShouldPersistTaps='always'
-			horizontal
-			showsHorizontalScrollIndicator={false}
-		/>
-	);
-}, (prevProps, nextProps) => {
-	if (prevProps.theme !== nextProps.theme) {
-		return false;
-	}
-	if (prevProps.showCommandPreview !== nextProps.showCommandPreview) {
-		return false;
-	}
-	if (!dequal(prevProps.commandPreview, nextProps.commandPreview)) {
-		return false;
-	}
-	return true;
-});
+);
 
 export default withTheme(CommandsPreview);

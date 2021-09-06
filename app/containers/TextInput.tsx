@@ -11,15 +11,15 @@ import ActivityIndicator from './ActivityIndicator';
 const styles = StyleSheet.create({
 	error: {
 		...sharedStyles.textAlignCenter,
-		paddingTop: 5,
+		paddingTop: 5
 	},
 	inputContainer: {
-		marginBottom: 10,
+		marginBottom: 10
 	},
 	label: {
 		marginBottom: 10,
 		fontSize: 14,
-		...sharedStyles.textSemibold,
+		...sharedStyles.textSemibold
 	},
 	input: {
 		...sharedStyles.textRegular,
@@ -27,27 +27,27 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		padding: 14,
 		borderWidth: StyleSheet.hairlineWidth,
-		borderRadius: 2,
+		borderRadius: 2
 	},
 	inputIconLeft: {
-		paddingLeft: 45,
+		paddingLeft: 45
 	},
 	inputIconRight: {
-		paddingRight: 45,
+		paddingRight: 45
 	},
 	wrap: {
-		position: 'relative',
+		position: 'relative'
 	},
 	iconContainer: {
 		position: 'absolute',
-		top: 14,
+		top: 14
 	},
 	iconLeft: {
-		left: 15,
+		left: 15
 	},
 	iconRight: {
-		right: 15,
-	},
+		right: 15
+	}
 });
 
 interface IRCTextInputProps {
@@ -73,19 +73,19 @@ interface IRCTextInputProps {
 export default class RCTextInput extends React.PureComponent<IRCTextInputProps, any> {
 	static defaultProps = {
 		error: {},
-		theme: 'light',
-	}
+		theme: 'light'
+	};
 
 	state = {
-		showPassword: false,
-	}
+		showPassword: false
+	};
 
 	get iconLeft() {
 		const { testID, iconLeft, theme } = this.props;
 		return (
 			<CustomIcon
 				name={iconLeft}
-				testID={testID ? `${ testID }-icon-left` : null}
+				testID={testID ? `${testID}-icon-left` : null}
 				style={[styles.iconContainer, styles.iconLeft, { color: themes[theme].bodyText }]}
 				size={20}
 			/>
@@ -96,11 +96,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 		const { iconRight, onIconRightPress, theme } = this.props;
 		return (
 			<BorderlessButton onPress={onIconRightPress} style={[styles.iconContainer, styles.iconRight]}>
-				<CustomIcon
-					name={iconRight}
-					style={{ color: themes[theme].bodyText }}
-					size={20}
-				/>
+				<CustomIcon name={iconRight} style={{ color: themes[theme].bodyText }} size={20} />
 			</BorderlessButton>
 		);
 	}
@@ -112,7 +108,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 			<BorderlessButton onPress={this.tooglePassword} style={[styles.iconContainer, styles.iconRight]}>
 				<CustomIcon
 					name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
-					testID={testID ? `${ testID }-icon-right` : null}
+					testID={testID ? `${testID}-icon-right` : null}
 					style={{ color: themes[theme].auxiliaryText }}
 					size={20}
 				/>
@@ -128,12 +124,25 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 
 	tooglePassword = () => {
 		this.setState((prevState: any) => ({ showPassword: !prevState.showPassword }));
-	}
+	};
 
 	render() {
 		const { showPassword } = this.state;
 		const {
-			label, left, error, loading, secureTextEntry, containerStyle, inputRef, iconLeft, iconRight, inputStyle, testID, placeholder, theme, ...inputProps
+			label,
+			left,
+			error,
+			loading,
+			secureTextEntry,
+			containerStyle,
+			inputRef,
+			iconLeft,
+			iconRight,
+			inputStyle,
+			testID,
+			placeholder,
+			theme,
+			...inputProps
 		} = this.props;
 		const { dangerColor } = themes[theme];
 		return (
@@ -143,12 +152,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 						contentDescription={null}
 						// @ts-ignore
 						accessibilityLabel={null}
-						style={[
-							styles.label,
-							{ color: themes[theme].titleText },
-							error.error && { color: dangerColor },
-						]}
-					>
+						style={[styles.label, { color: themes[theme].titleText }, error.error && { color: dangerColor }]}>
 						{label}
 					</Text>
 				) : null}
@@ -162,13 +166,13 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 							{
 								backgroundColor: themes[theme].backgroundColor,
 								borderColor: themes[theme].separatorColor,
-								color: themes[theme].titleText,
+								color: themes[theme].titleText
 							},
 							error.error && {
 								color: dangerColor,
-								borderColor: dangerColor,
+								borderColor: dangerColor
 							},
-							inputStyle,
+							inputStyle
 						]}
 						ref={inputRef}
 						/* @ts-ignore*/

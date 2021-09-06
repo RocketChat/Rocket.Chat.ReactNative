@@ -2,43 +2,51 @@ const { navigateToRegister, navigateToLogin } = require('../../helpers/app');
 
 describe('Legal screen', () => {
 	describe('From Login', () => {
-		before(async() => {
+		before(async () => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 			await navigateToLogin();
 		});
 
-		it('should have legal button on login', async() => {
-			await waitFor(element(by.id('login-view-more'))).toBeVisible().withTimeout(60000);
+		it('should have legal button on login', async () => {
+			await waitFor(element(by.id('login-view-more')))
+				.toBeVisible()
+				.withTimeout(60000);
 		});
 
-		it('should navigate to legal from login', async() => {
+		it('should navigate to legal from login', async () => {
 			await expect(element(by.id('login-view-more'))).toBeVisible();
 			await element(by.id('login-view-more')).tap();
-			await waitFor(element(by.id('legal-view'))).toBeVisible().withTimeout(4000);
+			await waitFor(element(by.id('legal-view')))
+				.toBeVisible()
+				.withTimeout(4000);
 		});
 	});
 
 	describe('From Register', () => {
-		before(async() => {
+		before(async () => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 			await navigateToRegister();
 		});
 
-		it('should have legal button on register', async() => {
-			await waitFor(element(by.id('register-view-more'))).toBeVisible().withTimeout(60000);
+		it('should have legal button on register', async () => {
+			await waitFor(element(by.id('register-view-more')))
+				.toBeVisible()
+				.withTimeout(60000);
 		});
 
-		it('should navigate to legal from register', async() => {
+		it('should navigate to legal from register', async () => {
 			await expect(element(by.id('register-view-more'))).toBeVisible();
 			await element(by.id('register-view-more')).tap();
-			await waitFor(element(by.id('legal-view'))).toBeVisible().withTimeout(4000);
+			await waitFor(element(by.id('legal-view')))
+				.toBeVisible()
+				.withTimeout(4000);
 		});
 
-		it('should have terms of service button', async() => {
+		it('should have terms of service button', async () => {
 			await expect(element(by.id('legal-terms-button'))).toBeVisible();
 		});
 
-		it('should have privacy policy button', async() => {
+		it('should have privacy policy button', async () => {
 			await expect(element(by.id('legal-privacy-button'))).toBeVisible();
 		});
 

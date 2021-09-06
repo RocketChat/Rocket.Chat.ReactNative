@@ -70,12 +70,7 @@ const Message = React.memo((props: IMessage) => {
 				{thread}
 				<View style={styles.flex}>
 					<MessageAvatar small {...props} />
-					<View
-						style={[
-							styles.messageContent,
-							props.isHeader && styles.messageContentWithHeader,
-						]}
-					>
+					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 						<Content {...props} />
 					</View>
 				</View>
@@ -87,19 +82,10 @@ const Message = React.memo((props: IMessage) => {
 		<View style={[styles.container, props.style]}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
-				<View
-					style={[
-						styles.messageContent,
-						props.isHeader && styles.messageContentWithHeader,
-					]}
-				>
+				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 					<MessageInner {...props} />
 				</View>
-				<ReadReceipt
-					isReadReceiptEnabled={props.isReadReceiptEnabled}
-					unread={props.unread}
-					theme={props.theme}
-				/>
+				<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread} theme={props.theme} />
 			</View>
 		</View>
 	);
@@ -120,8 +106,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			onLongPress={onLongPress}
 			onPress={onPress}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp}
-			style={{ backgroundColor: props.highlighted ? themes[props.theme].headerBackground : null }}
-		>
+			style={{ backgroundColor: props.highlighted ? themes[props.theme].headerBackground : null }}>
 			<View>
 				<Message {...props} />
 			</View>

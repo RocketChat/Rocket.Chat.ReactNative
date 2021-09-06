@@ -6,15 +6,15 @@ import { themes } from '../../constants/colors';
 const style = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		alignItems: 'flex-start',
+		alignItems: 'flex-start'
 	},
 	bullet: {
 		alignItems: 'flex-end',
-		marginRight: 5,
+		marginRight: 5
 	},
 	contents: {
-		flex: 1,
-	},
+		flex: 1
+	}
 });
 
 interface IListItem {
@@ -27,14 +27,12 @@ interface IListItem {
 	index: number;
 }
 
-const ListItem = React.memo(({
-	children, level, bulletWidth, continue: _continue, ordered, index, theme,
-}: IListItem) => {
+const ListItem = React.memo(({ children, level, bulletWidth, continue: _continue, ordered, index, theme }: IListItem) => {
 	let bullet;
 	if (_continue) {
 		bullet = '';
 	} else if (ordered) {
-		bullet = `${ index }.`;
+		bullet = `${index}.`;
 	} else if (level % 2 === 0) {
 		bullet = '◦';
 	} else {
@@ -44,13 +42,9 @@ const ListItem = React.memo(({
 	return (
 		<View style={style.container}>
 			<View style={[{ width: bulletWidth }, style.bullet]}>
-				<Text style={{ color: themes[theme].bodyText }}>
-					{bullet}
-				</Text>
+				<Text style={{ color: themes[theme].bodyText }}>{bullet}</Text>
 			</View>
-			<View style={style.contents}>
-				{children}
-			</View>
+			<View style={style.contents}>{children}</View>
 		</View>
 	);
 });

@@ -10,12 +10,17 @@ interface IStatus {
 }
 
 const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: IStatus) => {
-	const name = `status-${ status }`;
+	const name = `status-${status}`;
 	const isNameValid = CustomIcon.hasIcon(name);
 	const iconName = isNameValid ? name : 'status-offline';
-	const calculatedStyle = [{
-		width: size, height: size, textAlignVertical: 'center',
-	}, style];
+	const calculatedStyle = [
+		{
+			width: size,
+			height: size,
+			textAlignVertical: 'center'
+		},
+		style
+	];
 
 	return (
 		<CustomIcon

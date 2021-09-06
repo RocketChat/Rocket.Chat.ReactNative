@@ -8,13 +8,13 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'center'
 	},
 	image: {
 		width: 100,
 		height: 100,
-		resizeMode: 'contain',
-	},
+		resizeMode: 'contain'
+	}
 });
 
 interface ILoadingProps {
@@ -25,8 +25,8 @@ interface ILoadingProps {
 class Loading extends React.PureComponent<ILoadingProps, any> {
 	state = {
 		scale: new Animated.Value(1),
-		opacity: new Animated.Value(0),
-	}
+		opacity: new Animated.Value(0)
+	};
 
 	private opacityAnimation: any;
 
@@ -36,32 +36,25 @@ class Loading extends React.PureComponent<ILoadingProps, any> {
 		const { opacity, scale } = this.state;
 		const { visible } = this.props;
 
-		this.opacityAnimation = Animated.timing(
-			opacity,
-			{
-				toValue: 1,
-				duration: 200,
-				useNativeDriver: true,
-			},
-		);
-		this.scaleAnimation = Animated.loop(Animated.sequence([
-			Animated.timing(
-				scale,
-				{
+		this.opacityAnimation = Animated.timing(opacity, {
+			toValue: 1,
+			duration: 200,
+			useNativeDriver: true
+		});
+		this.scaleAnimation = Animated.loop(
+			Animated.sequence([
+				Animated.timing(scale, {
 					toValue: 0,
 					duration: 1000,
-					useNativeDriver: true,
-				},
-			),
-			Animated.timing(
-				scale,
-				{
+					useNativeDriver: true
+				}),
+				Animated.timing(scale, {
 					toValue: 1,
 					duration: 1000,
-					useNativeDriver: true,
-				},
-			),
-		]));
+					useNativeDriver: true
+				})
+			])
+		);
 
 		if (visible) {
 			this.startAnimations();
@@ -99,40 +92,40 @@ class Loading extends React.PureComponent<ILoadingProps, any> {
 
 		const scaleAnimation = scale.interpolate({
 			inputRange: [0, 0.5, 1],
-			outputRange: [1, 1.1, 1],
+			outputRange: [1, 1.1, 1]
 		});
 
 		const opacityAnimation = opacity.interpolate({
 			inputRange: [0, 1],
 			outputRange: [0, themes[theme].backdropOpacity],
-			extrapolate: 'clamp',
+			extrapolate: 'clamp'
 		});
 
 		return (
-			<Modal
-				visible={visible}
-				transparent
-				onRequestClose={() => {}}
-			>
-				<View
-					style={styles.container}
-					testID='loading'
-				>
+			<Modal visible={visible} transparent onRequestClose={() => {}}>
+				<View style={styles.container} testID='loading'>
 					<Animated.View
-						style={[{
-							// @ts-ignore
-							...StyleSheet.absoluteFill,
-							backgroundColor: themes[theme].backdropColor,
-							opacity: opacityAnimation,
-						}]}
+						style={[
+							{
+								// @ts-ignore
+								...StyleSheet.absoluteFill,
+								backgroundColor: themes[theme].backdropColor,
+								opacity: opacityAnimation
+							}
+						]}
 					/>
 					<Animated.Image
 						source={require('../static/images/logo.png')}
-						style={[styles.image, {
-							transform: [{
-								scale: scaleAnimation,
-							}],
-						}]}
+						style={[
+							styles.image,
+							{
+								transform: [
+									{
+										scale: scaleAnimation
+									}
+								]
+							}
+						]}
 					/>
 				</View>
 			</Modal>

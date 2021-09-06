@@ -17,22 +17,19 @@ interface IInput {
 	loading: boolean;
 }
 
-const Input = ({
-	children, onPress, theme, loading, inputStyle, placeholder, disabled,
-}: IInput) => (
+const Input = ({ children, onPress, theme, loading, inputStyle, placeholder, disabled }: IInput) => (
 	<Touchable
 		onPress={onPress}
 		style={[{ backgroundColor: themes[theme].backgroundColor }, inputStyle]}
 		background={Touchable.Ripple(themes[theme].bannerBackground)}
-		disabled={disabled}
-	>
+		disabled={disabled}>
 		<View style={[styles.input, { borderColor: themes[theme].separatorColor }]}>
 			{placeholder ? <Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{placeholder}</Text> : children}
-			{
-				loading
-					? <ActivityIndicator style={[styles.loading, styles.icon]} />
-					: <CustomIcon name='chevron-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
-			}
+			{loading ? (
+				<ActivityIndicator style={[styles.loading, styles.icon]} />
+			) : (
+				<CustomIcon name='chevron-down' size={22} color={themes[theme].auxiliaryText} style={styles.icon} />
+			)}
 		</View>
 	</Touchable>
 );

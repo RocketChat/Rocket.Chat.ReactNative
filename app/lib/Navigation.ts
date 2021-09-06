@@ -21,5 +21,5 @@ export default {
 	routeNameRef,
 	navigate,
 	back,
-	replace,
+	replace
 };

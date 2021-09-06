@@ -5,7 +5,7 @@ import { themes } from '../constants/colors';
 
 type TTheme = 'light' | 'dark' | 'black' | string;
 
-interface IActivityIndicator extends ActivityIndicatorProps{
+interface IActivityIndicator extends ActivityIndicatorProps {
 	theme?: TTheme;
 	absolute?: boolean;
 	props?: object;
@@ -14,7 +14,7 @@ interface IActivityIndicator extends ActivityIndicatorProps{
 const styles = StyleSheet.create({
 	indicator: {
 		padding: 16,
-		flex: 1,
+		flex: 1
 	},
 	absolute: {
 		position: 'absolute',
@@ -23,16 +23,12 @@ const styles = StyleSheet.create({
 		top: 0,
 		bottom: 0,
 		alignItems: 'center',
-		justifyContent: 'center',
-	},
+		justifyContent: 'center'
+	}
 });
 
 const RCActivityIndicator = ({ theme = 'light', absolute, ...props }: IActivityIndicator) => (
-	<ActivityIndicator
-		style={[styles.indicator, absolute && styles.absolute]}
-		color={themes[theme].auxiliaryText}
-		{...props}
-	/>
+	<ActivityIndicator style={[styles.indicator, absolute && styles.absolute]} color={themes[theme].auxiliaryText} {...props} />
 );
 
 export default RCActivityIndicator;

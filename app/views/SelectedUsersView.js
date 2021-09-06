@@ -18,11 +18,7 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
-import {
-	addUser as addUserAction,
-	removeUser as removeUserAction,
-	reset as resetAction
-} from '../actions/selectedUsers';
+import { addUser as addUserAction, removeUser as removeUserAction, reset as resetAction } from '../actions/selectedUsers';
 import { showErrorAlert } from '../utils/info';
 import SafeAreaView from '../containers/SafeAreaView';
 import sharedStyles from './Styles';
@@ -84,7 +80,7 @@ class SelectedUsersView extends React.Component {
 	}
 
 	// showButton can be sent as route params or updated by the component
-	setHeader = (showButton) => {
+	setHeader = showButton => {
 		const { navigation, route } = this.props;
 		const title = route.params?.title ?? I18n.t('Select_Users');
 		const buttonText = route.params?.buttonText ?? I18n.t('Next');
@@ -98,13 +94,12 @@ class SelectedUsersView extends React.Component {
 						<HeaderButton.Item title={buttonText} onPress={nextAction} testID='selected-users-view-submit' />
 					</HeaderButton.Container>
 				)
-
 		};
 		navigation.setOptions(options);
-	}
+	};
 
 	// eslint-disable-next-line react/sort-comp
-	init = async() => {
+	init = async () => {
 		try {
 			const db = database.active;
 			const observable = await db.collections
@@ -112,40 +107,43 @@ class SelectedUsersView extends React.Component {
 				.query(Q.where('t', 'd'))
 				.observeWithColumns(['room_updated_at']);
 
-			this.querySubscription = observable.subscribe((data) => {
+			this.querySubscription = observable.subscribe(data => {
 				const chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
 				this.setState({ chats });
 			});
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
 	onSearchChangeText(text) {
 		this.search(text);
 	}
 
-	search = async(text) => {
+	search = async text => {
 		const result = await RocketChat.search({ text, filterRooms: false });
 		this.setState({
 			search: result
 		});
-	}
+	};
 
 	isGroupChat = () => {
 		const { maxUsers } = this.state;
 		return maxUsers > 2;
-	}
+	};
 
-	isChecked = (username) => {
+	isChecked = username => {
 		const { users } = this.props;
 		return users.findIndex(el => el.name === username) !== -1;
-	}
+	};
 
-	toggleUser = (user) => {
+	toggleUser = user => {
 		const { maxUsers } = this.state;
 		const {
-			addUser, removeUser, users, user: { username }
+			addUser,
+			removeUser,
+			users,
+			user: { username }
 		} = this.props;
 
 		// Disallow removing self user from the direct message group
@@ -163,7 +161,7 @@ class SelectedUsersView extends React.Component {
 			logEvent(events.SELECTED_USERS_REMOVE_USER);
 			removeUser(user);
 		}
-	}
+	};
 
 	_onPressItem = (id, item = {}) => {
 		if (item.search) {
@@ -171,7 +169,7 @@ class SelectedUsersView extends React.Component {
 		} else {
 			this.toggleUser({ _id: item._id, name: item.name, fname: item.fname });
 		}
-	}
+	};
 
 	_onPressSelectedItem = item => this.toggleUser(item);
 
@@ -183,9 +181,9 @@ class SelectedUsersView extends React.Component {
 				{this.renderSelected()}
 			</View>
 		);
-	}
+	};
 
-	setFlatListRef = ref => this.flatlist = ref;
+	setFlatListRef = ref => (this.flatlist = ref);
 
 	onContentSizeChange = () => this.flatlist.scrollToEnd({ animated: true });
 
@@ -211,7 +209,7 @@ class SelectedUsersView extends React.Component {
 				horizontal
 			/>
 		);
-	}
+	};
 
 	renderSelectedItem = ({ item }) => {
 		const { baseUrl, user, theme } = this.props;
@@ -220,14 +218,14 @@ class SelectedUsersView extends React.Component {
 				name={item.fname}
 				username={item.name}
 				onPress={() => this._onPressSelectedItem(item)}
-				testID={`selected-user-${ item.name }`}
+				testID={`selected-user-${item.name}`}
 				baseUrl={baseUrl}
 				style={{ paddingRight: 15 }}
 				user={user}
 				theme={theme}
 			/>
 		);
-	}
+	};
 
 	renderItem = ({ item, index }) => {
 		const { search, chats } = this.state;
@@ -250,7 +248,7 @@ class SelectedUsersView extends React.Component {
 				name={name}
 				username={username}
 				onPress={() => this._onPressItem(item._id, item)}
-				testID={`select-users-view-item-${ item.name }`}
+				testID={`select-users-view-item-${item.name}`}
 				icon={this.isChecked(username) ? 'check' : null}
 				baseUrl={baseUrl}
 				style={style}
@@ -258,7 +256,7 @@ class SelectedUsersView extends React.Component {
 				theme={theme}
 			/>
 		);
-	}
+	};
 
 	renderList = () => {
 		const { search, chats } = this.state;
@@ -281,7 +279,7 @@ class SelectedUsersView extends React.Component {
 				keyboardShouldPersistTaps='always'
 			/>
 		);
-	}
+	};
 
 	render = () => {
 		const { loading } = this.props;
@@ -292,7 +290,7 @@ class SelectedUsersView extends React.Component {
 				<Loading visible={loading} />
 			</SafeAreaView>
 		);
-	}
+	};
 }
 
 const mapStateToProps = state => ({

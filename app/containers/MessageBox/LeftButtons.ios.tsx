@@ -12,16 +12,16 @@ interface IMessageBoxLeftButtons {
 	isActionsEnabled: boolean;
 }
 
-const LeftButtons = React.memo(({
-	theme, showMessageBoxActions, editing, editCancel, isActionsEnabled,
-}: IMessageBoxLeftButtons) => {
-	if (editing) {
-		return <CancelEditingButton onPress={editCancel} theme={theme} />;
+const LeftButtons = React.memo(
+	({ theme, showMessageBoxActions, editing, editCancel, isActionsEnabled }: IMessageBoxLeftButtons) => {
+		if (editing) {
+			return <CancelEditingButton onPress={editCancel} theme={theme} />;
+		}
+		if (isActionsEnabled) {
+			return <ActionsButton onPress={showMessageBoxActions} theme={theme} />;
+		}
+		return <View style={styles.buttonsWhitespace} />;
 	}
-	if (isActionsEnabled) {
-		return <ActionsButton onPress={showMessageBoxActions} theme={theme} />;
-	}
-	return <View style={styles.buttonsWhitespace} />;
-});
+);
 
 export default LeftButtons;

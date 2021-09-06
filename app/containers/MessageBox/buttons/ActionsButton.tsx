@@ -8,13 +8,7 @@ interface IActionsButton {
 }
 
 const ActionsButton = React.memo(({ theme, onPress }: IActionsButton) => (
-	<BaseButton
-		onPress={onPress}
-		testID='messagebox-actions'
-		accessibilityLabel='Message_actions'
-		icon='add'
-		theme={theme}
-	/>
+	<BaseButton onPress={onPress} testID='messagebox-actions' accessibilityLabel='Message_actions' icon='add' theme={theme} />
 ));
 
 export default ActionsButton;

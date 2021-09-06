@@ -1,8 +1,6 @@
 import { themes } from '../../constants/colors';
 
-export const getUnreadStyle = ({
-	unread, userMentions, groupMentions, theme, tunread, tunreadUser, tunreadGroup,
-}: any) => {
+export const getUnreadStyle = ({ unread, userMentions, groupMentions, theme, tunread, tunreadUser, tunreadGroup }: any) => {
 	if ((!unread || unread <= 0) && !tunread?.length) {
 		return {};
 	}
@@ -18,6 +16,7 @@ export const getUnreadStyle = ({
 	}
 
 	return {
-		backgroundColor, color,
+		backgroundColor,
+		color
 	};
 };

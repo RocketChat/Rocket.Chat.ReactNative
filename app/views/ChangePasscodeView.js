@@ -39,11 +39,11 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 		}
 	}, [data]);
 
-	const showChangePasscode = (args) => {
+	const showChangePasscode = args => {
 		setData(args);
 	};
 
-	const onSubmit = (passcode) => {
+	const onSubmit = passcode => {
 		const { submit } = data;
 		if (submit) {
 			submit(passcode);
@@ -73,20 +73,13 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 	}, []);
 
 	return (
-		<Modal
-			useNativeDriver
-			isVisible={visible}
-			hideModalContentWhileAnimating
-			style={styles.modal}
-		>
+		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal}>
 			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={onSubmit} force={data?.force} />
-			{!data?.force
-				? (
-					<Touchable onPress={onCancel} style={styles.close}>
-						<CustomIcon name='close' color={themes[theme].passcodePrimary} size={30} />
-					</Touchable>
-				)
-				: null}
+			{!data?.force ? (
+				<Touchable onPress={onCancel} style={styles.close}>
+					<CustomIcon name='close' color={themes[theme].passcodePrimary} size={30} />
+				</Touchable>
+			) : null}
 		</Modal>
 	);
 });

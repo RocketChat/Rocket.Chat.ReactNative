@@ -7,8 +7,8 @@ import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	view: {
-		flex: 1,
-	},
+		flex: 1
+	}
 });
 
 interface ISafeAreaView {
@@ -19,15 +19,12 @@ interface ISafeAreaView {
 	children: JSX.Element;
 }
 
-const SafeAreaView = React.memo(({
-	style, children, testID, theme, vertical = true, ...props
-}: ISafeAreaView) => (
+const SafeAreaView = React.memo(({ style, children, testID, theme, vertical = true, ...props }: ISafeAreaView) => (
 	<SafeAreaContext
 		style={[styles.view, { backgroundColor: themes[theme].auxiliaryBackground }, style]}
 		edges={vertical ? ['right', 'left'] : undefined}
 		testID={testID}
-		{...props}
-	>
+		{...props}>
 		{children}
 	</SafeAreaContext>
 ));

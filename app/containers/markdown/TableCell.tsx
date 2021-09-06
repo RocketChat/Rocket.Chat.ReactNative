@@ -28,9 +28,7 @@ const TableCell = React.memo(({ isLastCell, align, children, theme }: ITableCell
 
 	return (
 		<View style={[...cellStyle, { width: CELL_WIDTH }]}>
-			<Text style={[textStyle, { color: themes[theme].bodyText }]}>
-				{children}
-			</Text>
+			<Text style={[textStyle, { color: themes[theme].bodyText }]}>{children}</Text>
 		</View>
 	);
 });

@@ -26,7 +26,7 @@ const Link = React.memo(({ children, link, theme, onLinkPress }: ILink) => {
 		openLink(link, theme);
 	};
 
-	const childLength = React.Children.toArray(children).filter((o) => o).length;
+	const childLength = React.Children.toArray(children).filter(o => o).length;
 	const onLongPress = () => {
 		Clipboard.setString(link);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
@@ -34,12 +34,8 @@ const Link = React.memo(({ children, link, theme, onLinkPress }: ILink) => {
 
 	// if you have a [](https://rocket.chat) render https://rocket.chat
 	return (
-		<Text
-			onPress={handlePress}
-			onLongPress={onLongPress}
-			style={{ ...styles.link, color: themes[theme].actionTintColor }}
-		>
-			{ childLength !== 0 ? children : link }
+		<Text onPress={handlePress} onLongPress={onLongPress} style={{ ...styles.link, color: themes[theme].actionTintColor }}>
+			{childLength !== 0 ? children : link}
 		</Text>
 	);
 });

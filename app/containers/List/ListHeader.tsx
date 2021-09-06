@@ -10,12 +10,12 @@ import { PADDING_HORIZONTAL } from './constants';
 const styles = StyleSheet.create({
 	container: {
 		paddingBottom: 12,
-		paddingHorizontal: PADDING_HORIZONTAL,
+		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	title: {
 		fontSize: 16,
-		...sharedStyles.textRegular,
-	},
+		...sharedStyles.textRegular
+	}
 });
 
 interface IListHeader {
@@ -26,7 +26,9 @@ interface IListHeader {
 
 const ListHeader = React.memo(({ title, theme, translateTitle = true }: IListHeader) => (
 	<View style={styles.container}>
-		<Text style={[styles.title, { color: themes[theme].infoText }]} numberOfLines={1}>{translateTitle ? I18n.t(title) : title}</Text>
+		<Text style={[styles.title, { color: themes[theme].infoText }]} numberOfLines={1}>
+			{translateTitle ? I18n.t(title) : title}
+		</Text>
 	</View>
 ));
 

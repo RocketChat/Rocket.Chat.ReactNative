@@ -13,8 +13,8 @@ const List = React.memo(({ children, ordered, tight, start = 1, numberOfLines = 
 
 	if (ordered) {
 		// @ts-ignore
-		const lastNumber = (start + children.length) - 1;
-		bulletWidth = (9 * lastNumber.toString().length) + 7;
+		const lastNumber = start + children.length - 1;
+		bulletWidth = 9 * lastNumber.toString().length + 7;
 	}
 
 	let items = React.Children.toArray(children);
@@ -23,18 +23,16 @@ const List = React.memo(({ children, ordered, tight, start = 1, numberOfLines = 
 		items = items.slice(0, numberOfLines);
 	}
 
-	const _children = items.map((child: any, index: number) => React.cloneElement(child, {
-		bulletWidth,
-		ordered,
-		tight,
-		index: start + index,
-	}));
-
-	return (
-		<>
-			{_children}
-		</>
+	const _children = items.map((child: any, index: number) =>
+		React.cloneElement(child, {
+			bulletWidth,
+			ordered,
+			tight,
+			index: start + index
+		})
 	);
+
+	return <>{_children}</>;
 });
 
 export default List;

@@ -11,7 +11,7 @@ import updateMessages from './updateMessages';
 const COUNT = 50;
 
 export default function loadNextMessages(args) {
-	return new Promise(async(resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await this.methodCallWrapper('loadNextMessages', args.rid, args.ts, COUNT);
 			let messages = EJSON.fromJSONValue(data?.messages);

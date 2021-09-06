@@ -1,6 +1,6 @@
 export interface IAvatar {
 	server: string;
-	style: any,
+	style: any;
 	text: string;
 	avatar: string;
 	emoji: string;

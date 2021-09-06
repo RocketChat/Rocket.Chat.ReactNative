@@ -40,7 +40,7 @@ const ITEM_MARGIN = 8;
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
-		marginHorizontal: CONTAINER_MARGIN,
+		marginHorizontal: CONTAINER_MARGIN
 	},
 	headerItem: {
 		height: ITEM_SIZE,
@@ -48,17 +48,17 @@ const styles = StyleSheet.create({
 		borderRadius: ITEM_SIZE / 2,
 		marginHorizontal: ITEM_MARGIN,
 		justifyContent: 'center',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	headerIcon: {
 		...sharedStyles.textAlignCenter,
 		fontSize: 20,
-		color: '#fff',
+		color: '#fff'
 	},
 	customEmoji: {
 		height: 20,
-		width: 20,
-	},
+		width: 20
+	}
 });
 
 const keyExtractor = (item: any) => item?.id || item;
@@ -67,17 +67,14 @@ const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face',
 
 const HeaderItem = React.memo(({ item, onReaction, server, theme }: THeaderItem) => (
 	<Button
-		testID={`message-actions-emoji-${ item.content || item }`}
-		onPress={() => onReaction({ emoji: `:${ item.content || item }:` })}
+		testID={`message-actions-emoji-${item.content || item}`}
+		onPress={() => onReaction({ emoji: `:${item.content || item}:` })}
 		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-		theme={theme}
-	>
+		theme={theme}>
 		{item?.isCustom ? (
 			<CustomEmoji style={styles.customEmoji} emoji={item} baseUrl={server} />
 		) : (
-			<Text style={styles.headerIcon}>
-				{shortnameToUnicode(`:${ item.content || item }:`)}
-			</Text>
+			<Text style={styles.headerIcon}>{shortnameToUnicode(`:${item.content || item}:`)}</Text>
 		)}
 	</Button>
 ));
@@ -87,8 +84,7 @@ const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
 		testID='add-reaction'
 		onPress={onReaction}
 		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-		theme={theme}
-	>
+		theme={theme}>
 		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
 	</Button>
 ));
@@ -104,8 +100,8 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 			let freqEmojis = await freqEmojiCollection.query().fetch();
 
 			const isLandscape = width > height;
-			const size = (isLandscape || isMasterDetail ? width / 2 : width) - (CONTAINER_MARGIN * 2);
-			const quantity = (size / (ITEM_SIZE + (ITEM_MARGIN * 2))) - 1;
+			const size = (isLandscape || isMasterDetail ? width / 2 : width) - CONTAINER_MARGIN * 2;
+			const quantity = size / (ITEM_SIZE + ITEM_MARGIN * 2) - 1;
 
 			freqEmojis = freqEmojis.concat(DEFAULT_EMOJIS).slice(0, quantity);
 			setItems(freqEmojis);
@@ -118,9 +114,12 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 		setEmojis();
 	}, []);
 
-	const onReaction = ({ emoji }: {emoji: IEmoji}) => handleReaction(emoji, message);
+	const onReaction = ({ emoji }: { emoji: IEmoji }) => handleReaction(emoji, message);
 
-	const renderItem = useCallback(({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme} />, []);
+	const renderItem = useCallback(
+		({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme} />,
+		[]
+	);
 
 	const renderFooter = useCallback(() => <HeaderFooter onReaction={onReaction} theme={theme} />, []);
 

@@ -41,7 +41,7 @@ class CreateChannelView extends React.Component {
 		blockUnauthenticatedAccess: PropTypes.bool,
 		serverVersion: PropTypes.string,
 		encryptionEnabled: PropTypes.bool
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -61,9 +61,7 @@ class CreateChannelView extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		const { channel, name } = this.state;
-		const {
-			loading, failure, error, result, isMasterDetail
-		} = this.props;
+		const { loading, failure, error, result, isMasterDetail } = this.props;
 
 		if (channel?.rid !== prevState.channel?.rid || name !== prevState.name) {
 			this.setHeader();
@@ -82,7 +80,10 @@ class CreateChannelView extends React.Component {
 						Navigation.navigate('RoomsListView');
 					}
 					const item = {
-						rid, name: RocketChat.getRoomTitle(result), t, prid
+						rid,
+						name: RocketChat.getRoomTitle(result),
+						t,
+						prid
 					};
 					goRoom({ item, isMasterDetail });
 				}
@@ -95,26 +96,34 @@ class CreateChannelView extends React.Component {
 		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
 			title: I18n.t('Create_Discussion'),
-			headerRight:
-				this.valid()
-					? () => (
+			headerRight: this.valid()
+				? () => (
 						<HeaderButton.Container>
 							<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
 						</HeaderButton.Container>
-					)
-					: null,
+				  )
+				: null,
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
 		});
-	}
+	};
 
 	submit = () => {
 		const {
-			name: t_name, channel: { prid, rid }, message: { id: pmid }, reply, users, encrypted
+			name: t_name,
+			channel: { prid, rid },
+			message: { id: pmid },
+			reply,
+			users,
+			encrypted
 		} = this.state;
 		const { create } = this.props;
 
 		const params = {
-			prid: prid || rid, pmid, t_name, reply, users
+			prid: prid || rid,
+			pmid,
+			t_name,
+			reply,
+			users
 		};
 		if (this.isEncryptionEnabled) {
 			params.encrypted = encrypted ?? false;
@@ -124,27 +133,20 @@ class CreateChannelView extends React.Component {
 	};
 
 	valid = () => {
-		const {
-			channel, name
-		} = this.state;
+		const { channel, name } = this.state;
 
-		return (
-			channel
-			&& channel.rid
-			&& channel.rid.trim().length
-			&& name.trim().length
-		);
+		return channel && channel.rid && channel.rid.trim().length && name.trim().length;
 	};
 
 	selectChannel = ({ value }) => {
 		logEvent(events.CD_SELECT_CHANNEL);
 		this.setState({ channel: value, encrypted: value?.encrypted });
-	}
+	};
 
 	selectUsers = ({ value }) => {
 		logEvent(events.CD_SELECT_USERS);
 		this.setState({ users: value });
-	}
+	};
 
 	get isEncryptionEnabled() {
 		const { channel } = this.state;
@@ -152,24 +154,19 @@ class CreateChannelView extends React.Component {
 		return encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 	}
 
-	onEncryptedChange = (value) => {
+	onEncryptedChange = value => {
 		logEvent(events.CD_TOGGLE_ENCRY);
 		this.setState({ encrypted: value });
-	}
+	};
 
 	render() {
-		const {
-			name, users, encrypted
-		} = this.state;
-		const {
-			server, user, loading, blockUnauthenticatedAccess, theme, serverVersion
-		} = this.props;
+		const { name, users, encrypted } = this.state;
+		const { server, user, loading, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
 		return (
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				contentContainerStyle={styles.container}
-				keyboardVerticalOffset={128}
-			>
+				keyboardVerticalOffset={128}>
 				<StatusBar />
 				<SafeAreaView testID='create-discussion-view' style={styles.container}>
 					<ScrollView {...scrollPersistTaps}>
@@ -203,17 +200,12 @@ class CreateChannelView extends React.Component {
 							serverVersion={serverVersion}
 							theme={theme}
 						/>
-						{this.isEncryptionEnabled
-							? (
-								<>
-									<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
-									<Switch
-										value={encrypted}
-										onValueChange={this.onEncryptedChange}
-										trackColor={SWITCH_TRACK_COLOR}
-									/>
-								</>
-							) : null}
+						{this.isEncryptionEnabled ? (
+							<>
+								<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
+								<Switch value={encrypted} onValueChange={this.onEncryptedChange} trackColor={SWITCH_TRACK_COLOR} />
+							</>
+						) : null}
 						<Loading visible={loading} />
 					</ScrollView>
 				</SafeAreaView>

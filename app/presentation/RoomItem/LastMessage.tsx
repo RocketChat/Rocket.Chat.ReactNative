@@ -16,7 +16,6 @@ interface ILastMessage {
 		attachments: any;
 		msg: string;
 		e2e: string;
-
 	};
 	type: string;
 	showLastMessage: boolean;
@@ -25,9 +24,7 @@ interface ILastMessage {
 	alert: boolean;
 }
 
-const formatMsg = ({
-	lastMessage, type, showLastMessage, username, useRealName,
-}: Partial<ILastMessage>) => {
+const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }: Partial<ILastMessage>) => {
 	if (!showLastMessage) {
 		return '';
 	}
@@ -54,31 +51,38 @@ const formatMsg = ({
 
 	if (isLastMessageSentByMe) {
 		prefix = I18n.t('You_colon');
-	}	else if (type !== 'd') {
-		const { u: { name } } = lastMessage;
-		prefix = `${ useRealName ? name : lastMessage.u.username }: `;
+	} else if (type !== 'd') {
+		const {
+			u: { name }
+		} = lastMessage;
+		prefix = `${useRealName ? name : lastMessage.u.username}: `;
 	}
 
-	return `${ prefix }${ lastMessage.msg }`;
+	return `${prefix}${lastMessage.msg}`;
 };
 
 const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);
 
-const LastMessage = React.memo(({
-	lastMessage, type, showLastMessage, username, alert, useRealName, theme,
-}: ILastMessage) => (
-	// @ts-ignore
-	<Markdown
-		msg={formatMsg({
-			lastMessage, type, showLastMessage, username, useRealName,
-		})}
-		style={[styles.markdownText, { color: alert ? themes[theme].bodyText : themes[theme].auxiliaryText }]}
-		customEmojis={false}
-		useRealName={useRealName}
-		numberOfLines={2}
-		preview
-		theme={theme}
-	/>
-), arePropsEqual);
+const LastMessage = React.memo(
+	({ lastMessage, type, showLastMessage, username, alert, useRealName, theme }: ILastMessage) => (
+		// @ts-ignore
+		<Markdown
+			msg={formatMsg({
+				lastMessage,
+				type,
+				showLastMessage,
+				username,
+				useRealName
+			})}
+			style={[styles.markdownText, { color: alert ? themes[theme].bodyText : themes[theme].auxiliaryText }]}
+			customEmojis={false}
+			useRealName={useRealName}
+			numberOfLines={2}
+			preview
+			theme={theme}
+		/>
+	),
+	arePropsEqual
+);
 
 export default LastMessage;

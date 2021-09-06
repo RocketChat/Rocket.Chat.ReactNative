@@ -27,18 +27,18 @@ import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
 
 interface IDimensions {
-	width: number,
-	height: number,
-	scale: number,
-	fontScale: number
+	width: number;
+	height: number;
+	scale: number;
+	fontScale: number;
 }
 
 interface IState {
-	theme: string,
+	theme: string;
 	themePreferences: {
-		currentTheme: 'automatic' | 'light',
-		darkLevel: string
-	},
+		currentTheme: 'automatic' | 'light';
+		darkLevel: string;
+	};
 	root: any;
 	width: number;
 	height: number;
@@ -52,25 +52,15 @@ const InsideStack = () => {
 
 	const screenOptions = {
 		...defaultHeader,
-		...themedHeader(theme),
+		...themedHeader(theme)
 	};
 	screenOptions.headerStyle = { ...screenOptions.headerStyle, height: 57 };
 
 	return (
 		<Inside.Navigator screenOptions={screenOptions}>
-			<Inside.Screen
-				name='ShareListView'
-				component={ShareListView}
-			/>
-			<Inside.Screen
-				name='ShareView'
-				component={ShareView}
-			/>
-			<Inside.Screen
-				name='SelectServerView'
-				component={SelectServerView}
-				options={SelectServerView.navigationOptions}
-			/>
+			<Inside.Screen name='ShareListView' component={ShareListView} />
+			<Inside.Screen name='ShareView' component={ShareView} />
+			<Inside.Screen name='SelectServerView' component={SelectServerView} options={SelectServerView.navigationOptions} />
 		</Inside.Navigator>
 	);
 };
@@ -96,24 +86,9 @@ const Stack = createStackNavigator();
 export const App = ({ root }: any) => (
 	<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 		<>
-			{!root ? (
-				<Stack.Screen
-					name='AuthLoading'
-					component={AuthLoadingView}
-				/>
-			) : null}
-			{root === 'outside' ? (
-				<Stack.Screen
-					name='OutsideStack'
-					component={OutsideStack}
-				/>
-			) : null}
-			{root === 'inside' ? (
-				<Stack.Screen
-					name='InsideStack'
-					component={InsideStack}
-				/>
-			) : null}
+			{!root ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
+			{root === 'outside' ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
+			{root === 'inside' ? <Stack.Screen name='InsideStack' component={InsideStack} /> : null}
 		</>
 	</Stack.Navigator>
 );
@@ -126,13 +101,13 @@ class Root extends React.Component<{}, IState> {
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
-				darkLevel: 'black',
+				darkLevel: 'black'
 			},
 			root: '',
 			width,
 			height,
 			scale,
-			fontScale,
+			fontScale
 		};
 		this.init();
 	}
@@ -159,27 +134,33 @@ class Root extends React.Component<{}, IState> {
 		const currentRouteName = getActiveRouteName(state);
 		Navigation.routeNameRef.current = currentRouteName;
 		setCurrentScreen(currentRouteName);
-	}
+	};
 
 	setTheme = (newTheme = {}) => {
 		// change theme state
-		this.setState((prevState) => newThemeState(prevState, newTheme), () => {
-			const { themePreferences } = this.state;
-			// subscribe to Appearance changes
-			subscribeTheme(themePreferences, this.setTheme);
-		});
-	}
+		this.setState(
+			prevState => newThemeState(prevState, newTheme),
+			() => {
+				const { themePreferences } = this.state;
+				// subscribe to Appearance changes
+				subscribeTheme(themePreferences, this.setTheme);
+			}
+		);
+	};
 
 	// Dimensions update fires twice
-	onDimensionsChange = debounce(({ window: { width, height, scale, fontScale } }: {window: IDimensions}) => {
+	onDimensionsChange = debounce(({ window: { width, height, scale, fontScale } }: { window: IDimensions }) => {
 		this.setDimensions({ width, height, scale, fontScale });
-	})
+	});
 
 	setDimensions = ({ width, height, scale, fontScale }: IDimensions) => {
 		this.setState({
-			width, height, scale, fontScale,
+			width,
+			height,
+			scale,
+			fontScale
 		});
-	}
+	};
 
 	render() {
 		const { theme, root, width, height, scale, fontScale } = this.state;
@@ -194,21 +175,19 @@ class Root extends React.Component<{}, IState> {
 								height,
 								scale,
 								fontScale,
-								setDimensions: this.setDimensions,
-							}}
-						>
+								setDimensions: this.setDimensions
+							}}>
 							<NavigationContainer
 								theme={navTheme}
 								ref={Navigation.navigationRef}
-								onStateChange={(state) => {
+								onStateChange={state => {
 									const previousRouteName = Navigation.routeNameRef.current;
 									const currentRouteName = getActiveRouteName(state);
 									if (previousRouteName !== currentRouteName) {
 										setCurrentScreen(currentRouteName);
 									}
 									Navigation.routeNameRef.current = currentRouteName;
-								}}
-							>
+								}}>
 								<App root={root} />
 							</NavigationContainer>
 							<ScreenLockedView />

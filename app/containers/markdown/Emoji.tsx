@@ -18,34 +18,25 @@ interface IEmoji {
 	tabEmojiStyle?: object;
 }
 
-const Emoji = React.memo(({
-	literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis = true, style = {}, theme,
-}: IEmoji) => {
-	const emojiUnicode = shortnameToUnicode(literal);
-	const emoji: any = getCustomEmoji && getCustomEmoji(literal.replace(/:/g, ''));
-	if (emoji && customEmojis) {
+const Emoji = React.memo(
+	({ literal, isMessageContainsOnlyEmoji, getCustomEmoji, baseUrl, customEmojis = true, style = {}, theme }: IEmoji) => {
+		const emojiUnicode = shortnameToUnicode(literal);
+		const emoji: any = getCustomEmoji && getCustomEmoji(literal.replace(/:/g, ''));
+		if (emoji && customEmojis) {
+			return (
+				<CustomEmoji
+					baseUrl={baseUrl}
+					style={[isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji, style]}
+					emoji={emoji}
+				/>
+			);
+		}
 		return (
-			<CustomEmoji
-				baseUrl={baseUrl}
-				style={[
-					isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji,
-					style,
-				]}
-				emoji={emoji}
-			/>
+			<Text style={[{ color: themes[theme!].bodyText }, isMessageContainsOnlyEmoji ? styles.textBig : styles.text, style]}>
+				{emojiUnicode}
+			</Text>
 		);
 	}
-	return (
-		<Text
-			style={[
-				{ color: themes[theme!].bodyText },
-				isMessageContainsOnlyEmoji ? styles.textBig : styles.text,
-				style,
-			]}
-		>
-			{emojiUnicode}
-		</Text>
-	);
-});
+);
 
 export default Emoji;

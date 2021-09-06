@@ -32,7 +32,7 @@ const onCancelPress = () => {
 	}
 };
 
-export const onReviewPress = async() => {
+export const onReviewPress = async () => {
 	logEvent(events.SE_REVIEW_THIS_APP);
 	await onCancelPress();
 	try {
@@ -59,20 +59,19 @@ const onReviewButton = { text: I18n.t('Review_app_yes'), onPress: onReviewPress 
 const onAskMeLaterButton = { text: I18n.t('Review_app_later'), onPress: onAskMeLaterPress };
 const onCancelButton = { text: I18n.t('Review_app_no'), onPress: onCancelPress };
 
-const askReview = () => Alert.alert(
-	I18n.t('Review_app_title'),
-	I18n.t('Review_app_desc', { store }),
-	isIOS
-		? [onReviewButton, onAskMeLaterButton, onCancelButton]
-		: [onAskMeLaterButton, onCancelButton, onReviewButton],
-	{
-		cancelable: true,
-		onDismiss: onAskMeLaterPress
-	}
-);
+const askReview = () =>
+	Alert.alert(
+		I18n.t('Review_app_title'),
+		I18n.t('Review_app_desc', { store }),
+		isIOS ? [onReviewButton, onAskMeLaterButton, onCancelButton] : [onAskMeLaterButton, onCancelButton, onReviewButton],
+		{
+			cancelable: true,
+			onDismiss: onAskMeLaterPress
+		}
+	);
 
-const tryReview = async() => {
-	const data = await AsyncStorage.getItem(reviewKey) || '{}';
+const tryReview = async () => {
+	const data = (await AsyncStorage.getItem(reviewKey)) || '{}';
 	const reviewData = JSON.parse(data);
 	const { lastReview = 0, doneReview = false } = reviewData;
 	const lastReviewDate = new Date(lastReview);
@@ -97,7 +96,7 @@ class ReviewApp {
 				tryReview();
 			}
 		}
-	}
+	};
 }
 
 export const Review = new ReviewApp();

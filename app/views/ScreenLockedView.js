@@ -23,7 +23,7 @@ const ScreenLockedView = ({ theme }) => {
 		}
 	}, [data]);
 
-	const showScreenLock = (args) => {
+	const showScreenLock = args => {
 		setData(args);
 	};
 
@@ -55,8 +55,7 @@ const ScreenLockedView = ({ theme }) => {
 			hideModalContentWhileAnimating
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
-			animationOut='fadeOut'
-		>
+			animationOut='fadeOut'>
 			<PasscodeEnter theme={theme} hasBiometry={data?.hasBiometry} finishProcess={onSubmit} />
 		</Modal>
 	);

@@ -34,18 +34,18 @@ import { isFDroidBuild } from './constants/environment';
 RNScreens.enableScreens();
 
 interface IDimensions {
-	width: number,
-	height: number,
-	scale: number,
-	fontScale: number
+	width: number;
+	height: number;
+	scale: number;
+	fontScale: number;
 }
 
 interface IState {
-	theme: string,
+	theme: string;
 	themePreferences: {
-		currentTheme: 'automatic' | 'light',
-		darkLevel: string
-	},
+		currentTheme: 'automatic' | 'light';
+		darkLevel: string;
+	};
 	width: number;
 	height: number;
 	scale: number;
@@ -89,12 +89,12 @@ export default class Root extends React.Component<{}, IState> {
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
-				darkLevel: 'black',
+				darkLevel: 'black'
 			},
 			width,
 			height,
 			scale,
-			fontScale,
+			fontScale
 		};
 		if (isTablet) {
 			this.initTablet();
@@ -145,14 +145,14 @@ export default class Root extends React.Component<{}, IState> {
 
 		// Open app from app icon
 		store.dispatch(appInit());
-	}
+	};
 
 	getMasterDetail = (width: number) => {
 		if (!isTablet) {
 			return false;
 		}
 		return width > MIN_WIDTH_MASTER_DETAIL_LAYOUT;
-	}
+	};
 
 	setMasterDetail = (width: number) => {
 		const isMasterDetail = this.getMasterDetail(width);
@@ -160,51 +160,48 @@ export default class Root extends React.Component<{}, IState> {
 	};
 
 	// Dimensions update fires twice
-	onDimensionsChange = debounce(({
-		window: {
-			width, height, scale, fontScale,
-		},
-	}: {window: IDimensions}) => {
+	onDimensionsChange = debounce(({ window: { width, height, scale, fontScale } }: { window: IDimensions }) => {
 		this.setDimensions({
-			width, height, scale, fontScale,
+			width,
+			height,
+			scale,
+			fontScale
 		});
 		this.setMasterDetail(width);
-	})
+	});
 
 	setTheme = (newTheme = {}) => {
 		// change theme state
-		this.setState((prevState) => newThemeState(prevState, newTheme), () => {
-			const { themePreferences } = this.state;
-			// subscribe to Appearance changes
-			subscribeTheme(themePreferences, this.setTheme);
-		});
-	}
+		this.setState(
+			prevState => newThemeState(prevState, newTheme),
+			() => {
+				const { themePreferences } = this.state;
+				// subscribe to Appearance changes
+				subscribeTheme(themePreferences, this.setTheme);
+			}
+		);
+	};
 
 	setDimensions = ({ width, height, scale, fontScale }: IDimensions) => {
 		this.setState({ width, height, scale, fontScale });
-	}
+	};
 
 	initTablet = () => {
 		const { width } = this.state;
 		this.setMasterDetail(width);
-		this.onKeyCommands = KeyCommandsEmitter.addListener(
-			'onKeyCommand',
-			(command: unknown) => {
-				EventEmitter.emit(KEY_COMMAND, { event: command });
-			},
-		);
-	}
+		this.onKeyCommands = KeyCommandsEmitter.addListener('onKeyCommand', (command: unknown) => {
+			EventEmitter.emit(KEY_COMMAND, { event: command });
+		});
+	};
 
 	initCrashReport = () => {
-		RocketChat.getAllowCrashReport()
-			.then((allowCrashReport) => {
-				toggleCrashErrorsReport(allowCrashReport);
-			});
-		RocketChat.getAllowAnalyticsEvents()
-			.then((allowAnalyticsEvents) => {
-				toggleAnalyticsEventsReport(allowAnalyticsEvents);
-			});
-	}
+		RocketChat.getAllowCrashReport().then(allowCrashReport => {
+			toggleCrashErrorsReport(allowCrashReport);
+		});
+		RocketChat.getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
+			toggleAnalyticsEventsReport(allowAnalyticsEvents);
+		});
+	};
 
 	render() {
 		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
@@ -216,18 +213,16 @@ export default class Root extends React.Component<{}, IState> {
 							value={{
 								theme,
 								themePreferences,
-								setTheme: this.setTheme,
-							}}
-						>
+								setTheme: this.setTheme
+							}}>
 							<DimensionsContext.Provider
 								value={{
 									width,
 									height,
 									scale,
 									fontScale,
-									setDimensions: this.setDimensions,
-								}}
-							>
+									setDimensions: this.setDimensions
+								}}>
 								<ActionSheetProvider>
 									<AppContainer />
 									<TwoFactor />

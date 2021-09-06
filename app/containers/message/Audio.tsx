@@ -34,10 +34,10 @@ interface IMessageAudioProps {
 }
 
 interface IMessageAudioState {
-	loading: boolean,
-	currentTime: number,
-	duration: number,
-	paused: boolean
+	loading: boolean;
+	currentTime: number;
+	duration: number;
+	paused: boolean;
 }
 
 const mode = {
@@ -47,7 +47,7 @@ const mode = {
 	shouldDuckAndroid: true,
 	playThroughEarpieceAndroid: false,
 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
 };
 
 const styles = StyleSheet.create({
@@ -58,24 +58,24 @@ const styles = StyleSheet.create({
 		height: 56,
 		borderWidth: 1,
 		borderRadius: 4,
-		marginBottom: 6,
+		marginBottom: 6
 	},
 	playPauseButton: {
 		marginHorizontal: 10,
 		alignItems: 'center',
-		backgroundColor: 'transparent',
+		backgroundColor: 'transparent'
 	},
 	audioLoading: {
-		marginHorizontal: 8,
+		marginHorizontal: 8
 	},
 	slider: {
-		flex: 1,
+		flex: 1
 	},
 	duration: {
 		marginHorizontal: 12,
 		fontSize: 14,
-		...sharedStyles.textRegular,
-	},
+		...sharedStyles.textRegular
+	}
 });
 
 const formatTime = (seconds: number) => moment.utc(seconds * 1000).format('mm:ss');
@@ -85,7 +85,7 @@ const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 const sliderAnimationConfig = {
 	duration: 250,
 	easing: Easing.linear,
-	delay: 0,
+	delay: 0
 };
 
 const Button = React.memo(({ loading, paused, onPress, theme }: IButton) => (
@@ -93,13 +93,12 @@ const Button = React.memo(({ loading, paused, onPress, theme }: IButton) => (
 		style={styles.playPauseButton}
 		onPress={onPress}
 		hitSlop={BUTTON_HIT_SLOP}
-		background={Touchable.SelectableBackgroundBorderless()}
-	>
-		{
-			loading
-				? <ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} theme={theme} />
-				: <CustomIcon name={paused ? 'play-filled' : 'pause-filled'} size={36} color={themes[theme].tintColor} />
-		}
+		background={Touchable.SelectableBackgroundBorderless()}>
+		{loading ? (
+			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} theme={theme} />
+		) : (
+			<CustomIcon name={paused ? 'play-filled' : 'pause-filled'} size={36} color={themes[theme].tintColor} />
+		)}
 	</Touchable>
 ));
 
@@ -116,7 +115,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			loading: false,
 			currentTime: 0,
 			duration: 0,
-			paused: true,
+			paused: true
 		};
 
 		this.sound = new Audio.Sound();
@@ -129,12 +128,12 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 		let url = file.audio_url;
 		if (!url.startsWith('http')) {
-			url = `${ baseUrl }${ file.audio_url }`;
+			url = `${baseUrl}${file.audio_url}`;
 		}
 
 		this.setState({ loading: true });
 		try {
-			await this.sound.loadAsync({ uri: `${ url }?rc_uid=${ user.id }&rc_token=${ user.token }` });
+			await this.sound.loadAsync({ uri: `${url}?rc_uid=${user.id}&rc_token=${user.token}` });
 		} catch {
 			// Do nothing
 		}
@@ -142,9 +141,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	}
 
 	shouldComponentUpdate(nextProps: any, nextState: any) {
-		const {
-			currentTime, duration, paused, loading,
-		} = this.state;
+		const { currentTime, duration, paused, loading } = this.state;
 		const { file, theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -190,12 +187,12 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			this.onProgress(status);
 			this.onEnd(status);
 		}
-	}
+	};
 
 	onLoad = (data: any) => {
 		const duration = data.durationMillis / 1000;
 		this.setState({ duration: duration > 0 ? duration : 0 });
-	}
+	};
 
 	onProgress = (data: any) => {
 		const { duration } = this.state;
@@ -203,7 +200,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		if (currentTime <= duration) {
 			this.setState({ currentTime });
 		}
-	}
+	};
 
 	onEnd = async (data: any) => {
 		if (data.didJustFinish) {
@@ -214,7 +211,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 				// do nothing
 			}
 		}
-	}
+	};
 
 	get duration() {
 		const { currentTime, duration } = this.state;
@@ -224,7 +221,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 	togglePlayPause = () => {
 		const { paused } = this.state;
 		this.setState({ paused: !paused }, this.playPause);
-	}
+	};
 
 	playPause = async () => {
 		const { paused } = this.state;
@@ -238,7 +235,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		} catch {
 			// Do nothing
 		}
-	}
+	};
 
 	onValueChange = async (value: any) => {
 		try {
@@ -247,15 +244,11 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		} catch {
 			// Do nothing
 		}
-	}
+	};
 
 	render() {
-		const {
-			loading, paused, currentTime, duration,
-		} = this.state;
-		const {
-			file, getCustomEmoji, theme, scale,
-		} = this.props;
+		const { loading, paused, currentTime, duration } = this.state;
+		const { file, getCustomEmoji, theme, scale } = this.props;
 		const { description } = file;
 		const { baseUrl, user } = this.context;
 
@@ -268,9 +261,8 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 				<View
 					style={[
 						styles.audioContainer,
-						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor },
-					]}
-				>
+						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
+					]}>
 					<Button loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
 						style={styles.slider}

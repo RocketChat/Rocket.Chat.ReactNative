@@ -11,4 +11,4 @@ export const getLockedUntil = async () => {
 	return null;
 };
 // @ts-ignore
-export const getDiff = (t) => new Date(t) - new Date();
+export const getDiff = t => new Date(t) - new Date();

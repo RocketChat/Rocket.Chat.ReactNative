@@ -18,7 +18,7 @@ const TableRow = React.memo(({ isLastRow, children: _children, theme }: ITableRo
 
 	const children: any = React.Children.toArray(_children);
 	children[children.length - 1] = React.cloneElement(children[children.length - 1], {
-		isLastCell: true,
+		isLastCell: true
 	});
 
 	return <View style={rowStyle}>{children}</View>;

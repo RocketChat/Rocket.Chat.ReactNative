@@ -10,12 +10,12 @@ import I18n from '../../i18n';
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: 8,
-		paddingHorizontal: PADDING_HORIZONTAL,
+		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	text: {
 		fontSize: 14,
-		...sharedStyles.textRegular,
-	},
+		...sharedStyles.textRegular
+	}
 });
 
 interface IListHeader {

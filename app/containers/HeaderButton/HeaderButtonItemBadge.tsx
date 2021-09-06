@@ -11,16 +11,10 @@ const styles = StyleSheet.create({
 		top: -3,
 		borderRadius: 10,
 		alignItems: 'center',
-		justifyContent: 'center',
-	},
+		justifyContent: 'center'
+	}
 });
 
-export const Badge = ({ ...props }) => (
-	<UnreadBadge
-		{...props}
-		style={styles.badgeContainer}
-		small
-	/>
-);
+export const Badge = ({ ...props }) => <UnreadBadge {...props} style={styles.badgeContainer} small />;
 
 export default Badge;

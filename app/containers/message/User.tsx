@@ -15,26 +15,26 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	username: {
 		fontSize: 16,
 		lineHeight: 22,
-		...sharedStyles.textMedium,
+		...sharedStyles.textMedium
 	},
 	usernameInfoMessage: {
 		fontSize: 16,
-		...sharedStyles.textMedium,
+		...sharedStyles.textMedium
 	},
 	titleContainer: {
 		flexShrink: 1,
 		flexDirection: 'row',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	alias: {
 		fontSize: 14,
-		...sharedStyles.textRegular,
-	},
+		...sharedStyles.textRegular
+	}
 });
 
 interface IMessageUser {
@@ -54,59 +54,56 @@ interface IMessageUser {
 	type: string;
 }
 
-const User = React.memo(({
-	isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, type, ...props
-}: IMessageUser) => {
-	if (isHeader || hasError) {
-		const navParam = {
-			t: 'd',
-			rid: author._id,
-		};
-		const { user } = useContext(MessageContext);
-		const username = (useRealName && author.name) || author.username;
-		const aliasUsername = alias ? (<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>) : null;
-		const time = moment(ts).format(timeFormat);
-		const onUserPress = () => navToRoomInfo(navParam);
-		const isDisabled = author._id === user.id;
+const User = React.memo(
+	({ isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, type, ...props }: IMessageUser) => {
+		if (isHeader || hasError) {
+			const navParam = {
+				t: 'd',
+				rid: author._id
+			};
+			const { user } = useContext(MessageContext);
+			const username = (useRealName && author.name) || author.username;
+			const aliasUsername = alias ? (
+				<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>
+			) : null;
+			const time = moment(ts).format(timeFormat);
+			const onUserPress = () => navToRoomInfo(navParam);
+			const isDisabled = author._id === user.id;
 
-		const textContent = (
-			<>
-				{alias || username}
-				{aliasUsername}
-			</>
-		);
-
-		if (SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME.includes(type)) {
-			return (
-				<Text
-					style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
-					onPress={onUserPress}
-					// @ts-ignore
-					disabled={isDisabled}
-				>
-					{textContent}
-				</Text>
+			const textContent = (
+				<>
+					{alias || username}
+					{aliasUsername}
+				</>
 			);
-		}
 
-		return (
-			<View style={styles.container}>
-				<TouchableOpacity
-					style={styles.titleContainer}
-					onPress={onUserPress}
-					disabled={isDisabled}
-				>
-					<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
+			if (SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME.includes(type)) {
+				return (
+					<Text
+						style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
+						onPress={onUserPress}
+						// @ts-ignore
+						disabled={isDisabled}>
 						{textContent}
 					</Text>
-				</TouchableOpacity>
-				<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
-				{ hasError && <MessageError hasError={hasError} theme={theme} {...props} /> }
-			</View>
-		);
+				);
+			}
+
+			return (
+				<View style={styles.container}>
+					<TouchableOpacity style={styles.titleContainer} onPress={onUserPress} disabled={isDisabled}>
+						<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
+							{textContent}
+						</Text>
+					</TouchableOpacity>
+					<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
+					{hasError && <MessageError hasError={hasError} theme={theme} {...props} />}
+				</View>
+			);
+		}
+		return null;
 	}
-	return null;
-});
+);
 
 User.displayName = 'MessageUser';
 

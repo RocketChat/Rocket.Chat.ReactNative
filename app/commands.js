@@ -126,12 +126,12 @@ const keyCommands = [
 	},
 	// Refers to select rooms on list
 	...[1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
-		input: `${ value }`,
+		input: `${value}`,
 		modifierFlags: constants.keyModifierCommand
 	})),
 	// Refers to select servers on list
 	...[1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => ({
-		input: `${ value }`,
+		input: `${value}`,
 		modifierFlags: constants.keyModifierCommand | constants.keyModifierAlternate
 	}))
 ];
@@ -161,7 +161,8 @@ export const handleCommandSubmit = event => commandHandle(event, KEY_SEND_MESSAG
 
 export const handleCommandShowUpload = event => commandHandle(event, KEY_UPLOAD, ['command']);
 
-export const handleCommandScroll = event => commandHandle(event, [constants.keyInputUpArrow, constants.keyInputDownArrow], ['alternate']);
+export const handleCommandScroll = event =>
+	commandHandle(event, [constants.keyInputUpArrow, constants.keyInputDownArrow], ['alternate']);
 
 export const handleCommandRoomActions = event => commandHandle(event, KEY_ROOM_ACTIONS, ['command']);
 

@@ -10,45 +10,46 @@ const { SSLPinning } = NativeModules;
 
 const RCSSLPinning = Platform.select({
 	ios: {
-		pickCertificate: () => new Promise(async(resolve, reject) => {
-			try {
-				const res = await DocumentPicker.pick({
-					type: ['com.rsa.pkcs-12']
-				});
-				const { uri, name } = res;
-				Alert.prompt(
-					I18n.t('Certificate_password'),
-					I18n.t('Whats_the_password_for_your_certificate'),
-					[
-						{
-							text: 'OK',
-							onPress: async(password) => {
-								try {
-									const certificatePath = `${ FileSystem.documentDirectory }/${ name }`;
+		pickCertificate: () =>
+			new Promise(async (resolve, reject) => {
+				try {
+					const res = await DocumentPicker.pick({
+						type: ['com.rsa.pkcs-12']
+					});
+					const { uri, name } = res;
+					Alert.prompt(
+						I18n.t('Certificate_password'),
+						I18n.t('Whats_the_password_for_your_certificate'),
+						[
+							{
+								text: 'OK',
+								onPress: async password => {
+									try {
+										const certificatePath = `${FileSystem.documentDirectory}/${name}`;
 
-									await FileSystem.copyAsync({ from: uri, to: certificatePath });
+										await FileSystem.copyAsync({ from: uri, to: certificatePath });
 
-									const certificate = {
-										path: certificatePath.replace('file://', ''), // file:// isn't allowed by obj-C
-										password
-									};
+										const certificate = {
+											path: certificatePath.replace('file://', ''), // file:// isn't allowed by obj-C
+											password
+										};
 
-									await UserPreferences.setMapAsync(name, certificate);
+										await UserPreferences.setMapAsync(name, certificate);
 
-									resolve(name);
-								} catch (e) {
-									reject(e);
+										resolve(name);
+									} catch (e) {
+										reject(e);
+									}
 								}
 							}
-						}
-					],
-					'secure-text'
-				);
-			} catch (e) {
-				reject(e);
-			}
-		}),
-		setCertificate: async(alias, server) => {
+						],
+						'secure-text'
+					);
+				} catch (e) {
+					reject(e);
+				}
+			}),
+		setCertificate: async (alias, server) => {
 			if (alias) {
 				const certificate = await UserPreferences.getMapAsync(alias);
 				await UserPreferences.setMapAsync(extractHostname(server), certificate);

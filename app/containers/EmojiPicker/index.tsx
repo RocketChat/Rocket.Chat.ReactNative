@@ -21,7 +21,7 @@ import { IEmoji } from './interfaces';
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
-	keyboardDismissMode: 'none',
+	keyboardDismissMode: 'none'
 };
 
 interface IEmojiPickerProps {
@@ -46,17 +46,17 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 	constructor(props: IEmojiPickerProps) {
 		super(props);
 		const customEmojis = Object.keys(props.customEmojis)
-			.filter((item) => item === props.customEmojis[item].name)
-			.map((item) => ({
+			.filter(item => item === props.customEmojis[item].name)
+			.map(item => ({
 				content: props.customEmojis[item].name,
 				extension: props.customEmojis[item].extension,
-				isCustom: true,
+				isCustom: true
 			}));
 		this.state = {
 			frequentlyUsed: [],
 			customEmojis,
 			show: false,
-			width: null,
+			width: null
 		};
 	}
 
@@ -88,19 +88,21 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 			const { onEmojiSelected } = this.props;
 			if (emoji.isCustom) {
 				this._addFrequentlyUsed({
-					content: emoji.content, extension: emoji.extension, isCustom: true,
+					content: emoji.content,
+					extension: emoji.extension,
+					isCustom: true
 				});
-				onEmojiSelected!(`:${ emoji.content }:`);
+				onEmojiSelected!(`:${emoji.content}:`);
 			} else {
 				const content = emoji;
 				this._addFrequentlyUsed({ content, isCustom: false });
-				const shortname = `:${ emoji }:`;
+				const shortname = `:${emoji}:`;
 				onEmojiSelected!(shortnameToUnicode(shortname), shortname);
 			}
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
 	// eslint-disable-next-line react/sort-comp
 	_addFrequentlyUsed = protectedFunction(async (emoji: IEmoji) => {
@@ -126,7 +128,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 				});
 			}
 		});
-	})
+	});
 
 	updateFrequentlyUsed = async () => {
 		const db = database.active;
@@ -136,12 +138,16 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 			if (item.isCustom) {
 				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
 			}
-			return shortnameToUnicode(`${ item.content }`);
+			return shortnameToUnicode(`${item.content}`);
 		});
 		this.setState({ frequentlyUsed });
-	}
+	};
 
-	onLayout = ({ nativeEvent: { layout: { width } } }: any) => this.setState({ width });
+	onLayout = ({
+		nativeEvent: {
+			layout: { width }
+		}
+	}: any) => this.setState({ width });
 
 	renderCategory(category: any, i: number, label: string) {
 		const { frequentlyUsed, customEmojis, width } = this.state;
@@ -158,7 +164,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 		return (
 			<EmojiCategory
 				emojis={emojis}
-				onEmojiSelected={(emoji) => this.onEmojiSelected(emoji)}
+				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
 				width={width!}
 				baseUrl={baseUrl}
@@ -180,14 +186,12 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} theme={theme} />}
 					/* @ts-ignore*/
 					contentProps={scrollProps}
-					style={{ backgroundColor: themes[theme!].focusedBackground }}
-				>
-					{
-						categories.tabs.map((tab, i) => (
-							i === 0 && frequentlyUsed.length === 0 ? null // when no frequentlyUsed don't show the tab
-								: 									this.renderCategory(tab.category, i, tab.tabLabel)
-						))
-					}
+					style={{ backgroundColor: themes[theme!].focusedBackground }}>
+					{categories.tabs.map((tab, i) =>
+						i === 0 && frequentlyUsed.length === 0
+							? null // when no frequentlyUsed don't show the tab
+							: this.renderCategory(tab.category, i, tab.tabLabel)
+					)}
 				</ScrollableTabView>
 			</View>
 		);
@@ -195,7 +199,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 }
 
 const mapStateToProps = (state: any) => ({
-	customEmojis: state.customEmojis,
+	customEmojis: state.customEmojis
 });
 
 export default connect(mapStateToProps)(withTheme(EmojiPicker));

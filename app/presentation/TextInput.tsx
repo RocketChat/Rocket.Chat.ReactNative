@@ -5,10 +5,8 @@ import { themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
 	input: {
-		...I18nManager.isRTL
-			? { textAlign: 'right' }
-			: { textAlign: 'auto' },
-	},
+		...(I18nManager.isRTL ? { textAlign: 'right' } : { textAlign: 'auto' })
+	}
 });
 
 interface IThemedTextInput {

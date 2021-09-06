@@ -29,11 +29,11 @@ const MentionItem = ({ item, trackingType, theme }: IMessageBoxMentionItem) => {
 	const defineTestID = (type: string) => {
 		switch (type) {
 			case MENTIONS_TRACKING_TYPE_EMOJIS:
-				return `mention-item-${ item.name || item }`;
+				return `mention-item-${item.name || item}`;
 			case MENTIONS_TRACKING_TYPE_COMMANDS:
-				return `mention-item-${ item.command || item }`;
+				return `mention-item-${item.command || item}`;
 			default:
-				return `mention-item-${ item.username || item.name || item }`;
+				return `mention-item-${item.username || item.name || item}`;
 		}
 	};
 
@@ -45,13 +45,8 @@ const MentionItem = ({ item, trackingType, theme }: IMessageBoxMentionItem) => {
 
 	let content = (
 		<>
-			<Avatar
-				style={styles.avatar}
-				text={item.username || item.name}
-				size={30}
-				type={item.t}
-			/>
-			<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{ item.username || item.name || item }</Text>
+			<Avatar style={styles.avatar} text={item.username || item.name} size={30} type={item.t} />
+			<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{item.username || item.name || item}</Text>
 		</>
 	);
 
@@ -59,7 +54,7 @@ const MentionItem = ({ item, trackingType, theme }: IMessageBoxMentionItem) => {
 		content = (
 			<>
 				<MentionEmoji item={item} />
-				<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>:{ item.name || item }:</Text>
+				<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>:{item.name || item}:</Text>
 			</>
 		);
 	}
@@ -79,12 +74,11 @@ const MentionItem = ({ item, trackingType, theme }: IMessageBoxMentionItem) => {
 				styles.mentionItem,
 				{
 					backgroundColor: themes[theme].auxiliaryBackground,
-					borderTopColor: themes[theme].separatorColor,
-				},
+					borderTopColor: themes[theme].separatorColor
+				}
 			]}
 			onPress={() => onPressMention(item)}
-			testID={testID}
-		>
+			testID={testID}>
 			{content}
 		</TouchableOpacity>
 	);

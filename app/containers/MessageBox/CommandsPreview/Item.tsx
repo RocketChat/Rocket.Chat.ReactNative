@@ -26,22 +26,19 @@ const Item = ({ item, theme }: IMessageBoxCommandsPreviewItem) => {
 		<TouchableOpacity
 			style={styles.commandPreview}
 			onPress={() => onPressCommandPreview(item)}
-			testID={`command-preview-item${ item.id }`}
-		>
-			{item.type === 'image'
-				? (
-					<FastImage
-						style={styles.commandPreviewImage}
-						source={{ uri: item.value }}
-						resizeMode={FastImage.resizeMode.cover}
-						onLoadStart={() => setLoading(true)}
-						onLoad={() => setLoading(false)}
-					>
-						{ loading ? <ActivityIndicator theme={theme} /> : null }
-					</FastImage>
-				)
-				: <CustomIcon name='attach' size={36} color={themes[theme].actionTintColor} />
-			}
+			testID={`command-preview-item${item.id}`}>
+			{item.type === 'image' ? (
+				<FastImage
+					style={styles.commandPreviewImage}
+					source={{ uri: item.value }}
+					resizeMode={FastImage.resizeMode.cover}
+					onLoadStart={() => setLoading(true)}
+					onLoad={() => setLoading(false)}>
+					{loading ? <ActivityIndicator theme={theme} /> : null}
+				</FastImage>
+			) : (
+				<CustomIcon name='attach' size={36} color={themes[theme].actionTintColor} />
+			)}
 		</TouchableOpacity>
 	);
 };

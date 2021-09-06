@@ -34,16 +34,7 @@ interface IRoomItemContainerProps {
 	autoJoin: boolean;
 }
 
-const attrs = [
-	'width',
-	'status',
-	'connected',
-	'theme',
-	'isFocused',
-	'forceUpdate',
-	'showLastMessage',
-	'autoJoin',
-];
+const attrs = ['width', 'status', 'connected', 'theme', 'isFocused', 'forceUpdate', 'showLastMessage', 'autoJoin'];
 
 class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 	private mounted: boolean;
@@ -58,8 +49,8 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 		getRoomAvatar: () => '',
 		getIsGroupChat: () => false,
 		getIsRead: () => false,
-		swipeEnabled: true,
-	}
+		swipeEnabled: true
+	};
 
 	constructor(props: IRoomItemContainerProps) {
 		super(props);
@@ -77,7 +68,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 
 	shouldComponentUpdate(nextProps: any) {
 		const { props }: any = this;
-		return !attrs.every((key) => props[key] === nextProps[key]);
+		return !attrs.every(key => props[key] === nextProps[key]);
 	}
 
 	componentDidUpdate(prevProps: any) {
@@ -99,7 +90,10 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 	}
 
 	get isDirect() {
-		const { item: { t }, id }: any = this.props;
+		const {
+			item: { t },
+			id
+		}: any = this.props;
 		return t === 'd' && id && !this.isGroupChat;
 	}
 
@@ -111,19 +105,19 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				this.forceUpdate();
 			});
 		}
-	}
+	};
 
 	onPress = () => {
 		const { item, onPress } = this.props;
 		return onPress(item);
-	}
+	};
 
 	onLongPress = () => {
 		const { item, onLongPress } = this.props;
 		if (onLongPress) {
 			return onLongPress(item);
 		}
-	}
+	};
 
 	render() {
 		const {
@@ -143,10 +137,10 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 			username,
 			useRealName,
 			swipeEnabled,
-			autoJoin,
+			autoJoin
 		} = this.props;
 		const name = getRoomTitle(item);
-		const testID = `rooms-list-view-item-${ name }`;
+		const testID = `rooms-list-view-item-${name}`;
 		const avatar = getRoomAvatar(item);
 		const isRead = getIsRead(item);
 		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt);
@@ -154,17 +148,17 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 
 		let accessibilityLabel = name;
 		if (item.unread === 1) {
-			accessibilityLabel += `, ${ item.unread } ${ I18n.t('alert') }`;
+			accessibilityLabel += `, ${item.unread} ${I18n.t('alert')}`;
 		} else if (item.unread > 1) {
-			accessibilityLabel += `, ${ item.unread } ${ I18n.t('alerts') }`;
+			accessibilityLabel += `, ${item.unread} ${I18n.t('alerts')}`;
 		}
 
 		if (item.userMentions > 0) {
-			accessibilityLabel += `, ${ I18n.t('you_were_mentioned') }`;
+			accessibilityLabel += `, ${I18n.t('you_were_mentioned')}`;
 		}
 
 		if (date) {
-			accessibilityLabel += `, ${ I18n.t('last_message') } ${ date }`;
+			accessibilityLabel += `, ${I18n.t('last_message')} ${date}`;
 		}
 
 		return (
@@ -223,7 +217,7 @@ const mapStateToProps = (state: any, ownProps: any) => {
 	}
 	return {
 		connected: state.meteor.connected,
-		status,
+		status
 	};
 };
 

@@ -8,8 +8,8 @@ import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	icon: {
-		marginRight: 4,
-	},
+		marginRight: 4
+	}
 });
 
 interface IRoomTypeIcon {
@@ -22,19 +22,13 @@ interface IRoomTypeIcon {
 	style: any;
 }
 
-const RoomTypeIcon = React.memo(({
-	type, isGroupChat, status, style, theme, teamMain, size = 16,
-}: IRoomTypeIcon) => {
+const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, teamMain, size = 16 }: IRoomTypeIcon) => {
 	if (!type) {
 		return null;
 	}
 
 	const color = themes[theme].titleText;
-	const iconStyle = [
-		styles.icon,
-		{ color },
-		style,
-	];
+	const iconStyle = [styles.icon, { color }, style];
 
 	if (type === 'd' && !isGroupChat) {
 		return <Status style={[iconStyle, { color: STATUS_COLORS[status] ?? STATUS_COLORS.offline }]} size={size} status={status} />;
@@ -43,7 +37,7 @@ const RoomTypeIcon = React.memo(({
 	// TODO: move this to a separate function
 	let icon = 'channel-private';
 	if (teamMain) {
-		icon = `teams${ type === 'p' ? '-private' : '' }`;
+		icon = `teams${type === 'p' ? '-private' : ''}`;
 	} else if (type === 'discussion') {
 		icon = 'discussions';
 	} else if (type === 'c') {
@@ -58,13 +52,7 @@ const RoomTypeIcon = React.memo(({
 		icon = 'omnichannel';
 	}
 
-	return (
-		<CustomIcon
-			name={icon}
-			size={size}
-			style={iconStyle}
-		/>
-	);
+	return <CustomIcon name={icon} size={size} style={iconStyle} />;
 });
 
 export default withTheme(RoomTypeIcon);

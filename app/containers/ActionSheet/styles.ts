@@ -8,46 +8,46 @@ export default StyleSheet.create({
 	container: {
 		overflow: 'hidden',
 		borderTopLeftRadius: 16,
-		borderTopRightRadius: 16,
+		borderTopRightRadius: 16
 	},
 	item: {
 		paddingHorizontal: 16,
 		height: ITEM_HEIGHT,
 		alignItems: 'center',
-		flexDirection: 'row',
+		flexDirection: 'row'
 	},
 	separator: {
-		marginHorizontal: 16,
+		marginHorizontal: 16
 	},
 	content: {
-		paddingTop: 16,
+		paddingTop: 16
 	},
 	titleContainer: {
-		flex: 1,
+		flex: 1
 	},
 	title: {
 		fontSize: 16,
 		marginLeft: 16,
-		...sharedStyles.textRegular,
+		...sharedStyles.textRegular
 	},
 	handle: {
 		justifyContent: 'center',
 		alignItems: 'center',
-		paddingBottom: 8,
+		paddingBottom: 8
 	},
 	handleIndicator: {
 		width: 40,
 		height: 4,
 		borderRadius: 4,
-		margin: 8,
+		margin: 8
 	},
 	backdrop: {
-		...StyleSheet.absoluteFillObject,
+		...StyleSheet.absoluteFillObject
 	},
 	bottomSheet: {
 		width: '50%',
 		alignSelf: 'center',
-		left: '25%',
+		left: '25%'
 	},
 	button: {
 		marginHorizontal: 16,
@@ -55,14 +55,14 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		height: ITEM_HEIGHT,
 		borderRadius: 2,
-		marginBottom: 12,
+		marginBottom: 12
 	},
 	text: {
 		fontSize: 16,
 		...sharedStyles.textMedium,
-		...sharedStyles.textAlignCenter,
+		...sharedStyles.textAlignCenter
 	},
 	rightContainer: {
-		paddingLeft: 12,
-	},
+		paddingLeft: 12
+	}
 });

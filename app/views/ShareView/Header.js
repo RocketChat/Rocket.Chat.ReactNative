@@ -76,16 +76,11 @@ const Header = React.memo(({ room, thread, theme }) => {
 		<View style={styles.container}>
 			<View style={styles.inner}>
 				<Text numberOfLines={1} style={styles.text}>
-					<Text style={[styles.text, { color: textColor }]} numberOfLines={1}>{I18n.t('Sending_to')} </Text>
-					<CustomIcon
-						name={icon}
-						size={16}
-						color={textColor}
-					/>
-					<Text
-						style={[styles.name, { color: textColor }]}
-						numberOfLines={1}
-					>
+					<Text style={[styles.text, { color: textColor }]} numberOfLines={1}>
+						{I18n.t('Sending_to')}{' '}
+					</Text>
+					<CustomIcon name={icon} size={16} color={textColor} />
+					<Text style={[styles.name, { color: textColor }]} numberOfLines={1}>
 						{title}
 					</Text>
 				</Text>

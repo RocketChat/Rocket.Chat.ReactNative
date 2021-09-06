@@ -21,22 +21,18 @@ const UpdatedAt = React.memo(({ date, theme, hideUnreadStatus, alert }: IUpdated
 			style={[
 				styles.date,
 				{
-					color:
-						themes[theme]
-							.auxiliaryText,
+					color: themes[theme].auxiliaryText
 				},
-				alert && !hideUnreadStatus && [
-					styles.updateAlert,
-					{
-						color:
-							themes[theme]
-								.tintColor,
-					},
-				],
+				alert &&
+					!hideUnreadStatus && [
+						styles.updateAlert,
+						{
+							color: themes[theme].tintColor
+						}
+					]
 			]}
 			ellipsizeMode='tail'
-			numberOfLines={1}
-		>
+			numberOfLines={1}>
 			{capitalize(date)}
 		</Text>
 	);

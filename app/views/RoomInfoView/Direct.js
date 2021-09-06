@@ -8,18 +8,21 @@ import Timezone from './Timezone';
 import CustomFields from './CustomFields';
 import styles from './styles';
 
-const Roles = ({ roles, theme }) => (roles && roles.length ? (
-	<View style={styles.item}>
-		<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
-		<View style={styles.rolesContainer}>
-			{roles.map(role => (role ? (
-				<View style={[styles.roleBadge, { backgroundColor: themes[theme].auxiliaryBackground }]} key={role}>
-					<Text style={styles.role}>{role}</Text>
-				</View>
-			) : null))}
+const Roles = ({ roles, theme }) =>
+	roles && roles.length ? (
+		<View style={styles.item}>
+			<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
+			<View style={styles.rolesContainer}>
+				{roles.map(role =>
+					role ? (
+						<View style={[styles.roleBadge, { backgroundColor: themes[theme].auxiliaryBackground }]} key={role}>
+							<Text style={styles.role}>{role}</Text>
+						</View>
+					) : null
+				)}
+			</View>
 		</View>
-	</View>
-) : null);
+	) : null;
 Roles.propTypes = {
 	roles: PropTypes.array,
 	theme: PropTypes.string

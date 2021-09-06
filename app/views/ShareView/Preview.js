@@ -35,26 +35,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const IconPreview = React.memo(({
-	iconName, title, description, theme, width, height, danger
-}) => (
+const IconPreview = React.memo(({ iconName, title, description, theme, width, height, danger }) => (
 	<ScrollView
 		style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-		contentContainerStyle={[styles.fileContainer, { width, height }]}
-	>
-		<CustomIcon
-			name={iconName}
-			size={56}
-			color={danger ? themes[theme].dangerColor : themes[theme].tintColor}
-		/>
+		contentContainerStyle={[styles.fileContainer, { width, height }]}>
+		<CustomIcon name={iconName} size={56} color={danger ? themes[theme].dangerColor : themes[theme].tintColor} />
 		<Text style={[styles.fileName, { color: themes[theme].titleText }]}>{title}</Text>
 		{description ? <Text style={[styles.fileSize, { color: themes[theme].bodyText }]}>{description}</Text> : null}
 	</ScrollView>
 ));
 
-const Preview = React.memo(({
-	item, theme, isShareExtension, length
-}) => {
+const Preview = React.memo(({ item, theme, isShareExtension, length }) => {
 	const type = item?.mime;
 	const { width, height } = useDimensions();
 	const { isLandscape } = useOrientation();

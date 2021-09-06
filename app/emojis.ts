@@ -224,7 +224,7 @@ export const emojisByCategory: any = {
 		'right_facing_fist',
 		'handshake',
 		'fingers_crossed',
-		'pregnant_woman',
+		'pregnant_woman'
 	],
 	nature: [
 		'dog',
@@ -387,7 +387,7 @@ export const emojisByCategory: any = {
 		'rhino',
 		'wilted_rose',
 		'shrimp',
-		'squid',
+		'squid'
 	],
 	food: [
 		'green_apple',
@@ -474,7 +474,7 @@ export const emojisByCategory: any = {
 		'milk',
 		'peanuts',
 		'kiwi',
-		'pancakes',
+		'pancakes'
 	],
 	activity: [
 		'soccer',
@@ -546,7 +546,7 @@ export const emojisByCategory: any = {
 		'first_place',
 		'second_place',
 		'third_place',
-		'drum',
+		'drum'
 	],
 	travel: [
 		'red_car',
@@ -667,7 +667,7 @@ export const emojisByCategory: any = {
 		'shopping_cart',
 		'scooter',
 		'motor_scooter',
-		'canoe',
+		'canoe'
 	],
 	objects: [
 		'watch',
@@ -847,7 +847,7 @@ export const emojisByCategory: any = {
 		'crayon',
 		'paintbrush',
 		'mag',
-		'mag_right',
+		'mag_right'
 	],
 	symbols: [
 		'100',
@@ -1160,7 +1160,7 @@ export const emojisByCategory: any = {
 		'regional_indicator_d',
 		'regional_indicator_c',
 		'regional_indicator_b',
-		'regional_indicator_a',
+		'regional_indicator_a'
 	],
 	flags: [
 		'flag_ac',
@@ -1401,8 +1401,8 @@ export const emojisByCategory: any = {
 		'flag_mp',
 		'flag_sx',
 		'flag_ss',
-		'flag_tc',
-	],
+		'flag_tc'
+	]
 };
 
 export const emojis = [
@@ -2811,5 +2811,5 @@ export const emojis = [
 	'flag_sx',
 	'flag_ss',
 	'flag_tc',
-	'flag_mf',
+	'flag_mf'
 ];

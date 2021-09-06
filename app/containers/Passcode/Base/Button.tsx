@@ -24,19 +24,12 @@ const Button = React.memo(({ text, disabled, theme, onPress, icon }: Partial<IPa
 			rippleColor={themes[theme!].passcodeButtonActive}
 			enabled={!disabled}
 			theme={theme}
-			onPress={press}
-		>
-			{
-				icon
-					? (
-						<CustomIcon name={icon} size={36} color={themes[theme!].passcodePrimary} />
-					)
-					: (
-						<Text style={[styles.buttonText, { color: themes[theme!].passcodePrimary }]}>
-							{text}
-						</Text>
-					)
-			}
+			onPress={press}>
+			{icon ? (
+				<CustomIcon name={icon} size={36} color={themes[theme!].passcodePrimary} />
+			) : (
+				<Text style={[styles.buttonText, { color: themes[theme!].passcodePrimary }]}>{text}</Text>
+			)}
 		</Touch>
 	);
 });

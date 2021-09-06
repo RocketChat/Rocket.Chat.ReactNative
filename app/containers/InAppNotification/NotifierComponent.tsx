@@ -32,36 +32,36 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		marginHorizontal: 10,
 		borderWidth: StyleSheet.hairlineWidth,
-		borderRadius: 4,
+		borderRadius: 4
 	},
 	content: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	inner: {
-		flex: 1,
+		flex: 1
 	},
 	avatar: {
-		marginRight: 10,
+		marginRight: 10
 	},
 	roomName: {
 		fontSize: 17,
 		lineHeight: 20,
-		...sharedStyles.textMedium,
+		...sharedStyles.textMedium
 	},
 	message: {
 		fontSize: 14,
 		lineHeight: 17,
-		...sharedStyles.textRegular,
+		...sharedStyles.textRegular
 	},
 	close: {
-		marginLeft: 10,
+		marginLeft: 10
 	},
 	small: {
 		width: '50%',
-		alignSelf: 'center',
-	},
+		alignSelf: 'center'
+	}
 });
 
 const hideNotification = () => Notifier.hideNotification();
@@ -83,7 +83,10 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 			return;
 		}
 		const item = {
-			rid, name: title, t: type, prid,
+			rid,
+			name: title,
+			t: type,
+			prid
 		};
 
 		if (isMasterDetail) {
@@ -96,35 +99,34 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 	};
 
 	return (
-		<View style={[
-			styles.container,
-			(isMasterDetail || isLandscape) && styles.small,
-			{
-				backgroundColor: themes[theme].focusedBackground,
-				borderColor: themes[theme].separatorColor,
-				marginTop: insets.top,
-			},
-		]}
-		>
+		<View
+			style={[
+				styles.container,
+				(isMasterDetail || isLandscape) && styles.small,
+				{
+					backgroundColor: themes[theme].focusedBackground,
+					borderColor: themes[theme].separatorColor,
+					marginTop: insets.top
+				}
+			]}>
 			<Touchable
 				style={styles.content}
 				onPress={onPress}
 				hitSlop={BUTTON_HIT_SLOP}
-				background={Touchable.SelectableBackgroundBorderless()}
-			>
+				background={Touchable.SelectableBackgroundBorderless()}>
 				<>
 					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
 					<View style={styles.inner}>
-						<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
-						<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>{text}</Text>
+						<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>
+							{title}
+						</Text>
+						<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>
+							{text}
+						</Text>
 					</View>
 				</>
 			</Touchable>
-			<Touchable
-				onPress={hideNotification}
-				hitSlop={BUTTON_HIT_SLOP}
-				background={Touchable.SelectableBackgroundBorderless()}
-			>
+			<Touchable onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP} background={Touchable.SelectableBackgroundBorderless()}>
 				<CustomIcon name='close' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
 			</Touchable>
 		</View>
@@ -132,7 +134,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 });
 
 const mapStateToProps = (state: any) => ({
-	isMasterDetail: state.app.isMasterDetail,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(NotifierComponent);

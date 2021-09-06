@@ -15,12 +15,13 @@ const Blocks = React.memo(({ blocks, id: mid, rid, blockAction }: IMessageBlocks
 						value,
 						blockId,
 						rid,
-						mid,
+						mid
 					});
 				},
 				appId,
-				rid,
-			}), { blocks },
+				rid
+			}),
+			{ blocks }
 		);
 	}
 	return null;

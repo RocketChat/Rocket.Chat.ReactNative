@@ -9,22 +9,22 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginVertical: 24,
+		marginVertical: 24
 	},
 	line: {
 		height: 1,
-		flex: 1,
+		flex: 1
 	},
 	text: {
 		fontSize: 14,
 		marginLeft: 14,
 		marginRight: 14,
-		...sharedStyles.textMedium,
-	},
+		...sharedStyles.textMedium
+	}
 });
 
 interface IOrSeparator {
-	theme: string
+	theme: string;
 }
 
 const OrSeparator = React.memo(({ theme }: IOrSeparator) => {

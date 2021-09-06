@@ -26,18 +26,18 @@ interface ITwoFactor {
 const methods: any = {
 	totp: {
 		text: 'Open_your_authentication_app_and_enter_the_code',
-		keyboardType: 'numeric',
+		keyboardType: 'numeric'
 	},
 	email: {
 		text: 'Verify_your_email_for_the_code_we_sent',
-		keyboardType: 'numeric',
+		keyboardType: 'numeric'
 	},
 	password: {
 		title: 'Please_enter_your_password',
 		text: 'For_your_security_you_must_enter_your_current_password_to_continue',
 		secureTextEntry: true,
-		keyboardType: 'default',
-	},
+		keyboardType: 'default'
+	}
 };
 
 const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
@@ -95,10 +95,14 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 			avoidKeyboard
 			useNativeDriver
 			isVisible={visible}
-			hideModalContentWhileAnimating
-		>
+			hideModalContentWhileAnimating>
 			<View style={styles.container} testID='two-factor'>
-				<View style={[styles.content, isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet], { backgroundColor: themes[theme].backgroundColor }]}>
+				<View
+					style={[
+						styles.content,
+						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
+						{ backgroundColor: themes[theme].backgroundColor }
+					]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 					<TextInput
@@ -115,7 +119,11 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 						error={data.invalid && { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') }}
 						testID='two-factor-input'
 					/>
-					{isEmail && <Text style={[styles.sendEmail, { color }]} onPress={sendEmail}>{I18n.t('Send_me_the_code_again')}</Text>}
+					{isEmail && (
+						<Text style={[styles.sendEmail, { color }]} onPress={sendEmail}>
+							{I18n.t('Send_me_the_code_again')}
+						</Text>
+					)}
 					<View style={styles.buttonContainer}>
 						<Button
 							title={I18n.t('Cancel')}
@@ -141,7 +149,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 });
 
 const mapStateToProps = (state: any) => ({
-	isMasterDetail: state.app.isMasterDetail,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(TwoFactor));

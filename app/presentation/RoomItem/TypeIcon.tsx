@@ -11,8 +11,8 @@ interface ITypeIcon {
 	theme?: string;
 }
 
-const TypeIcon = React.memo(({
-	type, prid, status, isGroupChat, teamMain,
-}: ITypeIcon) => <RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />);
+const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain }: ITypeIcon) => (
+	<RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />
+));
 
 export default TypeIcon;

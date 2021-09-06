@@ -6,10 +6,7 @@ import conditional from './conditional';
 
 const { multiply } = Animated;
 
-const forFadeFromCenter = ({
-	current,
-	closing
-}) => {
+const forFadeFromCenter = ({ current, closing }) => {
 	const opacity = conditional(
 		closing,
 		current.progress,
@@ -51,11 +48,7 @@ export const FadeFromCenterModal = {
 	cardStyleInterpolator: forFadeFromCenter
 };
 
-const forStackAndroid = ({
-	current,
-	inverted,
-	layouts: { screen }
-}) => {
+const forStackAndroid = ({ current, inverted, layouts: { screen } }) => {
 	const translateX = multiply(
 		current.progress.interpolate({
 			inputRange: [0, 1],

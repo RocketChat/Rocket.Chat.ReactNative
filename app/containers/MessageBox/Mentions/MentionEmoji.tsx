@@ -17,23 +17,13 @@ const MentionEmoji = ({ item }: IMessageBoxMentionEmoji) => {
 	const { baseUrl } = context;
 
 	if (item.name) {
-		return (
-			<CustomEmoji
-				style={styles.mentionItemCustomEmoji}
-				emoji={item}
-				baseUrl={baseUrl}
-			/>
-		);
+		return <CustomEmoji style={styles.mentionItemCustomEmoji} emoji={item} baseUrl={baseUrl} />;
 	}
-	return (
-		<Text style={styles.mentionItemEmoji}>
-			{shortnameToUnicode(`:${ item }:`)}
-		</Text>
-	);
+	return <Text style={styles.mentionItemEmoji}>{shortnameToUnicode(`:${item}:`)}</Text>;
 };
 
 MentionEmoji.propTypes = {
-	item: PropTypes.object,
+	item: PropTypes.object
 };
 
 export default MentionEmoji;

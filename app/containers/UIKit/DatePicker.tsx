@@ -20,19 +20,19 @@ const styles = StyleSheet.create({
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,
 		alignItems: 'center',
-		flexDirection: 'row',
+		flexDirection: 'row'
 	},
 	inputText: {
 		...sharedStyles.textRegular,
-		fontSize: 14,
+		fontSize: 14
 	},
 	icon: {
 		right: 16,
-		position: 'absolute',
+		position: 'absolute'
 	},
 	loading: {
-		padding: 0,
-	},
+		padding: 0
+	}
 });
 
 interface IDatePicker {
@@ -49,9 +49,7 @@ interface IDatePicker {
 	error: string;
 }
 
-export const DatePicker = ({
-	element, language, action, context, theme, loading, value, error,
-}: IDatePicker) => {
+export const DatePicker = ({ element, language, action, context, theme, loading, value, error }: IDatePicker) => {
 	const [show, onShow] = useState(false);
 	const { initial_date, placeholder } = element;
 	const [currentDate, onChangeDate] = useState(new Date(initial_date || value));
@@ -65,49 +63,35 @@ export const DatePicker = ({
 		}
 	};
 
-	let button = (
-		<Button
-			title={textParser([placeholder])}
-			onPress={() => onShow(!show)}
-			loading={loading}
-			theme={theme}
-		/>
-	);
+	let button = <Button title={textParser([placeholder])} onPress={() => onShow(!show)} loading={loading} theme={theme} />;
 
 	if (context === BLOCK_CONTEXT.FORM) {
 		button = (
 			<Touchable
 				onPress={() => onShow(!show)}
 				style={{ backgroundColor: themes[theme].backgroundColor }}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
-			>
+				background={Touchable.Ripple(themes[theme].bannerBackground)}>
 				<View style={[styles.input, { borderColor: error ? themes[theme].dangerColor : themes[theme].separatorColor }]}>
-					<Text
-						style={[
-							styles.inputText,
-							{ color: error ? themes[theme].dangerColor : themes[theme].titleText },
-						]}
-					>
+					<Text style={[styles.inputText, { color: error ? themes[theme].dangerColor : themes[theme].titleText }]}>
 						{currentDate.toLocaleDateString(language)}
 					</Text>
-					{
-						loading
-							? <ActivityIndicator style={[styles.loading, styles.icon]} />
-							: <CustomIcon name='calendar' size={20} color={error ? themes[theme].dangerColor : themes[theme].auxiliaryText} style={styles.icon} />
-					}
+					{loading ? (
+						<ActivityIndicator style={[styles.loading, styles.icon]} />
+					) : (
+						<CustomIcon
+							name='calendar'
+							size={20}
+							color={error ? themes[theme].dangerColor : themes[theme].auxiliaryText}
+							style={styles.icon}
+						/>
+					)}
 				</View>
 			</Touchable>
 		);
 	}
 
 	const content = show ? (
-		<DateTimePicker
-			mode='date'
-			display='default'
-			value={currentDate}
-			onChange={onChange}
-			textColor={themes[theme].titleText}
-		/>
+		<DateTimePicker mode='date' display='default' value={currentDate} onChange={onChange} textColor={themes[theme].titleText} />
 	) : null;
 
 	return (

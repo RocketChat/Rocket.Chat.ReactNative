@@ -6,8 +6,8 @@ import { withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	separator: {
-		height: StyleSheet.hairlineWidth,
-	},
+		height: StyleSheet.hairlineWidth
+	}
 });
 
 interface IListSeparator {
@@ -16,13 +16,7 @@ interface IListSeparator {
 }
 
 const ListSeparator = React.memo(({ style, theme }: IListSeparator) => (
-	<View
-		style={[
-			styles.separator,
-			style,
-			{ backgroundColor: themes[theme].separatorColor },
-		]}
-	/>
+	<View style={[styles.separator, style, { backgroundColor: themes[theme].separatorColor }]} />
 ));
 
 ListSeparator.displayName = 'List.Separator';

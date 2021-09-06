@@ -32,7 +32,7 @@ if (__DEV__ && isIOS) {
 	console.log(appGroupPath);
 }
 
-const getDatabasePath = name => `${ appGroupPath }${ name }${ isOfficial ? '' : '-experimental' }.db`;
+const getDatabasePath = name => `${appGroupPath}${name}${isOfficial ? '' : '-experimental'}.db`;
 
 export const getDatabase = (database = '') => {
 	const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
@@ -76,7 +76,7 @@ class DB {
 			modelClasses: [Server, LoggedUser, ServersHistory],
 			actionsEnabled: true
 		})
-	}
+	};
 
 	get active() {
 		return this.databases.shareDB || this.databases.activeDB;

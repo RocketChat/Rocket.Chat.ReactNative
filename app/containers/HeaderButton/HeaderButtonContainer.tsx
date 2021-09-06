@@ -10,20 +10,18 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'center'
 	},
 	left: {
-		marginLeft: 5,
+		marginLeft: 5
 	},
 	right: {
-		marginRight: 5,
-	},
+		marginRight: 5
+	}
 });
 
 const Container = ({ children, left = false }: IHeaderButtonContainer) => (
-	<View style={[styles.container, left ? styles.left : styles.right]}>
-		{children}
-	</View>
+	<View style={[styles.container, left ? styles.left : styles.right]}>{children}</View>
 );
 
 Container.displayName = 'HeaderButton.Container';

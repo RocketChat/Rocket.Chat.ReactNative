@@ -23,9 +23,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DropdownItem = React.memo(({
-	theme, onPress, iconName, text
-}) => (
+const DropdownItem = React.memo(({ theme, onPress, iconName, text }) => (
 	<Touch theme={theme} onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }}>
 		<View style={styles.container}>
 			<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>{text}</Text>

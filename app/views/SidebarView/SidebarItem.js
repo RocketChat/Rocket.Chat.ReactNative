@@ -7,27 +7,20 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import styles from './styles';
 
-const Item = React.memo(({
-	left, right, text, onPress, testID, current, theme
-}) => (
+const Item = React.memo(({ left, right, text, onPress, testID, current, theme }) => (
 	<Touch
 		key={testID}
 		testID={testID}
 		onPress={onPress}
 		theme={theme}
-		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}
-	>
-		<View style={styles.itemHorizontal}>
-			{left}
-		</View>
+		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}>
+		<View style={styles.itemHorizontal}>{left}</View>
 		<View style={styles.itemCenter}>
 			<Text style={[styles.itemText, { color: themes[theme].titleText }]} numberOfLines={1}>
 				{text}
 			</Text>
 		</View>
-		<View style={styles.itemHorizontal}>
-			{right}
-		</View>
+		<View style={styles.itemHorizontal}>{right}</View>
 	</Touch>
 ));
 

@@ -12,9 +12,7 @@ interface IBlockQuote {
 const BlockQuote = React.memo(({ children, theme }: IBlockQuote) => (
 	<View style={styles.container}>
 		<View style={[styles.quote, { backgroundColor: themes[theme].borderColor }]} />
-		<View style={styles.childContainer}>
-			{children}
-		</View>
+		<View style={styles.childContainer}>{children}</View>
 	</View>
 ));
 

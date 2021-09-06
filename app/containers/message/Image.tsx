@@ -16,15 +16,15 @@ type TMessageButton = {
 	children: JSX.Element;
 	onPress: Function;
 	theme: string;
-}
+};
 
 type TMessageImage = {
 	img: string;
 	theme: string;
-}
+};
 
 interface IMessageImage {
-	file: { image_url: string; description?: string; };
+	file: { image_url: string; description?: string };
 	imageUrl?: string;
 	showAttachment: Function;
 	theme: string;
@@ -34,11 +34,7 @@ interface IMessageImage {
 const ImageProgress = createImageProgress(FastImage);
 
 const Button = React.memo(({ children, onPress, theme }: TMessageButton) => (
-	<Touchable
-		onPress={onPress}
-		style={styles.imageContainer}
-		background={Touchable.Ripple(themes[theme].bannerBackground)}
-	>
+	<Touchable onPress={onPress} style={styles.imageContainer} background={Touchable.Ripple(themes[theme].bannerBackground)}>
 		{children}
 	</Touchable>
 ));
@@ -50,38 +46,47 @@ export const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
 		resizeMode={FastImage.resizeMode.cover}
 		indicator={Progress.Pie}
 		indicatorProps={{
-			color: themes[theme].actionTintColor,
+			color: themes[theme].actionTintColor
 		}}
 	/>
 ));
 
-const ImageContainer = React.memo(({ file, imageUrl, showAttachment, getCustomEmoji, theme }: IMessageImage) => {
-	const { baseUrl, user } = useContext(MessageContext);
-	const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
-	if (!img) {
-		return null;
-	}
+const ImageContainer = React.memo(
+	({ file, imageUrl, showAttachment, getCustomEmoji, theme }: IMessageImage) => {
+		const { baseUrl, user } = useContext(MessageContext);
+		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
+		if (!img) {
+			return null;
+		}
 
-	const onPress = () => showAttachment(file);
+		const onPress = () => showAttachment(file);
 
-	if (file.description) {
+		if (file.description) {
+			return (
+				<Button theme={theme} onPress={onPress}>
+					<View>
+						<MessageImage img={img} theme={theme} />
+						{/* @ts-ignore*/}
+						<Markdown
+							msg={file.description}
+							baseUrl={baseUrl}
+							username={user.username}
+							getCustomEmoji={getCustomEmoji}
+							theme={theme}
+						/>
+					</View>
+				</Button>
+			);
+		}
+
 		return (
 			<Button theme={theme} onPress={onPress}>
-				<View>
-					<MessageImage img={img} theme={theme} />
-					{/* @ts-ignore*/}
-					<Markdown msg={file.description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
-				</View>
+				<MessageImage img={img} theme={theme} />
 			</Button>
 		);
-	}
-
-	return (
-		<Button theme={theme} onPress={onPress}>
-			<MessageImage img={img} theme={theme} />
-		</Button>
-	);
-}, (prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme);
+	},
+	(prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme
+);
 
 ImageContainer.displayName = 'MessageImageContainer';
 MessageImage.displayName = 'MessageImage';

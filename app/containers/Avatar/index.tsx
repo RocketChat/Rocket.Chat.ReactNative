@@ -14,7 +14,7 @@ class AvatarContainer extends React.Component<Partial<IAvatar>, any> {
 
 	static defaultProps = {
 		text: '',
-		type: 'd',
+		type: 'd'
 	};
 
 	constructor(props: Partial<IAvatar>) {
@@ -72,23 +72,17 @@ class AvatarContainer extends React.Component<Partial<IAvatar>, any> {
 				if (this.mounted) {
 					this.setState({ avatarETag });
 				} else {
-				// @ts-ignore
+					// @ts-ignore
 					this.state.avatarETag = avatarETag;
 				}
 			});
 		}
-	}
+	};
 
 	render() {
 		const { avatarETag } = this.state;
 		const { serverVersion } = this.props;
-		return (
-			<Avatar
-				avatarETag={avatarETag}
-				serverVersion={serverVersion}
-				{...this.props}
-			/>
-		);
+		return <Avatar avatarETag={avatarETag} serverVersion={serverVersion} {...this.props} />;
 	}
 }
 
@@ -97,8 +91,8 @@ const mapStateToProps = (state: any) => ({
 	server: state.share.server.server || state.server.server,
 	serverVersion: state.share.server.version || state.server.version,
 	blockUnauthenticatedAccess:
-		state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess
-		?? state.settings.Accounts_AvatarBlockUnauthenticatedAccess
-		?? true,
+		state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess ??
+		state.settings.Accounts_AvatarBlockUnauthenticatedAccess ??
+		true
 });
 export default connect(mapStateToProps)(AvatarContainer);

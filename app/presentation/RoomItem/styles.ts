@@ -9,103 +9,103 @@ export const LONG_SWIPE = ACTION_WIDTH * 3;
 
 export default StyleSheet.create<any>({
 	flex: {
-		flex: 1,
+		flex: 1
 	},
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingLeft: 14,
-		height: ROW_HEIGHT,
+		height: ROW_HEIGHT
 	},
 	centerContainer: {
 		flex: 1,
 		paddingVertical: 10,
 		paddingRight: 14,
-		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	title: {
 		flex: 1,
 		fontSize: 17,
 		lineHeight: 20,
-		...sharedStyles.textMedium,
+		...sharedStyles.textMedium
 	},
 	alert: {
-		...sharedStyles.textSemibold,
+		...sharedStyles.textSemibold
 	},
 	row: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'flex-start',
+		alignItems: 'flex-start'
 	},
 	titleContainer: {
 		width: '100%',
 		flexDirection: 'row',
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'center'
 	},
 	date: {
 		fontSize: 13,
 		marginLeft: 4,
-		...sharedStyles.textRegular,
+		...sharedStyles.textRegular
 	},
 	updateAlert: {
-		...sharedStyles.textSemibold,
+		...sharedStyles.textSemibold
 	},
 	status: {
-		marginRight: 2,
+		marginRight: 2
 	},
 	markdownText: {
 		flex: 1,
 		fontSize: 14,
 		lineHeight: 17,
-		...sharedStyles.textRegular,
+		...sharedStyles.textRegular
 	},
 	avatar: {
-		marginRight: 10,
+		marginRight: 10
 	},
 	upperContainer: {
-		overflow: 'hidden',
+		overflow: 'hidden'
 	},
 	actionsContainer: {
 		position: 'absolute',
 		left: 0,
 		right: 0,
-		height: ROW_HEIGHT,
+		height: ROW_HEIGHT
 	},
 	actionText: {
 		fontSize: 15,
 		justifyContent: 'center',
 		marginTop: 4,
-		...sharedStyles.textSemibold,
+		...sharedStyles.textSemibold
 	},
 	actionLeftButtonContainer: {
 		position: 'absolute',
 		height: ROW_HEIGHT,
 		justifyContent: 'center',
 		top: 0,
-		right: 0,
+		right: 0
 	},
 	actionRightButtonContainer: {
 		position: 'absolute',
 		height: ROW_HEIGHT,
 		justifyContent: 'center',
-		top: 0,
+		top: 0
 	},
 	actionButton: {
 		width: ACTION_WIDTH,
 		height: '100%',
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'center'
 	},
 	tagContainer: {
 		alignSelf: 'center',
 		alignItems: 'center',
 		borderRadius: 4,
-		marginHorizontal: 4,
+		marginHorizontal: 4
 	},
 	tagText: {
 		fontSize: 13,
 		paddingHorizontal: 4,
-		...sharedStyles.textSemibold,
-	},
+		...sharedStyles.textSemibold
+	}
 });

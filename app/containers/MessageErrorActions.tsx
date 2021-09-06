@@ -41,7 +41,7 @@ const MessageErrorActions = forwardRef(({ tmid }: any, ref): any => {
 							msg.prepareUpdate((m: any) => {
 								m.tcount = null;
 								m.tlm = null;
-							}),
+							})
 						);
 
 						try {
@@ -55,7 +55,7 @@ const MessageErrorActions = forwardRef(({ tmid }: any, ref): any => {
 						deleteBatch.push(
 							msg.prepareUpdate((m: any) => {
 								m.tcount -= 1;
-							}),
+							})
 						);
 					}
 				} catch {
@@ -76,21 +76,21 @@ const MessageErrorActions = forwardRef(({ tmid }: any, ref): any => {
 				{
 					title: I18n.t('Resend'),
 					icon: 'send',
-					onPress: () => handleResend(message),
+					onPress: () => handleResend(message)
 				},
 				{
 					title: I18n.t('Delete'),
 					icon: 'delete',
 					danger: true,
-					onPress: () => handleDelete(message),
-				},
+					onPress: () => handleDelete(message)
+				}
 			],
-			hasCancel: true,
+			hasCancel: true
 		});
 	};
 
 	useImperativeHandle(ref, () => ({
-		showMessageErrorActions,
+		showMessageErrorActions
 	}));
 
 	return null;

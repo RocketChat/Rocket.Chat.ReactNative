@@ -18,18 +18,21 @@ export const Drawer = React.memo(({ navigation, testID, ...props }: Partial<IHea
 	</Container>
 ));
 
-export const CloseModal = React.memo(({ navigation, testID, onPress = () => navigation.pop(), ...props }: IHeaderButtonCommon) => (
-	<Container left>
-		<Item iconName='close' onPress={onPress} testID={testID} {...props} />
-	</Container>
-));
+export const CloseModal = React.memo(
+	({ navigation, testID, onPress = () => navigation.pop(), ...props }: IHeaderButtonCommon) => (
+		<Container left>
+			<Item iconName='close' onPress={onPress} testID={testID} {...props} />
+		</Container>
+	)
+);
 
 export const CancelModal = React.memo(({ onPress, testID }: Partial<IHeaderButtonCommon>) => (
 	<Container left>
-		{isIOS
-			? <Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} />
-			: <Item iconName='close' onPress={onPress} testID={testID} />
-		}
+		{isIOS ? (
+			<Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} />
+		) : (
+			<Item iconName='close' onPress={onPress} testID={testID} />
+		)}
 	</Container>
 ));
 

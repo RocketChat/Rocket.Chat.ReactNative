@@ -8,9 +8,7 @@ import I18n from '../../i18n';
 import Markdown from '../markdown';
 import { IMessageRepliedThread } from './interfaces';
 
-const RepliedThread = memo(({
-	tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted, theme,
-}: IMessageRepliedThread) => {
+const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted, theme }: IMessageRepliedThread) => {
 	if (!tmid || !isHeader) {
 		return null;
 	}
@@ -32,7 +30,7 @@ const RepliedThread = memo(({
 	}
 
 	return (
-		<View style={styles.repliedThread} testID={`message-thread-replied-on-${ msg }`}>
+		<View style={styles.repliedThread} testID={`message-thread-replied-on-${msg}`}>
 			<CustomIcon name='threads' size={20} style={styles.repliedThreadIcon} color={themes[theme].tintColor} />
 			{/* @ts-ignore*/}
 			<Markdown
@@ -43,11 +41,7 @@ const RepliedThread = memo(({
 				numberOfLines={1}
 			/>
 			<View style={styles.repliedThreadDisclosure}>
-				<CustomIcon
-					name='chevron-right'
-					color={themes[theme].auxiliaryText}
-					size={20}
-				/>
+				<CustomIcon name='chevron-right' color={themes[theme].auxiliaryText} size={20} />
 			</View>
 		</View>
 	);

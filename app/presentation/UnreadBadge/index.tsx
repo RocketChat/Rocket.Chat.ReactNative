@@ -13,20 +13,20 @@ const styles = StyleSheet.create({
 		borderRadius: 10.5,
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginLeft: 10,
+		marginLeft: 10
 	},
 	unreadNumberContainerSmall: {
 		borderRadius: 10.5,
 		alignItems: 'center',
-		justifyContent: 'center',
+		justifyContent: 'center'
 	},
 	unreadText: {
 		fontSize: 13,
-		...sharedStyles.textSemibold,
+		...sharedStyles.textSemibold
 	},
 	textSmall: {
-		fontSize: 10,
-	},
+		fontSize: 10
+	}
 });
 
 interface IUnreadBadge {
@@ -41,52 +41,51 @@ interface IUnreadBadge {
 	small: boolean;
 }
 
-const UnreadBadge = React.memo(({
-	theme, unread, userMentions, groupMentions, style, tunread, tunreadUser, tunreadGroup, small,
-}: IUnreadBadge) => {
-	if ((!unread || unread <= 0) && !tunread?.length) {
-		return null;
-	}
-	const { backgroundColor, color } = getUnreadStyle({
-		theme, unread, userMentions, groupMentions, tunread, tunreadUser, tunreadGroup,
-	});
+const UnreadBadge = React.memo(
+	({ theme, unread, userMentions, groupMentions, style, tunread, tunreadUser, tunreadGroup, small }: IUnreadBadge) => {
+		if ((!unread || unread <= 0) && !tunread?.length) {
+			return null;
+		}
+		const { backgroundColor, color } = getUnreadStyle({
+			theme,
+			unread,
+			userMentions,
+			groupMentions,
+			tunread,
+			tunreadUser,
+			tunreadGroup
+		});
 
-	if (!backgroundColor) {
-		return null;
-	}
-	let text: any = unread || tunread?.length;
-	if (small && text >= 100) {
-		text = '+99';
-	}
-	if (!small && text >= 1000) {
-		text = '+999';
-	}
-	text = text.toString();
+		if (!backgroundColor) {
+			return null;
+		}
+		let text: any = unread || tunread?.length;
+		if (small && text >= 100) {
+			text = '+99';
+		}
+		if (!small && text >= 1000) {
+			text = '+999';
+		}
+		text = text.toString();
 
-	let minWidth = 21;
-	if (small) {
-		minWidth = 11 + text.length * 5;
-	}
+		let minWidth = 21;
+		if (small) {
+			minWidth = 11 + text.length * 5;
+		}
 
-	return (
-		<View
-			style={[
-				small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
-				{ backgroundColor, minWidth },
-				style,
-			]}
-		>
-			<Text
+		return (
+			<View
 				style={[
-					styles.unreadText,
-					small && styles.textSmall,
-					{ color },
-				]}
-				numberOfLines={1}
-			>{text}
-			</Text>
-		</View>
-	);
-});
+					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
+					{ backgroundColor, minWidth },
+					style
+				]}>
+				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
+					{text}
+				</Text>
+			</View>
+		);
+	}
+);
 
 export default withTheme(UnreadBadge);

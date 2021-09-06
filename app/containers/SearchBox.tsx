@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		flex: 1,
+		flex: 1
 	},
 	searchBox: {
 		alignItems: 'center',
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 		margin: 16,
 		marginVertical: 10,
 		paddingHorizontal: 10,
-		flex: 1,
+		flex: 1
 	},
 	input: {
 		flex: 1,
@@ -33,15 +33,15 @@ const styles = StyleSheet.create({
 		marginLeft: 8,
 		paddingTop: 0,
 		paddingBottom: 0,
-		...sharedStyles.textRegular,
+		...sharedStyles.textRegular
 	},
 	cancel: {
-		marginRight: 15,
+		marginRight: 15
 	},
 	cancelText: {
 		...sharedStyles.textRegular,
-		fontSize: 17,
-	},
+		fontSize: 17
+	}
 });
 
 interface ISearchBox {
@@ -61,14 +61,20 @@ const CancelButton = (onCancelPress: Function, theme: string) => (
 );
 
 const SearchBox = ({
-	onChangeText, onSubmitEditing, testID, hasCancel, onCancelPress, inputRef, theme, ...props
+	onChangeText,
+	onSubmitEditing,
+	testID,
+	hasCancel,
+	onCancelPress,
+	inputRef,
+	theme,
+	...props
 }: ISearchBox) => (
 	<View
 		style={[
 			styles.container,
-			{ backgroundColor: isIOS ? themes[theme].headerBackground : themes[theme].headerSecondaryBackground },
-		]}
-	>
+			{ backgroundColor: isIOS ? themes[theme].headerBackground : themes[theme].headerSecondaryBackground }
+		]}>
 		<View style={[styles.searchBox, { backgroundColor: themes[theme].searchboxBackground }]}>
 			<CustomIcon name='search' size={14} color={themes[theme].auxiliaryText} />
 			<TextInput
@@ -89,7 +95,7 @@ const SearchBox = ({
 				{...props}
 			/>
 		</View>
-		{ hasCancel ? CancelButton(onCancelPress, theme) : null }
+		{hasCancel ? CancelButton(onCancelPress, theme) : null}
 	</View>
 );
 

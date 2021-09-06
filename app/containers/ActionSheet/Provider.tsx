@@ -10,20 +10,19 @@ interface IActionSheetProvider {
 
 const context: IActionSheetProvider = React.createContext({
 	showActionSheet: () => {},
-	hideActionSheet: () => {},
+	hideActionSheet: () => {}
 });
 
 export const useActionSheet = () => useContext(context);
 
 const { Provider, Consumer } = context;
 
-export const withActionSheet = (Component: React.FC) => forwardRef((props: any, ref: ForwardedRef<any>) => (
-	<Consumer>
-		{(contexts: any) => <Component {...props} {...contexts} ref={ref} />}
-	</Consumer>
-));
+export const withActionSheet = (Component: React.FC) =>
+	forwardRef((props: any, ref: ForwardedRef<any>) => (
+		<Consumer>{(contexts: any) => <Component {...props} {...contexts} ref={ref} />}</Consumer>
+	));
 
-export const ActionSheetProvider = React.memo(({ children }: {children: JSX.Element}) => {
+export const ActionSheetProvider = React.memo(({ children }: { children: JSX.Element }) => {
 	const ref: ForwardedRef<any> = useRef();
 	const { theme }: any = useTheme();
 
@@ -33,7 +32,7 @@ export const ActionSheetProvider = React.memo(({ children }: {children: JSX.Elem
 		},
 		hideActionSheet: () => {
 			ref.current?.hideActionSheet();
-		},
+		}
 	});
 
 	return (

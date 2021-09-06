@@ -10,12 +10,10 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 
-const SelectChannel = ({
-	server, token, userId, onChannelSelect, initial, blockUnauthenticatedAccess, serverVersion, theme
-}) => {
+const SelectChannel = ({ server, token, userId, onChannelSelect, initial, blockUnauthenticatedAccess, serverVersion, theme }) => {
 	const [channels, setChannels] = useState([]);
 
-	const getChannels = debounce(async(keyword = '') => {
+	const getChannels = debounce(async (keyword = '') => {
 		try {
 			const res = await RocketChat.localSearch({ text: keyword });
 			setChannels(res);
@@ -24,16 +22,17 @@ const SelectChannel = ({
 		}
 	}, 300);
 
-	const getAvatar = item => avatarURL({
-		text: RocketChat.getRoomAvatar(item),
-		type: item.t,
-		user: { id: userId, token },
-		server,
-		avatarETag: item.avatarETag,
-		rid: item.rid,
-		blockUnauthenticatedAccess,
-		serverVersion
-	});
+	const getAvatar = item =>
+		avatarURL({
+			text: RocketChat.getRoomAvatar(item),
+			type: item.t,
+			user: { id: userId, token },
+			server,
+			avatarETag: item.avatarETag,
+			rid: item.rid,
+			blockUnauthenticatedAccess,
+			serverVersion
+		});
 
 	return (
 		<>
@@ -51,7 +50,7 @@ const SelectChannel = ({
 					imageUrl: getAvatar(channel)
 				}))}
 				onClose={() => setChannels([])}
-				placeholder={{ text: `${ I18n.t('Select_a_Channel') }...` }}
+				placeholder={{ text: `${I18n.t('Select_a_Channel')}...` }}
 			/>
 		</>
 	);

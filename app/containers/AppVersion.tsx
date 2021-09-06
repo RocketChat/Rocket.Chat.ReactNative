@@ -9,20 +9,23 @@ import I18n from '../i18n';
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
-		justifyContent: 'flex-end',
+		justifyContent: 'flex-end'
 	},
 	text: {
 		...sharedStyles.textRegular,
-		fontSize: 13,
+		fontSize: 13
 	},
 	bold: {
-		...sharedStyles.textSemibold,
-	},
+		...sharedStyles.textSemibold
+	}
 });
 
-const AppVersion = React.memo(({ theme }: {theme: string}) => (
+const AppVersion = React.memo(({ theme }: { theme: string }) => (
 	<View style={styles.container}>
-		<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>{I18n.t('Version_no', { version: '' })}<Text style={styles.bold}>{getReadableVersion}</Text></Text>
+		<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>
+			{I18n.t('Version_no', { version: '' })}
+			<Text style={styles.bold}>{getReadableVersion}</Text>
+		</Text>
 	</View>
 ));
 

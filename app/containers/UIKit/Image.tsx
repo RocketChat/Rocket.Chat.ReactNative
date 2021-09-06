@@ -8,11 +8,11 @@ import Navigation from '../../lib/Navigation';
 
 const styles = StyleSheet.create({
 	image: {
-		borderRadius: 2,
+		borderRadius: 2
 	},
 	mediaContext: {
-		marginRight: 8,
-	},
+		marginRight: 8
+	}
 });
 
 interface IThumb {
@@ -35,27 +35,21 @@ interface IImage {
 	theme: string;
 }
 
-const ThumbContext = (args: any) => <View style={styles.mediaContext}><Thumb size={20} {...args} /></View>;
+const ThumbContext = (args: any) => (
+	<View style={styles.mediaContext}>
+		<Thumb size={20} {...args} />
+	</View>
+);
 
 export const Thumb = ({ element, size = 88 }: IThumb) => (
-	<FastImage
-		style={[{ width: size, height: size }, styles.image]}
-		source={{ uri: element.imageUrl }}
-	/>
+	<FastImage style={[{ width: size, height: size }, styles.image]} source={{ uri: element.imageUrl }} />
 );
 
 export const Media = ({ element, theme }: IMedia) => {
 	const showAttachment = (attachment: any) => Navigation.navigate('AttachmentView', { attachment });
 	const { imageUrl } = element;
 
-	return (
-		<ImageContainer
-			file={{ image_url: imageUrl }}
-			imageUrl={imageUrl}
-			showAttachment={showAttachment}
-			theme={theme}
-		/>
-	);
+	return <ImageContainer file={{ image_url: imageUrl }} imageUrl={imageUrl} showAttachment={showAttachment} theme={theme} />;
 };
 
 const genericImage = (element: any, context: any, theme: string) => {

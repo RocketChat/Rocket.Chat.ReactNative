@@ -6,34 +6,34 @@ export default StyleSheet.create<any>({
 	container: {
 		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'flex-end',
+		justifyContent: 'flex-end'
 	},
 	modal: {
 		height: 300,
 		width: '100%',
 		borderTopRightRadius: 16,
 		borderTopLeftRadius: 16,
-		overflow: 'hidden',
+		overflow: 'hidden'
 	},
 	content: {
-		padding: 16,
+		padding: 16
 	},
 	animatedContent: {
-		width: '100%',
+		width: '100%'
 	},
 	keyboardView: {
-		width: '100%',
+		width: '100%'
 	},
 	pickerText: {
 		...sharedStyles.textRegular,
 		paddingLeft: 6,
-		fontSize: 16,
+		fontSize: 16
 	},
 	item: {
 		height: 48,
 		maxWidth: '85%',
 		alignItems: 'center',
-		flexDirection: 'row',
+		flexDirection: 'row'
 	},
 	input: {
 		minHeight: 48,
@@ -42,23 +42,23 @@ export default StyleSheet.create<any>({
 		borderWidth: StyleSheet.hairlineWidth,
 		borderRadius: 2,
 		alignItems: 'center',
-		flexDirection: 'row',
+		flexDirection: 'row'
 	},
 	icon: {
 		position: 'absolute',
-		right: 16,
+		right: 16
 	},
 	itemContent: {
-		paddingBottom: 36,
+		paddingBottom: 36
 	},
 	items: {
-		height: 226,
+		height: 226
 	},
 	chips: {
 		paddingTop: 8,
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginRight: 50,
+		marginRight: 50
 	},
 	chip: {
 		flexDirection: 'row',
@@ -67,24 +67,24 @@ export default StyleSheet.create<any>({
 		alignItems: 'center',
 		paddingHorizontal: 4,
 		marginBottom: 8,
-		marginRight: 8,
+		marginRight: 8
 	},
 	chipText: {
 		paddingHorizontal: 8,
 		flexShrink: 1,
 		...sharedStyles.textMedium,
-		fontSize: 14,
+		fontSize: 14
 	},
 	chipImage: {
 		marginLeft: 4,
 		borderRadius: 2,
 		width: 20,
-		height: 20,
+		height: 20
 	},
 	itemImage: {
 		marginRight: 8,
 		borderRadius: 2,
 		width: 24,
-		height: 24,
-	},
+		height: 24
+	}
 });

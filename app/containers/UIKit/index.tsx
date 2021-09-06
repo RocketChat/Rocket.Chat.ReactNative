@@ -1,13 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import React, { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import {
-	BLOCK_CONTEXT,
-	UiKitParserMessage,
-	UiKitParserModal,
-	uiKitMessage,
-	uiKitModal,
-} from '@rocket.chat/ui-kit';
+import { BLOCK_CONTEXT, UiKitParserMessage, UiKitParserModal, uiKitMessage, uiKitModal } from '@rocket.chat/ui-kit';
 
 import Markdown from '../markdown';
 import Button from '../Button';
@@ -29,20 +23,20 @@ import { ThemeContext } from '../../theme';
 
 const styles = StyleSheet.create({
 	input: {
-		marginBottom: 0,
+		marginBottom: 0
 	},
 	multiline: {
-		height: 130,
+		height: 130
 	},
 	button: {
-		marginBottom: 16,
+		marginBottom: 16
 	},
 	text: {
 		fontSize: 16,
 		lineHeight: 22,
 		textAlignVertical: 'center',
-		...sharedStyles.textRegular,
-	},
+		...sharedStyles.textRegular
+	}
 });
 
 const plainText = ({ text } = { text: '' }) => text;
@@ -57,12 +51,7 @@ class MessageParser extends UiKitParserMessage {
 		const isContext = context === BLOCK_CONTEXT.CONTEXT;
 		return (
 			// @ts-ignore
-			<Markdown
-				msg={text}
-				theme={theme}
-				style={[isContext && { color: themes[theme].auxiliaryText }]}
-				preview={isContext}
-			/>
+			<Markdown msg={text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} preview={isContext} />
 		);
 	}
 
@@ -102,16 +91,7 @@ class MessageParser extends UiKitParserMessage {
 	overflow(element: any, context: any) {
 		const [{ loading }, action]: any = useBlockContext(element, context);
 		const { theme }: any = useContext(ThemeContext);
-		return (
-			<Overflow
-				element={element}
-				context={context}
-				loading={loading}
-				action={action}
-				theme={theme}
-				parser={this}
-			/>
-		);
+		return <Overflow element={element} context={context} loading={loading} action={action} theme={theme} parser={this} />;
 	}
 
 	datePicker(element: any, context: any) {
@@ -145,59 +125,32 @@ class MessageParser extends UiKitParserMessage {
 		const [{ loading, value }, action]: any = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
 		return (
-			<MultiSelect
-				{...element}
-				theme={theme}
-				value={value}
-				onChange={action}
-				context={context}
-				loading={loading}
-				multiselect
-			/>
+			<MultiSelect {...element} theme={theme} value={value} onChange={action} context={context} loading={loading} multiselect />
 		);
 	}
 
 	staticSelect(element: any, context: any) {
 		const [{ loading, value }, action]: any = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
-		return (
-			<Select
-				{...element}
-				theme={theme}
-				value={value}
-				onChange={action}
-				loading={loading}
-			/>
-		);
+		return <Select {...element} theme={theme} value={value} onChange={action} loading={loading} />;
 	}
 
 	selectInput(element: any, context: any) {
 		const [{ loading, value }, action]: any = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
-		return (
-			<MultiSelect
-				{...element}
-				theme={theme}
-				value={value}
-				onChange={action}
-				context={context}
-				loading={loading}
-			/>
-		);
+		return <MultiSelect {...element} theme={theme} value={value} onChange={action} context={context} loading={loading} />;
 	}
 }
 
 class ModalParser extends UiKitParserModal {
 	constructor() {
 		super();
-		Object.getOwnPropertyNames(MessageParser.prototype).forEach((method) => {
+		Object.getOwnPropertyNames(MessageParser.prototype).forEach(method => {
 			ModalParser.prototype[method] = ModalParser.prototype[method] || MessageParser.prototype[method];
 		});
 	}
 
-	input({
-		element, blockId, appId, label, description, hint,
-	}: any, context: any) {
+	input({ element, blockId, appId, label, description, hint }: any, context: any) {
 		const [{ error }]: any = useBlockContext({ ...element, appId, blockId }, context);
 		const { theme }: any = useContext(ThemeContext);
 		return (

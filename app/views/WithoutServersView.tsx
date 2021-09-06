@@ -13,36 +13,33 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		padding: 15,
+		padding: 15
 	},
 	title: {
 		fontSize: 18,
-		...sharedStyles.textBold,
+		...sharedStyles.textBold
 	},
 	content: {
 		fontSize: 14,
 		...sharedStyles.textRegular,
-		...sharedStyles.textAlignCenter,
-	},
+		...sharedStyles.textAlignCenter
+	}
 });
 
 class WithoutServerView extends React.Component<any, any> {
 	static navigationOptions = () => ({
 		title: 'Rocket.Chat',
-		headerLeft: () => (
-			<HeaderButton.CancelModal
-				onPress={ShareExtension.close}
-				testID='share-extension-close'
-			/>
-		),
-	})
+		headerLeft: () => <HeaderButton.CancelModal onPress={ShareExtension.close} testID='share-extension-close' />
+	});
 
 	render() {
 		const { theme } = this.props;
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 				<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Without_Servers')}</Text>
-				<Text style={[styles.content, { color: themes[theme].titleText }]}>{I18n.t('You_need_to_access_at_least_one_RocketChat_server_to_share_something')}</Text>
+				<Text style={[styles.content, { color: themes[theme].titleText }]}>
+					{I18n.t('You_need_to_access_at_least_one_RocketChat_server_to_share_something')}
+				</Text>
 			</View>
 		);
 	}

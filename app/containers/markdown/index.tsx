@@ -46,18 +46,19 @@ interface IMarkdownProps {
 
 type TLiteral = {
 	literal: string;
-}
+};
 
 // Support <http://link|Text>
-const formatText = (text: string) => text.replace(
-	new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
-	(match, url, title) => `[${ title }](${ url })`,
-);
+const formatText = (text: string) =>
+	text.replace(
+		new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
+		(match, url, title) => `[${title}](${url})`
+	);
 
 const emojiRanges = [
 	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
 	':.{1,40}:', // custom emoji
-	' |\n', // allow spaces and line breaks
+	' |\n' // allow spaces and line breaks
 ].join('|');
 
 const removeSpaces = (str: string) => str && str.replace(/\s/g, '');
@@ -99,43 +100,44 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		this.renderer = this.createRenderer();
 	}
 
-	createRenderer = () => new Renderer({
-		renderers: {
-			text: this.renderText,
+	createRenderer = () =>
+		new Renderer({
+			renderers: {
+				text: this.renderText,
 
-			emph: Renderer.forwardChildren,
-			strong: Renderer.forwardChildren,
-			del: Renderer.forwardChildren,
-			code: this.renderCodeInline,
-			link: this.renderLink,
-			image: this.renderImage,
-			atMention: this.renderAtMention,
-			emoji: this.renderEmoji,
-			hashtag: this.renderHashtag,
+				emph: Renderer.forwardChildren,
+				strong: Renderer.forwardChildren,
+				del: Renderer.forwardChildren,
+				code: this.renderCodeInline,
+				link: this.renderLink,
+				image: this.renderImage,
+				atMention: this.renderAtMention,
+				emoji: this.renderEmoji,
+				hashtag: this.renderHashtag,
 
-			paragraph: this.renderParagraph,
-			heading: this.renderHeading,
-			codeBlock: this.renderCodeBlock,
-			blockQuote: this.renderBlockQuote,
+				paragraph: this.renderParagraph,
+				heading: this.renderHeading,
+				codeBlock: this.renderCodeBlock,
+				blockQuote: this.renderBlockQuote,
 
-			list: this.renderList,
-			item: this.renderListItem,
+				list: this.renderList,
+				item: this.renderListItem,
 
-			hardBreak: this.renderBreak,
-			thematicBreak: this.renderBreak,
-			softBreak: this.renderBreak,
+				hardBreak: this.renderBreak,
+				thematicBreak: this.renderBreak,
+				softBreak: this.renderBreak,
 
-			htmlBlock: this.renderText,
-			htmlInline: this.renderText,
+				htmlBlock: this.renderText,
+				htmlInline: this.renderText,
 
-			table: this.renderTable,
-			table_row: this.renderTableRow,
-			table_cell: this.renderTableCell,
+				table: this.renderTable,
+				table_row: this.renderTableRow,
+				table_cell: this.renderTableCell,
 
-			editedIndicator: this.renderEditedIndicator,
-		},
-		renderParagraphsInLists: true,
-	});
+				editedIndicator: this.renderEditedIndicator
+			},
+			renderParagraphsInLists: true
+		});
 
 	editedMessage = (ast: any) => {
 		const { isEdited } = this.props;
@@ -152,24 +154,15 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		}
 	};
 
-	renderText = ({ context, literal }: {context: []; literal: string}) => {
-		const {
-			numberOfLines, style = [],
-		} = this.props;
-		const defaultStyle = [
-			this.isMessageContainsOnlyEmoji ? styles.textBig : {},
-			...context.map((type) => styles[type]),
-		];
+	renderText = ({ context, literal }: { context: []; literal: string }) => {
+		const { numberOfLines, style = [] } = this.props;
+		const defaultStyle = [this.isMessageContainsOnlyEmoji ? styles.textBig : {}, ...context.map(type => styles[type])];
 		return (
-			<Text
-				accessibilityLabel={literal}
-				style={[styles.text, defaultStyle, ...style]}
-				numberOfLines={numberOfLines}
-			>
+			<Text accessibilityLabel={literal} style={[styles.text, defaultStyle, ...style]} numberOfLines={numberOfLines}>
 				{literal}
 			</Text>
 		);
-	}
+	};
 
 	renderCodeInline = ({ literal }: TLiteral) => {
 		const { theme, style = [] } = this.props;
@@ -180,11 +173,10 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 						...styles.codeInline,
 						color: themes[theme].bodyText,
 						backgroundColor: themes[theme].bannerBackground,
-						borderColor: themes[theme].bannerBackground,
+						borderColor: themes[theme].bannerBackground
 					},
-					...style,
-				]}
-			>
+					...style
+				]}>
 				{literal}
 			</Text>
 		);
@@ -199,11 +191,10 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 						...styles.codeBlock,
 						color: themes[theme].bodyText,
 						backgroundColor: themes[theme].bannerBackground,
-						borderColor: themes[theme].bannerBackground,
+						borderColor: themes[theme].bannerBackground
 					},
-					...style,
-				]}
-			>
+					...style
+				]}>
 				{literal}
 			</Text>
 		);
@@ -212,7 +203,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	renderBreak = () => {
 		const { tmid } = this.props;
 		return <Text>{tmid ? ' ' : '\n'}</Text>;
-	}
+	};
 
 	renderParagraph = ({ children }: any) => {
 		const { numberOfLines, style, theme } = this.props;
@@ -229,28 +220,16 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	renderLink = ({ children, href }: any) => {
 		const { theme, onLinkPress } = this.props;
 		return (
-			<MarkdownLink
-				link={href}
-				theme={theme}
-				onLinkPress={onLinkPress}
-			>
+			<MarkdownLink link={href} theme={theme} onLinkPress={onLinkPress}>
 				{children}
 			</MarkdownLink>
 		);
-	}
+	};
 
-	renderHashtag = ({ hashtag }: {hashtag: string}) => {
+	renderHashtag = ({ hashtag }: { hashtag: string }) => {
 		const { channels, navToRoomInfo, style, theme } = this.props;
-		return (
-			<MarkdownHashtag
-				hashtag={hashtag}
-				channels={channels}
-				navToRoomInfo={navToRoomInfo}
-				theme={theme}
-				style={style}
-			/>
-		);
-	}
+		return <MarkdownHashtag hashtag={hashtag} channels={channels} navToRoomInfo={navToRoomInfo} theme={theme} style={style} />;
+	};
 
 	renderAtMention = ({ mentionName }: { mentionName: string }) => {
 		const { username, mentions, navToRoomInfo, useRealName, style, theme } = this.props;
@@ -265,7 +244,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				style={style}
 			/>
 		);
-	}
+	};
 
 	renderEmoji = ({ literal }: TLiteral) => {
 		const { getCustomEmoji, baseUrl, customEmojis, style, theme } = this.props;
@@ -280,29 +259,24 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				theme={theme}
 			/>
 		);
-	}
+	};
 
-	renderImage = ({ src }: {src: string}) => {
+	renderImage = ({ src }: { src: string }) => {
 		if (!isValidURL(src)) {
 			return null;
 		}
 
-		return (
-			<Image
-				style={styles.inlineImage}
-				source={{ uri: encodeURI(src) }}
-			/>
-		);
-	}
+		return <Image style={styles.inlineImage} source={{ uri: encodeURI(src) }} />;
+	};
 
 	renderEditedIndicator = () => {
 		const { theme } = this.props;
 		return <Text style={[styles.edited, { color: themes[theme].auxiliaryText }]}> ({I18n.t('edited')})</Text>;
-	}
+	};
 
 	renderHeading = ({ children, level }: any) => {
 		const { numberOfLines, theme } = this.props;
-		const textStyle = styles[`heading${ level }Text`];
+		const textStyle = styles[`heading${level}Text`];
 		return (
 			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme].bodyText }]}>
 				{children}
@@ -313,12 +287,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	renderList = ({ children, start, tight, type }: any) => {
 		const { numberOfLines } = this.props;
 		return (
-			<MarkdownList
-				ordered={type !== 'bullet'}
-				start={start}
-				tight={tight}
-				numberOfLines={numberOfLines}
-			>
+			<MarkdownList ordered={type !== 'bullet'} start={start} tight={tight} numberOfLines={numberOfLines}>
 				{children}
 			</MarkdownList>
 		);
@@ -329,24 +298,16 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		const level = context.filter((type: string) => type === 'list').length;
 
 		return (
-			<MarkdownListItem
-				level={level}
-				theme={theme}
-				{...otherProps}
-			>
+			<MarkdownListItem level={level} theme={theme} {...otherProps}>
 				{children}
 			</MarkdownListItem>
 		);
 	};
 
-	renderBlockQuote = ({ children }: {children: JSX.Element}) => {
+	renderBlockQuote = ({ children }: { children: JSX.Element }) => {
 		const { theme } = this.props;
-		return (
-			<MarkdownBlockQuote theme={theme}>
-				{children}
-			</MarkdownBlockQuote>
-		);
-	}
+		return <MarkdownBlockQuote theme={theme}>{children}</MarkdownBlockQuote>;
+	};
 
 	renderTable = ({ children, numColumns }: { children: JSX.Element; numColumns: number }) => {
 		const { theme } = this.props;
@@ -355,22 +316,20 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				{children}
 			</MarkdownTable>
 		);
-	}
+	};
 
 	renderTableRow = (args: any) => {
 		const { theme } = this.props;
 		return <MarkdownTableRow {...args} theme={theme} />;
-	}
+	};
 
 	renderTableCell = (args: any) => {
 		const { theme } = this.props;
 		return <MarkdownTableCell {...args} theme={theme} />;
-	}
+	};
 
 	render() {
-		const {
-			msg, numberOfLines, preview = false, theme, style = [], testID,
-		} = this.props;
+		const { msg, numberOfLines, preview = false, theme, style = [], testID } = this.props;
 
 		if (!msg) {
 			return null;
@@ -389,7 +348,11 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			m = removeMarkdown(m);
 			m = m.replace(/\n+/g, ' ');
 			return (
-				<Text accessibilityLabel={m} style={[styles.text, { color: themes[theme].bodyText }, ...style]} numberOfLines={numberOfLines} testID={testID}>
+				<Text
+					accessibilityLabel={m}
+					style={[styles.text, { color: themes[theme].bodyText }, ...style]}
+					numberOfLines={numberOfLines}
+					testID={testID}>
 					{m}
 				</Text>
 			);

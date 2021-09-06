@@ -1,15 +1,9 @@
 import React from 'react';
 import { Animated } from 'react-native';
-import {
-	LongPressGestureHandler, PanGestureHandler, State,
-} from 'react-native-gesture-handler';
+import { LongPressGestureHandler, PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import Touch from '../../utils/touch';
-import {
-	ACTION_WIDTH,
-	LONG_SWIPE,
-	SMALL_SWIPE,
-} from './styles';
+import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { isRTL } from '../../i18n';
 import { themes } from '../../constants/colors';
 import { LeftActions, RightActions } from './Actions';
@@ -52,20 +46,12 @@ class Touchable extends React.Component<ITouchableProps, any> {
 		this.dragX = new Animated.Value(0);
 		this.rowOffSet = new Animated.Value(0);
 		this.reverse = new Animated.Value(isRTL() ? -1 : 1);
-		this.transX = Animated.add(
-			this.rowOffSet,
-			this.dragX,
-		);
-		this.transXReverse = Animated.multiply(
-			this.transX,
-			this.reverse,
-		);
+		this.transX = Animated.add(this.rowOffSet, this.dragX);
+		this.transXReverse = Animated.multiply(this.transX, this.reverse);
 		this.state = {
-			rowState: 0, // 0: closed, 1: right opened, -1: left opened
+			rowState: 0 // 0: closed, 1: right opened, -1: left opened
 		};
-		this._onGestureEvent = Animated.event(
-			[{ nativeEvent: { translationX: this.dragX } }], { useNativeDriver: true },
-		);
+		this._onGestureEvent = Animated.event([{ nativeEvent: { translationX: this.dragX } }], { useNativeDriver: true });
 		this._value = 0;
 	}
 
@@ -73,14 +59,13 @@ class Touchable extends React.Component<ITouchableProps, any> {
 		if (nativeEvent.oldState === State.ACTIVE) {
 			this._handleRelease(nativeEvent);
 		}
-	}
+	};
 
 	onLongPressHandlerStateChange = ({ nativeEvent }: any) => {
 		if (nativeEvent.state === State.ACTIVE) {
 			this.onLongPress();
 		}
-	}
-
+	};
 
 	_handleRelease = (nativeEvent: any) => {
 		const { translationX } = nativeEvent;
@@ -88,7 +73,8 @@ class Touchable extends React.Component<ITouchableProps, any> {
 		this._value += translationX;
 
 		let toValue = 0;
-		if (rowState === 0) { // if no option is opened
+		if (rowState === 0) {
+			// if no option is opened
 			if (translationX > 0 && translationX < LONG_SWIPE) {
 				// open leading option if he swipe right but not enough to trigger action
 				if (isRTL()) {
@@ -125,7 +111,8 @@ class Touchable extends React.Component<ITouchableProps, any> {
 			}
 		}
 
-		if (rowState === -1) { // if left option is opened
+		if (rowState === -1) {
+			// if left option is opened
 			if (this._value < SMALL_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
@@ -144,7 +131,8 @@ class Touchable extends React.Component<ITouchableProps, any> {
 			}
 		}
 
-		if (rowState === 1) { // if right option is opened
+		if (rowState === 1) {
+			// if right option is opened
 			if (this._value > -2 * SMALL_SWIPE) {
 				toValue = 0;
 				this.setState({ rowState: 0 });
@@ -163,7 +151,7 @@ class Touchable extends React.Component<ITouchableProps, any> {
 			}
 		}
 		this._animateRow(toValue);
-	}
+	};
 
 	_animateRow = (toValue: any) => {
 		this.rowOffSet.setValue(this._value);
@@ -172,14 +160,14 @@ class Touchable extends React.Component<ITouchableProps, any> {
 		Animated.spring(this.rowOffSet, {
 			toValue,
 			bounciness: 0,
-			useNativeDriver: true,
+			useNativeDriver: true
 		}).start();
-	}
+	};
 
 	close = () => {
 		this.setState({ rowState: 0 });
 		this._animateRow(0);
-	}
+	};
 
 	toggleFav = () => {
 		const { toggleFav, rid, favorite } = this.props;
@@ -239,9 +227,7 @@ class Touchable extends React.Component<ITouchableProps, any> {
 	};
 
 	render() {
-		const {
-			testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled,
-		} = this.props;
+		const { testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled } = this.props;
 
 		return (
 			<LongPressGestureHandler onHandlerStateChange={this.onLongPressHandlerStateChange}>
@@ -250,8 +236,7 @@ class Touchable extends React.Component<ITouchableProps, any> {
 						minDeltaX={20}
 						onGestureEvent={this._onGestureEvent}
 						onHandlerStateChange={this._onHandlerStateChange}
-						enabled={swipeEnabled}
-					>
+						enabled={swipeEnabled}>
 						<Animated.View>
 							<LeftActions
 								transX={this.transXReverse}
@@ -270,22 +255,19 @@ class Touchable extends React.Component<ITouchableProps, any> {
 							/>
 							<Animated.View
 								style={{
-									transform: [{ translateX: this.transX }],
-								}}
-							>
+									transform: [{ translateX: this.transX }]
+								}}>
 								<Touch
 									onPress={this.onPress}
 									theme={theme}
 									testID={testID}
 									style={{
-										backgroundColor: isFocused ? themes[theme].chatComponentBackground : themes[theme].backgroundColor,
-									}}
-								>
+										backgroundColor: isFocused ? themes[theme].chatComponentBackground : themes[theme].backgroundColor
+									}}>
 									{children}
 								</Touch>
 							</Animated.View>
 						</Animated.View>
-
 					</PanGestureHandler>
 				</Animated.View>
 			</LongPressGestureHandler>

@@ -15,7 +15,7 @@ export const defaultTheme = () => {
 	return 'light';
 };
 
-export const getTheme = (themePreferences) => {
+export const getTheme = themePreferences => {
 	const { darkLevel, currentTheme } = themePreferences;
 	let theme = currentTheme;
 	if (currentTheme === 'automatic') {
@@ -35,7 +35,7 @@ export const newThemeState = (prevState, newTheme) => {
 	return { themePreferences, theme: getTheme(themePreferences) };
 };
 
-export const setNativeTheme = async(themePreferences) => {
+export const setNativeTheme = async themePreferences => {
 	const theme = getTheme(themePreferences);
 	if (isAndroid) {
 		const iconsLight = theme === 'light';

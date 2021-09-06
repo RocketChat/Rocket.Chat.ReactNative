@@ -8,5 +8,5 @@ export default class ServersHistory extends Model {
 
 	@field('username') username;
 
-	@readonly @date('updated_at') updatedAt
+	@readonly @date('updated_at') updatedAt;
 }

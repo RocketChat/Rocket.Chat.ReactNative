@@ -37,51 +37,45 @@ class ReactionPicker extends React.Component {
 		// to set reactions, we need shortname type
 		const { onEmojiSelected, message } = this.props;
 		onEmojiSelected(shortname || emoji, message.id);
-	}
+	};
 
 	render() {
-		const {
-			width, height, show, baseUrl, reactionClose, isMasterDetail, theme
-		} = this.props;
+		const { width, height, show, baseUrl, reactionClose, isMasterDetail, theme } = this.props;
 
 		let widthStyle = width - margin;
-		let heightStyle = Math.min(width, height) - (margin * 2);
+		let heightStyle = Math.min(width, height) - margin * 2;
 
 		if (isMasterDetail) {
 			widthStyle = maxSize;
 			heightStyle = maxSize;
 		}
 
-		return show
-			? (
-				<Modal
-					isVisible={show}
-					style={{ alignItems: 'center' }}
-					onBackdropPress={reactionClose}
-					onBackButtonPress={reactionClose}
-					animationIn='fadeIn'
-					animationOut='fadeOut'
-					backdropOpacity={themes[theme].backdropOpacity}
-				>
-					<View
-						style={[
-							styles.reactionPickerContainer,
-							{
-								width: widthStyle,
-								height: heightStyle
-							}
-						]}
-						testID='reaction-picker'
-					>
-						<EmojiPicker
-							// tabEmojiStyle={tabEmojiStyle}
-							onEmojiSelected={this.onEmojiSelected}
-							baseUrl={baseUrl}
-						/>
-					</View>
-				</Modal>
-			)
-			: null;
+		return show ? (
+			<Modal
+				isVisible={show}
+				style={{ alignItems: 'center' }}
+				onBackdropPress={reactionClose}
+				onBackButtonPress={reactionClose}
+				animationIn='fadeIn'
+				animationOut='fadeOut'
+				backdropOpacity={themes[theme].backdropOpacity}>
+				<View
+					style={[
+						styles.reactionPickerContainer,
+						{
+							width: widthStyle,
+							height: heightStyle
+						}
+					]}
+					testID='reaction-picker'>
+					<EmojiPicker
+						// tabEmojiStyle={tabEmojiStyle}
+						onEmojiSelected={this.onEmojiSelected}
+						baseUrl={baseUrl}
+					/>
+				</View>
+			</Modal>
+		) : null;
 	}
 }
 

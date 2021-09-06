@@ -39,23 +39,22 @@ const keyExtractor = (item: any) => item.value;
 
 const styles = StyleSheet.create({
 	menu: {
-		justifyContent: 'center',
+		justifyContent: 'center'
 	},
 	option: {
 		padding: 8,
-		minHeight: 32,
+		minHeight: 32
 	},
 	loading: {
-		padding: 0,
-	},
+		padding: 0
+	}
 });
 
 const Option = ({ option: { text, value }, onOptionPress, parser, theme }: IOption) => (
 	<Touchable
 		onPress={() => onOptionPress({ value })}
 		background={Touchable.Ripple(themes[theme].bannerBackground)}
-		style={styles.option}
-	>
+		style={styles.option}>
 		<Text>{parser.text(text)}</Text>
 	</Touchable>
 );
@@ -84,20 +83,22 @@ export const Overflow = ({ element, loading, action, parser, theme }: IOverflow)
 		<>
 			<Touchable
 				/* @ts-ignore*/
-				ref={(ref) => touchable[blockId] = ref}
+				ref={ref => (touchable[blockId] = ref)}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 				onPress={() => onShow(!show)}
 				hitSlop={BUTTON_HIT_SLOP}
-				style={styles.menu}
-			>
-				{!loading ? <CustomIcon size={18} name='kebab' color={themes[theme].bodyText} /> : <ActivityIndicator style={styles.loading} theme={theme} />}
+				style={styles.menu}>
+				{!loading ? (
+					<CustomIcon size={18} name='kebab' color={themes[theme].bodyText} />
+				) : (
+					<ActivityIndicator style={styles.loading} theme={theme} />
+				)}
 			</Touchable>
 			<Popover
 				isVisible={show}
 				/* @ts-ignore*/
 				fromView={touchable[blockId]}
-				onRequestClose={() => onShow(false)}
-			>
+				onRequestClose={() => onShow(false)}>
 				<Options options={options} onOptionPress={onOptionPress} parser={parser} theme={theme} />
 			</Popover>
 		</>

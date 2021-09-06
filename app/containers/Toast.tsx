@@ -10,13 +10,13 @@ import { withTheme } from '../theme';
 const styles = StyleSheet.create({
 	toast: {
 		maxWidth: 300,
-		padding: 10,
+		padding: 10
 	},
 	text: {
 		fontSize: 14,
 		...sharedStyles.textRegular,
-		...sharedStyles.textAlignCenter,
-	},
+		...sharedStyles.textAlignCenter
+	}
 });
 
 export const LISTENER = 'Toast';
@@ -46,13 +46,13 @@ class Toast extends React.Component<IToastProps, any> {
 		EventEmitter.removeListener(LISTENER, this.listener);
 	}
 
-	getToastRef = (toast: any) => this.toast = toast;
+	getToastRef = (toast: any) => (this.toast = toast);
 
 	showToast = ({ message }: any) => {
 		if (this.toast && this.toast.show) {
 			this.toast.show(message, 1000);
 		}
-	}
+	};
 
 	render() {
 		const { theme } = this.props;

@@ -6,9 +6,9 @@ export interface IEmoji {
 }
 
 export interface ICustomEmoji {
-	baseUrl: string,
-	emoji: IEmoji,
-	style: any
+	baseUrl: string;
+	emoji: IEmoji;
+	style: any;
 }
 
 export interface IEmojiCategory {

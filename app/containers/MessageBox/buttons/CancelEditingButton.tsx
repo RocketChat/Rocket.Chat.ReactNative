@@ -4,7 +4,7 @@ import BaseButton from './BaseButton';
 
 interface ICancelEditingButton {
 	theme: string;
-	onPress():void;
+	onPress(): void;
 }
 
 const CancelEditingButton = React.memo(({ theme, onPress }: ICancelEditingButton) => (

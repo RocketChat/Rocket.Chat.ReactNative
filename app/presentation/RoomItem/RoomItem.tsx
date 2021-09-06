@@ -95,7 +95,7 @@ const RoomItem = ({
 	toggleRead,
 	hideChannel,
 	teamMain,
-	autoJoin,
+	autoJoin
 }: IRoomItem) => (
 	<Touchable
 		onPress={onPress}
@@ -111,84 +111,26 @@ const RoomItem = ({
 		type={type}
 		theme={theme}
 		isFocused={isFocused}
-		swipeEnabled={swipeEnabled}
-	>
-		<Wrapper
-			accessibilityLabel={accessibilityLabel}
-			avatar={avatar}
-			avatarSize={avatarSize}
-			type={type}
-			theme={theme}
-			rid={rid}
-		>
-			{showLastMessage
-				? (
-					<>
-						<View style={styles.titleContainer}>
-							<TypeIcon
-								type={type}
-								prid={prid}
-								status={status}
-								isGroupChat={isGroupChat}
-								theme={theme}
-								teamMain={teamMain}
-							/>
-							<Title
-								name={name}
-								theme={theme}
-								hideUnreadStatus={hideUnreadStatus}
-								alert={alert}
-							/>
-							{
-								autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null
-							}
-							<UpdatedAt
-								date={date}
-								theme={theme}
-								hideUnreadStatus={hideUnreadStatus}
-								alert={alert}
-							/>
-						</View>
-						<View style={styles.row}>
-							<LastMessage
-								lastMessage={lastMessage}
-								type={type}
-								showLastMessage={showLastMessage}
-								username={username}
-								alert={alert && !hideUnreadStatus}
-								useRealName={useRealName}
-								theme={theme}
-							/>
-							<UnreadBadge
-								unread={unread}
-								userMentions={userMentions}
-								groupMentions={groupMentions}
-								tunread={tunread}
-								tunreadUser={tunreadUser}
-								tunreadGroup={tunreadGroup}
-							/>
-						</View>
-					</>
-				)
-				: (
-					<View style={[styles.titleContainer, styles.flex]}>
-						<TypeIcon
+		swipeEnabled={swipeEnabled}>
+		<Wrapper accessibilityLabel={accessibilityLabel} avatar={avatar} avatarSize={avatarSize} type={type} theme={theme} rid={rid}>
+			{showLastMessage ? (
+				<>
+					<View style={styles.titleContainer}>
+						<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} theme={theme} teamMain={teamMain} />
+						<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+						{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
+						<UpdatedAt date={date} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+					</View>
+					<View style={styles.row}>
+						<LastMessage
+							lastMessage={lastMessage}
 							type={type}
-							prid={prid}
-							status={status}
-							isGroupChat={isGroupChat}
+							showLastMessage={showLastMessage}
+							username={username}
+							alert={alert && !hideUnreadStatus}
+							useRealName={useRealName}
 							theme={theme}
-							teamMain={teamMain}
 						/>
-						<Title
-							name={name}
-							theme={theme}
-							hideUnreadStatus={hideUnreadStatus}
-							alert={alert}
-						/>
-						{
-							autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null
-						}
 						<UnreadBadge
 							unread={unread}
 							userMentions={userMentions}
@@ -198,8 +140,22 @@ const RoomItem = ({
 							tunreadGroup={tunreadGroup}
 						/>
 					</View>
-				)
-			}
+				</>
+			) : (
+				<View style={[styles.titleContainer, styles.flex]}>
+					<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} theme={theme} teamMain={teamMain} />
+					<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+					{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
+					<UnreadBadge
+						unread={unread}
+						userMentions={userMentions}
+						groupMentions={groupMentions}
+						tunread={tunread}
+						tunreadUser={tunreadUser}
+						tunreadGroup={tunreadGroup}
+					/>
+				</View>
+			)}
 		</Wrapper>
 	</Touchable>
 );

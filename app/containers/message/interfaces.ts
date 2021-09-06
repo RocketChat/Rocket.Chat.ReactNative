@@ -8,10 +8,10 @@ export interface IMessageAttachments {
 
 export interface IMessageAttachedActions {
 	attachment: {
-		actions: [],
-		text: string,
-	},
-	theme: string,
+		actions: [];
+		text: string;
+	};
+	theme: string;
 }
 
 export interface IMessageAvatar {
@@ -19,7 +19,7 @@ export interface IMessageAvatar {
 	avatar: string;
 	emoji: string;
 	author: {
-		username: string
+		username: string;
 		_id: string;
 	};
 	small?: boolean;
@@ -37,10 +37,10 @@ export interface IMessageBlocks {
 
 export interface IMessageBroadcast {
 	author: {
-		_id: string
+		_id: string;
 	};
 	broadcast: boolean;
-	theme: string
+	theme: string;
 }
 
 export interface IMessageCallButton {
@@ -101,7 +101,7 @@ export interface IMessageTouchable {
 	archived: boolean;
 	highlighted: boolean;
 	theme: string;
-	ts?: any
+	ts?: any;
 	urls?: any;
 	reactions?: any;
 	alias?: any;
@@ -119,8 +119,14 @@ export interface IMessageRepliedThread {
 	isEncrypted: boolean;
 }
 
-export interface IMessageInner extends IMessageDiscussion, IMessageContent, IMessageCallButton, IMessageBlocks,
-	IMessageThread, IMessageAttachments, IMessageBroadcast {
+export interface IMessageInner
+	extends IMessageDiscussion,
+		IMessageContent,
+		IMessageCallButton,
+		IMessageBlocks,
+		IMessageThread,
+		IMessageAttachments,
+		IMessageBroadcast {
 	type: string;
 	blocks: [];
 }

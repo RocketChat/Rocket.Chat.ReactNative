@@ -17,42 +17,40 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingHorizontal: PADDING_HORIZONTAL,
+		paddingHorizontal: PADDING_HORIZONTAL
 	},
 	leftContainer: {
-		paddingRight: PADDING_HORIZONTAL,
+		paddingRight: PADDING_HORIZONTAL
 	},
 	rightContainer: {
-		paddingLeft: PADDING_HORIZONTAL,
+		paddingLeft: PADDING_HORIZONTAL
 	},
 	disabled: {
-		opacity: 0.3,
+		opacity: 0.3
 	},
 	textContainer: {
 		flex: 1,
-		justifyContent: 'center',
+		justifyContent: 'center'
 	},
 	textAlertContainer: {
 		flexDirection: 'row',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	alertIcon: {
-		paddingLeft: 4,
+		paddingLeft: 4
 	},
 	title: {
 		flexShrink: 1,
 		fontSize: 16,
-		...sharedStyles.textRegular,
+		...sharedStyles.textRegular
 	},
 	subtitle: {
 		fontSize: 14,
-		...sharedStyles.textRegular,
+		...sharedStyles.textRegular
 	},
 	actionIndicator: {
-		...I18nManager.isRTL
-			? { transform: [{ rotate: '180deg' }] }
-			: {},
-	},
+		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
+	}
 });
 
 interface IListItemContent {
@@ -71,39 +69,48 @@ interface IListItemContent {
 	alert?: boolean;
 }
 
-const Content = React.memo(({
-	title, subtitle, disabled, testID, left, right, color, theme, fontScale, alert, translateTitle = true, translateSubtitle = true, showActionIndicator = false,
-}: IListItemContent) => (
-	<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale! }]} testID={testID}>
-		{left
-			? (
-				<View style={styles.leftContainer}>
-					{left()}
+const Content = React.memo(
+	({
+		title,
+		subtitle,
+		disabled,
+		testID,
+		left,
+		right,
+		color,
+		theme,
+		fontScale,
+		alert,
+		translateTitle = true,
+		translateSubtitle = true,
+		showActionIndicator = false
+	}: IListItemContent) => (
+		<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale! }]} testID={testID}>
+			{left ? <View style={styles.leftContainer}>{left()}</View> : null}
+			<View style={styles.textContainer}>
+				<View style={styles.textAlertContainer}>
+					<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>
+						{translateTitle ? I18n.t(title) : title}
+					</Text>
+					{alert ? (
+						<CustomIcon style={[styles.alertIcon, { color: themes[theme].dangerColor }]} size={ICON_SIZE} name='info' />
+					) : null}
 				</View>
-			)
-			: null}
-		<View style={styles.textContainer}>
-			<View style={styles.textAlertContainer}>
-				<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>{translateTitle ? I18n.t(title) : title}</Text>
-				{alert ? (
-					<CustomIcon style={[styles.alertIcon, { color: themes[theme].dangerColor }]} size={ICON_SIZE} name='info' />
+				{subtitle ? (
+					<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+						{translateSubtitle ? I18n.t(subtitle) : subtitle}
+					</Text>
 				) : null}
 			</View>
-			{subtitle
-				? <Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{translateSubtitle ? I18n.t(subtitle) : subtitle}</Text>
-				: null
-			}
-		</View>
-		{right || showActionIndicator
-			? (
+			{right || showActionIndicator ? (
 				<View style={styles.rightContainer}>
 					{right ? right() : null}
 					{showActionIndicator ? <Icon name='chevron-right' style={styles.actionIndicator} /> : null}
 				</View>
-			)
-			: null}
-	</View>
-));
+			) : null}
+		</View>
+	)
+);
 
 interface IListItemButton {
 	title?: string;
@@ -120,8 +127,7 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
 		underlayColor={underlayColor}
 		enabled={!props.disabled}
-		theme={props.theme}
-	>
+		theme={props.theme}>
 		<Content {...props} />
 	</Touch>
 ));

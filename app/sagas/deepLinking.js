@@ -1,6 +1,4 @@
-import {
-	all, delay, put, select, take, takeLatest
-} from 'redux-saga/effects';
+import { all, delay, put, select, take, takeLatest } from 'redux-saga/effects';
 
 import UserPreferences from '../lib/userPreferences';
 import Navigation from '../lib/Navigation';
@@ -10,16 +8,17 @@ import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks'
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
-import {
-	ROOT_INSIDE, ROOT_NEW_SERVER, appInit, appStart
-} from '../actions/app';
+import { ROOT_INSIDE, ROOT_NEW_SERVER, appInit, appStart } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
 import { loginRequest } from '../actions/login';
 import log from '../utils/log';
 
 const roomTypes = {
-	channel: 'c', direct: 'd', group: 'p', channels: 'l'
+	channel: 'c',
+	direct: 'd',
+	group: 'p',
+	channels: 'l'
 };
 
 const handleInviteLink = function* handleInviteLink({ params, requireLogin = false }) {
@@ -132,9 +131,9 @@ const handleOpen = function* handleOpen({ params }) {
 	// If there's host, continue
 	if (!/^(http|https)/.test(host)) {
 		if (/^localhost(:\d+)?/.test(host)) {
-			host = `http://${ host }`;
+			host = `http://${host}`;
 		} else {
-			host = `https://${ host }`;
+			host = `https://${host}`;
 		}
 	} else {
 		// Notification should always come from https
@@ -147,7 +146,7 @@ const handleOpen = function* handleOpen({ params }) {
 
 	const [server, user] = yield all([
 		UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER),
-		UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ host }`)
+		UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${host}`)
 	]);
 
 	// TODO: needs better test

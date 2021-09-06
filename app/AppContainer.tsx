@@ -5,9 +5,7 @@ import { connect } from 'react-redux';
 
 import Navigation from './lib/Navigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './utils/navigation';
-import {
-	ROOT_INSIDE, ROOT_LOADING, ROOT_NEW_SERVER, ROOT_OUTSIDE, ROOT_SET_USERNAME,
-} from './actions/app';
+import { ROOT_INSIDE, ROOT_LOADING, ROOT_NEW_SERVER, ROOT_OUTSIDE, ROOT_SET_USERNAME } from './actions/app';
 // Stacks
 import AuthLoadingView from './views/AuthLoadingView';
 // SetUsername Stack
@@ -22,16 +20,13 @@ import { setCurrentScreen } from './utils/log';
 const SetUsername = createStackNavigator();
 const SetUsernameStack = () => (
 	<SetUsername.Navigator screenOptions={defaultHeader}>
-		<SetUsername.Screen
-			name='SetUsernameView'
-			component={SetUsernameView}
-		/>
+		<SetUsername.Screen name='SetUsernameView' component={SetUsernameView} />
 	</SetUsername.Navigator>
 );
 
 // App
 const Stack = createStackNavigator();
-const App = React.memo(({ root, isMasterDetail }: {root: string, isMasterDetail: boolean}) => {
+const App = React.memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	if (!root) {
 		return null;
 	}
@@ -50,47 +45,25 @@ const App = React.memo(({ root, isMasterDetail }: {root: string, isMasterDetail:
 		<NavigationContainer
 			theme={navTheme}
 			ref={Navigation.navigationRef}
-			onStateChange={(state) => {
+			onStateChange={state => {
 				const previousRouteName = Navigation.routeNameRef.current;
 				const currentRouteName = getActiveRouteName(state);
 				if (previousRouteName !== currentRouteName) {
 					setCurrentScreen(currentRouteName);
 				}
 				Navigation.routeNameRef.current = currentRouteName;
-			}}
-		>
+			}}>
 			<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 				<>
-					{root === ROOT_LOADING ? (
-						<Stack.Screen
-							name='AuthLoading'
-							component={AuthLoadingView}
-						/>
-					) : null}
+					{root === ROOT_LOADING ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
 					{root === ROOT_OUTSIDE || root === ROOT_NEW_SERVER ? (
-						<Stack.Screen
-							name='OutsideStack'
-							component={OutsideStack}
-						/>
+						<Stack.Screen name='OutsideStack' component={OutsideStack} />
 					) : null}
 					{root === ROOT_INSIDE && isMasterDetail ? (
-						<Stack.Screen
-							name='MasterDetailStack'
-							component={MasterDetailStack}
-						/>
+						<Stack.Screen name='MasterDetailStack' component={MasterDetailStack} />
 					) : null}
-					{root === ROOT_INSIDE && !isMasterDetail ? (
-						<Stack.Screen
-							name='InsideStack'
-							component={InsideStack}
-						/>
-					) : null}
-					{root === ROOT_SET_USERNAME ? (
-						<Stack.Screen
-							name='SetUsernameStack'
-							component={SetUsernameStack}
-						/>
-					) : null}
+					{root === ROOT_INSIDE && !isMasterDetail ? <Stack.Screen name='InsideStack' component={InsideStack} /> : null}
+					{root === ROOT_SET_USERNAME ? <Stack.Screen name='SetUsernameStack' component={SetUsernameStack} /> : null}
 				</>
 			</Stack.Navigator>
 		</NavigationContainer>
@@ -98,7 +71,7 @@ const App = React.memo(({ root, isMasterDetail }: {root: string, isMasterDetail:
 });
 const mapStateToProps = (state: any) => ({
 	root: state.app.root,
-	isMasterDetail: state.app.isMasterDetail,
+	isMasterDetail: state.app.isMasterDetail
 });
 
 const AppContainer = connect(mapStateToProps)(App);

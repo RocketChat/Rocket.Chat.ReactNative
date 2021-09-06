@@ -37,7 +37,7 @@ class QueueListView extends React.Component {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
 		}
 		return options;
-	}
+	};
 
 	static propTypes = {
 		user: PropTypes.shape({
@@ -52,7 +52,7 @@ class QueueListView extends React.Component {
 		useRealName: PropTypes.bool,
 		navigation: PropTypes.object,
 		theme: PropTypes.string
-	}
+	};
 
 	shouldComponentUpdate(nextProps) {
 		const { queued } = this.props;
@@ -82,19 +82,15 @@ class QueueListView extends React.Component {
 		});
 	};
 
-	getRoomTitle = item => RocketChat.getRoomTitle(item)
+	getRoomTitle = item => RocketChat.getRoomTitle(item);
 
-	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
+	getRoomAvatar = item => RocketChat.getRoomAvatar(item);
 
-	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room)
+	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
 
 	renderItem = ({ item }) => {
 		const {
-			user: {
-				id: userId,
-				username,
-				token
-			},
+			user: { id: userId, username, token },
 			server,
 			useRealName,
 			theme,
@@ -114,7 +110,7 @@ class QueueListView extends React.Component {
 				token={token}
 				baseUrl={server}
 				onPress={this.onPressItem}
-				testID={`queue-list-view-item-${ item.name }`}
+				testID={`queue-list-view-item-${item.name}`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				useRealName={useRealName}
 				getRoomTitle={this.getRoomTitle}
@@ -123,7 +119,7 @@ class QueueListView extends React.Component {
 				swipeEnabled={false}
 			/>
 		);
-	}
+	};
 
 	render() {
 		const { queued, theme } = this.props;

@@ -28,7 +28,7 @@ interface IMessageContainerProps {
 		groupable: any;
 		id: any;
 		tmid: any;
-		status: any
+		status: any;
 	};
 	baseUrl: string;
 	Message_GroupingPeriod: number;
@@ -84,8 +84,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		archived: false,
 		broadcast: false,
 		isIgnored: false,
-		theme: 'light',
-	}
+		theme: 'light'
+	};
 
 	state = { isManualUnignored: false };
 
@@ -103,9 +103,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 
 	shouldComponentUpdate(nextProps: any, nextState: any) {
 		const { isManualUnignored } = this.state;
-		const {
-			theme, threadBadgeColor, isIgnored, highlighted,
-		} = this.props;
+		const { theme, threadBadgeColor, isIgnored, highlighted } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -130,23 +128,27 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		}
 	}
 
-	onPress = debounce(() => {
-		const { onPress } = this.props;
-		if (this.isIgnored) {
-			return this.onIgnoredMessagePress();
-		}
+	onPress = debounce(
+		() => {
+			const { onPress } = this.props;
+			if (this.isIgnored) {
+				return this.onIgnoredMessagePress();
+			}
 
-		if (onPress) {
-			return onPress();
-		}
+			if (onPress) {
+				return onPress();
+			}
 
-		const { item, isThreadRoom } = this.props;
-		Keyboard.dismiss();
+			const { item, isThreadRoom } = this.props;
+			Keyboard.dismiss();
 
-		if ((item.tlm || item.tmid) && !isThreadRoom) {
-			this.onThreadPress();
-		}
-	}, 300, true);
+			if ((item.tlm || item.tmid) && !isThreadRoom) {
+				this.onThreadPress();
+			}
+		},
+		300,
+		true
+	);
 
 	onLongPress = () => {
 		const { archived, onLongPress, item } = this.props;
@@ -156,60 +158,60 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		if (onLongPress) {
 			onLongPress(item);
 		}
-	}
+	};
 
 	onErrorPress = () => {
 		const { errorActionsShow, item } = this.props;
 		if (errorActionsShow) {
 			errorActionsShow(item);
 		}
-	}
+	};
 
 	onReactionPress = (emoji: any) => {
 		const { onReactionPress, item } = this.props;
 		if (onReactionPress) {
 			onReactionPress(emoji, item.id);
 		}
-	}
+	};
 
 	onReactionLongPress = () => {
 		const { onReactionLongPress, item } = this.props;
 		if (onReactionLongPress) {
 			onReactionLongPress(item);
 		}
-	}
+	};
 
 	onEncryptedPress = () => {
 		const { onEncryptedPress } = this.props;
 		if (onEncryptedPress) {
 			onEncryptedPress();
 		}
-	}
+	};
 
 	onDiscussionPress = () => {
 		const { onDiscussionPress, item } = this.props;
 		if (onDiscussionPress) {
 			onDiscussionPress(item);
 		}
-	}
+	};
 
 	onThreadPress = () => {
 		const { onThreadPress, item } = this.props;
 		if (onThreadPress) {
 			onThreadPress(item);
 		}
-	}
+	};
 
 	onAnswerButtonPress = (msg: string) => {
 		const { onAnswerButtonPress } = this.props;
 		if (onAnswerButtonPress) {
 			onAnswerButtonPress(msg, undefined, false);
 		}
-	}
+	};
 
 	onIgnoredMessagePress = () => {
 		this.setState({ isManualUnignored: true });
-	}
+	};
 
 	get isHeader() {
 		const { item, previousItem, broadcast, Message_GroupingPeriod } = this.props;
@@ -217,13 +219,14 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 			return true;
 		}
 		try {
-			if (previousItem && (
-				(previousItem.ts.toDateString() === item.ts.toDateString())
-				&& (previousItem.u.username === item.u.username)
-				&& !(previousItem.groupable === false || item.groupable === false || broadcast === true)
-				&& (item.ts - previousItem.ts < Message_GroupingPeriod * 1000)
-				&& (previousItem.tmid === item.tmid)
-			)) {
+			if (
+				previousItem &&
+				previousItem.ts.toDateString() === item.ts.toDateString() &&
+				previousItem.u.username === item.u.username &&
+				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
+				item.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
+				previousItem.tmid === item.tmid
+			) {
 				return false;
 			}
 			return true;
@@ -237,7 +240,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		if (isThreadRoom) {
 			return false;
 		}
-		if (previousItem && item.tmid && (previousItem.tmid !== item.tmid) && (previousItem.id !== item.tmid)) {
+		if (previousItem && item.tmid && previousItem.tmid !== item.tmid && previousItem.id !== item.tmid) {
 			return true;
 		}
 		return false;
@@ -283,14 +286,14 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		if (reactionInit) {
 			reactionInit(item);
 		}
-	}
+	};
 
 	replyBroadcast = () => {
 		const { replyBroadcast, item } = this.props;
 		if (replyBroadcast) {
 			replyBroadcast(item);
 		}
-	}
+	};
 
 	onLinkPress = (link: any) => {
 		const { item, theme, jumpToMessage } = this.props;
@@ -299,7 +302,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 			return jumpToMessage(link);
 		}
 		openLink(link, theme);
-	}
+	};
 
 	render() {
 		const {
@@ -326,7 +329,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 			threadBadgeColor,
 			toggleFollowThread,
 			jumpToMessage,
-			highlighted,
+			highlighted
 		} = this.props;
 		const {
 			id,
@@ -354,7 +357,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 			unread,
 			blocks,
 			autoTranslate: autoTranslateMessage,
-			replies,
+			replies
 		} = item;
 
 		let message = msg;
@@ -383,9 +386,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 					jumpToMessage,
 					threadBadgeColor,
 					toggleFollowThread,
-					replies,
-				}}
-			>
+					replies
+				}}>
 				<Message
 					id={id}
 					msg={message}
