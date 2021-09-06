@@ -1017,7 +1017,7 @@ class RoomView extends React.Component {
 		const {
 			joined, room, selectedMessage, editing, replying, replyWithMention, readOnly
 		} = this.state;
-		const { navigation, theme } = this.props;
+		const { navigation, theme, route } = this.props;
 
 		if (!this.rid) {
 			return null;
@@ -1068,6 +1068,7 @@ class RoomView extends React.Component {
 				replyCancel={this.onReplyCancel}
 				getCustomEmoji={this.getCustomEmoji}
 				navigation={navigation}
+				usedCannedResponse={route?.params?.usedCannedResponse}
 			/>
 		);
 	};

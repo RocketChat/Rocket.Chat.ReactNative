@@ -107,7 +107,8 @@ class MessageBox extends Component {
 		showActionSheet: PropTypes.func,
 		iOSScrollBehavior: PropTypes.number,
 		sharing: PropTypes.bool,
-		isActionsEnabled: PropTypes.bool
+		isActionsEnabled: PropTypes.bool,
+		usedCannedResponse: PropTypes.string
 	}
 
 	static defaultProps = {
@@ -242,10 +243,13 @@ class MessageBox extends Component {
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		const {
-			isFocused, editing, replying, sharing
+			isFocused, editing, replying, sharing, usedCannedResponse
 		} = this.props;
 		if (!isFocused?.()) {
 			return;
+		}
+		if (usedCannedResponse !== nextProps.usedCannedResponse) {
+			this.onChangeText(nextProps.usedCannedResponse ?? '');
 		}
 		if (sharing) {
 			this.setInput(nextProps.message.msg ?? '');
@@ -274,7 +278,7 @@ class MessageBox extends Component {
 		} = this.state;
 
 		const {
-			roomType, replying, editing, isFocused, message, theme
+			roomType, replying, editing, isFocused, message, theme, usedCannedResponse
 		} = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
@@ -318,6 +322,9 @@ class MessageBox extends Component {
 		if (!dequal(nextProps.message?.id, message?.id)) {
 			return true;
 		}
+		if (nextProps.usedCannedResponse !== usedCannedResponse) {
+			return true;
+		}
 		return false;
 	}
 
@@ -337,6 +344,9 @@ class MessageBox extends Component {
 		}
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
+		}
+		if (this.getCannedResponses && this.getCannedResponses.stop) {
+			this.getCannedResponses.stop();
 		}
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();

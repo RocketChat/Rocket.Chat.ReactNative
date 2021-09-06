@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
+import { useSelector } from 'react-redux';
 import I18n from '../../i18n';
 
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -11,24 +12,58 @@ import HeaderCanned from './HeaderCanned';
 import CannedResponseItem from './CannedResponseItem';
 import RocketChat from '../../lib/rocketchat';
 import debounce from '../../utils/debounce';
+import Navigation from '../../lib/Navigation';
 
 const COUNT = 25;
 
-const CannedResponsesListView = (props) => {
+const CannedResponsesListView = ({ navigation, route }) => {
 	const [cannedResponses, setCannedResponses] = useState([]);
 	const [searchText, setSearchText] = useState('');
 	const [scope, setScope] = useState('');
 	const [departmentId, setDepartmentId] = useState('');
 	const [loading, setLoading] = useState(true);
 	const [offset, setOffset] = useState(0);
+
 	const { theme } = useTheme();
+	const { isMasterDetail } = useSelector(state => state.app);
+	const { rooms } = useSelector(state => state.room);
 
 	useEffect(() => {
-		const { navigation } = props;
 		navigation.setOptions({
 			title: I18n.t('Canned_Responses')
 		});
 	}, []);
+
+	const goRoom = (item) => {
+		const { room } = route.params;
+		const { name, username } = room;
+		const params = {
+			rid: room.rid,
+			name: RocketChat.getRoomTitle({
+				t: room.t,
+				fname: name,
+				name: username
+			}),
+			t: room.t,
+			roomUserId: RocketChat.getUidDirectMessage(room),
+			usedCannedResponse: item.text
+		};
+
+		if (room.rid) {
+			// if it's on master detail layout, we close the modal and replace RoomView
+			if (isMasterDetail) {
+				Navigation.navigate('DrawerNavigator');
+				goRoom({ item: params, isMasterDetail });
+			} else {
+				let navigate = navigation.push;
+				// if this is a room focused
+				if (rooms.includes(room.rid)) {
+					({ navigate } = navigation);
+				}
+				navigate('RoomView', params);
+			}
+		}
+	};
 
 	const getListCannedResponse = async(text, department, depId, debounced) => {
 		try {
@@ -118,6 +153,7 @@ const CannedResponsesListView = (props) => {
 						tags={item?.tags}
 						text={item.text}
 						onPressDetail={() => console.log('🏎️', cannedResponses, offset)}
+						onPressUse={() => goRoom(item)}
 					/>
 				)}
 				keyExtractor={item => item._id || item.shortcut}
@@ -131,7 +167,8 @@ const CannedResponsesListView = (props) => {
 };
 
 CannedResponsesListView.propTypes = {
-	navigation: PropTypes.object
+	navigation: PropTypes.object,
+	route: PropTypes.object
 };
 
 export default CannedResponsesListView;
