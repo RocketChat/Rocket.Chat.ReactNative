@@ -8,6 +8,7 @@
 		"test-update": "jest --updateSnapshot",
 		"lint": "eslint .",
 		"prettier": "prettier --write .",
+		"prettier-check": "prettier --check .",
 		"prettier-lint": "yarn lint --fix && prettier --write .",
 		"ci": "npm run precommit && codecov",
 		"ios": "npx react-native run-ios",
