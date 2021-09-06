@@ -11,15 +11,15 @@ import styles from './styles';
 
 export const filterDepartment = [
 	{
-		id: 'all',
+		_id: 'all',
 		name: I18n.t('All')
 	},
 	{
-		id: 'public',
+		_id: 'public',
 		name: I18n.t('Public')
 	},
 	{
-		id: 'private',
+		_id: 'private',
 		name: I18n.t('Private')
 	}
 ];

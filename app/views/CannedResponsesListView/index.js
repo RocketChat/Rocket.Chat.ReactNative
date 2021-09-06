@@ -17,7 +17,9 @@ const COUNT = 25;
 const CannedResponsesListView = (props) => {
 	const [cannedResponses, setCannedResponses] = useState([]);
 	const [searchText, setSearchText] = useState('');
-	const [loading, setLoading] = useState(false);
+	const [scope, setScope] = useState('');
+	const [departmentId, setDepartmentId] = useState('');
+	const [loading, setLoading] = useState(true);
 	const [offset, setOffset] = useState(0);
 	const { theme } = useTheme();
 
@@ -28,12 +30,14 @@ const CannedResponsesListView = (props) => {
 		});
 	}, []);
 
-	const getListCannedResponse = async(text = '', debounced) => {
+	const getListCannedResponse = async(text, department, depId, debounced) => {
 		try {
 			const res = await RocketChat.getListCannedResponse({
 				text,
 				offset,
-				count: COUNT
+				count: COUNT,
+				departmentId: depId,
+				scope: department
 			});
 			if (res.success) {
 				setCannedResponses(prevCanned => (
@@ -49,20 +53,45 @@ const CannedResponsesListView = (props) => {
 		}
 	};
 
-	const searchCallback = useCallback(debounce(async(text) => {
-		await getListCannedResponse(text, true);
+	const searchCallback = useCallback(debounce(async(text = '', department = '', depId = '') => {
+		await getListCannedResponse(text, department, depId, true);
 	}, 1000), []); // use debounce with useCallback https://stackoverflow.com/a/58594890
 
 	useEffect(() => {
 		getListCannedResponse();
 	}, []);
 
-	const search = (text) => {
+	const newSearch = () => {
 		setCannedResponses([]);
 		setLoading(true);
 		setOffset(0);
+	};
+
+	const onChangeText = (text) => {
+		newSearch();
 		setSearchText(text);
-		searchCallback(text);
+		searchCallback(text, scope, departmentId);
+	};
+
+	const onDepartmentSelect = ({ value }) => {
+		let department = '';
+		let depId = '';
+
+		if (value._id === 'all') {
+			department = '';
+		} else if (value._id === 'public') {
+			department = 'global';
+		} else if (value._id === 'private') {
+			department = 'user';
+		} else {
+			department = 'department';
+			depId = value._id;
+		}
+
+		newSearch();
+		setScope(department);
+		setDepartmentId(depId);
+		searchCallback(searchText, department, depId);
 	};
 
 	const onEndReached = async() => {
@@ -70,14 +99,14 @@ const CannedResponsesListView = (props) => {
 			return;
 		}
 		setLoading(true);
-		await getListCannedResponse(searchText);
+		await getListCannedResponse(searchText, scope, departmentId);
 	};
 
 	return (
 		<SafeAreaView>
 			<StatusBar />
 
-			<HeaderCanned theme={theme} onChangeText={search} />
+			<HeaderCanned theme={theme} onChangeText={onChangeText} onDepartmentSelect={onDepartmentSelect} />
 			<FlatList
 				data={cannedResponses}
 				extraData={cannedResponses}
