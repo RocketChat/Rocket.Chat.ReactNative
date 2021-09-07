@@ -1,4 +1,9 @@
 module.exports = {
+	project: {
+		ios: {},
+		android: {}, // grouped into "project"
+	  },
+	assets: ["./assets/fonts/"],
 	dependencies: {
 		'react-native-notifications': {
 			platforms: {
