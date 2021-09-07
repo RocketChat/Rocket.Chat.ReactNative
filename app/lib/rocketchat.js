@@ -1599,6 +1599,14 @@ const RocketChat = {
 			query, count, offset, sort
 		});
 	},
+	getProfileLibrary({
+		query, count, offset, sort
+	}) {
+		// RC 1.0
+		return this.sdk.get('profile_library', {
+			query, count, offset, sort
+		});
+	},
 	canAutoTranslate() {
 		try {
 			const { AutoTranslate_Enabled } = reduxStore.getState().settings;

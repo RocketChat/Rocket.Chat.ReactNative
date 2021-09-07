@@ -74,7 +74,7 @@ class CreateChannelView extends React.Component {
 		if (!loading && loading !== prevProps.loading) {
 			setTimeout(() => {
 				if (failure) {
-					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_channel') });
+					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_discussion') });
 					showErrorAlert(msg);
 				} else {
 					const { rid, t, prid } = result;

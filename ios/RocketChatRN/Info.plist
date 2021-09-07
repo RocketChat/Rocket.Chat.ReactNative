@@ -3,13 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>AppGroup</key>
-	<string>group.ios.chat.rocket</string>
-	<key>BugsnagAPIKey</key>
-	<string/>
+	<string>group.com.t1dreachout.app</string>
+	<key>bugsnag</key>
+	<dict>
+		<key>apiKey</key>
+		<string>a8d73b3358bd42a2966c9eefc34a96db</string>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>T1D Reachout</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -21,7 +24,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.18.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -44,7 +47,7 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>KeychainGroup</key>
-	<string>$(AppIdentifierPrefix)chat.rocket.reactnative</string>
+	<string>$(AppIdentifierPrefix)com.t1dreachout.app</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>googlechrome</string>
@@ -89,7 +92,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Use your microphone to record audio messages</string>
 	<key>NSMotionUsageDescription</key>
-	<string>Allow $(PRODUCT_NAME) to access your device's accelerometer</string>
+	<string>Allow $(PRODUCT_NAME) to access your device&apos;s accelerometer</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>

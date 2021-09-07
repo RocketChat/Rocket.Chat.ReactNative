@@ -17,6 +17,7 @@
 #import "RNBootSplash.h"
 #import "Orientation.h"
 #import <Firebase.h>
+#import <Bugsnag/Bugsnag.h>
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
@@ -29,15 +30,14 @@
 #import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-
 static void InitializeFlipper(UIApplication *application) {
-  FlipperClient *client = [FlipperClient sharedClient];
-  SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
-  [client addPlugin:[[FlipperKitLayoutPlugin alloc] initWithRootNode:application withDescriptorMapper:layoutDescriptorMapper]];
-  [client addPlugin:[[FKUserDefaultsPlugin alloc] initWithSuiteName:nil]];
-  [client addPlugin:[FlipperKitReactPlugin new]];
-  [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
-  [client start];
+ FlipperClient *client = [FlipperClient sharedClient];
+ SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
+ [client addPlugin:[[FlipperKitLayoutPlugin alloc] initWithRootNode:application withDescriptorMapper:layoutDescriptorMapper]];
+ [client addPlugin:[[FKUserDefaultsPlugin alloc] initWithSuiteName:nil]];
+ [client addPlugin:[FlipperKitReactPlugin new]];
+ [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
+ [client start];
 }
 #endif
 
@@ -45,15 +45,16 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    #if DEBUG
-      //InitializeFlipper(application);
-    #endif
+   #if DEBUG
+     InitializeFlipper(application);
+   #endif
 
     self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
     RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
     if(![FIRApp defaultApp]){
       [FIRApp configure];
     }
+    [Bugsnag start];
     RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                 moduleName:@"RocketChatRN"
                                                 initialProperties:nil];
@@ -61,7 +62,6 @@ static void InitializeFlipper(UIApplication *application) {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     UIViewController *rootViewController = [UIViewController new];
     rootViewController.view = rootView;
-    [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
     self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
     [RNNotifications startMonitorNotifications];
@@ -70,6 +70,8 @@ static void InitializeFlipper(UIApplication *application) {
     // AppGroup MMKV
     NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
     [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+
+    [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
 
     return YES;
 }

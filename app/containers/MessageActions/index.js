@@ -427,6 +427,8 @@ const MessageActions = React.memo(forwardRef(({
 	};
 
 	useImperativeHandle(ref, () => ({ showMessageActions }));
+
+	return null;
 }));
 MessageActions.propTypes = {
 	room: PropTypes.object,

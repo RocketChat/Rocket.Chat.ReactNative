@@ -3,12 +3,22 @@ import PropTypes from 'prop-types';
 
 import Item from './Item';
 
-const CustomFields = ({ customFields, theme, user }) => {
-	console.log('customFields', customFields);
+const CustomFields = ({
+	customFields, theme, currentUser
+}) => {
 	if (customFields) {
+		const isAdmin = ['admin', 'livechat-manager'].find(role => currentUser.roles.includes(role)) !== undefined;
 		return (
 			Object.keys(customFields).map((title) => {
 				if (!customFields[title]) {
+					return;
+				}
+				if ((!isAdmin && title === 'VideoUrl')
+				|| (!isAdmin && title === 'ConnectIds')
+				|| (!isAdmin && title === 'Age')
+				|| (!isAdmin && title === 'Location')
+				|| (!isAdmin && title === 'T1D Since')
+				) {
 					return;
 				}
 				return (
@@ -26,7 +36,7 @@ const CustomFields = ({ customFields, theme, user }) => {
 };
 CustomFields.propTypes = {
 	customFields: PropTypes.object,
-	user: PropTypes.object,
+	currentUser: PropTypes.object,
 	theme: PropTypes.string
 };
 
