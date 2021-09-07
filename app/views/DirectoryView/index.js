@@ -181,10 +181,10 @@ class DirectoryView extends React.Component {
 		);
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
+	// renderSeparator = () => {
+	// 	const { theme } = this.props;
+	// 	return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+	// }
 
 	renderItem = ({ item, index }) => {
 		const { data, type } = this.state;
@@ -250,7 +250,6 @@ class DirectoryView extends React.Component {
 					keyExtractor={item => item._id}
 					ListHeaderComponent={this.renderHeader}
 					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
 					keyboardShouldPersistTaps='always'
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}

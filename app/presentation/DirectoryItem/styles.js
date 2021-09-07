@@ -2,11 +2,15 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const ROW_HEIGHT = 54;
+export const ROW_HEIGHT = 130;
 
 export default StyleSheet.create({
 	directoryItemButton: {
-		height: ROW_HEIGHT
+		height: ROW_HEIGHT,
+		borderRadius: 11,
+		margin: 20,
+		elevation: 5,
+		backgroundColor: 'white'
 	},
 	directoryItemContainer: {
 		flex: 1,
@@ -25,7 +29,8 @@ export default StyleSheet.create({
 	directoryItemTextContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: 'center'
+		justifyContent: 'center',
+
 	},
 	directoryItemName: {
 		flex: 1,
@@ -34,11 +39,18 @@ export default StyleSheet.create({
 	},
 	directoryItemUsername: {
 		fontSize: 14,
+		alignItems: 'center',
 		...sharedStyles.textRegular
 	},
 	directoryItemLabel: {
 		fontSize: 14,
 		paddingLeft: 10,
 		...sharedStyles.textRegular
+	},
+	directoryItemAge: {
+		fontSize: 14,
+		...sharedStyles.textRegular,
+		alignItems: 'center',
+		paddingLeft: 5
 	}
 });

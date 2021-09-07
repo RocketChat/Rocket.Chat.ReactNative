@@ -4,7 +4,6 @@ import {
 	View, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
@@ -24,6 +23,7 @@ import styles from './styles';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
+import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 class ProfileLibraryView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -58,7 +58,8 @@ class ProfileLibraryView extends React.Component {
 			total: -1,
 			showOptionsDropdown: false,
 			globalUsers: true,
-			type: props.directoryDefaultView
+			type: props.directoryDefaultView,
+			age: ''
 		};
 	}
 
@@ -76,7 +77,6 @@ class ProfileLibraryView extends React.Component {
 		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
 		}
-
 		const {
 			loading, text, total, data: { length }
 		} = this.state;
@@ -89,7 +89,7 @@ class ProfileLibraryView extends React.Component {
 		try {
 			const { data, type, globalUsers } = this.state;
 			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
-			
+
 			const directories = await RocketChat.getProfileLibrary({
 				query,
 				offset: data.length,
@@ -100,6 +100,12 @@ class ProfileLibraryView extends React.Component {
 			if (directories.success) {
 				const results = directories.result;
 
+				const userInfo = await Promise.all(results.map(async(item) => {
+					const userAge = await RocketChat.getUserInfo(item._id);
+					userAge[item._id] = userAge.user.customFields;
+					return userAge;
+				}));
+				 console.log('custommmm', userInfo);
 				this.setState({
 					data: [...data, ...results],
 					loading: false,
@@ -149,13 +155,14 @@ class ProfileLibraryView extends React.Component {
 	onPressItem = async(item) => {
 		const { type } = this.state;
 		const { navigation } = this.props;
+		console.log('item', item);
 		if (type === 'users') {
-			let navParam = { 
+			const navParam = {
 				rid: item._id,
 				t: 'd',
-				isPeerSupporter: true,
+				isPeerSupporter: true
 			};
-			//alert(JSON.stringify(item));
+			// alert(JSON.stringify(item));
 			navigation.navigate('RoomInfoView', navParam);
 		} else {
 			this.goRoom({
@@ -174,20 +181,32 @@ class ProfileLibraryView extends React.Component {
 					onSubmitEditing={this.search}
 					testID='federation-view-search'
 				/>
-				
+
 			</>
 		);
 	}
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
+	// renderSeparator = () => {
+	// 	const { theme } = this.props;
+	// 	return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
+	// }
+	// loadUser = async(id) => {
+	// 	try {
+	// 		const roomUser = await RocketChat.getUserInfo(id);
+	// 		// console.log('roomuser',roomUser)
+	// 		if (roomUser.success) {
+	// 			const { user } = roomUser;
+	// 			// console.log('user', user);
+	// 		  this.setState({ age: user.customFields.Age });
+	// 		}
+	// 	} catch {
+	// 		// do nothing
+	// 	}
+	// }
 
 	renderItem = ({ item, index }) => {
-		const { data, type } = this.state;
+		const { data, type, age } = this.state;
 		const { baseUrl, user, theme } = this.props;
-
 		let style;
 		if (index === data.length - 1) {
 			style = {
@@ -195,7 +214,8 @@ class ProfileLibraryView extends React.Component {
 				borderColor: themes[theme].separatorColor
 			};
 		}
-
+		const PinIcon = () => <CustomIcon name='pin-map' size={15} color='#161a1d' />;
+		const TypeIcon = <RoomTypeIcon type={type} theme={theme} />;
 		const commonProps = {
 			title: item.name,
 			onPress: () => this.onPressItem(item),
@@ -210,9 +230,11 @@ class ProfileLibraryView extends React.Component {
 			return (
 				<DirectoryItem
 					avatar={item.username}
-					description={item.username}
+					description='Vernon, BC'
 					rightLabel={item.federation && item.federation.peer}
 					type='d'
+					icon={PinIcon()}
+					age={age}
 					{...commonProps}
 				/>
 			);
@@ -221,6 +243,7 @@ class ProfileLibraryView extends React.Component {
 			<DirectoryItem
 				avatar={item.name}
 				description={item.topic}
+				typeIcon={TypeIcon()}
 				rightLabel={I18n.t('N_users', { n: item.usersCount })}
 				type='c'
 				{...commonProps}
@@ -229,10 +252,13 @@ class ProfileLibraryView extends React.Component {
 	}
 
 	render = () => {
+		console.log('I was triggered during render');
 		const {
 			data, loading, showOptionsDropdown, type, globalUsers
 		} = this.state;
+		console.log('data', data);
 		const { isFederationEnabled, theme } = this.props;
+
 		return (
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
@@ -248,7 +274,7 @@ class ProfileLibraryView extends React.Component {
 					keyExtractor={item => item._id}
 					ListHeaderComponent={this.renderHeader}
 					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
+					// ItemSeparatorComponent={this.renderSeparator}
 					keyboardShouldPersistTaps='always'
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}

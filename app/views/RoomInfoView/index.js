@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image, ScrollView } from 'react-native';
+import {
+	View, Text, Image, ScrollView
+} from 'react-native';
 import { WebView } from 'react-native-webview';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
@@ -285,15 +287,15 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
-	connect = async () => {
+	connect = async() => {
 		const { user } = this.props;
 		const { roomUser } = this.state;
 		const { username } = roomUser;
 
 		if (user !== null && user.customFields != undefined && user.customFields !== null) {
 			user.customFields.ConnectIds = user.customFields.ConnectIds === undefined || user.customFields.ConnectIds === ''
-			? username 
-			: `${user.customFields.ConnectIds},${username}`;
+				? username
+				: `${ user.customFields.ConnectIds },${ username }`;
 		}
 
 		try {
@@ -305,11 +307,11 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
-	message = async () => {
+	message = async() => {
 		try {
 			await this.createDirect();
 			this.goRoom();
-		} catch(error) {
+		} catch (error) {
 			alert(error);
 			EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
 		}
@@ -322,103 +324,103 @@ class RoomInfoView extends React.Component {
 
 	renderAvatar = (room, roomUser) => {
 		const { baseUrl, user, theme } = this.props;
-		var isPeerSupporter = false;
+		let isPeerSupporter = false;
 
-		if (roomUser !== null 
-			&& roomUser !== undefined 
-			&& roomUser.parsedRoles !== null 
-			&& roomUser.parsedRoles !== undefined )
-			{
-				isPeerSupporter = roomUser.parsedRoles.indexOf('Peer Supporter') > -1;
-			}
+		if (roomUser !== null
+			&& roomUser !== undefined
+			&& roomUser.parsedRoles !== null
+			&& roomUser.parsedRoles !== undefined) {
+			isPeerSupporter = roomUser.parsedRoles.indexOf('Peer Supporter') > -1;
+		}
 
-		return isPeerSupporter 
-		? (
-			<View style={{
-				width: 320,
-				height: 240,
-				}} >
-				<WebView
-				style={{
-					width: '100%',
-					height: '100%',
-					padding: 20,
-					marginTop: 20,
-					}}
-					allowsFullscreenVideo
-					allowsInlineMediaPlayback
-					mediaPlaybackRequiresUserAction
-					javaScriptEnabled={true}
-					domStorageEnabled={true}
-					source={{
-						uri: `${roomUser.customFields.VideoUrl}`,
-					}}
-				/>
-			</View>
-		)  
-		: (
-			<Avatar
-				text={room.name || roomUser.username}
-				size={100}
-				style={styles.avatar}
-				type={this.t}
-				baseUrl={baseUrl}
-				userId={user.id}
-				token={user.token}
-			>
-				{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
-			</Avatar>
-		);
+		return isPeerSupporter
+			? (
+				<View style={{
+					width: 320,
+					height: 240
+				}}
+				>
+					<WebView
+						style={{
+							width: '100%',
+							height: '100%',
+							padding: 20,
+							marginTop: 20
+						}}
+						allowsFullscreenVideo
+						allowsInlineMediaPlayback
+						mediaPlaybackRequiresUserAction
+						javaScriptEnabled
+						domStorageEnabled
+						source={{
+							uri: `${ roomUser.customFields.VideoUrl }`
+						}}
+					/>
+				</View>
+			)
+			: (
+				<Avatar
+					text={room.name || roomUser.username}
+					size={100}
+					style={styles.avatar}
+					type={this.t}
+					baseUrl={baseUrl}
+					userId={user.id}
+					token={user.token}
+				>
+					{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
+				</Avatar>
+			);
 	}
 
 	renderButton = (onPress, iconName, text) => {
 		const { theme } = this.props;
 
-				const onActionPress = async() => {
-					try {
-						await this.createDirect();
-						onPress();
-					} catch {
-						EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
-					}
-				};
-		
-				return (
-					<BorderlessButton
-						onPress={onActionPress}
-						style={styles.roomButton}
-					>
-						<CustomIcon
-							name={iconName}
-							size={30}
-							color={themes[theme].actionTintColor}
-						/>
-						<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
-					</BorderlessButton>
-				);
+		const onActionPress = async() => {
+			try {
+				await this.createDirect();
+				onPress();
+			} catch {
+				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
+			}
+		};
+
+		return (
+			<BorderlessButton
+				onPress={onActionPress}
+				style={styles.roomButton}
+			>
+				<CustomIcon
+					name={iconName}
+					size={30}
+					color={themes[theme].actionTintColor}
+				/>
+				<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
+			</BorderlessButton>
+		);
 	}
 
 	renderButtons = (isPeerSupporter, canConnect, isConnected) => {
 		const { jitsiEnabled, theme } = this.props;
 		const { saving } = this.state;
 
-		return (isPeerSupporter && !isConnected && canConnect) ? 
-		(
-			<Button
-				title={I18n.t('Connect')}
-				type='primary'
-				onPress={this.connect}
-				disabled={false}
-				testID='profile-library-view-connect'
-				loading={saving}
-				theme={theme}
-			/>
-		) : (
-			<View style={styles.roomButtonsContainer}>
-				{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
-				{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
-			</View>
-		);
+		return (isPeerSupporter && !isConnected && canConnect)
+			? (
+				<Button
+					title={I18n.t('Connect')}
+					type='primary'
+					onPress={this.connect}
+					disabled={false}
+					testID='profile-library-view-connect'
+					loading={saving}
+					theme={theme}
+				/>
+			) : (
+				<View style={styles.roomButtonsContainer}>
+					{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
+					{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
+				</View>
+			);
 	}
 
 	renderContent = (isAdmin, isPeerSupporter, canConnect, isConnected) => {
@@ -436,28 +438,32 @@ class RoomInfoView extends React.Component {
 	renderPreContent = (isAdmin, isPeerSupporter, canConnect, isConnected) => {
 		const { room, roomUser } = this.state;
 		const { theme, user } = this.props;
-
+		console.log('roomUser.customFields', roomUser.customFields);
 		if (roomUser?.customFields != null) {
 			return (
-				<View style={{width: 300, flexDirection: 'column' }}>
+				<View style={{ width: 300, flexDirection: 'column' }}>
 					<View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
 						<View style={{ flexDirection: 'row' }}>
-							<Image 
-								style={{ width: 14, height: 14, marginRight: 10}}
-								source={require('../../../app/static/images/birthday-cake-solid.png')}
-								/>
-							<Text style={{ color: themes[theme].auxiliaryText}}>{`${roomUser.customFields.Age} years`}</Text>
+							<Image
+								style={{ width: 14, height: 14, marginRight: 10 }}
+								source={require('../../static/images/birthday-cake-solid.png')}
+							/>
+							<Text style={{ color: themes[theme].auxiliaryText }}>{`${ roomUser.customFields.Age } years`}</Text>
 						</View>
 						<View style={{ flexDirection: 'row' }}>
-							<Image 
-								style={{ width: 14, height: 14, marginRight: 10}}
-								source={require('../../../app/static/images/location-arrow-solid.png')}
-								/>
-							<Text style={{ color: themes[theme].auxiliaryText}}>{`${roomUser.customFields.Location}`}</Text>
+							<Image
+								style={{ width: 14, height: 14, marginRight: 10 }}
+								source={require('../../static/images/location-arrow-solid.png')}
+							/>
+							<Text style={{ color: themes[theme].auxiliaryText }}>{`${ roomUser.customFields.Location }`}</Text>
 						</View>
 					</View>
-					<Text style={{ color: themes[theme].titleText, marginTop: 10, alignSelf: 'center', fontWeight: 'bold'}}>{`T1D History`}</Text>
-					<Text style={{ color: themes[theme].auxiliaryText, marginTop: 5}}>{roomUser?.customFields["T1D Since"]}</Text>
+					<Text style={{
+						color: themes[theme].titleText, marginTop: 10, alignSelf: 'center', fontWeight: 'bold'
+					}}
+					>T1D History
+					</Text>
+					<Text style={{ color: themes[theme].auxiliaryText, marginTop: 5 }}>{roomUser?.customFields['T1D Since']}</Text>
 				</View>
 			);
 		}
@@ -469,15 +475,15 @@ class RoomInfoView extends React.Component {
 		const isPeerSupporter = route.params?.isPeerSupporter;
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role)) !== undefined;
 
-		const peerIds = (user === null 
-			|| user.customFields === null 
-			|| user.customFields === undefined 
-			|| user.customFields.ConnectIds === undefined 
+		const peerIds = (user === null
+			|| user.customFields === null
+			|| user.customFields === undefined
+			|| user.customFields.ConnectIds === undefined
 			|| user.customFields.ConnectIds === '')
 
-		? [] : user.customFields.ConnectIds.split(",");
+			? [] : user.customFields.ConnectIds.split(',');
 
-		const canConnect=  !peerIds.includes(roomUser.username) && peerIds.length < 5 && !isAdmin;
+		const canConnect = !peerIds.includes(roomUser.username) && peerIds.length < 5 && !isAdmin;
 		const isConnected = peerIds.includes(roomUser.username) && !isAdmin;
 
 		const name = (isConnected) ? `${ roomUser?.name } ✅ ` : roomUser?.name;

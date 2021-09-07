@@ -227,7 +227,6 @@ class Sidebar extends Component {
 		const {
 			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme
 		} = this.props;
-
 		if (!user) {
 			return null;
 		}
