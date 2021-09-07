@@ -1,5 +1,6 @@
 import { Model } from '@nozbe/watermelondb';
-import { field } from '@nozbe/watermelondb/decorators';
+import { field, json } from '@nozbe/watermelondb/decorators';
+import { sanitizer } from '../utils';
 
 export default class CannedResponses extends Model {
 	static table = 'canned_responses';
@@ -11,4 +12,6 @@ export default class CannedResponses extends Model {
   @field('department_id') departmentId;
 
   @field('created_by') createdBy;
+
+  @json('tags', sanitizer) tags;
 }

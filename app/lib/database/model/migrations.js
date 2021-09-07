@@ -234,7 +234,8 @@ export default schemaMigrations({
 						{ name: 'text', type: 'string', isOptional: true },
 						{ name: 'scope', type: 'string', isOptional: true },
 						{ name: 'department_id', type: 'string', isOptional: true },
-						{ name: 'created_by', type: 'string', isOptional: true }
+						{ name: 'created_by', type: 'string', isOptional: true },
+						{ name: 'tags', type: 'string', isOptional: true }
 					]
 				})
 			]
