@@ -32,9 +32,9 @@ import BackgroundContainer from '../../containers/BackgroundContainer';
 import { isIOS } from '../../utils/deviceInfo';
 import { getBadgeColor, makeThreadName } from '../../utils/room';
 import { getHeaderTitlePosition } from '../../containers/Header';
-import SearchHeader from './SearchHeader';
 import EventEmitter from '../../utils/events';
 import { LISTENER } from '../../containers/Toast';
+import SearchHeader from '../../containers/SearchHeader';
 
 const API_FETCH_COUNT = 50;
 
@@ -113,7 +113,7 @@ class ThreadMessagesView extends React.Component {
 						/>
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader onSearchChangeText={this.onSearchChangeText} />,
+				headerTitle: () => <SearchHeader onSearchChangeText={this.onSearchChangeText} placeholder='Search' theme={theme} testID='thread-messages-view-search-header' />,
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right

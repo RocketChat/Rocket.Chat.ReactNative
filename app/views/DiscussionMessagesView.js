@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
@@ -18,10 +17,11 @@ import * as List from '../containers/List';
 import BackgroundContainer from '../containers/BackgroundContainer';
 import { isIOS } from '../utils/deviceInfo';
 import { getHeaderTitlePosition } from '../containers/Header';
-import SearchHeader from './ThreadMessagesView/SearchHeader';
+
 import { useTheme } from '../theme';
 import Message from '../containers/message';
 import RocketChat from '../lib/rocketchat';
+import SearchHeader from '../containers/SearchHeader';
 
 const API_FETCH_COUNT = 25;
 
@@ -31,19 +31,22 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 	const autoTranslate = route.params?.autoTranslate;
 	const autoTranslateLanguage = route.params?.autoTranslateLanguage;
 	const navToRoomInfo = route.params?.navToRoomInfo;
+
 	const user = useSelector(state => state.login?.user);
 	const baseUrl = useSelector(state => state.server.server);
 	const useRealName = useSelector(state => state.settings.UI_Use_Real_Name);
 	const Message_TimeFormat = useSelector(state => state.settings.Message_TimeFormat);
 	const isMasterDetail = useSelector(state => state.app.isMasterDetail);
+
 	const [loading, setLoading] = useState(false);
 	const [discussions, setDiscussions] = useState([]);
 	const [search, setSearch] = useState([]);
 	const [isSearching, setIsSearching] = useState(false);
+
 	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
 
-	const load = async() => {
+	const load = async(text = '') => {
 		if (loading) {
 			return;
 		}
@@ -52,8 +55,9 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 		try {
 			const result = await RocketChat.getDiscussions({
 				roomId: rid,
-				offset: discussions.length,
-				count: API_FETCH_COUNT
+				offset: isSearching ? search.length : discussions.length,
+				count: API_FETCH_COUNT,
+				text
 			});
 
 			if (result.success) {
@@ -71,22 +75,8 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 	};
 
 	const onSearchChangeText = debounce(async(text) => {
-		setLoading(true);
-		try {
-			const result = await RocketChat.getDiscussions({
-				roomId: rid,
-				offset: search.length,
-				count: API_FETCH_COUNT,
-				text
-			});
-			if (result.success) {
-				setSearch(result.messages);
-			}
-			setLoading(false);
-		} catch (e) {
-			log(e);
-			setLoading(false);
-		}
+		setIsSearching(true);
+		await load(text);
 	}, 300);
 
 	const onCancelSearchPress = () => {
@@ -111,7 +101,14 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 						/>
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader placeholder='Search Messages' onSearchChangeText={onSearchChangeText} />,
+				headerTitle: () => (
+					<SearchHeader
+						placeholder='Search Messages'
+						onSearchChangeText={onSearchChangeText}
+						theme={theme}
+						testID='discussion-messages-view-search-header'
+					/>
+				),
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right
@@ -199,7 +196,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 				windowSize={10}
 				initialNumToRender={7}
 				removeClippedSubviews={isIOS}
-				onEndReached={() => discussions.length > 25 ?? load()}
+				onEndReached={() => discussions.length > API_FETCH_COUNT ?? load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				scrollIndicatorInsets={{ right: 1 }}
@@ -210,7 +207,10 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 
 DiscussionMessagesView.propTypes = {
 	navigation: PropTypes.object,
-	route: PropTypes.object
+	route: PropTypes.object,
+	item: PropTypes.shape({
+		msg: PropTypes.string
+	})
 };
 
 export default DiscussionMessagesView;

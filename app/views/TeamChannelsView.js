@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import StatusBar from '../containers/StatusBar';
 import RoomHeader from '../containers/RoomHeader';
 import { withTheme } from '../theme';
-import SearchHeader from './ThreadMessagesView/SearchHeader';
+
 import log, { events, logEvent } from '../utils/log';
 import database from '../lib/database';
 import { getUserSelector } from '../selectors/login';
@@ -29,6 +29,7 @@ import { withActionSheet } from '../containers/ActionSheet';
 import { deleteRoom as deleteRoomAction } from '../actions/room';
 import { CustomIcon } from '../lib/Icons';
 import { themes } from '../constants/colors';
+import SearchHeader from '../containers/SearchHeader';
 
 const API_FETCH_COUNT = 25;
 const PERMISSION_DELETE_C = 'delete-c';
@@ -162,7 +163,9 @@ class TeamChannelsView extends React.Component {
 
 	setHeader = () => {
 		const { isSearching, showCreate, data } = this.state;
-		const { navigation, isMasterDetail, insets } = this.props;
+		const {
+			navigation, isMasterDetail, insets, theme
+		} = this.props;
 
 		const { team } = this;
 		if (!team) {
@@ -182,7 +185,14 @@ class TeamChannelsView extends React.Component {
 						/>
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader onSearchChangeText={this.onSearchChangeText} />,
+				headerTitle: () => (
+					<SearchHeader
+						onSearchChangeText={this.onSearchChangeText}
+						placeholder='Search Channels'
+						theme={theme}
+						testID='team-channels-view-search-header'
+					/>
+				),
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right

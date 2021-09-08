@@ -799,7 +799,7 @@ const RocketChat = {
 		});
 	},
 	getDiscussions({
-		roomId, offset, count, text = ''
+		roomId, offset, count, text
 	}) {
 		const params = {
 			roomId,
