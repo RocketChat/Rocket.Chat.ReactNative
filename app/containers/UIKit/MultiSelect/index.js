@@ -39,6 +39,7 @@ export const MultiSelect = React.memo(({
 	multiselect = false,
 	onSearch,
 	onClose,
+	onOpen,
 	disabled,
 	inputStyle,
 	theme,
@@ -57,6 +58,7 @@ export const MultiSelect = React.memo(({
 	}, [values]);
 
 	useEffect(() => {
+		showContent ? onOpen() : null;
 		setOpen(showContent);
 	}, [showContent]);
 
@@ -198,6 +200,7 @@ MultiSelect.propTypes = {
 	multiselect: PropTypes.bool,
 	onSearch: PropTypes.func,
 	onClose: PropTypes.func,
+	onOpen: PropTypes.func,
 	inputStyle: PropTypes.object,
 	wrapInputStyle: PropTypes.object,
 	value: PropTypes.array,
@@ -205,5 +208,6 @@ MultiSelect.propTypes = {
 	theme: PropTypes.string
 };
 MultiSelect.defaultProps = {
-	onClose: () => {}
+	onClose: () => {},
+	onOpen: () => {}
 };

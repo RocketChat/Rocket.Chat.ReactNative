@@ -3,8 +3,8 @@ import {
 	View, Text, ActivityIndicator, TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { MENTIONS_TRACKING_TYPE_CANNED } from '../constants';
 
+import { MENTIONS_TRACKING_TYPE_CANNED } from '../constants';
 import styles from '../styles';
 import I18n from '../../../i18n';
 import { themes } from '../../../constants/colors';
@@ -61,6 +61,5 @@ MentionHeaderList.propTypes = {
 	theme: PropTypes.string,
 	mentionLoading: PropTypes.bool
 };
-
 
 export default MentionHeaderList;

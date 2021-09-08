@@ -555,7 +555,7 @@ class MessageBox extends Component {
 		const commandsCollection = db.get('canned_responses');
 		const likeString = sanitizeLikeString(keyword);
 		const commands = await commandsCollection.query(
-			Q.where('id', Q.like(`${ likeString }%`))
+			Q.where('id', Q.like(`%${ likeString }%`))
 		).fetch();
 		this.setState({ mentions: commands || [], mentionLoading: false });
 	}, 300)

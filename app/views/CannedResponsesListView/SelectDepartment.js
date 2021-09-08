@@ -15,6 +15,7 @@ const SelectDepartment = ({
 			wrapInputStyle={[styles.selectDepartment, { backgroundColor: themes[theme].messageboxBackground, borderColor: themes[theme].borderColor }]}
 			onChange={onDepartmentSelect}
 			onSearch={getDepartments}
+			onOpen={getDepartments}
 			value={initial && [initial]}
 			options={departments.map(department => ({
 				value: department,
