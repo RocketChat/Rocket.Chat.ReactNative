@@ -43951,7 +43951,6 @@ exports[`Storyshots Message Thumbnail from server 1`] = `
                           "flex": 1,
                           "height": 200,
                           "marginBottom": 1,
-                          "width": null,
                         },
                       ]
                     }
