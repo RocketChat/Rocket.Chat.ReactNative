@@ -26,7 +26,7 @@ const CannedResponseItem = ({
 						title={I18n.t('Use')}
 						fontSize={12}
 						color={themes[theme].titleText}
-						style={[styles.cannedUseButton, { backgroundColor: themes[theme].headerBackground }]}
+						style={[styles.cannedUseButton, { backgroundColor: themes[theme].chatComponentBackground }]}
 						theme={theme}
 						onPress={onPressUse}
 					/>
@@ -44,14 +44,13 @@ const CannedResponseItem = ({
 				<View style={styles.cannedTagContainer}>
 					{
 						tags?.length > 0
-							? (
+							? tags.map(t => (
 								<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>
-									<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryTintColor }]}>sales</Text>
+									<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryTintColor }]}>{t}</Text>
 								</View>
-							)
+							))
 							: null
 					}
-
 				</View>
 			</>
 		</Touchable>

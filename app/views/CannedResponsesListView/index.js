@@ -16,13 +16,33 @@ import Navigation from '../../lib/Navigation';
 
 const COUNT = 25;
 
+const filterDepartment = [
+	{
+		_id: 'all',
+		name: I18n.t('All')
+	},
+	{
+		_id: 'public',
+		name: I18n.t('Public')
+	},
+	{
+		_id: 'user',
+		name: I18n.t('Private')
+	}
+];
+
 const CannedResponsesListView = ({ navigation, route }) => {
 	const [cannedResponses, setCannedResponses] = useState([]);
+	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState([]);
 	const [searchText, setSearchText] = useState('');
 	const [scope, setScope] = useState('');
+	const [departments, setDepartments] = useState([]);
+	const [allDepartments, setAllDepartments] = useState([]);
 	const [departmentId, setDepartmentId] = useState('');
 	const [loading, setLoading] = useState(true);
 	const [offset, setOffset] = useState(0);
+
+	const { room } = route.params;
 
 	const { theme } = useTheme();
 	const { isMasterDetail } = useSelector(state => state.app);
@@ -34,8 +54,23 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		});
 	}, []);
 
+
+	const getDepartments = debounce(async(keyword = '') => {
+		try {
+			const res = await RocketChat.getDepartments(keyword);
+			const regExp = new RegExp(keyword, 'gi');
+			const filterWithText = filterDepartment.filter(dep => regExp.test(dep.name));
+			res.success
+				? setDepartments([...filterWithText, ...res.departments])
+				: setDepartments(filterWithText);
+
+			if (res.success && !keyword) { setAllDepartments([...filterWithText, ...res.departments]); }
+		} catch {
+			// do nothing
+		}
+	}, 300);
+
 	const goRoom = (item) => {
-		const { room } = route.params;
 		const { name, username } = room;
 		const params = {
 			rid: room.rid,
@@ -88,11 +123,30 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		}
 	};
 
+	useEffect(() => {
+		if (allDepartments.length > 0) {
+			const newCannedResponses = cannedResponses.map((cr) => {
+				let scopeName = '';
+
+				if (cr?.departmentId) {
+					scopeName = allDepartments.filter(dep => dep._id === cr.departmentId)[0]?.name;
+				} else {
+					scopeName = allDepartments.filter(dep => dep._id === cr.scope)[0]?.name;
+				}
+				cr.scopeName = scopeName;
+
+				return cr;
+			});
+			setCannedResponsesScopeName(newCannedResponses);
+		}
+	}, [allDepartments, cannedResponses]);
+
 	const searchCallback = useCallback(debounce(async(text = '', department = '', depId = '') => {
 		await getListCannedResponse(text, department, depId, true);
 	}, 1000), []); // use debounce with useCallback https://stackoverflow.com/a/58594890
 
 	useEffect(() => {
+		getDepartments();
 		getListCannedResponse();
 	}, []);
 
@@ -112,11 +166,11 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		let department = '';
 		let depId = '';
 
-		if (value._id === 'all') {
+		if (value._id === filterDepartment[0]._id) {
 			department = '';
-		} else if (value._id === 'public') {
+		} else if (value._id === filterDepartment[1]._id) {
 			department = 'global';
-		} else if (value._id === 'private') {
+		} else if (value._id === filterDepartment[2]._id) {
 			department = 'user';
 		} else {
 			department = 'department';
@@ -141,18 +195,29 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		<SafeAreaView>
 			<StatusBar />
 
-			<HeaderCanned theme={theme} onChangeText={onChangeText} onDepartmentSelect={onDepartmentSelect} />
+			<HeaderCanned
+				theme={theme}
+				onChangeText={onChangeText}
+				onDepartmentSelect={onDepartmentSelect}
+				initial={{
+					value: filterDepartment[0],
+					text: filterDepartment[0].name
+				}}
+				departments={departments}
+				getDepartments={getDepartments}
+			/>
+
 			<FlatList
-				data={cannedResponses}
-				extraData={cannedResponses}
+				data={cannedResponsesScopeName}
+				extraData={cannedResponsesScopeName}
 				renderItem={({ item }) => (
 					<CannedResponseItem
 						theme={theme}
-						scope={item.scope}
+						scope={item.scopeName}
 						shortcut={item.shortcut}
 						tags={item?.tags}
 						text={item.text}
-						onPressDetail={() => console.log('🏎️', cannedResponses, offset)}
+						onPressDetail={() => navigation.navigate('CannedResponseDetail', { cannedResponse: item, room })}
 						onPressUse={() => goRoom(item)}
 					/>
 				)}

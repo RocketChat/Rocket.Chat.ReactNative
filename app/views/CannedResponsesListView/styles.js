@@ -80,12 +80,14 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	cannedTagContainer: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		flexWrap: 'wrap'
 	},
 	cannedTagWrap: {
 		borderRadius: 4,
 		marginRight: 4,
-		marginTop: 8
+		marginTop: 8,
+		height: 16
 	},
 	cannedTag: {
 		fontSize: 12,
