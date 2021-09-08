@@ -104,7 +104,6 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 		}
 	};
 
-	// eslint-disable-next-line react/sort-comp
 	_addFrequentlyUsed = protectedFunction(async (emoji: IEmoji) => {
 		const db = database.active;
 		const freqEmojiCollection = db.get('frequently_used_emojis');

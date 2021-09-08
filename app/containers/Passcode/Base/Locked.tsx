@@ -62,9 +62,7 @@ const Locked = React.memo(({ theme, setStatus }: IPasscodeLocked) => {
 	}, []);
 
 	return (
-		// TODO - verify if this 'r' it's correct
-		// @ts-ignore
-		<Grid style={[styles.grid, { backgroundColor: themes[theme].passcodeBackground }]} r>
+		<Grid style={[styles.grid, { backgroundColor: themes[theme].passcodeBackground }]}>
 			<LockIcon theme={theme} />
 			<Title text={I18n.t('Passcode_app_locked_title')} theme={theme} />
 			<Timer theme={theme} time={lockedUntil} setStatus={setStatus} />
