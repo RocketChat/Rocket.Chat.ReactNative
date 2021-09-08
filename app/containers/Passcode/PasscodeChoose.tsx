@@ -41,7 +41,6 @@ const PasscodeChoose = ({ theme, finishProcess, force = false }: IPasscodeChoose
 
 	if (status === TYPE.CONFIRM) {
 		return (
-			// @ts-ignore
 			<Base
 				ref={confirmRef}
 				theme={theme}
@@ -55,7 +54,6 @@ const PasscodeChoose = ({ theme, finishProcess, force = false }: IPasscodeChoose
 	}
 
 	return (
-		// @ts-ignore
 		<Base
 			ref={chooseRef}
 			theme={theme}

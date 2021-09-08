@@ -89,7 +89,6 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeE
 	}
 
 	return (
-		// @ts-ignore
 		<Base
 			ref={ref}
 			theme={theme}

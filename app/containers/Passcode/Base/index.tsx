@@ -17,13 +17,13 @@ import Subtitle from './Subtitle';
 interface IPasscodeBase {
 	theme: string;
 	type: string;
-	previousPasscode: string;
+	previousPasscode?: string;
 	title: string;
-	subtitle: string;
-	showBiometry: string;
+	subtitle?: string;
+	showBiometry?: string;
 	onEndProcess: Function;
-	onError: Function;
-	onBiometryPress(): void;
+	onError?: Function;
+	onBiometryPress?(): void;
 }
 
 const Base = forwardRef(
