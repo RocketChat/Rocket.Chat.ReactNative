@@ -5,7 +5,6 @@ import { View, Text } from 'react-native';
 import CannedSearchBox from './CannedSearchBox';
 import SelectDepartment from './SelectDepartment';
 import { themes } from '../../constants/colors';
-
 import styles from './styles';
 import I18n from '../../i18n';
 
@@ -16,7 +15,7 @@ const HeaderCanned = ({
 		<Text style={[{ color: themes[theme].auxiliaryTintColor }]}>{I18n.t('Type_!_Canned_Response')}</Text>
 
 		<View style={styles.containerRow}>
-			<CannedSearchBox onChangeText={onChangeText} />
+			<CannedSearchBox onChangeText={onChangeText} theme={theme} />
 			<SelectDepartment
 				initial={initial}
 				theme={theme}

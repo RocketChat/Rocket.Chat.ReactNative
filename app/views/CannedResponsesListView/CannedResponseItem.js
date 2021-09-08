@@ -36,7 +36,6 @@ const CannedResponseItem = ({
 						color={themes[theme].auxiliaryText}
 						size={20}
 					/>
-
 				</View>
 
 				<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>“{text}”</Text>

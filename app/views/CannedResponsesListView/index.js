@@ -2,8 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
-import I18n from '../../i18n';
 
+import I18n from '../../i18n';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -55,7 +55,6 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		});
 	}, []);
 
-
 	const getDepartments = debounce(async(keyword = '') => {
 		try {
 			const res = await RocketChat.getDepartments(keyword);
@@ -70,6 +69,10 @@ const CannedResponsesListView = ({ navigation, route }) => {
 			// do nothing
 		}
 	}, 300);
+
+	const goToDetail = (item) => {
+		navigation.navigate('CannedResponseDetail', { cannedResponse: item, room });
+	};
 
 	const navigateToRoom = (item) => {
 		const { name, username } = room;
@@ -218,7 +221,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 						shortcut={item.shortcut}
 						tags={item?.tags}
 						text={item.text}
-						onPressDetail={() => navigation.navigate('CannedResponseDetail', { cannedResponse: item, room })}
+						onPressDetail={() => goToDetail(item)}
 						onPressUse={() => navigateToRoom(item)}
 					/>
 				)}

@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import I18n from '../i18n';
 
+import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import Button from '../containers/Button';
@@ -11,10 +11,8 @@ import { useTheme } from '../theme';
 import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/Navigation';
 import { goRoom } from '../utils/goRoom';
-
 import sharedStyles from './Styles';
 import { themes } from '../constants/colors';
-
 
 const styles = StyleSheet.create({
 	container: {

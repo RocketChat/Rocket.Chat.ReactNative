@@ -7,13 +7,13 @@ import CannedResponseItem from './CannedResponseItem';
 const stories = storiesOf('CannedResponseItem', module);
 
 const item = [{
-	_id: 'M768eo6X6TaxGwe8R',
+	_id: 'x1-x1-x1',
 	shortcut: '!FAQ4',
 	text: 'ZCVXZVXCZVZXVZXCVZXCVXZCVZX',
 	scope: 'user',
-	userId: 'srCyJGqRyhAtAEeMX',
+	userId: 'xxx-x-xx-x-x-',
 	createdBy: {
-		_id: 'srCyJGqRyhAtAEeMX',
+		_id: 'xxx-x-xx-x-x-',
 		username: 'diogo.pinto'
 	},
 	_createdAt: '2021-08-11T01:23:17.379Z',
@@ -21,7 +21,7 @@ const item = [{
 	scopeName: 'Private'
 },
 {
-	_id: 'pkw9nJeWJfipLkoeQ',
+	_id: 'x1-1x-1x',
 	shortcut: 'test4mobilePrivate',
 	text: 'test for mobile private',
 	scope: 'user',
@@ -34,9 +34,9 @@ const item = [{
 		'Closed',
 		'Problema produto Y'
 	],
-	userId: 'usaAgx2hdNPk9EdBJ',
+	userId: 'laslsaklasal',
 	createdBy: {
-		_id: 'usaAgx2hdNPk9EdBJ',
+		_id: 'laslsaklasal',
 		username: 'reinaldo.neto'
 	},
 	_createdAt: '2021-09-02T17:44:52.095Z',

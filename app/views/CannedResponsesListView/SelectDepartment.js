@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { themes } from '../../constants/colors';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-
 import styles from './styles';
 
 const SelectDepartment = ({
