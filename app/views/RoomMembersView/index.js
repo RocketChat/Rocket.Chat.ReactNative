@@ -403,7 +403,14 @@ class RoomMembersView extends React.Component {
 		this.setState({ isLoading: true });
 		try {
 			if (compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)) {
-				const membersResult = await RocketChat.getMembers(rid, t, allUsers ? 'all' : 'online', filtering, members.length, PAGE_SIZE);
+				const membersResult = await RocketChat.getMembers({
+					roomId: rid,
+					roomType: t,
+					type: allUsers ? 'all' : 'online',
+					filter: filtering,
+					offset: members.length,
+					count: PAGE_SIZE
+				});
 				newMembers = membersResult.members;
 			} else {
 				const membersResult = await RocketChat.getRoomMembers(rid, allUsers, members.length, PAGE_SIZE);
