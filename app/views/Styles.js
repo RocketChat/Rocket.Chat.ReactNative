@@ -100,7 +100,7 @@ export default StyleSheet.create({
 			android: {
 				includeFontPadding: false,
 				fontFamily: 'Poppins-SemiBold',
-				fontWeight: 'bold'
+				fontWeight: 'normal'
 			}
 		})
 	},
@@ -114,7 +114,7 @@ export default StyleSheet.create({
 			android: {
 				includeFontPadding: false,
 				fontFamily: 'Poppins-Bold',
-				fontWeight: 'bold'
+				fontWeight: 'normal'
 			}
 		})
 	},
