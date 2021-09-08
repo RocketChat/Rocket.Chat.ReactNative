@@ -71,7 +71,7 @@ interface IItem {
 }
 
 interface IModalContent {
-	message: {
+	message?: {
 		reactions: any;
 	};
 	onClose: Function;
@@ -147,7 +147,6 @@ const ReactionsModal = React.memo(
 			backdropOpacity={0.8}
 			onSwipeComplete={onClose}
 			swipeDirection={['up', 'left', 'right', 'down']}>
-			{/* @ts-ignore*/}
 			<ModalContent onClose={onClose} theme={theme} {...props} />
 		</Modal>
 	),
