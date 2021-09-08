@@ -13,6 +13,7 @@ import CannedResponseItem from './CannedResponseItem';
 import RocketChat from '../../lib/rocketchat';
 import debounce from '../../utils/debounce';
 import Navigation from '../../lib/Navigation';
+import { goRoom } from '../../utils/goRoom';
 
 const COUNT = 25;
 
@@ -70,7 +71,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		}
 	}, 300);
 
-	const goRoom = (item) => {
+	const navigateToRoom = (item) => {
 		const { name, username } = room;
 		const params = {
 			rid: room.rid,
@@ -88,7 +89,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 			// if it's on master detail layout, we close the modal and replace RoomView
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
-				goRoom({ item: params, isMasterDetail });
+				goRoom({ item: params, isMasterDetail, usedCannedResponse: item.text });
 			} else {
 				let navigate = navigation.push;
 				// if this is a room focused
@@ -218,7 +219,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 						tags={item?.tags}
 						text={item.text}
 						onPressDetail={() => navigation.navigate('CannedResponseDetail', { cannedResponse: item, room })}
-						onPressUse={() => goRoom(item)}
+						onPressUse={() => navigateToRoom(item)}
 					/>
 				)}
 				keyExtractor={item => item._id || item.shortcut}

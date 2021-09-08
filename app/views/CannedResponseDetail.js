@@ -10,6 +10,7 @@ import Button from '../containers/Button';
 import { useTheme } from '../theme';
 import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/Navigation';
+import { goRoom } from '../utils/goRoom';
 
 import sharedStyles from './Styles';
 import { themes } from '../constants/colors';
@@ -72,7 +73,7 @@ const CannedResponseDetail = ({ navigation, route }) => {
 		});
 	}, []);
 
-	const goRoom = (item) => {
+	const navigateToRoom = (item) => {
 		const { room } = route.params;
 		const { name, username } = room;
 		const params = {
@@ -91,7 +92,7 @@ const CannedResponseDetail = ({ navigation, route }) => {
 			// if it's on master detail layout, we close the modal and replace RoomView
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
-				goRoom({ item: params, isMasterDetail });
+				goRoom({ item: params, isMasterDetail, usedCannedResponse: item.text });
 			} else {
 				let navigate = navigation.push;
 				// if this is a room focused
@@ -134,7 +135,7 @@ const CannedResponseDetail = ({ navigation, route }) => {
 				theme={theme}
 				style={[styles.button]}
 				type='primary'
-				onPress={() => goRoom(cannedResponse)}
+				onPress={() => navigateToRoom(cannedResponse)}
 			/>
 		</SafeAreaView>
 	);

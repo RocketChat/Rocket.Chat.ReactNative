@@ -190,7 +190,7 @@ class MessageBox extends Component {
 	async componentDidMount() {
 		const db = database.active;
 		const {
-			rid, tmid, navigation, sharing
+			rid, tmid, navigation, sharing, usedCannedResponse, isMasterDetail
 		} = this.props;
 		let msg;
 		try {
@@ -224,6 +224,10 @@ class MessageBox extends Component {
 
 		if (isTablet) {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
+		}
+
+		if (isMasterDetail && usedCannedResponse) {
+			this.onChangeText(usedCannedResponse ?? '');
 		}
 
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
@@ -689,7 +693,13 @@ class MessageBox extends Component {
 	}
 
 	onPressNoMatchCanned = () => {
-		Navigation.navigate('CannedResponsesListView', { room: this.room });
+		const { isMasterDetail } = this.props;
+		const params = { room: this.room };
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'CannedResponsesListView', params });
+		} else {
+			Navigation.navigate('CannedResponsesListView', params);
+		}
 	}
 
 	openShareView = (attachments) => {
