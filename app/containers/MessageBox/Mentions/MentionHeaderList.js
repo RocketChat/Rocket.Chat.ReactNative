@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
 	View, Text, ActivityIndicator, TouchableOpacity
 } from 'react-native';
@@ -9,10 +9,14 @@ import styles from '../styles';
 import I18n from '../../../i18n';
 import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
+import MessageboxContext from '../Context';
 
 const MentionHeaderList = ({
 	trackingType, hasMentions, theme, mentionLoading
 }) => {
+	const context = useContext(MessageboxContext);
+	const { onPressNoMatchCanned } = context;
+
 	let content = (<></>);
 
 	if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
@@ -24,7 +28,7 @@ const MentionHeaderList = ({
 			);
 		} else {
 			content = (
-				<TouchableOpacity style={[styles.wrapMentionHeaderListRow, styles.mentionNoMatchHeader]} onPress={() => { /** AJEITAR A FUNCTION PELO CONTEXT */ }}>
+				<TouchableOpacity style={[styles.wrapMentionHeaderListRow, styles.mentionNoMatchHeader]} onPress={onPressNoMatchCanned}>
 					<Text style={[styles.mentionHeaderList, { color: themes[theme].auxiliaryText }]}>
 						{I18n.t('No_match_found', { action: I18n.t('Check_canned_responses') })}
 					</Text>

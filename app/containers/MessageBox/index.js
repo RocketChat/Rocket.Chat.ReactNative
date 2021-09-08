@@ -688,6 +688,10 @@ class MessageBox extends Component {
 		}
 	}
 
+	onPressNoMatchCanned = () => {
+		Navigation.navigate('CannedResponsesListView', { room: this.room });
+	}
+
 	openShareView = (attachments) => {
 		const { message, replyCancel, replyWithMention } = this.props;
 		// Start a thread with an attachment
@@ -1026,7 +1030,8 @@ class MessageBox extends Component {
 					user,
 					baseUrl,
 					onPressMention: this.onPressMention,
-					onPressCommandPreview: this.onPressCommandPreview
+					onPressCommandPreview: this.onPressCommandPreview,
+					onPressNoMatchCanned: this.onPressNoMatchCanned
 				}}
 			>
 				<KeyboardAccessoryView
