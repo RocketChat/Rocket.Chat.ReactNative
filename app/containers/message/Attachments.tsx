@@ -52,7 +52,6 @@ const Attachments = React.memo(
 				return <AttachedActions attachment={file} theme={theme} />;
 			}
 
-			// eslint-disable-next-line react/no-array-index-key
 			return (
 				<Reply
 					key={index}

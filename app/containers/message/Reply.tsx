@@ -68,6 +68,8 @@ const styles = StyleSheet.create({
 		marginBottom: 4
 	},
 	image: {
+		// @ts-ignore
+		width: null,
 		height: 200,
 		flex: 1,
 		borderTopLeftRadius: 4,
