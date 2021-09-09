@@ -163,7 +163,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 		return (
 			<EmojiCategory
 				emojis={emojis}
-				onEmojiSelected={emoji => this.onEmojiSelected(emoji)}
+				onEmojiSelected={(emoji: IEmoji) => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
 				width={width!}
 				baseUrl={baseUrl}

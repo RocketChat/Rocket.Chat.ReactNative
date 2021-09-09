@@ -183,6 +183,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 						testID={testID}
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
+						/* @ts-ignore*/
 						contentDescription={placeholder}
 						theme={theme}
 						{...inputProps}

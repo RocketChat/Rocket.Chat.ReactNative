@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
 });
 
 interface ISearchBox {
-	onChangeText: Function;
-	onSubmitEditing: Function;
+	onChangeText: () => void;
+	onSubmitEditing: () => void;
 	hasCancel: boolean;
 	onCancelPress: Function;
 	theme: string;
@@ -79,7 +79,6 @@ const SearchBox = ({
 			<CustomIcon name='search' size={14} color={themes[theme].auxiliaryText} />
 			<TextInput
 				ref={inputRef}
-				/* @ts-ignore*/
 				autoCapitalize='none'
 				autoCorrect={false}
 				blurOnSubmit

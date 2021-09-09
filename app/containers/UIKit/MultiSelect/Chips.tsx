@@ -15,14 +15,14 @@ interface IChip {
 		text: string;
 	};
 	onSelect: Function;
-	style: object;
+	style?: object;
 	theme: string;
 }
 
 interface IChips {
 	items: [];
 	onSelect: Function;
-	style: object;
+	style?: object;
 	theme: string;
 }
 

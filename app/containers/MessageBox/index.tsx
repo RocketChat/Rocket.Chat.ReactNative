@@ -687,7 +687,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			if (this.canUploadFile(file)) {
 				this.openShareView([file]);
 			}
-		} catch (e) {
+		} catch (e: any) {
 			if (!DocumentPicker.isCancel(e)) {
 				logEvent(events.ROOM_BOX_ACTION_FILE_F);
 				log(e);
@@ -809,9 +809,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		// Edit
 		if (editing) {
 			const { message: editingMessage, editRequest } = this.props;
-			// @ts-ignore
 			const {
 				id,
+				// @ts-ignore
 				subscription: { id: rid }
 			} = editingMessage;
 			editRequest({ id, msg: message, rid });
@@ -981,10 +981,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				/>
 				<TextInput
 					ref={component => (this.component = component)}
-					// @ts-ignore
 					style={[styles.textBoxInput, { color: themes[theme].bodyText }]}
-					returnKeyType='default'
 					// @ts-ignore
+					returnKeyType='default'
 					keyboardType='twitter'
 					blurOnSubmit={false}
 					placeholder={I18n.t('New_Message')}

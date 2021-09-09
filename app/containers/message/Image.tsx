@@ -28,7 +28,7 @@ interface IMessageImage {
 	imageUrl?: string;
 	showAttachment: Function;
 	theme: string;
-	getCustomEmoji?: Function;
+	getCustomEmoji: Function;
 }
 
 const ImageProgress = createImageProgress(FastImage);
@@ -66,7 +66,7 @@ const ImageContainer = React.memo(
 				<Button theme={theme} onPress={onPress}>
 					<View>
 						<MessageImage img={img} theme={theme} />
-						{/* @ts-ignore*/}
+						{/* @ts-ignore */}
 						<Markdown
 							msg={file.description}
 							baseUrl={baseUrl}

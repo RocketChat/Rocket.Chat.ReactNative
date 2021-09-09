@@ -79,8 +79,8 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 				inputAndroidContainer: pickerStyle
 			}}
 			Icon={Icon}
-			// @ts-ignore
 			textInputProps={{
+				// @ts-ignore
 				style: { ...styles.pickerText, color: selected ? themes[theme].titleText : themes[theme].auxiliaryText }
 			}}
 		/>

@@ -57,7 +57,7 @@ const Base = forwardRef(
 							break;
 						case TYPE.CONFIRM:
 							if (currentPasscode !== previousPasscode) {
-								onError();
+								onError?.();
 							} else {
 								onEndProcess(currentPasscode);
 							}

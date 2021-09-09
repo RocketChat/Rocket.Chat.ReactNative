@@ -22,7 +22,7 @@ export const withActionSheet = (Component: React.FC) =>
 		<Consumer>{(contexts: any) => <Component {...props} {...contexts} ref={ref} />}</Consumer>
 	));
 
-export const ActionSheetProvider = React.memo(({ children }: { children: JSX.Element }) => {
+export const ActionSheetProvider = React.memo(({ children }: { children: JSX.Element | JSX.Element[] }) => {
 	const ref: ForwardedRef<any> = useRef();
 	const { theme }: any = useTheme();
 
@@ -38,7 +38,7 @@ export const ActionSheetProvider = React.memo(({ children }: { children: JSX.Ele
 	return (
 		<Provider value={getContext()}>
 			<ActionSheet ref={ref} theme={theme}>
-				{children}
+				<>{children}</>
 			</ActionSheet>
 		</Provider>
 	);

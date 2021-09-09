@@ -7,3 +7,4 @@ declare module 'react-native-platform-touchable';
 declare module 'react-native-ui-lib/keyboard';
 declare module '@rocket.chat/ui-kit';
 declare module 'react-native-config-reader';
+declare module 'react-native-keycommands';

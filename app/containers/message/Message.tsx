@@ -69,6 +69,7 @@ const Message = React.memo((props: IMessage) => {
 			<View style={[styles.container, props.style]}>
 				{thread}
 				<View style={styles.flex}>
+					{/* @ts-ignore */}
 					<MessageAvatar small {...props} />
 					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 						<Content {...props} />
@@ -81,6 +82,7 @@ const Message = React.memo((props: IMessage) => {
 	return (
 		<View style={[styles.container, props.style]}>
 			<View style={styles.flex}>
+				{/* @ts-ignore */}
 				<MessageAvatar {...props} />
 				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 					<MessageInner {...props} />

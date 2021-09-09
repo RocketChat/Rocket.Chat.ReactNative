@@ -156,9 +156,8 @@ export const MultiSelect = React.memo(
 			button = (
 				// @ts-ignore
 				<Input onPress={onShow} theme={theme} loading={loading} disabled={disabled} inputStyle={inputStyle}>
-					{/* @ts-ignore*/}
 					{items.length ? (
-						<Chips items={items} onSelect={item => (disabled ? {} : onSelect(item))} theme={theme} />
+						<Chips items={items} onSelect={(item: any) => (disabled ? {} : onSelect(item))} theme={theme} />
 					) : (
 						<Text style={[styles.pickerText, { color: themes[theme].auxiliaryText }]}>{placeholder.text}</Text>
 					)}
@@ -171,13 +170,14 @@ export const MultiSelect = React.memo(
 				<Modal animationType='fade' transparent visible={open} onRequestClose={onHide} onShow={onShow}>
 					<TouchableWithoutFeedback onPress={onHide}>
 						<View style={styles.container}>
-							{/* @ts-ignore*/}
 							<View
-								style={{
-									...StyleSheet.absoluteFill,
-									opacity: themes[theme].backdropOpacity,
-									backgroundColor: themes[theme].backdropColor
-								}}
+								style={[
+									StyleSheet.absoluteFill,
+									{
+										opacity: themes[theme].backdropOpacity,
+										backgroundColor: themes[theme].backdropColor
+									}
+								]}
 							/>
 							{/* @ts-ignore*/}
 							<KeyboardAvoidingView style={styles.keyboardView} behavior={behavior}>
