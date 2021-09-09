@@ -27,7 +27,7 @@ const MentionItem = ({
 			case MENTIONS_TRACKING_TYPE_COMMANDS:
 				return `mention-item-${ item.command || item }`;
 			case MENTIONS_TRACKING_TYPE_CANNED:
-				return `mention-item-${ item.command || item }`;
+				return `mention-item-${ item.id || item }`;
 			default:
 				return `mention-item-${ item.username || item.name || item }`;
 		}
