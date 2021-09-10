@@ -235,8 +235,6 @@
   "Forward_to_user": "Encaminhar para usuário",
   "Full_table": "Clique para ver a tabela completa",
   "Generate_New_Link": "Gerar novo convite",
-  "Group_by_favorites": "Agrupar favoritos",
-  "Group_by_type": "Agrupar por tipo",
   "Hide": "Ocultar",
   "Has_joined_the_channel": "entrou no canal",
   "Has_joined_the_conversation": "entrou na conversa",
@@ -669,5 +667,12 @@
   "Left_The_Room_Successfully": "Saiu da sala com sucesso",
   "Deleted_The_Team_Successfully": "Time deletado com sucesso",
   "Deleted_The_Room_Successfully": "Sala deletada com sucesso",
-  "Convert_to_Channel": "Converter para um Canal"
+  "Convert_to_Channel": "Converter para um Canal",
+  "Display": "Display",
+  "Avatars": "Avatars",
+  "Sort_by": "Ordenar por",
+  "Group_by": "Agrupar por",
+  "Types": "Tipos",
+  "Expanded": "Estendido",
+  "Condensed": "Condensado"
 }
