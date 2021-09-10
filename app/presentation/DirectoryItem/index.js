@@ -21,7 +21,6 @@ const DirectoryItemLabel = React.memo(({ text, theme }) => {
 const DirectoryItem = ({
 	title, description, avatar, onPress, testID, style, baseUrl, user, rightLabel, type, theme, icon, age, typeIcon
 }) => {
-	console.log('age123456', age)
 	return (
 		<Touch
 			onPress={onPress}

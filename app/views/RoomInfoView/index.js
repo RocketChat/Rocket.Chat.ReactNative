@@ -333,14 +333,14 @@ class RoomInfoView extends React.Component {
 			isPeerSupporter = roomUser.parsedRoles.indexOf('Peer Supporter') > -1;
 		}
 
-		return isPeerSupporter
+		return isPeerSupporter 
 			? (
-				<View style={{
+				roomUser.customFields.VideoUrl ?<View style={{
 					width: 320,
 					height: 240
 				}}
 				>
-					<WebView
+					 <WebView
 						style={{
 							width: '100%',
 							height: '100%',
@@ -356,7 +356,7 @@ class RoomInfoView extends React.Component {
 							uri: `${ roomUser.customFields.VideoUrl }`
 						}}
 					/>
-				</View>
+				</View>: null
 			)
 			: (
 				<Avatar
