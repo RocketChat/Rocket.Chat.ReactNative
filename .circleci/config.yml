@@ -340,7 +340,7 @@ jobs:
     <<: *defaults
     docker:
       - image: circleci/node:15
-
+    resource_class: large
     environment:
       CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
 
