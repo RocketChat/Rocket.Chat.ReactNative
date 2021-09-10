@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import database from '../../lib/database';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
@@ -14,6 +15,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import log, { events, logEvent } from '../../utils/log';
 import { OPTIONS } from './options';
 import sharedStyles from '../Styles';
+import { compareServerVersion, methods } from '../../lib/utils';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -30,7 +32,8 @@ class NotificationPreferencesView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		route: PropTypes.object,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		serverVersion: PropTypes.string
 	};
 
 	constructor(props) {
@@ -132,6 +135,7 @@ class NotificationPreferencesView extends React.Component {
 
 	render() {
 		const { room } = this.state;
+		const { serverVersion } = this.props;
 		return (
 			<SafeAreaView testID='notification-preference-view'>
 				<StatusBar />
@@ -192,31 +196,37 @@ class NotificationPreferencesView extends React.Component {
 						<List.Separator />
 						<List.Info info='Push_Notifications_Alert_Info' />
 					</List.Section>
+					{(compareServerVersion(serverVersion, '4.0.0', methods.lowerThan))
+						? (
+							<List.Section title='Desktop_Options'>
+								<List.Separator />
+								<List.Item
+									title='Audio'
+									testID='notification-preference-view-audio'
+									onPress={title => this.pickerSelection(title, 'audioNotifications')}
+									right={() => this.renderPickerOption('audioNotifications')}
+								/>
+								<List.Separator />
 
-					<List.Section title='Desktop_Options'>
-						<List.Separator />
-						<List.Item
-							title='Audio'
-							testID='notification-preference-view-audio'
-							onPress={title => this.pickerSelection(title, 'audioNotifications')}
-							right={() => this.renderPickerOption('audioNotifications')}
-						/>
-						<List.Separator />
-						<List.Item
-							title='Sound'
-							testID='notification-preference-view-sound'
-							onPress={title => this.pickerSelection(title, 'audioNotificationValue')}
-							right={() => this.renderPickerOption('audioNotificationValue')}
-						/>
-						<List.Separator />
-						<List.Item
-							title='Notification_Duration'
-							testID='notification-preference-view-notification-duration'
-							onPress={title => this.pickerSelection(title, 'desktopNotificationDuration')}
-							right={() => this.renderPickerOption('desktopNotificationDuration')}
-						/>
-						<List.Separator />
-					</List.Section>
+								<>
+									<List.Item
+										title='Sound'
+										testID='notification-preference-view-sound'
+										onPress={title => this.pickerSelection(title, 'audioNotificationValue')}
+										right={() => this.renderPickerOption('audioNotificationValue')}
+									/>
+									<List.Separator />
+								</>
+
+								<List.Item
+									title='Notification_Duration'
+									testID='notification-preference-view-notification-duration'
+									onPress={title => this.pickerSelection(title, 'desktopNotificationDuration')}
+									right={() => this.renderPickerOption('desktopNotificationDuration')}
+								/>
+								<List.Separator />
+							</List.Section>
+						) : null}
 
 					<List.Section title='Email'>
 						<List.Separator />
@@ -234,4 +244,8 @@ class NotificationPreferencesView extends React.Component {
 	}
 }
 
-export default withTheme(NotificationPreferencesView);
+const mapStateToProps = state => ({
+	serverVersion: state.server.version
+});
+
+export default connect(mapStateToProps)(withTheme(NotificationPreferencesView));

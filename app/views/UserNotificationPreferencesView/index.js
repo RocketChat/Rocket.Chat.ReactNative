@@ -14,6 +14,7 @@ import { OPTIONS } from './options';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';
 import sharedStyles from '../Styles';
+import { compareServerVersion, methods } from '../../lib/utils';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -32,7 +33,8 @@ class UserNotificationPreferencesView extends React.Component {
 		theme: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string
-		})
+		}),
+		serverVersion: PropTypes.string
 	};
 
 	constructor(props) {
@@ -92,7 +94,7 @@ class UserNotificationPreferencesView extends React.Component {
 	}
 
 	render() {
-		const { theme } = this.props;
+		const { theme, serverVersion } = this.props;
 		const { loading } = this.state;
 		return (
 			<SafeAreaView testID='user-notification-preference-view'>
@@ -101,17 +103,19 @@ class UserNotificationPreferencesView extends React.Component {
 					{loading
 						? (
 							<>
-								<List.Section title='Desktop_Notifications'>
-									<List.Separator />
-									<List.Item
-										title='Alert'
-										testID='user-notification-preference-view-alert'
-										onPress={title => this.pickerSelection(title, 'desktopNotifications')}
-										right={() => this.renderPickerOption('desktopNotifications')}
-									/>
-									<List.Separator />
-									<List.Info info='Desktop_Alert_info' />
-								</List.Section>
+								{compareServerVersion(serverVersion, '4.0.0', methods.lowerThan) ? (
+									<List.Section title='Desktop_Notifications'>
+										<List.Separator />
+										<List.Item
+											title='Alert'
+											testID='user-notification-preference-view-alert'
+											onPress={title => this.pickerSelection(title, 'desktopNotifications')}
+											right={() => this.renderPickerOption('desktopNotifications')}
+										/>
+										<List.Separator />
+										<List.Info info='Desktop_Alert_info' />
+									</List.Section>
+								) : null}
 
 								<List.Section title='Push_Notifications'>
 									<List.Separator />
@@ -146,7 +150,8 @@ class UserNotificationPreferencesView extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	serverVersion: state.server.version
 });
 
 export default connect(mapStateToProps)(withTheme(UserNotificationPreferencesView));
