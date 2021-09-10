@@ -49716,7 +49716,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -49748,7 +49747,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -49798,13 +49797,16 @@ exports[`Storyshots Room Item Alerts 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -50009,6 +50011,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -50021,6 +50024,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -50030,13 +50036,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -50046,7 +50052,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -50154,7 +50162,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -50186,7 +50193,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -50236,13 +50243,16 @@ exports[`Storyshots Room Item Alerts 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -50447,6 +50457,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -50459,6 +50470,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -50468,13 +50482,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -50484,7 +50498,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -50633,7 +50649,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -50665,7 +50680,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -50715,13 +50730,16 @@ exports[`Storyshots Room Item Alerts 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -50926,6 +50944,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -50938,6 +50957,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -50947,13 +50969,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -50963,7 +50985,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -51112,7 +51136,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -51144,7 +51167,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -51194,13 +51217,16 @@ exports[`Storyshots Room Item Alerts 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -51405,6 +51431,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -51417,6 +51444,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -51426,13 +51456,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -51442,7 +51472,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -51591,7 +51623,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -51623,7 +51654,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -51673,13 +51704,16 @@ exports[`Storyshots Room Item Alerts 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -51884,6 +51918,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -51896,6 +51931,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -51905,13 +51943,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -51921,7 +51959,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -52070,7 +52110,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -52102,7 +52141,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -52152,13 +52191,16 @@ exports[`Storyshots Room Item Alerts 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -52363,6 +52405,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -52375,6 +52418,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -52384,13 +52430,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -52400,7 +52446,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -52549,7 +52597,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -52581,7 +52628,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -52631,13 +52678,16 @@ exports[`Storyshots Room Item Alerts 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -52842,6 +52892,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -52854,6 +52905,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -52863,13 +52917,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -52879,7 +52933,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -53028,7 +53084,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -53060,7 +53115,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -53110,13 +53165,16 @@ exports[`Storyshots Room Item Alerts 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -53321,6 +53379,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -53333,6 +53392,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -53342,13 +53404,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -53358,7 +53420,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -53507,7 +53571,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -53539,7 +53602,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -53589,13 +53652,16 @@ exports[`Storyshots Room Item Alerts 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -53800,6 +53866,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -53812,6 +53879,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -53821,13 +53891,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -53837,7 +53907,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -53986,7 +54058,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -54018,7 +54089,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -54068,13 +54139,16 @@ exports[`Storyshots Room Item Alerts 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -54279,6 +54353,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -54291,6 +54366,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -54300,13 +54378,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -54316,7 +54394,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -54465,7 +54545,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -54497,7 +54576,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -54547,13 +54626,16 @@ exports[`Storyshots Room Item Alerts 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -54758,6 +54840,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -54770,6 +54853,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -54779,13 +54865,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -54795,7 +54881,9 @@ exports[`Storyshots Room Item Alerts 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -54957,7 +55045,6 @@ exports[`Storyshots Room Item Basic 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -54989,7 +55076,7 @@ exports[`Storyshots Room Item Basic 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -55039,13 +55126,16 @@ exports[`Storyshots Room Item Basic 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -55250,6 +55340,7 @@ exports[`Storyshots Room Item Basic 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -55262,6 +55353,9 @@ exports[`Storyshots Room Item Basic 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -55271,13 +55365,13 @@ exports[`Storyshots Room Item Basic 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -55287,7 +55381,9 @@ exports[`Storyshots Room Item Basic 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -55393,7 +55489,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -55401,7 +55496,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
             style={
               Object {
                 "backgroundColor": "#1d74f5",
-                "height": 150,
+                "height": 120,
                 "justifyContent": "center",
                 "position": "absolute",
                 "right": 670,
@@ -55477,13 +55572,18 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              Object {
+                "height": 120,
+              },
+            ]
           }
         >
           <View
@@ -55690,6 +55790,9 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  Object {
+                    "paddingVertical": 20,
+                  },
                 ]
               }
             >
@@ -55702,6 +55805,9 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -55711,13 +55817,13 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -55727,7 +55833,9 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -55876,7 +55984,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -55884,7 +55991,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
             style={
               Object {
                 "backgroundColor": "#1d74f5",
-                "height": 150,
+                "height": 120,
                 "justifyContent": "center",
                 "position": "absolute",
                 "right": 670,
@@ -55960,13 +56067,18 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              Object {
+                "height": 120,
+              },
+            ]
           }
         >
           <View
@@ -56173,6 +56285,9 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  Object {
+                    "paddingVertical": 20,
+                  },
                 ]
               }
             >
@@ -56185,6 +56300,9 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -56194,13 +56312,13 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -56210,7 +56328,9 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -56359,7 +56479,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -56367,7 +56486,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
             style={
               Object {
                 "backgroundColor": "#1d74f5",
-                "height": 150,
+                "height": 120,
                 "justifyContent": "center",
                 "position": "absolute",
                 "right": 670,
@@ -56443,13 +56562,18 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              Object {
+                "height": 120,
+              },
+            ]
           }
         >
           <View
@@ -56656,6 +56780,9 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  Object {
+                    "paddingVertical": 20,
+                  },
                 ]
               }
             >
@@ -56668,6 +56795,9 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -56677,7 +56807,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
@@ -56686,7 +56816,9 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                         Object {
                           "color": "#0d0e12",
                         },
-                        undefined,
+                        Object {
+                          "marginRight": 8,
+                        },
                       ],
                       Object {
                         "fontFamily": "custom",
@@ -56823,7 +56955,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -56831,7 +56962,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
             style={
               Object {
                 "backgroundColor": "#1d74f5",
-                "height": 150,
+                "height": 120,
                 "justifyContent": "center",
                 "position": "absolute",
                 "right": 670,
@@ -56907,13 +57038,18 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              Object {
+                "height": 120,
+              },
+            ]
           }
         >
           <View
@@ -57070,6 +57206,9 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  Object {
+                    "paddingVertical": 20,
+                  },
                 ]
               }
             >
@@ -57082,6 +57221,9 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -57091,13 +57233,13 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -57107,7 +57249,9 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -57256,7 +57400,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -57264,7 +57407,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
             style={
               Object {
                 "backgroundColor": "#1d74f5",
-                "height": 150,
+                "height": 120,
                 "justifyContent": "center",
                 "position": "absolute",
                 "right": 670,
@@ -57340,13 +57483,18 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              Object {
+                "height": 120,
+              },
+            ]
           }
         >
           <View
@@ -57503,6 +57651,9 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  Object {
+                    "paddingVertical": 20,
+                  },
                 ]
               }
             >
@@ -57515,6 +57666,9 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -57524,7 +57678,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
@@ -57533,7 +57687,9 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                         Object {
                           "color": "#0d0e12",
                         },
-                        undefined,
+                        Object {
+                          "marginRight": 8,
+                        },
                       ],
                       Object {
                         "fontFamily": "custom",
@@ -57621,7 +57777,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -57629,7 +57784,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
             style={
               Object {
                 "backgroundColor": "#1d74f5",
-                "height": 150,
+                "height": 120,
                 "justifyContent": "center",
                 "position": "absolute",
                 "right": 670,
@@ -57705,13 +57860,18 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              Object {
+                "height": 120,
+              },
+            ]
           }
         >
           <View
@@ -57868,6 +58028,9 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  Object {
+                    "paddingVertical": 20,
+                  },
                 ]
               }
             >
@@ -57880,6 +58043,9 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -57889,13 +58055,13 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -57905,7 +58071,9 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -58047,7 +58215,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -58079,7 +58246,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -58129,13 +58296,16 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -58292,13 +58462,13 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                   Array [
                     Object {
                       "color": "#cbced1",
-                      "fontSize": 18,
+                      "fontSize": 24,
                     },
                     Array [
                       Object {
-                        "height": 18,
+                        "height": 24,
                         "textAlignVertical": "center",
-                        "width": 18,
+                        "width": 24,
                       },
                       Array [
                         Array [
@@ -58308,7 +58478,9 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                           Object {
                             "color": "#0d0e12",
                           },
-                          undefined,
+                          Object {
+                            "marginRight": 12,
+                          },
                         ],
                         Object {
                           "color": "#cbced1",
@@ -58339,6 +58511,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -58451,7 +58624,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                       },
                     ]
                   }
-                  testID="room-list-view-last-message"
+                  testID="room-item-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -58518,7 +58691,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -58550,7 +58722,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -58600,13 +58772,16 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -58763,13 +58938,13 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                   Array [
                     Object {
                       "color": "#2de0a5",
-                      "fontSize": 18,
+                      "fontSize": 24,
                     },
                     Array [
                       Object {
-                        "height": 18,
+                        "height": 24,
                         "textAlignVertical": "center",
-                        "width": 18,
+                        "width": 24,
                       },
                       Array [
                         Array [
@@ -58779,7 +58954,9 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                           Object {
                             "color": "#0d0e12",
                           },
-                          undefined,
+                          Object {
+                            "marginRight": 12,
+                          },
                         ],
                         Object {
                           "color": "#2de0a5",
@@ -58810,6 +58987,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -58922,7 +59100,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                       },
                     ]
                   }
-                  testID="room-list-view-last-message"
+                  testID="room-item-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -58973,19 +59151,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
         </View>
       </View>
     </View>
-  </View>
-</RCTScrollView>
-`;
-
-exports[`Storyshots Room Item Last Message 1`] = `
-<RCTScrollView
-  style={
-    Object {
-      "backgroundColor": "#ffffff",
-    }
-  }
->
-  <View>
     <View
       style={Object {}}
     >
@@ -59002,7 +59167,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -59034,7 +59198,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -59084,13 +59248,464 @@ exports[`Storyshots Room Item Last Message 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#54585e",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+                "transform": Array [
+                  Object {
+                    "translateX": 750,
+                  },
+                ],
+                "width": 750,
+              }
             }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#ffffff",
+                    "fontSize": 20,
+                  },
+                  undefined,
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 15,
+                    "fontWeight": "600",
+                    "justifyContent": "center",
+                    "marginTop": 4,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#ffffff",
+                  },
+                ]
+              }
+            >
+              Favorite
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "top": 0,
+                "transform": Array [
+                  Object {
+                    "translateX": 750,
+                  },
+                ],
+                "width": 750,
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#ffffff",
+                    "fontSize": 20,
+                  },
+                  undefined,
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 15,
+                    "fontWeight": "600",
+                    "justifyContent": "center",
+                    "marginTop": 4,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#ffffff",
+                  },
+                ]
+              }
+            >
+              Hide
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "transform": Array [
+                Object {
+                  "translateX": 0,
+                },
+              ],
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "height": 150,
+                  "paddingLeft": 14,
+                },
+                false,
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "height": 150,
+                  "justifyContent": "center",
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                style={
+                  Array [
+                    Object {
+                      "color": "#2de0a5",
+                      "fontSize": 24,
+                    },
+                    Array [
+                      Object {
+                        "height": 24,
+                        "textAlignVertical": "center",
+                        "width": 24,
+                      },
+                      Array [
+                        Array [
+                          Object {
+                            "marginRight": 4,
+                          },
+                          Object {
+                            "color": "#0d0e12",
+                          },
+                          Object {
+                            "marginRight": 12,
+                          },
+                        ],
+                        Object {
+                          "color": "#2de0a5",
+                        },
+                      ],
+                    ],
+                    Object {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+            <View
+              style={
+                Array [
+                  Object {
+                    "borderBottomWidth": 0.5,
+                    "flex": 1,
+                    "paddingRight": 14,
+                    "paddingVertical": 10,
+                  },
+                  Object {
+                    "borderColor": "#cbcbcc",
+                  },
+                  false,
+                ]
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "justifyContent": "center",
+                    "width": "100%",
+                  }
+                }
+              >
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "flex": 1,
+                        "fontFamily": "System",
+                        "fontSize": 17,
+                        "fontWeight": "500",
+                        "lineHeight": 20,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontWeight": "600",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#0d0e12",
+                      },
+                    ]
+                  }
+                >
+                  rocket.cat
+                </Text>
+                <Text
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "marginLeft": 4,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                      Array [
+                        Object {
+                          "backgroundColor": "transparent",
+                          "fontFamily": "System",
+                          "fontWeight": "600",
+                          "textAlign": "left",
+                        },
+                        Object {
+                          "color": "#1d74f5",
+                        },
+                      ],
+                    ]
+                  }
+                >
+                  10:00
+                </Text>
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "flex-start",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+                  numberOfLines={2}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#2f343d",
+                      },
+                      Object {
+                        "backgroundColor": "transparent",
+                        "flex": 1,
+                        "fontFamily": "System",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "lineHeight": 17,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#2f343d",
+                      },
+                    ]
+                  }
+                  testID="room-item-last-message"
+                >
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots Room Item Last Message 1`] = `
+<RCTScrollView
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+    }
+  }
+>
+  <View>
+    <View
+      style={Object {}}
+    >
+      <View
+        style={Object {}}
+      >
+        <View
+          pointerEvents="box-none"
+          style={
+            Array [
+              Object {
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+            ]
+          }
+        >
+          <View
+            style={
+              Object {
+                "backgroundColor": "#1d74f5",
+                "height": 150,
+                "justifyContent": "center",
+                "position": "absolute",
+                "right": 670,
+                "top": 0,
+                "transform": Array [
+                  Object {
+                    "translateX": -80,
+                  },
+                ],
+                "width": 750,
+              }
+            }
+          >
+            <View
+              style={
+                Array [
+                  Object {
+                    "height": 150,
+                    "justifyContent": "center",
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  },
+                  null,
+                ]
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                style={
+                  Array [
+                    Object {
+                      "color": "white",
+                      "fontSize": 20,
+                    },
+                    undefined,
+                    Object {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    Object {},
+                  ]
+                }
+              >
+                
+              </Text>
+              <Text
+                style={
+                  Array [
+                    Object {
+                      "backgroundColor": "transparent",
+                      "fontFamily": "System",
+                      "fontSize": 15,
+                      "fontWeight": "600",
+                      "justifyContent": "center",
+                      "marginTop": 4,
+                      "textAlign": "left",
+                    },
+                    Object {
+                      "color": "#ffffff",
+                    },
+                  ]
+                }
+              >
+                Read
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          pointerEvents="box-none"
+          style={
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -59295,6 +59910,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -59432,7 +60048,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
-                  testID="room-list-view-last-message"
+                  testID="room-item-last-message"
                 >
                   No Message
                 </Text>
@@ -59458,7 +60074,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -59490,7 +60105,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -59540,13 +60155,16 @@ exports[`Storyshots Room Item Last Message 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -59751,6 +60369,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -59888,7 +60507,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
-                  testID="room-list-view-last-message"
+                  testID="room-item-last-message"
                 >
                   2
                 </Text>
@@ -59914,7 +60533,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -59946,7 +60564,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -59996,13 +60614,16 @@ exports[`Storyshots Room Item Last Message 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -60207,6 +60828,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -60344,7 +60966,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
-                  testID="room-list-view-last-message"
+                  testID="room-item-last-message"
                 >
                   You: 1
                 </Text>
@@ -60370,7 +60992,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -60402,7 +61023,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -60452,13 +61073,16 @@ exports[`Storyshots Room Item Last Message 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -60663,6 +61287,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -60800,7 +61425,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
-                  testID="room-list-view-last-message"
+                  testID="room-item-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -60826,7 +61451,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -60858,7 +61482,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -60908,13 +61532,16 @@ exports[`Storyshots Room Item Last Message 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -61119,6 +61746,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -61271,7 +61899,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
-                  testID="room-list-view-last-message"
+                  testID="room-item-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -61338,7 +61966,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -61370,7 +61997,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -61420,13 +62047,16 @@ exports[`Storyshots Room Item Last Message 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -61631,6 +62261,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -61783,7 +62414,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
-                  testID="room-list-view-last-message"
+                  testID="room-item-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -61850,7 +62481,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -61882,7 +62512,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -61932,13 +62562,16 @@ exports[`Storyshots Room Item Last Message 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -62143,6 +62776,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -62295,7 +62929,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                       },
                     ]
                   }
-                  testID="room-list-view-last-message"
+                  testID="room-item-last-message"
                 >
                   Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
                 </Text>
@@ -62375,7 +63009,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -62407,7 +63040,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -62457,13 +63090,16 @@ exports[`Storyshots Room Item Tag 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -62668,6 +63304,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -62680,6 +63317,9 @@ exports[`Storyshots Room Item Tag 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -62689,13 +63329,13 @@ exports[`Storyshots Room Item Tag 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -62705,7 +63345,9 @@ exports[`Storyshots Room Item Tag 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -62834,7 +63476,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -62866,7 +63507,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -62916,13 +63557,16 @@ exports[`Storyshots Room Item Tag 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -63127,6 +63771,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -63301,7 +63946,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                       },
                     ]
                   }
-                  testID="room-list-view-last-message"
+                  testID="room-item-last-message"
                 >
                   No Message
                 </Text>
@@ -63327,7 +63972,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -63359,7 +64003,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -63409,13 +64053,16 @@ exports[`Storyshots Room Item Tag 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -63620,6 +64267,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -63632,6 +64280,9 @@ exports[`Storyshots Room Item Tag 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -63641,13 +64292,13 @@ exports[`Storyshots Room Item Tag 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -63657,7 +64308,9 @@ exports[`Storyshots Room Item Tag 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -63786,7 +64439,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -63818,7 +64470,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -63868,13 +64520,16 @@ exports[`Storyshots Room Item Tag 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -64079,6 +64734,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -64253,7 +64909,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                       },
                     ]
                   }
-                  testID="room-list-view-last-message"
+                  testID="room-item-last-message"
                 >
                   No Message
                 </Text>
@@ -64292,7 +64948,6 @@ exports[`Storyshots Room Item Touch 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -64324,7 +64979,7 @@ exports[`Storyshots Room Item Touch 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -64374,13 +65029,16 @@ exports[`Storyshots Room Item Touch 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -64585,6 +65243,7 @@ exports[`Storyshots Room Item Touch 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -64597,6 +65256,9 @@ exports[`Storyshots Room Item Touch 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -64606,13 +65268,13 @@ exports[`Storyshots Room Item Touch 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -64622,7 +65284,9 @@ exports[`Storyshots Room Item Touch 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -64728,7 +65392,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -64760,7 +65423,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -64810,13 +65473,16 @@ exports[`Storyshots Room Item Type 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -65021,6 +65687,7 @@ exports[`Storyshots Room Item Type 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -65033,6 +65700,9 @@ exports[`Storyshots Room Item Type 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -65042,13 +65712,13 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -65058,7 +65728,9 @@ exports[`Storyshots Room Item Type 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -65151,7 +65823,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -65183,7 +65854,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -65233,13 +65904,16 @@ exports[`Storyshots Room Item Type 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -65444,6 +66118,7 @@ exports[`Storyshots Room Item Type 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -65456,6 +66131,9 @@ exports[`Storyshots Room Item Type 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -65465,7 +66143,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
@@ -65474,7 +66152,9 @@ exports[`Storyshots Room Item Type 1`] = `
                         Object {
                           "color": "#0d0e12",
                         },
-                        undefined,
+                        Object {
+                          "marginRight": 8,
+                        },
                       ],
                       Object {
                         "fontFamily": "custom",
@@ -65562,7 +66242,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -65594,7 +66273,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -65644,13 +66323,16 @@ exports[`Storyshots Room Item Type 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -65855,6 +66537,7 @@ exports[`Storyshots Room Item Type 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -65867,6 +66550,9 @@ exports[`Storyshots Room Item Type 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -65876,7 +66562,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
@@ -65885,7 +66571,9 @@ exports[`Storyshots Room Item Type 1`] = `
                         Object {
                           "color": "#0d0e12",
                         },
-                        undefined,
+                        Object {
+                          "marginRight": 8,
+                        },
                       ],
                       Object {
                         "fontFamily": "custom",
@@ -65973,7 +66661,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -66005,7 +66692,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -66055,13 +66742,16 @@ exports[`Storyshots Room Item Type 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -66266,6 +66956,7 @@ exports[`Storyshots Room Item Type 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -66278,6 +66969,9 @@ exports[`Storyshots Room Item Type 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -66287,7 +66981,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
@@ -66296,7 +66990,9 @@ exports[`Storyshots Room Item Type 1`] = `
                         Object {
                           "color": "#0d0e12",
                         },
-                        undefined,
+                        Object {
+                          "marginRight": 8,
+                        },
                       ],
                       Object {
                         "fontFamily": "custom",
@@ -66384,7 +67080,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -66416,7 +67111,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -66466,13 +67161,16 @@ exports[`Storyshots Room Item Type 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -66677,6 +67375,7 @@ exports[`Storyshots Room Item Type 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -66689,6 +67388,9 @@ exports[`Storyshots Room Item Type 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -66698,7 +67400,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
@@ -66707,7 +67409,9 @@ exports[`Storyshots Room Item Type 1`] = `
                         Object {
                           "color": "#0d0e12",
                         },
-                        undefined,
+                        Object {
+                          "marginRight": 8,
+                        },
                       ],
                       Object {
                         "fontFamily": "custom",
@@ -66795,7 +67499,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -66827,7 +67530,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -66877,13 +67580,16 @@ exports[`Storyshots Room Item Type 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -67088,6 +67794,7 @@ exports[`Storyshots Room Item Type 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -67100,6 +67807,9 @@ exports[`Storyshots Room Item Type 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -67109,7 +67819,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
@@ -67118,7 +67828,9 @@ exports[`Storyshots Room Item Type 1`] = `
                         Object {
                           "color": "#0d0e12",
                         },
-                        undefined,
+                        Object {
+                          "marginRight": 8,
+                        },
                       ],
                       Object {
                         "fontFamily": "custom",
@@ -67206,7 +67918,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -67238,7 +67949,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -67288,13 +67999,16 @@ exports[`Storyshots Room Item Type 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -67499,6 +68213,7 @@ exports[`Storyshots Room Item Type 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -67511,6 +68226,9 @@ exports[`Storyshots Room Item Type 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -67520,7 +68238,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
@@ -67529,7 +68247,9 @@ exports[`Storyshots Room Item Type 1`] = `
                         Object {
                           "color": "#0d0e12",
                         },
-                        undefined,
+                        Object {
+                          "marginRight": 8,
+                        },
                       ],
                       Object {
                         "fontFamily": "custom",
@@ -67630,7 +68350,6 @@ exports[`Storyshots Room Item User 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -67662,7 +68381,7 @@ exports[`Storyshots Room Item User 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -67712,13 +68431,16 @@ exports[`Storyshots Room Item User 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -67923,6 +68645,7 @@ exports[`Storyshots Room Item User 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -67935,6 +68658,9 @@ exports[`Storyshots Room Item User 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -67944,13 +68670,13 @@ exports[`Storyshots Room Item User 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -67960,7 +68686,9 @@ exports[`Storyshots Room Item User 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -68053,7 +68781,6 @@ exports[`Storyshots Room Item User 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -68085,7 +68812,7 @@ exports[`Storyshots Room Item User 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -68135,13 +68862,16 @@ exports[`Storyshots Room Item User 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -68346,6 +69076,7 @@ exports[`Storyshots Room Item User 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -68358,6 +69089,9 @@ exports[`Storyshots Room Item User 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -68367,13 +69101,13 @@ exports[`Storyshots Room Item User 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -68383,7 +69117,9 @@ exports[`Storyshots Room Item User 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -68489,7 +69225,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -68521,7 +69256,7 @@ exports[`Storyshots Room Item User status 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -68571,13 +69306,16 @@ exports[`Storyshots Room Item User status 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -68782,6 +69520,7 @@ exports[`Storyshots Room Item User status 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -68794,6 +69533,9 @@ exports[`Storyshots Room Item User status 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -68803,13 +69545,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#2de0a5",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -68819,7 +69561,9 @@ exports[`Storyshots Room Item User status 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#2de0a5",
@@ -68912,7 +69656,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -68944,7 +69687,7 @@ exports[`Storyshots Room Item User status 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -68994,13 +69737,16 @@ exports[`Storyshots Room Item User status 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -69205,6 +69951,7 @@ exports[`Storyshots Room Item User status 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -69217,6 +69964,9 @@ exports[`Storyshots Room Item User status 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -69226,13 +69976,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#ffd21f",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -69242,7 +69992,9 @@ exports[`Storyshots Room Item User status 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#ffd21f",
@@ -69335,7 +70087,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -69367,7 +70118,7 @@ exports[`Storyshots Room Item User status 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -69417,13 +70168,16 @@ exports[`Storyshots Room Item User status 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -69628,6 +70382,7 @@ exports[`Storyshots Room Item User status 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -69640,6 +70395,9 @@ exports[`Storyshots Room Item User status 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -69649,13 +70407,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#f5455c",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -69665,7 +70423,9 @@ exports[`Storyshots Room Item User status 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#f5455c",
@@ -69758,7 +70518,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -69790,7 +70549,7 @@ exports[`Storyshots Room Item User status 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -69840,13 +70599,16 @@ exports[`Storyshots Room Item User status 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -70051,6 +70813,7 @@ exports[`Storyshots Room Item User status 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -70063,6 +70826,9 @@ exports[`Storyshots Room Item User status 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -70072,13 +70838,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -70088,7 +70854,9 @@ exports[`Storyshots Room Item User status 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
@@ -70181,7 +70949,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -70213,7 +70980,7 @@ exports[`Storyshots Room Item User status 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -70263,13 +71030,16 @@ exports[`Storyshots Room Item User status 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -70474,6 +71244,7 @@ exports[`Storyshots Room Item User status 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -70486,6 +71257,9 @@ exports[`Storyshots Room Item User status 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -70495,13 +71269,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#9ea2a8",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -70511,7 +71285,9 @@ exports[`Storyshots Room Item User status 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#9ea2a8",
@@ -70604,7 +71380,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
-              undefined,
             ]
           }
         >
@@ -70636,7 +71411,7 @@ exports[`Storyshots Room Item User status 1`] = `
                     "right": 0,
                     "top": 0,
                   },
-                  false,
+                  null,
                 ]
               }
             >
@@ -70686,13 +71461,16 @@ exports[`Storyshots Room Item User status 1`] = `
         <View
           pointerEvents="box-none"
           style={
-            Object {
-              "flexDirection": "row",
-              "height": 75,
-              "left": 0,
-              "position": "absolute",
-              "right": 0,
-            }
+            Array [
+              Object {
+                "flexDirection": "row",
+                "height": 150,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+              },
+              null,
+            ]
           }
         >
           <View
@@ -70897,6 +71675,7 @@ exports[`Storyshots Room Item User status 1`] = `
                   Object {
                     "borderColor": "#cbcbcc",
                   },
+                  false,
                 ]
               }
             >
@@ -70909,6 +71688,9 @@ exports[`Storyshots Room Item User status 1`] = `
                       "justifyContent": "center",
                       "width": "100%",
                     },
+                    Object {
+                      "flex": 1,
+                    },
                   ]
                 }
               >
@@ -70918,13 +71700,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 16,
+                        "fontSize": 24,
                       },
                       Array [
                         Object {
-                          "height": 16,
+                          "height": 24,
                           "textAlignVertical": "center",
-                          "width": 16,
+                          "width": 24,
                         },
                         Array [
                           Array [
@@ -70934,7 +71716,9 @@ exports[`Storyshots Room Item User status 1`] = `
                             Object {
                               "color": "#0d0e12",
                             },
-                            undefined,
+                            Object {
+                              "marginRight": 8,
+                            },
                           ],
                           Object {
                             "color": "#cbced1",
