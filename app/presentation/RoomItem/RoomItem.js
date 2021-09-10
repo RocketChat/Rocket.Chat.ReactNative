@@ -12,7 +12,7 @@ import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
-import { DISPLAY_MODE_EXPANDED } from './constantDisplayMode';
+import { DISPLAY_MODE_EXPANDED } from '../../constants/constantDisplayMode';
 
 const RoomItem = ({
 	rid,
@@ -119,7 +119,6 @@ const RoomItem = ({
 						</View>
 						<View style={styles.row}>
 							<LastMessage
-								testID='room-list-view-last-message'
 								lastMessage={lastMessage}
 								type={type}
 								showLastMessage={showLastMessage}
@@ -140,7 +139,7 @@ const RoomItem = ({
 					</>
 				)
 				: (
-					<View style={[styles.titleContainer]}>
+					<View style={[styles.titleContainer, styles.flex]}>
 						<TypeIcon
 							type={type}
 							prid={prid}
@@ -148,6 +147,7 @@ const RoomItem = ({
 							isGroupChat={isGroupChat}
 							theme={theme}
 							teamMain={teamMain}
+							size={18}
 						/>
 						<Title
 							name={name}

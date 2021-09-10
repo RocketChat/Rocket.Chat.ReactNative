@@ -16,7 +16,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
-import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
+import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../presentation/RoomItem';
 import styles from './styles';
 import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
@@ -60,6 +60,7 @@ import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
 
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
+import { DISPLAY_MODE_CONDENSED } from '../../constants/constantDisplayMode';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -104,9 +105,9 @@ const displayPropsShouldUpdate = [
 	'displayMode'
 ];
 
-const getItemLayout = (data, index) => ({
-	length: ROW_HEIGHT,
-	offset: ROW_HEIGHT * index,
+const getItemLayout = (data, index, height) => ({
+	length: height,
+	offset: height * index,
 	index
 });
 const keyExtractor = item => item.rid;
@@ -963,7 +964,9 @@ class RoomsListView extends React.Component {
 		const {
 			loading, chats, search, searching
 		} = this.state;
-		const { theme, refreshing } = this.props;
+		const { theme, refreshing, displayMode } = this.props;
+
+		const height = displayMode === DISPLAY_MODE_CONDENSED ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
@@ -978,7 +981,7 @@ class RoomsListView extends React.Component {
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
-				getItemLayout={getItemLayout}
+				getItemLayout={(data, index) => getItemLayout(data, index, height)}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}

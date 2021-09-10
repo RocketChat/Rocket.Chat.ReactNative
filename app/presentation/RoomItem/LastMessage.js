@@ -48,7 +48,7 @@ const formatMsg = ({
 const arePropsEqual = (oldProps, newProps) => dequal(oldProps, newProps);
 
 const LastMessage = React.memo(({
-	lastMessage, type, showLastMessage, username, alert, useRealName, theme, testID
+	lastMessage, type, showLastMessage, username, alert, useRealName, theme
 }) => (
 	<Markdown
 		msg={formatMsg({
@@ -60,7 +60,7 @@ const LastMessage = React.memo(({
 		numberOfLines={2}
 		preview
 		theme={theme}
-		testID={testID}
+		testID='room-item-last-message'
 	/>
 ), arePropsEqual);
 
@@ -71,8 +71,7 @@ LastMessage.propTypes = {
 	showLastMessage: PropTypes.bool,
 	username: PropTypes.string,
 	useRealName: PropTypes.bool,
-	alert: PropTypes.bool,
-	testID: PropTypes.string
+	alert: PropTypes.bool
 };
 
 export default LastMessage;

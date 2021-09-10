@@ -6,7 +6,7 @@ import Avatar from '../../containers/Avatar';
 import TypeIcon from './TypeIcon';
 
 import styles from './styles';
-import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from './constantDisplayMode';
+import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../../constants/constantDisplayMode';
 
 const IconOrAvatar = ({
 	avatar,
@@ -43,7 +43,7 @@ const IconOrAvatar = ({
 					isGroupChat={isGroupChat}
 					theme={theme}
 					teamMain={teamMain}
-					size={18}
+					size={24}
 				/>
 			</View>
 		);

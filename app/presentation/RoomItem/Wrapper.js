@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styles from './styles';
 import { themes } from '../../constants/colors';
 import IconOrAvatar from './IconOrAvatar';
-import { DISPLAY_MODE_CONDENSED } from './constantDisplayMode';
+import { DISPLAY_MODE_CONDENSED } from '../../constants/constantDisplayMode';
 
 const Wrapper = ({
 	accessibilityLabel,
@@ -31,7 +31,8 @@ const Wrapper = ({
 				styles.centerContainer,
 				{
 					borderColor: themes[theme].separatorColor
-				}
+				},
+				displayMode === DISPLAY_MODE_CONDENSED && styles.condensedPaddingVertical
 			]}
 		>
 			{children}

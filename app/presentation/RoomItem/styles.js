@@ -21,6 +21,9 @@ export default StyleSheet.create({
 	containerCondensed: {
 		height: ROW_HEIGHT_CONDENSED
 	},
+	condensedPaddingVertical: {
+		paddingVertical: 20
+	},
 	centerContainer: {
 		flex: 1,
 		paddingVertical: 10,
@@ -79,6 +82,13 @@ export default StyleSheet.create({
 		right: 0,
 		height: ROW_HEIGHT
 	},
+	actionsLeftContainer: {
+		flexDirection: 'row',
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		height: ROW_HEIGHT
+	},
 	actionText: {
 		fontSize: 15,
 		justifyContent: 'center',
@@ -117,6 +127,7 @@ export default StyleSheet.create({
 	},
 	typeIcon: {
 		height: ROW_HEIGHT,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		marginRight: 12
 	}
 });

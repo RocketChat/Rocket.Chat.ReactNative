@@ -8,7 +8,7 @@ import { themes } from '../../app/constants/colors';
 import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
 import { longText } from '../utils';
 import { store } from './index';
-import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../../app/presentation/RoomItem/constantDisplayMode';
+import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../../app/constants/constantDisplayMode';
 
 const baseUrl = 'https://open.rocket.chat';
 const { width } = Dimensions.get('window');
@@ -214,6 +214,14 @@ stories.add('Expanded Room Item without Avatar', () => (
 			showLastMessage
 			alert
 			tunread={[1]}
+			lastMessage={lastMessage}
+			displayMode={DISPLAY_MODE_EXPANDED}
+			showAvatar={false}
+		/>
+		<RoomItem
+			status='online'
+			showLastMessage
+			alert
 			lastMessage={lastMessage}
 			displayMode={DISPLAY_MODE_EXPANDED}
 			showAvatar={false}

@@ -7,7 +7,7 @@ import I18n, { isRTL } from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
-import { DISPLAY_MODE_CONDENSED } from './constantDisplayMode';
+import { DISPLAY_MODE_CONDENSED } from '../../constants/constantDisplayMode';
 
 const reverse = new Animated.Value(isRTL() ? -1 : 1);
 
@@ -21,9 +21,12 @@ export const LeftActions = React.memo(({
 		}),
 		reverse
 	);
+
+	const viewHeight = displayMode === DISPLAY_MODE_CONDENSED ? { height: ROW_HEIGHT_CONDENSED } : null;
+
 	return (
 		<View
-			style={[styles.actionsContainer, styles.actionLeftContainer]}
+			style={[styles.actionsContainer]}
 			pointerEvents='box-none'
 		>
 			<Animated.View
@@ -34,10 +37,11 @@ export const LeftActions = React.memo(({
 						width,
 						transform: [{ translateX }],
 						backgroundColor: themes[theme].tintColor
-					}
+					},
+					viewHeight
 				]}
 			>
-				<View style={[styles.actionLeftButtonContainer, (displayMode === DISPLAY_MODE_CONDENSED && { height: ROW_HEIGHT_CONDENSED })]}>
+				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
 						<>
 							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
@@ -67,15 +71,12 @@ export const RightActions = React.memo(({
 		}),
 		reverse
 	);
+
+	const viewHeight = displayMode === DISPLAY_MODE_CONDENSED ? { height: ROW_HEIGHT_CONDENSED } : null;
+
 	return (
 		<View
-			style={{
-				position: 'absolute',
-				left: 0,
-				right: 0,
-				height: 75,
-				flexDirection: 'row'
-			}}
+			style={[styles.actionsLeftContainer, viewHeight]}
 			pointerEvents='box-none'
 		>
 			<Animated.View
@@ -86,7 +87,7 @@ export const RightActions = React.memo(({
 						transform: [{ translateX: translateXFav }],
 						backgroundColor: themes[theme].hideBackground
 					},
-					(displayMode === DISPLAY_MODE_CONDENSED && { height: ROW_HEIGHT_CONDENSED })
+					viewHeight
 				]}
 			>
 				<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>

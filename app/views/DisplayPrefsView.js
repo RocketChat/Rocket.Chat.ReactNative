@@ -1,23 +1,21 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Switch } from 'react-native';
-
 import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { setPreference } from '../actions/sortPreferences';
 import RocketChat from '../lib/rocketchat';
 import StatusBar from '../containers/StatusBar';
 import I18n from '../i18n';
 import * as List from '../containers/List';
-
 import { useTheme } from '../theme';
 import { themes } from '../constants/colors';
-
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ICON_SIZE } from '../containers/List/constants';
 import log, { events, logEvent } from '../utils/log';
-import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../presentation/RoomItem/constantDisplayMode';
+import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../constants/constantDisplayMode';
 
 const DisplayPrefsView = (props) => {
 	const { theme } = useTheme();
@@ -44,53 +42,53 @@ const DisplayPrefsView = (props) => {
 		});
 	}, []);
 
-	const setSortPreference = (param) => {
+	const setSortPreference = async(param) => {
 		try {
 			dispatch(setPreference(param));
-			RocketChat.saveSortPreference(param);
+			await RocketChat.saveSortPreference(param);
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	const sortByName = () => {
+	const sortByName = async() => {
 		logEvent(events.DP_SORT_CHANNELS_BY_NAME);
-		setSortPreference({ sortBy: 'alphabetical' });
+		await setSortPreference({ sortBy: 'alphabetical' });
 	};
 
-	const sortByActivity = () => {
+	const sortByActivity = async() => {
 		logEvent(events.DP_SORT_CHANNELS_BY_ACTIVITY);
-		setSortPreference({ sortBy: 'activity' });
+		await setSortPreference({ sortBy: 'activity' });
 	};
 
-	const toggleGroupByType = () => {
+	const toggleGroupByType = async() => {
 		logEvent(events.DP_GROUP_CHANNELS_BY_TYPE);
-		setSortPreference({ groupByType: !groupByType });
+		await setSortPreference({ groupByType: !groupByType });
 	};
 
-	const toggleGroupByFavorites = () => {
+	const toggleGroupByFavorites = async() => {
 		logEvent(events.DP_GROUP_CHANNELS_BY_FAVORITE);
-		setSortPreference({ showFavorites: !showFavorites });
+		await setSortPreference({ showFavorites: !showFavorites });
 	};
 
-	const toggleUnread = () => {
+	const toggleUnread = async() => {
 		logEvent(events.DP_GROUP_CHANNELS_BY_UNREAD);
-		setSortPreference({ showUnread: !showUnread });
+		await setSortPreference({ showUnread: !showUnread });
 	};
 
-	const toggleAvatar = () => {
+	const toggleAvatar = async() => {
 		logEvent(events.DP_TOGGLE_AVATAR);
-		setSortPreference({ showAvatar: !showAvatar });
+		await setSortPreference({ showAvatar: !showAvatar });
 	};
 
-	const displayExpanded = () => {
+	const displayExpanded = async() => {
 		logEvent(events.DP_DISPLAY_EXPANDED);
-		setSortPreference({ displayMode: DISPLAY_MODE_EXPANDED });
+		await setSortPreference({ displayMode: DISPLAY_MODE_EXPANDED });
 	};
 
-	const displayCondensed = () => {
+	const displayCondensed = async() => {
 		logEvent(events.DP_DISPLAY_CONDENSED);
-		setSortPreference({ displayMode: DISPLAY_MODE_CONDENSED });
+		await setSortPreference({ displayMode: DISPLAY_MODE_CONDENSED });
 	};
 
 	const renderCheckBox = value => (

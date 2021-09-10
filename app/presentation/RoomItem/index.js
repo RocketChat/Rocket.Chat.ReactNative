@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
-import { ROW_HEIGHT } from './styles';
+import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
 import { formatDate } from '../../utils/room';
 import RoomItem from './RoomItem';
 
-export { ROW_HEIGHT };
+export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
 
 const attrs = [
 	'width',
