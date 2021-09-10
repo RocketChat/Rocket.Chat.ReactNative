@@ -12,11 +12,11 @@ import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import { logEvent, events } from '../../utils/log';
 
-const RECORDING_EXTENSION = '.aac';
+const RECORDING_EXTENSION = '.m4a';
 const RECORDING_SETTINGS = {
 	android: {
 		extension: RECORDING_EXTENSION,
-		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_AAC_ADTS,
+		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
 		audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
 		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.sampleRate,
 		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.numberOfChannels,
@@ -34,7 +34,7 @@ const RECORDING_SETTINGS = {
 const RECORDING_MODE = {
 	allowsRecordingIOS: true,
 	playsInSilentModeIOS: true,
-	staysActiveInBackground: false,
+	staysActiveInBackground: true,
 	shouldDuckAndroid: true,
 	playThroughEarpieceAndroid: false,
 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -140,7 +140,7 @@ export default class RecordAudio extends React.PureComponent {
 				const fileURI = this.recording.getURI();
 				const fileData = await getInfoAsync(fileURI);
 				const fileInfo = {
-					name: `${ Date.now() }.aac`,
+					name: `${ Date.now() }.m4a`,
 					mime: 'audio/aac',
 					type: 'audio/aac',
 					store: 'Uploads',
