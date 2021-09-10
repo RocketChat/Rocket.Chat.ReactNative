@@ -127,7 +127,6 @@ export default StyleSheet.create({
 	},
 	typeIcon: {
 		height: ROW_HEIGHT,
-		justifyContent: 'center',
-		marginRight: 12
+		justifyContent: 'center'
 	}
 });

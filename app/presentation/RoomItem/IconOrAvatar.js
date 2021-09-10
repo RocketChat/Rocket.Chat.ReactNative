@@ -44,6 +44,7 @@ const IconOrAvatar = ({
 					theme={theme}
 					teamMain={teamMain}
 					size={24}
+					style={{ marginRight: 12 }}
 				/>
 			</View>
 		);
