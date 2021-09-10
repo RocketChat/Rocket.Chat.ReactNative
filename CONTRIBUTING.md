@@ -58,12 +58,6 @@ yarn lint
 
 We use [Prettier](https://prettier.io) to format the code style in our project. We have a pre-commit hook enforcing commits to follow our style guides.
 
-To check your code formatting, run this on your terminal:
-
-```sh
-yarn prettier-check
-```
-
 To fix your code formatting issues, run this on your terminal:
 
 ```sh
