@@ -4,7 +4,6 @@ import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	containerHeader: {
-		height: 92,
 		paddingTop: 12,
 		paddingHorizontal: 16,
 		paddingBottom: 8
@@ -33,7 +32,8 @@ export default StyleSheet.create({
 		height: 40,
 		paddingHorizontal: 16,
 		borderWidth: 2,
-		width: 200
+		flex: 1,
+		marginRight: 8
 	},
 	inputSearch: {
 		flex: 1,
