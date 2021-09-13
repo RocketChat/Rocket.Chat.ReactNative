@@ -1,4 +1,4 @@
-import React, { forwardRef, isValidElement, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Keyboard, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { State, TapGestureHandler } from 'react-native-gesture-handler';
