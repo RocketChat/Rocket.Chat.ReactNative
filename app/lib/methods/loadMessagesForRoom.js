@@ -3,8 +3,8 @@ import moment from 'moment';
 import { MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
-import updateMessages from './updateMessages';
 import { generateLoadMoreId } from '../utils';
+import updateMessages from './updateMessages';
 
 const COUNT = 50;
 
@@ -20,7 +20,7 @@ async function load({ rid: roomId, latest, t }) {
 	}
 
 	// RC 0.48.0
-	const data = await this.sdk.get(`${ apiType }.history`, params);
+	const data = await this.sdk.get(`${apiType}.history`, params);
 	if (!data || data.status === 'error') {
 		return [];
 	}
@@ -28,7 +28,7 @@ async function load({ rid: roomId, latest, t }) {
 }
 
 export default function loadMessagesForRoom(args) {
-	return new Promise(async(resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await load.call(this, args);
 			if (data?.length) {

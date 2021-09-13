@@ -1,16 +1,14 @@
-import {
-	select, put, call, take, takeLatest
-} from 'redux-saga/effects';
+import { call, put, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
-import { createChannelSuccess, createChannelFailure } from '../actions/createChannel';
+import { createChannelFailure, createChannelSuccess } from '../actions/createChannel';
 import { showErrorAlert } from '../utils/info';
 import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/Navigation';
 import database from '../lib/database';
 import I18n from '../i18n';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
 import { goRoom } from '../utils/goRoom';
 
 const createChannel = function createChannel(data) {
@@ -34,17 +32,12 @@ const handleRequest = function* handleRequest({ data }) {
 
 		let sub;
 		if (data.isTeam) {
-			const {
-				type,
-				readOnly,
-				broadcast,
-				encrypted
-			} = data;
+			const { type, readOnly, broadcast, encrypted } = data;
 			logEvent(events.CT_CREATE, {
-				type: `${ type }`,
-				readOnly: `${ readOnly }`,
-				broadcast: `${ broadcast }`,
-				encrypted: `${ encrypted }`
+				type: `${type}`,
+				readOnly: `${readOnly}`,
+				broadcast: `${broadcast}`,
+				encrypted: `${encrypted}`
 			});
 			const result = yield call(createTeam, data);
 			sub = {
@@ -62,12 +55,7 @@ const handleRequest = function* handleRequest({ data }) {
 				};
 			}
 		} else {
-			const {
-				type,
-				readOnly,
-				broadcast,
-				encrypted
-			} = data;
+			const { type, readOnly, broadcast, encrypted } = data;
 			logEvent(events.CR_CREATE, {
 				type: type ? 'private' : 'public',
 				readOnly,
@@ -84,8 +72,8 @@ const handleRequest = function* handleRequest({ data }) {
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
-			yield db.action(async() => {
-				await subCollection.create((s) => {
+			yield db.action(async () => {
+				await subCollection.create(s => {
 					s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
 					Object.assign(s, sub);
 				});
@@ -120,9 +108,13 @@ const handleFailure = function handleFailure({ err, isTeam }) {
 
 	setTimeout(() => {
 		let msg = '';
-		const actionError = I18n.t('There_was_an_error_while_action', { action: isTeam ? I18n.t('creating_team') : I18n.t('creating_channel') });
+		const actionError = I18n.t('There_was_an_error_while_action', {
+			action: isTeam ? I18n.t('creating_team') : I18n.t('creating_channel')
+		});
 		if (err?.data?.errorType && err?.data?.details?.channel_name) {
-			msg = errorArray.includes(err.data.errorType) ? I18n.t(err.data.errorType, { room_name: err.data.details.channel_name }) : actionError;
+			msg = errorArray.includes(err.data.errorType)
+				? I18n.t(err.data.errorType, { room_name: err.data.details.channel_name })
+				: actionError;
 		} else {
 			msg = err?.reason || (errorArray.includes(err?.data?.error) ? I18n.t(err.data.error) : err.data.error || actionError);
 		}

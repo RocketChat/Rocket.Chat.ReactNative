@@ -6,7 +6,7 @@ import { withTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
 import TextInput from '../../presentation/TextInput';
-import { isTablet, isIOS } from '../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { useOrientation } from '../../dimensions';
 
 const styles = StyleSheet.create({

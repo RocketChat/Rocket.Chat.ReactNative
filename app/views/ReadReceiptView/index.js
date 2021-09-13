@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, Text } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import * as List from '../../containers/List';
 
+import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
-import styles from './styles';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import I18n from '../../i18n';
@@ -16,6 +15,7 @@ import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
+import styles from './styles';
 
 class ReadReceiptView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -26,13 +26,13 @@ class ReadReceiptView extends React.Component {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='read-receipt-view-close' />;
 		}
 		return options;
-	}
+	};
 
 	static propTypes = {
 		route: PropTypes.object,
 		Message_TimeAndDateFormat: PropTypes.string,
 		theme: PropTypes.string
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -62,7 +62,7 @@ class ReadReceiptView extends React.Component {
 		return false;
 	}
 
-	load = async() => {
+	load = async () => {
 		const { loading } = this.state;
 		if (loading) {
 			return;
@@ -82,16 +82,18 @@ class ReadReceiptView extends React.Component {
 			this.setState({ loading: false });
 			console.log('err_fetch_read_receipts', error);
 		}
-	}
+	};
 
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].chatComponentBackground }]} testID='read-receipt-view'>
+			<View
+				style={[styles.listEmptyContainer, { backgroundColor: themes[theme].chatComponentBackground }]}
+				testID='read-receipt-view'>
 				<Text style={{ color: themes[theme].titleText }}>{I18n.t('No_Read_Receipts')}</Text>
 			</View>
 		);
-	}
+	};
 
 	renderItem = ({ item }) => {
 		const { theme, Message_TimeAndDateFormat } = this.props;
@@ -101,26 +103,17 @@ class ReadReceiptView extends React.Component {
 		}
 		return (
 			<View style={[styles.itemContainer, { backgroundColor: themes[theme].backgroundColor }]}>
-				<Avatar
-					text={item.user.username}
-					size={40}
-				/>
+				<Avatar text={item.user.username} size={40} />
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>
-						<Text style={[styles.name, { color: themes[theme].titleText }]}>
-							{item?.user?.name}
-						</Text>
-						<Text style={{ color: themes[theme].auxiliaryText }}>
-							{time}
-						</Text>
+						<Text style={[styles.name, { color: themes[theme].titleText }]}>{item?.user?.name}</Text>
+						<Text style={{ color: themes[theme].auxiliaryText }}>{time}</Text>
 					</View>
-					<Text style={{ color: themes[theme].auxiliaryText }}>
-						{`@${ item.user.username }`}
-					</Text>
+					<Text style={{ color: themes[theme].auxiliaryText }}>{`@${item.user.username}`}</Text>
 				</View>
 			</View>
 		);
-	}
+	};
 
 	render() {
 		const { receipts, loading } = this.state;
@@ -133,23 +126,23 @@ class ReadReceiptView extends React.Component {
 		return (
 			<SafeAreaView testID='read-receipt-view'>
 				<StatusBar />
-				{loading
-					? <ActivityIndicator theme={theme} />
-					: (
-						<FlatList
-							data={receipts}
-							renderItem={this.renderItem}
-							ItemSeparatorComponent={List.Separator}
-							style={[
-								styles.list,
-								{
-									backgroundColor: themes[theme].chatComponentBackground,
-									borderColor: themes[theme].separatorColor
-								}
-							]}
-							keyExtractor={item => item._id}
-						/>
-					)}
+				{loading ? (
+					<ActivityIndicator theme={theme} />
+				) : (
+					<FlatList
+						data={receipts}
+						renderItem={this.renderItem}
+						ItemSeparatorComponent={List.Separator}
+						style={[
+							styles.list,
+							{
+								backgroundColor: themes[theme].chatComponentBackground,
+								borderColor: themes[theme].separatorColor
+							}
+						]}
+						keyExtractor={item => item._id}
+					/>
+				)}
 			</SafeAreaView>
 		);
 	}

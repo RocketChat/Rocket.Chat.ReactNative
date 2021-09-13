@@ -1,4 +1,4 @@
-export default function(message) {
+export default function (message) {
 	if (/image/.test(message.type)) {
 		return { image_url: message.url };
 	}

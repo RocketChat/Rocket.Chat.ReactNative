@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */
-import { createStore, combineReducers } from 'redux';
+import { combineReducers, createStore } from 'redux';
 
 import './RoomItem';
 import './List';

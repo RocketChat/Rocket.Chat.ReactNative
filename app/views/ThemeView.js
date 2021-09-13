@@ -26,15 +26,18 @@ const THEMES = [
 		label: 'Light',
 		value: 'light',
 		group: THEME_GROUP
-	}, {
+	},
+	{
 		label: 'Dark',
 		value: 'dark',
 		group: THEME_GROUP
-	}, {
+	},
+	{
 		label: 'Black',
 		value: 'black',
 		group: DARK_GROUP
-	}, {
+	},
+	{
 		label: 'Dark',
 		value: 'dark',
 		group: DARK_GROUP
@@ -51,15 +54,15 @@ const darkGroup = THEMES.filter(item => item.group === DARK_GROUP);
 class ThemeView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Theme')
-	})
+	});
 
 	static propTypes = {
 		theme: PropTypes.string,
 		themePreferences: PropTypes.object,
 		setTheme: PropTypes.func
-	}
+	};
 
-	isSelected = (item) => {
+	isSelected = item => {
 		const { themePreferences } = this.props;
 		const { group } = item;
 		const { darkLevel, currentTheme } = themePreferences;
@@ -69,9 +72,9 @@ class ThemeView extends React.Component {
 		if (group === DARK_GROUP) {
 			return item.value === darkLevel;
 		}
-	}
+	};
 
-	onClick = (item) => {
+	onClick = item => {
 		const { themePreferences } = this.props;
 		const { darkLevel, currentTheme } = themePreferences;
 		const { value, group } = item;
@@ -85,9 +88,9 @@ class ThemeView extends React.Component {
 			changes = { darkLevel: value };
 		}
 		this.setTheme(changes);
-	}
+	};
 
-	setTheme = async(theme) => {
+	setTheme = async theme => {
 		const { setTheme, themePreferences } = this.props;
 		const newTheme = { ...themePreferences, ...theme };
 		setTheme(newTheme);
@@ -97,7 +100,7 @@ class ThemeView extends React.Component {
 	renderIcon = () => {
 		const { theme } = this.props;
 		return <List.Icon name='check' color={themes[theme].tintColor} />;
-	}
+	};
 
 	renderItem = ({ item }) => {
 		const { label, value } = item;
@@ -106,13 +109,13 @@ class ThemeView extends React.Component {
 				<List.Item
 					title={label}
 					onPress={() => this.onClick(item)}
-					testID={`theme-view-${ value }`}
+					testID={`theme-view-${value}`}
 					right={this.isSelected(item) ? this.renderIcon : null}
 				/>
 				<List.Separator />
 			</>
 		);
-	}
+	};
 
 	render() {
 		return (
@@ -121,15 +124,11 @@ class ThemeView extends React.Component {
 				<List.Container>
 					<List.Section title='Theme'>
 						<List.Separator />
-						{
-							themeGroup.map(item => this.renderItem({ item }))
-						}
+						{themeGroup.map(item => this.renderItem({ item }))}
 					</List.Section>
 					<List.Section title='Dark_level'>
 						<List.Separator />
-						{
-							darkGroup.map(item => this.renderItem({ item }))
-						}
+						{darkGroup.map(item => this.renderItem({ item }))}
 					</List.Section>
 				</List.Container>
 			</SafeAreaView>

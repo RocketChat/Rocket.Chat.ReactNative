@@ -10,11 +10,7 @@ import { ThemeContext } from '../../app/theme';
 const stories = storiesOf('Header Buttons', module);
 
 const HeaderExample = ({ left, right }) => (
-	<Header
-		headerLeft={left}
-		headerTitle={() => <View style={{ flex: 1 }} />}
-		headerRight={right}
-	/>
+	<Header headerLeft={left} headerTitle={() => <View style={{ flex: 1 }} />} headerRight={right} />
 );
 
 stories.add('title', () => (
@@ -94,9 +90,7 @@ stories.add('badge', () => (
 ));
 
 const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider
-		value={{ theme }}
-	>
+	<ThemeContext.Provider value={{ theme }}>
 		<HeaderExample
 			left={() => (
 				<HeaderButton.Container left>
@@ -123,40 +117,12 @@ stories.add('themes', () => (
 
 stories.add('common', () => (
 	<>
-		<HeaderExample
-			left={() => (
-				<HeaderButton.Drawer />
-			)}
-		/>
-		<HeaderExample
-			left={() => (
-				<HeaderButton.CloseModal />
-			)}
-		/>
-		<HeaderExample
-			left={() => (
-				<HeaderButton.CancelModal />
-			)}
-		/>
-		<HeaderExample
-			right={() => (
-				<HeaderButton.More />
-			)}
-		/>
-		<HeaderExample
-			right={() => (
-				<HeaderButton.Download />
-			)}
-		/>
-		<HeaderExample
-			right={() => (
-				<HeaderButton.Preferences />
-			)}
-		/>
-		<HeaderExample
-			right={() => (
-				<HeaderButton.Legal />
-			)}
-		/>
+		<HeaderExample left={() => <HeaderButton.Drawer />} />
+		<HeaderExample left={() => <HeaderButton.CloseModal />} />
+		<HeaderExample left={() => <HeaderButton.CancelModal />} />
+		<HeaderExample right={() => <HeaderButton.More />} />
+		<HeaderExample right={() => <HeaderButton.Download />} />
+		<HeaderExample right={() => <HeaderButton.Preferences />} />
+		<HeaderExample right={() => <HeaderButton.Legal />} />
 	</>
 ));

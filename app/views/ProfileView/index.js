@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, Keyboard } from 'react-native';
+import { Keyboard, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
@@ -12,14 +12,13 @@ import omit from 'lodash/omit';
 import Touch from '../../utils/touch';
 import KeyboardView from '../../presentation/KeyboardView';
 import sharedStyles from '../Styles';
-import styles from './styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
-import log, { logEvent, events } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
@@ -31,6 +30,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import styles from './styles';
 
 class ProfileView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -44,7 +44,7 @@ class ProfileView extends React.Component {
 			<HeaderButton.Preferences onPress={() => navigation.navigate('UserPreferencesView')} testID='preferences-view-open' />
 		);
 		return options;
-	}
+	};
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
@@ -57,7 +57,7 @@ class ProfileView extends React.Component {
 		Accounts_CustomFields: PropTypes.string,
 		setUser: PropTypes.func,
 		theme: PropTypes.string
-	}
+	};
 
 	state = {
 		saving: false,
@@ -70,7 +70,7 @@ class ProfileView extends React.Component {
 		avatar: {},
 		avatarSuggestions: {},
 		customFields: {}
-	}
+	};
 
 	async componentDidMount() {
 		this.init();
@@ -96,7 +96,7 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	setAvatar = (avatar) => {
+	setAvatar = avatar => {
 		const { Accounts_AllowUserAvatarChange } = this.props;
 
 		if (!Accounts_AllowUserAvatarChange) {
@@ -104,13 +104,11 @@ class ProfileView extends React.Component {
 		}
 
 		this.setState({ avatar });
-	}
+	};
 
-	init = (user) => {
+	init = user => {
 		const { user: userProps } = this.props;
-		const {
-			name, username, emails, customFields
-		} = user || userProps;
+		const { name, username, emails, customFields } = user || userProps;
 
 		this.setState({
 			name,
@@ -122,41 +120,41 @@ class ProfileView extends React.Component {
 			avatar: {},
 			customFields: customFields || {}
 		});
-	}
+	};
 
 	formIsChanged = () => {
-		const {
-			name, username, email, newPassword, avatar, customFields
-		} = this.state;
+		const { name, username, email, newPassword, avatar, customFields } = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
 
 		const customFieldsKeys = Object.keys(customFields);
 		if (customFieldsKeys.length) {
-			customFieldsKeys.forEach((key) => {
+			customFieldsKeys.forEach(key => {
 				if (!user.customFields || user.customFields[key] !== customFields[key]) {
 					customFieldsChanged = true;
 				}
 			});
 		}
 
-		return !(user.name === name
-			&& user.username === username
-			&& !newPassword
-			&& (user.emails && user.emails[0].address === email)
-			&& !avatar.data
-			&& !customFieldsChanged
+		return !(
+			user.name === name &&
+			user.username === username &&
+			!newPassword &&
+			user.emails &&
+			user.emails[0].address === email &&
+			!avatar.data &&
+			!customFieldsChanged
 		);
-	}
+	};
 
 	handleError = (e, func, action) => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
 		}
 		showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t(action) }));
-	}
+	};
 
-	submit = async() => {
+	submit = async () => {
 		Keyboard.dismiss();
 
 		if (!this.formIsChanged()) {
@@ -165,9 +163,7 @@ class ProfileView extends React.Component {
 
 		this.setState({ saving: true });
 
-		const {
-			name, username, email, newPassword, currentPassword, avatar, customFields
-		} = this.state;
+		const { name, username, email, newPassword, currentPassword, avatar, customFields } = this.state;
 		const { user, setUser } = this.props;
 		const params = {};
 
@@ -206,7 +202,7 @@ class ProfileView extends React.Component {
 					{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
 					{
 						text: I18n.t('Save'),
-						onPress: (p) => {
+						onPress: p => {
 							this.setState({ currentPassword: p });
 							this.submit();
 						}
@@ -250,9 +246,9 @@ class ProfileView extends React.Component {
 			this.setState({ saving: false, currentPassword: null });
 			this.handleError(e, 'saveUserProfile', 'saving_profile');
 		}
-	}
+	};
 
-	resetAvatar = async() => {
+	resetAvatar = async () => {
 		const { Accounts_AllowUserAvatarChange } = this.props;
 
 		if (!Accounts_AllowUserAvatarChange) {
@@ -267,9 +263,9 @@ class ProfileView extends React.Component {
 		} catch (e) {
 			this.handleError(e, 'resetAvatar', 'changing_avatar');
 		}
-	}
+	};
 
-	pickImage = async() => {
+	pickImage = async () => {
 		const { Accounts_AllowUserAvatarChange } = this.props;
 
 		if (!Accounts_AllowUserAvatarChange) {
@@ -288,21 +284,19 @@ class ProfileView extends React.Component {
 		try {
 			logEvent(events.PROFILE_PICK_AVATAR);
 			const response = await ImagePicker.openPicker(options);
-			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${ response.data }`, service: 'upload' });
+			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' });
 		} catch (error) {
 			logEvent(events.PROFILE_PICK_AVATAR_F);
 			console.warn(error);
 		}
-	}
+	};
 
-	pickImageWithURL = (avatarUrl) => {
+	pickImageWithURL = avatarUrl => {
 		logEvent(events.PROFILE_PICK_AVATAR_WITH_URL);
 		this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' });
-	}
+	};
 
-	renderAvatarButton = ({
-		key, child, onPress, disabled = false
-	}) => {
+	renderAvatarButton = ({ key, child, onPress, disabled = false }) => {
 		const { theme } = this.props;
 		return (
 			<Touch
@@ -311,25 +305,20 @@ class ProfileView extends React.Component {
 				onPress={onPress}
 				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
 				enabled={!disabled}
-				theme={theme}
-			>
+				theme={theme}>
 				{child}
 			</Touch>
 		);
-	}
+	};
 
 	renderAvatarButtons = () => {
 		const { avatarUrl, avatarSuggestions } = this.state;
-		const {
-			user,
-			theme,
-			Accounts_AllowUserAvatarChange
-		} = this.props;
+		const { user, theme, Accounts_AllowUserAvatarChange } = this.props;
 
 		return (
 			<View style={styles.avatarButtons}>
 				{this.renderAvatarButton({
-					child: <Avatar text={`@${ user.username }`} size={50} />,
+					child: <Avatar text={`@${user.username}`} size={50} />,
 					onPress: () => this.resetAvatar(),
 					disabled: !Accounts_AllowUserAvatarChange,
 					key: 'profile-view-reset-avatar'
@@ -346,20 +335,24 @@ class ProfileView extends React.Component {
 					disabled: !avatarUrl,
 					key: 'profile-view-avatar-url-button'
 				})}
-				{Object.keys(avatarSuggestions).map((service) => {
+				{Object.keys(avatarSuggestions).map(service => {
 					const { url, blob, contentType } = avatarSuggestions[service];
 					return this.renderAvatarButton({
 						disabled: !Accounts_AllowUserAvatarChange,
-						key: `profile-view-avatar-${ service }`,
+						key: `profile-view-avatar-${service}`,
 						child: <Avatar avatar={url} size={50} />,
-						onPress: () => this.setAvatar({
-							url, data: blob, service, contentType
-						})
+						onPress: () =>
+							this.setAvatar({
+								url,
+								data: blob,
+								service,
+								contentType
+							})
 					});
 				})}
 			</View>
 		);
-	}
+	};
 
 	renderCustomFields = () => {
 		const { customFields } = this.state;
@@ -377,15 +370,16 @@ class ProfileView extends React.Component {
 						<RNPickerSelect
 							key={key}
 							items={options}
-							onValueChange={(value) => {
+							onValueChange={value => {
 								const newValue = {};
 								newValue[key] = value;
 								this.setState({ customFields: { ...customFields, ...newValue } });
 							}}
-							value={customFields[key]}
-						>
+							value={customFields[key]}>
 							<RCTextInput
-								inputRef={(e) => { this[key] = e; }}
+								inputRef={e => {
+									this[key] = e;
+								}}
 								label={key}
 								placeholder={key}
 								value={customFields[key]}
@@ -398,12 +392,14 @@ class ProfileView extends React.Component {
 
 				return (
 					<RCTextInput
-						inputRef={(e) => { this[key] = e; }}
+						inputRef={e => {
+							this[key] = e;
+						}}
 						key={key}
 						label={key}
 						placeholder={key}
 						value={customFields[key]}
-						onChangeText={(value) => {
+						onChangeText={value => {
 							const newValue = {};
 							newValue[key] = value;
 							this.setState({ customFields: { ...customFields, ...newValue } });
@@ -421,14 +417,14 @@ class ProfileView extends React.Component {
 		} catch (error) {
 			return null;
 		}
-	}
+	};
 
 	logoutOtherLocations = () => {
 		logEvent(events.PL_OTHER_LOCATIONS);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_from_other_locations'),
 			confirmationText: I18n.t('Logout'),
-			onPress: async() => {
+			onPress: async () => {
 				try {
 					await RocketChat.logoutOtherLocations();
 					EventEmitter.emit(LISTENER, { message: I18n.t('Logged_out_of_other_clients_successfully') });
@@ -438,12 +434,10 @@ class ProfileView extends React.Component {
 				}
 			}
 		});
-	}
+	};
 
 	render() {
-		const {
-			name, username, email, newPassword, avatarUrl, customFields, avatar, saving
-		} = this.state;
+		const { name, username, email, newPassword, avatarUrl, customFields, avatar, saving } = this.state;
 		const {
 			user,
 			theme,
@@ -459,71 +453,67 @@ class ProfileView extends React.Component {
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}
-			>
+				keyboardVerticalOffset={128}>
 				<StatusBar />
 				<SafeAreaView testID='profile-view'>
-					<ScrollView
-						contentContainerStyle={sharedStyles.containerScrollView}
-						testID='profile-view-list'
-						{...scrollPersistTaps}
-					>
+					<ScrollView contentContainerStyle={sharedStyles.containerScrollView} testID='profile-view-list' {...scrollPersistTaps}>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
-							<Avatar
-								text={user.username}
-								avatar={avatar?.url}
-								isStatic={avatar?.url}
-								size={100}
-							/>
+							<Avatar text={user.username} avatar={avatar?.url} isStatic={avatar?.url} size={100} />
 						</View>
 						<RCTextInput
 							editable={Accounts_AllowRealNameChange}
-							inputStyle={[
-								!Accounts_AllowRealNameChange && styles.disabled
-							]}
-							inputRef={(e) => { this.name = e; }}
+							inputStyle={[!Accounts_AllowRealNameChange && styles.disabled]}
+							inputRef={e => {
+								this.name = e;
+							}}
 							label={I18n.t('Name')}
 							placeholder={I18n.t('Name')}
 							value={name}
 							onChangeText={value => this.setState({ name: value })}
-							onSubmitEditing={() => { this.username.focus(); }}
+							onSubmitEditing={() => {
+								this.username.focus();
+							}}
 							testID='profile-view-name'
 							theme={theme}
 						/>
 						<RCTextInput
 							editable={Accounts_AllowUsernameChange}
-							inputStyle={[
-								!Accounts_AllowUsernameChange && styles.disabled
-							]}
-							inputRef={(e) => { this.username = e; }}
+							inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
+							inputRef={e => {
+								this.username = e;
+							}}
 							label={I18n.t('Username')}
 							placeholder={I18n.t('Username')}
 							value={username}
 							onChangeText={value => this.setState({ username: value })}
-							onSubmitEditing={() => { this.email.focus(); }}
+							onSubmitEditing={() => {
+								this.email.focus();
+							}}
 							testID='profile-view-username'
 							theme={theme}
 						/>
 						<RCTextInput
 							editable={Accounts_AllowEmailChange}
-							inputStyle={[
-								!Accounts_AllowEmailChange && styles.disabled
-							]}
-							inputRef={(e) => { this.email = e; }}
+							inputStyle={[!Accounts_AllowEmailChange && styles.disabled]}
+							inputRef={e => {
+								this.email = e;
+							}}
 							label={I18n.t('Email')}
 							placeholder={I18n.t('Email')}
 							value={email}
 							onChangeText={value => this.setState({ email: value })}
-							onSubmitEditing={() => { this.newPassword.focus(); }}
+							onSubmitEditing={() => {
+								this.newPassword.focus();
+							}}
 							testID='profile-view-email'
 							theme={theme}
 						/>
 						<RCTextInput
 							editable={Accounts_AllowPasswordChange}
-							inputStyle={[
-								!Accounts_AllowPasswordChange && styles.disabled
-							]}
-							inputRef={(e) => { this.newPassword = e; }}
+							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
+							inputRef={e => {
+								this.newPassword = e;
+							}}
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
 							value={newPassword}
@@ -541,10 +531,10 @@ class ProfileView extends React.Component {
 						{this.renderCustomFields()}
 						<RCTextInput
 							editable={Accounts_AllowUserAvatarChange}
-							inputStyle={[
-								!Accounts_AllowUserAvatarChange && styles.disabled
-							]}
-							inputRef={(e) => { this.avatarUrl = e; }}
+							inputStyle={[!Accounts_AllowUserAvatarChange && styles.disabled]}
+							inputRef={e => {
+								this.avatarUrl = e;
+							}}
 							label={I18n.t('Avatar_Url')}
 							placeholder={I18n.t('Avatar_Url')}
 							value={avatarUrl}

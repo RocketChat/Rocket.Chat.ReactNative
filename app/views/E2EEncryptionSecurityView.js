@@ -1,19 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import I18n from '../i18n';
-import log, { logEvent, events } from '../utils/log';
+import log, { events, logEvent } from '../utils/log';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import { getUserSelector } from '../selectors/login';
 import { PADDING_HORIZONTAL } from '../containers/List/constants';
-import sharedStyles from './Styles';
 import { themes } from '../constants/colors';
 import { Encryption } from '../lib/encryption';
 import RocketChat from '../lib/rocketchat';
@@ -22,6 +21,7 @@ import { showConfirmationAlert, showErrorAlert } from '../utils/info';
 import EventEmitter from '../utils/events';
 import { LISTENER } from '../containers/Toast';
 import debounce from '../utils/debounce';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -42,13 +42,13 @@ const styles = StyleSheet.create({
 });
 
 class E2EEncryptionSecurityView extends React.Component {
-	state = { newPassword: '' }
+	state = { newPassword: '' };
 
 	newPasswordInputRef = React.createRef();
 
-	onChangePasswordText = debounce(text => this.setState({ newPassword: text }), 300)
+	onChangePasswordText = debounce(text => this.setState({ newPassword: text }), 300);
 
-	setNewPasswordRef = ref => this.newPasswordInputRef = ref;
+	setNewPasswordRef = ref => (this.newPasswordInputRef = ref);
 
 	changePassword = () => {
 		const { newPassword } = this.state;
@@ -59,7 +59,7 @@ class E2EEncryptionSecurityView extends React.Component {
 			title: I18n.t('Are_you_sure_question_mark'),
 			message: I18n.t('E2E_encryption_change_password_message'),
 			confirmationText: I18n.t('E2E_encryption_change_password_confirmation'),
-			onPress: async() => {
+			onPress: async () => {
 				logEvent(events.E2E_SEC_CHANGE_PASSWORD);
 				try {
 					const { server } = this.props;
@@ -73,14 +73,14 @@ class E2EEncryptionSecurityView extends React.Component {
 				}
 			}
 		});
-	}
+	};
 
 	resetOwnKey = () => {
 		showConfirmationAlert({
 			title: I18n.t('Are_you_sure_question_mark'),
 			message: I18n.t('E2E_encryption_reset_message'),
 			confirmationText: I18n.t('E2E_encryption_reset_confirmation'),
-			onPress: async() => {
+			onPress: async () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
 					const res = await RocketChat.e2eResetOwnKey();
@@ -98,7 +98,7 @@ class E2EEncryptionSecurityView extends React.Component {
 				}
 			}
 		});
-	}
+	};
 
 	renderChangePassword = () => {
 		const { newPassword } = this.state;
@@ -109,8 +109,12 @@ class E2EEncryptionSecurityView extends React.Component {
 		return (
 			<>
 				<List.Section>
-					<Text style={[styles.title, { color: themes[theme].titleColor }]}>{I18n.t('E2E_encryption_change_password_title')}</Text>
-					<Text style={[styles.description, { color: themes[theme].bodyText }]}>{I18n.t('E2E_encryption_change_password_description')}</Text>
+					<Text style={[styles.title, { color: themes[theme].titleColor }]}>
+						{I18n.t('E2E_encryption_change_password_title')}
+					</Text>
+					<Text style={[styles.description, { color: themes[theme].bodyText }]}>
+						{I18n.t('E2E_encryption_change_password_description')}
+					</Text>
 					<TextInput
 						inputRef={this.setNewPasswordRef}
 						placeholder={I18n.t('New_Password')}
@@ -134,7 +138,7 @@ class E2EEncryptionSecurityView extends React.Component {
 				<List.Separator />
 			</>
 		);
-	}
+	};
 
 	render() {
 		const { theme } = this.props;
@@ -147,7 +151,9 @@ class E2EEncryptionSecurityView extends React.Component {
 
 						<List.Section>
 							<Text style={[styles.title, { color: themes[theme].titleColor }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
-							<Text style={[styles.description, { color: themes[theme].bodyText }]}>{I18n.t('E2E_encryption_reset_description')}</Text>
+							<Text style={[styles.description, { color: themes[theme].bodyText }]}>
+								{I18n.t('E2E_encryption_reset_description')}
+							</Text>
 							<Button
 								onPress={this.resetOwnKey}
 								title={I18n.t('E2E_encryption_reset_button')}

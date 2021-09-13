@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
@@ -76,16 +76,11 @@ const Header = React.memo(({ room, thread, theme }) => {
 		<View style={styles.container}>
 			<View style={styles.inner}>
 				<Text numberOfLines={1} style={styles.text}>
-					<Text style={[styles.text, { color: textColor }]} numberOfLines={1}>{I18n.t('Sending_to')} </Text>
-					<CustomIcon
-						name={icon}
-						size={16}
-						color={textColor}
-					/>
-					<Text
-						style={[styles.name, { color: textColor }]}
-						numberOfLines={1}
-					>
+					<Text style={[styles.text, { color: textColor }]} numberOfLines={1}>
+						{I18n.t('Sending_to')}{' '}
+					</Text>
+					<CustomIcon name={icon} size={16} color={textColor} />
+					<Text style={[styles.name, { color: textColor }]} numberOfLines={1}>
 						{title}
 					</Text>
 				</Text>
