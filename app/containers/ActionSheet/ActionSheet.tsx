@@ -115,27 +115,21 @@ const ActionSheet = React.memo(
 			hideActionSheet: hide
 		}));
 
-		const renderHandle = useCallback(
-			() => (
-				<>
-					<Handle theme={theme} />
-					{isValidElement(data?.customHeader) ? data.customHeader : null}
-				</>
-			),
-			[theme, data]
+		const renderHandle = () => (
+			<>
+				<Handle theme={theme} />
+				{isValidElement(data?.customHeader) ? data.customHeader : null}
+			</>
 		);
 
-		const renderFooter = useCallback(
-			() =>
-				data?.hasCancel ? (
-					<Button onPress={hide} style={[styles.button, { backgroundColor: themes[theme].auxiliaryBackground }]} theme={theme}>
-						<Text style={[styles.text, { color: themes[theme].bodyText }]}>{I18n.t('Cancel')}</Text>
-					</Button>
-				) : null,
-			[theme, data, hide]
-		);
+		const renderFooter = () =>
+			data?.hasCancel ? (
+				<Button onPress={hide} style={[styles.button, { backgroundColor: themes[theme].auxiliaryBackground }]} theme={theme}>
+					<Text style={[styles.text, { color: themes[theme].bodyText }]}>{I18n.t('Cancel')}</Text>
+				</Button>
+			) : null;
 
-		const renderItem = useCallback(({ item }) => <Item item={item} hide={hide} theme={theme} />, []);
+		const renderItem = ({ item }: any) => <Item item={item} hide={hide} theme={theme} />;
 
 		const animatedPosition = React.useRef(new Value(0));
 		const opacity = interpolate(animatedPosition.current, {
