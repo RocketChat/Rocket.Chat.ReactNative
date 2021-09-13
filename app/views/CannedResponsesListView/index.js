@@ -17,7 +17,7 @@ import { goRoom } from '../../utils/goRoom';
 
 const COUNT = 25;
 
-const filterDepartment = [
+const fixedScopes = [
 	{
 		_id: 'all',
 		name: I18n.t('All')
@@ -59,7 +59,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		try {
 			const res = await RocketChat.getDepartments(keyword);
 			const regExp = new RegExp(keyword, 'gi');
-			const filterWithText = filterDepartment.filter(dep => regExp.test(dep.name));
+			const filterWithText = fixedScopes.filter(dep => regExp.test(dep.name));
 			res.success
 				? setDepartments([...filterWithText, ...res.departments])
 				: setDepartments(filterWithText);
@@ -170,11 +170,11 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		let department = '';
 		let depId = '';
 
-		if (value._id === filterDepartment[0]._id) {
+		if (value._id === fixedScopes[0]._id) {
 			department = '';
-		} else if (value._id === filterDepartment[1]._id) {
+		} else if (value._id === fixedScopes[1]._id) {
 			department = 'global';
-		} else if (value._id === filterDepartment[2]._id) {
+		} else if (value._id === fixedScopes[2]._id) {
 			department = 'user';
 		} else {
 			department = 'department';
@@ -204,8 +204,8 @@ const CannedResponsesListView = ({ navigation, route }) => {
 				onChangeText={onChangeText}
 				onDepartmentSelect={onDepartmentSelect}
 				initial={{
-					value: filterDepartment[0],
-					text: filterDepartment[0].name
+					value: fixedScopes[0],
+					text: fixedScopes[0].name
 				}}
 				departments={departments}
 				getDepartments={getDepartments}

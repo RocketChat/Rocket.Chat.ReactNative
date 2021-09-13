@@ -33,7 +33,6 @@ import getSettings, { getLoginSettings, setSettings, subscribeSettings } from '.
 import getRooms from './methods/getRooms';
 import { setPermissions, getPermissions } from './methods/getPermissions';
 import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
-import { getCannedResponses } from './methods/getCannedResponses';
 import {
 	getEnterpriseModules, setEnterpriseModules, hasLicense, isOmnichannelModuleAvailable
 } from './methods/enterpriseModules';
@@ -895,7 +894,6 @@ const RocketChat = {
 	getPermissions,
 	setPermissions,
 	getCustomEmojis,
-	getCannedResponses,
 	setCustomEmojis,
 	getEnterpriseModules,
 	setEnterpriseModules,

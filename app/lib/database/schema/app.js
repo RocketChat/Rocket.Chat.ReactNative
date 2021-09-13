@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 14,
+	version: 13,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -264,16 +264,6 @@ export default appSchema({
 				{ name: 'name', type: 'string', isOptional: true },
 				{ name: 'username', type: 'string', isIndexed: true },
 				{ name: 'avatar_etag', type: 'string', isOptional: true }
-			]
-		}),
-		tableSchema({
-			name: 'canned_responses',
-			columns: [
-				{ name: 'text', type: 'string', isOptional: true },
-				{ name: 'scope', type: 'string', isOptional: true },
-				{ name: 'department_id', type: 'string', isOptional: true },
-				{ name: 'created_by', type: 'string', isOptional: true },
-				{ name: 'tags', type: 'string', isOptional: true }
 			]
 		})
 	]

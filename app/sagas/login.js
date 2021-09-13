@@ -92,10 +92,6 @@ const fetchCustomEmojis = function* fetchCustomEmojis() {
 	yield RocketChat.getCustomEmojis();
 };
 
-const fetchCannedResponses = function* fetchCannedResponses() {
-	yield RocketChat.getCannedResponses();
-};
-
 const fetchRoles = function* fetchRoles() {
 	RocketChat.subscribe('stream-roles', 'roles');
 	yield RocketChat.getRoles();
@@ -138,7 +134,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchCustomEmojis);
 		yield fork(fetchRoles);
 		yield fork(fetchSlashCommands);
-		yield fork(fetchCannedResponses);
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
 		yield fork(fetchEnterpriseModules, { user });
