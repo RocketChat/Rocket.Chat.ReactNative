@@ -27,7 +27,7 @@ const MentionItem = ({
 			case MENTIONS_TRACKING_TYPE_COMMANDS:
 				return `mention-item-${ item.command || item }`;
 			case MENTIONS_TRACKING_TYPE_CANNED:
-				return `mention-item-${ item.id || item }`;
+				return `mention-item-${ item.shortcut || item }`;
 			default:
 				return `mention-item-${ item.username || item.name || item }`;
 		}
@@ -72,7 +72,7 @@ const MentionItem = ({
 	if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
 		content = (
 			<>
-				<Text style={[styles.cannedItem, { color: themes[theme].titleText }]}>!{item.id}</Text>
+				<Text style={[styles.cannedItem, { color: themes[theme].titleText }]}>!{item.shortcut}</Text>
 				<Text numberOfLines={1} style={[styles.cannedMentionText, { color: themes[theme].auxiliaryTintColor }]}>{item.text}</Text>
 			</>
 		);

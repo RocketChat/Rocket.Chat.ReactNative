@@ -1143,7 +1143,7 @@ const RocketChat = {
 	},
 
 	getListCannedResponse({
-		scope, departmentId, offset, count, text
+		scope, departmentId, offset = 0, count = 15, text
 	}) {
 		const params = {
 			offset,

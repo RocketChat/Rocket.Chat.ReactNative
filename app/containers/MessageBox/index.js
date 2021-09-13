@@ -550,15 +550,10 @@ class MessageBox extends Component {
 		this.setState({ mentions: commands || [], mentionLoading: false });
 	}, 300)
 
-	getCannedResponses = debounce(async(keyword) => {
-		const db = database.active;
-		const commandsCollection = db.get('canned_responses');
-		const likeString = sanitizeLikeString(keyword);
-		const commands = await commandsCollection.query(
-			Q.where('id', Q.like(`%${ likeString }%`))
-		).fetch();
-		this.setState({ mentions: commands || [], mentionLoading: false });
-	}, 300)
+	getCannedResponses = debounce(async(text) => {
+		const res = await RocketChat.getListCannedResponse({ text });
+		this.setState({ mentions: res?.cannedResponses || [], mentionLoading: false });
+	}, 500)
 
 	focus = () => {
 		if (this.component && this.component.focus) {
