@@ -1,4 +1,4 @@
-export default function(updatedSince) {
+export default function (updatedSince) {
 	// subscriptions.get: Since RC 0.60.0
 	// rooms.get: Since RC 0.62.0
 	if (updatedSince) {

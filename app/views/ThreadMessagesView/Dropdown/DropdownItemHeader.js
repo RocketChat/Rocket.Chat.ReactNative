@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import DropdownItem from './DropdownItem';
 import { FILTER } from '../filters';
 import I18n from '../../../i18n';
+import DropdownItem from './DropdownItem';
 
 const DropdownItemHeader = ({ currentFilter, onPress }) => {
 	let text;

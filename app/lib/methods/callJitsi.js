@@ -1,6 +1,6 @@
 import reduxStore from '../createStore';
 import Navigation from '../Navigation';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 
 async function jitsiURL({ room }) {
 	const { settings } = reduxStore.getState();
@@ -10,11 +10,9 @@ async function jitsiURL({ room }) {
 		return '';
 	}
 
-	const {
-		Jitsi_Domain, Jitsi_URL_Room_Prefix, Jitsi_SSL, Jitsi_Enabled_TokenAuth, uniqueID, Jitsi_URL_Room_Hash
-	} = settings;
+	const { Jitsi_Domain, Jitsi_URL_Room_Prefix, Jitsi_SSL, Jitsi_Enabled_TokenAuth, uniqueID, Jitsi_URL_Room_Hash } = settings;
 
-	const domain = `${ Jitsi_Domain }/`;
+	const domain = `${Jitsi_Domain}/`;
 	const prefix = Jitsi_URL_Room_Prefix;
 	const protocol = Jitsi_SSL ? 'https://' : 'http://';
 
@@ -22,7 +20,7 @@ async function jitsiURL({ room }) {
 	if (Jitsi_Enabled_TokenAuth) {
 		try {
 			const accessToken = await this.methodCallWrapper('jitsi:generateAccessToken', room?.rid);
-			queryString = `?jwt=${ accessToken }`;
+			queryString = `?jwt=${accessToken}`;
 		} catch {
 			logEvent(events.RA_JITSI_F);
 		}
@@ -35,7 +33,7 @@ async function jitsiURL({ room }) {
 		rname = encodeURIComponent(room.t === 'd' ? room?.usernames?.join?.(' x ') : room?.name);
 	}
 
-	return `${ protocol }${ domain }${ prefix }${ rname }${ queryString }`;
+	return `${protocol}${domain}${prefix}${rname}${queryString}`;
 }
 
 async function callJitsi(room, onlyAudio = false) {

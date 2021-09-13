@@ -10,7 +10,12 @@ import * as List from '../containers/List';
 import I18n from '../i18n';
 import { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../lib/rocketchat';
 import {
-	logEvent, events, toggleCrashErrorsReport, toggleAnalyticsEventsReport, getReportCrashErrorsValue, getReportAnalyticsEventsValue
+	logEvent,
+	events,
+	toggleCrashErrorsReport,
+	toggleAnalyticsEventsReport,
+	getReportCrashErrorsValue,
+	getReportAnalyticsEventsValue
 } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import { isFDroidBuild } from '../constants/environment';
@@ -27,22 +32,22 @@ const SecurityPrivacyView = ({ navigation }) => {
 		});
 	}, []);
 
-	const toggleCrashReport = (value) => {
+	const toggleCrashReport = value => {
 		logEvent(events.SE_TOGGLE_CRASH_REPORT);
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
 		setCrashReportState(value);
 		toggleCrashErrorsReport(value);
 	};
 
-	const toggleAnalyticsEvents = (value) => {
+	const toggleAnalyticsEvents = value => {
 		logEvent(events.SE_TOGGLE_ANALYTICS_EVENTS);
 		AsyncStorage.setItem(ANALYTICS_EVENTS_KEY, JSON.stringify(value));
 		setAnalyticsEventsState(value);
 		toggleAnalyticsEventsReport(value);
 	};
 
-	const navigateToScreen = (screen) => {
-		logEvent(events[`SP_GO_${ screen.replace('View', '').toUpperCase() }`]);
+	const navigateToScreen = screen => {
+		logEvent(events[`SP_GO_${screen.replace('View', '').toUpperCase()}`]);
 		navigation.navigate(screen);
 	};
 
@@ -52,20 +57,17 @@ const SecurityPrivacyView = ({ navigation }) => {
 			<List.Container testID='security-privacy-view-list'>
 				<List.Section>
 					<List.Separator />
-					{e2eEnabled
-						? (
-							<>
-								<List.Item
-									title='E2E_Encryption'
-									showActionIndicator
-									onPress={() => navigateToScreen('E2EEncryptionSecurityView')}
-									testID='security-privacy-view-e2e-encryption'
-								/>
-								<List.Separator />
-							</>
-						)
-						: null
-					}
+					{e2eEnabled ? (
+						<>
+							<List.Item
+								title='E2E_Encryption'
+								showActionIndicator
+								onPress={() => navigateToScreen('E2EEncryptionSecurityView')}
+								testID='security-privacy-view-e2e-encryption'
+							/>
+							<List.Separator />
+						</>
+					) : null}
 					<List.Item
 						title='Screen_lock'
 						showActionIndicator
@@ -83,11 +85,7 @@ const SecurityPrivacyView = ({ navigation }) => {
 								title='Log_analytics_events'
 								testID='security-privacy-view-analytics-events'
 								right={() => (
-									<Switch
-										value={analyticsEventsState}
-										trackColor={SWITCH_TRACK_COLOR}
-										onValueChange={toggleAnalyticsEvents}
-									/>
+									<Switch value={analyticsEventsState} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleAnalyticsEvents} />
 								)}
 							/>
 							<List.Separator />
@@ -95,11 +93,7 @@ const SecurityPrivacyView = ({ navigation }) => {
 								title='Send_crash_report'
 								testID='security-privacy-view-crash-report'
 								right={() => (
-									<Switch
-										value={crashReportState}
-										trackColor={SWITCH_TRACK_COLOR}
-										onValueChange={toggleCrashReport}
-									/>
+									<Switch value={crashReportState} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleCrashReport} />
 								)}
 							/>
 							<List.Separator />

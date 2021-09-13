@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
-	toggleServerDropdown, closeServerDropdown, closeSortDropdown, setSearch as setSearchAction
+	closeServerDropdown,
+	closeSortDropdown,
+	setSearch as setSearchAction,
+	toggleServerDropdown
 } from '../../../actions/rooms';
-import Header from './Header';
 import { withTheme } from '../../../theme';
 import EventEmitter from '../../../utils/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown } from '../../../commands';
 import { isTablet } from '../../../utils/deviceInfo';
-import { logEvent, events } from '../../../utils/log';
+import { events, logEvent } from '../../../utils/log';
+import Header from './Header';
 
 class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
@@ -27,7 +30,7 @@ class RoomsListHeaderView extends PureComponent {
 		close: PropTypes.func,
 		closeSort: PropTypes.func,
 		setSearch: PropTypes.func
-	}
+	};
 
 	componentDidMount() {
 		if (isTablet) {
@@ -46,18 +49,16 @@ class RoomsListHeaderView extends PureComponent {
 		if (handleCommandOpenServerDropdown(event)) {
 			this.onPress();
 		}
-	}
+	};
 
-	onSearchChangeText = (text) => {
+	onSearchChangeText = text => {
 		const { setSearch } = this.props;
 		setSearch(text.trim());
-	}
+	};
 
 	onPress = () => {
 		logEvent(events.RL_TOGGLE_SERVER_DROPDOWN);
-		const {
-			showServerDropdown, showSortDropdown, close, open, closeSort
-		} = this.props;
+		const { showServerDropdown, showSortDropdown, close, open, closeSort } = this.props;
 		if (showServerDropdown) {
 			close();
 		} else if (showSortDropdown) {
@@ -68,12 +69,10 @@ class RoomsListHeaderView extends PureComponent {
 		} else {
 			open();
 		}
-	}
+	};
 
 	render() {
-		const {
-			serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, theme, server
-		} = this.props;
+		const { serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, theme, server } = this.props;
 
 		return (
 			<Header

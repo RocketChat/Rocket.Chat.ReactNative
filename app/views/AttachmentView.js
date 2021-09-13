@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, PermissionsAndroid } from 'react-native';
+import { PermissionsAndroid, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CameraRoll from '@react-native-community/cameraroll';
@@ -44,7 +44,7 @@ class AttachmentView extends React.Component {
 			token: PropTypes.string
 		}),
 		Allow_Save_Media_to_Gallery: PropTypes.bool
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -69,9 +69,7 @@ class AttachmentView extends React.Component {
 	}
 
 	setHeader = () => {
-		const {
-			route, navigation, theme, Allow_Save_Media_to_Gallery
-		} = this.props;
+		const { route, navigation, theme, Allow_Save_Media_to_Gallery } = this.props;
 		const attachment = route.params?.attachment;
 		let { title } = attachment;
 		try {
@@ -81,27 +79,34 @@ class AttachmentView extends React.Component {
 		}
 		const options = {
 			title,
-			headerLeft: () => <HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />,
-			headerRight: () => (
-				Allow_Save_Media_to_Gallery
-					? <HeaderButton.Download testID='save-image' onPress={this.handleSave} buttonStyle={{ color: themes[theme].previewTintColor }} />
-					: null
+			headerLeft: () => (
+				<HeaderButton.CloseModal
+					testID='close-attachment-view'
+					navigation={navigation}
+					buttonStyle={{ color: themes[theme].previewTintColor }}
+				/>
 			),
+			headerRight: () =>
+				Allow_Save_Media_to_Gallery ? (
+					<HeaderButton.Download
+						testID='save-image'
+						onPress={this.handleSave}
+						buttonStyle={{ color: themes[theme].previewTintColor }}
+					/>
+				) : null,
 			headerBackground: () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />,
 			headerTintColor: themes[theme].previewTintColor,
 			headerTitleStyle: { color: themes[theme].previewTintColor, marginHorizontal: 10 }
 		};
 		navigation.setOptions(options);
-	}
+	};
 
-	getVideoRef = ref => this.videoRef = ref;
+	getVideoRef = ref => (this.videoRef = ref);
 
-	handleSave = async() => {
+	handleSave = async () => {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
-		const {
-			image_url, image_type, video_url, video_type
-		} = attachment;
+		const { image_url, image_type, video_url, video_type } = attachment;
 		const url = image_url || video_url;
 		const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 
@@ -118,9 +123,9 @@ class AttachmentView extends React.Component {
 
 		this.setState({ loading: true });
 		try {
-			const extension = image_url ? `.${ mime.extension(image_type) || 'jpg' }` : `.${ mime.extension(video_type) || 'mp4' }`;
-			const documentDir = `${ RNFetchBlob.fs.dirs.DocumentDir }/`;
-			const path = `${ documentDir + SHA256(url) + extension }`;
+			const extension = image_url ? `.${mime.extension(image_type) || 'jpg'}` : `.${mime.extension(video_type) || 'mp4'}`;
+			const documentDir = `${RNFetchBlob.fs.dirs.DocumentDir}/`;
+			const path = `${documentDir + SHA256(url) + extension}`;
 			const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment);
 			await CameraRoll.save(path, { album: 'Rocket.Chat' });
 			await file.flush();
@@ -131,10 +136,8 @@ class AttachmentView extends React.Component {
 		this.setState({ loading: false });
 	};
 
-	renderImage = (uri) => {
-		const {
-			theme, width, height, insets
-		} = this.props;
+	renderImage = uri => {
+		const { theme, width, height, insets } = this.props;
 		const headerHeight = getHeaderHeight(width > height);
 		return (
 			<ImageViewer
@@ -145,7 +148,7 @@ class AttachmentView extends React.Component {
 				height={height - insets.top - insets.bottom - headerHeight}
 			/>
 		);
-	}
+	};
 
 	renderVideo = uri => (
 		<Video
