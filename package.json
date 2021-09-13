@@ -152,7 +152,7 @@
 		"@types/react-test-renderer": "^17.0.1",
 		"@typescript-eslint/eslint-plugin": "^4.28.3",
 		"@typescript-eslint/parser": "^4.28.5",
-		"axios": "0.21.1",
+		"axios": "0.21.2",
 		"babel-jest": "^27.0.6",
 		"babel-plugin-transform-remove-console": "^6.9.4",
 		"codecov": "3.8.2",
