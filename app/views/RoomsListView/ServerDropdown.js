@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import {
-	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList
+	View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Linking
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect, batch } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import * as List from '../../containers/List';
+import Button from '../../containers/Button';
 
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
@@ -106,6 +107,15 @@ class ServerDropdown extends Component {
 				useNativeDriver: true
 			}
 		).start(() => toggleServerDropdown());
+	}
+
+	createWorkspace = async() => {
+		logEvent(events.ONBOARD_CREATE_NEW_WORKSPACE);
+		try {
+			await Linking.openURL('https://cloud.rocket.chat/trial');
+		} catch {
+			logEvent(events.ONBOARD_CREATE_NEW_WORKSPACE_F);
+		}
 	}
 
 	navToNewServer = (previousServer) => {
@@ -245,6 +255,16 @@ class ServerDropdown extends Component {
 						renderItem={this.renderServer}
 						ItemSeparatorComponent={List.Separator}
 						keyboardShouldPersistTaps='always'
+					/>
+					<List.Separator />
+					<Button
+						title={I18n.t('Create_a_new_workspace')}
+						type='secondary'
+						onPress={this.createWorkspace}
+						theme={theme}
+						testID='rooms-list-header-create-workspace-button'
+						style={styles.buttonCreateWorkspace}
+						color={themes[theme].tintColor}
 					/>
 				</Animated.View>
 			</>

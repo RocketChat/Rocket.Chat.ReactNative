@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Text, Image, Linking
+	View, Text, Image
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Orientation from 'react-native-orientation-locker';
@@ -45,15 +45,6 @@ class OnboardingView extends React.Component {
 		navigation.navigate('NewServerView');
 	}
 
-	createWorkspace = async() => {
-		logEvent(events.ONBOARD_CREATE_NEW_WORKSPACE);
-		try {
-			await Linking.openURL('https://cloud.rocket.chat/trial');
-		} catch {
-			logEvent(events.ONBOARD_CREATE_NEW_WORKSPACE_F);
-		}
-	}
-
 	render() {
 		const { theme } = this.props;
 		return (
@@ -70,14 +61,6 @@ class OnboardingView extends React.Component {
 							onPress={this.connectServer}
 							theme={theme}
 							testID='join-workspace'
-						/>
-						<Button
-							title={I18n.t('Create_a_new_workspace')}
-							type='secondary'
-							backgroundColor={themes[theme].chatComponentBackground}
-							onPress={this.createWorkspace}
-							theme={theme}
-							testID='create-workspace-button'
 						/>
 					</View>
 				</FormContainerInner>
