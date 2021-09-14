@@ -27,7 +27,6 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { CustomIcon } from '../../lib/Icons';
-import { compareServerVersion, methods } from '../../lib/utils';
 
 const PAGE_SIZE = 25;
 
@@ -57,7 +56,6 @@ class RoomMembersView extends React.Component {
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
 		useRealName: PropTypes.bool,
-		serverVersion: PropTypes.string,
 		muteUserPermission: PropTypes.array,
 		setLeaderPermission: PropTypes.array,
 		setOwnerPermission: PropTypes.array,
@@ -393,7 +391,6 @@ class RoomMembersView extends React.Component {
 		const {
 			rid, members, isLoading, allUsers, end, room, filtering
 		} = this.state;
-		const { serverVersion } = this.props;
 		const { t } = room;
 		let newMembers;
 		if (isLoading || end) {
@@ -402,20 +399,15 @@ class RoomMembersView extends React.Component {
 
 		this.setState({ isLoading: true });
 		try {
-			if (compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)) {
-				const membersResult = await RocketChat.getMembers({
-					roomId: rid,
-					roomType: t,
-					type: allUsers ? 'all' : 'online',
-					filter: filtering,
-					offset: members.length,
-					count: PAGE_SIZE
-				});
-				newMembers = membersResult.members;
-			} else {
-				const membersResult = await RocketChat.getRoomMembers(rid, allUsers, members.length, PAGE_SIZE);
-				newMembers = membersResult.records;
-			}
+			const membersResult = await RocketChat.getRoomMembers({
+				rid,
+				roomType: t,
+				type: allUsers ? 'all' : 'online',
+				filter: filtering,
+				skip: members.length,
+				limit: PAGE_SIZE
+			});
+			newMembers = membersResult.members;
 			this.setState({
 				members: members.concat(newMembers || []),
 				isLoading: false,
@@ -596,7 +588,6 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	useRealName: state.settings.UI_Use_Real_Name,
-	serverVersion: state.server.version,
 	muteUserPermission: state.permissions[PERMISSION_MUTE_USER],
 	setLeaderPermission: state.permissions[PERMISSION_SET_LEADER],
 	setOwnerPermission: state.permissions[PERMISSION_SET_OWNER],

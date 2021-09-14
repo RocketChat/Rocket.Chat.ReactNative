@@ -1028,7 +1028,20 @@ const RocketChat = {
 		}
 		return this.post('subscriptions.read', { rid: roomId });
 	},
-	getRoomMembers(rid, allUsers, skip = 0, limit = 10) {
+	getRoomMembers({
+		rid, allUsers, roomType, type, filter, skip = 0, limit = 10
+	}) {
+		const serverVersion = reduxStore.getState().server.version;
+		if (compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)) {
+			const params = {
+				roomId: rid,
+				offset: skip,
+				count: limit,
+				...(type !== 'all' && { 'status[]': type }),
+				...(filter && { filter })
+			};
+			return this.sdk.get(`${ this.roomTypeToApiType(roomType) }.members`, params);
+		}
 		// RC 0.42.0
 		return this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
 	},
