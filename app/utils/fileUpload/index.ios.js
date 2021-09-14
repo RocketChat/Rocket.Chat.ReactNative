@@ -4,23 +4,23 @@ class Upload {
 		this.formData = new FormData();
 	}
 
-	then = (callback) => {
+	then = callback => {
 		this.xhr.onload = () => callback({ respInfo: this.xhr });
 		this.xhr.send(this.formData);
-	}
+	};
 
-	catch = (callback) => {
+	catch = callback => {
 		this.xhr.onerror = callback;
-	}
+	};
 
-	uploadProgress = (callback) => {
+	uploadProgress = callback => {
 		this.xhr.upload.onprogress = ({ total, loaded }) => callback(loaded, total);
-	}
+	};
 
 	cancel = () => {
 		this.xhr.abort();
 		return Promise.resolve();
-	}
+	};
 }
 
 class FileUpload {
@@ -28,11 +28,11 @@ class FileUpload {
 		const upload = new Upload();
 		upload.xhr.open(method, url);
 
-		Object.keys(headers).forEach((key) => {
+		Object.keys(headers).forEach(key => {
 			upload.xhr.setRequestHeader(key, headers[key]);
 		});
 
-		data.forEach((item) => {
+		data.forEach(item => {
 			if (item.uri) {
 				upload.formData.append(item.name, {
 					uri: item.uri,
@@ -45,7 +45,7 @@ class FileUpload {
 		});
 
 		return upload;
-	}
+	};
 }
 
 const fileUpload = new FileUpload();

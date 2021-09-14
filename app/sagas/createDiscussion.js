@@ -1,13 +1,11 @@
-import {
-	select, put, call, take, takeLatest
-} from 'redux-saga/effects';
+import { call, put, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CREATE_DISCUSSION, LOGIN } from '../actions/actionsTypes';
-import { createDiscussionSuccess, createDiscussionFailure } from '../actions/createDiscussion';
+import { createDiscussionFailure, createDiscussionSuccess } from '../actions/createDiscussion';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
 
 const create = function* create(data) {
 	return yield RocketChat.createDiscussion(data);
@@ -28,8 +26,8 @@ const handleRequest = function* handleRequest({ data }) {
 			try {
 				const db = database.active;
 				const subCollection = db.get('subscriptions');
-				yield db.action(async() => {
-					await subCollection.create((s) => {
+				yield db.action(async () => {
+					await subCollection.create(s => {
 						s._raw = sanitizedRaw({ id: sub.rid }, subCollection.schema);
 						Object.assign(s, sub);
 					});
