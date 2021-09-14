@@ -9,14 +9,12 @@ class Touch extends React.Component {
 		this.ref.setNativeProps(props);
 	}
 
-	getRef = (ref) => {
+	getRef = ref => {
 		this.ref = ref;
 	};
 
 	render() {
-		const {
-			children, onPress, theme, underlayColor, ...props
-		} = this.props;
+		const { children, onPress, theme, underlayColor, ...props } = this.props;
 
 		return (
 			<RectButton
@@ -25,8 +23,7 @@ class Touch extends React.Component {
 				activeOpacity={1}
 				underlayColor={underlayColor || themes[theme].bannerBackground}
 				rippleColor={themes[theme].bannerBackground}
-				{...props}
-			>
+				{...props}>
 				{children}
 			</RectButton>
 		);

@@ -7,7 +7,6 @@ const initialState = {
 	showUnread: false
 };
 
-
 export default (state = initialState, action) => {
 	switch (action.type) {
 		case SORT_PREFERENCES.SET_ALL:

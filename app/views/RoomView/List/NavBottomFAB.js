@@ -1,9 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
-import Animated, {
-	call, cond, greaterOrEq, useCode
-} from 'react-native-reanimated';
+import Animated, { call, cond, greaterOrEq, useCode } from 'react-native-reanimated';
 
 import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
@@ -38,10 +36,15 @@ const NavBottomFAB = ({ y, onPress, isThread }) => {
 	const handleOnPress = useCallback(() => onPress());
 	const toggle = v => setShow(v);
 
-	useCode(() => cond(greaterOrEq(y, SCROLL_LIMIT),
-		call([y], () => toggle(true)),
-		call([y], () => toggle(false))),
-	[y]);
+	useCode(
+		() =>
+			cond(
+				greaterOrEq(y, SCROLL_LIMIT),
+				call([y], () => toggle(true)),
+				call([y], () => toggle(false))
+			),
+		[y]
+	);
 
 	if (!show) {
 		return null;
@@ -53,11 +56,7 @@ const NavBottomFAB = ({ y, onPress, isThread }) => {
 	}
 	return (
 		<Animated.View style={[styles.container, { bottom }]} testID='nav-jump-to-bottom'>
-			<Touch
-				onPress={handleOnPress}
-				theme={theme}
-				style={[styles.button, { backgroundColor: themes[theme].backgroundColor }]}
-			>
+			<Touch onPress={handleOnPress} theme={theme} style={[styles.button, { backgroundColor: themes[theme].backgroundColor }]}>
 				<View style={[styles.content, { borderColor: themes[theme].borderColor }]}>
 					<CustomIcon name='chevron-down' color={themes[theme].auxiliaryTintColor} size={36} />
 				</View>

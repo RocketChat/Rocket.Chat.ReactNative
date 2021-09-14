@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+
 import { isIOS } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 

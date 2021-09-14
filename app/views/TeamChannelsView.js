@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, Alert, FlatList } from 'react-native';
+import { Alert, FlatList, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import StatusBar from '../containers/StatusBar';
 import RoomHeader from '../containers/RoomHeader';
 import { withTheme } from '../theme';
-
 import log, { events, logEvent } from '../utils/log';
 import database from '../lib/database';
 import { getUserSelector } from '../selectors/login';
@@ -38,7 +37,6 @@ const PERMISSION_EDIT_TEAM_CHANNEL = 'edit-team-channel';
 const PERMISSION_REMOVE_TEAM_CHANNEL = 'remove-team-channel';
 const PERMISSION_ADD_TEAM_CHANNEL = 'add-team-channel';
 
-
 const getItemLayout = (data, index) => ({
 	length: data.length,
 	offset: ROW_HEIGHT * index,
@@ -63,7 +61,7 @@ class TeamChannelsView extends React.Component {
 		deletePPermission: PropTypes.array,
 		showActionSheet: PropTypes.func,
 		deleteRoom: PropTypes.func
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -86,16 +84,14 @@ class TeamChannelsView extends React.Component {
 		this.load();
 	}
 
-	loadTeam = async() => {
+	loadTeam = async () => {
 		const { addTeamChannelPermission } = this.props;
 		const { loading, data } = this.state;
 
 		const db = database.active;
 		try {
 			const subCollection = db.get('subscriptions');
-			this.teamChannels = await subCollection.query(
-				Q.where('team_id', Q.eq(this.teamId))
-			);
+			this.teamChannels = await subCollection.query(Q.where('team_id', Q.eq(this.teamId)));
 			this.team = this.teamChannels?.find(channel => channel.teamMain);
 			this.setHeader();
 
@@ -116,12 +112,10 @@ class TeamChannelsView extends React.Component {
 			navigation.pop();
 			showErrorAlert(I18n.t('Team_not_found'));
 		}
-	}
+	};
 
-	load = debounce(async() => {
-		const {
-			loadingMore, data, search, isSearching, searchText, end
-		} = this.state;
+	load = debounce(async () => {
+		const { loadingMore, data, search, isSearching, searchText, end } = this.state;
 
 		const length = isSearching ? search.length : data.length;
 		if (loadingMore || end) {
@@ -159,7 +153,7 @@ class TeamChannelsView extends React.Component {
 			log(e);
 			this.setState({ loading: false, loadingMore: false });
 		}
-	}, 300)
+	}, 300);
 
 	setHeader = () => {
 		const { isSearching, showCreate, data } = this.state;
@@ -179,10 +173,7 @@ class TeamChannelsView extends React.Component {
 				headerTitleAlign: 'left',
 				headerLeft: () => (
 					<HeaderButton.Container left>
-						<HeaderButton.Item
-							iconName='close'
-							onPress={this.onCancelSearchPress}
-						/>
+						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
 					</HeaderButton.Container>
 				),
 				headerTitle: () => (
@@ -225,29 +216,40 @@ class TeamChannelsView extends React.Component {
 
 		options.headerRight = () => (
 			<HeaderButton.Container>
-				{ showCreate
-					? <HeaderButton.Item iconName='create' testID='team-channels-view-create' onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })} />
-					: null}
+				{showCreate ? (
+					<HeaderButton.Item
+						iconName='create'
+						testID='team-channels-view-create'
+						onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })}
+					/>
+				) : null}
 				<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
 			</HeaderButton.Container>
 		);
 		navigation.setOptions(options);
-	}
+	};
 
 	onSearchPress = () => {
 		logEvent(events.TC_SEARCH);
 		this.setState({ isSearching: true }, () => this.setHeader());
-	}
+	};
 
-	onSearchChangeText = debounce((searchText) => {
-		this.setState({
-			searchText, search: [], loading: !!searchText, loadingMore: false, end: false
-		}, () => {
-			if (searchText) {
-				this.load();
+	onSearchChangeText = debounce(searchText => {
+		this.setState(
+			{
+				searchText,
+				search: [],
+				loading: !!searchText,
+				loadingMore: false,
+				end: false
+			},
+			() => {
+				if (searchText) {
+					this.load();
+				}
 			}
-		});
-	}, 300)
+		);
+	}, 300);
 
 	onCancelSearchPress = () => {
 		logEvent(events.TC_CANCEL_SEARCH);
@@ -256,65 +258,83 @@ class TeamChannelsView extends React.Component {
 			return;
 		}
 		Keyboard.dismiss();
-		this.setState({
-			searchText: null, isSearching: false, search: [], loadingMore: false, end: false
-		}, () => {
-			this.setHeader();
-		});
+		this.setState(
+			{
+				searchText: null,
+				isSearching: false,
+				search: [],
+				loadingMore: false,
+				end: false
+			},
+			() => {
+				this.setHeader();
+			}
+		);
 	};
 
-	goRoomActionsView = (screen) => {
+	goRoomActionsView = screen => {
 		logEvent(events.TC_GO_ACTIONS);
 		const { team } = this;
-		const {
-			navigation, isMasterDetail
-		} = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', {
 				screen: screen ?? 'RoomActionsView',
 				params: {
-					rid: team.rid, t: team.t, room: team, showCloseModal: false
+					rid: team.rid,
+					t: team.t,
+					room: team,
+					showCloseModal: false
 				}
 			});
 		} else {
 			navigation.navigate('RoomActionsView', {
-				rid: team.rid, t: team.t, room: team
+				rid: team.rid,
+				t: team.t,
+				room: team
 			});
 		}
-	}
+	};
 
-	getRoomTitle = item => RocketChat.getRoomTitle(item)
+	getRoomTitle = item => RocketChat.getRoomTitle(item);
 
-	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
+	getRoomAvatar = item => RocketChat.getRoomAvatar(item);
 
-	onPressItem = debounce(async(item) => {
-		logEvent(events.TC_GO_ROOM);
-		const { navigation, isMasterDetail } = this.props;
-		try {
-			const { room } = await RocketChat.getRoomInfo(item._id);
-			const params = {
-				rid: item._id, name: RocketChat.getRoomTitle(room), joinCodeRequired: room.joinCodeRequired, t: room.t, teamId: room.teamId
-			};
-			if (isMasterDetail) {
-				navigation.pop();
+	onPressItem = debounce(
+		async item => {
+			logEvent(events.TC_GO_ROOM);
+			const { navigation, isMasterDetail } = this.props;
+			try {
+				const { room } = await RocketChat.getRoomInfo(item._id);
+				const params = {
+					rid: item._id,
+					name: RocketChat.getRoomTitle(room),
+					joinCodeRequired: room.joinCodeRequired,
+					t: room.t,
+					teamId: room.teamId
+				};
+				if (isMasterDetail) {
+					navigation.pop();
+				}
+				goRoom({ item: params, isMasterDetail, navigationMethod: navigation.push });
+			} catch (e) {
+				if (e.data.error === 'not-allowed') {
+					showErrorAlert(I18n.t('error-not-allowed'));
+				} else {
+					showErrorAlert(e.data.error);
+				}
 			}
-			goRoom({ item: params, isMasterDetail, navigationMethod: navigation.push });
-		} catch (e) {
-			if (e.data.error === 'not-allowed') {
-				showErrorAlert(I18n.t('error-not-allowed'));
-			} else {
-				showErrorAlert(e.data.error);
-			}
-		}
-	}, 1000, true);
+		},
+		1000,
+		true
+	);
 
-	toggleAutoJoin = async(item) => {
+	toggleAutoJoin = async item => {
 		logEvent(events.TC_TOGGLE_AUTOJOIN);
 		try {
 			const { data } = this.state;
 			const result = await RocketChat.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
 			if (result.success) {
-				const newData = data.map((i) => {
+				const newData = data.map(i => {
 					if (i._id === item._id) {
 						i.teamDefault = !i.teamDefault;
 					}
@@ -326,9 +346,9 @@ class TeamChannelsView extends React.Component {
 			logEvent(events.TC_TOGGLE_AUTOJOIN_F);
 			log(e);
 		}
-	}
+	};
 
-	remove = (item) => {
+	remove = item => {
 		Alert.alert(
 			I18n.t('Confirmation'),
 			I18n.t('Remove_Team_Room_Warning'),
@@ -345,9 +365,9 @@ class TeamChannelsView extends React.Component {
 			],
 			{ cancelable: false }
 		);
-	}
+	};
 
-	removeRoom = async(item) => {
+	removeRoom = async item => {
 		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const { data } = this.state;
@@ -360,9 +380,9 @@ class TeamChannelsView extends React.Component {
 			logEvent(events.TC_DELETE_ROOM_F);
 			log(e);
 		}
-	}
+	};
 
-	delete = (item) => {
+	delete = item => {
 		logEvent(events.TC_DELETE_ROOM);
 		const { deleteRoom } = this.props;
 
@@ -382,12 +402,17 @@ class TeamChannelsView extends React.Component {
 			],
 			{ cancelable: false }
 		);
-	}
+	};
 
-	showChannelActions = async(item) => {
+	showChannelActions = async item => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		const {
-			showActionSheet, editTeamChannelPermission, deleteCPermission, deletePPermission, theme, removeTeamChannelPermission
+			showActionSheet,
+			editTeamChannelPermission,
+			deleteCPermission,
+			deletePPermission,
+			theme,
+			removeTeamChannelPermission
 		} = this.props;
 		const isAutoJoinChecked = item.teamDefault;
 		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
@@ -401,7 +426,14 @@ class TeamChannelsView extends React.Component {
 				title: I18n.t('Auto-join'),
 				icon: item.t === 'p' ? 'channel-private' : 'channel-public',
 				onPress: () => this.toggleAutoJoin(item),
-				right: () => <CustomIcon testID={isAutoJoinChecked ? 'auto-join-checked' : 'auto-join-unchecked'} name={autoJoinIcon} size={20} color={autoJoinIconColor} />,
+				right: () => (
+					<CustomIcon
+						testID={isAutoJoinChecked ? 'auto-join-checked' : 'auto-join-unchecked'}
+						name={autoJoinIcon}
+						size={20}
+						color={autoJoinIconColor}
+					/>
+				),
 				testID: 'action-sheet-auto-join'
 			});
 		}
@@ -432,15 +464,10 @@ class TeamChannelsView extends React.Component {
 			return;
 		}
 		showActionSheet({ options });
-	}
+	};
 
 	renderItem = ({ item }) => {
-		const {
-			StoreLastMessage,
-			useRealName,
-			theme,
-			width
-		} = this.props;
+		const { StoreLastMessage, useRealName, theme, width } = this.props;
 		return (
 			<RoomItem
 				item={item}
@@ -466,12 +493,10 @@ class TeamChannelsView extends React.Component {
 			return <ActivityIndicator theme={theme} />;
 		}
 		return null;
-	}
+	};
 
 	renderScroll = () => {
-		const {
-			loading, data, search, isSearching, searchText
-		} = this.state;
+		const { loading, data, search, isSearching, searchText } = this.state;
 		if (loading) {
 			return <BackgroundContainer loading />;
 		}
@@ -499,7 +524,7 @@ class TeamChannelsView extends React.Component {
 	};
 
 	render() {
-		console.count(`${ this.constructor.name }.render calls`);
+		console.count(`${this.constructor.name}.render calls`);
 		return (
 			<SafeAreaView testID='team-channels-view'>
 				<StatusBar />
@@ -526,4 +551,7 @@ const mapDispatchToProps = dispatch => ({
 	deleteRoom: (rid, t) => dispatch(deleteRoomAction(rid, t))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withSafeAreaInsets(withTheme(withActionSheet(TeamChannelsView)))));
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withDimensions(withSafeAreaInsets(withTheme(withActionSheet(TeamChannelsView)))));

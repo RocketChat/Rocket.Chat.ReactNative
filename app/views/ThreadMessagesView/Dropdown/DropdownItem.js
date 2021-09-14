@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
@@ -23,9 +23,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DropdownItem = React.memo(({
-	theme, onPress, iconName, text
-}) => (
+const DropdownItem = React.memo(({ theme, onPress, iconName, text }) => (
 	<Touch theme={theme} onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }}>
 		<View style={styles.container}>
 			<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>{text}</Text>

@@ -1,4 +1,4 @@
-import { takeLatest, select } from 'redux-saga/effects';
+import { select, takeLatest } from 'redux-saga/effects';
 import { Q } from '@nozbe/watermelondb';
 
 import Navigation from '../lib/Navigation';
