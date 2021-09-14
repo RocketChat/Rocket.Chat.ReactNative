@@ -9,7 +9,7 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import database from '../lib/database';
 import { localAuthenticate } from '../utils/localAuthentication';
-import { appStart, ROOT_OUTSIDE, appReady } from '../actions/app';
+import { ROOT_OUTSIDE, appReady, appStart } from '../actions/app';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
@@ -19,7 +19,7 @@ export const initLocalSettings = function* initLocalSettings() {
 const restore = function* restore() {
 	try {
 		const server = yield UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
-		let userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		let userId = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
 
 		if (!server) {
 			yield put(appStart({ root: ROOT_OUTSIDE }));
@@ -32,7 +32,7 @@ const restore = function* restore() {
 			if (servers.length > 0) {
 				for (let i = 0; i < servers.length; i += 1) {
 					const newServer = servers[i].id;
-					userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+					userId = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${newServer}`);
 					if (userId) {
 						return yield put(selectServerRequest(newServer));
 					}

@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, Text, Share, Switch
-} from 'react-native';
+import { Share, Switch, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { Q } from '@nozbe/watermelondb';
@@ -10,20 +8,17 @@ import { Q } from '@nozbe/watermelondb';
 import { compareServerVersion, methods } from '../../lib/utils';
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
-import {
-	leaveRoom as leaveRoomAction, closeRoom as closeRoomAction
-} from '../../actions/room';
-import styles from './styles';
+import { closeRoom as closeRoomAction, leaveRoom as leaveRoomAction } from '../../actions/room';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
 import * as List from '../../containers/List';
 import RocketChat from '../../lib/rocketchat';
-import log, { logEvent, events } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import { themes, SWITCH_TRACK_COLOR } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import * as HeaderButton from '../../containers/HeaderButton';
 import Markdown from '../../containers/markdown';
@@ -33,6 +28,7 @@ import { E2E_ROOM_TYPES } from '../../lib/encryption/constants';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import database from '../../lib/database';
 import { withDimensions } from '../../dimensions';
+import styles from './styles';
 
 class RoomActionsView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -43,7 +39,7 @@ class RoomActionsView extends React.Component {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='room-actions-view-close' />;
 		}
 		return options;
-	}
+	};
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -69,7 +65,7 @@ class RoomActionsView extends React.Component {
 		createTeamPermission: PropTypes.array,
 		addTeamChannelPermission: PropTypes.array,
 		convertTeamPermission: PropTypes.array
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -97,14 +93,13 @@ class RoomActionsView extends React.Component {
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable
-				.subscribe((changes) => {
-					if (this.mounted) {
-						this.setState({ room: changes });
-					} else {
-						this.state.room = changes;
-					}
-				});
+			this.subscription = this.roomObservable.subscribe(changes => {
+				if (this.mounted) {
+					this.setState({ room: changes });
+				} else {
+					this.state.room = changes;
+				}
+			});
 		}
 	}
 
@@ -147,7 +142,15 @@ class RoomActionsView extends React.Component {
 			const canConvertTeam = await this.canConvertTeam();
 
 			this.setState({
-				canAutoTranslate, canAddUser, canInviteUser, canEdit, canToggleEncryption, canViewMembers, canCreateTeam, canAddChannelToTeam, canConvertTeam
+				canAutoTranslate,
+				canAddUser,
+				canInviteUser,
+				canEdit,
+				canToggleEncryption,
+				canViewMembers,
+				canCreateTeam,
+				canAddChannelToTeam,
+				canConvertTeam
 			});
 
 			// livechat permissions
@@ -170,26 +173,29 @@ class RoomActionsView extends React.Component {
 		return room.t === 'l' && room.status === 'queued';
 	}
 
-	onPressTouchable = (item) => {
+	onPressTouchable = item => {
 		const { route, event, params } = item;
 		if (route) {
-			logEvent(events[`RA_GO_${ route.replace('View', '').toUpperCase() }${ params.name ? params.name.toUpperCase() : '' }`]);
+			logEvent(events[`RA_GO_${route.replace('View', '').toUpperCase()}${params.name ? params.name.toUpperCase() : ''}`]);
 			const { navigation } = this.props;
 			navigation.navigate(route, params);
 		}
 		if (event) {
 			return event();
 		}
-	}
+	};
 
-	canAddUser = async() => {
+	canAddUser = async () => {
 		const { room, joined } = this.state;
 		const { addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission } = this.props;
 		const { rid, t } = room;
 		let canAddUser = false;
 
 		const userInRoom = joined;
-		const permissions = await RocketChat.hasPermission([addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission], rid);
+		const permissions = await RocketChat.hasPermission(
+			[addUserToJoinedRoomPermission, addUserToAnyCRoomPermission, addUserToAnyPRoomPermission],
+			rid
+		);
 
 		if (userInRoom && permissions[0]) {
 			canAddUser = true;
@@ -201,9 +207,9 @@ class RoomActionsView extends React.Component {
 			canAddUser = true;
 		}
 		return canAddUser;
-	}
+	};
 
-	canInviteUser = async() => {
+	canInviteUser = async () => {
 		const { room } = this.state;
 		const { createInviteLinksPermission } = this.props;
 		const { rid } = room;
@@ -211,9 +217,9 @@ class RoomActionsView extends React.Component {
 
 		const canInviteUser = permissions[0];
 		return canInviteUser;
-	}
+	};
 
-	canEdit = async() => {
+	canEdit = async () => {
 		const { room } = this.state;
 		const { editRoomPermission } = this.props;
 		const { rid } = room;
@@ -221,9 +227,9 @@ class RoomActionsView extends React.Component {
 
 		const canEdit = permissions[0];
 		return canEdit;
-	}
+	};
 
-	canCreateTeam = async() => {
+	canCreateTeam = async () => {
 		const { room } = this.state;
 		const { createTeamPermission } = this.props;
 		const { rid } = room;
@@ -231,9 +237,9 @@ class RoomActionsView extends React.Component {
 
 		const canCreateTeam = permissions[0];
 		return canCreateTeam;
-	}
+	};
 
-	canAddChannelToTeam = async() => {
+	canAddChannelToTeam = async () => {
 		const { room } = this.state;
 		const { addTeamChannelPermission } = this.props;
 		const { rid } = room;
@@ -241,9 +247,9 @@ class RoomActionsView extends React.Component {
 
 		const canAddChannelToTeam = permissions[0];
 		return canAddChannelToTeam;
-	}
+	};
 
-	canConvertTeam = async() => {
+	canConvertTeam = async () => {
 		const { room } = this.state;
 		const { convertTeamPermission } = this.props;
 		const { rid } = room;
@@ -251,9 +257,9 @@ class RoomActionsView extends React.Component {
 
 		const canConvertTeam = permissions[0];
 		return canConvertTeam;
-	}
+	};
 
-	canToggleEncryption = async() => {
+	canToggleEncryption = async () => {
 		const { room } = this.state;
 		const { toggleRoomE2EEncryptionPermission } = this.props;
 		const { rid } = room;
@@ -261,9 +267,9 @@ class RoomActionsView extends React.Component {
 
 		const canToggleEncryption = permissions[0];
 		return canToggleEncryption;
-	}
+	};
 
-	canViewMembers = async() => {
+	canViewMembers = async () => {
 		const { room } = this.state;
 		const { viewBroadcastMemberListPermission } = this.props;
 		const { rid, t, broadcast } = room;
@@ -276,26 +282,26 @@ class RoomActionsView extends React.Component {
 
 		// This method is executed only in componentDidMount and returns a value
 		// We save the state to read in render
-		const result = (t === 'c' || t === 'p');
+		const result = t === 'c' || t === 'p';
 		return result;
-	}
+	};
 
-	canForwardGuest = async() => {
+	canForwardGuest = async () => {
 		const { room } = this.state;
 		const { transferLivechatGuestPermission } = this.props;
 		const { rid } = room;
 		const permissions = await RocketChat.hasPermission([transferLivechatGuestPermission], rid);
 		return permissions[0];
-	}
+	};
 
-	canReturnQueue = async() => {
+	canReturnQueue = async () => {
 		try {
 			const { returnQueue } = await RocketChat.getRoutingConfig();
 			return returnQueue;
 		} catch {
 			// do nothing
 		}
-	}
+	};
 
 	renderEncryptedSwitch = () => {
 		const { room, canToggleEncryption, canEdit } = this.state;
@@ -308,28 +314,27 @@ class RoomActionsView extends React.Component {
 			hasPermission = canToggleEncryption;
 		}
 		return (
-			<Switch
-				value={encrypted}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleEncrypted}
-				disabled={!hasPermission}
-			/>
+			<Switch value={encrypted} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleEncrypted} disabled={!hasPermission} />
 		);
-	}
+	};
 
 	closeLivechat = () => {
-		const { room: { rid } } = this.state;
+		const {
+			room: { rid }
+		} = this.state;
 		const { closeRoom } = this.props;
 
 		closeRoom(rid);
-	}
+	};
 
 	returnLivechat = () => {
-		const { room: { rid } } = this.state;
+		const {
+			room: { rid }
+		} = this.state;
 		showConfirmationAlert({
 			message: I18n.t('Would_you_like_to_return_the_inquiry'),
 			confirmationText: I18n.t('Yes'),
-			onPress: async() => {
+			onPress: async () => {
 				try {
 					await RocketChat.returnLivechat(rid);
 				} catch (e) {
@@ -337,9 +342,9 @@ class RoomActionsView extends React.Component {
 				}
 			}
 		});
-	}
+	};
 
-	updateRoomMember = async() => {
+	updateRoomMember = async () => {
 		const { room } = this.state;
 
 		try {
@@ -354,9 +359,9 @@ class RoomActionsView extends React.Component {
 			log(e);
 			this.setState({ member: {} });
 		}
-	}
+	};
 
-	addUser = async() => {
+	addUser = async () => {
 		const { room } = this.state;
 		const { setLoadingInvite, navigation } = this.props;
 		const { rid } = room;
@@ -369,9 +374,9 @@ class RoomActionsView extends React.Component {
 		} finally {
 			setLoadingInvite(false);
 		}
-	}
+	};
 
-	toggleBlockUser = async() => {
+	toggleBlockUser = async () => {
 		logEvent(events.RA_TOGGLE_BLOCK_USER);
 		const { room } = this.state;
 		const { rid, blocker } = room;
@@ -382,9 +387,9 @@ class RoomActionsView extends React.Component {
 			logEvent(events.RA_TOGGLE_BLOCK_USER_F);
 			log(e);
 		}
-	}
+	};
 
-	toggleEncrypted = async() => {
+	toggleEncrypted = async () => {
 		logEvent(events.RA_TOGGLE_ENCRYPTED);
 		const { room } = this.state;
 		const { rid } = room;
@@ -394,10 +399,12 @@ class RoomActionsView extends React.Component {
 		const encrypted = !room.encrypted;
 		try {
 			// Instantly feedback to the user
-			await db.action(async() => {
-				await room.update(protectedFunction((r) => {
-					r.encrypted = encrypted;
-				}));
+			await db.action(async () => {
+				await room.update(
+					protectedFunction(r => {
+						r.encrypted = encrypted;
+					})
+				);
 			});
 
 			try {
@@ -412,16 +419,18 @@ class RoomActionsView extends React.Component {
 			}
 
 			// If something goes wrong we go back to the previous value
-			await db.action(async() => {
-				await room.update(protectedFunction((r) => {
-					r.encrypted = room.encrypted;
-				}));
+			await db.action(async () => {
+				await room.update(
+					protectedFunction(r => {
+						r.encrypted = room.encrypted;
+					})
+				);
 			});
 		} catch (e) {
 			logEvent(events.RA_TOGGLE_ENCRYPTED_F);
 			log(e);
 		}
-	}
+	};
 
 	handleShare = () => {
 		logEvent(events.RA_SHARE);
@@ -444,9 +453,9 @@ class RoomActionsView extends React.Component {
 			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
 			onPress: () => leaveRoom('channel', room)
 		});
-	}
+	};
 
-	convertTeamToChannel = async() => {
+	convertTeamToChannel = async () => {
 		const { room } = this.state;
 		const { navigation } = this.props;
 
@@ -471,9 +480,9 @@ class RoomActionsView extends React.Component {
 		} catch (e) {
 			this.convertTeamToChannelConfirmation();
 		}
-	}
+	};
 
-	handleConvertTeamToChannel = async(selected) => {
+	handleConvertTeamToChannel = async selected => {
 		logEvent(events.RA_CONVERT_TEAM_TO_CHANNEL);
 		try {
 			const { room } = this.state;
@@ -488,7 +497,7 @@ class RoomActionsView extends React.Component {
 			logEvent(events.RA_CONVERT_TEAM_TO_CHANNEL_F);
 			log(e);
 		}
-	}
+	};
 
 	convertTeamToChannelConfirmation = (selected = []) => {
 		showConfirmationAlert({
@@ -497,9 +506,9 @@ class RoomActionsView extends React.Component {
 			confirmationText: I18n.t('Convert'),
 			onPress: () => this.handleConvertTeamToChannel(selected)
 		});
-	}
+	};
 
-	leaveTeam = async() => {
+	leaveTeam = async () => {
 		const { room } = this.state;
 		const { navigation, leaveRoom } = this.props;
 
@@ -534,9 +543,9 @@ class RoomActionsView extends React.Component {
 				onPress: () => leaveRoom('team', room)
 			});
 		}
-	}
+	};
 
-	handleConvertToTeam = async() => {
+	handleConvertToTeam = async () => {
 		logEvent(events.RA_CONVERT_TO_TEAM);
 		try {
 			const { room } = this.state;
@@ -550,7 +559,7 @@ class RoomActionsView extends React.Component {
 			logEvent(events.RA_CONVERT_TO_TEAM_F);
 			log(e);
 		}
-	}
+	};
 
 	convertToTeam = () => {
 		showConfirmationAlert({
@@ -559,9 +568,9 @@ class RoomActionsView extends React.Component {
 			confirmationText: I18n.t('Convert'),
 			onPress: () => this.handleConvertToTeam()
 		});
-	}
+	};
 
-	handleMoveToTeam = async(selected) => {
+	handleMoveToTeam = async selected => {
 		logEvent(events.RA_MOVE_TO_TEAM);
 		try {
 			const { room } = this.state;
@@ -575,16 +584,14 @@ class RoomActionsView extends React.Component {
 			log(e);
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('moving_channel_to_team') }));
 		}
-	}
+	};
 
-	moveToTeam = async() => {
+	moveToTeam = async () => {
 		try {
 			const { navigation } = this.props;
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
-			const teamRooms = await subCollection.query(
-				Q.where('team_main', true)
-			);
+			const teamRooms = await subCollection.query(Q.where('team_main', true));
 
 			if (teamRooms.length) {
 				const data = teamRooms.map(team => ({
@@ -602,12 +609,13 @@ class RoomActionsView extends React.Component {
 							isRadio: true,
 							isSearch: true,
 							onSearch: onChangeText => this.searchTeam(onChangeText),
-							nextAction: selected => showConfirmationAlert({
-								title: I18n.t('Confirmation'),
-								message: I18n.t('Move_to_Team_Warning'),
-								confirmationText: I18n.t('Yes_action_it', { action: I18n.t('move') }),
-								onPress: () => this.handleMoveToTeam(selected)
-							})
+							nextAction: selected =>
+								showConfirmationAlert({
+									title: I18n.t('Confirmation'),
+									message: I18n.t('Move_to_Team_Warning'),
+									confirmationText: I18n.t('Yes_action_it', { action: I18n.t('move') }),
+									onPress: () => this.handleMoveToTeam(selected)
+								})
 						});
 					}
 				});
@@ -615,9 +623,9 @@ class RoomActionsView extends React.Component {
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	searchTeam = async(onChangeText) => {
+	searchTeam = async onChangeText => {
 		logEvent(events.RA_SEARCH_TEAM);
 		try {
 			const { addTeamChannelPermission, createTeamPermission } = this.props;
@@ -627,19 +635,21 @@ class RoomActionsView extends React.Component {
 				.get('subscriptions')
 				.query(
 					Q.where('team_main', true),
-					Q.where('name', Q.like(`%${ onChangeText }%`)),
+					Q.where('name', Q.like(`%${onChangeText}%`)),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
 				);
 
-			const asyncFilter = async(teamArray) => {
-				const results = await Promise.all(teamArray.map(async(team) => {
-					const permissions = await RocketChat.hasPermission([addTeamChannelPermission, createTeamPermission], team.rid);
-					if (!permissions[0]) {
-						return false;
-					}
-					return true;
-				}));
+			const asyncFilter = async teamArray => {
+				const results = await Promise.all(
+					teamArray.map(async team => {
+						const permissions = await RocketChat.hasPermission([addTeamChannelPermission, createTeamPermission], team.rid);
+						if (!permissions[0]) {
+							return false;
+						}
+						return true;
+					})
+				);
 
 				return teamArray.filter((_v, index) => results[index]);
 			};
@@ -648,13 +658,11 @@ class RoomActionsView extends React.Component {
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
-		const {
-			rid, name, t, topic
-		} = room;
+		const { rid, name, t, topic } = room;
 		const { theme, fontScale } = this.props;
 
 		const avatar = RocketChat.getRoomAvatar(room);
@@ -664,54 +672,61 @@ class RoomActionsView extends React.Component {
 			<List.Section>
 				<List.Separator />
 				<Touch
-					onPress={() => this.onPressTouchable({
-						route: 'RoomInfoView',
-						// forward room only if room isn't joined
-						params: {
-							rid, t, room, member
-						}
-					})}
+					onPress={() =>
+						this.onPressTouchable({
+							route: 'RoomInfoView',
+							// forward room only if room isn't joined
+							params: {
+								rid,
+								t,
+								room,
+								member
+							}
+						})
+					}
 					style={{ backgroundColor: themes[theme].backgroundColor }}
 					accessibilityLabel={I18n.t('Room_Info')}
 					accessibilityTraits='button'
 					enabled={!isGroupChat}
 					testID='room-actions-info'
-					theme={theme}
-				>
+					theme={theme}>
 					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
-						<Avatar
-							text={avatar}
-							style={styles.avatar}
-							size={50 * fontScale}
-							type={t}
-							rid={rid}
-						>
-							{t === 'd' && member._id
-								? (
-									<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
-										<Status size={16} id={member._id} />
-									</View>
-								) : null
-							}
+						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid}>
+							{t === 'd' && member._id ? (
+								<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
+									<Status size={16} id={member._id} />
+								</View>
+							) : null}
 						</Avatar>
 						<View style={styles.roomTitleContainer}>
-							{room.t === 'd'
-								? <Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{room.fname}</Text>
-								: (
-									<View style={styles.roomTitleRow}>
-										<RoomTypeIcon type={room.prid ? 'discussion' : room.t} teamMain={room.teamMain} status={room.visitor?.status} />
-										<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>{RocketChat.getRoomTitle(room)}</Text>
-									</View>
-								)
-							}
+							{room.t === 'd' ? (
+								<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
+									{room.fname}
+								</Text>
+							) : (
+								<View style={styles.roomTitleRow}>
+									<RoomTypeIcon type={room.prid ? 'discussion' : room.t} teamMain={room.teamMain} status={room.visitor?.status} />
+									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
+										{RocketChat.getRoomTitle(room)}
+									</Text>
+								</View>
+							)}
 							<Markdown
 								preview
-								msg={t === 'd' ? `@${ name }` : topic}
+								msg={t === 'd' ? `@${name}` : topic}
 								style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
 								numberOfLines={1}
 								theme={theme}
 							/>
-							{room.t === 'd' && <Markdown msg={member.statusText} style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]} preview theme={theme} numberOfLines={1} />}
+							{room.t === 'd' && (
+								<Markdown
+									msg={member.statusText}
+									style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
+									preview
+									theme={theme}
+									numberOfLines={1}
+								/>
+							)}
 						</View>
 						{isGroupChat ? null : <List.Icon name='chevron-right' style={styles.actionIndicator} />}
 					</View>
@@ -719,7 +734,7 @@ class RoomActionsView extends React.Component {
 				<List.Separator />
 			</List.Section>
 		);
-	}
+	};
 
 	renderJitsi = () => {
 		const { room } = this.state;
@@ -753,7 +768,7 @@ class RoomActionsView extends React.Component {
 				<List.Separator />
 			</List.Section>
 		);
-	}
+	};
 
 	renderE2EEncryption = () => {
 		const { room } = this.state;
@@ -776,7 +791,7 @@ class RoomActionsView extends React.Component {
 			);
 		}
 		return null;
-	}
+	};
 
 	renderLastSection = () => {
 		const { room, joined } = this.state;
@@ -792,10 +807,12 @@ class RoomActionsView extends React.Component {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title={`${ blocker ? 'Unblock' : 'Block' }_user`}
-						onPress={() => this.onPressTouchable({
-							event: this.toggleBlockUser
-						})}
+						title={`${blocker ? 'Unblock' : 'Block'}_user`}
+						onPress={() =>
+							this.onPressTouchable({
+								event: this.toggleBlockUser
+							})
+						}
 						testID='room-actions-block-user'
 						left={() => <List.Icon name='ignore' color={themes[theme].dangerColor} />}
 						showActionIndicator
@@ -812,9 +829,11 @@ class RoomActionsView extends React.Component {
 					<List.Separator />
 					<List.Item
 						title='Leave'
-						onPress={() => this.onPressTouchable({
-							event: room.teamMain ? this.leaveTeam : this.leaveChannel
-						})}
+						onPress={() =>
+							this.onPressTouchable({
+								event: room.teamMain ? this.leaveTeam : this.leaveChannel
+							})
+						}
 						testID='room-actions-leave-channel'
 						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}
 						showActionIndicator
@@ -826,7 +845,7 @@ class RoomActionsView extends React.Component {
 		}
 
 		return null;
-	}
+	};
 
 	teamChannelActions = (t, room) => {
 		const { canEdit, canCreateTeam, canAddChannelToTeam } = this.state;
@@ -835,42 +854,42 @@ class RoomActionsView extends React.Component {
 
 		return (
 			<>
-				{['c', 'p'].includes(t) && canConvertToTeam
-					? (
-						<>
-							<List.Item
-								title='Convert_to_Team'
-								onPress={() => this.onPressTouchable({
+				{['c', 'p'].includes(t) && canConvertToTeam ? (
+					<>
+						<List.Item
+							title='Convert_to_Team'
+							onPress={() =>
+								this.onPressTouchable({
 									event: this.convertToTeam
-								})}
-								testID='room-actions-convert-to-team'
-								left={() => <List.Icon name='teams' />}
-								showActionIndicator
-							/>
-							<List.Separator />
-						</>
-					)
-					: null}
+								})
+							}
+							testID='room-actions-convert-to-team'
+							left={() => <List.Icon name='teams' />}
+							showActionIndicator
+						/>
+						<List.Separator />
+					</>
+				) : null}
 
-				{['c', 'p'].includes(t) && canMoveToTeam
-					? (
-						<>
-							<List.Item
-								title='Move_to_Team'
-								onPress={() => this.onPressTouchable({
+				{['c', 'p'].includes(t) && canMoveToTeam ? (
+					<>
+						<List.Item
+							title='Move_to_Team'
+							onPress={() =>
+								this.onPressTouchable({
 									event: this.moveToTeam
-								})}
-								testID='room-actions-move-to-team'
-								left={() => <List.Icon name='channel-move-to-team' />}
-								showActionIndicator
-							/>
-							<List.Separator />
-						</>
-					)
-					: null}
+								})
+							}
+							testID='room-actions-move-to-team'
+							left={() => <List.Icon name='channel-move-to-team' />}
+							showActionIndicator
+						/>
+						<List.Separator />
+					</>
+				) : null}
 			</>
 		);
-	}
+	};
 
 	teamToChannelActions = (t, room) => {
 		const { canEdit, canConvertTeam } = this.state;
@@ -878,33 +897,39 @@ class RoomActionsView extends React.Component {
 
 		return (
 			<>
-				{['c', 'p'].includes(t) && canConvertTeamToChannel
-					? (
-						<>
-							<List.Item
-								title='Convert_to_Channel'
-								onPress={() => this.onPressTouchable({
+				{['c', 'p'].includes(t) && canConvertTeamToChannel ? (
+					<>
+						<List.Item
+							title='Convert_to_Channel'
+							onPress={() =>
+								this.onPressTouchable({
 									event: this.convertTeamToChannel
-								})}
-								testID='room-actions-convert-channel-to-team'
-								left={() => <List.Icon name='channel-public' />}
-								showActionIndicator
-							/>
-							<List.Separator />
-						</>
-					)
-					: null}
+								})
+							}
+							testID='room-actions-convert-channel-to-team'
+							left={() => <List.Icon name='channel-public' />}
+							showActionIndicator
+						/>
+						<List.Separator />
+					</>
+				) : null}
 			</>
 		);
-	}
+	};
 
 	render() {
 		const {
-			room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canForwardGuest, canReturnQueue
+			room,
+			membersCount,
+			canViewMembers,
+			canAddUser,
+			canInviteUser,
+			joined,
+			canAutoTranslate,
+			canForwardGuest,
+			canReturnQueue
 		} = this.state;
-		const {
-			rid, t
-		} = room;
+		const { rid, t } = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
 		return (
@@ -917,257 +942,254 @@ class RoomActionsView extends React.Component {
 					<List.Section>
 						<List.Separator />
 
-						{(['c', 'p'].includes(t) && canViewMembers) || isGroupChat
-							? (
-								<>
-									<List.Item
-										title='Members'
-										subtitle={membersCount > 0 ? `${ membersCount } ${ I18n.t('members') }` : null}
-										onPress={() => this.onPressTouchable({ route: 'RoomMembersView', params: { rid, room } })}
-										testID='room-actions-members'
-										left={() => <List.Icon name='team' />}
-										showActionIndicator
-										translateSubtitle={false}
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+						{(['c', 'p'].includes(t) && canViewMembers) || isGroupChat ? (
+							<>
+								<List.Item
+									title='Members'
+									subtitle={membersCount > 0 ? `${membersCount} ${I18n.t('members')}` : null}
+									onPress={() => this.onPressTouchable({ route: 'RoomMembersView', params: { rid, room } })}
+									testID='room-actions-members'
+									left={() => <List.Icon name='team' />}
+									showActionIndicator
+									translateSubtitle={false}
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['c', 'p'].includes(t) && canAddUser
-							? (
-								<>
-									<List.Item
-										title='Add_users'
-										onPress={() => this.onPressTouchable({
+						{['c', 'p'].includes(t) && canAddUser ? (
+							<>
+								<List.Item
+									title='Add_users'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'SelectedUsersView',
 											params: {
 												rid,
 												title: I18n.t('Add_users'),
 												nextAction: this.addUser
 											}
-										})}
-										testID='room-actions-add-user'
-										left={() => <List.Icon name='add' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									testID='room-actions-add-user'
+									left={() => <List.Icon name='add' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['c', 'p'].includes(t) && canInviteUser
-							? (
-								<>
-									<List.Item
-										title='Invite_users'
-										onPress={() => this.onPressTouchable({
+						{['c', 'p'].includes(t) && canInviteUser ? (
+							<>
+								<List.Item
+									title='Invite_users'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'InviteUsersView',
 											params: { rid }
-										})}
-										testID='room-actions-invite-user'
-										left={() => <List.Icon name='user-add' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									testID='room-actions-invite-user'
+									left={() => <List.Icon name='user-add' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['c', 'p', 'd'].includes(t)
-							? (
-								<>
-									<List.Item
-										title='Files'
-										onPress={() => this.onPressTouchable({
+						{['c', 'p', 'd'].includes(t) ? (
+							<>
+								<List.Item
+									title='Files'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'MessagesView',
 											params: { rid, t, name: 'Files' }
-										})}
-										testID='room-actions-files'
-										left={() => <List.Icon name='attach' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									testID='room-actions-files'
+									left={() => <List.Icon name='attach' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['c', 'p', 'd'].includes(t)
-							? (
-								<>
-									<List.Item
-										title='Mentions'
-										onPress={() => this.onPressTouchable({
+						{['c', 'p', 'd'].includes(t) ? (
+							<>
+								<List.Item
+									title='Mentions'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'MessagesView',
 											params: { rid, t, name: 'Mentions' }
-										})}
-										testID='room-actions-mentioned'
-										left={() => <List.Icon name='mention' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									testID='room-actions-mentioned'
+									left={() => <List.Icon name='mention' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['c', 'p', 'd'].includes(t)
-							? (
-								<>
-									<List.Item
-										title='Starred'
-										onPress={() => this.onPressTouchable({
+						{['c', 'p', 'd'].includes(t) ? (
+							<>
+								<List.Item
+									title='Starred'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'MessagesView',
 											params: { rid, t, name: 'Starred' }
-										})}
-										testID='room-actions-starred'
-										left={() => <List.Icon name='star' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									testID='room-actions-starred'
+									left={() => <List.Icon name='star' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['c', 'p', 'd'].includes(t)
-							? (
-								<>
-									<List.Item
-										title='Share'
-										onPress={() => this.onPressTouchable({
+						{['c', 'p', 'd'].includes(t) ? (
+							<>
+								<List.Item
+									title='Share'
+									onPress={() =>
+										this.onPressTouchable({
 											event: this.handleShare
-										})}
-										testID='room-actions-share'
-										left={() => <List.Icon name='share' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									testID='room-actions-share'
+									left={() => <List.Icon name='share' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['c', 'p', 'd'].includes(t)
-							? (
-								<>
-									<List.Item
-										title='Pinned'
-										onPress={() => this.onPressTouchable({
+						{['c', 'p', 'd'].includes(t) ? (
+							<>
+								<List.Item
+									title='Pinned'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'MessagesView',
 											params: { rid, t, name: 'Pinned' }
-										})}
-										testID='room-actions-pinned'
-										left={() => <List.Icon name='pin' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									testID='room-actions-pinned'
+									left={() => <List.Icon name='pin' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['c', 'p', 'd'].includes(t) && canAutoTranslate
-							? (
-								<>
-									<List.Item
-										title='Auto_Translate'
-										onPress={() => this.onPressTouchable({
+						{['c', 'p', 'd'].includes(t) && canAutoTranslate ? (
+							<>
+								<List.Item
+									title='Auto_Translate'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'AutoTranslateView',
 											params: { rid, room }
-										})}
-										testID='room-actions-auto-translate'
-										left={() => <List.Icon name='language' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									testID='room-actions-auto-translate'
+									left={() => <List.Icon name='language' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['c', 'p', 'd'].includes(t) && joined
-							? (
-								<>
-									<List.Item
-										title='Notifications'
-										onPress={() => this.onPressTouchable({
+						{['c', 'p', 'd'].includes(t) && joined ? (
+							<>
+								<List.Item
+									title='Notifications'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'NotificationPrefView',
 											params: { rid, room }
-										})}
-										testID='room-actions-notifications'
-										left={() => <List.Icon name='notification' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									testID='room-actions-notifications'
+									left={() => <List.Icon name='notification' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-
-						{ this.teamChannelActions(t, room) }
+						{this.teamChannelActions(t, room)}
 						{this.teamToChannelActions(t, room)}
 
-						{['l'].includes(t) && !this.isOmnichannelPreview
-							? (
-								<>
-									<List.Item
-										title='Close'
-										onPress={() => this.onPressTouchable({
+						{['l'].includes(t) && !this.isOmnichannelPreview ? (
+							<>
+								<List.Item
+									title='Close'
+									onPress={() =>
+										this.onPressTouchable({
 											event: this.closeLivechat
-										})}
-										left={() => <List.Icon name='close' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									left={() => <List.Icon name='close' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['l'].includes(t) && !this.isOmnichannelPreview && canForwardGuest
-							? (
-								<>
-									<List.Item
-										title='Forward'
-										onPress={() => this.onPressTouchable({
+						{['l'].includes(t) && !this.isOmnichannelPreview && canForwardGuest ? (
+							<>
+								<List.Item
+									title='Forward'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'ForwardLivechatView',
 											params: { rid }
-										})}
-										left={() => <List.Icon name='user-forward' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									left={() => <List.Icon name='user-forward' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['l'].includes(t) && !this.isOmnichannelPreview && canReturnQueue
-							? (
-								<>
-									<List.Item
-										title='Return'
-										onPress={() => this.onPressTouchable({
+						{['l'].includes(t) && !this.isOmnichannelPreview && canReturnQueue ? (
+							<>
+								<List.Item
+									title='Return'
+									onPress={() =>
+										this.onPressTouchable({
 											event: this.returnLivechat
-										})}
-										left={() => <List.Icon name='undo' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									left={() => <List.Icon name='undo' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['l'].includes(t) && !this.isOmnichannelPreview
-							? (
-								<>
-									<List.Item
-										title='Navigation_history'
-										onPress={() => this.onPressTouchable({
+						{['l'].includes(t) && !this.isOmnichannelPreview ? (
+							<>
+								<List.Item
+									title='Navigation_history'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'VisitorNavigationView',
 											params: { rid }
-										})}
-										left={() => <List.Icon name='history' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									left={() => <List.Icon name='history' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 					</List.Section>
 
 					{this.renderLastSection()}

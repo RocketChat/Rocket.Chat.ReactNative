@@ -13,39 +13,31 @@ const styles = StyleSheet.create({
 	}
 });
 
-const LeftButtons = React.memo(({
-	tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, isMasterDetail
-}) => {
-	if (!isMasterDetail || tmid) {
-		const onPress = useCallback(() => navigation.goBack());
-		const label = unreadsCount > 99 ? '+99' : unreadsCount || ' ';
-		const labelLength = label.length ? label.length : 1;
-		const marginLeft = -2 * labelLength;
-		const fontSize = labelLength > 1 ? 14 : 17;
-		return (
-			<HeaderBackButton
-				label={label}
-				onPress={onPress}
-				tintColor={themes[theme].headerTintColor}
-				labelStyle={{ fontSize, marginLeft }}
-			/>
-		);
-	}
-	const onPress = useCallback(() => goRoomActionsView(), []);
+const LeftButtons = React.memo(
+	({ tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, isMasterDetail }) => {
+		if (!isMasterDetail || tmid) {
+			const onPress = useCallback(() => navigation.goBack());
+			const label = unreadsCount > 99 ? '+99' : unreadsCount || ' ';
+			const labelLength = label.length ? label.length : 1;
+			const marginLeft = -2 * labelLength;
+			const fontSize = labelLength > 1 ? 14 : 17;
+			return (
+				<HeaderBackButton
+					label={label}
+					onPress={onPress}
+					tintColor={themes[theme].headerTintColor}
+					labelStyle={{ fontSize, marginLeft }}
+				/>
+			);
+		}
+		const onPress = useCallback(() => goRoomActionsView(), []);
 
-	if (baseUrl && userId && token) {
-		return (
-			<Avatar
-				text={title}
-				size={30}
-				type={t}
-				style={styles.avatar}
-				onPress={onPress}
-			/>
-		);
+		if (baseUrl && userId && token) {
+			return <Avatar text={title} size={30} type={t} style={styles.avatar} onPress={onPress} />;
+		}
+		return null;
 	}
-	return null;
-});
+);
 
 LeftButtons.propTypes = {
 	tmid: PropTypes.string,

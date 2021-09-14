@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Keyboard, View, StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
 import SearchBox from '../../../containers/SearchBox';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import { themes } from '../../../constants/colors';
-
 import sharedStyles from '../../Styles';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 
@@ -17,12 +16,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = React.memo(({
-	searching, onChangeSearchText, initSearch, cancelSearch, theme
-}) => {
+const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSearch, theme }) => {
 	const [text, setText] = useState('');
 
-	const onChangeText = (searchText) => {
+	const onChangeText = searchText => {
 		onChangeSearchText(searchText);
 		setText(searchText);
 	};
@@ -47,18 +44,8 @@ const Header = React.memo(({
 					borderColor: themes[theme].separatorColor,
 					backgroundColor: themes[theme].headerBackground
 				}
-			]}
-		>
-			{
-				!searching
-					? (
-						<HeaderButton.CancelModal
-							onPress={ShareExtension.close}
-							testID='share-extension-close'
-						/>
-					)
-					: null
-			}
+			]}>
+			{!searching ? <HeaderButton.CancelModal onPress={ShareExtension.close} testID='share-extension-close' /> : null}
 			<SearchBox
 				value={text}
 				hasCancel={searching}

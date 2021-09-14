@@ -11,11 +11,10 @@ import * as HeaderButton from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
-import { MODAL_ACTIONS, CONTAINER_TYPES } from '../lib/methods/actions';
-
-import sharedStyles from './Styles';
+import { CONTAINER_TYPES, MODAL_ACTIONS } from '../lib/methods/actions';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/Navigation';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,7 +30,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-Object.fromEntries = Object.fromEntries || (arr => arr.reduce((acc, [k, v]) => ((acc[k] = v, acc)), {}));
+Object.fromEntries = Object.fromEntries || (arr => arr.reduce((acc, [k, v]) => ((acc[k] = v), acc), {}));
 const groupStateByBlockIdMap = (obj, [key, { blockId, value }]) => {
 	obj[blockId] = obj[blockId] || {};
 	obj[blockId][key] = value;
@@ -48,7 +47,10 @@ const filterInputFields = ({ element, elements = [] }) => {
 };
 const mapElementToState = ({ element, blockId, elements = [] }) => {
 	if (elements.length) {
-		return elements.map(e => ({ element: e, blockId })).filter(filterInputFields).map(mapElementToState);
+		return elements
+			.map(e => ({ element: e, blockId }))
+			.filter(filterInputFields)
+			.map(mapElementToState);
 	}
 	return [element.actionId, { value: element.initialValue, blockId }];
 };
@@ -62,7 +64,7 @@ class ModalBlockView extends React.Component {
 		return {
 			title: textParser([title])
 		};
-	}
+	};
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -73,7 +75,7 @@ class ModalBlockView extends React.Component {
 			id: PropTypes.string,
 			token: PropTypes.string
 		})
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -115,28 +117,32 @@ class ModalBlockView extends React.Component {
 		const { title, close, submit } = view;
 		navigation.setOptions({
 			title: textParser([title]),
-			headerLeft: close ? () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						title={textParser([close.text])}
-						style={styles.submit}
-						onPress={this.cancel}
-						testID='close-modal-uikit'
-					/>
-				</HeaderButton.Container>
-			) : null,
-			headerRight: submit ? () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item
-						title={textParser([submit.text])}
-						style={styles.submit}
-						onPress={this.submit}
-						testID='submit-modal-uikit'
-					/>
-				</HeaderButton.Container>
-			) : null
+			headerLeft: close
+				? () => (
+						<HeaderButton.Container>
+							<HeaderButton.Item
+								title={textParser([close.text])}
+								style={styles.submit}
+								onPress={this.cancel}
+								testID='close-modal-uikit'
+							/>
+						</HeaderButton.Container>
+				  )
+				: null,
+			headerRight: submit
+				? () => (
+						<HeaderButton.Container>
+							<HeaderButton.Item
+								title={textParser([submit.text])}
+								style={styles.submit}
+								onPress={this.submit}
+								testID='submit-modal-uikit'
+							/>
+						</HeaderButton.Container>
+				  )
+				: null
 		});
-	}
+	};
 
 	handleUpdate = ({ type, ...data }) => {
 		if ([MODAL_ACTIONS.ERRORS].includes(type)) {
@@ -148,7 +154,7 @@ class ModalBlockView extends React.Component {
 		}
 	};
 
-	cancel = async({ closeModal }) => {
+	cancel = async ({ closeModal }) => {
 		const { data } = this.state;
 		const { appId, viewId, view } = data;
 
@@ -173,9 +179,9 @@ class ModalBlockView extends React.Component {
 		} catch (e) {
 			// do nothing
 		}
-	}
+	};
 
-	submit = async() => {
+	submit = async () => {
 		const { data } = this.state;
 		if (this.submitting) {
 			return;
@@ -204,7 +210,7 @@ class ModalBlockView extends React.Component {
 		this.setState({ loading: false });
 	};
 
-	action = async({ actionId, value, blockId }) => {
+	action = async ({ actionId, value, blockId }) => {
 		const { data } = this.state;
 		const { mid, appId, viewId } = data;
 		await RocketChat.triggerBlockAction({
@@ -219,7 +225,7 @@ class ModalBlockView extends React.Component {
 			mid
 		});
 		this.changeState({ actionId, value, blockId });
-	}
+	};
 
 	changeState = ({ actionId, value, blockId = 'default' }) => {
 		this.values[actionId] = {
@@ -237,28 +243,22 @@ class ModalBlockView extends React.Component {
 
 		return (
 			<KeyboardAwareScrollView
-				style={[
-					styles.container,
-					{ backgroundColor: themes[theme].auxiliaryBackground }
-				]}
-				keyboardShouldPersistTaps='always'
-			>
+				style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				keyboardShouldPersistTaps='always'>
 				<View style={styles.content}>
-					{
-						React.createElement(
-							modalBlockWithContext({
-								action: this.action,
-								state: this.changeState,
-								...data
-							}),
-							{
-								blocks,
-								errors,
-								language,
-								values
-							}
-						)
-					}
+					{React.createElement(
+						modalBlockWithContext({
+							action: this.action,
+							state: this.changeState,
+							...data
+						}),
+						{
+							blocks,
+							errors,
+							language,
+							values
+						}
+					)}
 				</View>
 				{loading ? <ActivityIndicator absolute size='large' theme={theme} /> : null}
 			</KeyboardAwareScrollView>
