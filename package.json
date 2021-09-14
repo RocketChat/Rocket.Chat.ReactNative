@@ -21,7 +21,8 @@
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx}": [
-			"prettier-lint",
+			"prettier --write",
+			"eslint",
 			"jest --bail --findRelatedTests"
 		]
 	},
