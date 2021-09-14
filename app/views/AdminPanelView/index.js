@@ -14,12 +14,12 @@ class AdminPanelView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => ({
 		headerLeft: isMasterDetail ? undefined : () => <HeaderButton.Drawer navigation={navigation} />,
 		title: I18n.t('Admin_Panel')
-	})
+	});
 
 	static propTypes = {
 		baseUrl: PropTypes.string,
 		token: PropTypes.string
-	}
+	};
 
 	render() {
 		const { baseUrl, token } = this.props;
@@ -32,8 +32,8 @@ class AdminPanelView extends React.Component {
 				<WebView
 					// https://github.com/react-native-community/react-native-webview/issues/1311
 					onMessage={() => {}}
-					source={{ uri: `${ baseUrl }/admin/info?layout=embedded` }}
-					injectedJavaScript={`Meteor.loginWithToken('${ token }', function() { })`}
+					source={{ uri: `${baseUrl}/admin/info?layout=embedded` }}
+					injectedJavaScript={`Meteor.loginWithToken('${token}', function() { })`}
 				/>
 			</SafeAreaView>
 		);

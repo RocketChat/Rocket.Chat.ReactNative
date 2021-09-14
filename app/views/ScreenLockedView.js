@@ -23,7 +23,7 @@ const ScreenLockedView = ({ theme }) => {
 		}
 	}, [data]);
 
-	const showScreenLock = (args) => {
+	const showScreenLock = args => {
 		setData(args);
 	};
 
@@ -32,12 +32,12 @@ const ScreenLockedView = ({ theme }) => {
 			Orientation.lockToPortrait();
 		}
 		const listener = EventEmitter.addEventListener(LOCAL_AUTHENTICATE_EMITTER, showScreenLock);
-		return (() => {
+		return () => {
 			if (!isTablet) {
 				Orientation.unlockAllOrientations();
 			}
 			EventEmitter.removeListener(LOCAL_AUTHENTICATE_EMITTER, listener);
-		});
+		};
 	}, []);
 
 	const onSubmit = () => {
@@ -55,8 +55,7 @@ const ScreenLockedView = ({ theme }) => {
 			hideModalContentWhileAnimating
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
-			animationOut='fadeOut'
-		>
+			animationOut='fadeOut'>
 			<PasscodeEnter theme={theme} hasBiometry={data?.hasBiometry} finishProcess={onSubmit} />
 		</Modal>
 	);

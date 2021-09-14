@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import * as List from '../../containers/List';
 
-import styles from './styles';
+import * as List from '../../containers/List';
 import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import RocketChat from '../../lib/rocketchat';
@@ -27,6 +26,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { CustomIcon } from '../../lib/Icons';
+import styles from './styles';
 
 const PAGE_SIZE = 25;
 
@@ -64,7 +64,7 @@ class RoomMembersView extends React.Component {
 		editTeamMemberPermission: PropTypes.array,
 		viewAllTeamChannelsPermission: PropTypes.array,
 		viewAllTeamsPermission: PropTypes.array
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -84,14 +84,13 @@ class RoomMembersView extends React.Component {
 		};
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable
-				.subscribe((changes) => {
-					if (this.mounted) {
-						this.setState({ room: changes });
-					} else {
-						this.state.room = changes;
-					}
-				});
+			this.subscription = this.roomObservable.subscribe(changes => {
+				if (this.mounted) {
+					this.setState({ room: changes });
+				} else {
+					this.state.room = changes;
+				}
+			});
 		}
 		this.setHeader();
 	}
@@ -102,12 +101,27 @@ class RoomMembersView extends React.Component {
 
 		const { room } = this.state;
 		const {
-			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission, editTeamMemberPermission, viewAllTeamChannelsPermission, viewAllTeamsPermission
+			muteUserPermission,
+			setLeaderPermission,
+			setOwnerPermission,
+			setModeratorPermission,
+			removeUserPermission,
+			editTeamMemberPermission,
+			viewAllTeamChannelsPermission,
+			viewAllTeamsPermission
 		} = this.props;
 
-		const result = await RocketChat.hasPermission([
-			muteUserPermission, setLeaderPermission, setOwnerPermission, setModeratorPermission, removeUserPermission, ...(room.teamMain ? [editTeamMemberPermission, viewAllTeamChannelsPermission, viewAllTeamsPermission] : [])
-		], room.rid);
+		const result = await RocketChat.hasPermission(
+			[
+				muteUserPermission,
+				setLeaderPermission,
+				setOwnerPermission,
+				setModeratorPermission,
+				removeUserPermission,
+				...(room.teamMain ? [editTeamMemberPermission, viewAllTeamChannelsPermission, viewAllTeamsPermission] : [])
+			],
+			room.rid
+		);
 
 		this.permissions = {
 			[PERMISSION_MUTE_USER]: result[0],
@@ -115,11 +129,13 @@ class RoomMembersView extends React.Component {
 			[PERMISSION_SET_OWNER]: result[2],
 			[PERMISSION_SET_MODERATOR]: result[3],
 			[PERMISSION_REMOVE_USER]: result[4],
-			...(room.teamMain ? {
-				[PERMISSION_EDIT_TEAM_MEMBER]: result[5],
-				[PERMISSION_VIEW_ALL_TEAM_CHANNELS]: result[6],
-				[PERMISION_VIEW_ALL_TEAMS]: result[7]
-			} : {})
+			...(room.teamMain
+				? {
+						[PERMISSION_EDIT_TEAM_MEMBER]: result[5],
+						[PERMISSION_VIEW_ALL_TEAM_CHANNELS]: result[6],
+						[PERMISION_VIEW_ALL_TEAMS]: result[7]
+				  }
+				: {})
 		};
 
 		const hasSinglePermission = Object.values(this.permissions).some(p => !!p);
@@ -146,20 +162,22 @@ class RoomMembersView extends React.Component {
 				</HeaderButton.Container>
 			)
 		});
-	}
+	};
 
-	onSearchChangeText = protectedFunction((text) => {
+	onSearchChangeText = protectedFunction(text => {
 		const { members } = this.state;
 		let membersFiltered = [];
 		text = text.trim();
 
 		if (members && members.length > 0 && text) {
-			membersFiltered = members.filter(m => m.username.toLowerCase().match(text.toLowerCase()) || m.name.toLowerCase().match(text.toLowerCase()));
+			membersFiltered = members.filter(
+				m => m.username.toLowerCase().match(text.toLowerCase()) || m.name.toLowerCase().match(text.toLowerCase())
+			);
 		}
 		this.setState({ filtering: !!text, membersFiltered });
-	})
+	});
 
-	navToDirectMessage = async(item) => {
+	navToDirectMessage = async item => {
 		try {
 			const db = database.active;
 			const subsCollection = db.get('subscriptions');
@@ -176,9 +194,9 @@ class RoomMembersView extends React.Component {
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	handleRemoveFromTeam = async(selectedUser) => {
+	handleRemoveFromTeam = async selectedUser => {
 		try {
 			const { navigation } = this.props;
 			const { room } = this.state;
@@ -213,9 +231,9 @@ class RoomMembersView extends React.Component {
 				onPress: () => this.removeFromTeam(selectedUser)
 			});
 		}
-	}
+	};
 
-	removeFromTeam = async(selectedUser, selected) => {
+	removeFromTeam = async (selectedUser, selected) => {
 		try {
 			const { members, membersFiltered, room } = this.state;
 			const { navigation } = this.props;
@@ -241,23 +259,23 @@ class RoomMembersView extends React.Component {
 		} catch (e) {
 			log(e);
 			showErrorAlert(
-				e.data.error
-					? I18n.t(e.data.error)
-					: I18n.t('There_was_an_error_while_action', { action: I18n.t('removing_team') }),
+				e.data.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('removing_team') }),
 				I18n.t('Cannot_remove')
 			);
 		}
-	}
+	};
 
-	onPressUser = (selectedUser) => {
+	onPressUser = selectedUser => {
 		const { room } = this.state;
 		const { showActionSheet, user, theme } = this.props;
 
-		const options = [{
-			icon: 'message',
-			title: I18n.t('Direct_message'),
-			onPress: () => this.navToDirectMessage(selectedUser)
-		}];
+		const options = [
+			{
+				icon: 'message',
+				title: I18n.t('Direct_message'),
+				onPress: () => this.navToDirectMessage(selectedUser)
+			}
+		];
 
 		// Ignore
 		if (selectedUser._id !== user.id) {
@@ -280,7 +298,7 @@ class RoomMembersView extends React.Component {
 				title: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
 				onPress: () => {
 					showConfirmationAlert({
-						message: I18n.t(`The_user_${ userIsMuted ? 'will' : 'wont' }_be_able_to_type_in_roomName`, {
+						message: I18n.t(`The_user_${userIsMuted ? 'will' : 'wont'}_be_able_to_type_in_roomName`, {
 							roomName: RocketChat.getRoomTitle(room)
 						}),
 						confirmationText: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
@@ -299,7 +317,14 @@ class RoomMembersView extends React.Component {
 				icon: 'shield-check',
 				title: I18n.t('Owner'),
 				onPress: () => this.handleOwner(selectedUser, !isOwner),
-				right: () => <CustomIcon testID={isOwner ? 'action-sheet-set-owner-checked' : 'action-sheet-set-owner-unchecked'} name={isOwner ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isOwner ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />,
+				right: () => (
+					<CustomIcon
+						testID={isOwner ? 'action-sheet-set-owner-checked' : 'action-sheet-set-owner-unchecked'}
+						name={isOwner ? 'checkbox-checked' : 'checkbox-unchecked'}
+						size={20}
+						color={isOwner ? themes[theme].tintActive : themes[theme].auxiliaryTintColor}
+					/>
+				),
 				testID: 'action-sheet-set-owner'
 			});
 		}
@@ -312,7 +337,14 @@ class RoomMembersView extends React.Component {
 				icon: 'shield-alt',
 				title: I18n.t('Leader'),
 				onPress: () => this.handleLeader(selectedUser, !isLeader),
-				right: () => <CustomIcon testID={isLeader ? 'action-sheet-set-leader-checked' : 'action-sheet-set-leader-unchecked'} name={isLeader ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isLeader ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />,
+				right: () => (
+					<CustomIcon
+						testID={isLeader ? 'action-sheet-set-leader-checked' : 'action-sheet-set-leader-unchecked'}
+						name={isLeader ? 'checkbox-checked' : 'checkbox-unchecked'}
+						size={20}
+						color={isLeader ? themes[theme].tintActive : themes[theme].auxiliaryTintColor}
+					/>
+				),
 				testID: 'action-sheet-set-leader'
 			});
 		}
@@ -325,7 +357,14 @@ class RoomMembersView extends React.Component {
 				icon: 'shield',
 				title: I18n.t('Moderator'),
 				onPress: () => this.handleModerator(selectedUser, !isModerator),
-				right: () => <CustomIcon testID={isModerator ? 'action-sheet-set-moderator-checked' : 'action-sheet-set-moderator-unchecked'} name={isModerator ? 'checkbox-checked' : 'checkbox-unchecked'} size={20} color={isModerator ? themes[theme].tintActive : themes[theme].auxiliaryTintColor} />,
+				right: () => (
+					<CustomIcon
+						testID={isModerator ? 'action-sheet-set-moderator-checked' : 'action-sheet-set-moderator-unchecked'}
+						name={isModerator ? 'checkbox-checked' : 'checkbox-unchecked'}
+						size={20}
+						color={isModerator ? themes[theme].tintActive : themes[theme].auxiliaryTintColor}
+					/>
+				),
 				testID: 'action-sheet-set-moderator'
 			});
 		}
@@ -362,7 +401,7 @@ class RoomMembersView extends React.Component {
 			options,
 			hasCancel: true
 		});
-	}
+	};
 
 	toggleStatus = () => {
 		try {
@@ -373,9 +412,9 @@ class RoomMembersView extends React.Component {
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	fetchRoomMembersRoles = async() => {
+	fetchRoomMembersRoles = async () => {
 		try {
 			const { room } = this.state;
 			const result = await RocketChat.getRoomRoles(room.rid, room.t);
@@ -385,12 +424,10 @@ class RoomMembersView extends React.Component {
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	fetchMembers = async() => {
-		const {
-			rid, members, isLoading, allUsers, end
-		} = this.state;
+	fetchMembers = async () => {
+		const { rid, members, isLoading, allUsers, end } = this.state;
 		if (isLoading || end) {
 			return;
 		}
@@ -409,9 +446,9 @@ class RoomMembersView extends React.Component {
 			log(e);
 			this.setState({ isLoading: false });
 		}
-	}
+	};
 
-	goRoom = (item) => {
+	goRoom = item => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('DrawerNavigator');
@@ -419,30 +456,37 @@ class RoomMembersView extends React.Component {
 			navigation.popToTop();
 		}
 		goRoom({ item, isMasterDetail });
-	}
+	};
 
-	getUserDisplayName = (user) => {
+	getUserDisplayName = user => {
 		const { useRealName } = this.props;
 		return (useRealName ? user.name : user.username) || user.username;
-	}
+	};
 
-	handleMute = async(user) => {
+	handleMute = async user => {
 		const { rid } = this.state;
 		try {
 			await RocketChat.toggleMuteUserInRoom(rid, user?.username, !user?.muted);
-			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') }) });
+			EventEmitter.emit(LISTENER, {
+				message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') })
+			});
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	handleOwner = async(selectedUser, isOwner) => {
+	handleOwner = async (selectedUser, isOwner) => {
 		try {
 			const { room } = this.state;
 			await RocketChat.toggleRoomOwner({
-				roomId: room.rid, t: room.t, userId: selectedUser._id, isOwner
+				roomId: room.rid,
+				t: room.t,
+				userId: selectedUser._id,
+				isOwner
 			});
-			const message = isOwner ? 'User__username__is_now_a_owner_of__room_name_' : 'User__username__removed_from__room_name__owners';
+			const message = isOwner
+				? 'User__username__is_now_a_owner_of__room_name_'
+				: 'User__username__removed_from__room_name__owners';
 			EventEmitter.emit(LISTENER, {
 				message: I18n.t(message, {
 					username: this.getUserDisplayName(selectedUser),
@@ -453,15 +497,20 @@ class RoomMembersView extends React.Component {
 			log(e);
 		}
 		this.fetchRoomMembersRoles();
-	}
+	};
 
-	handleLeader = async(selectedUser, isLeader) => {
+	handleLeader = async (selectedUser, isLeader) => {
 		try {
 			const { room } = this.state;
 			await RocketChat.toggleRoomLeader({
-				roomId: room.rid, t: room.t, userId: selectedUser._id, isLeader
+				roomId: room.rid,
+				t: room.t,
+				userId: selectedUser._id,
+				isLeader
 			});
-			const message = isLeader ? 'User__username__is_now_a_leader_of__room_name_' : 'User__username__removed_from__room_name__leaders';
+			const message = isLeader
+				? 'User__username__is_now_a_leader_of__room_name_'
+				: 'User__username__removed_from__room_name__leaders';
 			EventEmitter.emit(LISTENER, {
 				message: I18n.t(message, {
 					username: this.getUserDisplayName(selectedUser),
@@ -472,15 +521,20 @@ class RoomMembersView extends React.Component {
 			log(e);
 		}
 		this.fetchRoomMembersRoles();
-	}
+	};
 
-	handleModerator = async(selectedUser, isModerator) => {
+	handleModerator = async (selectedUser, isModerator) => {
 		try {
 			const { room } = this.state;
 			await RocketChat.toggleRoomModerator({
-				roomId: room.rid, t: room.t, userId: selectedUser._id, isModerator
+				roomId: room.rid,
+				t: room.t,
+				userId: selectedUser._id,
+				isModerator
 			});
-			const message = isModerator ? 'User__username__is_now_a_moderator_of__room_name_' : 'User__username__removed_from__room_name__moderators';
+			const message = isModerator
+				? 'User__username__is_now_a_moderator_of__room_name_'
+				: 'User__username__removed_from__room_name__moderators';
 			EventEmitter.emit(LISTENER, {
 				message: I18n.t(message, {
 					username: this.getUserDisplayName(selectedUser),
@@ -491,22 +545,24 @@ class RoomMembersView extends React.Component {
 			log(e);
 		}
 		this.fetchRoomMembersRoles();
-	}
+	};
 
-	handleIgnore = async(selectedUser, ignore) => {
+	handleIgnore = async (selectedUser, ignore) => {
 		try {
 			const { room } = this.state;
 			await RocketChat.ignoreUser({
-				rid: room.rid, userId: selectedUser._id, ignore
+				rid: room.rid,
+				userId: selectedUser._id,
+				ignore
 			});
 			const message = I18n.t(ignore ? 'User_has_been_ignored' : 'User_has_been_unignored');
 			EventEmitter.emit(LISTENER, { message });
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	handleRemoveUserFromRoom = async(selectedUser) => {
+	handleRemoveUserFromRoom = async selectedUser => {
 		try {
 			const { room, members, membersFiltered } = this.state;
 			const userId = selectedUser._id;
@@ -520,11 +576,9 @@ class RoomMembersView extends React.Component {
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	renderSearchBar = () => (
-		<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />
-	)
+	renderSearchBar = () => <SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />;
 
 	renderItem = ({ item }) => {
 		const { baseUrl, user, theme } = this.props;
@@ -535,17 +589,15 @@ class RoomMembersView extends React.Component {
 				username={item.username}
 				onPress={() => this.onPressUser(item)}
 				baseUrl={baseUrl}
-				testID={`room-members-view-item-${ item.username }`}
+				testID={`room-members-view-item-${item.username}`}
 				user={user}
 				theme={theme}
 			/>
 		);
-	}
+	};
 
 	render() {
-		const {
-			filtering, members, membersFiltered, isLoading
-		} = this.state;
+		const { filtering, members, membersFiltered, isLoading } = this.state;
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='room-members-view'>

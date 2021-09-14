@@ -1,7 +1,7 @@
-import normalizeMessage from './normalizeMessage';
 import messagesStatus from '../../../constants/messagesStatus';
+import normalizeMessage from './normalizeMessage';
 
-export default (message) => {
+export default message => {
 	message.status = messagesStatus.SENT;
 	return normalizeMessage(message);
 };

@@ -10,23 +10,20 @@ import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-
-import styles from './styles';
 import { themes } from '../../constants/colors';
+import styles from './styles';
 
-const SelectUsers = ({
-	server, token, userId, selected, onUserSelect, blockUnauthenticatedAccess, serverVersion, theme
-}) => {
+const SelectUsers = ({ server, token, userId, selected, onUserSelect, blockUnauthenticatedAccess, serverVersion, theme }) => {
 	const [users, setUsers] = useState([]);
 
-	const getUsers = debounce(async(keyword = '') => {
+	const getUsers = debounce(async (keyword = '') => {
 		try {
 			const db = database.active;
 			const usersCollection = db.get('users');
 			const res = await RocketChat.search({ text: keyword, filterRooms: false });
 			let items = [...users.filter(u => selected.includes(u.name)), ...res.filter(r => !users.find(u => u.name === r.name))];
 			const records = await usersCollection.query(Q.where('username', Q.oneOf(items.map(u => u.name)))).fetch();
-			items = items.map((item) => {
+			items = items.map(item => {
 				const index = records.findIndex(r => r.username === item.name);
 				if (index > -1) {
 					const record = records[index];
@@ -47,15 +44,16 @@ const SelectUsers = ({
 		}
 	}, 300);
 
-	const getAvatar = item => avatarURL({
-		text: RocketChat.getRoomAvatar(item),
-		type: 'd',
-		user: { id: userId, token },
-		server,
-		avatarETag: item.avatarETag,
-		blockUnauthenticatedAccess,
-		serverVersion
-	});
+	const getAvatar = item =>
+		avatarURL({
+			text: RocketChat.getRoomAvatar(item),
+			type: 'd',
+			user: { id: userId, token },
+			server,
+			avatarETag: item.avatarETag,
+			blockUnauthenticatedAccess,
+			serverVersion
+		});
 
 	return (
 		<>
@@ -71,7 +69,7 @@ const SelectUsers = ({
 					imageUrl: getAvatar(user)
 				}))}
 				onClose={() => setUsers(users.filter(u => selected.includes(u.name)))}
-				placeholder={{ text: `${ I18n.t('Select_Users') }...` }}
+				placeholder={{ text: `${I18n.t('Select_Users')}...` }}
 				context={BLOCK_CONTEXT.FORM}
 				multiselect
 			/>
