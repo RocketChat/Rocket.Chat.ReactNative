@@ -10,7 +10,10 @@ import CustomFields from './CustomFields';
 
 import styles from './styles';
 
-const Roles = ({ roles, theme, user }) => (roles && roles.length ? (
+
+const Roles = ({ roles, theme, user }) => {
+	(roles && roles.length ? (
+
 	<View style={styles.item}>
 		<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
 		<View style={styles.rolesContainer}>
@@ -21,7 +24,7 @@ const Roles = ({ roles, theme, user }) => (roles && roles.length ? (
 			) : null))}
 		</View>
 	</View>
-) : null);
+) : null)};
 Roles.propTypes = {
 	roles: PropTypes.array,
 	theme: PropTypes.string,
@@ -29,29 +32,18 @@ Roles.propTypes = {
 };
 
 const Bio = ({ bio, theme }) => bio != null ? (
-	<View style={{  padding: 20 }}>
-		<Image 
-			style={{ width: 25, height: 25, left: 40, top: 5, position: 'absolute'}}
-			source={require('../../../app/static/images/quote-left-solid.png')}
-			/>
+	<View style={{  paddingLeft: 30,paddingRight:30 }}>
+		<Text style={{fontSize:28,paddingLeft:30}}>About</Text>	
 		<Text style={
 			{ 
 				color: themes[theme].auxiliaryText, 
 				padding: 20,
-				borderColor: '#ffffff',
-				borderWidth: 1,
-				borderRadius: 10,
 			}
 			}>
 				{bio}
 		</Text>
 		<View>
-		<Image 
-			style={{ width: 25, height: 25, top: -10, right: 20, position: 'absolute', alignSelf: 'flex-end'}}
-			source={require('../../../app/static/images/quote-right-solid.png')}
-			/>
 		</View>
-
 	</View>
 ) 
 : (null);
@@ -62,14 +54,16 @@ Bio.propTypes = {
 
 const Direct = ({ roomUser, theme, user }) => { 
 	const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role)) !== undefined;
-
-	return (
+	return roomUser.bio ? (
 	<>
-		<Bio bio={roomUser.bio} theme={theme} />
+		  <Bio bio={roomUser.bio} theme={theme} />
 		{isAdmin && (<Roles roles={roomUser.parsedRoles} theme={theme} user={user} />)}
 		<CustomFields customFields={roomUser.customFields} user={roomUser} currentUser={user} theme={theme} />
 	</>
-)};
+): (<>
+  {isAdmin && (<Roles roles={roomUser.parsedRoles} theme={theme} user={user} />)}
+  <CustomFields customFields={roomUser.customFields} user={roomUser} currentUser={user} theme={theme} />
+</>)};
 Direct.propTypes = {
 	roomUser: PropTypes.object,
 	theme: PropTypes.string
