@@ -106,9 +106,7 @@ class AttachmentView extends React.Component {
 	handleSave = async () => {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
-		const {
-			title_link, image_url, image_type, video_url, video_type
-		} = attachment;
+		const { title_link, image_url, image_type, video_url, video_type } = attachment;
 		const url = title_link || image_url || video_url;
 		const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 
