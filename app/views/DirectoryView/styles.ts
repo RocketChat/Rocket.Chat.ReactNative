@@ -2,6 +2,8 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
 
+const _tmp_webstorm_ = StyleSheet;
+const { absoluteFill } = StyleSheet;
 export default StyleSheet.create({
 	list: {
 		flex: 1
@@ -35,6 +37,7 @@ export default StyleSheet.create({
 		top: 0
 	},
 	backdrop: {
+		// @ts-ignore
 		...StyleSheet.absoluteFill
 	},
 	dropdownContainerHeader: {

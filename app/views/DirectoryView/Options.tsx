@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Touch from '../../utils/touch';
 import { CustomIcon } from '../../lib/Icons';
@@ -16,18 +15,20 @@ const ANIMATION_PROPS = {
 	useNativeDriver: true
 };
 
-export default class DirectoryOptions extends PureComponent {
-	static propTypes = {
-		type: PropTypes.string,
-		globalUsers: PropTypes.bool,
-		isFederationEnabled: PropTypes.bool,
-		close: PropTypes.func,
-		changeType: PropTypes.func,
-		toggleWorkspace: PropTypes.func,
-		theme: PropTypes.string
-	};
+interface IDirectoryOptionsProps {
+	type: string;
+	globalUsers: boolean;
+	isFederationEnabled: boolean;
+	close: Function;
+	changeType: Function;
+	toggleWorkspace(): void;
+	theme: string;
+}
 
-	constructor(props) {
+export default class DirectoryOptions extends PureComponent<IDirectoryOptionsProps, any> {
+	private animatedValue: Animated.Value;
+
+	constructor(props: IDirectoryOptionsProps) {
 		super(props);
 		this.animatedValue = new Animated.Value(0);
 	}
@@ -47,7 +48,7 @@ export default class DirectoryOptions extends PureComponent {
 		}).start(() => close());
 	};
 
-	renderItem = itemType => {
+	renderItem = (itemType: string) => {
 		const { changeType, type: propType, theme } = this.props;
 		let text = 'Users';
 		let icon = 'user';

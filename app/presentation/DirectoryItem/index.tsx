@@ -25,14 +25,14 @@ interface IDirectoryItem {
 	rightLabel: string;
 	rid: string;
 	theme: string;
-	teamMain: boolean;
+	teamMain?: boolean;
 }
 
-const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => {
+const DirectoryItemLabel = React.memo(({ text, theme }: Partial<IDirectoryItemLabel>) => {
 	if (!text) {
 		return null;
 	}
-	return <Text style={[styles.directoryItemLabel, { color: themes[theme].auxiliaryText }]}>{text}</Text>;
+	return <Text style={[styles.directoryItemLabel, { color: themes[theme!].auxiliaryText }]}>{text}</Text>;
 });
 
 const DirectoryItem = ({
