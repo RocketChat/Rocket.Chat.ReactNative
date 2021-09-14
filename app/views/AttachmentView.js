@@ -106,8 +106,10 @@ class AttachmentView extends React.Component {
 	handleSave = async () => {
 		const { attachment } = this.state;
 		const { user, baseUrl } = this.props;
-		const { image_url, image_type, video_url, video_type } = attachment;
-		const url = image_url || video_url;
+		const {
+			title_link, image_url, image_type, video_url, video_type
+		} = attachment;
+		const url = title_link || image_url || video_url;
 		const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 
 		if (isAndroid) {
@@ -173,7 +175,7 @@ class AttachmentView extends React.Component {
 		let content = null;
 
 		if (attachment && attachment.image_url) {
-			const uri = formatAttachmentUrl(attachment.image_url, user.id, user.token, baseUrl);
+			const uri = formatAttachmentUrl(attachment.title_link || attachment.image_url, user.id, user.token, baseUrl);
 			content = this.renderImage(encodeURI(uri));
 		} else if (attachment && attachment.video_url) {
 			const uri = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
