@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 
 import Header from './Header';
 
-const ShareListHeader = React.memo(({
-	searching, initSearch, cancelSearch, search, theme
-}) => {
-	const onSearchChangeText = (text) => {
+const ShareListHeader = React.memo(({ searching, initSearch, cancelSearch, search, theme }) => {
+	const onSearchChangeText = text => {
 		search(text.trim());
 	};
 

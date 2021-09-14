@@ -899,27 +899,22 @@ exports[`Storyshots BackgroundContainer black theme - loading 1`] = `
   </View>
   <ActivityIndicator
     animating={true}
-    color="#999999"
+    color="#f9f9f9"
     hidesWhenStopped={true}
     size="small"
     style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-          "fontFamily": "System",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "left": 0,
-          "paddingHorizontal": 24,
-          "position": "absolute",
-          "right": 0,
-          "textAlign": "center",
-          "top": 60,
-        },
-        Object {
-          "color": "#f9f9f9",
-        },
-      ]
+      Object {
+        "backgroundColor": "transparent",
+        "fontFamily": "System",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "left": 0,
+        "paddingHorizontal": 24,
+        "position": "absolute",
+        "right": 0,
+        "textAlign": "center",
+        "top": 60,
+      }
     }
   />
 </View>
@@ -1037,27 +1032,22 @@ exports[`Storyshots BackgroundContainer dark theme - loading 1`] = `
   </View>
   <ActivityIndicator
     animating={true}
-    color="#999999"
+    color="#f9f9f9"
     hidesWhenStopped={true}
     size="small"
     style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-          "fontFamily": "System",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "left": 0,
-          "paddingHorizontal": 24,
-          "position": "absolute",
-          "right": 0,
-          "textAlign": "center",
-          "top": 60,
-        },
-        Object {
-          "color": "#f9f9f9",
-        },
-      ]
+      Object {
+        "backgroundColor": "transparent",
+        "fontFamily": "System",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "left": 0,
+        "paddingHorizontal": 24,
+        "position": "absolute",
+        "right": 0,
+        "textAlign": "center",
+        "top": 60,
+      }
     }
   />
 </View>
@@ -1175,27 +1165,22 @@ exports[`Storyshots BackgroundContainer loading 1`] = `
   </View>
   <ActivityIndicator
     animating={true}
-    color="#999999"
+    color="#6C727A"
     hidesWhenStopped={true}
     size="small"
     style={
-      Array [
-        Object {
-          "backgroundColor": "transparent",
-          "fontFamily": "System",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "left": 0,
-          "paddingHorizontal": 24,
-          "position": "absolute",
-          "right": 0,
-          "textAlign": "center",
-          "top": 60,
-        },
-        Object {
-          "color": "#6C727A",
-        },
-      ]
+      Object {
+        "backgroundColor": "transparent",
+        "fontFamily": "System",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "left": 0,
+        "paddingHorizontal": 24,
+        "position": "absolute",
+        "right": 0,
+        "textAlign": "center",
+        "top": 60,
+      }
     }
   />
 </View>
@@ -4693,7 +4678,7 @@ exports[`Storyshots List pressable 1`] = `
             "justifyContent": "center",
             "paddingHorizontal": 12,
           },
-          false,
+          undefined,
           Object {
             "height": 92,
           },
@@ -6211,7 +6196,7 @@ exports[`Storyshots List with bigger font 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 69,
               },
@@ -6625,7 +6610,7 @@ exports[`Storyshots List with bigger font 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 69,
               },
@@ -7080,7 +7065,7 @@ exports[`Storyshots List with black theme 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 92,
               },
@@ -7494,7 +7479,7 @@ exports[`Storyshots List with black theme 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 92,
               },
@@ -7972,7 +7957,7 @@ exports[`Storyshots List with custom colors 1`] = `
             "justifyContent": "center",
             "paddingHorizontal": 12,
           },
-          false,
+          undefined,
           Object {
             "height": 92,
           },
@@ -8129,7 +8114,7 @@ exports[`Storyshots List with dark theme 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 92,
               },
@@ -8543,7 +8528,7 @@ exports[`Storyshots List with dark theme 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 92,
               },
@@ -10410,7 +10395,7 @@ exports[`Storyshots List with small font 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 36.800000000000004,
               },
@@ -10824,7 +10809,7 @@ exports[`Storyshots List with small font 1`] = `
                 "justifyContent": "center",
                 "paddingHorizontal": 12,
               },
-              false,
+              undefined,
               Object {
                 "height": 36.800000000000004,
               },

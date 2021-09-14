@@ -6,11 +6,11 @@ class PushNotification {
 		this.onNotification = null;
 		this.deviceToken = null;
 
-		NotificationsAndroid.setRegistrationTokenUpdateListener((deviceToken) => {
+		NotificationsAndroid.setRegistrationTokenUpdateListener(deviceToken => {
 			this.deviceToken = deviceToken;
 		});
 
-		NotificationsAndroid.setNotificationOpenedListener((notification) => {
+		NotificationsAndroid.setNotificationOpenedListener(notification => {
 			this.onNotification(notification);
 		});
 	}
@@ -19,7 +19,7 @@ class PushNotification {
 		return this.deviceToken;
 	}
 
-	setBadgeCount = () => {}
+	setBadgeCount = () => {};
 
 	configure(params) {
 		this.onRegister = params.onRegister;

@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, FlatList, Text
-} from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import * as List from '../../containers/List';
 
+import * as List from '../../containers/List';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
@@ -17,14 +15,14 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
-import log, { logEvent, events } from '../../utils/log';
-import Options from './Options';
+import log, { events, logEvent } from '../../utils/log';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
-import styles from './styles';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
+import styles from './styles';
+import Options from './Options';
 
 class DirectoryView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -35,7 +33,7 @@ class DirectoryView extends React.Component {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
 		}
 		return options;
-	}
+	};
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -67,18 +65,21 @@ class DirectoryView extends React.Component {
 		this.load({});
 	}
 
-	onSearchChangeText = (text) => {
+	onSearchChangeText = text => {
 		this.setState({ text }, this.search);
-	}
+	};
 
 	// eslint-disable-next-line react/sort-comp
-	load = debounce(async({ newSearch = false }) => {
+	load = debounce(async ({ newSearch = false }) => {
 		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
 		}
 
 		const {
-			loading, text, total, data: { length }
+			loading,
+			text,
+			total,
+			data: { length }
 		} = this.state;
 		if (loading || length === total) {
 			return;
@@ -93,7 +94,7 @@ class DirectoryView extends React.Component {
 				query,
 				offset: data.length,
 				count: 50,
-				sort: (type === 'users') ? { username: 1 } : { usersCount: -1 }
+				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
 			});
 			if (directories.success) {
 				this.setState({
@@ -108,13 +109,13 @@ class DirectoryView extends React.Component {
 			log(e);
 			this.setState({ loading: false });
 		}
-	}, 200)
+	}, 200);
 
 	search = () => {
 		this.load({ newSearch: true });
-	}
+	};
 
-	changeType = (type) => {
+	changeType = type => {
 		this.setState({ type, data: [] }, () => this.search());
 
 		if (type === 'users') {
@@ -124,17 +125,20 @@ class DirectoryView extends React.Component {
 		} else if (type === 'teams') {
 			logEvent(events.DIRECTORY_SEARCH_TEAMS);
 		}
-	}
+	};
 
 	toggleWorkspace = () => {
-		this.setState(({ globalUsers }) => ({ globalUsers: !globalUsers, data: [] }), () => this.search());
-	}
+		this.setState(
+			({ globalUsers }) => ({ globalUsers: !globalUsers, data: [] }),
+			() => this.search()
+		);
+	};
 
 	toggleDropdown = () => {
 		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
-	}
+	};
 
-	goRoom = (item) => {
+	goRoom = item => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('DrawerNavigator');
@@ -142,9 +146,9 @@ class DirectoryView extends React.Component {
 			navigation.navigate('RoomsListView');
 		}
 		goRoom({ item, isMasterDetail });
-	}
+	};
 
-	onPressItem = async(item) => {
+	onPressItem = async item => {
 		const { type } = this.state;
 		if (type === 'users') {
 			const result = await RocketChat.createDirectMessage(item.username);
@@ -154,14 +158,23 @@ class DirectoryView extends React.Component {
 		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
 			const { room } = await RocketChat.getRoomInfo(item._id);
 			this.goRoom({
-				rid: item._id, name: item.name, joinCodeRequired: room.joinCodeRequired, t: item.t, search: true
+				rid: item._id,
+				name: item.name,
+				joinCodeRequired: room.joinCodeRequired,
+				t: item.t,
+				search: true
 			});
 		} else {
 			this.goRoom({
-				rid: item._id, name: item.name, t: item.t, search: true, teamMain: item.teamMain, teamId: item.teamId
+				rid: item._id,
+				name: item.name,
+				t: item.t,
+				search: true,
+				teamMain: item.teamMain,
+				teamId: item.teamId
 			});
 		}
-	}
+	};
 
 	renderHeader = () => {
 		const { type } = this.state;
@@ -181,26 +194,26 @@ class DirectoryView extends React.Component {
 
 		return (
 			<>
-				<SearchBox
-					onChangeText={this.onSearchChangeText}
-					onSubmitEditing={this.search}
-					testID='directory-view-search'
-				/>
-				<Touch
-					onPress={this.toggleDropdown}
-					style={styles.dropdownItemButton}
-					testID='directory-view-dropdown'
-					theme={theme}
-				>
-					<View style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].separatorColor }]}>
+				<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
+				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown' theme={theme}>
+					<View
+						style={[
+							sharedStyles.separatorVertical,
+							styles.toggleDropdownContainer,
+							{ borderColor: themes[theme].separatorColor }
+						]}>
 						<CustomIcon style={[styles.toggleDropdownIcon, { color: themes[theme].tintColor }]} size={20} name={icon} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
-						<CustomIcon name='chevron-down' size={20} style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]} />
+						<CustomIcon
+							name='chevron-down'
+							size={20}
+							style={[styles.toggleDropdownArrow, { color: themes[theme].auxiliaryTintColor }]}
+						/>
 					</View>
 				</Touch>
 			</>
 		);
-	}
+	};
 
 	renderItem = ({ item, index }) => {
 		const { data, type } = this.state;
@@ -218,7 +231,7 @@ class DirectoryView extends React.Component {
 			title: item.name,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
-			testID: `directory-view-item-${ item.name }`.toLowerCase(),
+			testID: `directory-view-item-${item.name}`.toLowerCase(),
 			style,
 			user,
 			theme,
@@ -258,18 +271,13 @@ class DirectoryView extends React.Component {
 				{...commonProps}
 			/>
 		);
-	}
+	};
 
 	render = () => {
-		const {
-			data, loading, showOptionsDropdown, type, globalUsers
-		} = this.state;
+		const { data, loading, showOptionsDropdown, type, globalUsers } = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				testID='directory-view'
-			>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
 				<StatusBar />
 				<FlatList
 					data={data}
@@ -284,22 +292,20 @@ class DirectoryView extends React.Component {
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}
 				/>
-				{showOptionsDropdown
-					? (
-						<Options
-							theme={theme}
-							type={type}
-							globalUsers={globalUsers}
-							close={this.toggleDropdown}
-							changeType={this.changeType}
-							toggleWorkspace={this.toggleWorkspace}
-							isFederationEnabled={isFederationEnabled}
-						/>
-					)
-					: null}
+				{showOptionsDropdown ? (
+					<Options
+						theme={theme}
+						type={type}
+						globalUsers={globalUsers}
+						close={this.toggleDropdown}
+						changeType={this.changeType}
+						toggleWorkspace={this.toggleWorkspace}
+						isFederationEnabled={isFederationEnabled}
+					/>
+				) : null}
 			</SafeAreaView>
 		);
-	}
+	};
 }
 
 const mapStateToProps = state => ({

@@ -1,6 +1,6 @@
-import { StyleSheet, I18nManager } from 'react-native';
-import { PADDING_HORIZONTAL } from '../../containers/List/constants';
+import { I18nManager, StyleSheet } from 'react-native';
 
+import { PADDING_HORIZONTAL } from '../../containers/List/constants';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
@@ -29,8 +29,6 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	actionIndicator: {
-		...I18nManager.isRTL
-			? { transform: [{ rotate: '180deg' }] }
-			: {}
+		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
 	}
 });
