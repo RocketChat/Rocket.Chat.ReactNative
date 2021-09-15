@@ -8,12 +8,12 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { useTheme } from '../../theme';
-import HeaderCanned from './HeaderCanned';
-import CannedResponseItem from './CannedResponseItem';
 import RocketChat from '../../lib/rocketchat';
 import debounce from '../../utils/debounce';
 import Navigation from '../../lib/Navigation';
 import { goRoom } from '../../utils/goRoom';
+import CannedResponseItem from './CannedResponseItem';
+import HeaderCanned from './HeaderCanned';
 
 const COUNT = 25;
 
@@ -55,26 +55,26 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		});
 	}, []);
 
-	const getDepartments = debounce(async(keyword = '') => {
+	const getDepartments = debounce(async (keyword = '') => {
 		try {
 			const res = await RocketChat.getDepartments(keyword);
 			const regExp = new RegExp(keyword, 'gi');
 			const filterWithText = fixedScopes.filter(dep => regExp.test(dep.name));
-			res.success
-				? setDepartments([...filterWithText, ...res.departments])
-				: setDepartments(filterWithText);
+			res.success ? setDepartments([...filterWithText, ...res.departments]) : setDepartments(filterWithText);
 
-			if (res.success && !keyword) { setAllDepartments([...filterWithText, ...res.departments]); }
+			if (res.success && !keyword) {
+				setAllDepartments([...filterWithText, ...res.departments]);
+			}
 		} catch {
 			// do nothing
 		}
 	}, 300);
 
-	const goToDetail = (item) => {
+	const goToDetail = item => {
 		navigation.navigate('CannedResponseDetail', { cannedResponse: item, room });
 	};
 
-	const navigateToRoom = (item) => {
+	const navigateToRoom = item => {
 		const { name, username } = room;
 		const params = {
 			rid: room.rid,
@@ -104,7 +104,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		}
 	};
 
-	const getListCannedResponse = async(text, department, depId, debounced) => {
+	const getListCannedResponse = async (text, department, depId, debounced) => {
 		try {
 			const res = await RocketChat.getListCannedResponse({
 				text,
@@ -114,11 +114,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 				scope: department
 			});
 			if (res.success) {
-				setCannedResponses(prevCanned => (
-					debounced
-						? res.cannedResponses
-						: [...prevCanned, ...res.cannedResponses]
-				));
+				setCannedResponses(prevCanned => (debounced ? res.cannedResponses : [...prevCanned, ...res.cannedResponses]));
 				setLoading(false);
 				setOffset(prevOffset => prevOffset + COUNT);
 			}
@@ -129,7 +125,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 
 	useEffect(() => {
 		if (allDepartments.length > 0) {
-			const newCannedResponses = cannedResponses.map((cr) => {
+			const newCannedResponses = cannedResponses.map(cr => {
 				let scopeName = '';
 
 				if (cr?.departmentId) {
@@ -145,9 +141,12 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		}
 	}, [allDepartments, cannedResponses]);
 
-	const searchCallback = useCallback(debounce(async(text = '', department = '', depId = '') => {
-		await getListCannedResponse(text, department, depId, true);
-	}, 1000), []); // use debounce with useCallback https://stackoverflow.com/a/58594890
+	const searchCallback = useCallback(
+		debounce(async (text = '', department = '', depId = '') => {
+			await getListCannedResponse(text, department, depId, true);
+		}, 1000),
+		[]
+	); // use debounce with useCallback https://stackoverflow.com/a/58594890
 
 	useEffect(() => {
 		getDepartments();
@@ -160,7 +159,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		setOffset(0);
 	};
 
-	const onChangeText = (text) => {
+	const onChangeText = text => {
 		newSearch();
 		setSearchText(text);
 		searchCallback(text, scope, departmentId);
@@ -187,7 +186,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		searchCallback(searchText, department, depId);
 	};
 
-	const onEndReached = async() => {
+	const onEndReached = async () => {
 		if (cannedResponses.length < offset || loading) {
 			return;
 		}
@@ -230,7 +229,6 @@ const CannedResponsesListView = ({ navigation, route }) => {
 				onEndReachedThreshold={0.5}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 			/>
-
 		</SafeAreaView>
 	);
 };

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { ScrollView, Dimensions } from 'react-native';
+import { Dimensions, ScrollView } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { Provider } from 'react-redux';
 
@@ -39,21 +39,14 @@ const stories = storiesOf('Room Item', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.addDecorator(story => <ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>{story()}</ScrollView>);
 
+stories.add('Basic', () => <RoomItem />);
 
-stories.add('Basic', () => (
-	<RoomItem />
-));
-
-stories.add('Touch', () => (
-	<RoomItem onPress={() => alert('on press')} onLongPress={() => alert('on long press')} />
-));
+stories.add('Touch', () => <RoomItem onPress={() => alert('on press')} onLongPress={() => alert('on long press')} />);
 
 stories.add('User', () => (
 	<>
 		<RoomItem name='diego.mello' avatar='diego.mello' />
-		<RoomItem
-			name={longText}
-		/>
+		<RoomItem name={longText} />
 	</>
 ));
 
@@ -107,9 +100,7 @@ stories.add('Tag', () => (
 
 stories.add('Last Message', () => (
 	<>
-		<RoomItem
-			showLastMessage
-		/>
+		<RoomItem showLastMessage />
 		<RoomItem
 			showLastMessage
 			lastMessage={{
@@ -129,27 +120,9 @@ stories.add('Last Message', () => (
 			}}
 			username='diego.mello'
 		/>
-		<RoomItem
-			showLastMessage
-			lastMessage={lastMessage}
-		/>
-		<RoomItem
-			showLastMessage
-			alert
-			unread={1}
-			lastMessage={lastMessage}
-		/>
-		<RoomItem
-			showLastMessage
-			alert
-			unread={1000}
-			lastMessage={lastMessage}
-		/>
-		<RoomItem
-			showLastMessage
-			alert
-			tunread={[1]}
-			lastMessage={lastMessage}
-		/>
+		<RoomItem showLastMessage lastMessage={lastMessage} />
+		<RoomItem showLastMessage alert unread={1} lastMessage={lastMessage} />
+		<RoomItem showLastMessage alert unread={1000} lastMessage={lastMessage} />
+		<RoomItem showLastMessage alert tunread={[1]} lastMessage={lastMessage} />
 	</>
 ));

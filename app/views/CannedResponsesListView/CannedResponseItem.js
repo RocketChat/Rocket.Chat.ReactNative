@@ -5,14 +5,12 @@ import { View, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { themes } from '../../constants/colors';
 import * as List from '../../containers/List';
-import styles from './styles';
 import Button from '../../containers/Button';
 import { CustomIcon } from '../../lib/Icons';
 import I18n from '../../i18n';
+import styles from './styles';
 
-const CannedResponseItem = ({
-	theme, onPressDetail, shortcut, scope, onPressUse, text, tags
-}) => (
+const CannedResponseItem = ({ theme, onPressDetail, shortcut, scope, onPressUse, text, tags }) => (
 	<>
 		<Touchable onPress={onPressDetail} style={[styles.wrapCannedItem, { backgroundColor: themes[theme].messageboxBackground }]}>
 			<>
@@ -31,31 +29,24 @@ const CannedResponseItem = ({
 						onPress={onPressUse}
 					/>
 
-					<CustomIcon
-						name='chevron-right'
-						color={themes[theme].auxiliaryText}
-						size={20}
-					/>
+					<CustomIcon name='chevron-right' color={themes[theme].auxiliaryText} size={20} />
 				</View>
 
 				<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>“{text}”</Text>
 
 				<View style={styles.cannedTagContainer}>
-					{
-						tags?.length > 0
-							? tags.map(t => (
+					{tags?.length > 0
+						? tags.map(t => (
 								<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>
 									<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryTintColor }]}>{t}</Text>
 								</View>
-							))
-							: null
-					}
+						  ))
+						: null}
 				</View>
 			</>
 		</Touchable>
 		<List.Separator />
 	</>
-
 );
 
 CannedResponseItem.propTypes = {

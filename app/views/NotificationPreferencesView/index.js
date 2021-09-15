@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Switch, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import database from '../../lib/database';
@@ -12,8 +12,8 @@ import { withTheme } from '../../theme';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
 import log, { events, logEvent } from '../../utils/log';
-import { OPTIONS } from './options';
 import sharedStyles from '../Styles';
+import { OPTIONS } from './options';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 class NotificationPreferencesView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Notification_Preferences')
-	})
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -43,14 +43,13 @@ class NotificationPreferencesView extends React.Component {
 		};
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable
-				.subscribe((changes) => {
-					if (this.mounted) {
-						this.setState({ room: changes });
-					} else {
-						this.state.room = changes;
-					}
-				});
+			this.subscription = this.roomObservable.subscribe(changes => {
+				if (this.mounted) {
+					this.setState({ room: changes });
+				} else {
+					this.state.room = changes;
+				}
+			});
 		}
 	}
 
@@ -64,16 +63,18 @@ class NotificationPreferencesView extends React.Component {
 		}
 	}
 
-	saveNotificationSettings = async(key, value, params) => {
-		logEvent(events[`NP_${ key.toUpperCase() }`]);
+	saveNotificationSettings = async (key, value, params) => {
+		logEvent(events[`NP_${key.toUpperCase()}`]);
 		const { room } = this.state;
 		const db = database.active;
 
 		try {
-			await db.action(async() => {
-				await room.update(protectedFunction((r) => {
-					r[key] = value;
-				}));
+			await db.action(async () => {
+				await room.update(
+					protectedFunction(r => {
+						r[key] = value;
+					})
+				);
 			});
 
 			try {
@@ -85,16 +86,18 @@ class NotificationPreferencesView extends React.Component {
 				// do nothing
 			}
 
-			await db.action(async() => {
-				await room.update(protectedFunction((r) => {
-					r[key] = room[key];
-				}));
+			await db.action(async () => {
+				await room.update(
+					protectedFunction(r => {
+						r[key] = room[key];
+					})
+				);
 			});
 		} catch (e) {
-			logEvent(events[`NP_${ key.toUpperCase() }_F`]);
+			logEvent(events[`NP_${key.toUpperCase()}_F`]);
 			log(e);
 		}
-	}
+	};
 
 	onValueChangeSwitch = (key, value) => this.saveNotificationSettings(key, value, { [key]: value ? '1' : '0' });
 
@@ -109,16 +112,20 @@ class NotificationPreferencesView extends React.Component {
 			value: room[key],
 			onChangeValue: value => this.onValueChangePicker(key, value)
 		});
-	}
+	};
 
-	renderPickerOption = (key) => {
+	renderPickerOption = key => {
 		const { room } = this.state;
 		const { theme } = this.props;
 		const text = room[key] ? OPTIONS[key].find(option => option.value === room[key]) : OPTIONS[key][0];
-		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{I18n.t(text?.label, { defaultValue: text?.label, second: text?.second })}</Text>;
-	}
+		return (
+			<Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>
+				{I18n.t(text?.label, { defaultValue: text?.label, second: text?.second })}
+			</Text>
+		);
+	};
 
-	renderSwitch = (key) => {
+	renderSwitch = key => {
 		const { room } = this.state;
 		return (
 			<Switch
@@ -128,7 +135,7 @@ class NotificationPreferencesView extends React.Component {
 				onValueChange={value => this.onValueChangeSwitch(key, !value)}
 			/>
 		);
-	}
+	};
 
 	render() {
 		const { room } = this.state;

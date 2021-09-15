@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Text, Keyboard, StyleSheet, View, BackHandler
-} from 'react-native';
+import { BackHandler, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
 import parse from 'url-parse';
 import { Q } from '@nozbe/watermelondb';
-
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import UserPreferences from '../../lib/userPreferences';
 import EventEmitter from '../../utils/events';
 import { selectServerRequest, serverRequest } from '../../actions/server';
@@ -19,17 +17,17 @@ import OrSeparator from '../../containers/OrSeparator';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
-import { setBasicAuth, BASIC_AUTH_KEY } from '../../utils/fetch';
+import { BASIC_AUTH_KEY, setBasicAuth } from '../../utils/fetch';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { showConfirmationAlert } from '../../utils/info';
 import database from '../../lib/database';
-import ServerInput from './ServerInput';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import SSLPinning from '../../utils/sslPinning';
 import RocketChat from '../../lib/rocketchat';
+import ServerInput from './ServerInput';
 
 const styles = StyleSheet.create({
 	title: {
@@ -63,7 +61,7 @@ const styles = StyleSheet.create({
 class NewServerView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Workspaces')
-	})
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -74,7 +72,7 @@ class NewServerView extends React.Component {
 		adding: PropTypes.bool,
 		previousServer: PropTypes.string,
 		inviteLinksClear: PropTypes.func
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -113,7 +111,7 @@ class NewServerView extends React.Component {
 				headerLeft: () => <HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
 			});
 		}
-	}
+	};
 
 	handleBackPress = () => {
 		const { navigation, previousServer } = this.props;
@@ -122,43 +120,36 @@ class NewServerView extends React.Component {
 			return true;
 		}
 		return false;
-	}
+	};
 
-	onChangeText = (text) => {
+	onChangeText = text => {
 		this.setState({ text });
 		this.queryServerHistory(text);
-	}
+	};
 
-	queryServerHistory = async(text) => {
+	queryServerHistory = async text => {
 		const db = database.servers;
 		try {
 			const serversHistoryCollection = db.get('servers_history');
-			let whereClause = [
-				Q.where('username', Q.notEq(null)),
-				Q.experimentalSortBy('updated_at', Q.desc),
-				Q.experimentalTake(3)
-			];
+			let whereClause = [Q.where('username', Q.notEq(null)), Q.experimentalSortBy('updated_at', Q.desc), Q.experimentalTake(3)];
 			const likeString = sanitizeLikeString(text);
 			if (text) {
-				whereClause = [
-					...whereClause,
-					Q.where('url', Q.like(`%${ likeString }%`))
-				];
+				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
 			}
 			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();
 			this.setState({ serversHistory });
 		} catch {
 			// Do nothing
 		}
-	}
+	};
 
 	close = () => {
 		const { selectServer, previousServer, inviteLinksClear } = this.props;
 		inviteLinksClear();
 		selectServer(previousServer);
-	}
+	};
 
-	handleNewServerEvent = (event) => {
+	handleNewServerEvent = event => {
 		let { server } = event;
 		if (!server) {
 			return;
@@ -167,13 +158,15 @@ class NewServerView extends React.Component {
 		this.setState({ text: server });
 		server = this.completeUrl(server);
 		connectServer(server);
-	}
+	};
 
-	onPressServerHistory = (serverHistory) => {
-		this.setState({ text: serverHistory?.url }, () => this.submit({ fromServerHistory: true, username: serverHistory?.username }));
-	}
+	onPressServerHistory = serverHistory => {
+		this.setState({ text: serverHistory?.url }, () =>
+			this.submit({ fromServerHistory: true, username: serverHistory?.username })
+		);
+	};
 
-	submit = async({ fromServerHistory = false, username }) => {
+	submit = async ({ fromServerHistory = false, username }) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
@@ -185,7 +178,7 @@ class NewServerView extends React.Component {
 			const server = this.completeUrl(text);
 
 			// Save info - SSL Pinning
-			await UserPreferences.setStringAsync(`${ RocketChat.CERTIFICATE_KEY }-${ server }`, certificate);
+			await UserPreferences.setStringAsync(`${RocketChat.CERTIFICATE_KEY}-${server}`, certificate);
 
 			// Save info - HTTP Basic Authentication
 			await this.basicAuth(server, text);
@@ -196,38 +189,38 @@ class NewServerView extends React.Component {
 				connectServer(server);
 			}
 		}
-	}
+	};
 
 	connectOpen = () => {
 		logEvent(events.NS_JOIN_OPEN_WORKSPACE);
 		this.setState({ connectingOpen: true });
 		const { connectServer } = this.props;
 		connectServer('https://open.rocket.chat');
-	}
+	};
 
-	basicAuth = async(server, text) => {
+	basicAuth = async (server, text) => {
 		try {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
 				const credentials = Base64.encode(parsedUrl.auth);
-				await UserPreferences.setStringAsync(`${ BASIC_AUTH_KEY }-${ server }`, credentials);
+				await UserPreferences.setStringAsync(`${BASIC_AUTH_KEY}-${server}`, credentials);
 				setBasicAuth(credentials);
 			}
 		} catch {
 			// do nothing
 		}
-	}
+	};
 
-	chooseCertificate = async() => {
+	chooseCertificate = async () => {
 		try {
 			const certificate = await SSLPinning.pickCertificate();
 			this.setState({ certificate });
 		} catch {
 			// Do nothing
 		}
-	}
+	};
 
-	completeUrl = (url) => {
+	completeUrl = url => {
 		const parsedUrl = parse(url, true);
 		if (parsedUrl.auth.length) {
 			url = parsedUrl.origin;
@@ -235,28 +228,27 @@ class NewServerView extends React.Component {
 
 		url = url && url.replace(/\s/g, '');
 
-		if (/^(\w|[0-9-_]){3,}$/.test(url)
-			&& /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
-			url = `${ url }.rocket.chat`;
+		if (/^(\w|[0-9-_]){3,}$/.test(url) && /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
+			url = `${url}.rocket.chat`;
 		}
 
 		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
 			if (/^localhost(:\d+)?/.test(url)) {
-				url = `http://${ url }`;
+				url = `http://${url}`;
 			} else if (/^https?:\/\//.test(url) === false) {
-				url = `https://${ url }`;
+				url = `https://${url}`;
 			}
 		}
 
 		return url.replace(/\/+$/, '').replace(/\\/g, '/');
-	}
+	};
 
 	uriToPath = uri => uri.replace('file://', '');
 
-	saveCertificate = (certificate) => {
+	saveCertificate = certificate => {
 		animateNextTransition();
 		this.setState({ certificate });
-	}
+	};
 
 	handleRemove = () => {
 		showConfirmationAlert({
@@ -264,62 +256,45 @@ class NewServerView extends React.Component {
 			confirmationText: I18n.t('Remove'),
 			onPress: this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
 		});
-	}
+	};
 
-	deleteServerHistory = async(item) => {
+	deleteServerHistory = async item => {
 		const { serversHistory } = this.state;
 		const db = database.servers;
 		try {
-			await db.action(async() => {
+			await db.action(async () => {
 				await item.destroyPermanently();
 			});
 			this.setState({ serversHistory: serversHistory.filter(server => server.id !== item.id) });
 		} catch {
 			// Nothing
 		}
-	}
+	};
 
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
 		const { theme } = this.props;
 		return (
 			<View style={styles.certificatePicker}>
-				<Text
-					style={[
-						styles.chooseCertificateTitle,
-						{ color: themes[theme].auxiliaryText }
-					]}
-				>
+				<Text style={[styles.chooseCertificateTitle, { color: themes[theme].auxiliaryText }]}>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<TouchableOpacity
 					onPress={certificate ? this.handleRemove : this.chooseCertificate}
-					testID='new-server-choose-certificate'
-				>
-					<Text
-						style={[
-							styles.chooseCertificate,
-							{ color: themes[theme].tintColor }
-						]}
-					>
+					testID='new-server-choose-certificate'>
+					<Text style={[styles.chooseCertificate, { color: themes[theme].tintColor }]}>
 						{certificate ?? I18n.t('Apply_Your_Certificate')}
 					</Text>
 				</TouchableOpacity>
 			</View>
 		);
-	}
+	};
 
 	render() {
 		const { connecting, theme } = this.props;
-		const {
-			text, connectingOpen, serversHistory
-		} = this.state;
+		const { text, connectingOpen, serversHistory } = this.state;
 		return (
-			<FormContainer
-				theme={theme}
-				testID='new-server-view'
-				keyboardShouldPersistTaps='never'
-			>
+			<FormContainer theme={theme} testID='new-server-view' keyboardShouldPersistTaps='never'>
 				<FormContainerInner>
 					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
 					<ServerInput
@@ -342,7 +317,9 @@ class NewServerView extends React.Component {
 						testID='new-server-view-button'
 					/>
 					<OrSeparator theme={theme} />
-					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Onboarding_join_open_description')}</Text>
+					<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>
+						{I18n.t('Onboarding_join_open_description')}
+					</Text>
 					<Button
 						title={I18n.t('Join_our_open_workspace')}
 						type='secondary'

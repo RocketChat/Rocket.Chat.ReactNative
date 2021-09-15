@@ -1,10 +1,8 @@
-import {
-	put, takeLatest, delay, select
-} from 'redux-saga/effects';
+import { delay, put, select, takeLatest } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 
 import { INVITE_LINKS } from '../actions/actionsTypes';
-import { inviteLinksSuccess, inviteLinksFailure, inviteLinksSetInvite } from '../actions/inviteLinks';
+import { inviteLinksFailure, inviteLinksSetInvite, inviteLinksSuccess } from '../actions/inviteLinks';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import Navigation from '../lib/Navigation';
@@ -50,7 +48,9 @@ const handleCreateInviteLink = function* handleCreateInviteLink({ rid }) {
 	try {
 		const inviteLinks = yield select(state => state.inviteLinks);
 		const result = yield RocketChat.findOrCreateInvite({
-			rid, days: inviteLinks.days, maxUses: inviteLinks.maxUses
+			rid,
+			days: inviteLinks.days,
+			maxUses: inviteLinks.maxUses
 		});
 		if (!result.success) {
 			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_invite') }));

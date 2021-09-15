@@ -5,13 +5,14 @@ import { themes } from '../../constants/colors';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import styles from './styles';
 
-const SelectDepartment = ({
-	onDepartmentSelect, initial, theme, departments, getDepartments
-}) => (
+const SelectDepartment = ({ onDepartmentSelect, initial, theme, departments, getDepartments }) => (
 	<>
 		<MultiSelect
 			theme={theme}
-			wrapInputStyle={[styles.selectDepartment, { backgroundColor: themes[theme].messageboxBackground, borderColor: themes[theme].borderColor }]}
+			innerInputStyle={[
+				styles.selectDepartment,
+				{ backgroundColor: themes[theme].messageboxBackground, borderColor: themes[theme].borderColor }
+			]}
 			onChange={onDepartmentSelect}
 			onSearch={getDepartments}
 			onOpen={getDepartments}

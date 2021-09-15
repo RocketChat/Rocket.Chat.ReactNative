@@ -8,14 +8,12 @@ import { connect } from 'react-redux';
 import RocketChat from '../lib/rocketchat';
 import { getUserSelector } from '../selectors/login';
 import ActivityIndicator from '../containers/ActivityIndicator';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
 import { isAndroid, isIOS } from '../utils/deviceInfo';
 import { withTheme } from '../theme';
 
-const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) => (
-	`${ baseUrl }/avatar/${ url }?format=png&width=${ uriSize }&height=${ uriSize }${ avatarAuthURLFragment }`
-);
-
+const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) =>
+	`${baseUrl}/avatar/${url}?format=png&width=${uriSize}&height=${uriSize}${avatarAuthURLFragment}`;
 class JitsiMeetView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -28,7 +26,7 @@ class JitsiMeetView extends React.Component {
 			name: PropTypes.string,
 			token: PropTypes.string
 		})
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -37,10 +35,8 @@ class JitsiMeetView extends React.Component {
 		this.jitsiTimeout = null;
 
 		const { user, baseUrl } = props;
-		const {
-			name: displayName, id: userId, token, username
-		} = user;
-		const avatarAuthURLFragment = `&rc_token=${ token }&rc_uid=${ userId }`;
+		const { name: displayName, id: userId, token, username } = user;
+		const avatarAuthURLFragment = `&rc_token=${token}&rc_uid=${userId}`;
 		const avatar = formatUrl(username, baseUrl, 100, avatarAuthURLFragment);
 		this.state = {
 			userInfo: {
@@ -79,7 +75,7 @@ class JitsiMeetView extends React.Component {
 
 	onConferenceWillJoin = () => {
 		this.setState({ loading: false });
-	}
+	};
 
 	// Jitsi Update Timeout needs to be called every 10 seconds to make sure
 	// call is not ended and is available to web users.
@@ -94,13 +90,13 @@ class JitsiMeetView extends React.Component {
 		this.jitsiTimeout = BackgroundTimer.setInterval(() => {
 			RocketChat.updateJitsiTimeout(this.rid).catch(e => console.log(e));
 		}, 10000);
-	}
+	};
 
 	onConferenceTerminated = () => {
 		logEvent(events.JM_CONFERENCE_TERMINATE);
 		const { navigation } = this.props;
 		navigation.pop();
-	}
+	};
 
 	render() {
 		const { userInfo, loading } = this.state;
