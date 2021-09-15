@@ -6,7 +6,6 @@ import { storiesOf } from '@storybook/react-native';
 import Markdown from '../../app/containers/markdown';
 import { themes } from '../../app/constants/colors';
 
-
 const theme = 'light';
 
 const styles = StyleSheet.create({
@@ -22,7 +21,8 @@ const styles = StyleSheet.create({
 });
 
 const baseUrl = 'https://open.rocket.chat';
-const longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+const longText =
+	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 const lineBreakText = `a
 b
 c
@@ -33,7 +33,7 @@ d
 e`;
 const sequentialEmptySpacesText = 'a       b                                                                             c';
 
-const getCustomEmoji = (content) => {
+const getCustomEmoji = content => {
 	const customEmoji = {
 		marioparty: { name: content, extension: 'gif' },
 		react_rocket: { name: content, extension: 'png' },
@@ -47,55 +47,24 @@ const stories = storiesOf('Markdown', module);
 stories.add('Text', () => (
 	<View style={styles.container}>
 		<Markdown msg='This is Rocket.Chat' theme={theme} />
-		<Markdown
-			msg={longText}
-			theme={theme}
-		/>
-		<Markdown
-			msg={lineBreakText}
-			theme={theme}
-		/>
-		<Markdown
-			msg={sequentialEmptySpacesText}
-			theme={theme}
-		/>
-		<Markdown
-			msg='Strong emphasis, aka bold, with **asterisks** or __underscores__'
-			theme={theme}
-		/>
+		<Markdown msg={longText} theme={theme} />
+		<Markdown msg={lineBreakText} theme={theme} />
+		<Markdown msg={sequentialEmptySpacesText} theme={theme} />
+		<Markdown msg='Strong emphasis, aka bold, with **asterisks** or __underscores__' theme={theme} />
 	</View>
 ));
 
 stories.add('Edited', () => (
 	<View style={styles.container}>
-		<Markdown
-			msg='This is edited'
-			theme={theme}
-			isEdited
-		/>
+		<Markdown msg='This is edited' theme={theme} isEdited />
 	</View>
 ));
 
 stories.add('Preview', () => (
 	<View style={styles.container}>
-		<Markdown
-			msg={longText}
-			theme={theme}
-			numberOfLines={1}
-			preview
-		/>
-		<Markdown
-			msg={lineBreakText}
-			theme={theme}
-			numberOfLines={1}
-			preview
-		/>
-		<Markdown
-			msg={sequentialEmptySpacesText}
-			theme={theme}
-			numberOfLines={1}
-			preview
-		/>
+		<Markdown msg={longText} theme={theme} numberOfLines={1} preview />
+		<Markdown msg={lineBreakText} theme={theme} numberOfLines={1} preview />
+		<Markdown msg={sequentialEmptySpacesText} theme={theme} numberOfLines={1} preview />
 		<Markdown
 			msg='@rocket.cat @name1 @all @here @unknown #general #unknown'
 			theme={theme}
@@ -110,13 +79,7 @@ stories.add('Preview', () => (
 			channels={[{ _id: '123', name: 'test-channel' }]}
 			username='rocket.cat'
 		/>
-		<Markdown
-			msg='Testing: 😃 :+1: :marioparty:'
-			getCustomEmoji={getCustomEmoji}
-			theme={theme}
-			numberOfLines={1}
-			preview
-		/>
+		<Markdown msg='Testing: 😃 :+1: :marioparty:' getCustomEmoji={getCustomEmoji} theme={theme} numberOfLines={1} preview />
 	</View>
 ));
 
@@ -150,11 +113,7 @@ stories.add('Mentions', () => (
 
 stories.add('Hashtag', () => (
 	<View style={styles.container}>
-		<Markdown
-			msg='#test-channel #unknown'
-			theme={theme}
-			channels={[{ _id: '123', name: 'test-channel' }]}
-		/>
+		<Markdown msg='#test-channel #unknown' theme={theme} channels={[{ _id: '123', name: 'test-channel' }]} />
 	</View>
 ));
 
@@ -168,12 +127,7 @@ stories.add('Emoji', () => (
 			getCustomEmoji={getCustomEmoji}
 			baseUrl={baseUrl}
 		/>
-		<Markdown
-			msg='😃 :+1: :marioparty:'
-			theme={theme}
-			getCustomEmoji={getCustomEmoji}
-			baseUrl={baseUrl}
-		/>
+		<Markdown msg='😃 :+1: :marioparty:' theme={theme} getCustomEmoji={getCustomEmoji} baseUrl={baseUrl} />
 	</View>
 ));
 
@@ -194,7 +148,6 @@ stories.add('Links', () => (
 	</View>
 ));
 
-
 stories.add('Image', () => (
 	<View style={styles.container}>
 		<Markdown msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' theme={theme} />
@@ -203,39 +156,18 @@ stories.add('Image', () => (
 
 stories.add('Headers', () => (
 	<View style={styles.container}>
-		<Markdown
-			msg='# Header 1'
-			theme={theme}
-		/>
-		<Markdown
-			msg='## Header 2'
-			theme={theme}
-		/>
-		<Markdown
-			msg='### Header 3'
-			theme={theme}
-		/>
-		<Markdown
-			msg='#### Header 4'
-			theme={theme}
-		/>
-		<Markdown
-			msg='##### Header 5'
-			theme={theme}
-		/>
-		<Markdown
-			msg='###### Header 6'
-			theme={theme}
-		/>
+		<Markdown msg='# Header 1' theme={theme} />
+		<Markdown msg='## Header 2' theme={theme} />
+		<Markdown msg='### Header 3' theme={theme} />
+		<Markdown msg='#### Header 4' theme={theme} />
+		<Markdown msg='##### Header 5' theme={theme} />
+		<Markdown msg='###### Header 6' theme={theme} />
 	</View>
 ));
 
 stories.add('Code', () => (
 	<View style={styles.container}>
-		<Markdown
-			msg='This is `inline code`'
-			theme={theme}
-		/>
+		<Markdown msg='This is `inline code`' theme={theme} />
 		<Markdown
 			msg='Inline `code` has `back-ticks around` it.
 ```
@@ -248,14 +180,8 @@ Code block
 
 stories.add('Lists', () => (
 	<View style={styles.container}>
-		<Markdown
-			msg={'* Open Source\n* Rocket.Chat\n  - nodejs\n  - ReactNative'}
-			theme={theme}
-		/>
-		<Markdown
-			msg={'1. Open Source\n2. Rocket.Chat'}
-			theme={theme}
-		/>
+		<Markdown msg={'* Open Source\n* Rocket.Chat\n  - nodejs\n  - ReactNative'} theme={theme} />
+		<Markdown msg={'1. Open Source\n2. Rocket.Chat'} theme={theme} />
 	</View>
 ));
 

@@ -2,11 +2,7 @@
 /* eslint-disable no-bitwise */
 // https://github.com/beatgammit/base64-js/tree/master/test
 
-import {
-	byteLength,
-	toByteArray,
-	fromByteArray
-} from './index';
+import { byteLength, fromByteArray, toByteArray } from './index';
 
 const map = (arr, callback) => {
 	const res = [];
@@ -14,7 +10,7 @@ const map = (arr, callback) => {
 	let mappedValue;
 
 	for (let k = 0, len = arr.length; k < len; k += 1) {
-		if ((typeof arr === 'string' && !!arr.charAt(k))) {
+		if (typeof arr === 'string' && !!arr.charAt(k)) {
 			kValue = arr.charAt(k);
 			mappedValue = callback(kValue, k, arr);
 			res[k] = mappedValue;
@@ -37,7 +33,7 @@ expect.extend({
 			};
 		}
 		for (i = 0; i < length; i += 1) {
-			if ((a[i] & 0xFF) !== (b[i] & 0xFF)) {
+			if ((a[i] & 0xff) !== (b[i] & 0xff)) {
 				return {
 					pass: false
 				};
@@ -76,17 +72,7 @@ test('padding bytes found inside base64 string', () => {
 	expect(byteLength(str)).toBe(1);
 });
 
-const checks = [
-	'a',
-	'aa',
-	'aaa',
-	'hi',
-	'hi!',
-	'hi!!',
-	'sup',
-	'sup?',
-	'sup?!'
-];
+const checks = ['a', 'aa', 'aaa', 'hi', 'hi!', 'hi!!', 'sup', 'sup?', 'sup?!'];
 
 test('convert to base64 and back', () => {
 	for (let i = 0; i < checks.length; i += 1) {

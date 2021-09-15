@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
 import { AppRegistry } from 'react-native';
+
 import { name as appName, share as shareName } from './app.json';
 
 if (__DEV__) {

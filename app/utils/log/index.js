@@ -1,4 +1,5 @@
 import firebaseAnalytics from '@react-native-firebase/analytics';
+
 import { isFDroidBuild } from '../../constants/environment';
 import events from './events';
 
@@ -11,7 +12,6 @@ let reportAnalyticsEvents = true;
 export const getReportCrashErrorsValue = () => reportCrashErrors;
 export const getReportAnalyticsEventsValue = () => reportAnalyticsEvents;
 
-
 if (!isFDroidBuild) {
 	bugsnag = require('@bugsnag/react-native').default;
 	bugsnag.start({
@@ -19,7 +19,9 @@ if (!isFDroidBuild) {
 			return reportAnalyticsEvents;
 		},
 		onError(error) {
-			if (!reportAnalyticsEvents) { error.breadcrumbs = []; }
+			if (!reportAnalyticsEvents) {
+				error.breadcrumbs = [];
+			}
 			return reportCrashErrors;
 		}
 	});
@@ -32,7 +34,7 @@ export { events };
 
 let metadata = {};
 
-export const logServerVersion = (serverVersion) => {
+export const logServerVersion = serverVersion => {
 	metadata = {
 		serverVersion
 	};
@@ -49,26 +51,26 @@ export const logEvent = (eventName, payload) => {
 	}
 };
 
-export const setCurrentScreen = (currentScreen) => {
+export const setCurrentScreen = currentScreen => {
 	if (!isFDroidBuild) {
 		analytics().setCurrentScreen(currentScreen);
 		bugsnag.leaveBreadcrumb(currentScreen, { type: 'navigation' });
 	}
 };
 
-export const toggleCrashErrorsReport = (value) => {
+export const toggleCrashErrorsReport = value => {
 	crashlytics().setCrashlyticsCollectionEnabled(value);
-	return reportCrashErrors = value;
+	return (reportCrashErrors = value);
 };
 
-export const toggleAnalyticsEventsReport = (value) => {
+export const toggleAnalyticsEventsReport = value => {
 	analytics().setAnalyticsCollectionEnabled(value);
-	return reportAnalyticsEvents = value;
+	return (reportAnalyticsEvents = value);
 };
 
-export default (e) => {
+export default e => {
 	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
-		bugsnag.notify(e, (event) => {
+		bugsnag.notify(e, event => {
 			event.addMetadata('details', { ...metadata });
 		});
 		if (!isFDroidBuild) {

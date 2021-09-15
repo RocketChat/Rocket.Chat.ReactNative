@@ -20,24 +20,12 @@ const item = {
 
 const theme = 'light';
 
-
 stories.add('Short and Long Text', () => (
 	<>
 		<View style={styles.paddingHorizontal}>
-			<TextInput
-				label='Short Text'
-				placeholder='placeholder'
-				value={item.name}
-				theme={theme}
-			/>
+			<TextInput label='Short Text' placeholder='placeholder' value={item.name} theme={theme} />
 
-			<TextInput
-				label='Long Text'
-				placeholder='placeholder'
-				value={item.longText}
-				theme={theme}
-			/>
+			<TextInput label='Long Text' placeholder='placeholder' value={item.longText} theme={theme} />
 		</View>
 	</>
 ));
-

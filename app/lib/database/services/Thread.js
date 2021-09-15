@@ -3,7 +3,7 @@ import { TABLE_NAME } from '../model/Thread';
 
 const getCollection = db => db.get(TABLE_NAME);
 
-export const getThreadById = async(tmid) => {
+export const getThreadById = async tmid => {
 	const db = database.active;
 	const threadCollection = getCollection(db);
 	try {
