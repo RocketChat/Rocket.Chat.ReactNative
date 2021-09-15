@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FlatList, StyleSheet, Switch } from 'react-native';
 
 import RocketChat from '../../lib/rocketchat';
@@ -17,17 +16,33 @@ const styles = StyleSheet.create({
 	}
 });
 
-class AutoTranslateView extends React.Component {
+interface IRoom {
+	observe: Function;
+	autoTranslateLanguage: boolean;
+	autoTranslate: boolean;
+}
+
+interface IAutoTranslateViewProps {
+	route: {
+		params: {
+			rid?: string;
+			room?: IRoom;
+		};
+	};
+	theme: string;
+}
+
+class AutoTranslateView extends React.Component<IAutoTranslateViewProps, any> {
 	static navigationOptions = () => ({
 		title: I18n.t('Auto_Translate')
 	});
 
-	static propTypes = {
-		route: PropTypes.object,
-		theme: PropTypes.string
-	};
+	private mounted: boolean;
+	private rid: string | undefined;
+	private roomObservable: any;
+	private subscription: any;
 
-	constructor(props) {
+	constructor(props: IAutoTranslateViewProps) {
 		super(props);
 		this.mounted = false;
 		this.rid = props.route.params?.rid;
@@ -35,7 +50,7 @@ class AutoTranslateView extends React.Component {
 
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable.subscribe(changes => {
+			this.subscription = this.roomObservable.subscribe((changes: IRoom) => {
 				if (this.mounted) {
 					const { selectedLanguage, enableAutoTranslate } = this.state;
 					if (selectedLanguage !== changes.autoTranslateLanguage) {
@@ -49,8 +64,8 @@ class AutoTranslateView extends React.Component {
 		}
 		this.state = {
 			languages: [],
-			selectedLanguage: room.autoTranslateLanguage,
-			enableAutoTranslate: room.autoTranslate
+			selectedLanguage: room?.autoTranslateLanguage,
+			enableAutoTranslate: room?.autoTranslate
 		};
 	}
 
@@ -87,13 +102,15 @@ class AutoTranslateView extends React.Component {
 		}
 	};
 
-	saveAutoTranslateLanguage = async language => {
+	saveAutoTranslateLanguage = async (language: string) => {
 		logEvent(events.AT_SET_LANG);
 		try {
+			// TODO: remove the parameter options, after migrate the RocketChat
 			await RocketChat.saveAutoTranslate({
 				rid: this.rid,
 				field: 'autoTranslateLanguage',
-				value: language
+				value: language,
+				options: null
 			});
 			this.setState({ selectedLanguage: language });
 		} catch (error) {
@@ -112,7 +129,7 @@ class AutoTranslateView extends React.Component {
 		return <Switch value={enableAutoTranslate} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleAutoTranslate} />;
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: { language: string; name: string } }) => {
 		const { selectedLanguage } = this.state;
 		const { language, name } = item;
 		const isSelected = selectedLanguage === language;

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -24,9 +23,22 @@ import { goRoom } from '../../utils/goRoom';
 import styles from './styles';
 import Options from './Options';
 
-class DirectoryView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => {
-		const options = {
+interface IDirectoryViewProps {
+	navigation: object;
+	baseUrl: string;
+	isFederationEnabled: boolean;
+	user: {
+		id: string;
+		token: string;
+	};
+	theme: string;
+	directoryDefaultView: string;
+	isMasterDetail: boolean;
+}
+
+class DirectoryView extends React.Component<IDirectoryViewProps, any> {
+	static navigationOptions = ({ navigation, isMasterDetail }: any) => {
+		const options: any = {
 			title: I18n.t('Directory')
 		};
 		if (isMasterDetail) {
@@ -35,20 +47,7 @@ class DirectoryView extends React.Component {
 		return options;
 	};
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		baseUrl: PropTypes.string,
-		isFederationEnabled: PropTypes.bool,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string
-		}),
-		theme: PropTypes.string,
-		directoryDefaultView: PropTypes.string,
-		isMasterDetail: PropTypes.bool
-	};
-
-	constructor(props) {
+	constructor(props: IDirectoryViewProps) {
 		super(props);
 		this.state = {
 			data: [],
@@ -65,7 +64,7 @@ class DirectoryView extends React.Component {
 		this.load({});
 	}
 
-	onSearchChangeText = text => {
+	onSearchChangeText = (text: string) => {
 		this.setState({ text }, this.search);
 	};
 
@@ -115,7 +114,7 @@ class DirectoryView extends React.Component {
 		this.load({ newSearch: true });
 	};
 
-	changeType = type => {
+	changeType = (type: string) => {
 		this.setState({ type, data: [] }, () => this.search());
 
 		if (type === 'users') {
@@ -129,17 +128,17 @@ class DirectoryView extends React.Component {
 
 	toggleWorkspace = () => {
 		this.setState(
-			({ globalUsers }) => ({ globalUsers: !globalUsers, data: [] }),
+			({ globalUsers }: any) => ({ globalUsers: !globalUsers, data: [] }),
 			() => this.search()
 		);
 	};
 
 	toggleDropdown = () => {
-		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
+		this.setState(({ showOptionsDropdown }: any) => ({ showOptionsDropdown: !showOptionsDropdown }));
 	};
 
-	goRoom = item => {
-		const { navigation, isMasterDetail } = this.props;
+	goRoom = (item: any) => {
+		const { navigation, isMasterDetail }: any = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('DrawerNavigator');
 		} else {
@@ -148,7 +147,7 @@ class DirectoryView extends React.Component {
 		goRoom({ item, isMasterDetail });
 	};
 
-	onPressItem = async item => {
+	onPressItem = async (item: any) => {
 		const { type } = this.state;
 		if (type === 'users') {
 			const result = await RocketChat.createDirectMessage(item.username);
@@ -215,7 +214,7 @@ class DirectoryView extends React.Component {
 		);
 	};
 
-	renderItem = ({ item, index }) => {
+	renderItem = ({ item, index }: any) => {
 		const { data, type } = this.state;
 		const { baseUrl, user, theme } = this.props;
 
@@ -308,7 +307,7 @@ class DirectoryView extends React.Component {
 	};
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	isFederationEnabled: state.settings.FEDERATION_Enabled,

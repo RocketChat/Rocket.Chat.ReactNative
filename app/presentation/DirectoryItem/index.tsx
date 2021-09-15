@@ -25,14 +25,14 @@ interface IDirectoryItem {
 	rightLabel: string;
 	rid: string;
 	theme: string;
-	teamMain: boolean;
+	teamMain?: boolean;
 }
 
 const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => {
 	if (!text) {
 		return null;
 	}
-	return <Text style={[styles.directoryItemLabel, { color: themes[theme].auxiliaryText }]}>{text}</Text>;
+	return <Text style={[styles.directoryItemLabel, { color: themes[theme!].auxiliaryText }]}>{text}</Text>;
 });
 
 const DirectoryItem = ({
@@ -47,7 +47,7 @@ const DirectoryItem = ({
 	rid,
 	theme,
 	teamMain
-}: IDirectoryItem) => (
+}: IDirectoryItem): JSX.Element => (
 	<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID} theme={theme}>
 		<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
 			<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
