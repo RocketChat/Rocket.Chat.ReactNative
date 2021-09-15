@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, FlatList
-} from 'react-native';
+import { FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 
@@ -59,16 +57,17 @@ class AddExistingChannelView extends React.Component {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
 		}
 
-		options.headerRight = () => selected.length > 0 && (
-			<HeaderButton.Container>
-				<HeaderButton.Item title={I18n.t('Next')} onPress={this.submit} testID='add-existing-channel-view-submit' />
-			</HeaderButton.Container>
-		);
+		options.headerRight = () =>
+			selected.length > 0 && (
+				<HeaderButton.Container>
+					<HeaderButton.Item title={I18n.t('Next')} onPress={this.submit} testID='add-existing-channel-view-submit' />
+				</HeaderButton.Container>
+			);
 
 		navigation.setOptions(options);
-	}
+	};
 
-	query = async(stringToSearch = '') => {
+	query = async (stringToSearch = '') => {
 		try {
 			const { addTeamChannelPermission } = this.props;
 			const db = database.active;
@@ -77,23 +76,25 @@ class AddExistingChannelView extends React.Component {
 				.query(
 					Q.where('team_id', ''),
 					Q.where('t', Q.oneOf(['c', 'p'])),
-					Q.where('name', Q.like(`%${ stringToSearch }%`)),
+					Q.where('name', Q.like(`%${stringToSearch}%`)),
 					Q.experimentalTake(QUERY_SIZE),
 					Q.experimentalSortBy('room_updated_at', Q.desc)
 				)
 				.fetch();
 
-			const asyncFilter = async(channelsArray) => {
-				const results = await Promise.all(channelsArray.map(async(channel) => {
-					if (channel.prid) {
-						return false;
-					}
-					const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
-					if (!permissions[0]) {
-						return false;
-					}
-					return true;
-				}));
+			const asyncFilter = async channelsArray => {
+				const results = await Promise.all(
+					channelsArray.map(async channel => {
+						if (channel.prid) {
+							return false;
+						}
+						const permissions = await RocketChat.hasPermission([addTeamChannelPermission], channel.rid);
+						if (!permissions[0]) {
+							return false;
+						}
+						return true;
+					})
+				);
 
 				return channelsArray.filter((_v, index) => results[index]);
 			};
@@ -102,18 +103,18 @@ class AddExistingChannelView extends React.Component {
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	onSearchChangeText = debounce((text) => {
+	onSearchChangeText = debounce(text => {
 		this.query(text);
-	}, 300)
+	}, 300);
 
 	dismiss = () => {
 		const { navigation } = this.props;
 		return navigation.pop();
-	}
+	};
 
-	submit = async() => {
+	submit = async () => {
 		const { selected } = this.state;
 		const { isMasterDetail } = this.props;
 
@@ -130,7 +131,7 @@ class AddExistingChannelView extends React.Component {
 			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
 			this.setState({ loading: false });
 		}
-	}
+	};
 
 	renderHeader = () => {
 		const { theme } = this.props;
@@ -139,14 +140,14 @@ class AddExistingChannelView extends React.Component {
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='add-existing-channel-view-search' />
 			</View>
 		);
-	}
+	};
 
-	isChecked = (rid) => {
+	isChecked = rid => {
 		const { selected } = this.state;
 		return selected.includes(rid);
-	}
+	};
 
-	toggleChannel = (rid) => {
+	toggleChannel = rid => {
 		const { selected } = this.state;
 
 		animateNextTransition();
@@ -158,7 +159,7 @@ class AddExistingChannelView extends React.Component {
 			const filterSelected = selected.filter(el => el !== rid);
 			this.setState({ selected: filterSelected }, () => this.setHeader());
 		}
-	}
+	};
 
 	renderItem = ({ item }) => {
 		const isChecked = this.isChecked(item.rid);
@@ -169,13 +170,12 @@ class AddExistingChannelView extends React.Component {
 				title={RocketChat.getRoomTitle(item)}
 				translateTitle={false}
 				onPress={() => this.toggleChannel(item.rid)}
-				testID={`add-existing-channel-view-item-${ item.name }`}
+				testID={`add-existing-channel-view-item-${item.name}`}
 				left={() => <List.Icon name={icon} />}
 				right={() => (isChecked ? <List.Icon name='check' /> : null)}
 			/>
-
 		);
-	}
+	};
 
 	renderList = () => {
 		const { search, channels } = this.state;
@@ -192,7 +192,7 @@ class AddExistingChannelView extends React.Component {
 				keyboardShouldPersistTaps='always'
 			/>
 		);
-	}
+	};
 
 	render() {
 		const { loading } = this.state;

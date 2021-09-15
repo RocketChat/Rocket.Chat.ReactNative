@@ -31,7 +31,7 @@ export default function inquiry(state = initialState, action) {
 		case INQUIRY.QUEUE_UPDATE:
 			return {
 				...state,
-				queued: state.queued.map((item) => {
+				queued: state.queued.map(item => {
 					if (item._id === action.inquiry._id) {
 						return action.inquiry;
 					}

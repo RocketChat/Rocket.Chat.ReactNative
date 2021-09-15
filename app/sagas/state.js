@@ -1,4 +1,4 @@
-import { takeLatest, select } from 'redux-saga/effects';
+import { select, takeLatest } from 'redux-saga/effects';
 
 import RocketChat from '../lib/rocketchat';
 import { setBadgeCount } from '../notifications/push';

@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	FlatList, Image, View, StyleSheet
-} from 'react-native';
-import { RectButton, TouchableOpacity, TouchableNativeFeedback } from 'react-native-gesture-handler';
+import { FlatList, Image, StyleSheet, View } from 'react-native';
+import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
 import { themes } from '../../constants/colors';
@@ -70,20 +68,11 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }) => {
 	if (type?.match(/image/)) {
 		// Disallow preview of images too big in order to prevent memory issues on iOS share extension
 		if (allowPreview(isShareExtension, item?.size)) {
-			return (
-				<Image
-					source={{ uri: item.path }}
-					style={[styles.thumb, { borderColor: themes[theme].borderColor }]}
-				/>
-			);
+			return <Image source={{ uri: item.path }} style={[styles.thumb, { borderColor: themes[theme].borderColor }]} />;
 		} else {
 			return (
 				<View style={[styles.thumb, { borderColor: themes[theme].borderColor }]}>
-					<CustomIcon
-						name='image'
-						size={30}
-						color={themes[theme].tintColor}
-					/>
+					<CustomIcon name='image' size={30} color={themes[theme].tintColor} />
 				</View>
 			);
 		}
@@ -93,11 +82,7 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }) => {
 		if (isIOS) {
 			return (
 				<View style={[styles.thumb, { borderColor: themes[theme].borderColor }]}>
-					<CustomIcon
-						name='camera'
-						size={30}
-						color={themes[theme].tintColor}
-					/>
+					<CustomIcon name='camera' size={30} color={themes[theme].tintColor} />
 				</View>
 			);
 		} else {
@@ -105,12 +90,7 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }) => {
 			return (
 				<>
 					<Image source={{ uri }} style={styles.thumb} />
-					<CustomIcon
-						name='camera-filled'
-						size={20}
-						color={themes[theme].buttonText}
-						style={styles.videoThumbIcon}
-					/>
+					<CustomIcon name='camera-filled' size={20} color={themes[theme].buttonText} style={styles.videoThumbIcon} />
 				</>
 			);
 		}
@@ -120,46 +100,28 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }) => {
 	return null;
 });
 
-const Thumb = ({
-	item, theme, isShareExtension, onPress, onRemove
-}) => (
+const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }) => (
 	<ThumbButton style={styles.item} onPress={() => onPress(item)} activeOpacity={0.7}>
 		<>
-			<ThumbContent
-				item={item}
-				theme={theme}
-				isShareExtension={isShareExtension}
-			/>
+			<ThumbContent item={item} theme={theme} isShareExtension={isShareExtension} />
 			<RectButton
 				hitSlop={BUTTON_HIT_SLOP}
 				style={[styles.removeButton, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
 				activeOpacity={1}
 				rippleColor={themes[theme].bannerBackground}
-				onPress={() => onRemove(item)}
-			>
+				onPress={() => onRemove(item)}>
 				<View style={[styles.removeView, { borderColor: themes[theme].auxiliaryBackground }]}>
-					<CustomIcon
-						name='close'
-						color={themes[theme].backgroundColor}
-						size={14}
-					/>
+					<CustomIcon name='close' color={themes[theme].backgroundColor} size={14} />
 				</View>
 			</RectButton>
 			{!item?.canUpload ? (
-				<CustomIcon
-					name='warning'
-					size={20}
-					color={themes[theme].dangerColor}
-					style={styles.dangerIcon}
-				/>
+				<CustomIcon name='warning' size={20} color={themes[theme].dangerColor} style={styles.dangerIcon} />
 			) : null}
 		</>
 	</ThumbButton>
 );
 
-const Thumbs = React.memo(({
-	attachments, theme, isShareExtension, onPress, onRemove
-}) => {
+const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRemove }) => {
 	if (attachments?.length > 1) {
 		return (
 			<FlatList

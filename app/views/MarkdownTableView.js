@@ -10,12 +10,12 @@ import { withTheme } from '../theme';
 class MarkdownTableView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Table')
-	})
+	});
 
 	static propTypes = {
 		route: PropTypes.object,
 		theme: PropTypes.string
-	}
+	};
 
 	render() {
 		const { route, theme } = this.props;
@@ -32,9 +32,7 @@ class MarkdownTableView extends React.Component {
 
 		return (
 			<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<ScrollView horizontal>
-					{renderRows()}
-				</ScrollView>
+				<ScrollView horizontal>{renderRows()}</ScrollView>
 			</ScrollView>
 		);
 	}

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 import { storiesOf } from '@storybook/react-native';
 // import moment from 'moment';
@@ -9,14 +9,12 @@ import MessageComponent from '../../app/containers/message/Message';
 import messagesStatus from '../../app/constants/messagesStatus';
 import MessageSeparator from '../../app/views/RoomView/Separator';
 import MessageContext from '../../app/containers/message/Context';
-
 import { themes } from '../../app/constants/colors';
 import { store } from './index';
 
 const _theme = 'light';
 
-const styles = StyleSheet.create({
-});
+const styles = StyleSheet.create({});
 
 const user = {
 	id: 'y8bd77ptZswPj3EW8',
@@ -29,9 +27,10 @@ const author = {
 };
 const baseUrl = 'https://open.rocket.chat';
 const date = new Date(2017, 10, 10, 10);
-const longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+const longText =
+	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
-const getCustomEmoji = (content) => {
+const getCustomEmoji = content => {
 	const customEmoji = {
 		marioparty: { name: content, extension: 'gif' },
 		react_rocket: { name: content, extension: 'png' },
@@ -54,8 +53,7 @@ export const MessageDecorator = story => (
 			onDiscussionPress: () => {},
 			onReactionLongPress: () => {},
 			threadBadgeColor: themes.light.tunreadColor
-		}}
-	>
+		}}>
 		{story()}
 	</MessageContext.Provider>
 );
@@ -106,9 +104,7 @@ stories.add('Grouped messages', () => (
 	</>
 ));
 
-stories.add('Without header', () => (
-	<Message msg='Message' isHeader={false} />
-));
+stories.add('Without header', () => <Message msg='Message' isHeader={false} />);
 
 stories.add('With alias', () => (
 	<>
@@ -124,54 +120,34 @@ stories.add('With alias', () => (
 	</>
 ));
 
-stories.add('Edited', () => (
-	<Message msg='Message' edited />
-));
+stories.add('Edited', () => <Message msg='Message' edited />);
 
 stories.add('Encrypted', () => (
 	<>
-		<Message
-			msg='Message'
-			type='e2e'
-		/>
-		<Message
-			msg='Message Encrypted without Header'
-			isHeader={false}
-			type='e2e'
-		/>
+		<Message msg='Message' type='e2e' />
+		<Message msg='Message Encrypted without Header' isHeader={false} type='e2e' />
 		<Message
 			msg='Message Encrypted with Reactions'
-			reactions={[{
-				emoji: ':joy:',
-				usernames: [user.username]
-			}, {
-				emoji: ':marioparty:',
-				usernames: [user.username]
-			}, {
-				emoji: ':thinking:',
-				usernames: [user.username]
-			}]}
+			reactions={[
+				{
+					emoji: ':joy:',
+					usernames: [user.username]
+				},
+				{
+					emoji: ':marioparty:',
+					usernames: [user.username]
+				},
+				{
+					emoji: ':thinking:',
+					usernames: [user.username]
+				}
+			]}
 			onReactionPress={() => {}}
 			type='e2e'
 		/>
-		<Message
-			msg='Thread reply encrypted'
-			tmid='1'
-			tmsg='Thread with emoji :) :joy:'
-			isThreadReply
-			type='e2e'
-		/>
-		<Message
-			msg='Temp message encrypted'
-			status={messagesStatus.TEMP}
-			isTemp
-			type='e2e'
-		/>
-		<Message
-			msg='Message Edited encrypted'
-			edited
-			type='e2e'
-		/>
+		<Message msg='Thread reply encrypted' tmid='1' tmsg='Thread with emoji :) :joy:' isThreadReply type='e2e' />
+		<Message msg='Temp message encrypted' status={messagesStatus.TEMP} isTemp type='e2e' />
+		<Message msg='Message Edited encrypted' edited type='e2e' />
 		<Message
 			hasError
 			msg='This message has error and is encrypted'
@@ -179,19 +155,8 @@ stories.add('Encrypted', () => (
 			onErrorPress={() => alert('Error pressed')}
 			type='e2e'
 		/>
-		<Message
-			msg='Read Receipt encrypted with Header'
-			isReadReceiptEnabled
-			read
-			type='e2e'
-		/>
-		<Message
-			msg='Read Receipt encrypted without Header'
-			isReadReceiptEnabled
-			read
-			isHeader={false}
-			type='e2e'
-		/>
+		<Message msg='Read Receipt encrypted with Header' isReadReceiptEnabled read type='e2e' />
+		<Message msg='Read Receipt encrypted without Header' isReadReceiptEnabled read isHeader={false} type='e2e' />
 	</>
 ));
 
@@ -212,10 +177,7 @@ stories.add('Lists', () => (
 ));
 
 stories.add('Static avatar', () => (
-	<Message
-		msg='Message'
-		avatar='https://pbs.twimg.com/profile_images/1016397063649660929/14EIApTi_400x400.jpg'
-	/>
+	<Message msg='Message' avatar='https://pbs.twimg.com/profile_images/1016397063649660929/14EIApTi_400x400.jpg' />
 ));
 
 stories.add('Full name', () => (
@@ -234,33 +196,47 @@ stories.add('Mentions', () => (
 	<>
 		<Message
 			msg='@rocket.cat @diego.mello @all @here #general'
-			mentions={[{
-				username: 'rocket.cat'
-			}, {
-				username: 'diego.mello'
-			}, {
-				username: 'all'
-			}, {
-				username: 'here'
-			}]}
-			channels={[{
-				name: 'general'
-			}]}
+			mentions={[
+				{
+					username: 'rocket.cat'
+				},
+				{
+					username: 'diego.mello'
+				},
+				{
+					username: 'all'
+				},
+				{
+					username: 'here'
+				}
+			]}
+			channels={[
+				{
+					name: 'general'
+				}
+			]}
 		/>
 		<Message
 			msg='@rocket.cat Lorem ipsum dolor @diego.mello sit amet, @all consectetur adipiscing @here elit, sed do eiusmod tempor #general incididunt ut labore et dolore magna aliqua.'
-			mentions={[{
-				username: 'rocket.cat'
-			}, {
-				username: 'diego.mello'
-			}, {
-				username: 'all'
-			}, {
-				username: 'here'
-			}]}
-			channels={[{
-				name: 'general'
-			}]}
+			mentions={[
+				{
+					username: 'rocket.cat'
+				},
+				{
+					username: 'diego.mello'
+				},
+				{
+					username: 'all'
+				},
+				{
+					username: 'here'
+				}
+			]}
+			channels={[
+				{
+					name: 'general'
+				}
+			]}
 		/>
 	</>
 ));
@@ -276,56 +252,68 @@ stories.add('Emojis', () => (
 	</>
 ));
 
-stories.add('Time format', () => (
-	<Message msg='Testing' timeFormat='DD MMMM YYYY' />
-));
+stories.add('Time format', () => <Message msg='Testing' timeFormat='DD MMMM YYYY' />);
 
 stories.add('Reactions', () => (
 	<>
 		<Message
 			msg='Reactions'
-			reactions={[{
-				emoji: ':joy:',
-				usernames: [user.username]
-			}, {
-				emoji: ':marioparty:',
-				usernames: new Array(99)
-			}, {
-				emoji: ':thinking:',
-				usernames: new Array(999)
-			}, {
-				emoji: ':thinking:',
-				usernames: new Array(9999)
-			}]}
+			reactions={[
+				{
+					emoji: ':joy:',
+					usernames: [user.username]
+				},
+				{
+					emoji: ':marioparty:',
+					usernames: new Array(99)
+				},
+				{
+					emoji: ':thinking:',
+					usernames: new Array(999)
+				},
+				{
+					emoji: ':thinking:',
+					usernames: new Array(9999)
+				}
+			]}
 			onReactionPress={() => {}}
 		/>
 		<Message
 			msg='Multiple Reactions'
-			reactions={[{
-				emoji: ':marioparty:',
-				usernames: [user.username]
-			}, {
-				emoji: ':react_rocket:',
-				usernames: [user.username]
-			}, {
-				emoji: ':nyan_rocket:',
-				usernames: [user.username]
-			}, {
-				emoji: ':heart:',
-				usernames: [user.username]
-			}, {
-				emoji: ':dog:',
-				usernames: [user.username]
-			}, {
-				emoji: ':grinning:',
-				usernames: [user.username]
-			}, {
-				emoji: ':grimacing:',
-				usernames: [user.username]
-			}, {
-				emoji: ':grin:',
-				usernames: [user.username]
-			}]}
+			reactions={[
+				{
+					emoji: ':marioparty:',
+					usernames: [user.username]
+				},
+				{
+					emoji: ':react_rocket:',
+					usernames: [user.username]
+				},
+				{
+					emoji: ':nyan_rocket:',
+					usernames: [user.username]
+				},
+				{
+					emoji: ':heart:',
+					usernames: [user.username]
+				},
+				{
+					emoji: ':dog:',
+					usernames: [user.username]
+				},
+				{
+					emoji: ':grinning:',
+					usernames: [user.username]
+				},
+				{
+					emoji: ':grimacing:',
+					usernames: [user.username]
+				},
+				{
+					emoji: ':grin:',
+					usernames: [user.username]
+				}
+			]}
 			onReactionPress={() => {}}
 		/>
 	</>
@@ -366,18 +354,22 @@ stories.add('Date and Unread separators', () => (
 stories.add('With image', () => (
 	<>
 		<Message
-			attachments={[{
-				title: 'This is a title',
-				description: 'This is a description',
-				image_url: '/dummypath'
-			}]}
+			attachments={[
+				{
+					title: 'This is a title',
+					description: 'This is a description',
+					image_url: '/dummypath'
+				}
+			]}
 		/>
 		<Message
-			attachments={[{
-				title: 'This is a title',
-				description: 'This is a description :nyan_rocket:',
-				image_url: '/dummypath'
-			}]}
+			attachments={[
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
+					image_url: '/dummypath'
+				}
+			]}
 		/>
 	</>
 ));
@@ -385,17 +377,21 @@ stories.add('With image', () => (
 stories.add('With video', () => (
 	<>
 		<Message
-			attachments={[{
-				title: 'This is a title',
-				description: 'This is a description :nyan_rocket:',
-				video_url: '/dummypath'
-			}]}
+			attachments={[
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
+					video_url: '/dummypath'
+				}
+			]}
 		/>
 		<Message
-			attachments={[{
-				title: 'This is a title',
-				video_url: '/dummypath'
-			}]}
+			attachments={[
+				{
+					title: 'This is a title',
+					video_url: '/dummypath'
+				}
+			]}
 		/>
 	</>
 ));
@@ -403,33 +399,41 @@ stories.add('With video', () => (
 stories.add('With audio', () => (
 	<>
 		<Message
-			attachments={[{
-				title: 'This is a title',
-				description: 'This is a description :nyan_rocket:',
-				audio_url: '/dummypath'
-			}]}
+			attachments={[
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
+					audio_url: '/dummypath'
+				}
+			]}
 		/>
 		<Message msg='First message' isHeader={false} />
 		<Message
-			attachments={[{
-				title: 'This is a title',
-				description: 'This is a description',
-				audio_url: '/dummypath'
-			}]}
+			attachments={[
+				{
+					title: 'This is a title',
+					description: 'This is a description',
+					audio_url: '/dummypath'
+				}
+			]}
 			isHeader={false}
 		/>
 		<Message
-			attachments={[{
-				title: 'This is a title',
-				audio_url: '/dummypath'
-			}]}
+			attachments={[
+				{
+					title: 'This is a title',
+					audio_url: '/dummypath'
+				}
+			]}
 			isHeader={false}
 		/>
 		<Message
-			attachments={[{
-				title: 'This is a title',
-				audio_url: '/dummypath'
-			}]}
+			attachments={[
+				{
+					title: 'This is a title',
+					audio_url: '/dummypath'
+				}
+			]}
 			isHeader={false}
 		/>
 	</>
@@ -438,16 +442,20 @@ stories.add('With audio', () => (
 stories.add('With file', () => (
 	<>
 		<Message
-			attachments={[{
-				text: 'File.pdf',
-				description: 'This is a description :nyan_rocket:'
-			}]}
+			attachments={[
+				{
+					text: 'File.pdf',
+					description: 'This is a description :nyan_rocket:'
+				}
+			]}
 		/>
 		<Message
-			attachments={[{
-				text: 'File.pdf',
-				description: 'This is a description :nyan_rocket:'
-			}]}
+			attachments={[
+				{
+					text: 'File.pdf',
+					description: 'This is a description :nyan_rocket:'
+				}
+			]}
 			isHeader={false}
 		/>
 	</>
@@ -457,97 +465,56 @@ stories.add('Message with reply', () => (
 	<>
 		<Message
 			msg="I'm fine!"
-			attachments={[{
-				author_name: 'I\'m a very long long title and I\'ll break',
-				ts: date,
-				timeFormat: 'LT',
-				text: 'How are you?'
-			}]}
+			attachments={[
+				{
+					author_name: "I'm a very long long title and I'll break",
+					ts: date,
+					timeFormat: 'LT',
+					text: 'How are you?'
+				}
+			]}
 		/>
 		<Message
 			msg="I'm fine!"
-			attachments={[{
-				author_name: 'rocket.cat',
-				ts: date,
-				timeFormat: 'LT',
-				text: 'How are you? :nyan_rocket:'
-			}]}
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: 'How are you? :nyan_rocket:'
+				}
+			]}
 		/>
 	</>
 ));
 
 stories.add('Message with read receipt', () => (
 	<>
-		<Message
-			msg="I'm fine!"
-			isReadReceiptEnabled
-			unread
-		/>
-		<Message
-			msg="I'm fine!"
-			isReadReceiptEnabled
-			unread
-			isHeader={false}
-		/>
-		<Message
-			msg="I'm fine!"
-			isReadReceiptEnabled
-			read
-		/>
-		<Message
-			msg="I'm fine!"
-			isReadReceiptEnabled
-			read
-			isHeader={false}
-		/>
+		<Message msg="I'm fine!" isReadReceiptEnabled unread />
+		<Message msg="I'm fine!" isReadReceiptEnabled unread isHeader={false} />
+		<Message msg="I'm fine!" isReadReceiptEnabled read />
+		<Message msg="I'm fine!" isReadReceiptEnabled read isHeader={false} />
 	</>
 ));
 
 stories.add('Message with thread', () => (
 	<>
-		<Message
-			msg='How are you?'
-			tcount={1}
-			tlm={date}
-		/>
-		<Message
-			msg="I'm fine!"
-			tmid='1'
-			tmsg='How are you?'
-			isThreadReply
-		/>
-		<Message
-			msg="I'm fine!"
-			tmid='1'
-			tmsg='Thread with emoji :) :joy:'
-			isThreadReply
-		/>
-		<Message
-			msg="I'm fine!"
-			tmid='1'
-			tmsg={longText}
-			isThreadReply
-		/>
-		<Message
-			msg={longText}
-			tmid='1'
-			tmsg='How are you?'
-			isThreadReply
-		/>
-		<Message
-			msg={longText}
-			tmid='1'
-			tmsg={longText}
-			isThreadReply
-		/>
+		<Message msg='How are you?' tcount={1} tlm={date} />
+		<Message msg="I'm fine!" tmid='1' tmsg='How are you?' isThreadReply />
+		<Message msg="I'm fine!" tmid='1' tmsg='Thread with emoji :) :joy:' isThreadReply />
+		<Message msg="I'm fine!" tmid='1' tmsg={longText} isThreadReply />
+		<Message msg={longText} tmid='1' tmsg='How are you?' isThreadReply />
+		<Message msg={longText} tmid='1' tmsg={longText} isThreadReply />
 		<Message
 			tmid='1'
 			tmsg='Thread with attachment'
-			attachments={[{
-				title: 'This is a title',
-				description: 'This is a description :nyan_rocket:',
-				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
-			}]}
+			attachments={[
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
+					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+				}
+			]}
 			isThreadReply
 		/>
 	</>
@@ -555,27 +522,17 @@ stories.add('Message with thread', () => (
 
 stories.add('Sequential thread messages following thread button', () => (
 	<>
+		<Message msg='How are you?' tcount={1} tlm={date} />
+		<Message msg="I'm fine!" tmid='1' isThreadSequential />
+		<Message msg={longText} tmid='1' isThreadSequential />
 		<Message
-			msg='How are you?'
-			tcount={1}
-			tlm={date}
-		/>
-		<Message
-			msg="I'm fine!"
-			tmid='1'
-			isThreadSequential
-		/>
-		<Message
-			msg={longText}
-			tmid='1'
-			isThreadSequential
-		/>
-		<Message
-			attachments={[{
-				title: 'This is a title',
-				description: 'This is a description',
-				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
-			}]}
+			attachments={[
+				{
+					title: 'This is a title',
+					description: 'This is a description',
+					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+				}
+			]}
 			tmid='1'
 			isThreadSequential
 		/>
@@ -584,28 +541,17 @@ stories.add('Sequential thread messages following thread button', () => (
 
 stories.add('Sequential thread messages following thread reply', () => (
 	<>
+		<Message msg="I'm fine!" tmid='1' tmsg='How are you?' isThreadReply />
+		<Message msg='Cool!' tmid='1' isThreadSequential />
+		<Message msg={longText} tmid='1' isThreadSequential />
 		<Message
-			msg="I'm fine!"
-			tmid='1'
-			tmsg='How are you?'
-			isThreadReply
-		/>
-		<Message
-			msg='Cool!'
-			tmid='1'
-			isThreadSequential
-		/>
-		<Message
-			msg={longText}
-			tmid='1'
-			isThreadSequential
-		/>
-		<Message
-			attachments={[{
-				title: 'This is a title',
-				description: 'This is a description',
-				audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
-			}]}
+			attachments={[
+				{
+					title: 'This is a title',
+					description: 'This is a description',
+					audio_url: '/file-upload/c4wcNhrbXJLBvAJtN/1535569819516.aac'
+				}
+			]}
 			tmid='1'
 			isThreadSequential
 		/>
@@ -614,65 +560,52 @@ stories.add('Sequential thread messages following thread reply', () => (
 
 stories.add('Discussion', () => (
 	<>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={null}
-			dlm={null}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1}
-			dlm={date}
-			msg='This is a discussion'
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={10}
-			dlm={date}
-			msg={longText}
-		/>
-		<Message
-			type='discussion-created'
-			drid='aisduhasidhs'
-			dcount={1000}
-			dlm={date}
-			msg='This is a discussion'
-		/>
+		<Message type='discussion-created' drid='aisduhasidhs' dcount={null} dlm={null} msg='This is a discussion' />
+		<Message type='discussion-created' drid='aisduhasidhs' dcount={1} dlm={date} msg='This is a discussion' />
+		<Message type='discussion-created' drid='aisduhasidhs' dcount={10} dlm={date} msg={longText} />
+		<Message type='discussion-created' drid='aisduhasidhs' dcount={1000} dlm={date} msg='This is a discussion' />
 	</>
 ));
 
 stories.add('URL', () => (
 	<>
 		<Message
-			urls={[{
-				url: 'https://rocket.chat',
-				image: 'https://rocket.chat/images/blog/post.jpg',
-				title: 'Rocket.Chat - Free, Open Source, Enterprise Team Chat',
-				description: 'Rocket.Chat is the leading open source team chat software solution. Free, unlimited and completely customizable with on-premises and SaaS cloud hosting.'
-			}, {
-				url: 'https://google.com',
-				title: 'Google',
-				description: 'Search the world\'s information, including webpages, images, videos and more. Google has many special features to help you find exactly what you\'re looking for.'
-			}]}
+			urls={[
+				{
+					url: 'https://rocket.chat',
+					image: 'https://rocket.chat/images/blog/post.jpg',
+					title: 'Rocket.Chat - Free, Open Source, Enterprise Team Chat',
+					description:
+						'Rocket.Chat is the leading open source team chat software solution. Free, unlimited and completely customizable with on-premises and SaaS cloud hosting.'
+				},
+				{
+					url: 'https://google.com',
+					title: 'Google',
+					description:
+						"Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for."
+				}
+			]}
 		/>
 		<Message
-			urls={[{
-				url: 'https://google.com',
-				title: 'Google',
-				description: 'Search the world\'s information, including webpages, images, videos and more. Google has many special features to help you find exactly what you\'re looking for.'
-			}]}
+			urls={[
+				{
+					url: 'https://google.com',
+					title: 'Google',
+					description:
+						"Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for."
+				}
+			]}
 			msg='Message :nyan_rocket:'
 		/>
 		<Message
-			urls={[{
-				url: 'https://google.com',
-				title: 'Google',
-				description: 'Search the world\'s information, including webpages, images, videos and more. Google has many special features to help you find exactly what you\'re looking for.'
-			}]}
+			urls={[
+				{
+					url: 'https://google.com',
+					title: 'Google',
+					description:
+						"Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for."
+				}
+			]}
 			isHeader={false}
 		/>
 	</>
@@ -682,28 +615,36 @@ stories.add('Custom fields', () => (
 	<>
 		<Message
 			msg='Message'
-			attachments={[{
-				author_name: 'rocket.cat',
-				ts: date,
-				timeFormat: 'LT',
-				text: 'Custom fields',
-				fields: [{
-					title: 'Field 1',
-					value: 'Value 1'
-				}, {
-					title: 'Field 2',
-					value: 'Value 2'
-				}, {
-					title: 'Field 3',
-					value: 'Value 3'
-				}, {
-					title: 'Field 4',
-					value: 'Value 4'
-				}, {
-					title: 'Field 5',
-					value: 'Value 5'
-				}]
-			}]}
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: 'Custom fields',
+					fields: [
+						{
+							title: 'Field 1',
+							value: 'Value 1'
+						},
+						{
+							title: 'Field 2',
+							value: 'Value 2'
+						},
+						{
+							title: 'Field 3',
+							value: 'Value 3'
+						},
+						{
+							title: 'Field 4',
+							value: 'Value 4'
+						},
+						{
+							title: 'Field 5',
+							value: 'Value 5'
+						}
+					]
+				}
+			]}
 		/>
 	</>
 ));
@@ -711,99 +652,119 @@ stories.add('Custom fields', () => (
 stories.add('Two short custom fields with markdown', () => (
 	<Message
 		msg='Message'
-		attachments={[{
-			author_name: 'rocket.cat',
-			ts: date,
-			timeFormat: 'LT',
-			text: 'Custom fields',
-			fields: [{
-				title: 'Field 1',
-				value: 'Value 1',
-				short: true
-			}, {
-				title: 'Field 2',
-				value: '[Value 2](https://google.com/)',
-				short: true
-			}]
-		}, {
-			author_name: 'rocket.cat',
-			ts: date,
-			timeFormat: 'LT',
-			text: 'Custom fields 2',
-			fields: [{
-				title: 'Field 1',
-				value: 'Value 1',
-				short: true
-			}, {
-				title: 'Field 2',
-				value: '**Value 2**',
-				short: true
-			}]
-		}]}
+		attachments={[
+			{
+				author_name: 'rocket.cat',
+				ts: date,
+				timeFormat: 'LT',
+				text: 'Custom fields',
+				fields: [
+					{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					},
+					{
+						title: 'Field 2',
+						value: '[Value 2](https://google.com/)',
+						short: true
+					}
+				]
+			},
+			{
+				author_name: 'rocket.cat',
+				ts: date,
+				timeFormat: 'LT',
+				text: 'Custom fields 2',
+				fields: [
+					{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					},
+					{
+						title: 'Field 2',
+						value: '**Value 2**',
+						short: true
+					}
+				]
+			}
+		]}
 	/>
 ));
 
 stories.add('Colored attachments', () => (
 	<Message
-		attachments={[{
-			color: 'red',
-			fields: [{
-				title: 'Field 1',
-				value: 'Value 1',
-				short: true
-			}, {
-				title: 'Field 2',
-				value: 'Value 2',
-				short: true
-			}]
-		}, {
-			color: 'green',
-			fields: [{
-				title: 'Field 1',
-				value: 'Value 1',
-				short: true
-			}, {
-				title: 'Field 2',
-				value: 'Value 2',
-				short: true
-			}]
-		}, {
-			color: 'blue',
-			fields: [{
-				title: 'Field 1',
-				value: 'Value 1',
-				short: true
-			}, {
-				title: 'Field 2',
-				value: 'Value 2',
-				short: true
-			}]
-		}]}
+		attachments={[
+			{
+				color: 'red',
+				fields: [
+					{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					},
+					{
+						title: 'Field 2',
+						value: 'Value 2',
+						short: true
+					}
+				]
+			},
+			{
+				color: 'green',
+				fields: [
+					{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					},
+					{
+						title: 'Field 2',
+						value: 'Value 2',
+						short: true
+					}
+				]
+			},
+			{
+				color: 'blue',
+				fields: [
+					{
+						title: 'Field 1',
+						value: 'Value 1',
+						short: true
+					},
+					{
+						title: 'Field 2',
+						value: 'Value 2',
+						short: true
+					}
+				]
+			}
+		]}
 	/>
 ));
 
-stories.add('Broadcast', () => (
-	<Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />
-));
+stories.add('Broadcast', () => <Message msg='Broadcasted message' broadcast replyBroadcast={() => alert('broadcast!')} />);
 
-stories.add('Archived', () => (
-	<Message msg='This message is inside an archived room' archived />
-));
+stories.add('Archived', () => <Message msg='This message is inside an archived room' archived />);
 
 stories.add('Error', () => (
 	<>
 		<Message hasError msg='This message has error' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} />
-		<Message hasError msg='This message has error too' status={messagesStatus.ERROR} onErrorPress={() => alert('Error pressed')} isHeader={false} />
+		<Message
+			hasError
+			msg='This message has error too'
+			status={messagesStatus.ERROR}
+			onErrorPress={() => alert('Error pressed')}
+			isHeader={false}
+		/>
 	</>
 ));
 
-stories.add('Temp', () => (
-	<Message msg='Temp message' status={messagesStatus.TEMP} isTemp />
-));
+stories.add('Temp', () => <Message msg='Temp message' status={messagesStatus.TEMP} isTemp />);
 
-stories.add('Editing', () => (
-	<Message msg='Message being edited' editing />
-));
+stories.add('Editing', () => <Message msg='Message being edited' editing />);
 
 stories.add('System messages', () => (
 	<>
@@ -813,30 +774,22 @@ stories.add('System messages', () => (
 			msg='New name'
 			type='message_pinned'
 			isInfo
-			attachments={[{
-				author_name: 'rocket.cat',
-				ts: date,
-				timeFormat: 'LT',
-				text: 'First message'
-			}]}
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					ts: date,
+					timeFormat: 'LT',
+					text: 'First message'
+				}
+			]}
 		/>
 		<Message type='ul' isInfo />
 		<Message msg='rocket.cat' type='ru' isInfo />
 		<Message msg='rocket.cat' type='au' isInfo />
 		<Message msg='rocket.cat' type='user-muted' isInfo />
 		<Message msg='rocket.cat' type='user-unmuted' isInfo />
-		<Message
-			msg='rocket.cat'
-			role='admin'
-			type='subscription-role-added'
-			isInfo
-		/>
-		<Message
-			msg='rocket.cat'
-			role='admin'
-			type='subscription-role-removed'
-			isInfo
-		/>
+		<Message msg='rocket.cat' role='admin' type='subscription-role-added' isInfo />
+		<Message msg='rocket.cat' role='admin' type='subscription-role-removed' isInfo />
 		<Message msg='New name' type='r' isInfo />
 		<Message msg='new description' type='room_changed_description' isInfo />
 		<Message msg='new announcement' type='room_changed_announcement' isInfo />
@@ -847,39 +800,38 @@ stories.add('System messages', () => (
 	</>
 ));
 
-stories.add('Ignored', () => (
-	<Message isIgnored />
-));
+stories.add('Ignored', () => <Message isIgnored />);
 
-stories.add('Custom style', () => (
-	<Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />
-));
+stories.add('Custom style', () => <Message msg='Message' style={[styles.normalize, { backgroundColor: '#ddd' }]} />);
 
 stories.add('Show a button as attachment', () => (
 	<Message
-		attachments={[{
-			text: 'Test Button',
-			actions: [
-				{
-					type: 'button',
-					text: 'Text button',
-					msg: 'Response message',
-					msg_in_chat_window: true
-				}
-			]
-		}]}
+		attachments={[
+			{
+				text: 'Test Button',
+				actions: [
+					{
+						type: 'button',
+						text: 'Text button',
+						msg: 'Response message',
+						msg_in_chat_window: true
+					}
+				]
+			}
+		]}
 	/>
 ));
 
 stories.add('Thumbnail from server', () => (
 	<Message
 		msg='this is a thumbnail'
-		attachments={[{
-			text: 'Image text',
-			thumb_url: 'https://images-na.ssl-images-amazon.com/images/I/71jKxPAMFbL._AC_SL1500_.jpg',
-			title: 'Title',
-			title_link: 'https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/2975'
-		}]}
+		attachments={[
+			{
+				text: 'Image text',
+				thumb_url: 'https://images-na.ssl-images-amazon.com/images/I/71jKxPAMFbL._AC_SL1500_.jpg',
+				title: 'Title',
+				title_link: 'https://github.com/RocketChat/Rocket.Chat.ReactNative/pull/2975'
+			}
+		]}
 	/>
 ));
-

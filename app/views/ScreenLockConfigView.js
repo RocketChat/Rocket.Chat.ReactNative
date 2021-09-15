@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
-import { themes, SWITCH_TRACK_COLOR } from '../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
-import { supportedBiometryLabel, changePasscode, checkHasPasscode } from '../utils/localAuthentication';
+import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../utils/localAuthentication';
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';
@@ -26,7 +26,7 @@ class ScreenLockConfigView extends React.Component {
 		server: PropTypes.string,
 		Force_Screen_Lock: PropTypes.string,
 		Force_Screen_Lock_After: PropTypes.string
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -68,7 +68,7 @@ class ScreenLockConfigView extends React.Component {
 		}
 	];
 
-	init = async() => {
+	init = async () => {
 		const { server } = this.props;
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
@@ -87,71 +87,77 @@ class ScreenLockConfigView extends React.Component {
 		this.setState({ biometryLabel });
 
 		this.observe();
-	}
+	};
 
 	/*
 	 * We should observe biometry value
 	 * because it can be changed by PasscodeChange
 	 * when the user set his first passcode
-	*/
+	 */
 	observe = () => {
 		this.observable = this.serverRecord?.observe()?.subscribe(({ biometry }) => {
 			this.setState({ biometry });
 		});
-	}
+	};
 
-	save = async() => {
+	save = async () => {
 		logEvent(events.SLC_SAVE_SCREEN_LOCK);
 		const { autoLock, autoLockTime, biometry } = this.state;
 		const serversDB = database.servers;
-		await serversDB.action(async() => {
-			await this.serverRecord?.update((record) => {
+		await serversDB.action(async () => {
+			await this.serverRecord?.update(record => {
 				record.autoLock = autoLock;
 				record.autoLockTime = autoLockTime === null ? DEFAULT_AUTO_LOCK : autoLockTime;
 				record.biometry = biometry === null ? DEFAULT_BIOMETRY : biometry;
 			});
 		});
-	}
+	};
 
-	changePasscode = async({ force }) => {
+	changePasscode = async ({ force }) => {
 		logEvent(events.SLC_CHANGE_PASSCODE);
 		await changePasscode({ force });
-	}
+	};
 
 	toggleAutoLock = () => {
 		logEvent(events.SLC_TOGGLE_AUTOLOCK);
-		this.setState(({ autoLock }) => ({ autoLock: !autoLock, autoLockTime: DEFAULT_AUTO_LOCK }), async() => {
-			const { autoLock } = this.state;
-			if (autoLock) {
-				try {
-					await checkHasPasscode({ force: false, serverRecord: this.serverRecord });
-				} catch {
-					this.toggleAutoLock();
+		this.setState(
+			({ autoLock }) => ({ autoLock: !autoLock, autoLockTime: DEFAULT_AUTO_LOCK }),
+			async () => {
+				const { autoLock } = this.state;
+				if (autoLock) {
+					try {
+						await checkHasPasscode({ force: false, serverRecord: this.serverRecord });
+					} catch {
+						this.toggleAutoLock();
+					}
 				}
+				this.save();
 			}
-			this.save();
-		});
-	}
+		);
+	};
 
 	toggleBiometry = () => {
 		logEvent(events.SLC_TOGGLE_BIOMETRY);
-		this.setState(({ biometry }) => ({ biometry: !biometry }), () => this.save());
-	}
+		this.setState(
+			({ biometry }) => ({ biometry: !biometry }),
+			() => this.save()
+		);
+	};
 
-	isSelected = (value) => {
+	isSelected = value => {
 		const { autoLockTime } = this.state;
 		return autoLockTime === value;
-	}
+	};
 
-	changeAutoLockTime = (autoLockTime) => {
+	changeAutoLockTime = autoLockTime => {
 		logEvent(events.SLC_CHANGE_AUTOLOCK_TIME);
 		this.setState({ autoLockTime }, () => this.save());
-	}
+	};
 
 	renderIcon = () => {
 		const { theme } = this.props;
 		return <List.Icon name='check' color={themes[theme].tintColor} />;
-	}
+	};
 
 	renderItem = ({ item }) => {
 		const { title, value, disabled } = item;
@@ -167,31 +173,20 @@ class ScreenLockConfigView extends React.Component {
 				<List.Separator />
 			</>
 		);
-	}
+	};
 
 	renderAutoLockSwitch = () => {
 		const { autoLock } = this.state;
 		const { Force_Screen_Lock } = this.props;
 		return (
-			<Switch
-				value={autoLock}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleAutoLock}
-				disabled={Force_Screen_Lock}
-			/>
+			<Switch value={autoLock} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleAutoLock} disabled={Force_Screen_Lock} />
 		);
-	}
+	};
 
 	renderBiometrySwitch = () => {
 		const { biometry } = this.state;
-		return (
-			<Switch
-				value={biometry}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleBiometry}
-			/>
-		);
-	}
+		return <Switch value={biometry} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleBiometry} />;
+	};
 
 	renderAutoLockItems = () => {
 		const { autoLock, autoLockTime } = this.state;
@@ -201,12 +196,14 @@ class ScreenLockConfigView extends React.Component {
 		}
 		let items = this.defaultAutoLockOptions;
 		if (Force_Screen_Lock && Force_Screen_Lock_After > 0) {
-			items = [{
-				title: I18n.t('After_seconds_set_by_admin', { seconds: Force_Screen_Lock_After }),
-				value: Force_Screen_Lock_After,
-				disabled: true
-			}];
-		// if Force_Screen_Lock is disabled and autoLockTime is a value that isn't on our defaultOptions we'll show it
+			items = [
+				{
+					title: I18n.t('After_seconds_set_by_admin', { seconds: Force_Screen_Lock_After }),
+					value: Force_Screen_Lock_After,
+					disabled: true
+				}
+			];
+			// if Force_Screen_Lock is disabled and autoLockTime is a value that isn't on our defaultOptions we'll show it
 		} else if (Force_Screen_Lock_After === autoLockTime && !items.find(item => item.value === autoLockTime)) {
 			items.push({
 				title: I18n.t('After_seconds_set_by_admin', { seconds: Force_Screen_Lock_After }),
@@ -219,7 +216,7 @@ class ScreenLockConfigView extends React.Component {
 				{items.map(item => this.renderItem({ item }))}
 			</List.Section>
 		);
-	}
+	};
 
 	renderBiometry = () => {
 		const { autoLock, biometryLabel } = this.state;
@@ -237,7 +234,7 @@ class ScreenLockConfigView extends React.Component {
 				<List.Separator />
 			</List.Section>
 		);
-	}
+	};
 
 	render() {
 		const { autoLock } = this.state;
@@ -247,23 +244,13 @@ class ScreenLockConfigView extends React.Component {
 				<List.Container>
 					<List.Section>
 						<List.Separator />
-						<List.Item
-							title='Local_authentication_unlock_option'
-							right={() => this.renderAutoLockSwitch()}
-						/>
-						{autoLock
-							? (
-								<>
-									<List.Separator />
-									<List.Item
-										title='Local_authentication_change_passcode'
-										onPress={this.changePasscode}
-										showActionIndicator
-									/>
-								</>
-							)
-							: null
-						}
+						<List.Item title='Local_authentication_unlock_option' right={() => this.renderAutoLockSwitch()} />
+						{autoLock ? (
+							<>
+								<List.Separator />
+								<List.Item title='Local_authentication_change_passcode' onPress={this.changePasscode} showActionIndicator />
+							</>
+						) : null}
 						<List.Separator />
 						<List.Info info='Local_authentication_info' />
 					</List.Section>

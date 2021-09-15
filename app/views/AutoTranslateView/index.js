@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Switch, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Switch } from 'react-native';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
@@ -9,7 +9,7 @@ import * as List from '../../containers/List';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 
 const styles = StyleSheet.create({
 	list: {
@@ -20,12 +20,12 @@ const styles = StyleSheet.create({
 class AutoTranslateView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Auto_Translate')
-	})
+	});
 
 	static propTypes = {
 		route: PropTypes.object,
 		theme: PropTypes.string
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -35,18 +35,17 @@ class AutoTranslateView extends React.Component {
 
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable
-				.subscribe((changes) => {
-					if (this.mounted) {
-						const { selectedLanguage, enableAutoTranslate } = this.state;
-						if (selectedLanguage !== changes.autoTranslateLanguage) {
-							this.setState({ selectedLanguage: changes.autoTranslateLanguage });
-						}
-						if (enableAutoTranslate !== changes.autoTranslate) {
-							this.setState({ enableAutoTranslate: changes.autoTranslate });
-						}
+			this.subscription = this.roomObservable.subscribe(changes => {
+				if (this.mounted) {
+					const { selectedLanguage, enableAutoTranslate } = this.state;
+					if (selectedLanguage !== changes.autoTranslateLanguage) {
+						this.setState({ selectedLanguage: changes.autoTranslateLanguage });
 					}
-				});
+					if (enableAutoTranslate !== changes.autoTranslate) {
+						this.setState({ enableAutoTranslate: changes.autoTranslate });
+					}
+				}
+			});
 		}
 		this.state = {
 			languages: [],
@@ -71,7 +70,7 @@ class AutoTranslateView extends React.Component {
 		}
 	}
 
-	toggleAutoTranslate = async() => {
+	toggleAutoTranslate = async () => {
 		logEvent(events.AT_TOGGLE_TRANSLATE);
 		const { enableAutoTranslate } = this.state;
 		try {
@@ -86,9 +85,9 @@ class AutoTranslateView extends React.Component {
 			logEvent(events.AT_TOGGLE_TRANSLATE_F);
 			console.log(error);
 		}
-	}
+	};
 
-	saveAutoTranslateLanguage = async(language) => {
+	saveAutoTranslateLanguage = async language => {
 		logEvent(events.AT_SET_LANG);
 		try {
 			await RocketChat.saveAutoTranslate({
@@ -101,23 +100,17 @@ class AutoTranslateView extends React.Component {
 			logEvent(events.AT_SET_LANG_F);
 			console.log(error);
 		}
-	}
+	};
 
 	renderIcon = () => {
 		const { theme } = this.props;
 		return <List.Icon name='check' style={{ color: themes[theme].tintColor }} />;
-	}
+	};
 
 	renderSwitch = () => {
 		const { enableAutoTranslate } = this.state;
-		return (
-			<Switch
-				value={enableAutoTranslate}
-				trackColor={SWITCH_TRACK_COLOR}
-				onValueChange={this.toggleAutoTranslate}
-			/>
-		);
-	}
+		return <Switch value={enableAutoTranslate} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleAutoTranslate} />;
+	};
 
 	renderItem = ({ item }) => {
 		const { selectedLanguage } = this.state;
@@ -128,12 +121,12 @@ class AutoTranslateView extends React.Component {
 			<List.Item
 				title={name || language}
 				onPress={() => this.saveAutoTranslateLanguage(language)}
-				testID={`auto-translate-view-${ language }`}
+				testID={`auto-translate-view-${language}`}
 				right={isSelected ? this.renderIcon : null}
 				translateTitle={false}
 			/>
 		);
-	}
+	};
 
 	render() {
 		const { languages } = this.state;
@@ -143,11 +136,7 @@ class AutoTranslateView extends React.Component {
 				<List.Container testID='auto-translate-view-list'>
 					<List.Section>
 						<List.Separator />
-						<List.Item
-							title='Enable_Auto_Translate'
-							testID='auto-translate-view-switch'
-							right={() => this.renderSwitch()}
-						/>
+						<List.Item title='Enable_Auto_Translate' testID='auto-translate-view-switch' right={() => this.renderSwitch()} />
 						<List.Separator />
 					</List.Section>
 					<FlatList
