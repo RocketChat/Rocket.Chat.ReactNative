@@ -930,9 +930,7 @@ class RoomActionsView extends React.Component {
 			canForwardGuest,
 			canReturnQueue
 		} = this.state;
-		const {
-			rid, t, prid
-		} = room;
+		const { rid, t, prid } = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
 		return (
@@ -990,22 +988,22 @@ class RoomActionsView extends React.Component {
 										this.onPressTouchable({
 											route: 'InviteUsersView',
 											params: { rid }
-										})}
-										testID='room-actions-invite-user'
-										left={() => <List.Icon name='user-add' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									testID='room-actions-invite-user'
+									left={() => <List.Icon name='user-add' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['c', 'p', 'd'].includes(t) && !prid
-							? (
-								<>
-									<List.Item
-										title='Discussions'
-										onPress={() => this.onPressTouchable({
+						{['c', 'p', 'd'].includes(t) && !prid ? (
+							<>
+								<List.Item
+									title='Discussions'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'DiscussionMessagesView',
 											params: {
 												rid,
@@ -1016,22 +1014,22 @@ class RoomActionsView extends React.Component {
 												autoTranslateLanguage: room.autoTranslateLanguage,
 												navToRoomInfo: navParam => this.navToRoomInfo(navParam)
 											}
-										})}
-										testID='room-actions-discussions'
-										left={() => <List.Icon name='discussions' />}
-										showActionIndicator
-									/>
-									<List.Separator />
-								</>
-							)
-							: null}
+										})
+									}
+									testID='room-actions-discussions'
+									left={() => <List.Icon name='discussions' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
 
-						{['c', 'p', 'd'].includes(t)
-							? (
-								<>
-									<List.Item
-										title='Files'
-										onPress={() => this.onPressTouchable({
+						{['c', 'p', 'd'].includes(t) ? (
+							<>
+								<List.Item
+									title='Files'
+									onPress={() =>
+										this.onPressTouchable({
 											route: 'MessagesView',
 											params: { rid, t, name: 'Files' }
 										})
