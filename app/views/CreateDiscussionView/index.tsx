@@ -33,7 +33,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 		const { route } = props;
 		this.channel = route.params?.channel;
 		const message: any = route.params?.message ?? {};
-
 		this.state = {
 			channel: this.channel,
 			message,
@@ -137,7 +136,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	get isEncryptionEnabled() {
 		const { channel } = this.state;
 		const { encryptionEnabled } = this.props;
-		// TODO - remove this ts-ignore when migrate the file: app/lib/encryption/constants.js
+		// TODO: remove this ts-ignore when migrate the file: app/lib/encryption/constants.js
 		// @ts-ignore
 		return encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 	}

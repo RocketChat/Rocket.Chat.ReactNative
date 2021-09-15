@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { Text } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import { Q } from '@nozbe/watermelondb';
@@ -27,8 +27,8 @@ const SelectUsers = ({
 	blockUnauthenticatedAccess,
 	serverVersion,
 	theme
-}: ICreateDiscussionViewSelectUsers) => {
-	const [users, setUsers] = useState<SetStateAction<any>>([]);
+}: ICreateDiscussionViewSelectUsers): JSX.Element => {
+	const [users, setUsers] = useState<any[]>([]);
 
 	const getUsers = debounce(async (keyword = '') => {
 		try {
@@ -62,7 +62,7 @@ const SelectUsers = ({
 	}, 300);
 
 	const getAvatar = (item: any) =>
-		// TODO - remove this ts-ignore when migrate the file: app/utils/avatar.js
+		// TODO: remove this ts-ignore when migrate the file: app/utils/avatar.js
 		// @ts-ignore
 		avatarURL({
 			text: RocketChat.getRoomAvatar(item),

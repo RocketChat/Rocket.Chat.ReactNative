@@ -19,7 +19,7 @@ const SelectChannel = ({
 	blockUnauthenticatedAccess,
 	serverVersion,
 	theme
-}: ICreateDiscussionViewSelectChannel) => {
+}: ICreateDiscussionViewSelectChannel): JSX.Element => {
 	const [channels, setChannels] = useState([]);
 
 	const getChannels = debounce(async (keyword = '') => {
@@ -32,7 +32,7 @@ const SelectChannel = ({
 	}, 300);
 
 	const getAvatar = (item: any) =>
-		// TODO - remove this ts-ignore when migrate the file: app/utils/avatar.js
+		// TODO: remove this ts-ignore when migrate the file: app/utils/avatar.js
 		// @ts-ignore
 		avatarURL({
 			text: RocketChat.getRoomAvatar(item),
