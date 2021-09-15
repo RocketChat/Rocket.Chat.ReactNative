@@ -2,8 +2,6 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
 
-const _tmp_webstorm_ = StyleSheet;
-const { absoluteFill } = StyleSheet;
 export default StyleSheet.create({
 	list: {
 		flex: 1
