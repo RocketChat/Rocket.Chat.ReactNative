@@ -17,7 +17,8 @@
 		"precommit": "lint-staged",
 		"generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",
 		"postinstall": "patch-package && jetify",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"pod": "cd ios && pod install && cd .."
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx}": [
