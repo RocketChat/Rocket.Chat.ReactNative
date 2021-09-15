@@ -235,7 +235,8 @@ module.exports = {
 						ignoreRestSiblings: true
 					}
 				],
-				'new-cap': 'off'
+				'new-cap': 'off',
+				'lines-between-class-members': 'off'
 			},
 			globals: {
 				JSX: true
