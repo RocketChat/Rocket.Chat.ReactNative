@@ -105,7 +105,7 @@ class AutoTranslateView extends React.Component<IAutoTranslateViewProps, any> {
 	saveAutoTranslateLanguage = async (language: string) => {
 		logEvent(events.AT_SET_LANG);
 		try {
-			// TODO remove the parameter options, after migrate the RocketChat
+			// TODO: remove the parameter options, after migrate the RocketChat
 			await RocketChat.saveAutoTranslate({
 				rid: this.rid,
 				field: 'autoTranslateLanguage',
