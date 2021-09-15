@@ -35,6 +35,7 @@ export default StyleSheet.create({
 		top: 0
 	},
 	backdrop: {
+		// @ts-ignore
 		...StyleSheet.absoluteFill
 	},
 	dropdownContainerHeader: {
