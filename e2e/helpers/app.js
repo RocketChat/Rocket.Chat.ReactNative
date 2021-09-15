@@ -1,8 +1,6 @@
 const data = require('../data');
 
 async function navigateToWorkspace(server = data.server) {
-	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(10000);
-	await element(by.id('join-workspace')).tap();
 	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(60000);
 	await element(by.id('new-server-view-input')).typeText(`${ server }\n`);
 	await waitFor(element(by.id('workspace-view'))).toBeVisible().withTimeout(60000);
@@ -10,7 +8,6 @@ async function navigateToWorkspace(server = data.server) {
 }
 
 async function navigateToLogin(server) {
-	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-login')).tap();
 	await waitFor(element(by.id('login-view'))).toBeVisible().withTimeout(2000);
@@ -18,7 +15,6 @@ async function navigateToLogin(server) {
 }
 
 async function navigateToRegister(server) {
-	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-register')).tap();
 	await waitFor(element(by.id('register-view'))).toBeVisible().withTimeout(2000);
@@ -44,8 +40,8 @@ async function logout() {
 	await waitFor(element(by.text(logoutAlertMessage)).atIndex(0)).toExist().withTimeout(10000);
 	await expect(element(by.text(logoutAlertMessage)).atIndex(0)).toExist();
 	await element(by.text('Logout')).tap();
-	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(10000);
-	await expect(element(by.id('onboarding-view'))).toBeVisible();
+	await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(10000);
+	await expect(element(by.id('new-server-view'))).toBeVisible();
 }
 
 async function mockMessage(message, isThread = false) {

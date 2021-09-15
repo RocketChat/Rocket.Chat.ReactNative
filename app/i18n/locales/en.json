@@ -772,5 +772,6 @@
   "Converting_Team_To_Channel": "Converting Team to Channel",
   "Select_Team_Channels_To_Delete": "Select the Team’s Channels you would like to delete, the ones you do not select will be moved to the Workspace. \n\nNotice that public Channels will be public and visible to everyone.",
   "You_are_converting_the_team": "You are converting this Team to a Channel",
-  "creating_discussion": "creating discussion"
+  "creating_discussion": "creating discussion",
+  "Rocket_Chat": "Rocket.Chat"
 }

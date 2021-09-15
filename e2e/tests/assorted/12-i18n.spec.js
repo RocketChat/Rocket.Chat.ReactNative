@@ -28,9 +28,8 @@ describe('i18n', () => {
 				},
 				delete: true
 			});
-			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
-			await expect(element(by.id('join-workspace').and(by.label('Join a workspace')))).toBeVisible();
-			await expect(element(by.id('create-workspace-button').and(by.label('Create a new workspace')))).toBeVisible();
+			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(20000);
+			await expect(element(by.id('new-server-view-open').and(by.label('Join our open workspace')))).toBeVisible();
 		});
 
 		it('OS set to unavailable language and fallback to \'en\'', async() => {
@@ -41,9 +40,8 @@ describe('i18n', () => {
 					locale: 'es-MX'
 				}
 			});
-			await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
-			await expect(element(by.id('join-workspace').and(by.label('Join a workspace')))).toBeVisible();
-			await expect(element(by.id('create-workspace-button').and(by.label('Create a new workspace')))).toBeVisible();
+			await waitFor(element(by.id('new-server-view'))).toBeVisible().withTimeout(20000);
+			await expect(element(by.id('new-server-view-open').and(by.label('Join our open workspace')))).toBeVisible();
 		});
 
 		/**
@@ -58,9 +56,6 @@ describe('i18n', () => {
 		// 			locale: "nl"
 		// 		}
 		// 	});
-		// 	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
-		// 	await expect(element(by.id('join-workspace').and(by.label('Word lid van een werkruimte')))).toBeVisible();
-		// 	await expect(element(by.id('create-workspace-button').and(by.label('Een nieuwe werkruimte aanmaken')))).toBeVisible();
 		// });
 	});
 

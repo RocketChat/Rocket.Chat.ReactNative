@@ -11,7 +11,6 @@ import I18n from '../../../i18n';
 const styles = StyleSheet.create({
 	container: {
 		zIndex: 1,
-		marginTop: 24,
 		marginBottom: 32
 	},
 	inputContainer: {

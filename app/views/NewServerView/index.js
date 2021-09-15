@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	Text, Keyboard, StyleSheet, View, BackHandler
+	Text, Keyboard, StyleSheet, View, BackHandler, Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
@@ -30,11 +30,30 @@ import ServerInput from './ServerInput';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import SSLPinning from '../../utils/sslPinning';
 import RocketChat from '../../lib/rocketchat';
+import { isTablet } from '../../utils/deviceInfo';
 
 const styles = StyleSheet.create({
+	onboarding: {
+		alignSelf: 'center',
+		marginTop: isTablet ? 0 : 96,
+		marginBottom: 25,
+		maxHeight: 150,
+		width: 100,
+		height: 100
+	},
 	title: {
 		...sharedStyles.textBold,
-		fontSize: 22
+		letterSpacing: 0,
+		fontSize: 22,
+		alignSelf: 'center',
+		marginBottom: 8,
+		lineHeight: 32
+	},
+	subtitle: {
+		...sharedStyles.textRegular,
+		fontSize: 16,
+		alignSelf: 'center',
+		marginBottom: 41
 	},
 	certificatePicker: {
 		marginBottom: 32,
@@ -52,7 +71,7 @@ const styles = StyleSheet.create({
 	description: {
 		...sharedStyles.textRegular,
 		fontSize: 14,
-		textAlign: 'left',
+		textAlign: 'center',
 		marginBottom: 24
 	},
 	connectButton: {
@@ -61,9 +80,9 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
-	static navigationOptions = () => ({
-		title: I18n.t('Workspaces')
-	})
+	static navigationOptions = {
+		headerShown: false
+	};
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -321,7 +340,9 @@ class NewServerView extends React.Component {
 				keyboardShouldPersistTaps='never'
 			>
 				<FormContainerInner>
-					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Join_your_workspace')}</Text>
+					<Image style={styles.onboarding} source={require('../../static/images/logo.png')} fadeDuration={0} resizeMode='stretch' />
+					<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Rocket_Chat')}</Text>
+					<Text style={[styles.subtitle, { color: themes[theme].controlText }]}>{I18n.t('Onboarding_subtitle')}</Text>
 					<ServerInput
 						text={text}
 						theme={theme}
