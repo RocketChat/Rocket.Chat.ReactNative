@@ -171,24 +171,36 @@ describe('Discussion', () => {
 		});
 	});
 
-	describe('Open Discussion from DiscussionMessagesView', () => {
-		const discussionName = `${ data.random }message`;
-		it('should go back to main room', async() => {
+	describe('Open Discussion from DiscussionsView', () => {
+		const discussionName = `${data.random}message`;
+		it('should go back to main room', async () => {
 			await tapBack();
-			await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
+			await waitFor(element(by.id('room-actions-view')))
+				.toBeVisible()
+				.withTimeout(5000);
 			await tapBack();
-			await waitFor(element(by.id(`room-view-title-${ discussionName }`))).toExist().withTimeout(5000);
+			await waitFor(element(by.id(`room-view-title-${discussionName}`)))
+				.toExist()
+				.withTimeout(5000);
 			await tapBack();
 			await navigateToRoom();
 		});
 
-		it('should navigate to DiscussionMessagesView', async() => {
-			await waitFor(element(by.id(`room-view-title-${ channel }`))).toExist().withTimeout(5000);
-			await waitFor(element(by.id('room-header'))).toBeVisible().withTimeout(5000);
+		it('should navigate to DiscussionsView', async () => {
+			await waitFor(element(by.id(`room-view-title-${channel}`)))
+				.toExist()
+				.withTimeout(5000);
+			await waitFor(element(by.id('room-header')))
+				.toBeVisible()
+				.withTimeout(5000);
 			await element(by.id('room-header')).tap();
-			await waitFor(element(by.id('room-actions-discussions'))).toBeVisible().withTimeout(5000);
+			await waitFor(element(by.id('room-actions-discussions')))
+				.toBeVisible()
+				.withTimeout(5000);
 			await element(by.id('room-actions-discussions')).tap();
-			await waitFor(element(by.id('discussion-messages-view'))).toBeVisible().withTimeout(5000);
+			await waitFor(element(by.id('discussion-messages-view')))
+				.toBeVisible()
+				.withTimeout(5000);
 		});
 	});
 });
