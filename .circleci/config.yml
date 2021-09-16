@@ -146,16 +146,12 @@ commands:
 
       - run:
           name: Build App
-          no_output_timeout: 30m
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               ./gradlew bundleOfficialPlayRelease
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
               ./gradlew bundleExperimentalPlayRelease
-            fi
-            if [[ $CIRCLE_JOB == "android-build-e2e" ]]; then
-              ./gradlew app:assembleE2ePlayRelease app:assembleE2ePlayReleaseAndroidTest -DtestBuildType=release
             fi
             if [[ ! $KEYSTORE ]]; then
               ./gradlew assembleExperimentalPlayDebug
@@ -193,40 +189,6 @@ commands:
           root: .
           paths:
             - android/app/build/outputs
-
-  android-e2e-test:
-    description: "End-to-End testing for Android using detox"
-    parameters:
-      folder:
-        type: string
-        default: ""
-    steps:
-      - checkout
-
-      - node/install:
-          install-yarn: true
-
-      - restore_cache: *restore-npm-cache-linux
-
-      - run: *install-npm-modules
-
-      - run:
-          name: Create avd
-          command: |
-            SYSTEM_IMAGES="system-images;android-28;default;x86"
-            sdkmanager "$SYSTEM_IMAGES"
-            echo "no" | avdmanager --verbose create avd -n "PIXEL_API_28_AOSP" -k "$SYSTEM_IMAGES" -d "pixel"
-
-      - run:
-          name: Launch emulator
-          command: |
-            emulator -avd "PIXEL_API_28_AOSP" -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-          background: true
-
-      - run:
-          name: Run the test
-          command: |
-            yarn detox test <<parameters.folder>> -c and.emu.release --cleanup
 
   ios-build:
     description: "Build iOS app"
@@ -364,8 +326,6 @@ commands:
       - save_cache: *save-gems-cache
 
 version: 2.1
-orbs:
-  node: circleci/node@4.6.0
 
 # EXECUTORS
 executors:
@@ -380,7 +340,7 @@ jobs:
     <<: *defaults
     docker:
       - image: circleci/node:15
-
+    resource_class: large
     environment:
       CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
 
@@ -416,6 +376,7 @@ jobs:
     environment:
       <<: *android-env
       <<: *bash-env
+    resource_class: large
     steps:
       - android-build
   
@@ -426,67 +387,9 @@ jobs:
     environment:
       <<: *android-env
       <<: *bash-env
+    resource_class: large
     steps:
       - android-build
-
-  android-build-e2e:
-    <<: *defaults
-    docker:
-      - image: circleci/android:api-29-node
-    resource_class: large
-    environment:
-      <<: *android-env
-      <<: *bash-env
-    steps:
-      - android-build
-  
-  android-e2e-test-assorted:
-    <<: *defaults
-    machine:
-      image: android:202102-01
-    resource_class: large
-    environment:
-      <<: *android-env
-      <<: *bash-env
-    steps:
-      - android-e2e-test:
-          folder: "./e2e/tests/assorted/"
-
-  android-e2e-test-onboarding:
-    <<: *defaults
-    machine:
-      image: android:202102-01
-    resource_class: large
-    environment:
-      <<: *android-env
-      <<: *bash-env
-    steps:
-      - android-e2e-test:
-          folder: "./e2e/tests/onboarding/"
-
-  android-e2e-test-room:
-    <<: *defaults
-    machine:
-      image: android:202102-01
-    resource_class: large
-    environment:
-      <<: *android-env
-      <<: *bash-env
-    steps:
-      - android-e2e-test:
-          folder: "./e2e/tests/room/"
-
-  android-e2e-test-team:
-    <<: *defaults
-    machine:
-      image: android:202102-01
-    resource_class: large
-    environment:
-      <<: *android-env
-      <<: *bash-env
-    steps:
-      - android-e2e-test:
-          folder: "./e2e/tests/team/"
 
   android-internal-app-sharing-experimental:
     <<: *defaults
@@ -618,27 +521,3 @@ workflows:
       - android-google-play-beta-official:
           requires:
             - android-hold-google-play-beta-official
-
-      # Aandroid E2E Testing
-      - android-hold-e2e:
-          type: approval
-          requires:
-            - lint-testunit
-      - android-build-e2e:
-          requires:
-            - android-hold-e2e
-      - android-e2e-test-assorted:
-          requires:
-            - android-build-e2e
-
-      - android-e2e-test-onboarding:
-          requires:
-            - android-build-e2e
-
-      - android-e2e-test-room:
-          requires:
-            - android-build-e2e
-
-      - android-e2e-test-team:
-          requires:
-            - android-build-e2e
