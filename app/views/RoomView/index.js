@@ -818,6 +818,7 @@ class RoomView extends React.Component {
 					loading: true
 				});
 				// needs a timeout before to change joined to true, to MessageBox get some time until search in Watermelon
+				// TODO: Refactor this
 				setTimeout(
 					() =>
 						this.internalSetState({

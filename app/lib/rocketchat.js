@@ -1126,9 +1126,11 @@ const RocketChat = {
 		return this.sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
 	},
 	getDepartments(text = '') {
-		// RC 2.2.0
-		const params = { text };
+		const params = {
+			...(text && { text })
+		};
 
+		// RC 2.2.0
 		return this.sdk.get('livechat/department', params);
 	},
 	usersAutoComplete(selector) {
@@ -1152,7 +1154,7 @@ const RocketChat = {
 		return this.sdk.get('livechat/custom-fields');
 	},
 
-	getListCannedResponse({ scope = '', departmentId = '', offset = 0, count = 15, text = '' }) {
+	getListCannedResponse({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }) {
 		const params = {
 			offset,
 			count,
