@@ -814,7 +814,18 @@ class RoomView extends React.Component {
 
 			if (this.isOmnichannel) {
 				await takeInquiry(room._id);
-				this.onJoin();
+				this.internalSetState({
+					loading: true
+				});
+				// needs a timeout before to change joined to true, to MessageBox get some time until search in Watermelon
+				setTimeout(
+					() =>
+						this.internalSetState({
+							loading: false,
+							joined: true
+						}),
+					500
+				);
 			} else {
 				const { joinCodeRequired } = room;
 				if (joinCodeRequired) {
@@ -1057,7 +1068,7 @@ class RoomView extends React.Component {
 	};
 
 	renderFooter = () => {
-		const { joined, room, selectedMessage, editing, replying, replyWithMention, readOnly } = this.state;
+		const { joined, room, selectedMessage, editing, replying, replyWithMention, readOnly, loading } = this.state;
 		const { navigation, theme, route } = this.props;
 
 		const usedCannedResponse = route?.params?.usedCannedResponse;
@@ -1076,6 +1087,7 @@ class RoomView extends React.Component {
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
+						enabled={!loading}
 						theme={theme}>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
