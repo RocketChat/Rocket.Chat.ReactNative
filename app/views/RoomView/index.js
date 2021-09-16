@@ -814,19 +814,7 @@ class RoomView extends React.Component {
 
 			if (this.isOmnichannel) {
 				await takeInquiry(room._id);
-				this.internalSetState({
-					loading: true
-				});
-				// needs a timeout before to change joined to true, to MessageBox get some time until search in Watermelon
-				// TODO: Refactor this
-				setTimeout(
-					() =>
-						this.internalSetState({
-							loading: false,
-							joined: true
-						}),
-					500
-				);
+				this.onJoin();
 			} else {
 				const { joinCodeRequired } = room;
 				if (joinCodeRequired) {

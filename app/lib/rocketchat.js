@@ -1163,6 +1163,7 @@ const RocketChat = {
 			...(scope && { scope })
 		};
 
+		// RC 3.17.0
 		return this.sdk.get('canned-responses', params);
 	},
 

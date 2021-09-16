@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 
 import Touchable from 'react-native-platform-touchable';
 import { themes } from '../../constants/colors';
@@ -32,9 +32,10 @@ const CannedResponseItem = ({ theme, onPressDetail, shortcut, scope, onPressUse,
 					<CustomIcon name='chevron-right' color={themes[theme].auxiliaryText} size={20} />
 				</View>
 
-				<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>“{text}”</Text>
-
-				<View style={styles.cannedTagContainer}>
+				<Text ellipsizeMode='tail' numberOfLines={2} style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>
+					“{text}”
+				</Text>
+				<ScrollView contentContainerStyle={styles.cannedTagContainer} scrollEnabled={false}>
 					{tags?.length > 0
 						? tags.map(t => (
 								<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>
@@ -42,7 +43,7 @@ const CannedResponseItem = ({ theme, onPressDetail, shortcut, scope, onPressUse,
 								</View>
 						  ))
 						: null}
-				</View>
+				</ScrollView>
 			</>
 		</Touchable>
 		<List.Separator />

@@ -732,8 +732,22 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	};
 
-	onPressNoMatchCanned = () => {
-		const { isMasterDetail } = this.props;
+	onPressNoMatchCanned = async () => {
+		const { isMasterDetail, rid } = this.props;
+
+		// The error here is when we Take It a new chat from Omnichannel's Queued Chat and after join
+		// the chat, the MessageBox is mounted, but the room isn't created in Watermelon DB
+		if (!this.room) {
+			const db = database.active;
+			const subsCollection = db.get('subscriptions');
+			try {
+				this.room = await subsCollection.find(rid);
+			} catch (error) {
+				console.log('onPressNoMatchCanned: Room not found');
+				return;
+			}
+		}
+
 		const params = { room: this.room };
 		if (isMasterDetail) {
 			Navigation.navigate('ModalStackNavigator', { screen: 'CannedResponsesListView', params });

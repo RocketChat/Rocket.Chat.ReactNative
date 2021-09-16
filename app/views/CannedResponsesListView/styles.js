@@ -58,7 +58,6 @@ export default StyleSheet.create({
 	cannedShortcut: {
 		flex: 1,
 		fontSize: 14,
-		lineHeight: 20,
 		paddingTop: 0,
 		paddingBottom: 0,
 		...sharedStyles.textMedium
@@ -66,7 +65,6 @@ export default StyleSheet.create({
 	cannedScope: {
 		flex: 1,
 		fontSize: 12,
-		lineHeight: 16,
 		paddingTop: 0,
 		paddingBottom: 0,
 		...sharedStyles.textRegular
@@ -74,7 +72,6 @@ export default StyleSheet.create({
 	cannedText: {
 		marginTop: 8,
 		fontSize: 14,
-		lineHeight: 20,
 		paddingTop: 0,
 		paddingBottom: 0,
 		...sharedStyles.textRegular
@@ -91,7 +88,6 @@ export default StyleSheet.create({
 	},
 	cannedTag: {
 		fontSize: 12,
-		lineHeight: 16,
 		paddingTop: 0,
 		paddingBottom: 0,
 		paddingHorizontal: 4,

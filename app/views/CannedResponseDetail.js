@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import I18n from '../i18n';
@@ -11,13 +11,17 @@ import { useTheme } from '../theme';
 import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/Navigation';
 import { goRoom } from '../utils/goRoom';
-import sharedStyles from './Styles';
 import { themes } from '../constants/colors';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
+	scroll: {
+		flex: 1
+	},
 	container: {
+		flex: 1,
 		marginTop: 12,
-		marginHorizontal: 22
+		marginHorizontal: 15
 	},
 	label: {
 		fontSize: 14,
@@ -27,7 +31,6 @@ const styles = StyleSheet.create({
 		marginTop: 8,
 		marginBottom: 16,
 		fontSize: 14,
-		lineHeight: 20,
 		paddingTop: 0,
 		paddingBottom: 0,
 		...sharedStyles.textRegular
@@ -44,7 +47,6 @@ const styles = StyleSheet.create({
 	},
 	cannedTag: {
 		fontSize: 12,
-		lineHeight: 16,
 		paddingTop: 0,
 		paddingBottom: 0,
 		paddingHorizontal: 4,
@@ -52,10 +54,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		margin: 24,
-		position: 'absolute',
-		bottom: 24,
-		left: 0,
-		right: 0
+		marginBottom: 24
 	}
 });
 
@@ -67,11 +66,11 @@ const CannedResponseDetail = ({ navigation, route }) => {
 
 	useEffect(() => {
 		navigation.setOptions({
-			title: `!${ cannedResponse?.shortcut }`
+			title: `!${cannedResponse?.shortcut}`
 		});
 	}, []);
 
-	const navigateToRoom = (item) => {
+	const navigateToRoom = item => {
 		const { room } = route.params;
 		const { name, username } = room;
 		const params = {
@@ -104,37 +103,39 @@ const CannedResponseDetail = ({ navigation, route }) => {
 
 	return (
 		<SafeAreaView>
-			<StatusBar />
-			<View style={styles.container}>
-				<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Shortcut')}:</Text>
-				<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>!{cannedResponse?.shortcut}</Text>
+			<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: themes[theme].messageboxBackground }]}>
+				<StatusBar />
+				<View style={styles.container}>
+					<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Shortcut')}:</Text>
+					<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>!{cannedResponse?.shortcut}</Text>
 
-				<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Content')}:</Text>
-				<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>{cannedResponse?.text}</Text>
+					<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Content')}:</Text>
+					<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>{cannedResponse?.text}</Text>
 
-				<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Sharing')}:</Text>
-				<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>{cannedResponse?.scopeName}</Text>
+					<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Sharing')}:</Text>
+					<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>{cannedResponse?.scopeName}</Text>
 
-				<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Tags')}:</Text>
-				<View style={styles.cannedTagContainer}>
-					{
-						cannedResponse?.tags?.length > 0
-							? cannedResponse.tags.map(t => (
+					<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Tags')}:</Text>
+					<View style={styles.cannedTagContainer}>
+						{cannedResponse?.tags?.length > 0 ? (
+							cannedResponse.tags.map(t => (
 								<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>
 									<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryTintColor }]}>{t}</Text>
 								</View>
 							))
-							: <Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>-</Text>
-					}
+						) : (
+							<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>-</Text>
+						)}
+					</View>
 				</View>
-			</View>
-			<Button
-				title={I18n.t('Use')}
-				theme={theme}
-				style={[styles.button]}
-				type='primary'
-				onPress={() => navigateToRoom(cannedResponse)}
-			/>
+				<Button
+					title={I18n.t('Use')}
+					theme={theme}
+					style={styles.button}
+					type='primary'
+					onPress={() => navigateToRoom(cannedResponse)}
+				/>
+			</ScrollView>
 		</SafeAreaView>
 	);
 };
