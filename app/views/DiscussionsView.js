@@ -23,9 +23,9 @@ import Message from '../containers/message';
 import RocketChat from '../lib/rocketchat';
 import SearchHeader from '../containers/SearchHeader';
 
-const API_FETCH_COUNT = 25;
+const API_FETCH_COUNT = 50;
 
-const DiscussionMessagesView = ({ navigation, route }) => {
+const DiscussionsView = ({ navigation, route }) => {
 	const rid = route.params?.rid;
 	const canAutoTranslate = route.params?.canAutoTranslate;
 	const autoTranslate = route.params?.autoTranslate;
@@ -42,11 +42,12 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 	const [discussions, setDiscussions] = useState([]);
 	const [search, setSearch] = useState([]);
 	const [isSearching, setIsSearching] = useState(false);
+	const [total, setTotal] = useState(0);
 
 	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
 
-	const load = async(text = '') => {
+	const load = async (text = '') => {
 		if (loading) {
 			return;
 		}
@@ -63,8 +64,10 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 			if (result.success) {
 				if (isSearching) {
 					setSearch(result.messages);
+					setTotal(result.total);
 				} else {
 					setDiscussions(result.messages);
+					setTotal(result.total);
 				}
 			}
 			setLoading(false);
@@ -74,7 +77,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 		}
 	};
 
-	const onSearchChangeText = debounce(async(text) => {
+	const onSearchChangeText = debounce(async text => {
 		setIsSearching(true);
 		await load(text);
 	}, 300);
@@ -95,10 +98,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 				headerTitleAlign: 'left',
 				headerLeft: () => (
 					<HeaderButton.Container left>
-						<HeaderButton.Item
-							iconName='close'
-							onPress={onCancelSearchPress}
-						/>
+						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
 					</HeaderButton.Container>
 				),
 				headerTitle: () => (
@@ -119,11 +119,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 
 		const options = {
 			headerLeft: () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.pop()}
-					tintColor={themes[theme].headerTintColor}
-				/>
+				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
@@ -154,12 +150,18 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 		navigation.setOptions(options);
 	}, [navigation, isSearching]);
 
-
-	const onDiscussionPress = debounce((item) => {
-		navigation.push('RoomView', {
-			rid: item.drid, prid: item.rid, name: item.msg, t: 'p'
-		});
-	}, 1000, true);
+	const onDiscussionPress = debounce(
+		item => {
+			navigation.push('RoomView', {
+				rid: item.drid,
+				prid: item.rid,
+				name: item.msg,
+				t: 'p'
+			});
+		},
+		1000,
+		true
+	);
 
 	const renderItem = ({ item }) => (
 		<Message
@@ -176,11 +178,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 		/>
 	);
 	if (!discussions?.length) {
-		return (
-			<>
-				<BackgroundContainer text={I18n.t('No_discussions')} />
-			</>
-		);
+		return <BackgroundContainer loading={loading} text={I18n.t('No_discussions')} />;
 	}
 
 	return (
@@ -196,7 +194,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 				windowSize={10}
 				initialNumToRender={7}
 				removeClippedSubviews={isIOS}
-				onEndReached={() => discussions.length > API_FETCH_COUNT ?? load()}
+				onEndReached={() => total > API_FETCH_COUNT ?? load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				scrollIndicatorInsets={{ right: 1 }}
@@ -205,7 +203,7 @@ const DiscussionMessagesView = ({ navigation, route }) => {
 	);
 };
 
-DiscussionMessagesView.propTypes = {
+DiscussionsView.propTypes = {
 	navigation: PropTypes.object,
 	route: PropTypes.object,
 	item: PropTypes.shape({
@@ -213,4 +211,4 @@ DiscussionMessagesView.propTypes = {
 	})
 };
 
-export default DiscussionMessagesView;
+export default DiscussionsView;
