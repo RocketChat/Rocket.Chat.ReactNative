@@ -9,7 +9,6 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.nozbe.watermelondb.WatermelonDBPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
@@ -35,7 +34,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
-      packages.add(new WatermelonDBPackage());
       packages.add(new RNCViewPagerPackage());
       packages.add(new SSLPinningPackage());
       List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
