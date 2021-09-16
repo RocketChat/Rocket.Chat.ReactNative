@@ -20,7 +20,7 @@ abstract_target 'defaults' do
   all_pods
 
   target 'RocketChatRN' # Experimental app
-  target 'Rocket.Chat' # Official app
+  #target 'Rocket.Chat' # Official app
   target 'ShareRocketChatRN'
   target 'NotificationService'
 end

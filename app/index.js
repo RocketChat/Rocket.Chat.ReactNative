@@ -40,6 +40,7 @@ import { isFDroidBuild } from './constants/environment';
 
 RNScreens.enableScreens();
 
+
 const parseDeepLinking = (url) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
