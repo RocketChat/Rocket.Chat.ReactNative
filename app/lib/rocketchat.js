@@ -1039,9 +1039,7 @@ const RocketChat = {
 		}
 		return this.post('subscriptions.read', { rid: roomId });
 	},
-	getRoomMembers({
-		rid, allUsers, roomType, type, filter, skip = 0, limit = 10
-	}) {
+	getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
 		const serverVersion = reduxStore.getState().server.version;
 		if (compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)) {
 			const params = {
@@ -1051,23 +1049,11 @@ const RocketChat = {
 				...(type !== 'all' && { 'status[]': type }),
 				...(filter && { filter })
 			};
-			return this.sdk.get(`${ this.roomTypeToApiType(roomType) }.members`, params);
+			// RC 3.16.0
+			return this.sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
 		}
 		// RC 0.42.0
 		return this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
-	},
-	getMembers({
-		roomId, roomType, type, filter, offset, count
-	}) {
-		const params = {
-			roomId,
-			offset,
-			count,
-			...(type !== 'all' && { 'status[]': type }),
-			...(filter && { filter })
-		};
-		// RC 3.16.0
-		return this.sdk.get(`${ this.roomTypeToApiType(roomType) }.members`, params);
 	},
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
