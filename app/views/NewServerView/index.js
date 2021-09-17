@@ -44,8 +44,7 @@ const styles = StyleSheet.create({
 		letterSpacing: 0,
 		fontSize: 22,
 		alignSelf: 'center',
-		marginBottom: 8,
-		lineHeight: 32
+		marginBottom: 8
 	},
 	subtitle: {
 		...sharedStyles.textRegular,

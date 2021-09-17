@@ -99,11 +99,11 @@ class ServerDropdown extends Component {
 	};
 
 	createWorkspace = async () => {
-		logEvent(events.ONBOARD_CREATE_NEW_WORKSPACE);
+		logEvent(events.RL_CREATE_NEW_WORKSPACE);
 		try {
 			await Linking.openURL('https://cloud.rocket.chat/trial');
 		} catch {
-			logEvent(events.ONBOARD_CREATE_NEW_WORKSPACE_F);
+			logEvent(events.RL_CREATE_NEW_WORKSPACE_F);
 		}
 	};
 
