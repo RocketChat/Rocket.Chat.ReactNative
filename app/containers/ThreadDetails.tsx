@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
@@ -42,8 +41,8 @@ const styles = StyleSheet.create({
 
 interface IThreadDetails {
 	item: {
-		tcount?: number | string;
-		dcount?: number | string;
+		tcount: number | string;
+		dcount: number | string;
 		replies?: any;
 		id: string;
 	};
@@ -61,16 +60,16 @@ interface IThreadDetails {
 const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, thread, time, style, theme }: IThreadDetails) => {
 	let { tcount, dcount } = item;
 	if (thread) {
-		if (tcount! >= 1000) {
+		if (tcount >= 1000) {
 			tcount = '+999';
-		} else if (tcount! >= 100) {
+		} else if (tcount >= 100) {
 			tcount = '+99';
 		}
 	}
 
-	if (dcount! >= 1000) {
+	if (dcount >= 1000) {
 		dcount = '+999';
-	} else if (dcount! >= 100) {
+	} else if (dcount >= 100) {
 		dcount = '+99';
 	}
 
