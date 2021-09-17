@@ -9,9 +9,9 @@ export default async function readMessages(rid, ls, updateLastOpen = false) {
 		// RC 0.61.0
 		await this.sdk.post('subscriptions.read', { rid });
 
-		await db.action(async() => {
+		await db.action(async () => {
 			try {
-				await subscription.update((s) => {
+				await subscription.update(s => {
 					s.open = true;
 					s.alert = false;
 					s.unread = 0;

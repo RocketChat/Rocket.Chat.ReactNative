@@ -1,18 +1,16 @@
 import React from 'react';
-import {
-	View, Text, Image
-} from 'react-native';
+import { View, Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import Orientation from 'react-native-orientation-locker';
 
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
-import styles from './styles';
 import { isTablet } from '../../utils/deviceInfo';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
+import styles from './styles';
 
 class OnboardingView extends React.Component {
 	static navigationOptions = {
@@ -22,7 +20,7 @@ class OnboardingView extends React.Component {
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -43,7 +41,7 @@ class OnboardingView extends React.Component {
 		logEvent(events.ONBOARD_JOIN_A_WORKSPACE);
 		const { navigation } = this.props;
 		navigation.navigate('NewServerView');
-	}
+	};
 
 	render() {
 		const { theme } = this.props;

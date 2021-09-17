@@ -1,4 +1,4 @@
-import { schemaMigrations, addColumns, createTable } from '@nozbe/watermelondb/Schema/migrations';
+import { addColumns, createTable, schemaMigrations } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
 	migrations: [
@@ -7,9 +7,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'subscriptions',
-					columns: [
-						{ name: 'jitsi_timeout', type: 'number', isOptional: true }
-					]
+					columns: [{ name: 'jitsi_timeout', type: 'number', isOptional: true }]
 				})
 			]
 		},
@@ -18,9 +16,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'subscriptions',
-					columns: [
-						{ name: 'hide_unread_status', type: 'boolean', isOptional: true }
-					]
+					columns: [{ name: 'hide_unread_status', type: 'boolean', isOptional: true }]
 				})
 			]
 		},
@@ -29,15 +25,11 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'messages',
-					columns: [
-						{ name: 'blocks', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'blocks', type: 'string', isOptional: true }]
 				}),
 				addColumns({
 					table: 'slash_commands',
-					columns: [
-						{ name: 'app_id', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'app_id', type: 'string', isOptional: true }]
 				})
 			]
 		},
@@ -46,9 +38,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'settings',
-					columns: [
-						{ name: 'value_as_array', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'value_as_array', type: 'string', isOptional: true }]
 				})
 			]
 		},
@@ -57,9 +47,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'subscriptions',
-					columns: [
-						{ name: 'sys_mes', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'sys_mes', type: 'string', isOptional: true }]
 				})
 			]
 		},
@@ -80,21 +68,15 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'messages',
-					columns: [
-						{ name: 'emoji', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'emoji', type: 'string', isOptional: true }]
 				}),
 				addColumns({
 					table: 'thread_messages',
-					columns: [
-						{ name: 'emoji', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'emoji', type: 'string', isOptional: true }]
 				}),
 				addColumns({
 					table: 'threads',
-					columns: [
-						{ name: 'emoji', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'emoji', type: 'string', isOptional: true }]
 				}),
 				addColumns({
 					table: 'subscriptions',
@@ -124,9 +106,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'subscriptions',
-					columns: [
-						{ name: 'group_mentions', type: 'number', isOptional: true }
-					]
+					columns: [{ name: 'group_mentions', type: 'number', isOptional: true }]
 				})
 			]
 		},
@@ -143,27 +123,19 @@ export default schemaMigrations({
 				}),
 				addColumns({
 					table: 'messages',
-					columns: [
-						{ name: 'e2e', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'e2e', type: 'string', isOptional: true }]
 				}),
 				addColumns({
 					table: 'thread_messages',
-					columns: [
-						{ name: 'e2e', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'e2e', type: 'string', isOptional: true }]
 				}),
 				addColumns({
 					table: 'threads',
-					columns: [
-						{ name: 'e2e', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'e2e', type: 'string', isOptional: true }]
 				}),
 				addColumns({
 					table: 'rooms',
-					columns: [
-						{ name: 'e2e_key_id', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'e2e_key_id', type: 'string', isOptional: true }]
 				})
 			]
 		},
@@ -172,9 +144,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'messages',
-					columns: [
-						{ name: 'tshow', type: 'boolean', isOptional: true }
-					]
+					columns: [{ name: 'tshow', type: 'boolean', isOptional: true }]
 				}),
 				createTable({
 					name: 'users',
@@ -196,9 +166,7 @@ export default schemaMigrations({
 				}),
 				addColumns({
 					table: 'rooms',
-					columns: [
-						{ name: 'avatar_etag', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'avatar_etag', type: 'string', isOptional: true }]
 				})
 			]
 		},
@@ -207,9 +175,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'subscriptions',
-					columns: [
-						{ name: 'ignored', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'ignored', type: 'string', isOptional: true }]
 				})
 			]
 		},

@@ -21,9 +21,7 @@ const setHeader = (navigation, isMasterDetail) => {
 	navigation.setOptions(options);
 };
 
-const AddChannelTeamView = ({
-	navigation, route, isMasterDetail
-}) => {
+const AddChannelTeamView = ({ navigation, route, isMasterDetail }) => {
 	const { teamId, teamChannels } = route.params;
 	const { theme } = useTheme();
 
@@ -38,9 +36,15 @@ const AddChannelTeamView = ({
 				<List.Separator />
 				<List.Item
 					title='Create_New'
-					onPress={() => (isMasterDetail
-						? navigation.navigate('SelectedUsersViewCreateChannel', { nextAction: () => navigation.navigate('CreateChannelView', { teamId }) })
-						: navigation.navigate('SelectedUsersView', { nextAction: () => navigation.navigate('ChatsStackNavigator', { screen: 'CreateChannelView', params: { teamId } }) }))
+					onPress={() =>
+						isMasterDetail
+							? navigation.navigate('SelectedUsersViewCreateChannel', {
+									nextAction: () => navigation.navigate('CreateChannelView', { teamId })
+							  })
+							: navigation.navigate('SelectedUsersView', {
+									nextAction: () =>
+										navigation.navigate('ChatsStackNavigator', { screen: 'CreateChannelView', params: { teamId } })
+							  })
 					}
 					testID='add-channel-team-view-create-channel'
 					left={() => <List.Icon name='team' />}

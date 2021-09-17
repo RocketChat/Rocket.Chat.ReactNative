@@ -7,13 +7,13 @@ import RNRestart from 'react-native-restart';
 import RocketChat from '../../lib/rocketchat';
 import I18n, { LANGUAGES, isRTL } from '../../i18n';
 import { showErrorAlert } from '../../utils/info';
-import log, { logEvent, events } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import { setUser as setUserAction } from '../../actions/login';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { appStart as appStartAction, ROOT_LOADING, ROOT_INSIDE } from '../../actions/app';
+import { ROOT_INSIDE, ROOT_LOADING, appStart as appStartAction } from '../../actions/app';
 import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -21,14 +21,14 @@ import SafeAreaView from '../../containers/SafeAreaView';
 class LanguageView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Change_Language')
-	})
+	});
 
 	static propTypes = {
 		user: PropTypes.object,
 		setUser: PropTypes.func,
 		appStart: PropTypes.func,
 		theme: PropTypes.string
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -52,12 +52,12 @@ class LanguageView extends React.Component {
 		return false;
 	}
 
-	formIsChanged = (language) => {
+	formIsChanged = language => {
 		const { user } = this.props;
-		return (user.language !== language);
-	}
+		return user.language !== language;
+	};
 
-	submit = async(language) => {
+	submit = async language => {
 		if (!this.formIsChanged(language)) {
 			return;
 		}
@@ -76,9 +76,9 @@ class LanguageView extends React.Component {
 		} else {
 			await appStart({ root: ROOT_INSIDE });
 		}
-	}
+	};
 
-	changeLanguage = async(language) => {
+	changeLanguage = async language => {
 		logEvent(events.LANG_SET_LANGUAGE);
 		const { user, setUser } = this.props;
 
@@ -95,10 +95,10 @@ class LanguageView extends React.Component {
 
 			const serversDB = database.servers;
 			const usersCollection = serversDB.get('users');
-			await serversDB.action(async() => {
+			await serversDB.action(async () => {
 				try {
 					const userRecord = await usersCollection.find(user.id);
-					await userRecord.update((record) => {
+					await userRecord.update(record => {
 						record.language = params.language;
 					});
 				} catch (e) {
@@ -110,12 +110,12 @@ class LanguageView extends React.Component {
 			showErrorAlert(I18n.t('There_was_an_error_while_action', { action: I18n.t('saving_preferences') }));
 			log(e);
 		}
-	}
+	};
 
 	renderIcon = () => {
 		const { theme } = this.props;
 		return <List.Icon name='check' color={themes[theme].tintColor} />;
-	}
+	};
 
 	renderItem = ({ item }) => {
 		const { value, label } = item;
@@ -126,12 +126,12 @@ class LanguageView extends React.Component {
 			<List.Item
 				title={label}
 				onPress={() => this.submit(value)}
-				testID={`language-view-${ value }`}
+				testID={`language-view-${value}`}
 				right={isSelected ? this.renderIcon : null}
 				translateTitle={false}
 			/>
 		);
-	}
+	};
 
 	render() {
 		return (
