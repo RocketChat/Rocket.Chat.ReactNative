@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import debounce from '../../utils/debounce';
 import { avatarURL } from '../../utils/avatar';
@@ -9,8 +8,18 @@ import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../constants/colors';
 import styles from './styles';
+import { ICreateDiscussionViewSelectChannel } from './interfaces';
 
-const SelectChannel = ({ server, token, userId, onChannelSelect, initial, blockUnauthenticatedAccess, serverVersion, theme }) => {
+const SelectChannel = ({
+	server,
+	token,
+	userId,
+	onChannelSelect,
+	initial,
+	blockUnauthenticatedAccess,
+	serverVersion,
+	theme
+}: ICreateDiscussionViewSelectChannel): JSX.Element => {
 	const [channels, setChannels] = useState([]);
 
 	const getChannels = debounce(async (keyword = '') => {
@@ -22,7 +31,9 @@ const SelectChannel = ({ server, token, userId, onChannelSelect, initial, blockU
 		}
 	}, 300);
 
-	const getAvatar = item =>
+	const getAvatar = (item: any) =>
+		// TODO: remove this ts-ignore when migrate the file: app/utils/avatar.js
+		// @ts-ignore
 		avatarURL({
 			text: RocketChat.getRoomAvatar(item),
 			type: item.t,
@@ -54,16 +65,6 @@ const SelectChannel = ({ server, token, userId, onChannelSelect, initial, blockU
 			/>
 		</>
 	);
-};
-SelectChannel.propTypes = {
-	server: PropTypes.string,
-	token: PropTypes.string,
-	userId: PropTypes.string,
-	initial: PropTypes.object,
-	onChannelSelect: PropTypes.func,
-	blockUnauthenticatedAccess: PropTypes.bool,
-	serverVersion: PropTypes.string,
-	theme: PropTypes.string
 };
 
 export default SelectChannel;
