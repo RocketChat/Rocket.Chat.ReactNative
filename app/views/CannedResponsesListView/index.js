@@ -121,6 +121,8 @@ const CannedResponsesListView = ({ navigation, route }) => {
 				scope: department
 			});
 			if (res.success) {
+				// search with changes on text or scope are debounced
+				// the begin result and pagination aren't debounced
 				setCannedResponses(prevCanned => (debounced ? res.cannedResponses : [...prevCanned, ...res.cannedResponses]));
 				setLoading(false);
 				setOffset(prevOffset => prevOffset + COUNT);
