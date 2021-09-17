@@ -762,11 +762,15 @@
 	"Load_More": "Mehr laden",
 	"Load_Newer": "Neuere laden",
 	"Load_Older": "Ältere laden",
+	"room-name-already-exists": "Raum-Name existiert bereits",
+	"error-team-creation": "Fehler bei der Erstellung des Teams",
+	"unauthorized": "Nicht erlaubt",
 	"Left_The_Room_Successfully": "Raum erfolgreich verlassen",
 	"Deleted_The_Team_Successfully": "Team erfolgreich gelöscht",
 	"Deleted_The_Room_Successfully": "Raum erfolgreich gelöscht",
 	"Convert_to_Channel": "In Kanal umwandeln",
 	"Converting_Team_To_Channel": "Team in Kanal umwandeln",
 	"Select_Team_Channels_To_Delete": "Wähle die Kanäle des Teams aus, die du löschen möchtest. Die Kanäle, die du nicht auswählst, werden in den Arbeitsbereich verschoben \n\nBeachte, dass öffentliche Kanäle öffentlich und für alle sichtbar sind.",
-	"You_are_converting_the_team": "Du wandelst dieses Team in einen Raum um"
+	"You_are_converting_the_team": "Du wandelst dieses Team in einen Raum um",
+	"creating_discussion": "erzeuge Diskussion"
 }
