@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { FlatList } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton } from '@react-navigation/stack';
@@ -46,6 +46,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 	const [cannedResponses, setCannedResponses] = useState([]);
 	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState([]);
 	const [departments, setDepartments] = useState([]);
+	const [refreshing, setRefreshing] = useState(false);
 
 	// states used by the filter in Header and Dropdown
 	const [isSearching, setIsSearching] = useState(false);
@@ -284,6 +285,17 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		);
 	};
 
+	const onRefresh = () => {
+		setRefreshing(true);
+		onChangeText('');
+	};
+
+	useEffect(() => {
+		if (refreshing) {
+			setRefreshing(false);
+		}
+	}, [refreshing, cannedResponsesScopeName]);
+
 	return (
 		<SafeAreaView>
 			<StatusBar />
@@ -303,10 +315,11 @@ const CannedResponsesListView = ({ navigation, route }) => {
 					/>
 				)}
 				keyExtractor={item => item._id || item.shortcut}
-				onEndReached={onEndReached}
-				onEndReachedThreshold={0.5}
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={themes[theme].auxiliaryText} />}
 				ListHeaderComponent={renderFlatListHeader}
 				stickyHeaderIndices={[0]}
+				onEndReached={onEndReached}
+				onEndReachedThreshold={0.5}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 			/>
 			{showFilterDropdown ? (
