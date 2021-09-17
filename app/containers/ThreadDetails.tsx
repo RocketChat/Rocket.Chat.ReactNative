@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
@@ -41,8 +42,8 @@ const styles = StyleSheet.create({
 
 interface IThreadDetails {
 	item: {
-		tcount: number | string;
-		dcount: number | string;
+		tcount?: number | string;
+		dcount?: number | string;
 		replies?: any;
 		id: string;
 	};
@@ -58,19 +59,13 @@ interface IThreadDetails {
 }
 
 const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, thread, time, style, theme }: IThreadDetails) => {
-	let { tcount, dcount } = item;
-	if (thread) {
-		if (tcount >= 1000) {
-			tcount = '+999';
-		} else if (tcount >= 100) {
-			tcount = '+99';
-		}
-	}
+	const { tcount, dcount } = item;
+	let count = tcount || dcount;
 
-	if (dcount >= 1000) {
-		dcount = '+999';
-	} else if (dcount >= 100) {
-		dcount = '+99';
+	if (count! >= 1000) {
+		count = '+999';
+	} else if (count! >= 100) {
+		count = '+99';
 	}
 
 	let replies = item?.replies?.length ?? 0;
@@ -88,7 +83,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, thread, tim
 				<View style={styles.detailContainer}>
 					<CustomIcon name={thread ? 'threads' : 'discussions'} size={24} color={themes[theme].auxiliaryText} />
 					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-						{thread ? tcount : dcount}
+						{count}
 					</Text>
 				</View>
 
