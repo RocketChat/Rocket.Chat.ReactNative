@@ -31,9 +31,9 @@ import { isTablet } from '../../utils/deviceInfo';
 import ServerInput from './ServerInput';
 
 const styles = StyleSheet.create({
-	onboarding: {
+	onboardingImage: {
 		alignSelf: 'center',
-		marginTop: isTablet ? 0 : 96,
+		marginTop: isTablet ? 0 : 70,
 		marginBottom: 25,
 		maxHeight: 150,
 		width: 100,
@@ -315,7 +315,7 @@ class NewServerView extends React.Component {
 			<FormContainer theme={theme} testID='new-server-view' keyboardShouldPersistTaps='never'>
 				<FormContainerInner>
 					<Image
-						style={styles.onboarding}
+						style={styles.onboardingImage}
 						source={require('../../static/images/logo.png')}
 						fadeDuration={0}
 						resizeMode='stretch'
