@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
@@ -41,8 +42,9 @@ const styles = StyleSheet.create({
 
 interface IThreadDetails {
 	item: {
-		tcount: number | string;
-		replies: any;
+		tcount?: number | string;
+		dcount?: number | string;
+		replies?: any;
 		id: string;
 	};
 	user: {
@@ -50,16 +52,25 @@ interface IThreadDetails {
 	};
 	badgeColor: string;
 	toggleFollowThread: Function;
+	thread: boolean;
 	style: object;
 	theme: string;
 }
 
-const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style, theme }: IThreadDetails) => {
-	let { tcount } = item;
-	if (tcount >= 1000) {
-		tcount = '+999';
-	} else if (tcount >= 100) {
-		tcount = '+99';
+const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, thread, style, theme }: IThreadDetails) => {
+	let { tcount, dcount } = item;
+	if (thread) {
+		if (tcount! >= 1000) {
+			tcount = '+999';
+		} else if (tcount! >= 100) {
+			tcount = '+99';
+		}
+	}
+
+	if (dcount! >= 1000) {
+		dcount = '+999';
+	} else if (dcount! >= 100) {
+		dcount = '+99';
 	}
 
 	let replies = item?.replies?.length ?? 0;
@@ -75,30 +86,34 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style, them
 		<View style={[styles.container, style]}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
-					<CustomIcon name='threads' size={24} color={themes[theme].auxiliaryText} />
+					<CustomIcon name={thread ? 'threads' : 'discussions'} size={24} color={themes[theme].auxiliaryText} />
 					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-						{tcount}
+						{thread ? tcount : dcount}
 					</Text>
 				</View>
 
-				<View style={styles.detailContainer}>
-					<CustomIcon name='user' size={24} color={themes[theme].auxiliaryText} />
-					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-						{replies}
-					</Text>
-				</View>
+				{thread ? (
+					<View style={styles.detailContainer}>
+						<CustomIcon name='user' size={24} color={themes[theme].auxiliaryText} />
+						<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+							{replies}
+						</Text>
+					</View>
+				) : null}
 			</View>
 
-			<View style={styles.badgeContainer}>
-				{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
-				<Touchable onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
-					<CustomIcon
-						size={24}
-						name={isFollowing ? 'notification' : 'notification-disabled'}
-						color={themes[theme].auxiliaryTintColor}
-					/>
-				</Touchable>
-			</View>
+			{thread ? (
+				<View style={styles.badgeContainer}>
+					{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
+					<Touchable onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
+						<CustomIcon
+							size={24}
+							name={isFollowing ? 'notification' : 'notification-disabled'}
+							color={themes[theme].auxiliaryTintColor}
+						/>
+					</Touchable>
+				</View>
+			) : null}
 		</View>
 	);
 };

@@ -106,7 +106,14 @@ class ThreadMessagesView extends React.Component {
 						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader onSearchChangeText={this.onSearchChangeText} placeholder='Search' theme={theme} testID='thread-messages-view-search-header' />,
+				headerTitle: () => (
+					<SearchHeader
+						onSearchChangeText={this.onSearchChangeText}
+						placeholder='Search'
+						theme={theme}
+						testID='thread-messages-view-search-header'
+					/>
+				),
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right
@@ -417,6 +424,7 @@ class ThreadMessagesView extends React.Component {
 					useRealName,
 					badgeColor
 				}}
+				thread
 				onPress={this.onThreadPress}
 				toggleFollowThread={this.toggleFollowThread}
 			/>

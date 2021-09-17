@@ -1,48 +1,76 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton } from '@react-navigation/stack';
 
-import ActivityIndicator from '../containers/ActivityIndicator';
-import I18n from '../i18n';
-import StatusBar from '../containers/StatusBar';
-import log from '../utils/log';
-import debounce from '../utils/debounce';
-import { themes } from '../constants/colors';
-import SafeAreaView from '../containers/SafeAreaView';
-import * as HeaderButton from '../containers/HeaderButton';
-import * as List from '../containers/List';
-import BackgroundContainer from '../containers/BackgroundContainer';
-import { isIOS } from '../utils/deviceInfo';
-import { getHeaderTitlePosition } from '../containers/Header';
-
-import { useTheme } from '../theme';
-import Message from '../containers/message';
-import RocketChat from '../lib/rocketchat';
-import SearchHeader from '../containers/SearchHeader';
+import ActivityIndicator from '../../containers/ActivityIndicator';
+import I18n from '../../i18n';
+import StatusBar from '../../containers/StatusBar';
+import log from '../../utils/log';
+import debounce from '../../utils/debounce';
+import { themes } from '../../constants/colors';
+import SafeAreaView from '../../containers/SafeAreaView';
+import * as HeaderButton from '../../containers/HeaderButton';
+import * as List from '../../containers/List';
+import BackgroundContainer from '../../containers/BackgroundContainer';
+import { isIOS } from '../../utils/deviceInfo';
+import { getHeaderTitlePosition } from '../../containers/Header';
+import { useTheme } from '../../theme';
+import RocketChat from '../../lib/rocketchat';
+import SearchHeader from '../../containers/SearchHeader';
+import Item from '../ThreadMessagesView/Item';
+import styles from './styles';
 
 const API_FETCH_COUNT = 50;
 
-const DiscussionsView = ({ navigation, route }) => {
-	const rid = route.params?.rid;
-	const canAutoTranslate = route.params?.canAutoTranslate;
-	const autoTranslate = route.params?.autoTranslate;
-	const autoTranslateLanguage = route.params?.autoTranslateLanguage;
-	const navToRoomInfo = route.params?.navToRoomInfo;
+interface IDiscussionsViewProps {
+	navigation: any;
+	route: {
+		params?: {
+			rid: string;
+			canAutoTranslate: boolean;
+			autoTranslate: boolean;
+			autoTranslateLanguage: string;
+			navToRoomInfo: Function;
+		};
+	};
+	item: {
+		msg: string;
+	};
+}
 
-	const user = useSelector(state => state.login?.user);
-	const baseUrl = useSelector(state => state.server.server);
-	const useRealName = useSelector(state => state.settings.UI_Use_Real_Name);
-	const Message_TimeFormat = useSelector(state => state.settings.Message_TimeFormat);
-	const isMasterDetail = useSelector(state => state.app.isMasterDetail);
+interface IState {
+	login?: {
+		user: object;
+	};
+	server: {
+		server: string;
+	};
+	settings: {
+		UI_Use_Real_Name: boolean;
+		Message_TimeFormat: string;
+	};
+	app: {
+		isMasterDetail: boolean;
+	};
+}
+
+const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Element => {
+	const rid = route.params?.rid;
+
+	const user = useSelector((state: IState) => state.login?.user);
+	const baseUrl = useSelector((state: IState) => state.server?.server);
+	const useRealName = useSelector((state: IState) => state.settings?.UI_Use_Real_Name);
+	const isMasterDetail = useSelector((state: IState) => state.app?.isMasterDetail);
 
 	const [loading, setLoading] = useState(false);
 	const [discussions, setDiscussions] = useState([]);
 	const [search, setSearch] = useState([]);
 	const [isSearching, setIsSearching] = useState(false);
 	const [total, setTotal] = useState(0);
+	const [searchTotal, setSearchTotal] = useState(0);
 
 	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
@@ -64,7 +92,7 @@ const DiscussionsView = ({ navigation, route }) => {
 			if (result.success) {
 				if (isSearching) {
 					setSearch(result.messages);
-					setTotal(result.total);
+					setSearchTotal(result.total);
 				} else {
 					setDiscussions(result.messages);
 					setTotal(result.total);
@@ -77,7 +105,7 @@ const DiscussionsView = ({ navigation, route }) => {
 		}
 	};
 
-	const onSearchChangeText = debounce(async text => {
+	const onSearchChangeText = debounce(async (text: string) => {
 		setIsSearching(true);
 		await load(text);
 	}, 300);
@@ -119,25 +147,24 @@ const DiscussionsView = ({ navigation, route }) => {
 
 		const options = {
 			headerLeft: () => (
-				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
+				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme!].headerTintColor} />
 			),
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
 			headerTitleContainerStyle: {
 				left: null,
 				right: null
-			}
+			},
+			headerRight: () => (
+				<HeaderButton.Container>
+					<HeaderButton.Item iconName='search' onPress={onSearchPress} />
+				</HeaderButton.Container>
+			)
 		};
 
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
 		}
-
-		options.headerRight = () => (
-			<HeaderButton.Container>
-				<HeaderButton.Item iconName='search' onPress={onSearchPress} />
-			</HeaderButton.Container>
-		);
 		return options;
 	};
 
@@ -151,7 +178,7 @@ const DiscussionsView = ({ navigation, route }) => {
 	}, [navigation, isSearching]);
 
 	const onDiscussionPress = debounce(
-		item => {
+		(item: any) => {
 			navigation.push('RoomView', {
 				rid: item.drid,
 				prid: item.rid,
@@ -163,20 +190,19 @@ const DiscussionsView = ({ navigation, route }) => {
 		true
 	);
 
-	const renderItem = ({ item }) => (
-		<Message
-			item={item}
-			user={user}
-			rid={rid}
-			navToRoomInfo={navToRoomInfo}
-			onDiscussionPress={onDiscussionPress}
-			baseUrl={baseUrl}
-			timeFormat={Message_TimeFormat}
-			useRealName={useRealName}
-			autoTranslateRoom={canAutoTranslate && autoTranslate}
-			autoTranslateLanguage={autoTranslateLanguage}
+	const renderItem = ({ item }: any) => (
+		<Item
+			{...{
+				item,
+				user,
+				navigation,
+				baseUrl,
+				useRealName
+			}}
+			onPress={onDiscussionPress}
 		/>
 	);
+
 	if (!discussions?.length) {
 		return <BackgroundContainer loading={loading} text={I18n.t('No_discussions')} />;
 	}
@@ -187,28 +213,21 @@ const DiscussionsView = ({ navigation, route }) => {
 			<FlatList
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}
-				keyExtractor={item => item.msg}
-				style={{ backgroundColor: themes[theme].backgroundColor }}
+				keyExtractor={(item: any) => item.msg}
+				style={{ backgroundColor: themes[theme!].backgroundColor }}
+				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
 				windowSize={10}
 				initialNumToRender={7}
 				removeClippedSubviews={isIOS}
-				onEndReached={() => total > API_FETCH_COUNT ?? load()}
+				onEndReached={() => (isSearching ? searchTotal > API_FETCH_COUNT ?? load() : total > API_FETCH_COUNT ?? load())}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				scrollIndicatorInsets={{ right: 1 }}
 			/>
 		</SafeAreaView>
 	);
-};
-
-DiscussionsView.propTypes = {
-	navigation: PropTypes.object,
-	route: PropTypes.object,
-	item: PropTypes.shape({
-		msg: PropTypes.string
-	})
 };
 
 export default DiscussionsView;
