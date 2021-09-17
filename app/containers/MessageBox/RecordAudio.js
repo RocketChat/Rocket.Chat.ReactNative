@@ -59,17 +59,19 @@ export default class RecordAudio extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.isRecorderBusy = false;
+		this.LastDuration = 0;
 		this.state = {
 			isRecording: false,
+			isRecorderActive: false,
 			recordingDurationMillis: 0
 		};
 	}
 
 	componentDidUpdate() {
 		const { recordingCallback } = this.props;
-		const { isRecording } = this.state;
+		const { isRecorderActive } = this.state;
 
-		recordingCallback(isRecording);
+		recordingCallback(isRecorderActive);
 	}
 
 	componentWillUnmount() {
@@ -81,6 +83,10 @@ export default class RecordAudio extends React.PureComponent {
 	get duration() {
 		const { recordingDurationMillis } = this.state;
 		return formatTime(Math.floor(recordingDurationMillis / 1000));
+	}
+
+	get GetLastDuration() {
+		return formatTime(Math.floor(this.LastDuration / 1000));
 	}
 
 	isRecordingPermissionGranted = async() => {
@@ -101,17 +107,20 @@ export default class RecordAudio extends React.PureComponent {
 			isRecording: status.isRecording,
 			recordingDurationMillis: status.durationMillis
 		});
+		this.LastDuration = status.durationMillis;
 	}
 
 	startRecordingAudio = async() => {
 		logEvent(events.ROOM_AUDIO_RECORD);
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;
+			this.LastDuration = 0;
 			try {
 				const canRecord = await this.isRecordingPermissionGranted();
 				if (canRecord) {
 					await Audio.setAudioModeAsync(RECORDING_MODE);
 
+					this.setState({ isRecorderActive: true });
 					this.recording = new Audio.Recording();
 					await this.recording.prepareToRecordAsync(RECORDING_SETTINGS);
 					this.recording.setOnRecordingStatusUpdate(this.onRecordingStatusUpdate);
@@ -152,7 +161,7 @@ export default class RecordAudio extends React.PureComponent {
 			} catch (error) {
 				logEvent(events.ROOM_AUDIO_FINISH_F);
 			}
-			this.setState({ isRecording: false, recordingDurationMillis: 0 });
+			this.setState({ isRecording: false, isRecorderActive: false, recordingDurationMillis: 0 });
 			deactivateKeepAwake();
 			this.isRecorderBusy = false;
 		}
@@ -167,7 +176,7 @@ export default class RecordAudio extends React.PureComponent {
 			} catch (error) {
 				logEvent(events.ROOM_AUDIO_CANCEL_F);
 			}
-			this.setState({ isRecording: false, recordingDurationMillis: 0 });
+			this.setState({ isRecording: false, isRecorderActive: false, recordingDurationMillis: 0 });
 			deactivateKeepAwake();
 			this.isRecorderBusy = false;
 		}
@@ -176,8 +185,10 @@ export default class RecordAudio extends React.PureComponent {
 	render() {
 		const { theme } = this.props;
 		const { isRecording } = this.state;
+		const { isRecorderActive } = this.state;
 
-		if (!isRecording) {
+		// Show normal message box when recorder is not active and no recording is running
+		if ((!isRecording) && (!isRecorderActive)) {
 			return (
 				<BorderlessButton
 					onPress={this.startRecordingAudio}
@@ -191,6 +202,52 @@ export default class RecordAudio extends React.PureComponent {
 			);
 		}
 
+		// Show recording UI with "pause" symbol and the time of the last recording.
+		// Will appear when something stopped the recording (i.e. a call in IOS)
+		if ((!isRecording) && (isRecorderActive)) {
+			return (
+				<View style={styles.recordingContent}>
+					<View style={styles.textArea}>
+						<BorderlessButton
+							onPress={this.cancelRecordingAudio}
+							accessibilityLabel={I18n.t('Cancel_recording')}
+							accessibilityTraits='button'
+							style={styles.actionButton}
+						>
+							<CustomIcon
+								size={24}
+								color={themes[theme].dangerColor}
+								name='delete'
+							/>
+						</BorderlessButton>
+						<Text
+							style={[styles.recordingCancelText, { color: themes[theme].titleText }]}
+						>
+							{this.GetLastDuration} &nbsp;
+						</Text>
+						<CustomIcon
+							size={24}
+							color='black'
+							name='pause'
+						/>
+					</View>
+					<BorderlessButton
+						onPress={this.finishRecordingAudio}
+						accessibilityLabel={I18n.t('Finish_recording')}
+						accessibilityTraits='button'
+						style={styles.actionButton}
+					>
+						<CustomIcon
+							size={24}
+							color={themes[theme].successColor}
+							name='send-filled'
+						/>
+					</BorderlessButton>
+				</View>
+			);
+		}
+
+		// Show normal recording UI with a "record" symbol
 		return (
 			<View style={styles.recordingContent}>
 				<View style={styles.textArea}>
@@ -203,14 +260,19 @@ export default class RecordAudio extends React.PureComponent {
 						<CustomIcon
 							size={24}
 							color={themes[theme].dangerColor}
-							name='close'
+							name='delete'
 						/>
 					</BorderlessButton>
 					<Text
 						style={[styles.recordingCancelText, { color: themes[theme].titleText }]}
 					>
-						{this.duration}
+						{this.duration} &nbsp;
 					</Text>
+					<CustomIcon
+						size={24}
+						color='red'
+						name='record'
+					/>
 				</View>
 				<BorderlessButton
 					onPress={this.finishRecordingAudio}
@@ -221,7 +283,7 @@ export default class RecordAudio extends React.PureComponent {
 					<CustomIcon
 						size={24}
 						color={themes[theme].successColor}
-						name='check'
+						name='send-filled'
 					/>
 				</BorderlessButton>
 			</View>
