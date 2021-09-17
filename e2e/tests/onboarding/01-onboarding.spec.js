@@ -9,7 +9,7 @@ describe('Onboarding', () => {
 	});
 
 	describe('Render', () => {
-		it('should have onboarding screen as New Server View', async () => {
+		it('should have onboarding screen', async () => {
 			await expect(element(by.id('new-server-view'))).toBeVisible();
 		});
 

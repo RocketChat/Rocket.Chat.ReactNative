@@ -8,7 +8,7 @@ import * as List from '../../containers/List';
 import Button from '../../containers/Button';
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
-import { ROOT_NEW_SERVER, appStart as appStartAction } from '../../actions/app';
+import { ROOT_OUTSIDE, appStart as appStartAction } from '../../actions/app';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
@@ -20,7 +20,7 @@ import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
-import { events, logEvent } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
 import UserPreferences from '../../lib/userPreferences';
@@ -102,15 +102,16 @@ class ServerDropdown extends Component {
 		logEvent(events.RL_CREATE_NEW_WORKSPACE);
 		try {
 			await Linking.openURL('https://cloud.rocket.chat/trial');
-		} catch {
+		} catch (e) {
 			logEvent(events.RL_CREATE_NEW_WORKSPACE_F);
+			log(e);
 		}
 	};
 
 	navToNewServer = previousServer => {
 		const { appStart, initAdd } = this.props;
 		batch(() => {
-			appStart({ root: ROOT_NEW_SERVER });
+			appStart({ root: ROOT_OUTSIDE });
 			initAdd(previousServer);
 		});
 	};

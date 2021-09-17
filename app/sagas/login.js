@@ -3,7 +3,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
 import * as types from '../actions/actionsTypes';
-import { ROOT_INSIDE, ROOT_LOADING, ROOT_NEW_SERVER, ROOT_SET_USERNAME, appStart } from '../actions/app';
+import { ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE, ROOT_SET_USERNAME, appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
@@ -204,7 +204,7 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 
 			// if the user was logged out by the server
 			if (forcedByServer) {
-				yield put(appStart({ root: ROOT_NEW_SERVER }));
+				yield put(appStart({ root: ROOT_OUTSIDE }));
 				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
 				yield delay(300);
 				Navigation.navigate('NewServerView');
@@ -228,10 +228,10 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 					}
 				}
 				// if there's no servers, go outside
-				yield put(appStart({ root: ROOT_NEW_SERVER }));
+				yield put(appStart({ root: ROOT_OUTSIDE }));
 			}
 		} catch (e) {
-			yield put(appStart({ root: ROOT_NEW_SERVER }));
+			yield put(appStart({ root: ROOT_OUTSIDE }));
 			log(e);
 		}
 	}

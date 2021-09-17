@@ -15,7 +15,7 @@ import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
-import { ROOT_INSIDE, ROOT_NEW_SERVER, appStart } from '../actions/app';
+import { ROOT_INSIDE, ROOT_OUTSIDE, appStart } from '../actions/app';
 import UserPreferences from '../lib/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../utils/sslPinning';
@@ -114,7 +114,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(appStart({ root: ROOT_INSIDE }));
 		} else {
 			yield RocketChat.connect({ server });
-			yield put(appStart({ root: ROOT_NEW_SERVER }));
+			yield put(appStart({ root: ROOT_OUTSIDE }));
 		}
 
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
