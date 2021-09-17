@@ -30,10 +30,6 @@ interface IDiscussionsViewProps {
 	route: {
 		params?: {
 			rid: string;
-			canAutoTranslate: boolean;
-			autoTranslate: boolean;
-			autoTranslateLanguage: string;
-			navToRoomInfo: Function;
 		};
 	};
 	item: {

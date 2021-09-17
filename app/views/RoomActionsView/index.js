@@ -1006,13 +1006,7 @@ class RoomActionsView extends React.Component {
 										this.onPressTouchable({
 											route: 'DiscussionsView',
 											params: {
-												rid,
-												t,
-												prid,
-												canAutoTranslate,
-												autoTranslate: room.autoTranslate,
-												autoTranslateLanguage: room.autoTranslateLanguage,
-												navToRoomInfo: navParam => this.navToRoomInfo(navParam)
+												rid
 											}
 										})
 									}
