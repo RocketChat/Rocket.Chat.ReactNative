@@ -73,7 +73,6 @@ export default StyleSheet.create({
 	cannedUseButton: {
 		height: 28,
 		width: 56,
-		marginRight: 32,
 		marginLeft: 8
 	}
 });

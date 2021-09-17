@@ -11,32 +11,26 @@ import { CustomIcon } from '../../../lib/Icons';
 import MessageboxContext from '../Context';
 
 const MentionHeaderList = ({ trackingType, hasMentions, theme, loading }) => {
-	if (loading) {
-		return (
-			<View style={styles.wrapMentionHeaderListRow}>
-				<ActivityIndicator style={styles.loadingPaddingHeader} size='small' color={themes[theme].actionTintColor} />
-				<Text style={[styles.mentionHeaderList, { color: themes[theme].auxiliaryText }]}>{I18n.t('Searching')}</Text>
-			</View>
-		);
-	}
-
 	const context = useContext(MessageboxContext);
 	const { onPressNoMatchCanned } = context;
 
 	if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
-		if (hasMentions) {
+		if (loading) {
 			return (
-				<View style={styles.wrapMentionHeaderList}>
-					<Text style={[styles.mentionHeaderList, { color: themes[theme].bodyText }]}>{I18n.t('CANNED_RESPONSES')}</Text>
+				<View style={styles.wrapMentionHeaderListRow}>
+					<ActivityIndicator style={styles.loadingPaddingHeader} size='small' color={themes[theme].actionTintColor} />
+					<Text style={[styles.mentionHeaderList, { color: themes[theme].auxiliaryText }]}>{I18n.t('Searching')}</Text>
 				</View>
 			);
-		} else {
+		}
+
+		if (!hasMentions) {
 			return (
 				<TouchableOpacity style={[styles.wrapMentionHeaderListRow, styles.mentionNoMatchHeader]} onPress={onPressNoMatchCanned}>
 					<Text style={[styles.mentionHeaderListNoMatchFound, { color: themes[theme].auxiliaryText }]}>
 						{I18n.t('No_match_found')} <Text style={sharedStyles.textSemibold}>{I18n.t('Check_canned_responses')}</Text>
 					</Text>
-					<CustomIcon name='chevron-right' size={20} style={styles.mentionChevronMargin} color={themes[theme].auxiliaryText} />
+					<CustomIcon name='chevron-right' size={24} color={themes[theme].auxiliaryText} />
 				</TouchableOpacity>
 			);
 		}

@@ -38,29 +38,24 @@ export default StyleSheet.create({
 	},
 	wrapMentionHeaderList: {
 		height: MENTION_HEIGHT,
-		justifyContent: 'center',
-		marginTop: 8
+		justifyContent: 'center'
 	},
 	wrapMentionHeaderListRow: {
 		height: MENTION_HEIGHT,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingHorizontal: 12
 	},
 	loadingPaddingHeader: {
-		paddingLeft: 12
+		paddingRight: 12
 	},
 	mentionHeaderList: {
-		fontSize: 12,
-		paddingLeft: 12,
-		...sharedStyles.textSemibold
+		fontSize: 14,
+		...sharedStyles.textMedium
 	},
 	mentionHeaderListNoMatchFound: {
-		fontSize: 12,
-		paddingLeft: 12,
+		fontSize: 14,
 		...sharedStyles.textRegular
-	},
-	mentionChevronMargin: {
-		marginRight: 20
 	},
 	mentionNoMatchHeader: {
 		justifyContent: 'space-between'

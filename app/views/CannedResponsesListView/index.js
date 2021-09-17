@@ -320,6 +320,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 				stickyHeaderIndices={[0]}
 				onEndReached={onEndReached}
 				onEndReachedThreshold={0.5}
+				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading && !refreshing ? <ActivityIndicator theme={theme} /> : null}
 			/>
 			{showFilterDropdown ? (
