@@ -294,7 +294,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		if (refreshing) {
 			setRefreshing(false);
 		}
-	}, [refreshing, cannedResponsesScopeName]);
+	}, [cannedResponses]);
 
 	return (
 		<SafeAreaView>
@@ -320,7 +320,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 				stickyHeaderIndices={[0]}
 				onEndReached={onEndReached}
 				onEndReachedThreshold={0.5}
-				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				ListFooterComponent={loading && !refreshing ? <ActivityIndicator theme={theme} /> : null}
 			/>
 			{showFilterDropdown ? (
 				<Dropdown
