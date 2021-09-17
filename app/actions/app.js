@@ -1,6 +1,5 @@
 import { APP } from './actionsTypes';
 
-export const ROOT_OUTSIDE = 'outside';
 export const ROOT_INSIDE = 'inside';
 export const ROOT_LOADING = 'loading';
 export const ROOT_NEW_SERVER = 'newServer';
