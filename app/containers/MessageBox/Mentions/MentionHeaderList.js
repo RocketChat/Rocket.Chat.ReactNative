@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { MENTIONS_TRACKING_TYPE_CANNED } from '../constants';
 import styles from '../styles';
+import sharedStyles from '../../../views/Styles';
 import I18n from '../../../i18n';
 import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
@@ -32,10 +33,10 @@ const MentionHeaderList = ({ trackingType, hasMentions, theme, loading }) => {
 		} else {
 			return (
 				<TouchableOpacity style={[styles.wrapMentionHeaderListRow, styles.mentionNoMatchHeader]} onPress={onPressNoMatchCanned}>
-					<Text style={[styles.mentionHeaderList, { color: themes[theme].auxiliaryText }]}>
-						{I18n.t('No_match_found', { action: I18n.t('Check_canned_responses') })}
+					<Text style={[styles.mentionHeaderListNoMatchFound, { color: themes[theme].auxiliaryText }]}>
+						{I18n.t('No_match_found')} <Text style={sharedStyles.textSemibold}>{I18n.t('Check_canned_responses')}</Text>
 					</Text>
-					<CustomIcon name='chevron-right' size={20} style={styles.mentionChevronMargin} />
+					<CustomIcon name='chevron-right' size={20} style={styles.mentionChevronMargin} color={themes[theme].auxiliaryText} />
 				</TouchableOpacity>
 			);
 		}

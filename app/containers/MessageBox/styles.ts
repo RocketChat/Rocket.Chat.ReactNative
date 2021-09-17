@@ -54,6 +54,11 @@ export default StyleSheet.create({
 		paddingLeft: 12,
 		...sharedStyles.textSemibold
 	},
+	mentionHeaderListNoMatchFound: {
+		fontSize: 12,
+		paddingLeft: 12,
+		...sharedStyles.textRegular
+	},
 	mentionChevronMargin: {
 		marginRight: 20
 	},
