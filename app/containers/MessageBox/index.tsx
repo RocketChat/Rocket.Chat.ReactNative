@@ -274,7 +274,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 
 		if (isMasterDetail && usedCannedResponse) {
-			this.onChangeText(usedCannedResponse ?? '');
+			this.onChangeText('');
 		}
 
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
