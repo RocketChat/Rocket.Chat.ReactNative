@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
+import moment from 'moment';
 
 import { withTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
@@ -24,6 +25,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		marginBottom: 2,
 		alignItems: 'center'
+	},
+	discussionTitleContainer: {
+		flexDirection: 'row',
+		marginBottom: 2,
+		justifyContent: 'space-between'
 	},
 	title: {
 		flexShrink: 1,
@@ -56,11 +62,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, toggleFollowThread, thread }) => {
+const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, toggleFollowThread, timeFormat, thread }) => {
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
-	let time;
+	let date;
+	let hour;
 	if (item?.ts) {
-		time = formatDateThreads(item.ts);
+		date = formatDateThreads(item.ts);
+		hour = moment(item.ts).format(timeFormat);
 	}
 
 	return (
@@ -71,11 +79,11 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} user={user} theme={theme} />
 				<View style={styles.contentContainer}>
-					<View style={styles.titleContainer}>
+					<View style={thread ? styles.titleContainer : styles.discussionTitleContainer}>
 						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
 							{username}
 						</Text>
-						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
+						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{thread ? date : hour}</Text>
 					</View>
 					<View style={styles.messageContainer}>
 						<Markdown
@@ -92,6 +100,7 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 					<ThreadDetails
 						item={item}
 						user={user}
+						time={date}
 						toggleFollowThread={toggleFollowThread}
 						thread={thread}
 						style={styles.threadDetails}
@@ -111,7 +120,8 @@ Item.propTypes = {
 	badgeColor: PropTypes.string,
 	onPress: PropTypes.func,
 	toggleFollowThread: PropTypes.func,
-	thread: PropTypes.bool
+	thread: PropTypes.bool,
+	timeFormat: PropTypes.string
 };
 
 export default withTheme(Item);

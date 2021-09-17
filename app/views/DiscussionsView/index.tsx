@@ -63,6 +63,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 	const user = useSelector((state: IState) => state.login?.user);
 	const baseUrl = useSelector((state: IState) => state.server?.server);
 	const useRealName = useSelector((state: IState) => state.settings?.UI_Use_Real_Name);
+	const timeFormat = useSelector((state: IState) => state.settings?.Message_TimeFormat);
 	const isMasterDetail = useSelector((state: IState) => state.app?.isMasterDetail);
 
 	const [loading, setLoading] = useState(false);
@@ -199,6 +200,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				baseUrl,
 				useRealName
 			}}
+			timeFormat={timeFormat}
 			onPress={onDiscussionPress}
 		/>
 	);
