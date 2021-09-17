@@ -3,6 +3,18 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
+	list: {
+		flex: 1
+	},
+	dropdownContainer: {
+		width: '100%',
+		position: 'absolute',
+		top: 0,
+		borderBottomWidth: StyleSheet.hairlineWidth
+	},
+	backdrop: {
+		...StyleSheet.absoluteFill
+	},
 	containerHeader: {
 		paddingTop: 12,
 		paddingHorizontal: 16,

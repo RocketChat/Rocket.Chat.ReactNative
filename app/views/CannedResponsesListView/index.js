@@ -12,8 +12,13 @@ import RocketChat from '../../lib/rocketchat';
 import debounce from '../../utils/debounce';
 import Navigation from '../../lib/Navigation';
 import { goRoom } from '../../utils/goRoom';
+import * as List from '../../containers/List';
+import { themes } from '../../constants/colors';
+import log from '../../utils/log';
 import CannedResponseItem from './CannedResponseItem';
-import HeaderCanned from './HeaderCanned';
+import Dropdown from './Dropdown';
+import DropdownItemHeader from './Dropdown/DropdownItemHeader';
+import styles from './styles';
 
 const COUNT = 25;
 
@@ -35,10 +40,15 @@ const fixedScopes = [
 const CannedResponsesListView = ({ navigation, route }) => {
 	const [cannedResponses, setCannedResponses] = useState([]);
 	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState([]);
+	const [departments, setDepartments] = useState([]);
+
+	// states used by the Dropdown
+	const [currentDepartment, setCurrentDepartment] = useState(fixedScopes[0]);
+	const [showFilterDropdown, setShowFilterDropDown] = useState(false);
+
+	// states used to do a fetch by onChangeText, onDepartmentSelect and onEndReached
 	const [searchText, setSearchText] = useState('');
 	const [scope, setScope] = useState('');
-	const [departments, setDepartments] = useState([]);
-	const [allDepartments, setAllDepartments] = useState([]);
 	const [departmentId, setDepartmentId] = useState('');
 	const [loading, setLoading] = useState(true);
 	const [offset, setOffset] = useState(0);
@@ -55,18 +65,15 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		});
 	}, []);
 
-	const getDepartments = debounce(async (keyword = '') => {
+	const getDepartments = debounce(async () => {
 		try {
-			const res = await RocketChat.getDepartments(keyword);
-			const regExp = new RegExp(keyword, 'gi');
-			const filterWithText = fixedScopes.filter(dep => regExp.test(dep.name));
-			res.success ? setDepartments([...filterWithText, ...res.departments]) : setDepartments(filterWithText);
-
-			if (res.success && !keyword) {
-				setAllDepartments([...filterWithText, ...res.departments]);
+			const res = await RocketChat.getDepartments();
+			if (res.success) {
+				setDepartments([...fixedScopes, ...res.departments]);
 			}
-		} catch {
-			// do nothing
+		} catch (e) {
+			setDepartments(fixedScopes);
+			log(e);
 		}
 	}, 300);
 
@@ -104,7 +111,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		}
 	};
 
-	const getListCannedResponse = async (text, department, depId, debounced) => {
+	const getListCannedResponse = async ({ text, department, depId, debounced }) => {
 		try {
 			const res = await RocketChat.getListCannedResponse({
 				text,
@@ -119,19 +126,19 @@ const CannedResponsesListView = ({ navigation, route }) => {
 				setOffset(prevOffset => prevOffset + COUNT);
 			}
 		} catch (e) {
-			// do nothing
+			log(e);
 		}
 	};
 
 	useEffect(() => {
-		if (allDepartments.length > 0) {
+		if (departments.length > 0) {
 			const newCannedResponses = cannedResponses.map(cr => {
 				let scopeName = '';
 
 				if (cr?.departmentId) {
-					scopeName = allDepartments.filter(dep => dep._id === cr.departmentId)[0]?.name;
+					scopeName = departments.filter(dep => dep._id === cr.departmentId)[0]?.name || 'Department';
 				} else {
-					scopeName = allDepartments.filter(dep => dep._id === cr.scope)[0]?.name;
+					scopeName = departments.filter(dep => dep._id === cr.scope)[0]?.name;
 				}
 				cr.scopeName = scopeName;
 
@@ -139,18 +146,18 @@ const CannedResponsesListView = ({ navigation, route }) => {
 			});
 			setCannedResponsesScopeName(newCannedResponses);
 		}
-	}, [allDepartments, cannedResponses]);
+	}, [departments, cannedResponses]);
 
 	const searchCallback = useCallback(
 		debounce(async (text = '', department = '', depId = '') => {
-			await getListCannedResponse(text, department, depId, true);
+			await getListCannedResponse({ text, department, depId, debounced: true });
 		}, 1000),
 		[]
 	); // use debounce with useCallback https://stackoverflow.com/a/58594890
 
 	useEffect(() => {
 		getDepartments();
-		getListCannedResponse();
+		getListCannedResponse({ text: '', department: '', depId: '', debounced: false });
 	}, []);
 
 	const newSearch = () => {
@@ -165,7 +172,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		searchCallback(text, scope, departmentId);
 	};
 
-	const onDepartmentSelect = ({ value }) => {
+	const onDepartmentSelect = value => {
 		let department = '';
 		let depId = '';
 
@@ -181,8 +188,10 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		}
 
 		newSearch();
+		setCurrentDepartment(value);
 		setScope(department);
 		setDepartmentId(depId);
+		setShowFilterDropDown(false);
 		searchCallback(searchText, department, depId);
 	};
 
@@ -191,28 +200,29 @@ const CannedResponsesListView = ({ navigation, route }) => {
 			return;
 		}
 		setLoading(true);
-		await getListCannedResponse(searchText, scope, departmentId);
+		await getListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
+	};
+
+	const renderHeader = () => {
+		if (!departments.length) {
+			return null;
+		}
+
+		return (
+			<>
+				<DropdownItemHeader department={currentDepartment} onPress={() => setShowFilterDropDown(true)} />
+				<List.Separator />
+			</>
+		);
 	};
 
 	return (
 		<SafeAreaView>
 			<StatusBar />
-
-			<HeaderCanned
-				theme={theme}
-				onChangeText={onChangeText}
-				onDepartmentSelect={onDepartmentSelect}
-				initial={{
-					value: fixedScopes[0],
-					text: fixedScopes[0].name
-				}}
-				departments={departments}
-				getDepartments={getDepartments}
-			/>
-
 			<FlatList
 				data={cannedResponsesScopeName}
 				extraData={cannedResponsesScopeName}
+				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={({ item }) => (
 					<CannedResponseItem
 						theme={theme}
@@ -227,8 +237,18 @@ const CannedResponsesListView = ({ navigation, route }) => {
 				keyExtractor={item => item._id || item.shortcut}
 				onEndReached={onEndReached}
 				onEndReachedThreshold={0.5}
+				ListHeaderComponent={renderHeader}
+				stickyHeaderIndices={[0]}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 			/>
+			{showFilterDropdown ? (
+				<Dropdown
+					departments={departments}
+					currentDepartment={currentDepartment}
+					onDepartmentSelected={onDepartmentSelect}
+					onClose={() => setShowFilterDropDown(false)}
+				/>
+			) : null}
 		</SafeAreaView>
 	);
 };
