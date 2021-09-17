@@ -14,19 +14,19 @@ import Input from './Input';
 import styles from './styles';
 
 interface IMultiSelect {
-	options: [];
+	options: any[];
 	onChange: Function;
 	placeholder: {
 		text: string;
 	};
-	context: number;
-	loading: boolean;
-	multiselect: boolean;
+	context?: number;
+	loading?: boolean;
+	multiselect?: boolean;
 	onSearch: Function;
 	onClose: Function;
 	inputStyle: object;
-	value: { text: any }[];
-	disabled: boolean;
+	value?: any[];
+	disabled?: boolean | object;
 	theme: string;
 }
 

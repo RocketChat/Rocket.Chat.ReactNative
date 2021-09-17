@@ -70,6 +70,7 @@ class RoomMembersView extends React.Component {
 		super(props);
 		this.mounted = false;
 		this.MUTE_INDEX = 0;
+		this.permissions = {};
 		const rid = props.route.params?.rid;
 		const room = props.route.params?.room;
 		this.state = {
@@ -96,10 +97,14 @@ class RoomMembersView extends React.Component {
 	}
 
 	async componentDidMount() {
+		const { room } = this.state;
 		this.mounted = true;
 		this.fetchMembers();
 
-		const { room } = this.state;
+		if (RocketChat.isGroupChat(room)) {
+			return;
+		}
+
 		const {
 			muteUserPermission,
 			setLeaderPermission,
@@ -427,15 +432,24 @@ class RoomMembersView extends React.Component {
 	};
 
 	fetchMembers = async () => {
-		const { rid, members, isLoading, allUsers, end } = this.state;
+		const { rid, members, isLoading, allUsers, end, room, filtering } = this.state;
+		const { t } = room;
+		let newMembers;
 		if (isLoading || end) {
 			return;
 		}
 
 		this.setState({ isLoading: true });
 		try {
-			const membersResult = await RocketChat.getRoomMembers(rid, allUsers, members.length, PAGE_SIZE);
-			const newMembers = membersResult.records;
+			const membersResult = await RocketChat.getRoomMembers({
+				rid,
+				roomType: t,
+				type: allUsers ? 'all' : 'online',
+				filter: filtering,
+				skip: members.length,
+				limit: PAGE_SIZE
+			});
+			newMembers = membersResult.members;
 			this.setState({
 				members: members.concat(newMembers || []),
 				isLoading: false,
