@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { withDimensions } from '../dimensions';
 import { isIOS, isTablet } from '../utils/deviceInfo';
@@ -19,9 +18,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SearchHeader = ({
-	onSearchChangeText, placeholder, theme, testID, width, height
-}) => {
+interface ISearchHeaderProps {
+	onSearchChangeText(): void;
+	placeholder: string;
+	theme: string;
+	testID: string;
+	width: number;
+	height: number;
+}
+
+const SearchHeader = ({ onSearchChangeText, placeholder, theme, testID, width, height }: ISearchHeaderProps) => {
 	const isLight = theme === 'light';
 	const isLandscape = width > height;
 	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
@@ -41,12 +47,4 @@ const SearchHeader = ({
 	);
 };
 
-SearchHeader.propTypes = {
-	onSearchChangeText: PropTypes.func.isRequired,
-	placeholder: PropTypes.string.isRequired,
-	theme: PropTypes.string,
-	testID: PropTypes.string,
-	width: PropTypes.number,
-	height: PropTypes.number
-};
 export default withDimensions(SearchHeader);
