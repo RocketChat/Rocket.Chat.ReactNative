@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Keyboard, NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
-import ImagePicker, { Image } from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
@@ -735,8 +735,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	onPressNoMatchCanned = async () => {
 		const { isMasterDetail, rid } = this.props;
 
-		// The error here is when we Take It a new chat from Omnichannel's Queued Chat and after join
-		// the chat, the MessageBox is mounted, but the room isn't created in Watermelon DB
+		// The error here is when we Take It a new chat from Omnichannel's Queued Chat and after join the chat,
+		// the MessageBox is mounted, but the room didn't found in Watermelon DB
 		if (!this.room) {
 			const db = database.active;
 			const subsCollection = db.get('subscriptions');
@@ -756,9 +756,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	};
 
-	openShareView = (
-		attachments: Image | (Image | Image[])[] | { filename: string; size: number; mime: string; path: string }[]
-	) => {
+	openShareView = (attachments: any) => {
 		const { message, replyCancel, replyWithMention } = this.props;
 		// Start a thread with an attachment
 		let { thread } = this;

@@ -148,7 +148,6 @@ export const MultiSelect = React.memo(
 		let button = multiselect ? (
 			<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} theme={theme} />
 		) : (
-			// @ts-ignore
 			<Input
 				onPress={onShow}
 				theme={theme}
@@ -165,7 +164,6 @@ export const MultiSelect = React.memo(
 		if (context === BLOCK_CONTEXT.FORM) {
 			const items: any = options.filter((option: any) => selected.includes(option.value));
 			button = (
-				// @ts-ignore
 				<Input
 					onPress={onShow}
 					theme={theme}

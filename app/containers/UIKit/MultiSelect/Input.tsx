@@ -12,9 +12,9 @@ interface IInput {
 	onPress: Function;
 	theme: string;
 	inputStyle: object;
-	disabled: boolean;
-	placeholder: string;
-	loading: boolean;
+	disabled?: boolean | object;
+	placeholder?: string;
+	loading?: boolean;
 	innerInputStyle: object;
 }
 
