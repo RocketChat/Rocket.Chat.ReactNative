@@ -1367,19 +1367,17 @@ const RocketChat = {
 	 * Returns an array of boolean for each permission from permissions arg
 	 */
 	async hasPermission(permissions, rid) {
+		const db = database.active;
+		const subsCollection = db.get('subscriptions');
 		let roomRoles = [];
-		if (rid) {
-			const db = database.active;
-			const subsCollection = db.get('subscriptions');
-			try {
-				// get the room from database
-				const room = await subsCollection.find(rid);
-				// get room roles
-				roomRoles = room.roles || [];
-			} catch (error) {
-				console.log('hasPermission -> Room not found');
-				return permissions.map(() => false);
-			}
+		try {
+			// get the room from database
+			const room = await subsCollection.find(rid);
+			// get room roles
+			roomRoles = room.roles || [];
+		} catch (error) {
+			console.log('hasPermission -> Room not found');
+			return permissions.map(() => false);
 		}
 
 		try {

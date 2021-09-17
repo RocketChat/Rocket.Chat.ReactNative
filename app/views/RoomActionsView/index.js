@@ -298,8 +298,10 @@ class RoomActionsView extends React.Component {
 	};
 
 	canViewCannedResponse = async () => {
+		const { room } = this.state;
 		const { viewCannedResponsesPermission } = this.props;
-		const permissions = await RocketChat.hasPermission([viewCannedResponsesPermission]);
+		const { rid } = room;
+		const permissions = await RocketChat.hasPermission([viewCannedResponsesPermission], rid);
 		return permissions[0];
 	};
 
