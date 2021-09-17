@@ -2,16 +2,21 @@ import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { HeaderBackButton } from '@react-navigation/stack';
 
 import I18n from '../../i18n';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
+import SearchHeader from '../../containers/SearchHeader';
+import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
 import RocketChat from '../../lib/rocketchat';
 import debounce from '../../utils/debounce';
 import Navigation from '../../lib/Navigation';
 import { goRoom } from '../../utils/goRoom';
+import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import { themes } from '../../constants/colors';
 import log from '../../utils/log';
@@ -42,7 +47,8 @@ const CannedResponsesListView = ({ navigation, route }) => {
 	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState([]);
 	const [departments, setDepartments] = useState([]);
 
-	// states used by the Dropdown
+	// states used by the filter in Header and Dropdown
+	const [isSearching, setIsSearching] = useState(false);
 	const [currentDepartment, setCurrentDepartment] = useState(fixedScopes[0]);
 	const [showFilterDropdown, setShowFilterDropDown] = useState(false);
 
@@ -55,15 +61,10 @@ const CannedResponsesListView = ({ navigation, route }) => {
 
 	const { room } = route.params;
 
+	const insets = useSafeAreaInsets();
 	const { theme } = useTheme();
 	const { isMasterDetail } = useSelector(state => state.app);
 	const { rooms } = useSelector(state => state.room);
-
-	useEffect(() => {
-		navigation.setOptions({
-			title: I18n.t('Canned_Responses')
-		});
-	}, []);
 
 	const getDepartments = debounce(async () => {
 		try {
@@ -205,14 +206,79 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		await getListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
 	};
 
-	const renderHeader = () => {
+	const getHeader = () => {
+		if (isSearching) {
+			const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 1 });
+			return {
+				headerTitleAlign: 'left',
+				headerLeft: () => (
+					<HeaderButton.Container left>
+						<HeaderButton.Item
+							iconName='close'
+							onPress={() => {
+								onChangeText();
+								setIsSearching(false);
+							}}
+						/>
+					</HeaderButton.Container>
+				),
+				headerTitle: () => <SearchHeader onSearchChangeText={onChangeText} />,
+				headerTitleContainerStyle: {
+					left: headerTitlePosition.left,
+					right: headerTitlePosition.right
+				},
+				headerRight: () => null
+			};
+		}
+
+		const options = {
+			headerLeft: () => (
+				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
+			),
+			headerTitleAlign: 'center',
+			headerTitle: I18n.t('Canned_Responses'),
+			headerTitleContainerStyle: {
+				left: null,
+				right: null
+			}
+		};
+
+		if (isMasterDetail) {
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
+		}
+
+		options.headerRight = () => (
+			<HeaderButton.Container>
+				<HeaderButton.Item iconName='search' onPress={() => setIsSearching(true)} />
+			</HeaderButton.Container>
+		);
+		return options;
+	};
+
+	const setHeader = () => {
+		const options = getHeader();
+		navigation.setOptions(options);
+	};
+
+	useEffect(() => {
+		setHeader();
+	}, [isSearching]);
+
+	const showDropdown = () => {
+		if (isSearching) {
+			setSearchText('');
+			setIsSearching(false);
+		}
+		setShowFilterDropDown(true);
+	};
+
+	const renderFlatListHeader = () => {
 		if (!departments.length) {
 			return null;
 		}
-
 		return (
 			<>
-				<DropdownItemHeader department={currentDepartment} onPress={() => setShowFilterDropDown(true)} />
+				<DropdownItemHeader department={currentDepartment} onPress={showDropdown} />
 				<List.Separator />
 			</>
 		);
@@ -239,7 +305,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 				keyExtractor={item => item._id || item.shortcut}
 				onEndReached={onEndReached}
 				onEndReachedThreshold={0.5}
-				ListHeaderComponent={renderHeader}
+				ListHeaderComponent={renderFlatListHeader}
 				stickyHeaderIndices={[0]}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 			/>
