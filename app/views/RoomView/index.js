@@ -439,12 +439,19 @@ class RoomView extends React.Component {
 			navigation.navigate('ModalStackNavigator', {
 				screen: screen ?? 'RoomActionsView',
 				params: {
-					rid: this.rid, t: this.t, room, member, showCloseModal: !!screen, navToRoomInfo: navParam => this.navToRoomInfo(navParam)
+					rid: this.rid,
+					t: this.t,
+					room,
+					member,
+					showCloseModal: !!screen
 				}
 			});
 		} else {
 			navigation.push('RoomActionsView', {
-				rid: this.rid, t: this.t, room, member, navToRoomInfo: navParam => this.navToRoomInfo(navParam)
+				rid: this.rid,
+				t: this.t,
+				room,
+				member
 			});
 		}
 	};

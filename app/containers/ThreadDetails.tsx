@@ -93,21 +93,12 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, thread, tim
 					</Text>
 				</View>
 
-				{thread ? (
-					<View style={styles.detailContainer}>
-						<CustomIcon name='user' size={24} color={themes[theme].auxiliaryText} />
-						<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-							{replies}
-						</Text>
-					</View>
-				) : (
-					<View style={styles.detailContainer}>
-						<CustomIcon name='clock' size={24} color={themes[theme].auxiliaryText} />
-						<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-							{time}
-						</Text>
-					</View>
-				)}
+				<View style={styles.detailContainer}>
+					<CustomIcon name={thread ? 'user' : 'clock'} size={24} color={themes[theme].auxiliaryText} />
+					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+						{thread ? replies : time}
+					</Text>
+				</View>
 			</View>
 
 			{thread ? (
