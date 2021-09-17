@@ -1,19 +1,19 @@
 export interface IAvatar {
-	server?: string;
+	server: string;
 	style: any;
 	text: string;
-	avatar?: string;
+	avatar: string;
 	emoji: string;
 	size: number;
 	borderRadius: number;
-	type?: string;
-	children?: JSX.Element;
+	type: string;
+	children: JSX.Element;
 	user: {
 		id: string;
 		token: string;
 	};
 	theme: string;
-	onPress?(): void;
+	onPress(): void;
 	getCustomEmoji(): any;
 	avatarETag: string;
 	isStatic: boolean;
