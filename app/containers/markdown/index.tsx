@@ -23,24 +23,24 @@ import { isValidURL } from '../../utils/url';
 
 interface IMarkdownProps {
 	msg: string;
-	getCustomEmoji?: Function;
+	getCustomEmoji: Function;
 	baseUrl: string;
 	username: string;
-	tmid?: string;
-	isEdited?: boolean;
+	tmid: string;
+	isEdited: boolean;
 	numberOfLines: number;
-	customEmojis?: boolean;
+	customEmojis: boolean;
 	useRealName: boolean;
 	channels: {
 		name: string;
 		_id: number;
 	}[];
-	mentions?: object[];
+	mentions: object[];
 	navToRoomInfo: Function;
-	preview?: boolean;
+	preview: boolean;
 	theme: string;
-	testID?: string;
-	style?: any;
+	testID: string;
+	style: any;
 	onLinkPress: Function;
 }
 
