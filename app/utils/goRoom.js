@@ -20,7 +20,7 @@ const navigate = ({ item, isMasterDetail, ...props }) => {
 	});
 };
 
-export const goRoom = async({ item = {}, isMasterDetail = false, ...props }) => {
+export const goRoom = async ({ item = {}, isMasterDetail = false, ...props }) => {
 	if (item.t === 'd' && item.search) {
 		// if user is using the search we need first to join/create room
 		try {

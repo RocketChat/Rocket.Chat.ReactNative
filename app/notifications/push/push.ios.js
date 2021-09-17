@@ -19,7 +19,7 @@ class PushNotification {
 		this.onNotification = null;
 		this.deviceToken = null;
 
-		NotificationsIOS.addEventListener('remoteNotificationsRegistered', (deviceToken) => {
+		NotificationsIOS.addEventListener('remoteNotificationsRegistered', deviceToken => {
 			this.deviceToken = deviceToken;
 		});
 
@@ -32,10 +32,12 @@ class PushNotification {
 		});
 
 		const actions = [];
-		actions.push(new NotificationCategory({
-			identifier: 'MESSAGE',
-			actions: [replyAction]
-		}));
+		actions.push(
+			new NotificationCategory({
+				identifier: 'MESSAGE',
+				actions: [replyAction]
+			})
+		);
 		NotificationsIOS.requestPermissions(actions);
 	}
 
@@ -45,7 +47,7 @@ class PushNotification {
 
 	setBadgeCount = (count = 0) => {
 		NotificationsIOS.setBadgesCount(count);
-	}
+	};
 
 	async configure(params) {
 		this.onRegister = params.onRegister;

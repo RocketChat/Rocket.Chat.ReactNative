@@ -26,7 +26,7 @@ test('render ascii smile', () => {
 });
 
 test('render several ascii emojis', () => {
-	expect(shortnameToUnicode(':) :( -_- \':-D')).toBe('🙂😞😑😅');
+	expect(shortnameToUnicode(":) :( -_- ':-D")).toBe('🙂😞😑😅');
 });
 
 test('render text with ascii emoji', () => {
@@ -34,5 +34,5 @@ test('render text with ascii emoji', () => {
 });
 
 test('render emoji and ascii emoji', () => {
-	expect(shortnameToUnicode('\':-D :joy:')).toBe('😅 😂');
+	expect(shortnameToUnicode("':-D :joy:")).toBe('😅 😂');
 });

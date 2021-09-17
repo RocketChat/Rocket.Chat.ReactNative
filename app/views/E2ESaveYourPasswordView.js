@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-	Text,
-	View,
-	Clipboard,
-	ScrollView,
-	StyleSheet
-} from 'react-native';
+import { Clipboard, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { encryptionSetBanner as encryptionSetBannerAction } from '../actions/encryption';
 import { E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
@@ -15,15 +9,15 @@ import * as HeaderButton from '../containers/HeaderButton';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
 import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
 import { themes } from '../constants/colors';
 import EventEmitter from '../utils/events';
 import Button from '../containers/Button';
 import { withTheme } from '../theme';
-import sharedStyles from './Styles';
 import I18n from '../i18n';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -63,14 +57,14 @@ class E2ESaveYourPasswordView extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
 		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='e2e-save-your-password-view-close' />,
 		title: I18n.t('Save_Your_E2E_Password')
-	})
+	});
 
 	static propTypes = {
 		server: PropTypes.string,
 		navigation: PropTypes.object,
 		encryptionSetBanner: PropTypes.func,
 		theme: PropTypes.string
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -83,11 +77,11 @@ class E2ESaveYourPasswordView extends React.Component {
 		this.mounted = true;
 	}
 
-	init = async() => {
+	init = async () => {
 		const { server } = this.props;
 		try {
 			// Set stored password on local state
-			const password = await UserPreferences.getStringAsync(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
+			const password = await UserPreferences.getStringAsync(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
 			if (this.mounted) {
 				this.setState({ password });
 			} else {
@@ -96,30 +90,30 @@ class E2ESaveYourPasswordView extends React.Component {
 		} catch {
 			// Do nothing
 		}
-	}
+	};
 
-	onSaved = async() => {
+	onSaved = async () => {
 		logEvent(events.E2E_SAVE_PW_SAVED);
 		const { navigation, server, encryptionSetBanner } = this.props;
 		// Remove stored password
-		await UserPreferences.removeItem(`${ server }-${ E2E_RANDOM_PASSWORD_KEY }`);
+		await UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
 		// Hide encryption banner
 		encryptionSetBanner();
 		navigation.pop();
-	}
+	};
 
 	onCopy = () => {
 		logEvent(events.E2E_SAVE_PW_COPY);
 		const { password } = this.state;
 		Clipboard.setString(password);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
-	}
+	};
 
 	onHowItWorks = () => {
 		logEvent(events.E2E_SAVE_PW_HOW_IT_WORKS);
 		const { navigation } = this.props;
 		navigation.navigate('E2EHowItWorksView');
-	}
+	};
 
 	render() {
 		const { password } = this.state;
@@ -128,9 +122,14 @@ class E2ESaveYourPasswordView extends React.Component {
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='e2e-save-password-view'>
 				<StatusBar />
-				<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
+				<ScrollView
+					{...scrollPersistTaps}
+					style={sharedStyles.container}
+					contentContainerStyle={sharedStyles.containerScrollView}>
 					<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
-						<Text style={[styles.warning, { color: themes[theme].dangerColor }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>
+						<Text style={[styles.warning, { color: themes[theme].dangerColor }]}>
+							{I18n.t('Save_Your_Encryption_Password_warning')}
+						</Text>
 						<View style={styles.content}>
 							<Text style={[styles.passwordText, { color: themes[theme].bodyText }]}>{I18n.t('Your_password_is')}</Text>
 							<Text style={[styles.password, { color: themes[theme].bodyText }]}>{password}</Text>

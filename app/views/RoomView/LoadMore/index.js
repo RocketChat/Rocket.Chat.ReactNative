@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { Text, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../../../constants/colors';
@@ -25,7 +25,7 @@ const LoadMore = ({ load, type, runOnRender }) => {
 	const { theme } = useTheme();
 	const [loading, setLoading] = useState(false);
 
-	const handleLoad = useCallback(async() => {
+	const handleLoad = useCallback(async () => {
 		try {
 			if (loading) {
 				return;
@@ -52,17 +52,12 @@ const LoadMore = ({ load, type, runOnRender }) => {
 	}
 
 	return (
-		<Touch
-			onPress={handleLoad}
-			style={styles.button}
-			theme={theme}
-			enabled={!loading}
-		>
-			{
-				loading
-					? <ActivityIndicator color={themes[theme].auxiliaryText} />
-					: <Text style={[styles.text, { color: themes[theme].titleText }]}>{I18n.t(text)}</Text>
-			}
+		<Touch onPress={handleLoad} style={styles.button} theme={theme} enabled={!loading}>
+			{loading ? (
+				<ActivityIndicator color={themes[theme].auxiliaryText} />
+			) : (
+				<Text style={[styles.text, { color: themes[theme].titleText }]}>{I18n.t(text)}</Text>
+			)}
 		</Touch>
 	);
 };
