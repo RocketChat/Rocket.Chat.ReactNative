@@ -53,11 +53,12 @@ interface IThreadDetails {
 	badgeColor: string;
 	toggleFollowThread: Function;
 	thread: boolean;
+	time: string;
 	style: object;
 	theme: string;
 }
 
-const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, thread, style, theme }: IThreadDetails) => {
+const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, thread, time, style, theme }: IThreadDetails) => {
 	let { tcount, dcount } = item;
 	if (thread) {
 		if (tcount! >= 1000) {
@@ -99,7 +100,14 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, thread, sty
 							{replies}
 						</Text>
 					</View>
-				) : null}
+				) : (
+					<View style={styles.detailContainer}>
+						<CustomIcon name='clock' size={24} color={themes[theme].auxiliaryText} />
+						<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+							{time}
+						</Text>
+					</View>
+				)}
 			</View>
 
 			{thread ? (

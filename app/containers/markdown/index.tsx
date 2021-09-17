@@ -28,20 +28,20 @@ interface IMarkdownProps {
 	username: string;
 	tmid?: string;
 	isEdited?: boolean;
-	numberOfLines?: number;
+	numberOfLines: number;
 	customEmojis?: boolean;
-	useRealName?: boolean;
-	channels?: {
+	useRealName: boolean;
+	channels: {
 		name: string;
 		_id: number;
 	}[];
 	mentions?: object[];
-	navToRoomInfo?: Function;
+	navToRoomInfo: Function;
 	preview?: boolean;
-	theme?: string;
+	theme: string;
 	testID?: string;
 	style?: any;
-	onLinkPress?: Function;
+	onLinkPress: Function;
 }
 
 type TLiteral = {
