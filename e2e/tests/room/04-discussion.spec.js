@@ -198,7 +198,7 @@ describe('Discussion', () => {
 				.toBeVisible()
 				.withTimeout(5000);
 			await element(by.id('room-actions-discussions')).tap();
-			await waitFor(element(by.id('discussion-messages-view')))
+			await waitFor(element(by.id('discussions-view')))
 				.toBeVisible()
 				.withTimeout(5000);
 		});

@@ -208,7 +208,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 	}
 
 	return (
-		<SafeAreaView testID='discussion-messages-view'>
+		<SafeAreaView testID='discussions-view'>
 			<StatusBar />
 			<FlatList
 				data={isSearching ? search : discussions}
