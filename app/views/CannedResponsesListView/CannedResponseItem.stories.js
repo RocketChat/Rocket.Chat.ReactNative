@@ -6,43 +6,36 @@ import CannedResponseItem from './CannedResponseItem';
 
 const stories = storiesOf('CannedResponseItem', module);
 
-const item = [{
-	_id: 'x1-x1-x1',
-	shortcut: '!FAQ4',
-	text: 'ZCVXZVXCZVZXVZXCVZXCVXZCVZX',
-	scope: 'user',
-	userId: 'xxx-x-xx-x-x-',
-	createdBy: {
-		_id: 'xxx-x-xx-x-x-',
-		username: 'diogo.pinto'
+const item = [
+	{
+		_id: 'x1-x1-x1',
+		shortcut: '!FAQ4',
+		text: 'ZCVXZVXCZVZXVZXCVZXCVXZCVZX',
+		scope: 'user',
+		userId: 'xxx-x-xx-x-x-',
+		createdBy: {
+			_id: 'xxx-x-xx-x-x-',
+			username: 'rocket.cat'
+		},
+		_createdAt: '2021-08-11T01:23:17.379Z',
+		_updatedAt: '2021-08-11T01:23:17.379Z',
+		scopeName: 'Private'
 	},
-	_createdAt: '2021-08-11T01:23:17.379Z',
-	_updatedAt: '2021-08-11T01:23:17.379Z',
-	scopeName: 'Private'
-},
-{
-	_id: 'x1-1x-1x',
-	shortcut: 'test4mobilePrivate',
-	text: 'test for mobile private',
-	scope: 'user',
-	tags: [
-		'HQ',
-		'Closed',
-		'HQ',
-		'Problema produto Y',
-		'HQ',
-		'Closed',
-		'Problema produto Y'
-	],
-	userId: 'laslsaklasal',
-	createdBy: {
-		_id: 'laslsaklasal',
-		username: 'reinaldo.neto'
-	},
-	_createdAt: '2021-09-02T17:44:52.095Z',
-	_updatedAt: '2021-09-02T18:24:40.436Z',
-	scopeName: 'Private'
-}
+	{
+		_id: 'x1-1x-1x',
+		shortcut: 'test4mobilePrivate',
+		text: 'test for mobile private',
+		scope: 'user',
+		tags: ['HQ', 'Closed', 'HQ', 'Problem in Product Y', 'HQ', 'Closed', 'Problem in Product Y'],
+		userId: 'laslsaklasal',
+		createdBy: {
+			_id: 'laslsaklasal',
+			username: 'reinaldo.neto'
+		},
+		_createdAt: '2021-09-02T17:44:52.095Z',
+		_updatedAt: '2021-09-02T18:24:40.436Z',
+		scopeName: 'Private'
+	}
 ];
 
 const theme = 'light';
