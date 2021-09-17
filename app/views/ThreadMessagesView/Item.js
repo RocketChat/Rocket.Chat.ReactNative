@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, toggleFollowThread }) => {
+const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, toggleFollowThread, thread }) => {
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
 	if (item?.ts) {
@@ -66,19 +66,10 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 	return (
 		<Touchable
 			onPress={() => onPress(item)}
-			testID={`thread-messages-view-${item.msg}`}
+			testID={thread ? `thread-messages-view-${item.msg}` : `discussions-view-${item.msg}`}
 			style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<View style={styles.container}>
-				<Avatar
-					style={styles.avatar}
-					text={item?.u?.username}
-					size={36}
-					borderRadius={4}
-					baseUrl={baseUrl}
-					userId={user?.id}
-					token={user?.token}
-					theme={theme}
-				/>
+				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} user={user} theme={theme} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
 						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
@@ -98,7 +89,13 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 						/>
 						{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
 					</View>
-					<ThreadDetails item={item} user={user} toggleFollowThread={toggleFollowThread} style={styles.threadDetails} />
+					<ThreadDetails
+						item={item}
+						user={user}
+						toggleFollowThread={toggleFollowThread}
+						thread={thread}
+						style={styles.threadDetails}
+					/>
 				</View>
 			</View>
 		</Touchable>
@@ -113,7 +110,8 @@ Item.propTypes = {
 	user: PropTypes.object,
 	badgeColor: PropTypes.string,
 	onPress: PropTypes.func,
-	toggleFollowThread: PropTypes.func
+	toggleFollowThread: PropTypes.func,
+	thread: PropTypes.bool
 };
 
 export default withTheme(Item);

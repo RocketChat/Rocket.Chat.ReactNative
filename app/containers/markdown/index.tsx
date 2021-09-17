@@ -23,25 +23,25 @@ import { isValidURL } from '../../utils/url';
 
 interface IMarkdownProps {
 	msg: string;
-	getCustomEmoji: Function;
+	getCustomEmoji?: Function;
 	baseUrl: string;
 	username: string;
-	tmid: string;
-	isEdited: boolean;
-	numberOfLines: number;
-	customEmojis: boolean;
-	useRealName: boolean;
-	channels: {
+	tmid?: string;
+	isEdited?: boolean;
+	numberOfLines?: number;
+	customEmojis?: boolean;
+	useRealName?: boolean;
+	channels?: {
 		name: string;
 		_id: number;
 	}[];
-	mentions: object[];
-	navToRoomInfo: Function;
-	preview: boolean;
-	theme: string;
-	testID: string;
-	style: any;
-	onLinkPress: Function;
+	mentions?: object[];
+	navToRoomInfo?: Function;
+	preview?: boolean;
+	theme?: string;
+	testID?: string;
+	style?: any;
+	onLinkPress?: Function;
 }
 
 type TLiteral = {
