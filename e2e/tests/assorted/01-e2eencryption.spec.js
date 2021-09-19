@@ -281,6 +281,10 @@ describe('E2E Encryption', () => {
 					.withTimeout(2000);
 				await expect(element(by.text("You're going to be logged out."))).toExist();
 				await element(by.text('Yes, reset it').and(by.type(alertButtonType))).tap();
+				await waitFor(element(by.text('OK')))
+					.toBeVisible()
+					.withTimeout(15000);
+				await element(by.text('OK').and(by.type(alertButtonType))).tap();
 				await sleep(2000);
 				await waitFor(element(by.id('workspace-view')))
 					.toBeVisible()
