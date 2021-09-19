@@ -236,9 +236,7 @@ export default appSchema({
 		}),
 		tableSchema({
 			name: 'roles',
-			columns: [
-				{ name: 'description', type: 'string', isOptional: true }
-			]
+			columns: [{ name: 'description', type: 'string', isOptional: true }]
 		}),
 		tableSchema({
 			name: 'permissions',

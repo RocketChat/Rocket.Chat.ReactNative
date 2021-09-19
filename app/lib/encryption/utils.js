@@ -12,7 +12,7 @@ export const utf8ToBuffer = SimpleCrypto.utils.convertUtf8ToArrayBuffer;
 export const bufferToB64 = arrayBuffer => fromByteArray(new Uint8Array(arrayBuffer));
 // ArrayBuffer -> Base64 URI Safe
 // https://github.com/herrjemand/Base64URL-ArrayBuffer/blob/master/lib/base64url-arraybuffer.js
-export const bufferToB64URI = (buffer) => {
+export const bufferToB64URI = buffer => {
 	const uintArray = new Uint8Array(buffer);
 	const len = uintArray.length;
 	let base64 = '';
@@ -24,7 +24,7 @@ export const bufferToB64URI = (buffer) => {
 		base64 += BASE64URI[uintArray[i + 2] & 63];
 	}
 
-	if ((len % 3) === 2) {
+	if (len % 3 === 2) {
 		base64 = base64.substring(0, base64.length - 1);
 	} else if (len % 3 === 1) {
 		base64 = base64.substring(0, base64.length - 2);
@@ -33,13 +33,13 @@ export const bufferToB64URI = (buffer) => {
 	return base64;
 };
 // SimpleCrypto.utils.convertArrayBufferToUtf8 is not working with unicode emoji
-export const bufferToUtf8 = (buffer) => {
+export const bufferToUtf8 = buffer => {
 	const uintArray = new Uint8Array(buffer);
 	const encodedString = String.fromCharCode.apply(null, uintArray);
 	const decodedString = decodeURIComponent(escape(encodedString));
 	return decodedString;
 };
-export const splitVectorData = (text) => {
+export const splitVectorData = text => {
 	const vector = text.slice(0, 16);
 	const data = text.slice(16);
 	return [vector, data];
@@ -50,11 +50,11 @@ export const joinVectorData = (vector, data) => {
 	output.set(new Uint8Array(data), vector.byteLength);
 	return output.buffer;
 };
-export const toString = (thing) => {
+export const toString = thing => {
 	if (typeof thing === 'string') {
 		return thing;
 	}
 	// eslint-disable-next-line new-cap
 	return new ByteBuffer.wrap(thing).toString('binary');
 };
-export const randomPassword = () => `${ random(3) }-${ random(3) }-${ random(3) }`.toLowerCase();
+export const randomPassword = () => `${random(3)}-${random(3)}-${random(3)}`.toLowerCase();
