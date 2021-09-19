@@ -2,7 +2,9 @@ import database from '../database';
 import store from '../createStore';
 
 const restTypes = {
-	channel: 'channels', direct: 'im', group: 'groups'
+	channel: 'channels',
+	direct: 'im',
+	group: 'groups'
 };
 
 async function open({ type, rid, name }) {
@@ -24,7 +26,7 @@ async function open({ type, rid, name }) {
 		if (type === 'group') {
 			try {
 				// RC 0.61.0
-				await this.sdk.post(`${ restTypes[type] }.open`, params);
+				await this.sdk.post(`${restTypes[type]}.open`, params);
 			} catch (e) {
 				if (!(e.data && /is already open/.test(e.data.error))) {
 					return false;
@@ -36,7 +38,7 @@ async function open({ type, rid, name }) {
 		// we'll get info from the room
 		if ((type === 'channel' || type === 'group') && !rid) {
 			// RC 0.72.0
-			const result = await this.sdk.get(`${ restTypes[type] }.info`, params);
+			const result = await this.sdk.get(`${restTypes[type]}.info`, params);
 			if (result.success) {
 				const room = result[type];
 				room.rid = room._id;
@@ -63,7 +65,7 @@ export default async function canOpenRoom({ rid, path, isCall }) {
 			// Extract rid from a Jitsi URL
 			// Eg.: [Jitsi_URL_Room_Prefix][uniqueID][rid][?jwt]
 			const { Jitsi_URL_Room_Prefix, uniqueID } = store.getState().settings;
-			rid = path.replace(`${ Jitsi_URL_Room_Prefix }${ uniqueID }`, '').replace(/\?(.*)/g, '');
+			rid = path.replace(`${Jitsi_URL_Room_Prefix}${uniqueID}`, '').replace(/\?(.*)/g, '');
 		}
 
 		if (rid) {

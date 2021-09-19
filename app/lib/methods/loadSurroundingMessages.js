@@ -3,15 +3,15 @@ import moment from 'moment';
 import orderBy from 'lodash/orderBy';
 
 import log from '../../utils/log';
-import updateMessages from './updateMessages';
 import { getMessageById } from '../database/services/Message';
 import { MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../constants/messageTypeLoad';
 import { generateLoadMoreId } from '../utils';
+import updateMessages from './updateMessages';
 
 const COUNT = 50;
 
 export default function loadSurroundingMessages({ messageId, rid }) {
-	return new Promise(async(resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await this.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);
 			let messages = EJSON.fromJSONValue(data?.messages);

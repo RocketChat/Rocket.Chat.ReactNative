@@ -32,7 +32,6 @@ export function inviteLinksClear() {
 	};
 }
 
-
 export function inviteLinksCreate(rid) {
 	return {
 		type: types.INVITE_LINKS.CREATE,

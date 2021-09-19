@@ -6,7 +6,7 @@ export default class Upload extends Model {
 
 	static associations = {
 		subscriptions: { type: 'belongs_to', key: 'rid' }
-	}
+	};
 
 	@field('path') path;
 

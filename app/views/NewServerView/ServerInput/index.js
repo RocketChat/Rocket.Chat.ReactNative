@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import TextInput from '../../../containers/TextInput';
 import * as List from '../../../containers/List';
 import { themes } from '../../../constants/colors';
-import Item from './Item';
 import I18n from '../../../i18n';
+import Item from './Item';
 
 const styles = StyleSheet.create({
 	container: {
@@ -30,15 +30,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ServerInput = ({
-	text,
-	theme,
-	serversHistory,
-	onChangeText,
-	onSubmit,
-	onDelete,
-	onPressServerHistory
-}) => {
+const ServerInput = ({ text, theme, serversHistory, onChangeText, onSubmit, onDelete, onPressServerHistory }) => {
 	const [focused, setFocused] = useState(false);
 	return (
 		<View style={styles.container}>
@@ -58,19 +50,22 @@ const ServerInput = ({
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
 			/>
-			{
-				focused && serversHistory?.length
-					? (
-						<View style={[styles.serverHistory, { backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }]}>
-							<FlatList
-								data={serversHistory}
-								renderItem={({ item }) => <Item item={item} theme={theme} onPress={() => onPressServerHistory(item)} onDelete={onDelete} />}
-								ItemSeparatorComponent={List.Separator}
-								keyExtractor={item => item.id}
-							/>
-						</View>
-					) : null
-			}
+			{focused && serversHistory?.length ? (
+				<View
+					style={[
+						styles.serverHistory,
+						{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }
+					]}>
+					<FlatList
+						data={serversHistory}
+						renderItem={({ item }) => (
+							<Item item={item} theme={theme} onPress={() => onPressServerHistory(item)} onDelete={onDelete} />
+						)}
+						ItemSeparatorComponent={List.Separator}
+						keyExtractor={item => item.id}
+					/>
+				</View>
+			) : null}
 		</View>
 	);
 };

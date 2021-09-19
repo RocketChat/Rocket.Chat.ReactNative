@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { verticalScale, moderateScale } from '../../utils/scaling';
+import { moderateScale, verticalScale } from '../../utils/scaling';
 import { isTablet } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 
