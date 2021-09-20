@@ -1421,7 +1421,6 @@ Array [
             "justifyContent": "center",
             "marginBottom": 12,
             "marginLeft": 8,
-            "marginRight": 32,
             "opacity": 1,
             "paddingHorizontal": 14,
             "width": 56,
@@ -1451,26 +1450,6 @@ Array [
           Use
         </Text>
       </View>
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "color": "#9ca2a8",
-              "fontSize": 20,
-            },
-            undefined,
-            Object {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            Object {},
-          ]
-        }
-      >
-        
-      </Text>
     </View>
     <Text
       ellipsizeMode="tail"
@@ -1497,31 +1476,15 @@ Array [
       ZCVXZVXCZVZXVZXCVZXCVXZCVZX
       ”
     </Text>
-    <RCTScrollView
-      contentContainerStyle={
+    <View
+      style={
         Object {
           "flexDirection": "row",
-          "flexWrap": "wrap",
+          "overflow": "hidden",
         }
       }
-      scrollEnabled={false}
-    >
-      <View />
-    </RCTScrollView>
+    />
   </View>,
-  <View
-    style={
-      Array [
-        Object {
-          "height": 0.5,
-        },
-        undefined,
-        Object {
-          "backgroundColor": "#cbcbcc",
-        },
-      ]
-    }
-  />,
   <View
     accessible={true}
     focusable={true}
@@ -1619,7 +1582,6 @@ Array [
             "justifyContent": "center",
             "marginBottom": 12,
             "marginLeft": 8,
-            "marginRight": 32,
             "opacity": 1,
             "paddingHorizontal": 14,
             "width": 56,
@@ -1649,26 +1611,6 @@ Array [
           Use
         </Text>
       </View>
-      <Text
-        allowFontScaling={false}
-        style={
-          Array [
-            Object {
-              "color": "#9ca2a8",
-              "fontSize": 20,
-            },
-            undefined,
-            Object {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            Object {},
-          ]
-        }
-      >
-        
-      </Text>
     </View>
     <Text
       ellipsizeMode="tail"
@@ -1695,291 +1637,275 @@ Array [
       test for mobile private
       ”
     </Text>
-    <RCTScrollView
-      contentContainerStyle={
+    <View
+      style={
         Object {
           "flexDirection": "row",
-          "flexWrap": "wrap",
+          "overflow": "hidden",
         }
       }
-      scrollEnabled={false}
     >
-      <View>
-        <View
+      <View
+        style={
+          Array [
+            Object {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            Object {
+              "backgroundColor": "#E6E6E7",
+            },
+          ]
+        }
+      >
+        <Text
           style={
             Array [
               Object {
-                "borderRadius": 4,
-                "height": 16,
-                "marginRight": 4,
-                "marginTop": 8,
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
               },
               Object {
-                "backgroundColor": "#E6E6E7",
+                "color": "#6C727A",
               },
             ]
           }
         >
-          <Text
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "paddingBottom": 0,
-                  "paddingHorizontal": 4,
-                  "paddingTop": 0,
-                  "textAlign": "left",
-                },
-                Object {
-                  "color": "#6C727A",
-                },
-              ]
-            }
-          >
-            HQ
-          </Text>
-        </View>
-        <View
-          style={
-            Array [
-              Object {
-                "borderRadius": 4,
-                "height": 16,
-                "marginRight": 4,
-                "marginTop": 8,
-              },
-              Object {
-                "backgroundColor": "#E6E6E7",
-              },
-            ]
-          }
-        >
-          <Text
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "paddingBottom": 0,
-                  "paddingHorizontal": 4,
-                  "paddingTop": 0,
-                  "textAlign": "left",
-                },
-                Object {
-                  "color": "#6C727A",
-                },
-              ]
-            }
-          >
-            Closed
-          </Text>
-        </View>
-        <View
-          style={
-            Array [
-              Object {
-                "borderRadius": 4,
-                "height": 16,
-                "marginRight": 4,
-                "marginTop": 8,
-              },
-              Object {
-                "backgroundColor": "#E6E6E7",
-              },
-            ]
-          }
-        >
-          <Text
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "paddingBottom": 0,
-                  "paddingHorizontal": 4,
-                  "paddingTop": 0,
-                  "textAlign": "left",
-                },
-                Object {
-                  "color": "#6C727A",
-                },
-              ]
-            }
-          >
-            HQ
-          </Text>
-        </View>
-        <View
-          style={
-            Array [
-              Object {
-                "borderRadius": 4,
-                "height": 16,
-                "marginRight": 4,
-                "marginTop": 8,
-              },
-              Object {
-                "backgroundColor": "#E6E6E7",
-              },
-            ]
-          }
-        >
-          <Text
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "paddingBottom": 0,
-                  "paddingHorizontal": 4,
-                  "paddingTop": 0,
-                  "textAlign": "left",
-                },
-                Object {
-                  "color": "#6C727A",
-                },
-              ]
-            }
-          >
-            Problem in Product Y
-          </Text>
-        </View>
-        <View
-          style={
-            Array [
-              Object {
-                "borderRadius": 4,
-                "height": 16,
-                "marginRight": 4,
-                "marginTop": 8,
-              },
-              Object {
-                "backgroundColor": "#E6E6E7",
-              },
-            ]
-          }
-        >
-          <Text
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "paddingBottom": 0,
-                  "paddingHorizontal": 4,
-                  "paddingTop": 0,
-                  "textAlign": "left",
-                },
-                Object {
-                  "color": "#6C727A",
-                },
-              ]
-            }
-          >
-            HQ
-          </Text>
-        </View>
-        <View
-          style={
-            Array [
-              Object {
-                "borderRadius": 4,
-                "height": 16,
-                "marginRight": 4,
-                "marginTop": 8,
-              },
-              Object {
-                "backgroundColor": "#E6E6E7",
-              },
-            ]
-          }
-        >
-          <Text
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "paddingBottom": 0,
-                  "paddingHorizontal": 4,
-                  "paddingTop": 0,
-                  "textAlign": "left",
-                },
-                Object {
-                  "color": "#6C727A",
-                },
-              ]
-            }
-          >
-            Closed
-          </Text>
-        </View>
-        <View
-          style={
-            Array [
-              Object {
-                "borderRadius": 4,
-                "height": 16,
-                "marginRight": 4,
-                "marginTop": 8,
-              },
-              Object {
-                "backgroundColor": "#E6E6E7",
-              },
-            ]
-          }
-        >
-          <Text
-            style={
-              Array [
-                Object {
-                  "backgroundColor": "transparent",
-                  "fontFamily": "System",
-                  "fontSize": 12,
-                  "fontWeight": "400",
-                  "paddingBottom": 0,
-                  "paddingHorizontal": 4,
-                  "paddingTop": 0,
-                  "textAlign": "left",
-                },
-                Object {
-                  "color": "#6C727A",
-                },
-              ]
-            }
-          >
-            Problem in Product Y
-          </Text>
-        </View>
+          HQ
+        </Text>
       </View>
-    </RCTScrollView>
+      <View
+        style={
+          Array [
+            Object {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            Object {
+              "backgroundColor": "#E6E6E7",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Closed
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            Object {
+              "backgroundColor": "#E6E6E7",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          HQ
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            Object {
+              "backgroundColor": "#E6E6E7",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Problem in Product Y
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            Object {
+              "backgroundColor": "#E6E6E7",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          HQ
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            Object {
+              "backgroundColor": "#E6E6E7",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Closed
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "borderRadius": 4,
+              "height": 16,
+              "marginRight": 4,
+              "marginTop": 8,
+            },
+            Object {
+              "backgroundColor": "#E6E6E7",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "fontFamily": "System",
+                "fontSize": 12,
+                "fontWeight": "400",
+                "paddingBottom": 0,
+                "paddingHorizontal": 4,
+                "paddingTop": 0,
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#6C727A",
+              },
+            ]
+          }
+        >
+          Problem in Product Y
+        </Text>
+      </View>
+    </View>
   </View>,
-  <View
-    style={
-      Array [
-        Object {
-          "height": 0.5,
-        },
-        undefined,
-        Object {
-          "backgroundColor": "#cbcbcc",
-        },
-      ]
-    }
-  />,
 ]
 `;
 
