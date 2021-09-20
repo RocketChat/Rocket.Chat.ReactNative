@@ -78,6 +78,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 			setRoom(r);
 		} catch (error) {
 			console.log('CannedResponsesListView: Room not found');
+			log(error);
 		}
 	};
 
@@ -98,6 +99,9 @@ const CannedResponsesListView = ({ navigation, route }) => {
 	};
 
 	const navigateToRoom = item => {
+		if (!room) {
+			return;
+		}
 		const { name, username } = room;
 		const params = {
 			rid: room.rid,
