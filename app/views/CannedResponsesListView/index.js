@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton } from '@react-navigation/stack';
 
+import database from '../../lib/database';
 import I18n from '../../i18n';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
@@ -44,6 +45,8 @@ const fixedScopes = [
 ];
 
 const CannedResponsesListView = ({ navigation, route }) => {
+	const [room, setRoom] = useState(null);
+
 	const [cannedResponses, setCannedResponses] = useState([]);
 	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState([]);
 	const [departments, setDepartments] = useState([]);
@@ -61,12 +64,22 @@ const CannedResponsesListView = ({ navigation, route }) => {
 	const [loading, setLoading] = useState(true);
 	const [offset, setOffset] = useState(0);
 
-	const { room } = route.params;
-
 	const insets = useSafeAreaInsets();
 	const { theme } = useTheme();
 	const { isMasterDetail } = useSelector(state => state.app);
 	const { rooms } = useSelector(state => state.room);
+
+	const getRoomFromDb = async () => {
+		const { rid } = route.params;
+		const db = database.active;
+		const subsCollection = db.get('subscriptions');
+		try {
+			const r = await subsCollection.find(rid);
+			setRoom(r);
+		} catch (error) {
+			console.log('CannedResponsesListView: Room not found');
+		}
+	};
 
 	const getDepartments = debounce(async () => {
 		try {
@@ -161,6 +174,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 	); // use debounce with useCallback https://stackoverflow.com/a/58594890
 
 	useEffect(() => {
+		getRoomFromDb();
 		getDepartments();
 		getListCannedResponse({ text: '', department: '', depId: '', debounced: false });
 	}, []);
