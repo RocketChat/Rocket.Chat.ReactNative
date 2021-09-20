@@ -24,12 +24,11 @@ interface IMultiSelect {
 	multiselect?: boolean;
 	onSearch: Function;
 	onClose: Function;
-	onOpen: Function;
 	inputStyle: object;
 	value?: any[];
 	disabled?: boolean | object;
 	theme: string;
-	innerInputStyle: object;
+	innerInputStyle?: object;
 }
 
 const ANIMATION_DURATION = 200;
@@ -53,7 +52,6 @@ export const MultiSelect = React.memo(
 		multiselect = false,
 		onSearch,
 		onClose = () => {},
-		onOpen = () => {},
 		disabled,
 		inputStyle,
 		theme,
@@ -72,7 +70,6 @@ export const MultiSelect = React.memo(
 		}, [values]);
 
 		useEffect(() => {
-			showContent ? onOpen() : null;
 			setOpen(showContent);
 		}, [showContent]);
 

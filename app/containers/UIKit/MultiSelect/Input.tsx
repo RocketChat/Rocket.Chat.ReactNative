@@ -15,7 +15,7 @@ interface IInput {
 	disabled?: boolean | object;
 	placeholder?: string;
 	loading?: boolean;
-	innerInputStyle: object;
+	innerInputStyle?: object;
 }
 
 const Input = ({ children, onPress, theme, loading, inputStyle, placeholder, disabled, innerInputStyle }: IInput) => (
