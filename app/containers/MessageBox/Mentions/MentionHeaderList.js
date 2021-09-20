@@ -18,7 +18,7 @@ const MentionHeaderList = ({ trackingType, hasMentions, theme, loading }) => {
 		if (loading) {
 			return (
 				<View style={styles.wrapMentionHeaderListRow}>
-					<ActivityIndicator style={styles.loadingPaddingHeader} size='small' color={themes[theme].actionTintColor} />
+					<ActivityIndicator style={styles.loadingPaddingHeader} size='small' />
 					<Text style={[styles.mentionHeaderList, { color: themes[theme].auxiliaryText }]}>{I18n.t('Searching')}</Text>
 				</View>
 			);

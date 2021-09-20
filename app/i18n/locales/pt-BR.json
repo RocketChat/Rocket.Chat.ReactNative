@@ -677,8 +677,8 @@
 	"No_match_found": "Nenhum resultado encontrado",
 	"Check_canned_responses": "Verifique nas respostas predefinidas",
 	"Searching": "Buscando",
-	"Type_!_Canned_Response": "Digite ! ao responder para usar as respostas predefinidas",
 	"Use": "Use",
 	"Shortcut": "Atalho",
-	"Content": "Conteúdo"
+	"Content": "Conteúdo",
+	"No_canned_responses": "Não há respostas predefinidas"
 }

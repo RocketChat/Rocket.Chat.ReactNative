@@ -30,8 +30,7 @@ const CannedResponseItem = ({ theme, onPressDetail, shortcut, scope, onPressUse,
 			<Text ellipsizeMode='tail' numberOfLines={2} style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>
 				“{text}”
 			</Text>
-			{/* TODO: style me pls :) */}
-			<View style={{ flex: 1, flexDirection: 'row', overflow: 'hidden' }}>
+			<View style={styles.cannedTagContainer}>
 				{tags?.length > 0
 					? tags.map(t => (
 							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>

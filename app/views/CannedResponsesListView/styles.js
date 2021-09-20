@@ -15,11 +15,6 @@ export default StyleSheet.create({
 	backdrop: {
 		...StyleSheet.absoluteFill
 	},
-	label: {
-		marginBottom: 10,
-		fontSize: 14,
-		...sharedStyles.textSemibold
-	},
 	wrapCannedItem: {
 		minHeight: 117,
 		maxHeight: 141,
@@ -55,7 +50,7 @@ export default StyleSheet.create({
 	},
 	cannedTagContainer: {
 		flexDirection: 'row',
-		flexWrap: 'wrap'
+		overflow: 'hidden'
 	},
 	cannedTagWrap: {
 		borderRadius: 4,

@@ -10,6 +10,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import SearchHeader from '../../containers/SearchHeader';
+import BackgroundContainer from '../../containers/BackgroundContainer';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
 import RocketChat from '../../lib/rocketchat';
@@ -296,9 +297,16 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		}
 	}, [cannedResponses]);
 
-	return (
-		<SafeAreaView>
-			<StatusBar />
+	const renderContent = () => {
+		if (!cannedResponsesScopeName.length && !loading) {
+			return (
+				<>
+					{renderFlatListHeader()}
+					<BackgroundContainer text={I18n.t('No_canned_responses')} />
+				</>
+			);
+		}
+		return (
 			<FlatList
 				data={cannedResponsesScopeName}
 				extraData={cannedResponsesScopeName}
@@ -323,6 +331,13 @@ const CannedResponsesListView = ({ navigation, route }) => {
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading && !refreshing ? <ActivityIndicator theme={theme} /> : null}
 			/>
+		);
+	};
+
+	return (
+		<SafeAreaView>
+			<StatusBar />
+			{renderContent()}
 			{showFilterDropdown ? (
 				<Dropdown
 					departments={departments}
