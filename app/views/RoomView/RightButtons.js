@@ -6,7 +6,7 @@ import { dequal } from 'dequal';
 import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 import { isTeamRoom } from '../../utils/room';
 
 class RightButtonsContainer extends Component {
@@ -41,7 +41,7 @@ class RightButtonsContainer extends Component {
 				const threadRecord = await db.get('messages').find(tmid);
 				this.observeThread(threadRecord);
 			} catch (e) {
-				console.log('Can\'t find message to observe.');
+				console.log("Can't find message to observe.");
 			}
 		}
 		if (rid) {
@@ -50,15 +50,13 @@ class RightButtonsContainer extends Component {
 				const subRecord = await subCollection.find(rid);
 				this.observeSubscription(subRecord);
 			} catch (e) {
-				console.log('Can\'t find subscription to observe.');
+				console.log("Can't find subscription to observe.");
 			}
 		}
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const {
-			isFollowingThread, tunread, tunreadUser, tunreadGroup
-		} = this.state;
+		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
 		const { teamId } = this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
@@ -87,40 +85,36 @@ class RightButtonsContainer extends Component {
 		}
 	}
 
-	observeThread = (threadRecord) => {
+	observeThread = threadRecord => {
 		const threadObservable = threadRecord.observe();
-		this.threadSubscription = threadObservable
-			.subscribe(thread => this.updateThread(thread));
-	}
+		this.threadSubscription = threadObservable.subscribe(thread => this.updateThread(thread));
+	};
 
-	updateThread = (thread) => {
+	updateThread = thread => {
 		const { userId } = this.props;
 		this.setState({
 			isFollowingThread: thread.replies && !!thread.replies.find(t => t === userId)
 		});
-	}
+	};
 
-	observeSubscription = (subRecord) => {
+	observeSubscription = subRecord => {
 		const subObservable = subRecord.observe();
-		this.subSubscription = subObservable
-			.subscribe((sub) => {
-				this.updateSubscription(sub);
-			});
-	}
+		this.subSubscription = subObservable.subscribe(sub => {
+			this.updateSubscription(sub);
+		});
+	};
 
-	updateSubscription = (sub) => {
+	updateSubscription = sub => {
 		this.setState({
 			tunread: sub?.tunread,
 			tunreadUser: sub?.tunreadUser,
 			tunreadGroup: sub?.tunreadGroup
 		});
-	}
+	};
 
 	goTeamChannels = () => {
 		logEvent(events.ROOM_GO_TEAM_CHANNELS);
-		const {
-			navigation, isMasterDetail, teamId
-		} = this.props;
+		const { navigation, isMasterDetail, teamId } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', {
 				screen: 'TeamChannelsView',
@@ -129,31 +123,27 @@ class RightButtonsContainer extends Component {
 		} else {
 			navigation.navigate('TeamChannelsView', { teamId });
 		}
-	}
+	};
 
 	goThreadsView = () => {
 		logEvent(events.ROOM_GO_THREADS);
-		const {
-			rid, t, navigation, isMasterDetail
-		} = this.props;
+		const { rid, t, navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'ThreadMessagesView', params: { rid, t } });
 		} else {
 			navigation.navigate('ThreadMessagesView', { rid, t });
 		}
-	}
+	};
 
 	goSearchView = () => {
 		logEvent(events.ROOM_GO_SEARCH);
-		const {
-			rid, t, navigation, isMasterDetail
-		} = this.props;
+		const { rid, t, navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'SearchMessagesView', params: { rid, showCloseModal: true } });
 		} else {
 			navigation.navigate('SearchMessagesView', { rid, t });
 		}
-	}
+	};
 
 	toggleFollowThread = () => {
 		logEvent(events.ROOM_TOGGLE_FOLLOW_THREADS);
@@ -162,15 +152,11 @@ class RightButtonsContainer extends Component {
 		if (toggleFollowThread) {
 			toggleFollowThread(isFollowingThread);
 		}
-	}
+	};
 
 	render() {
-		const {
-			isFollowingThread, tunread, tunreadUser, tunreadGroup
-		} = this.state;
-		const {
-			t, tmid, threadsEnabled, teamId, joined
-		} = this.props;
+		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
+		const { t, tmid, threadsEnabled, teamId, joined } = this.props;
 		if (t === 'l') {
 			return null;
 		}
@@ -188,31 +174,17 @@ class RightButtonsContainer extends Component {
 		return (
 			<HeaderButton.Container>
 				{isTeamRoom({ teamId, joined }) ? (
-					<HeaderButton.Item
-						iconName='channel-public'
-						onPress={this.goTeamChannels}
-						testID='room-view-header-team-channels'
-					/>
+					<HeaderButton.Item iconName='channel-public' onPress={this.goTeamChannels} testID='room-view-header-team-channels' />
 				) : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
-						badge={() => (
-							<HeaderButton.Badge
-								tunread={tunread}
-								tunreadUser={tunreadUser}
-								tunreadGroup={tunreadGroup}
-							/>
-						)}
+						badge={() => <HeaderButton.Badge tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />}
 					/>
 				) : null}
-				<HeaderButton.Item
-					iconName='search'
-					onPress={this.goSearchView}
-					testID='room-view-search'
-				/>
+				<HeaderButton.Item iconName='search' onPress={this.goSearchView} testID='room-view-search' />
 			</HeaderButton.Container>
 		);
 	}

@@ -7,9 +7,9 @@ import reduxStore from '../createStore';
 import settings from '../../constants/settings';
 import log from '../../utils/log';
 import database from '../database';
-import protectedFunction from './helpers/protectedFunction';
 import fetch from '../../utils/fetch';
 import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
+import protectedFunction from './helpers/protectedFunction';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -41,7 +41,7 @@ const loginSettings = [
 	'Accounts_Iframe_api_method'
 ];
 
-const serverInfoUpdate = async(serverInfo, iconSetting) => {
+const serverInfoUpdate = async (serverInfo, iconSetting) => {
 	const serversDB = database.servers;
 	const serverId = reduxStore.getState().server.server;
 	const serversCollection = serversDB.get('servers');
@@ -87,13 +87,13 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 	}, {});
 
 	if (iconSetting) {
-		const iconURL = `${ serverId }/${ iconSetting.value.url || iconSetting.value.defaultUrl }`;
+		const iconURL = `${serverId}/${iconSetting.value.url || iconSetting.value.defaultUrl}`;
 		info = { ...info, iconURL };
 	}
 
-	await serversDB.action(async() => {
+	await serversDB.action(async () => {
 		try {
-			await server.update((record) => {
+			await server.update(record => {
 				Object.assign(record, info);
 			});
 		} catch (e) {
@@ -105,7 +105,9 @@ const serverInfoUpdate = async(serverInfo, iconSetting) => {
 export async function getLoginSettings({ server }) {
 	try {
 		const settingsParams = JSON.stringify(loginSettings);
-		const result = await fetch(`${ server }/api/v1/settings.public?query={"_id":{"$in":${ settingsParams }}}`).then(response => response.json());
+		const result = await fetch(`${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`).then(response =>
+			response.json()
+		);
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
@@ -135,13 +137,16 @@ export function subscribeSettings() {
 	return RocketChat.subscribe('stream-notify-all', 'public-settings-changed');
 }
 
-export default async function() {
+export default async function () {
 	try {
 		const db = database.active;
 		const settingsParams = Object.keys(settings).filter(key => !loginSettings.includes(key));
 		// RC 0.60.0
-		const result = await fetch(`${ this.sdk.client.host }/api/v1/settings.public?query={"_id":{"$in":${ JSON.stringify(settingsParams) }}}&count=${ settingsParams.length }`)
-			.then(response => response.json());
+		const result = await fetch(
+			`${this.sdk.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}&count=${
+				settingsParams.length
+			}`
+		).then(response => response.json());
 
 		if (!result.success) {
 			return;
@@ -161,34 +166,35 @@ export default async function() {
 			// Server not found
 		}
 
-		await db.action(async() => {
+		await db.action(async () => {
 			const settingsCollection = db.get('settings');
-			const allSettingsRecords = await settingsCollection
-				.query(Q.where('id', Q.oneOf(filteredSettingsIds)))
-				.fetch();
+			const allSettingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(filteredSettingsIds))).fetch();
 
 			// filter settings
 			let settingsToCreate = filteredSettings.filter(i1 => !allSettingsRecords.find(i2 => i1._id === i2.id));
 			let settingsToUpdate = allSettingsRecords.filter(i1 => filteredSettings.find(i2 => i1.id === i2._id));
 
 			// Create
-			settingsToCreate = settingsToCreate.map(setting => settingsCollection.prepareCreate(protectedFunction((s) => {
-				s._raw = sanitizedRaw({ id: setting._id }, settingsCollection.schema);
-				Object.assign(s, setting);
-			})));
+			settingsToCreate = settingsToCreate.map(setting =>
+				settingsCollection.prepareCreate(
+					protectedFunction(s => {
+						s._raw = sanitizedRaw({ id: setting._id }, settingsCollection.schema);
+						Object.assign(s, setting);
+					})
+				)
+			);
 
 			// Update
-			settingsToUpdate = settingsToUpdate.map((setting) => {
+			settingsToUpdate = settingsToUpdate.map(setting => {
 				const newSetting = filteredSettings.find(s => s._id === setting.id);
-				return setting.prepareUpdate(protectedFunction((s) => {
-					Object.assign(s, newSetting);
-				}));
+				return setting.prepareUpdate(
+					protectedFunction(s => {
+						Object.assign(s, newSetting);
+					})
+				);
 			});
 
-			const allRecords = [
-				...settingsToCreate,
-				...settingsToUpdate
-			];
+			const allRecords = [...settingsToCreate, ...settingsToUpdate];
 
 			try {
 				await db.batch(...allRecords);

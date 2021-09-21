@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import I18n from '../../i18n';
-import log, {
-	logEvent, events
-} from '../../utils/log';
+import log, { logEvent, events } from '../../utils/log';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
@@ -14,10 +12,11 @@ import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import RocketChat from '../../lib/rocketchat';
 
-
 const UserPreferencesView = ({ navigation }) => {
 	const user = useSelector(state => getUserSelector(state));
-	const isMessageParserServerEnabled = useSelector(state => state.settings.Accounts_Default_User_Preferences_enableMessageParserEarlyAdoption);
+	const isMessageParserServerEnabled = useSelector(
+		state => state.settings.Accounts_Default_User_Preferences_enableMessageParserEarlyAdoption
+	);
 	const [enableParser, setEnableParser] = useState(user.enableMessageParserEarlyAdoption);
 
 	useEffect(() => {
@@ -27,11 +26,11 @@ const UserPreferencesView = ({ navigation }) => {
 	}, []);
 
 	const navigateToScreen = (screen, params) => {
-		logEvent(events[`SE_GO_${ screen.replace('View', '').toUpperCase() }`]);
+		logEvent(events[`SE_GO_${screen.replace('View', '').toUpperCase()}`]);
 		navigation.navigate(screen, params);
 	};
 
-	const toggleMessageParser = async(value) => {
+	const toggleMessageParser = async value => {
 		try {
 			await RocketChat.saveUserPreferences({ id: user.id, enableMessageParserEarlyAdoption: value });
 			setEnableParser(value);
@@ -41,11 +40,7 @@ const UserPreferencesView = ({ navigation }) => {
 	};
 
 	const renderMessageParserSwitch = () => (
-		<Switch
-			value={enableParser}
-			trackColor={SWITCH_TRACK_COLOR}
-			onValueChange={toggleMessageParser}
-		/>
+		<Switch value={enableParser} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleMessageParser} />
 	);
 
 	return (

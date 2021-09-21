@@ -7,15 +7,19 @@ import database from '../database';
 import log from '../../utils/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
 
-const getUpdatedSince = (allEmojis) => {
+const getUpdatedSince = allEmojis => {
 	if (!allEmojis.length) {
 		return null;
 	}
-	const ordered = orderBy(allEmojis.filter(item => item._updatedAt !== null), ['_updatedAt'], ['desc']);
+	const ordered = orderBy(
+		allEmojis.filter(item => item._updatedAt !== null),
+		['_updatedAt'],
+		['desc']
+	);
 	return ordered && ordered[0]._updatedAt.toISOString();
 };
 
-const updateEmojis = async({ update = [], remove = [], allRecords }) => {
+const updateEmojis = async ({ update = [], remove = [], allRecords }) => {
 	if (!((update && update.length) || (remove && remove.length))) {
 		return;
 	}
@@ -29,13 +33,15 @@ const updateEmojis = async({ update = [], remove = [], allRecords }) => {
 	if (update && update.length) {
 		emojisToCreate = update.filter(i1 => !allRecords.find(i2 => i1._id === i2.id));
 		emojisToUpdate = allRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
-		emojisToCreate = emojisToCreate.map(emoji => emojisCollection.prepareCreate((e) => {
-			e._raw = sanitizedRaw({ id: emoji._id }, emojisCollection.schema);
-			Object.assign(e, emoji);
-		}));
-		emojisToUpdate = emojisToUpdate.map((emoji) => {
+		emojisToCreate = emojisToCreate.map(emoji =>
+			emojisCollection.prepareCreate(e => {
+				e._raw = sanitizedRaw({ id: emoji._id }, emojisCollection.schema);
+				Object.assign(e, emoji);
+			})
+		);
+		emojisToUpdate = emojisToUpdate.map(emoji => {
 			const newEmoji = update.find(e => e._id === emoji.id);
-			return emoji.prepareUpdate((e) => {
+			return emoji.prepareUpdate(e => {
 				Object.assign(e, newEmoji);
 			});
 		});
@@ -47,12 +53,8 @@ const updateEmojis = async({ update = [], remove = [], allRecords }) => {
 	}
 
 	try {
-		await db.action(async() => {
-			await db.batch(
-				...emojisToCreate,
-				...emojisToUpdate,
-				...emojisToDelete
-			);
+		await db.action(async () => {
+			await db.batch(...emojisToCreate, ...emojisToUpdate, ...emojisToDelete);
 		});
 		return true;
 	} catch (e) {
@@ -69,7 +71,7 @@ export async function setCustomEmojis() {
 			name: item.name,
 			extension: item.extension
 		};
-		item.aliases.forEach((alias) => {
+		item.aliases.forEach(alias => {
 			ret[alias] = {
 				name: item.name,
 				extension: item.extension
@@ -81,7 +83,7 @@ export async function setCustomEmojis() {
 }
 
 export function getCustomEmojis() {
-	return new Promise(async(resolve) => {
+	return new Promise(async resolve => {
 		try {
 			const serverVersion = reduxStore.getState().server.version;
 			const db = database.active;

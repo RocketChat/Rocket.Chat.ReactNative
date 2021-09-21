@@ -13,15 +13,15 @@ class LegalView extends React.Component {
 	static propTypes = {
 		server: PropTypes.string,
 		theme: PropTypes.string
-	}
+	};
 
 	onPressItem = ({ route }) => {
 		const { server, theme } = this.props;
 		if (!server) {
 			return;
 		}
-		openLink(`${ server }/${ route }`, theme);
-	}
+		openLink(`${server}/${route}`, theme);
+	};
 
 	render() {
 		return (

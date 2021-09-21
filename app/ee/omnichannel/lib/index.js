@@ -1,6 +1,6 @@
-import subscribeInquiry from './subscriptions/inquiry';
 import RocketChat from '../../../lib/rocketchat';
 import EventEmitter from '../../../utils/events';
+import subscribeInquiry from './subscriptions/inquiry';
 
 export const isOmnichannelStatusAvailable = user => user?.statusLivechat === 'available';
 
@@ -22,10 +22,10 @@ class Omnichannel {
 		EventEmitter.addEventListener('INQUIRY_UNSUBSCRIBE', this.unsubscribeInquiry);
 	}
 
-	subscribeInquiry = async() => {
+	subscribeInquiry = async () => {
 		console.log('[RCRN] Subscribing to inquiry');
 		this.inquirySub = await subscribeInquiry();
-	}
+	};
 
 	unsubscribeInquiry = () => {
 		if (this.inquirySub) {
@@ -33,7 +33,7 @@ class Omnichannel {
 			this.inquirySub.stop();
 			this.inquirySub = null;
 		}
-	}
+	};
 }
 
 // eslint-disable-next-line no-unused-vars

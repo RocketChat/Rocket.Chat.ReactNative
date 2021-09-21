@@ -73,18 +73,18 @@ export default async function getUsersPresence() {
 
 				const db = database.active;
 				const userCollection = db.get('users');
-				users.forEach(async(user) => {
+				users.forEach(async user => {
 					try {
 						const userRecord = await userCollection.find(user._id);
-						await db.action(async() => {
-							await userRecord.update((u) => {
+						await db.action(async () => {
+							await userRecord.update(u => {
 								Object.assign(u, user);
 							});
 						});
 					} catch (e) {
 						// User not found
-						await db.action(async() => {
-							await userCollection.create((u) => {
+						await db.action(async () => {
+							await userCollection.create(u => {
 								u._raw = sanitizedRaw({ id: user._id }, userCollection.schema);
 								Object.assign(u, user);
 							});

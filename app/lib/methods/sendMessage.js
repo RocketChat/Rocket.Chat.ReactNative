@@ -7,14 +7,14 @@ import random from '../../utils/random';
 import { Encryption } from '../encryption';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
 
-const changeMessageStatus = async(id, tmid, status, message) => {
+const changeMessageStatus = async (id, tmid, status, message) => {
 	const db = database.active;
 	const msgCollection = db.get('messages');
 	const threadMessagesCollection = db.get('thread_messages');
 	const successBatch = [];
 	const messageRecord = await msgCollection.find(id);
 	successBatch.push(
-		messageRecord.prepareUpdate((m) => {
+		messageRecord.prepareUpdate(m => {
 			m.status = status;
 			if (message) {
 				m.mentions = message.mentions;
@@ -30,7 +30,7 @@ const changeMessageStatus = async(id, tmid, status, message) => {
 	if (tmid) {
 		const threadMessageRecord = await threadMessagesCollection.find(id);
 		successBatch.push(
-			threadMessageRecord.prepareUpdate((tm) => {
+			threadMessageRecord.prepareUpdate(tm => {
 				tm.status = status;
 				if (message) {
 					tm.mentions = message.mentions;
@@ -45,7 +45,7 @@ const changeMessageStatus = async(id, tmid, status, message) => {
 	}
 
 	try {
-		await db.action(async() => {
+		await db.action(async () => {
 			await db.batch(...successBatch);
 		});
 	} catch (error) {
@@ -71,8 +71,8 @@ export async function sendMessageCall(message) {
 export async function resendMessage(message, tmid) {
 	const db = database.active;
 	try {
-		await db.action(async() => {
-			await message.update((m) => {
+		await db.action(async () => {
+			await message.update(m => {
 				m.status = messagesStatus.TEMP;
 			});
 		});
@@ -94,7 +94,7 @@ export async function resendMessage(message, tmid) {
 	}
 }
 
-export default async function(rid, msg, tmid, user, tshow) {
+export default async function (rid, msg, tmid, user, tshow) {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
@@ -105,7 +105,11 @@ export default async function(rid, msg, tmid, user, tshow) {
 		const batch = [];
 
 		let message = {
-			_id: messageId, rid, msg, tmid, tshow
+			_id: messageId,
+			rid,
+			msg,
+			tmid,
+			tshow
 		};
 		message = await Encryption.encryptMessage(message);
 
@@ -118,7 +122,7 @@ export default async function(rid, msg, tmid, user, tshow) {
 				// Find thread message header in Messages collection
 				tMessageRecord = await msgCollection.find(tmid);
 				batch.push(
-					tMessageRecord.prepareUpdate((m) => {
+					tMessageRecord.prepareUpdate(m => {
 						m.tlm = messageDate;
 						m.tcount += 1;
 					})
@@ -130,7 +134,7 @@ export default async function(rid, msg, tmid, user, tshow) {
 				} catch (error) {
 					// If there's no record, create one
 					batch.push(
-						threadCollection.prepareCreate((tm) => {
+						threadCollection.prepareCreate(tm => {
 							tm._raw = sanitizedRaw({ id: tmid }, threadCollection.schema);
 							tm.subscription.id = rid;
 							tm.tmid = tmid;
@@ -149,7 +153,7 @@ export default async function(rid, msg, tmid, user, tshow) {
 
 				// Create the message sent in ThreadMessages collection
 				batch.push(
-					threadMessagesCollection.prepareCreate((tm) => {
+					threadMessagesCollection.prepareCreate(tm => {
 						tm._raw = sanitizedRaw({ id: messageId }, threadMessagesCollection.schema);
 						tm.subscription.id = rid;
 						tm.rid = tmid;
@@ -175,7 +179,7 @@ export default async function(rid, msg, tmid, user, tshow) {
 
 		// Create the message sent in Messages collection
 		batch.push(
-			msgCollection.prepareCreate((m) => {
+			msgCollection.prepareCreate(m => {
 				m._raw = sanitizedRaw({ id: messageId }, msgCollection.schema);
 				m.subscription.id = rid;
 				m.msg = msg;
@@ -204,7 +208,7 @@ export default async function(rid, msg, tmid, user, tshow) {
 			const room = await subsCollection.find(rid);
 			if (room.draftMessage) {
 				batch.push(
-					room.prepareUpdate((r) => {
+					room.prepareUpdate(r => {
 						r.draftMessage = null;
 					})
 				);
@@ -214,7 +218,7 @@ export default async function(rid, msg, tmid, user, tshow) {
 		}
 
 		try {
-			await db.action(async() => {
+			await db.action(async () => {
 				await db.batch(...batch);
 			});
 		} catch (e) {
