@@ -103,6 +103,7 @@
 	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>audio</string>
 		<string>fetch</string>
 		<string>voip</string>
 	</array>
