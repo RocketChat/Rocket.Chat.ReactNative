@@ -30,6 +30,7 @@ import SSLPinning from '../../utils/sslPinning';
 import RocketChat from '../../lib/rocketchat';
 import { isTablet } from '../../utils/deviceInfo';
 import { verticalScale, moderateScale } from '../../utils/scaling';
+import { withDimensions } from '../../dimensions';
 import ServerInput from './ServerInput';
 
 const styles = StyleSheet.create({
@@ -285,22 +286,26 @@ class NewServerView extends React.Component {
 
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
-		const { theme } = this.props;
+		const { theme, width, height } = this.props;
 		return (
 			<View
 				style={[
 					styles.certificatePicker,
 					{
-						marginBottom: verticalScale(32)
+						marginBottom: verticalScale(32, height)
 					}
 				]}>
-				<Text style={[styles.chooseCertificateTitle, { color: themes[theme].auxiliaryText, fontSize: moderateScale(13) }]}>
+				<Text
+					style={[
+						styles.chooseCertificateTitle,
+						{ color: themes[theme].auxiliaryText, fontSize: moderateScale(13, null, width) }
+					]}>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<TouchableOpacity
 					onPress={certificate ? this.handleRemove : this.chooseCertificate}
 					testID='new-server-choose-certificate'>
-					<Text style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale(13) }]}>
+					<Text style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale(13, null, width) }]}>
 						{certificate ?? I18n.t('Apply_Your_Certificate')}
 					</Text>
 				</TouchableOpacity>
@@ -309,7 +314,7 @@ class NewServerView extends React.Component {
 	};
 
 	render() {
-		const { connecting, theme, adding } = this.props;
+		const { connecting, theme, adding, width, height } = this.props;
 		const { text, connectingOpen, serversHistory } = this.state;
 		const marginTopHeader = adding ? 25 : 70;
 
@@ -320,9 +325,9 @@ class NewServerView extends React.Component {
 						style={[
 							styles.onboardingImage,
 							{
-								marginTop: isTablet ? 0 : verticalScale(marginTopHeader),
-								marginBottom: verticalScale(25),
-								maxHeight: verticalScale(150)
+								marginTop: isTablet ? 0 : verticalScale(marginTopHeader, height),
+								marginBottom: verticalScale(25, height),
+								maxHeight: verticalScale(150, height)
 							}
 						]}
 						source={require('../../static/images/logo.png')}
@@ -332,14 +337,18 @@ class NewServerView extends React.Component {
 					<Text
 						style={[
 							styles.title,
-							{ color: themes[theme].titleText, fontSize: moderateScale(22), marginBottom: verticalScale(8) }
+							{ color: themes[theme].titleText, fontSize: moderateScale(22, null, width), marginBottom: verticalScale(8, height) }
 						]}>
 						Rocket.Chat
 					</Text>
 					<Text
 						style={[
 							styles.subtitle,
-							{ color: themes[theme].controlText, fontSize: moderateScale(16), marginBottom: verticalScale(41) }
+							{
+								color: themes[theme].controlText,
+								fontSize: moderateScale(16, null, width),
+								marginBottom: verticalScale(41, height)
+							}
 						]}>
 						{I18n.t('Onboarding_subtitle')}
 					</Text>
@@ -366,7 +375,11 @@ class NewServerView extends React.Component {
 					<Text
 						style={[
 							styles.description,
-							{ color: themes[theme].auxiliaryText, fontSize: moderateScale(14), marginBottom: verticalScale(24) }
+							{
+								color: themes[theme].auxiliaryText,
+								fontSize: moderateScale(14, null, width),
+								marginBottom: verticalScale(24, height)
+							}
 						]}>
 						{I18n.t('Onboarding_join_open_description')}
 					</Text>
@@ -399,4 +412,4 @@ const mapDispatchToProps = dispatch => ({
 	inviteLinksClear: () => dispatch(inviteLinksClearAction())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewServerView));
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(NewServerView)));
