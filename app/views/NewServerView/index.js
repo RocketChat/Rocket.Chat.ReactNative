@@ -10,7 +10,6 @@ import Orientation from 'react-native-orientation-locker';
 
 import UserPreferences from '../../lib/userPreferences';
 import EventEmitter from '../../utils/events';
-import { ROOT_NEW_SERVER } from '../../actions/app';
 import { selectServerRequest, serverRequest } from '../../actions/server';
 import { inviteLinksClear as inviteLinksClearAction } from '../../actions/inviteLinks';
 import sharedStyles from '../Styles';
@@ -76,8 +75,7 @@ class NewServerView extends React.Component {
 		selectServer: PropTypes.func.isRequired,
 		adding: PropTypes.bool,
 		previousServer: PropTypes.string,
-		inviteLinksClear: PropTypes.func,
-		root: PropTypes.string
+		inviteLinksClear: PropTypes.func
 	};
 
 	constructor(props) {
@@ -114,8 +112,8 @@ class NewServerView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { adding, navigation, root } = this.props;
-		if (adding && root === ROOT_NEW_SERVER) {
+		const { adding, navigation } = this.props;
+		if (adding) {
 			return navigation.setOptions({
 				headerTitle: I18n.t('Workspaces'),
 				headerLeft: () => <HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
@@ -311,9 +309,9 @@ class NewServerView extends React.Component {
 	};
 
 	render() {
-		const { connecting, theme, adding, root } = this.props;
+		const { connecting, theme, adding } = this.props;
 		const { text, connectingOpen, serversHistory } = this.state;
-		const marginTopHeader = adding && root === ROOT_NEW_SERVER ? 25 : 70;
+		const marginTopHeader = adding ? 25 : 70;
 
 		return (
 			<FormContainer theme={theme} testID='new-server-view' keyboardShouldPersistTaps='never'>
@@ -392,8 +390,7 @@ class NewServerView extends React.Component {
 const mapStateToProps = state => ({
 	connecting: state.server.connecting,
 	adding: state.server.adding,
-	previousServer: state.server.previousServer,
-	root: state.app.root
+	previousServer: state.server.previousServer
 });
 
 const mapDispatchToProps = dispatch => ({

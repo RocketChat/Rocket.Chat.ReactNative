@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, select } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
@@ -7,7 +7,7 @@ import coerce from 'semver/functions/coerce';
 
 import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
-import { selectServerFailure, selectServerRequest, selectServerSuccess, serverFailure } from '../actions/server';
+import { selectServerFailure, selectServerRequest, selectServerSuccess, serverFailure, serverFinishAdd } from '../actions/server';
 import { clearSettings } from '../actions/settings';
 import { setUser } from '../actions/login';
 import RocketChat from '../lib/rocketchat';
@@ -136,6 +136,12 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		// we'll set serverVersion as metadata for bugsnag
 		logServerVersion(serverVersion);
 		yield put(selectServerSuccess(server, serverVersion));
+
+		// if the adding state is true, finish add server
+		const adding = yield select(state => state.server.adding);
+		if (adding) {
+			yield put(serverFinishAdd());
+		}
 	} catch (e) {
 		yield put(selectServerFailure());
 		log(e);
