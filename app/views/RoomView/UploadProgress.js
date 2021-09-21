@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-	View, Text, StyleSheet, TouchableOpacity, ScrollView
-} from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 
@@ -64,7 +62,7 @@ class UploadProgress extends Component {
 			token: PropTypes.string.isRequired
 		}),
 		baseUrl: PropTypes.string.isRequired
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -88,37 +86,33 @@ class UploadProgress extends Component {
 
 	init = () => {
 		const { rid } = this.props;
-		if (!rid) { return; }
+		if (!rid) {
+			return;
+		}
 
 		const db = database.active;
-		this.uploadsObservable = db.collections
-			.get('uploads')
-			.query(
-				Q.where('rid', rid)
-			)
-			.observeWithColumns(['progress', 'error']);
+		this.uploadsObservable = db.collections.get('uploads').query(Q.where('rid', rid)).observeWithColumns(['progress', 'error']);
 
-		this.uploadsSubscription = this.uploadsObservable
-			.subscribe((uploads) => {
-				if (this.mounted) {
-					this.setState({ uploads });
-				} else {
-					this.state.uploads = uploads;
-				}
-				if (!this.ranInitialUploadCheck) {
-					this.uploadCheck();
-				}
-			});
-	}
+		this.uploadsSubscription = this.uploadsObservable.subscribe(uploads => {
+			if (this.mounted) {
+				this.setState({ uploads });
+			} else {
+				this.state.uploads = uploads;
+			}
+			if (!this.ranInitialUploadCheck) {
+				this.uploadCheck();
+			}
+		});
+	};
 
 	uploadCheck = () => {
 		this.ranInitialUploadCheck = true;
 		const { uploads } = this.state;
-		uploads.forEach(async(u) => {
+		uploads.forEach(async u => {
 			if (!RocketChat.isUploadActive(u.path)) {
 				try {
 					const db = database.active;
-					await db.action(async() => {
+					await db.action(async () => {
 						await u.update(() => {
 							u.error = true;
 						});
@@ -128,33 +122,33 @@ class UploadProgress extends Component {
 				}
 			}
 		});
-	}
+	};
 
-	deleteUpload = async(item) => {
+	deleteUpload = async item => {
 		try {
 			const db = database.active;
-			await db.action(async() => {
+			await db.action(async () => {
 				await item.destroyPermanently();
 			});
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	cancelUpload = async(item) => {
+	cancelUpload = async item => {
 		try {
 			await RocketChat.cancelUpload(item);
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	tryAgain = async(item) => {
+	tryAgain = async item => {
 		const { rid, baseUrl: server, user } = this.props;
 
 		try {
 			const db = database.active;
-			await db.action(async() => {
+			await db.action(async () => {
 				await item.update(() => {
 					item.error = false;
 				});
@@ -163,30 +157,35 @@ class UploadProgress extends Component {
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	renderItemContent = (item) => {
+	renderItemContent = item => {
 		const { width, theme } = this.props;
 
 		if (!item.error) {
-			return (
-				[
-					<View key='row' style={styles.row}>
-						<CustomIcon name='attach' size={20} color={themes[theme].auxiliaryText} />
-						<Text style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-							{I18n.t('Uploading')} {item.name}
-						</Text>
-						<CustomIcon name='close' size={20} color={themes[theme].auxiliaryText} onPress={() => this.cancelUpload(item)} />
-					</View>,
-					<View key='progress' style={[styles.progress, { width: (width * item.progress) / 100, backgroundColor: themes[theme].tintColor }]} />
-				]
-			);
+			return [
+				<View key='row' style={styles.row}>
+					<CustomIcon name='attach' size={20} color={themes[theme].auxiliaryText} />
+					<Text
+						style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme].auxiliaryText }]}
+						numberOfLines={1}>
+						{I18n.t('Uploading')} {item.name}
+					</Text>
+					<CustomIcon name='close' size={20} color={themes[theme].auxiliaryText} onPress={() => this.cancelUpload(item)} />
+				</View>,
+				<View
+					key='progress'
+					style={[styles.progress, { width: (width * item.progress) / 100, backgroundColor: themes[theme].tintColor }]}
+				/>
+			];
 		}
 		return (
 			<View style={styles.row}>
 				<CustomIcon name='warning' size={20} color={themes[theme].dangerColor} />
 				<View style={styles.descriptionContainer}>
-					<Text style={[styles.descriptionText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{I18n.t('Error_uploading')} {item.name}</Text>
+					<Text style={[styles.descriptionText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+						{I18n.t('Error_uploading')} {item.name}
+					</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>
 						<Text style={[styles.tryAgainButtonText, { color: themes[theme].tintColor }]}>{I18n.t('Try_again')}</Text>
 					</TouchableOpacity>
@@ -194,7 +193,7 @@ class UploadProgress extends Component {
 				<CustomIcon name='close' size={20} color={themes[theme].auxiliaryText} onPress={() => this.deleteUpload(item)} />
 			</View>
 		);
-	}
+	};
 
 	// TODO: transform into stateless and update based on its own observable changes
 	renderItem = (item, index) => {
@@ -210,20 +209,15 @@ class UploadProgress extends Component {
 						backgroundColor: themes[theme].chatComponentBackground,
 						borderColor: themes[theme].borderColor
 					}
-				]}
-			>
+				]}>
 				{this.renderItemContent(item)}
 			</View>
 		);
-	}
+	};
 
 	render() {
 		const { uploads } = this.state;
-		return (
-			<ScrollView style={styles.container}>
-				{uploads.map((item, i) => this.renderItem(item, i))}
-			</ScrollView>
-		);
+		return <ScrollView style={styles.container}>{uploads.map((item, i) => this.renderItem(item, i))}</ScrollView>;
 	}
 }
 

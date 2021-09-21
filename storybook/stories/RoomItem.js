@@ -1,14 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-import { ScrollView, Dimensions } from 'react-native';
+import { Dimensions, ScrollView } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { Provider } from 'react-redux';
 
 import { themes } from '../../app/constants/colors';
 import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
 import { longText } from '../utils';
-import { store } from './index';
 import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../../app/constants/constantDisplayMode';
+import { store } from './index';
 
 const baseUrl = 'https://open.rocket.chat';
 const { width } = Dimensions.get('window');
@@ -42,21 +42,14 @@ const stories = storiesOf('Room Item', module)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>)
 	.addDecorator(story => <ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>{story()}</ScrollView>);
 
+stories.add('Basic', () => <RoomItem />);
 
-stories.add('Basic', () => (
-	<RoomItem />
-));
-
-stories.add('Touch', () => (
-	<RoomItem onPress={() => alert('on press')} onLongPress={() => alert('on long press')} />
-));
+stories.add('Touch', () => <RoomItem onPress={() => alert('on press')} onLongPress={() => alert('on long press')} />);
 
 stories.add('User', () => (
 	<>
 		<RoomItem name='diego.mello' avatar='diego.mello' />
-		<RoomItem
-			name={longText}
-		/>
+		<RoomItem name={longText} />
 	</>
 ));
 
@@ -110,9 +103,7 @@ stories.add('Tag', () => (
 
 stories.add('Last Message', () => (
 	<>
-		<RoomItem
-			showLastMessage
-		/>
+		<RoomItem showLastMessage />
 		<RoomItem
 			showLastMessage
 			lastMessage={{
@@ -132,51 +123,20 @@ stories.add('Last Message', () => (
 			}}
 			username='diego.mello'
 		/>
-		<RoomItem
-			showLastMessage
-			lastMessage={lastMessage}
-		/>
-		<RoomItem
-			showLastMessage
-			alert
-			unread={1}
-			lastMessage={lastMessage}
-		/>
-		<RoomItem
-			showLastMessage
-			alert
-			unread={1000}
-			lastMessage={lastMessage}
-		/>
-		<RoomItem
-			showLastMessage
-			alert
-			tunread={[1]}
-			lastMessage={lastMessage}
-		/>
+		<RoomItem showLastMessage lastMessage={lastMessage} />
+		<RoomItem showLastMessage alert unread={1} lastMessage={lastMessage} />
+		<RoomItem showLastMessage alert unread={1000} lastMessage={lastMessage} />
+		<RoomItem showLastMessage alert tunread={[1]} lastMessage={lastMessage} />
 	</>
 ));
 
 stories.add('Condensed Room Item', () => (
 	<>
-		<RoomItem
-			showLastMessage
-			alert
-			tunread={[1]}
-			lastMessage={lastMessage}
-			displayMode={DISPLAY_MODE_CONDENSED}
-		/>
-		<RoomItem
-			showLastMessage
-			alert
-			name='unread'
-			unread={1000}
-			displayMode={DISPLAY_MODE_CONDENSED}
-		/>
+		<RoomItem showLastMessage alert tunread={[1]} lastMessage={lastMessage} displayMode={DISPLAY_MODE_CONDENSED} />
+		<RoomItem showLastMessage alert name='unread' unread={1000} displayMode={DISPLAY_MODE_CONDENSED} />
 
 		<RoomItem type='c' displayMode={DISPLAY_MODE_CONDENSED} autoJoin />
 	</>
-
 ));
 
 stories.add('Condensed Room Item without Avatar', () => (
@@ -190,12 +150,7 @@ stories.add('Condensed Room Item without Avatar', () => (
 			showAvatar={false}
 		/>
 		<RoomItem type='p' displayMode={DISPLAY_MODE_CONDENSED} showAvatar={false} />
-		<RoomItem
-			name={longText}
-			autoJoin
-			displayMode={DISPLAY_MODE_CONDENSED}
-			showAvatar={false}
-		/>
+		<RoomItem name={longText} autoJoin displayMode={DISPLAY_MODE_CONDENSED} showAvatar={false} />
 	</>
 ));
 

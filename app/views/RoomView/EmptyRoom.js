@@ -10,16 +10,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-const EmptyRoom = React.memo(({
-	length, mounted, theme, rid
-}) => {
+const EmptyRoom = React.memo(({ length, mounted, theme, rid }) => {
 	if ((length === 0 && mounted) || !rid) {
-		return (
-			<ImageBackground
-				source={{ uri: `message_empty_${ theme }` }}
-				style={styles.image}
-			/>
-		);
+		return <ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />;
 	}
 	return null;
 });

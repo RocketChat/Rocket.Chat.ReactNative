@@ -17,32 +17,26 @@ import { ICON_SIZE } from '../containers/List/constants';
 import log, { events, logEvent } from '../utils/log';
 import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../constants/constantDisplayMode';
 
-const DisplayPrefsView = (props) => {
+const DisplayPrefsView = props => {
 	const { theme } = useTheme();
 
-	const {
-		sortBy,
-		groupByType,
-		showFavorites,
-		showUnread,
-		showAvatar,
-		displayMode
-	} = useSelector(state => state.sortPreferences);
+	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useSelector(state => state.sortPreferences);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const { navigation, isMasterDetail } = props;
 		navigation.setOptions({
 			title: I18n.t('Display'),
-			headerLeft: () => (isMasterDetail ? (
-				<HeaderButton.CloseModal navigation={navigation} testID='display-view-close' />
-			) : (
-				<HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />
-			))
+			headerLeft: () =>
+				isMasterDetail ? (
+					<HeaderButton.CloseModal navigation={navigation} testID='display-view-close' />
+				) : (
+					<HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />
+				)
 		});
 	}, []);
 
-	const setSortPreference = async(param) => {
+	const setSortPreference = async param => {
 		try {
 			dispatch(setPreference(param));
 			await RocketChat.saveSortPreference(param);
@@ -51,59 +45,52 @@ const DisplayPrefsView = (props) => {
 		}
 	};
 
-	const sortByName = async() => {
+	const sortByName = async () => {
 		logEvent(events.DP_SORT_CHANNELS_BY_NAME);
 		await setSortPreference({ sortBy: 'alphabetical' });
 	};
 
-	const sortByActivity = async() => {
+	const sortByActivity = async () => {
 		logEvent(events.DP_SORT_CHANNELS_BY_ACTIVITY);
 		await setSortPreference({ sortBy: 'activity' });
 	};
 
-	const toggleGroupByType = async() => {
+	const toggleGroupByType = async () => {
 		logEvent(events.DP_GROUP_CHANNELS_BY_TYPE);
 		await setSortPreference({ groupByType: !groupByType });
 	};
 
-	const toggleGroupByFavorites = async() => {
+	const toggleGroupByFavorites = async () => {
 		logEvent(events.DP_GROUP_CHANNELS_BY_FAVORITE);
 		await setSortPreference({ showFavorites: !showFavorites });
 	};
 
-	const toggleUnread = async() => {
+	const toggleUnread = async () => {
 		logEvent(events.DP_GROUP_CHANNELS_BY_UNREAD);
 		await setSortPreference({ showUnread: !showUnread });
 	};
 
-	const toggleAvatar = async() => {
+	const toggleAvatar = async () => {
 		logEvent(events.DP_TOGGLE_AVATAR);
 		await setSortPreference({ showAvatar: !showAvatar });
 	};
 
-	const displayExpanded = async() => {
+	const displayExpanded = async () => {
 		logEvent(events.DP_DISPLAY_EXPANDED);
 		await setSortPreference({ displayMode: DISPLAY_MODE_EXPANDED });
 	};
 
-	const displayCondensed = async() => {
+	const displayCondensed = async () => {
 		logEvent(events.DP_DISPLAY_CONDENSED);
 		await setSortPreference({ displayMode: DISPLAY_MODE_CONDENSED });
 	};
 
 	const renderCheckBox = value => (
-		<List.Icon
-			name={value ? 'checkbox-checked' : 'checkbox-unchecked'}
-			color={value ? themes[theme].actionTintColor : null}
-		/>
+		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? themes[theme].actionTintColor : null} />
 	);
 
 	const renderAvatarSwitch = value => (
-		<Switch
-			value={value}
-			onValueChange={() => toggleAvatar()}
-			testID='display-pref-view-avatar-switch'
-		/>
+		<Switch value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
 	);
 
 	const renderRadio = value => (
@@ -154,7 +141,7 @@ const DisplayPrefsView = (props) => {
 						testID='display-pref-view-activity'
 						left={() => <List.Icon name='clock' />}
 						onPress={sortByActivity}
-						right={() => (renderRadio(sortBy === 'activity'))}
+						right={() => renderRadio(sortBy === 'activity')}
 					/>
 					<List.Separator />
 					<List.Item
@@ -162,7 +149,7 @@ const DisplayPrefsView = (props) => {
 						testID='display-pref-view-name'
 						left={() => <List.Icon name='sort-az' />}
 						onPress={sortByName}
-						right={() => (renderRadio(sortBy === 'alphabetical'))}
+						right={() => renderRadio(sortBy === 'alphabetical')}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -175,7 +162,7 @@ const DisplayPrefsView = (props) => {
 						testID='display-pref-view-unread'
 						left={() => <List.Icon name='flag' />}
 						onPress={toggleUnread}
-						right={() => (renderCheckBox(showUnread))}
+						right={() => renderCheckBox(showUnread)}
 					/>
 					<List.Separator />
 					<List.Item
@@ -183,7 +170,7 @@ const DisplayPrefsView = (props) => {
 						testID='display-pref-view-favorites'
 						left={() => <List.Icon name='star' />}
 						onPress={toggleGroupByFavorites}
-						right={() => (renderCheckBox(showFavorites))}
+						right={() => renderCheckBox(showFavorites)}
 					/>
 					<List.Separator />
 					<List.Item
@@ -191,7 +178,7 @@ const DisplayPrefsView = (props) => {
 						testID='display-pref-view-types'
 						left={() => <List.Icon name='group-by-type' />}
 						onPress={toggleGroupByType}
-						right={() => (renderCheckBox(groupByType))}
+						right={() => renderCheckBox(groupByType)}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -205,4 +192,4 @@ DisplayPrefsView.propTypes = {
 	isMasterDetail: PropTypes.bool
 };
 
-export default (DisplayPrefsView);
+export default DisplayPrefsView;

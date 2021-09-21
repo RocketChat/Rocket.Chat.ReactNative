@@ -3,10 +3,9 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Avatar from '../../containers/Avatar';
-import TypeIcon from './TypeIcon';
-
-import styles from './styles';
 import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../../constants/constantDisplayMode';
+import TypeIcon from './TypeIcon';
+import styles from './styles';
 
 const IconOrAvatar = ({
 	avatar,
@@ -23,13 +22,7 @@ const IconOrAvatar = ({
 }) => {
 	if (showAvatar) {
 		return (
-			<Avatar
-				text={avatar}
-				size={displayMode === DISPLAY_MODE_CONDENSED ? 36 : 48}
-				type={type}
-				style={styles.avatar}
-				rid={rid}
-			/>
+			<Avatar text={avatar} size={displayMode === DISPLAY_MODE_CONDENSED ? 36 : 48} type={type} style={styles.avatar} rid={rid} />
 		);
 	}
 

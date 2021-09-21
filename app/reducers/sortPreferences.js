@@ -10,7 +10,6 @@ const initialState = {
 	displayMode: DISPLAY_MODE_EXPANDED
 };
 
-
 export default (state = initialState, action) => {
 	switch (action.type) {
 		case SORT_PREFERENCES.SET_ALL:

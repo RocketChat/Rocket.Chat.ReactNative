@@ -1,9 +1,8 @@
 import { compareServerVersion, methods } from '../utils';
-
 import reduxStore from '../createStore';
 import database from '../database';
 import log from '../../utils/log';
-import { setEnterpriseModules as setEnterpriseModulesAction, clearEnterpriseModules } from '../../actions/enterpriseModules';
+import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '../../actions/enterpriseModules';
 
 export const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';
 export const LICENSE_LIVECHAT_ENTERPRISE = 'livechat-enterprise';
@@ -30,7 +29,7 @@ export async function setEnterpriseModules() {
 }
 
 export function getEnterpriseModules() {
-	return new Promise(async(resolve) => {
+	return new Promise(async resolve => {
 		try {
 			const { version: serverVersion, server: serverId } = reduxStore.getState().server;
 			if (compareServerVersion(serverVersion, '3.1.0', methods.greaterThanOrEqualTo)) {
@@ -40,8 +39,8 @@ export function getEnterpriseModules() {
 					const serversDB = database.servers;
 					const serversCollection = serversDB.get('servers');
 					const server = await serversCollection.find(serverId);
-					await serversDB.action(async() => {
-						await server.update((s) => {
+					await serversDB.action(async () => {
+						await server.update(s => {
 							s.enterpriseModules = enterpriseModules.join(',');
 						});
 					});

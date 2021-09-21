@@ -2,15 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import {
-	toggleServerDropdown, closeServerDropdown, setSearch as setSearchAction
-} from '../../../actions/rooms';
-import Header from './Header';
+import { toggleServerDropdown, closeServerDropdown, setSearch as setSearchAction } from '../../../actions/rooms';
 import { withTheme } from '../../../theme';
 import EventEmitter from '../../../utils/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown } from '../../../commands';
 import { isTablet } from '../../../utils/deviceInfo';
-import { logEvent, events } from '../../../utils/log';
+import { events, logEvent } from '../../../utils/log';
+import Header from './Header';
 
 class RoomsListHeaderView extends PureComponent {
 	static propTypes = {
@@ -25,7 +23,7 @@ class RoomsListHeaderView extends PureComponent {
 		open: PropTypes.func,
 		close: PropTypes.func,
 		setSearch: PropTypes.func
-	}
+	};
 
 	componentDidMount() {
 		if (isTablet) {
@@ -44,29 +42,25 @@ class RoomsListHeaderView extends PureComponent {
 		if (handleCommandOpenServerDropdown(event)) {
 			this.onPress();
 		}
-	}
+	};
 
-	onSearchChangeText = (text) => {
+	onSearchChangeText = text => {
 		const { setSearch } = this.props;
 		setSearch(text.trim());
-	}
+	};
 
 	onPress = () => {
 		logEvent(events.RL_TOGGLE_SERVER_DROPDOWN);
-		const {
-			showServerDropdown, close, open
-		} = this.props;
+		const { showServerDropdown, close, open } = this.props;
 		if (showServerDropdown) {
 			close();
 		} else {
 			open();
 		}
-	}
+	};
 
 	render() {
-		const {
-			serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, theme, server
-		} = this.props;
+		const { serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, theme, server } = this.props;
 
 		return (
 			<Header
