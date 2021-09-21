@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Text, StyleSheet, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
@@ -11,7 +11,6 @@ import KeyboardView from '../presentation/KeyboardView';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 
-import sharedStyles from './Styles';
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -19,6 +18,7 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -39,15 +39,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Title = ({ title, theme }) => (title ? <Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text> : null);
+const Title = ({ title, theme }) =>
+	title ? <Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text> : null;
 Title.propTypes = {
 	title: PropTypes.string,
 	theme: PropTypes.string
 };
 
-const LivechatEditView = ({
-	user, navigation, route, theme, editOmnichannelContact, editLivechatRoomCustomfields
-}) => {
+const LivechatEditView = ({ user, navigation, route, theme, editOmnichannelContact, editLivechatRoomCustomfields }) => {
 	const [customFields, setCustomFields] = useState({});
 	const [availableUserTags, setAvailableUserTags] = useState([]);
 	const [permissions, setPermissions] = useState([]);
@@ -58,7 +57,7 @@ const LivechatEditView = ({
 	const livechat = route.params?.room ?? {};
 	const visitor = route.params?.roomUser ?? {};
 
-	const getCustomFields = async() => {
+	const getCustomFields = async () => {
 		const result = await RocketChat.getCustomFields();
 		if (result.success && result.customFields?.length) {
 			const visitorCustomFields = result.customFields
@@ -84,16 +83,16 @@ const LivechatEditView = ({
 		setTags(uniqueArray);
 	}, [availableUserTags]);
 
-	const getTagsList = async(agentDepartments) => {
+	const getTagsList = async agentDepartments => {
 		const tags = await RocketChat.getTagsList();
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role));
 		const availableTags = tags
-			.filter(({ departments }) => isAdmin || (departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1)))
+			.filter(({ departments }) => isAdmin || departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1))
 			.map(({ name }) => name);
 		setAvailableUserTags(availableTags);
 	};
 
-	const getAgentDepartments = async() => {
+	const getAgentDepartments = async () => {
 		const result = await RocketChat.getAgentDepartments(visitor?._id);
 		if (result.success) {
 			const agentDepartments = result.departments.map(dept => dept.departmentId);
@@ -101,7 +100,7 @@ const LivechatEditView = ({
 		}
 	};
 
-	const submit = async() => {
+	const submit = async () => {
 		const userData = { _id: visitor?._id };
 
 		const { rid, sms } = livechat;
@@ -150,9 +149,11 @@ const LivechatEditView = ({
 		}
 	};
 
-	const onChangeText = (key, text) => { params[key] = text; };
+	const onChangeText = (key, text) => {
+		params[key] = text;
+	};
 
-	const getPermissions = async() => {
+	const getPermissions = async () => {
 		const permissionsArray = await RocketChat.hasPermission([editOmnichannelContact, editLivechatRoomCustomfields], livechat.rid);
 		setPermissions(permissionsArray);
 	};
@@ -167,34 +168,38 @@ const LivechatEditView = ({
 		<KeyboardView
 			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
-					<Title
-						title={visitor?.username}
-						theme={theme}
-					/>
+					<Title title={visitor?.username} theme={theme} />
 					<TextInput
 						label={I18n.t('Name')}
 						defaultValue={visitor?.name}
 						onChangeText={text => onChangeText('name', text)}
-						onSubmitEditing={() => { inputs.name.focus(); }}
+						onSubmitEditing={() => {
+							inputs.name.focus();
+						}}
 						theme={theme}
 						editable={!!permissions[0]}
 					/>
 					<TextInput
 						label={I18n.t('Email')}
-						inputRef={(e) => { inputs.name = e; }}
+						inputRef={e => {
+							inputs.name = e;
+						}}
 						defaultValue={visitor?.visitorEmails && visitor?.visitorEmails[0]?.address}
 						onChangeText={text => onChangeText('email', text)}
-						onSubmitEditing={() => { inputs.phone.focus(); }}
+						onSubmitEditing={() => {
+							inputs.phone.focus();
+						}}
 						theme={theme}
 						editable={!!permissions[0]}
 					/>
 					<TextInput
 						label={I18n.t('Phone')}
-						inputRef={(e) => { inputs.phone = e; }}
+						inputRef={e => {
+							inputs.phone = e;
+						}}
 						defaultValue={visitor?.phone && visitor?.phone[0]?.phoneNumber}
 						onChangeText={text => onChangeText('phone', text)}
 						onSubmitEditing={() => {
@@ -213,7 +218,9 @@ const LivechatEditView = ({
 						<TextInput
 							label={key}
 							defaultValue={value}
-							inputRef={(e) => { inputs[key] = e; }}
+							inputRef={e => {
+								inputs[key] = e;
+							}}
 							onChangeText={text => onChangeText(key, text)}
 							onSubmitEditing={() => {
 								if (array.length - 1 > index) {
@@ -225,13 +232,12 @@ const LivechatEditView = ({
 							editable={!!permissions[0]}
 						/>
 					))}
-					<Title
-						title={I18n.t('Conversation')}
-						theme={theme}
-					/>
+					<Title title={I18n.t('Conversation')} theme={theme} />
 					<TextInput
 						label={I18n.t('Topic')}
-						inputRef={(e) => { inputs.topic = e; }}
+						inputRef={e => {
+							inputs.topic = e;
+						}}
 						defaultValue={livechat?.topic}
 						onChangeText={text => onChangeText('topic', text)}
 						onSubmitEditing={() => inputs.tags.focus()}
@@ -239,14 +245,7 @@ const LivechatEditView = ({
 						editable={!!permissions[1]}
 					/>
 
-					<Text
-						style={[
-							styles.label,
-							{ color: themes[theme].titleText }
-						]}
-					>
-						{ I18n.t('Tags') }
-					</Text>
+					<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Tags')}</Text>
 					<MultiSelect
 						options={tagParam.map(tag => ({ text: { text: tag }, value: tag }))}
 						onChange={({ value }) => {
@@ -265,7 +264,9 @@ const LivechatEditView = ({
 						<TextInput
 							label={key}
 							defaultValue={value}
-							inputRef={(e) => { inputs[key] = e; }}
+							inputRef={e => {
+								inputs[key] = e;
+							}}
 							onChangeText={text => onChangeText(key, text)}
 							onSubmitEditing={() => {
 								if (array.length - 1 > index) {
@@ -278,11 +279,7 @@ const LivechatEditView = ({
 						/>
 					))}
 
-					<Button
-						title={I18n.t('Save')}
-						onPress={submit}
-						theme={theme}
-					/>
+					<Button title={I18n.t('Save')} onPress={submit} theme={theme} />
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>
@@ -296,9 +293,9 @@ LivechatEditView.propTypes = {
 	editOmnichannelContact: PropTypes.array,
 	editLivechatRoomCustomfields: PropTypes.array
 };
-LivechatEditView.navigationOptions = ({
+LivechatEditView.navigationOptions = {
 	title: I18n.t('Edit')
-});
+};
 
 const mapStateToProps = state => ({
 	server: state.server.server,

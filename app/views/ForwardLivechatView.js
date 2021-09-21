@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import I18n from '../i18n';
@@ -18,9 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ForwardLivechatView = ({
-	forwardRoom, navigation, route, theme
-}) => {
+const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }) => {
 	const [departments, setDepartments] = useState([]);
 	const [departmentId, setDepartment] = useState();
 	const [users, setUsers] = useState([]);
@@ -29,7 +27,7 @@ const ForwardLivechatView = ({
 
 	const rid = route.params?.rid;
 
-	const getDepartments = async() => {
+	const getDepartments = async () => {
 		try {
 			const result = await RocketChat.getDepartments();
 			if (result.success) {
@@ -40,11 +38,14 @@ const ForwardLivechatView = ({
 		}
 	};
 
-	const getUsers = async(term = '') => {
+	const getUsers = async (term = '') => {
 		try {
 			const { servedBy: { _id: agentId } = {} } = room;
 			const _id = agentId && { $ne: agentId };
-			const result = await RocketChat.usersAutoComplete({ conditions: { _id, status: { $ne: 'offline' }, statusLivechat: 'available' }, term });
+			const result = await RocketChat.usersAutoComplete({
+				conditions: { _id, status: { $ne: 'offline' }, statusLivechat: 'available' },
+				term
+			});
 			if (result.success) {
 				const parsedUsers = result.items.map(user => ({ label: user.username, value: user._id }));
 				setUsers(parsedUsers);
@@ -56,7 +57,7 @@ const ForwardLivechatView = ({
 		return [];
 	};
 
-	const getRoom = async() => {
+	const getRoom = async () => {
 		try {
 			const result = await RocketChat.getRoomInfo(rid);
 			if (result.success) {
@@ -122,17 +123,9 @@ const ForwardLivechatView = ({
 
 	return (
 		<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-			<Input
-				onPress={onPressDepartment}
-				placeholder={I18n.t('Select_a_Department')}
-				theme={theme}
-			/>
+			<Input onPress={onPressDepartment} placeholder={I18n.t('Select_a_Department')} theme={theme} />
 			<OrSeparator theme={theme} />
-			<Input
-				onPress={onPressUser}
-				placeholder={I18n.t('Select_a_User')}
-				theme={theme}
-			/>
+			<Input onPress={onPressUser} placeholder={I18n.t('Select_a_User')} theme={theme} />
 		</View>
 	);
 };

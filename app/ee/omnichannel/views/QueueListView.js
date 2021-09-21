@@ -7,7 +7,7 @@ import { dequal } from 'dequal';
 import I18n from '../../../i18n';
 import RoomItem, { ROW_HEIGHT } from '../../../presentation/RoomItem';
 import { MAX_SIDEBAR_WIDTH } from '../../../constants/tablet';
-import { isTablet, isIOS } from '../../../utils/deviceInfo';
+import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { getUserSelector } from '../../../selectors/login';
 import { withTheme } from '../../../theme';
 import { withDimensions } from '../../../dimensions';
@@ -17,7 +17,7 @@ import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../utils/goRoom';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import RocketChat from '../../../lib/rocketchat';
-import { logEvent, events } from '../../../utils/log';
+import { events, logEvent } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -37,7 +37,7 @@ class QueueListView extends React.Component {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
 		}
 		return options;
-	}
+	};
 
 	static propTypes = {
 		user: PropTypes.shape({
@@ -52,7 +52,7 @@ class QueueListView extends React.Component {
 		useRealName: PropTypes.bool,
 		navigation: PropTypes.object,
 		theme: PropTypes.string
-	}
+	};
 
 	shouldComponentUpdate(nextProps) {
 		const { queued } = this.props;
@@ -82,19 +82,15 @@ class QueueListView extends React.Component {
 		});
 	};
 
-	getRoomTitle = item => RocketChat.getRoomTitle(item)
+	getRoomTitle = item => RocketChat.getRoomTitle(item);
 
-	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
+	getRoomAvatar = item => RocketChat.getRoomAvatar(item);
 
-	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room)
+	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
 
 	renderItem = ({ item }) => {
 		const {
-			user: {
-				id: userId,
-				username,
-				token
-			},
+			user: { id: userId, username, token },
 			server,
 			useRealName,
 			theme,
@@ -114,7 +110,7 @@ class QueueListView extends React.Component {
 				token={token}
 				baseUrl={server}
 				onPress={this.onPressItem}
-				testID={`queue-list-view-item-${ item.name }`}
+				testID={`queue-list-view-item-${item.name}`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				useRealName={useRealName}
 				getRoomTitle={this.getRoomTitle}
@@ -123,7 +119,7 @@ class QueueListView extends React.Component {
 				swipeEnabled={false}
 			/>
 		);
-	}
+	};
 
 	render() {
 		const { queued, theme } = this.props;

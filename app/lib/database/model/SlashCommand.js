@@ -4,13 +4,13 @@ import { field } from '@nozbe/watermelondb/decorators';
 export default class SlashCommand extends Model {
 	static table = 'slash_commands';
 
-  @field('params') params;
+	@field('params') params;
 
-  @field('description') description;
+	@field('description') description;
 
-  @field('client_only') clientOnly;
+	@field('client_only') clientOnly;
 
-  @field('provides_preview') providesPreview;
+	@field('provides_preview') providesPreview;
 
-  @field('app_id') appId;
+	@field('app_id') appId;
 }

@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Animated, Easing, TouchableWithoutFeedback
-} from 'react-native';
+import { Animated, Easing, TouchableWithoutFeedback } from 'react-native';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
@@ -24,7 +22,7 @@ class Dropdown extends React.Component {
 		currentFilter: PropTypes.string,
 		onClose: PropTypes.func,
 		onFilterSelected: PropTypes.func
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -32,34 +30,26 @@ class Dropdown extends React.Component {
 	}
 
 	componentDidMount() {
-		Animated.timing(
-			this.animatedValue,
-			{
-				toValue: 1,
-				duration: ANIMATION_DURATION,
-				easing: Easing.inOut(Easing.quad),
-				useNativeDriver: true
-			}
-		).start();
+		Animated.timing(this.animatedValue, {
+			toValue: 1,
+			duration: ANIMATION_DURATION,
+			easing: Easing.inOut(Easing.quad),
+			useNativeDriver: true
+		}).start();
 	}
 
 	close = () => {
 		const { onClose } = this.props;
-		Animated.timing(
-			this.animatedValue,
-			{
-				toValue: 0,
-				duration: ANIMATION_DURATION,
-				easing: Easing.inOut(Easing.quad),
-				useNativeDriver: true
-			}
-		).start(() => onClose());
-	}
+		Animated.timing(this.animatedValue, {
+			toValue: 0,
+			duration: ANIMATION_DURATION,
+			easing: Easing.inOut(Easing.quad),
+			useNativeDriver: true
+		}).start(() => onClose());
+	};
 
 	render() {
-		const {
-			isMasterDetail, insets, theme, currentFilter, onFilterSelected
-		} = this.props;
+		const { isMasterDetail, insets, theme, currentFilter, onFilterSelected } = this.props;
 		const statusBarHeight = insets?.top ?? 0;
 		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
@@ -73,12 +63,15 @@ class Dropdown extends React.Component {
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>
-					<Animated.View style={[styles.backdrop,
-						{
-							backgroundColor: themes[theme].backdropColor,
-							opacity: backdropOpacity,
-							top: heightDestination
-						}]}
+					<Animated.View
+						style={[
+							styles.backdrop,
+							{
+								backgroundColor: themes[theme].backdropColor,
+								opacity: backdropOpacity,
+								top: heightDestination
+							}
+						]}
 					/>
 				</TouchableWithoutFeedback>
 				<Animated.View
@@ -89,8 +82,7 @@ class Dropdown extends React.Component {
 							backgroundColor: themes[theme].backgroundColor,
 							borderColor: themes[theme].separatorColor
 						}
-					]}
-				>
+					]}>
 					<DropdownItemHeader currentFilter={currentFilter} onPress={this.close} />
 					<List.Separator />
 					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.ALL} onPress={onFilterSelected} />

@@ -29,7 +29,7 @@ let queue = {};
 let subTimer = null;
 const WINDOW_TIME = 500;
 
-const createOrUpdateSubscription = async(subscription, room) => {
+const createOrUpdateSubscription = async (subscription, room) => {
 	try {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
@@ -90,11 +90,13 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				};
 			} catch (error) {
 				try {
-					await db.action(async() => {
-						await roomsCollection.create(protectedFunction((r) => {
-							r._raw = sanitizedRaw({ id: room._id }, roomsCollection.schema);
-							Object.assign(r, room);
-						}));
+					await db.action(async () => {
+						await roomsCollection.create(
+							protectedFunction(r => {
+								r._raw = sanitizedRaw({ id: room._id }, roomsCollection.schema);
+								Object.assign(r, room);
+							})
+						);
 					});
 				} catch (e) {
 					// Do nothing
@@ -155,7 +157,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 		const batch = [];
 		if (sub) {
 			try {
-				const update = sub.prepareUpdate((s) => {
+				const update = sub.prepareUpdate(s => {
 					Object.assign(s, tmp);
 					if (subscription.announcement) {
 						if (subscription.announcement !== sub.announcement) {
@@ -169,7 +171,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 			}
 		} else {
 			try {
-				const create = subCollection.prepareCreate((s) => {
+				const create = subCollection.prepareCreate(s => {
 					s._raw = sanitizedRaw({ id: tmp.rid }, subCollection.schema);
 					Object.assign(s, tmp);
 					if (s.roomUpdatedAt) {
@@ -201,7 +203,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 				);
 			} else {
 				batch.push(
-					messagesCollection.prepareCreate((m) => {
+					messagesCollection.prepareCreate(m => {
 						m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
 						m.subscription.id = lastMessage.rid;
 						return Object.assign(m, lastMessage);
@@ -210,7 +212,7 @@ const createOrUpdateSubscription = async(subscription, room) => {
 			}
 		}
 
-		await db.action(async() => {
+		await db.action(async () => {
 			await db.batch(...batch);
 		});
 	} catch (e) {
@@ -218,17 +220,17 @@ const createOrUpdateSubscription = async(subscription, room) => {
 	}
 };
 
-const getSubQueueId = rid => `SUB-${ rid }`;
+const getSubQueueId = rid => `SUB-${rid}`;
 
-const getRoomQueueId = rid => `ROOM-${ rid }`;
+const getRoomQueueId = rid => `ROOM-${rid}`;
 
-const debouncedUpdate = (subscription) => {
+const debouncedUpdate = subscription => {
 	if (!subTimer) {
 		subTimer = setTimeout(() => {
 			const batch = queue;
 			queue = {};
 			subTimer = null;
-			Object.keys(batch).forEach((key) => {
+			Object.keys(batch).forEach(key => {
 				InteractionManager.runAfterInteractions(() => {
 					if (batch[key]) {
 						if (/SUB/.test(key)) {
@@ -257,7 +259,7 @@ export default function subscribeRooms() {
 		store.dispatch(roomsRequest());
 	};
 
-	const handleStreamMessageReceived = protectedFunction(async(ddpMessage) => {
+	const handleStreamMessageReceived = protectedFunction(async ddpMessage => {
 		const db = database.active;
 
 		// check if the server from variable is the same as the js sdk client
@@ -289,13 +291,8 @@ export default function subscribeRooms() {
 					const messagesToDelete = messages.map(m => m.prepareDestroyPermanently());
 					const threadsToDelete = threads.map(m => m.prepareDestroyPermanently());
 					const threadMessagesToDelete = threadMessages.map(m => m.prepareDestroyPermanently());
-					await db.action(async() => {
-						await db.batch(
-							sub.prepareDestroyPermanently(),
-							...messagesToDelete,
-							...threadsToDelete,
-							...threadMessagesToDelete
-						);
+					await db.action(async () => {
+						await db.batch(sub.prepareDestroyPermanently(), ...messagesToDelete, ...threadsToDelete, ...threadMessagesToDelete);
 					});
 
 					const roomState = store.getState().room;
@@ -336,12 +333,14 @@ export default function subscribeRooms() {
 			};
 			try {
 				const msgCollection = db.get('messages');
-				await db.action(async() => {
-					await msgCollection.create(protectedFunction((m) => {
-						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
-						m.subscription.id = args.rid;
-						Object.assign(m, message);
-					}));
+				await db.action(async () => {
+					await msgCollection.create(
+						protectedFunction(m => {
+							m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
+							m.subscription.id = args.rid;
+							Object.assign(m, message);
+						})
+					);
 				});
 			} catch (e) {
 				log(e);
@@ -350,7 +349,9 @@ export default function subscribeRooms() {
 		if (/notification/.test(ev)) {
 			const [notification] = ddpMessage.fields.args;
 			try {
-				const { payload: { rid, message, sender } } = notification;
+				const {
+					payload: { rid, message, sender }
+				} = notification;
 				const room = await RocketChat.getRoom(rid);
 				notification.title = RocketChat.getRoomTitle(room);
 				notification.avatar = RocketChat.getRoomAvatar(room);
@@ -362,9 +363,9 @@ export default function subscribeRooms() {
 					// If it's a direct the content is the message decrypted
 					if (room.t === 'd') {
 						notification.text = msg;
-					// If it's a private group we should add the sender name
+						// If it's a private group we should add the sender name
 					} else {
-						notification.text = `${ RocketChat.getSenderName(sender) }: ${ msg }`;
+						notification.text = `${RocketChat.getSenderName(sender)}: ${msg}`;
 					}
 				}
 			} catch (e) {

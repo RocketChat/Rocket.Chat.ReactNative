@@ -3,14 +3,16 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
-import LoadMore from './index';
 import { longText } from '../../../../storybook/utils';
 import { ThemeContext } from '../../../theme';
-import {
-	Message, StoryProvider, MessageDecorator
-} from '../../../../storybook/stories/Message';
+import { Message, MessageDecorator, StoryProvider } from '../../../../storybook/stories/Message';
 import { themes } from '../../../constants/colors';
-import { MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../../constants/messageTypeLoad';
+import {
+	MESSAGE_TYPE_LOAD_MORE,
+	MESSAGE_TYPE_LOAD_NEXT_CHUNK,
+	MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK
+} from '../../../constants/messageTypeLoad';
+import LoadMore from './index';
 
 const stories = storiesOf('LoadMore', module);
 
@@ -27,9 +29,7 @@ stories.add('basic', () => (
 ));
 
 const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider
-		value={{ theme }}
-	>
+	<ThemeContext.Provider value={{ theme }}>
 		<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<LoadMore load={load} type={MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK} />
 			<Message msg='Hey!' theme={theme} />
@@ -59,4 +59,3 @@ stories
 	.addDecorator(StoryProvider)
 	.addDecorator(MessageDecorator)
 	.add('black theme', () => <ThemeStory theme='black' />);
-

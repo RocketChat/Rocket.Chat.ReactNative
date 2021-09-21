@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-	ScrollView, Text, View, TouchableWithoutFeedback
-} from 'react-native';
+import { ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
-import styles from './styles';
-import SidebarItem from './SidebarItem';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/Navigation';
+import SidebarItem from './SidebarItem';
+import styles from './styles';
 
 const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
 Separator.propTypes = {
@@ -40,7 +39,7 @@ class Sidebar extends Component {
 		viewRoomAdministrationPermission: PropTypes.object,
 		viewUserAdministrationPermission: PropTypes.object,
 		viewPrivilegedSettingPermission: PropTypes.object
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -52,7 +51,17 @@ class Sidebar extends Component {
 	shouldComponentUpdate(nextProps, nextState) {
 		const { showStatus, isAdmin } = this.state;
 		const {
-			Site_Name, user, baseUrl, state, isMasterDetail, useRealName, theme, viewStatisticsPermission, viewRoomAdministrationPermission, viewUserAdministrationPermission, viewPrivilegedSettingPermission
+			Site_Name,
+			user,
+			baseUrl,
+			state,
+			isMasterDetail,
+			useRealName,
+			theme,
+			viewStatisticsPermission,
+			viewRoomAdministrationPermission,
+			viewUserAdministrationPermission,
+			viewPrivilegedSettingPermission
 		} = this.props;
 		// Drawer navigation state
 		if (state?.index !== nextProps.state?.index) {
@@ -100,33 +109,38 @@ class Sidebar extends Component {
 		return false;
 	}
 
-
 	getIsAdmin() {
 		const {
-			user, viewStatisticsPermission, viewRoomAdministrationPermission, viewUserAdministrationPermission, viewPrivilegedSettingPermission
+			user,
+			viewStatisticsPermission,
+			viewRoomAdministrationPermission,
+			viewUserAdministrationPermission,
+			viewPrivilegedSettingPermission
 		} = this.props;
 		const { roles } = user;
-		const allPermissions = [viewStatisticsPermission, viewRoomAdministrationPermission, viewUserAdministrationPermission, viewPrivilegedSettingPermission];
+		const allPermissions = [
+			viewStatisticsPermission,
+			viewRoomAdministrationPermission,
+			viewUserAdministrationPermission,
+			viewPrivilegedSettingPermission
+		];
 		let isAdmin = false;
 
-		if	(roles) {
+		if (roles) {
 			isAdmin = allPermissions.reduce((result, permission) => {
 				if (permission) {
-					return (
-						result || permission.some(r => roles.indexOf(r) !== -1)
-					);
+					return result || permission.some(r => roles.indexOf(r) !== -1);
 				}
 				return result;
-			},
-			false);
+			}, false);
 		}
 		return isAdmin;
 	}
 
-	sidebarNavigate = (route) => {
-		logEvent(events[`SIDEBAR_GO_${ route.replace('StackNavigator', '').replace('View', '').toUpperCase() }`]);
+	sidebarNavigate = route => {
+		logEvent(events[`SIDEBAR_GO_${route.replace('StackNavigator', '').replace('View', '').toUpperCase()}`]);
 		Navigation.navigate(route);
-	}
+	};
 
 	get currentItemKey() {
 		const { state } = this.props;
@@ -139,7 +153,7 @@ class Sidebar extends Component {
 			return;
 		}
 		navigation.closeDrawer();
-	}
+	};
 
 	renderAdmin = () => {
 		const { theme, isMasterDetail } = this.props;
@@ -159,7 +173,7 @@ class Sidebar extends Component {
 				/>
 			</>
 		);
-	}
+	};
 
 	renderNavigation = () => {
 		const { theme } = this.props;
@@ -189,7 +203,7 @@ class Sidebar extends Component {
 				{this.renderAdmin()}
 			</>
 		);
-	}
+	};
 
 	renderCustomStatus = () => {
 		const { user, theme } = this.props;
@@ -202,12 +216,10 @@ class Sidebar extends Component {
 				testID='sidebar-custom-status'
 			/>
 		);
-	}
+	};
 
 	render() {
-		const {
-			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme
-		} = this.props;
+		const { user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme } = this.props;
 
 		if (!user) {
 			return null;
@@ -218,29 +230,24 @@ class Sidebar extends Component {
 					style={[
 						styles.container,
 						{
-							backgroundColor: isMasterDetail
-								? themes[theme].backgroundColor
-								: themes[theme].focusedBackground
+							backgroundColor: isMasterDetail ? themes[theme].backgroundColor : themes[theme].focusedBackground
 						}
 					]}
-					{...scrollPersistTaps}
-				>
+					{...scrollPersistTaps}>
 					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
 						<View style={styles.header} theme={theme}>
-							<Avatar
-								text={user.username}
-								style={styles.avatar}
-								size={30}
-							/>
+							<Avatar text={user.username} style={styles.avatar} size={30} />
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
-									<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>{useRealName ? user.name : user.username}</Text>
+									<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>
+										{useRealName ? user.name : user.username}
+									</Text>
 								</View>
 								<Text
 									style={[styles.currentServerText, { color: themes[theme].titleText }]}
 									numberOfLines={1}
-									accessibilityLabel={`Connected to ${ baseUrl }`}
-								>{Site_Name}
+									accessibilityLabel={`Connected to ${baseUrl}`}>
+									{Site_Name}
 								</Text>
 							</View>
 						</View>
@@ -256,9 +263,7 @@ class Sidebar extends Component {
 							<Separator theme={theme} />
 						</>
 					) : (
-						<>
-							{this.renderAdmin()}
-						</>
+						<>{this.renderAdmin()}</>
 					)}
 				</ScrollView>
 			</SafeAreaView>
