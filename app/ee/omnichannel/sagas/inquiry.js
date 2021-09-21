@@ -1,10 +1,10 @@
-import { put, takeLatest, select } from 'redux-saga/effects';
+import { put, select, takeLatest } from 'redux-saga/effects';
 
 import * as types from '../../../actions/actionsTypes';
 import RocketChat from '../../../lib/rocketchat';
 import EventEmitter from '../../../utils/events';
-import { inquirySuccess, inquiryFailure, inquirySetEnabled } from '../actions/inquiry';
-import { isOmnichannelStatusAvailable, getInquiriesQueued } from '../lib';
+import { inquiryFailure, inquirySetEnabled, inquirySuccess } from '../actions/inquiry';
+import { getInquiriesQueued, isOmnichannelStatusAvailable } from '../lib';
 
 const handleRequest = function* handleRequest() {
 	try {

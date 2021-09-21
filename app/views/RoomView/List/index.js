@@ -13,22 +13,23 @@ import EmptyRoom from '../EmptyRoom';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { themes } from '../../../constants/colors';
+import debounce from '../../../utils/debounce';
 import List from './List';
 import NavBottomFAB from './NavBottomFAB';
-import debounce from '../../../utils/debounce';
 
 const QUERY_SIZE = 50;
 
-const onScroll = ({ y }) => event(
-	[
-		{
-			nativeEvent: {
-				contentOffset: { y }
+const onScroll = ({ y }) =>
+	event(
+		[
+			{
+				nativeEvent: {
+					contentOffset: { y }
+				}
 			}
-		}
-	],
-	{ useNativeDriver: true }
-);
+		],
+		{ useNativeDriver: true }
+	);
 
 class ListContainer extends React.Component {
 	static propTypes = {
@@ -47,8 +48,8 @@ class ListContainer extends React.Component {
 
 	constructor(props) {
 		super(props);
-		console.time(`${ this.constructor.name } init`);
-		console.time(`${ this.constructor.name } mount`);
+		console.time(`${this.constructor.name} init`);
+		console.time(`${this.constructor.name} mount`);
 		this.count = 0;
 		this.mounted = false;
 		this.animated = false;
@@ -67,19 +68,17 @@ class ListContainer extends React.Component {
 		this.viewabilityConfig = {
 			itemVisiblePercentThreshold: 10
 		};
-		console.timeEnd(`${ this.constructor.name } init`);
+		console.timeEnd(`${this.constructor.name} init`);
 	}
 
 	componentDidMount() {
 		this.mounted = true;
-		console.timeEnd(`${ this.constructor.name } mount`);
+		console.timeEnd(`${this.constructor.name} mount`);
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { refreshing, highlightedMessage } = this.state;
-		const {
-			hideSystemMessages, theme, tunread, ignored, loading
-		} = this.props;
+		const { hideSystemMessages, theme, tunread, ignored, loading } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
@@ -120,7 +119,7 @@ class ListContainer extends React.Component {
 			this.unsubscribeFocus();
 		}
 		this.clearHighlightedMessageTimeout();
-		console.countReset(`${ this.constructor.name }.render calls`);
+		console.countReset(`${this.constructor.name}.render calls`);
 	}
 
 	clearHighlightedMessageTimeout = () => {
@@ -128,9 +127,9 @@ class ListContainer extends React.Component {
 			clearTimeout(this.highlightedMessageTimeout);
 			this.highlightedMessageTimeout = false;
 		}
-	}
+	};
 
-	query = async() => {
+	query = async () => {
 		this.count += QUERY_SIZE;
 		const { rid, tmid, showMessageInMainThread } = this.props;
 		const db = database.active;
@@ -143,20 +142,13 @@ class ListContainer extends React.Component {
 
 		if (tmid) {
 			try {
-				this.thread = await db.collections
-					.get('threads')
-					.find(tmid);
+				this.thread = await db.collections.get('threads').find(tmid);
 			} catch (e) {
 				console.log(e);
 			}
 			this.messagesObservable = db.collections
 				.get('thread_messages')
-				.query(
-					Q.where('rid', tmid),
-					Q.experimentalSortBy('ts', Q.desc),
-					Q.experimentalSkip(0),
-					Q.experimentalTake(this.count)
-				)
+				.query(Q.where('rid', tmid), Q.experimentalSortBy('ts', Q.desc), Q.experimentalSkip(0), Q.experimentalTake(this.count))
 				.observe();
 		} else if (rid) {
 			const whereClause = [
@@ -166,12 +158,7 @@ class ListContainer extends React.Component {
 				Q.experimentalTake(this.count)
 			];
 			if (!showMessageInMainThread) {
-				whereClause.push(
-					Q.or(
-						Q.where('tmid', null),
-						Q.where('tshow', Q.eq(true))
-					)
-				);
+				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
 			}
 			this.messagesObservable = db.collections
 				.get('messages')
@@ -181,30 +168,29 @@ class ListContainer extends React.Component {
 
 		if (rid) {
 			this.unsubscribeMessages();
-			this.messagesSubscription = this.messagesObservable
-				.subscribe((messages) => {
-					if (tmid && this.thread) {
-						messages = [...messages, this.thread];
-					}
-					messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
+			this.messagesSubscription = this.messagesObservable.subscribe(messages => {
+				if (tmid && this.thread) {
+					messages = [...messages, this.thread];
+				}
+				messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
 
-					if (this.mounted) {
-						this.setState({ messages }, () => this.update());
-					} else {
-						this.state.messages = messages;
-					}
-					// TODO: move it away from here
-					this.readThreads();
-				});
+				if (this.mounted) {
+					this.setState({ messages }, () => this.update());
+				} else {
+					this.state.messages = messages;
+				}
+				// TODO: move it away from here
+				this.readThreads();
+			});
 		}
-	}
+	};
 
 	reload = () => {
 		this.count = 0;
 		this.query();
-	}
+	};
 
-	readThreads = debounce(async() => {
+	readThreads = debounce(async () => {
 		const { tmid } = this.props;
 
 		if (tmid) {
@@ -214,28 +200,29 @@ class ListContainer extends React.Component {
 				// Do nothing
 			}
 		}
-	}, 300)
+	}, 300);
 
-	onEndReached = () => this.query()
+	onEndReached = () => this.query();
 
-	onRefresh = () => this.setState({ refreshing: true }, async() => {
-		const { messages } = this.state;
-		const { rid, tmid } = this.props;
+	onRefresh = () =>
+		this.setState({ refreshing: true }, async () => {
+			const { messages } = this.state;
+			const { rid, tmid } = this.props;
 
-		if (messages.length) {
-			try {
-				if (tmid) {
-					await RocketChat.loadThreadMessages({ tmid, rid });
-				} else {
-					await RocketChat.loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
+			if (messages.length) {
+				try {
+					if (tmid) {
+						await RocketChat.loadThreadMessages({ tmid, rid });
+					} else {
+						await RocketChat.loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
+					}
+				} catch (e) {
+					log(e);
 				}
-			} catch (e) {
-				log(e);
 			}
-		}
 
-		this.setState({ refreshing: false });
-	})
+			this.setState({ refreshing: false });
+		});
 
 	update = () => {
 		if (this.animated) {
@@ -248,7 +235,7 @@ class ListContainer extends React.Component {
 		if (this.messagesSubscription && this.messagesSubscription.unsubscribe) {
 			this.messagesSubscription.unsubscribe();
 		}
-	}
+	};
 
 	getLastMessage = () => {
 		const { messages } = this.state;
@@ -256,52 +243,53 @@ class ListContainer extends React.Component {
 			return messages[0];
 		}
 		return null;
-	}
+	};
 
-	handleScrollToIndexFailed = (params) => {
+	handleScrollToIndexFailed = params => {
 		const { listRef } = this.props;
 		listRef.current.getNode().scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
-	}
+	};
 
-	jumpToMessage = messageId => new Promise(async(resolve) => {
-		this.jumping = true;
-		const { messages } = this.state;
-		const { listRef } = this.props;
-		const index = messages.findIndex(item => item.id === messageId);
-		if (index > -1) {
-			listRef.current.getNode().scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
-			await new Promise(res => setTimeout(res, 300));
-			if (!this.viewableItems.map(vi => vi.key).includes(messageId)) {
+	jumpToMessage = messageId =>
+		new Promise(async resolve => {
+			this.jumping = true;
+			const { messages } = this.state;
+			const { listRef } = this.props;
+			const index = messages.findIndex(item => item.id === messageId);
+			if (index > -1) {
+				listRef.current.getNode().scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
+				await new Promise(res => setTimeout(res, 300));
+				if (!this.viewableItems.map(vi => vi.key).includes(messageId)) {
+					if (!this.jumping) {
+						return resolve();
+					}
+					await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
+					return;
+				}
+				this.setState({ highlightedMessage: messageId });
+				this.clearHighlightedMessageTimeout();
+				this.highlightedMessageTimeout = setTimeout(() => {
+					this.setState({ highlightedMessage: null });
+				}, 10000);
+				await setTimeout(() => resolve(), 300);
+			} else {
+				listRef.current.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
 				if (!this.jumping) {
 					return resolve();
 				}
 				await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
-				return;
 			}
-			this.setState({ highlightedMessage: messageId });
-			this.clearHighlightedMessageTimeout();
-			this.highlightedMessageTimeout = setTimeout(() => {
-				this.setState({ highlightedMessage: null });
-			}, 10000);
-			await setTimeout(() => resolve(), 300);
-		} else {
-			listRef.current.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
-			if (!this.jumping) {
-				return resolve();
-			}
-			await setTimeout(() => resolve(this.jumpToMessage(messageId)), 300);
-		}
-	});
+		});
 
 	// this.jumping is checked in between operations to make sure we're not stuck
 	cancelJumpToMessage = () => {
 		this.jumping = false;
-	}
+	};
 
 	jumpToBottom = () => {
 		const { listRef } = this.props;
 		listRef.current.getNode().scrollToOffset({ offset: -100 });
-	}
+	};
 
 	renderFooter = () => {
 		const { rid, theme, loading } = this.props;
@@ -309,20 +297,20 @@ class ListContainer extends React.Component {
 			return <ActivityIndicator theme={theme} />;
 		}
 		return null;
-	}
+	};
 
 	renderItem = ({ item, index }) => {
 		const { messages, highlightedMessage } = this.state;
 		const { renderRow } = this.props;
 		return renderRow(item, messages[index + 1], highlightedMessage);
-	}
+	};
 
 	onViewableItemsChanged = ({ viewableItems }) => {
 		this.viewableItems = viewableItems;
-	}
+	};
 
 	render() {
-		console.count(`${ this.constructor.name }.render calls`);
+		console.count(`${this.constructor.name}.render calls`);
 		const { rid, tmid, listRef } = this.props;
 		const { messages, refreshing } = this.state;
 		const { theme } = this.props;
@@ -340,13 +328,9 @@ class ListContainer extends React.Component {
 					onScrollToIndexFailed={this.handleScrollToIndexFailed}
 					onViewableItemsChanged={this.onViewableItemsChanged}
 					viewabilityConfig={this.viewabilityConfig}
-					refreshControl={(
-						<RefreshControl
-							refreshing={refreshing}
-							onRefresh={this.onRefresh}
-							tintColor={themes[theme].auxiliaryText}
-						/>
-					)}
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
+					}
 				/>
 				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
 			</>

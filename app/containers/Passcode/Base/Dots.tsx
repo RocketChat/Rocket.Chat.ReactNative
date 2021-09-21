@@ -1,0 +1,50 @@
+import React from 'react';
+import { View } from 'react-native';
+import range from 'lodash/range';
+
+import styles from './styles';
+import { themes } from '../../../constants/colors';
+
+const SIZE_EMPTY = 12;
+const SIZE_FULL = 16;
+
+interface IPasscodeDots {
+	passcode: string;
+	theme: string;
+	length: number;
+}
+
+const Dots = React.memo(({ passcode, theme, length }: IPasscodeDots) => (
+	<View style={styles.dotsContainer}>
+		{range(length).map(val => {
+			const lengthSup = passcode.length >= val + 1;
+			const height = lengthSup ? SIZE_FULL : SIZE_EMPTY;
+			const width = lengthSup ? SIZE_FULL : SIZE_EMPTY;
+			let backgroundColor = '';
+			if (lengthSup && passcode.length > 0) {
+				backgroundColor = themes[theme].passcodeDotFull;
+			} else {
+				backgroundColor = themes[theme].passcodeDotEmpty;
+			}
+			const borderRadius = lengthSup ? SIZE_FULL / 2 : SIZE_EMPTY / 2;
+			const marginRight = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;
+			const marginLeft = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;
+			return (
+				<View style={styles.dotsView}>
+					<View
+						style={{
+							height,
+							width,
+							borderRadius,
+							backgroundColor,
+							marginRight,
+							marginLeft
+						}}
+					/>
+				</View>
+			);
+		})}
+	</View>
+));
+
+export default Dots;

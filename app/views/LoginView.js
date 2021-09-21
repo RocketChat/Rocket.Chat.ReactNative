@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Text, View, StyleSheet, Keyboard, Alert
-} from 'react-native';
+import { Alert, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import sharedStyles from './Styles';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -16,6 +13,7 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import LoginServices from '../containers/LoginServices';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	registerDisabled: {
@@ -52,7 +50,7 @@ class LoginView extends React.Component {
 	static navigationOptions = ({ route, navigation }) => ({
 		title: route.params?.title ?? 'Rocket.Chat',
 		headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
-	})
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -70,7 +68,7 @@ class LoginView extends React.Component {
 		theme: PropTypes.string,
 		loginRequest: PropTypes.func,
 		inviteLinkToken: PropTypes.string
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -95,22 +93,22 @@ class LoginView extends React.Component {
 	login = () => {
 		const { navigation, Site_Name } = this.props;
 		navigation.navigate('LoginView', { title: Site_Name });
-	}
+	};
 
 	register = () => {
 		const { navigation, Site_Name } = this.props;
 		navigation.navigate('RegisterView', { title: Site_Name });
-	}
+	};
 
 	forgotPassword = () => {
 		const { navigation, Site_Name } = this.props;
 		navigation.navigate('ForgotPasswordView', { title: Site_Name });
-	}
+	};
 
 	valid = () => {
 		const { user, password } = this.state;
 		return user.trim() && password.trim();
-	}
+	};
 
 	submit = () => {
 		if (!this.valid()) {
@@ -121,12 +119,18 @@ class LoginView extends React.Component {
 		const { loginRequest } = this.props;
 		Keyboard.dismiss();
 		loginRequest({ user, password });
-	}
+	};
 
 	renderUserForm = () => {
 		const { user } = this.state;
 		const {
-			Accounts_EmailOrUsernamePlaceholder, Accounts_PasswordPlaceholder, Accounts_PasswordReset, Accounts_RegistrationForm_LinkReplacementText, isFetching, theme, Accounts_ShowFormLogin
+			Accounts_EmailOrUsernamePlaceholder,
+			Accounts_PasswordPlaceholder,
+			Accounts_PasswordReset,
+			Accounts_RegistrationForm_LinkReplacementText,
+			isFetching,
+			theme,
+			Accounts_ShowFormLogin
 		} = this.props;
 
 		if (!Accounts_ShowFormLogin) {
@@ -143,7 +147,9 @@ class LoginView extends React.Component {
 					keyboardType='email-address'
 					returnKeyType='next'
 					onChangeText={value => this.setState({ user: value })}
-					onSubmitEditing={() => { this.passwordInput.focus(); }}
+					onSubmitEditing={() => {
+						this.passwordInput.focus();
+					}}
 					testID='login-view-email'
 					textContentType='username'
 					autoCompleteType='username'
@@ -153,7 +159,9 @@ class LoginView extends React.Component {
 				<TextInput
 					label={I18n.t('Password')}
 					containerStyle={styles.inputContainer}
-					inputRef={(e) => { this.passwordInput = e; }}
+					inputRef={e => {
+						this.passwordInput = e;
+					}}
 					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
 					returnKeyType='send'
 					secureTextEntry
@@ -187,18 +195,24 @@ class LoginView extends React.Component {
 				)}
 				{this.showRegistrationButton ? (
 					<View style={styles.bottomContainer}>
-						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
+						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
+							{I18n.t('Dont_Have_An_Account')}
+						</Text>
 						<Text
 							style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
 							onPress={this.register}
-							testID='login-view-register'
-						>{I18n.t('Create_account')}
+							testID='login-view-register'>
+							{I18n.t('Create_account')}
 						</Text>
 					</View>
-				) : (<Text style={[styles.registerDisabled, { color: themes[theme].auxiliaryText }]}>{Accounts_RegistrationForm_LinkReplacementText}</Text>)}
+				) : (
+					<Text style={[styles.registerDisabled, { color: themes[theme].auxiliaryText }]}>
+						{Accounts_RegistrationForm_LinkReplacementText}
+					</Text>
+				)}
 			</>
 		);
-	}
+	};
 
 	render() {
 		const { Accounts_ShowFormLogin, theme, navigation } = this.props;

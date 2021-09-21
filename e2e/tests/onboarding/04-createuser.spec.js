@@ -2,33 +2,33 @@ const { navigateToRegister } = require('../../helpers/app');
 const data = require('../../data');
 
 describe('Create user screen', () => {
-	before(async() => {
+	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToRegister();
 	});
 
 	describe('Render', () => {
-		it('should have create user screen', async() => {
+		it('should have create user screen', async () => {
 			await expect(element(by.id('register-view'))).toBeVisible();
 		});
 
-		it('should have name input', async() => {
+		it('should have name input', async () => {
 			await expect(element(by.id('register-view-name'))).toBeVisible();
 		});
 
-		it('should have email input', async() => {
+		it('should have email input', async () => {
 			await expect(element(by.id('register-view-email'))).toBeVisible();
 		});
 
-		it('should have password input', async() => {
+		it('should have password input', async () => {
 			await expect(element(by.id('register-view-password'))).toBeVisible();
 		});
 
-		it('should have submit button', async() => {
+		it('should have submit button', async () => {
 			await expect(element(by.id('register-view-submit'))).toBeVisible();
 		});
 
-		it('should have legal button', async() => {
+		it('should have legal button', async () => {
 			await expect(element(by.id('register-view-more'))).toBeVisible();
 		});
 	});
@@ -44,33 +44,39 @@ describe('Create user screen', () => {
 		// 	await element(by.id('register-view-submit')).tap();
 		// });
 
-		it('should submit email already taken and raise error', async() => {
+		it('should submit email already taken and raise error', async () => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-email')).replaceText(data.users.existing.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by.text('Email already exists. [403]')).atIndex(0)).toExist().withTimeout(10000);
+			await waitFor(element(by.text('Email already exists. [403]')).atIndex(0))
+				.toExist()
+				.withTimeout(10000);
 			await element(by.text('OK')).tap();
 		});
 
-		it('should submit username already taken and raise error', async() => {
+		it('should submit username already taken and raise error', async () => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-username')).replaceText(data.users.existing.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by.text('Username is already in use')).atIndex(0)).toExist().withTimeout(10000);
+			await waitFor(element(by.text('Username is already in use')).atIndex(0))
+				.toExist()
+				.withTimeout(10000);
 			await element(by.text('OK')).tap();
 		});
 
-		it('should register', async() => {
+		it('should register', async () => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(60000);
+			await waitFor(element(by.id('rooms-list-view')))
+				.toBeVisible()
+				.withTimeout(60000);
 		});
 	});
 });

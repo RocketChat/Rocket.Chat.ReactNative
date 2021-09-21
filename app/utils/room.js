@@ -1,9 +1,9 @@
 import moment from 'moment';
-import { themes } from '../constants/colors';
 
+import { themes } from '../constants/colors';
 import I18n from '../i18n';
 
-export const isBlocked = (room) => {
+export const isBlocked = room => {
 	if (room) {
 		const { t, blocked, blocker } = room;
 		if (t === 'd' && (blocked || blocker)) {
@@ -13,24 +13,28 @@ export const isBlocked = (room) => {
 	return false;
 };
 
-export const capitalize = (s) => {
-	if (typeof s !== 'string') { return ''; }
+export const capitalize = s => {
+	if (typeof s !== 'string') {
+		return '';
+	}
 	return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
-export const formatDate = date => moment(date).calendar(null, {
-	lastDay: `[${ I18n.t('Yesterday') }]`,
-	sameDay: 'LT',
-	lastWeek: 'dddd',
-	sameElse: 'L'
-});
+export const formatDate = date =>
+	moment(date).calendar(null, {
+		lastDay: `[${I18n.t('Yesterday')}]`,
+		sameDay: 'LT',
+		lastWeek: 'dddd',
+		sameElse: 'L'
+	});
 
-export const formatDateThreads = date => moment(date).calendar(null, {
-	sameDay: 'LT',
-	lastDay: `[${ I18n.t('Yesterday') }] LT`,
-	lastWeek: 'dddd LT',
-	sameElse: 'LL'
-});
+export const formatDateThreads = date =>
+	moment(date).calendar(null, {
+		sameDay: 'LT',
+		lastDay: `[${I18n.t('Yesterday')}] LT`,
+		lastWeek: 'dddd LT',
+		sameElse: 'LL'
+	});
 
 export const getBadgeColor = ({ subscription, messageId, theme }) => {
 	if (subscription?.tunreadUser?.includes(messageId)) {

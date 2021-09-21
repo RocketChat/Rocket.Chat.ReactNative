@@ -1,15 +1,12 @@
-import { Easing, Animated } from 'react-native';
-import { TransitionPresets, HeaderStyleInterpolators } from '@react-navigation/stack';
+import { Animated, Easing } from 'react-native';
+import { HeaderStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
 
 import { isAndroid } from '../deviceInfo';
 import conditional from './conditional';
 
 const { multiply } = Animated;
 
-const forFadeFromCenter = ({
-	current,
-	closing
-}) => {
+const forFadeFromCenter = ({ current, closing }) => {
 	const opacity = conditional(
 		closing,
 		current.progress,
@@ -51,11 +48,7 @@ export const FadeFromCenterModal = {
 	cardStyleInterpolator: forFadeFromCenter
 };
 
-const forStackAndroid = ({
-	current,
-	inverted,
-	layouts: { screen }
-}) => {
+const forStackAndroid = ({ current, inverted, layouts: { screen } }) => {
 	const translateX = multiply(
 		current.progress.interpolate({
 			inputRange: [0, 1],

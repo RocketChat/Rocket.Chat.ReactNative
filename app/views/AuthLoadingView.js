@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	View, Text, StyleSheet, ActivityIndicator
-} from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -9,7 +7,6 @@ import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
-
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
@@ -32,7 +29,7 @@ const AuthLoadingView = React.memo(({ theme, text }) => (
 		{text && (
 			<>
 				<ActivityIndicator color={themes[theme].auxiliaryText} size='large' />
-				<Text style={[styles.text, { color: themes[theme].bodyText }]}>{`${ text }\n${ I18n.t('Please_wait') }`}</Text>
+				<Text style={[styles.text, { color: themes[theme].bodyText }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
 			</>
 		)}
 	</View>
