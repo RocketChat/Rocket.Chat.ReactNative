@@ -35,7 +35,7 @@ const fixedScopes = [
 		name: I18n.t('All')
 	},
 	{
-		_id: 'public',
+		_id: 'global',
 		name: I18n.t('Public')
 	},
 	{
