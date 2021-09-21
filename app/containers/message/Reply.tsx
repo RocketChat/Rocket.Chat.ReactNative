@@ -11,6 +11,7 @@ import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import Attachments from './Attachments';
 
 const styles = StyleSheet.create({
 	button: {
@@ -93,6 +94,28 @@ interface IMessageReplyAttachment {
 	short: boolean;
 	value: string;
 	title_link: string;
+	attachments: [
+		{
+			ts: string;
+			title: string;
+			title_link: string;
+			title_download: boolean;
+			image_url?: string;
+			image_dimensions?: {
+				width: number;
+				height: number;
+			};
+			image_preview?: string;
+			image_type?: string;
+			image_size?: number;
+			video_url?: string;
+			video_type?: string;
+			video_size?: number;
+			type: string;
+			fields: IMessageReplyAttachment[];
+			attachments: Partial<IMessageReplyAttachment>[];
+		}
+	];
 	author_link: string;
 	type: string;
 	color: string;
@@ -260,6 +283,8 @@ const Reply = React.memo(
 						<UrlImage image={attachment.thumb_url} />
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+						{/* @ts-ignore*/}
+						<Attachments attachments={attachment.attachments} showAttachment={onPress} theme={theme} />
 					</View>
 				</Touchable>
 				{/* @ts-ignore*/}

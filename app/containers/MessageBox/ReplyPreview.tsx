@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
+import { formatAttachmentUrl } from '../../lib/utils';
 
 const styles = StyleSheet.create({
 	container: {
@@ -15,10 +16,18 @@ const styles = StyleSheet.create({
 	},
 	messageContainer: {
 		flex: 1,
-		marginHorizontal: 10,
+		marginLeft: 10,
 		paddingHorizontal: 15,
 		paddingVertical: 10,
-		borderRadius: 4
+		borderBottomLeftRadius: 4,
+		borderTopLeftRadius: 4
+	},
+	thumbnail: {
+		flex: 0.25,
+		width: 55,
+		marginRight: 10,
+		borderBottomRightRadius: 4,
+		borderTopRightRadius: 4
 	},
 	header: {
 		flexDirection: 'row',
@@ -45,6 +54,14 @@ interface IMessageBoxReplyPreview {
 	message: {
 		ts: Date;
 		msg: string;
+		attachments: [
+			{
+				title_link?: string;
+				description: string;
+				image_url?: string;
+				video_url?: string;
+			}
+		];
 		u: any;
 	};
 	Message_TimeFormat: string;
@@ -54,6 +71,15 @@ interface IMessageBoxReplyPreview {
 	getCustomEmoji: Function;
 	theme: string;
 	useRealName: boolean;
+}
+
+interface IState {
+	login: {
+		user: {
+			id: string;
+			token: string;
+		};
+	};
 }
 
 const ReplyPreview = React.memo(
@@ -72,7 +98,25 @@ const ReplyPreview = React.memo(
 			return null;
 		}
 
+		let description;
+		if (message.msg === '') {
+			if (!message.attachments[0]?.description && message.attachments[0].image_url) {
+				description = 'Image';
+			} else if (!message.attachments[0]?.description && message.attachments[0].video_url) {
+				description = 'Video';
+			} else {
+				description = message.attachments[0].description;
+			}
+		} else {
+			description = message.msg;
+		}
+		const user = useSelector((state: IState) => state.login?.user);
+		console.log({ message });
+		const uri = message.attachments[0]?.image_url
+			? formatAttachmentUrl(message.attachments[0]?.image_url, user.id, user.token, baseUrl)
+			: null;
 		const time = moment(message.ts).format(Message_TimeFormat);
+		console.log({ message });
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].messageboxBackground }]}>
 				<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>
@@ -84,7 +128,7 @@ const ReplyPreview = React.memo(
 					</View>
 					{/* @ts-ignore*/}
 					<Markdown
-						msg={message.msg}
+						msg={description}
 						baseUrl={baseUrl}
 						username={username}
 						getCustomEmoji={getCustomEmoji}
@@ -93,6 +137,7 @@ const ReplyPreview = React.memo(
 						theme={theme}
 					/>
 				</View>
+				{uri ? <Image style={styles.thumbnail} source={{ uri }} /> : null}
 				<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 			</View>
 		);
