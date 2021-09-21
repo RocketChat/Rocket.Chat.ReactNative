@@ -13,9 +13,7 @@ import UnorderedList from './UnorderedList';
 
 const isBigEmoji = tokens => tokens.length === 1 && tokens[0].type === 'BIG_EMOJI';
 
-const Body = ({
-	tokens, mentions, channels, navToRoomInfo, style
-}) => {
+const Body = ({ tokens, mentions, channels, navToRoomInfo, style }) => {
 	if (isBigEmoji(tokens)) {
 		return <BigEmoji value={tokens[0].value} />;
 	}

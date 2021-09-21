@@ -2,9 +2,6 @@ import React from 'react';
 import { Text, Clipboard } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Strike from './Strike';
-import Italic from './Italic';
-import Bold from './Bold';
 import styles from '../styles';
 import I18n from '../../../i18n';
 import { LISTENER } from '../../Toast';
@@ -12,6 +9,10 @@ import { useTheme } from '../../../theme';
 import openLink from '../../../utils/openLink';
 import EventEmitter from '../../../utils/events';
 import { themes } from '../../../constants/colors';
+
+import Strike from './Strike';
+import Italic from './Italic';
+import Bold from './Bold';
 
 const Link = ({ value }) => {
 	const { theme } = useTheme();
@@ -29,12 +30,8 @@ const Link = ({ value }) => {
 	};
 
 	return (
-		<Text
-			onPress={handlePress}
-			onLongPress={onLongPress}
-			style={{ ...styles.link, color: themes[theme].actionTintColor }}
-		>
-			{((block) => {
+		<Text onPress={handlePress} onLongPress={onLongPress} style={{ ...styles.link, color: themes[theme].actionTintColor }}>
+			{(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':
 						return block.value;

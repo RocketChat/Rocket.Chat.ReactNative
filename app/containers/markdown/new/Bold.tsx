@@ -1,11 +1,15 @@
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import PropTypes from 'prop-types';
+import { Bold as BoldProps } from '@rocket.chat/message-parser';
 
 import Strike from './Strike';
 import Italic from './Italic';
 import Plain from './Plain';
+
+interface IBoldProps {
+	value: BoldProps['value'];
+}
 
 const styles = StyleSheet.create({
 	text: {
@@ -13,25 +17,21 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Bold = ({ value }) => (
+const Bold: FC<IBoldProps> = ({ value }) => (
 	<Text style={styles.text}>
-		{value.map((block, index) => {
+		{value.map(block => {
 			switch (block.type) {
 				case 'PLAIN_TEXT':
 					return <Plain value={block.value} />;
 				case 'STRIKE':
-					return <Strike key={index} value={block.value} />;
+					return <Strike value={block.value} />;
 				case 'ITALIC':
-					return <Italic key={index} value={block.value} />;
+					return <Italic value={block.value} />;
 				default:
 					return null;
 			}
 		})}
 	</Text>
 );
-
-Bold.propTypes = {
-	value: PropTypes.string
-};
 
 export default Bold;

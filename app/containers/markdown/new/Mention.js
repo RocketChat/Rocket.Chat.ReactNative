@@ -7,9 +7,7 @@ import { events, logEvent } from '../../../utils/log';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';
 
-const Mention = ({
-	value: mention, mentions, navToRoomInfo, style
-}) => {
+const Mention = ({ value: mention, mentions, navToRoomInfo, style }) => {
 	const { theme } = useTheme();
 	let mentionStyle = [];
 	const notMentionedStyle = [styles.text, { color: themes[theme].bodyText }, ...style];
@@ -43,10 +41,14 @@ const Mention = ({
 
 	return (
 		<Text
-			style={[styles.mention, (mention || mentionedUser) && mentionStyle, !(mention || mentionedUser) && notMentionedStyle, ...style]}
-			onPress={handlePress}
-		>
-			{mentionedUser ? mentionedUser.name || mention.value : `@{${ mention }}` }
+			style={[
+				styles.mention,
+				(mention || mentionedUser) && mentionStyle,
+				!(mention || mentionedUser) && notMentionedStyle,
+				...style
+			]}
+			onPress={handlePress}>
+			{mentionedUser ? mentionedUser.name || mention.value : `@{${mention}}`}
 		</Text>
 	);
 };

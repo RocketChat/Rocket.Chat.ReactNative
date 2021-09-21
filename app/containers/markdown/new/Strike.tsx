@@ -1,11 +1,15 @@
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import PropTypes from 'prop-types';
+import { Strike as StrikeProps } from '@rocket.chat/message-parser';
 
 import Bold from './Bold';
 import Italic from './Italic';
 import Plain from './Plain';
+
+interface IStrikeProps {
+	value: StrikeProps['value'];
+}
 
 const styles = StyleSheet.create({
 	text: {
@@ -13,25 +17,21 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Strike = ({ value }) => (
+const Strike: FC<IStrikeProps> = ({ value }) => (
 	<Text style={styles.text}>
-		{value.map((block, index) => {
+		{value.map(block => {
 			switch (block.type) {
 				case 'PLAIN_TEXT':
-					return <Plain key={index} value={block.value} />;
+					return <Plain value={block.value} />;
 				case 'BOLD':
-					return <Bold key={index} value={block.value} />;
+					return <Bold value={block.value} />;
 				case 'ITALIC':
-					return <Italic key={index} value={block.value} />;
+					return <Italic value={block.value} />;
 				default:
 					return null;
 			}
 		})}
 	</Text>
 );
-
-Strike.propTypes = {
-	value: PropTypes.string
-};
 
 export default Strike;

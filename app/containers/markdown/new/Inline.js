@@ -2,6 +2,8 @@ import React from 'react';
 import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 
+import Hashtag from '../Hashtag';
+
 import Link from './Link';
 import Plain from './Plain';
 import Bold from './Bold';
@@ -10,14 +12,10 @@ import Italic from './Italic';
 import Emoji from './Emoji';
 import Mention from './Mention';
 import InlineCode from './InlineCode';
-import Hashtag from '../Hashtag';
 
-
-const Inline = ({
-	value, mentions, channels, navToRoomInfo, style
-}) => (
+const Inline = ({ value, mentions, channels, navToRoomInfo, style }) => (
 	<Text>
-		{value.map((block) => {
+		{value.map(block => {
 			switch (block.type) {
 				case 'PLAIN_TEXT':
 					return <Plain value={block.value} />;
@@ -33,7 +31,7 @@ const Inline = ({
 				case 'MENTION_USER':
 					return <Mention value={block.value} navToRoomInfo={navToRoomInfo} mentions={mentions} style={style} />;
 				case 'EMOJI':
-					return <Emoji emojiHandle={`:${ block.value.value }:`} />;
+					return <Emoji emojiHandle={`:${block.value.value}:`} />;
 				case 'MENTION_CHANNEL':
 					return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} style={style} />;
 				case 'INLINE_CODE':

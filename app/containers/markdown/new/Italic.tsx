@@ -1,11 +1,15 @@
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import PropTypes from 'prop-types';
+import { Italic as ItalicProps } from '@rocket.chat/message-parser';
 
 import Strike from './Strike';
 import Bold from './Bold';
 import Plain from './Plain';
+
+interface IItalicProps {
+	value: ItalicProps['value'];
+}
 
 const styles = StyleSheet.create({
 	text: {
@@ -13,7 +17,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Italic = ({ value }) => (
+const Italic: FC<IItalicProps> = ({ value }) => (
 	<Text style={styles.text}>
 		{value.map((block, index) => {
 			switch (block.type) {
@@ -29,9 +33,5 @@ const Italic = ({ value }) => (
 		})}
 	</Text>
 );
-
-Italic.propTypes = {
-	value: PropTypes.string
-};
 
 export default Italic;

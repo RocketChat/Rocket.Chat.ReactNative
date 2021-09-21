@@ -4,6 +4,7 @@ import { Node, Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import removeMarkdown from 'remove-markdown';
 import { connect } from 'react-redux';
+import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import I18n from '../../i18n';
@@ -22,10 +23,16 @@ import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
 import { isValidURL } from '../../utils/url';
 import { getUserSelector } from '../../selectors/login';
-import MessageBody from './MessageBody';
+import NewMarkdown from './new';
 
 interface IMarkdownProps {
 	msg: string;
+	md: [
+		{
+			tokens: MarkdownAST;
+			mentions: object[];
+		}
+	];
 	getCustomEmoji: Function;
 	baseUrl: string;
 	username: string;
@@ -39,6 +46,9 @@ interface IMarkdownProps {
 		_id: number;
 	}[];
 	mentions: object[];
+	user: {
+		enableMessageParserEarlyAdoption: boolean;
+	};
 	navToRoomInfo: Function;
 	preview: boolean;
 	theme: string;
@@ -351,7 +361,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		}
 
 		if (user.enableMessageParserEarlyAdoption && md) {
-			return <MessageBody tokens={md} style={style} mentions={mentions} channels={channels} navToRoomInfo={navToRoomInfo} />;
+			return <NewMarkdown tokens={md} style={style} mentions={mentions} channels={channels} navToRoomInfo={navToRoomInfo} />;
 		}
 
 		let m = formatText(msg);
@@ -385,7 +395,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state)
 });
 

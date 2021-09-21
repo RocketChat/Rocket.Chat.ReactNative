@@ -3,15 +3,12 @@ import React from 'react';
 import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-import CodeLine from './CodeLine';
 import styles from '../styles';
-
 import { themes } from '../../../constants/colors';
 import { useTheme } from '../../../theme';
+import CodeLine from './CodeLine';
 
-const Code = ({
-	value, style
-}) => {
+const Code = ({ value, style }) => {
 	const { theme } = useTheme();
 
 	return (
@@ -24,8 +21,7 @@ const Code = ({
 					borderColor: themes[theme].borderColor
 				},
 				...style
-			]}
-		>
+			]}>
 			{value.map((block, index) => {
 				switch (block.type) {
 					case 'CODE_LINE':

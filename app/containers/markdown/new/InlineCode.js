@@ -10,17 +10,17 @@ const InlineCode = ({ value, style }) => {
 	const { theme } = useTheme();
 
 	return (
-		<Text style={[
-			{
-				...styles.codeInline,
-				color: themes[theme].bodyText,
-				backgroundColor: themes[theme].bannerBackground,
-				borderColor: themes[theme].borderColor
-			},
-			...style
-		]}
-		>
-			{((block) => {
+		<Text
+			style={[
+				{
+					...styles.codeInline,
+					color: themes[theme].bodyText,
+					backgroundColor: themes[theme].bannerBackground,
+					borderColor: themes[theme].borderColor
+				},
+				...style
+			]}>
+			{(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':
 						return block.value;

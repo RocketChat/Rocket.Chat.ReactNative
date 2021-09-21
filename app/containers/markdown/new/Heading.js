@@ -7,18 +7,14 @@ import { useTheme } from '../../../theme';
 
 const Heading = ({ value, level }) => {
 	const { theme } = useTheme();
-	const textStyle = styles[`heading${ level }`];
+	const textStyle = styles[`heading${level}`];
 
 	return (
 		<>
-			{value.map((block) => {
+			{value.map(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':
-						return (
-							<Text style={[textStyle, { color: themes[theme].bodyText }]}>
-								{block.value}
-							</Text>
-						);
+						return <Text style={[textStyle, { color: themes[theme].bodyText }]}>{block.value}</Text>;
 					default:
 						return null;
 				}

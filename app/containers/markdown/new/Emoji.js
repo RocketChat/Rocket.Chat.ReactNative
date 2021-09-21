@@ -11,15 +11,7 @@ const Emoji = ({ emojiHandle, style, isBigEmoji }) => {
 	const { theme } = useTheme();
 	const emojiUnicode = shortnameToUnicode(emojiHandle);
 	return (
-		<Text
-			style={[
-				{ color: themes[theme].bodyText },
-				isBigEmoji ? styles.textBig : styles.text,
-				style
-			]}
-		>
-			{emojiUnicode}
-		</Text>
+		<Text style={[{ color: themes[theme].bodyText }, isBigEmoji ? styles.textBig : styles.text, style]}>{emojiUnicode}</Text>
 	);
 };
 
