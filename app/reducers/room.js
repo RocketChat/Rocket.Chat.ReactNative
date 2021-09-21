@@ -6,7 +6,7 @@ const initialState = {
 	rooms: []
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
 	switch (action.type) {
 		case ROOM.SUBSCRIBE:
 			return {
@@ -16,8 +16,7 @@ export default function(state = initialState, action) {
 		case ROOM.UNSUBSCRIBE:
 			return {
 				...state,
-				rooms: state.rooms
-					.filter(rid => rid !== action.rid)
+				rooms: state.rooms.filter(rid => rid !== action.rid)
 			};
 		case ROOM.LEAVE:
 			return {

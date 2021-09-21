@@ -11,8 +11,7 @@ import EventEmitter from '../utils/events';
 import { showErrorAlert } from '../utils/info';
 import Loading from '../containers/Loading';
 import RocketChat from '../lib/rocketchat';
-import log, { logEvent, events } from '../utils/log';
-
+import log, { events, logEvent } from '../utils/log';
 import { LISTENER } from '../containers/Toast';
 import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
@@ -20,19 +19,24 @@ import * as HeaderButton from '../containers/HeaderButton';
 import { setUser as setUserAction } from '../actions/login';
 import SafeAreaView from '../containers/SafeAreaView';
 
-const STATUS = [{
-	id: 'online',
-	name: 'Online'
-}, {
-	id: 'busy',
-	name: 'Busy'
-}, {
-	id: 'away',
-	name: 'Away'
-}, {
-	id: 'offline',
-	name: 'Invisible'
-}];
+const STATUS = [
+	{
+		id: 'online',
+		name: 'Online'
+	},
+	{
+		id: 'busy',
+		name: 'Busy'
+	},
+	{
+		id: 'away',
+		name: 'Away'
+	},
+	{
+		id: 'offline',
+		name: 'Invisible'
+	}
+];
 
 const styles = StyleSheet.create({
 	inputContainer: {
@@ -61,7 +65,7 @@ class StatusView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		setUser: PropTypes.func,
 		Accounts_AllowInvisibleStatusOption: PropTypes.bool
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -78,17 +82,13 @@ class StatusView extends React.Component {
 			headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CancelModal onPress={this.close} />,
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item
-						title={I18n.t('Done')}
-						onPress={this.submit}
-						testID='status-view-submit'
-					/>
+					<HeaderButton.Item title={I18n.t('Done')} onPress={this.submit} testID='status-view-submit' />
 				</HeaderButton.Container>
 			)
 		});
-	}
+	};
 
-	submit = async() => {
+	submit = async () => {
 		logEvent(events.STATUS_DONE);
 		const { statusText } = this.state;
 		const { user } = this.props;
@@ -96,14 +96,14 @@ class StatusView extends React.Component {
 			await this.setCustomStatus(statusText);
 		}
 		this.close();
-	}
+	};
 
 	close = () => {
 		const { navigation } = this.props;
 		navigation.goBack();
-	}
+	};
 
-	setCustomStatus = async(statusText) => {
+	setCustomStatus = async statusText => {
 		const { user, setUser } = this.props;
 
 		this.setState({ loading: true });
@@ -124,7 +124,7 @@ class StatusView extends React.Component {
 		}
 
 		this.setState({ loading: false });
-	}
+	};
 
 	renderHeader = () => {
 		const { statusText } = this.state;
@@ -137,14 +137,7 @@ class StatusView extends React.Component {
 					value={statusText}
 					containerStyle={styles.inputContainer}
 					onChangeText={text => this.setState({ statusText: text })}
-					left={(
-						<Status
-							testID={`status-view-current-${ user.status }`}
-							style={styles.inputLeft}
-							status={user.status}
-							size={24}
-						/>
-					)}
+					left={<Status testID={`status-view-current-${user.status}`} style={styles.inputLeft} status={user.status} size={24} />}
 					inputStyle={styles.inputStyle}
 					placeholder={I18n.t('What_are_you_doing_right_now')}
 					testID='status-view-input'
@@ -152,7 +145,7 @@ class StatusView extends React.Component {
 				<List.Separator />
 			</>
 		);
-	}
+	};
 
 	renderItem = ({ item }) => {
 		const { statusText } = this.state;
@@ -161,8 +154,8 @@ class StatusView extends React.Component {
 		return (
 			<List.Item
 				title={name}
-				onPress={async() => {
-					logEvent(events[`STATUS_${ item.id.toUpperCase() }`]);
+				onPress={async () => {
+					logEvent(events[`STATUS_${item.id.toUpperCase()}`]);
 					if (user.status !== item.id) {
 						try {
 							const result = await RocketChat.setUserStatus(item.id, statusText);
@@ -176,11 +169,11 @@ class StatusView extends React.Component {
 						}
 					}
 				}}
-				testID={`status-view-${ id }`}
+				testID={`status-view-${id}`}
 				left={() => <Status size={24} status={item.id} />}
 			/>
 		);
-	}
+	};
 
 	render() {
 		const { loading } = this.state;
