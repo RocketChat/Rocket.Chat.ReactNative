@@ -103,7 +103,6 @@ class ServerDropdown extends Component {
 		try {
 			await Linking.openURL('https://cloud.rocket.chat/trial');
 		} catch (e) {
-			logEvent(events.RL_CREATE_NEW_WORKSPACE_F);
 			log(e);
 		}
 	};
