@@ -9,6 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import UserPreferences from '../../lib/userPreferences';
 import EventEmitter from '../../utils/events';
+import { ROOT_NEW_SERVER } from '../../actions/app';
 import { selectServerRequest, serverRequest } from '../../actions/server';
 import { inviteLinksClear as inviteLinksClearAction } from '../../actions/inviteLinks';
 import sharedStyles from '../Styles';
@@ -77,10 +78,6 @@ const styles = StyleSheet.create({
 });
 
 class NewServerView extends React.Component {
-	static navigationOptions = {
-		headerShown: false
-	};
-
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string,
@@ -89,7 +86,8 @@ class NewServerView extends React.Component {
 		selectServer: PropTypes.func.isRequired,
 		adding: PropTypes.bool,
 		previousServer: PropTypes.string,
-		inviteLinksClear: PropTypes.func
+		inviteLinksClear: PropTypes.func,
+		root: PropTypes.string
 	};
 
 	constructor(props) {
@@ -123,10 +121,15 @@ class NewServerView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { adding, navigation } = this.props;
-		if (adding) {
+		const { adding, navigation, root } = this.props;
+		if (adding && root === ROOT_NEW_SERVER) {
 			navigation.setOptions({
+				headerTitle: I18n.t('Workspaces'),
 				headerLeft: () => <HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
+			});
+		} else {
+			navigation.setOptions({
+				headerShown: false
 			});
 		}
 	};
@@ -365,7 +368,8 @@ class NewServerView extends React.Component {
 const mapStateToProps = state => ({
 	connecting: state.server.connecting,
 	adding: state.server.adding,
-	previousServer: state.server.previousServer
+	previousServer: state.server.previousServer,
+	root: state.app.root
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -8,7 +8,7 @@ import * as List from '../../containers/List';
 import Button from '../../containers/Button';
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
-import { ROOT_OUTSIDE, appStart as appStartAction } from '../../actions/app';
+import { appStart as appStartAction, ROOT_NEW_SERVER } from '../../actions/app';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
@@ -111,7 +111,7 @@ class ServerDropdown extends Component {
 	navToNewServer = previousServer => {
 		const { appStart, initAdd } = this.props;
 		batch(() => {
-			appStart({ root: ROOT_OUTSIDE });
+			appStart({ root: ROOT_NEW_SERVER });
 			initAdd(previousServer);
 		});
 	};
