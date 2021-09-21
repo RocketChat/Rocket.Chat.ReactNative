@@ -6,7 +6,7 @@ import I18n, { isRTL } from '../../i18n';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
-import { DISPLAY_MODE_CONDENSED } from '../../constants/constantDisplayMode';
+import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../../constants/constantDisplayMode';
 
 interface ILeftActions {
 	theme: string;
@@ -57,7 +57,9 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
 						<>
 							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
-							<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
+							{displayMode === DISPLAY_MODE_EXPANDED ? (
+								<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
+							) : null}
 						</>
 					</RectButton>
 				</View>
@@ -100,9 +102,11 @@ export const RightActions = React.memo(
 					<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>
 						<>
 							<CustomIcon size={20} name={favorite ? 'star-filled' : 'star'} color={themes[theme].buttonText} />
-							<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>
-								{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
-							</Text>
+							{displayMode === DISPLAY_MODE_EXPANDED ? (
+								<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>
+									{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
+								</Text>
+							) : null}
 						</>
 					</RectButton>
 				</Animated.View>
@@ -118,7 +122,9 @@ export const RightActions = React.memo(
 					<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].hideBackground }]} onPress={onHidePress}>
 						<>
 							<CustomIcon size={20} name='unread-on-top-disabled' color={themes[theme].buttonText} />
-							<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t('Hide')}</Text>
+							{displayMode === DISPLAY_MODE_EXPANDED ? (
+								<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t('Hide')}</Text>
+							) : null}
 						</>
 					</RectButton>
 				</Animated.View>
