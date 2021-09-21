@@ -191,7 +191,7 @@ class ServerDropdown extends Component {
 		const { servers } = this.state;
 		const { theme, isMasterDetail, insets } = this.props;
 		const maxRows = 4;
-		const initialTop = 41 + Math.min(servers.length, maxRows) * ROW_HEIGHT;
+		const initialTop = 87 + Math.min(servers.length, maxRows) * ROW_HEIGHT;
 		const statusBarHeight = insets?.top ?? 0;
 		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
@@ -249,6 +249,7 @@ class ServerDropdown extends Component {
 						testID='rooms-list-header-create-workspace-button'
 						style={styles.buttonCreateWorkspace}
 						color={themes[theme].tintColor}
+						styleText={[styles.serverHeaderAdd, { textAlign: 'center' }]}
 					/>
 				</Animated.View>
 			</>
