@@ -205,5 +205,8 @@ export default {
 	},
 	Accounts_Default_User_Preferences_enableMessageParserEarlyAdoption: {
 		type: 'valueAsBoolean'
+	},
+	Canned_Responses_Enable: {
+		type: 'valueAsBoolean'
 	}
 };
