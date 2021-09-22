@@ -40566,6 +40566,7 @@ exports[`Storyshots Message Show a button as attachment 1`] = `
                         "color": "#ffffff",
                       },
                       undefined,
+                      undefined,
                     ]
                   }
                 >
