@@ -8,7 +8,7 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	container: {
-		paddingVertical: 6,
+		 paddingVertical: 2,
 		width: '100%',
 		paddingHorizontal: 14,
 		flexDirection: 'column'
@@ -37,7 +37,6 @@ export default StyleSheet.create({
 	reactionsContainer: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		marginTop: 6
 	},
 	reactionButton: {
 		marginRight: 6,
@@ -80,7 +79,7 @@ export default StyleSheet.create({
 		paddingVertical: 5
 	},
 	buttonContainer: {
-		marginTop: 6,
+		marginBottom: 8,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
