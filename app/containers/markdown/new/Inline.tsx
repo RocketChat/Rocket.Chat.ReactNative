@@ -1,9 +1,8 @@
 import React from 'react';
-import { Text } from 'react-native';
-import PropTypes from 'prop-types';
+import { StyleProp, Text, ViewStyle } from 'react-native';
+import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Hashtag from '../Hashtag';
-
 import Link from './Link';
 import Plain from './Plain';
 import Bold from './Bold';
@@ -13,7 +12,26 @@ import Emoji from './Emoji';
 import Mention from './Mention';
 import InlineCode from './InlineCode';
 
-const Inline = ({ value, mentions, channels, navToRoomInfo, style }) => (
+interface IUser {
+	_id: string;
+	username: string;
+	name: string;
+}
+
+type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
+
+interface IParagraphProps {
+	value: ParagraphProps['value'];
+	mentions: UserMention[];
+	channels: {
+		name: string;
+		_id: number;
+	}[];
+	navToRoomInfo: Function;
+	style: StyleProp<ViewStyle>[];
+}
+
+const Inline: React.FC<IParagraphProps> = ({ value, mentions, channels, navToRoomInfo, style }) => (
 	<Text>
 		{value.map(block => {
 			switch (block.type) {
@@ -26,12 +44,11 @@ const Inline = ({ value, mentions, channels, navToRoomInfo, style }) => (
 				case 'ITALIC':
 					return <Italic value={block.value} />;
 				case 'LINK':
-					// eslint-disable-next-line jsx-a11y/anchor-is-valid
 					return <Link value={block.value} />;
 				case 'MENTION_USER':
 					return <Mention value={block.value} navToRoomInfo={navToRoomInfo} mentions={mentions} style={style} />;
 				case 'EMOJI':
-					return <Emoji emojiHandle={`:${block.value.value}:`} />;
+					return <Emoji value={block.value} />;
 				case 'MENTION_CHANNEL':
 					return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} style={style} />;
 				case 'INLINE_CODE':
@@ -42,13 +59,5 @@ const Inline = ({ value, mentions, channels, navToRoomInfo, style }) => (
 		})}
 	</Text>
 );
-
-Inline.propTypes = {
-	value: PropTypes.object,
-	mentions: PropTypes.array,
-	channels: PropTypes.array,
-	navToRoomInfo: PropTypes.func,
-	style: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
-};
 
 export default Inline;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { StyleProp, Text, TextStyle } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';
@@ -8,8 +8,7 @@ import styles from './styles';
 interface IHashtag {
 	hashtag: string;
 	navToRoomInfo: Function;
-	style: [];
-	theme: string;
+	style: StyleProp<TextStyle>;
 	channels: {
 		name: string;
 		_id: number;

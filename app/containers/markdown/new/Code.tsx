@@ -1,40 +1,41 @@
 import React from 'react';
-import { Text } from 'react-native';
-import PropTypes from 'prop-types';
+import { StyleProp, Text, TextStyle } from 'react-native';
+import { Code as CodeProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
 import { themes } from '../../../constants/colors';
 import { useTheme } from '../../../theme';
+import CodeLine from './CodeLine';
 
-const InlineCode = ({ value, style }) => {
+interface ICodeProps {
+	value: CodeProps['value'];
+	style: StyleProp<TextStyle>[];
+}
+
+const Code: React.FC<ICodeProps> = ({ value, style }) => {
 	const { theme } = useTheme();
 
 	return (
 		<Text
 			style={[
 				{
-					...styles.codeInline,
+					...styles.codeBlock,
 					color: themes[theme].bodyText,
 					backgroundColor: themes[theme].bannerBackground,
 					borderColor: themes[theme].borderColor
 				},
 				...style
 			]}>
-			{(block => {
+			{value.map(block => {
 				switch (block.type) {
-					case 'PLAIN_TEXT':
-						return block.value;
+					case 'CODE_LINE':
+						return <CodeLine value={block.value} />;
 					default:
 						return null;
 				}
-			})(value)}
+			})}
 		</Text>
 	);
 };
 
-InlineCode.propTypes = {
-	value: PropTypes.object,
-	style: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
-};
-
-export default InlineCode;
+export default Code;

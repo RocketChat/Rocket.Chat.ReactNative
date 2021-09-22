@@ -1,11 +1,17 @@
 import React from 'react';
 import { Text } from 'react-native';
-import PropTypes from 'prop-types';
+import { Heading as HeadingProps } from '@rocket.chat/message-parser';
+
 import { themes } from '../../../constants/colors';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 
-const Heading = ({ value, level }) => {
+interface IHeadingProps {
+	value: HeadingProps['value'];
+	level: HeadingProps['level'];
+}
+
+const Heading: React.FC<IHeadingProps> = ({ value, level }) => {
 	const { theme } = useTheme();
 	const textStyle = styles[`heading${level}`];
 
@@ -21,11 +27,6 @@ const Heading = ({ value, level }) => {
 			})}
 		</>
 	);
-};
-
-Heading.propTypes = {
-	value: PropTypes.string,
-	level: PropTypes.number
 };
 
 export default Heading;

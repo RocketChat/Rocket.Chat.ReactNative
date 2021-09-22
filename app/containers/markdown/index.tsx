@@ -25,14 +25,18 @@ import { isValidURL } from '../../utils/url';
 import { getUserSelector } from '../../selectors/login';
 import NewMarkdown from './new';
 
+interface IUser {
+	_id: string;
+	username: string;
+	name: string;
+}
+
+type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
+
 interface IMarkdownProps {
 	msg: string;
-	md: [
-		{
-			tokens: MarkdownAST;
-			mentions: object[];
-		}
-	];
+	md: MarkdownAST;
+	mentions: UserMention[];
 	getCustomEmoji: Function;
 	baseUrl: string;
 	username: string;
@@ -45,7 +49,6 @@ interface IMarkdownProps {
 		name: string;
 		_id: number;
 	}[];
-	mentions: object[];
 	user: {
 		enableMessageParserEarlyAdoption: boolean;
 	};

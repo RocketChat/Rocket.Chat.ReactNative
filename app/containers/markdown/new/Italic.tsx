@@ -1,5 +1,4 @@
-/* eslint-disable react/no-array-index-key */
-import React, { FC } from 'react';
+import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Italic as ItalicProps } from '@rocket.chat/message-parser';
 
@@ -17,16 +16,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Italic: FC<IItalicProps> = ({ value }) => (
+const Italic: React.FC<IItalicProps> = ({ value }) => (
 	<Text style={styles.text}>
-		{value.map((block, index) => {
+		{value.map(block => {
 			switch (block.type) {
 				case 'PLAIN_TEXT':
-					return <Plain key={index} value={block.value} />;
+					return <Plain value={block.value} />;
 				case 'STRIKE':
-					return <Strike key={index} value={block.value} />;
+					return <Strike value={block.value} />;
 				case 'BOLD':
-					return <Bold key={index} value={block.value} />;
+					return <Bold value={block.value} />;
 				default:
 					return null;
 			}

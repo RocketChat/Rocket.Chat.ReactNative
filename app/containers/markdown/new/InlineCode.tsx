@@ -1,42 +1,40 @@
-/* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { Text } from 'react-native';
-import PropTypes from 'prop-types';
+import { StyleProp, Text, TextStyle } from 'react-native';
+import { InlineCode as InlineCodeProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
 import { themes } from '../../../constants/colors';
 import { useTheme } from '../../../theme';
-import CodeLine from './CodeLine';
 
-const Code = ({ value, style }) => {
+interface IInlineCodeProps {
+	value: InlineCodeProps['value'];
+	style: StyleProp<TextStyle>[];
+}
+
+const InlineCode: React.FC<IInlineCodeProps> = ({ value, style }) => {
 	const { theme } = useTheme();
 
 	return (
 		<Text
 			style={[
 				{
-					...styles.codeBlock,
+					...styles.codeInline,
 					color: themes[theme].bodyText,
 					backgroundColor: themes[theme].bannerBackground,
 					borderColor: themes[theme].borderColor
 				},
 				...style
 			]}>
-			{value.map((block, index) => {
+			{(block => {
 				switch (block.type) {
-					case 'CODE_LINE':
-						return <CodeLine key={index} value={block.value} />;
+					case 'PLAIN_TEXT':
+						return block.value;
 					default:
 						return null;
 				}
-			})}
+			})(value)}
 		</Text>
 	);
 };
 
-Code.propTypes = {
-	value: PropTypes.array,
-	style: PropTypes.object
-};
-
-export default Code;
+export default InlineCode;

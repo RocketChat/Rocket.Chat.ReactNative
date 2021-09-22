@@ -103,6 +103,9 @@ const Content = React.memo(
 		if (prevProps.isIgnored !== nextProps.isIgnored) {
 			return false;
 		}
+		if (!dequal(prevProps.md, nextProps.md)) {
+			return false;
+		}
 		if (!dequal(prevProps.mentions, nextProps.mentions)) {
 			return false;
 		}

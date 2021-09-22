@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Clipboard } from 'react-native';
-import PropTypes from 'prop-types';
+import { Link as LinkProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
 import I18n from '../../../i18n';
@@ -9,12 +9,15 @@ import { useTheme } from '../../../theme';
 import openLink from '../../../utils/openLink';
 import EventEmitter from '../../../utils/events';
 import { themes } from '../../../constants/colors';
-
 import Strike from './Strike';
 import Italic from './Italic';
 import Bold from './Bold';
 
-const Link = ({ value }) => {
+interface ILinkProps {
+	value: LinkProps['value'];
+}
+
+const Link: React.FC<ILinkProps> = ({ value }) => {
 	const { theme } = useTheme();
 	const { src, label } = value;
 	const handlePress = () => {
@@ -47,13 +50,6 @@ const Link = ({ value }) => {
 			})(label)}
 		</Text>
 	);
-};
-
-Link.propTypes = {
-	value: {
-		src: PropTypes.string,
-		label: PropTypes.string
-	}
 };
 
 export default Link;

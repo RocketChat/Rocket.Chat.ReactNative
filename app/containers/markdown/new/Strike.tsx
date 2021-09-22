@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { FC } from 'react';
+import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Strike as StrikeProps } from '@rocket.chat/message-parser';
 
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Strike: FC<IStrikeProps> = ({ value }) => (
+const Strike: React.FC<IStrikeProps> = ({ value }) => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {

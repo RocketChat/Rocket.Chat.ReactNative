@@ -1,30 +1,31 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { View } from 'react-native';
-import PropTypes from 'prop-types';
+import { Quote as QuoteProps } from '@rocket.chat/message-parser';
+
 import { themes } from '../../../constants/colors';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
 import Paragraph from './Paragraph';
 
-const Quote = ({ value }) => {
+interface IQuoteProps {
+	value: QuoteProps['value'];
+}
+
+const Quote: React.FC<IQuoteProps> = ({ value }) => {
 	const { theme } = useTheme();
 	return (
 		<>
 			<View style={styles.container}>
 				<View style={[styles.quote, { backgroundColor: themes[theme].borderColor }]} />
 				<View style={styles.childContainer}>
-					{value.map((item, index) => (
-						<Paragraph key={index} value={item.value} mentions={[]} />
+					{value.map(item => (
+						<Paragraph value={item.value} mentions={[]} />
 					))}
 				</View>
 			</View>
 		</>
 	);
-};
-
-Quote.propTypes = {
-	value: PropTypes.string
 };
 
 export default Quote;
