@@ -74,7 +74,6 @@ class NewServerView extends React.Component {
 		connecting: PropTypes.bool.isRequired,
 		connectServer: PropTypes.func.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		// adding: PropTypes.bool,
 		previousServer: PropTypes.string,
 		inviteLinksClear: PropTypes.func,
 		serverFinishAdd: PropTypes.func
@@ -100,13 +99,6 @@ class NewServerView extends React.Component {
 	componentDidMount() {
 		this.queryServerHistory();
 	}
-
-	// componentDidUpdate(prevProps) {
-	// 	const { adding } = this.props;
-	// 	if (prevProps.adding !== adding) {
-	// 		this.setHeader();
-	// 	}
-	// }
 
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
@@ -407,7 +399,6 @@ class NewServerView extends React.Component {
 
 const mapStateToProps = state => ({
 	connecting: state.server.connecting,
-	// adding: state.server.adding,
 	previousServer: state.server.previousServer
 });
 
