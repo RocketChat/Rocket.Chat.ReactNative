@@ -137,11 +137,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		logServerVersion(serverVersion);
 		yield put(selectServerSuccess(server, serverVersion));
 
-		// if the adding state is true, finish add server
-		const adding = yield select(state => state.server.adding);
-		if (adding) {
-			yield put(serverFinishAdd());
-		}
+		// // if the adding state is true, finish add server
+		// const adding = yield select(state => state.server.adding);
+		// if (adding) {
+		// 	yield put(serverFinishAdd());
+		// }
 	} catch (e) {
 		yield put(selectServerFailure());
 		log(e);

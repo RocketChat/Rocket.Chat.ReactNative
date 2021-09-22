@@ -74,7 +74,7 @@ class NewServerView extends React.Component {
 		connecting: PropTypes.bool.isRequired,
 		connectServer: PropTypes.func.isRequired,
 		selectServer: PropTypes.func.isRequired,
-		adding: PropTypes.bool,
+		// adding: PropTypes.bool,
 		previousServer: PropTypes.string,
 		inviteLinksClear: PropTypes.func
 	};
@@ -100,12 +100,12 @@ class NewServerView extends React.Component {
 		this.queryServerHistory();
 	}
 
-	componentDidUpdate(prevProps) {
-		const { adding } = this.props;
-		if (prevProps.adding !== adding) {
-			this.setHeader();
-		}
-	}
+	// componentDidUpdate(prevProps) {
+	// 	const { adding } = this.props;
+	// 	if (prevProps.adding !== adding) {
+	// 		this.setHeader();
+	// 	}
+	// }
 
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
@@ -113,8 +113,8 @@ class NewServerView extends React.Component {
 	}
 
 	setHeader = () => {
-		const { adding, navigation } = this.props;
-		if (adding) {
+		const { previousServer, navigation } = this.props;
+		if (previousServer) {
 			return navigation.setOptions({
 				headerTitle: I18n.t('Workspaces'),
 				headerLeft: () => <HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
@@ -314,9 +314,9 @@ class NewServerView extends React.Component {
 	};
 
 	render() {
-		const { connecting, theme, adding, width, height } = this.props;
+		const { connecting, theme, previousServer, width, height } = this.props;
 		const { text, connectingOpen, serversHistory } = this.state;
-		const marginTopHeader = adding ? 25 : 70;
+		const marginTopHeader = previousServer ? 0 : 70;
 
 		return (
 			<FormContainer theme={theme} testID='new-server-view' keyboardShouldPersistTaps='never'>
@@ -402,7 +402,7 @@ class NewServerView extends React.Component {
 
 const mapStateToProps = state => ({
 	connecting: state.server.connecting,
-	adding: state.server.adding,
+	// adding: state.server.adding,
 	previousServer: state.server.previousServer
 });
 
