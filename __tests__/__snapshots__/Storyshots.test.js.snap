@@ -1444,6 +1444,7 @@ Array [
               Object {
                 "fontSize": 12,
               },
+              undefined,
             ]
           }
         >
@@ -1605,6 +1606,7 @@ Array [
               Object {
                 "fontSize": 12,
               },
+              undefined,
             ]
           }
         >
