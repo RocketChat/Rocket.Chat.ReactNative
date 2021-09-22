@@ -193,10 +193,8 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 
 	render() {
 		const { theme } = this.props;
-		const { isRecording } = this.state;
-		const { isRecorderActive } = this.state;
+		const { isRecording, isRecorderActive } = this.state;
 
-		// Show normal message box when recorder is not active and no recording is running
 		if (!isRecording && !isRecorderActive) {
 			return (
 				<BorderlessButton
@@ -211,8 +209,6 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 			);
 		}
 
-		// Show recording UI with "pause" symbol and the time of the last recording.
-		// Will appear when something stopped the recording (i.e. a call in IOS)
 		if (!isRecording && isRecorderActive) {
 			return (
 				<View style={styles.recordingContent}>
@@ -225,8 +221,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 							style={styles.actionButton}>
 							<CustomIcon size={24} color={themes[theme].dangerColor} name='delete' />
 						</BorderlessButton>
-						<Text style={[styles.recordingCancelText, { color: themes[theme].titleText }]}>{this.GetLastDuration} &nbsp;</Text>
-						<CustomIcon size={24} color='black' name='pause' />
+						<Text style={[styles.recordingDurationText, { color: themes[theme].titleText }]}>{this.GetLastDuration}</Text>
 					</View>
 					<BorderlessButton
 						onPress={this.finishRecordingAudio}
@@ -234,13 +229,12 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 						accessibilityLabel={I18n.t('Finish_recording')}
 						accessibilityTraits='button'
 						style={styles.actionButton}>
-						<CustomIcon size={24} color={themes[theme].successColor} name='send-filled' />
+						<CustomIcon size={24} color={themes[theme].tintColor} name='send-filled' />
 					</BorderlessButton>
 				</View>
 			);
 		}
 
-		// Show normal recording UI with a "record" symbol
 		return (
 			<View style={styles.recordingContent}>
 				<View style={styles.textArea}>
@@ -252,8 +246,8 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 						style={styles.actionButton}>
 						<CustomIcon size={24} color={themes[theme].dangerColor} name='delete' />
 					</BorderlessButton>
-					<Text style={[styles.recordingCancelText, { color: themes[theme].titleText }]}>{this.duration} &nbsp;</Text>
-					<CustomIcon size={24} color='red' name='record' />
+					<Text style={[styles.recordingDurationText, { color: themes[theme].titleText }]}>{this.duration}</Text>
+					<CustomIcon size={24} color={themes[theme].dangerColor} name='record' />
 				</View>
 				<BorderlessButton
 					onPress={this.finishRecordingAudio}
@@ -261,7 +255,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 					accessibilityLabel={I18n.t('Finish_recording')}
 					accessibilityTraits='button'
 					style={styles.actionButton}>
-					<CustomIcon size={24} color={themes[theme].successColor} name='send-filled' />
+					<CustomIcon size={24} color={themes[theme].tintColor} name='send-filled' />
 				</BorderlessButton>
 			</View>
 		);
