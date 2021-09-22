@@ -313,7 +313,8 @@ class NewServerView extends React.Component {
 	render() {
 		const { connecting, theme, previousServer, width, height } = this.props;
 		const { text, connectingOpen, serversHistory } = this.state;
-		const marginTopHeader = previousServer ? 0 : 70;
+		const isSmallHeight = height <= 684; // iPhone SE resolution the height is 667, but for Android with 420dpi is 683.4
+		const marginTopHeader = isSmallHeight ? 15 : 70;
 
 		return (
 			<FormContainer theme={theme} testID='new-server-view' keyboardShouldPersistTaps='never'>
@@ -322,9 +323,9 @@ class NewServerView extends React.Component {
 						style={[
 							styles.onboardingImage,
 							{
-								marginTop: isTablet ? 0 : verticalScale(marginTopHeader, height),
-								marginBottom: verticalScale(25, height),
-								maxHeight: verticalScale(150, height)
+								marginBottom: verticalScale(isSmallHeight ? 0 : 15, height),
+								maxHeight: verticalScale(150, height),
+								...(!previousServer && !isTablet && { marginTop: verticalScale(marginTopHeader, height) })
 							}
 						]}
 						source={require('../../static/images/logo.png')}
@@ -334,7 +335,11 @@ class NewServerView extends React.Component {
 					<Text
 						style={[
 							styles.title,
-							{ color: themes[theme].titleText, fontSize: moderateScale(22, null, width), marginBottom: verticalScale(8, height) }
+							{
+								color: themes[theme].titleText,
+								fontSize: moderateScale(22, null, width),
+								marginBottom: verticalScale(8, height)
+							}
 						]}>
 						Rocket.Chat
 					</Text>
@@ -344,7 +349,7 @@ class NewServerView extends React.Component {
 							{
 								color: themes[theme].controlText,
 								fontSize: moderateScale(16, null, width),
-								marginBottom: verticalScale(41, height)
+								marginBottom: verticalScale(isSmallHeight ? 18 : 41, height)
 							}
 						]}>
 						{I18n.t('Onboarding_subtitle')}
@@ -364,7 +369,7 @@ class NewServerView extends React.Component {
 						onPress={this.submit}
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
-						style={styles.connectButton}
+						style={[styles.connectButton, { marginTop: verticalScale(16, height) }]}
 						theme={theme}
 						testID='new-server-view-button'
 					/>
@@ -375,7 +380,7 @@ class NewServerView extends React.Component {
 							{
 								color: themes[theme].auxiliaryText,
 								fontSize: moderateScale(14, null, width),
-								marginBottom: verticalScale(24, height)
+								marginBottom: verticalScale(16, height)
 							}
 						]}>
 						{I18n.t('Onboarding_join_open_description')}
