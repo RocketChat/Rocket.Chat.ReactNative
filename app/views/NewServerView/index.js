@@ -10,7 +10,7 @@ import Orientation from 'react-native-orientation-locker';
 
 import UserPreferences from '../../lib/userPreferences';
 import EventEmitter from '../../utils/events';
-import { selectServerRequest, serverRequest } from '../../actions/server';
+import { selectServerRequest, serverRequest, serverFinishAdd as serverFinishAddAction } from '../../actions/server';
 import { inviteLinksClear as inviteLinksClearAction } from '../../actions/inviteLinks';
 import sharedStyles from '../Styles';
 import Button from '../../containers/Button';
@@ -76,7 +76,8 @@ class NewServerView extends React.Component {
 		selectServer: PropTypes.func.isRequired,
 		// adding: PropTypes.bool,
 		previousServer: PropTypes.string,
-		inviteLinksClear: PropTypes.func
+		inviteLinksClear: PropTypes.func,
+		serverFinishAdd: PropTypes.func
 	};
 
 	constructor(props) {
@@ -110,6 +111,10 @@ class NewServerView extends React.Component {
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		const { previousServer, serverFinishAdd } = this.props;
+		if (previousServer) {
+			serverFinishAdd();
+		}
 	}
 
 	setHeader = () => {
@@ -409,7 +414,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	connectServer: (...params) => dispatch(serverRequest(...params)),
 	selectServer: server => dispatch(selectServerRequest(server)),
-	inviteLinksClear: () => dispatch(inviteLinksClearAction())
+	inviteLinksClear: () => dispatch(inviteLinksClearAction()),
+	serverFinishAdd: () => dispatch(serverFinishAddAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(NewServerView)));
