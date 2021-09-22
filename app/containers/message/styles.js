@@ -8,7 +8,7 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	container: {
-		paddingVertical: 4,
+		paddingVertical: 6,
 		width: '100%',
 		paddingHorizontal: 14,
 		flexDirection: 'column'
@@ -18,7 +18,7 @@ export default StyleSheet.create({
 		marginLeft: 46
 	},
 	messageContentWithHeader: {
-		marginLeft: 10
+		marginLeft: 20
 	},
 	messageContentWithError: {
 		marginLeft: 0
@@ -42,20 +42,20 @@ export default StyleSheet.create({
 	reactionButton: {
 		marginRight: 6,
 		marginBottom: 6,
-		borderRadius: 2
+		borderRadius: 2,
 	},
 	reactionContainer: {
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderRadius: 2,
-		borderWidth: 1,
-		height: 28,
-		minWidth: 46.3
+		borderRadius: 4,
+		borderWidth: 1.5,
+		height: 40,
+		minWidth: 60
 	},
 	reactionCount: {
-		fontSize: 14,
-		marginLeft: 3,
+		fontSize: 18,
+		marginLeft: 5,
 		marginRight: 8.5,
 		...sharedStyles.textSemibold
 	},
@@ -90,16 +90,16 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: 2
+		borderRadius: 6
 	},
 	smallButton: {
-		height: 30
+		height: 35
 	},
 	buttonIcon: {
 		marginRight: 6
 	},
 	buttonText: {
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	imageContainer: {
@@ -139,11 +139,11 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	time: {
-		fontSize: 12,
+		fontSize: 14,
 		paddingLeft: 10,
 		lineHeight: 22,
 		...sharedStyles.textRegular,
-		fontWeight: '300'
+		fontWeight: '400'
 	},
 	repliedThread: {
 		flexDirection: 'row',

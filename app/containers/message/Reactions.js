@@ -54,7 +54,7 @@ const Reaction = React.memo(({
 					baseUrl={baseUrl}
 					getCustomEmoji={getCustomEmoji}
 				/>
-				<Text style={[styles.reactionCount, { color: themes[theme].tintColor }]}>{ reaction.usernames.length }</Text>
+				<Text style={[styles.reactionCount, { color: themes[theme].bodyText }]}>{ reaction.usernames.length }</Text>
 			</View>
 		</Touchable>
 	);

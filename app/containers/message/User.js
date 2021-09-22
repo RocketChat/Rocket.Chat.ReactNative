@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
-		fontSize: 16,
+		fontSize: 19,
 		lineHeight: 22,
 		...sharedStyles.textMedium
 	},
@@ -55,7 +55,7 @@ const User = React.memo(({
 					onPress={() => navToRoomInfo(navParam)}
 					disabled={author._id === user.id}
 				>
-					<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
+					<Text style={[styles.username, { color: themes[theme].controlText}]} numberOfLines={1}>
 						{alias || username}
 						{aliasUsername}
 					</Text>

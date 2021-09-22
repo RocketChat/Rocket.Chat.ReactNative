@@ -25,7 +25,7 @@ const Content = React.memo((props) => {
 	let content = null;
 
 	if (props.tmid && !props.msg) {
-		content = <Text style={[styles.text, { color: themes[props.theme].bodyText }]}>{I18n.t('Sent_an_attachment')}</Text>;
+		content = <Text style={[styles.text, { color: themes[props.theme].controlText}]}>"{I18n.t('Sent_an_attachment')}"</Text>;
 	} else {
 		const { baseUrl, user } = useContext(MessageContext);
 		content = (
