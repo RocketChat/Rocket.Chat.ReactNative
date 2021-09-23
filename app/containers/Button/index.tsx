@@ -17,6 +17,7 @@ interface IButtonProps {
 	color: string;
 	fontSize: any;
 	style: any;
+	styleText?: any;
 	testID: string;
 }
 
@@ -48,7 +49,8 @@ export default class Button extends React.PureComponent<Partial<IButtonProps>, a
 	};
 
 	render() {
-		const { title, type, onPress, disabled, backgroundColor, color, loading, style, theme, fontSize, ...otherProps } = this.props;
+		const { title, type, onPress, disabled, backgroundColor, color, loading, style, theme, fontSize, styleText, ...otherProps } =
+			this.props;
 		const isPrimary = type === 'primary';
 
 		let textColor = isPrimary ? themes[theme!].buttonText : themes[theme!].bodyText;
@@ -72,7 +74,7 @@ export default class Button extends React.PureComponent<Partial<IButtonProps>, a
 				{loading ? (
 					<ActivityIndicator color={textColor} />
 				) : (
-					<Text style={[styles.text, { color: textColor }, fontSize && { fontSize }]} accessibilityLabel={title}>
+					<Text style={[styles.text, { color: textColor }, fontSize && { fontSize }, styleText]} accessibilityLabel={title}>
 						{title}
 					</Text>
 				)}
