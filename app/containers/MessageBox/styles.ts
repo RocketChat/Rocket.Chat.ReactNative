@@ -139,7 +139,8 @@ export default StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-between'
 	},
-	recordingCancelText: {
+	recordingDurationText: {
+		width: 60,
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},

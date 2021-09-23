@@ -1444,6 +1444,7 @@ Array [
               Object {
                 "fontSize": 12,
               },
+              undefined,
             ]
           }
         >
@@ -1605,6 +1606,7 @@ Array [
               Object {
                 "fontSize": 12,
               },
+              undefined,
             ]
           }
         >
@@ -41201,6 +41203,7 @@ exports[`Storyshots Message Show a button as attachment 1`] = `
                       Object {
                         "color": "#ffffff",
                       },
+                      undefined,
                       undefined,
                     ]
                   }
