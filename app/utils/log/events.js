@@ -74,7 +74,6 @@ export default {
 	RL_GROUP_CHANNELS_BY_FAVORITE: 'rl_group_channels_by_favorite',
 	RL_GROUP_CHANNELS_BY_UNREAD: 'rl_group_channels_by_unread',
 	RL_CREATE_NEW_WORKSPACE: 'rl_create_new_workspace',
-	RL_CREATE_NEW_WORKSPACE_F: 'rl_create_new_workspace_f',
 
 	// QUEUE LIST VIEW
 	QL_GO_ROOM: 'ql_go_room',
