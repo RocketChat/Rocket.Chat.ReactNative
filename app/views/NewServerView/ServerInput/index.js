@@ -10,9 +10,7 @@ import Item from './Item';
 
 const styles = StyleSheet.create({
 	container: {
-		zIndex: 1,
-		marginTop: 24,
-		marginBottom: 32
+		zIndex: 1
 	},
 	inputContainer: {
 		marginTop: 0,
