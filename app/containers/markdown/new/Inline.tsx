@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Hashtag from '../Hashtag';
@@ -11,28 +11,21 @@ import Italic from './Italic';
 import Emoji from './Emoji';
 import Mention from './Mention';
 import InlineCode from './InlineCode';
-
-interface IUser {
-	_id: string;
-	username: string;
-	name: string;
-}
-
-type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
+import { UserMention } from '../../message/interfaces';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];
-	mentions: UserMention[];
-	channels: {
+	mentions?: UserMention[];
+	channels?: {
 		name: string;
 		_id: number;
 	}[];
-	navToRoomInfo: Function;
-	style: StyleProp<ViewStyle>[];
+	navToRoomInfo?: Function;
+	style?: StyleProp<ViewStyle>[];
 }
 
 const Inline: React.FC<IParagraphProps> = ({ value, mentions, channels, navToRoomInfo, style }) => (
-	<Text>
+	<>
 		{value.map(block => {
 			switch (block.type) {
 				case 'PLAIN_TEXT':
@@ -57,7 +50,7 @@ const Inline: React.FC<IParagraphProps> = ({ value, mentions, channels, navToRoo
 					return null;
 			}
 		})}
-	</Text>
+	</>
 );
 
 export default Inline;

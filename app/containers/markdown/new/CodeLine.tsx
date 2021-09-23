@@ -6,6 +6,12 @@ interface ICodeLineProps {
 	value: CodeLineProps['value'];
 }
 
-const CodeLine: React.FC<ICodeLineProps> = ({ value }) => <Text>{value.type === 'PLAIN_TEXT' && value.value}</Text>;
+const CodeLine: React.FC<ICodeLineProps> = ({ value }) => {
+	if (value.type !== 'PLAIN_TEXT') {
+		return null;
+	}
+
+	return <Text>{value.value}</Text>;
+};
 
 export default CodeLine;

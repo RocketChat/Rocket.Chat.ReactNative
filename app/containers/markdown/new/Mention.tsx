@@ -6,14 +6,7 @@ import styles from '../styles';
 import { events, logEvent } from '../../../utils/log';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';
-
-interface IUser {
-	_id: string;
-	username: string;
-	name: string;
-}
-
-type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
+import { UserMention } from '../../message/interfaces';
 
 interface IMentionProps {
 	value: UserMentionProps['value'];

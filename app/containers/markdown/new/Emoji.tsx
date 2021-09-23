@@ -17,7 +17,7 @@ const Emoji: React.FC<IEmojiProps> = ({ value, style, isBigEmoji }) => {
 	const { theme } = useTheme();
 	const emojiUnicode = shortnameToUnicode(`:${value.value}:`);
 	return (
-		<Text style={[{ color: themes[theme!].bodyText }, isBigEmoji ? styles.textBig : styles.text, style]}>{emojiUnicode}</Text>
+		<Text style={[{ color: themes[theme].bodyText }, isBigEmoji ? styles.textBig : styles.text, style]}>{emojiUnicode}</Text>
 	);
 };
 

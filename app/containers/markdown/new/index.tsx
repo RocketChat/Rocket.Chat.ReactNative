@@ -9,14 +9,9 @@ import Code from './Code';
 import BigEmoji from './BigEmoji';
 import OrderedList from './OrderedList';
 import UnorderedList from './UnorderedList';
+import { UserMention } from '../../message/interfaces';
+import TaskList from './TaskList';
 
-interface IUser {
-	_id: string;
-	username: string;
-	name: string;
-}
-
-type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
 interface IBodyProps {
 	tokens: MarkdownAST;
 	mentions: UserMention[];
@@ -44,7 +39,7 @@ const Body: React.FC<IBodyProps> = ({ tokens, mentions, channels, navToRoomInfo,
 					case 'ORDERED_LIST':
 						return <OrderedList value={block.value} />;
 					case 'TASKS':
-						return <OrderedList value={block.value} />;
+						return <TaskList value={block.value} />;
 					case 'QUOTE':
 						return <Quote value={block.value} />;
 					case 'PARAGRAPH':

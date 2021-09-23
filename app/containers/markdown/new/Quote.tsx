@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { View } from 'react-native';
 import { Quote as QuoteProps } from '@rocket.chat/message-parser';

@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Strike as StrikeProps } from '@rocket.chat/message-parser';
