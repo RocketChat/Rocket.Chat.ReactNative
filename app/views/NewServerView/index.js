@@ -36,8 +36,7 @@ import ServerInput from './ServerInput';
 const styles = StyleSheet.create({
 	onboardingImage: {
 		alignSelf: 'center',
-		width: 100,
-		height: 100
+		resizeMode: 'contain'
 	},
 	title: {
 		...sharedStyles.textBold,
@@ -283,13 +282,13 @@ class NewServerView extends React.Component {
 
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
-		const { theme, width, height } = this.props;
+		const { theme, width, height, previousServer } = this.props;
 		return (
 			<View
 				style={[
 					styles.certificatePicker,
 					{
-						marginBottom: verticalScale(32, height)
+						marginBottom: verticalScale(previousServer && !isTablet ? 10 : 30, height)
 					}
 				]}>
 				<Text
@@ -313,8 +312,7 @@ class NewServerView extends React.Component {
 	render() {
 		const { connecting, theme, previousServer, width, height } = this.props;
 		const { text, connectingOpen, serversHistory } = this.state;
-		const isSmallHeight = height <= 684; // iPhone SE resolution the height is 667, but for Android with 420dpi is 683.4
-		const marginTopHeader = isSmallHeight ? 15 : 70;
+		const marginTop = previousServer ? 0 : 35;
 
 		return (
 			<FormContainer theme={theme} testID='new-server-view' keyboardShouldPersistTaps='never'>
@@ -323,14 +321,14 @@ class NewServerView extends React.Component {
 						style={[
 							styles.onboardingImage,
 							{
-								marginBottom: verticalScale(isSmallHeight ? 0 : 15, height),
-								maxHeight: verticalScale(150, height),
-								...(!previousServer && !isTablet && { marginTop: verticalScale(marginTopHeader, height) })
+								marginBottom: verticalScale(10, height),
+								marginTop: isTablet ? 0 : verticalScale(marginTop, height),
+								width: verticalScale(100, height),
+								height: verticalScale(100, height)
 							}
 						]}
 						source={require('../../static/images/logo.png')}
 						fadeDuration={0}
-						resizeMode='stretch'
 					/>
 					<Text
 						style={[
@@ -349,7 +347,7 @@ class NewServerView extends React.Component {
 							{
 								color: themes[theme].controlText,
 								fontSize: moderateScale(16, null, width),
-								marginBottom: verticalScale(isSmallHeight ? 18 : 41, height)
+								marginBottom: verticalScale(30, height)
 							}
 						]}>
 						{I18n.t('Onboarding_subtitle')}
