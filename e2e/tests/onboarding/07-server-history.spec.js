@@ -11,7 +11,6 @@ describe('Server history', () => {
 			await navigateToLogin();
 			await login(data.users.regular.username, data.users.regular.password);
 			await logout();
-			await element(by.id('join-workspace')).tap();
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(60000);

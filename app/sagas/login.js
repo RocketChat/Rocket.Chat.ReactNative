@@ -118,8 +118,6 @@ const fetchRooms = function* fetchRooms() {
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
-		const adding = yield select(state => state.server.adding);
-
 		RocketChat.getUserPresence(user.id);
 
 		const server = yield select(getServer);
@@ -170,24 +168,10 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 
-		let currentRoot;
-		if (adding) {
-			yield put(serverFinishAdd());
-			yield put(appStart({ root: ROOT_INSIDE }));
-		} else {
-			currentRoot = yield select(state => state.app.root);
-			if (currentRoot !== ROOT_INSIDE) {
-				yield put(appStart({ root: ROOT_INSIDE }));
-			}
-		}
-
-		// after a successful login, check if it's been invited via invite link
-		currentRoot = yield select(state => state.app.root);
-		if (currentRoot === ROOT_INSIDE) {
-			const inviteLinkToken = yield select(state => state.inviteLinks.token);
-			if (inviteLinkToken) {
-				yield put(inviteLinksRequest(inviteLinkToken));
-			}
+		yield put(appStart({ root: ROOT_INSIDE }));
+		const inviteLinkToken = yield select(state => state.inviteLinks.token);
+		if (inviteLinkToken) {
+			yield put(inviteLinksRequest(inviteLinkToken));
 		}
 	} catch (e) {
 		log(e);
