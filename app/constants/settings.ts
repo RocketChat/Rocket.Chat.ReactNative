@@ -202,5 +202,8 @@ export default {
 	},
 	Jitsi_Enable_Channels: {
 		type: 'valuesAsBoolean'
+	},
+	Canned_Responses_Enable: {
+		type: 'valueAsBoolean'
 	}
 };

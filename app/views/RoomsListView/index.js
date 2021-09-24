@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { BackHandler, FlatList, Keyboard, RefreshControl, Text, View } from 'react-native';
-import { connect } from 'react-redux';
+import { batch, connect } from 'react-redux';
 import { dequal } from 'dequal';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
@@ -19,12 +19,13 @@ import {
 	roomsRequest as roomsRequestAction,
 	toggleSortDropdown as toggleSortDropdownAction
 } from '../../actions/rooms';
+import { appStart as appStartAction, ROOT_OUTSIDE } from '../../actions/app';
 import debounce from '../../utils/debounce';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
+import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
@@ -143,7 +144,8 @@ class RoomsListView extends React.Component {
 		createDirectMessagePermission: PropTypes.array,
 		createPublicChannelPermission: PropTypes.array,
 		createPrivateChannelPermission: PropTypes.array,
-		createDiscussionPermission: PropTypes.array
+		createDiscussionPermission: PropTypes.array,
+		initAdd: PropTypes.func
 	};
 
 	constructor(props) {
@@ -826,7 +828,7 @@ class RoomsListView extends React.Component {
 	};
 
 	handleCommands = ({ event }) => {
-		const { navigation, server, isMasterDetail } = this.props;
+		const { navigation, server, isMasterDetail, appStart, initAdd } = this.props;
 		const { input } = event;
 		if (handleCommandShowPreferences(event)) {
 			navigation.navigate('SettingsView');
@@ -845,7 +847,10 @@ class RoomsListView extends React.Component {
 				navigation.navigate('NewMessageStack');
 			}
 		} else if (handleCommandAddNewServer(event)) {
-			navigation.navigate('NewServerView', { previousServer: server });
+			batch(() => {
+				appStart({ root: ROOT_OUTSIDE });
+				initAdd(server);
+			});
 		}
 	};
 
@@ -1035,7 +1040,9 @@ const mapDispatchToProps = dispatch => ({
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	roomsRequest: params => dispatch(roomsRequestAction(params)),
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
-	closeServerDropdown: () => dispatch(closeServerDropdownAction())
+	closeServerDropdown: () => dispatch(closeServerDropdownAction()),
+	appStart: params => dispatch(appStartAction(params)),
+	initAdd: previousServer => dispatch(serverInitAddAction(previousServer))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));
