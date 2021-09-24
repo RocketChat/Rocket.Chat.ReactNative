@@ -182,6 +182,7 @@ export default {
 	Description: 'Description',
 	DESKTOP_OPTIONS: 'DESKTOP OPTIONS',
 	Directory: 'Directory',
+	Peer_supporter: 'Peer Suporters',
 	Direct_Messages: 'Direct Messages',
 	Disable_notifications: 'Disable notifications',
 	Discussions: 'Discussions',

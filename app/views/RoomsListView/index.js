@@ -13,7 +13,6 @@ import isEqual from 'react-fast-compare';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
-
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
@@ -64,6 +63,7 @@ import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { showErrorAlert } from '../../utils/info';
 import { getInquiryQueueSelector } from '../../selectors/inquiry';
+import { forEach } from 'lodash';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -71,9 +71,11 @@ const UNREAD_HEADER = 'Unread';
 const FAVORITES_HEADER = 'Favorites';
 const DISCUSSIONS_HEADER = 'Discussions';
 const CHANNELS_HEADER = 'Channels';
+const PEER_SUPPORTERS = 'Peer_supporter';
 const DM_HEADER = 'Direct_Messages';
 const GROUPS_HEADER = 'Private_Groups';
 const QUERY_SIZE = 20;
+
 
 const filterIsUnread = s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = s => s.f;
@@ -154,7 +156,12 @@ class RoomsListView extends React.Component {
 			loading: true,
 			chatsOrder: [],
 			chats: [],
-			item: {}
+			item: {},
+			data: [],
+			text: '',
+			total: -1,
+			globalUsers: true,
+			type: props.directoryDefaultView
 		};
 		this.setHeader();
 	}
@@ -163,8 +170,8 @@ class RoomsListView extends React.Component {
 		const {
 			navigation, closeServerDropdown, appState
 		} = this.props;
-
-		/**
+	// 	 this.load()
+	 /**
 		 * - When didMount is triggered and appState is foreground,
 		 * it means the user is logging in and selectServer has ran, so we can getSubscriptions
 		 *
@@ -276,6 +283,7 @@ class RoomsListView extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		
 		const {
 			sortBy,
 			groupByType,
@@ -329,7 +337,32 @@ class RoomsListView extends React.Component {
 		}
 		console.countReset(`${ this.constructor.name }.render calls`);
 	}
+	// load = async() => {
+	// 	try {
+	// 		const { data, type} = this.state;
+	// 		const query = { text:'', type };
+	// 		const directories = await RocketChat.getProfileLibrary({
+	// 			query,
+	// 			offset: data.length,
+	// 			count: 50,
+	// 			sort: type === 'users' 
+	// 		});
+	// 		if (directories.success) {
+	// 			const results = directories.result;
+    //      console.log('reuslts',results)
+	// 			this.setState({
+	// 				data: results,
+	// 				total: results.length
+	// 			});
+	// 		} 
+	// 		console.log('123456789',data)
+	// 	} catch (e) {
+	// 		log('errrrrr',e);
+	// 		this.setState({ loading: false });
+	// 	}
+	// }
 
+	
 	getHeader = () => {
 		const { searching } = this.state;
 		const { navigation, isMasterDetail, insets } = this.props;
@@ -376,6 +409,7 @@ class RoomsListView extends React.Component {
 			))
 		};
 	}
+	
 
 	setHeader = () => {
 		const { navigation } = this.props;
@@ -389,7 +423,21 @@ class RoomsListView extends React.Component {
 		}
 		this.setState(...args);
 	};
+	// getRoleDescription = async(id) => {
+	// 	const db = database.active;
+	// 	try {
+	// 		const rolesCollection = db.collections.get('roles');
+	// 		const role = await rolesCollection.find(id);
+	// 		if (role) {
+	// 			return role.description;
+	// 		}
+	// 		return null;
+	// 	} catch (e) {
+	// 		return null;
+	// 	}
+	// };
 
+	
 	addRoomsGroup = (data, header, allData) => {
 		if (data.length > 0) {
 			if (header) {
@@ -399,6 +447,7 @@ class RoomsListView extends React.Component {
 		}
 		return allData;
 	}
+
 
 	getSubscriptions = async() => {
 		this.unsubscribeQuery();
@@ -412,7 +461,14 @@ class RoomsListView extends React.Component {
 
 		const db = database.active;
 		let observable;
-
+	
+		// 	const rolesCollection = db.collections.get('roles');
+		// 	const role = await rolesCollection.find(id);
+			
+		//   console.log('role------',role('v7fEPn8p5u5FurmZ9'))
+		
+		
+	 
 		const defaultWhereClause = [
 			Q.where('archived', false),
 			Q.where('open', true)
@@ -448,7 +504,7 @@ class RoomsListView extends React.Component {
 		this.querySubscription = observable.subscribe((data) => {
 			let tempChats = [];
 			let chats = data;
-
+			console.log(this.getRoleDescription('v7fEPn8p5u5FurmZ9'))
 			/**
 			 * We trigger re-render only when chats order changes
 			 * RoomItem handles its own re-render
@@ -471,14 +527,42 @@ class RoomsListView extends React.Component {
 
 			// type
 			if (groupByType) {
+				const {data} = this.state;
+				
 				const discussions = chats.filter(s => s.prid);
 				const channels = chats.filter(s => s.t === 'c' && !s.prid);
 				const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
 				const direct = chats.filter(s => s.t === 'd' && !s.prid);
+				// const direct1 = direct.filter(s => {
+				// 	let notPeerSupporter = true;
+				// 	 data.forEach(peer => {
+				// 		  if(!s.uids.includes(peer._id)){
+				// 			  return notPeerSupporter = true ;
+				// 		  } else{
+				// 			  return notPeerSupporter = false;
+				// 		  }
+				// 	  })
+				// 	  return notPeerSupporter;
+				//   })
+				//   console.log('direct.....',direct1)
+				//   const peerSupporter = direct.filter(s => {
+				// 	let isPeerSupporter = false;
+				// 	 data.forEach(peer => {
+				// 		  if(s.uids.includes(peer._id)){
+				// 			  return isPeerSupporter = true;
+				// 		  } 
+				// 	  })
+				// 	  return isPeerSupporter;
+				//   })
+				 
+				//  console.log('chatssss',chats[0].database.collections)
+				//  console.log('peerSupporter0000000000000000',peerSupporter)
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
+			//  tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS, tempChats)
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
-				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
+				 tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
+				
 			} else if (showUnread || showFavorites) {
 				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
@@ -556,7 +640,9 @@ class RoomsListView extends React.Component {
 
 	getRoomTitle = item => RocketChat.getRoomTitle(item)
 
+
 	getRoomAvatar = item => RocketChat.getRoomAvatar(item)
+
 
 	isGroupChat = item => RocketChat.isGroupChat(item)
 
@@ -786,7 +872,7 @@ class RoomsListView extends React.Component {
 			navigation.navigate('NewServerView', { previousServer: server });
 		}
 	};
-
+   
 	onRefresh = () => {
 		const { searching } = this.state;
 		const { roomsRequest } = this.props;
@@ -935,6 +1021,7 @@ class RoomsListView extends React.Component {
 
 	render = () => {
 		console.count(`${ this.constructor.name }.render calls`);
+	
 		const {
 			sortBy,
 			groupByType,

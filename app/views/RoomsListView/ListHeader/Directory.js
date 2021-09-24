@@ -14,7 +14,7 @@ const Directory = React.memo(({ goDirectory, theme, searching }) => {
 	if (searching > 0) {
 		return null;
 	}
-	const color = { color: themes[theme].headerSecondaryText };
+	const color = { color: themes[theme].tintColor };
 	return (
 		<Touch
 			onPress={goDirectory}
