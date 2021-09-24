@@ -24,6 +24,8 @@ import DirectoryView from '../../views/DirectoryView';
 import NotificationPrefView from '../../views/NotificationPreferencesView';
 import VisitorNavigationView from '../../views/VisitorNavigationView';
 import ForwardLivechatView from '../../views/ForwardLivechatView';
+import CannedResponsesListView from '../../views/CannedResponsesListView';
+import CannedResponseDetail from '../../views/CannedResponseDetail';
 import LivechatEditView from '../../views/LivechatEditView';
 import PickerView from '../../views/PickerView';
 import ThreadMessagesView from '../../views/ThreadMessagesView';
@@ -159,6 +161,16 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					name='ForwardLivechatView'
 					component={ForwardLivechatView}
 					options={ForwardLivechatView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='CannedResponsesListView'
+					component={CannedResponsesListView}
+					options={CannedResponsesListView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='CannedResponseDetail'
+					component={CannedResponseDetail}
+					options={CannedResponseDetail.navigationOptions}
 				/>
 				<ModalStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
 				<ModalStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />

@@ -674,5 +674,13 @@
 	"Group_by": "Agrupar por",
 	"Types": "Tipos",
 	"Expanded": "Estendido",
-	"Condensed": "Condensado"
+	"Condensed": "Condensado",
+	"Canned_Responses": "Respostas Predefinidas",
+	"No_match_found": "Nenhum resultado encontrado",
+	"Check_canned_responses": "Verifique nas respostas predefinidas",
+	"Searching": "Buscando",
+	"Use": "Use",
+	"Shortcut": "Atalho",
+	"Content": "Conteúdo",
+	"No_canned_responses": "Não há respostas predefinidas"
 }

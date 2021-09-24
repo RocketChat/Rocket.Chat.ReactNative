@@ -1,9 +1,4 @@
 export default {
-	// ONBOARDING VIEW
-	ONBOARD_JOIN_A_WORKSPACE: 'onboard_join_a_workspace',
-	ONBOARD_CREATE_NEW_WORKSPACE: 'onboard_create_new_workspace',
-	ONBOARD_CREATE_NEW_WORKSPACE_F: 'onboard_create_new_workspace_f',
-
 	// NEW SERVER VIEW
 	NS_CONNECT_TO_WORKSPACE: 'ns_connect_to_workspace',
 	NS_JOIN_OPEN_WORKSPACE: 'ns_join_open_workspace',
@@ -72,6 +67,7 @@ export default {
 	RL_HIDE_CHANNEL: 'rl_hide_channel',
 	RL_HIDE_CHANNEL_F: 'rl_hide_channel_f',
 	RL_TOGGLE_SORT_DROPDOWN: 'rl_toggle_sort_dropdown',
+	RL_CREATE_NEW_WORKSPACE: 'rl_create_new_workspace',
 
 	// DISPLAY PREFERENCES VIEW
 	DP_SORT_CHANNELS_BY_NAME: 'dp_sort_channels_by_name',

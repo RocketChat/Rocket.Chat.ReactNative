@@ -774,5 +774,14 @@
 	"Types": "Types",
 	"Expanded": "Expanded",
 	"Condensed": "Condensed",
-	"creating_discussion": "creating discussion"
+	"creating_discussion": "creating discussion",
+	"Canned_Responses": "Canned Responses",
+	"No_match_found": "No match found.",
+	"Check_canned_responses": "Check on canned responses.",
+	"Searching": "Searching",
+	"Use": "Use",
+	"Shortcut": "Shortcut",
+	"Content": "Content",
+	"Sharing": "Sharing",
+	"No_canned_responses": "No canned responses"
 }

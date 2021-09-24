@@ -1039,11 +1039,22 @@ const RocketChat = {
 		}
 		return this.post('subscriptions.read', { rid: roomId });
 	},
-	getRoomMembers(rid, allUsers, skip = 0, limit = 10) {
+	getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
+		const serverVersion = reduxStore.getState().server.version;
+		if (compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)) {
+			const params = {
+				roomId: rid,
+				offset: skip,
+				count: limit,
+				...(type !== 'all' && { 'status[]': type }),
+				...(filter && { filter })
+			};
+			// RC 3.16.0
+			return this.sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
+		}
 		// RC 0.42.0
 		return this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
 	},
-
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		if (API_Use_REST_For_DDP_Calls) {
@@ -1148,6 +1159,19 @@ const RocketChat = {
 	getCustomFields() {
 		// RC 2.2.0
 		return this.sdk.get('livechat/custom-fields');
+	},
+
+	getListCannedResponse({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }) {
+		const params = {
+			offset,
+			count,
+			...(departmentId && { departmentId }),
+			...(text && { text }),
+			...(scope && { scope })
+		};
+
+		// RC 3.17.0
+		return this.sdk.get('canned-responses', params);
 	},
 
 	getUidDirectMessage(room) {
