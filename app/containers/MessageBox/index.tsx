@@ -35,6 +35,7 @@ import Mentions from './Mentions';
 import MessageboxContext from './Context';
 import {
 	MENTIONS_COUNT_TO_DISPLAY,
+	MENTIONS_TRACKING_TYPE_CANNED,
 	MENTIONS_TRACKING_TYPE_COMMANDS,
 	MENTIONS_TRACKING_TYPE_EMOJIS,
 	MENTIONS_TRACKING_TYPE_ROOMS,
@@ -107,6 +108,7 @@ interface IMessageBoxProps {
 	iOSScrollBehavior: number;
 	sharing: boolean;
 	isActionsEnabled: boolean;
+	usedCannedResponse: string;
 }
 
 interface IMessageBoxState {
@@ -121,6 +123,7 @@ interface IMessageBoxState {
 		appId?: any;
 	};
 	tshow: boolean;
+	mentionLoading: boolean;
 }
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
@@ -175,7 +178,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			commandPreview: [],
 			showCommandPreview: false,
 			command: {},
-			tshow: false
+			tshow: false,
+			mentionLoading: false
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -234,7 +238,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	async componentDidMount() {
 		const db = database.active;
-		const { rid, tmid, navigation, sharing } = this.props;
+		const { rid, tmid, navigation, sharing, usedCannedResponse, isMasterDetail } = this.props;
 		let msg;
 		try {
 			const threadsCollection = db.get('threads');
@@ -269,6 +273,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			EventEmiter.addEventListener(KEY_COMMAND, this.handleCommands);
 		}
 
+		if (isMasterDetail && usedCannedResponse) {
+			this.onChangeText('');
+		}
+
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			// didFocus
 			// We should wait pushed views be dismissed
@@ -285,9 +293,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps: any) {
-		const { isFocused, editing, replying, sharing } = this.props;
+		const { isFocused, editing, replying, sharing, usedCannedResponse } = this.props;
 		if (!isFocused?.()) {
 			return;
+		}
+		if (usedCannedResponse !== nextProps.usedCannedResponse) {
+			this.onChangeText(nextProps.usedCannedResponse ?? '');
 		}
 		if (sharing) {
 			this.setInput(nextProps.message.msg ?? '');
@@ -311,10 +322,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	shouldComponentUpdate(nextProps: any, nextState: any) {
-		const { showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow } = this.state;
+		const { showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow, mentionLoading, trackingType } = this.state;
 
-		const { roomType, replying, editing, isFocused, message, theme } = this.props;
-
+		const { roomType, replying, editing, isFocused, message, theme, usedCannedResponse } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -333,6 +343,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (nextState.showEmojiKeyboard !== showEmojiKeyboard) {
 			return true;
 		}
+		if (nextState.trackingType !== trackingType) {
+			return true;
+		}
+		if (nextState.mentionLoading !== mentionLoading) {
+			return true;
+		}
 		if (nextState.showSend !== showSend) {
 			return true;
 		}
@@ -349,6 +365,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return true;
 		}
 		if (!dequal(nextProps.message?.id, message?.id)) {
+			return true;
+		}
+		if (nextProps.usedCannedResponse !== usedCannedResponse) {
 			return true;
 		}
 		return false;
@@ -370,6 +389,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 		if (this.getSlashCommands && this.getSlashCommands.stop) {
 			this.getSlashCommands.stop();
+		}
+		if (this.getCannedResponses && this.getCannedResponses.stop) {
+			this.getCannedResponses.stop();
 		}
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
@@ -395,7 +417,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	// eslint-disable-next-line react/sort-comp
 	debouncedOnChangeText = debounce(async (text: any) => {
-		const { sharing } = this.props;
+		const { sharing, roomType } = this.props;
 		const isTextEmpty = text.length === 0;
 		if (isTextEmpty) {
 			this.stopTrackingMention();
@@ -412,6 +434,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const channelMention = lastWord.match(/^#/);
 		const userMention = lastWord.match(/^@/);
 		const emojiMention = lastWord.match(/^:/);
+		const cannedMention = lastWord.match(/^!/);
 
 		if (commandMention && !sharing) {
 			const command = text.substr(1);
@@ -440,6 +463,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (emojiMention) {
 			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_EMOJIS);
 		}
+		if (cannedMention && roomType === 'l') {
+			return this.identifyMentionKeyword(result, MENTIONS_TRACKING_TYPE_CANNED);
+		}
 		return this.stopTrackingMention();
 	}, 100);
 
@@ -456,11 +482,17 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
 		const regexp = /([a-z0-9._-]+)$/im;
-		const result = msg.substr(0, cursor).replace(regexp, '');
+		let result = msg.substr(0, cursor).replace(regexp, '');
+		// Remove the ! after select the canned response
+		if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
+			const lastIndexOfExclamation = msg.lastIndexOf('!', cursor);
+			result = msg.substr(0, lastIndexOfExclamation).replace(regexp, '');
+		}
 		const mentionName =
-			trackingType === MENTIONS_TRACKING_TYPE_EMOJIS ? `${item.name || item}:` : item.username || item.name || item.command;
+			trackingType === MENTIONS_TRACKING_TYPE_EMOJIS
+				? `${item.name || item}:`
+				: item.username || item.name || item.command || item.text;
 		const text = `${result}${mentionName} ${msg.slice(cursor)}`;
-
 		if (trackingType === MENTIONS_TRACKING_TYPE_COMMANDS && item.providesPreview) {
 			this.setState({ showCommandPreview: true });
 		}
@@ -532,12 +564,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	getUsers = debounce(async (keyword: any) => {
 		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
 		res = [...this.getFixedMentions(keyword), ...res];
-		this.setState({ mentions: res });
+		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
 
 	getRooms = debounce(async (keyword = '') => {
 		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
-		this.setState({ mentions: res });
+		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
 
 	getEmojis = debounce(async (keyword: any) => {
@@ -552,7 +584,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		customEmojis = customEmojis.slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		const filteredEmojis = emojis.filter(emoji => emoji.indexOf(keyword) !== -1).slice(0, MENTIONS_COUNT_TO_DISPLAY);
 		const mergedEmojis = [...customEmojis, ...filteredEmojis].slice(0, MENTIONS_COUNT_TO_DISPLAY);
-		this.setState({ mentions: mergedEmojis || [] });
+		this.setState({ mentions: mergedEmojis || [], mentionLoading: false });
 	}, 300);
 
 	getSlashCommands = debounce(async (keyword: any) => {
@@ -560,8 +592,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const commandsCollection = db.get('slash_commands');
 		const likeString = sanitizeLikeString(keyword);
 		const commands = await commandsCollection.query(Q.where('id', Q.like(`${likeString}%`))).fetch();
-		this.setState({ mentions: commands || [] });
+		this.setState({ mentions: commands || [], mentionLoading: false });
 	}, 300);
+
+	getCannedResponses = debounce(async (text?: string) => {
+		const res = await RocketChat.getListCannedResponse({ text });
+		this.setState({ mentions: res?.cannedResponses || [], mentionLoading: false });
+	}, 500);
 
 	focus = () => {
 		if (this.component && this.component.focus) {
@@ -692,6 +729,16 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				logEvent(events.ROOM_BOX_ACTION_FILE_F);
 				log(e);
 			}
+		}
+	};
+
+	onPressNoMatchCanned = () => {
+		const { isMasterDetail, rid } = this.props;
+		const params = { rid };
+		if (isMasterDetail) {
+			Navigation.navigate('ModalStackNavigator', { screen: 'CannedResponsesListView', params });
+		} else {
+			Navigation.navigate('CannedResponsesListView', params);
 		}
 	};
 
@@ -854,6 +901,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			this.getEmojis(keyword);
 		} else if (type === MENTIONS_TRACKING_TYPE_COMMANDS) {
 			this.getSlashCommands(keyword);
+		} else if (type === MENTIONS_TRACKING_TYPE_CANNED) {
+			this.getCannedResponses(keyword);
 		} else {
 			this.getRooms(keyword);
 		}
@@ -862,7 +911,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	identifyMentionKeyword = (keyword: any, type: string) => {
 		this.setState({
 			showEmojiKeyboard: false,
-			trackingType: type
+			trackingType: type,
+			mentionLoading: true
 		});
 		this.updateMentions(keyword, type);
 	};
@@ -918,7 +968,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	renderContent = () => {
-		const { recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview } = this.state;
+		const { recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, mentionLoading } =
+			this.state;
 		const {
 			editing,
 			message,
@@ -950,8 +1001,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const commandsPreviewAndMentions = !recording ? (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-				{/* @ts-ignore*/}
-				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} />
+				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} loading={mentionLoading} />
 			</>
 		) : null;
 
@@ -1039,7 +1089,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					user,
 					baseUrl,
 					onPressMention: this.onPressMention,
-					onPressCommandPreview: this.onPressCommandPreview
+					onPressCommandPreview: this.onPressCommandPreview,
+					onPressNoMatchCanned: this.onPressNoMatchCanned
 				}}>
 				<KeyboardAccessoryView
 					ref={(ref: any) => (this.tracking = ref)}

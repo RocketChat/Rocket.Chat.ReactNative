@@ -5,7 +5,7 @@ const reopenAndCheckServer = async server => {
 	await device.launchApp({ permissions: { notifications: 'YES' } });
 	await waitFor(element(by.id('rooms-list-view')))
 		.toBeVisible()
-		.withTimeout(6000);
+		.withTimeout(10000);
 	await checkServer(server);
 };
 
@@ -19,13 +19,21 @@ describe('Change server', () => {
 			.withTimeout(10000);
 	});
 
-	it('should login to server, add new server, close the app, open the app and show previous logged server', async () => {
+	it('should open the dropdown button, have the server add button and create workspace button', async () => {
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await element(by.id('rooms-list-header-server-add')).tap();
+		await waitFor(element(by.id('rooms-list-header-server-add')))
+			.toBeVisible()
+			.withTimeout(5000);
+		await waitFor(element(by.id('rooms-list-header-create-workspace-button')))
+			.toBeVisible()
+			.withTimeout(5000);
+	});
 
+	it('should login to server, add new server, close the app, open the app and show previous logged server', async () => {
+		await element(by.id('rooms-list-header-server-add')).tap();
 		await waitFor(element(by.id('new-server-view')))
 			.toBeVisible()
 			.withTimeout(6000);

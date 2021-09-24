@@ -762,11 +762,15 @@
 	"Load_More": "Meer laden",
 	"Load_Newer": "Nieuwer laden",
 	"Load_Older": "Ouder laden",
+	"room-name-already-exists": "Kamernaam bestaat al",
+	"error-team-creation": "Fout bij het aanmaken van team",
+	"unauthorized": "Onbevoegd",
 	"Left_The_Room_Successfully": "Heeft kamer met succes verlaten",
 	"Deleted_The_Team_Successfully": "Team succesvol verwijderd",
 	"Deleted_The_Room_Successfully": "Kamer succesvol verwijderd",
 	"Convert_to_Channel": "Converteren naar kanaal",
 	"Converting_Team_To_Channel": "Team converteren naar kanaal",
 	"Select_Team_Channels_To_Delete": "Selecteer de teamkanalen die je wilt verwijderen, de kanalen die u niet selecteert, worden naar de werkruimte verplaatst.\n\nMerk op dat openbare kanalen openbaar en voor iedereen zichtbaar zullen zijn.",
-	"You_are_converting_the_team": "Je converteert dit team naar een kanaal"
+	"You_are_converting_the_team": "Je converteert dit team naar een kanaal",
+	"creating_discussion": "discussie aanmaken"
 }
