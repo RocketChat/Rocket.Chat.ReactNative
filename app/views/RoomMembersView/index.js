@@ -453,7 +453,7 @@ class RoomMembersView extends React.Component {
 			this.setState({
 				members: members.concat(newMembers || []),
 				isLoading: false,
-				end: newMembers.length < PAGE_SIZE
+				end: newMembers?.length < PAGE_SIZE
 			});
 			this.setHeader();
 		} catch (e) {
