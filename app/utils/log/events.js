@@ -66,7 +66,6 @@ export default {
 	RL_TOGGLE_READ_F: 'rl_toggle_read_f',
 	RL_HIDE_CHANNEL: 'rl_hide_channel',
 	RL_HIDE_CHANNEL_F: 'rl_hide_channel_f',
-	RL_TOGGLE_SORT_DROPDOWN: 'rl_toggle_sort_dropdown',
 	RL_CREATE_NEW_WORKSPACE: 'rl_create_new_workspace',
 
 	// DISPLAY PREFERENCES VIEW

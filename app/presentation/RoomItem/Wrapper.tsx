@@ -23,11 +23,11 @@ interface IWrapper {
 	showAvatar: boolean;
 }
 
-const Wrapper = ({ accessibilityLabel, avatar, avatarSize, type, theme, rid, children, displayMode, ...props }: IWrapper) => (
+const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }: IWrapper) => (
 	<View
 		style={[styles.container, displayMode === DISPLAY_MODE_CONDENSED && styles.containerCondensed]}
 		accessibilityLabel={accessibilityLabel}>
-		<IconOrAvatar theme={theme} displayMode={displayMode} avatar={avatar} {...props} />
+		<IconOrAvatar theme={theme} displayMode={displayMode} {...props} />
 		<View
 			style={[
 				styles.centerContainer,
