@@ -24,7 +24,8 @@ async function navigateToWorkspace(server = data.server) {
 	await waitFor(element(by.id('new-server-view')))
 		.toBeVisible()
 		.withTimeout(60000);
-	await element(by.id('new-server-view-input')).replaceText(`${server}\n`);
+	await element(by.id('new-server-view-input')).replaceText(`${server}`);
+	await element(by.text('Connect')).tap();
 	await waitFor(element(by.id('workspace-view')))
 		.toBeVisible()
 		.withTimeout(60000);
