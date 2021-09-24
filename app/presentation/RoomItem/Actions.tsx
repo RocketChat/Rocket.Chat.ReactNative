@@ -3,10 +3,10 @@ import { Animated, Text, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
 import I18n, { isRTL } from '../../i18n';
-import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../../constants/constantDisplayMode';
+import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 
 interface ILeftActions {
 	theme: string;

@@ -16,8 +16,7 @@ import {
 	closeSearchHeader as closeSearchHeaderAction,
 	closeServerDropdown as closeServerDropdownAction,
 	openSearchHeader as openSearchHeaderAction,
-	roomsRequest as roomsRequestAction,
-	toggleSortDropdown as toggleSortDropdownAction
+	roomsRequest as roomsRequestAction
 } from '../../actions/rooms';
 import { appStart as appStartAction, ROOT_OUTSIDE } from '../../actions/app';
 import debounce from '../../utils/debounce';
