@@ -6,7 +6,7 @@ import Avatar from '../../Avatar';
 import MessageboxContext from '../Context';
 import FixedMentionItem from './FixedMentionItem';
 import MentionEmoji from './MentionEmoji';
-import { MENTIONS_TRACKING_TYPE_COMMANDS, MENTIONS_TRACKING_TYPE_EMOJIS } from '../constants';
+import { MENTIONS_TRACKING_TYPE_EMOJIS, MENTIONS_TRACKING_TYPE_COMMANDS, MENTIONS_TRACKING_TYPE_CANNED } from '../constants';
 import { themes } from '../../../constants/colors';
 import { IEmoji } from '../../EmojiPicker/interfaces';
 
@@ -17,6 +17,8 @@ interface IMessageBoxMentionItem {
 		username: string;
 		t: string;
 		id: string;
+		shortcut: string;
+		text: string;
 	} & IEmoji;
 	trackingType: string;
 	theme: string;
@@ -32,6 +34,8 @@ const MentionItem = ({ item, trackingType, theme }: IMessageBoxMentionItem) => {
 				return `mention-item-${item.name || item}`;
 			case MENTIONS_TRACKING_TYPE_COMMANDS:
 				return `mention-item-${item.command || item}`;
+			case MENTIONS_TRACKING_TYPE_CANNED:
+				return `mention-item-${item.shortcut || item}`;
 			default:
 				return `mention-item-${item.username || item.name || item}`;
 		}
@@ -64,6 +68,17 @@ const MentionItem = ({ item, trackingType, theme }: IMessageBoxMentionItem) => {
 			<>
 				<Text style={[styles.slash, { backgroundColor: themes[theme].borderColor, color: themes[theme].tintColor }]}>/</Text>
 				<Text style={[styles.mentionText, { color: themes[theme].titleText }]}>{item.id}</Text>
+			</>
+		);
+	}
+
+	if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
+		content = (
+			<>
+				<Text style={[styles.cannedItem, { color: themes[theme].titleText }]}>!{item.shortcut}</Text>
+				<Text numberOfLines={1} style={[styles.cannedMentionText, { color: themes[theme].auxiliaryTintColor }]}>
+					{item.text}
+				</Text>
 			</>
 		);
 	}
