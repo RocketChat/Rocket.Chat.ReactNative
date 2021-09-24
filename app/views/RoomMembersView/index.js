@@ -26,6 +26,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { CustomIcon } from '../../lib/Icons';
+import { compareServerVersion, methods } from '../../lib/utils';
 import styles from './styles';
 
 const PAGE_SIZE = 25;
@@ -46,6 +47,7 @@ class RoomMembersView extends React.Component {
 		rid: PropTypes.string,
 		members: PropTypes.array,
 		baseUrl: PropTypes.string,
+		serverVersion: PropTypes.string,
 		room: PropTypes.object,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -432,6 +434,7 @@ class RoomMembersView extends React.Component {
 	};
 
 	fetchMembers = async () => {
+		const { serverVersion } = this.props;
 		const { rid, members, isLoading, allUsers, end, room, filtering } = this.state;
 		const { t } = room;
 		let newMembers;
@@ -449,7 +452,9 @@ class RoomMembersView extends React.Component {
 				skip: members.length,
 				limit: PAGE_SIZE
 			});
-			newMembers = membersResult.members;
+			newMembers = compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)
+				? membersResult.members
+				: membersResult.records;
 			this.setState({
 				members: members.concat(newMembers || []),
 				isLoading: false,
@@ -642,6 +647,7 @@ class RoomMembersView extends React.Component {
 
 const mapStateToProps = state => ({
 	baseUrl: state.server.server,
+	serverVersion: state.server.version,
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	useRealName: state.settings.UI_Use_Real_Name,
