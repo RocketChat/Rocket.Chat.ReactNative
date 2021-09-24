@@ -56,5 +56,10 @@ export default StyleSheet.create({
 		marginRight: 12,
 		paddingVertical: 10,
 		...sharedStyles.textRegular
+	},
+	buttonCreateWorkspace: {
+		height: 46,
+		justifyContent: 'center',
+		marginBottom: 0
 	}
 });

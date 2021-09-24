@@ -17,11 +17,11 @@ interface IMessageBoxRecordAudioProps {
 	onFinish: Function;
 }
 
-const RECORDING_EXTENSION = '.aac';
+const RECORDING_EXTENSION = '.m4a';
 const RECORDING_SETTINGS = {
 	android: {
 		extension: RECORDING_EXTENSION,
-		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_AAC_ADTS,
+		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
 		audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
 		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.sampleRate,
 		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.numberOfChannels,
@@ -39,7 +39,7 @@ const RECORDING_SETTINGS = {
 const RECORDING_MODE = {
 	allowsRecordingIOS: true,
 	playsInSilentModeIOS: true,
-	staysActiveInBackground: false,
+	staysActiveInBackground: true,
 	shouldDuckAndroid: true,
 	playThroughEarpieceAndroid: false,
 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -63,20 +63,24 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 
 	private recording: any;
 
+	private LastDuration: number;
+
 	constructor(props: IMessageBoxRecordAudioProps) {
 		super(props);
 		this.isRecorderBusy = false;
+		this.LastDuration = 0;
 		this.state = {
 			isRecording: false,
+			isRecorderActive: false,
 			recordingDurationMillis: 0
 		};
 	}
 
 	componentDidUpdate() {
 		const { recordingCallback } = this.props;
-		const { isRecording } = this.state;
+		const { isRecorderActive } = this.state;
 
-		recordingCallback(isRecording);
+		recordingCallback(isRecorderActive);
 	}
 
 	componentWillUnmount() {
@@ -88,6 +92,10 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 	get duration() {
 		const { recordingDurationMillis } = this.state;
 		return formatTime(Math.floor(recordingDurationMillis / 1000));
+	}
+
+	get GetLastDuration() {
+		return formatTime(Math.floor(this.LastDuration / 1000));
 	}
 
 	isRecordingPermissionGranted = async () => {
@@ -108,17 +116,20 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 			isRecording: status.isRecording,
 			recordingDurationMillis: status.durationMillis
 		});
+		this.LastDuration = status.durationMillis;
 	};
 
 	startRecordingAudio = async () => {
 		logEvent(events.ROOM_AUDIO_RECORD);
 		if (!this.isRecorderBusy) {
 			this.isRecorderBusy = true;
+			this.LastDuration = 0;
 			try {
 				const canRecord = await this.isRecordingPermissionGranted();
 				if (canRecord) {
 					await Audio.setAudioModeAsync(RECORDING_MODE);
 
+					this.setState({ isRecorderActive: true });
 					this.recording = new Audio.Recording();
 					await this.recording.prepareToRecordAsync(RECORDING_SETTINGS);
 					this.recording.setOnRecordingStatusUpdate(this.onRecordingStatusUpdate);
@@ -147,7 +158,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 				const fileURI = this.recording.getURI();
 				const fileData = await getInfoAsync(fileURI);
 				const fileInfo = {
-					name: `${Date.now()}.aac`,
+					name: `${Date.now()}.m4a`,
 					mime: 'audio/aac',
 					type: 'audio/aac',
 					store: 'Uploads',
@@ -159,7 +170,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 			} catch (error) {
 				logEvent(events.ROOM_AUDIO_FINISH_F);
 			}
-			this.setState({ isRecording: false, recordingDurationMillis: 0 });
+			this.setState({ isRecording: false, isRecorderActive: false, recordingDurationMillis: 0 });
 			deactivateKeepAwake();
 			this.isRecorderBusy = false;
 		}
@@ -174,7 +185,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 			} catch (error) {
 				logEvent(events.ROOM_AUDIO_CANCEL_F);
 			}
-			this.setState({ isRecording: false, recordingDurationMillis: 0 });
+			this.setState({ isRecording: false, isRecorderActive: false, recordingDurationMillis: 0 });
 			deactivateKeepAwake();
 			this.isRecorderBusy = false;
 		}
@@ -182,9 +193,9 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 
 	render() {
 		const { theme } = this.props;
-		const { isRecording } = this.state;
+		const { isRecording, isRecorderActive } = this.state;
 
-		if (!isRecording) {
+		if (!isRecording && !isRecorderActive) {
 			return (
 				<BorderlessButton
 					onPress={this.startRecordingAudio}
@@ -198,6 +209,32 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 			);
 		}
 
+		if (!isRecording && isRecorderActive) {
+			return (
+				<View style={styles.recordingContent}>
+					<View style={styles.textArea}>
+						<BorderlessButton
+							onPress={this.cancelRecordingAudio}
+							// @ts-ignore
+							accessibilityLabel={I18n.t('Cancel_recording')}
+							accessibilityTraits='button'
+							style={styles.actionButton}>
+							<CustomIcon size={24} color={themes[theme].dangerColor} name='delete' />
+						</BorderlessButton>
+						<Text style={[styles.recordingDurationText, { color: themes[theme].titleText }]}>{this.GetLastDuration}</Text>
+					</View>
+					<BorderlessButton
+						onPress={this.finishRecordingAudio}
+						// @ts-ignore
+						accessibilityLabel={I18n.t('Finish_recording')}
+						accessibilityTraits='button'
+						style={styles.actionButton}>
+						<CustomIcon size={24} color={themes[theme].tintColor} name='send-filled' />
+					</BorderlessButton>
+				</View>
+			);
+		}
+
 		return (
 			<View style={styles.recordingContent}>
 				<View style={styles.textArea}>
@@ -207,9 +244,10 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 						accessibilityLabel={I18n.t('Cancel_recording')}
 						accessibilityTraits='button'
 						style={styles.actionButton}>
-						<CustomIcon size={24} color={themes[theme].dangerColor} name='close' />
+						<CustomIcon size={24} color={themes[theme].dangerColor} name='delete' />
 					</BorderlessButton>
-					<Text style={[styles.recordingCancelText, { color: themes[theme].titleText }]}>{this.duration}</Text>
+					<Text style={[styles.recordingDurationText, { color: themes[theme].titleText }]}>{this.duration}</Text>
+					<CustomIcon size={24} color={themes[theme].dangerColor} name='record' />
 				</View>
 				<BorderlessButton
 					onPress={this.finishRecordingAudio}
@@ -217,7 +255,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 					accessibilityLabel={I18n.t('Finish_recording')}
 					accessibilityTraits='button'
 					style={styles.actionButton}>
-					<CustomIcon size={24} color={themes[theme].successColor} name='check' />
+					<CustomIcon size={24} color={themes[theme].tintColor} name='send-filled' />
 				</BorderlessButton>
 			</View>
 		);
