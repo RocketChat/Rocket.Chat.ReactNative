@@ -38,10 +38,10 @@ import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
-const getRoomTitle = (room, type, name, username, statusText, theme) => (type === 'd'
+const getRoomTitle = (room, type, name, username,age, statusText, theme) => (type === 'd'
 	? (
 		<>
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{`${ name }`}</Text>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{`${ name }, ${age}`}</Text>
 			{username && <Text testID='room-info-view-username' style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}></Text>}
 			{!!statusText && <View testID='room-info-view-custom-status'><Markdown msg={statusText} style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]} preview theme={theme} /></View>}
 		</>
@@ -300,6 +300,7 @@ class RoomInfoView extends React.Component {
 
 		try {
 			const result = await RocketChat.saveUserProfile({}, user.customFields);
+			
 			await this.createDirect();
 			this.goRoom();
 		} catch (e) {
@@ -351,7 +352,7 @@ class RoomInfoView extends React.Component {
 					token={user.token}
 				>
 					{this.t === 'd' && roomUser._id ? <CustomIcon
-					  style={{left:150,position:'absolute',top:150}} name='play-filled' size={60} color='#8FCEA7' onPress={()=>Navigation.navigate('Video',{videoUrl:`${ roomUser.customFields.VideoUrl }`})
+					  style={{left:150,position:'absolute',top:150,cursor:'pointer'}} name='play-filled' size={60} color='#8FCEA7' onPress={()=>Navigation.navigate('Video',{videoUrl:`${ roomUser.customFields.VideoUrl }`})
 						 } />: null}
 				</Avatar>
 				</View>: <View style={{
@@ -487,6 +488,7 @@ class RoomInfoView extends React.Component {
 	render() {
 		const { room, roomUser } = this.state;
 		const { theme, user, route } = this.props;
+		
 		const isPeerSupporter = route.params?.isPeerSupporter;
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role)) !== undefined;
 
@@ -500,8 +502,8 @@ class RoomInfoView extends React.Component {
 
 		const canConnect = !peerIds.includes(roomUser.username) && peerIds.length < 5 && !isAdmin;
 		const isConnected = peerIds.includes(roomUser.username) && !isAdmin;
-        console.log('-------',roomUser?.customFields)
-		const name = (isConnected) ?  `${ roomUser?.name }, ${roomUser?.customFields?.Age} ` : roomUser?.name;
+		
+		const name = (isConnected) ? `${ roomUser?.name } ✅ ` : roomUser?.name;
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar theme={theme} />
@@ -512,7 +514,7 @@ class RoomInfoView extends React.Component {
 					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser, isAdmin, isPeerSupporter, canConnect, isConnected)}
 						<View style={{flexDirection:'row'}} ><View style={{marginTop:17}}>{this.renderStatus(room,roomUser)}</View>
-						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, name, roomUser?.username, roomUser?.statusText, theme) }</View></View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, name, roomUser?.username,roomUser?.customFields?.Age, roomUser?.statusText, theme) }</View></View>
 						{this.isDirect ? this.renderPreContent(isAdmin, isPeerSupporter, canConnect, isConnected) : null}
 						{this.isDirect ? this.renderButtons(isPeerSupporter, canConnect, isConnected) : null}
 						

@@ -74,6 +74,7 @@ class ProfileLibraryView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	load = debounce(async({ newSearch = false }) => {
+	
 		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
 		}
@@ -196,6 +197,7 @@ class ProfileLibraryView extends React.Component {
 		const { data, type } = this.state;
 		const { baseUrl, user, theme } = this.props;
 
+
 		let style;
 		if (index === data.length - 1) {
 			style = {
@@ -244,6 +246,7 @@ class ProfileLibraryView extends React.Component {
 		const {
 			data, loading, showOptionsDropdown, type, globalUsers
 		} = this.state;
+		console.log('00000000000',data)
 		const { isFederationEnabled, theme } = this.props;
 
 		return (

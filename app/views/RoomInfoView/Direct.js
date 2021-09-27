@@ -51,16 +51,17 @@ Bio.propTypes = {
 };
 
 const Direct = ({ roomUser, theme, user }) => { 
+
 	const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role)) !== undefined;
 	return roomUser.bio ? ( 
 	<>
 	 <Bio bio={roomUser.bio} theme={theme} />
 		{/* {isAdmin && (<Roles roles={roomUser.parsedRoles} theme={theme} user={user} />)} */}
-		{/* <CustomFields customFields={roomUser.customFields} user={roomUser} currentUser={user} theme={theme} /> */}
+		 {/* <CustomFields customFields={roomUser.customFields} user={roomUser} currentUser={user} theme={theme} />  */}
 	</>
 ): (<>
-  {isAdmin && (<Roles roles={roomUser.parsedRoles} theme={theme} user={user} />)}
-  {/* <CustomFields customFields={roomUser.customFields} user={roomUser} currentUser={user} theme={theme} /> */}
+  {/* {isAdmin && (<Roles roles={roomUser.parsedRoles} theme={theme} user={user} />)}
+  <CustomFields customFields={roomUser.customFields} user={roomUser} currentUser={user} theme={theme} />  */}
 </>)};
 Direct.propTypes = {
 	roomUser: PropTypes.object,
