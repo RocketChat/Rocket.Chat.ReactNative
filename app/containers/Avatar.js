@@ -9,12 +9,13 @@ import { avatarURL } from '../utils/avatar';
 import Emoji from './markdown/Emoji';
 
 const Avatar = React.memo(({
-	text, size, baseUrl, borderRadius, style, avatar, type, children, userId, token, onPress, theme, emoji, getCustomEmoji
+	text, size, baseUrl, borderRadius,borderBottomRightRadius, style, avatar, type, children, userId, token, onPress, theme, emoji, getCustomEmoji
 }) => {
 	const avatarStyle = {
 		width: size,
 		height: size,
-		borderRadius
+		borderRadius,
+		borderBottomRightRadius
 	};
 
 	if (!text && !avatar) {

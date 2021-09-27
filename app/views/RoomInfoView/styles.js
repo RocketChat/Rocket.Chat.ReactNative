@@ -32,6 +32,7 @@ export default StyleSheet.create({
 		marginHorizontal: 10,
 	
 	
+	
 	},
 	roomTitleContainer: {
 		paddingTop: 20,

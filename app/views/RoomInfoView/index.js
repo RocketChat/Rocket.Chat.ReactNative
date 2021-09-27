@@ -340,6 +340,7 @@ class RoomInfoView extends React.Component {
 				}}
 				>
 					<Avatar 
+					borderBottomRightRadius={80}
 			        borderRadius={20}
 					text={room.name || roomUser.username}
 					size={200}
