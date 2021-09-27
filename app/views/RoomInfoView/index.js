@@ -339,8 +339,8 @@ class RoomInfoView extends React.Component {
 					height: 240
 				}}
 				>
-					<Avatar
-			        
+					<Avatar 
+			        borderRadius={20}
 					text={room.name || roomUser.username}
 					size={200}
 					style={styles.avatar}
@@ -349,26 +349,27 @@ class RoomInfoView extends React.Component {
 					userId={user.id}
 					token={user.token}
 				>
-					{this.t === 'd' && roomUser._id ?<CustomIcon
-					  style={{left:150,position:'absolute',top:150}} name='play-filled' size={60} color='#8FCEA7' /> : null}
+					{this.t === 'd' && roomUser._id ? <CustomIcon
+					  style={{left:150,position:'absolute',top:150}} name='play-filled' size={60} color='#8FCEA7' onPress={()=>Navigation.navigate('Video',{videoUrl:`${ roomUser.customFields.VideoUrl }`})
+						 } />: null}
 				</Avatar>
-					 {/* <WebView
-						style={{
-							width: '100%',
-							height: '100%',
-							padding: 20,
-							marginTop: 20,borderRadius:10
-						}}
-						allowsFullscreenVideo
-						allowsInlineMediaPlayback
-						mediaPlaybackRequiresUserAction
-						javaScriptEnabled
-						domStorageEnabled
-						source={{
-							uri: `${ roomUser.customFields.VideoUrl }`
-						}}
-					/> */}
-				</View>: null
+				</View>: <View style={{
+					width: 240,
+					height: 240
+				}}
+				>
+					<Avatar
+                    borderRadius={20}
+					text={room.name || roomUser.username}
+					size={200}
+					style={styles.avatar}
+					type={this.t}
+					baseUrl={baseUrl}
+					userId={user.id}
+					token={user.token}
+				>
+					
+				</Avatar></View>
 			)
 			: (
 				<Avatar
@@ -476,8 +477,6 @@ class RoomInfoView extends React.Component {
 								<Text style={{ color: themes[theme].titleText}}>{`${ roomUser.customFields.Location }`}</Text>
 							</View>
 							<Text style={{ color: themes[theme].titleText,marginRight:60,marginLeft:60,textAlign:'center',marginTop:10  }}>{roomUser?.customFields['T1D Since']}</Text>
-						
-				
 						</View> 
 				</View>
 			);
@@ -500,8 +499,8 @@ class RoomInfoView extends React.Component {
 
 		const canConnect = !peerIds.includes(roomUser.username) && peerIds.length < 5 && !isAdmin;
 		const isConnected = peerIds.includes(roomUser.username) && !isAdmin;
-        
-		const name = (isConnected) ?  `${ roomUser?.name }, ${roomUser?.customFields.Age} ` : roomUser?.name;
+        console.log('-------',roomUser?.customFields)
+		const name = (isConnected) ?  `${ roomUser?.name }, ${roomUser?.customFields?.Age} ` : roomUser?.name;
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar theme={theme} />
@@ -512,7 +511,7 @@ class RoomInfoView extends React.Component {
 					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser, isAdmin, isPeerSupporter, canConnect, isConnected)}
 						<View style={{flexDirection:'row'}} ><View style={{marginTop:17}}>{this.renderStatus(room,roomUser)}</View>
-						<View style={styles.roomTitleContainer}  >{ getRoomTitle(room, this.t, name, roomUser?.username, roomUser?.statusText, theme) }</View></View>
+						<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, name, roomUser?.username, roomUser?.statusText, theme) }</View></View>
 						{this.isDirect ? this.renderPreContent(isAdmin, isPeerSupporter, canConnect, isConnected) : null}
 						{this.isDirect ? this.renderButtons(isPeerSupporter, canConnect, isConnected) : null}
 						

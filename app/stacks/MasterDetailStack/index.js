@@ -42,6 +42,7 @@ import AdminPanelView from '../../views/AdminPanelView';
 import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
 import QueueListView from '../../views/QueueListView';
+import VideoPlayerView from '../../views/VideoPlayerView';
 
 // InsideStackNavigator
 import AttachmentView from '../../views/AttachmentView';
@@ -108,6 +109,7 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					component={RoomInfoView}
 					options={RoomInfoView.navigationOptions}
 				/>
+				
 				<ModalStack.Screen
 					name='RoomInfoEditView'
 					component={RoomInfoEditView}
@@ -132,6 +134,7 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					component={InviteUsersView}
 					options={InviteUsersView.navigationOptions}
 				/>
+				
 				<ModalStack.Screen
 					name='InviteUsersEditView'
 					component={InviteUsersEditView}

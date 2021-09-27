@@ -21,14 +21,17 @@ export default StyleSheet.create({
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 20
+		marginBottom: 20,
+	
 	},
 	avatarContainerDirectRoom: {
 		paddingVertical: 16,
 		minHeight: 320
 	},
 	avatar: {
-		marginHorizontal: 10
+		marginHorizontal: 10,
+	
+	
 	},
 	roomTitleContainer: {
 		paddingTop: 20,

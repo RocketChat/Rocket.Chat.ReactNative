@@ -59,6 +59,7 @@ import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
+import VideoPlayerView from '../views/VideoPlayerView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator();
@@ -172,6 +173,7 @@ const ChatsStackNavigator = () => {
 				component={QueueListView}
 				options={QueueListView.navigationOptions}
 			/>
+			
 		</ChatsStack.Navigator>
 	);
 };
@@ -192,6 +194,7 @@ const ProfileStackNavigator = () => {
 				component={RoomInfoView}
 				options={RoomInfoView.navigationOptions}
 			/>
+			
 		</ProfileStack.Navigator>
 	);
 };
@@ -253,15 +256,22 @@ const ProfileLibraryStack = createStackNavigator();
 const ProfileLibraryStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
-			<ProfileStack.Screen
+		<ProfileLibraryStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<ProfileLibraryStack.Screen
 				name='ProfileLibraryView'
 				component={ProfileLibraryView}
 				options={ProfileLibraryView.navigationOptions}
 			/>
-		</ProfileStack.Navigator>
+			{/* <ProfileLibraryStack.Screen
+				name='VideoPlayerView'
+				component={VideoPlayerView}
+				options={VideoPlayerView.navigationOptions}
+			/> */}
+			
+		</ProfileLibraryStack.Navigator>
 	);
 };
+
 
 // DrawerNavigator
 const Drawer = createDrawerNavigator();
@@ -276,6 +286,7 @@ const DrawerNavigator = () => (
 		<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 		<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
 		<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />
+		
 	</Drawer.Navigator>
 );
 
@@ -324,6 +335,11 @@ const InsideStackNavigator = () => {
 				name='NewMessageStackNavigator'
 				component={NewMessageStackNavigator}
 				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name='Video'
+				component={VideoPlayerView}
+				options={{ headerShown: true }}
 			/>
 			<InsideStack.Screen
 				name='AttachmentView'
