@@ -51,6 +51,7 @@ const Content = React.memo(
 				// @ts-ignore
 				<Markdown
 					msg={props.msg}
+					md={props.md}
 					baseUrl={baseUrl}
 					getCustomEmoji={props.getCustomEmoji}
 					username={user.username}

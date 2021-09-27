@@ -5,6 +5,7 @@ import { InlineCode as InlineCodeProps } from '@rocket.chat/message-parser';
 import styles from '../styles';
 import { themes } from '../../../constants/colors';
 import { useTheme } from '../../../theme';
+import Plain from './Plain';
 
 interface IInlineCodeProps {
 	value: InlineCodeProps['value'];
@@ -28,7 +29,7 @@ const InlineCode: React.FC<IInlineCodeProps> = ({ value, style }) => {
 			{(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':
-						return block.value;
+						return <Plain value={block.value} />;
 					default:
 						return null;
 				}

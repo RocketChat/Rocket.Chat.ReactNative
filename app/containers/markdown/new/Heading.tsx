@@ -16,16 +16,16 @@ const Heading: React.FC<IHeadingProps> = ({ value, level }) => {
 	const textStyle = styles[`heading${level}`];
 
 	return (
-		<>
+		<Text style={[textStyle, { color: themes[theme].bodyText }]}>
 			{value.map(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':
-						return <Text style={[textStyle, { color: themes[theme].bodyText }]}>{block.value}</Text>;
+						return block.value;
 					default:
 						return null;
 				}
 			})}
-		</>
+		</Text>
 	);
 };
 
