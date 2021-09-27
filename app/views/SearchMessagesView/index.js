@@ -25,6 +25,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { isIOS } from '../../utils/deviceInfo';
+import { compareServerVersion, methods } from '../../lib/utils';
 import styles from './styles';
 
 const QUERY_SIZE = 50;
@@ -45,6 +46,7 @@ class SearchMessagesView extends React.Component {
 		route: PropTypes.object,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
+		serverVersion: PropTypes.string,
 		customEmojis: PropTypes.object,
 		theme: PropTypes.string,
 		useRealName: PropTypes.bool
@@ -183,8 +185,14 @@ class SearchMessagesView extends React.Component {
 	};
 
 	onEndReached = async () => {
-		const { searchText, messages } = this.state;
-		if (messages.length < this.offset || this.encrypted) {
+		const { serverVersion } = this.props;
+		const { searchText, messages, loading } = this.state;
+		if (
+			messages.length < this.offset ||
+			this.encrypted ||
+			loading ||
+			compareServerVersion(serverVersion, '3.17.0', methods.lowerThan)
+		) {
 			return;
 		}
 		this.setState({ loading: true });
@@ -270,6 +278,7 @@ class SearchMessagesView extends React.Component {
 }
 
 const mapStateToProps = state => ({
+	serverVersion: state.server.version,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
