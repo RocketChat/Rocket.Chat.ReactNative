@@ -12,13 +12,11 @@ import styles from './styles';
 
 
 const Roles = ({ roles, theme, user }) => {
-	(roles && roles.length ? (
-
-	<View style={styles.item}>
+return	(roles && roles.length ?  ( 
+	 <View style={styles.item}>
 		<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
 		<View style={styles.rolesContainer}>
-			{roles.map(role => (role ? (
-				<View style={[styles.roleBadge, { backgroundColor: themes[theme].auxiliaryBackground }]} key={role}>
+			{roles.map(role => (role ? ( <View style={[styles.roleBadge, { backgroundColor: themes[theme].auxiliaryBackground }]} key={role}>
 					<Text style={styles.role}>{role}</Text>
 				</View>
 			) : null))}
@@ -54,9 +52,9 @@ Bio.propTypes = {
 
 const Direct = ({ roomUser, theme, user }) => { 
 	const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role)) !== undefined;
-	return roomUser.bio ? (
+	return roomUser.bio ? ( 
 	<>
-		  <Bio bio={roomUser.bio} theme={theme} />
+	 <Bio bio={roomUser.bio} theme={theme} />
 		{isAdmin && (<Roles roles={roomUser.parsedRoles} theme={theme} user={user} />)}
 		<CustomFields customFields={roomUser.customFields} user={roomUser} currentUser={user} theme={theme} />
 	</>

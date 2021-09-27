@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Image, ScrollView
+	View, Text, Image, ScrollView,Video
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { BorderlessButton } from 'react-native-gesture-handler';
@@ -339,7 +339,20 @@ class RoomInfoView extends React.Component {
 					height: 240
 				}}
 				>
-					 <WebView
+					<Avatar
+			        
+					text={room.name || roomUser.username}
+					size={200}
+					style={styles.avatar}
+					type={this.t}
+					baseUrl={baseUrl}
+					userId={user.id}
+					token={user.token}
+				>
+					{this.t === 'd' && roomUser._id ?<CustomIcon
+					  style={{left:150,position:'absolute',top:150}} name='play-filled' size={60} color='#8FCEA7' /> : null}
+				</Avatar>
+					 {/* <WebView
 						style={{
 							width: '100%',
 							height: '100%',
@@ -354,7 +367,7 @@ class RoomInfoView extends React.Component {
 						source={{
 							uri: `${ roomUser.customFields.VideoUrl }`
 						}}
-					/>
+					/> */}
 				</View>: null
 			)
 			: (
