@@ -80,7 +80,7 @@ describe('Room screen', () => {
 		describe('Messagebox', () => {
 			it('should send message', async () => {
 				await mockMessage('message');
-				await expect(element(by.text(`${data.random}message`)).atIndex(0)).toExist();
+				await expect(element(by.label(`${data.random}message`)).atIndex(0)).toExist();
 			});
 
 			// FIXME: Detox tests halt on android while rendering GIFs
@@ -201,25 +201,25 @@ describe('Room screen', () => {
 
 		describe('Message', () => {
 			it('should copy permalink', async () => {
-				await element(by.text(`${data.random}message`))
+				await element(by.label(`${data.random}message`))
 					.atIndex(0)
 					.longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.text('Permalink')).atIndex(0).tap();
+				await element(by.label('Permalink')).atIndex(0).tap();
 
 				// TODO: test clipboard
 			});
 
 			it('should copy message', async () => {
-				await element(by.text(`${data.random}message`))
+				await element(by.label(`${data.random}message`))
 					.atIndex(0)
 					.longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.text('Copy')).atIndex(0).tap();
+				await element(by.label('Copy')).atIndex(0).tap();
 
 				// TODO: test clipboard
 			});
@@ -228,7 +228,7 @@ describe('Room screen', () => {
 				await starMessage('message');
 
 				await sleep(1000); // https://github.com/RocketChat/Rocket.Chat.ReactNative/issues/2324
-				await element(by.text(`${data.random}message`))
+				await element(by.label(`${data.random}message`))
 					.atIndex(0)
 					.longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
@@ -244,7 +244,7 @@ describe('Room screen', () => {
 				if (device.getPlatform() === 'android') {
 					return; // FIXME: Detox tests halt on android while rendering GIFs
 				}
-				await element(by.text(`${data.random}message`))
+				await element(by.label(`${data.random}message`))
 					.atIndex(0)
 					.longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
@@ -268,7 +268,7 @@ describe('Room screen', () => {
 				if (device.getPlatform() === 'android') {
 					return; // FIXME: Detox tests halt on android while rendering GIFs
 				}
-				await element(by.text(`${data.random}message`))
+				await element(by.label(`${data.random}message`))
 					.atIndex(0)
 					.longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
@@ -325,29 +325,29 @@ describe('Room screen', () => {
 					return; // FIXME: Failing on android
 				}
 				await mockMessage('edit');
-				await element(by.text(`${data.random}edit`))
+				await element(by.label(`${data.random}edit`))
 					.atIndex(0)
 					.longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.text('Edit')).atIndex(0).tap();
+				await element(by.label('Edit')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).replaceText(`${data.random}edited`);
 				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.text(`${data.random}edited (edited)`)).atIndex(0))
+				await waitFor(element(by.label(`${data.random}edited (edited)`)).atIndex(0))
 					.toExist()
 					.withTimeout(60000);
 			});
 
 			it('should quote message', async () => {
 				await mockMessage('quote');
-				await element(by.text(`${data.random}quote`))
+				await element(by.label(`${data.random}quote`))
 					.atIndex(0)
 					.longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.text('Quote')).atIndex(0).tap();
+				await element(by.label('Quote')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).replaceText(`${data.random}quoted`);
 				await element(by.id('messagebox-send-message')).tap();
 
@@ -361,13 +361,13 @@ describe('Room screen', () => {
 				await mockMessage('pin');
 				await pinMessage('pin');
 
-				await waitFor(element(by.text(`${data.random}pin`)).atIndex(0))
+				await waitFor(element(by.label(`${data.random}pin`)).atIndex(0))
 					.toExist()
 					.withTimeout(5000);
-				await waitFor(element(by.text(`${data.users.regular.username} Message pinned`)).atIndex(0))
+				await waitFor(element(by.label(`${data.users.regular.username} Message pinned`)).atIndex(0))
 					.toExist()
 					.withTimeout(5000); // Failing on android
-				await element(by.text(`${data.random}pin`))
+				await element(by.label(`${data.random}pin`))
 					.atIndex(0)
 					.longPress();
 				await waitFor(element(by.id('action-sheet')))
@@ -384,25 +384,25 @@ describe('Room screen', () => {
 			it('should delete message', async () => {
 				await mockMessageWithNag('delete'); // SKipping emoji tests delays the nag on android
 
-				await waitFor(element(by.text(`${data.random}delete`)).atIndex(0)).toBeVisible();
-				await element(by.text(`${data.random}delete`))
+				await waitFor(element(by.label(`${data.random}delete`)).atIndex(0)).toBeVisible();
+				await element(by.label(`${data.random}delete`))
 					.atIndex(0)
 					.longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await waitFor(element(by.text('Delete')))
+				await waitFor(element(by.label('Delete')))
 					.toExist()
 					.withTimeout(1000);
-				await element(by.text('Delete')).atIndex(0).tap();
+				await element(by.label('Delete')).atIndex(0).tap();
 
 				const deleteAlertMessage = 'You will not be able to recover this message!';
-				await waitFor(element(by.text(deleteAlertMessage)).atIndex(0))
+				await waitFor(element(by.label(deleteAlertMessage)).atIndex(0))
 					.toExist()
 					.withTimeout(10000);
-				await element(by.text('Delete')).tap();
+				await element(by.label('Delete')).tap();
 
-				await waitFor(element(by.text(`${data.random}delete`)).atIndex(0))
+				await waitFor(element(by.label(`${data.random}delete`)).atIndex(0))
 					.toNotExist()
 					.withTimeout(2000);
 			});

@@ -58,10 +58,10 @@ describe('Login screen', () => {
 			await element(by.id('login-view-email')).replaceText(data.users.regular.username);
 			await element(by.id('login-view-password')).replaceText('NotMyActualPassword');
 			await element(by.id('login-view-submit')).tap();
-			await waitFor(element(by.text('Your credentials were rejected! Please try again.')))
+			await waitFor(element(by.label('Your credentials were rejected! Please try again.')))
 				.toBeVisible()
 				.withTimeout(10000);
-			await element(by.text('OK')).tap();
+			await element(by.label('OK')).tap();
 		});
 
 		it('should login with success', async () => {

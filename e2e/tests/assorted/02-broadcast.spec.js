@@ -101,7 +101,7 @@ describe('Broadcast room', () => {
 	});
 
 	it('should have the message created earlier', async () => {
-		await waitFor(element(by.text(`${data.random}message`)))
+		await waitFor(element(by.label(`${data.random}message`)))
 			.toExist()
 			.withTimeout(60000);
 	});

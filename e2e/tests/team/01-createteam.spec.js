@@ -43,10 +43,10 @@ describe('Create team screen', () => {
 			it('should get invalid team name', async () => {
 				await element(by.id('create-channel-name')).replaceText(`${data.teams.private.name}`);
 				await element(by.id('create-channel-submit')).tap();
-				await waitFor(element(by.text('OK')))
+				await waitFor(element(by.label('OK')))
 					.toBeVisible()
 					.withTimeout(5000);
-				await element(by.text('OK')).tap();
+				await element(by.label('OK')).tap();
 			});
 
 			it('should create private team', async () => {
@@ -84,10 +84,10 @@ describe('Create team screen', () => {
 			await element(by.id('room-info-view-edit-button')).tap();
 			await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 			await element(by.id('room-info-edit-view-delete')).tap();
-			await waitFor(element(by.text('Yes, delete it!')))
+			await waitFor(element(by.label('Yes, delete it!')))
 				.toExist()
 				.withTimeout(5000);
-			await element(by.text('Yes, delete it!')).tap();
+			await element(by.label('Yes, delete it!')).tap();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toExist()
 				.withTimeout(10000);

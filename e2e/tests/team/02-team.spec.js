@@ -320,22 +320,22 @@ describe('Team', () => {
 
 				await waitFor(
 					element(
-						by.text(
+						by.label(
 							'You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.'
 						)
 					)
 				)
 					.toExist()
 					.withTimeout(2000);
-				await element(by.text('OK')).tap();
+				await element(by.label('OK')).tap();
 				await waitFor(element(by.id('select-list-view-submit')))
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('select-list-view-submit')).tap();
-				await waitFor(element(by.text('Last owner cannot be removed')))
+				await waitFor(element(by.label('Last owner cannot be removed')))
 					.toExist()
 					.withTimeout(8000);
-				await element(by.text('OK')).tap();
+				await element(by.label('OK')).tap();
 				await tapBack();
 				await waitFor(element(by.id('room-actions-view')))
 					.toExist()
@@ -429,14 +429,14 @@ describe('Team', () => {
 
 					await waitFor(
 						element(
-							by.text(
+							by.label(
 								'You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.'
 							)
 						)
 					)
 						.toExist()
 						.withTimeout(2000);
-					await element(by.text('OK')).tap();
+					await element(by.label('OK')).tap();
 					await waitFor(element(by.id('select-list-view-submit')))
 						.toExist()
 						.withTimeout(2000);

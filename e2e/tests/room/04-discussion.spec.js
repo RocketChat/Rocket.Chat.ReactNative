@@ -29,7 +29,7 @@ describe('Discussion', () => {
 			.toExist()
 			.withTimeout(60000);
 		await expect(element(by.id('create-discussion-view'))).toExist();
-		await element(by.text('Select a Channel...')).tap();
+		await element(by.label('Select a Channel...')).tap();
 		await element(by.id('multi-select-search')).replaceText(`${channel}`);
 		await waitFor(element(by.id(`multi-select-item-${channel}`)))
 			.toExist()
@@ -59,7 +59,7 @@ describe('Discussion', () => {
 		await waitFor(element(by.id('action-sheet')))
 			.toExist()
 			.withTimeout(2000);
-		await element(by.text('Create Discussion')).atIndex(0).tap();
+		await element(by.label('Create Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view')))
 			.toExist()
 			.withTimeout(2000);
@@ -86,11 +86,11 @@ describe('Discussion', () => {
 
 		it('should create discussion', async () => {
 			const discussionName = `${data.random}message`;
-			await element(by.text(discussionName)).atIndex(0).longPress();
+			await element(by.label(discussionName)).atIndex(0).longPress();
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by.text('Start a Discussion')).atIndex(0).tap();
+			await element(by.label('Start a Discussion')).atIndex(0).tap();
 			await waitFor(element(by.id('create-discussion-view')))
 				.toExist()
 				.withTimeout(2000);

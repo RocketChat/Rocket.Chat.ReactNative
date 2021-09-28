@@ -165,11 +165,11 @@ describe('Join public room', () => {
 
 		it('should leave room', async () => {
 			await element(by.id('room-actions-leave-channel')).tap();
-			await waitFor(element(by.text('Yes, leave it!')))
+			await waitFor(element(by.label('Yes, leave it!')))
 				.toBeVisible()
 				.withTimeout(5000);
-			await expect(element(by.text('Yes, leave it!'))).toBeVisible();
-			await element(by.text('Yes, leave it!')).tap();
+			await expect(element(by.label('Yes, leave it!'))).toBeVisible();
+			await element(by.label('Yes, leave it!')).tap();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
 				.withTimeout(10000);

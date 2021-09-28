@@ -50,10 +50,10 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-email')).replaceText(data.users.existing.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by.text('Email already exists. [403]')).atIndex(0))
+			await waitFor(element(by.label('Email already exists. [403]')).atIndex(0))
 				.toExist()
 				.withTimeout(10000);
-			await element(by.text('OK')).tap();
+			await element(by.label('OK')).tap();
 		});
 
 		it('should submit username already taken and raise error', async () => {
@@ -62,10 +62,10 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by.text('Username is already in use')).atIndex(0))
+			await waitFor(element(by.label('Username is already in use')).atIndex(0))
 				.toExist()
 				.withTimeout(10000);
-			await element(by.text('OK')).tap();
+			await element(by.label('OK')).tap();
 		});
 
 		it('should register', async () => {

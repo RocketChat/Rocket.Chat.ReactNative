@@ -85,10 +85,7 @@ const Content = React.memo(
 		translateSubtitle = true,
 		showActionIndicator = false
 	}: IListItemContent) => (
-		<View
-			style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale! }]}
-			testID={testID}
-			accessibilityLabel={title}>
+		<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale! }]} testID={testID}>
 			{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 			<View style={styles.textContainer}>
 				<View style={styles.textAlertContainer}>

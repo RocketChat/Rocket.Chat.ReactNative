@@ -25,12 +25,12 @@ describe('Onboarding', () => {
 
 		it('should enter an invalid server and get error', async () => {
 			await element(by.id('new-server-view-input')).replaceText('invalidtest');
-			await element(by.text('Connect')).tap();
+			await element(by.label('Connect')).tap();
 			const errorText = 'Oops!';
-			await waitFor(element(by.text(errorText)))
+			await waitFor(element(by.label(errorText)))
 				.toBeVisible()
 				.withTimeout(60000);
-			await element(by.text('OK')).tap();
+			await element(by.label('OK')).tap();
 		});
 
 		it('should tap on "Join our open workspace" and navigate', async () => {

@@ -27,7 +27,7 @@ describe('Delete server', () => {
 			.toBeVisible()
 			.withTimeout(10000);
 		await element(by.id('new-server-view-input')).replaceText(`${data.alternateServer}`);
-		await element(by.text('Connect')).tap();
+		await element(by.label('Connect')).tap();
 		await waitFor(element(by.id('workspace-view')))
 			.toBeVisible()
 			.withTimeout(10000);
@@ -56,7 +56,7 @@ describe('Delete server', () => {
 			.toBeVisible()
 			.withTimeout(5000);
 		await element(by.id(`rooms-list-header-server-${data.server}`)).longPress(1500);
-		await element(by.text('Delete').and(by.type(alertButtonType))).tap();
+		await element(by.label('Delete').and(by.type(alertButtonType))).tap();
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
 			.toBeVisible()

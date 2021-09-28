@@ -108,7 +108,7 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-new-password')).replaceText(`${profileChangeUser.password}new`);
 			await element(by.id('profile-view-submit')).tap();
 			await element(by.type(textInputType)).replaceText(`${profileChangeUser.password}`);
-			await element(by.text('SAVE').and(by.type(alertButtonType))).tap();
+			await element(by.label('SAVE').and(by.type(alertButtonType))).tap();
 			await waitForToast();
 		});
 

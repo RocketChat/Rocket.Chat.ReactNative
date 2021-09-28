@@ -69,10 +69,10 @@ describe('Move/Convert Team', () => {
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('room-actions-convert-to-team')).tap();
-			await waitFor(element(by.text('You are converting this Channel to a Team. All Members will be kept.')))
+			await waitFor(element(by.label('You are converting this Channel to a Team. All Members will be kept.')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by.text('Convert')).tap();
+			await element(by.label('Convert')).tap();
 			await waitFor(element(by.id('room-view')))
 				.toExist()
 				.withTimeout(20000);
@@ -116,14 +116,14 @@ describe('Move/Convert Team', () => {
 			await element(by.id('select-list-view-submit')).atIndex(0).tap();
 			await waitFor(
 				element(
-					by.text(
+					by.label(
 						'After reading the previous intructions about this behavior, do you still want to move this channel to the selected team?'
 					)
 				)
 			)
 				.toExist()
 				.withTimeout(2000);
-			await element(by.text('Yes, move it!')).tap();
+			await element(by.label('Yes, move it!')).tap();
 			await waitFor(element(by.id('room-view-header-team-channels')))
 				.toExist()
 				.withTimeout(10000);
@@ -157,10 +157,10 @@ describe('Move/Convert Team', () => {
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('select-list-view-submit')).tap();
-			await waitFor(element(by.text('You are converting this Team to a Channel')))
+			await waitFor(element(by.label('You are converting this Team to a Channel')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by.text('Convert')).tap();
+			await element(by.label('Convert')).tap();
 			await waitFor(element(by.id('room-view')))
 				.toExist()
 				.withTimeout(20000);

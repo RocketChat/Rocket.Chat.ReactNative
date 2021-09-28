@@ -69,7 +69,7 @@ describe('Threads', () => {
 			const thread = `${data.random}thread`;
 			it('should create thread', async () => {
 				await mockMessage('thread');
-				await element(by.text(thread)).atIndex(0).longPress();
+				await element(by.label(thread)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
@@ -126,7 +126,7 @@ describe('Threads', () => {
 					.toBeNotVisible()
 					.withTimeout(2000);
 				await sleep(500); // TODO: Find a better way to wait for the animation to finish and the messagebox-input to be available and usable :(
-				await waitFor(element(by.text(`${data.random}${messageText}`)).atIndex(0))
+				await waitFor(element(by.label(`${data.random}${messageText}`)).atIndex(0))
 					.toNotExist()
 					.withTimeout(2000);
 			});

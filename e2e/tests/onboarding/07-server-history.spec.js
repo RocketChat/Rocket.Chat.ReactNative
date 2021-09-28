@@ -29,7 +29,7 @@ describe('Server history', () => {
 			await waitFor(element(by.id('login-view-email')))
 				.toBeVisible()
 				.withTimeout(5000);
-			await expect(element(by.text(data.users.regular.username).withAncestor(by.id('login-view-email'))));
+			await expect(element(by.label(data.users.regular.username).withAncestor(by.id('login-view-email'))));
 			// await expect(element(by.id('login-view-email'))).toHaveText(data.users.regular.username);
 		});
 

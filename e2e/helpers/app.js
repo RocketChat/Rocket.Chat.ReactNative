@@ -21,7 +21,15 @@ async function navigateToWorkspace(server = data.server) {
 		.toBeVisible()
 		.withTimeout(60000);
 	await element(by.id('new-server-view-input')).replaceText(`${server}`);
-	await element(by.text('Connect')).tap();
+	await element(by.id('new-server-view-input')).tapReturnKey();
+	// try {
+	// 	await element(by.label('Connect')).atIndex(0).tap();
+	// } catch (error) {
+	// 	await waitFor(element(by.id(`server-history-${data.server}`)))
+	// 		.toBeVisible()
+	// 		.withTimeout(2000);
+	// 	await element(by.id(`server-history-${data.server}`)).tap();
+	// }
 	await waitFor(element(by.id('workspace-view')))
 		.toBeVisible()
 		.withTimeout(60000);
@@ -74,11 +82,11 @@ async function logout() {
 	await element(by.type(scrollViewType)).atIndex(1).scrollTo('bottom');
 	await element(by.id('settings-logout')).tap();
 	const logoutAlertMessage = 'You will be logged out of this application.';
-	await waitFor(element(by.text(logoutAlertMessage)).atIndex(0))
+	await waitFor(element(by.label(logoutAlertMessage)).atIndex(0))
 		.toExist()
 		.withTimeout(10000);
-	await expect(element(by.text(logoutAlertMessage)).atIndex(0)).toExist();
-	await element(by.text('Logout')).tap();
+	await expect(element(by.label(logoutAlertMessage)).atIndex(0)).toExist();
+	await element(by.label('Logout')).atIndex(0).tap();
 	await waitFor(element(by.id('new-server-view')))
 		.toBeVisible()
 		.withTimeout(10000);
@@ -90,22 +98,22 @@ async function mockMessage(message, isThread = false) {
 	await element(by.id(input)).tap();
 	await element(by.id(input)).typeText(`${data.random}${message}`);
 	await element(by.id('messagebox-send-message')).tap();
-	await waitFor(element(by.text(`${data.random}${message}`)))
+	await waitFor(element(by.label(`${data.random}${message}`)))
 		.toExist()
 		.withTimeout(60000);
-	await expect(element(by.text(`${data.random}${message}`))).toExist();
-	await element(by.text(`${data.random}${message}`))
+	await expect(element(by.label(`${data.random}${message}`))).toExist();
+	await element(by.label(`${data.random}${message}`))
 		.atIndex(0)
 		.tap();
 }
 
 async function starMessage(message) {
 	const messageLabel = `${data.random}${message}`;
-	await element(by.text(messageLabel)).atIndex(0).longPress();
+	await element(by.label(messageLabel)).atIndex(0).longPress();
 	await expect(element(by.id('action-sheet'))).toExist();
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by.text('Star')).atIndex(0).tap();
+	await element(by.label('Star')).atIndex(0).tap();
 	await waitFor(element(by.id('action-sheet')))
 		.not.toExist()
 		.withTimeout(5000);
@@ -113,22 +121,22 @@ async function starMessage(message) {
 
 async function pinMessage(message) {
 	const messageLabel = `${data.random}${message}`;
-	await waitFor(element(by.text(messageLabel)).atIndex(0)).toExist();
-	await element(by.text(messageLabel)).atIndex(0).longPress();
+	await waitFor(element(by.label(messageLabel)).atIndex(0)).toExist();
+	await element(by.label(messageLabel)).atIndex(0).longPress();
 	await expect(element(by.id('action-sheet'))).toExist();
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by.text('Pin')).atIndex(0).tap();
+	await element(by.label('Pin')).atIndex(0).tap();
 	await waitFor(element(by.id('action-sheet')))
 		.not.toExist()
 		.withTimeout(5000);
 }
 
 async function dismissReviewNag() {
-	await waitFor(element(by.text('Are you enjoying this app?')))
+	await waitFor(element(by.label('Are you enjoying this app?')))
 		.toExist()
 		.withTimeout(60000);
-	await element(by.text('No').and(by.type(platformTypes.android.alertButtonType))).tap(); // Tap `no` on ask for review alert
+	await element(by.label('No').and(by.type(platformTypes.android.alertButtonType))).tap(); // Tap `no` on ask for review alert
 }
 
 async function mockMessageWithNag(message, isThread = false) {
@@ -137,11 +145,11 @@ async function mockMessageWithNag(message, isThread = false) {
 	await element(by.id(input)).replaceText(`${data.random}${message}`);
 	await element(by.id('messagebox-send-message')).tap();
 	await dismissReviewNag();
-	await waitFor(element(by.text(`${data.random}${message}`)))
+	await waitFor(element(by.label(`${data.random}${message}`)))
 		.toExist()
 		.withTimeout(60000);
-	await expect(element(by.text(`${data.random}${message}`))).toExist();
-	await element(by.text(`${data.random}${message}`))
+	await expect(element(by.label(`${data.random}${message}`))).toExist();
+	await element(by.label(`${data.random}${message}`))
 		.atIndex(0)
 		.tap();
 }
@@ -190,7 +198,7 @@ const checkServer = async server => {
 	await waitFor(element(by.id('sidebar-view')))
 		.toBeVisible()
 		.withTimeout(2000);
-	await waitFor(element(by.text(label)))
+	await waitFor(element(by.label(label)))
 		.toBeVisible()
 		.withTimeout(10000);
 	await element(by.id('sidebar-close-drawer')).tap();

@@ -123,11 +123,11 @@ describe('Create room screen', () => {
 			it('should get invalid room', async () => {
 				await element(by.id('create-channel-name')).replaceText('general');
 				await element(by.id('create-channel-submit')).tap();
-				await waitFor(element(by.text('A channel with name general exists')))
+				await waitFor(element(by.label('A channel with name general exists')))
 					.toExist()
 					.withTimeout(60000);
-				await expect(element(by.text('A channel with name general exists'))).toExist();
-				await element(by.text('OK')).tap();
+				await expect(element(by.label('A channel with name general exists'))).toExist();
+				await element(by.label('OK')).tap();
 			});
 
 			it('should create public room', async () => {

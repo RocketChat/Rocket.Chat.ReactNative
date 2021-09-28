@@ -38,7 +38,7 @@ describe('Change server', () => {
 			.toBeVisible()
 			.withTimeout(6000);
 		await element(by.id('new-server-view-input')).replaceText(`${data.alternateServer}`);
-		await element(by.text('Connect')).tap();
+		await element(by.label('Connect')).tap();
 		await waitFor(element(by.id('workspace-view')))
 			.toBeVisible()
 			.withTimeout(10000);
