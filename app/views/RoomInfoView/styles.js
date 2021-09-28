@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
+import { themes } from '../../constants/colors';
 
 export default StyleSheet.create({
 	container: {
@@ -122,5 +123,5 @@ export default StyleSheet.create({
 		flexDirection:'row',
 		justifyContent:'center',
 		marginTop:10
-	}
+	},
 });

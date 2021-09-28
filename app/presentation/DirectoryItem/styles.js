@@ -2,13 +2,13 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const ROW_HEIGHT = 130;
+export const ROW_HEIGHT = 110;
 
 export default StyleSheet.create({
 	directoryItemButton: {
 		height: ROW_HEIGHT,
 		borderRadius: 11,
-		margin: 20,
+		margin: 12,
 		elevation: 5,
 		shadowColor: "#000",
         shadowOffset: {

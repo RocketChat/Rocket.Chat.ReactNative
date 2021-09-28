@@ -36,6 +36,7 @@ const Bio = ({ bio, theme }) => bio != null ? (
 			{ 
 				color: themes[theme].auxiliaryText, 
 				padding: 20,
+				fontSize:16
 			}
 			}>
 				{bio}
@@ -56,12 +57,8 @@ const Direct = ({ roomUser, theme, user }) => {
 	return roomUser.bio ? ( 
 	<>
 	 <Bio bio={roomUser.bio} theme={theme} />
-		{/* {isAdmin && (<Roles roles={roomUser.parsedRoles} theme={theme} user={user} />)} */}
-		 {/* <CustomFields customFields={roomUser.customFields} user={roomUser} currentUser={user} theme={theme} />  */}
 	</>
 ): (<>
-  {/* {isAdmin && (<Roles roles={roomUser.parsedRoles} theme={theme} user={user} />)}
-  <CustomFields customFields={roomUser.customFields} user={roomUser} currentUser={user} theme={theme} />  */}
 </>)};
 Direct.propTypes = {
 	roomUser: PropTypes.object,

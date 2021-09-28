@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, Image, ScrollView,Video
+	View, Text, ScrollView,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import UAParser from 'ua-parser-js';
 import _ from 'lodash';
-
 import Button from '../../containers/Button';
 import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
@@ -478,22 +475,22 @@ class RoomInfoView extends React.Component {
 					<View style={{alignContent:'center',alignItems:'center'}} >
 				
 							<View style={styles.locationView}>
-								<CustomIcon  name='pin-map' size={15} color={themes[theme].pinIconColor}/>
-								<Text style={{ color: themes[theme].titleText}}>{`${ roomUser.customFields.Location }`}</Text>
+								<CustomIcon  name='pin-map' size={20} color={themes[theme].pinIconColor}/>
+								<Text style={{ color: themes[theme].titleText,fontSize:20}}>{`${ roomUser.customFields.Location }`}</Text>
 							</View>
 							
 						</View> 
 						{roomUser.customFields['Glucose Monitoring Method'] && roomUser.customFields['Insulin Delivery Method']?(<View style={styles.deviceContainer}>
 							<View style={styles.t1dView} >
-						    <Text style={{ color: themes[theme].titleText, textAlign:'center',bottom:10 }}>T1D Since</Text>
-							<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center'}}>{roomUser?.customFields['T1D Since']}</Text>
+						    <Text style={{ color: themes[theme].titleText, textAlign:'center',bottom:10,fontSize:20 }}>T1D Since</Text>
+							<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center',fontSize:18}}>{roomUser?.customFields['T1D Since']}</Text>
 							</View>
 							<View style={{marginRight:'50%'}} >
-							<Text style={{ color: themes[theme].titleText,textAlign:'center',bottom:10}}>Devices</Text>
-							<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center'  }}>{roomUser?.customFields['Glucose Monitoring Method']}</Text>
-							<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center'  }}>{roomUser?.customFields['Insulin Delivery Method']}</Text>
+							<Text style={{ color: themes[theme].titleText,textAlign:'center',bottom:10,fontSize:20}}>Devices</Text>
+							<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center',fontSize:18  }}>{roomUser?.customFields['Glucose Monitoring Method']}</Text>
+							<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center',fontSize:18  }}>{roomUser?.customFields['Insulin Delivery Method']}</Text>
 							</View>
-							</View>): (<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center',marginTop:20}}>{roomUser?.customFields['T1D Since']}</Text>)}
+							</View>): (<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center',fontSize:18 ,marginTop:20}}>{roomUser?.customFields['T1D Since']}</Text>)}
 							
 				</View>
 			);
