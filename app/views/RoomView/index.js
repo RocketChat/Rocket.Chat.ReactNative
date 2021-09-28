@@ -258,7 +258,7 @@ class RoomView extends React.Component {
 		}
 
 		if (route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
-			this.navToThread({ tmid: this.jumpToThreadId });
+			this.navToThread({ tmid: route?.params?.jumpToThreadId });
 		}
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
