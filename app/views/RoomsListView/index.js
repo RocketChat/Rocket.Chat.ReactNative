@@ -500,7 +500,7 @@ class RoomsListView extends React.Component {
 				const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
 				const direct = chats.filter(s => s.t === 'd' && !s.prid);
 				console.log('UserInfo-------',userInfo.length)
-				const peerSupporter = chats.filter(s => {
+				const peerSupporter = filteredChats.filter(s => {
 					let isPeerSupporter = false;
 			
 				userInfo.filter(peer => {
