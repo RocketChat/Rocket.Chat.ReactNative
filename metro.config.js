@@ -6,21 +6,20 @@
  */
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const blacklist = require('metro-config/src/defaults/blacklist');
+const blocklist = require('metro-config/src/defaults/exclusionList');
 
 module.exports = {
 	transformer: {
 		getTransformOptions: () => ({
 			transform: {
-				experimentalImportSupport: true,
-				inlineRequires: true
+				// experimentalImportSupport: true,
+				// https://github.com/storybookjs/react-native/issues/152
+				inlineRequires: false
 			}
 		})
 	},
 	maxWorkers: 2,
 	resolver: {
-		blacklistRE: blacklist([
-			/ios\/Pods\/JitsiMeetSDK\/Frameworks\/JitsiMeet.framework\/assets\/node_modules\/react-native\/.*/
-		])
+		blocklistRE: blocklist([/ios\/Pods\/JitsiMeetSDK\/Frameworks\/JitsiMeet.framework\/assets\/node_modules\/react-native\/.*/])
 	}
 };

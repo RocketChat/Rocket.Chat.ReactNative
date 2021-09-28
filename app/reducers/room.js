@@ -7,7 +7,7 @@ const initialState = {
 	threads: []
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
 	switch (action.type) {
 		case ROOM.SUBSCRIBE:
 			return {
@@ -17,8 +17,7 @@ export default function(state = initialState, action) {
 		case ROOM.UNSUBSCRIBE:
 			return {
 				...state,
-				rooms: state.rooms
-					.filter(rid => rid !== action.rid)
+				rooms: state.rooms.filter(rid => rid !== action.rid)
 			};
 		case ROOM.LEAVE:
 			return {
@@ -29,7 +28,7 @@ export default function(state = initialState, action) {
 		case ROOM.DELETE:
 			return {
 				...state,
-				rid: action.rid,
+				rid: action.room.rid,
 				isDeleting: true
 			};
 		case ROOM.CLOSE:

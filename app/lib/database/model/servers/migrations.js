@@ -1,4 +1,4 @@
-import { schemaMigrations, addColumns, createTable } from '@nozbe/watermelondb/Schema/migrations';
+import { addColumns, createTable, schemaMigrations } from '@nozbe/watermelondb/Schema/migrations';
 
 export default schemaMigrations({
 	migrations: [
@@ -7,9 +7,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'users',
-					columns: [
-						{ name: 'statusText', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'statusText', type: 'string', isOptional: true }]
 				})
 			]
 		},
@@ -32,9 +30,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'servers',
-					columns: [
-						{ name: 'unique_id', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'unique_id', type: 'string', isOptional: true }]
 				})
 			]
 		},
@@ -43,9 +39,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'servers',
-					columns: [
-						{ name: 'enterprise_modules', type: 'string', isOptional: true }
-					]
+					columns: [{ name: 'enterprise_modules', type: 'string', isOptional: true }]
 				})
 			]
 		},
@@ -54,9 +48,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'users',
-					columns: [
-						{ name: 'login_email_password', type: 'boolean', isOptional: true }
-					]
+					columns: [{ name: 'login_email_password', type: 'boolean', isOptional: true }]
 				})
 			]
 		},
@@ -65,9 +57,7 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'servers',
-					columns: [
-						{ name: 'e2e_enable', type: 'boolean', isOptional: true }
-					]
+					columns: [{ name: 'e2e_enable', type: 'boolean', isOptional: true }]
 				})
 			]
 		},
@@ -93,6 +83,15 @@ export default schemaMigrations({
 						{ name: 'show_message_in_main_thread', type: 'boolean', isOptional: true },
 						{ name: 'avatar_etag', type: 'string', isOptional: true }
 					]
+				})
+			]
+		},
+		{
+			toVersion: 11,
+			steps: [
+				addColumns({
+					table: 'users',
+					columns: [{ name: 'is_from_webview', type: 'boolean', isOptional: true }]
 				})
 			]
 		}

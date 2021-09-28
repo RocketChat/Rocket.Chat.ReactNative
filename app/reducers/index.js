@@ -1,4 +1,6 @@
 import { combineReducers } from 'redux';
+
+import inquiry from '../ee/omnichannel/reducers/inquiry';
 import settings from './settings';
 import login from './login';
 import meteor from './connect';
@@ -10,7 +12,6 @@ import createChannel from './createChannel';
 import app from './app';
 import sortPreferences from './sortPreferences';
 import share from './share';
-import crashReport from './crashReport';
 import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
 import usersActivity from './usersActivity';
@@ -19,8 +20,7 @@ import createDiscussion from './createDiscussion';
 import enterpriseModules from './enterpriseModules';
 import encryption from './encryption';
 import permissions from './permissions';
-
-import inquiry from '../ee/omnichannel/reducers/inquiry';
+import roles from './roles';
 
 export default combineReducers({
 	settings,
@@ -34,7 +34,6 @@ export default combineReducers({
 	rooms,
 	sortPreferences,
 	share,
-	crashReport,
 	customEmojis,
 	activeUsers,
 	usersActivity,
@@ -43,5 +42,6 @@ export default combineReducers({
 	inquiry,
 	enterpriseModules,
 	encryption,
-	permissions
+	permissions,
+	roles
 });

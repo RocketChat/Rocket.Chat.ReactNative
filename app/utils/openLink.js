@@ -27,28 +27,28 @@ const appSchemeURL = (url, browser) => {
 			schemeUrl = url.replace(protocol, scheme.chromeSecure);
 		}
 	} else if (browser === 'firefox') {
-		schemeUrl = `${ scheme.firefox }//open-url?url=${ url }`;
+		schemeUrl = `${scheme.firefox}//open-url?url=${url}`;
 	} else if (browser === 'brave') {
-		schemeUrl = `${ scheme.brave }//open-url?url=${ url }`;
+		schemeUrl = `${scheme.brave}//open-url?url=${url}`;
 	}
 
 	return schemeUrl;
 };
 
-const openLink = async(url, theme = 'light') => {
+const openLink = async (url, theme = 'light') => {
 	try {
 		const browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
 
-		if (browser) {
-			const schemeUrl = appSchemeURL(url, browser.replace(':', ''));
-			await Linking.openURL(schemeUrl);
-		} else {
+		if (browser === 'inApp') {
 			await WebBrowser.openBrowserAsync(url, {
 				toolbarColor: themes[theme].headerBackground,
 				controlsColor: themes[theme].headerTintColor,
 				collapseToolbar: true,
 				showTitle: true
 			});
+		} else {
+			const schemeUrl = appSchemeURL(url, browser.replace(':', ''));
+			await Linking.openURL(schemeUrl);
 		}
 	} catch {
 		try {

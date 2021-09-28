@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, NativeModules } from 'react-native';
+import { NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
-import styles from './styles';
 import Loading from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
 import { userUploading as userUploadingAction } from '../../actions/room';
-import Header from './Header';
 import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
-import Preview from './Preview';
-import Thumbs from './Thumbs';
 import MessageBox from '../../containers/MessageBox';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
@@ -25,6 +21,10 @@ import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
 import { canUploadFile } from '../../utils/media';
 import { isAndroid } from '../../utils/deviceInfo';
+import Thumbs from './Thumbs';
+import Preview from './Preview';
+import Header from './Header';
+import styles from './styles';
 
 class ShareView extends Component {
 	constructor(props) {
@@ -48,20 +48,18 @@ class ShareView extends Component {
 		this.getServerInfo();
 	}
 
-	componentDidMount = async() => {
+	componentDidMount = async () => {
 		const readOnly = await this.getReadOnly();
 		const { attachments, selected } = await this.getAttachments();
 		this.setState({ readOnly, attachments, selected }, () => this.setHeader());
-	}
+	};
 
 	componentWillUnmount = () => {
-		console.countReset(`${ this.constructor.name }.render calls`);
-	}
+		console.countReset(`${this.constructor.name}.render calls`);
+	};
 
 	setHeader = () => {
-		const {
-			room, thread, readOnly, attachments
-		} = this.state;
+		const { room, thread, readOnly, attachments } = this.state;
 		const { navigation, theme } = this.props;
 
 		const options = {
@@ -72,7 +70,9 @@ class ShareView extends Component {
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />;
+			options.headerLeft = () => (
+				<HeaderButton.CloseModal navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />
+			);
 		}
 
 		if (!attachments.length && !readOnly) {
@@ -90,10 +90,10 @@ class ShareView extends Component {
 		options.headerBackground = () => <View style={[styles.container, { backgroundColor: themes[theme].previewBackground }]} />;
 
 		navigation.setOptions(options);
-	}
+	};
 
 	// fetch server info
-	getServerInfo = async() => {
+	getServerInfo = async () => {
 		const { server } = this.props;
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
@@ -102,47 +102,49 @@ class ShareView extends Component {
 		} catch (error) {
 			// Do nothing
 		}
-	}
+	};
 
-	getReadOnly = async() => {
+	getReadOnly = async () => {
 		const { room } = this.state;
 		const { user } = this.props;
 		const readOnly = await isReadOnly(room, user);
 		return readOnly;
-	}
+	};
 
-	getAttachments = async() => {
+	getAttachments = async () => {
 		const { mediaAllowList, maxFileSize } = this.state;
-		const items = await Promise.all(this.files.map(async(item) => {
-			// Check server settings
-			const { success: canUpload, error } = canUploadFile(item, mediaAllowList, maxFileSize);
-			item.canUpload = canUpload;
-			item.error = error;
+		const items = await Promise.all(
+			this.files.map(async item => {
+				// Check server settings
+				const { success: canUpload, error } = canUploadFile(item, mediaAllowList, maxFileSize);
+				item.canUpload = canUpload;
+				item.error = error;
 
-			// get video thumbnails
-			if (isAndroid && this.files.length > 1 && item.mime?.match?.(/video/)) {
-				try {
-					const VideoThumbnails = require('expo-video-thumbnails');
-					const { uri } = await VideoThumbnails.getThumbnailAsync(item.path);
-					item.uri = uri;
-				} catch {
-					// Do nothing
+				// get video thumbnails
+				if (isAndroid && this.files.length > 1 && item.mime?.match?.(/video/)) {
+					try {
+						const VideoThumbnails = require('expo-video-thumbnails');
+						const { uri } = await VideoThumbnails.getThumbnailAsync(item.path);
+						item.uri = uri;
+					} catch {
+						// Do nothing
+					}
 				}
-			}
 
-			// Set a filename, if there isn't any
-			if (!item.filename) {
-				item.filename = new Date().toISOString();
-			}
-			return item;
-		}));
+				// Set a filename, if there isn't any
+				if (!item.filename) {
+					item.filename = new Date().toISOString();
+				}
+				return item;
+			})
+		);
 		return {
 			attachments: items,
 			selected: items[0]
 		};
-	}
+	};
 
-	send = async() => {
+	send = async () => {
 		const { loading, selected } = this.state;
 		if (loading) {
 			return;
@@ -151,18 +153,14 @@ class ShareView extends Component {
 		// update state
 		await this.selectFile(selected);
 
-		const {
-			attachments, room, text, thread
-		} = this.state;
-		const {
-			navigation, server, user, uploading
-		} = this.props;
+		const { attachments, room, text, thread } = this.state;
+		const { navigation, server, user, uploading } = this.props;
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
 			this.setState({ loading: true });
 
-		// if it's not share extension this can close
+			// if it's not share extension this can close
 		} else {
 			navigation.pop();
 		}
@@ -171,35 +169,30 @@ class ShareView extends Component {
 			// Send attachment
 			if (attachments.length) {
 				uploading(room.rid, true, { tmid: thread?.id });
-				await Promise.all(attachments.map(({
-					filename: name,
-					mime: type,
-					description,
-					size,
-					path,
-					canUpload
-				}) => {
-					if (canUpload) {
-						return RocketChat.sendFileMessage(
-							room.rid,
-							{
-								name,
-								description,
-								size,
-								type,
-								path,
-								store: 'Uploads'
-							},
-							thread?.id,
-							server,
-							{ id: user.id, token: user.token }
-						);
-					}
-					return Promise.resolve();
-				}));
-
+				await Promise.all(
+					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
+						if (canUpload) {
+							return RocketChat.sendFileMessage(
+								room.rid,
+								{
+									name,
+									description,
+									size,
+									type,
+									path,
+									store: 'Uploads'
+								},
+								thread?.id,
+								server,
+								{ id: user.id, token: user.token }
+							);
+						}
+						return Promise.resolve();
+					})
+				);
 				uploading(room.rid, false, { tmid: thread?.id });
-			// Send text message
+
+				// Send text message
 			} else if (text.length) {
 				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
 			}
@@ -214,11 +207,11 @@ class ShareView extends Component {
 		}
 	};
 
-	selectFile = (item) => {
+	selectFile = item => {
 		const { attachments, selected } = this.state;
 		if (attachments.length > 0) {
 			const { text } = this.messagebox.current;
-			const newAttachments = attachments.map((att) => {
+			const newAttachments = attachments.map(att => {
 				if (att.path === selected.path) {
 					att.description = text;
 				}
@@ -226,9 +219,9 @@ class ShareView extends Component {
 			});
 			return this.setState({ attachments: newAttachments, selected: item });
 		}
-	}
+	};
 
-	removeFile = (item) => {
+	removeFile = item => {
 		const { selected, attachments } = this.state;
 		let newSelected;
 		if (item.path === selected.path) {
@@ -236,7 +229,7 @@ class ShareView extends Component {
 			// Selects the next one, if available
 			if (attachments[selectedIndex + 1]?.path) {
 				newSelected = attachments[selectedIndex + 1];
-			// If it's the last thumb, selects the previous one
+				// If it's the last thumb, selects the previous one
 			} else {
 				newSelected = attachments[selectedIndex - 1] || {};
 			}
@@ -244,16 +237,14 @@ class ShareView extends Component {
 		this.setState({ attachments: attachments.filter(att => att.path !== item.path), selected: newSelected ?? selected }, () => {
 			this.messagebox?.current?.forceUpdate?.();
 		});
-	}
+	};
 
-	onChangeText = (text) => {
+	onChangeText = text => {
 		this.setState({ text });
-	}
+	};
 
 	renderContent = () => {
-		const {
-			attachments, selected, room, text
-		} = this.state;
+		const { attachments, selected, room, text } = this.state;
 		const { theme, navigation } = this.props;
 
 		if (attachments.length) {
@@ -279,8 +270,7 @@ class ShareView extends Component {
 						navigation={navigation}
 						isFocused={navigation.isFocused}
 						iOSScrollBehavior={NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorNone}
-						isActionsEnabled={false}
-					>
+						isActionsEnabled={false}>
 						<Thumbs
 							attachments={attachments}
 							theme={theme}
@@ -296,11 +286,7 @@ class ShareView extends Component {
 		return (
 			<TextInput
 				containerStyle={styles.inputContainer}
-				inputStyle={[
-					styles.input,
-					styles.textInput,
-					{ backgroundColor: themes[theme].focusedBackground }
-				]}
+				inputStyle={[styles.input, styles.textInput, { backgroundColor: themes[theme].focusedBackground }]}
 				placeholder=''
 				onChangeText={this.onChangeText}
 				defaultValue=''
@@ -314,7 +300,7 @@ class ShareView extends Component {
 	};
 
 	render() {
-		console.count(`${ this.constructor.name }.render calls`);
+		console.count(`${this.constructor.name}.render calls`);
 		const { readOnly, room, loading } = this.state;
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
@@ -327,9 +313,7 @@ class ShareView extends Component {
 			);
 		}
 		return (
-			<SafeAreaView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-			>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{this.renderContent()}
 				<Loading visible={loading} />
@@ -360,8 +344,8 @@ const mapStateToProps = state => ({
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });
 
-const dispatchToProps = ({
+const dispatchToProps = {
 	uploading: (rid, status, options) => userUploadingAction(rid, status, options)
-});
+};
 
 export default connect(mapStateToProps, dispatchToProps)(withTheme(ShareView));

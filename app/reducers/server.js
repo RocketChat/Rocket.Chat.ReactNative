@@ -7,11 +7,9 @@ const initialState = {
 	server: '',
 	version: null,
 	loading: true,
-	adding: false,
 	previousServer: null,
 	changingServer: false
 };
-
 
 export default function server(state = initialState, action) {
 	switch (action.type) {
@@ -59,13 +57,11 @@ export default function server(state = initialState, action) {
 		case SERVER.INIT_ADD:
 			return {
 				...state,
-				adding: true,
 				previousServer: action.previousServer
 			};
 		case SERVER.FINISH_ADD:
 			return {
 				...state,
-				adding: false,
 				previousServer: null
 			};
 		default:

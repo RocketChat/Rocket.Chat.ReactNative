@@ -18,12 +18,12 @@ const keyExtractor = item => item.id;
 class SelectServerView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Select_Server')
-	})
+	});
 
 	static propTypes = {
 		server: PropTypes.string,
 		navigation: PropTypes.object
-	}
+	};
 
 	state = { servers: [] };
 
@@ -34,27 +34,19 @@ class SelectServerView extends React.Component {
 		this.setState({ servers });
 	}
 
-	select = async(server) => {
-		const {
-			server: currentServer, navigation
-		} = this.props;
+	select = async server => {
+		const { server: currentServer, navigation } = this.props;
 
 		navigation.navigate('ShareListView');
 		if (currentServer !== server) {
 			await RocketChat.shareExtensionInit(server);
 		}
-	}
+	};
 
 	renderItem = ({ item }) => {
 		const { server } = this.props;
-		return (
-			<ServerItem
-				onPress={() => this.select(item.id)}
-				item={item}
-				hasCheck={item.id === server}
-			/>
-		);
-	}
+		return <ServerItem onPress={() => this.select(item.id)} item={item} hasCheck={item.id === server} />;
+	};
 
 	render() {
 		const { servers } = this.state;
@@ -79,8 +71,8 @@ class SelectServerView extends React.Component {
 	}
 }
 
-const mapStateToProps = (({ share }) => ({
+const mapStateToProps = ({ share }) => ({
 	server: share.server.server
-}));
+});
 
 export default connect(mapStateToProps)(SelectServerView);
