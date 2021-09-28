@@ -148,6 +148,7 @@ class RoomView extends React.Component {
 			prid
 		};
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
+		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? RocketChat.getUidDirectMessage(room);
 		this.state = {
 			joined: true,
@@ -208,6 +209,9 @@ class RoomView extends React.Component {
 			if (this.jumpToMessageId) {
 				this.jumpToMessage(this.jumpToMessageId);
 			}
+			if (this.jumpToThreadId && !this.jumpToMessageId) {
+				this.navToThread({ tmid: this.jumpToThreadId });
+			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
 			}
@@ -251,6 +255,10 @@ class RoomView extends React.Component {
 
 		if (route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
 			this.jumpToMessage(route?.params?.jumpToMessageId);
+		}
+
+		if (route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
+			this.navToThread({ tmid: this.jumpToThreadId });
 		}
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {

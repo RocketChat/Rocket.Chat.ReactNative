@@ -45,8 +45,12 @@ const navigate = function* navigate({ params }) {
 	if (params.path || params.rid) {
 		let type;
 		let name;
+		let jumpToThreadId;
 		if (params.path) {
-			[type, name] = params.path.split('/');
+			const pathSplitted = params.path.split('/');
+			type = pathSplitted[0];
+			name = pathSplitted[1];
+			jumpToThreadId = pathSplitted.includes('thread') ? pathSplitted[pathSplitted.length - 1] : null;
 		}
 		if (type !== 'invite' || params.rid) {
 			const room = yield RocketChat.canOpenRoom(params);
@@ -65,14 +69,14 @@ const navigate = function* navigate({ params }) {
 				if (focusedRooms.includes(room.rid)) {
 					// if there's one room on the list or last room is the one
 					if (focusedRooms.length === 1 || focusedRooms[0] === room.rid) {
-						yield goRoom({ item, isMasterDetail, jumpToMessageId });
+						yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 					} else {
 						popToRoot({ isMasterDetail });
-						yield goRoom({ item, isMasterDetail, jumpToMessageId });
+						yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 					}
 				} else {
 					popToRoot({ isMasterDetail });
-					yield goRoom({ item, isMasterDetail, jumpToMessageId });
+					yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 				}
 
 				if (params.isCall) {
