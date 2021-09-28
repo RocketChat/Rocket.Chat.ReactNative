@@ -32,7 +32,6 @@ export default StyleSheet.create({
 		marginHorizontal: 10,
 	
 	
-	
 	},
 	roomTitleContainer: {
 		paddingTop: 20,
@@ -108,5 +107,20 @@ export default StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
 		backgroundColor: 'white'
+	},
+	deviceContainer:{
+		flexDirection:'row',
+		top:30,
+		marginBottom:30,
+		width:'100%'
+	},
+	t1dView:{
+		marginLeft:'50%',
+		marginRight:'20%'
+	},
+	locationView:{
+		flexDirection:'row',
+		justifyContent:'center',
+		marginTop:10
 	}
 });

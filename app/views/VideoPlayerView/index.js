@@ -22,8 +22,8 @@ class VideoPlayerView extends React.Component {
                  flex:1,
              }}>
                 <View style={{
-                    width:"100%",
-                    height:"100%"
+                    width:'100%',
+                    height:'100%'
                 }}>
                    <WebView
                    allowsFullscreenVideo
@@ -31,7 +31,7 @@ class VideoPlayerView extends React.Component {
                    mediaPlaybackRequiresUserAction
                    javaScriptEnabled
                    domStorageEnabled
-                    source={{uri:videoUrl}}
+                    source={{html:`<iframe width="100%" height="80%" src=${videoUrl}  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>` }}
                    />
      
                 </View>

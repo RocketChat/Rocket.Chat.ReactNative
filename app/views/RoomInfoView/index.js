@@ -326,7 +326,10 @@ class RoomInfoView extends React.Component {
 	renderAvatar = (room, roomUser) => {
 		const { baseUrl, user, theme } = this.props;
 		let isPeerSupporter = false;
-
+		let embedVideoUrl = 'https://www.youtube.com/embed/'
+        let videoUrl = roomUser?.customFields?.VideoUrl
+		const id = videoUrl?.split('/')[3]
+		embedVideoUrl = embedVideoUrl.concat(id)
 		if (roomUser !== null
 			&& roomUser !== undefined
 			&& roomUser.parsedRoles !== null
@@ -352,7 +355,7 @@ class RoomInfoView extends React.Component {
 					token={user.token}
 				>
 					{this.t === 'd' && roomUser._id ? <CustomIcon
-					  style={{left:150,position:'absolute',top:150,cursor:'pointer'}} name='play-filled' size={60} color='#8FCEA7' onPress={()=>Navigation.navigate('Video',{videoUrl:`${ roomUser.customFields.VideoUrl }`})
+		style={{left:150,position:'absolute',top:150}} name='play-filled' size={60} color='#8FCEA7' onPress={()=>Navigation.navigate('Video',{videoUrl:`${ embedVideoUrl }`})
 						 } />: null}
 				</Avatar>
 				</View>: <View style={{
@@ -474,12 +477,24 @@ class RoomInfoView extends React.Component {
 				<View >
 					<View style={{alignContent:'center',alignItems:'center'}} >
 				
-							<View style={{flexDirection:'row',justifyContent:'center',marginTop:10 }}>
+							<View style={styles.locationView}>
 								<CustomIcon  name='pin-map' size={15} color={themes[theme].pinIconColor}/>
 								<Text style={{ color: themes[theme].titleText}}>{`${ roomUser.customFields.Location }`}</Text>
 							</View>
-							<Text style={{ color: themes[theme].titleText,marginRight:60,marginLeft:60,textAlign:'center',marginTop:10  }}>{roomUser?.customFields['T1D Since']}</Text>
+							
 						</View> 
+						{roomUser.customFields['Glucose Monitoring Method'] && roomUser.customFields['Insulin Delivery Method']?(<View style={styles.deviceContainer}>
+							<View style={styles.t1dView} >
+						    <Text style={{ color: themes[theme].titleText, textAlign:'center',bottom:10 }}>T1D Since</Text>
+							<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center'}}>{roomUser?.customFields['T1D Since']}</Text>
+							</View>
+							<View style={{marginRight:'50%'}} >
+							<Text style={{ color: themes[theme].titleText,textAlign:'center',bottom:10}}>Devices</Text>
+							<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center'  }}>{roomUser?.customFields['Glucose Monitoring Method']}</Text>
+							<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center'  }}>{roomUser?.customFields['Insulin Delivery Method']}</Text>
+							</View>
+							</View>): (<Text style={{ color: themes[theme].auxiliaryText,textAlign:'center',marginTop:20}}>{roomUser?.customFields['T1D Since']}</Text>)}
+							
 				</View>
 			);
 		}
@@ -491,7 +506,6 @@ class RoomInfoView extends React.Component {
 		
 		const isPeerSupporter = route.params?.isPeerSupporter;
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role)) !== undefined;
-
 		const peerIds = (user === null
 			|| user.customFields === null
 			|| user.customFields === undefined
