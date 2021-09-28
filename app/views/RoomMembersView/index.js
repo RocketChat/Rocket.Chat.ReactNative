@@ -446,7 +446,8 @@ class RoomMembersView extends React.Component {
 				type: allUsers ? 'all' : 'online',
 				filter: filtering,
 				skip: members.length,
-				limit: PAGE_SIZE
+				limit: PAGE_SIZE,
+				allUsers
 			});
 			this.setState({
 				members: members.concat(membersResult || []),
