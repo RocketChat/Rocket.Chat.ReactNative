@@ -13675,7 +13675,7 @@ react-native-gesture-handler@^1.10.3:
 
 react-native-image-crop-picker@RocketChat/react-native-image-crop-picker#update-our-repo:
   version "0.36.3"
-  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/bd287cdaaa9370a816266588b6becb961a8daa5e"
+  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/4ee695e9325fbe79646190785d4ae17c3705fca5"
 
 react-native-image-progress@^1.1.1:
   version "1.1.1"
