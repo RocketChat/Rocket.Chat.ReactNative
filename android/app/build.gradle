@@ -207,7 +207,7 @@ android {
         }
         e2e {
             dimension = "app"
-            buildConfigField "boolean", "IS_OFFICIAL", "true"
+            buildConfigField "boolean", "IS_OFFICIAL", "false"
         }
         foss {
             dimension = "type"
@@ -238,12 +238,12 @@ android {
         }
         e2ePlayDebug {
             java.srcDirs = ['src/main/java', 'src/play/java']
-            res.srcDirs = ['src/official/res']
+            res.srcDirs = ['src/experimental/res']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
         e2ePlayRelease {
             java.srcDirs = ['src/main/java', 'src/play/java']
-            res.srcDirs = ['src/official/res']
+            res.srcDirs = ['src/experimental/res']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
     }
