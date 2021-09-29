@@ -52,7 +52,7 @@ const navigate = function* navigate({ params }) {
 			name = pathSplitted[1];
 			// Check if has thread at path from params: channel/general/thread/threadId and expect that threadId is the next param
 			const threadIdIndexOf = pathSplitted.lastIndexOf('thread') + 1;
-			jumpToThreadId = threadIdIndexOf > 0 && threadIdIndexOf <= pathSplitted.length ? pathSplitted[threadIdIndexOf] : null;
+			jumpToThreadId = threadIdIndexOf > 0 && threadIdIndexOf < pathSplitted.length ? pathSplitted[threadIdIndexOf] : null;
 		}
 		if (type !== 'invite' || params.rid) {
 			const room = yield RocketChat.canOpenRoom(params);
