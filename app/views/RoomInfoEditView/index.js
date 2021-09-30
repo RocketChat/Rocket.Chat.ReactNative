@@ -666,8 +666,10 @@ class RoomInfoEditView extends React.Component {
 						) : null}
 						{room.broadcast
 							? [
-									<Text style={styles.broadcast}>{I18n.t('Broadcast_Channel')}</Text>,
-									<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
+									<Text style={styles.broadcast} key={0}>
+										{I18n.t('Broadcast_Channel')}
+									</Text>,
+									<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} key={1} />
 							  ]
 							: null}
 						{!compareServerVersion(serverVersion, '3.0.0', methods.lowerThan) ? (

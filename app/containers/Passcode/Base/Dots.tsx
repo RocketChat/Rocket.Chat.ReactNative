@@ -16,7 +16,7 @@ interface IPasscodeDots {
 
 const Dots = React.memo(({ passcode, theme, length }: IPasscodeDots) => (
 	<View style={styles.dotsContainer}>
-		{range(length).map(val => {
+		{range(length).map((val, index) => {
 			const lengthSup = passcode.length >= val + 1;
 			const height = lengthSup ? SIZE_FULL : SIZE_EMPTY;
 			const width = lengthSup ? SIZE_FULL : SIZE_EMPTY;
@@ -30,7 +30,7 @@ const Dots = React.memo(({ passcode, theme, length }: IPasscodeDots) => (
 			const marginRight = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;
 			const marginLeft = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;
 			return (
-				<View style={styles.dotsView}>
+				<View style={styles.dotsView} key={index}>
 					<View
 						style={{
 							height,

@@ -50,8 +50,10 @@ const Accessory = ({ blockId, appId, element, parser }: IAccessory) =>
 	parser.renderAccessories({ blockId, appId, ...element }, BLOCK_CONTEXT.SECTION, parser);
 
 const Fields = ({ fields, parser, theme }: IFields) =>
-	fields.map((field: any) => (
-		<Text style={[styles.text, styles.field, { color: themes[theme].bodyText }]}>{parser.text(field)}</Text>
+	fields.map((field: any, index: number) => (
+		<Text style={[styles.text, styles.field, { color: themes[theme].bodyText }]} key={index}>
+			{parser.text(field)}
+		</Text>
 	));
 
 const accessoriesRight = ['image', 'overflow'];

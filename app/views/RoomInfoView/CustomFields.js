@@ -5,11 +5,11 @@ import Item from './Item';
 
 const CustomFields = ({ customFields, theme }) => {
 	if (customFields) {
-		return Object.keys(customFields).map(title => {
+		return Object.keys(customFields).map((title, index) => {
 			if (!customFields[title]) {
 				return;
 			}
-			return <Item label={title} content={customFields[title]} theme={theme} />;
+			return <Item label={title} content={customFields[title]} theme={theme} key={index} />;
 		});
 	}
 

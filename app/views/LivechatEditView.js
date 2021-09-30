@@ -230,6 +230,7 @@ const LivechatEditView = ({ user, navigation, route, theme, editOmnichannelConta
 							}}
 							theme={theme}
 							editable={!!permissions[0]}
+							key={index}
 						/>
 					))}
 					<Title title={I18n.t('Conversation')} theme={theme} />
@@ -276,6 +277,7 @@ const LivechatEditView = ({ user, navigation, route, theme, editOmnichannelConta
 							}}
 							theme={theme}
 							editable={!!permissions[1]}
+							key={index}
 						/>
 					))}
 
