@@ -4,7 +4,8 @@ const initialState = {
 	rid: null,
 	isDeleting: false,
 	rooms: [],
-	threads: []
+	threads: [],
+	performingActions: []
 };
 
 export default function (state = initialState, action) {
@@ -48,6 +49,13 @@ export default function (state = initialState, action) {
 				...state,
 				isDeleting: false
 			};
+		case ROOM.START_PERFORMING_ACTION:
+			if (state.performingActions.includes(action.activity)) {
+				return { ...state };
+			}
+			return { ...state, performingActions: [...state.performingActions, action.activity] };
+		case ROOM.STOP_PERFORMING_ACTION:
+			return { ...state, performingActions: [...state.performingActions.filter(activity => activity !== action.activity)] };
 		default:
 			return state;
 	}

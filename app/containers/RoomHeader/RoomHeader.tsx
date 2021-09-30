@@ -108,7 +108,6 @@ const ActivityIndicator = ({ performingUsers, fontSize, theme, activityName }: T
 
 const SubTitle = React.memo(({ roomId, userActivity, subtitle, renderFunc, theme, scale }: TRoomHeaderSubTitle) => {
 	const fontSize = getSubTitleSize(scale);
-	console.log(roomId, 'room id is');
 	if (userActivity.uploading?.[roomId]?.length) {
 		return (
 			<ActivityIndicator

@@ -10,11 +10,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
-import {
-	userTyping as userTypingAction,
-	userRecording as userRecordingAction,
-	userUploading as userUploadingAction
-} from '../../actions/room';
+import { startPerformingAction, stopPerformingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
@@ -101,9 +97,8 @@ interface IMessageBoxProps {
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
-	typing: Function;
-	uploading: Function;
-	recording: Function;
+	startPerformingAction: Function;
+	stopPerformingAction: Function;
 	theme: string;
 	replyCancel(): void;
 	showSend: boolean;
@@ -425,11 +420,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	debouncedOnChangeText = debounce(async (text: any) => {
 		const { sharing, roomType } = this.props;
 		const isTextEmpty = text.length === 0;
+		this.handleTyping(!isTextEmpty);
 		if (isTextEmpty) {
 			this.stopTrackingMention();
 			return;
 		}
-		this.handleTyping(!isTextEmpty);
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
 		const txt = cursor < text.length ? text.substr(0, cursor).split(' ') : text.split(' ');
@@ -613,7 +608,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	handleTyping = (isTyping: boolean) => {
-		const { typing, rid, sharing, tmid } = this.props;
+		const { startPerformingAction, stopPerformingAction, rid, sharing, tmid } = this.props;
 		if (sharing) {
 			return;
 		}
@@ -622,7 +617,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			typing(rid, false, { tmid });
+			stopPerformingAction(rid, 'user-typing', { tmid });
 			return;
 		}
 
@@ -631,7 +626,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 
 		this.typingTimeout = setTimeout(() => {
-			typing(rid, true, { tmid });
+			startPerformingAction(rid, 'user-typing', { tmid });
 			this.typingTimeout = false;
 		}, 1000);
 	};
@@ -788,20 +783,24 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	recordingCallback = (isRecording: boolean) => {
-		const { rid, recording, tmid } = this.props;
+		const { rid, startPerformingAction, stopPerformingAction, tmid } = this.props;
 		this.setState({ recording: isRecording });
-		recording(rid, isRecording, { tmid });
+		if (isRecording) {
+			startPerformingAction(rid, 'user-recording', { tmid });
+		} else {
+			stopPerformingAction(rid, 'user-recording', { tmid });
+		}
 	};
 
 	finishAudioMessage = async (fileInfo: any) => {
-		const { rid, tmid, baseUrl: server, user, uploading } = this.props;
+		const { rid, tmid, baseUrl: server, user, startPerformingAction } = this.props;
 
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					uploading(rid, true, { tmid });
+					startPerformingAction(rid, 'user-uploading', { tmid });
 					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-					uploading(rid, false, { tmid });
+					stopPerformingAction(rid, 'user-uploading', { tmid });
 				}
 			} catch (e) {
 				log(e);
@@ -1131,9 +1130,8 @@ const mapStateToProps = (state: any) => ({
 });
 
 const dispatchToProps = {
-	typing: (rid: any, status: any, options: any) => userTypingAction(rid, status, options),
-	uploading: (rid: any, status: any, options: any) => userUploadingAction(rid, status, options),
-	recording: (rid: any, status: any, options: any) => userRecordingAction(rid, status, options)
+	startPerformingAction: (rid: string, action: string, options: any) => startPerformingAction(rid, action, options),
+	stopPerformingAction: (rid: string, action: string, options: any) => stopPerformingAction(rid, action, options)
 };
 // @ts-ignore
 export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));

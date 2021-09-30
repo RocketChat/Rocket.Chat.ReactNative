@@ -1004,15 +1004,11 @@ const RocketChat = {
 	onStreamData(...args) {
 		return this.sdk.onStreamData(...args);
 	},
-	emitUserActivity(room, activated = true, activityType, extras = {}) {
+	emitUserActivity(room, activities, extras = {}) {
 		const { login, settings } = reduxStore.getState();
 		const { UI_Use_Real_Name } = settings;
 		const { user } = login;
 		const name = UI_Use_Real_Name ? user.name : user.username;
-		if (activityType === 'user-typing') {
-			this.methodCall('stream-notify-room', `${room}/typing`, name, activated);
-		}
-		const activities = activated ? [activityType] : [];
 		return this.methodCall('stream-notify-room', `${room}/user-activity`, name, activities, extras);
 	},
 	setUserPresenceAway() {

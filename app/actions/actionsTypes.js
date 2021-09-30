@@ -31,9 +31,8 @@ export const ROOM = createRequestTypes('ROOM', [
 	'REMOVED',
 	'CLOSE',
 	'FORWARD',
-	'USER_TYPING',
-	'USER_RECORDING',
-	'USER_UPLOADING'
+	'START_PERFORMING_ACTION',
+	'STOP_PERFORMING_ACTION'
 ]);
 export const INQUIRY = createRequestTypes('INQUIRY', [
 	...defaultTypes,
@@ -64,9 +63,10 @@ export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
 export const SET_ACTIVE_USERS = 'SET_ACTIVE_USERS';
 export const CLEAR_ALL_USER_ACTIVITY = 'CLEAR_ALL_USER_ACTIVITY';
-export const USER_TYPING = createRequestTypes('USER_TYPING', ['ADD', 'REMOVE']);
-export const USER_RECORDING = createRequestTypes('USER_RECORDING', ['ADD', 'REMOVE']);
-export const USER_UPLOADING = createRequestTypes('USER_UPLOADING', ['ADD', 'REMOVE']);
+export const REMOVE_ALL_ROOM_ACTIVITIES = 'REMOVE_ALL_ROOM_ACTIVITIES';
+export const USER_TYPING = createRequestTypes('USER_TYPING', ['ADD']);
+export const USER_RECORDING = createRequestTypes('USER_RECORDING', ['ADD']);
+export const USER_UPLOADING = createRequestTypes('USER_UPLOADING', ['ADD']);
 
 export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 	'SET_TOKEN',

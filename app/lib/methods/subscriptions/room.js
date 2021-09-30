@@ -7,7 +7,7 @@ import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../database';
 import reduxStore from '../../createStore';
-import { addUserActivity, removeUserActivity, clearAllUserActivities } from '../../../actions/usersActivity';
+import { addUserActivity, clearAllUserActivities, removeAllRoomActivities } from '../../../actions/usersActivity';
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
@@ -57,7 +57,7 @@ export default class RoomSubscription {
 				// do nothing
 			}
 		}
-		reduxStore.dispatch(clearAllUserActivities());
+		reduxStore.dispatch(removeAllRoomActivities());
 		this.removeListener(this.connectedListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
@@ -79,14 +79,14 @@ export default class RoomSubscription {
 	};
 
 	handleConnection = () => {
-		reduxStore.dispatch(clearAllUserActivities());
+		reduxStore.dispatch(removeAllRoomActivities());
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
 
 	handleNotifyRoomReceived = protectedFunction(ddpMessage => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		const { UI_Use_Real_Name } = reduxStore.getState().settings;
-		if (ev === 'user-activity' || ev === 'typing') {
+		if (ev === 'user-activity') {
 			const { user } = reduxStore.getState().login;
 			const { rooms } = reduxStore.getState().room;
 
@@ -94,42 +94,28 @@ export default class RoomSubscription {
 				return;
 			}
 
-			const addActivityIndicator = (name, events, options) => {
-				console.log(name, events, options, 'name,events, options');
-				const key = UI_Use_Real_Name ? 'name' : 'username';
-				const roomId = options?.tmid || _rid;
+			const [name, events, options] = ddpMessage.fields.args;
+			const key = UI_Use_Real_Name ? 'name' : 'username';
+			const roomId = options?.tmid || _rid;
 
-				if (!events.length) {
-					reduxStore.dispatch(clearAllUserActivities());
+			if (!events.length) {
+				reduxStore.dispatch(clearAllUserActivities(name, roomId));
+				clearTimeout(this.actionTimeouts[roomId]);
+				delete this.actionTimeouts[roomId];
+				return;
+			}
+
+			events.forEach(event => {
+				const activity = event.toUpperCase().split('-').join('_');
+				if (name !== user[key]) {
+					reduxStore.dispatch(addUserActivity(name, activity, roomId));
+				}
+				this.actionTimeouts[roomId] = setTimeout(() => {
+					reduxStore.dispatch(clearAllUserActivities(name, roomId));
 					clearTimeout(this.actionTimeouts[roomId]);
 					delete this.actionTimeouts[roomId];
-					return;
-				}
-
-				events.forEach(event => {
-					const activity = event.toUpperCase().split('-').join('_');
-					if (name !== user[key]) {
-						reduxStore.dispatch(addUserActivity(name, activity, roomId));
-					}
-					this.actionTimeouts[roomId] = setTimeout(() => {
-						reduxStore.dispatch(removeUserActivity(name, activity, roomId));
-						clearTimeout(this.actionTimeouts[roomId]);
-						delete this.actionTimeouts[roomId];
-					}, TIME_OUT);
-				});
-			};
-
-			if (ev === 'typing') {
-				const [name, eventActive, activityType, options] = ddpMessage.fields.args;
-				if (eventActive) {
-					addActivityIndicator(name, [activityType], options);
-				} else {
-					addActivityIndicator(name, [], options);
-				}
-			} else if (ev === 'user-activity') {
-				const [name, events, options] = ddpMessage.fields.args;
-				addActivityIndicator(name, events, options);
-			}
+				}, TIME_OUT);
+			});
 		}
 
 		if (ev === 'deleteMessage') {

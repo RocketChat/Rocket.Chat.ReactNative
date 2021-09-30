@@ -12,42 +12,15 @@ import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
 
-const timeoutTimer = 10000;
-const renewTimer = 4000;
-
-const activityRenews = {};
-
-const watchUserActivity = function* watchUserActivity({ type, rid, status, options = {} }) {
-	const id = options?.tmid || rid;
-
-	if (id in activityRenews && status === true) {
-		yield delay(2000);
-	}
-
-	const activity = type.split('_').slice(1).join('-').toLowerCase();
-
+const watchUserActivity = function* watchUserActivity({ _type, rid, _action, options = {} }) {
+	const activities = yield select(state => state.room.performingActions) || [];
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
 		yield take(types.LOGIN.SUCCESS);
 	}
 
 	try {
-		if (status === true) {
-			activityRenews[id] = setTimeout(() => {
-				clearTimeout(activityRenews[id]);
-				delete activityRenews[id];
-			}, renewTimer);
-		} else {
-			clearTimeout(activityRenews[id]);
-			delete activityRenews[id];
-		}
-
-		yield RocketChat.emitUserActivity(rid, status, activity, options);
-
-		if (status) {
-			yield delay(timeoutTimer);
-			yield RocketChat.emitUserActivity(rid, false, activity, options);
-		}
+		yield RocketChat.emitUserActivity(rid, activities, options);
 	} catch (e) {
 		log(e);
 	}
@@ -190,12 +163,12 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 };
 
 const root = function* root() {
-	yield takeLatest(types.ROOM.USER_TYPING, watchUserActivity);
-	yield takeLatest(types.ROOM.USER_RECORDING, watchUserActivity);
-	yield takeLatest(types.ROOM.USER_UPLOADING, watchUserActivity);
-	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
-	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
-	yield takeLatest(types.ROOM.CLOSE, handleCloseRoom);
-	yield takeLatest(types.ROOM.FORWARD, handleForwardRoom);
+	const { START_PERFORMING_ACTION, STOP_PERFORMING_ACTION, LEAVE, DELETE, CLOSE, FORWARD } = types.ROOM;
+	yield takeLatest(START_PERFORMING_ACTION, watchUserActivity);
+	yield takeLatest(STOP_PERFORMING_ACTION, watchUserActivity);
+	yield takeLatest(LEAVE, handleLeaveRoom);
+	yield takeLatest(DELETE, handleDeleteRoom);
+	yield takeLatest(CLOSE, handleCloseRoom);
+	yield takeLatest(FORWARD, handleForwardRoom);
 };
 export default root;

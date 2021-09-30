@@ -11,7 +11,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
-import { userUploading as userUploadingAction } from '../../actions/room';
+import { startPerformingAction, stopPerformingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
 import MessageBox from '../../containers/MessageBox';
@@ -154,7 +154,7 @@ class ShareView extends Component {
 		await this.selectFile(selected);
 
 		const { attachments, room, text, thread } = this.state;
-		const { navigation, server, user, uploading } = this.props;
+		const { navigation, server, user, startPerformingAction, stopPerformingAction } = this.props;
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
@@ -168,7 +168,7 @@ class ShareView extends Component {
 		try {
 			// Send attachment
 			if (attachments.length) {
-				uploading(room.rid, true, { tmid: thread?.id });
+				startPerformingAction(room.rid, 'user-uploading', { tmid: thread?.id });
 				await Promise.all(
 					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
 						if (canUpload) {
@@ -190,7 +190,7 @@ class ShareView extends Component {
 						return Promise.resolve();
 					})
 				);
-				uploading(room.rid, false, { tmid: thread?.id });
+				stopPerformingAction(room.rid, 'user-uploading', { tmid: thread?.id });
 
 				// Send text message
 			} else if (text.length) {
@@ -198,7 +198,7 @@ class ShareView extends Component {
 			}
 		} catch {
 			// Do nothing
-			uploading(room.rid, false, { tmid: thread?.id });
+			stopPerformingAction(room.rid, 'user-uploading', { tmid: thread?.id });
 		}
 
 		// if it's share extension this should close
@@ -345,7 +345,8 @@ const mapStateToProps = state => ({
 });
 
 const dispatchToProps = {
-	uploading: (rid, status, options) => userUploadingAction(rid, status, options)
+	startPerformingAction: (rid, activity, options) => startPerformingAction(rid, activity, options),
+	stopPerformingAction: (rid, activity, options) => stopPerformingAction(rid, activity, options)
 };
 
 export default connect(mapStateToProps, dispatchToProps)(withTheme(ShareView));

@@ -53,29 +53,20 @@ export function removedRoom() {
 	};
 }
 
-export function userTyping(rid, status = true, options = {}) {
+export function startPerformingAction(rid, activity, options = {}) {
 	return {
-		type: types.ROOM.USER_TYPING,
+		type: types.ROOM.START_PERFORMING_ACTION,
 		rid,
-		status,
+		activity,
 		options
 	};
 }
 
-export function userRecording(rid, status = true, options = {}) {
+export function stopPerformingAction(rid, activity, options = {}) {
 	return {
-		type: types.ROOM.USER_RECORDING,
+		type: types.ROOM.STOP_PERFORMING_ACTION,
 		rid,
-		status,
-		options
-	};
-}
-
-export function userUploading(rid, status = true, options = {}) {
-	return {
-		type: types.ROOM.USER_UPLOADING,
-		rid,
-		status,
+		activity,
 		options
 	};
 }

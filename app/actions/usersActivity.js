@@ -1,9 +1,4 @@
-import {
-	USER_RECORDING,
-	USER_TYPING,
-	USER_UPLOADING,
-	CLEAR_ALL_USER_ACTIVITY
-} from './actionsTypes';
+import { USER_RECORDING, USER_TYPING, USER_UPLOADING, CLEAR_ALL_USER_ACTIVITY, REMOVE_ALL_ROOM_ACTIVITIES } from './actionsTypes';
 
 function checkUserActionType(actionType) {
 	switch (actionType) {
@@ -24,26 +19,22 @@ export function addUserActivity(username, actionType, roomId) {
 
 	return {
 		type: action.ADD,
-		activity,
+		roomId,
 		username,
-		roomId
+		activity
 	};
 }
 
-export function removeUserActivity(username, actionType, roomId) {
-	const action = checkUserActionType(actionType);
-	const activity = actionType.split('_')[1].toLowerCase();
-
+export function clearAllUserActivities(username, roomId) {
 	return {
-		type: action.REMOVE,
-		activity,
-		username,
-		roomId
+		type: CLEAR_ALL_USER_ACTIVITY,
+		roomId,
+		username
 	};
 }
 
-export function clearAllUserActivities() {
+export function removeAllRoomActivities() {
 	return {
-		type: CLEAR_ALL_USER_ACTIVITY
+		type: REMOVE_ALL_ROOM_ACTIVITIES
 	};
 }

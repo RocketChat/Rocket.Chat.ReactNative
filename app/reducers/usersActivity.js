@@ -2,7 +2,8 @@ import {
 	USER_RECORDING,
 	USER_TYPING,
 	USER_UPLOADING,
-	CLEAR_ALL_USER_ACTIVITY
+	CLEAR_ALL_USER_ACTIVITY,
+	REMOVE_ALL_ROOM_ACTIVITIES
 } from '../actions/actionsTypes';
 
 const initialState = {
@@ -12,12 +13,7 @@ const initialState = {
 };
 
 export default function usersActivity(state = initialState, action) {
-	const {
-		activity,
-		type,
-		roomId,
-		username
-	} = action;
+	const { type, roomId, username, activity } = action;
 
 	switch (type) {
 		case USER_TYPING.ADD:
@@ -32,16 +28,18 @@ export default function usersActivity(state = initialState, action) {
 				return { ...state, [activity]: { ...state[activity], [roomId]: [username] } };
 			}
 
-		case USER_TYPING.REMOVE:
-		case USER_RECORDING.REMOVE:
-		case USER_UPLOADING.REMOVE:
-			if (state[activity]?.[roomId]) {
-				const filteredUsers = state[activity][roomId].filter(u => u !== username);
-				return { ...state, [activity]: { ...state[activity], [roomId]: [...filteredUsers] } };
-			}
-			return state;
-
 		case CLEAR_ALL_USER_ACTIVITY:
+			const newState = {};
+			Object.keys(state).forEach(activity => {
+				newState[activity] = { ...state[activity] };
+				if (state[activity]?.[roomId]) {
+					const filteredUsers = state[activity][roomId].filter(u => u !== username);
+					newState[activity][roomId] = [...filteredUsers];
+				}
+			});
+			return { ...newState };
+
+		case REMOVE_ALL_ROOM_ACTIVITIES:
 			return { ...initialState };
 
 		default:
