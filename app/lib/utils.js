@@ -1,15 +1,13 @@
-import {
-	lt, lte, gt, gte, coerce
-} from 'semver';
+import { coerce, gt, gte, lt, lte } from 'semver';
 
 export const formatAttachmentUrl = (attachmentUrl, userId, token, server) => {
 	if (attachmentUrl.startsWith('http')) {
 		if (attachmentUrl.includes('rc_token')) {
 			return encodeURI(attachmentUrl);
 		}
-		return encodeURI(`${ attachmentUrl }?rc_uid=${ userId }&rc_token=${ token }`);
+		return encodeURI(`${attachmentUrl}?rc_uid=${userId}&rc_token=${token}`);
 	}
-	return encodeURI(`${ server }${ attachmentUrl }?rc_uid=${ userId }&rc_token=${ token }`);
+	return encodeURI(`${server}${attachmentUrl}?rc_uid=${userId}&rc_token=${token}`);
 };
 
 export const methods = {
@@ -19,6 +17,7 @@ export const methods = {
 	greaterThanOrEqualTo: gte
 };
 
-export const compareServerVersion = (currentServerVersion, versionToCompare, func) => currentServerVersion && func(coerce(currentServerVersion), versionToCompare);
+export const compareServerVersion = (currentServerVersion, versionToCompare, func) =>
+	currentServerVersion && func(coerce(currentServerVersion), versionToCompare);
 
-export const generateLoadMoreId = id => `load-more-${ id }`;
+export const generateLoadMoreId = id => `load-more-${id}`;

@@ -1,12 +1,7 @@
 import log from '../../../../utils/log';
 import store from '../../../../lib/createStore';
 import RocketChat from '../../../../lib/rocketchat';
-import {
-	inquiryRequest,
-	inquiryQueueAdd,
-	inquiryQueueUpdate,
-	inquiryQueueRemove
-} from '../../actions/inquiry';
+import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
 
 const removeListener = listener => listener.stop();
 
@@ -21,7 +16,7 @@ export default function subscribeInquiry() {
 		store.dispatch(inquiryRequest());
 	};
 
-	const handleQueueMessageReceived = (ddpMessage) => {
+	const handleQueueMessageReceived = ddpMessage => {
 		const [{ type, ...sub }] = ddpMessage.fields.args;
 
 		// added can be ignored, since it is handled by 'changed' event
@@ -69,7 +64,7 @@ export default function subscribeInquiry() {
 
 	try {
 		const { user } = store.getState().login;
-		RocketChat.getAgentDepartments(user.id).then((result) => {
+		RocketChat.getAgentDepartments(user.id).then(result => {
 			if (result.success) {
 				const { departments } = result;
 
@@ -78,9 +73,9 @@ export default function subscribeInquiry() {
 				}
 
 				const departmentIds = departments.map(({ departmentId }) => departmentId);
-				departmentIds.forEach((departmentId) => {
+				departmentIds.forEach(departmentId => {
 					// subscribe to all departments of the agent
-					RocketChat.subscribe(streamTopic, `department/${ departmentId }`).catch(e => console.log(e));
+					RocketChat.subscribe(streamTopic, `department/${departmentId}`).catch(e => console.log(e));
 				});
 			}
 		});

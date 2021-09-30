@@ -1,30 +1,32 @@
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types, react/destructuring-assignment */
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
-import RoomHeaderComponent from './RoomHeader';
 import Header from '../Header';
 import { longText } from '../../../storybook/utils';
 import { ThemeContext } from '../../theme';
+import RoomHeaderComponent from './RoomHeader';
 
 const stories = storiesOf('RoomHeader', module);
 
 // TODO: refactor after react-navigation v6
 const HeaderExample = ({ title }) => (
-	<Header
-		headerTitle={() => (
-			<View style={{ flex: 1, paddingHorizontal: 12 }}>
-				{title()}
-			</View>
-		)}
-	/>
+	<Header headerTitle={() => <View style={{ flex: 1, paddingHorizontal: 12 }}>{title()}</View>} />
 );
 
 const { width, height } = Dimensions.get('window');
 
 const RoomHeader = ({ ...props }) => (
-	<RoomHeaderComponent width={width} height={height} title='title' type='p' testID={props.title} onPress={() => alert('header pressed!')} {...props} />
+	<RoomHeaderComponent
+		width={width}
+		height={height}
+		title='title'
+		type='p'
+		testID={props.title}
+		onPress={() => alert('header pressed!')}
+		{...props}
+	/>
 );
 
 stories.add('title and subtitle', () => (
@@ -78,9 +80,7 @@ stories.add('thread', () => (
 ));
 
 const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider
-		value={{ theme }}
-	>
+	<ThemeContext.Provider value={{ theme }}>
 		<HeaderExample title={() => <RoomHeader subtitle='subtitle' />} />
 	</ThemeContext.Provider>
 );

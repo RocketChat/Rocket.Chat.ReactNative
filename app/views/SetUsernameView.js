@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Text, ScrollView, StyleSheet
-} from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import Orientation from 'react-native-orientation-locker';
 
@@ -10,7 +8,6 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import KeyboardView from '../presentation/KeyboardView';
-import sharedStyles from './Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
@@ -21,6 +18,7 @@ import { isTablet } from '../utils/deviceInfo';
 import { getUserSelector } from '../selectors/login';
 import { showErrorAlert } from '../utils/info';
 import SafeAreaView from '../containers/SafeAreaView';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -32,7 +30,7 @@ const styles = StyleSheet.create({
 class SetUsernameView extends React.Component {
 	static navigationOptions = ({ route }) => ({
 		title: route.params?.title
-	})
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -41,7 +39,7 @@ class SetUsernameView extends React.Component {
 		loginRequest: PropTypes.func,
 		token: PropTypes.string,
 		theme: PropTypes.string
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -78,7 +76,7 @@ class SetUsernameView extends React.Component {
 		return false;
 	}
 
-	submit = async() => {
+	submit = async () => {
 		const { username } = this.state;
 		const { loginRequest, token } = this.props;
 
@@ -94,36 +92,20 @@ class SetUsernameView extends React.Component {
 			showErrorAlert(e.message, I18n.t('Oops'));
 		}
 		this.setState({ saving: false });
-	}
+	};
 
 	render() {
 		const { username, saving } = this.state;
 		const { theme } = this.props;
 		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-				contentContainerStyle={sharedStyles.container}
-			>
+			<KeyboardView style={{ backgroundColor: themes[theme].auxiliaryBackground }} contentContainerStyle={sharedStyles.container}>
 				<StatusBar />
 				<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView testID='set-username-view'>
-						<Text
-							style={[
-								sharedStyles.loginTitle,
-								sharedStyles.textBold,
-								styles.loginTitle,
-								{ color: themes[theme].titleText }
-							]}
-						>
+						<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: themes[theme].titleText }]}>
 							{I18n.t('Username')}
 						</Text>
-						<Text
-							style={[
-								sharedStyles.loginSubtitle,
-								sharedStyles.textRegular,
-								{ color: themes[theme].titleText }
-							]}
-						>
+						<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: themes[theme].titleText }]}>
 							{I18n.t('Set_username_subtitle')}
 						</Text>
 						<TextInput

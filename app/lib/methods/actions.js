@@ -24,13 +24,13 @@ export const CONTAINER_TYPES = {
 
 const triggersId = new Map();
 
-const invalidateTriggerId = (id) => {
+const invalidateTriggerId = id => {
 	const appId = triggersId.get(id);
 	triggersId.delete(id);
 	return appId;
 };
 
-export const generateTriggerId = (appId) => {
+export const generateTriggerId = appId => {
 	const triggerId = random(17);
 	triggersId.set(triggerId, appId);
 
@@ -80,7 +80,6 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 		return MODAL_ACTIONS.UPDATE;
 	}
 
-
 	if ([MODAL_ACTIONS.OPEN].includes(type) || [MODAL_ACTIONS.MODAL].includes(type)) {
 		Navigation.navigate('ModalBlockView', {
 			data: {
@@ -96,10 +95,8 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 	return MODAL_ACTIONS.CLOSE;
 };
 
-export function triggerAction({
-	type, actionId, appId, rid, mid, viewId, container, ...rest
-}) {
-	return new Promise(async(resolve, reject) => {
+export function triggerAction({ type, actionId, appId, rid, mid, viewId, container, ...rest }) {
+	return new Promise(async (resolve, reject) => {
 		const triggerId = generateTriggerId(appId);
 
 		const payload = rest.payload || rest;
@@ -109,7 +106,7 @@ export function triggerAction({
 			const { host } = this.sdk.client;
 
 			// we need to use fetch because this.sdk.post add /v1 to url
-			const result = await fetch(`${ host }/api/apps/ui.interaction/${ appId }/`, {
+			const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

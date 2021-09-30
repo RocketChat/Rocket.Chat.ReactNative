@@ -2,7 +2,7 @@ import database from '../database';
 import log from '../../utils/log';
 import updateMessages from './updateMessages';
 
-const getLastUpdate = async(rid) => {
+const getLastUpdate = async rid => {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
@@ -27,9 +27,9 @@ async function load({ rid: roomId, lastOpen }) {
 }
 
 export default function loadMissedMessages(args) {
-	return new Promise(async(resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 		try {
-			const data = (await load.call(this, { rid: args.rid, lastOpen: args.lastOpen }));
+			const data = await load.call(this, { rid: args.rid, lastOpen: args.lastOpen });
 
 			if (data) {
 				const { updated, deleted } = data;

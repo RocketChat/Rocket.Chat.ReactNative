@@ -1,9 +1,4 @@
 export default {
-	// ONBOARDING VIEW
-	ONBOARD_JOIN_A_WORKSPACE: 'onboard_join_a_workspace',
-	ONBOARD_CREATE_NEW_WORKSPACE: 'onboard_create_new_workspace',
-	ONBOARD_CREATE_NEW_WORKSPACE_F: 'onboard_create_new_workspace_f',
-
 	// NEW SERVER VIEW
 	NS_CONNECT_TO_WORKSPACE: 'ns_connect_to_workspace',
 	NS_JOIN_OPEN_WORKSPACE: 'ns_join_open_workspace',
@@ -78,6 +73,7 @@ export default {
 	RL_GROUP_CHANNELS_BY_TYPE: 'rl_group_channels_by_type',
 	RL_GROUP_CHANNELS_BY_FAVORITE: 'rl_group_channels_by_favorite',
 	RL_GROUP_CHANNELS_BY_UNREAD: 'rl_group_channels_by_unread',
+	RL_CREATE_NEW_WORKSPACE: 'rl_create_new_workspace',
 
 	// QUEUE LIST VIEW
 	QL_GO_ROOM: 'ql_go_room',
@@ -85,6 +81,7 @@ export default {
 	// DIRECTORY VIEW
 	DIRECTORY_SEARCH_USERS: 'directory_search_users',
 	DIRECTORY_SEARCH_CHANNELS: 'directory_search_channels',
+	DIRECTORY_SEARCH_TEAMS: 'directory_search_teams',
 
 	// NEW MESSAGE VIEW
 	NEW_MSG_CREATE_CHANNEL: 'new_msg_create_channel',
