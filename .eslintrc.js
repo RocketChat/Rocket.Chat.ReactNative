@@ -7,7 +7,7 @@ module.exports = {
 		}
 	},
 	parser: '@babel/eslint-parser',
-	extends: ['@rocket.chat/eslint-config', 'prettier'],
+	extends: ['@rocket.chat/eslint-config', 'prettier', 'plugin:react/recommended'],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2017,
@@ -100,7 +100,7 @@ module.exports = {
 		'no-undef': 2,
 		'no-unreachable': 2,
 		'no-unused-expressions': 0,
-		'no-unused-vars': 'off',
+		'no-unused-vars': 2,
 		'max-len': 0,
 		'react/jsx-uses-vars': 2,
 		'no-void': 2,
@@ -147,7 +147,10 @@ module.exports = {
 		'no-async-promise-executor': [0],
 		'max-classes-per-file': [0],
 		'no-multiple-empty-lines': [0],
-		'no-sequences': 'off'
+		'no-sequences': 'off',
+		'react/no-direct-mutation-state': 'off',
+		'react/prop-types': 'off',
+		'react/display-name': 'off'
 	},
 	globals: {
 		__DEV__: true
