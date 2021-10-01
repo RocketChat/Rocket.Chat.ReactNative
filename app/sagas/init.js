@@ -1,18 +1,17 @@
 import { put, takeLatest, all } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 
-// import * as actions from '../actions';
-import { selectServerRequest, serverRequest } from '../actions/server';
-// import { selectServerRequest } from '../actions/server';
 import UserPreferences from '../lib/userPreferences';
+import { selectServerRequest, serverRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import database from '../lib/database';
-import appConfig from '../../app.json';
 import { localAuthenticate } from '../utils/localAuthentication';
-import { appStart, ROOT_OUTSIDE, appReady } from '../actions/app';
+import { ROOT_OUTSIDE, appReady, appStart } from '../actions/app';
+
+import appConfig from '../../app.json';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
@@ -22,13 +21,10 @@ export const initLocalSettings = function* initLocalSettings() {
 const restore = function* restore() {
 	try {
 		const { server } = appConfig;
-		const userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		const userId = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
 
 		if (!userId) {
-			yield all([
-				UserPreferences.removeItem(RocketChat.TOKEN_KEY),
-				UserPreferences.removeItem(RocketChat.CURRENT_SERVER)
-			]);
+			yield all([UserPreferences.removeItem(RocketChat.TOKEN_KEY), UserPreferences.removeItem(RocketChat.CURRENT_SERVER)]);
 			yield put(serverRequest(appConfig.server));
 			yield put(appStart({ root: ROOT_OUTSIDE }));
 		} else {

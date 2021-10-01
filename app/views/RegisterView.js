@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	Text, View, StyleSheet, Keyboard
-} from 'react-native';
+import { Keyboard, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
-import log, { logEvent, events } from '../utils/log';
-import sharedStyles from './Styles';
+import log, { events, logEvent } from '../utils/log';
 import Button from '../containers/Button';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -22,6 +19,7 @@ import { loginRequest as loginRequestAction } from '../actions/login';
 import openLink from '../utils/openLink';
 import LoginServices from '../containers/LoginServices';
 import { getShowLoginButton } from '../selectors/login';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	title: {
@@ -67,7 +65,7 @@ class RegisterView extends React.Component {
 		Site_Name: PropTypes.string,
 		loginRequest: PropTypes.func,
 		showLoginButton: PropTypes.bool
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -80,7 +78,7 @@ class RegisterView extends React.Component {
 				log(e);
 			}
 		}
-		Object.keys(this.parsedCustomFields).forEach((key) => {
+		Object.keys(this.parsedCustomFields).forEach(key => {
 			if (this.parsedCustomFields[key].defaultValue) {
 				customFields[key] = this.parsedCustomFields[key].defaultValue;
 			}
@@ -98,22 +96,20 @@ class RegisterView extends React.Component {
 	login = () => {
 		const { navigation, Site_Name } = this.props;
 		navigation.navigate('LoginView', { title: Site_Name });
-	}
+	};
 
 	valid = () => {
-		const {
-			name, email, password, username, customFields
-		} = this.state;
+		const { name, email, password, username, customFields } = this.state;
 		let requiredCheck = true;
-		Object.keys(this.parsedCustomFields).forEach((key) => {
+		Object.keys(this.parsedCustomFields).forEach(key => {
 			if (this.parsedCustomFields[key].required) {
 				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
 			}
 		});
 		return name.trim() && email.trim() && password.trim() && username.trim() && isValidEmail(email) && requiredCheck;
-	}
+	};
 
-	submit = async() => {
+	submit = async () => {
 		logEvent(events.REGISTER_DEFAULT_SIGN_UP);
 		if (!this.valid()) {
 			return;
@@ -121,19 +117,16 @@ class RegisterView extends React.Component {
 		this.setState({ saving: true });
 		Keyboard.dismiss();
 
-		const {
-			name, email, password, username, customFields
-		} = this.state;
-		const {
-			loginRequest,
-			Accounts_EmailVerification,
-			navigation,
-			Accounts_ManuallyApproveNewUsers
-		} = this.props;
+		const { name, email, password, username, customFields } = this.state;
+		const { loginRequest, Accounts_EmailVerification, navigation, Accounts_ManuallyApproveNewUsers } = this.props;
 
 		try {
 			await RocketChat.register({
-				name, email, pass: password, username, ...customFields
+				name,
+				email,
+				pass: password,
+				username,
+				...customFields
 			});
 
 			if (Accounts_EmailVerification) {
@@ -155,15 +148,15 @@ class RegisterView extends React.Component {
 			}
 		}
 		this.setState({ saving: false });
-	}
+	};
 
-	openContract = (route) => {
+	openContract = route => {
 		const { server, theme } = this.props;
 		if (!server) {
 			return;
 		}
-		openLink(`${ server }/${ route }`, theme);
-	}
+		openLink(`${server}/${route}`, theme);
+	};
 
 	renderCustomFields = () => {
 		const { customFields } = this.state;
@@ -179,15 +172,16 @@ class RegisterView extends React.Component {
 						<RNPickerSelect
 							key={key}
 							items={options}
-							onValueChange={(value) => {
+							onValueChange={value => {
 								const newValue = {};
 								newValue[key] = value;
 								this.setState({ customFields: { ...customFields, ...newValue } });
 							}}
-							value={customFields[key]}
-						>
+							value={customFields[key]}>
 							<TextInput
-								inputRef={(e) => { this[key] = e; }}
+								inputRef={e => {
+									this[key] = e;
+								}}
 								placeholder={key}
 								value={customFields[key]}
 								testID='register-view-custom-picker'
@@ -199,12 +193,14 @@ class RegisterView extends React.Component {
 
 				return (
 					<TextInput
-						inputRef={(e) => { this[key] = e; }}
+						inputRef={e => {
+							this[key] = e;
+						}}
 						key={key}
 						label={key}
 						placeholder={key}
 						value={customFields[key]}
-						onChangeText={(value) => {
+						onChangeText={value => {
 							const newValue = {};
 							newValue[key] = value;
 							this.setState({ customFields: { ...customFields, ...newValue } });
@@ -223,7 +219,7 @@ class RegisterView extends React.Component {
 		} catch (error) {
 			return null;
 		}
-	}
+	};
 
 	render() {
 		const { saving } = this.state;
@@ -239,37 +235,49 @@ class RegisterView extends React.Component {
 						placeholder={I18n.t('Name')}
 						returnKeyType='next'
 						onChangeText={name => this.setState({ name })}
-						onSubmitEditing={() => { this.usernameInput.focus(); }}
+						onSubmitEditing={() => {
+							this.usernameInput.focus();
+						}}
 						testID='register-view-name'
 						theme={theme}
 					/>
 					<TextInput
 						label={I18n.t('Username')}
 						containerStyle={styles.inputContainer}
-						inputRef={(e) => { this.usernameInput = e; }}
+						inputRef={e => {
+							this.usernameInput = e;
+						}}
 						placeholder={I18n.t('Username')}
 						returnKeyType='next'
 						onChangeText={username => this.setState({ username })}
-						onSubmitEditing={() => { this.emailInput.focus(); }}
+						onSubmitEditing={() => {
+							this.emailInput.focus();
+						}}
 						testID='register-view-username'
 						theme={theme}
 					/>
 					<TextInput
 						label={I18n.t('Email')}
 						containerStyle={styles.inputContainer}
-						inputRef={(e) => { this.emailInput = e; }}
+						inputRef={e => {
+							this.emailInput = e;
+						}}
 						placeholder={I18n.t('Email')}
 						returnKeyType='next'
 						keyboardType='email-address'
 						onChangeText={email => this.setState({ email })}
-						onSubmitEditing={() => { this.passwordInput.focus(); }}
+						onSubmitEditing={() => {
+							this.passwordInput.focus();
+						}}
 						testID='register-view-email'
 						theme={theme}
 					/>
 					<TextInput
 						label={I18n.t('Password')}
 						containerStyle={styles.inputContainer}
-						inputRef={(e) => { this.passwordInput = e; }}
+						inputRef={e => {
+							this.passwordInput = e;
+						}}
 						placeholder={I18n.t('Password')}
 						returnKeyType='send'
 						secureTextEntry
@@ -294,31 +302,32 @@ class RegisterView extends React.Component {
 
 					<View style={styles.bottomContainer}>
 						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
-							{`${ I18n.t('Onboarding_agree_terms') }\n`}
+							{`${I18n.t('Onboarding_agree_terms')}\n`}
 							<Text
 								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
-								onPress={() => this.openContract('terms-of-service')}
-							>{I18n.t('Terms_of_Service')}
-							</Text> {I18n.t('and')}
+								onPress={() => this.openContract('terms-of-service')}>
+								{I18n.t('Terms_of_Service')}
+							</Text>{' '}
+							{I18n.t('and')}
 							<Text
 								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
-								onPress={() => this.openContract('privacy-policy')}
-							> {I18n.t('Privacy_Policy')}
+								onPress={() => this.openContract('privacy-policy')}>
+								{' '}
+								{I18n.t('Privacy_Policy')}
 							</Text>
 						</Text>
 					</View>
 
-					{showLoginButton
-						? (
-							<View style={styles.bottomContainer}>
-								<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Do_you_have_an_account')}</Text>
-								<Text
-									style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
-									onPress={this.login}
-								>{I18n.t('Login')}
-								</Text>
-							</View>
-						) : null}
+					{showLoginButton ? (
+						<View style={styles.bottomContainer}>
+							<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
+								{I18n.t('Do_you_have_an_account')}
+							</Text>
+							<Text style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]} onPress={this.login}>
+								{I18n.t('Login')}
+							</Text>
+						</View>
+					) : null}
 				</FormContainerInner>
 			</FormContainer>
 		);

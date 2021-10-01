@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
-import sharedStyles from './Styles';
 import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
 import I18n from '../i18n';
@@ -12,23 +11,24 @@ import RocketChat from '../lib/rocketchat';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import { logEvent, events } from '../utils/log';
+import { events, logEvent } from '../utils/log';
+import sharedStyles from './Styles';
 
 class ForgotPasswordView extends React.Component {
 	static navigationOptions = ({ route }) => ({
 		title: route.params?.title ?? 'Rocket.Chat'
-	})
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
 		theme: PropTypes.string
-	}
+	};
 
 	state = {
 		email: '',
 		invalidEmail: true,
 		isFetching: false
-	}
+	};
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { email, invalidEmail, isFetching } = this.state;
@@ -48,15 +48,15 @@ class ForgotPasswordView extends React.Component {
 		return false;
 	}
 
-	validate = (email) => {
+	validate = email => {
 		if (!isValidEmail(email)) {
 			this.setState({ invalidEmail: true });
 			return;
 		}
 		this.setState({ email, invalidEmail: false });
-	}
+	};
 
-	resetPassword = async() => {
+	resetPassword = async () => {
 		logEvent(events.FP_FORGOT_PASSWORD);
 		const { email, invalidEmail } = this.state;
 		if (invalidEmail || !email) {
@@ -76,7 +76,7 @@ class ForgotPasswordView extends React.Component {
 			showErrorAlert(msg, I18n.t('Alert'));
 		}
 		this.setState({ isFetching: false });
-	}
+	};
 
 	render() {
 		const { invalidEmail, isFetching } = this.state;
@@ -85,7 +85,9 @@ class ForgotPasswordView extends React.Component {
 		return (
 			<FormContainer theme={theme} testID='forgot-password-view'>
 				<FormContainerInner>
-					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Forgot_password')}</Text>
+					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>
+						{I18n.t('Forgot_password')}
+					</Text>
 					<TextInput
 						autoFocus
 						placeholder={I18n.t('Email')}

@@ -1,10 +1,10 @@
 import EJSON from 'ejson';
 
-import normalizeMessage from './normalizeMessage';
-import findSubscriptionsRooms from './findSubscriptionsRooms';
 import { Encryption } from '../../encryption';
 import reduxStore from '../../createStore';
 import { compareServerVersion, methods } from '../../utils';
+import findSubscriptionsRooms from './findSubscriptionsRooms';
+import normalizeMessage from './normalizeMessage';
 // TODO: delete and update
 
 export const merge = (subscription, room) => {
@@ -35,7 +35,9 @@ export const merge = (subscription, room) => {
 		} else {
 			// https://github.com/RocketChat/Rocket.Chat/blob/develop/app/ui-sidenav/client/roomList.js#L180
 			const lastRoomUpdate = room.lm || subscription.ts || subscription._updatedAt;
-			subscription.roomUpdatedAt = subscription.lr ? Math.max(new Date(subscription.lr), new Date(lastRoomUpdate)) : lastRoomUpdate;
+			subscription.roomUpdatedAt = subscription.lr
+				? Math.max(new Date(subscription.lr), new Date(lastRoomUpdate))
+				: lastRoomUpdate;
 		}
 		subscription.ro = room.ro;
 		subscription.broadcast = room.broadcast;
@@ -86,7 +88,7 @@ export const merge = (subscription, room) => {
 	return subscription;
 };
 
-export default async(subscriptions = [], rooms = []) => {
+export default async (subscriptions = [], rooms = []) => {
 	if (subscriptions.update) {
 		subscriptions = subscriptions.update;
 		rooms = rooms.update;
@@ -95,7 +97,7 @@ export default async(subscriptions = [], rooms = []) => {
 	// Find missing rooms/subscriptions on local database
 	({ subscriptions, rooms } = await findSubscriptionsRooms(subscriptions, rooms));
 	// Merge each subscription into a room
-	subscriptions = subscriptions.map((s) => {
+	subscriptions = subscriptions.map(s => {
 		const index = rooms.findIndex(({ _id }) => _id === s.rid);
 		// Room not found
 		if (index < 0) {

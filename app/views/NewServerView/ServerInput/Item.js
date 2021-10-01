@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	View, StyleSheet, Text
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
@@ -29,15 +27,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({
-	item, theme, onPress, onDelete
-}) => (
-	<Touch style={styles.container} onPress={() => onPress(item.url)} theme={theme} testID={`server-history-${ item.url }`}>
+const Item = ({ item, theme, onPress, onDelete }) => (
+	<Touch style={styles.container} onPress={() => onPress(item.url)} theme={theme} testID={`server-history-${item.url}`}>
 		<View style={styles.content}>
-			<Text numberOfLines={1} style={[styles.server, { color: themes[theme].bodyText }]}>{item.url}</Text>
-			<Text numberOfLines={1} style={[styles.username, { color: themes[theme].auxiliaryText }]}>{item.username}</Text>
+			<Text numberOfLines={1} style={[styles.server, { color: themes[theme].bodyText }]}>
+				{item.url}
+			</Text>
+			<Text numberOfLines={1} style={[styles.username, { color: themes[theme].auxiliaryText }]}>
+				{item.username}
+			</Text>
 		</View>
-		<BorderlessButton onPress={() => onDelete(item)} testID={`server-history-delete-${ item.url }`}>
+		<BorderlessButton onPress={() => onDelete(item)} testID={`server-history-delete-${item.url}`}>
 			<CustomIcon name='delete' size={24} color={themes[theme].auxiliaryText} />
 		</BorderlessButton>
 	</Touch>
