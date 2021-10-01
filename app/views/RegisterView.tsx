@@ -1,6 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Keyboard, StyleSheet, Text, View } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Dispatch } from 'redux';
+import { RouteProp } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -49,25 +51,65 @@ const styles = StyleSheet.create({
 	}
 });
 
-class RegisterView extends React.Component {
-	static navigationOptions = ({ route, navigation }) => ({
+interface IRootState {
+	server: {
+		server: string;
+	};
+	settings: {
+		Site_Name: string;
+		API_Gitlab_URL: string;
+		CAS_enabled: boolean;
+		CAS_login_url: string;
+		Accounts_CustomFields: object;
+		Accounts_EmailVerification: boolean;
+		Accounts_ManuallyApproveNewUsers: boolean;
+	};
+	showLoginButton: boolean;
+}
+
+interface IParams {
+	credentials: object;
+	logoutOnError: Function;
+	isFromWebView: boolean;
+}
+
+interface IState {
+	name: string;
+	email: string;
+	password: string;
+	username: string;
+	saving: boolean;
+	customFields: {
+		[key: string]: number | string;
+	}[];
+}
+
+interface IProps {
+	navigation: StackNavigationProp<any>;
+	route: RouteProp<any, 'RegisterView'>;
+	server: string;
+	Site_Name: string;
+	Gitlab_URL: string;
+	CAS_enabled: boolean;
+	CAS_login_url: string;
+	Accounts_CustomFields: string;
+	Accounts_EmailVerification: boolean;
+	Accounts_ManuallyApproveNewUsers: boolean;
+	showLoginButton: boolean;
+	loginRequest: Function;
+	theme: string;
+}
+
+class RegisterView extends React.Component<IProps, IState> {
+	parsedCustomFields: {
+		[key: string]: number | string;
+	}[];
+	static navigationOptions = ({ route, navigation }: Partial<IProps>) => ({
 		title: route.params?.title ?? 'Rocket.Chat',
 		headerRight: () => <HeaderButton.Legal testID='register-view-more' navigation={navigation} />
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		server: PropTypes.string,
-		Accounts_CustomFields: PropTypes.string,
-		Accounts_EmailVerification: PropTypes.bool,
-		Accounts_ManuallyApproveNewUsers: PropTypes.bool,
-		theme: PropTypes.string,
-		Site_Name: PropTypes.string,
-		loginRequest: PropTypes.func,
-		showLoginButton: PropTypes.bool
-	};
-
-	constructor(props) {
+	constructor(props: IProps) {
 		super(props);
 		const customFields = {};
 		this.parsedCustomFields = {};
@@ -78,7 +120,7 @@ class RegisterView extends React.Component {
 				log(e);
 			}
 		}
-		Object.keys(this.parsedCustomFields).forEach(key => {
+		Object.keys(this.parsedCustomFields).forEach((key: string) => {
 			if (this.parsedCustomFields[key].defaultValue) {
 				customFields[key] = this.parsedCustomFields[key].defaultValue;
 			}
@@ -150,7 +192,7 @@ class RegisterView extends React.Component {
 		this.setState({ saving: false });
 	};
 
-	openContract = route => {
+	openContract = (route: Partial<IProps>) => {
 		const { server, theme } = this.props;
 		if (!server) {
 			return;
@@ -334,7 +376,7 @@ class RegisterView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IRootState) => ({
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
 	Gitlab_URL: state.settings.API_Gitlab_URL,
@@ -346,8 +388,8 @@ const mapStateToProps = state => ({
 	showLoginButton: getShowLoginButton(state)
 });
 
-const mapDispatchToProps = dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	loginRequest: (params: IParams) => dispatch(loginRequestAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RegisterView));

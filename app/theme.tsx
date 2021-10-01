@@ -1,7 +1,7 @@
 import React from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
-interface IThemeContextProps {
+export interface IThemeContextProps {
 	theme: string;
 	themePreferences: {
 		currentTheme: 'automatic' | 'light';
