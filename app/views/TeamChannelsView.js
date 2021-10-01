@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
+import { HeaderBackButton } from '@react-navigation/stack';
 
 import StatusBar from '../containers/StatusBar';
 import RoomHeader from '../containers/RoomHeader';
@@ -16,6 +17,7 @@ import * as HeaderButton from '../containers/HeaderButton';
 import BackgroundContainer from '../containers/BackgroundContainer';
 import SafeAreaView from '../containers/SafeAreaView';
 import ActivityIndicator from '../containers/ActivityIndicator';
+import SearchHeader from '../containers/SearchHeader';
 import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
 import RocketChat from '../lib/rocketchat';
 import { withDimensions } from '../dimensions';
@@ -28,7 +30,6 @@ import { withActionSheet } from '../containers/ActionSheet';
 import { deleteRoom as deleteRoomAction } from '../actions/room';
 import { CustomIcon } from '../lib/Icons';
 import { themes } from '../constants/colors';
-import SearchHeader from './ThreadMessagesView/SearchHeader';
 
 const API_FETCH_COUNT = 25;
 const PERMISSION_DELETE_C = 'delete-c';
@@ -157,7 +158,7 @@ class TeamChannelsView extends React.Component {
 
 	setHeader = () => {
 		const { isSearching, showCreate, data } = this.state;
-		const { navigation, isMasterDetail, insets } = this.props;
+		const { navigation, isMasterDetail, insets, theme } = this.props;
 
 		const { team } = this;
 		if (!team) {
@@ -167,7 +168,7 @@ class TeamChannelsView extends React.Component {
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 2 });
 
 		if (isSearching) {
-			return {
+			const options = {
 				headerTitleAlign: 'left',
 				headerLeft: () => (
 					<HeaderButton.Container left>
@@ -181,6 +182,7 @@ class TeamChannelsView extends React.Component {
 				},
 				headerRight: () => null
 			};
+			return navigation.setOptions(options);
 		}
 
 		const options = {
@@ -190,6 +192,9 @@ class TeamChannelsView extends React.Component {
 				left: headerTitlePosition.left,
 				right: headerTitlePosition.right
 			},
+			headerLeft: () => (
+				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
+			),
 			headerTitle: () => (
 				<RoomHeader
 					title={RocketChat.getRoomTitle(team)}

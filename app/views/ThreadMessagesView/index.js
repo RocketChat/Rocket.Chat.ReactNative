@@ -29,7 +29,7 @@ import { getBadgeColor, makeThreadName } from '../../utils/room';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import EventEmitter from '../../utils/events';
 import { LISTENER } from '../../containers/Toast';
-import SearchHeader from './SearchHeader';
+import SearchHeader from '../../containers/SearchHeader';
 import { FILTER } from './filters';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import Dropdown from './Dropdown';

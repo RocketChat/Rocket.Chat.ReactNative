@@ -96,7 +96,6 @@ class WorkspaceView extends React.Component {
 
 const mapStateToProps = state => ({
 	server: state.server.server,
-	adding: state.server.adding,
 	Site_Name: state.settings.Site_Name,
 	Site_Url: state.settings.Site_Url,
 	Assets_favicon_512: state.settings.Assets_favicon_512,
