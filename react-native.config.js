@@ -5,12 +5,6 @@ module.exports = {
 				android: null
 			}
 		},
-		'@nozbe/watermelondb': {
-			platforms: {
-				android: null,
-				ios: null
-			}
-		},
 		'@react-native-firebase/app': {
 			platforms: {
 				android: null

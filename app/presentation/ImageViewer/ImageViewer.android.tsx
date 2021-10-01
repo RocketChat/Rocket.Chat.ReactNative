@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PanGestureHandler, PinchGestureHandler, State } from 'react-native-gesture-handler';
-import Animated, { Easing } from 'react-native-reanimated';
+import Animated, { EasingNode } from 'react-native-reanimated';
 
 import { ImageComponent } from './ImageComponent';
 import { themes } from '../../constants/colors';
@@ -94,7 +94,7 @@ function runTiming(clock: any, value: any, dest: any, startStopClock: any = true
 	const config = {
 		toValue: new Value(0),
 		duration: 300,
-		easing: Easing.inOut(Easing.cubic)
+		easing: EasingNode.inOut(EasingNode.cubic)
 	};
 
 	return [
@@ -215,7 +215,9 @@ class Image extends React.PureComponent<IImageProps, any> {
 		return <Component {...this.props} />;
 	}
 }
-const AnimatedImage = Animated.createAnimatedComponent(Image);
+
+// https://github.com/software-mansion/react-native-reanimated/issues/1717
+const AnimatedImage: any = Animated.createAnimatedComponent(Image);
 
 // it was picked from https://github.com/software-mansion/react-native-reanimated/tree/master/Example/imageViewer
 // and changed to use FastImage animated component
