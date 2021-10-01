@@ -433,7 +433,7 @@ class RoomView extends React.Component {
 
 	goRoomActionsView = screen => {
 		logEvent(events.ROOM_GO_RA);
-		const { room, member } = this.state;
+		const { room, member, joined } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', {
@@ -443,7 +443,8 @@ class RoomView extends React.Component {
 					t: this.t,
 					room,
 					member,
-					showCloseModal: !!screen
+					showCloseModal: !!screen,
+					joined
 				}
 			});
 		} else {
@@ -451,7 +452,8 @@ class RoomView extends React.Component {
 				rid: this.rid,
 				t: this.t,
 				room,
-				member
+				member,
+				joined
 			});
 		}
 	};
