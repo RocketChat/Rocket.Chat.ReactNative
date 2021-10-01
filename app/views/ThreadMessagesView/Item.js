@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { withTheme } from '../../theme';
@@ -56,9 +56,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({
-	item, baseUrl, theme, useRealName, user, badgeColor, onPress, toggleFollowThread
-}) => {
+const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, toggleFollowThread }) => {
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
 	if (item?.ts) {
@@ -66,7 +64,10 @@ const Item = ({
 	}
 
 	return (
-		<Touchable onPress={() => onPress(item)} testID={`thread-messages-view-${ item.msg }`} style={{ backgroundColor: themes[theme].backgroundColor }}>
+		<Touchable
+			onPress={() => onPress(item)}
+			testID={`thread-messages-view-${item.msg}`}
+			style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<View style={styles.container}>
 				<Avatar
 					style={styles.avatar}
@@ -80,19 +81,24 @@ const Item = ({
 				/>
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>{username}</Text>
+						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
+							{username}
+						</Text>
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
-						<Markdown msg={makeThreadName(item)} baseUrl={baseUrl} username={username} theme={theme} numberOfLines={2} style={[styles.markdown]} preview />
-						{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null }
+						<Markdown
+							msg={makeThreadName(item)}
+							baseUrl={baseUrl}
+							username={username}
+							theme={theme}
+							numberOfLines={2}
+							style={[styles.markdown]}
+							preview
+						/>
+						{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
 					</View>
-					<ThreadDetails
-						item={item}
-						user={user}
-						toggleFollowThread={toggleFollowThread}
-						style={styles.threadDetails}
-					/>
+					<ThreadDetails item={item} user={user} toggleFollowThread={toggleFollowThread} style={styles.threadDetails} />
 				</View>
 			</View>
 		</Touchable>

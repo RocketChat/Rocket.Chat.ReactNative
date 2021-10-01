@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Share, ScrollView } from 'react-native';
+import { ScrollView, Share, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
 import {
-	inviteLinksCreate as inviteLinksCreateAction,
-	inviteLinksClear as inviteLinksClearAction
+	inviteLinksClear as inviteLinksClearAction,
+	inviteLinksCreate as inviteLinksCreateAction
 } from '../../actions/inviteLinks';
 import RCTextInput from '../../containers/TextInput';
-import styles from './styles';
 import Markdown from '../../containers/markdown';
 import Button from '../../containers/Button';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -18,12 +17,13 @@ import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { logEvent, events } from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
+import styles from './styles';
 
 class InviteUsersView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Invite_users')
-	})
+	});
 
 	static propTypes = {
 		navigation: PropTypes.object,
@@ -33,7 +33,7 @@ class InviteUsersView extends React.Component {
 		invite: PropTypes.object,
 		createInviteLink: PropTypes.func,
 		clearInviteLink: PropTypes.func
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -57,13 +57,13 @@ class InviteUsersView extends React.Component {
 			return;
 		}
 		Share.share({ message: invite.url });
-	}
+	};
 
 	edit = () => {
 		logEvent(events.IU_GO_IU_EDIT);
 		const { navigation } = this.props;
 		navigation.navigate('InviteUsersEditView', { rid: this.rid });
-	}
+	};
 
 	linkExpirationText = () => {
 		const { timeDateFormat, invite } = this.props;
@@ -77,7 +77,10 @@ class InviteUsersView extends React.Component {
 
 			if (invite.maxUses) {
 				const usesLeft = invite.maxUses - invite.uses;
-				return I18n.t('Your_invite_link_will_expire_on__date__or_after__usesLeft__uses', { date: moment(expiration).format(timeDateFormat), usesLeft });
+				return I18n.t('Your_invite_link_will_expire_on__date__or_after__usesLeft__uses', {
+					date: moment(expiration).format(timeDateFormat),
+					usesLeft
+				});
 			}
 
 			return I18n.t('Your_invite_link_will_expire_on__date__', { date: moment(expiration).format(timeDateFormat) });
@@ -89,48 +92,30 @@ class InviteUsersView extends React.Component {
 		}
 
 		return I18n.t('Your_invite_link_will_never_expire');
-	}
+	};
 
 	renderExpiration = () => {
 		const { theme } = this.props;
 		const expirationMessage = this.linkExpirationText();
 		return <Markdown msg={expirationMessage} username='' baseUrl='' theme={theme} />;
-	}
+	};
 
 	render() {
-		const {
-			theme, invite
-		} = this.props;
+		const { theme, invite } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<ScrollView
 					{...scrollPersistTaps}
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 					contentContainerStyle={styles.contentContainer}
-					showsVerticalScrollIndicator={false}
-				>
+					showsVerticalScrollIndicator={false}>
 					<StatusBar />
 					<View style={styles.innerContainer}>
-						<RCTextInput
-							label={I18n.t('Invite_Link')}
-							theme={theme}
-							value={invite && invite.url}
-							editable={false}
-						/>
+						<RCTextInput label={I18n.t('Invite_Link')} theme={theme} value={invite && invite.url} editable={false} />
 						{this.renderExpiration()}
 						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
-						<Button
-							title={I18n.t('Share_Link')}
-							type='primary'
-							onPress={this.share}
-							theme={theme}
-						/>
-						<Button
-							title={I18n.t('Edit_Invite')}
-							type='secondary'
-							onPress={this.edit}
-							theme={theme}
-						/>
+						<Button title={I18n.t('Share_Link')} type='primary' onPress={this.share} theme={theme} />
+						<Button title={I18n.t('Edit_Invite')} type='secondary' onPress={this.edit} theme={theme} />
 					</View>
 				</ScrollView>
 			</SafeAreaView>

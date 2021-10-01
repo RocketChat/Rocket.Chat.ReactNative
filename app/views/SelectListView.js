@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, StyleSheet, FlatList, Text
-} from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { RadioButton } from 'react-native-ui-lib';
 
 import log from '../utils/log';
 import * as List from '../containers/List';
-import sharedStyles from './Styles';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
@@ -18,7 +15,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
-
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -74,7 +71,7 @@ class SelectListView extends React.Component {
 		);
 
 		navigation.setOptions(options);
-	}
+	};
 
 	renderInfoText = () => {
 		const { theme } = this.props;
@@ -83,18 +80,22 @@ class SelectListView extends React.Component {
 				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t(this.infoText)}</Text>
 			</View>
 		);
-	}
+	};
 
 	renderSearch = () => {
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
-				<SearchBox onChangeText={text => this.search(text)} testID='select-list-view-search' onCancelPress={() => this.setState({ isSearching: false })} />
+				<SearchBox
+					onChangeText={text => this.search(text)}
+					testID='select-list-view-search'
+					onCancelPress={() => this.setState({ isSearching: false })}
+				/>
 			</View>
 		);
-	}
+	};
 
-	search = async(text) => {
+	search = async text => {
 		try {
 			this.setState({ isSearching: true });
 			const result = await this.onSearch(text);
@@ -102,14 +103,14 @@ class SelectListView extends React.Component {
 		} catch (e) {
 			log(e);
 		}
-	}
+	};
 
-	isChecked = (rid) => {
+	isChecked = rid => {
 		const { selected } = this.state;
 		return selected.includes(rid);
-	}
+	};
 
-	toggleItem = (rid) => {
+	toggleItem = rid => {
 		const { selected } = this.state;
 
 		animateNextTransition();
@@ -123,7 +124,7 @@ class SelectListView extends React.Component {
 			const filterSelected = selected.filter(el => el !== rid);
 			this.setState({ selected: filterSelected }, () => this.setHeader());
 		}
-	}
+	};
 
 	renderItem = ({ item }) => {
 		const { theme } = this.props;
@@ -134,8 +135,21 @@ class SelectListView extends React.Component {
 		const icon = item.teamMain ? teamIcon : channelIcon;
 		const checked = this.isChecked(item.rid) ? 'check' : null;
 
-		const showRadio = () => <RadioButton testID={selected ? `radio-button-selected-${ item.name }` : `radio-button-unselected-${ item.name }`} selected={selected.includes(item.rid)} color={themes[theme].actionTintColor} size={ICON_SIZE} />;
-		const showCheck = () => <List.Icon testID={checked ? `${ item.name }-checked` : `${ item.name }-unchecked`} name={checked} color={themes[theme].actionTintColor} />;
+		const showRadio = () => (
+			<RadioButton
+				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
+				selected={selected.includes(item.rid)}
+				color={themes[theme].actionTintColor}
+				size={ICON_SIZE}
+			/>
+		);
+		const showCheck = () => (
+			<List.Icon
+				testID={checked ? `${item.name}-checked` : `${item.name}-unchecked`}
+				name={checked}
+				color={themes[theme].actionTintColor}
+			/>
+		);
 
 		return (
 			<>
@@ -143,7 +157,7 @@ class SelectListView extends React.Component {
 				<List.Item
 					title={item.name}
 					translateTitle={false}
-					testID={`select-list-view-item-${ item.name }`}
+					testID={`select-list-view-item-${item.name}`}
 					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
 					alert={item.alert}
 					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
@@ -151,7 +165,7 @@ class SelectListView extends React.Component {
 				/>
 			</>
 		);
-	}
+	};
 
 	render() {
 		const { data, isSearching, dataFiltered } = this.state;

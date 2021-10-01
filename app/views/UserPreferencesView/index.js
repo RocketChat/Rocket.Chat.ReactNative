@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import I18n from '../../i18n';
-import {
-	logEvent, events
-} from '../../utils/log';
+import { events, logEvent } from '../../utils/log';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
@@ -16,13 +14,13 @@ class UserPreferencesView extends React.Component {
 
 	static propTypes = {
 		navigation: PropTypes.object
-	}
+	};
 
 	navigateToScreen = (screen, params) => {
-		logEvent(events[`SE_GO_${ screen.replace('View', '').toUpperCase() }`]);
+		logEvent(events[`SE_GO_${screen.replace('View', '').toUpperCase()}`]);
 		const { navigation } = this.props;
 		navigation.navigate(screen, params);
-	}
+	};
 
 	render() {
 		return (

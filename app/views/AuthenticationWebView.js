@@ -48,7 +48,7 @@ class AuthenticationWebView extends React.PureComponent {
 		Accounts_Iframe_api_url: PropTypes.bool,
 		Accounts_Iframe_api_method: PropTypes.bool,
 		theme: PropTypes.string
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -56,8 +56,8 @@ class AuthenticationWebView extends React.PureComponent {
 			logging: false,
 			loading: false
 		};
-		this.oauthRedirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
-		this.iframeRedirectRegex = new RegExp(`(?=.*(${ props.server }))(?=.*(event|loginToken|token))`, 'g');
+		this.oauthRedirectRegex = new RegExp(`(?=.*(${props.server}))(?=.*(credentialToken))(?=.*(credentialSecret))`, 'g');
+		this.iframeRedirectRegex = new RegExp(`(?=.*(${props.server}))(?=.*(event|loginToken|token))`, 'g');
 	}
 
 	componentWillUnmount() {
@@ -69,9 +69,9 @@ class AuthenticationWebView extends React.PureComponent {
 	dismiss = () => {
 		const { navigation } = this.props;
 		navigation.pop();
-	}
+	};
 
-	login = (params) => {
+	login = params => {
 		const { logging } = this.state;
 		if (logging) {
 			return;
@@ -86,21 +86,25 @@ class AuthenticationWebView extends React.PureComponent {
 		}
 		this.setState({ logging: false });
 		this.dismiss();
-	}
+	};
 
 	// Force 3s delay so the server has time to evaluate the token
 	debouncedLogin = debounce(params => this.login(params), 3000);
 
-	tryLogin = debounce(async() => {
-		const { Accounts_Iframe_api_url, Accounts_Iframe_api_method } = this.props;
-		const data = await fetch(Accounts_Iframe_api_url, { method: Accounts_Iframe_api_method }).then(response => response.json());
-		const resume = data?.login || data?.loginToken;
-		if (resume) {
-			this.login({ resume });
-		}
-	}, 3000, true)
+	tryLogin = debounce(
+		async () => {
+			const { Accounts_Iframe_api_url, Accounts_Iframe_api_method } = this.props;
+			const data = await fetch(Accounts_Iframe_api_url, { method: Accounts_Iframe_api_method }).then(response => response.json());
+			const resume = data?.login || data?.loginToken;
+			if (resume) {
+				this.login({ resume });
+			}
+		},
+		3000,
+		true
+	);
 
-	onNavigationStateChange = (webViewState) => {
+	onNavigationStateChange = webViewState => {
 		const url = decodeURIComponent(webViewState.url);
 		const { route } = this.props;
 		const { authType } = route.params;
@@ -141,11 +145,11 @@ class AuthenticationWebView extends React.PureComponent {
 						this.debouncedLogin({ resume: credentials.token || credentials.loginToken });
 						break;
 					default:
-						// Do nothing
+					// Do nothing
 				}
 			}
 		}
-	}
+	};
 
 	render() {
 		const { loading } = this.state;
@@ -170,7 +174,7 @@ class AuthenticationWebView extends React.PureComponent {
 						this.setState({ loading: false });
 					}}
 				/>
-				{ loading ? <ActivityIndicator size='large' theme={theme} absolute /> : null }
+				{loading ? <ActivityIndicator size='large' theme={theme} absolute /> : null}
 			</>
 		);
 	}
