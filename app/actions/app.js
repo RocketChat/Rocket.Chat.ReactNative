@@ -3,7 +3,6 @@ import { APP } from './actionsTypes';
 export const ROOT_OUTSIDE = 'outside';
 export const ROOT_INSIDE = 'inside';
 export const ROOT_LOADING = 'loading';
-export const ROOT_NEW_SERVER = 'newServer';
 export const ROOT_SET_USERNAME = 'setUsername';
 
 export function appStart({ root, ...args }) {

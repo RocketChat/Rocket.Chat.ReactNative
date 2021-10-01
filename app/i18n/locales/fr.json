@@ -762,11 +762,15 @@
 	"Load_More": "Charger plus",
 	"Load_Newer": "Charger plus récent",
 	"Load_Older": "Charger plus ancien",
+	"room-name-already-exists": "Le nom du salon existe déjà",
+	"error-team-creation": "Erreur de création d'équipe",
+	"unauthorized": "Non autorisé",
 	"Left_The_Room_Successfully": "A quitté le salon avec succès",
 	"Deleted_The_Team_Successfully": "Equipe supprimée avec succès",
 	"Deleted_The_Room_Successfully": "Salon supprimé avec succès",
 	"Convert_to_Channel": "Convertir en canal",
 	"Converting_Team_To_Channel": "Conversion de l’équipe en canal",
 	"Select_Team_Channels_To_Delete": "Sélectionnez les canaux de l'équipe que vous souhaitez supprimer, ceux que vous ne sélectionnez pas, seront déplacés vers l'espace de travail. \n\n\nNotez que les canaux publics seront publics et visibles par tous.",
-	"You_are_converting_the_team": "Vous convertissez cette équipe en canal"
+	"You_are_converting_the_team": "Vous convertissez cette équipe en canal",
+	"creating_discussion": "créer une discussion"
 }
