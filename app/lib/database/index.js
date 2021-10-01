@@ -60,8 +60,7 @@ export const getDatabase = (database = '') => {
 			Permission,
 			SlashCommand,
 			User
-		],
-		actionsEnabled: true
+		]
 	});
 };
 
@@ -73,8 +72,7 @@ class DB {
 				schema: serversSchema,
 				migrations: serversMigrations
 			}),
-			modelClasses: [Server, LoggedUser, ServersHistory],
-			actionsEnabled: true
+			modelClasses: [Server, LoggedUser, ServersHistory]
 		})
 	};
 
@@ -117,8 +115,7 @@ class DB {
 				FrequentlyUsedEmoji,
 				Setting,
 				User
-			],
-			actionsEnabled: true
+			]
 		});
 	}
 
