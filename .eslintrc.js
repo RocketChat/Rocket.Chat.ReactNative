@@ -3,6 +3,10 @@ module.exports = {
 		'import/resolver': {
 			node: {
 				extensions: ['.js', '.ios.js', '.android.js', '.native.js', '.ts', '.tsx']
+			},
+			'babel-plugin-root-import': {
+				rootPathPrefix: '~',
+				rootPathSuffix: 'app'
 			}
 		}
 	},
@@ -245,6 +249,10 @@ module.exports = {
 				'import/resolver': {
 					node: {
 						extensions: ['.js', '.ts', '.tsx']
+					},
+					'babel-plugin-root-import': {
+						rootPathPrefix: '~',
+						rootPathSuffix: 'app'
 					}
 				}
 			}
