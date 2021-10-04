@@ -61,11 +61,11 @@ const styles = StyleSheet.create({
 });
 
 interface IRCTextInputProps {
-	label: string;
+	label?: string;
 	value?: string;
 	keyboardType?: KeyboardTypeOptions;
 	returnKeyType?: ReturnKeyTypeOptions;
-	onChangeText: Function;
+	onChangeText?: Function;
 	onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
 	error?: {
 		error: any;
