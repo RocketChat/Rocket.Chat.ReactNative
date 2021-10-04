@@ -30,12 +30,12 @@ interface IAuthLoadingView {
 const AuthLoadingView = React.memo(({ theme, text }: IAuthLoadingView) => (
 	<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 		<StatusBar />
-		{text && (
+		{text ? (
 			<>
 				<ActivityIndicator color={themes[theme].auxiliaryText} size='large' />
 				<Text style={[styles.text, { color: themes[theme].bodyText }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
 			</>
-		)}
+		) : null}
 	</View>
 ));
 
