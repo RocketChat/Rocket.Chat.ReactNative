@@ -1,5 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+	KeyboardTypeOptions,
+	NativeSyntheticEvent,
+	ReturnKeyTypeOptions,
+	StyleSheet,
+	Text,
+	TextInputSubmitEditingEventData,
+	View
+} from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import sharedStyles from '../views/Styles';
@@ -52,21 +60,26 @@ const styles = StyleSheet.create({
 
 interface IRCTextInputProps {
 	label: string;
+	value?: string;
+	keyboardType?: KeyboardTypeOptions;
+	returnKeyType?: ReturnKeyTypeOptions;
+	onChangeText: Function;
+	onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
 	error: {
 		error: any;
 		reason: any;
 	};
-	loading: boolean;
-	secureTextEntry: boolean;
+	loading?: boolean;
+	secureTextEntry?: boolean;
 	containerStyle: any;
-	inputStyle: object;
-	inputRef: any;
+	inputStyle?: object;
+	inputRef?: React.Ref<unknown>;
 	testID: string;
-	iconLeft: string;
-	iconRight: string;
+	iconLeft?: string;
+	iconRight?: string;
 	placeholder: string;
-	left: JSX.Element;
-	onIconRightPress(): void;
+	left?: JSX.Element;
+	onIconRightPress?(): void;
 	theme: string;
 }
 
