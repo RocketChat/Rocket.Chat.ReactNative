@@ -6,6 +6,8 @@ import {
 	StyleProp,
 	StyleSheet,
 	Text,
+	TextInputAndroidProps,
+	TextInputIOSProps,
 	TextInputSubmitEditingEventData,
 	View,
 	ViewStyle
@@ -81,6 +83,8 @@ interface IRCTextInputProps {
 	iconRight?: string;
 	placeholder: string;
 	left?: JSX.Element;
+	textContentType?: TextInputIOSProps['textContentType'];
+	autoCompleteType?: TextInputAndroidProps['autoCompleteType'];
 	onIconRightPress?(): void;
 	theme: string;
 }
