@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 });
 
 interface ISearchHeaderProps {
-	onSearchChangeText(): void;
+	onSearchChangeText?: (text: string) => void;
 	placeholder: string;
 	theme: string;
 	testID: string;
