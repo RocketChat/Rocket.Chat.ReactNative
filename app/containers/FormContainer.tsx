@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const FormContainerInner = ({ children }: { children: JSX.Element }) => (
+export const FormContainerInner = ({ children }: { children: React.ReactNode }) => (
 	<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>{children}</View>
 );
 
