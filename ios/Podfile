@@ -4,6 +4,9 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 
 def all_pods
+  pod 'WatermelonDB', :path => '../node_modules/@nozbe/watermelondb'
+  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
+  pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
   config = use_native_modules!
   use_unimodules!
   use_react_native!(
