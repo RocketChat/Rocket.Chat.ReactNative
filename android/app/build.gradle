@@ -260,7 +260,6 @@ android {
 
 dependencies {
     addUnimodulesDependencies()
-    implementation project(':watermelondb')
     implementation project(':@react-native-community_viewpager')
     playImplementation project(':reactnativenotifications')
     playImplementation project(':@react-native-firebase_app')
