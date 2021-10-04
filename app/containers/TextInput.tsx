@@ -6,6 +6,8 @@ import {
 	StyleProp,
 	StyleSheet,
 	Text,
+	TextInputAndroidProps,
+	TextInputIOSProps,
 	TextInputSubmitEditingEventData,
 	View,
 	ViewStyle
@@ -81,33 +83,8 @@ interface IRCTextInputProps {
 	iconRight?: string;
 	placeholder: string;
 	left?: JSX.Element;
-	textContentType?:
-		| 'none'
-		| 'URL'
-		| 'addressCity'
-		| 'addressCityAndState'
-		| 'addressState'
-		| 'countryName'
-		| 'creditCardNumber'
-		| 'emailAddress'
-		| 'familyName'
-		| 'fullStreetAddress'
-		| 'givenName'
-		| 'jobTitle'
-		| 'location'
-		| 'middleName'
-		| 'name'
-		| 'namePrefix'
-		| 'nameSuffix'
-		| 'nickname'
-		| 'organizationName'
-		| 'postalCode'
-		| 'streetAddressLine1'
-		| 'streetAddressLine2'
-		| 'sublocality'
-		| 'telephoneNumber'
-		| 'username'
-		| 'password';
+	textContentType?: TextInputIOSProps['textContentType'];
+	autoCompleteType?: TextInputAndroidProps['autoCompleteType'];
 	onIconRightPress?(): void;
 	theme: string;
 }

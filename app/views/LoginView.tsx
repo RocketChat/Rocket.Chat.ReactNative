@@ -3,6 +3,8 @@ import { Alert, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Dispatch } from 'redux';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
 
 import Button from '../containers/Button';
 import I18n from '../i18n';
@@ -72,8 +74,8 @@ interface IRootState {
 }
 
 interface IProps {
-	navigation: any;
-	route: any;
+	navigation: StackNavigationProp<any>;
+	route: RouteProp<any, 'RegisterView'>;
 	Site_Name: string;
 	Accounts_RegistrationForm: string;
 	Accounts_RegistrationForm_LinkReplacementText: string;
@@ -99,7 +101,7 @@ class LoginView extends React.Component<IProps, any> {
 	private passwordInput: any;
 
 	static navigationOptions = ({ route, navigation }: Partial<IProps>) => ({
-		title: route.params?.title ?? 'Rocket.Chat',
+		title: route?.params?.title ?? 'Rocket.Chat',
 		headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
 	});
 
@@ -179,7 +181,7 @@ class LoginView extends React.Component<IProps, any> {
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
 					keyboardType='email-address'
 					returnKeyType='next'
-					onChangeText={value => this.setState({ user: value })}
+					onChangeText={(value: string) => this.setState({ user: value })}
 					onSubmitEditing={() => {
 						this.passwordInput.focus();
 					}}
@@ -199,7 +201,7 @@ class LoginView extends React.Component<IProps, any> {
 					returnKeyType='send'
 					secureTextEntry
 					onSubmitEditing={this.submit}
-					onChangeText={value => this.setState({ password: value })}
+					onChangeText={(value: string) => this.setState({ password: value })}
 					testID='login-view-password'
 					textContentType='password'
 					autoCompleteType='password'
