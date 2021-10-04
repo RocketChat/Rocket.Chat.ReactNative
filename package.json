@@ -29,7 +29,7 @@
 	"dependencies": {
 		"@bugsnag/react-native": "^7.10.5",
 		"@codler/react-native-keyboard-aware-scroll-view": "^1.0.1",
-		"@nozbe/watermelondb": "0.19.0",
+		"@nozbe/watermelondb": "0.23.0",
 		"@react-native-community/art": "^1.2.0",
 		"@react-native-community/async-storage": "1.12.1",
 		"@react-native-community/blur": "^3.6.0",
@@ -104,7 +104,7 @@
 		"react-native-popover-view": "4.0.1",
 		"react-native-progress": "4.1.2",
 		"react-native-prompt-android": "^1.1.0",
-		"react-native-reanimated": "1.9.0",
+		"react-native-reanimated": "2.2.2",
 		"react-native-restart": "0.0.22",
 		"react-native-safe-area-context": "3.2.0",
 		"react-native-screens": "2.9.0",

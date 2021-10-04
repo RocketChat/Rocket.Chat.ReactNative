@@ -75,6 +75,7 @@ class RoomActionsView extends React.Component {
 		const member = props.route.params?.member;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
+		this.joined = props.route.params?.joined;
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,
@@ -173,7 +174,7 @@ class RoomActionsView extends React.Component {
 
 	get isOmnichannelPreview() {
 		const { room } = this.state;
-		return room.t === 'l' && room.status === 'queued';
+		return room.t === 'l' && room.status === 'queued' && !this.joined;
 	}
 
 	onPressTouchable = item => {
