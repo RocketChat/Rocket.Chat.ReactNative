@@ -3,10 +3,12 @@ import {
 	KeyboardTypeOptions,
 	NativeSyntheticEvent,
 	ReturnKeyTypeOptions,
+	StyleProp,
 	StyleSheet,
 	Text,
 	TextInputSubmitEditingEventData,
-	View
+	View,
+	ViewStyle
 } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
@@ -65,16 +67,16 @@ interface IRCTextInputProps {
 	returnKeyType?: ReturnKeyTypeOptions;
 	onChangeText: Function;
 	onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
-	error: {
+	error?: {
 		error: any;
 		reason: any;
 	};
 	loading?: boolean;
 	secureTextEntry?: boolean;
-	containerStyle: any;
+	containerStyle?: StyleProp<ViewStyle>;
 	inputStyle?: object;
 	inputRef?: React.Ref<unknown>;
-	testID: string;
+	testID?: string;
 	iconLeft?: string;
 	iconRight?: string;
 	placeholder: string;
@@ -161,17 +163,10 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
 				{label ? (
-					<Text
-						contentDescription={null}
-						// @ts-ignore
-						accessibilityLabel={null}
-						style={[styles.label, { color: themes[theme].titleText }, error.error && { color: dangerColor }]}>
-						{label}
-					</Text>
+					<Text style={[styles.label, { color: themes[theme].titleText }, error?.error && { color: dangerColor }]}>{label}</Text>
 				) : null}
 				<View style={styles.wrap}>
 					<TextInput
-						/* @ts-ignore*/
 						style={[
 							styles.input,
 							iconLeft && styles.inputIconLeft,
@@ -181,7 +176,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 								borderColor: themes[theme].separatorColor,
 								color: themes[theme].titleText
 							},
-							error.error && {
+							error?.error && {
 								color: dangerColor,
 								borderColor: dangerColor
 							},

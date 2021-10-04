@@ -181,7 +181,7 @@ class RegisterView extends React.Component<IProps, IState> {
 			} else {
 				await loginRequest({ user: email, password });
 			}
-		} catch (e) {
+		} catch (e: any) {
 			if (e.data?.errorType === 'username-invalid') {
 				return loginRequest({ user: email, password });
 			}
