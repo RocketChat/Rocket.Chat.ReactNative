@@ -15,6 +15,7 @@ import './Avatar';
 import '../../app/containers/BackgroundContainer/index.stories.js';
 import '../../app/containers/RoomHeader/RoomHeader.stories.js';
 import '../../app/views/RoomView/LoadMore/LoadMore.stories';
+import '../../app/views/CannedResponsesListView/CannedResponseItem.stories';
 import '../../app/containers/TextInput.stories';
 
 // Change here to see themed storybook

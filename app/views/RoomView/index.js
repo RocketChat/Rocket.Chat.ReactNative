@@ -433,7 +433,7 @@ class RoomView extends React.Component {
 
 	goRoomActionsView = screen => {
 		logEvent(events.ROOM_GO_RA);
-		const { room, member } = this.state;
+		const { room, member, joined } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', {
@@ -443,7 +443,8 @@ class RoomView extends React.Component {
 					t: this.t,
 					room,
 					member,
-					showCloseModal: !!screen
+					showCloseModal: !!screen,
+					joined
 				}
 			});
 		} else {
@@ -451,7 +452,8 @@ class RoomView extends React.Component {
 				rid: this.rid,
 				t: this.t,
 				room,
-				member
+				member,
+				joined
 			});
 		}
 	};
@@ -1057,8 +1059,10 @@ class RoomView extends React.Component {
 	};
 
 	renderFooter = () => {
-		const { joined, room, selectedMessage, editing, replying, replyWithMention, readOnly } = this.state;
-		const { navigation, theme } = this.props;
+		const { joined, room, selectedMessage, editing, replying, replyWithMention, readOnly, loading } = this.state;
+		const { navigation, theme, route } = this.props;
+
+		const usedCannedResponse = route?.params?.usedCannedResponse;
 
 		if (!this.rid) {
 			return null;
@@ -1074,6 +1078,7 @@ class RoomView extends React.Component {
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
+						enabled={!loading}
 						theme={theme}>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
@@ -1118,6 +1123,7 @@ class RoomView extends React.Component {
 				replyCancel={this.onReplyCancel}
 				getCustomEmoji={this.getCustomEmoji}
 				navigation={navigation}
+				usedCannedResponse={usedCannedResponse}
 			/>
 		);
 	};
