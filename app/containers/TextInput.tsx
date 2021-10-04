@@ -1,5 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+	KeyboardTypeOptions,
+	NativeSyntheticEvent,
+	ReturnKeyTypeOptions,
+	StyleProp,
+	StyleSheet,
+	Text,
+	TextInputSubmitEditingEventData,
+	View,
+	ViewStyle
+} from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import sharedStyles from '../views/Styles';
@@ -51,22 +61,54 @@ const styles = StyleSheet.create({
 });
 
 interface IRCTextInputProps {
-	label: string;
-	error: {
+	label?: string;
+	value?: string;
+	keyboardType?: KeyboardTypeOptions;
+	returnKeyType?: ReturnKeyTypeOptions;
+	onChangeText?: Function;
+	onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
+	error?: {
 		error: any;
 		reason: any;
 	};
-	loading: boolean;
-	secureTextEntry: boolean;
-	containerStyle: any;
-	inputStyle: object;
-	inputRef: any;
-	testID: string;
-	iconLeft: string;
-	iconRight: string;
+	loading?: boolean;
+	secureTextEntry?: boolean;
+	containerStyle?: StyleProp<ViewStyle>;
+	inputStyle?: object;
+	inputRef?: React.Ref<unknown>;
+	testID?: string;
+	iconLeft?: string;
+	iconRight?: string;
 	placeholder: string;
-	left: JSX.Element;
-	onIconRightPress(): void;
+	left?: JSX.Element;
+	textContentType?:
+		| 'none'
+		| 'URL'
+		| 'addressCity'
+		| 'addressCityAndState'
+		| 'addressState'
+		| 'countryName'
+		| 'creditCardNumber'
+		| 'emailAddress'
+		| 'familyName'
+		| 'fullStreetAddress'
+		| 'givenName'
+		| 'jobTitle'
+		| 'location'
+		| 'middleName'
+		| 'name'
+		| 'namePrefix'
+		| 'nameSuffix'
+		| 'nickname'
+		| 'organizationName'
+		| 'postalCode'
+		| 'streetAddressLine1'
+		| 'streetAddressLine2'
+		| 'sublocality'
+		| 'telephoneNumber'
+		| 'username'
+		| 'password';
+	onIconRightPress?(): void;
 	theme: string;
 }
 
@@ -148,17 +190,10 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
 				{label ? (
-					<Text
-						contentDescription={null}
-						// @ts-ignore
-						accessibilityLabel={null}
-						style={[styles.label, { color: themes[theme].titleText }, error.error && { color: dangerColor }]}>
-						{label}
-					</Text>
+					<Text style={[styles.label, { color: themes[theme].titleText }, error?.error && { color: dangerColor }]}>{label}</Text>
 				) : null}
 				<View style={styles.wrap}>
 					<TextInput
-						/* @ts-ignore*/
 						style={[
 							styles.input,
 							iconLeft && styles.inputIconLeft,
@@ -168,7 +203,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 								borderColor: themes[theme].separatorColor,
 								color: themes[theme].titleText
 							},
-							error.error && {
+							error?.error && {
 								color: dangerColor,
 								borderColor: dangerColor
 							},

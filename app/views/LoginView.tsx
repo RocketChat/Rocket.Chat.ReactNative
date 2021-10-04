@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Alert, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import { Dispatch } from 'redux';
 
 import Button from '../containers/Button';
 import I18n from '../i18n';
@@ -46,7 +47,47 @@ const styles = StyleSheet.create({
 	}
 });
 
-class LoginView extends React.Component {
+interface IRootState {
+	server: {
+		server: string;
+	};
+	settings: {
+		Site_Name: string;
+		Accounts_RegistrationForm: string;
+		Accounts_RegistrationForm_LinkReplacementText: string;
+		Accounts_EmailOrUsernamePlaceholder: string;
+		Accounts_PasswordPlaceholder: string;
+		Accounts_PasswordReset: boolean;
+		Accounts_ShowFormLogin: boolean;
+	};
+	login: {
+		isFetching: boolean;
+		error: {
+			data: object;
+		};
+		failure: boolean;
+	};
+	inviteLinks: {
+		token: string;
+	};
+}
+
+interface IProps extends IRootState {
+	navigation: any;
+	route: any;
+	loginRequest: Function;
+	theme: string;
+}
+
+interface IParams {
+	credentials: object;
+	logoutOnError: Function;
+	isFromWebView: boolean;
+}
+
+class LoginView extends React.Component<IProps, any> {
+	private passwordInput: any;
+
 	static navigationOptions = ({ route, navigation }) => ({
 		title: route.params?.title ?? 'Rocket.Chat',
 		headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
@@ -227,7 +268,7 @@ class LoginView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IRootState) => ({
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
 	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
@@ -242,8 +283,8 @@ const mapStateToProps = state => ({
 	inviteLinkToken: state.inviteLinks.token
 });
 
-const mapDispatchToProps = dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	loginRequest: (params: IParams) => dispatch(loginRequestAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginView));
