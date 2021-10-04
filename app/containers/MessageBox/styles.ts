@@ -36,6 +36,30 @@ export default StyleSheet.create({
 		width: 60,
 		height: 48
 	},
+	wrapMentionHeaderList: {
+		height: MENTION_HEIGHT,
+		justifyContent: 'center'
+	},
+	wrapMentionHeaderListRow: {
+		height: MENTION_HEIGHT,
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingHorizontal: 12
+	},
+	loadingPaddingHeader: {
+		paddingRight: 12
+	},
+	mentionHeaderList: {
+		fontSize: 14,
+		...sharedStyles.textMedium
+	},
+	mentionHeaderListNoMatchFound: {
+		fontSize: 14,
+		...sharedStyles.textRegular
+	},
+	mentionNoMatchHeader: {
+		justifyContent: 'space-between'
+	},
 	mentionList: {
 		maxHeight: MENTION_HEIGHT * 4
 	},
@@ -66,6 +90,18 @@ export default StyleSheet.create({
 	mentionText: {
 		fontSize: 14,
 		...sharedStyles.textRegular
+	},
+	cannedMentionText: {
+		flex: 1,
+		fontSize: 14,
+		paddingRight: 12,
+		...sharedStyles.textRegular
+	},
+	cannedItem: {
+		fontSize: 14,
+		...sharedStyles.textBold,
+		paddingLeft: 12,
+		paddingRight: 8
 	},
 	emojiKeyboardContainer: {
 		flex: 1,
@@ -103,7 +139,8 @@ export default StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-between'
 	},
-	recordingCancelText: {
+	recordingDurationText: {
+		width: 60,
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},

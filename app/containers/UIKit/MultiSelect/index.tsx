@@ -28,6 +28,7 @@ interface IMultiSelect {
 	value?: any[];
 	disabled?: boolean | object;
 	theme: string;
+	innerInputStyle?: object;
 }
 
 const ANIMATION_DURATION = 200;
@@ -53,7 +54,8 @@ export const MultiSelect = React.memo(
 		onClose = () => {},
 		disabled,
 		inputStyle,
-		theme
+		theme,
+		innerInputStyle
 	}: IMultiSelect) => {
 		const [selected, select] = useState<any>(Array.isArray(values) ? values : []);
 		const [open, setOpen] = useState(false);
@@ -143,8 +145,13 @@ export const MultiSelect = React.memo(
 		let button = multiselect ? (
 			<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} theme={theme} />
 		) : (
-			// @ts-ignore
-			<Input onPress={onShow} theme={theme} loading={loading} disabled={disabled} inputStyle={inputStyle}>
+			<Input
+				onPress={onShow}
+				theme={theme}
+				loading={loading}
+				disabled={disabled}
+				inputStyle={inputStyle}
+				innerInputStyle={innerInputStyle}>
 				<Text style={[styles.pickerText, { color: currentValue ? themes[theme].titleText : themes[theme].auxiliaryText }]}>
 					{currentValue || placeholder.text}
 				</Text>
@@ -154,8 +161,13 @@ export const MultiSelect = React.memo(
 		if (context === BLOCK_CONTEXT.FORM) {
 			const items: any = options.filter((option: any) => selected.includes(option.value));
 			button = (
-				// @ts-ignore
-				<Input onPress={onShow} theme={theme} loading={loading} disabled={disabled} inputStyle={inputStyle}>
+				<Input
+					onPress={onShow}
+					theme={theme}
+					loading={loading}
+					disabled={disabled}
+					inputStyle={inputStyle}
+					innerInputStyle={innerInputStyle}>
 					{items.length ? (
 						<Chips items={items} onSelect={(item: any) => (disabled ? {} : onSelect(item))} theme={theme} />
 					) : (
