@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Alert, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
@@ -72,11 +71,22 @@ interface IRootState {
 	};
 }
 
-interface IProps extends IRootState {
+interface IProps {
 	navigation: any;
 	route: any;
-	loginRequest: Function;
+	Site_Name: string;
+	Accounts_RegistrationForm: string;
+	Accounts_RegistrationForm_LinkReplacementText: string;
+	Accounts_EmailOrUsernamePlaceholder: string;
+	Accounts_PasswordPlaceholder: string;
+	Accounts_PasswordReset: boolean;
+	Accounts_ShowFormLogin: boolean;
+	isFetching: boolean;
+	error: object;
+	failure: boolean;
 	theme: string;
+	loginRequest: Function;
+	inviteLinkToken: string;
 }
 
 interface IParams {
@@ -88,30 +98,12 @@ interface IParams {
 class LoginView extends React.Component<IProps, any> {
 	private passwordInput: any;
 
-	static navigationOptions = ({ route, navigation }) => ({
+	static navigationOptions = ({ route, navigation }: Partial<IProps>) => ({
 		title: route.params?.title ?? 'Rocket.Chat',
 		headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		Site_Name: PropTypes.string,
-		Accounts_RegistrationForm: PropTypes.string,
-		Accounts_RegistrationForm_LinkReplacementText: PropTypes.string,
-		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
-		Accounts_PasswordPlaceholder: PropTypes.string,
-		Accounts_PasswordReset: PropTypes.bool,
-		Accounts_ShowFormLogin: PropTypes.bool,
-		isFetching: PropTypes.bool,
-		error: PropTypes.object,
-		failure: PropTypes.bool,
-		theme: PropTypes.string,
-		loginRequest: PropTypes.func,
-		inviteLinkToken: PropTypes.string
-	};
-
-	constructor(props) {
+	constructor(props: IProps) {
 		super(props);
 		this.state = {
 			user: props.route.params?.username ?? '',
@@ -119,7 +111,7 @@ class LoginView extends React.Component<IProps, any> {
 		};
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps: IProps) {
 		const { error } = this.props;
 		if (nextProps.failure && !dequal(error, nextProps.error)) {
 			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
