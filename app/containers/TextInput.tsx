@@ -10,7 +10,7 @@ import {
 	View,
 	ViewStyle
 } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import Touchable from 'react-native-platform-touchable';
 
 import sharedStyles from '../views/Styles';
 import TextInput from '../presentation/TextInput';
@@ -110,9 +110,9 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 	get iconRight() {
 		const { iconRight, onIconRightPress, theme } = this.props;
 		return (
-			<BorderlessButton onPress={onIconRightPress} style={[styles.iconContainer, styles.iconRight]}>
+			<Touchable onPress={onIconRightPress} style={[styles.iconContainer, styles.iconRight]}>
 				<CustomIcon name={iconRight} style={{ color: themes[theme].bodyText }} size={20} />
-			</BorderlessButton>
+			</Touchable>
 		);
 	}
 
@@ -120,14 +120,14 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 		const { showPassword } = this.state;
 		const { testID, theme } = this.props;
 		return (
-			<BorderlessButton onPress={this.tooglePassword} style={[styles.iconContainer, styles.iconRight]}>
+			<Touchable onPress={this.tooglePassword} style={[styles.iconContainer, styles.iconRight]}>
 				<CustomIcon
 					name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 					testID={testID ? `${testID}-icon-right` : null}
 					style={{ color: themes[theme].auxiliaryText }}
 					size={20}
 				/>
-			</BorderlessButton>
+			</Touchable>
 		);
 	}
 
