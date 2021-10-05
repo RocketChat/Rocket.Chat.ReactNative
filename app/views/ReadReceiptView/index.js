@@ -17,7 +17,6 @@ import { themes } from '../../constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 
-
 class ReadReceiptView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
 		const options = {
@@ -26,7 +25,6 @@ class ReadReceiptView extends React.Component {
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='read-receipt-view-close' />;
 		}
-
 		return options;
 	};
 
