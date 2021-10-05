@@ -50291,6 +50291,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -50737,6 +50738,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -51224,6 +51226,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -51711,6 +51714,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -52198,6 +52202,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -52685,6 +52690,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -53172,6 +53178,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -53659,6 +53666,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -54146,6 +54154,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -54633,6 +54642,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -55120,6 +55130,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -55620,6 +55631,7 @@ exports[`Storyshots Room Item Basic 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -56064,6 +56076,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -56120,26 +56133,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -56198,26 +56191,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
             >
               
             </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
-            </Text>
           </View>
           <View
             style={
@@ -56254,26 +56227,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -56559,6 +56512,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -56615,26 +56569,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -56693,26 +56627,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
             >
               
             </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
-            </Text>
           </View>
           <View
             style={
@@ -56749,26 +56663,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -57054,6 +56948,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -57110,26 +57005,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -57188,26 +57063,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
             >
               
             </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
-            </Text>
           </View>
           <View
             style={
@@ -57244,26 +57099,6 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -57530,6 +57365,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -57586,26 +57422,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -57664,26 +57480,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
             >
               
             </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
-            </Text>
           </View>
           <View
             style={
@@ -57720,26 +57516,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -57975,6 +57751,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -58031,26 +57808,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -58109,26 +57866,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
             >
               
             </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
-            </Text>
           </View>
           <View
             style={
@@ -58165,26 +57902,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -58352,6 +58069,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -58408,26 +58126,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -58486,26 +58184,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
             >
               
             </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
-            </Text>
           </View>
           <View
             style={
@@ -58542,26 +58220,6 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -58790,6 +58448,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -59266,6 +58925,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -59742,6 +59402,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -60190,6 +59851,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -60649,6 +60311,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -61108,6 +60771,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -61567,6 +61231,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -62026,6 +61691,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -62541,6 +62207,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -63056,6 +62723,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -63584,6 +63252,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -64051,6 +63720,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -64547,6 +64217,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -65014,6 +64685,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -65523,6 +65195,7 @@ exports[`Storyshots Room Item Touch 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -65967,6 +65640,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -66398,6 +66072,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -66817,6 +66492,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -67236,6 +66912,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -67655,6 +67332,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -68074,6 +67752,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -68493,6 +68172,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -68925,6 +68605,7 @@ exports[`Storyshots Room Item User 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -69356,6 +69037,7 @@ exports[`Storyshots Room Item User 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -69800,6 +69482,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -70231,6 +69914,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -70662,6 +70346,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -71093,6 +70778,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -71524,6 +71210,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
@@ -71955,6 +71642,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 "position": "absolute",
                 "right": 0,
               },
+              undefined,
             ]
           }
         >
