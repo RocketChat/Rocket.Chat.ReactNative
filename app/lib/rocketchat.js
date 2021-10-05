@@ -1061,9 +1061,11 @@ const RocketChat = {
 		return prefs;
 	},
 	async saveSortPreference(param) {
+		console.log('........param',param)
 		try {
 			let prefs = await RocketChat.getSortPreferences();
 			prefs = { ...prefs, ...param };
+			console.log('..........prefs',prefs)
 			return await RNUserDefaults.setObjectForKey(SORT_PREFS_KEY, prefs);
 		} catch (error) {
 			console.warn(error);

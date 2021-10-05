@@ -64,7 +64,7 @@ import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { showErrorAlert } from '../../utils/info';
 import { getInquiryQueueSelector } from '../../selectors/inquiry';
-import { isObject } from 'lodash';
+
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -450,6 +450,7 @@ class RoomsListView extends React.Component {
 				.get('subscriptions')
 				.query(...defaultWhereClause)
 				.observe();
+				console.log('lllllllll',observable)
 
 		// When we're NOT grouping
 		} else {
@@ -471,7 +472,7 @@ class RoomsListView extends React.Component {
 			let chats = data;
 			const {userInfo} = this.state;
 			const filteredChats = chats.filter(s => s.t === 'd');
-			console.log('fil',filteredChats)
+			console.log('fil',filteredChats.length)
 	      
 			/**
 			 * We trigger re-render only when chats order changes
@@ -499,37 +500,24 @@ class RoomsListView extends React.Component {
 				const channels = chats.filter(s => s.t === 'c' && !s.prid);
 				const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
 				const direct = chats.filter(s => s.t === 'd' && !s.prid);
-				console.log('UserInfo-------',userInfo.length)
-				const peerSupporter = filteredChats.filter(s => {
-					let isPeerSupporter = false;
+				// console.log('UserInfo-------',userInfo.length)
+				// const peerSupporter = filteredChats.filter(s => {
+				// 	let isPeerSupporter = false;
 			
-				userInfo.filter(peer => {
+				// userInfo.filter(peer => {
 						 
-					if(s.uids.includes(peer.user._id) && peer.user.roles.includes('Peer Supporter') ){
-						return isPeerSupporter = true;
-					} 
+				// 	if(s.uids.includes(peer.user._id) && peer.user.roles.includes('Peer Supporter') ){
+				// 		return isPeerSupporter = true;
+				// 	} 
 			  
-				})
-				return isPeerSupporter;
+				// })
+				// return isPeerSupporter;
 		
 					 
-					 })
-				// const direct1 = direct.filter(s => {
-				// 		let notPeerSupporter = false;
-				// 		 userInfo.forEach(peer => {
-				// 			  if(!peer.user.roles.includes('Peer Supporter') && !peer.user.roles.includes('user')){
-				// 				  console.log('00000000',peer.user.roles)
-				// 				  return notPeerSupporter = true;
-				// 			  }
-				// 		  })
-				// 		  console.log(s.uids,notPeerSupporter)
-				// 		  return notPeerSupporter;
-				// 		 })
-
-     
-				// const 
+				// 	 })
+			
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
-				  tempChats = this.addRoomsGroup( peerSupporter, PEER_SUPPORTERS, tempChats);
+				tempChats = this.addRoomsGroup(privateGroup, PEER_SUPPORTERS, tempChats);
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
@@ -919,20 +907,20 @@ class RoomsListView extends React.Component {
 			// 	console.log('1111111',id)
 			// 	el.user._id === id
 			// })
-			console.log('id',id)
-			//  const isObjectPresent = userInfo.find((o) => id === o.user._id);
-			function checkAvailability(arr, val) {
-				return arr.some(arrVal => {
-					console.log('userinfoId',arrVal.user._id)
-				return	val === arrVal.user._id});
-			  }
-			const check =  checkAvailability(userInfo,id)
-			 console.log('check',check)
-		 if(!check){
-			this.getInfo(id).then(res=>this.setState(prevState=>({
-				userInfo:[...prevState.userInfo,res]	
-			}))).catch(e=>console.log(e))
-		}
+		// 	console.log('id',id)
+		// 	//  const isObjectPresent = userInfo.find((o) => id === o.user._id);
+		// 	function checkAvailability(arr, val) {
+		// 		return arr.some(arrVal => {
+		// 			console.log('userinfoId',arrVal.user._id)
+		// 		return	val === arrVal.user._id});
+		// 	  }
+		// 	const check =  checkAvailability(userInfo,id)
+		// 	 console.log('check',check)
+		//  if(!check){
+		// 	this.getInfo(id).then(res=>this.setState(prevState=>({
+		// 		userInfo:[...prevState.userInfo,res]	
+		// 	}))).catch(e=>console.log(e))
+		// }
 		
 
 	// console.log('-------',userInfo)
