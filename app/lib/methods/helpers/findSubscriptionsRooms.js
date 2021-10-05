@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import database from '../../database';
 
-export default async(subscriptions = [], rooms = []) => {
+export default async (subscriptions = [], rooms = []) => {
 	try {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');

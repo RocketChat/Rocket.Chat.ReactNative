@@ -8,7 +8,7 @@ import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
 import { withTheme } from '../theme';
-import { isTablet, hasNotch } from '../utils/deviceInfo';
+import { hasNotch, isTablet } from '../utils/deviceInfo';
 import { TYPE } from '../containers/Passcode/constants';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../utils/events';
@@ -39,11 +39,11 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 		}
 	}, [data]);
 
-	const showChangePasscode = (args) => {
+	const showChangePasscode = args => {
 		setData(args);
 	};
 
-	const onSubmit = (passcode) => {
+	const onSubmit = passcode => {
 		const { submit } = data;
 		if (submit) {
 			submit(passcode);
@@ -64,29 +64,22 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 			Orientation.lockToPortrait();
 		}
 		const listener = EventEmitter.addEventListener(CHANGE_PASSCODE_EMITTER, showChangePasscode);
-		return (() => {
+		return () => {
 			if (!isTablet) {
 				Orientation.unlockAllOrientations();
 			}
 			EventEmitter.removeListener(CHANGE_PASSCODE_EMITTER, listener);
-		});
+		};
 	}, []);
 
 	return (
-		<Modal
-			useNativeDriver
-			isVisible={visible}
-			hideModalContentWhileAnimating
-			style={styles.modal}
-		>
+		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal}>
 			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={onSubmit} force={data?.force} />
-			{!data?.force
-				? (
-					<Touchable onPress={onCancel} style={styles.close}>
-						<CustomIcon name='close' color={themes[theme].passcodePrimary} size={30} />
-					</Touchable>
-				)
-				: null}
+			{!data?.force ? (
+				<Touchable onPress={onCancel} style={styles.close}>
+					<CustomIcon name='close' color={themes[theme].passcodePrimary} size={30} />
+				</Touchable>
+			) : null}
 		</Modal>
 	);
 });

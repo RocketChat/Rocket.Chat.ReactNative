@@ -2,6 +2,9 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import logger from '@nozbe/watermelondb/utils/common/logger';
 
+import { isIOS } from '../../utils/deviceInfo';
+import appGroup from '../../utils/appGroup';
+import { isOfficial } from '../../constants/environment';
 import Subscription from './model/Subscription';
 import Room from './model/Room';
 import Message from './model/Message';
@@ -15,20 +18,13 @@ import Role from './model/Role';
 import Permission from './model/Permission';
 import SlashCommand from './model/SlashCommand';
 import User from './model/User';
-
 import LoggedUser from './model/servers/User';
 import Server from './model/servers/Server';
 import ServersHistory from './model/ServersHistory';
-
 import serversSchema from './schema/servers';
 import appSchema from './schema/app';
-
 import migrations from './model/migrations';
 import serversMigrations from './model/servers/migrations';
-
-import { isIOS } from '../../utils/deviceInfo';
-import appGroup from '../../utils/appGroup';
-import { isOfficial } from '../../constants/environment';
 
 const appGroupPath = isIOS ? appGroup.path : '';
 
@@ -36,7 +32,7 @@ if (__DEV__ && isIOS) {
 	console.log(appGroupPath);
 }
 
-const getDatabasePath = name => `${ appGroupPath }${ name }${ isOfficial ? '' : '-experimental' }.db`;
+const getDatabasePath = name => `${appGroupPath}${name}${isOfficial ? '' : '-experimental'}.db`;
 
 export const getDatabase = (database = '') => {
 	const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
@@ -64,8 +60,7 @@ export const getDatabase = (database = '') => {
 			Permission,
 			SlashCommand,
 			User
-		],
-		actionsEnabled: true
+		]
 	});
 };
 
@@ -77,10 +72,9 @@ class DB {
 				schema: serversSchema,
 				migrations: serversMigrations
 			}),
-			modelClasses: [Server, LoggedUser, ServersHistory],
-			actionsEnabled: true
+			modelClasses: [Server, LoggedUser, ServersHistory]
 		})
-	}
+	};
 
 	get active() {
 		return this.databases.shareDB || this.databases.activeDB;
@@ -121,8 +115,7 @@ class DB {
 				FrequentlyUsedEmoji,
 				Setting,
 				User
-			],
-			actionsEnabled: true
+			]
 		});
 	}
 

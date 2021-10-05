@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-	Linking, Share, Clipboard
-} from 'react-native';
+import { Clipboard, Linking, Share } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FastImage from '@rocket.chat/react-native-fast-image';
@@ -15,20 +13,16 @@ import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
-import {
-	getReadableVersion, getDeviceModel, isAndroid
-} from '../../utils/deviceInfo';
+import { getDeviceModel, getReadableVersion, isAndroid } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
-import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
-import { logEvent, events } from '../../utils/log';
-import {
-	PLAY_MARKET_LINK, FDROID_MARKET_LINK, APP_STORE_LINK, LICENSE_LINK
-} from '../../constants/links';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import { events, logEvent } from '../../utils/log';
+import { APP_STORE_LINK, FDROID_MARKET_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../constants/links';
 import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
-import { appStart as appStartAction, ROOT_LOADING } from '../../actions/app';
+import { ROOT_LOADING, appStart as appStartAction } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import SafeAreaView from '../../containers/SafeAreaView';
 import database from '../../lib/database';
@@ -37,11 +31,12 @@ import { getUserSelector } from '../../selectors/login';
 
 class SettingsView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => ({
-		headerLeft: () => (isMasterDetail ? (
-			<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
-		) : (
-			<HeaderButton.Drawer navigation={navigation} testID='settings-view-drawer' />
-		)),
+		headerLeft: () =>
+			isMasterDetail ? (
+				<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
+			) : (
+				<HeaderButton.Drawer navigation={navigation} testID='settings-view-drawer' />
+			),
 		title: I18n.t('Settings')
 	});
 
@@ -57,9 +52,9 @@ class SettingsView extends React.Component {
 			id: PropTypes.string
 		}),
 		appStart: PropTypes.func
-	}
+	};
 
-	checkCookiesAndLogout = async() => {
+	checkCookiesAndLogout = async () => {
 		const { logout, user } = this.props;
 		const db = database.servers;
 		const usersCollection = db.get('users');
@@ -71,7 +66,7 @@ class SettingsView extends React.Component {
 					message: I18n.t('Clear_cookies_desc'),
 					confirmationText: I18n.t('Clear_cookies_yes'),
 					dismissText: I18n.t('Clear_cookies_no'),
-					onPress: async() => {
+					onPress: async () => {
 						await CookieManager.clearAll(true);
 						logout();
 					},
@@ -85,7 +80,7 @@ class SettingsView extends React.Component {
 		} catch {
 			// Do nothing: user not found
 		}
-	}
+	};
 
 	handleLogout = () => {
 		logEvent(events.SE_LOG_OUT);
@@ -94,16 +89,18 @@ class SettingsView extends React.Component {
 			confirmationText: I18n.t('Logout'),
 			onPress: this.checkCookiesAndLogout
 		});
-	}
+	};
 
 	handleClearCache = () => {
 		logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
 			confirmationText: I18n.t('Clear'),
-			onPress: async() => {
+			onPress: async () => {
 				const {
-					server: { server }, appStart, selectServerRequest
+					server: { server },
+					appStart,
+					selectServerRequest
 				} = this.props;
 				appStart({ root: ROOT_LOADING, text: I18n.t('Clear_cache_loading') });
 				await RocketChat.clearCache({ server });
@@ -113,29 +110,29 @@ class SettingsView extends React.Component {
 				selectServerRequest(server);
 			}
 		});
-	}
+	};
 
-	navigateToScreen = (screen) => {
-		logEvent(events[`SE_GO_${ screen.replace('View', '').toUpperCase() }`]);
+	navigateToScreen = screen => {
+		logEvent(events[`SE_GO_${screen.replace('View', '').toUpperCase()}`]);
 		const { navigation } = this.props;
 		navigation.navigate(screen);
-	}
+	};
 
-	sendEmail = async() => {
+	sendEmail = async () => {
 		logEvent(events.SE_CONTACT_US);
 		const subject = encodeURI('React Native App Support');
 		const email = encodeURI('support@rocket.chat');
 		const description = encodeURI(`
-			version: ${ getReadableVersion }
-			device: ${ getDeviceModel }
+			version: ${getReadableVersion}
+			device: ${getDeviceModel}
 		`);
 		try {
-			await Linking.openURL(`mailto:${ email }?subject=${ subject }&body=${ description }`);
+			await Linking.openURL(`mailto:${email}?subject=${subject}&body=${description}`);
 		} catch (e) {
 			logEvent(events.SE_CONTACT_US_F);
 			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
 		}
-	}
+	};
 
 	shareApp = () => {
 		let message;
@@ -148,29 +145,31 @@ class SettingsView extends React.Component {
 			message = APP_STORE_LINK;
 		}
 		Share.share({ message });
-	}
+	};
 
 	copyServerVersion = () => {
-		const { server: { version } } = this.props;
+		const {
+			server: { version }
+		} = this.props;
 		logEvent(events.SE_COPY_SERVER_VERSION, { serverVersion: version });
 		this.saveToClipboard(version);
-	}
+	};
 
 	copyAppVersion = () => {
 		logEvent(events.SE_COPY_APP_VERSION, { appVersion: getReadableVersion });
 		this.saveToClipboard(getReadableVersion);
-	}
+	};
 
-	saveToClipboard = async(content) => {
+	saveToClipboard = async content => {
 		await Clipboard.setString(content);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
-	}
+	};
 
 	onPressLicense = () => {
 		logEvent(events.SE_READ_LICENSE);
 		const { theme } = this.props;
 		openLink(LICENSE_LINK, theme);
-	}
+	};
 
 	render() {
 		const { server, isMasterDetail, theme } = this.props;
@@ -200,12 +199,7 @@ class SettingsView extends React.Component {
 
 					<List.Section>
 						<List.Separator />
-						<List.Item
-							title='Contact_us'
-							onPress={this.sendEmail}
-							showActionIndicator
-							testID='settings-view-contact'
-						/>
+						<List.Item title='Contact_us' onPress={this.sendEmail} showActionIndicator testID='settings-view-contact' />
 						<List.Separator />
 						<List.Item
 							title='Language'
@@ -225,12 +219,7 @@ class SettingsView extends React.Component {
 							</>
 						) : null}
 						<List.Separator />
-						<List.Item
-							title='Share_this_app'
-							showActionIndicator
-							onPress={this.shareApp}
-							testID='settings-view-share-app'
-						/>
+						<List.Item title='Share_this_app' showActionIndicator onPress={this.shareApp} testID='settings-view-share-app' />
 						<List.Separator />
 						<List.Item
 							title='Default_browser'
@@ -257,12 +246,7 @@ class SettingsView extends React.Component {
 
 					<List.Section>
 						<List.Separator />
-						<List.Item
-							title='License'
-							onPress={this.onPressLicense}
-							showActionIndicator
-							testID='settings-view-license'
-						/>
+						<List.Item title='License' onPress={this.onPressLicense} showActionIndicator testID='settings-view-license' />
 						<List.Separator />
 						<List.Item
 							title={I18n.t('Version_no', { version: getReadableVersion })}
@@ -274,7 +258,7 @@ class SettingsView extends React.Component {
 						<List.Item
 							title={I18n.t('Server_version', { version: server.version })}
 							onPress={this.copyServerVersion}
-							subtitle={`${ server.server.split('//')[1] }`}
+							subtitle={`${server.server.split('//')[1]}`}
 							testID='settings-view-server-version'
 							translateTitle={false}
 							translateSubtitle={false}

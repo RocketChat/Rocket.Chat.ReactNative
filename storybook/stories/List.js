@@ -42,11 +42,10 @@ stories.add('pressable', () => (
 		<List.Separator />
 		<List.Item title='Press me' onPress={() => alert('Hi there!')} translateTitle={false} />
 		<List.Separator />
-		<List.Item title={'I\'m disabled'} onPress={() => alert('Hi there!')} disabled translateTitle={false} />
+		<List.Item title={"I'm disabled"} onPress={() => alert('Hi there!')} disabled translateTitle={false} />
 		<List.Separator />
 	</List.Container>
 ));
-
 
 stories.add('header', () => (
 	<List.Container>
@@ -177,9 +176,7 @@ const ListFull = () => (
 );
 
 const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider
-		value={{ theme }}
-	>
+	<ThemeContext.Provider value={{ theme }}>
 		<ListFull />
 	</ThemeContext.Provider>
 );
@@ -189,9 +186,7 @@ stories.add('with dark theme', () => <ThemeStory theme='dark' />);
 stories.add('with black theme', () => <ThemeStory theme='black' />);
 
 const FontStory = ({ fontScale }) => (
-	<DimensionsContext.Provider
-		value={{ fontScale }}
-	>
+	<DimensionsContext.Provider value={{ fontScale }}>
 		<ListFull />
 	</DimensionsContext.Provider>
 );

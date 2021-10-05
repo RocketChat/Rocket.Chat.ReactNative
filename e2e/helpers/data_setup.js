@@ -1,4 +1,5 @@
 const axios = require('axios').default;
+
 const data = require('../data');
 
 const TEAM_TYPE = {
@@ -9,14 +10,14 @@ const TEAM_TYPE = {
 const { server } = data;
 
 const rocketchat = axios.create({
-	baseURL: `${ server }/api/v1/`,
+	baseURL: `${server}/api/v1/`,
 	headers: {
 		'Content-Type': 'application/json;charset=UTF-8'
 	}
 });
 
-const login = async(username, password) => {
-	console.log(`Logging in as user ${ username }`);
+const login = async (username, password) => {
+	console.log(`Logging in as user ${username}`);
 	const response = await rocketchat.post('login', {
 		user: username,
 		password
@@ -28,8 +29,8 @@ const login = async(username, password) => {
 	return { authToken, userId };
 };
 
-const createUser = async(username, password, name, email) => {
-	console.log(`Creating user ${ username }`);
+const createUser = async (username, password, name, email) => {
+	console.log(`Creating user ${username}`);
 	try {
 		await rocketchat.post('users.create', {
 			username,
@@ -43,16 +44,17 @@ const createUser = async(username, password, name, email) => {
 	}
 };
 
-const createChannelIfNotExists = async(channelname) => {
-	console.log(`Creating public channel ${ channelname }`);
+const createChannelIfNotExists = async channelname => {
+	console.log(`Creating public channel ${channelname}`);
 	try {
 		const room = await rocketchat.post('channels.create', {
 			name: channelname
 		});
 		return room;
 	} catch (createError) {
-		try { // Maybe it exists already?
-			const room = rocketchat.get(`channels.info?roomName=${ channelname }`);
+		try {
+			// Maybe it exists already?
+			const room = rocketchat.get(`channels.info?roomName=${channelname}`);
 			return room;
 		} catch (infoError) {
 			console.log(JSON.stringify(createError));
@@ -62,16 +64,17 @@ const createChannelIfNotExists = async(channelname) => {
 	}
 };
 
-const createTeamIfNotExists = async(teamname) => {
-	console.log(`Creating private team ${ teamname }`);
+const createTeamIfNotExists = async teamname => {
+	console.log(`Creating private team ${teamname}`);
 	try {
 		await rocketchat.post('teams.create', {
 			name: teamname,
 			type: TEAM_TYPE.PRIVATE
 		});
 	} catch (createError) {
-		try { // Maybe it exists already?
-			await rocketchat.get(`teams.info?teamName=${ teamname }`);
+		try {
+			// Maybe it exists already?
+			await rocketchat.get(`teams.info?teamName=${teamname}`);
 		} catch (infoError) {
 			console.log(JSON.stringify(createError));
 			console.log(JSON.stringify(infoError));
@@ -80,15 +83,16 @@ const createTeamIfNotExists = async(teamname) => {
 	}
 };
 
-const createGroupIfNotExists = async(groupname) => {
-	console.log(`Creating private group ${ groupname }`);
+const createGroupIfNotExists = async groupname => {
+	console.log(`Creating private group ${groupname}`);
 	try {
 		await rocketchat.post('groups.create', {
 			name: groupname
 		});
 	} catch (createError) {
-		try { // Maybe it exists already?
-			await rocketchat.get(`groups.info?roomName=${ groupname }`);
+		try {
+			// Maybe it exists already?
+			await rocketchat.get(`groups.info?roomName=${groupname}`);
 		} catch (infoError) {
 			console.log(JSON.stringify(createError));
 			console.log(JSON.stringify(infoError));
@@ -97,16 +101,13 @@ const createGroupIfNotExists = async(groupname) => {
 	}
 };
 
-const changeChannelJoinCode = async(roomId, joinCode) => {
-	console.log(`Changing channel Join Code ${ roomId }`);
+const changeChannelJoinCode = async (roomId, joinCode) => {
+	console.log(`Changing channel Join Code ${roomId}`);
 	try {
 		await rocketchat.post('method.call/saveRoomSettings', {
 			message: JSON.stringify({
 				method: 'saveRoomSettings',
-				params: [
-					roomId,
-					{ joinCode }
-				]
+				params: [roomId, { joinCode }]
 			})
 		});
 	} catch (createError) {
@@ -115,8 +116,8 @@ const changeChannelJoinCode = async(roomId, joinCode) => {
 	}
 };
 
-const sendMessage = async(user, channel, msg) => {
-	console.log(`Sending message to ${ channel }`);
+const sendMessage = async (user, channel, msg) => {
+	console.log(`Sending message to ${channel}`);
 	try {
 		await login(user.username, user.password);
 		await rocketchat.post('chat.postMessage', { channel, msg });
@@ -126,7 +127,7 @@ const sendMessage = async(user, channel, msg) => {
 	}
 };
 
-const setup = async() => {
+const setup = async () => {
 	await login(data.adminUser, data.adminPassword);
 
 	for (const userKey in data.users) {
@@ -139,7 +140,11 @@ const setup = async() => {
 	for (const channelKey in data.channels) {
 		if (Object.prototype.hasOwnProperty.call(data.channels, channelKey)) {
 			const channel = data.channels[channelKey];
-			const { data: { channel: { _id } } } = await createChannelIfNotExists(channel.name);
+			const {
+				data: {
+					channel: { _id }
+				}
+			} = await createChannelIfNotExists(channel.name);
 
 			if (channel.joinCode) {
 				await changeChannelJoinCode(_id, channel.joinCode);
@@ -164,16 +169,20 @@ const setup = async() => {
 	}
 };
 
-const get = (endpoint) => {
-	console.log(`GET /${ endpoint }`);
+const get = endpoint => {
+	console.log(`GET /${endpoint}`);
 	return rocketchat.get(endpoint);
 };
 
 const post = (endpoint, body) => {
-	console.log(`POST /${ endpoint } ${ JSON.stringify(body) }`);
+	console.log(`POST /${endpoint} ${JSON.stringify(body)}`);
 	return rocketchat.post(endpoint, body);
 };
 
 module.exports = {
-	setup, sendMessage, get, post, login
+	setup,
+	sendMessage,
+	get,
+	post,
+	login
 };

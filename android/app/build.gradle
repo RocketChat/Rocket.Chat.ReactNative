@@ -25,7 +25,7 @@ import com.android.build.OutputFile
  *   bundleAssetName: "index.android.bundle",
  *
  *   // the entry file for bundle generation. If none specified and
- *   // "index.android.js" exists, it will be used. Otherwise "index.js" is
+ *   // "index.android.js" exists, it will be used. Otherwise "index.tsx" is
  *   // default. Can be overridden with ENTRY_FILE environment variable.
  *   entryFile: "index.android.js",
  *
@@ -260,7 +260,6 @@ android {
 
 dependencies {
     addUnimodulesDependencies()
-    implementation project(':watermelondb')
     implementation project(':@react-native-community_viewpager')
     playImplementation project(':reactnativenotifications')
     playImplementation project(':@react-native-firebase_app')

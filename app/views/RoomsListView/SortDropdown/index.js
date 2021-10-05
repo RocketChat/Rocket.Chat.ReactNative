@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-	Animated, Easing, TouchableWithoutFeedback
-} from 'react-native';
+import { Animated, Easing, TouchableWithoutFeedback } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,7 +8,7 @@ import styles from '../styles';
 import * as List from '../../../containers/List';
 import RocketChat from '../../../lib/rocketchat';
 import { setPreference } from '../../../actions/sortPreferences';
-import log, { logEvent, events } from '../../../utils/log';
+import log, { events, logEvent } from '../../../utils/log';
 import I18n from '../../../i18n';
 import { withTheme } from '../../../theme';
 import { themes } from '../../../constants/colors';
@@ -30,7 +28,7 @@ class Sort extends PureComponent {
 		theme: PropTypes.string,
 		insets: PropTypes.object,
 		setSortPreference: PropTypes.func
-	}
+	};
 
 	constructor(props) {
 		super(props);
@@ -38,15 +36,12 @@ class Sort extends PureComponent {
 	}
 
 	componentDidMount() {
-		Animated.timing(
-			this.animatedValue,
-			{
-				toValue: 1,
-				duration: ANIMATION_DURATION,
-				easing: Easing.inOut(Easing.quad),
-				useNativeDriver: true
-			}
-		).start();
+		Animated.timing(this.animatedValue, {
+			toValue: 1,
+			duration: ANIMATION_DURATION,
+			easing: Easing.inOut(Easing.quad),
+			useNativeDriver: true
+		}).start();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -56,7 +51,7 @@ class Sort extends PureComponent {
 		}
 	}
 
-	setSortPreference = (param) => {
+	setSortPreference = param => {
 		const { setSortPreference } = this.props;
 
 		try {
@@ -66,55 +61,52 @@ class Sort extends PureComponent {
 			logEvent(events.RL_SORT_CHANNELS_F);
 			log(e);
 		}
-	}
+	};
 
 	sortByName = () => {
 		logEvent(events.RL_SORT_CHANNELS_BY_NAME);
 		this.setSortPreference({ sortBy: 'alphabetical' });
 		this.close();
-	}
+	};
 
 	sortByActivity = () => {
 		logEvent(events.RL_SORT_CHANNELS_BY_ACTIVITY);
 		this.setSortPreference({ sortBy: 'activity' });
 		this.close();
-	}
+	};
 
 	toggleGroupByType = () => {
 		logEvent(events.RL_GROUP_CHANNELS_BY_TYPE);
 		const { groupByType } = this.props;
 		this.setSortPreference({ groupByType: !groupByType });
-	}
+	};
 
 	toggleGroupByFavorites = () => {
 		logEvent(events.RL_GROUP_CHANNELS_BY_FAVORITE);
 		const { showFavorites } = this.props;
 		this.setSortPreference({ showFavorites: !showFavorites });
-	}
+	};
 
 	toggleUnread = () => {
 		logEvent(events.RL_GROUP_CHANNELS_BY_UNREAD);
 		const { showUnread } = this.props;
 		this.setSortPreference({ showUnread: !showUnread });
-	}
+	};
 
 	close = () => {
 		const { close } = this.props;
-		Animated.timing(
-			this.animatedValue,
-			{
-				toValue: 0,
-				duration: ANIMATION_DURATION,
-				easing: Easing.inOut(Easing.quad),
-				useNativeDriver: true
-			}
-		).start(() => close());
-	}
+		Animated.timing(this.animatedValue, {
+			toValue: 0,
+			duration: ANIMATION_DURATION,
+			easing: Easing.inOut(Easing.quad),
+			useNativeDriver: true
+		}).start(() => close());
+	};
 
 	renderCheck = () => {
 		const { theme } = this.props;
 		return <List.Icon name='check' color={themes[theme].tintColor} />;
-	}
+	};
 
 	render() {
 		const { isMasterDetail, insets } = this.props;
@@ -124,9 +116,7 @@ class Sort extends PureComponent {
 			inputRange: [0, 1],
 			outputRange: [-326, heightDestination]
 		});
-		const {
-			sortBy, groupByType, showFavorites, showUnread, theme
-		} = this.props;
+		const { sortBy, groupByType, showFavorites, showUnread, theme } = this.props;
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
 			outputRange: [0, themes[theme].backdropOpacity]
@@ -135,12 +125,15 @@ class Sort extends PureComponent {
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>
-					<Animated.View style={[styles.backdrop,
-						{
-							backgroundColor: themes[theme].backdropColor,
-							opacity: backdropOpacity,
-							top: heightDestination
-						}]}
+					<Animated.View
+						style={[
+							styles.backdrop,
+							{
+								backgroundColor: themes[theme].backdropColor,
+								opacity: backdropOpacity,
+								top: heightDestination
+							}
+						]}
 					/>
 				</TouchableWithoutFeedback>
 				<Animated.View
@@ -151,8 +144,7 @@ class Sort extends PureComponent {
 							backgroundColor: themes[theme].backgroundColor,
 							borderColor: themes[theme].separatorColor
 						}
-					]}
-				>
+					]}>
 					<List.Item
 						title={I18n.t('Sorting_by', { key: I18n.t(sortBy === 'alphabetical' ? 'name' : 'activity') })}
 						left={() => <List.Icon name='sort' />}
