@@ -591,9 +591,9 @@ class RoomsListView extends React.Component {
 
 	isRead = item => RocketChat.isRead(item);
 
-	isSwipeEnabled = item => RocketChat.isSwipeEnabled(item)
+	isSwipeEnabled = item => !(item?.search || item?.joinCodeRequired || item?.outside);
 
-	getUserPresence = uid => RocketChat.getUserPresence(uid)
+	getUserPresence = uid => RocketChat.getUserPresence(uid);
 
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
 

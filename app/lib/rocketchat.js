@@ -1204,10 +1204,6 @@ const RocketChat = {
 		return !isUnread;
 	},
 
-	isSwipeEnabled(item) {
-		return !(item?.search || item?.joinCodeRequired || item?.outside);
-	},
-
 	isGroupChat(room) {
 		return (room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2);
 	},
