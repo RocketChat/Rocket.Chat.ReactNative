@@ -13,7 +13,8 @@ import ServerAvatar from './ServerAvatar';
 import styles from './styles';
 
 interface IWorkSpaceProp {
-	navigation: StackNavigationProp<any, 'WorkspaceView'>; // waiting for the RootStackParamList https://reactnavigation.org/docs/typescript/#type-checking-screens
+	// TODO: waiting for the RootStackParamList https://reactnavigation.org/docs/typescript/#type-checking-screens
+	navigation: StackNavigationProp<any, 'WorkspaceView'>;
 	theme: string;
 	Site_Name: string;
 	Site_Url: string;
