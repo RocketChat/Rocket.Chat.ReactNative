@@ -4,29 +4,22 @@ import RNBootSplash from 'react-native-bootsplash';
 import UserPreferences from '../lib/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
-import { toggleCrashReport, toggleAnalyticsEvents } from '../actions/crashReport';
 import { APP } from '../actions/actionsTypes';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import database from '../lib/database';
 import { localAuthenticate } from '../utils/localAuthentication';
-import { appStart, ROOT_OUTSIDE, appReady } from '../actions/app';
+import { ROOT_OUTSIDE, appReady, appStart } from '../actions/app';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
-
-	const allowCrashReport = yield RocketChat.getAllowCrashReport();
-	yield put(toggleCrashReport(allowCrashReport));
-
-	const allowAnalyticsEvents = yield RocketChat.getAllowAnalyticsEvents();
-	yield put(toggleAnalyticsEvents(allowAnalyticsEvents));
 };
 
 const restore = function* restore() {
 	try {
 		const server = yield UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
-		let userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ server }`);
+		let userId = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
 
 		if (!server) {
 			yield put(appStart({ root: ROOT_OUTSIDE }));
@@ -39,7 +32,7 @@ const restore = function* restore() {
 			if (servers.length > 0) {
 				for (let i = 0; i < servers.length; i += 1) {
 					const newServer = servers[i].id;
-					userId = yield UserPreferences.getStringAsync(`${ RocketChat.TOKEN_KEY }-${ newServer }`);
+					userId = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${newServer}`);
 					if (userId) {
 						return yield put(selectServerRequest(newServer));
 					}
@@ -67,8 +60,8 @@ const restore = function* restore() {
 	}
 };
 
-const start = function start() {
-	RNBootSplash.hide();
+const start = function* start() {
+	yield RNBootSplash.hide();
 };
 
 const root = function* root() {

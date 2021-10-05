@@ -8,9 +8,9 @@ import { themes } from '../constants/colors';
 import openLink from '../utils/openLink';
 import I18n from '../i18n';
 import debounce from '../utils/debounce';
-import sharedStyles from './Styles';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	noResult: {
@@ -37,7 +37,7 @@ const VisitorNavigationView = ({ route, theme }) => {
 	let total = 0;
 	const [pages, setPages] = useState([]);
 
-	const getPages = async() => {
+	const getPages = async () => {
 		const rid = route.params?.rid;
 		if (rid) {
 			try {
@@ -53,7 +53,9 @@ const VisitorNavigationView = ({ route, theme }) => {
 		}
 	};
 
-	useEffect(() => { getPages(); }, []);
+	useEffect(() => {
+		getPages();
+	}, []);
 
 	const onEndReached = debounce(() => {
 		if (pages.length <= total) {
@@ -70,7 +72,9 @@ const VisitorNavigationView = ({ route, theme }) => {
 				ListFooterComponent={List.Separator}
 				ListHeaderComponent={List.Separator}
 				contentContainerStyle={List.styles.contentContainerStyleFlatList}
-				ListEmptyComponent={() => <Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>}
+				ListEmptyComponent={() => (
+					<Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+				)}
 				keyExtractor={item => item}
 				onEndReached={onEndReached}
 				onEndReachedThreshold={5}

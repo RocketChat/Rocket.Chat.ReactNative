@@ -20,7 +20,7 @@ export async function cancelUpload(item) {
 		}
 		try {
 			const db = database.active;
-			await db.action(async() => {
+			await db.action(async () => {
 				await item.destroyPermanently();
 			});
 		} catch (e) {
@@ -31,11 +31,11 @@ export async function cancelUpload(item) {
 }
 
 export function sendFileMessage(rid, fileInfo, tmid, server, user) {
-	return new Promise(async(resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 		try {
 			const { id, token } = user;
 
-			const uploadUrl = `${ server }/api/v1/rooms.upload/${ rid }`;
+			const uploadUrl = `${server}/api/v1/rooms.upload/${rid}`;
 
 			fileInfo.rid = rid;
 
@@ -46,8 +46,8 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				uploadRecord = await uploadsCollection.find(fileInfo.path);
 			} catch (error) {
 				try {
-					await db.action(async() => {
-						uploadRecord = await uploadsCollection.create((u) => {
+					await db.action(async () => {
+						uploadRecord = await uploadsCollection.create(u => {
 							u._raw = sanitizedRaw({ id: fileInfo.path }, uploadsCollection.schema);
 							Object.assign(u, fileInfo);
 							u.subscription.id = rid;
@@ -89,10 +89,10 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			uploadQueue[fileInfo.path] = FileUpload.fetch('POST', uploadUrl, headers, formData);
 
-			uploadQueue[fileInfo.path].uploadProgress(async(loaded, total) => {
+			uploadQueue[fileInfo.path].uploadProgress(async (loaded, total) => {
 				try {
-					await db.action(async() => {
-						await uploadRecord.update((u) => {
+					await db.action(async () => {
+						await uploadRecord.update(u => {
 							u.progress = Math.floor((loaded / total) * 100);
 						});
 					});
@@ -101,10 +101,11 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				}
 			});
 
-			uploadQueue[fileInfo.path].then(async(response) => {
-				if (response.respInfo.status >= 200 && response.respInfo.status < 400) { // If response is all good...
+			uploadQueue[fileInfo.path].then(async response => {
+				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
+					// If response is all good...
 					try {
-						await db.action(async() => {
+						await db.action(async () => {
 							await uploadRecord.destroyPermanently();
 						});
 						resolve(response);
@@ -113,8 +114,8 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 					}
 				} else {
 					try {
-						await db.action(async() => {
-							await uploadRecord.update((u) => {
+						await db.action(async () => {
+							await uploadRecord.update(u => {
 								u.error = true;
 							});
 						});
@@ -129,10 +130,10 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				}
 			});
 
-			uploadQueue[fileInfo.path].catch(async(error) => {
+			uploadQueue[fileInfo.path].catch(async error => {
 				try {
-					await db.action(async() => {
-						await uploadRecord.update((u) => {
+					await db.action(async () => {
+						await uploadRecord.update(u => {
 							u.error = true;
 						});
 					});

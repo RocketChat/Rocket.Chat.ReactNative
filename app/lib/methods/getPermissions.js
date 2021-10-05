@@ -7,8 +7,8 @@ import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
 import RocketChat from '../rocketchat';
-import protectedFunction from './helpers/protectedFunction';
 import { setPermissions as setPermissionsAction } from '../../actions/permissions';
+import protectedFunction from './helpers/protectedFunction';
 
 const PERMISSIONS = [
 	'add-user-to-any-c-room',
@@ -18,6 +18,10 @@ const PERMISSIONS = [
 	'archive-room',
 	'auto-translate',
 	'create-invite-links',
+	'create-c',
+	'create-p',
+	'create-d',
+	'start-discussion',
 	'create-team',
 	'delete-c',
 	'delete-message',
@@ -47,7 +51,11 @@ const PERMISSIONS = [
 	'view-statistics',
 	'view-user-administration',
 	'view-all-teams',
-	'view-all-team-channels'
+	'view-all-team-channels',
+	'convert-team',
+	'edit-omnichannel-contact',
+	'edit-livechat-room-customfields',
+	'view-canned-responses'
 ];
 
 export async function setPermissions() {
@@ -59,12 +67,16 @@ export async function setPermissions() {
 	reduxStore.dispatch(setPermissionsAction(parsed));
 }
 
-const getUpdatedSince = (allRecords) => {
+const getUpdatedSince = allRecords => {
 	try {
 		if (!allRecords.length) {
 			return null;
 		}
-		const ordered = orderBy(allRecords.filter(item => item._updatedAt !== null), ['_updatedAt'], ['desc']);
+		const ordered = orderBy(
+			allRecords.filter(item => item._updatedAt !== null),
+			['_updatedAt'],
+			['desc']
+		);
 		return ordered && ordered[0]._updatedAt.toISOString();
 	} catch (e) {
 		log(e);
@@ -72,7 +84,7 @@ const getUpdatedSince = (allRecords) => {
 	return null;
 };
 
-const updatePermissions = async({ update = [], remove = [], allRecords }) => {
+const updatePermissions = async ({ update = [], remove = [], allRecords }) => {
 	if (!((update && update.length) || (remove && remove.length))) {
 		return;
 	}
@@ -88,15 +100,21 @@ const updatePermissions = async({ update = [], remove = [], allRecords }) => {
 	if (update && update.length) {
 		permissionsToCreate = update.filter(i1 => !allRecords.find(i2 => i1._id === i2.id));
 		permissionsToUpdate = allRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
-		permissionsToCreate = permissionsToCreate.map(permission => permissionsCollection.prepareCreate(protectedFunction((p) => {
-			p._raw = sanitizedRaw({ id: permission._id }, permissionsCollection.schema);
-			Object.assign(p, permission);
-		})));
-		permissionsToUpdate = permissionsToUpdate.map((permission) => {
+		permissionsToCreate = permissionsToCreate.map(permission =>
+			permissionsCollection.prepareCreate(
+				protectedFunction(p => {
+					p._raw = sanitizedRaw({ id: permission._id }, permissionsCollection.schema);
+					Object.assign(p, permission);
+				})
+			)
+		);
+		permissionsToUpdate = permissionsToUpdate.map(permission => {
 			const newPermission = update.find(p => p._id === permission.id);
-			return permission.prepareUpdate(protectedFunction((p) => {
-				Object.assign(p, newPermission);
-			}));
+			return permission.prepareUpdate(
+				protectedFunction(p => {
+					Object.assign(p, newPermission);
+				})
+			);
 		});
 	}
 
@@ -106,14 +124,10 @@ const updatePermissions = async({ update = [], remove = [], allRecords }) => {
 		permissionsToDelete = permissionsToDelete.map(permission => permission.prepareDestroyPermanently());
 	}
 
-	const batch = [
-		...permissionsToCreate,
-		...permissionsToUpdate,
-		...permissionsToDelete
-	];
+	const batch = [...permissionsToCreate, ...permissionsToUpdate, ...permissionsToDelete];
 
 	try {
-		await db.action(async() => {
+		await db.action(async () => {
 			await db.batch(...batch);
 		});
 		return true;
@@ -123,7 +137,7 @@ const updatePermissions = async({ update = [], remove = [], allRecords }) => {
 };
 
 export function getPermissions() {
-	return new Promise(async(resolve) => {
+	return new Promise(async resolve => {
 		try {
 			const serverVersion = reduxStore.getState().server.version;
 			const db = database.active;
