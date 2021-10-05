@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-
+import { dequal } from 'dequal';
 import * as List from '../containers/List';
+
 import Touch from '../utils/touch';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
@@ -57,13 +58,19 @@ class NewMessageView extends React.Component {
 		baseUrl: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			roles: PropTypes.array
 		}),
 		create: PropTypes.func,
 		maxUsers: PropTypes.number,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
-		serverVersion: PropTypes.string
+		serverVersion: PropTypes.string,
+		createTeamPermission: PropTypes.array,
+		createDirectMessagePermission: PropTypes.array,
+		createPublicChannelPermission: PropTypes.array,
+		createPrivateChannelPermission: PropTypes.array,
+		createDiscussionPermission: PropTypes.array
 	};
 
 	constructor(props) {
@@ -71,7 +78,8 @@ class NewMessageView extends React.Component {
 		this.init();
 		this.state = {
 			search: [],
-			chats: []
+			chats: [],
+			permissions: []
 		};
 	}
 
@@ -89,6 +97,30 @@ class NewMessageView extends React.Component {
 			log(e);
 		}
 	};
+
+	componentDidMount() {
+		this.handleHasPermission();
+	}
+
+	componentDidUpdate(prevProps) {
+		const {
+			createTeamPermission,
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createDirectMessagePermission,
+			createDiscussionPermission
+		} = this.props;
+
+		if (
+			!dequal(createTeamPermission, prevProps.createTeamPermission) ||
+			!dequal(createPublicChannelPermission, prevProps.createPublicChannelPermission) ||
+			!dequal(createPrivateChannelPermission, prevProps.createPrivateChannelPermission) ||
+			!dequal(createDirectMessagePermission, prevProps.createDirectMessagePermission) ||
+			!dequal(createDiscussionPermission, prevProps.createDiscussionPermission)
+		) {
+			this.handleHasPermission();
+		}
+	}
 
 	onSearchChangeText(text) {
 		this.search(text);
@@ -161,20 +193,43 @@ class NewMessageView extends React.Component {
 		Navigation.navigate('CreateDiscussionView');
 	};
 
+	handleHasPermission = async () => {
+		const {
+			createTeamPermission,
+			createDirectMessagePermission,
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createDiscussionPermission
+		} = this.props;
+		const permissions = [
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createTeamPermission,
+			createDirectMessagePermission,
+			createDiscussionPermission
+		];
+		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		this.setState({ permissions: permissionsToCreate });
+	};
+
 	renderHeader = () => {
 		const { maxUsers, theme, serverVersion } = this.props;
+		const { permissions } = this.state;
+
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<View style={styles.buttonContainer}>
-					{this.renderButton({
-						onPress: this.createChannel,
-						title: I18n.t('Create_Channel'),
-						icon: 'channel-public',
-						testID: 'new-message-view-create-channel',
-						first: true
-					})}
-					{compareServerVersion(serverVersion, '3.13.0', methods.greaterThanOrEqualTo)
+					{permissions[0] || permissions[1]
+						? this.renderButton({
+								onPress: this.createChannel,
+								title: I18n.t('Create_Channel'),
+								icon: 'channel-public',
+								testID: 'new-message-view-create-channel',
+								first: true
+						  })
+						: null}
+					{compareServerVersion(serverVersion, '3.13.0', methods.greaterThanOrEqualTo) && permissions[2]
 						? this.renderButton({
 								onPress: this.createTeam,
 								title: I18n.t('Create_Team'),
@@ -182,7 +237,7 @@ class NewMessageView extends React.Component {
 								testID: 'new-message-view-create-team'
 						  })
 						: null}
-					{maxUsers > 2
+					{maxUsers > 2 && permissions[3]
 						? this.renderButton({
 								onPress: this.createGroupChat,
 								title: I18n.t('Create_Direct_Messages'),
@@ -190,12 +245,14 @@ class NewMessageView extends React.Component {
 								testID: 'new-message-view-create-direct-message'
 						  })
 						: null}
-					{this.renderButton({
-						onPress: this.createDiscussion,
-						title: I18n.t('Create_Discussion'),
-						icon: 'discussions',
-						testID: 'new-message-view-create-discussion'
-					})}
+					{permissions[4]
+						? this.renderButton({
+								onPress: this.createDiscussion,
+								title: I18n.t('Create_Discussion'),
+								icon: 'discussions',
+								testID: 'new-message-view-create-discussion'
+						  })
+						: null}
 				</View>
 			</View>
 		);
@@ -261,7 +318,12 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	maxUsers: state.settings.DirectMesssage_maxUsers || 1,
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	createTeamPermission: state.permissions['create-team'],
+	createDirectMessagePermission: state.permissions['create-d'],
+	createPublicChannelPermission: state.permissions['create-c'],
+	createPrivateChannelPermission: state.permissions['create-p'],
+	createDiscussionPermission: state.permissions['start-discussion']
 });
 
 const mapDispatchToProps = dispatch => ({

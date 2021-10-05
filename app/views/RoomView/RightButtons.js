@@ -20,7 +20,8 @@ class RightButtonsContainer extends Component {
 		navigation: PropTypes.object,
 		isMasterDetail: PropTypes.bool,
 		toggleFollowThread: PropTypes.func,
-		joined: PropTypes.bool
+		joined: PropTypes.bool,
+		encrypted: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -137,11 +138,14 @@ class RightButtonsContainer extends Component {
 
 	goSearchView = () => {
 		logEvent(events.ROOM_GO_SEARCH);
-		const { rid, t, navigation, isMasterDetail } = this.props;
+		const { rid, t, navigation, isMasterDetail, encrypted } = this.props;
 		if (isMasterDetail) {
-			navigation.navigate('ModalStackNavigator', { screen: 'SearchMessagesView', params: { rid, showCloseModal: true } });
+			navigation.navigate('ModalStackNavigator', {
+				screen: 'SearchMessagesView',
+				params: { rid, showCloseModal: true, encrypted }
+			});
 		} else {
-			navigation.navigate('SearchMessagesView', { rid, t });
+			navigation.navigate('SearchMessagesView', { rid, t, encrypted });
 		}
 	};
 
