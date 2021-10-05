@@ -47,7 +47,8 @@ class ThreadMessagesView extends React.Component {
 		useRealName: PropTypes.bool,
 		theme: PropTypes.string,
 		isMasterDetail: PropTypes.bool,
-		insets: PropTypes.object
+		insets: PropTypes.object,
+		Message_TimeFormat: PropTypes.string
 	};
 
 	constructor(props) {
@@ -412,7 +413,7 @@ class ThreadMessagesView extends React.Component {
 	};
 
 	renderItem = ({ item }) => {
-		const { user, navigation, baseUrl, useRealName } = this.props;
+		const { user, navigation, baseUrl, useRealName, Message_TimeFormat } = this.props;
 		const badgeColor = this.getBadgeColor(item);
 		return (
 			<Item
@@ -425,6 +426,7 @@ class ThreadMessagesView extends React.Component {
 					badgeColor
 				}}
 				thread
+				timeFormat={Message_TimeFormat}
 				onPress={this.onThreadPress}
 				toggleFollowThread={this.toggleFollowThread}
 			/>
@@ -506,7 +508,8 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
+	Message_TimeFormat: state.settings.Message_TimeFormat
 });
 
 export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ThreadMessagesView)));
