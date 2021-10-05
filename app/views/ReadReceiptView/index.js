@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Text, View, RefreshControl } from 'react-native';
+import { ScrollView, FlatList, Text, View, RefreshControl } from 'react-native';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -17,6 +17,7 @@ import { themes } from '../../constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 
+
 class ReadReceiptView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
 		const options = {
@@ -25,6 +26,7 @@ class ReadReceiptView extends React.Component {
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='read-receipt-view-close' />;
 		}
+
 		return options;
 	};
 
@@ -50,7 +52,7 @@ class ReadReceiptView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, receipts } = this.state;
-		const { theme, refreshing } = this.props;
+		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -86,13 +88,21 @@ class ReadReceiptView extends React.Component {
 	};
 
 	renderEmpty = () => {
-		const { theme } = this.props;
+		const { theme, refreshing, loading } = this.props;
 		return (
-			<View
-				style={[styles.listEmptyContainer, { backgroundColor: themes[theme].chatComponentBackground }]}
-				testID='read-receipt-view'>
-				<Text style={{ color: themes[theme].titleText }}>{I18n.t('No_Read_Receipts')}</Text>
-			</View>
+			<SafeAreaView testID='read-receipt-view'>
+				{loading ? (
+					<ActivityIndicator theme={theme} />
+				) : (
+				<ScrollView
+					contentContainerStyle={[styles.listEmptyContainer, { backgroundColor: themes[theme].chatComponentBackground }]}
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
+					}>
+					<Text style={{ color: themes[theme].titleText }}>{I18n.t('No_Read_Receipts')}</Text>
+				</ScrollView>
+				)}
+			</SafeAreaView>
 		);
 	};
 
@@ -118,7 +128,7 @@ class ReadReceiptView extends React.Component {
 
 	render() {
 		const { receipts, loading } = this.state;
-		const { theme } = this.props;
+		const { theme, refreshing } = this.props;
 
 		if (!loading && receipts.length === 0) {
 			return this.renderEmpty();
@@ -150,6 +160,7 @@ class ReadReceiptView extends React.Component {
 			</SafeAreaView>
 		);
 	}
+
 	onRefresh = () => {
 		const { loading } = this.state;
 		if (loading) {
