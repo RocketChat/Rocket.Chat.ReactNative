@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, Text, View, RefreshControl } from 'react-native';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
@@ -31,7 +31,8 @@ class ReadReceiptView extends React.Component {
 	static propTypes = {
 		route: PropTypes.object,
 		Message_TimeAndDateFormat: PropTypes.string,
-		theme: PropTypes.string
+		theme: PropTypes.string,
+		refreshing: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -49,7 +50,7 @@ class ReadReceiptView extends React.Component {
 
 	shouldComponentUpdate(nextProps, nextState) {
 		const { loading, receipts } = this.state;
-		const { theme } = this.props;
+		const { theme, refreshing } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -140,12 +141,22 @@ class ReadReceiptView extends React.Component {
 								borderColor: themes[theme].separatorColor
 							}
 						]}
+						refreshControl={
+							<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
+						}
 						keyExtractor={item => item._id}
 					/>
 				)}
 			</SafeAreaView>
 		);
 	}
+	onRefresh = () => {
+		const { loading } = this.state;
+		if (loading) {
+			return;
+		}
+		this.load();
+	};
 }
 
 const mapStateToProps = state => ({
