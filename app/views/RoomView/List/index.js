@@ -14,10 +14,9 @@ import { animateNextTransition } from '../../../utils/layoutAnimation';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { themes } from '../../../constants/colors';
 import debounce from '../../../utils/debounce';
+import { compareServerVersion, methods } from '../../../lib/utils';
 import List from './List';
 import NavBottomFAB from './NavBottomFAB';
-import debounce from '../../../utils/debounce';
-import { compareServerVersion, methods } from '../../../lib/utils';
 
 const QUERY_SIZE = 50;
 
@@ -134,9 +133,7 @@ class ListContainer extends React.Component {
 
 	query = async () => {
 		this.count += QUERY_SIZE;
-		const {
-			rid, tmid, showMessageInMainThread, serverVersion
-		} = this.props;
+		const { rid, tmid, showMessageInMainThread, serverVersion } = this.props;
 		const db = database.active;
 
 		// handle servers with version < 3.0.0
@@ -173,19 +170,18 @@ class ListContainer extends React.Component {
 
 		if (rid) {
 			this.unsubscribeMessages();
-			this.messagesSubscription = this.messagesObservable
-				.subscribe((messages) => {
-					if (tmid && this.thread) {
-						messages = [...messages, this.thread];
-					}
+			this.messagesSubscription = this.messagesObservable.subscribe(messages => {
+				if (tmid && this.thread) {
+					messages = [...messages, this.thread];
+				}
 
-					/**
-					 * Since 3.16.0 server version, the backend don't response with messages if
-					 * hide system message is enabled
-					 */
-					if (compareServerVersion(serverVersion, '3.16.0', methods.lowerThan) || hideSystemMessages.length) {
-						messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
-					}
+				/**
+				 * Since 3.16.0 server version, the backend don't response with messages if
+				 * hide system message is enabled
+				 */
+				if (compareServerVersion(serverVersion, '3.16.0', methods.lowerThan) || hideSystemMessages.length) {
+					messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
+				}
 
 				if (this.mounted) {
 					this.setState({ messages }, () => this.update());
