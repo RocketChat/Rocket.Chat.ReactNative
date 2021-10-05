@@ -1,6 +1,5 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import I18n from '../i18n';
@@ -23,25 +22,25 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AuthLoadingView = React.memo(({ theme, text }) => (
+interface IAuthLoadingView {
+	theme: string;
+	text: string;
+}
+
+const AuthLoadingView = React.memo(({ theme, text }: IAuthLoadingView) => (
 	<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 		<StatusBar />
-		{text && (
+		{text ? (
 			<>
 				<ActivityIndicator color={themes[theme].auxiliaryText} size='large' />
 				<Text style={[styles.text, { color: themes[theme].bodyText }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
 			</>
-		)}
+		) : null}
 	</View>
 ));
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	text: state.app.text
 });
-
-AuthLoadingView.propTypes = {
-	theme: PropTypes.string,
-	text: PropTypes.string
-};
 
 export default connect(mapStateToProps)(withTheme(AuthLoadingView));
