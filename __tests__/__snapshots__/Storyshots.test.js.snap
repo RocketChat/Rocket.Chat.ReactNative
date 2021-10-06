@@ -5900,7 +5900,28 @@ exports[`Storyshots List with FlatList 1`] = `
                     "flexDirection": "row",
                   }
                 }
-              />
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "System",
+                        "fontSize": 16,
+                        "fontWeight": "400",
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#0d0e12",
+                      },
+                    ]
+                  }
+                >
+                  0
+                </Text>
+              </View>
             </View>
           </View>
         </View>

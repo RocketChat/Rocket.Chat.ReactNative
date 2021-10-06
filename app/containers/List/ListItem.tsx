@@ -89,11 +89,9 @@ const Content = React.memo(
 			{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 			<View style={styles.textContainer}>
 				<View style={styles.textAlertContainer}>
-					{title ? (
-						<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>
-							{translateTitle ? I18n.t(title) : title}
-						</Text>
-					) : null}
+					<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>
+						{translateTitle ? I18n.t(title) : title}
+					</Text>
 					{alert ? (
 						<CustomIcon style={[styles.alertIcon, { color: themes[theme].dangerColor }]} size={ICON_SIZE} name='info' />
 					) : null}
