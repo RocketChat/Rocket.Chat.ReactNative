@@ -6,10 +6,9 @@ PODS:
   - DoubleConversion (1.1.6)
   - EXAppleAuthentication (2.2.1):
     - UMCore
-  - EXAV (8.2.1):
+  - EXAV (9.2.3):
+    - ExpoModulesCore
     - UMCore
-    - UMFileSystemInterface
-    - UMPermissionsInterface
   - EXConstants (9.1.1):
     - UMConstantsInterface
     - UMCore
@@ -30,6 +29,15 @@ PODS:
   - EXPermissions (9.0.1):
     - UMCore
     - UMPermissionsInterface
+  - ExpoModulesCore (0.2.0):
+    - ExpoModulesCore/Core (= 0.2.0)
+    - ExpoModulesCore/Interfaces (= 0.2.0)
+    - UMCore
+  - ExpoModulesCore/Core (0.2.0):
+    - UMCore
+  - ExpoModulesCore/Interfaces (0.2.0):
+    - ExpoModulesCore/Core
+    - UMCore
   - EXVideoThumbnails (5.1.0):
     - UMCore
     - UMFileSystemInterface
@@ -620,6 +628,7 @@ DEPENDENCIES:
   - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - EXLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
+  - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
   - EXVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -786,6 +795,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-local-authentication/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
+  ExpoModulesCore:
+    :path: "../node_modules/expo-modules-core/ios"
   EXVideoThumbnails:
     :path: "../node_modules/expo-video-thumbnails/ios"
   EXWebBrowser:
@@ -966,7 +977,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   EXAppleAuthentication: 5b3da71bada29e2423d8ea27e5538ef0d75aba62
-  EXAV: 86344030966e0da7e00556fbb97269d9ad16071d
+  EXAV: 67bcc1d0afeb1fab854b206c84b9f2afbd61d0cd
   EXConstants: f907b3b6ce16e20d1750f22af1e095e924574bcb
   EXFileSystem: 76875135b61708b9afa7e6a89b72a60ba0fdfa20
   EXHaptics: 5428b344a216ca5d9df6ca8f65720b2a1ad9f109
@@ -974,10 +985,11 @@ SPEC CHECKSUMS:
   EXKeepAwake: 8b0f68242f036b971f9f8976341823cbe6f50812
   EXLocalAuthentication: 985c65e08a6eb84f8f98b51f7435df138b18b9e8
   EXPermissions: 80ac3acbdb145930079810fe5b08c022b3428aa8
+  ExpoModulesCore: 2734852616127a6c1fc23012197890a6f3763dc7
   EXVideoThumbnails: cd257fc6e07884a704a5674d362a6410933acb68
   EXWebBrowser: d37a5ffdea1b65947352bc001dd9f732463725d4
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: b427d2f482828b9533661dbcf9edf846cb60dc7b
+  FBReactNativeSpec: 110d69378fce79af38271c39894b59fec7890221
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
