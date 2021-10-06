@@ -89,7 +89,12 @@ const shouldUpdateProps = [
 	'refreshing',
 	'queueSize',
 	'inquiryEnabled',
-	'encryptionBanner'
+	'encryptionBanner',
+	'createTeamPermission',
+	'createDirectMessagePermission',
+	'createPublicChannelPermission',
+	'createPrivateChannelPermission',
+	'createDiscussionPermission'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -106,7 +111,7 @@ class RoomsListView extends React.Component {
 			username: PropTypes.string,
 			token: PropTypes.string,
 			statusLivechat: PropTypes.string,
-			roles: PropTypes.object
+			roles: PropTypes.array
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
@@ -135,6 +140,11 @@ class RoomsListView extends React.Component {
 		queueSize: PropTypes.number,
 		inquiryEnabled: PropTypes.bool,
 		encryptionBanner: PropTypes.string,
+		createTeamPermission: PropTypes.array,
+		createDirectMessagePermission: PropTypes.array,
+		createPublicChannelPermission: PropTypes.array,
+		createPrivateChannelPermission: PropTypes.array,
+		createDiscussionPermission: PropTypes.array,
 		initAdd: PropTypes.func
 	};
 
@@ -152,7 +162,8 @@ class RoomsListView extends React.Component {
 			loading: true,
 			chatsUpdate: [],
 			chats: [],
-			item: {}
+			item: {},
+			canCreateRoom: false
 		};
 		this.setHeader();
 		this.getSubscriptions();
@@ -160,6 +171,7 @@ class RoomsListView extends React.Component {
 
 	componentDidMount() {
 		const { navigation, closeServerDropdown } = this.props;
+		this.handleHasPermission();
 		this.mounted = true;
 
 		if (isTablet) {
@@ -203,7 +215,7 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { chatsUpdate, searching, item } = this.state;
+		const { chatsUpdate, searching, item, canCreateRoom } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -219,6 +231,10 @@ class RoomsListView extends React.Component {
 		}
 
 		if (nextState.searching !== searching) {
+			return true;
+		}
+
+		if (nextState.canCreateRoom !== canCreateRoom) {
 			return true;
 		}
 
@@ -257,7 +273,20 @@ class RoomsListView extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { sortBy, groupByType, showFavorites, showUnread, rooms, isMasterDetail, insets } = this.props;
+		const {
+			sortBy,
+			groupByType,
+			showFavorites,
+			showUnread,
+			rooms,
+			isMasterDetail,
+			insets,
+			createTeamPermission,
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createDirectMessagePermission,
+			createDiscussionPermission
+		} = this.props;
 		const { item } = this.state;
 
 		if (
@@ -276,6 +305,17 @@ class RoomsListView extends React.Component {
 			this.setState({ item: { rid: rooms[0] } });
 		}
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
+			this.setHeader();
+		}
+
+		if (
+			!dequal(createTeamPermission, prevProps.createTeamPermission) ||
+			!dequal(createPublicChannelPermission, prevProps.createPublicChannelPermission) ||
+			!dequal(createPrivateChannelPermission, prevProps.createPrivateChannelPermission) ||
+			!dequal(createDirectMessagePermission, prevProps.createDirectMessagePermission) ||
+			!dequal(createDiscussionPermission, prevProps.createDiscussionPermission)
+		) {
+			this.handleHasPermission();
 			this.setHeader();
 		}
 	}
@@ -297,10 +337,31 @@ class RoomsListView extends React.Component {
 		console.countReset(`${this.constructor.name}.render calls`);
 	}
 
+	handleHasPermission = async () => {
+		const {
+			createTeamPermission,
+			createDirectMessagePermission,
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createDiscussionPermission
+		} = this.props;
+		const permissions = [
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createTeamPermission,
+			createDirectMessagePermission,
+			createDiscussionPermission
+		];
+		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		const canCreateRoom = permissionsToCreate.filter(r => r === true).length > 0;
+		this.setState({ canCreateRoom }, () => this.setHeader());
+	};
+
 	getHeader = () => {
-		const { searching } = this.state;
+		const { searching, canCreateRoom } = this.state;
 		const { navigation, isMasterDetail, insets } = this.props;
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: searching ? 0 : 3 });
+
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () =>
@@ -327,7 +388,9 @@ class RoomsListView extends React.Component {
 			headerRight: () =>
 				searching ? null : (
 					<HeaderButton.Container>
-						<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
+						{canCreateRoom ? (
+							<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
+						) : null}
 						<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' />
 						<HeaderButton.Item iconName='directory' onPress={this.goDirectory} testID='rooms-list-view-directory' />
 					</HeaderButton.Container>
@@ -963,7 +1026,12 @@ const mapStateToProps = state => ({
 	rooms: state.room.rooms,
 	queueSize: getInquiryQueueSelector(state).length,
 	inquiryEnabled: state.inquiry.enabled,
-	encryptionBanner: state.encryption.banner
+	encryptionBanner: state.encryption.banner,
+	createTeamPermission: state.permissions['create-team'],
+	createDirectMessagePermission: state.permissions['create-d'],
+	createPublicChannelPermission: state.permissions['create-c'],
+	createPrivateChannelPermission: state.permissions['create-p'],
+	createDiscussionPermission: state.permissions['start-discussion']
 });
 
 const mapDispatchToProps = dispatch => ({
