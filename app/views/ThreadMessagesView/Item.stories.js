@@ -38,6 +38,7 @@ const BaseItem = ({ item, ...props }) => (
 		}}
 		onPress={() => alert('pressed')}
 		{...props}
+		thread
 	/>
 );
 
