@@ -4,7 +4,7 @@ PODS:
     - React-Core
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
-  - EXAppleAuthentication (2.2.1):
+  - EXAppleAuthentication (3.2.1):
     - UMCore
   - EXAV (9.2.3):
     - ExpoModulesCore
@@ -975,7 +975,7 @@ SPEC CHECKSUMS:
   BugsnagReactNative: a97b3132c1854fd7bf92350fabd505e3ebdd7829
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
-  EXAppleAuthentication: 5b3da71bada29e2423d8ea27e5538ef0d75aba62
+  EXAppleAuthentication: e8c537fcbe80670dd76fde7a07acb94af70ada00
   EXAV: 67bcc1d0afeb1fab854b206c84b9f2afbd61d0cd
   EXConstants: f907b3b6ce16e20d1750f22af1e095e924574bcb
   EXFileSystem: 0a04aba8da751b9ac954065911bcf166503f8267
