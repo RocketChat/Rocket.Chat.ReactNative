@@ -50332,8 +50332,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -50346,26 +50346,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -50408,7 +50388,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -50421,26 +50401,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -50465,7 +50425,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -50478,26 +50438,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -50612,13 +50552,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -50779,8 +50719,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -50793,26 +50733,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -50855,7 +50775,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -50868,26 +50788,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -50912,7 +50812,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -50925,26 +50825,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -51059,13 +50939,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -51267,8 +51147,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -51281,26 +51161,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -51343,7 +51203,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -51356,26 +51216,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -51400,7 +51240,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -51413,26 +51253,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -51547,13 +51367,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -51755,8 +51575,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -51769,26 +51589,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -51831,7 +51631,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -51844,26 +51644,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -51888,7 +51668,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -51901,26 +51681,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -52035,13 +51795,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -52243,8 +52003,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -52257,26 +52017,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -52319,7 +52059,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -52332,26 +52072,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -52376,7 +52096,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -52389,26 +52109,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -52523,13 +52223,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -52731,8 +52431,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -52745,26 +52445,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -52807,7 +52487,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -52820,26 +52500,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -52864,7 +52524,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -52877,26 +52537,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -53011,13 +52651,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -53219,8 +52859,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -53233,26 +52873,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -53295,7 +52915,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -53308,26 +52928,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -53352,7 +52952,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -53365,26 +52965,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -53499,13 +53079,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -53707,8 +53287,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -53721,26 +53301,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -53783,7 +53343,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -53796,26 +53356,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -53840,7 +53380,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -53853,26 +53393,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -53987,13 +53507,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -54195,8 +53715,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -54209,26 +53729,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -54271,7 +53771,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -54284,26 +53784,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -54328,7 +53808,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -54341,26 +53821,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -54475,13 +53935,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -54683,8 +54143,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -54697,26 +54157,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -54759,7 +54199,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -54772,26 +54212,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -54816,7 +54236,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -54829,26 +54249,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -54963,13 +54363,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -55171,8 +54571,8 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -55185,26 +54585,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -55247,7 +54627,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -55260,26 +54640,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -55304,7 +54664,7 @@ exports[`Storyshots Room Item Alerts 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -55317,26 +54677,6 @@ exports[`Storyshots Room Item Alerts 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -55451,13 +54791,13 @@ exports[`Storyshots Room Item Alerts 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -55672,8 +55012,8 @@ exports[`Storyshots Room Item Basic 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -55686,26 +55026,6 @@ exports[`Storyshots Room Item Basic 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -55748,7 +55068,7 @@ exports[`Storyshots Room Item Basic 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -55761,26 +55081,6 @@ exports[`Storyshots Room Item Basic 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -55805,7 +55105,7 @@ exports[`Storyshots Room Item Basic 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -55818,26 +55118,6 @@ exports[`Storyshots Room Item Basic 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -55952,13 +55232,13 @@ exports[`Storyshots Room Item Basic 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -56119,8 +55399,8 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 24,
                     },
                     undefined,
                     Object {
@@ -56177,7 +55457,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -56214,7 +55494,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -56345,13 +55625,13 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -56555,8 +55835,8 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 24,
                     },
                     undefined,
                     Object {
@@ -56613,7 +55893,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -56650,7 +55930,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -56781,13 +56061,13 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -56991,8 +56271,8 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 24,
                     },
                     undefined,
                     Object {
@@ -57049,7 +56329,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -57086,7 +56366,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -57217,7 +56497,7 @@ exports[`Storyshots Room Item Condensed Room Item 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
@@ -57408,8 +56688,8 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 24,
                     },
                     undefined,
                     Object {
@@ -57466,7 +56746,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -57503,7 +56783,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -57584,13 +56864,13 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -57794,8 +57074,8 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 24,
                     },
                     undefined,
                     Object {
@@ -57852,7 +57132,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -57889,7 +57169,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -57970,7 +57250,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
@@ -58112,8 +57392,8 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 24,
                     },
                     undefined,
                     Object {
@@ -58170,7 +57450,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -58207,7 +57487,7 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 24,
                   },
                   undefined,
                   Object {
@@ -58288,13 +57568,13 @@ exports[`Storyshots Room Item Condensed Room Item without Avatar 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -58489,8 +57769,8 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -58503,26 +57783,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -58565,7 +57825,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -58578,26 +57838,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -58622,7 +57862,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -58635,26 +57875,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -58966,8 +58186,8 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -58980,26 +58200,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -59042,7 +58242,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -59055,26 +58255,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -59099,7 +58279,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -59112,26 +58292,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -59443,8 +58603,8 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -59457,26 +58617,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -59519,7 +58659,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -59532,26 +58672,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -59576,7 +58696,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -59589,26 +58709,6 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -59892,8 +58992,8 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -59906,26 +59006,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -59968,7 +59048,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -59981,26 +59061,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -60025,7 +59085,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -60038,26 +59098,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -60352,8 +59392,8 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -60366,26 +59406,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -60428,7 +59448,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -60441,26 +59461,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -60485,7 +59485,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -60498,26 +59498,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -60812,8 +59792,8 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -60826,26 +59806,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -60888,7 +59848,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -60901,26 +59861,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -60945,7 +59885,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -60958,26 +59898,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -61272,8 +60192,8 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -61286,26 +60206,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -61348,7 +60248,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -61361,26 +60261,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -61405,7 +60285,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -61418,26 +60298,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -61732,8 +60592,8 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -61746,26 +60606,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -61808,7 +60648,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -61821,26 +60661,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -61865,7 +60685,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -61878,26 +60698,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -62248,8 +61048,8 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -62262,26 +61062,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -62324,7 +61104,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -62337,26 +61117,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -62381,7 +61141,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -62394,26 +61154,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -62764,8 +61504,8 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -62778,26 +61518,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -62840,7 +61560,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -62853,26 +61573,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -62897,7 +61597,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -62910,26 +61610,6 @@ exports[`Storyshots Room Item Last Message 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -63293,8 +61973,8 @@ exports[`Storyshots Room Item Tag 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -63307,26 +61987,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -63369,7 +62029,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -63382,26 +62042,6 @@ exports[`Storyshots Room Item Tag 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -63426,7 +62066,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -63439,26 +62079,6 @@ exports[`Storyshots Room Item Tag 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -63573,13 +62193,13 @@ exports[`Storyshots Room Item Tag 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -63761,8 +62381,8 @@ exports[`Storyshots Room Item Tag 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -63775,26 +62395,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -63837,7 +62437,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -63850,26 +62450,6 @@ exports[`Storyshots Room Item Tag 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -63894,7 +62474,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -63907,26 +62487,6 @@ exports[`Storyshots Room Item Tag 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -64258,8 +62818,8 @@ exports[`Storyshots Room Item Tag 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -64272,26 +62832,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -64334,7 +62874,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -64347,26 +62887,6 @@ exports[`Storyshots Room Item Tag 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -64391,7 +62911,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -64404,26 +62924,6 @@ exports[`Storyshots Room Item Tag 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -64538,13 +63038,13 @@ exports[`Storyshots Room Item Tag 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -64726,8 +63226,8 @@ exports[`Storyshots Room Item Tag 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -64740,26 +63240,6 @@ exports[`Storyshots Room Item Tag 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -64802,7 +63282,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -64815,26 +63295,6 @@ exports[`Storyshots Room Item Tag 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -64859,7 +63319,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -64872,26 +63332,6 @@ exports[`Storyshots Room Item Tag 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -65236,8 +63676,8 @@ exports[`Storyshots Room Item Touch 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -65250,26 +63690,6 @@ exports[`Storyshots Room Item Touch 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -65312,7 +63732,7 @@ exports[`Storyshots Room Item Touch 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -65325,26 +63745,6 @@ exports[`Storyshots Room Item Touch 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -65369,7 +63769,7 @@ exports[`Storyshots Room Item Touch 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -65382,26 +63782,6 @@ exports[`Storyshots Room Item Touch 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -65516,13 +63896,13 @@ exports[`Storyshots Room Item Touch 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -65681,8 +64061,8 @@ exports[`Storyshots Room Item Type 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -65695,26 +64075,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -65757,7 +64117,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -65770,26 +64130,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -65814,7 +64154,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -65827,26 +64167,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -65961,13 +64281,13 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -66113,8 +64433,8 @@ exports[`Storyshots Room Item Type 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -66127,26 +64447,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -66189,7 +64489,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -66202,26 +64502,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -66246,7 +64526,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -66259,26 +64539,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -66393,7 +64653,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
@@ -66533,8 +64793,8 @@ exports[`Storyshots Room Item Type 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -66547,26 +64807,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -66609,7 +64849,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -66622,26 +64862,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -66666,7 +64886,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -66679,26 +64899,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -66813,7 +65013,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
@@ -66953,8 +65153,8 @@ exports[`Storyshots Room Item Type 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -66967,26 +65167,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -67029,7 +65209,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -67042,26 +65222,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -67086,7 +65246,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -67099,26 +65259,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -67233,7 +65373,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
@@ -67373,8 +65513,8 @@ exports[`Storyshots Room Item Type 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -67387,26 +65527,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -67449,7 +65569,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -67462,26 +65582,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -67506,7 +65606,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -67519,26 +65619,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -67653,7 +65733,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
@@ -67793,8 +65873,8 @@ exports[`Storyshots Room Item Type 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -67807,26 +65887,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -67869,7 +65929,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -67882,26 +65942,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -67926,7 +65966,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -67939,26 +65979,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -68073,7 +66093,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
@@ -68213,8 +66233,8 @@ exports[`Storyshots Room Item Type 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -68227,26 +66247,6 @@ exports[`Storyshots Room Item Type 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -68289,7 +66289,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -68302,26 +66302,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -68346,7 +66326,7 @@ exports[`Storyshots Room Item Type 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -68359,26 +66339,6 @@ exports[`Storyshots Room Item Type 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -68493,7 +66453,7 @@ exports[`Storyshots Room Item Type 1`] = `
                     Array [
                       Object {
                         "color": undefined,
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
@@ -68646,8 +66606,8 @@ exports[`Storyshots Room Item User 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -68660,26 +66620,6 @@ exports[`Storyshots Room Item User 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -68722,7 +66662,7 @@ exports[`Storyshots Room Item User 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -68735,26 +66675,6 @@ exports[`Storyshots Room Item User 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -68779,7 +66699,7 @@ exports[`Storyshots Room Item User 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -68792,26 +66712,6 @@ exports[`Storyshots Room Item User 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -68926,13 +66826,13 @@ exports[`Storyshots Room Item User 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -69078,8 +66978,8 @@ exports[`Storyshots Room Item User 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -69092,26 +66992,6 @@ exports[`Storyshots Room Item User 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -69154,7 +67034,7 @@ exports[`Storyshots Room Item User 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -69167,26 +67047,6 @@ exports[`Storyshots Room Item User 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -69211,7 +67071,7 @@ exports[`Storyshots Room Item User 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -69224,26 +67084,6 @@ exports[`Storyshots Room Item User 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -69358,13 +67198,13 @@ exports[`Storyshots Room Item User 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -69523,8 +67363,8 @@ exports[`Storyshots Room Item User status 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -69537,26 +67377,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -69599,7 +67419,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -69612,26 +67432,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -69656,7 +67456,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -69669,26 +67469,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -69803,13 +67583,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#2de0a5",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -69955,8 +67735,8 @@ exports[`Storyshots Room Item User status 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -69969,26 +67749,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -70031,7 +67791,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -70044,26 +67804,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -70088,7 +67828,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -70101,26 +67841,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -70235,13 +67955,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#ffd21f",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -70387,8 +68107,8 @@ exports[`Storyshots Room Item User status 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -70401,26 +68121,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -70463,7 +68163,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -70476,26 +68176,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -70520,7 +68200,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -70533,26 +68213,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -70667,13 +68327,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#f5455c",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -70819,8 +68479,8 @@ exports[`Storyshots Room Item User status 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -70833,26 +68493,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -70895,7 +68535,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -70908,26 +68548,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -70952,7 +68572,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -70965,26 +68585,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -71099,13 +68699,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -71251,8 +68851,8 @@ exports[`Storyshots Room Item User status 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -71265,26 +68865,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -71327,7 +68907,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -71340,26 +68920,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -71384,7 +68944,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -71397,26 +68957,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -71531,13 +69071,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#9ea2a8",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
@@ -71683,8 +69223,8 @@ exports[`Storyshots Room Item User status 1`] = `
                 style={
                   Array [
                     Object {
-                      "color": "white",
-                      "fontSize": 20,
+                      "color": "#ffffff",
+                      "fontSize": 28,
                     },
                     undefined,
                     Object {
@@ -71697,26 +69237,6 @@ exports[`Storyshots Room Item User status 1`] = `
                 }
               >
                 
-              </Text>
-              <Text
-                style={
-                  Array [
-                    Object {
-                      "backgroundColor": "transparent",
-                      "fontFamily": "System",
-                      "fontSize": 15,
-                      "fontWeight": "600",
-                      "justifyContent": "center",
-                      "marginTop": 4,
-                      "textAlign": "left",
-                    },
-                    Object {
-                      "color": "#ffffff",
-                    },
-                  ]
-                }
-              >
-                Read
               </Text>
             </View>
           </View>
@@ -71759,7 +69279,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -71772,26 +69292,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Favorite
             </Text>
           </View>
           <View
@@ -71816,7 +69316,7 @@ exports[`Storyshots Room Item User status 1`] = `
                 Array [
                   Object {
                     "color": "#ffffff",
-                    "fontSize": 20,
+                    "fontSize": 28,
                   },
                   undefined,
                   Object {
@@ -71829,26 +69329,6 @@ exports[`Storyshots Room Item User status 1`] = `
               }
             >
               
-            </Text>
-            <Text
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "System",
-                    "fontSize": 15,
-                    "fontWeight": "600",
-                    "justifyContent": "center",
-                    "marginTop": 4,
-                    "textAlign": "left",
-                  },
-                  Object {
-                    "color": "#ffffff",
-                  },
-                ]
-              }
-            >
-              Hide
             </Text>
           </View>
         </View>
@@ -71963,13 +69443,13 @@ exports[`Storyshots Room Item User status 1`] = `
                     Array [
                       Object {
                         "color": "#cbced1",
-                        "fontSize": 24,
+                        "fontSize": 22,
                       },
                       Array [
                         Object {
-                          "height": 24,
+                          "height": 22,
                           "textAlignVertical": "center",
-                          "width": 24,
+                          "width": 22,
                         },
                         Array [
                           Array [
