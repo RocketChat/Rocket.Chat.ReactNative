@@ -57,7 +57,6 @@ interface IRCTextInputProps extends TextInputProps {
 		reason: any;
 	};
 	loading?: boolean;
-	secureTextEntry?: boolean;
 	containerStyle?: any;
 	inputStyle?: object;
 	inputRef?: any;

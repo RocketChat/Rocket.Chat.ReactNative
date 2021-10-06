@@ -35,13 +35,13 @@ interface IInviteUsersView {
 	};
 	createInviteLink(rid: string): void;
 	clearInviteLink(): void;
-	rid: string;
 }
 class InviteUsersView extends React.Component<IInviteUsersView, any> {
+	private rid: string;
+
 	static navigationOptions: StackNavigationOptions = {
 		title: I18n.t('Invite_users')
 	};
-	rid: string;
 
 	constructor(props: IInviteUsersView) {
 		super(props);
