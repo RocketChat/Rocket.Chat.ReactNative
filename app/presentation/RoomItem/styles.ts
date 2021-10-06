@@ -89,12 +89,6 @@ export default StyleSheet.create<any>({
 		right: 0,
 		height: ROW_HEIGHT
 	},
-	actionText: {
-		fontSize: 15,
-		justifyContent: 'center',
-		marginTop: 4,
-		...sharedStyles.textSemibold
-	},
 	actionLeftButtonContainer: {
 		position: 'absolute',
 		height: ROW_HEIGHT,

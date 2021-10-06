@@ -1,11 +1,11 @@
 import React from 'react';
-import { Animated, Text, View } from 'react-native';
+import { Animated, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-import I18n, { isRTL } from '../../i18n';
+import { isRTL } from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
-import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../../constants/constantDisplayMode';
+import { DISPLAY_MODE_CONDENSED } from '../../constants/constantDisplayMode';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 
 interface ILeftActions {
@@ -28,6 +28,8 @@ interface IRightActions {
 }
 
 const reverse = new Animated.Value(isRTL() ? -1 : 1);
+const CONDENSED_ICON_SIZE = 24;
+const EXPANDED_ICON_SIZE = 28;
 
 export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleReadPress, displayMode }: ILeftActions) => {
 	const translateX = Animated.multiply(
@@ -38,7 +40,8 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 		reverse
 	);
 
-	const viewHeight = displayMode === DISPLAY_MODE_CONDENSED ? { height: ROW_HEIGHT_CONDENSED } : null;
+	const isCondensed = displayMode === DISPLAY_MODE_CONDENSED;
+	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
 
 	return (
 		<View style={[styles.actionsContainer, styles.actionLeftContainer]} pointerEvents='box-none'>
@@ -55,12 +58,11 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 				]}>
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
 					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
-						<>
-							<CustomIcon size={20} name={isRead ? 'flag' : 'check'} color='white' />
-							{displayMode === DISPLAY_MODE_EXPANDED ? (
-								<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t(isRead ? 'Unread' : 'Read')}</Text>
-							) : null}
-						</>
+						<CustomIcon
+							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+							name={isRead ? 'flag' : 'check'}
+							color={themes[theme].buttonText}
+						/>
 					</RectButton>
 				</View>
 			</Animated.View>
@@ -85,7 +87,8 @@ export const RightActions = React.memo(
 			reverse
 		);
 
-		const viewHeight = displayMode === DISPLAY_MODE_CONDENSED ? { height: ROW_HEIGHT_CONDENSED } : null;
+		const isCondensed = displayMode === DISPLAY_MODE_CONDENSED;
+		const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
 
 		return (
 			<View style={[styles.actionsLeftContainer, viewHeight]} pointerEvents='box-none'>
@@ -100,14 +103,11 @@ export const RightActions = React.memo(
 						viewHeight
 					]}>
 					<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].favoriteBackground }]} onPress={toggleFav}>
-						<>
-							<CustomIcon size={20} name={favorite ? 'star-filled' : 'star'} color={themes[theme].buttonText} />
-							{displayMode === DISPLAY_MODE_EXPANDED ? (
-								<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>
-									{I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
-								</Text>
-							) : null}
-						</>
+						<CustomIcon
+							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+							name={favorite ? 'star-filled' : 'star'}
+							color={themes[theme].buttonText}
+						/>
 					</RectButton>
 				</Animated.View>
 				<Animated.View
@@ -117,15 +117,14 @@ export const RightActions = React.memo(
 							width,
 							transform: [{ translateX: translateXHide }]
 						},
-						displayMode === DISPLAY_MODE_CONDENSED && { height: ROW_HEIGHT_CONDENSED }
+						isCondensed && { height: ROW_HEIGHT_CONDENSED }
 					]}>
 					<RectButton style={[styles.actionButton, { backgroundColor: themes[theme].hideBackground }]} onPress={onHidePress}>
-						<>
-							<CustomIcon size={20} name='unread-on-top-disabled' color={themes[theme].buttonText} />
-							{displayMode === DISPLAY_MODE_EXPANDED ? (
-								<Text style={[styles.actionText, { color: themes[theme].buttonText }]}>{I18n.t('Hide')}</Text>
-							) : null}
-						</>
+						<CustomIcon
+							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
+							name='unread-on-top-disabled'
+							color={themes[theme].buttonText}
+						/>
 					</RectButton>
 				</Animated.View>
 			</View>
