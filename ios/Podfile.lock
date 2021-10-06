@@ -37,9 +37,9 @@ PODS:
   - ExpoModulesCore/Interfaces (0.2.0):
     - ExpoModulesCore/Core
     - UMCore
-  - EXVideoThumbnails (5.1.0):
+  - EXVideoThumbnails (5.2.1):
+    - ExpoModulesCore
     - UMCore
-    - UMFileSystemInterface
   - EXWebBrowser (8.3.1):
     - UMCore
   - FBLazyVector (0.64.2)
@@ -985,7 +985,7 @@ SPEC CHECKSUMS:
   EXLocalAuthentication: 88a1a69ea66c4934387d1eb503628170c853caef
   EXPermissions: 80ac3acbdb145930079810fe5b08c022b3428aa8
   ExpoModulesCore: 2734852616127a6c1fc23012197890a6f3763dc7
-  EXVideoThumbnails: cd257fc6e07884a704a5674d362a6410933acb68
+  EXVideoThumbnails: 442c3abadb51a81551a3b53705b7560de390e6f7
   EXWebBrowser: d37a5ffdea1b65947352bc001dd9f732463725d4
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
   FBReactNativeSpec: 110d69378fce79af38271c39894b59fec7890221

@@ -8071,10 +8071,12 @@ expo-permissions@~9.0.1:
   resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-9.0.1.tgz#dc10b58654bbe39bbbed5827369942b01b08055e"
   integrity sha512-CosJgy8XQRN/OFG2JTQDcFxz3XTGi27coCMym/hVXWtQfk0z6PwdRG5IXHfLGuSckwIcgmirrwm2+Zc0X3MmNg==
 
-expo-video-thumbnails@5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/expo-video-thumbnails/-/expo-video-thumbnails-5.1.0.tgz#7227698977b1496a076c1a71149a372d14827311"
-  integrity sha512-Ggtud9tieWu+iCvm5QZfJKw//3tmXAX68SR0IZ9WPQ9MKePGSyOWpMY/PSxOXJMSbkCDQJY48rQMqiloXlaLmg==
+expo-video-thumbnails@5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/expo-video-thumbnails/-/expo-video-thumbnails-5.2.1.tgz#d7f9853117671a09acc24e70df84b6c7c3e38114"
+  integrity sha512-0ttnCbQJrhqs0sFLHjIXb7wZ/z4hfT6GGkmfWOoNiNYcgY9mShASv5domn82llz8/S4lLE9KpNUl9rrt90JsJg==
+  dependencies:
+    expo-modules-core "~0.2.0"
 
 expo-web-browser@8.3.1:
   version "8.3.1"
