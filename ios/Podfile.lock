@@ -15,7 +15,7 @@ PODS:
   - EXFileSystem (11.1.3):
     - ExpoModulesCore
     - UMCore
-  - EXHaptics (8.2.1):
+  - EXHaptics (10.1.0):
     - UMCore
   - EXImageLoader (1.1.1):
     - React-Core
@@ -980,7 +980,7 @@ SPEC CHECKSUMS:
   EXAV: 67bcc1d0afeb1fab854b206c84b9f2afbd61d0cd
   EXConstants: f907b3b6ce16e20d1750f22af1e095e924574bcb
   EXFileSystem: 0a04aba8da751b9ac954065911bcf166503f8267
-  EXHaptics: 5428b344a216ca5d9df6ca8f65720b2a1ad9f109
+  EXHaptics: 6dc4307ab0794fe7a87ec8d7d1c299cf103d6cb3
   EXImageLoader: 02ca02c9cd5cc8a97b423207a73a791e0a86bea5
   EXKeepAwake: f4105ef469be7b283f66ce2d7234bb71ac80cd26
   EXLocalAuthentication: 985c65e08a6eb84f8f98b51f7435df138b18b9e8

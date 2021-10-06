@@ -8038,10 +8038,10 @@ expo-file-system@~9.0.1:
   dependencies:
     uuid "^3.4.0"
 
-expo-haptics@8.2.1:
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/expo-haptics/-/expo-haptics-8.2.1.tgz#e4723cc6f25280631841ef178cb732b4cf637267"
-  integrity sha512-isw7ocEK1lNZ5dFfgyiJMj9s6jYIqfOKyEUYwhFP8KPOIDYVZJ2N5RPwvS95MRGprwrVetxbbGNEqZOELyhZKg==
+expo-haptics@10.1.0:
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/expo-haptics/-/expo-haptics-10.1.0.tgz#2ef5f0c3442f57844f7a7a961d922872e4ea9a71"
+  integrity sha512-2rpixkP3LSCwaJAmbbs0CSqbY7lSk7Ytay4UAYWg3YiJ05My7+MGMPbQJARyAMI5JQNuzcdsZN74btSusBvgYQ==
 
 expo-image-loader@~1.1.1:
   version "1.1.1"
