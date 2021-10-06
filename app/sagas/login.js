@@ -20,7 +20,6 @@ import { encryptionInit, encryptionStop } from '../actions/encryption';
 import UserPreferences from '../lib/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
-import Navigation from '../lib/Navigation';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
