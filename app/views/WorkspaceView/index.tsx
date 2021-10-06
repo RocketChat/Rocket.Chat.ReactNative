@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import PropTypes from 'prop-types';
+import { StackNavigationProp, StackNavigationOptions } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
@@ -12,23 +12,27 @@ import { getShowLoginButton } from '../../selectors/login';
 import ServerAvatar from './ServerAvatar';
 import styles from './styles';
 
-class WorkspaceView extends React.Component {
-	static navigationOptions = () => ({
-		title: I18n.t('Your_workspace')
-	});
+interface IWorkSpaceProp {
+	// TODO: waiting for the RootStackParamList https://reactnavigation.org/docs/typescript/#type-checking-screens
+	navigation: StackNavigationProp<any, 'WorkspaceView'>;
+	theme: string;
+	Site_Name: string;
+	Site_Url: string;
+	server: string;
+	Assets_favicon_512: {
+		url?: string;
+		defaultUrl: string;
+	};
+	registrationForm: string;
+	registrationText: string;
+	showLoginButton: boolean;
+	Accounts_iframe_enabled: boolean;
+	inviteLinkToken: string;
+}
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		theme: PropTypes.string,
-		Site_Name: PropTypes.string,
-		Site_Url: PropTypes.string,
-		server: PropTypes.string,
-		Assets_favicon_512: PropTypes.object,
-		registrationForm: PropTypes.string,
-		registrationText: PropTypes.string,
-		showLoginButton: PropTypes.bool,
-		Accounts_iframe_enabled: PropTypes.bool,
-		inviteLinkToken: PropTypes.string
+class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
+	static navigationOptions: StackNavigationOptions = {
+		title: I18n.t('Your_workspace')
 	};
 
 	get showRegistrationButton() {
@@ -94,7 +98,7 @@ class WorkspaceView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
 	Site_Url: state.settings.Site_Url,
