@@ -8078,10 +8078,10 @@ expo-video-thumbnails@5.2.1:
   dependencies:
     expo-modules-core "~0.2.0"
 
-expo-web-browser@8.3.1:
-  version "8.3.1"
-  resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-8.3.1.tgz#c88cc349dfa1db31cfdbe365753b6840054d0152"
-  integrity sha512-mDxSNpc/Ww/RX6MhmPRUWo2xNi8HGZ1TDMqIjTvUzrL7pGG9VerX0EDMhfLgo6c7KVOY1ngbTyybApZTXgPCOQ==
+expo-web-browser@9.2.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-9.2.0.tgz#34c1355552c4c6eaae515340a0761939a9bf6152"
+  integrity sha512-Gy9tkIw/JplfiTiOR/pdEbLdyuzeQBYFuU27TXSfLOn/tDRcOghOcJ+vNH2FX3iZqReBHMJEINjcWxpOpOvpFw==
   dependencies:
     compare-urls "^2.0.0"
 
