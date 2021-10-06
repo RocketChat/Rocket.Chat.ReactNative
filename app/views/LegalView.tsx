@@ -19,7 +19,7 @@ class LegalView extends React.Component<ILegalView, any> {
 		title: I18n.t('Legal')
 	};
 
-	onPressItem = ({ route = '' }) => {
+	onPressItem = ({ route }: { route: string }) => {
 		const { server, theme } = this.props;
 		if (!server) {
 			return;
