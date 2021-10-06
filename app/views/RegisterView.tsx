@@ -1,7 +1,6 @@
 import React from 'react';
 import { Keyboard, StyleSheet, Text, View } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Dispatch } from 'redux';
 import { RouteProp } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
@@ -51,37 +50,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IRootState {
-	server: {
-		server: string;
-	};
-	settings: {
-		Site_Name: string;
-		API_Gitlab_URL: string;
-		CAS_enabled: boolean;
-		CAS_login_url: string;
-		Accounts_CustomFields: object;
-		Accounts_EmailVerification: boolean;
-		Accounts_ManuallyApproveNewUsers: boolean;
-	};
-	showLoginButton: boolean;
-}
-
-interface IParams {
-	credentials: object;
-	logoutOnError: Function;
-	isFromWebView: boolean;
-}
-
-interface IState {
-	name: string;
-	email: string;
-	password: string;
-	username: string;
-	saving: boolean;
-	customFields: any;
-}
-
 interface IProps {
 	navigation: StackNavigationProp<any>;
 	route: RouteProp<any, 'RegisterView'>;
@@ -98,7 +66,7 @@ interface IProps {
 	theme: string;
 }
 
-class RegisterView extends React.Component<IProps, IState> {
+class RegisterView extends React.Component<IProps, any> {
 	private parsedCustomFields: any;
 	private usernameInput: any;
 	private passwordInput: any;
@@ -377,7 +345,7 @@ class RegisterView extends React.Component<IProps, IState> {
 	}
 }
 
-const mapStateToProps = (state: IRootState) => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
 	Gitlab_URL: state.settings.API_Gitlab_URL,
@@ -389,8 +357,8 @@ const mapStateToProps = (state: IRootState) => ({
 	showLoginButton: getShowLoginButton(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	loginRequest: (params: IParams) => dispatch(loginRequestAction(params))
+const mapDispatchToProps = (dispatch: any) => ({
+	loginRequest: (params: any) => dispatch(loginRequestAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RegisterView));
