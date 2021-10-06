@@ -2,7 +2,6 @@ import React from 'react';
 import { Alert, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
-import { Dispatch } from 'redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/core';
 
@@ -48,31 +47,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IRootState {
-	server: {
-		server: string;
-	};
-	settings: {
-		Site_Name: string;
-		Accounts_RegistrationForm: string;
-		Accounts_RegistrationForm_LinkReplacementText: string;
-		Accounts_EmailOrUsernamePlaceholder: string;
-		Accounts_PasswordPlaceholder: string;
-		Accounts_PasswordReset: boolean;
-		Accounts_ShowFormLogin: boolean;
-	};
-	login: {
-		isFetching: boolean;
-		error: {
-			data: object;
-		};
-		failure: boolean;
-	};
-	inviteLinks: {
-		token: string;
-	};
-}
-
 interface IProps {
 	navigation: StackNavigationProp<any>;
 	route: RouteProp<any, 'RegisterView'>;
@@ -89,12 +63,6 @@ interface IProps {
 	theme: string;
 	loginRequest: Function;
 	inviteLinkToken: string;
-}
-
-interface IParams {
-	credentials: object;
-	logoutOnError: Function;
-	isFromWebView: boolean;
 }
 
 class LoginView extends React.Component<IProps, any> {
@@ -262,7 +230,7 @@ class LoginView extends React.Component<IProps, any> {
 	}
 }
 
-const mapStateToProps = (state: IRootState) => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
 	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
@@ -277,8 +245,8 @@ const mapStateToProps = (state: IRootState) => ({
 	inviteLinkToken: state.inviteLinks.token
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	loginRequest: (params: IParams) => dispatch(loginRequestAction(params))
+const mapDispatchToProps = (dispatch: any) => ({
+	loginRequest: (params: any) => dispatch(loginRequestAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginView));
