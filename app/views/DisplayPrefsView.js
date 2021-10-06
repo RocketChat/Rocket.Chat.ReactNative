@@ -105,9 +105,8 @@ const DisplayPrefsView = props => {
 		<SafeAreaView>
 			<StatusBar />
 			<List.Container testID='display-view-list'>
-				<List.Section>
+				<List.Section title='Display'>
 					<List.Separator />
-					<List.Item title='Display' />
 					<List.Item
 						left={() => <List.Icon name='view-extended' />}
 						title='Expanded'
@@ -133,9 +132,8 @@ const DisplayPrefsView = props => {
 					<List.Separator />
 				</List.Section>
 
-				<List.Section>
+				<List.Section title='Sort_by'>
 					<List.Separator />
-					<List.Item title='Sort_by' />
 					<List.Item
 						title='Activity'
 						testID='display-pref-view-activity'
@@ -154,9 +152,8 @@ const DisplayPrefsView = props => {
 					<List.Separator />
 				</List.Section>
 
-				<List.Section>
+				<List.Section title='Group_by'>
 					<List.Separator />
-					<List.Item title='Group_by' />
 					<List.Item
 						title='Unread_on_top'
 						testID='display-pref-view-unread'
