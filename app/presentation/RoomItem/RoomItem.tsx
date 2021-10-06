@@ -171,7 +171,7 @@ const RoomItem = ({
 						isGroupChat={isGroupChat}
 						theme={theme}
 						teamMain={teamMain}
-						size={24}
+						size={22}
 						style={{ marginRight: 8 }}
 					/>
 					<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
