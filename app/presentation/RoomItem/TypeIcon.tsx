@@ -9,10 +9,19 @@ interface ITypeIcon {
 	isGroupChat: boolean;
 	teamMain: boolean;
 	theme?: string;
+	size?: number;
+	style?: object;
 }
 
-const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain }: ITypeIcon) => (
-	<RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />
+const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain, size, style }: ITypeIcon) => (
+	<RoomTypeIcon
+		type={prid ? 'discussion' : type}
+		isGroupChat={isGroupChat}
+		status={status}
+		teamMain={teamMain}
+		size={size}
+		style={style}
+	/>
 ));
 
 export default TypeIcon;
