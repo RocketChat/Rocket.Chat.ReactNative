@@ -191,8 +191,6 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 				yield put(appStart({ root: ROOT_OUTSIDE }));
 				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
 				yield delay(300);
-				Navigation.navigate('NewServerView');
-				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
 			} else {
 				const serversDB = database.servers;
