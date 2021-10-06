@@ -14,6 +14,7 @@ import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
+import allSettled from 'promise.allsettled';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
@@ -65,7 +66,6 @@ import { withDimensions } from '../../dimensions';
 import { showErrorAlert } from '../../utils/info';
 import { getInquiryQueueSelector } from '../../selectors/inquiry';
 
-
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
@@ -103,7 +103,7 @@ const getItemLayout = (data, index) => ({
 	offset: ROW_HEIGHT * index,
 	index
 });
-const keyExtractor = item => item.rid;
+const keyExtractor = (item, index) => `${ item.rid + index }`;
 
 class RoomsListView extends React.Component {
 	static propTypes = {
@@ -144,22 +144,18 @@ class RoomsListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		console.time(`${ this.constructor.name } init`);
-		console.time(`${ this.constructor.name } mount`);
 
 		this.gotSubscriptions = false;
 		this.animated = false;
 		this.count = 0;
-		
+
 		this.state = {
 			searching: false,
 			search: [],
 			loading: true,
 			chatsOrder: [],
 			chats: [],
-			item: {},
-			userInfo:[]
-			
+			item: {}
 		};
 		this.setHeader();
 	}
@@ -168,7 +164,6 @@ class RoomsListView extends React.Component {
 		const {
 			navigation, closeServerDropdown, appState
 		} = this.props;
-		
 
 		/**
 		 * - When didMount is triggered and appState is foreground,
@@ -203,7 +198,6 @@ class RoomsListView extends React.Component {
 				this.backHandler.remove();
 			}
 		});
-		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -333,7 +327,6 @@ class RoomsListView extends React.Component {
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
-		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
 	getHeader = () => {
@@ -401,25 +394,11 @@ class RoomsListView extends React.Component {
 			if (header) {
 				allData.push({ rid: header, separator: true });
 			}
-			 allData = allData.concat(data);
+			allData = allData.concat(data);
 		}
 		return allData;
 	}
- 
-		
-	// onload = () => {
-	// 	const {chats, userInfo} = this.state
-	// 	const direct = chats.filter(s => s.t === 'd' && !s.prid);
-	// 	direct.map(t=> {
-	// 		const id = this.getUidDirectMessage(t);
-	// 		this.getInfo(id).then(res=>this.setState({
-	// 			userInfo:res
-	// 		}) ).catch(e=>console.log(e))
 
-	// 	})
-	
-	// }
-	
 	getSubscriptions = async() => {
 		this.unsubscribeQuery();
 
@@ -450,7 +429,6 @@ class RoomsListView extends React.Component {
 				.get('subscriptions')
 				.query(...defaultWhereClause)
 				.observe();
-				console.log('lllllllll',observable)
 
 		// When we're NOT grouping
 		} else {
@@ -465,15 +443,11 @@ class RoomsListView extends React.Component {
 				.observe();
 		}
 
-
-
-		this.querySubscription = observable.subscribe((data) => {
+		this.querySubscription = observable.subscribe(async(data) => {
 			let tempChats = [];
-			let chats = data;
-			const {userInfo} = this.state;
+			let chats = data.map(i => i);
 			const filteredChats = chats.filter(s => s.t === 'd');
-			console.log('fil',filteredChats.length)
-	      
+
 			/**
 			 * We trigger re-render only when chats order changes
 			 * RoomItem handles its own re-render
@@ -500,20 +474,31 @@ class RoomsListView extends React.Component {
 				const channels = chats.filter(s => s.t === 'c' && !s.prid);
 				const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
 				const direct = chats.filter(s => s.t === 'd' && !s.prid);
-				
-				const peerSupporter = filteredChats.filter(s => {
-					let isPeerSupporter = false;
-			
-				userInfo.filter(peer => {
-						 
-					if(s.uids.includes(peer.user._id) && peer.user.roles.includes('Peer Supporter') ){
-						return isPeerSupporter = true;
-					} 
-			  
-				})
-				return isPeerSupporter; 
-					 })
-			
+
+				// get peer supporters
+				const peerSupporter = [];
+				const peerSupporterInfo = [];
+				for (let i = 0; i < filteredChats.length; i += 1) {
+					const item = filteredChats[i];
+					const id = this.getUidDirectMessage(item);
+					peerSupporterInfo.push(this.getInfo(id));
+				}
+				try {
+					this.internalSetState({
+						loading: true
+					});
+					const usersInfo = await allSettled(peerSupporterInfo);
+					usersInfo.forEach((i) => {
+						if (i.status === 'fulfilled' && i.value.user.roles.includes('Peer Supporter')) {
+							const chat = filteredChats.find(k => this.getUidDirectMessage(k) === i.value.user._id);
+							peerSupporter.push(chat);
+						}
+					});
+				} catch (e) {
+					console.error(e);
+				}
+				// end get peer supporters
+
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS, tempChats);
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
@@ -525,7 +510,7 @@ class RoomsListView extends React.Component {
 			} else {
 				tempChats = chats;
 			}
-         
+
 			this.internalSetState({
 				chats: tempChats,
 				chatsOrder,
@@ -606,7 +591,8 @@ class RoomsListView extends React.Component {
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
-	getInfo = async(id) => await RocketChat.getUserInfo(id);
+
+	getInfo = id => RocketChat.getUserInfo(id);
 
 	get isGrouping() {
 		const { showUnread, showFavorites, groupByType } = this.props;
@@ -884,7 +870,7 @@ class RoomsListView extends React.Component {
 			return this.renderSectionHeader(item.rid);
 		}
 
-		const { item: currentItem, userInfo } = this.state;
+		const { item: currentItem } = this.state;
 		const {
 			user: {
 				id: userId,
@@ -898,21 +884,9 @@ class RoomsListView extends React.Component {
 			isMasterDetail,
 			width
 		} = this.props;
-		
+
 		const id = this.getUidDirectMessage(item);
-	      
-			function checkAvailability(arr, val) {
-				return arr.some(arrVal => {
-					console.log('userinfoId',arrVal.user._id)
-				return	val === arrVal.user._id});
-			  }
-			const check =  checkAvailability(userInfo,id)
-		 if(!check){
-			this.getInfo(id).then(res=>this.setState(prevState=>({
-				userInfo:[...prevState.userInfo,res]	
-			}))).catch(e=>console.log(e))
-		}
-		
+
 		return (
 			<RoomItem
 				item={item}
@@ -989,7 +963,6 @@ class RoomsListView extends React.Component {
 	};
 
 	render = () => {
-		console.count(`${ this.constructor.name }.render calls`);
 		const {
 			sortBy,
 			groupByType,
@@ -1054,4 +1027,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));
-

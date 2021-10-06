@@ -57,6 +57,7 @@
     "lodash": "4.17.19",
     "moment": "2.27.0",
     "pretty-bytes": "^5.3.0",
+    "promise.allsettled": "^1.0.5",
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-fast-compare": "^3.2.0",
