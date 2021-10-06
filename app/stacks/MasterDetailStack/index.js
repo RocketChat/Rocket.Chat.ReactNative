@@ -33,6 +33,7 @@ import TeamChannelsView from '../../views/TeamChannelsView';
 import MarkdownTableView from '../../views/MarkdownTableView';
 import ReadReceiptsView from '../../views/ReadReceiptView';
 import ProfileView from '../../views/ProfileView';
+import DisplayPrefsView from '../../views/DisplayPrefsView';
 import SettingsView from '../../views/SettingsView';
 import LanguageView from '../../views/LanguageView';
 import ThemeView from '../../views/ThemeView';
@@ -204,6 +205,7 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					component={ProfileView}
 					options={props => ProfileView.navigationOptions({ ...props, isMasterDetail: true })}
 				/>
+				<ModalStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
 				<ModalStack.Screen
 					name='AdminPanelView'
 					component={AdminPanelView}
