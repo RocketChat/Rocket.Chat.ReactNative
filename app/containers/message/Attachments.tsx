@@ -49,7 +49,7 @@ const Attachments = React.memo(
 				);
 			}
 			if (file.actions && file.actions.length > 0) {
-				return <AttachedActions key={file} attachment={file} theme={theme} />;
+				return <AttachedActions attachment={file} theme={theme} />;
 			}
 
 			return (

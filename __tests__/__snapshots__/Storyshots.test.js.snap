@@ -72220,7 +72220,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-Message content"
+      testID="thread-messages-view-Message content"
     >
       <View
         style={
@@ -72290,8 +72290,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -72333,7 +72333,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -72432,7 +72432,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -72482,7 +72482,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -72502,7 +72502,53 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  1
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6C727A",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
@@ -72539,7 +72585,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-Message content"
+      testID="thread-messages-view-Message content"
     >
       <View
         style={
@@ -72609,8 +72655,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -72652,7 +72698,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -72751,7 +72797,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -72801,7 +72847,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -72821,7 +72867,53 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  1
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6C727A",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
@@ -72858,7 +72950,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-Message content"
+      testID="thread-messages-view-Message content"
     >
       <View
         style={
@@ -72928,8 +73020,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -72971,7 +73063,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -73070,7 +73162,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -73120,7 +73212,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -73140,7 +73232,53 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  1
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6C727A",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
@@ -73164,7 +73302,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      testID="thread-messages-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     >
       <View
         style={
@@ -73234,8 +73372,8 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -73277,7 +73415,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -73376,7 +73514,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -73426,7 +73564,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -73446,7 +73584,53 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  1
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6C727A",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
@@ -73503,7 +73687,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-Message content"
+      testID="thread-messages-view-Message content"
     >
       <View
         style={
@@ -73573,8 +73757,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -73616,7 +73800,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -73699,7 +73883,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -73749,7 +73933,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -73769,7 +73953,53 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  1
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6C727A",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
@@ -73806,7 +74036,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      testID="thread-messages-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     >
       <View
         style={
@@ -73876,8 +74106,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -73919,7 +74149,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -74002,7 +74232,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -74052,7 +74282,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -74072,7 +74302,53 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  1
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6C727A",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
@@ -74109,7 +74385,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-Message content"
+      testID="thread-messages-view-Message content"
     >
       <View
         style={
@@ -74179,8 +74455,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -74222,7 +74498,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -74305,7 +74581,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -74355,7 +74631,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -74375,7 +74651,53 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  +999
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6C727A",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
@@ -74412,7 +74734,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-"
+      testID="thread-messages-view-"
     >
       <View
         style={
@@ -74482,8 +74804,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -74525,7 +74847,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -74608,7 +74930,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -74658,7 +74980,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -74678,7 +75000,53 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  1
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6C727A",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
@@ -74715,7 +75083,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-Message content"
+      testID="thread-messages-view-Message content"
     >
       <View
         style={
@@ -74785,8 +75153,8 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -74828,7 +75196,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -74911,7 +75279,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -74961,7 +75329,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -74981,7 +75349,53 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  1
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6C727A",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
@@ -75038,7 +75452,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-Message content"
+      testID="thread-messages-view-Message content"
     >
       <View
         style={
@@ -75108,8 +75522,8 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -75151,7 +75565,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -75250,7 +75664,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -75300,7 +75714,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -75320,7 +75734,53 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  1
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6C727A",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
@@ -75344,7 +75804,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-Message content"
+      testID="thread-messages-view-Message content"
     >
       <View
         style={
@@ -75414,8 +75874,8 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -75457,7 +75917,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -75556,7 +76016,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -75606,7 +76066,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -75626,7 +76086,53 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  1
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#f9f9f9",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
@@ -75650,7 +76156,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
           "opacity": 1,
         }
       }
-      testID="discussions-view-Message content"
+      testID="thread-messages-view-Message content"
     >
       <View
         style={
@@ -75720,8 +76226,8 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
           <View
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
-                "justifyContent": "space-between",
                 "marginBottom": 2,
               }
             }
@@ -75763,7 +76269,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                 ]
               }
             >
-              2020-11-10T10:00:00-04:00
+              November 10, 2020
             </Text>
           </View>
           <View
@@ -75862,7 +76368,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -75912,7 +76418,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     ]
                   }
                 >
-                  
+                  
                 </Text>
                 <Text
                   numberOfLines={1}
@@ -75932,7 +76438,53 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                     ]
                   }
                 >
-                  November 10, 2020
+                  1
+                </Text>
+              </View>
+            </View>
+            <View
+              style={
+                Object {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#f9f9f9",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
                 </Text>
               </View>
             </View>
