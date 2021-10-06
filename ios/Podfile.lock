@@ -12,16 +12,16 @@ PODS:
   - EXConstants (9.1.1):
     - UMConstantsInterface
     - UMCore
-  - EXFileSystem (9.0.1):
+  - EXFileSystem (11.1.3):
+    - ExpoModulesCore
     - UMCore
-    - UMFileSystemInterface
   - EXHaptics (8.2.1):
     - UMCore
   - EXImageLoader (1.1.1):
     - React-Core
     - UMCore
     - UMImageLoaderInterface
-  - EXKeepAwake (8.2.1):
+  - EXKeepAwake (9.2.0):
     - UMCore
   - EXLocalAuthentication (9.2.0):
     - UMConstantsInterface
@@ -979,10 +979,10 @@ SPEC CHECKSUMS:
   EXAppleAuthentication: 5b3da71bada29e2423d8ea27e5538ef0d75aba62
   EXAV: 67bcc1d0afeb1fab854b206c84b9f2afbd61d0cd
   EXConstants: f907b3b6ce16e20d1750f22af1e095e924574bcb
-  EXFileSystem: 76875135b61708b9afa7e6a89b72a60ba0fdfa20
+  EXFileSystem: 0a04aba8da751b9ac954065911bcf166503f8267
   EXHaptics: 5428b344a216ca5d9df6ca8f65720b2a1ad9f109
   EXImageLoader: 02ca02c9cd5cc8a97b423207a73a791e0a86bea5
-  EXKeepAwake: 8b0f68242f036b971f9f8976341823cbe6f50812
+  EXKeepAwake: f4105ef469be7b283f66ce2d7234bb71ac80cd26
   EXLocalAuthentication: 985c65e08a6eb84f8f98b51f7435df138b18b9e8
   EXPermissions: 80ac3acbdb145930079810fe5b08c022b3428aa8
   ExpoModulesCore: 2734852616127a6c1fc23012197890a6f3763dc7
