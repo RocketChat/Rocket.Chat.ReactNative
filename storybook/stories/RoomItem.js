@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { themes } from '../../app/constants/colors';
 import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
 import { longText } from '../utils';
+import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../../app/constants/constantDisplayMode';
 import { store } from './index';
 
 const baseUrl = 'https://open.rocket.chat';
@@ -30,6 +31,8 @@ const RoomItem = props => (
 		baseUrl={baseUrl}
 		width={width}
 		theme={_theme}
+		showAvatar
+		displayMode={DISPLAY_MODE_EXPANDED}
 		{...updatedAt}
 		{...props}
 	/>
@@ -124,5 +127,59 @@ stories.add('Last Message', () => (
 		<RoomItem showLastMessage alert unread={1} lastMessage={lastMessage} />
 		<RoomItem showLastMessage alert unread={1000} lastMessage={lastMessage} />
 		<RoomItem showLastMessage alert tunread={[1]} lastMessage={lastMessage} />
+	</>
+));
+
+stories.add('Condensed Room Item', () => (
+	<>
+		<RoomItem showLastMessage alert tunread={[1]} lastMessage={lastMessage} displayMode={DISPLAY_MODE_CONDENSED} />
+		<RoomItem showLastMessage alert name='unread' unread={1000} displayMode={DISPLAY_MODE_CONDENSED} />
+
+		<RoomItem type='c' displayMode={DISPLAY_MODE_CONDENSED} autoJoin />
+	</>
+));
+
+stories.add('Condensed Room Item without Avatar', () => (
+	<>
+		<RoomItem
+			showLastMessage
+			alert
+			tunread={[1]}
+			lastMessage={lastMessage}
+			displayMode={DISPLAY_MODE_CONDENSED}
+			showAvatar={false}
+		/>
+		<RoomItem type='p' displayMode={DISPLAY_MODE_CONDENSED} showAvatar={false} />
+		<RoomItem name={longText} autoJoin displayMode={DISPLAY_MODE_CONDENSED} showAvatar={false} />
+	</>
+));
+
+stories.add('Expanded Room Item without Avatar', () => (
+	<>
+		<RoomItem
+			showLastMessage
+			alert
+			tunread={[1]}
+			lastMessage={lastMessage}
+			displayMode={DISPLAY_MODE_EXPANDED}
+			showAvatar={false}
+		/>
+		<RoomItem
+			status='online'
+			showLastMessage
+			alert
+			tunread={[1]}
+			lastMessage={lastMessage}
+			displayMode={DISPLAY_MODE_EXPANDED}
+			showAvatar={false}
+		/>
+		<RoomItem
+			status='online'
+			showLastMessage
+			alert
+			lastMessage={lastMessage}
+			displayMode={DISPLAY_MODE_EXPANDED}
+			showAvatar={false}
+		/>
 	</>
 ));
