@@ -2,12 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import I18n from '../../i18n';
-import { ROW_HEIGHT } from './styles';
+import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
 import { formatDate } from '../../utils/room';
 import RoomItem from './RoomItem';
 
-export { ROW_HEIGHT };
-
+export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
 interface IRoomItemContainerProps {
 	item: any;
 	showLastMessage: boolean;
@@ -32,9 +31,22 @@ interface IRoomItemContainerProps {
 	getIsRead: Function;
 	swipeEnabled: boolean;
 	autoJoin: boolean;
+	showAvatar: boolean;
+	displayMode: string;
 }
 
-const attrs = ['width', 'status', 'connected', 'theme', 'isFocused', 'forceUpdate', 'showLastMessage', 'autoJoin'];
+const attrs = [
+	'width',
+	'status',
+	'connected',
+	'theme',
+	'isFocused',
+	'forceUpdate',
+	'showLastMessage',
+	'autoJoin',
+	'showAvatar',
+	'displayMode'
+];
 
 class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 	private mounted: boolean;
@@ -137,7 +149,9 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 			username,
 			useRealName,
 			swipeEnabled,
-			autoJoin
+			autoJoin,
+			showAvatar,
+			displayMode
 		} = this.props;
 		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${name}`;
@@ -200,6 +214,8 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				swipeEnabled={swipeEnabled}
 				teamMain={item.teamMain}
 				autoJoin={autoJoin}
+				showAvatar={showAvatar}
+				displayMode={displayMode}
 			/>
 		);
 	}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 import FastImage from '@rocket.chat/react-native-fast-image';
@@ -41,15 +40,24 @@ const styles = StyleSheet.create({
 	}
 });
 
-const getInitial = url => url && url.replace(/http(s?):\/\//, '').slice(0, 1);
+const getInitial = (url: string) => url && url.replace(/http(s?):\/\//, '').slice(0, 1);
 
-const Fallback = ({ theme, initial }) => (
+interface IFallback {
+	theme: string;
+	initial: string;
+}
+const Fallback = ({ theme, initial }: IFallback) => (
 	<View style={[styles.container, styles.fallback, { backgroundColor: themes[theme].dangerColor }]}>
 		<Text style={[styles.initial, { color: themes[theme].buttonText }]}>{initial}</Text>
 	</View>
 );
 
-const ServerAvatar = React.memo(({ theme, url, image }) => (
+interface IServerAvatar {
+	theme: string;
+	url: string;
+	image: string;
+}
+const ServerAvatar = React.memo(({ theme, url, image }: IServerAvatar) => (
 	<View style={styles.container}>
 		{image && (
 			<ImageProgress
@@ -66,16 +74,6 @@ const ServerAvatar = React.memo(({ theme, url, image }) => (
 	</View>
 ));
 
-ServerAvatar.propTypes = {
-	theme: PropTypes.string,
-	url: PropTypes.string,
-	image: PropTypes.string
-};
 ServerAvatar.displayName = 'ServerAvatar';
-
-Fallback.propTypes = {
-	theme: PropTypes.string,
-	initial: PropTypes.string
-};
 
 export default ServerAvatar;
