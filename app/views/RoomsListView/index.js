@@ -500,24 +500,22 @@ class RoomsListView extends React.Component {
 				const channels = chats.filter(s => s.t === 'c' && !s.prid);
 				const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
 				const direct = chats.filter(s => s.t === 'd' && !s.prid);
-				// console.log('UserInfo-------',userInfo.length)
-				// const peerSupporter = filteredChats.filter(s => {
-				// 	let isPeerSupporter = false;
+				
+				const peerSupporter = filteredChats.filter(s => {
+					let isPeerSupporter = false;
 			
-				// userInfo.filter(peer => {
+				userInfo.filter(peer => {
 						 
-				// 	if(s.uids.includes(peer.user._id) && peer.user.roles.includes('Peer Supporter') ){
-				// 		return isPeerSupporter = true;
-				// 	} 
+					if(s.uids.includes(peer.user._id) && peer.user.roles.includes('Peer Supporter') ){
+						return isPeerSupporter = true;
+					} 
 			  
-				// })
-				// return isPeerSupporter;
-		
-					 
-				// 	 })
+				})
+				return isPeerSupporter; 
+					 })
 			
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
-				tempChats = this.addRoomsGroup(privateGroup, PEER_SUPPORTERS, tempChats);
+				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS, tempChats);
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
@@ -902,28 +900,19 @@ class RoomsListView extends React.Component {
 		} = this.props;
 		
 		const id = this.getUidDirectMessage(item);
-	        // const found = userInfo.some(el => {
-			// 	console.log('000000',el.user._id)
-			// 	console.log('1111111',id)
-			// 	el.user._id === id
-			// })
-		// 	console.log('id',id)
-		// 	//  const isObjectPresent = userInfo.find((o) => id === o.user._id);
-		// 	function checkAvailability(arr, val) {
-		// 		return arr.some(arrVal => {
-		// 			console.log('userinfoId',arrVal.user._id)
-		// 		return	val === arrVal.user._id});
-		// 	  }
-		// 	const check =  checkAvailability(userInfo,id)
-		// 	 console.log('check',check)
-		//  if(!check){
-		// 	this.getInfo(id).then(res=>this.setState(prevState=>({
-		// 		userInfo:[...prevState.userInfo,res]	
-		// 	}))).catch(e=>console.log(e))
-		// }
+	      
+			function checkAvailability(arr, val) {
+				return arr.some(arrVal => {
+					console.log('userinfoId',arrVal.user._id)
+				return	val === arrVal.user._id});
+			  }
+			const check =  checkAvailability(userInfo,id)
+		 if(!check){
+			this.getInfo(id).then(res=>this.setState(prevState=>({
+				userInfo:[...prevState.userInfo,res]	
+			}))).catch(e=>console.log(e))
+		}
 		
-
-	// console.log('-------',userInfo)
 		return (
 			<RoomItem
 				item={item}
