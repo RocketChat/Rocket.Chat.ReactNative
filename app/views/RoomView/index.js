@@ -362,6 +362,7 @@ class RoomView extends React.Component {
 		const t = room?.t;
 		const teamMain = room?.teamMain;
 		const teamId = room?.teamId;
+		const encrypted = room?.encrypted;
 		const { id: userId, token } = user;
 		const avatar = room?.name;
 		const visitor = room?.visitor;
@@ -424,6 +425,7 @@ class RoomView extends React.Component {
 					teamMain={teamMain}
 					joined={joined}
 					t={t}
+					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
 				/>
@@ -433,7 +435,7 @@ class RoomView extends React.Component {
 
 	goRoomActionsView = screen => {
 		logEvent(events.ROOM_GO_RA);
-		const { room, member } = this.state;
+		const { room, member, joined } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', {
@@ -443,7 +445,8 @@ class RoomView extends React.Component {
 					t: this.t,
 					room,
 					member,
-					showCloseModal: !!screen
+					showCloseModal: !!screen,
+					joined
 				}
 			});
 		} else {
@@ -451,7 +454,8 @@ class RoomView extends React.Component {
 				rid: this.rid,
 				t: this.t,
 				room,
-				member
+				member,
+				joined
 			});
 		}
 	};
