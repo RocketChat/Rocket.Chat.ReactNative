@@ -9,15 +9,14 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
-import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
-import log, { events, logEvent } from '../../utils/log';
+import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../presentation/RoomItem';
+import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import {
 	closeSearchHeader as closeSearchHeaderAction,
 	closeServerDropdown as closeServerDropdownAction,
 	openSearchHeader as openSearchHeaderAction,
-	roomsRequest as roomsRequestAction,
-	toggleSortDropdown as toggleSortDropdownAction
+	roomsRequest as roomsRequestAction
 } from '../../actions/rooms';
 import { appStart as appStartAction, ROOT_OUTSIDE } from '../../actions/app';
 import debounce from '../../utils/debounce';
@@ -50,11 +49,11 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
+import { DISPLAY_MODE_CONDENSED } from '../../constants/constantDisplayMode';
+import styles from './styles';
+import ServerDropdown from './ServerDropdown';
 import ListHeader from './ListHeader';
 import RoomsListHeaderView from './Header';
-import ServerDropdown from './ServerDropdown';
-import SortDropdown from './SortDropdown';
-import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -77,11 +76,6 @@ const shouldUpdateProps = [
 	'searchText',
 	'loadingServer',
 	'showServerDropdown',
-	'showSortDropdown',
-	'sortBy',
-	'groupByType',
-	'showFavorites',
-	'showUnread',
 	'useRealName',
 	'StoreLastMessage',
 	'theme',
@@ -96,9 +90,14 @@ const shouldUpdateProps = [
 	'createPrivateChannelPermission',
 	'createDiscussionPermission'
 ];
-const getItemLayout = (data, index) => ({
-	length: ROW_HEIGHT,
-	offset: ROW_HEIGHT * index,
+
+const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', 'showUnread'];
+
+const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
+
+const getItemLayout = (data, index, height) => ({
+	length: height,
+	offset: height * index,
 	index
 });
 const keyExtractor = item => item.rid;
@@ -118,7 +117,6 @@ class RoomsListView extends React.Component {
 		changingServer: PropTypes.bool,
 		loadingServer: PropTypes.bool,
 		showServerDropdown: PropTypes.bool,
-		showSortDropdown: PropTypes.bool,
 		sortBy: PropTypes.string,
 		groupByType: PropTypes.bool,
 		showFavorites: PropTypes.bool,
@@ -126,7 +124,6 @@ class RoomsListView extends React.Component {
 		refreshing: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		theme: PropTypes.string,
-		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
 		closeSearchHeader: PropTypes.func,
 		appStart: PropTypes.func,
@@ -140,6 +137,8 @@ class RoomsListView extends React.Component {
 		queueSize: PropTypes.number,
 		inquiryEnabled: PropTypes.bool,
 		encryptionBanner: PropTypes.string,
+		showAvatar: PropTypes.bool,
+		displayMode: PropTypes.string,
 		createTeamPermission: PropTypes.array,
 		createDirectMessagePermission: PropTypes.array,
 		createPublicChannelPermission: PropTypes.array,
@@ -180,6 +179,11 @@ class RoomsListView extends React.Component {
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			Orientation.unlockAllOrientations();
 			this.animated = true;
+			// Check if there were changes with sort preference, then call getSubscription to remount the list
+			if (this.sortPreferencesChanged) {
+				this.getSubscriptions();
+				this.sortPreferencesChanged = false;
+			}
 			// Check if there were changes while not focused (it's set on sCU)
 			if (this.shouldUpdate) {
 				this.forceUpdate();
@@ -220,6 +224,20 @@ class RoomsListView extends React.Component {
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
 			return true;
+		}
+
+		// check if some display props are changed to force update when focus this view again
+		// eslint-disable-next-line react/destructuring-assignment
+		const displayUpdated = displayPropsShouldUpdate.some(key => nextProps[key] !== this.props[key]);
+		if (displayUpdated) {
+			this.shouldUpdate = true;
+		}
+
+		// check if some sort preferences are changed to getSubscription() when focus this view again
+		// eslint-disable-next-line react/destructuring-assignment
+		const sortPreferencesUpdate = sortPreferencesShouldUpdate.some(key => nextProps[key] !== this.props[key]);
+		if (sortPreferencesUpdate) {
+			this.sortPreferencesChanged = true;
 		}
 
 		// Compare changes only once
@@ -285,7 +303,9 @@ class RoomsListView extends React.Component {
 			createPublicChannelPermission,
 			createPrivateChannelPermission,
 			createDirectMessagePermission,
-			createDiscussionPermission
+			createDiscussionPermission,
+			showAvatar,
+			displayMode
 		} = this.props;
 		const { item } = this.state;
 
@@ -294,7 +314,9 @@ class RoomsListView extends React.Component {
 				prevProps.sortBy === sortBy &&
 				prevProps.groupByType === groupByType &&
 				prevProps.showFavorites === showFavorites &&
-				prevProps.showUnread === showUnread
+				prevProps.showUnread === showUnread &&
+				prevProps.showAvatar === showAvatar &&
+				prevProps.displayMode === displayMode
 			)
 		) {
 			this.getSubscriptions();
@@ -616,16 +638,6 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	toggleSort = () => {
-		logEvent(events.RL_TOGGLE_SORT_DROPDOWN);
-		const { toggleSortDropdown } = this.props;
-
-		this.scrollToTop();
-		setTimeout(() => {
-			toggleSortDropdown();
-		}, 100);
-	};
-
 	toggleFav = async (rid, favorite) => {
 		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
@@ -874,12 +886,10 @@ class RoomsListView extends React.Component {
 
 	renderListHeader = () => {
 		const { searching } = this.state;
-		const { sortBy, queueSize, inquiryEnabled, encryptionBanner, user } = this.props;
+		const { queueSize, inquiryEnabled, encryptionBanner, user } = this.props;
 		return (
 			<ListHeader
 				searching={searching}
-				sortBy={sortBy}
-				toggleSort={this.toggleSort}
 				goEncryption={this.goEncryption}
 				goQueue={this.goQueue}
 				queueSize={queueSize}
@@ -913,7 +923,9 @@ class RoomsListView extends React.Component {
 			useRealName,
 			theme,
 			isMasterDetail,
-			width
+			width,
+			showAvatar,
+			displayMode
 		} = this.props;
 		const id = this.getUidDirectMessage(item);
 
@@ -938,6 +950,8 @@ class RoomsListView extends React.Component {
 				getIsRead={this.isRead}
 				visitor={item.visitor}
 				isFocused={currentItem?.rid === item.rid}
+				showAvatar={showAvatar}
+				displayMode={displayMode}
 			/>
 		);
 	};
@@ -953,7 +967,9 @@ class RoomsListView extends React.Component {
 
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
-		const { theme, refreshing } = this.props;
+		const { theme, refreshing, displayMode } = this.props;
+
+		const height = displayMode === DISPLAY_MODE_CONDENSED ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
@@ -968,7 +984,7 @@ class RoomsListView extends React.Component {
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
-				getItemLayout={getItemLayout}
+				getItemLayout={(data, index) => getItemLayout(data, index, height)}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
@@ -984,23 +1000,13 @@ class RoomsListView extends React.Component {
 
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { sortBy, groupByType, showFavorites, showUnread, showServerDropdown, showSortDropdown, theme, navigation } =
-			this.props;
+		const { showServerDropdown, theme, navigation } = this.props;
 
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				{showSortDropdown ? (
-					<SortDropdown
-						close={this.toggleSort}
-						sortBy={sortBy}
-						groupByType={groupByType}
-						showFavorites={showFavorites}
-						showUnread={showUnread}
-					/>
-				) : null}
 				{showServerDropdown ? <ServerDropdown navigation={navigation} /> : null}
 			</SafeAreaView>
 		);
@@ -1015,7 +1021,6 @@ const mapStateToProps = state => ({
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
-	showSortDropdown: state.rooms.showSortDropdown,
 	refreshing: state.rooms.refreshing,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
@@ -1027,6 +1032,8 @@ const mapStateToProps = state => ({
 	queueSize: getInquiryQueueSelector(state).length,
 	inquiryEnabled: state.inquiry.enabled,
 	encryptionBanner: state.encryption.banner,
+	showAvatar: state.sortPreferences.showAvatar,
+	displayMode: state.sortPreferences.displayMode,
 	createTeamPermission: state.permissions['create-team'],
 	createDirectMessagePermission: state.permissions['create-d'],
 	createPublicChannelPermission: state.permissions['create-c'],
@@ -1035,7 +1042,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
 	roomsRequest: params => dispatch(roomsRequestAction(params)),

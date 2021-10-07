@@ -45,18 +45,6 @@ export function toggleServerDropdown() {
 	};
 }
 
-export function closeSortDropdown() {
-	return {
-		type: types.ROOMS.CLOSE_SORT_DROPDOWN
-	};
-}
-
-export function toggleSortDropdown() {
-	return {
-		type: types.ROOMS.TOGGLE_SORT_DROPDOWN
-	};
-}
-
 export function openSearchHeader() {
 	return {
 		type: types.ROOMS.OPEN_SEARCH_HEADER
