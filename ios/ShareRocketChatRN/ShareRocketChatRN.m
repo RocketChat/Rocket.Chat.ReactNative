@@ -10,8 +10,9 @@
 #import "ReactNativeShareExtension.h"
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <React/RCTLog.h>
+#import <MMKV/MMKV.h>
 #import <Firebase.h>
+#import <Bugsnag/Bugsnag.h>
 
 #import <React/RCTBridgeDelegate.h>
 #import <UMCore/UMModuleRegistry.h>
@@ -32,6 +33,7 @@ RCT_EXPORT_MODULE();
   if(![FIRApp defaultApp]){
     [FIRApp configure];
   }
+  [Bugsnag start];
   
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
@@ -44,6 +46,10 @@ RCT_EXPORT_MODULE();
   
   // Uncomment for console output in Xcode console for release mode on device:
   // RCTSetLogThreshold(RCTLogLevelInfo - 1);
+
+  // AppGroup MMKV
+  NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
+  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
   
   return rootView;
 }

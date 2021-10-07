@@ -20,6 +20,9 @@ export default {
 	Accounts_AllowUsernameChange: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_AvatarBlockUnauthenticatedAccess: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_CustomFields: {
 		type: 'valueAsString'
 	},
@@ -68,6 +71,9 @@ export default {
 	DirectMesssage_maxUsers: {
 		type: 'valueAsNumber'
 	},
+	E2E_Enable: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_Directory_DefaultView: {
 		type: 'valueAsString'
 	},
@@ -93,6 +99,9 @@ export default {
 		type: 'valueAsString'
 	},
 	Jitsi_Enabled_TokenAuth: {
+		type: 'valueAsBoolean'
+	},
+	Jitsi_URL_Room_Hash: {
 		type: 'valueAsBoolean'
 	},
 	Jitsi_URL_Room_Prefix: {
@@ -181,5 +190,17 @@ export default {
 	},
 	Force_Screen_Lock_After: {
 		type: 'valueAsNumber'
+	},
+	Allow_Save_Media_to_Gallery: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_AllowInvisibleStatusOption: {
+		type: 'valueAsString'
+	},
+	Jitsi_Enable_Teams: {
+		type: 'valueAsBoolean'
+	},
+	Jitsi_Enable_Channels: {
+		type: 'valuesAsBoolean'
 	}
 };

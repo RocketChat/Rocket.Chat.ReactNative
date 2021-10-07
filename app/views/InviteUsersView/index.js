@@ -102,14 +102,14 @@ class InviteUsersView extends React.Component {
 			theme, invite
 		} = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} theme={theme}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<ScrollView
 					{...scrollPersistTaps}
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}
 				>
-					<StatusBar theme={theme} />
+					<StatusBar />
 					<View style={styles.innerContainer}>
 						<RCTextInput
 							label={I18n.t('Invite_Link')}

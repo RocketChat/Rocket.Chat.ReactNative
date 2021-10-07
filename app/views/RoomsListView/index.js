@@ -9,7 +9,7 @@ import {
 	RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
-import isEqual from 'react-fast-compare';
+import { dequal } from 'dequal';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
@@ -30,15 +30,10 @@ import {
 	roomsRequest as roomsRequestAction,
 	closeServerDropdown as closeServerDropdownAction
 } from '../../actions/rooms';
-import { appStart as appStartAction, ROOT_BACKGROUND } from '../../actions/app';
 import debounce from '../../utils/debounce';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import RoomsListHeaderView from './Header';
-import {
-	DrawerButton,
-	CustomHeaderButtons,
-	Item
-} from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import ListHeader from './ListHeader';
@@ -63,22 +58,29 @@ import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
-import { showErrorAlert } from '../../utils/info';
-import { getInquiryQueueSelector } from '../../selectors/inquiry';
+import { showErrorAlert, showConfirmationAlert } from '../../utils/info';
+import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
+
+import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
+import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
 const FAVORITES_HEADER = 'Favorites';
-const PEER_SUPPORTERS = 'Peer_supporter';
+const PEER_SUPPORTERS_HEADER = 'Peer_supporter';
 const DISCUSSIONS_HEADER = 'Discussions';
+const TEAMS_HEADER = 'Teams';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
-const GROUPS_HEADER = 'Private_Groups';
+const OMNICHANNEL_HEADER = 'Open_Livechats';
 const QUERY_SIZE = 20;
 
-const filterIsUnread = s => (s.unread > 0 || s.alert) && !s.hideUnreadStatus;
+const filterIsUnread = s => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = s => s.f;
+const filterIsOmnichannel = s => s.t === 'l';
+const filterIsTeam = s => s.teamMain;
+const filterIsDiscussion = s => s.prid;
 
 const shouldUpdateProps = [
 	'searchText',
@@ -91,12 +93,12 @@ const shouldUpdateProps = [
 	'showUnread',
 	'useRealName',
 	'StoreLastMessage',
-	'appState',
 	'theme',
 	'isMasterDetail',
 	'refreshing',
 	'queueSize',
-	'inquiryEnabled'
+	'inquiryEnabled',
+	'encryptionBanner'
 ];
 const getItemLayout = (data, index) => ({
 	length: ROW_HEIGHT,
@@ -111,10 +113,13 @@ class RoomsListView extends React.Component {
 		user: PropTypes.shape({
 			id: PropTypes.string,
 			username: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			statusLivechat: PropTypes.string,
+			roles: PropTypes.object
 		}),
 		server: PropTypes.string,
 		searchText: PropTypes.string,
+		changingServer: PropTypes.bool,
 		loadingServer: PropTypes.bool,
 		showServerDropdown: PropTypes.bool,
 		showSortDropdown: PropTypes.bool,
@@ -124,7 +129,6 @@ class RoomsListView extends React.Component {
 		showUnread: PropTypes.bool,
 		refreshing: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
-		appState: PropTypes.string,
 		theme: PropTypes.string,
 		toggleSortDropdown: PropTypes.func,
 		openSearchHeader: PropTypes.func,
@@ -133,49 +137,39 @@ class RoomsListView extends React.Component {
 		roomsRequest: PropTypes.func,
 		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
-		connected: PropTypes.bool,
 		isMasterDetail: PropTypes.bool,
 		rooms: PropTypes.array,
 		width: PropTypes.number,
 		insets: PropTypes.object,
 		queueSize: PropTypes.number,
-		inquiryEnabled: PropTypes.bool
+		inquiryEnabled: PropTypes.bool,
+		encryptionBanner: PropTypes.string
 	};
 
 	constructor(props) {
 		super(props);
 
-		this.gotSubscriptions = false;
 		this.animated = false;
+		this.mounted = false;
 		this.count = 0;
 
 		this.state = {
 			searching: false,
 			search: [],
 			loading: true,
-			chatsOrder: [],
+			chatsUpdate: [],
 			chats: [],
 			item: {}
 		};
 		this.setHeader();
+		this.getSubscriptions();
 	}
 
 	componentDidMount() {
 		const {
-			navigation, closeServerDropdown, appState
+			navigation, closeServerDropdown
 		} = this.props;
-
-		/**
-		 * - When didMount is triggered and appState is foreground,
-		 * it means the user is logging in and selectServer has ran, so we can getSubscriptions
-		 *
-		 * - When didMount is triggered and appState is background,
-		 * it means the user has resumed the app, so selectServer needs to be triggered,
-		 * which is going to change server and getSubscriptions will be triggered by componentWillReceiveProps
-		 */
-		if (appState === 'foreground') {
-			this.getSubscriptions();
-		}
+		this.mounted = true;
 
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
@@ -201,17 +195,17 @@ class RoomsListView extends React.Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { loadingServer, searchText, server } = this.props;
+		const {
+			loadingServer, searchText, server, changingServer
+		} = this.props;
 
-		if (nextProps.server && loadingServer !== nextProps.loadingServer) {
-			if (nextProps.loadingServer) {
-				this.setState({ loading: true });
-			} else {
-				this.getSubscriptions();
-			}
+		// when the server is changed
+		if (server !== nextProps.server && loadingServer !== nextProps.loadingServer && nextProps.loadingServer) {
+			this.setState({ loading: true });
 		}
-		if (server && server !== nextProps.server) {
-			this.gotSubscriptions = false;
+		// when the server is changing and stopped loading
+		if (changingServer && loadingServer !== nextProps.loadingServer && !nextProps.loadingServer) {
+			this.getSubscriptions();
 		}
 		if (searchText !== nextProps.searchText) {
 			this.search(nextProps.searchText);
@@ -219,7 +213,7 @@ class RoomsListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { chatsOrder, searching, item } = this.state;
+		const { chatsUpdate, searching, item } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -227,7 +221,7 @@ class RoomsListView extends React.Component {
 		}
 
 		// Compare changes only once
-		const chatsNotEqual = !isEqual(nextState.chatsOrder, chatsOrder);
+		const chatsNotEqual = !dequal(nextState.chatsUpdate, chatsUpdate);
 
 		// If they aren't equal, set to update if focused
 		if (chatsNotEqual) {
@@ -258,13 +252,13 @@ class RoomsListView extends React.Component {
 		if (nextProps.width !== width) {
 			return true;
 		}
-		if (!isEqual(nextState.search, search)) {
+		if (!dequal(nextState.search, search)) {
 			return true;
 		}
-		if (!isEqual(nextProps.rooms, rooms)) {
+		if (!dequal(nextProps.rooms, rooms)) {
 			return true;
 		}
-		if (!isEqual(nextProps.insets, insets)) {
+		if (!dequal(nextProps.insets, insets)) {
 			return true;
 		}
 		// If it's focused and there are changes, update
@@ -281,9 +275,6 @@ class RoomsListView extends React.Component {
 			groupByType,
 			showFavorites,
 			showUnread,
-			appState,
-			connected,
-			roomsRequest,
 			rooms,
 			isMasterDetail,
 			insets
@@ -299,15 +290,9 @@ class RoomsListView extends React.Component {
 			)
 		) {
 			this.getSubscriptions();
-		} else if (
-			appState === 'foreground'
-			&& appState !== prevProps.appState
-			&& connected
-		) {
-			roomsRequest();
 		}
 		// Update current item in case of another action triggers an update on rooms reducer
-		if (isMasterDetail && item?.rid !== rooms[0] && !isEqual(rooms, prevProps.rooms)) {
+		if (isMasterDetail && item?.rid !== rooms[0] && !dequal(rooms, prevProps.rooms)) {
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ item: { rid: rooms[0] } });
 		}
@@ -324,6 +309,9 @@ class RoomsListView extends React.Component {
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
 		}
+		if (this.backHandler && this.backHandler.remove) {
+			this.backHandler.remove();
+		}
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
@@ -332,19 +320,18 @@ class RoomsListView extends React.Component {
 	getHeader = () => {
 		const { searching } = this.state;
 		const { navigation, isMasterDetail, insets } = this.props;
-		const headerTitlePosition = getHeaderTitlePosition(insets);
+		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: searching ? 0 : 3 });
 		return {
 			headerTitleAlign: 'left',
 			headerLeft: () => (searching ? (
-				<CustomHeaderButtons left>
-					<Item
-						title='cancel'
+				<HeaderButton.Container left>
+					<HeaderButton.Item
 						iconName='close'
 						onPress={this.cancelSearch}
 					/>
-				</CustomHeaderButtons>
+				</HeaderButton.Container>
 			) : (
-				<DrawerButton
+				<HeaderButton.Drawer
 					navigation={navigation}
 					testID='rooms-list-view-sidebar'
 					onPress={isMasterDetail
@@ -358,20 +345,23 @@ class RoomsListView extends React.Component {
 				right: headerTitlePosition.right
 			},
 			headerRight: () => (searching ? null : (
-				<CustomHeaderButtons>
-					<Item
-						title='new'
+				<HeaderButton.Container>
+					<HeaderButton.Item
 						iconName='create'
 						onPress={this.goToNewMessage}
 						testID='rooms-list-view-create-channel'
 					/>
-					<Item
-						title='search'
+					<HeaderButton.Item
 						iconName='search'
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
 					/>
-				</CustomHeaderButtons>
+					<HeaderButton.Item
+						iconName='directory'
+						onPress={this.goDirectory}
+						testID='rooms-list-view-directory'
+					/>
+				</HeaderButton.Container>
 			))
 		};
 	}
@@ -406,7 +396,8 @@ class RoomsListView extends React.Component {
 			sortBy,
 			showUnread,
 			showFavorites,
-			groupByType
+			groupByType,
+			user
 		} = this.props;
 
 		const db = database.active;
@@ -428,7 +419,7 @@ class RoomsListView extends React.Component {
 			observable = await db.collections
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observe();
+				.observeWithColumns(['alert']);
 
 		// When we're NOT grouping
 		} else {
@@ -448,11 +439,27 @@ class RoomsListView extends React.Component {
 			let chats = data.map(i => i);
 			const filteredChats = chats.filter(s => s.t === 'd');
 
-			/**
-			 * We trigger re-render only when chats order changes
-			 * RoomItem handles its own re-render
-			 */
-			const chatsOrder = data.map(item => item.rid);
+			let chatsUpdate = [];
+			if (showUnread) {
+				/**
+				 * If unread on top, we trigger re-render based on order changes and sub.alert
+				 * RoomItem handles its own re-render
+				 */
+				chatsUpdate = data.map(item => ({ rid: item.rid, alert: item.alert }));
+			} else {
+				/**
+				 * Otherwise, we trigger re-render only when chats order changes
+				 * RoomItem handles its own re-render
+				 */
+				chatsUpdate = data.map(item => item.rid);
+			}
+
+			const isOmnichannelAgent = user?.roles?.includes('livechat-agent');
+			if (isOmnichannelAgent) {
+				const omnichannel = chats.filter(s => filterIsOmnichannel(s));
+				chats = chats.filter(s => !filterIsOmnichannel(s));
+				tempChats = this.addRoomsGroup(omnichannel, OMNICHANNEL_HEADER, tempChats);
+			}
 
 			// unread
 			if (showUnread) {
@@ -500,22 +507,26 @@ class RoomsListView extends React.Component {
 				// end get peer supporters
 
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
-				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS, tempChats);
+				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
-				tempChats = this.addRoomsGroup(privateGroup, GROUPS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
-				
 			} else if (showUnread || showFavorites) {
 				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
 				tempChats = chats;
 			}
 
-			this.internalSetState({
-				chats: tempChats,
-				chatsOrder,
-				loading: false
-			});
+			if (this.mounted) {
+				this.internalSetState({
+					chats: tempChats,
+					chatsUpdate,
+					loading: false
+				});
+			} else {
+				this.state.chats = tempChats;
+				this.state.chatsUpdate = chatsUpdate;
+				this.state.loading = false;
+			}
 		});
 	}
 
@@ -530,6 +541,7 @@ class RoomsListView extends React.Component {
 		const { openSearchHeader } = this.props;
 		this.internalSetState({ searching: true }, () => {
 			openSearchHeader();
+			this.search('');
 			this.setHeader();
 		});
 	};
@@ -555,12 +567,10 @@ class RoomsListView extends React.Component {
 
 	handleBackPress = () => {
 		const { searching } = this.state;
-		const { appStart } = this.props;
 		if (searching) {
 			this.cancelSearch();
 			return true;
 		}
-		appStart({ root: ROOT_BACKGROUND });
 		return false;
 	};
 
@@ -631,7 +641,7 @@ class RoomsListView extends React.Component {
 			const db = database.active;
 			const result = await RocketChat.toggleFavorite(rid, !favorite);
 			if (result.success) {
-				const subCollection = db.collections.get('subscriptions');
+				const subCollection = db.get('subscriptions');
 				await db.action(async() => {
 					try {
 						const subRecord = await subCollection.find(rid);
@@ -654,13 +664,15 @@ class RoomsListView extends React.Component {
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleRead(isRead, rid);
+
 			if (result.success) {
-				const subCollection = db.collections.get('subscriptions');
+				const subCollection = db.get('subscriptions');
 				await db.action(async() => {
 					try {
 						const subRecord = await subCollection.find(rid);
 						await subRecord.update((sub) => {
 							sub.alert = isRead;
+							sub.unread = 0;
 						});
 					} catch (e) {
 						log(e);
@@ -679,7 +691,7 @@ class RoomsListView extends React.Component {
 			const db = database.active;
 			const result = await RocketChat.hideRoom(rid, type);
 			if (result.success) {
-				const subCollection = db.collections.get('subscriptions');
+				const subCollection = db.get('subscriptions');
 				await db.action(async() => {
 					try {
 						const subRecord = await subCollection.find(rid);
@@ -707,7 +719,28 @@ class RoomsListView extends React.Component {
 
 	goQueue = () => {
 		logEvent(events.RL_GO_QUEUE);
-		const { navigation, isMasterDetail, queueSize } = this.props;
+		const {
+			navigation, isMasterDetail, queueSize, inquiryEnabled, user
+		} = this.props;
+
+		// if not-available, prompt to change to available
+		if (!isOmnichannelStatusAvailable(user)) {
+			showConfirmationAlert({
+				message: I18n.t('Omnichannel_enable_alert'),
+				confirmationText: I18n.t('Yes'),
+				onPress: async() => {
+					try {
+						await changeLivechatStatus();
+					} catch {
+						// Do nothing
+					}
+				}
+			});
+		}
+
+		if (!inquiryEnabled) {
+			return;
+		}
 		// prevent navigation to empty list
 		if (!queueSize) {
 			return showErrorAlert(I18n.t('Queue_is_empty'), I18n.t('Oops'));
@@ -791,6 +824,20 @@ class RoomsListView extends React.Component {
 		}
 	}
 
+	goEncryption = () => {
+		logEvent(events.RL_GO_E2E_SAVE_PASSWORD);
+		const { navigation, isMasterDetail, encryptionBanner } = this.props;
+
+		const isSavePassword = encryptionBanner === E2E_BANNER_TYPE.SAVE_PASSWORD;
+		if (isMasterDetail) {
+			const screen = isSavePassword ? 'E2ESaveYourPasswordView' : 'E2EEnterYourPasswordView';
+			navigation.navigate('ModalStackNavigator', { screen });
+		} else {
+			const screen = isSavePassword ? 'E2ESaveYourPasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
+			navigation.navigate(screen);
+		}
+	}
+
 	handleCommands = ({ event }) => {
 		const { navigation, server, isMasterDetail } = this.props;
 		const { input } = event;
@@ -835,22 +882,26 @@ class RoomsListView extends React.Component {
 
 	renderListHeader = () => {
 		const { searching } = this.state;
-		const { sortBy, queueSize, inquiryEnabled } = this.props;
+		const {
+			sortBy, queueSize, inquiryEnabled, encryptionBanner, user
+		} = this.props;
 		return (
 			<ListHeader
 				searching={searching}
 				sortBy={sortBy}
 				toggleSort={this.toggleSort}
-				goDirectory={this.goDirectory}
+				goEncryption={this.goEncryption}
 				goQueue={this.goQueue}
 				queueSize={queueSize}
 				inquiryEnabled={inquiryEnabled}
+				encryptionBanner={encryptionBanner}
+				user={user}
 			/>
 		);
 	};
 
 	renderHeader = () => {
-		const { isMasterDetail, theme } = this.props;
+		const { isMasterDetail } = this.props;
 
 		if (!isMasterDetail) {
 			return null;
@@ -859,7 +910,6 @@ class RoomsListView extends React.Component {
 		const options = this.getHeader();
 		return (
 			<Header
-				theme={theme}
 				{...options}
 			/>
 		);
@@ -872,12 +922,7 @@ class RoomsListView extends React.Component {
 
 		const { item: currentItem } = this.state;
 		const {
-			user: {
-				id: userId,
-				username,
-				token
-			},
-			server,
+			user: { username },
 			StoreLastMessage,
 			useRealName,
 			theme,
@@ -893,13 +938,9 @@ class RoomsListView extends React.Component {
 				theme={theme}
 				id={id}
 				type={item.t}
-				userId={userId}
 				username={username}
-				token={token}
-				baseUrl={server}
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
-				testID={`rooms-list-view-item-${ item.name }`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
 				toggleRead={this.toggleRead}
@@ -975,8 +1016,8 @@ class RoomsListView extends React.Component {
 		} = this.props;
 
 		return (
-			<SafeAreaView testID='rooms-list-view' theme={theme} style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<StatusBar theme={theme} />
+			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
+				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
 				{showSortDropdown ? (
@@ -998,7 +1039,7 @@ const mapStateToProps = state => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,
-	connected: state.server.connected,
+	changingServer: state.server.changingServer,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
 	showServerDropdown: state.rooms.showServerDropdown,
@@ -1009,18 +1050,17 @@ const mapStateToProps = state => ({
 	showFavorites: state.sortPreferences.showFavorites,
 	showUnread: state.sortPreferences.showUnread,
 	useRealName: state.settings.UI_Use_Real_Name,
-	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
 	StoreLastMessage: state.settings.Store_Last_Message,
 	rooms: state.room.rooms,
 	queueSize: getInquiryQueueSelector(state).length,
-	inquiryEnabled: state.inquiry.enabled
+	inquiryEnabled: state.inquiry.enabled,
+	encryptionBanner: state.encryption.banner
 });
 
 const mapDispatchToProps = dispatch => ({
 	toggleSortDropdown: () => dispatch(toggleSortDropdownAction()),
 	openSearchHeader: () => dispatch(openSearchHeaderAction()),
 	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	appStart: params => dispatch(appStartAction(params)),
 	roomsRequest: params => dispatch(roomsRequestAction(params)),
 	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
 	closeServerDropdown: () => dispatch(closeServerDropdownAction())

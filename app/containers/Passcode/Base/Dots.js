@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import _ from 'lodash';
+import range from 'lodash/range';
 import PropTypes from 'prop-types';
 
 import styles from './styles';
@@ -11,7 +11,7 @@ const SIZE_FULL = 16;
 
 const Dots = React.memo(({ passcode, theme, length }) => (
 	<View style={styles.dotsContainer}>
-		{_.range(length).map((val) => {
+		{range(length).map((val) => {
 			const lengthSup = (passcode.length >= val + 1);
 			const height = lengthSup ? SIZE_FULL : SIZE_EMPTY;
 			const width = lengthSup ? SIZE_FULL : SIZE_EMPTY;

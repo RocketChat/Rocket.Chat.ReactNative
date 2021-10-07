@@ -1,14 +1,33 @@
-import { Client } from 'bugsnag-react-native';
-import analytics from '@react-native-firebase/analytics';
-import crashlytics from '@react-native-firebase/crashlytics';
-import config from '../../../config';
+import firebaseAnalytics from '@react-native-firebase/analytics';
+import { isFDroidBuild } from '../../constants/environment';
 import events from './events';
 
-const bugsnag = new Client(config.BUGSNAG_API_KEY);
+const analytics = firebaseAnalytics || '';
+let bugsnag = '';
+let crashlytics;
+let reportCrashErrors = true;
+let reportAnalyticsEvents = true;
+
+export const getReportCrashErrorsValue = () => reportCrashErrors;
+export const getReportAnalyticsEventsValue = () => reportAnalyticsEvents;
+
+
+if (!isFDroidBuild) {
+	bugsnag = require('@bugsnag/react-native').default;
+	bugsnag.start({
+		onBreadcrumb() {
+			return reportAnalyticsEvents;
+		},
+		onError(error) {
+			if (!reportAnalyticsEvents) { error.breadcrumbs = []; }
+			return reportCrashErrors;
+		}
+	});
+	crashlytics = require('@react-native-firebase/crashlytics').default;
+}
 
 export { analytics };
 export const loggerConfig = bugsnag.config;
-export const { leaveBreadcrumb } = bugsnag;
 export { events };
 
 let metadata = {};
@@ -21,28 +40,40 @@ export const logServerVersion = (serverVersion) => {
 
 export const logEvent = (eventName, payload) => {
 	try {
-		analytics().logEvent(eventName, payload);
-		leaveBreadcrumb(eventName, payload);
+		if (!isFDroidBuild) {
+			analytics().logEvent(eventName, payload);
+			bugsnag.leaveBreadcrumb(eventName, payload);
+		}
 	} catch {
 		// Do nothing
 	}
 };
 
 export const setCurrentScreen = (currentScreen) => {
-	analytics().setCurrentScreen(currentScreen);
-	leaveBreadcrumb(currentScreen, { type: 'navigation' });
+	if (!isFDroidBuild) {
+		analytics().setCurrentScreen(currentScreen);
+		bugsnag.leaveBreadcrumb(currentScreen, { type: 'navigation' });
+	}
+};
+
+export const toggleCrashErrorsReport = (value) => {
+	crashlytics().setCrashlyticsCollectionEnabled(value);
+	return reportCrashErrors = value;
+};
+
+export const toggleAnalyticsEventsReport = (value) => {
+	analytics().setAnalyticsCollectionEnabled(value);
+	return reportAnalyticsEvents = value;
 };
 
 export default (e) => {
-	if (e instanceof Error && e.message !== 'Aborted' && !__DEV__) {
-		bugsnag.notify(e, (report) => {
-			report.metadata = {
-				details: {
-					...metadata
-				}
-			};
+	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
+		bugsnag.notify(e, (event) => {
+			event.addMetadata('details', { ...metadata });
 		});
-		crashlytics().recordError(e);
+		if (!isFDroidBuild) {
+			crashlytics().recordError(e);
+		}
 	} else {
 		console.log(e);
 	}

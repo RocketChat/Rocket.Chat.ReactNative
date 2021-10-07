@@ -6,17 +6,13 @@ import { sanitizer } from '../utils';
 export default class User extends Model {
 	static table = 'users';
 
-	@field('token') token;
-
-	@field('username') username;
+	@field('_id') _id;
 
 	@field('name') name;
 
-	@field('language') language;
+	@field('username') username;
 
-	@field('status') status;
-
-	@field('statusText') statusText;
+	@field('avatar_etag') avatarETag;
 
 	@json('roles', sanitizer) roles;
 }

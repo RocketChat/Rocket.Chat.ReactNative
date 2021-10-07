@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, Text
+	View, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { DrawerButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
 import log, { logEvent, events } from '../../utils/log';
 import Options from './Options';
@@ -31,7 +29,7 @@ class ProfileLibraryView extends React.Component {
 			title: I18n.t('Profile_library')
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => <DrawerButton navigation={navigation} />;
+			options.headerLeft = () => <HeaderButton.Drawer navigation={navigation} />;
 		}
 		return options;
 	}
@@ -89,7 +87,7 @@ class ProfileLibraryView extends React.Component {
 		try {
 			const { data, type, globalUsers } = this.state;
 			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
-			
+
 			const directories = await RocketChat.getProfileLibrary({
 				query,
 				offset: data.length,
@@ -145,16 +143,16 @@ class ProfileLibraryView extends React.Component {
 		goRoom({ item, isMasterDetail });
 	}
 
-	onPressItem = async(item) => {
+	onPressItem = (item) => {
 		const { type } = this.state;
 		const { navigation } = this.props;
 		if (type === 'users') {
-			let navParam = { 
+			const navParam = {
 				rid: item._id,
 				t: 'd',
-				isPeerSupporter: true,
+				isPeerSupporter: true
 			};
-			//alert(JSON.stringify(item));
+			// alert(JSON.stringify(item));
 			navigation.navigate('RoomInfoView', navParam);
 		} else {
 			this.goRoom({
@@ -163,20 +161,16 @@ class ProfileLibraryView extends React.Component {
 		}
 	}
 
-	renderHeader = () => {
-		const { type } = this.state;
-		const { theme } = this.props;
-		return (
-			<>
-				<SearchBox
-					onChangeText={this.onSearchChangeText}
-					onSubmitEditing={this.search}
-					testID='federation-view-search'
-				/>
-				
-			</>
-		);
-	}
+	renderHeader = () => (
+		<>
+			<SearchBox
+				onChangeText={this.onSearchChangeText}
+				onSubmitEditing={this.search}
+				testID='federation-view-search'
+			/>
+
+		</>
+	)
 
 	renderSeparator = () => {
 		const { theme } = this.props;

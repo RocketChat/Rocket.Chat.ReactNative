@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Navigation from './lib/Navigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './utils/navigation';
 import {
-	ROOT_LOADING, ROOT_OUTSIDE, ROOT_NEW_SERVER, ROOT_INSIDE, ROOT_SET_USERNAME, ROOT_BACKGROUND
+	ROOT_LOADING, ROOT_OUTSIDE, ROOT_NEW_SERVER, ROOT_INSIDE, ROOT_SET_USERNAME
 } from './actions/app';
 
 // Stacks
@@ -65,7 +65,7 @@ const App = React.memo(({ root, isMasterDetail }) => {
 		>
 			<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 				<>
-					{root === ROOT_LOADING || root === ROOT_BACKGROUND ? (
+					{root === ROOT_LOADING ? (
 						<Stack.Screen
 							name='AuthLoading'
 							component={AuthLoadingView}

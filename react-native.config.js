@@ -1,16 +1,11 @@
 module.exports = {
 	project: {
 		ios: {},
-		android: {}, // grouped into "project"
+		android: {} // grouped into "project"
 	  },
-	assets: ["./assets/fonts/"],
+	assets: ['./assets/fonts/'],
 	dependencies: {
 		'react-native-notifications': {
-			platforms: {
-				android: null
-			}
-		},
-		'react-native-keyboard-input': {
 			platforms: {
 				android: null
 			}
@@ -19,6 +14,21 @@ module.exports = {
 			platforms: {
 				android: null,
 				ios: null
+			}
+		},
+		'@react-native-firebase/app': {
+			platforms: {
+				android: null
+			}
+		},
+		'@react-native-firebase/analytics': {
+			platforms: {
+				android: null
+			}
+		},
+		'@react-native-firebase/crashlytics': {
+			platforms: {
+				android: null
 			}
 		}
 	}

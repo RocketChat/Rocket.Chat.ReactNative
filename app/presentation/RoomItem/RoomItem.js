@@ -10,6 +10,8 @@ import LastMessage from './LastMessage';
 import Title from './Title';
 import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
+import Tag from './Tag';
+import I18n from '../../i18n';
 
 const RoomItem = ({
 	rid,
@@ -19,10 +21,7 @@ const RoomItem = ({
 	avatar,
 	width,
 	avatarSize,
-	baseUrl,
-	userId,
 	username,
-	token,
 	showLastMessage,
 	status,
 	useRealName,
@@ -39,16 +38,22 @@ const RoomItem = ({
 	unread,
 	userMentions,
 	groupMentions,
-	roomUpdatedAt,
+	tunread,
+	tunreadUser,
+	tunreadGroup,
 	testID,
 	swipeEnabled,
 	onPress,
+	onLongPress,
 	toggleFav,
 	toggleRead,
-	hideChannel
+	hideChannel,
+	teamMain,
+	autoJoin
 }) => (
 	<Touchable
 		onPress={onPress}
+		onLongPress={onLongPress}
 		width={width}
 		favorite={favorite}
 		toggleFav={toggleFav}
@@ -67,10 +72,8 @@ const RoomItem = ({
 			avatar={avatar}
 			avatarSize={avatarSize}
 			type={type}
-			baseUrl={baseUrl}
-			userId={userId}
-			token={token}
 			theme={theme}
+			rid={rid}
 		>
 			{showLastMessage
 				? (
@@ -82,6 +85,7 @@ const RoomItem = ({
 								status={status}
 								isGroupChat={isGroupChat}
 								theme={theme}
+								teamMain={teamMain}
 							/>
 							<Title
 								name={name}
@@ -89,8 +93,10 @@ const RoomItem = ({
 								hideUnreadStatus={hideUnreadStatus}
 								alert={alert}
 							/>
+							{
+								autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null
+							}
 							<UpdatedAt
-								roomUpdatedAt={roomUpdatedAt}
 								date={date}
 								theme={theme}
 								hideUnreadStatus={hideUnreadStatus}
@@ -111,7 +117,9 @@ const RoomItem = ({
 								unread={unread}
 								userMentions={userMentions}
 								groupMentions={groupMentions}
-								theme={theme}
+								tunread={tunread}
+								tunreadUser={tunreadUser}
+								tunreadGroup={tunreadGroup}
 							/>
 						</View>
 					</>
@@ -124,6 +132,7 @@ const RoomItem = ({
 							status={status}
 							isGroupChat={isGroupChat}
 							theme={theme}
+							teamMain={teamMain}
 						/>
 						<Title
 							name={name}
@@ -131,11 +140,16 @@ const RoomItem = ({
 							hideUnreadStatus={hideUnreadStatus}
 							alert={alert}
 						/>
+						{
+							autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null
+						}
 						<UnreadBadge
 							unread={unread}
 							userMentions={userMentions}
 							groupMentions={groupMentions}
-							theme={theme}
+							tunread={tunread}
+							tunreadUser={tunreadUser}
+							tunreadGroup={tunreadGroup}
 						/>
 					</View>
 				)
@@ -150,11 +164,8 @@ RoomItem.propTypes = {
 	prid: PropTypes.string,
 	name: PropTypes.string.isRequired,
 	avatar: PropTypes.string.isRequired,
-	baseUrl: PropTypes.string.isRequired,
 	showLastMessage: PropTypes.bool,
-	userId: PropTypes.string,
 	username: PropTypes.string,
-	token: PropTypes.string,
 	avatarSize: PropTypes.number,
 	testID: PropTypes.string,
 	width: PropTypes.number,
@@ -164,6 +175,7 @@ RoomItem.propTypes = {
 	isFocused: PropTypes.bool,
 	isGroupChat: PropTypes.bool,
 	isRead: PropTypes.bool,
+	teamMain: PropTypes.bool,
 	date: PropTypes.string,
 	accessibilityLabel: PropTypes.string,
 	lastMessage: PropTypes.object,
@@ -173,12 +185,16 @@ RoomItem.propTypes = {
 	unread: PropTypes.number,
 	userMentions: PropTypes.number,
 	groupMentions: PropTypes.number,
-	roomUpdatedAt: PropTypes.instanceOf(Date),
+	tunread: PropTypes.array,
+	tunreadUser: PropTypes.array,
+	tunreadGroup: PropTypes.array,
 	swipeEnabled: PropTypes.bool,
 	toggleFav: PropTypes.func,
 	toggleRead: PropTypes.func,
 	onPress: PropTypes.func,
-	hideChannel: PropTypes.func
+	onLongPress: PropTypes.func,
+	hideChannel: PropTypes.func,
+	autoJoin: PropTypes.bool
 };
 
 RoomItem.defaultProps = {

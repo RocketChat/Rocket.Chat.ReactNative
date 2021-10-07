@@ -1,8 +1,8 @@
 import { Linking } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
-import RNUserDefaults from 'rn-user-defaults';
 import parse from 'url-parse';
 
+import UserPreferences from '../lib/userPreferences';
 import { themes } from '../constants/colors';
 
 export const DEFAULT_BROWSER_KEY = 'DEFAULT_BROWSER_KEY';
@@ -37,18 +37,18 @@ const appSchemeURL = (url, browser) => {
 
 const openLink = async(url, theme = 'light') => {
 	try {
-		const browser = await RNUserDefaults.get(DEFAULT_BROWSER_KEY);
+		const browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
 
-		if (browser) {
-			const schemeUrl = appSchemeURL(url, browser.replace(':', ''));
-			await Linking.openURL(schemeUrl);
-		} else {
+		if (browser === 'inApp') {
 			await WebBrowser.openBrowserAsync(url, {
 				toolbarColor: themes[theme].headerBackground,
 				controlsColor: themes[theme].headerTintColor,
 				collapseToolbar: true,
 				showTitle: true
 			});
+		} else {
+			const schemeUrl = appSchemeURL(url, browser.replace(':', ''));
+			await Linking.openURL(schemeUrl);
 		}
 	} catch {
 		try {
