@@ -68,6 +68,7 @@ interface IMessageBoxReplyPreview {
 				audio_url?: string;
 			}
 		];
+		author_name?: string;
 		u: any;
 	};
 	Message_TimeFormat: string;
