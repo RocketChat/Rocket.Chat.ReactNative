@@ -298,8 +298,8 @@ const Reply = React.memo(
 						<Attachments attachments={attachment.attachments} showAttachment={onPress} theme={theme} />
 					</View>
 				</Touchable>
-				{/* @ts-ignore*/}
 				<Markdown
+					// @ts-ignore
 					msg={attachment.description}
 					baseUrl={baseUrl}
 					username={user.username}
