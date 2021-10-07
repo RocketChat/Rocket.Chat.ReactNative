@@ -24,6 +24,8 @@ import DirectoryView from '../../views/DirectoryView';
 import NotificationPrefView from '../../views/NotificationPreferencesView';
 import VisitorNavigationView from '../../views/VisitorNavigationView';
 import ForwardLivechatView from '../../views/ForwardLivechatView';
+import CannedResponsesListView from '../../views/CannedResponsesListView';
+import CannedResponseDetail from '../../views/CannedResponseDetail';
 import LivechatEditView from '../../views/LivechatEditView';
 import PickerView from '../../views/PickerView';
 import ThreadMessagesView from '../../views/ThreadMessagesView';
@@ -31,6 +33,7 @@ import TeamChannelsView from '../../views/TeamChannelsView';
 import MarkdownTableView from '../../views/MarkdownTableView';
 import ReadReceiptsView from '../../views/ReadReceiptView';
 import ProfileView from '../../views/ProfileView';
+import DisplayPrefsView from '../../views/DisplayPrefsView';
 import SettingsView from '../../views/SettingsView';
 import LanguageView from '../../views/LanguageView';
 import ThemeView from '../../views/ThemeView';
@@ -159,6 +162,16 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					component={ForwardLivechatView}
 					options={ForwardLivechatView.navigationOptions}
 				/>
+				<ModalStack.Screen
+					name='CannedResponsesListView'
+					component={CannedResponsesListView}
+					options={CannedResponsesListView.navigationOptions}
+				/>
+				<ModalStack.Screen
+					name='CannedResponseDetail'
+					component={CannedResponseDetail}
+					options={CannedResponseDetail.navigationOptions}
+				/>
 				<ModalStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
 				<ModalStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
@@ -192,6 +205,7 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					component={ProfileView}
 					options={props => ProfileView.navigationOptions({ ...props, isMasterDetail: true })}
 				/>
+				<ModalStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
 				<ModalStack.Screen
 					name='AdminPanelView'
 					component={AdminPanelView}

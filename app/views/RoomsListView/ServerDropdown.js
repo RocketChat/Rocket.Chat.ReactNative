@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Animated, Easing, FlatList, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import { batch, connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import * as List from '../../containers/List';
+import Button from '../../containers/Button';
 import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
 import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
-import { ROOT_NEW_SERVER, appStart as appStartAction } from '../../actions/app';
+import { appStart as appStartAction, ROOT_OUTSIDE } from '../../actions/app';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
@@ -19,7 +20,7 @@ import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
-import { events, logEvent } from '../../utils/log';
+import log, { events, logEvent } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
 import UserPreferences from '../../lib/userPreferences';
@@ -97,10 +98,19 @@ class ServerDropdown extends Component {
 		}).start(() => toggleServerDropdown());
 	};
 
+	createWorkspace = async () => {
+		logEvent(events.RL_CREATE_NEW_WORKSPACE);
+		try {
+			await Linking.openURL('https://cloud.rocket.chat/trial');
+		} catch (e) {
+			log(e);
+		}
+	};
+
 	navToNewServer = previousServer => {
 		const { appStart, initAdd } = this.props;
 		batch(() => {
-			appStart({ root: ROOT_NEW_SERVER });
+			appStart({ root: ROOT_OUTSIDE });
 			initAdd(previousServer);
 		});
 	};
@@ -181,7 +191,7 @@ class ServerDropdown extends Component {
 		const { servers } = this.state;
 		const { theme, isMasterDetail, insets } = this.props;
 		const maxRows = 4;
-		const initialTop = 41 + Math.min(servers.length, maxRows) * ROW_HEIGHT;
+		const initialTop = 87 + Math.min(servers.length, maxRows) * ROW_HEIGHT;
 		const statusBarHeight = insets?.top ?? 0;
 		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 		const translateY = this.animatedValue.interpolate({
@@ -229,6 +239,17 @@ class ServerDropdown extends Component {
 						renderItem={this.renderServer}
 						ItemSeparatorComponent={List.Separator}
 						keyboardShouldPersistTaps='always'
+					/>
+					<List.Separator />
+					<Button
+						title={I18n.t('Create_a_new_workspace')}
+						type='secondary'
+						onPress={this.createWorkspace}
+						theme={theme}
+						testID='rooms-list-header-create-workspace-button'
+						style={styles.buttonCreateWorkspace}
+						color={themes[theme].tintColor}
+						styleText={[styles.serverHeaderAdd, { textAlign: 'center' }]}
 					/>
 				</Animated.View>
 			</>

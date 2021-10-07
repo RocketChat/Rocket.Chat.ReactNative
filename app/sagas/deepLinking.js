@@ -8,7 +8,7 @@ import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks'
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
-import { ROOT_INSIDE, ROOT_NEW_SERVER, appInit, appStart } from '../actions/app';
+import { ROOT_INSIDE, ROOT_OUTSIDE, appInit, appStart } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
 import { loginRequest } from '../actions/login';
@@ -180,7 +180,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield fallbackNavigation();
 			return;
 		}
-		yield put(appStart({ root: ROOT_NEW_SERVER }));
+		yield put(appStart({ root: ROOT_OUTSIDE }));
 		yield put(serverInitAdd(server));
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });
