@@ -11,6 +11,7 @@ import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
+import { DISPLAY_MODE_EXPANDED } from '../../constants/constantDisplayMode';
 
 interface IRoomItem {
 	rid: string;
@@ -57,6 +58,8 @@ interface IRoomItem {
 	hideChannel(): void;
 	autoJoin: boolean;
 	size?: number;
+	showAvatar: boolean;
+	displayMode: string;
 }
 
 const RoomItem = ({
@@ -95,7 +98,9 @@ const RoomItem = ({
 	toggleRead,
 	hideChannel,
 	teamMain,
-	autoJoin
+	autoJoin,
+	showAvatar,
+	displayMode
 }: IRoomItem) => (
 	<Touchable
 		onPress={onPress}
@@ -111,12 +116,28 @@ const RoomItem = ({
 		type={type}
 		theme={theme}
 		isFocused={isFocused}
-		swipeEnabled={swipeEnabled}>
-		<Wrapper accessibilityLabel={accessibilityLabel} avatar={avatar} avatarSize={avatarSize} type={type} theme={theme} rid={rid}>
-			{showLastMessage ? (
+		swipeEnabled={swipeEnabled}
+		displayMode={displayMode}>
+		<Wrapper
+			accessibilityLabel={accessibilityLabel}
+			avatar={avatar}
+			avatarSize={avatarSize}
+			type={type}
+			theme={theme}
+			rid={rid}
+			prid={prid}
+			status={status}
+			isGroupChat={isGroupChat}
+			teamMain={teamMain}
+			displayMode={displayMode}
+			showAvatar={showAvatar}
+			showLastMessage={showLastMessage}>
+			{showLastMessage && displayMode === DISPLAY_MODE_EXPANDED ? (
 				<>
 					<View style={styles.titleContainer}>
-						<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} theme={theme} teamMain={teamMain} />
+						{showAvatar ? (
+							<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} theme={theme} teamMain={teamMain} />
+						) : null}
 						<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 						{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
 						<UpdatedAt date={date} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
@@ -143,17 +164,29 @@ const RoomItem = ({
 				</>
 			) : (
 				<View style={[styles.titleContainer, styles.flex]}>
-					<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} theme={theme} teamMain={teamMain} />
+					<TypeIcon
+						type={type}
+						prid={prid}
+						status={status}
+						isGroupChat={isGroupChat}
+						theme={theme}
+						teamMain={teamMain}
+						size={22}
+						style={{ marginRight: 8 }}
+					/>
 					<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 					{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
-					<UnreadBadge
-						unread={unread}
-						userMentions={userMentions}
-						groupMentions={groupMentions}
-						tunread={tunread}
-						tunreadUser={tunreadUser}
-						tunreadGroup={tunreadGroup}
-					/>
+					<View style={styles.wrapUpdatedAndBadge}>
+						<UpdatedAt date={date} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+						<UnreadBadge
+							unread={unread}
+							userMentions={userMentions}
+							groupMentions={groupMentions}
+							tunread={tunread}
+							tunreadUser={tunreadUser}
+							tunreadGroup={tunreadGroup}
+						/>
+					</View>
 				</View>
 			)}
 		</Wrapper>
