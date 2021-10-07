@@ -80,15 +80,6 @@ interface IMessageBoxReplyPreview {
 	useRealName: boolean;
 }
 
-interface IState {
-	login: {
-		user: {
-			id: string;
-			token: string;
-		};
-	};
-}
-
 const ReplyPreview = React.memo(
 	({
 		message,
@@ -120,7 +111,7 @@ const ReplyPreview = React.memo(
 		} else {
 			description = message.msg;
 		}
-		const user = useSelector((state: IState) => state.login?.user);
+		const user = useSelector((state: any) => state.login?.user);
 		const uri = message.attachments[0]?.image_url
 			? formatAttachmentUrl(message.attachments[0]?.image_url, user.id, user.token, baseUrl)
 			: null;

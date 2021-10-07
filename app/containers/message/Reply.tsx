@@ -147,6 +147,7 @@ interface IMessageReply {
 	attachment: Partial<IMessageReplyAttachment>;
 	timeFormat: string;
 	index: number;
+	quote?: boolean;
 	theme: string;
 	getCustomEmoji: Function;
 }
@@ -294,7 +295,7 @@ const Reply = React.memo(
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						{/* @ts-ignore*/}
-						<Attachments quote attachments={attachment.attachments} showAttachment={onPress} theme={theme} />
+						<Attachments attachments={attachment.attachments} showAttachment={onPress} theme={theme} />
 					</View>
 				</Touchable>
 				{/* @ts-ignore*/}

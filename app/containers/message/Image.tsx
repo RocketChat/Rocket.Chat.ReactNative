@@ -20,7 +20,6 @@ type TMessageButton = {
 
 type TMessageImage = {
 	img: string;
-	quote?: boolean;
 	theme: string;
 };
 
@@ -29,7 +28,6 @@ interface IMessageImage {
 	imageUrl?: string;
 	showAttachment: Function;
 	theme: string;
-	quote?: boolean;
 	getCustomEmoji: Function;
 }
 
@@ -41,9 +39,9 @@ const Button = React.memo(({ children, onPress, theme }: TMessageButton) => (
 	</Touchable>
 ));
 
-export const MessageImage = React.memo(({ img, quote, theme }: TMessageImage) => (
+export const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
 	<ImageProgress
-		style={[styles.image, quote && styles.thumbnail, { borderColor: themes[theme].borderColor }]}
+		style={[styles.image, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(img) }}
 		resizeMode={FastImage.resizeMode.cover}
 		indicator={Progress.Pie}

@@ -3,7 +3,6 @@ export interface IMessageAttachments {
 	timeFormat: string;
 	showAttachment: Function;
 	getCustomEmoji: Function;
-	quote: boolean;
 	theme: string;
 }
 
