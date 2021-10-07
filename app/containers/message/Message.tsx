@@ -51,8 +51,8 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	return (
 		<>
 			<User {...props} />
-			<Content {...props} />
 			<Attachments {...props} />
+			<Content {...props} />
 			<Urls {...props} />
 			<Thread {...props} />
 			<Reactions {...props} />

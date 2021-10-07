@@ -11,7 +11,6 @@ import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
-import ReplyPreview from '../MessageBox/ReplyPreview';
 
 type TMessageButton = {
 	children: JSX.Element;
@@ -55,16 +54,11 @@ export const MessageImage = React.memo(({ img, quote, theme }: TMessageImage) =>
 ));
 
 const ImageContainer = React.memo(
-	({ file, imageUrl, showAttachment, getCustomEmoji, quote, theme }: IMessageImage) => {
+	({ file, imageUrl, showAttachment, getCustomEmoji, theme }: IMessageImage) => {
 		const { baseUrl, user } = useContext(MessageContext);
 		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 		if (!img) {
 			return null;
-		}
-
-		if (quote) {
-			/* @ts-ignore */
-			return <ReplyPreview getCustomEmoji={getCustomEmoji} message={file.description} baseUrl={baseUrl} theme={theme} />;
 		}
 
 		const onPress = () => showAttachment(file);

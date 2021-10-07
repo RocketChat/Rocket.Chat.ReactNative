@@ -5,6 +5,7 @@ import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
+import ReplyPreview from '../MessageBox/ReplyPreview';
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
@@ -231,7 +232,7 @@ const Fields = React.memo(
 );
 
 const Reply = React.memo(
-	({ attachment, timeFormat, index, getCustomEmoji, theme }: IMessageReply) => {
+	({ attachment, timeFormat, index, getCustomEmoji, quote, theme }: IMessageReply) => {
 		if (!attachment) {
 			return null;
 		}
@@ -262,6 +263,15 @@ const Reply = React.memo(
 			}
 		} catch (e) {
 			// fallback to default
+		}
+
+		if (quote) {
+			/* @ts-ignore */
+			return (
+				<Touchable theme={theme} onPress={onPress}>
+					<ReplyPreview replying getCustomEmoji={getCustomEmoji} message={attachment} baseUrl={baseUrl} theme={theme} />
+				</Touchable>
+			);
 		}
 
 		return (

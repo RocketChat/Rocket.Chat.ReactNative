@@ -16,11 +16,16 @@ const styles = StyleSheet.create({
 	},
 	messageContainer: {
 		flex: 1,
-		marginLeft: 10,
 		paddingHorizontal: 15,
 		paddingVertical: 10,
 		borderBottomLeftRadius: 4,
 		borderTopLeftRadius: 4
+	},
+	isPreview: {
+		marginLeft: 10
+	},
+	isMessage: {
+		marginBottom: 2
 	},
 	thumbnail: {
 		flex: 0.25,
@@ -99,16 +104,17 @@ const ReplyPreview = React.memo(
 			return null;
 		}
 
+		const messageUser = useRealName ? message.u?.name : message.u?.username || message.author_name;
 		let description;
-		if (message.msg === '') {
-			if (!message.attachments[0]?.description && message.attachments[0].image_url) {
+		if (!message.msg) {
+			if (!message.attachments[0]?.description && message.attachments[0]?.image_url) {
 				description = 'Image';
-			} else if (!message.attachments[0]?.description && message.attachments[0].video_url) {
+			} else if (!message.attachments[0]?.description && message.attachments[0]?.video_url) {
 				description = 'Video';
-			} else if (!message.attachments[0]?.description && message.attachments[0].audio_url) {
+			} else if (!message.attachments[0]?.description && message.attachments[0]?.audio_url) {
 				description = 'Audio';
 			} else {
-				description = message.attachments[0].description;
+				description = message.attachments[0]?.description || 'File';
 			}
 		} else {
 			description = message.msg;
@@ -119,12 +125,15 @@ const ReplyPreview = React.memo(
 			: null;
 		const time = moment(message.ts).format(Message_TimeFormat);
 		return (
-			<View style={[styles.container, { backgroundColor: themes[theme].messageboxBackground }]}>
+			<View
+				style={[
+					styles.container,
+					!message.author_name ? styles.isPreview : styles.isMessage,
+					{ backgroundColor: themes[theme].messageboxBackground }
+				]}>
 				<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>
 					<View style={styles.header}>
-						<Text style={[styles.username, { color: themes[theme].tintColor }]}>
-							{useRealName ? message.u?.name : message.u?.username}
-						</Text>
+						<Text style={[styles.username, { color: themes[theme].tintColor }]}>{messageUser}</Text>
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
 					{/* @ts-ignore*/}
@@ -139,7 +148,9 @@ const ReplyPreview = React.memo(
 					/>
 				</View>
 				{uri ? <Image style={styles.thumbnail} source={{ uri }} /> : null}
-				<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
+				{close ? (
+					<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
+				) : null}
 			</View>
 		);
 	},
