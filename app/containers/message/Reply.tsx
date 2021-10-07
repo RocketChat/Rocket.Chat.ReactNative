@@ -267,9 +267,9 @@ const Reply = React.memo(
 		}
 
 		if (quote) {
-			/* @ts-ignore */
 			return (
 				<Touchable theme={theme} onPress={onPress}>
+					{/* @ts-ignore*/}
 					<ReplyPreview replying getCustomEmoji={getCustomEmoji} message={attachment} baseUrl={baseUrl} theme={theme} />
 				</Touchable>
 			);
