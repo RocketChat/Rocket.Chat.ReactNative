@@ -89,8 +89,6 @@ class ProfileLibraryView extends React.Component {
 		try {
 			const { data, type, globalUsers } = this.state;
 			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
-			console.log('query',query)
-			console.log('dattt',data)
 			
 			const directories = await RocketChat.getProfileLibrary({
 				query,
@@ -98,7 +96,6 @@ class ProfileLibraryView extends React.Component {
 				count: 50,
 				sort: (type === 'users') ? { username: 1 } : { usersCount: -1 }
 			});
-        console.log('direcccc', directories)
 			if (directories.success) {
 				const results = directories.result;
 
@@ -234,7 +231,6 @@ class ProfileLibraryView extends React.Component {
 		const {
 			data, loading, showOptionsDropdown, type, globalUsers
 		} = this.state;
-		console.log('peerData',data)
 		const { isFederationEnabled, theme } = this.props;
 		return (
 			<SafeAreaView

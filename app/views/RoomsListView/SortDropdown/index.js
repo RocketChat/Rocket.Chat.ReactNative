@@ -60,7 +60,6 @@ class Sort extends PureComponent {
 
 	setSortPreference = (param) => {
 		const { setSortPreference } = this.props;
-console.log('param',param)
 		try {
 			setSortPreference(param);
 			RocketChat.saveSortPreference(param);
@@ -85,7 +84,6 @@ console.log('param',param)
 	toggleGroupByType = () => {
 		logEvent(events.RL_GROUP_CHANNELS_BY_TYPE);
 		const { groupByType } = this.props;
-		console.log('........',groupByType)
 		this.setSortPreference({ groupByType: !groupByType });
 		
 	}
