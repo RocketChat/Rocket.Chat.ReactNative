@@ -60,6 +60,7 @@ interface IMessageBoxReplyPreview {
 				description: string;
 				image_url?: string;
 				video_url?: string;
+				audio_url?: string;
 			}
 		];
 		u: any;
@@ -104,6 +105,8 @@ const ReplyPreview = React.memo(
 				description = 'Image';
 			} else if (!message.attachments[0]?.description && message.attachments[0].video_url) {
 				description = 'Video';
+			} else if (!message.attachments[0]?.description && message.attachments[0].audio_url) {
+				description = 'Audio';
 			} else {
 				description = message.attachments[0].description;
 			}
@@ -111,12 +114,10 @@ const ReplyPreview = React.memo(
 			description = message.msg;
 		}
 		const user = useSelector((state: IState) => state.login?.user);
-		console.log({ message });
 		const uri = message.attachments[0]?.image_url
 			? formatAttachmentUrl(message.attachments[0]?.image_url, user.id, user.token, baseUrl)
 			: null;
 		const time = moment(message.ts).format(Message_TimeFormat);
-		console.log({ message });
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].messageboxBackground }]}>
 				<View style={[styles.messageContainer, { backgroundColor: themes[theme].chatComponentBackground }]}>

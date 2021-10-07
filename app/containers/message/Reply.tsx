@@ -284,12 +284,12 @@ const Reply = React.memo(
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						{/* @ts-ignore*/}
-						<Attachments attachments={attachment.attachments} showAttachment={onPress} theme={theme} />
+						<Attachments quote attachments={attachment.attachments} showAttachment={onPress} theme={theme} />
 					</View>
 				</Touchable>
 				{/* @ts-ignore*/}
 				<Markdown
-					msg={attachment.description!}
+					msg={attachment.description}
 					baseUrl={baseUrl}
 					username={user.username}
 					getCustomEmoji={getCustomEmoji}

@@ -29,7 +29,7 @@ const AttachedActions = ({ attachment, theme }: IMessageAttachedActions) => {
 };
 
 const Attachments = React.memo(
-	({ attachments, timeFormat, showAttachment, getCustomEmoji, theme }: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, getCustomEmoji, quote, theme }: IMessageAttachments) => {
 		if (!attachments || attachments.length === 0) {
 			return null;
 		}
@@ -37,15 +37,29 @@ const Attachments = React.memo(
 		return attachments.map((file: any, index: number) => {
 			if (file.image_url) {
 				return (
-					<Image key={file.image_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+					<Image
+						quote={quote}
+						key={file.image_url}
+						file={file}
+						showAttachment={showAttachment}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
 				);
 			}
 			if (file.audio_url) {
-				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} theme={theme} />;
+				return <Audio quote={quote} key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} theme={theme} />;
 			}
 			if (file.video_url) {
 				return (
-					<Video key={file.video_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+					<Video
+						quote={quote}
+						key={file.video_url}
+						file={file}
+						showAttachment={showAttachment}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
 				);
 			}
 			if (file.actions && file.actions.length > 0) {
