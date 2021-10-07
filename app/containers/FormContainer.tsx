@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const FormContainerInner = ({ children }: { children: JSX.Element }) => (
+export const FormContainerInner = ({ children }: { children: React.ReactNode }): JSX.Element => (
 	<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>{children}</View>
 );
 
-const FormContainer = ({ children, theme, testID, ...props }: IFormContainer) => (
+const FormContainer = ({ children, theme, testID, ...props }: IFormContainer): JSX.Element => (
 	// @ts-ignore
 	<KeyboardView
 		style={{ backgroundColor: themes[theme].backgroundColor }}
