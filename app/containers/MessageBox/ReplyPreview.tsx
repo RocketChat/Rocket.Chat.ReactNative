@@ -59,6 +59,7 @@ interface IMessageBoxReplyPreview {
 	message: {
 		ts: Date;
 		msg: string;
+		text?: string;
 		attachments: [
 			{
 				title_link?: string;
@@ -106,11 +107,12 @@ const ReplyPreview = React.memo(
 			} else if (!message.attachments[0]?.description && message.attachments[0]?.audio_url) {
 				description = 'Audio';
 			} else {
-				description = message.attachments[0]?.description || 'File';
+				description = message.msg || message.text || message.attachments[0]?.description || 'File';
 			}
 		} else {
 			description = message.msg;
 		}
+		console.log({ message });
 		const user = useSelector((state: any) => state.login?.user);
 		const uri = message.attachments[0]?.image_url
 			? formatAttachmentUrl(message.attachments[0]?.image_url, user.id, user.token, baseUrl)
