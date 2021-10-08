@@ -203,9 +203,6 @@ export default {
 	Jitsi_Enable_Channels: {
 		type: 'valuesAsBoolean'
 	},
-	Accounts_Default_User_Preferences_enableMessageParserEarlyAdoption: {
-		type: 'valueAsBoolean'
-	},
 	Canned_Responses_Enable: {
 		type: 'valueAsBoolean'
 	}

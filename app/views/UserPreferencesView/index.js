@@ -14,9 +14,6 @@ import RocketChat from '../../lib/rocketchat';
 
 const UserPreferencesView = ({ navigation }) => {
 	const user = useSelector(state => getUserSelector(state));
-	const isMessageParserServerEnabled = useSelector(
-		state => state.settings.Accounts_Default_User_Preferences_enableMessageParserEarlyAdoption
-	);
 	const [enableParser, setEnableParser] = useState(user.enableMessageParserEarlyAdoption);
 
 	useEffect(() => {
@@ -57,17 +54,15 @@ const UserPreferencesView = ({ navigation }) => {
 					/>
 					<List.Separator />
 				</List.Section>
-				{isMessageParserServerEnabled && (
-					<List.Section>
-						<List.Separator />
-						<List.Item
-							title='Enable_Message_Parser'
-							testID='preferences-view-enable-message-parser'
-							right={() => renderMessageParserSwitch()}
-						/>
-						<List.Separator />
-					</List.Section>
-				)}
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title='Enable_Message_Parser'
+						testID='preferences-view-enable-message-parser'
+						right={() => renderMessageParserSwitch()}
+					/>
+					<List.Separator />
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);
