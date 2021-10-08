@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { themes } from '../../../constants/colors';
@@ -27,13 +26,24 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ item, theme, onPress, onDelete }) => (
+type item = {
+	url: string;
+	username: string;
+};
+interface IItem {
+	item: item;
+	theme: string;
+	onPress(url: string): void;
+	onDelete(item: item): void;
+}
+
+const Item = ({ item, theme, onPress, onDelete }: IItem): JSX.Element => (
 	<Touch style={styles.container} onPress={() => onPress(item.url)} theme={theme} testID={`server-history-${item.url}`}>
 		<View style={styles.content}>
 			<Text numberOfLines={1} style={[styles.server, { color: themes[theme].bodyText }]}>
 				{item.url}
 			</Text>
-			<Text numberOfLines={1} style={[styles.username, { color: themes[theme].auxiliaryText }]}>
+			<Text numberOfLines={1} style={{ color: themes[theme].auxiliaryText }}>
 				{item.username}
 			</Text>
 		</View>
@@ -42,12 +52,5 @@ const Item = ({ item, theme, onPress, onDelete }) => (
 		</BorderlessButton>
 	</Touch>
 );
-
-Item.propTypes = {
-	item: PropTypes.object,
-	theme: PropTypes.string,
-	onPress: PropTypes.func,
-	onDelete: PropTypes.func
-};
 
 export default Item;
