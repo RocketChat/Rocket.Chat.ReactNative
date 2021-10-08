@@ -12,7 +12,7 @@ interface IInlineCodeProps {
 	style: StyleProp<TextStyle>[];
 }
 
-const InlineCode: React.FC<IInlineCodeProps> = ({ value, style }) => {
+const InlineCode: React.FC<IInlineCodeProps> = ({ value, style = [] }) => {
 	const { theme } = useTheme();
 
 	return (
