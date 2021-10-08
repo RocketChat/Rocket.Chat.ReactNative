@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 });
 
 interface IRCTextInputProps extends TextInputProps {
-	label: string;
+	label?: string;
 	error?: {
 		error: any;
 		reason: any;
