@@ -879,7 +879,12 @@ class RoomView extends React.Component {
 		if (item.tmid) {
 			let name = item.tmsg;
 			if (!name) {
-				name = await this.getThreadName(item.tmid, item.id);
+				const result = await this.getThreadName(item.tmid, item.id);
+				// test if there isn't a thread
+				if (!result) {
+					return;
+				}
+				name = result;
 			}
 			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
