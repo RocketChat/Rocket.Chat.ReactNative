@@ -49,9 +49,7 @@ interface IMarkdownProps {
 		name: string;
 		_id: number;
 	}[];
-	user: {
-		enableMessageParserEarlyAdoption: boolean;
-	};
+	enableMessageParser: boolean;
 	navToRoomInfo: Function;
 	preview: boolean;
 	theme: string;
@@ -353,7 +351,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			theme,
 			style = [],
 			testID,
-			user,
+			enableMessageParser,
 			mentions,
 			channels,
 			navToRoomInfo
@@ -363,7 +361,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			return null;
 		}
 
-		if (user.enableMessageParserEarlyAdoption && md) {
+		if (enableMessageParser && md) {
 			return <NewMarkdown tokens={md} style={style} mentions={mentions} channels={channels} navToRoomInfo={navToRoomInfo} />;
 		}
 
@@ -399,7 +397,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 }
 
 const mapStateToProps = (state: any) => ({
-	user: getUserSelector(state)
+	enableMessageParser: getUserSelector(state).enableMessageParserEarlyAdoption
 });
 
 export default connect(mapStateToProps)(Markdown);
