@@ -8,6 +8,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Orientation from 'react-native-orientation-locker';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Dispatch } from 'redux';
+import Model from '@nozbe/watermelondb/Model';
 
 import UserPreferences from '../../lib/userPreferences';
 import EventEmitter from '../../utils/events';
@@ -67,6 +68,10 @@ const styles = StyleSheet.create({
 	}
 });
 
+export interface IServer extends Model {
+	url: string;
+	username: string;
+}
 interface INewServerView {
 	navigation: StackNavigationProp<any, 'NewServerView'>;
 	theme: string;
@@ -81,10 +86,10 @@ interface INewServerView {
 }
 
 interface IState {
-	text: string | undefined;
+	text: string;
 	connectingOpen: boolean;
 	certificate: any;
-	serversHistory: any[];
+	serversHistory: IServer[];
 }
 
 class NewServerView extends React.Component<INewServerView, IState> {
@@ -155,7 +160,7 @@ class NewServerView extends React.Component<INewServerView, IState> {
 			if (text) {
 				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
 			}
-			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();
+			const serversHistory = (await serversHistoryCollection.query(...whereClause).fetch()) as IServer[];
 			this.setState({ serversHistory });
 		} catch {
 			// Do nothing
@@ -179,8 +184,8 @@ class NewServerView extends React.Component<INewServerView, IState> {
 		connectServer(server);
 	};
 
-	onPressServerHistory = (serverHistory: { url?: string; username?: string }) => {
-		this.setState({ text: serverHistory?.url }, () => this.submit(true, serverHistory?.username));
+	onPressServerHistory = (serverHistory: IServer) => {
+		this.setState({ text: serverHistory.url }, () => this.submit(true, serverHistory?.username));
 	};
 
 	submit = async (fromServerHistory?: boolean, username?: string) => {
@@ -278,15 +283,15 @@ class NewServerView extends React.Component<INewServerView, IState> {
 		});
 	};
 
-	// TODO: Refactor when migrate the WatermelonDB
-	deleteServerHistory = async (item: any) => {
-		const db: any = database.servers;
+	deleteServerHistory = async (item: IServer) => {
+		const db = database.servers;
 		try {
-			await db.action(async () => {
+			await db.write(async () => {
+				// TODO: Check if is write or action? https://nozbe.github.io/WatermelonDB/Writers.html?highlight=action#delete-action
 				await item.destroyPermanently();
 			});
 			this.setState((prevstate: IState) => ({
-				serversHistory: prevstate.serversHistory.filter((server: any) => server.id !== item.id)
+				serversHistory: prevstate.serversHistory.filter((server: IServer) => server.id !== item.id)
 			}));
 		} catch {
 			// Nothing

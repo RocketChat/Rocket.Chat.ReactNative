@@ -6,6 +6,7 @@ import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import sharedStyles from '../../Styles';
 import Touch from '../../../utils/touch';
+import { IServer } from '../index';
 
 const styles = StyleSheet.create({
 	container: {
@@ -26,15 +27,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-type item = {
-	url: string;
-	username: string;
-};
 interface IItem {
-	item: item;
+	item: IServer;
 	theme: string;
 	onPress(url: string): void;
-	onDelete(item: item): void;
+	onDelete(item: IServer): void;
 }
 
 const Item = ({ item, theme, onPress, onDelete }: IItem): JSX.Element => (
