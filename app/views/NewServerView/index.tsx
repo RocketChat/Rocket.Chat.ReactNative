@@ -80,7 +80,14 @@ interface INewServerView {
 	height: number;
 }
 
-class NewServerView extends React.Component<INewServerView, any> {
+interface IState {
+	text: string | undefined;
+	connectingOpen: boolean;
+	certificate: any;
+	serversHistory: any[];
+}
+
+class NewServerView extends React.Component<INewServerView, IState> {
 	constructor(props: INewServerView) {
 		super(props);
 		if (!isTablet) {
@@ -273,13 +280,14 @@ class NewServerView extends React.Component<INewServerView, any> {
 
 	// TODO: Refactor when migrate the WatermelonDB
 	deleteServerHistory = async (item: any) => {
-		const { serversHistory } = this.state;
 		const db: any = database.servers;
 		try {
 			await db.action(async () => {
 				await item.destroyPermanently();
 			});
-			this.setState({ serversHistory: serversHistory.filter((server: any) => server.id !== item.id) });
+			this.setState((prevstate: IState) => ({
+				serversHistory: prevstate.serversHistory.filter((server: any) => server.id !== item.id)
+			}));
 		} catch {
 			// Nothing
 		}
