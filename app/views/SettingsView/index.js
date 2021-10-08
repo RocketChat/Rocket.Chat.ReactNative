@@ -186,6 +186,8 @@ class SettingsView extends React.Component {
 							</List.Section>
 							<List.Section>
 								<List.Separator />
+								<List.Item title='Display' onPress={() => this.navigateToScreen('DisplayPrefsView')} showActionIndicator />
+								<List.Separator />
 								<List.Item
 									title='Profile'
 									onPress={() => this.navigateToScreen('ProfileView')}
