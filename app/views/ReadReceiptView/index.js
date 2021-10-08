@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, FlatList, Text, View, RefreshControl } from 'react-native';
+import { FlatList, Text, View, RefreshControl } from 'react-native';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
 import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
-import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
@@ -31,8 +30,7 @@ class ReadReceiptView extends React.Component {
 	static propTypes = {
 		route: PropTypes.object,
 		Message_TimeAndDateFormat: PropTypes.string,
-		theme: PropTypes.string,
-		refreshing: PropTypes.bool
+		theme: PropTypes.string
 	};
 
 	constructor(props) {
@@ -86,21 +84,17 @@ class ReadReceiptView extends React.Component {
 	};
 
 	renderEmpty = () => {
-		const { theme, refreshing, loading } = this.props;
+		const { loading } = this.state;
+		const { theme } = this.props;
+		if (loading) {
+			return null;
+		}
 		return (
-			<SafeAreaView testID='read-receipt-view'>
-				{loading ? (
-					<ActivityIndicator theme={theme} />
-				) : (
-				<ScrollView
-					contentContainerStyle={[styles.listEmptyContainer, { backgroundColor: themes[theme].chatComponentBackground }]}
-					refreshControl={
-						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
-					}>
-					<Text style={{ color: themes[theme].titleText }}>{I18n.t('No_Read_Receipts')}</Text>
-				</ScrollView>
-				)}
-			</SafeAreaView>
+			<View
+				style={[styles.listEmptyContainer, { backgroundColor: themes[theme].chatComponentBackground }]}
+				testID='read-receipt-view'>
+				<Text style={[styles.emptyText, { color: themes[theme].auxiliaryTintColor }]}>{I18n.t('No_Read_Receipts')}</Text>
+			</View>
 		);
 	};
 
@@ -116,9 +110,15 @@ class ReadReceiptView extends React.Component {
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>
 						<Text style={[styles.name, { color: themes[theme].titleText }]}>{item?.user?.name}</Text>
-						<Text style={{ color: themes[theme].auxiliaryText }}>{time}</Text>
+						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
-					<Text style={{ color: themes[theme].auxiliaryText }}>{`@${item.user.username}`}</Text>
+					<Text
+						style={[
+							styles.username,
+							{
+								color: themes[theme].auxiliaryText
+							}
+						]}>{`@${item.user.username}`}</Text>
 				</View>
 			</View>
 		);
@@ -126,46 +126,30 @@ class ReadReceiptView extends React.Component {
 
 	render() {
 		const { receipts, loading } = this.state;
-		const { theme, refreshing } = this.props;
-
-		if (!loading && receipts.length === 0) {
-			return this.renderEmpty();
-		}
+		const { theme } = this.props;
 
 		return (
 			<SafeAreaView testID='read-receipt-view'>
 				<StatusBar />
-				{loading ? (
-					<ActivityIndicator theme={theme} />
-				) : (
-					<FlatList
-						data={receipts}
-						renderItem={this.renderItem}
-						ItemSeparatorComponent={List.Separator}
-						style={[
-							styles.list,
-							{
-								backgroundColor: themes[theme].chatComponentBackground,
-								borderColor: themes[theme].separatorColor
-							}
-						]}
-						refreshControl={
-							<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
+				<FlatList
+					data={receipts}
+					renderItem={this.renderItem}
+					ItemSeparatorComponent={List.Separator}
+					ListEmptyComponent={this.renderEmpty}
+					contentContainerStyle={List.styles.contentContainerStyleFlatList}
+					style={[
+						styles.list,
+						{
+							backgroundColor: themes[theme].chatComponentBackground,
+							borderColor: themes[theme].separatorColor
 						}
-						keyExtractor={item => item._id}
-					/>
-				)}
+					]}
+					refreshControl={<RefreshControl refreshing={loading} onRefresh={this.load} tintColor={themes[theme].auxiliaryText} />}
+					keyExtractor={item => item._id}
+				/>
 			</SafeAreaView>
 		);
 	}
-
-	onRefresh = () => {
-		const { loading } = this.state;
-		if (loading) {
-			return;
-		}
-		this.load();
-	};
 }
 
 const mapStateToProps = state => ({
