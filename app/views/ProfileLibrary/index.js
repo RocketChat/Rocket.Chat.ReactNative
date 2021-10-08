@@ -1,22 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, FlatList, Text
+	View, FlatList
 } from 'react-native';
 import { connect } from 'react-redux';
-import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import { CustomIcon } from '../../lib/Icons';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { DrawerButton } from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
 import log, { logEvent, events } from '../../utils/log';
 import Options from './Options';
+import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import styles from './styles';
@@ -32,7 +31,7 @@ class ProfileLibraryView extends React.Component {
 			title: I18n.t('Profile_library')
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => <DrawerButton navigation={navigation} />;
+			options.headerLeft = () => <HeaderButton.Drawer navigation={navigation} />;
 		}
 		return options;
 	}
@@ -154,7 +153,7 @@ class ProfileLibraryView extends React.Component {
 		goRoom({ item, isMasterDetail });
 	}
 
-	onPressItem = async(item) => {
+	onPressItem = (item) => {
 		const { type } = this.state;
 		const { navigation } = this.props;
 		if (type === 'users') {
@@ -173,8 +172,6 @@ class ProfileLibraryView extends React.Component {
 	}
 
 	renderHeader = () => {
-		const { type } = this.state;
-		const { theme } = this.props;
 		return (
 			<>
 				<SearchBox
@@ -187,11 +184,6 @@ class ProfileLibraryView extends React.Component {
 		);
 	}
 
-	// renderSeparator = () => {
-	// 	const { theme } = this.props;
-	// 	return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	// }
-	
 
 	renderItem = ({ item, index }) => {
 		const { data, type } = this.state;

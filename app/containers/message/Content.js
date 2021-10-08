@@ -1,33 +1,51 @@
 import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
-import equal from 'deep-equal';
+import { dequal } from 'dequal';
 
 import I18n from '../../i18n';
 import styles from './styles';
 import Markdown from '../markdown';
-import { getInfoMessage } from './utils';
+import User from './User';
+import { getInfoMessage, SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import Encrypted from './Encrypted';
+import { E2E_MESSAGE_TYPE } from '../../lib/encryption/constants';
 
 const Content = React.memo((props) => {
 	if (props.isInfo) {
 		const infoMessage = getInfoMessage({ ...props });
-		return (
+
+		const renderMessageContent = (
 			<Text
 				style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}
 				accessibilityLabel={infoMessage}
-			>{infoMessage}
+			>
+				{infoMessage}
 			</Text>
 		);
+
+		if (SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME.includes(props.type)) {
+			return (
+				<Text>
+					<User {...props} /> {renderMessageContent}
+				</Text>
+			);
+		}
+
+		return renderMessageContent;
 	}
 
+	const isPreview = props.tmid && !props.isThreadRoom;
 	let content = null;
 
 	if (props.tmid && !props.msg) {
 		content = <Text style={[styles.text, { color: themes[props.theme].bodyText }]}>{I18n.t('Sent_an_attachment')}</Text>;
+	} else if (props.isEncrypted) {
+		content = <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{I18n.t('Encrypted_message')}</Text>;
 	} else {
-		const { baseUrl, user } = useContext(MessageContext);
+		const { baseUrl, user, onLinkPress } = useContext(MessageContext);
 		content = (
 			<Markdown
 				msg={props.msg}
@@ -35,16 +53,36 @@ const Content = React.memo((props) => {
 				getCustomEmoji={props.getCustomEmoji}
 				username={user.username}
 				isEdited={props.isEdited}
-				numberOfLines={(props.tmid && !props.isThreadRoom) ? 1 : 0}
-				preview={props.tmid && !props.isThreadRoom}
+				numberOfLines={isPreview ? 1 : 0}
+				preview={isPreview}
 				channels={props.channels}
 				mentions={props.mentions}
 				navToRoomInfo={props.navToRoomInfo}
 				tmid={props.tmid}
 				useRealName={props.useRealName}
 				theme={props.theme}
+				onLinkPress={onLinkPress}
 			/>
 		);
+	}
+
+	// If this is a encrypted message and is not a preview
+	if (props.type === E2E_MESSAGE_TYPE && !isPreview) {
+		content = (
+			<View style={styles.flex}>
+				<View style={styles.contentContainer}>
+					{content}
+				</View>
+				<Encrypted
+					type={props.type}
+					theme={props.theme}
+				/>
+			</View>
+		);
+	}
+
+	if (props.isIgnored) {
+		content = <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{I18n.t('Message_Ignored')}</Text>;
 	}
 
 	return (
@@ -59,13 +97,22 @@ const Content = React.memo((props) => {
 	if (prevProps.msg !== nextProps.msg) {
 		return false;
 	}
+	if (prevProps.type !== nextProps.type) {
+		return false;
+	}
 	if (prevProps.theme !== nextProps.theme) {
 		return false;
 	}
-	if (!equal(prevProps.mentions, nextProps.mentions)) {
+	if (prevProps.isEncrypted !== nextProps.isEncrypted) {
 		return false;
 	}
-	if (!equal(prevProps.channels, nextProps.channels)) {
+	if (prevProps.isIgnored !== nextProps.isIgnored) {
+		return false;
+	}
+	if (!dequal(prevProps.mentions, nextProps.mentions)) {
+		return false;
+	}
+	if (!dequal(prevProps.channels, nextProps.channels)) {
 		return false;
 	}
 	return true;
@@ -79,11 +126,14 @@ Content.propTypes = {
 	msg: PropTypes.string,
 	theme: PropTypes.string,
 	isEdited: PropTypes.bool,
+	isEncrypted: PropTypes.bool,
 	getCustomEmoji: PropTypes.func,
 	channels: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	mentions: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	navToRoomInfo: PropTypes.func,
-	useRealName: PropTypes.bool
+	useRealName: PropTypes.bool,
+	isIgnored: PropTypes.bool,
+	type: PropTypes.string
 };
 Content.displayName = 'MessageContent';
 

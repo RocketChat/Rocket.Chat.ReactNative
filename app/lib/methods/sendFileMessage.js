@@ -1,6 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
+import FileUpload from '../../utils/fileUpload';
 import database from '../database';
 import log from '../../utils/log';
 
@@ -12,7 +13,11 @@ export function isUploadActive(path) {
 
 export async function cancelUpload(item) {
 	if (uploadQueue[item.path]) {
-		uploadQueue[item.path].abort();
+		try {
+			await uploadQueue[item.path].cancel();
+		} catch {
+			// Do nothing
+		}
 		try {
 			const db = database.active;
 			await db.action(async() => {
@@ -32,13 +37,10 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			const uploadUrl = `${ server }/api/v1/rooms.upload/${ rid }`;
 
-			const xhr = new XMLHttpRequest();
-			const formData = new FormData();
-
 			fileInfo.rid = rid;
 
 			const db = database.active;
-			const uploadsCollection = db.collections.get('uploads');
+			const uploadsCollection = db.get('uploads');
 			let uploadRecord;
 			try {
 				uploadRecord = await uploadsCollection.find(fileInfo.path);
@@ -56,31 +58,38 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				}
 			}
 
-			uploadQueue[fileInfo.path] = xhr;
-			xhr.open('POST', uploadUrl);
-
-			formData.append('file', {
-				uri: fileInfo.path,
+			const formData = [];
+			formData.push({
+				name: 'file',
 				type: fileInfo.type,
-				name: encodeURI(fileInfo.name) || 'fileMessage'
+				filename: fileInfo.name || 'fileMessage',
+				uri: fileInfo.path
 			});
 
 			if (fileInfo.description) {
-				formData.append('description', fileInfo.description);
+				formData.push({
+					name: 'description',
+					data: fileInfo.description
+				});
 			}
 
 			if (tmid) {
-				formData.append('tmid', tmid);
+				formData.push({
+					name: 'tmid',
+					data: tmid
+				});
 			}
 
-			xhr.setRequestHeader('X-Auth-Token', token);
-			xhr.setRequestHeader('X-User-Id', id);
-			const { customHeaders } = RocketChatSettings;
-			Object.keys(customHeaders).forEach((key) => {
-				xhr.setRequestHeader(key, customHeaders[key]);
-			});
+			const headers = {
+				...RocketChatSettings.customHeaders,
+				'Content-Type': 'multipart/form-data',
+				'X-Auth-Token': token,
+				'X-User-Id': id
+			};
 
-			xhr.upload.onprogress = async({ total, loaded }) => {
+			uploadQueue[fileInfo.path] = FileUpload.fetch('POST', uploadUrl, headers, formData);
+
+			uploadQueue[fileInfo.path].uploadProgress(async(loaded, total) => {
 				try {
 					await db.action(async() => {
 						await uploadRecord.update((u) => {
@@ -90,15 +99,14 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				} catch (e) {
 					log(e);
 				}
-			};
+			});
 
-			xhr.onload = async() => {
-				if (xhr.status >= 200 && xhr.status < 400) { // If response is all good...
+			uploadQueue[fileInfo.path].then(async(response) => {
+				if (response.respInfo.status >= 200 && response.respInfo.status < 400) { // If response is all good...
 					try {
 						await db.action(async() => {
 							await uploadRecord.destroyPermanently();
 						});
-						const response = JSON.parse(xhr.response);
 						resolve(response);
 					} catch (e) {
 						log(e);
@@ -114,15 +122,14 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 						log(e);
 					}
 					try {
-						const response = JSON.parse(xhr.response);
 						reject(response);
 					} catch (e) {
 						reject(e);
 					}
 				}
-			};
+			});
 
-			xhr.onerror = async(error) => {
+			uploadQueue[fileInfo.path].catch(async(error) => {
 				try {
 					await db.action(async() => {
 						await uploadRecord.update((u) => {
@@ -133,9 +140,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 					log(e);
 				}
 				reject(error);
-			};
-
-			xhr.send(formData);
+			});
 		} catch (e) {
 			log(e);
 		}

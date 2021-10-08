@@ -1,21 +1,19 @@
-const {
-	device, expect, element, by, waitFor
-} = require('detox');
 const data = require('../../data');
-const { navigateToLogin, login, mockMessage, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const {
+	navigateToLogin, login, mockMessage, tapBack, searchRoom
+} = require('../../helpers/app');
 
-const testuser = data.users.regular
+const testuser = data.users.regular;
 const room = data.channels.detoxpublic.name;
 
 async function navigateToRoom() {
 	await searchRoom(room);
-	await waitFor(element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0)).toBeVisible().withTimeout(60000);
-	await element(by.id(`rooms-list-view-item-${ room }`)).atIndex(0).tap();
+	await element(by.id(`rooms-list-view-item-${ room }`)).tap();
 	await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(5000);
 }
 
 async function navigateToRoomActions() {
-	await element(by.id('room-view-header-actions')).tap();
+	await element(by.id('room-header')).tap();
 	await waitFor(element(by.id('room-actions-view'))).toBeVisible().withTimeout(5000);
 }
 
@@ -27,7 +25,7 @@ describe('Join public room', () => {
 		await navigateToRoom();
 	});
 
-	describe('Render', async() => {
+	describe('Render', () => {
 		it('should have room screen', async() => {
 			await expect(element(by.id('room-view'))).toBeVisible();
 		});
@@ -37,14 +35,14 @@ describe('Join public room', () => {
 		// });
 
 		// Render - Header
-		describe('Header', async() => {
+		describe('Header', () => {
 			it('should have actions button ', async() => {
-				await expect(element(by.id('room-view-header-actions'))).toBeVisible();
+				await expect(element(by.id('room-header'))).toBeVisible();
 			});
 		});
 
 		// Render - Join
-		describe('Join', async() => {
+		describe('Join', () => {
 			it('should have join', async() => {
 				await expect(element(by.id('room-view-join'))).toBeVisible();
 			});
@@ -62,9 +60,9 @@ describe('Join public room', () => {
 			});
 		});
 
-		describe('Room Actions', async() => {
+		describe('Room Actions', () => {
 			before(async() => {
-				await navigateToRoomActions('c');
+				await navigateToRoomActions();
 			});
 
 			it('should have room actions screen', async() => {
@@ -99,12 +97,7 @@ describe('Join public room', () => {
 				await expect(element(by.id('room-actions-starred'))).toBeVisible();
 			});
 
-			it('should have search', async() => {
-				await expect(element(by.id('room-actions-search'))).toBeVisible();
-			});
-
 			it('should have share', async() => {
-				await element(by.type('UIScrollView')).atIndex(1).swipe('down');
 				await expect(element(by.id('room-actions-share'))).toBeVisible();
 			});
 
@@ -123,11 +116,11 @@ describe('Join public room', () => {
 			after(async() => {
 				await tapBack();
 				await waitFor(element(by.id('room-view'))).toBeVisible().withTimeout(2000);
-			})
+			});
 		});
 	});
 
-	describe('Usage', async() => {
+	describe('Usage', () => {
 		it('should join room', async() => {
 			await element(by.id('room-view-join-button')).tap();
 			await tapBack();
@@ -142,8 +135,8 @@ describe('Join public room', () => {
 			await mockMessage('message');
 		});
 
-		it('should have disable notifications and leave channel', async() => {
-			await navigateToRoomActions('c');
+		it('should have notifications and leave channel', async() => {
+			await navigateToRoomActions();
 			await expect(element(by.id('room-actions-view'))).toBeVisible();
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
 			// await expect(element(by.id('room-actions-voice'))).toBeVisible();
@@ -152,8 +145,7 @@ describe('Join public room', () => {
 			await expect(element(by.id('room-actions-files'))).toBeVisible();
 			await expect(element(by.id('room-actions-mentioned'))).toBeVisible();
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
-			await expect(element(by.id('room-actions-search'))).toBeVisible();
-			await element(by.type('UIScrollView')).atIndex(1).swipe('down');
+			await element(by.id('room-actions-scrollview')).swipe('down');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 			await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			await expect(element(by.id('room-actions-notifications'))).toBeVisible();
@@ -166,7 +158,6 @@ describe('Join public room', () => {
 			await expect(element(by.text('Yes, leave it!'))).toBeVisible();
 			await element(by.text('Yes, leave it!')).tap();
 			await waitFor(element(by.id('rooms-list-view'))).toBeVisible().withTimeout(10000);
-			// await element(by.id('rooms-list-view-search')).typeText('');
 			await waitFor(element(by.id(`rooms-list-view-item-${ room }`))).toBeNotVisible().withTimeout(60000);
 		});
 	});

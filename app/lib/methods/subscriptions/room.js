@@ -11,6 +11,7 @@ import { addUserTyping, removeUserTyping, clearUserTyping } from '../../../actio
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
+import { Encryption } from '../../encryption';
 
 const WINDOW_TIME = 1000;
 
@@ -46,6 +47,7 @@ export default class RoomSubscription {
 	unsubscribe = async() => {
 		console.log(`[RCRN] Unsubscribing from room ${ this.rid }`);
 		this.isAlive = false;
+		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
 			try {
 				const subscriptions = await this.promises || [];
@@ -62,8 +64,6 @@ export default class RoomSubscription {
 		if (this.timer) {
 			clearTimeout(this.timer);
 		}
-
-		reduxStore.dispatch(unsubscribeRoom(this.rid));
 	}
 
 	removeListener = async(promise) => {
@@ -90,6 +90,10 @@ export default class RoomSubscription {
 		if (ev === 'typing') {
 			const { user } = reduxStore.getState().login;
 			const { UI_Use_Real_Name } = reduxStore.getState().settings;
+			const { rooms } = reduxStore.getState().room;
+			if (rooms[0] !== _rid) {
+				return;
+			}
 			const [name, typing] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
@@ -105,9 +109,9 @@ export default class RoomSubscription {
 					try {
 						const { _id } = ddpMessage.fields.args[0];
 						const db = database.active;
-						const msgCollection = db.collections.get('messages');
-						const threadsCollection = db.collections.get('threads');
-						const threadMessagesCollection = db.collections.get('thread_messages');
+						const msgCollection = db.get('messages');
+						const threadsCollection = db.get('threads');
+						const threadMessagesCollection = db.get('thread_messages');
 						let deleteMessage;
 						let deleteThread;
 						let deleteThreadMessage;
@@ -155,13 +159,16 @@ export default class RoomSubscription {
 	updateMessage = message => (
 		new Promise(async(resolve) => {
 			if (this.rid !== message.rid) {
-				return;
+				return resolve();
 			}
 
 			const db = database.active;
-			const msgCollection = db.collections.get('messages');
-			const threadsCollection = db.collections.get('threads');
-			const threadMessagesCollection = db.collections.get('thread_messages');
+			const msgCollection = db.get('messages');
+			const threadsCollection = db.get('threads');
+			const threadMessagesCollection = db.get('thread_messages');
+
+			// Decrypt the message if necessary
+			message = await Encryption.decryptMessage(message);
 
 			// Create or update message
 			try {

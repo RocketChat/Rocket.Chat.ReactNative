@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 });
 
 const DateSeparator = React.memo(({ ts, unread, theme }) => {
-	const date = ts ? moment(ts).format('MMM DD, YYYY') : null;
+	const date = ts ? moment(ts).format('LL') : null;
 	const unreadLine = { backgroundColor: themes[theme].dangerColor };
 	const unreadText = { color: themes[theme].dangerColor };
 	if (ts && unread) {

@@ -12,28 +12,28 @@ Install _fastlane_ using
 ```
 [sudo] gem install fastlane -NV
 ```
-or alternatively using `brew cask install fastlane`
+or alternatively using `brew install fastlane`
 
 # Available Actions
 ## Android
-### android build
+### android beta
 ```
-fastlane android build
+fastlane android beta
 ```
-Build App for development
-### android release
+Upload App to Play Store Internal
+### android internal_app_sharing
 ```
-fastlane android release
+fastlane android internal_app_sharing
 ```
-Build App for release
-### android alpha
+Upload App to Internal App Sharing
+### android production
 ```
-fastlane android alpha
+fastlane android production
 ```
-Upload App to Play store
+Upload App to Play Store Production
 
 ----
 
-This README.md is auto-generated and will be re-generated every time [fastlane](https://fastlane.tools) is run.
+This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
 More information about fastlane can be found on [fastlane.tools](https://fastlane.tools).
 The documentation of fastlane can be found on [docs.fastlane.tools](https://docs.fastlane.tools).

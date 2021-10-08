@@ -7,9 +7,9 @@ import { themes } from '../../constants/colors';
 import { capitalize } from '../../utils/room';
 
 const UpdatedAt = React.memo(({
-	roomUpdatedAt, date, theme, hideUnreadStatus, alert
+	date, theme, hideUnreadStatus, alert
 }) => {
-	if (!roomUpdatedAt) {
+	if (!date) {
 		return null;
 	}
 	return (
@@ -39,7 +39,6 @@ const UpdatedAt = React.memo(({
 });
 
 UpdatedAt.propTypes = {
-	roomUpdatedAt: PropTypes.instanceOf(Date),
 	date: PropTypes.string,
 	theme: PropTypes.string,
 	hideUnreadStatus: PropTypes.bool,

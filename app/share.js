@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
-import RNUserDefaults from 'rn-user-defaults';
 
 import {
 	defaultTheme,
@@ -13,6 +12,7 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './utils/theme';
+import UserPreferences from './lib/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { supportSystemTheme } from './utils/deviceInfo';
@@ -117,17 +117,20 @@ App.propTypes = {
 class Root extends React.Component {
 	constructor(props) {
 		super(props);
-		const { width, height, scale } = Dimensions.get('screen');
+		const {
+			width, height, scale, fontScale
+		} = Dimensions.get('screen');
 		this.state = {
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
-				darkLevel: 'dark'
+				darkLevel: 'black'
 			},
 			root: '',
 			width,
 			height,
-			scale
+			scale,
+			fontScale
 		};
 		this.init();
 	}
@@ -138,11 +141,11 @@ class Root extends React.Component {
 	}
 
 	init = async() => {
-		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
-		const currentServer = await RNUserDefaults.get('currentServer');
-		const token = await RNUserDefaults.get(RocketChat.TOKEN_KEY);
+		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
 
-		if (currentServer && token) {
+		const currentServer = await UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
+
+		if (currentServer) {
 			await localAuthenticate(currentServer);
 			this.setState({ root: 'inside' });
 			await RocketChat.shareExtensionInit(currentServer);
@@ -166,18 +169,28 @@ class Root extends React.Component {
 	}
 
 	// Dimensions update fires twice
-	onDimensionsChange = debounce(({ window: { width, height, scale } }) => {
-		this.setDimensions({ width, height, scale });
+	onDimensionsChange = debounce(({
+		window: {
+			width, height, scale, fontScale
+		}
+	}) => {
+		this.setDimensions({
+			width, height, scale, fontScale
+		});
 		this.setMasterDetail(width);
 	})
 
-	setDimensions = ({ width, height, scale }) => {
-		this.setState({ width, height, scale });
+	setDimensions = ({
+		width, height, scale, fontScale
+	}) => {
+		this.setState({
+			width, height, scale, fontScale
+		});
 	}
 
 	render() {
 		const {
-			theme, root, width, height, scale
+			theme, root, width, height, scale, fontScale
 		} = this.state;
 		const navTheme = navigationTheme(theme);
 		return (
@@ -189,6 +202,7 @@ class Root extends React.Component {
 								width,
 								height,
 								scale,
+								fontScale,
 								setDimensions: this.setDimensions
 							}}
 						>

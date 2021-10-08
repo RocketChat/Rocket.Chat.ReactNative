@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import Orientation from 'react-native-orientation-locker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
@@ -32,7 +32,7 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 	const [data, setData] = useState({});
 
 	useDeepCompareEffect(() => {
-		if (!_.isEmpty(data)) {
+		if (!isEmpty(data)) {
 			setVisible(true);
 		} else {
 			setVisible(false);
@@ -63,12 +63,12 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 		if (!isTablet) {
 			Orientation.lockToPortrait();
 		}
-		EventEmitter.addEventListener(CHANGE_PASSCODE_EMITTER, showChangePasscode);
+		const listener = EventEmitter.addEventListener(CHANGE_PASSCODE_EMITTER, showChangePasscode);
 		return (() => {
 			if (!isTablet) {
 				Orientation.unlockAllOrientations();
 			}
-			EventEmitter.removeListener(CHANGE_PASSCODE_EMITTER);
+			EventEmitter.removeListener(CHANGE_PASSCODE_EMITTER, listener);
 		});
 	}, []);
 

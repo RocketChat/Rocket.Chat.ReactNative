@@ -5,8 +5,10 @@ import {
 
 import { sanitizer } from '../utils';
 
+export const TABLE_NAME = 'thread_messages';
+
 export default class ThreadMessage extends Model {
-	static table = 'thread_messages';
+	static table = TABLE_NAME;
 
 	static associations = {
 		subscriptions: { type: 'belongs_to', key: 'subscription_id' }
@@ -75,4 +77,6 @@ export default class ThreadMessage extends Model {
 	@json('translations', sanitizer) translations;
 
 	@field('draft_message') draftMessage;
+
+	@field('e2e') e2e;
 }

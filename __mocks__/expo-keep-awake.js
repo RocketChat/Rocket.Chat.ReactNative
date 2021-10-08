@@ -1,4 +1,4 @@
-export default {
-	activateKeepAwake: () => '',
-	deactivateKeepAwake: () => ''
-};
+const activateKeepAwake = () => '';
+const deactivateKeepAwake = () => '';
+
+export { activateKeepAwake, deactivateKeepAwake };

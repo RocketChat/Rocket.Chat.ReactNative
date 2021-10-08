@@ -3,10 +3,16 @@ defaults: &defaults
 
 macos: &macos
   macos:
-    xcode: "11.5.0"
+    xcode: "12.5.0"
+  resource_class: large
 
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"
+
+android-env: &android-env
+  JAVA_OPTS: '-Xms512m -Xmx2g'
+  GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
+  TERM: dumb
 
 install-npm-modules: &install-npm-modules
   name: Install NPM modules
@@ -31,15 +37,6 @@ save-npm-cache-mac: &save-npm-cache-mac
   name: Save NPM cache
   paths:
     - ./node_modules
-
-install-node: &install-node
-  name: Install Node
-  command: |
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-    source ~/.nvm/nvm.sh
-    INSTALLED_NODE=`nvm which current`
-    echo "export PATH=\"${INSTALLED_NODE%%/node}:\$PATH\"" >> ~/.bash_profile
-    source ~/.bash_profile
 
 restore-gems-cache: &restore-gems-cache
   name: Restore gems cache
@@ -75,6 +72,259 @@ restore_cache: &restore-gradle-cache
   name: Restore gradle cache
   key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
+# COMMANDS
+commands:
+
+  manage-pods:
+    description: "Restore/Get/Save cache of pods libs"
+    steps:
+      - restore_cache:
+          name: Restore pods
+          # TODO: CircleCI isn't caching Podfile.lock correctly, because checksum changes after install
+          # key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+          key: pods-v1-{{ checksum "ios/Podfile" }}
+      - run:
+          name: Install pods libs
+          command: |
+            bundle exec pod install
+          working_directory: ios
+      - save_cache:
+          name: Save pods specs and pods cache
+          # key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+          key: pods-v1-{{ checksum "ios/Podfile" }}
+          paths:
+            - ~/.pods
+            - ios/Pods
+
+  android-build:
+    description: "Build Android app"
+    steps:
+      - checkout
+
+      - restore_cache: *restore-npm-cache-linux
+
+      - run: *install-npm-modules
+
+      - restore_cache: *restore-gradle-cache
+
+      - run:
+          name: Configure Gradle
+          command: |
+            echo -e "" > ./gradle.properties
+            # echo -e "android.enableAapt2=false" >> ./gradle.properties
+            echo -e "android.useAndroidX=true" >> ./gradle.properties
+            echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+
+            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
+              echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
+              echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
+              echo $CHAT_ROCKET_ANDROID_STORE_FILE_BASE64_JKS | base64 --decode > ./app/$KEYSTORE_OFFICIAL
+              echo -e "KEYSTORE=$KEYSTORE_OFFICIAL" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$CHAT_ROCKET_ANDROID_STORE_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$CHAT_ROCKET_ANDROID_KEY_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$CHAT_ROCKET_ANDROID_KEY_PASSWORD" >> ./gradle.properties
+            else
+              echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
+              echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
+              echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
+              echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+            fi
+          working_directory: android
+
+      - run:
+          name: Set Google Services
+          command: |
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
+            fi
+          working_directory: android/app
+
+      - run:
+          name: Build App
+          command: |
+            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
+              ./gradlew bundleOfficialPlayRelease
+            fi
+            if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
+              ./gradlew bundleExperimentalPlayRelease
+            fi
+            if [[ ! $KEYSTORE ]]; then
+              ./gradlew assembleExperimentalPlayDebug
+            fi
+          working_directory: android
+
+      - run:
+          name: Upload sourcemaps to Bugsnag
+          command: |
+            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
+              npx bugsnag-source-maps upload-react-native \
+                --api-key=$BUGSNAG_KEY_OFFICIAL \
+                --app-version-code=$CIRCLE_BUILD_NUM \
+                --platform android \
+                --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
+                --bundle android/app/build/generated/assets/react/officialPlay/release/app.bundle
+            fi
+            if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
+              npx bugsnag-source-maps upload-react-native \
+                --api-key=$BUGSNAG_KEY \
+                --app-version-code=$CIRCLE_BUILD_NUM \
+                --platform android \
+                --source-map=android/app/build/generated/sourcemaps/react/experimentalPlay/release/app.bundle.map \
+                --bundle android/app/build/generated/assets/react/experimentalPlay/release/app.bundle
+            fi
+
+      - store_artifacts:
+          path: android/app/build/outputs
+
+      - save_cache: *save-npm-cache-linux
+
+      - save_cache: *save-gradle-cache
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - android/app/build/outputs
+
+  ios-build:
+    description: "Build iOS app"
+    steps:
+      - checkout
+      - restore_cache: *restore-gems-cache
+      - restore_cache: *restore-npm-cache-mac
+      - run: *install-npm-modules
+      - run: *update-fastlane-ios
+      - manage-pods
+      - run:
+          name: Set Google Services
+          command: |
+            if [[ $KEYSTORE ]]; then
+              echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
+            fi
+          working_directory: ios
+      - run:
+          name: Fastlane Build
+          no_output_timeout: 40m
+          command: |
+            agvtool new-version -all $CIRCLE_BUILD_NUM
+            if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
+            else
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
+              /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
+            fi
+
+            if [[ $APP_STORE_CONNECT_API_BASE64 ]]; then
+              echo $APP_STORE_CONNECT_API_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+              if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+                bundle exec fastlane ios build_official
+              else
+                if [[ $KEYSTORE ]]; then
+                  bundle exec fastlane ios build_experimental
+                else
+                  bundle exec fastlane ios build_fork
+                fi
+              fi
+            fi
+          working_directory: ios
+      - save_cache: *save-npm-cache-mac
+      - save_cache: *save-gems-cache
+      - store_artifacts:
+          path: ios/Rocket.Chat.ipa
+      - store_artifacts:
+          path: ios/Rocket.Chat.app.dSYM.zip
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ios/*.ipa
+            - ios/*.zip
+
+  upload-to-google-play-beta:
+    description: "Upload to Google Play beta"
+    parameters:
+      official:
+        type: boolean
+    steps:
+      - checkout
+      - attach_workspace:
+          at: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run: *update-fastlane-android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android beta official:<< parameters.official >>
+          working_directory: android
+
+  # EXPERIMENTAL ONLY
+  upload-to-internal-app-sharing:
+    description: "Upload to Internal App Sharing"
+    steps:
+      - checkout
+      - attach_workspace:
+          at: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run: *update-fastlane-android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android internal_app_sharing
+          working_directory: android
+
+  # EXPERIMENTAL ONLY
+  # No plans to do it for Official
+  upload-to-google-play-production:
+    description: "Upload to Google Play production"
+    steps:
+      - checkout
+      - attach_workspace:
+          at: android
+      - run:
+          name: Store the google service account key
+          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
+          working_directory: android
+      - run: *update-fastlane-android
+      - run:
+          name: Fastlane Play Store Upload
+          command: bundle exec fastlane android production
+          working_directory: android
+
+  upload-to-testflight:
+    description: "Upload to TestFlight"
+    parameters:
+      official:
+        type: boolean
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ios
+      - restore_cache: *restore-gems-cache
+      - restore_cache: *restore-npm-cache-mac
+      - run: *update-fastlane-ios
+      - manage-pods
+      - run:
+          name: Fastlane Tesflight Upload
+          command: |
+            echo $APP_STORE_CONNECT_API_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            bundle exec fastlane ios beta official:<< parameters.official >>
+          working_directory: ios
+      - save_cache: *save-gems-cache
+
 version: 2.1
 
 # EXECUTORS
@@ -89,7 +339,7 @@ jobs:
   lint-testunit:
     <<: *defaults
     docker:
-      - image: circleci/node:10
+      - image: circleci/node:15
 
     environment:
       CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
@@ -119,231 +369,153 @@ jobs:
       - save_cache: *save-npm-cache-linux
 
   # Android builds
-  android-build:
+  android-build-experimental:
     <<: *defaults
     docker:
-      - image: circleci/android:api-28-node
-
+      - image: circleci/android:api-29-node
     environment:
-      JAVA_OPTS: '-Xms512m -Xmx2g'
-      GRADLE_OPTS: '-Xmx3g -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx2g -XX:+HeapDumpOnOutOfMemoryError"'
-      TERM: dumb
+      <<: *android-env
       <<: *bash-env
-
     steps:
-      - checkout
+      - android-build
+  
+  android-build-official:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-29-node
+    environment:
+      <<: *android-env
+      <<: *bash-env
+    steps:
+      - android-build
 
-      - run: *install-node
-
-      - restore_cache: *restore-npm-cache-linux
-
-      - run: *install-npm-modules
-
-      - run: *update-fastlane-android
-
-      - restore_cache: *restore-gradle-cache
-
-      - run:
-          name: Configure Gradle
-          command: |
-            echo -e "" > ./gradle.properties
-            # echo -e "android.enableAapt2=false" >> ./gradle.properties
-            echo -e "android.useAndroidX=true" >> ./gradle.properties
-            echo -e "android.enableJetifier=true" >> ./gradle.properties
-            echo -e "FLIPPER_VERSION=0.33.1" >> ./gradle.properties
-
-            if [[ $KEYSTORE ]]; then
-              echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
-              echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
-              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
-              echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
-              echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
-            fi
-
-            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
-            echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
-          working_directory: android
-
-      - run:
-          name: Set Google Services
-          command: |
-            cp google-services.prod.json google-services.json
-          working_directory: android/app
-
-      - run:
-          name: Config variables
-          command: |
-            echo -e "export default { BUGSNAG_API_KEY: '$BUGSNAG_KEY' };" > ./config.js
-
-      - run:
-          name: Build Android App
-          command: |
-            if [[ $KEYSTORE ]]; then
-              bundle exec fastlane android release
-            else
-              bundle exec fastlane android build
-            fi
-          working_directory: android
-
-      - run:
-          name: Upload sourcemaps to Bugsnag
-          command: |
-            if [[ $BUGSNAG_KEY ]]; then
-              yarn generate-source-maps-android upload \
-                --api-key=$BUGSNAG_KEY \
-                --app-version=$CIRCLE_BUILD_NUM \
-                --minifiedFile=android/app/build/generated/assets/react/release/app.bundle \
-                --source-map=android/app/build/generated/sourcemaps/react/release/app.bundle.map \
-                --minified-url=app.bundle \
-                --upload-sources
-            fi
-
-      - store_artifacts:
-          path: android/app/build/outputs
-
-      - save_cache: *save-npm-cache-linux
-
-      - save_cache: *save-gradle-cache
-
-      - persist_to_workspace:
-          root: .
-          paths:
-            - android/fastlane/report.xml
-            - android/app/build/outputs
-
-  android-google-play-alpha:
+  android-internal-app-sharing-experimental:
     <<: *defaults
     docker:
       - image: circleci/android:api-28-node
 
     steps:
-      - checkout
+      - upload-to-internal-app-sharing
 
-      - attach_workspace:
-          at: android
+  android-google-play-beta-experimental:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-29-node
 
-      - run:
-          name: Store the google service account key
-          command: echo "$FASTLANE_GOOGLE_SERVICE_ACCOUNT" | base64 --decode > service_account.json
-          working_directory: android
+    steps:
+      - upload-to-google-play-beta:
+          official: false
 
-      - run: *update-fastlane-android
+  android-google-play-production-experimental:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-29-node
+    steps:
+      - upload-to-google-play-production
 
-      - run:
-          name: Fastlane Play Store Upload
-          command: bundle exec fastlane android alpha
-          working_directory: android
+  android-google-play-beta-official:
+    <<: *defaults
+    docker:
+      - image: circleci/android:api-29-node
+
+    steps:
+      - upload-to-google-play-beta:
+          official: true
 
   # iOS builds
-  ios-build:
+  ios-build-experimental:
     executor: mac-env
-
     steps:
-      - checkout
+      - ios-build
 
-      - restore_cache: *restore-gems-cache
-
-      - restore_cache: *restore-npm-cache-mac
-
-      - run: *install-node
-
-      - run: *install-npm-modules
-
-      - run: *update-fastlane-ios
-
-      - run:
-          name: Set Google Services
-          command: |
-            cp GoogleService-Info.prod.plist GoogleService-Info.plist
-          working_directory: ios
-
-      - run:
-          name: Upload sourcemaps to Bugsnag
-          command: |
-            if [[ $BUGSNAG_KEY ]]; then
-              yarn generate-source-maps-ios
-              curl https://upload.bugsnag.com/react-native-source-map \
-                -F apiKey=$BUGSNAG_KEY \
-                -F appBundleVersion=$CIRCLE_BUILD_NUM \
-                -F dev=false \
-                -F platform=ios \
-                -F sourceMap=@ios-release.bundle.map \
-                -F bundle=@ios-release.bundle
-            fi
-
-      - run:
-          name: Fastlane Build
-          no_output_timeout: 1200
-          command: |
-            agvtool new-version -all $CIRCLE_BUILD_NUM
-            /usr/libexec/PlistBuddy -c "Set BugsnagAPIKey $BUGSNAG_KEY" ./RocketChatRN/Info.plist
-
-            if [[ $MATCH_KEYCHAIN_NAME ]]; then
-              bundle exec fastlane ios release
-            else
-              export MATCH_KEYCHAIN_NAME="temp"
-              export MATCH_KEYCHAIN_PASSWORD="temp"
-              bundle exec fastlane ios build
-            fi
-          working_directory: ios
-
-      - save_cache: *save-npm-cache-mac
-
-      - save_cache: *save-gems-cache
-
-      - store_artifacts:
-          path: ios/RocketChatRN.ipa
-
-      - persist_to_workspace:
-          root: .
-          paths:
-            - ios/*.ipa
-            - ios/fastlane/report.xml
-
-  ios-testflight:
+  ios-build-official:
     executor: mac-env
-
     steps:
-      - checkout
+      - ios-build
 
-      - attach_workspace:
-          at: ios
+  ios-testflight-experimental:
+    executor: mac-env
+    steps:
+      - upload-to-testflight:
+          official: false
 
-      - restore_cache: *restore-gems-cache
-
-      - run: *update-fastlane-ios
-
-      - run:
-          name: Fastlane Tesflight Upload
-          command: |
-            bundle exec fastlane ios beta
-          working_directory: ios
-
-      - save_cache: *save-gems-cache
+  ios-testflight-official:
+    executor: mac-env
+    steps:
+      - upload-to-testflight:
+          official: true
 
 workflows:
   build-and-test:
     jobs:
       - lint-testunit
 
-      - ios-build:
-          requires:
-            - lint-testunit
-      - ios-hold-testflight:
+      # iOS Experimental
+      - ios-hold-build-experimental:
           type: approval
           requires:
-            - ios-build
-      - ios-testflight:
+              - lint-testunit
+      - ios-build-experimental:
           requires:
-            - ios-hold-testflight
+            - ios-hold-build-experimental
+      - ios-testflight-experimental:
+          requires:
+            - ios-build-experimental
 
-      - android-build:
-          requires:
-            - lint-testunit
-      - android-hold-google-play-alpha:
+      # iOS Official
+      - ios-hold-build-official:
           type: approval
           requires:
-            - android-build
-      - android-google-play-alpha:
+            - lint-testunit
+      - ios-build-official:
           requires:
-            - android-hold-google-play-alpha
+            - ios-hold-build-official
+      - ios-hold-testflight-official:
+          type: approval
+          requires:
+            - ios-build-official
+      - ios-testflight-official:
+          requires:
+            - ios-hold-testflight-official
+
+      # Android Experimental
+      - android-hold-build-experimental:
+          type: approval
+          requires:
+              - lint-testunit
+      - android-build-experimental:
+          requires:
+            - android-hold-build-experimental
+      - android-internal-app-sharing-experimental:
+          requires:
+            - android-build-experimental
+      - android-hold-google-play-beta-experimental:
+          type: approval
+          requires:
+            - android-build-experimental
+      - android-google-play-beta-experimental:
+          requires:
+            - android-hold-google-play-beta-experimental
+      - android-hold-google-play-production-experimental:
+          type: approval
+          requires:
+            - android-build-experimental
+      - android-google-play-production-experimental:
+          requires:
+            - android-hold-google-play-production-experimental
+      
+      # Android Official
+      - android-hold-build-official:
+          type: approval
+          requires:
+            - lint-testunit
+      - android-build-official:
+          requires:
+            - android-hold-build-official
+      - android-hold-google-play-beta-official:
+          type: approval
+          requires:
+            - android-build-official
+      - android-google-play-beta-official:
+          requires:
+            - android-hold-google-play-beta-official

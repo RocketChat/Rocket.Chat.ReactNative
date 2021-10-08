@@ -2,7 +2,6 @@ import React from 'react';
 import { Linking, Dimensions } from 'react-native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { Provider } from 'react-redux';
-import RNUserDefaults from 'rn-user-defaults';
 import { KeyCommandsEmitter } from 'react-native-keycommands';
 import RNScreens from 'react-native-screens';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
@@ -13,13 +12,14 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './utils/theme';
+import UserPreferences from './lib/userPreferences';
 import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
-import { loggerConfig, analytics } from './utils/log';
+import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './utils/log';
 import { ThemeContext } from './theme';
 import { DimensionsContext } from './dimensions';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
@@ -36,7 +36,7 @@ import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
-
+import { isFDroidBuild } from './constants/environment';
 
 RNScreens.enableScreens();
 
@@ -65,17 +65,22 @@ export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.init();
-		this.initCrashReport();
-		const { width, height, scale } = Dimensions.get('window');
+		if (!isFDroidBuild) {
+			this.initCrashReport();
+		}
+		const {
+			width, height, scale, fontScale
+		} = Dimensions.get('window');
 		this.state = {
 			theme: defaultTheme(),
 			themePreferences: {
 				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
-				darkLevel: 'dark'
+				darkLevel: 'black'
 			},
 			width,
 			height,
-			scale
+			scale,
+			fontScale
 		};
 		if (isTablet) {
 			this.initTablet();
@@ -106,17 +111,26 @@ export default class Root extends React.Component {
 	}
 
 	init = async() => {
-		RNUserDefaults.objectForKey(THEME_PREFERENCES_KEY).then(this.setTheme);
-		const [notification, deepLinking] = await Promise.all([initializePushNotifications(), Linking.getInitialURL()]);
-		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
+		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then(this.setTheme);
 		store.dispatch(appInitLocalSettings());
+
+		// Open app from push notification
+		const notification = await initializePushNotifications();
 		if (notification) {
 			onNotification(notification);
-		} else if (parsedDeepLinkingURL) {
-			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
-		} else {
-			store.dispatch(appInit());
+			return;
 		}
+
+		// Open app from deep linking
+		const deepLinking = await Linking.getInitialURL();
+		const parsedDeepLinkingURL = parseDeepLinking(deepLinking);
+		if (parsedDeepLinkingURL) {
+			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+			return;
+		}
+
+		// Open app from app icon
+		store.dispatch(appInit());
 	}
 
 	getMasterDetail = (width) => {
@@ -132,8 +146,14 @@ export default class Root extends React.Component {
 	};
 
 	// Dimensions update fires twice
-	onDimensionsChange = debounce(({ window: { width, height, scale } }) => {
-		this.setDimensions({ width, height, scale });
+	onDimensionsChange = debounce(({
+		window: {
+			width, height, scale, fontScale
+		}
+	}) => {
+		this.setDimensions({
+			width, height, scale, fontScale
+		});
 		this.setMasterDetail(width);
 	})
 
@@ -146,8 +166,12 @@ export default class Root extends React.Component {
 		});
 	}
 
-	setDimensions = ({ width, height, scale }) => {
-		this.setState({ width, height, scale });
+	setDimensions = ({
+		width, height, scale, fontScale
+	}) => {
+		this.setState({
+			width, height, scale, fontScale
+		});
 	}
 
 	initTablet = () => {
@@ -164,17 +188,17 @@ export default class Root extends React.Component {
 	initCrashReport = () => {
 		RocketChat.getAllowCrashReport()
 			.then((allowCrashReport) => {
-				if (!allowCrashReport) {
-					loggerConfig.autoNotify = false;
-					loggerConfig.registerBeforeSendCallback(() => false);
-					analytics().setAnalyticsCollectionEnabled(false);
-				}
+				toggleCrashErrorsReport(allowCrashReport);
+			});
+		RocketChat.getAllowAnalyticsEvents()
+			.then((allowAnalyticsEvents) => {
+				toggleAnalyticsEventsReport(allowAnalyticsEvents);
 			});
 	}
 
 	render() {
 		const {
-			themePreferences, theme, width, height, scale
+			themePreferences, theme, width, height, scale, fontScale
 		} = this.state;
 		return (
 			<SafeAreaProvider initialMetrics={initialWindowMetrics}>
@@ -192,6 +216,7 @@ export default class Root extends React.Component {
 									width,
 									height,
 									scale,
+									fontScale,
 									setDimensions: this.setDimensions
 								}}
 							>

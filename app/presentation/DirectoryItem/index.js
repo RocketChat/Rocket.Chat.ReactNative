@@ -71,7 +71,9 @@ DirectoryItem.propTypes = {
 	testID: PropTypes.string.isRequired,
 	style: PropTypes.any,
 	rightLabel: PropTypes.string,
-	theme: PropTypes.string
+	rid: PropTypes.string,
+	theme: PropTypes.string,
+	teamMain: PropTypes.bool
 };
 
 DirectoryItemLabel.propTypes = {

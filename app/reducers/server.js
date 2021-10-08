@@ -8,7 +8,8 @@ const initialState = {
 	version: null,
 	loading: true,
 	adding: false,
-	previousServer: null
+	previousServer: null,
+	changingServer: false
 };
 
 
@@ -34,7 +35,8 @@ export default function server(state = initialState, action) {
 				version: action.version,
 				connecting: true,
 				connected: false,
-				loading: true
+				loading: true,
+				changingServer: action.changeServer
 			};
 		case SERVER.SELECT_SUCCESS:
 			return {
@@ -43,14 +45,16 @@ export default function server(state = initialState, action) {
 				version: action.version,
 				connecting: false,
 				connected: true,
-				loading: false
+				loading: false,
+				changingServer: false
 			};
 		case SERVER.SELECT_FAILURE:
 			return {
 				...state,
 				connecting: false,
 				connected: false,
-				loading: false
+				loading: false,
+				changingServer: false
 			};
 		case SERVER.INIT_ADD:
 			return {

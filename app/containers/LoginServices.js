@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, StyleSheet, Text, Animated, Easing, Image
+	View, StyleSheet, Text, Animated, Easing, Linking
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -17,11 +17,15 @@ import I18n from '../i18n';
 import random from '../utils/random';
 import { logEvent, events } from '../utils/log';
 import RocketChat from '../lib/rocketchat';
+import { CustomIcon } from '../lib/Icons';
 
 const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
 const BORDER_RADIUS = 2;
 const SERVICES_COLLAPSED_HEIGHT = 174;
+
+const LOGIN_STYPE_POPUP = 'popup';
+const LOGIN_STYPE_REDIRECT = 'redirect';
 
 const styles = StyleSheet.create({
 	serviceButton: {
@@ -121,9 +125,9 @@ class LoginServices extends React.PureComponent {
 		const endpoint = 'https://accounts.google.com/o/oauth2/auth';
 		const redirect_uri = `${ server }/_oauth/google?close`;
 		const scope = 'email';
-		const state = this.getOAuthState();
+		const state = this.getOAuthState(LOGIN_STYPE_REDIRECT);
 		const params = `?client_id=${ clientId }&redirect_uri=${ redirect_uri }&scope=${ scope }&state=${ state }&response_type=code`;
-		this.openOAuth({ url: `${ endpoint }${ params }` });
+		Linking.openURL(`${ endpoint }${ params }`);
 	}
 
 	onPressLinkedin = () => {
@@ -218,9 +222,16 @@ class LoginServices extends React.PureComponent {
 		}
 	}
 
-	getOAuthState = () => {
+	getOAuthState = (loginStyle = LOGIN_STYPE_POPUP) => {
 		const credentialToken = random(43);
-		return Base64.encodeURI(JSON.stringify({ loginStyle: 'popup', credentialToken, isCordova: true }));
+		let obj = { loginStyle, credentialToken, isCordova: true };
+		if (loginStyle === LOGIN_STYPE_REDIRECT) {
+			obj = {
+				...obj,
+				redirectUrl: 'rocketchat://auth'
+			};
+		}
+		return Base64.encodeURI(JSON.stringify(obj));
 	}
 
 	openOAuth = ({ url, ssoToken, authType = 'oauth' }) => {
@@ -296,7 +307,7 @@ class LoginServices extends React.PureComponent {
 		const { CAS_enabled, theme } = this.props;
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
-		const icon = `icon_${ name }`;
+		const icon = `${ name }-monochromatic`;
 		const isSaml = service.service === 'saml';
 		let onPress = () => {};
 
@@ -325,18 +336,6 @@ class LoginServices extends React.PureComponent {
 				break;
 		}
 
-		if (name === 'apple') {
-			return (
-				<AppleAuthentication.AppleAuthenticationButton
-					buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
-					buttonStyle={theme === 'light' ? AppleAuthentication.AppleAuthenticationButtonStyle.BLACK : AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
-					cornerRadius={BORDER_RADIUS}
-					style={[styles.serviceButton, { height: BUTTON_HEIGHT }]}
-					onPress={onPress}
-				/>
-			);
-		}
-
 		name = name.charAt(0).toUpperCase() + name.slice(1);
 		let buttonText;
 		if (isSaml || (service.service === 'cas' && CAS_enabled)) {
@@ -361,7 +360,7 @@ class LoginServices extends React.PureComponent {
 				underlayColor={themes[theme].buttonText}
 			>
 				<View style={styles.serviceButtonContainer}>
-					{service.authType === 'oauth' ? <Image source={{ uri: icon }} style={styles.serviceIcon} /> : null}
+					{service.authType === 'oauth' || service.authType === 'apple' ? <CustomIcon name={icon} size={24} color={themes[theme].titleText} style={styles.serviceIcon} /> : null}
 					<Text style={[styles.serviceText, { color: themes[theme].titleText }]}>{buttonText}</Text>
 				</View>
 			</Touch>

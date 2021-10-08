@@ -4,7 +4,7 @@ import log from '../../utils/log';
 export default async function readMessages(rid, ls, updateLastOpen = false) {
 	try {
 		const db = database.active;
-		const subscription = await db.collections.get('subscriptions').find(rid);
+		const subscription = await db.get('subscriptions').find(rid);
 
 		// RC 0.61.0
 		await this.sdk.post('subscriptions.read', { rid });

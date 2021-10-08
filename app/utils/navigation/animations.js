@@ -64,13 +64,10 @@ const forStackAndroid = ({
 		inverted
 	);
 
-	const opacity = multiply(
-		current.progress.interpolate({
-			inputRange: [0, 1],
-			outputRange: [0, 1]
-		}),
-		inverted
-	);
+	const opacity = current.progress.interpolate({
+		inputRange: [0, 1],
+		outputRange: [0, 1]
+	});
 
 	return {
 		cardStyle: {

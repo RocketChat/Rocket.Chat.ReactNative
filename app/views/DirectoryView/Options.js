@@ -64,6 +64,11 @@ export default class DirectoryOptions extends PureComponent {
 			icon = 'channel-public';
 		}
 
+		if (itemType === 'teams') {
+			text = 'Teams';
+			icon = 'teams';
+		}
+
 		return (
 			<Touch
 				onPress={() => changeType(itemType)}
@@ -84,13 +89,13 @@ export default class DirectoryOptions extends PureComponent {
 			inputRange: [0, 1],
 			outputRange: [-326, 0]
 		});
-		const backdropOpacity = this.animatedValue.interpolate({
-			inputRange: [0, 1],
-			outputRange: [0, 0.3]
-		});
 		const {
 			globalUsers, toggleWorkspace, isFederationEnabled, theme
 		} = this.props;
+		const backdropOpacity = this.animatedValue.interpolate({
+			inputRange: [0, 1],
+			outputRange: [0, themes[theme].backdropOpacity]
+		});
 		return (
 			<>
 				<TouchableWithoutFeedback onPress={this.close}>
@@ -105,14 +110,15 @@ export default class DirectoryOptions extends PureComponent {
 					</Touch>
 					{this.renderItem('channels')}
 					{this.renderItem('users')}
+					{this.renderItem('teams')}
 					{isFederationEnabled
 						? (
 							<>
 								<View style={[styles.dropdownSeparator, { backgroundColor: themes[theme].separatorColor }]} />
 								<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
 									<View style={styles.globalUsersTextContainer}>
-										<Text style={styles.dropdownItemText}>{I18n.t('Search_global_users')}</Text>
-										<Text style={styles.dropdownItemDescription}>{I18n.t('Search_global_users_description')}</Text>
+										<Text style={[styles.dropdownItemText, { color: themes[theme].infoText }]}>{I18n.t('Search_global_users')}</Text>
+										<Text style={[styles.dropdownItemDescription, { color: themes[theme].infoText }]}>{I18n.t('Search_global_users_description')}</Text>
 									</View>
 									<Switch value={globalUsers} onValueChange={toggleWorkspace} trackColor={SWITCH_TRACK_COLOR} />
 								</View>

@@ -10,13 +10,17 @@ import createChannel from './createChannel';
 import app from './app';
 import sortPreferences from './sortPreferences';
 import share from './share';
-import crashReport from './crashReport';
 import customEmojis from './customEmojis';
 import activeUsers from './activeUsers';
 import usersTyping from './usersTyping';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
-import inquiry from './inquiry';
+import enterpriseModules from './enterpriseModules';
+import encryption from './encryption';
+import permissions from './permissions';
+import roles from './roles';
+
+import inquiry from '../ee/omnichannel/reducers/inquiry';
 
 export default combineReducers({
 	settings,
@@ -30,11 +34,14 @@ export default combineReducers({
 	rooms,
 	sortPreferences,
 	share,
-	crashReport,
 	customEmojis,
 	activeUsers,
 	usersTyping,
 	inviteLinks,
 	createDiscussion,
-	inquiry
+	inquiry,
+	enterpriseModules,
+	encryption,
+	permissions,
+	roles
 });

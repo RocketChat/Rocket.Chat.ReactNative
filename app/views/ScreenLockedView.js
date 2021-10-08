@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import Orientation from 'react-native-orientation-locker';
 
 import { withTheme } from '../theme';
@@ -16,7 +16,7 @@ const ScreenLockedView = ({ theme }) => {
 	const [data, setData] = useState({});
 
 	useDeepCompareEffect(() => {
-		if (!_.isEmpty(data)) {
+		if (!isEmpty(data)) {
 			setVisible(true);
 		} else {
 			setVisible(false);
@@ -31,12 +31,12 @@ const ScreenLockedView = ({ theme }) => {
 		if (!isTablet) {
 			Orientation.lockToPortrait();
 		}
-		EventEmitter.addEventListener(LOCAL_AUTHENTICATE_EMITTER, showScreenLock);
+		const listener = EventEmitter.addEventListener(LOCAL_AUTHENTICATE_EMITTER, showScreenLock);
 		return (() => {
 			if (!isTablet) {
 				Orientation.unlockAllOrientations();
 			}
-			EventEmitter.removeListener(LOCAL_AUTHENTICATE_EMITTER);
+			EventEmitter.removeListener(LOCAL_AUTHENTICATE_EMITTER, listener);
 		});
 	}, []);
 

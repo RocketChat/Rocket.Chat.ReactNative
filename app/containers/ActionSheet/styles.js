@@ -22,6 +22,9 @@ export default StyleSheet.create({
 	content: {
 		paddingTop: 16
 	},
+	titleContainer: {
+		flex: 1
+	},
 	title: {
 		fontSize: 16,
 		marginLeft: 16,
@@ -56,7 +59,10 @@ export default StyleSheet.create({
 	},
 	text: {
 		fontSize: 16,
-		textAlign: 'center',
-		...sharedStyles.textMedium
+		...sharedStyles.textMedium,
+		...sharedStyles.textAlignCenter
+	},
+	rightContainer: {
+		paddingLeft: 12
 	}
 });

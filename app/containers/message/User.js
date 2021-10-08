@@ -12,11 +12,13 @@ import MessageError from './MessageError';
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
 import MessageContext from './Context';
+import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'row',
+		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
 	username: {
@@ -24,8 +26,12 @@ const styles = StyleSheet.create({
 		lineHeight: 22,
 		...sharedStyles.textMedium
 	},
+	usernameInfoMessage: {
+		fontSize: 16,
+		...sharedStyles.textMedium
+	},
 	titleContainer: {
-		flex: 1,
+		flexShrink: 1,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -36,7 +42,7 @@ const styles = StyleSheet.create({
 });
 
 const User = React.memo(({
-	isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, ...props
+	isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, type, ...props
 }) => {
 	if (isHeader || hasError) {
 		const navParam = {
@@ -47,17 +53,37 @@ const User = React.memo(({
 		const username = (useRealName && author.name) || author.username;
 		const aliasUsername = alias ? (<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>) : null;
 		const time = moment(ts).format(timeFormat);
+		const onUserPress = () => navToRoomInfo(navParam);
+		const isDisabled = author._id === user.id;
+
+		const textContent = (
+			<>
+				{alias || username}
+				{aliasUsername}
+			</>
+		);
+
+		if (SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME.includes(type)) {
+			return (
+				<Text
+					style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
+					onPress={onUserPress}
+					disabled={isDisabled}
+				>
+					{textContent}
+				</Text>
+			);
+		}
 
 		return (
 			<View style={styles.container}>
 				<TouchableOpacity
 					style={styles.titleContainer}
-					onPress={() => navToRoomInfo(navParam)}
-					disabled={author._id === user.id}
+					onPress={onUserPress}
+					disabled={isDisabled}
 				>
 					<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
-						{alias || username}
-						{aliasUsername}
+						{textContent}
 					</Text>
 				</TouchableOpacity>
 				<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
@@ -77,7 +103,8 @@ User.propTypes = {
 	ts: PropTypes.instanceOf(Date),
 	timeFormat: PropTypes.string,
 	theme: PropTypes.string,
-	navToRoomInfo: PropTypes.func
+	navToRoomInfo: PropTypes.func,
+	type: PropTypes.string
 };
 User.displayName = 'MessageUser';
 

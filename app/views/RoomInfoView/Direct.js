@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
-import Item from './Item';
-import Timezone from './Timezone';
 import CustomFields from './CustomFields';
 
 import styles from './styles';
@@ -25,27 +23,27 @@ return	(roles && roles.length ?  (
 ) : null)};
 Roles.propTypes = {
 	roles: PropTypes.array,
-	theme: PropTypes.string,
-	user: PropTypes.object,
+	theme: PropTypes.string
 };
 
 const Bio = ({ bio, theme }) => bio != null ? (
 	<View style={{  paddingLeft: 30,paddingRight:30 }}>
 		<Text style={{fontSize:28,paddingLeft:30}}>About</Text>	
 		<Text style={
-			{ 
-				color: themes[theme].auxiliaryText, 
+			{
+				color: themes[theme].auxiliaryText,
 				padding: 20,
 				fontSize:16
 			}
-			}>
-				{bio}
+		}
+		>
+			{bio}
 		</Text>
 		<View>
 		</View>
 	</View>
-) 
-: (null);
+)
+	: (null);
 Bio.propTypes = {
 	bio: PropTypes.string,
 	theme: PropTypes.string
@@ -62,7 +60,10 @@ const Direct = ({ roomUser, theme, user }) => {
 </>)};
 Direct.propTypes = {
 	roomUser: PropTypes.object,
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	user: PropTypes.shape({
+		roles: PropTypes.array
+	})
 };
 
 export default Direct;

@@ -54,9 +54,7 @@ export default StyleSheet.create({
 	temp: { opacity: 0.3 },
 	mention: {
 		fontSize: 16,
-		padding: 5,
-		...sharedStyles.textMedium,
-		letterSpacing: 0.5
+		...sharedStyles.textSemibold
 	},
 	paragraph: {
 		marginTop: 0,

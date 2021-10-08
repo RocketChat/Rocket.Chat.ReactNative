@@ -12,6 +12,7 @@ import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
+import sharedStyles from '../../views/Styles';
 
 export const HEADER_HEIGHT = 36;
 const ITEM_SIZE = 36;
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	headerIcon: {
-		textAlign: 'center',
+		...sharedStyles.textAlignCenter,
 		fontSize: 20,
 		color: '#fff'
 	},
@@ -95,7 +96,7 @@ const Header = React.memo(({
 	const setEmojis = async() => {
 		try {
 			const db = database.active;
-			const freqEmojiCollection = db.collections.get('frequently_used_emojis');
+			const freqEmojiCollection = db.get('frequently_used_emojis');
 			let freqEmojis = await freqEmojiCollection.query().fetch();
 
 			const isLandscape = width > height;
