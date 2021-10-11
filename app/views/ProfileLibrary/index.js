@@ -95,7 +95,6 @@ class ProfileLibraryView extends React.Component {
 				count: 50,
 				sort: (type === 'users') ? { username: 1 } : { usersCount: -1 }
 			});
-
 			if (directories.success) {
 				const results = directories.result;
 

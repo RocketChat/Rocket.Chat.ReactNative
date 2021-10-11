@@ -68,12 +68,12 @@ const ThreadDetails = ({
 		<View style={[styles.container, style]}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
-					<CustomIcon name='threads' size={24} color={themes[theme].auxiliaryText} />
+					<CustomIcon name='threads' size={24} color={themes[theme].tintColor} />
 					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{tcount}</Text>
 				</View>
 
 				<View style={styles.detailContainer}>
-					<CustomIcon name='user' size={24} color={themes[theme].auxiliaryText} />
+					<CustomIcon name='user' size={24} color={themes[theme].tintColor} />
 					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{replies}</Text>
 				</View>
 			</View>
@@ -84,7 +84,7 @@ const ThreadDetails = ({
 					<CustomIcon
 						size={24}
 						name={isFollowing ? 'notification' : 'notification-disabled'}
-						color={themes[theme].auxiliaryTintColor}
+						color={themes[theme].tintColor}
 					/>
 				</Touchable>
 			</View>

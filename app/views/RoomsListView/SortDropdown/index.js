@@ -58,7 +58,6 @@ class Sort extends PureComponent {
 
 	setSortPreference = (param) => {
 		const { setSortPreference } = this.props;
-
 		try {
 			setSortPreference(param);
 			RocketChat.saveSortPreference(param);
