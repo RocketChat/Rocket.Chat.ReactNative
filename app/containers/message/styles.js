@@ -8,7 +8,7 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	container: {
-		 paddingVertical: 2,
+		paddingVertical: 2,
 		width: '100%',
 		paddingHorizontal: 14,
 		flexDirection: 'column'

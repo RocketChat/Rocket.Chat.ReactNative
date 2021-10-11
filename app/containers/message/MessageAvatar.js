@@ -35,7 +35,7 @@ MessageAvatar.propTypes = {
 	isHeader: PropTypes.bool,
 	avatar: PropTypes.string,
 	emoji: PropTypes.string,
-	author: PropTypes.obj,
+	author: PropTypes.object,
 	small: PropTypes.bool,
 	navToRoomInfo: PropTypes.func,
 	getCustomEmoji: PropTypes.func,
