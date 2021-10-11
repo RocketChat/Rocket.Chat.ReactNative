@@ -191,6 +191,7 @@ class RegisterView extends React.Component<IProps, any> {
 							value={customFields[key]}>
 							<TextInput
 								inputRef={(e: any) => {
+									// @ts-ignore
 									this[key] = e;
 								}}
 								placeholder={key}
@@ -205,6 +206,7 @@ class RegisterView extends React.Component<IProps, any> {
 				return (
 					<TextInput
 						inputRef={(e: any) => {
+							// @ts-ignore
 							this[key] = e;
 						}}
 						key={key}
@@ -218,6 +220,7 @@ class RegisterView extends React.Component<IProps, any> {
 						}}
 						onSubmitEditing={() => {
 							if (array.length - 1 > index) {
+								// @ts-ignore
 								return this[array[index + 1]].focus();
 							}
 							this.avatarUrl.focus();
