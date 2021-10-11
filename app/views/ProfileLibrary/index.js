@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, FlatList
-} from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
@@ -25,7 +23,6 @@ import { goRoom } from '../../utils/goRoom';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 class ProfileLibraryView extends React.Component {
-	
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
 		const options = {
 			title: I18n.t('Profile_library')
@@ -35,6 +32,7 @@ class ProfileLibraryView extends React.Component {
 		}
 		return options;
 	}
+
 	static propTypes = {
 		navigation: PropTypes.object,
 		baseUrl: PropTypes.string,
@@ -57,15 +55,17 @@ class ProfileLibraryView extends React.Component {
 			total: -1,
 			showOptionsDropdown: false,
 			globalUsers: true,
-			type: props.directoryDefaultView,
+			type: props.directoryDefaultView
 		};
 	}
-	 userInfoObject = {};
+
 
 	componentDidMount() {
 		this.load({});
 		logEvent(events.DIRECTORY_SEARCH_USERS);
 	}
+
+	userInfoObject = {};
 
 	onSearchChangeText = (text) => {
 		this.setState({ text });
@@ -73,7 +73,6 @@ class ProfileLibraryView extends React.Component {
 
 	// eslint-disable-next-line react/sort-comp
 	load = debounce(async({ newSearch = false }) => {
-	
 		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
 		}
@@ -102,11 +101,10 @@ class ProfileLibraryView extends React.Component {
 
 				const userInfo = await Promise.all(results.map(async(item) => {
 					const user = await RocketChat.getUserInfo(item._id);
-					return {id: user.user.customFields};
+					return { id: user.user.customFields };
 				}));
-			userInfo.forEach(data => userInfoObject = {...data, ...userInfo})
-			
-				
+				userInfo.forEach(d => this.userInfoObject = { ...d, ...userInfo });
+
 				this.setState({
 					data: [...data, ...results],
 					loading: false,
@@ -171,18 +169,16 @@ class ProfileLibraryView extends React.Component {
 		}
 	}
 
-	renderHeader = () => {
-		return (
-			<>
-				<SearchBox
-					onChangeText={this.onSearchChangeText}
-					onSubmitEditing={this.search}
-					testID='federation-view-search'
-				/>
+	renderHeader = () => (
+		<>
+			<SearchBox
+				onChangeText={this.onSearchChangeText}
+				onSubmitEditing={this.search}
+				testID='federation-view-search'
+			/>
 
-			</>
-		);
-	}
+		</>
+	)
 
 
 	renderItem = ({ item, index }) => {
@@ -198,7 +194,6 @@ class ProfileLibraryView extends React.Component {
 			};
 		}
 		const PinIcon = () => <CustomIcon name='pin-map' size={15} color='#161a1d' />;
-		const TypeIcon = <RoomTypeIcon type={type} theme={theme} />;
 		const commonProps = {
 			title: item.name,
 			onPress: () => this.onPressItem(item),
@@ -213,20 +208,21 @@ class ProfileLibraryView extends React.Component {
 			return (
 				<DirectoryItem
 					avatar={item.username}
-					description={userInfoObject[`${index}`].id.Location}
+					description={this.userInfoObject[`${ index }`].id.Location}
 					rightLabel={item.federation && item.federation.peer}
 					type='d'
 					icon={PinIcon()}
-					age={`${userInfoObject[`${index}`].id.Age} years old`}
+					age={`${ this.userInfoObject[`${ index }`].id.Age } years old`}
 					{...commonProps}
 				/>
 			);
 		}
+
 		return (
 			<DirectoryItem
 				avatar={item.name}
 				description={item.topic}
-				typeIcon={TypeIcon()}
+				typeIcon={<RoomTypeIcon type={type} theme={theme} />}
 				rightLabel={I18n.t('N_users', { n: item.usersCount })}
 				type='c'
 				{...commonProps}
@@ -238,7 +234,6 @@ class ProfileLibraryView extends React.Component {
 		const {
 			data, loading, showOptionsDropdown, type, globalUsers
 		} = this.state;
-		console.log('00000000000',data)
 		const { isFederationEnabled, theme } = this.props;
 
 		return (
@@ -256,7 +251,6 @@ class ProfileLibraryView extends React.Component {
 					keyExtractor={item => item._id}
 					ListHeaderComponent={this.renderHeader}
 					renderItem={this.renderItem}
-					// ItemSeparatorComponent={this.renderSeparator}
 					keyboardShouldPersistTaps='always'
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}

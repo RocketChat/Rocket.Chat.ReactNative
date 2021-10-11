@@ -42,8 +42,6 @@ import ScreenLockConfigView from '../../views/ScreenLockConfigView';
 import AdminPanelView from '../../views/AdminPanelView';
 import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
-// import QueueListView from '../../views/QueueListView';
-import VideoPlayerView from '../../views/VideoPlayerView';
 import UserPreferencesView from '../../views/UserPreferencesView';
 import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
 import SecurityPrivacyView from '../../views/SecurityPrivacyView';
@@ -122,7 +120,7 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					component={RoomInfoView}
 					options={RoomInfoView.navigationOptions}
 				/>
-				
+
 				<ModalStack.Screen
 					name='SelectListView'
 					component={SelectListView}
@@ -152,7 +150,7 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					component={InviteUsersView}
 					options={InviteUsersView.navigationOptions}
 				/>
-				
+
 				<ModalStack.Screen
 					name='AddChannelTeamView'
 					component={AddChannelTeamView}

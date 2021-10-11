@@ -216,7 +216,6 @@ const ChatsStackNavigator = () => {
 				component={QueueListView}
 				options={QueueListView.navigationOptions}
 			/>
-			
 		</ChatsStack.Navigator>
 	);
 };
@@ -247,7 +246,6 @@ const ProfileStackNavigator = () => {
 				component={PickerView}
 				options={PickerView.navigationOptions}
 			/>
-			
 		</ProfileStack.Navigator>
 	);
 };
@@ -436,9 +434,14 @@ const InsideStackNavigator = () => {
 				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen
-				name='Video'
+				name='VideoPlayerView'
 				component={VideoPlayerView}
 				options={{ headerShown: true }}
+			/>
+			<InsideStack.Screen
+				name='E2ESaveYourPasswordStackNavigator'
+				component={E2ESaveYourPasswordStackNavigator}
+				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen
 				name='E2EEnterYourPasswordStackNavigator'
