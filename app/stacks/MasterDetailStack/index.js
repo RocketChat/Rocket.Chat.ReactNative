@@ -120,6 +120,7 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					component={RoomInfoView}
 					options={RoomInfoView.navigationOptions}
 				/>
+
 				<ModalStack.Screen
 					name='SelectListView'
 					component={SelectListView}
@@ -149,6 +150,7 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					component={InviteUsersView}
 					options={InviteUsersView.navigationOptions}
 				/>
+
 				<ModalStack.Screen
 					name='AddChannelTeamView'
 					component={AddChannelTeamView}

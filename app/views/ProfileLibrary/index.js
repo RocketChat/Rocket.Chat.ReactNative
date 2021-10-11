@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, FlatList
-} from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
 import sharedStyles from '../Styles';
@@ -16,12 +13,14 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
 import log, { logEvent, events } from '../../utils/log';
 import Options from './Options';
+import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
+import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 class ProfileLibraryView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -60,10 +59,13 @@ class ProfileLibraryView extends React.Component {
 		};
 	}
 
+
 	componentDidMount() {
 		this.load({});
 		logEvent(events.DIRECTORY_SEARCH_USERS);
 	}
+
+	userInfoObject = {};
 
 	onSearchChangeText = (text) => {
 		this.setState({ text });
@@ -74,7 +76,6 @@ class ProfileLibraryView extends React.Component {
 		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
 		}
-
 		const {
 			loading, text, total, data: { length }
 		} = this.state;
@@ -96,6 +97,12 @@ class ProfileLibraryView extends React.Component {
 			});
 			if (directories.success) {
 				const results = directories.result;
+
+				const userInfo = await Promise.all(results.map(async(item) => {
+					const user = await RocketChat.getUserInfo(item._id);
+					return { id: user.user.customFields };
+				}));
+				userInfo.forEach(d => this.userInfoObject = { ...d, ...userInfo });
 
 				this.setState({
 					data: [...data, ...results],
@@ -172,14 +179,11 @@ class ProfileLibraryView extends React.Component {
 		</>
 	)
 
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
 
 	renderItem = ({ item, index }) => {
 		const { data, type } = this.state;
 		const { baseUrl, user, theme } = this.props;
+
 
 		let style;
 		if (index === data.length - 1) {
@@ -188,7 +192,7 @@ class ProfileLibraryView extends React.Component {
 				borderColor: themes[theme].separatorColor
 			};
 		}
-
+		const PinIcon = () => <CustomIcon name='pin-map' size={15} color='#161a1d' />;
 		const commonProps = {
 			title: item.name,
 			onPress: () => this.onPressItem(item),
@@ -203,17 +207,21 @@ class ProfileLibraryView extends React.Component {
 			return (
 				<DirectoryItem
 					avatar={item.username}
-					description={item.username}
+					description={this.userInfoObject[`${ index }`].id.Location}
 					rightLabel={item.federation && item.federation.peer}
 					type='d'
+					icon={PinIcon()}
+					age={`${ this.userInfoObject[`${ index }`].id.Age } years old`}
 					{...commonProps}
 				/>
 			);
 		}
+
 		return (
 			<DirectoryItem
 				avatar={item.name}
 				description={item.topic}
+				typeIcon={<RoomTypeIcon type={type} theme={theme} />}
 				rightLabel={I18n.t('N_users', { n: item.usersCount })}
 				type='c'
 				{...commonProps}
@@ -226,6 +234,7 @@ class ProfileLibraryView extends React.Component {
 			data, loading, showOptionsDropdown, type, globalUsers
 		} = this.state;
 		const { isFederationEnabled, theme } = this.props;
+
 		return (
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
@@ -241,7 +250,6 @@ class ProfileLibraryView extends React.Component {
 					keyExtractor={item => item._id}
 					ListHeaderComponent={this.renderHeader}
 					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
 					keyboardShouldPersistTaps='always'
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}
