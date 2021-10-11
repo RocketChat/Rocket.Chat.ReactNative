@@ -417,7 +417,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	connectServer: (server: string, username?: string, fromServerHistory?: boolean) =>
+	connectServer: (server: string, username: string & null, fromServerHistory?: boolean) =>
 		dispatch(serverRequest(server, username, fromServerHistory)),
 	selectServer: (server: string) => dispatch(selectServerRequest(server)),
 	inviteLinksClear: () => dispatch(inviteLinksClearAction()),
