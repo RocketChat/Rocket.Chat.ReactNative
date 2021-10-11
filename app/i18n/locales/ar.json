@@ -14,7 +14,7 @@
   "error-delete-protected-role": "لا يمكن حذف دور محمي",
   "error-department-not-found": "القسم غير موجود",
   "error-direct-message-file-upload-not-allowed": "مشاركة الملفات غير مسموح في الرسالة المباشرة",
-  "error-duplicate-channel-name": "القناة {{channel_name}} موجودة مسبقاً",
+  "error-duplicate-channel-name": "القناة {{room_name}} موجودة مسبقاً",
   "error-email-domain-blacklisted": "عنوان اﻹيميل محظور",
   "error-email-send-failed": "خطأ في إرسال البريد اﻹلكتروني: {{message}}",
   "error-save-image": "خطأ عند حفظ الصورة",
