@@ -420,7 +420,6 @@
 				7AAB3E3F257E6A6E00707CF6 /* libWatermelonDB.a in Frameworks */,
 				55E724EAD95E79F984DCDF02 /* libPods-defaults-Rocket.Chat.a in Frameworks */,
 				69E4354C5D935D5EE022A7E5 /* BuildFile in Frameworks */,
-				231FC6EC3EC1BDD585C6AD48 /* libPods-defaults-Rocket.Chat.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1203,8 +1202,8 @@
 				"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-frameworks.sh",
 				"${PODS_ROOT}/hermes-engine/destroot/Library/Frameworks/iphoneos/hermes.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiMeetSDK/JitsiMeetSDK.framework/JitsiMeetSDK",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiMeetSDK/WebRTC.framework/WebRTC",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/WebRTC/WebRTC.framework/WebRTC",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1348,8 +1347,8 @@
 				"${PODS_ROOT}/Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN-frameworks.sh",
 				"${PODS_ROOT}/hermes-engine/destroot/Library/Frameworks/iphoneos/hermes.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiMeetSDK/JitsiMeetSDK.framework/JitsiMeetSDK",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiMeetSDK/WebRTC.framework/WebRTC",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/WebRTC/WebRTC.framework/WebRTC",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1411,11 +1410,6 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
-				"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-frameworks.sh",
-				"${PODS_ROOT}/hermes-engine/destroot/Library/Frameworks/iphoneos/hermes.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiMeetSDK/JitsiMeetSDK.framework/JitsiMeetSDK",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiMeetSDK/WebRTC.framework/WebRTC",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
