@@ -67,12 +67,12 @@ export default StyleSheet.create({
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
-				fontFamily: 'System',
+				fontFamily: 'Poppins-Regular',
 				fontWeight: '400'
 			},
 			android: {
 				includeFontPadding: false,
-				fontFamily: 'sans-serif',
+				fontFamily: 'Poppins-Regular',
 				fontWeight: 'normal'
 			}
 		})
@@ -82,12 +82,12 @@ export default StyleSheet.create({
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
-				fontFamily: 'System',
+				fontFamily: 'Poppins-Medium',
 				fontWeight: '500'
 			},
 			android: {
 				includeFontPadding: false,
-				fontFamily: 'sans-serif-medium',
+				fontFamily: 'Poppins-Medium',
 				fontWeight: 'normal'
 			}
 		})
@@ -97,13 +97,13 @@ export default StyleSheet.create({
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
-				fontFamily: 'System',
+				fontFamily: 'Poppins-SemiBold',
 				fontWeight: '600'
 			},
 			android: {
 				includeFontPadding: false,
-				fontFamily: 'sans-serif',
-				fontWeight: 'bold'
+				fontFamily: 'Poppins-SemiBold',
+				fontWeight: 'normal'
 			}
 		})
 	},
@@ -112,13 +112,13 @@ export default StyleSheet.create({
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
-				fontFamily: 'System',
+				fontFamily: 'Poppins-Bold',
 				fontWeight: '700'
 			},
 			android: {
 				includeFontPadding: false,
-				fontFamily: 'sans-serif',
-				fontWeight: 'bold'
+				fontFamily: 'Poppins-Bold',
+				fontWeight: 'normal'
 			}
 		})
 	},

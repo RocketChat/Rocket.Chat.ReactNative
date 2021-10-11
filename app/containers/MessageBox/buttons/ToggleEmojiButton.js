@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import BaseButton from './BaseButton';
+import { themes } from '../../../constants/colors';
 
 const ToggleEmojiButton = React.memo(({
 	theme, show, open, close
@@ -14,6 +15,7 @@ const ToggleEmojiButton = React.memo(({
 				accessibilityLabel='Close_emoji_selector'
 				icon='keyboard'
 				theme={theme}
+				color={themes[theme].tintColor}
 			/>
 		);
 	}
@@ -24,6 +26,7 @@ const ToggleEmojiButton = React.memo(({
 			accessibilityLabel='Open_emoji_selector'
 			icon='emoji'
 			theme={theme}
+			color={themes[theme].tintColor}
 		/>
 	);
 });

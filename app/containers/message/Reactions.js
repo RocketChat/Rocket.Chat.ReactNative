@@ -23,7 +23,7 @@ const AddReaction = React.memo(({ theme }) => {
 			hitSlop={BUTTON_HIT_SLOP}
 		>
 			<View style={[styles.reactionContainer, { borderColor: themes[theme].borderColor }]}>
-				<CustomIcon name='reaction-add' size={21} color={themes[theme].tintColor} />
+				<CustomIcon name='add' size={21} color={themes[theme].tintColor} />
 			</View>
 		</Touchable>
 	);
@@ -54,7 +54,7 @@ const Reaction = React.memo(({
 					baseUrl={baseUrl}
 					getCustomEmoji={getCustomEmoji}
 				/>
-				<Text style={[styles.reactionCount, { color: themes[theme].tintColor }]}>{ reaction.usernames.length }</Text>
+				<Text style={[styles.reactionCount, { color: themes[theme].bodyText }]}>{ reaction.usernames.length }</Text>
 			</View>
 		</Touchable>
 	);

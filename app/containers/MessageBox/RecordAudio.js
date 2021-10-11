@@ -186,7 +186,7 @@ export default class RecordAudio extends React.PureComponent {
 					accessibilityLabel={I18n.t('Send_audio_message')}
 					accessibilityTraits='button'
 				>
-					<CustomIcon name='microphone' size={24} color={themes[theme].auxiliaryTintColor} />
+					<CustomIcon name='microphone' size={24} color={themes[theme].tintColor} />
 				</BorderlessButton>
 			);
 		}
