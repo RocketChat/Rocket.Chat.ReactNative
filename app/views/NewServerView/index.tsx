@@ -21,7 +21,6 @@ import FormContainer, { FormContainerInner } from '../../containers/FormContaine
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import { events, logEvent } from '../../utils/log';
-import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../utils/fetch';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -267,12 +266,6 @@ class NewServerView extends React.Component<INewServerView, IState> {
 
 	uriToPath = (uri: string) => uri.replace('file://', '');
 
-	// TODO: Check if we need this function
-	saveCertificate = (certificate: any) => {
-		animateNextTransition();
-		this.setState({ certificate });
-	};
-
 	handleRemove = () => {
 		// TODO: Remove ts-ignore when migrate the showConfirmationAlert
 		// @ts-ignore
@@ -287,7 +280,6 @@ class NewServerView extends React.Component<INewServerView, IState> {
 		const db = database.servers;
 		try {
 			await db.write(async () => {
-				// TODO: Check if is write or action? https://nozbe.github.io/WatermelonDB/Writers.html?highlight=action#delete-action
 				await item.destroyPermanently();
 			});
 			this.setState((prevstate: IState) => ({
