@@ -36,7 +36,7 @@ const PERMISSION_EDIT_ROOM = 'edit-room';
 const getRoomTitle = (room, type, name, username, age, statusText, theme) => (type === 'd'
 	? (
 		<>
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{`${ name }, ${ age }`}</Text>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>{`${ name }, ${ age ?? '' }`}</Text>
 			{username && <Text testID='room-info-view-username' style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]} />}
 			{!!statusText && <View testID='room-info-view-custom-status'><Markdown msg={statusText} style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]} preview theme={theme} /></View>}
 		</>
@@ -316,20 +316,15 @@ class RoomInfoView extends React.Component {
 
 	renderAvatar = (room, roomUser) => {
 		const { baseUrl, user, theme } = this.props;
-		let isPeerSupporter = false;
+		const isPeerSupporter = roomUser?.parsedRoles?.indexOf('Peer Supporter') > -1;
 		let embedVideoUrl = 'https://www.youtube.com/embed/';
 		const videoUrl = roomUser?.customFields?.VideoUrl;
 		const id = videoUrl?.split('/')[3];
 		embedVideoUrl = embedVideoUrl.concat(id);
-		if (roomUser !== null
-			&& roomUser !== undefined
-			&& roomUser.parsedRoles !== null
-			&& roomUser.parsedRoles !== undefined) {
-			isPeerSupporter = roomUser.parsedRoles.indexOf('Peer Supporter') > -1;
-		}
+
 
 		if (isPeerSupporter) {
-			return roomUser.customFields.VideoUrl ? (
+			return roomUser?.customFields?.VideoUrl ? (
 				<View style={{
 					width: 240,
 					height: 240
