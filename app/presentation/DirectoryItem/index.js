@@ -56,7 +56,7 @@ DirectoryItem.propTypes = {
 	description: PropTypes.string,
 	avatar: PropTypes.string,
 	type: PropTypes.string,
-	icon: PropTypes.func,
+	icon: PropTypes.element,
 	age: PropTypes.string,
 	typeIcon: PropTypes.func,
 	user: PropTypes.shape({
