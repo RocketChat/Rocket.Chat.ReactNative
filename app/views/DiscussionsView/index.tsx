@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HeaderBackButton } from '@react-navigation/stack';
+import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
 
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -25,12 +26,8 @@ import styles from './styles';
 const API_FETCH_COUNT = 50;
 
 interface IDiscussionsViewProps {
-	navigation: any;
-	route: {
-		params?: {
-			rid: string;
-		};
-	};
+	navigation: StackNavigationProp<any, 'DiscussionsView'>;
+	route: RouteProp<any, 'DiscussionsView'>;
 	item: {
 		msg: string;
 	};
@@ -108,7 +105,8 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 
 	const onCancelSearchPress = () => {
 		setIsSearching(false);
-		load();
+		setSearch([]);
+		setSearchTotal(0);
 	};
 
 	const onSearchPress = () => {
@@ -116,9 +114,10 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 	};
 
 	const setHeader = () => {
+		let options: Partial<StackNavigationOptions>;
 		if (isSearching) {
 			const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 1 });
-			return {
+			options = {
 				headerTitleAlign: 'left',
 				headerLeft: () => (
 					<HeaderButton.Container left>
@@ -139,11 +138,12 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				},
 				headerRight: () => null
 			};
+			return options;
 		}
 
-		const options = {
+		options = {
 			headerLeft: () => (
-				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme!].headerTintColor} />
+				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
@@ -211,7 +211,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}
 				keyExtractor={(item: any) => item.msg}
-				style={{ backgroundColor: themes[theme!].backgroundColor }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
