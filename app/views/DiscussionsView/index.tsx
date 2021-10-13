@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
