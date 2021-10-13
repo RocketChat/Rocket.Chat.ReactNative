@@ -779,5 +779,7 @@
   "Shortcut": "Shortcut",
   "Content": "Content",
   "Sharing": "Sharing",
-  "No_canned_responses": "No canned responses"
+  "No_canned_responses": "No canned responses",
+  "Send_email_confirmation": "Send email confirmation",
+  "sending_email_confirmation": "sending email confirmation"
 }
