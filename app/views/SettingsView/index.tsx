@@ -30,7 +30,7 @@ import { isFDroidBuild } from '../../constants/environment';
 import { getUserSelector } from '../../selectors/login';
 
 interface IProps {
-	navigation: StackNavigationProp<any>;
+	navigation: StackNavigationProp<any, 'SettingsView'>;
 	server: {
 		version: string;
 		server: string;
@@ -62,7 +62,7 @@ class SettingsView extends React.Component<IProps, any> {
 		const db = database.servers;
 		const usersCollection = db.get('users');
 		try {
-			const userRecord = await usersCollection.find(user.id);
+			const userRecord: any = await usersCollection.find(user.id);
 			if (userRecord.isFromWebView) {
 				showConfirmationAlert({
 					title: I18n.t('Clear_cookies_alert'),
@@ -87,6 +87,7 @@ class SettingsView extends React.Component<IProps, any> {
 
 	handleLogout = () => {
 		logEvent(events.SE_LOG_OUT);
+		// @ts-ignore
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			confirmationText: I18n.t('Logout'),
