@@ -81,8 +81,9 @@ interface IRCTextInputProps {
 	testID?: string;
 	iconLeft?: string;
 	iconRight?: string;
-	placeholder: string;
+	placeholder?: string;
 	left?: JSX.Element;
+	autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
 	textContentType?: TextInputIOSProps['textContentType'];
 	autoCompleteType?: TextInputAndroidProps['autoCompleteType'];
 	onIconRightPress?(): void;

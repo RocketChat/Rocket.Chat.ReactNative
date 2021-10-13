@@ -72024,8 +72024,6 @@ exports[`Storyshots Text Input Short and Long Text 1`] = `
     }
   >
     <Text
-      accessibilityLabel={null}
-      contentDescription={null}
       style={
         Array [
           Object {
@@ -72110,8 +72108,6 @@ exports[`Storyshots Text Input Short and Long Text 1`] = `
     }
   >
     <Text
-      accessibilityLabel={null}
-      contentDescription={null}
       style={
         Array [
           Object {
