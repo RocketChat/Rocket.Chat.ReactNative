@@ -1,10 +1,13 @@
 import { SORT_PREFERENCES } from '../actions/actionsTypes';
+import { DISPLAY_MODE_EXPANDED } from '../constants/constantDisplayMode';
 
 const initialState = {
 	sortBy: 'activity',
 	groupByType: false,
 	showFavorites: false,
-	showUnread: false
+	showUnread: false,
+	showAvatar: true,
+	displayMode: DISPLAY_MODE_EXPANDED
 };
 
 export default (state = initialState, action) => {
