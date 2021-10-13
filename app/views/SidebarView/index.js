@@ -194,6 +194,13 @@ class Sidebar extends Component {
 					current={this.currentItemKey === 'ProfileStackNavigator'}
 				/>
 				<SidebarItem
+					text={I18n.t('Display')}
+					left={<CustomIcon name='sort' size={20} color={themes[theme].titleText} />}
+					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
+					testID='sidebar-display'
+					current={this.currentItemKey === 'DisplayPrefStackNavigator'}
+				/>
+				<SidebarItem
 					text={I18n.t('Settings')}
 					left={<CustomIcon name='administration' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}

@@ -530,12 +530,12 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNImageCropPicker (0.31.1):
+  - RNImageCropPicker (0.36.3):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.31.1)
+    - RNImageCropPicker/QBImagePickerController (= 0.36.3)
     - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.31.1):
+  - RNImageCropPicker/QBImagePickerController (0.36.3):
     - React-Core
     - React-RCTImage
     - TOCropViewController
@@ -977,7 +977,7 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: cd257fc6e07884a704a5674d362a6410933acb68
   EXWebBrowser: d37a5ffdea1b65947352bc001dd9f732463725d4
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 686ac17e193dcf7d5df4d772b224504dd2f3ad81
+  FBReactNativeSpec: 110d69378fce79af38271c39894b59fec7890221
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
@@ -1061,7 +1061,7 @@ SPEC CHECKSUMS:
   RNFBApp: 6fd8a7e757135d4168bf033a8812c241af7363a0
   RNFBCrashlytics: 88de72c2476b5868a892d9523b89b86c527c540e
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNImageCropPicker: 38865ab4af1b0b2146ad66061196bc0184946855
+  RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNReanimated: 241c586663f44f19a53883c63375fdd041253960
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494

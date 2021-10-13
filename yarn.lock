@@ -6389,11 +6389,6 @@ concat-stream@^2.0.0:
     readable-stream "^3.0.2"
     typedarray "^0.0.6"
 
-confusing-browser-globals@^1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/confusing-browser-globals/-/confusing-browser-globals-1.0.9.tgz#72bc13b483c0276801681871d4898516f8f54fdd"
-  integrity sha512-KbS1Y0jMtyPgIxjO7ZzMAuUpAKMt1SzCL9fsrKsX6b0zJPTaT0SiSPmewwVZg9UAO83HVIlEhZF84LIjZ0lmAw==
-
 connect@^3.6.5:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/connect/-/connect-3.7.0.tgz#5d49348910caa5e07a01800b030d0c35f20484f8"
@@ -7504,24 +7499,6 @@ escodegen@^2.0.0:
     optionator "^0.8.1"
   optionalDependencies:
     source-map "~0.6.1"
-
-eslint-config-airbnb-base@^14.1.0:
-  version "14.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-airbnb-base/-/eslint-config-airbnb-base-14.1.0.tgz#2ba4592dd6843258221d9bff2b6831bd77c874e4"
-  integrity sha512-+XCcfGyCnbzOnktDVhwsCAx+9DmrzEmuwxyHUJpw+kqBVT744OUBrB09khgFKlK1lshVww6qXGsYPZpavoNjJw==
-  dependencies:
-    confusing-browser-globals "^1.0.9"
-    object.assign "^4.1.0"
-    object.entries "^1.1.1"
-
-eslint-config-airbnb@^18.1.0:
-  version "18.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-airbnb/-/eslint-config-airbnb-18.1.0.tgz#724d7e93dadd2169492ff5363c5aaa779e01257d"
-  integrity sha512-kZFuQC/MPnH7KJp6v95xsLBf63G/w7YqdPfQ0MUanxQ7zcKUNG8j+sSY860g3NwCBOa62apw16J6pRN+AOgXzw==
-  dependencies:
-    eslint-config-airbnb-base "^14.1.0"
-    object.assign "^4.1.0"
-    object.entries "^1.1.1"
 
 eslint-config-prettier@^8.3.0:
   version "8.3.0"
@@ -12322,7 +12299,7 @@ object.assign@^4.1.2:
     has-symbols "^1.0.1"
     object-keys "^1.1.1"
 
-object.entries@^1.1.0, object.entries@^1.1.1:
+object.entries@^1.1.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/object.entries/-/object.entries-1.1.2.tgz#bc73f00acb6b6bb16c203434b10f9a7e797d3add"
   integrity sha512-BQdB9qKmb/HyNdMNWVr7O3+z5MUIx3aiegEIJqjMBbBf0YT9RRxTJSim4mzFqtyr7PDAHigq0N9dO0m0tRakQA==
@@ -13702,8 +13679,8 @@ react-native-gesture-handler@^1.10.3:
     prop-types "^15.7.2"
 
 react-native-image-crop-picker@RocketChat/react-native-image-crop-picker:
-  version "0.31.1"
-  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/db1040b57e8536bd64db699897361167009b359c"
+  version "0.36.3"
+  resolved "https://codeload.github.com/RocketChat/react-native-image-crop-picker/tar.gz/f347776247afb5cbd1400dde215689d7ca8fd6f2"
 
 react-native-image-progress@^1.1.1:
   version "1.1.1"

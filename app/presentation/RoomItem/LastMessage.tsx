@@ -80,6 +80,7 @@ const LastMessage = React.memo(
 			numberOfLines={2}
 			preview
 			theme={theme}
+			testID='room-item-last-message'
 		/>
 	),
 	arePropsEqual
