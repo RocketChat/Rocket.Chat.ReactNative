@@ -3,6 +3,7 @@ import { PixelRatio, StyleSheet } from 'react-native';
 import sharedStyles from '../../views/Styles';
 
 export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+export const ROW_HEIGHT_CONDENSED = 60 * PixelRatio.getFontScale();
 export const ACTION_WIDTH = 80;
 export const SMALL_SWIPE = ACTION_WIDTH / 2;
 export const LONG_SWIPE = ACTION_WIDTH * 3;
@@ -16,6 +17,12 @@ export default StyleSheet.create<any>({
 		alignItems: 'center',
 		paddingLeft: 14,
 		height: ROW_HEIGHT
+	},
+	containerCondensed: {
+		height: ROW_HEIGHT_CONDENSED
+	},
+	condensedPaddingVertical: {
+		paddingVertical: 20
 	},
 	centerContainer: {
 		flex: 1,
@@ -36,6 +43,9 @@ export default StyleSheet.create<any>({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'flex-start'
+	},
+	wrapUpdatedAndBadge: {
+		alignItems: 'flex-end'
 	},
 	titleContainer: {
 		width: '100%',
@@ -72,11 +82,12 @@ export default StyleSheet.create<any>({
 		right: 0,
 		height: ROW_HEIGHT
 	},
-	actionText: {
-		fontSize: 15,
-		justifyContent: 'center',
-		marginTop: 4,
-		...sharedStyles.textSemibold
+	actionsLeftContainer: {
+		flexDirection: 'row',
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		height: ROW_HEIGHT
 	},
 	actionLeftButtonContainer: {
 		position: 'absolute',
@@ -107,5 +118,9 @@ export default StyleSheet.create<any>({
 		fontSize: 13,
 		paddingHorizontal: 4,
 		...sharedStyles.textSemibold
+	},
+	typeIcon: {
+		height: ROW_HEIGHT,
+		justifyContent: 'center'
 	}
 });
