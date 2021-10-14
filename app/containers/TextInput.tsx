@@ -1,17 +1,5 @@
 import React from 'react';
-import {
-	KeyboardTypeOptions,
-	NativeSyntheticEvent,
-	ReturnKeyTypeOptions,
-	StyleProp,
-	StyleSheet,
-	Text,
-	TextInputAndroidProps,
-	TextInputIOSProps,
-	TextInputSubmitEditingEventData,
-	View,
-	ViewStyle
-} from 'react-native';
+import { StyleProp, StyleSheet, Text, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import sharedStyles from '../views/Styles';
@@ -62,30 +50,20 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IRCTextInputProps {
+interface IRCTextInputProps extends TextInputProps {
 	label?: string;
-	value?: string;
-	keyboardType?: KeyboardTypeOptions;
-	returnKeyType?: ReturnKeyTypeOptions;
-	onChangeText?: Function;
-	onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void;
 	error?: {
 		error: any;
 		reason: any;
 	};
 	loading?: boolean;
-	secureTextEntry?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
-	inputStyle?: object;
+	inputStyle?: TextStyle;
 	inputRef?: React.Ref<unknown>;
 	testID?: string;
 	iconLeft?: string;
 	iconRight?: string;
-	placeholder?: string;
 	left?: JSX.Element;
-	autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
-	textContentType?: TextInputIOSProps['textContentType'];
-	autoCompleteType?: TextInputAndroidProps['autoCompleteType'];
 	onIconRightPress?(): void;
 	theme: string;
 }
@@ -188,7 +166,6 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 							inputStyle
 						]}
 						ref={inputRef}
-						/* @ts-ignore*/
 						autoCorrect={false}
 						autoCapitalize='none'
 						underlineColorAndroid='transparent'
@@ -196,8 +173,6 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 						testID={testID}
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
-						/* @ts-ignore*/
-						contentDescription={placeholder}
 						theme={theme}
 						{...inputProps}
 					/>
