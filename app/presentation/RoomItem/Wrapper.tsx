@@ -1,9 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import styles from './styles';
 import { themes } from '../../constants/colors';
-import Avatar from '../../containers/Avatar';
+import { DISPLAY_MODE_CONDENSED } from '../../constants/constantDisplayMode';
+import IconOrAvatar from './IconOrAvatar';
+import styles from './styles';
 
 interface IWrapper {
 	accessibilityLabel: string;
@@ -13,17 +14,27 @@ interface IWrapper {
 	theme: string;
 	rid: string;
 	children: JSX.Element;
+	displayMode: string;
+	prid: string;
+	showLastMessage: boolean;
+	status: string;
+	isGroupChat: boolean;
+	teamMain: boolean;
+	showAvatar: boolean;
 }
 
-const Wrapper = ({ accessibilityLabel, avatar, avatarSize, type, theme, rid, children }: IWrapper) => (
-	<View style={styles.container} accessibilityLabel={accessibilityLabel}>
-		<Avatar text={avatar} size={avatarSize} type={type} style={styles.avatar} rid={rid} />
+const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }: IWrapper) => (
+	<View
+		style={[styles.container, displayMode === DISPLAY_MODE_CONDENSED && styles.containerCondensed]}
+		accessibilityLabel={accessibilityLabel}>
+		<IconOrAvatar theme={theme} displayMode={displayMode} {...props} />
 		<View
 			style={[
 				styles.centerContainer,
 				{
 					borderColor: themes[theme].separatorColor
-				}
+				},
+				displayMode === DISPLAY_MODE_CONDENSED && styles.condensedPaddingVertical
 			]}>
 			{children}
 		</View>
