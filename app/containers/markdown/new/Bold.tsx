@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Bold: React.FC<IBoldProps> = ({ value }) => (
+const Bold = ({ value }: IBoldProps): JSX.Element => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {

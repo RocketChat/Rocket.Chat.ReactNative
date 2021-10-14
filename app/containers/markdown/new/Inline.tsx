@@ -24,7 +24,7 @@ interface IParagraphProps {
 	style?: StyleProp<ViewStyle>[];
 }
 
-const Inline: React.FC<IParagraphProps> = ({ value, mentions, channels, navToRoomInfo, style }) => (
+const Inline = ({ value, mentions, channels, navToRoomInfo, style }: IParagraphProps): JSX.Element => (
 	<>
 		{value.map(block => {
 			switch (block.type) {

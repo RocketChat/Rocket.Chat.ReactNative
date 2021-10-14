@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Strike: React.FC<IStrikeProps> = ({ value }) => (
+const Strike = ({ value }: IStrikeProps): JSX.Element => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {

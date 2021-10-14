@@ -9,10 +9,10 @@ import Plain from './Plain';
 
 interface IInlineCodeProps {
 	value: InlineCodeProps['value'];
-	style: StyleProp<TextStyle>[];
+	style?: StyleProp<TextStyle>[];
 }
 
-const InlineCode: React.FC<IInlineCodeProps> = ({ value, style = [] }) => {
+const InlineCode = ({ value, style = [] }: IInlineCodeProps): JSX.Element => {
 	const { theme } = useTheme();
 
 	return (

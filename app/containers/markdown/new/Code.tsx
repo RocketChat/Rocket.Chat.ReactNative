@@ -12,7 +12,7 @@ interface ICodeProps {
 	style: StyleProp<TextStyle>[];
 }
 
-const Code: React.FC<ICodeProps> = ({ value, style }) => {
+const Code = ({ value, style }: ICodeProps): JSX.Element => {
 	const { theme } = useTheme();
 
 	return (

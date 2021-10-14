@@ -11,7 +11,7 @@ interface IQuoteProps {
 	value: QuoteProps['value'];
 }
 
-const Quote: React.FC<IQuoteProps> = ({ value }) => {
+const Quote = ({ value }: IQuoteProps): JSX.Element => {
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>

@@ -10,6 +10,7 @@ interface IHashtag {
 	navToRoomInfo: Function;
 	style: StyleProp<TextStyle>;
 	channels: {
+		[index: number]: string | number;
 		name: string;
 		_id: number;
 	}[];
@@ -19,7 +20,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 	const { theme } = useTheme();
 
 	const handlePress = () => {
-		const index = channels.findIndex(channel => channel.name === hashtag);
+		const index = channels?.findIndex(channel => channel.name === hashtag);
 		const navParam = {
 			t: 'c',
 			rid: channels[index]._id

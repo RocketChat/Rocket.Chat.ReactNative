@@ -9,7 +9,7 @@ interface ITasksProps {
 	value: TasksProps['value'];
 }
 
-const TaskList: React.FC<ITasksProps> = ({ value }) => (
+const TaskList = ({ value }: ITasksProps): JSX.Element => (
 	<Text
 		style={{
 			marginLeft: 0,

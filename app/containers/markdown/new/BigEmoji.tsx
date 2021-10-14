@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const BigEmoji: React.FC<IBigEmojiProps> = ({ value }) => (
+const BigEmoji = ({ value }: IBigEmojiProps): JSX.Element => (
 	<View style={styles.container}>
 		{value.map(block => (
 			<Emoji value={block.value} isBigEmoji />

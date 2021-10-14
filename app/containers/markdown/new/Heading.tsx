@@ -11,7 +11,7 @@ interface IHeadingProps {
 	level: HeadingProps['level'];
 }
 
-const Heading: React.FC<IHeadingProps> = ({ value, level }) => {
+const Heading = ({ value, level }: IHeadingProps): JSX.Element => {
 	const { theme } = useTheme();
 	const textStyle = styles[`heading${level}`];
 

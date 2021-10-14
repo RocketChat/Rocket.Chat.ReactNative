@@ -17,7 +17,7 @@ interface ILinkProps {
 	value: LinkProps['value'];
 }
 
-const Link: React.FC<ILinkProps> = ({ value }) => {
+const Link = ({ value }: ILinkProps): JSX.Element => {
 	const { theme } = useTheme();
 	const { src, label } = value;
 	const handlePress = () => {

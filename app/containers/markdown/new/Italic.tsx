@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Italic: React.FC<IItalicProps> = ({ value }) => (
+const Italic = ({ value }: IItalicProps): JSX.Element => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {

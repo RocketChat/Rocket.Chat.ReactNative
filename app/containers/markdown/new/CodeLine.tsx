@@ -6,7 +6,7 @@ interface ICodeLineProps {
 	value: CodeLineProps['value'];
 }
 
-const CodeLine: React.FC<ICodeLineProps> = ({ value }) => {
+const CodeLine = ({ value }: ICodeLineProps): JSX.Element | null => {
 	if (value.type !== 'PLAIN_TEXT') {
 		return null;
 	}

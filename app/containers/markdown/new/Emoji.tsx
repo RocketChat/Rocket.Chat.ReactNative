@@ -13,7 +13,7 @@ interface IEmojiProps {
 	isBigEmoji?: boolean;
 }
 
-const Emoji: React.FC<IEmojiProps> = ({ value, style, isBigEmoji }) => {
+const Emoji = ({ value, style, isBigEmoji }: IEmojiProps): JSX.Element => {
 	const { theme } = useTheme();
 	const emojiUnicode = shortnameToUnicode(`:${value.value}:`);
 	return (

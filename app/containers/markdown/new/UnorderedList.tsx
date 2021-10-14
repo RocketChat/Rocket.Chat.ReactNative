@@ -7,7 +7,7 @@ interface IUnorderedListProps {
 	value: UnorderedListProps['value'];
 }
 
-const UnorderedList: React.FC<IUnorderedListProps> = ({ value }) => (
+const UnorderedList = ({ value }: IUnorderedListProps): JSX.Element => (
 	<>
 		{value.map(item => (
 			<Inline value={item.value} />

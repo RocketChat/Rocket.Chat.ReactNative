@@ -14,15 +14,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const OrderedList: React.FC<IOrderedListProps> = React.memo(({ value }) => (
-	<>
-		{value.map((item, index) => (
-			<View style={styles.container}>
-				<Text>{index + 1}. </Text>
-				<Inline value={item.value} />
-			</View>
-		))}
-	</>
-));
+const OrderedList = React.memo(
+	({ value }: IOrderedListProps): JSX.Element => (
+		<>
+			{value.map((item, index) => (
+				<View style={styles.container}>
+					<Text>{index + 1}. </Text>
+					<Inline value={item.value} />
+				</View>
+			))}
+		</>
+	)
+);
 
 export default OrderedList;

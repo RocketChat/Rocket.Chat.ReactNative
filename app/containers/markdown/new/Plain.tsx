@@ -6,6 +6,6 @@ interface IPlainProps {
 	value: PlainProps['value'];
 }
 
-const Plain: React.FC<IPlainProps> = ({ value }) => <Text accessibilityLabel={value}>{value}</Text>;
+const Plain = ({ value }: IPlainProps): JSX.Element => <Text accessibilityLabel={value}>{value}</Text>;
 
 export default Plain;

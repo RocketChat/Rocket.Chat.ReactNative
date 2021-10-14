@@ -11,11 +11,11 @@ import { UserMention } from '../../message/interfaces';
 interface IMentionProps {
 	value: UserMentionProps['value'];
 	mentions: UserMention[];
-	navToRoomInfo: Function;
+	navToRoomInfo?: Function;
 	style: StyleProp<ViewStyle>[];
 }
 
-const Mention: React.FC<IMentionProps> = ({ value: { value: mention }, mentions, navToRoomInfo, style }) => {
+const Mention = ({ value: { value: mention }, mentions, navToRoomInfo, style }: IMentionProps): JSX.Element => {
 	const { theme } = useTheme();
 	let mentionStyle: StyleProp<TextStyle>;
 	const notMentionedStyle = [styles.text, { color: themes[theme].bodyText }, ...style];

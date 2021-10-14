@@ -25,7 +25,7 @@ interface IBodyProps {
 
 const isBigEmoji = (tokens: MarkdownAST): tokens is [BigEmojiProps] => tokens.length === 1 && tokens[0].type === 'BIG_EMOJI';
 
-const Body: React.FC<IBodyProps> = ({ tokens, mentions, channels, navToRoomInfo, style }) => {
+const Body = ({ tokens, mentions, channels, navToRoomInfo, style }: IBodyProps): JSX.Element => {
 	if (isBigEmoji(tokens)) {
 		return <BigEmoji value={tokens[0].value} />;
 	}
