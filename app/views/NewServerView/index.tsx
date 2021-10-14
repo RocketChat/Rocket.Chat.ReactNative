@@ -298,13 +298,13 @@ class NewServerView extends React.Component<INewServerView, IState> {
 				style={[
 					styles.certificatePicker,
 					{
-						marginBottom: verticalScale(previousServer && !isTablet ? 10 : 30, height)
+						marginBottom: verticalScale({ size: previousServer && !isTablet ? 10 : 30, height })
 					}
 				]}>
 				<Text
 					style={[
 						styles.chooseCertificateTitle,
-						{ color: themes[theme].auxiliaryText, fontSize: moderateScale(13, undefined, width) }
+						{ color: themes[theme].auxiliaryText, fontSize: moderateScale({ size: 13, width }) }
 					]}>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
@@ -312,7 +312,7 @@ class NewServerView extends React.Component<INewServerView, IState> {
 					onPress={certificate ? this.handleRemove : this.chooseCertificate}
 					testID='new-server-choose-certificate'>
 					<Text
-						style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale(13, undefined, width) }]}>
+						style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale({ size: 13, width }) }]}>
 						{certificate ?? I18n.t('Apply_Your_Certificate')}
 					</Text>
 				</TouchableOpacity>
@@ -332,10 +332,10 @@ class NewServerView extends React.Component<INewServerView, IState> {
 						style={[
 							styles.onboardingImage,
 							{
-								marginBottom: verticalScale(10, height),
-								marginTop: isTablet ? 0 : verticalScale(marginTop, height),
-								width: verticalScale(100, height),
-								height: verticalScale(100, height)
+								marginBottom: verticalScale({ size: 10, height }),
+								marginTop: isTablet ? 0 : verticalScale({ size: marginTop, height }),
+								width: verticalScale({ size: 100, height }),
+								height: verticalScale({ size: 100, height })
 							}
 						]}
 						source={require('../../static/images/logo.png')}
@@ -346,8 +346,8 @@ class NewServerView extends React.Component<INewServerView, IState> {
 							styles.title,
 							{
 								color: themes[theme].titleText,
-								fontSize: moderateScale(22, undefined, width),
-								marginBottom: verticalScale(8, height)
+								fontSize: moderateScale({ size: 22, width }),
+								marginBottom: verticalScale({ size: 8, height })
 							}
 						]}>
 						Rocket.Chat
@@ -357,8 +357,8 @@ class NewServerView extends React.Component<INewServerView, IState> {
 							styles.subtitle,
 							{
 								color: themes[theme].controlText,
-								fontSize: moderateScale(16, undefined, width),
-								marginBottom: verticalScale(30, height)
+								fontSize: moderateScale({ size: 16, width }),
+								marginBottom: verticalScale({ size: 30, height })
 							}
 						]}>
 						{I18n.t('Onboarding_subtitle')}
@@ -378,7 +378,7 @@ class NewServerView extends React.Component<INewServerView, IState> {
 						onPress={this.submit}
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
-						style={[styles.connectButton, { marginTop: verticalScale(16, height) }]}
+						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
 						theme={theme}
 						testID='new-server-view-button'
 					/>
@@ -388,8 +388,8 @@ class NewServerView extends React.Component<INewServerView, IState> {
 							styles.description,
 							{
 								color: themes[theme].auxiliaryText,
-								fontSize: moderateScale(14, undefined, width),
-								marginBottom: verticalScale(16, height)
+								fontSize: moderateScale({ size: 14, width }),
+								marginBottom: verticalScale({ size: 16, height })
 							}
 						]}>
 						{I18n.t('Onboarding_join_open_description')}
