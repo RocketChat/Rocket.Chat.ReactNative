@@ -48,8 +48,7 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 			}
 		} catch (e: any) {
 			log(e);
-			const msg =
-				(e.data && e.data.error) || I18n.t('There_was_an_error_while_action', { action: I18n.t('sending_email_confirmation') });
+			const msg = e?.data?.error || I18n.t('There_was_an_error_while_action', { action: I18n.t('sending_email_confirmation') });
 			showErrorAlert(msg, I18n.t('Alert'));
 		}
 		setIsFetching(false);
