@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, ScrollView,
+	View, Text, ScrollView, Alert, Modal,Pressable,
 } from 'react-native';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import UAParser from 'ua-parser-js';
 import _ from 'lodash';
@@ -33,6 +34,7 @@ import Direct from './Direct';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
+
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 const getRoomTitle = (room, type, name, username,age, statusText, theme) => (type === 'd'
@@ -77,7 +79,9 @@ class RoomInfoView extends React.Component {
 			saving: false,
 			room: room || { rid: this.rid, t: this.t },
 			roomUser: roomUser || {},
-			showEdit: false
+			showEdit: false,
+			modalVisible: false,
+			connectButton: false
 		};
 	}
 
@@ -283,7 +287,9 @@ class RoomInfoView extends React.Component {
 			}
 		}
 	}
-
+	setModalVisible = (visible) => {
+		this.setState({ modalVisible: visible });
+	  }
 	connect = async() => {
 		const { user } = this.props;
 		const { roomUser } = this.state;
@@ -294,15 +300,14 @@ class RoomInfoView extends React.Component {
 				? username
 				: `${ user.customFields.ConnectIds },${ username }`;
 		}
-
+  
 		try {
-			const result = await RocketChat.saveUserProfile({}, user.customFields);
 			
-			await this.createDirect();
-			this.goRoom();
+			const result = await RocketChat.saveUserProfile({}, user.customFields);
+			 this.setModalVisible(true)	
 		} catch (e) {
 			showErrorAlert(e.message, I18n.t('Oops'));
-		}
+		}  
 	}
 
 	message = async() => {
@@ -382,15 +387,43 @@ class RoomInfoView extends React.Component {
 					baseUrl={baseUrl}
 					userId={user.id}
 					token={user.token}
+					
 				>
 					{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
 				</Avatar>
 			);
 	}
+	renderModal = () =>{
+		const { modalVisible,roomUser } = this.state;
+	return	<Modal
+		animationType="slide"
+		transparent={true}
+		visible={modalVisible}
+		onRequestClose={() => {
+		  Alert.alert("Modal has been closed.");
+		  this.setModalVisible(!modalVisible);
+		}}
+	  ><View style={styles.centeredView}>
+	  <View style={styles.modalView}>
+		<Text style={styles.modalText}>Get the conversation started!</Text>
+		<Text style={styles.modalText}>Introduce yourself to your new peer supporter!</Text>
+		<Pressable
+		  style={[styles.button, styles.buttonClose]}
+		  onPress={async() => {
+			this.setModalVisible(!modalVisible)
+			await this.createDirect()
+			this.goRoom();
+		  }}
+		><CustomIcon name="send-filled" color='white' size={20} />
+		  <Text style={styles.textStyle}>Message</Text>
+		</Pressable>
+	  </View>
+	</View></Modal>
+	}
 	renderStatus = (room, roomUser) => {
 		const { baseUrl, user, theme } = this.props;
 		let isPeerSupporter = false;
-
+ 
 		if (roomUser !== null
 			&& roomUser !== undefined
 			&& roomUser.parsedRoles !== null
@@ -404,20 +437,21 @@ class RoomInfoView extends React.Component {
 			: null
 
 	};
-	renderButton = (onPress, iconName, text) => {
+	renderButton = (onPress, iconName, text,connect) => {
 		const { theme } = this.props;
 
-		const onActionPress = async() => {
-			try {
-				await this.createDirect();
-				onPress();
-			} catch {
-				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
-			}
-		};
-  
-		return (
-			<Button style={{marginTop:10,borderRadius:20,width:'50%'}}
+				const onActionPress = async() => {
+					try {
+						  await this.createDirect();
+						 onPress();
+						
+					} catch {
+						EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
+					}
+				};
+		
+				return (
+					connect ? <Button style={{marginTop:10,borderRadius:20,width:'50%'}}
 					title={I18n.t('Connect')}
 					type='primary'
 					onPress={onActionPress}
@@ -425,34 +459,43 @@ class RoomInfoView extends React.Component {
 					testID='profile-library-view-connect'
 					theme={theme}
 					backgroundColor={themes[theme].connectButtonColor}
-				/>
-		);
+				/>: <BorderlessButton
+						onPress={onActionPress}
+						style={styles.roomButton}
+					>
+						<CustomIcon
+							name={iconName}
+							size={30}
+							color={themes[theme].actionTintColor}
+						/>
+						<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
+					</BorderlessButton>
+				);
 	}
 
 	renderButtons = (isPeerSupporter, canConnect, isConnected) => {
 		const { jitsiEnabled, theme } = this.props;
 		const { saving } = this.state;
 
-		return (isPeerSupporter && !isConnected && canConnect)
-			? (
-				<Button style={{marginTop:10,borderRadius:10}}
-					title={I18n.t('Connect')}
-					type='primary'
-					onPress={this.connect}
-					disabled={false}
-					testID='profile-library-view-connect'
-					loading={saving}
-					theme={theme}
-					backgroundColor={themes[theme].connectButtonColor}
-				/>
-			) 
-			: (
-				
-				<View style={styles.roomButtonsContainer}>
-					{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
-					{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
-				</View>
-			);
+		return (isPeerSupporter && !isConnected && canConnect) ? 
+		(<Button
+			style={{marginTop:10,borderRadius:20,width:'50%'}}
+				title={I18n.t('Connect')}
+				type='primary'
+				onPress={this.connect}
+				disabled={false}
+				testID='profile-library-view-connect'
+				loading={saving}
+				theme={theme}
+				backgroundColor={themes[theme].connectButtonColor}
+			/>
+					
+		) : (
+			<View style={styles.roomButtonsContainer}>
+				{this.renderButton(this.goRoom, 'message', I18n.t('Message'),true)}
+				{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call'),false) : null}
+			</View>
+		);
 	}
 
 	renderContent = (isAdmin, isPeerSupporter, canConnect, isConnected) => {
@@ -496,13 +539,14 @@ class RoomInfoView extends React.Component {
 			);
 		}
 	}
-
+	
 	render() {
-		const { room, roomUser } = this.state;
+		const { room, roomUser,modalVisible } = this.state;
 		const { theme, user, route } = this.props;
 		
 		const isPeerSupporter = route.params?.isPeerSupporter;
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role)) !== undefined;
+
 		const peerIds = (user === null
 			|| user.customFields === null
 			|| user.customFields === undefined
@@ -511,12 +555,14 @@ class RoomInfoView extends React.Component {
 
 			? [] : user.customFields.ConnectIds.split(',');
 
+
 		const canConnect = !peerIds.includes(roomUser.username) && peerIds.length < 5 && !isAdmin;
 		const isConnected = peerIds.includes(roomUser.username) && !isAdmin;
 		
 		const name = (isConnected) ? `${ roomUser?.name } ✅ ` : roomUser?.name;
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
+
 				<StatusBar theme={theme} />
 				<SafeAreaView
 					theme={theme}
@@ -530,7 +576,10 @@ class RoomInfoView extends React.Component {
 						{this.isDirect ? this.renderButtons(isPeerSupporter, canConnect, isConnected) : null}
 						
 					</View>
+				
+		           {isConnected ? this.renderModal() : null}
 					{this.renderContent(isAdmin, isPeerSupporter, canConnect, isConnected)}
+		
 				</SafeAreaView>
 			</ScrollView>
 		);
