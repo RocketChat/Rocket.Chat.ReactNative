@@ -39,10 +39,12 @@ const Inline = ({ value, mentions, channels, navToRoomInfo, style }: IParagraphP
 				case 'LINK':
 					return <Link value={block.value} />;
 				case 'MENTION_USER':
+					// @ts-ignore
 					return <Mention value={block.value} navToRoomInfo={navToRoomInfo} mentions={mentions} style={style} />;
 				case 'EMOJI':
 					return <Emoji value={block.value} />;
 				case 'MENTION_CHANNEL':
+					// @ts-ignore
 					return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} style={style} />;
 				case 'INLINE_CODE':
 					return <InlineCode value={block.value} style={style} />;

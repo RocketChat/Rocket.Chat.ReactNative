@@ -6,6 +6,7 @@ import sharedStyles from '../../../views/Styles';
 import Strike from './Strike';
 import Italic from './Italic';
 import Plain from './Plain';
+import Link from './Link';
 
 interface IBoldProps {
 	value: BoldProps['value'];
@@ -21,6 +22,8 @@ const Bold = ({ value }: IBoldProps): JSX.Element => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {
+				case 'LINK':
+					return <Link value={block.value} />;
 				case 'PLAIN_TEXT':
 					return <Plain value={block.value} />;
 				case 'STRIKE':

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { Text, TextStyle } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';
@@ -8,7 +8,7 @@ import styles from './styles';
 interface IHashtag {
 	hashtag: string;
 	navToRoomInfo: Function;
-	style: StyleProp<TextStyle>;
+	style: TextStyle[];
 	channels: {
 		[index: number]: string | number;
 		name: string;
@@ -16,7 +16,7 @@ interface IHashtag {
 	}[];
 }
 
-const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
+const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style }: IHashtag) => {
 	const { theme } = useTheme();
 
 	const handlePress = () => {

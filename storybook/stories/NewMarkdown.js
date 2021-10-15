@@ -3,10 +3,10 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
-import MessageBody from '../../app/containers/markdown/MessageBody';
+import NewMarkdown from '../../app/containers/markdown/new';
 import { themes } from '../../app/constants/colors';
 
-const stories = storiesOf('MessageBody', module);
+const stories = storiesOf('NewMarkdown', module);
 
 const theme = 'light';
 
@@ -22,21 +22,30 @@ const styles = StyleSheet.create({
 	}
 });
 
-const simpleTextMsg = [{
-	type: 'PARAGRAPH',
-	value: [{
-		type: 'PLAIN_TEXT',
-		value: 'This is Rocket.Chat'
-	}]
-}];
+const simpleTextMsg = [
+	{
+		type: 'PARAGRAPH',
+		value: [
+			{
+				type: 'PLAIN_TEXT',
+				value: 'This is Rocket.Chat'
+			}
+		]
+	}
+];
 
-const longTextMsg = [{
-	type: 'PARAGRAPH',
-	value: [{
-		type: 'PLAIN_TEXT',
-		value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-	}]
-}];
+const longTextMsg = [
+	{
+		type: 'PARAGRAPH',
+		value: [
+			{
+				type: 'PLAIN_TEXT',
+				value:
+					'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+			}
+		]
+	}
+];
 
 const lineBreakMsg = [
 	{
@@ -100,10 +109,12 @@ const boldOrUnderscoreMsg = [
 			},
 			{
 				type: 'BOLD',
-				value: [{
-					type: 'PLAIN_TEXT',
-					value: 'asterisks'
-				}]
+				value: [
+					{
+						type: 'PLAIN_TEXT',
+						value: 'asterisks'
+					}
+				]
 			},
 			{
 				type: 'PLAIN_TEXT',
@@ -111,10 +122,12 @@ const boldOrUnderscoreMsg = [
 			},
 			{
 				type: 'ITALIC',
-				value: [{
-					type: 'PLAIN_TEXT',
-					value: 'underscore'
-				}]
+				value: [
+					{
+						type: 'PLAIN_TEXT',
+						value: 'underscore'
+					}
+				]
 			}
 		]
 	}
@@ -122,11 +135,11 @@ const boldOrUnderscoreMsg = [
 
 stories.add('Text', () => (
 	<View style={styles.container}>
-		<MessageBody tokens={simpleTextMsg} />
-		<MessageBody tokens={longTextMsg} />
-		<MessageBody tokens={lineBreakMsg} />
-		<MessageBody tokens={sequentialEmptySpacesMsg} />
-		<MessageBody tokens={boldOrUnderscoreMsg} />
+		<NewMarkdown tokens={simpleTextMsg} />
+		<NewMarkdown tokens={longTextMsg} />
+		<NewMarkdown tokens={lineBreakMsg} />
+		<NewMarkdown tokens={sequentialEmptySpacesMsg} />
+		<NewMarkdown tokens={boldOrUnderscoreMsg} />
 	</View>
 ));
 
@@ -221,21 +234,23 @@ const multipleMentions = [
 
 stories.add('Mentions', () => (
 	<View style={styles.container}>
-		<MessageBody tokens={allMentionTokens} mentions={allMentions} navToRoomInfo={() => {}} style={[]} />
-		<MessageBody tokens={multipleMentionTokens} mentions={multipleMentions} navToRoomInfo={() => {}} style={[]} />
+		<NewMarkdown tokens={allMentionTokens} mentions={allMentions} navToRoomInfo={() => {}} style={[]} />
+		<NewMarkdown tokens={multipleMentionTokens} mentions={multipleMentions} navToRoomInfo={() => {}} style={[]} />
 	</View>
 ));
 
 const channelTokens = [
 	{
 		type: 'PARAGRAPH',
-		value: [{
-			type: 'MENTION_CHANNEL',
-			value: {
-				type: 'PLAIN_TEXT',
-				value: 'text_channel'
+		value: [
+			{
+				type: 'MENTION_CHANNEL',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'text_channel'
+				}
 			}
-		}]
+		]
 	}
 ];
 
@@ -248,93 +263,104 @@ const channelMention = [
 
 stories.add('Hashtag', () => (
 	<View style={styles.container}>
-		<MessageBody tokens={channelTokens} channels={channelMention} navToRoomInfo={() => {}} />
+		<NewMarkdown tokens={channelTokens} channels={channelMention} navToRoomInfo={() => {}} />
 	</View>
 ));
 
-const bigEmojiTokens = [{
-	type: 'BIG_EMOJI',
-	value: [
-		{
-			type: 'EMOJI',
-			value: {
-				type: 'PLAIN_TEXT',
-				value: 'green_heart'
+const bigEmojiTokens = [
+	{
+		type: 'BIG_EMOJI',
+		value: [
+			{
+				type: 'EMOJI',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'green_heart'
+				}
 			}
-		}
-	]
-}];
+		]
+	}
+];
 
-const multipleBigEmojiTokens = [{
-	type: 'BIG_EMOJI',
-	value: [
-		{
-			type: 'EMOJI',
-			value: {
-				type: 'PLAIN_TEXT',
-				value: 'green_heart'
+const multipleBigEmojiTokens = [
+	{
+		type: 'BIG_EMOJI',
+		value: [
+			{
+				type: 'EMOJI',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'green_heart'
+				}
+			},
+			{
+				type: 'EMOJI',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'joy'
+				}
+			},
+			{
+				type: 'EMOJI',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'grin'
+				}
 			}
-		},
-		{
-			type: 'EMOJI',
-			value: {
-				type: 'PLAIN_TEXT',
-				value: 'joy'
-			}
-		},
-		{
-			type: 'EMOJI',
-			value: {
-				type: 'PLAIN_TEXT',
-				value: 'grin'
-			}
-		}
-	]
-}];
+		]
+	}
+];
 
-const emojiTokens = [{
-	type: 'PARAGRAPH',
-	value: [
-		{
-			type: 'EMOJI',
-			value: {
-				type: 'PLAIN_TEXT',
-				value: 'rocket'
+const emojiTokens = [
+	{
+		type: 'PARAGRAPH',
+		value: [
+			{
+				type: 'EMOJI',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'rocket'
+				}
+			},
+			{
+				type: 'EMOJI',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'facepalm'
+				}
 			}
-		},
-		{
-			type: 'EMOJI',
-			value: {
-				type: 'PLAIN_TEXT',
-				value: 'facepalm'
-			}
-		}
-	]
-}];
+		]
+	}
+];
 
 stories.add('Emoji', () => (
 	<View style={styles.container}>
-		<MessageBody tokens={bigEmojiTokens} />
-		<MessageBody tokens={multipleBigEmojiTokens} />
-		<MessageBody tokens={emojiTokens} />
+		<NewMarkdown tokens={bigEmojiTokens} />
+		<NewMarkdown tokens={multipleBigEmojiTokens} />
+		<NewMarkdown tokens={emojiTokens} />
 	</View>
 ));
 
-const blockQuoteTokens = [{
-	type: 'QUOTE',
-	value: [{
-		type: 'PARAGRAPH',
-		value: [{
-			type: 'PLAIN_TEXT',
-			value: 'Rocket.Chat to the moon'
-		}]
-	}]
-
-}];
+const blockQuoteTokens = [
+	{
+		type: 'QUOTE',
+		value: [
+			{
+				type: 'PARAGRAPH',
+				value: [
+					{
+						type: 'PLAIN_TEXT',
+						value: 'Rocket.Chat to the moon'
+					}
+				]
+			}
+		]
+	}
+];
 
 stories.add('Block quote', () => (
 	<View style={styles.container}>
-		<MessageBody tokens={blockQuoteTokens} />
+		<NewMarkdown tokens={blockQuoteTokens} />
 	</View>
 ));
 
@@ -382,96 +408,96 @@ const markdownLink = [
 
 stories.add('Links', () => (
 	<View style={styles.container}>
-		<MessageBody tokens={rocketChatLink} />
-		<MessageBody tokens={markdownLink} />
+		<NewMarkdown tokens={rocketChatLink} />
+		<NewMarkdown tokens={markdownLink} />
 	</View>
 ));
 
 stories.add('Headers', () => (
 	<View style={styles.container}>
-		<MessageBody
-			tokens={
-				[
-					{
-						type: 'HEADING',
-						value: [{
+		<NewMarkdown
+			tokens={[
+				{
+					type: 'HEADING',
+					value: [
+						{
 							type: 'PLAIN_TEXT',
 							value: '# Header 1'
-						}],
-						level: 1
-					}
-				]
-			}
+						}
+					],
+					level: 1
+				}
+			]}
 		/>
-		<MessageBody
-			tokens={
-				[
-					{
-						type: 'HEADING',
-						value: [{
+		<NewMarkdown
+			tokens={[
+				{
+					type: 'HEADING',
+					value: [
+						{
 							type: 'PLAIN_TEXT',
 							value: '## Header 2'
-						}],
-						level: 2
-					}
-				]
-			}
+						}
+					],
+					level: 2
+				}
+			]}
 		/>
-		<MessageBody
-			tokens={
-				[
-					{
-						type: 'HEADING',
-						value: [{
+		<NewMarkdown
+			tokens={[
+				{
+					type: 'HEADING',
+					value: [
+						{
 							type: 'PLAIN_TEXT',
 							value: '### Header 3'
-						}],
-						level: 3
-					}
-				]
-			}
+						}
+					],
+					level: 3
+				}
+			]}
 		/>
-		<MessageBody
-			tokens={
-				[
-					{
-						type: 'HEADING',
-						value: [{
+		<NewMarkdown
+			tokens={[
+				{
+					type: 'HEADING',
+					value: [
+						{
 							type: 'PLAIN_TEXT',
 							value: '#### Header 4'
-						}],
-						level: 4
-					}
-				]
-			}
+						}
+					],
+					level: 4
+				}
+			]}
 		/>
-		<MessageBody
-			tokens={
-				[
-					{
-						type: 'HEADING',
-						value: [{
+		<NewMarkdown
+			tokens={[
+				{
+					type: 'HEADING',
+					value: [
+						{
 							type: 'PLAIN_TEXT',
 							value: '##### Header 5'
-						}],
-						level: 5
-					}
-				]
-			}
+						}
+					],
+					level: 5
+				}
+			]}
 		/>
-		<MessageBody
-			tokens={
-				[
-					{
-						type: 'HEADING',
-						value: [{
+		<NewMarkdown
+			tokens={[
+				{
+					type: 'HEADING',
+					value: [
+						{
 							type: 'PLAIN_TEXT',
 							value: '###### Header 6'
-						}],
-						level: 6
-					}
-				]
-			}
+						}
+					],
+					level: 6
+				}
+			]}
 		/>
 	</View>
 ));
@@ -514,11 +540,10 @@ const multilineCodeToken = [
 	}
 ];
 
-
 stories.add('Code', () => (
 	<View style={styles.container}>
-		<MessageBody tokens={inlineCodeToken} style={[]} />
-		<MessageBody tokens={multilineCodeToken} style={[]} />
+		<NewMarkdown tokens={inlineCodeToken} style={[]} />
+		<NewMarkdown tokens={multilineCodeToken} style={[]} />
 	</View>
 ));
 
@@ -576,7 +601,7 @@ const orderedListToken = [
 
 stories.add('Lists', () => (
 	<View style={styles.container}>
-		<MessageBody tokens={unorederedListToken} />
-		<MessageBody tokens={orderedListToken} />
+		<NewMarkdown tokens={unorederedListToken} />
+		<NewMarkdown tokens={orderedListToken} />
 	</View>
 ));
