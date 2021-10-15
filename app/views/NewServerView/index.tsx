@@ -155,8 +155,8 @@ class NewServerView extends React.Component<INewServerView, IState> {
 		try {
 			const serversHistoryCollection = db.get('servers_history');
 			let whereClause = [Q.where('username', Q.notEq(null)), Q.experimentalSortBy('updated_at', Q.desc), Q.experimentalTake(3)];
-			const likeString = sanitizeLikeString(text);
 			if (text) {
+				const likeString = sanitizeLikeString(text);
 				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
 			}
 			const serversHistory = (await serversHistoryCollection.query(...whereClause).fetch()) as IServer[];
