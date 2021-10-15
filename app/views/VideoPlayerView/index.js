@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View,Dimensions} from 'react-native';
+import { View} from 'react-native';
 import { WebView } from 'react-native-webview';
 import { DrawerButton } from '../../containers/HeaderButton';
 

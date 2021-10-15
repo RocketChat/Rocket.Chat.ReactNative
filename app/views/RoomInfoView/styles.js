@@ -167,6 +167,8 @@ export default StyleSheet.create({
 	  },
 	  modalText: {
 		marginBottom: 15,
-		textAlign: "center"
+		textAlign: "center",
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textRegular
 	  }
 });

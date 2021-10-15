@@ -112,12 +112,12 @@ class RoomInfoView extends React.Component {
 
 	setHeader = () => {
 		const { roomUser, room, showEdit } = this.state;
-		const { navigation, route } = this.props;
+		const { navigation, route, theme } = this.props;
 		const t = route.params?.t;
 		const rid = route.params?.rid;
-		const showCloseModal = route.params?.showCloseModal;
+		console.log('navigation',navigation)
 		navigation.setOptions({
-			headerLeft: showCloseModal ? () => <CloseModalButton navigation={navigation} /> : undefined,
+			headerLeft:()=> <CustomIcon name='chevron-left-big'  size={24} onPress={()=> Navigation.navigate('ProfileLibraryNavigator')} color={themes[theme].auxiliaryText} />,
 			title: t === 'd' ? I18n.t('Profile') : I18n.t('Room_Info'),
 			headerRight: showEdit
 				? () => (
