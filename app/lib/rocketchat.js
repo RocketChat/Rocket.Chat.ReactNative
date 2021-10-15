@@ -1039,7 +1039,7 @@ const RocketChat = {
 		}
 		return this.post('subscriptions.read', { rid: roomId });
 	},
-	getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
+	async getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
 		const serverVersion = reduxStore.getState().server.version;
 		if (compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)) {
 			const params = {
@@ -1050,10 +1050,12 @@ const RocketChat = {
 				...(filter && { filter })
 			};
 			// RC 3.16.0
-			return this.sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
+			const result = await this.sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
+			return result?.members;
 		}
 		// RC 0.42.0
-		return this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
+		const result = await this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
+		return result?.records;
 	},
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
@@ -1378,17 +1380,19 @@ const RocketChat = {
 	 * Returns an array of boolean for each permission from permissions arg
 	 */
 	async hasPermission(permissions, rid) {
-		const db = database.active;
-		const subsCollection = db.get('subscriptions');
 		let roomRoles = [];
-		try {
-			// get the room from database
-			const room = await subsCollection.find(rid);
-			// get room roles
-			roomRoles = room.roles || [];
-		} catch (error) {
-			console.log('hasPermission -> Room not found');
-			return permissions.map(() => false);
+		if (rid) {
+			const db = database.active;
+			const subsCollection = db.get('subscriptions');
+			try {
+				// get the room from database
+				const room = await subsCollection.find(rid);
+				// get room roles
+				roomRoles = room.roles || [];
+			} catch (error) {
+				console.log('hasPermission -> Room not found');
+				return permissions.map(() => false);
+			}
 		}
 
 		try {
@@ -1535,11 +1539,13 @@ const RocketChat = {
 			messageId
 		});
 	},
-	searchMessages(roomId, searchText) {
+	searchMessages(roomId, searchText, count, offset) {
 		// RC 0.60.0
 		return this.sdk.get('chat.search', {
 			roomId,
-			searchText
+			searchText,
+			count,
+			offset
 		});
 	},
 	toggleFollowMessage(mid, follow) {

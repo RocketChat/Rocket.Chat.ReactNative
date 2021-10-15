@@ -434,7 +434,6 @@ class RoomMembersView extends React.Component {
 	fetchMembers = async () => {
 		const { rid, members, isLoading, allUsers, end, room, filtering } = this.state;
 		const { t } = room;
-		let newMembers;
 		if (isLoading || end) {
 			return;
 		}
@@ -447,13 +446,13 @@ class RoomMembersView extends React.Component {
 				type: allUsers ? 'all' : 'online',
 				filter: filtering,
 				skip: members.length,
-				limit: PAGE_SIZE
+				limit: PAGE_SIZE,
+				allUsers
 			});
-			newMembers = membersResult.members;
 			this.setState({
-				members: members.concat(newMembers || []),
+				members: members.concat(membersResult || []),
 				isLoading: false,
-				end: newMembers.length < PAGE_SIZE
+				end: membersResult?.length < PAGE_SIZE
 			});
 			this.setHeader();
 		} catch (e) {

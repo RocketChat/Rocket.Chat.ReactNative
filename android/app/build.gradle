@@ -144,7 +144,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.20.0"
+        versionName "4.21.0"
         vectorDrawables.useSupportLibrary = true
         if (!isFoss) {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
@@ -276,7 +276,6 @@ android {
 
 dependencies {
     addUnimodulesDependencies()
-    implementation project(':watermelondb')
     implementation project(':@react-native-community_viewpager')
     playImplementation project(':reactnativenotifications')
     playImplementation project(':@react-native-firebase_app')
@@ -309,6 +308,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.9.0"
     annotationProcessor "com.github.bumptech.glide:compiler:4.9.0"
     implementation "com.tencent:mmkv-static:1.2.1"
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:4.9.0"
     androidTestImplementation('com.wix:detox:+') { transitive = true }
     androidTestImplementation 'junit:junit:4.12'
 }
