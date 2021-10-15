@@ -437,7 +437,11 @@ class RoomsListView extends React.Component {
 		this.querySubscription = observable.subscribe(async(data) => {
 			let tempChats = [];
 			let chats = data.map(i => i);
-			const filteredChats = chats.filter(s => s.t === 'd');
+
+			const filteredChats = chats.filter(s => s.t === 'd' &&  user?.customFields?.ConnectIds.includes(s.name) );
+			// const filter = filteredChats.filter(s=>user.customFields.ConnectIds.includes(s.name))
+			 console.log('chats',filteredChats.length)
+			// console.log('user',user.customFields.ConnectIds)
 
 			let chatsUpdate = [];
 			if (showUnread) {
@@ -460,7 +464,7 @@ class RoomsListView extends React.Component {
 				chats = chats.filter(s => !filterIsOmnichannel(s));
 				tempChats = this.addRoomsGroup(omnichannel, OMNICHANNEL_HEADER, tempChats);
 			}
-
+		
 			// unread
 			if (showUnread) {
 				const unread = chats.filter(s => filterIsUnread(s));
@@ -481,31 +485,9 @@ class RoomsListView extends React.Component {
 				const channels = chats.filter(s => s.t === 'c' && !s.prid);
 				const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
 				const direct = chats.filter(s => s.t === 'd' && !s.prid);
-
-				// get peer supporters
-				const peerSupporter = [];
-				const peerSupporterInfo = [];
-				for (let i = 0; i < filteredChats.length; i += 1) {
-					const item = filteredChats[i];
-					const id = this.getUidDirectMessage(item);
-					peerSupporterInfo.push(this.getInfo(id));
-				}
-				try {
-					this.internalSetState({
-						loading: true
-					});
-					const usersInfo = await allSettled(peerSupporterInfo);
-					usersInfo.forEach((i) => {
-						if (i.status === 'fulfilled' && i.value.user.roles.includes('Peer Supporter')) {
-							const chat = filteredChats.find(k => this.getUidDirectMessage(k) === i.value.user._id);
-							peerSupporter.push(chat);
-						}
-					});
-				} catch (e) {
-					console.error(e);
-				}
+                const peerSupporter = chats.filter(s => s.t === 'd' && user?.customFields?.ConnectIds?.includes(s.name));
+			
 				// end get peer supporters
-
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
