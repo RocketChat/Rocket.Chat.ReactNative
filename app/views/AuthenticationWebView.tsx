@@ -41,17 +41,20 @@ window.addEventListener('popstate', function() {
 });
 `;
 
-type Route = {
+interface IRoute {
 	params: {
 		authType: string;
 		url: string;
 		ssoToken?: string;
 	};
-};
+}
 
-interface IAuthenticationWebView {
+interface INavigationOption {
 	navigation: StackNavigationProp<any, 'AuthenticationWebView'>;
-	route: Route;
+	route: IRoute;
+}
+
+interface IAuthenticationWebView extends INavigationOption {
 	server: string;
 	Accounts_Iframe_api_url: string;
 	Accounts_Iframe_api_method: string;
@@ -67,13 +70,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 	private oauthRedirectRegex: RegExp;
 	private iframeRedirectRegex: RegExp;
 
-	static navigationOptions = ({
-		route,
-		navigation
-	}: {
-		route: Route;
-		navigation: StackNavigationProp<any, 'AuthenticationWebView'>;
-	}) => {
+	static navigationOptions = ({ route, navigation }: INavigationOption) => {
 		const { authType } = route.params;
 		return {
 			headerLeft: () => <HeaderButton.CloseModal navigation={navigation} />,
