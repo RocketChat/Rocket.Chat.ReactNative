@@ -166,7 +166,7 @@ class Sidebar extends Component {
 		return (
 			<>
 				<SidebarItem
-					text={I18n.t('Chats')}
+					text={I18n.t('Home')}
 					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					testID='sidebar-chats'
