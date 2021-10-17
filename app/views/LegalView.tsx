@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
@@ -9,13 +9,17 @@ import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 
-class LegalView extends React.Component {
-	static propTypes = {
-		server: PropTypes.string,
-		theme: PropTypes.string
+interface ILegalView {
+	server: string;
+	theme: string;
+}
+
+class LegalView extends React.Component<ILegalView, any> {
+	static navigationOptions: StackNavigationOptions = {
+		title: I18n.t('Legal')
 	};
 
-	onPressItem = ({ route }) => {
+	onPressItem = ({ route }: { route: string }) => {
 		const { server, theme } = this.props;
 		if (!server) {
 			return;
@@ -51,12 +55,8 @@ class LegalView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server
 });
-
-LegalView.navigationOptions = {
-	title: I18n.t('Legal')
-};
 
 export default connect(mapStateToProps)(withTheme(LegalView));

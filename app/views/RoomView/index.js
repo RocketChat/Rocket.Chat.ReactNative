@@ -362,6 +362,7 @@ class RoomView extends React.Component {
 		const t = room?.t;
 		const teamMain = room?.teamMain;
 		const teamId = room?.teamId;
+		const encrypted = room?.encrypted;
 		const { id: userId, token } = user;
 		const avatar = room?.name;
 		const visitor = room?.visitor;
@@ -424,6 +425,7 @@ class RoomView extends React.Component {
 					teamMain={teamMain}
 					joined={joined}
 					t={t}
+					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
 				/>
