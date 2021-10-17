@@ -617,7 +617,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			stopPerformingAction(rid, 'user-typing', { tmid });
+			stopPerformingAction(rid, 'user-typing', { tmid, isTyping });
 			return;
 		}
 
@@ -626,7 +626,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 
 		this.typingTimeout = setTimeout(() => {
-			startPerformingAction(rid, 'user-typing', { tmid });
+			startPerformingAction(rid, 'user-typing', { tmid, isTyping });
 			this.typingTimeout = false;
 		}, 1000);
 	};

@@ -12,6 +12,7 @@ import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
+import { compareServerVersion, methods } from '../../utils';
 
 const WINDOW_TIME = 1000;
 const TIME_OUT = 15000;
@@ -86,10 +87,26 @@ export default class RoomSubscription {
 	handleNotifyRoomReceived = protectedFunction(ddpMessage => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		const { UI_Use_Real_Name } = reduxStore.getState().settings;
-		if (ev === 'user-activity') {
-			const { user } = reduxStore.getState().login;
-			const { rooms } = reduxStore.getState().room;
+		const { user } = reduxStore.getState().login;
+		const { rooms } = reduxStore.getState().room;
+		const { version: serverVersion } = reduxStore.getState().server;
 
+		if (ev === 'typing' && compareServerVersion(serverVersion, '4.0.0', methods.lowerThan)) {
+			if (rooms[0] !== _rid) {
+				return;
+			}
+			const [name, typing] = ddpMessage.fields.args;
+			const key = UI_Use_Real_Name ? 'name' : 'username';
+			if (name !== user[key]) {
+				if (typing) {
+					reduxStore.dispatch(addUserActivity(name, 'USER_TYPING', _rid));
+				} else {
+					reduxStore.dispatch(clearAllUserActivities(name, _rid));
+				}
+			}
+			return;
+		}
+		if (ev === 'user-activity') {
 			if (rooms[0] !== _rid) {
 				return;
 			}

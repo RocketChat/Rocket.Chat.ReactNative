@@ -1004,12 +1004,17 @@ const RocketChat = {
 	onStreamData(...args) {
 		return this.sdk.onStreamData(...args);
 	},
-	emitUserActivity(room, activities, extras = {}) {
-		const { login, settings } = reduxStore.getState();
+	emitUserActivity({ room, activities, extras = {} }) {
+		const { login, settings, server } = reduxStore.getState();
 		const { UI_Use_Real_Name } = settings;
+		const { version: serverVersion } = server;
 		const { user } = login;
 		const name = UI_Use_Real_Name ? user.name : user.username;
-		return this.methodCall('stream-notify-room', `${room}/user-activity`, name, activities, extras);
+		if (compareServerVersion(serverVersion, '4.0.0', methods.greaterThanOrEqualTo)) {
+			return this.methodCall('stream-notify-room', `${room}/user-activity`, name, activities, extras);
+		} else {
+			return extras.hasOwnProperty('isTyping') && this.methodCall('stream-notify-room', `${room}/typing`, name, extras.isTyping);
+		}
 	},
 	setUserPresenceAway() {
 		return this.methodCall('UserPresence:away');

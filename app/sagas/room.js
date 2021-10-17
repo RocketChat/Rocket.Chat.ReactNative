@@ -12,7 +12,7 @@ import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
 
-const watchUserActivity = function* watchUserActivity({ _type, rid, _action, options = {} }) {
+const watchUserActivity = function* watchUserActivity({ rid, options = {} }) {
 	const activities = yield select(state => state.room.performingActions) || [];
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
@@ -20,7 +20,7 @@ const watchUserActivity = function* watchUserActivity({ _type, rid, _action, opt
 	}
 
 	try {
-		yield RocketChat.emitUserActivity(rid, activities, options);
+		yield RocketChat.emitUserActivity({ room: rid, activities, extras: options });
 	} catch (e) {
 		log(e);
 	}
