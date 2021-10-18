@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import isEmpty from 'lodash/isEmpty';
 
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
 import Markdown from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
-import { withTheme } from '../../theme';
 
 const HIT_SLOP = {
 	top: 5,
@@ -194,7 +195,7 @@ const Header = React.memo(
 		let scale = 1;
 
 		if (!portrait && !tmid) {
-			if (Object.keys(userActivity).length > 0 || subtitle) {
+			if (!isEmpty(userActivity) || subtitle) {
 				scale = 0.8;
 			}
 		}

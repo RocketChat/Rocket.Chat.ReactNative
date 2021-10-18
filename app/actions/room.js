@@ -53,7 +53,7 @@ export function removedRoom() {
 	};
 }
 
-export function startPerformingAction(rid, activity, options = {}) {
+export function startPerforming(rid, activity, options = {}) {
 	return {
 		type: types.ROOM.START_PERFORMING_ACTION,
 		rid,
@@ -62,7 +62,7 @@ export function startPerformingAction(rid, activity, options = {}) {
 	};
 }
 
-export function stopPerformingAction(rid, activity, options = {}) {
+export function stopPerforming(rid, activity, options = {}) {
 	return {
 		type: types.ROOM.STOP_PERFORMING_ACTION,
 		rid,

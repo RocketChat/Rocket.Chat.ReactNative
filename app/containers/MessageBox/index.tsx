@@ -7,10 +7,11 @@ import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Dispatch } from 'redux';
 
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
-import { startPerformingAction, stopPerformingAction } from '../../actions/room';
+import { startPerforming as startPerformingAction, stopPerforming as stopPerformingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
@@ -98,8 +99,8 @@ interface IMessageBoxProps {
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
-	startPerformingAction: Function;
-	stopPerformingAction: Function;
+	startPerforming: Function;
+	stopPerforming: Function;
 	theme: string;
 	replyCancel(): void;
 	showSend: boolean;
@@ -609,7 +610,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	handleTyping = (isTyping: boolean) => {
-		const { startPerformingAction, stopPerformingAction, rid, sharing, tmid } = this.props;
+		const { startPerforming, stopPerforming, rid, sharing, tmid } = this.props;
 		if (sharing) {
 			return;
 		}
@@ -618,7 +619,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			stopPerformingAction(rid, userTyping, { tmid, isTyping });
+			stopPerforming(rid, userTyping, { tmid, isTyping });
 			return;
 		}
 
@@ -627,7 +628,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 
 		this.typingTimeout = setTimeout(() => {
-			startPerformingAction(rid, userTyping, { tmid, isTyping });
+			startPerforming(rid, userTyping, { tmid, isTyping });
 			this.typingTimeout = false;
 		}, 1000);
 	};
@@ -784,24 +785,24 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	recordingCallback = (isRecording: boolean) => {
-		const { rid, startPerformingAction, stopPerformingAction, tmid } = this.props;
+		const { rid, startPerforming, stopPerforming, tmid } = this.props;
 		this.setState({ recording: isRecording });
 		if (isRecording) {
-			startPerformingAction(rid, userRecording, { tmid });
+			startPerforming(rid, userRecording, { tmid });
 		} else {
-			stopPerformingAction(rid, userRecording, { tmid });
+			stopPerforming(rid, userRecording, { tmid });
 		}
 	};
 
 	finishAudioMessage = async (fileInfo: any) => {
-		const { rid, tmid, baseUrl: server, user, startPerformingAction } = this.props;
+		const { rid, tmid, baseUrl: server, user, startPerforming, stopPerforming } = this.props;
 
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					startPerformingAction(rid, userUploading, { tmid });
+					startPerforming(rid, userUploading, { tmid });
 					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-					stopPerformingAction(rid, userUploading, { tmid });
+					stopPerforming(rid, userUploading, { tmid });
 				}
 			} catch (e) {
 				log(e);
@@ -1130,9 +1131,9 @@ const mapStateToProps = (state: any) => ({
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled
 });
 
-const dispatchToProps = {
-	startPerformingAction: (rid: string, action: string, options: any) => startPerformingAction(rid, action, options),
-	stopPerformingAction: (rid: string, action: string, options: any) => stopPerformingAction(rid, action, options)
-};
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	startPerforming: (rid: string, action: string, options: any) => dispatch(startPerformingAction(rid, action, options)),
+	stopPerforming: (rid: string, action: string, options: any) => dispatch(stopPerformingAction(rid, action, options))
+});
 // @ts-ignore
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));
+export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));
