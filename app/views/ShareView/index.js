@@ -11,7 +11,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
-import { startPerformingAction, stopPerformingAction } from '../../actions/room';
+import { startPerforming as startPerformingAction, stopPerforming as stopPerformingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
 import MessageBox from '../../containers/MessageBox';
@@ -155,7 +155,7 @@ class ShareView extends Component {
 		await this.selectFile(selected);
 
 		const { attachments, room, text, thread } = this.state;
-		const { navigation, server, user, startPerformingAction, stopPerformingAction } = this.props;
+		const { navigation, server, user, startPerforming, stopPerforming } = this.props;
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
@@ -169,7 +169,7 @@ class ShareView extends Component {
 		try {
 			// Send attachment
 			if (attachments.length) {
-				startPerformingAction(room.rid, userUploading, { tmid: thread?.id });
+				startPerforming(room.rid, userUploading, { tmid: thread?.id });
 				await Promise.all(
 					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
 						if (canUpload) {
@@ -191,7 +191,7 @@ class ShareView extends Component {
 						return Promise.resolve();
 					})
 				);
-				stopPerformingAction(room.rid, userUploading, { tmid: thread?.id });
+				stopPerforming(room.rid, userUploading, { tmid: thread?.id });
 
 				// Send text message
 			} else if (text.length) {
@@ -199,7 +199,7 @@ class ShareView extends Component {
 			}
 		} catch {
 			// Do nothing
-			stopPerformingAction(room.rid, userUploading, { tmid: thread?.id });
+			stopPerforming(room.rid, userUploading, { tmid: thread?.id });
 		}
 
 		// if it's share extension this should close
@@ -335,7 +335,9 @@ ShareView.propTypes = {
 	server: PropTypes.string,
 	FileUpload_MediaTypeWhiteList: PropTypes.string,
 	FileUpload_MaxFileSize: PropTypes.string,
-	uploading: PropTypes.func
+	uploading: PropTypes.func,
+	startPerforming: PropTypes.func,
+	stopPerforming: PropTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -346,8 +348,8 @@ const mapStateToProps = state => ({
 });
 
 const dispatchToProps = {
-	startPerformingAction: (rid, activity, options) => startPerformingAction(rid, activity, options),
-	stopPerformingAction: (rid, activity, options) => stopPerformingAction(rid, activity, options)
+	startPerforming: (rid, activity, options) => startPerformingAction(rid, activity, options),
+	stopPerforming: (rid, activity, options) => stopPerformingAction(rid, activity, options)
 };
 
 export default connect(mapStateToProps, dispatchToProps)(withTheme(ShareView));
