@@ -1,5 +1,5 @@
 const data = require('../../data');
-const { navigateToLogin, login, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes } = require('../../helpers/app');
 
 const privateRoomName = data.groups.private.name;
 
@@ -34,8 +34,10 @@ async function waitForToast() {
 }
 
 describe('Room info screen', () => {
+	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});
@@ -311,7 +313,7 @@ describe('Room info screen', () => {
 				await waitFor(element(by.label('Yes, archive it!')))
 					.toExist()
 					.withTimeout(5000);
-				await element(by.label('Yes, archive it!')).tap();
+				await element(by.label('Yes, archive it!').and(by.type(alertButtonType))).tap();
 				await waitFor(element(by.id('room-info-edit-view-unarchive')))
 					.toExist()
 					.withTimeout(60000);
@@ -331,7 +333,7 @@ describe('Room info screen', () => {
 				await waitFor(element(by.label('Yes, delete it!')))
 					.toExist()
 					.withTimeout(5000);
-				await element(by.label('Yes, delete it!')).tap();
+				await element(by.label('Yes, delete it!').and(by.type(alertButtonType))).tap();
 				await waitFor(element(by.id('rooms-list-view')))
 					.toExist()
 					.withTimeout(10000);

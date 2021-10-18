@@ -127,18 +127,18 @@ const handleOpen = function* handleOpen({ params }) {
 		yield fallbackNavigation();
 		return;
 	}
+	host = `http://${host}`;
 
 	// If there's host, continue
-	if (!/^(http|https)/.test(host)) {
-		if (/^localhost(:\d+)?/.test(host)) {
-			host = `http://${host}`;
-		} else {
-			host = `https://${host}`;
-		}
-	} else {
-		// Notification should always come from https
-		host = host.replace('http://', 'https://');
-	}
+	// if (!/^(http|https)/.test(host)) {
+	// 	if (/^localhost(:\d+)?/.test(host)) {
+	// 	} else {
+	// 		host = `https://${host}`;
+	// 	}
+	// } else {
+	// 	// Notification should always come from https
+	// 	host = host.replace('http://', 'https://');
+	// }
 	// remove last "/" from host
 	if (host.slice(-1) === '/') {
 		host = host.slice(0, host.length - 1);

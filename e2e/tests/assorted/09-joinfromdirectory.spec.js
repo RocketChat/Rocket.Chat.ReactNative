@@ -18,7 +18,7 @@ async function navigateToRoom(search) {
 		.withTimeout(5000);
 }
 
-describe('Join room from directory', () => {
+describe.skip('Join room from directory', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
@@ -44,8 +44,8 @@ describe('Join room from directory', () => {
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('directory-view-dropdown')).tap();
-			await element(by.label('Users')).tap();
-			await element(by.label('Search by')).tap();
+			await element(by.label('Users')).atIndex(0).tap();
+			await element(by.label('Search by')).atIndex(0).tap();
 			await navigateToRoom(data.users.alternate.username);
 		});
 
@@ -56,8 +56,8 @@ describe('Join room from directory', () => {
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('directory-view-dropdown')).tap();
-			await element(by.label('Teams')).tap();
-			await element(by.label('Search by')).tap();
+			await element(by.label('Teams')).atIndex(0).tap();
+			await element(by.label('Search by')).atIndex(0).tap();
 			await navigateToRoom(data.teams.private.name);
 		});
 	});

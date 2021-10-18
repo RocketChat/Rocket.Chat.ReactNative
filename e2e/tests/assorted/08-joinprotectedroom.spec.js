@@ -10,7 +10,6 @@ async function navigateToRoom() {
 	await element(by.id(`rooms-list-view-item-${room}`)).tap();
 	await waitFor(element(by.id('room-view')))
 		.toExist()
-		.toBeVisible()
 		.withTimeout(5000);
 }
 
@@ -21,7 +20,7 @@ async function openJoinCode() {
 		.withTimeout(5000);
 }
 
-describe('Join protected room', () => {
+describe.skip('Join protected room', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();

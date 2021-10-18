@@ -1,11 +1,13 @@
 const data = require('../../data');
-const { navigateToLogin, login } = require('../../helpers/app');
+const { navigateToLogin, login, platformTypes } = require('../../helpers/app');
 
 const teamName = `team-${data.random}`;
 
 describe('Create team screen', () => {
+	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});
@@ -46,7 +48,7 @@ describe('Create team screen', () => {
 				await waitFor(element(by.label('OK')))
 					.toBeVisible()
 					.withTimeout(5000);
-				await element(by.label('OK')).tap();
+				await element(by.label('OK').and(by.type(alertButtonType))).tap();
 			});
 
 			it('should create private team', async () => {

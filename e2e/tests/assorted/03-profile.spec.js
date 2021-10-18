@@ -13,7 +13,7 @@ async function waitForToast() {
 	await sleep(300);
 }
 
-describe('Profile screen', () => {
+describe.skip('Profile screen', () => {
 	let textInputType;
 	let scrollViewType;
 	let alertButtonType;
@@ -108,7 +108,7 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-new-password')).replaceText(`${profileChangeUser.password}new`);
 			await element(by.id('profile-view-submit')).tap();
 			await element(by.type(textInputType)).replaceText(`${profileChangeUser.password}`);
-			await element(by.label('SAVE').and(by.type(alertButtonType))).tap();
+			await element(by.label('Save').and(by.type(alertButtonType))).tap();
 			await waitForToast();
 		});
 

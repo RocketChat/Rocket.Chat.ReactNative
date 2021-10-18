@@ -1,9 +1,11 @@
 const data = require('../../data');
-const { navigateToLogin } = require('../../helpers/app');
+const { navigateToLogin, platformTypes } = require('../../helpers/app');
 
-describe('Forgot password screen', () => {
+describe.skip('Forgot password screen', () => {
+	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await element(by.id('login-view-forgot-password')).tap();
 		await waitFor(element(by.id('forgot-password-view')))
@@ -32,7 +34,7 @@ describe('Forgot password screen', () => {
 			await waitFor(element(by.label('OK')))
 				.toExist()
 				.withTimeout(10000);
-			await element(by.label('OK')).tap();
+			await element(by.label('OK').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('login-view')))
 				.toBeVisible()
 				.withTimeout(60000);

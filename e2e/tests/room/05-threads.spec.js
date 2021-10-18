@@ -12,7 +12,7 @@ async function navigateToRoom(roomName) {
 		.withTimeout(5000);
 }
 
-describe('Threads', () => {
+describe.skip('Threads', () => {
 	const mainRoom = data.groups.private.name;
 
 	before(async () => {
@@ -75,6 +75,9 @@ describe('Threads', () => {
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Reply in Thread')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).replaceText('replied');
+				await waitFor(element(by.id('messagebox-send-message')))
+					.toExist()
+					.withTimeout(2000);
 				await element(by.id('messagebox-send-message')).tap();
 				await waitFor(element(by.id(`message-thread-button-${thread}`)))
 					.toExist()
@@ -155,7 +158,7 @@ describe('Threads', () => {
 
 			it('should navigate to thread from thread name', async () => {
 				const messageText = 'navthreadname';
-				await mockMessageWithNag('dummymessagebetweenthethread'); // TODO: Create a proper test for this elsewhere.
+				await mockMessage('dummymessagebetweenthethread'); // TODO: Create a proper test for this elsewhere.
 				await element(by.id(`message-thread-button-${thread}`)).tap();
 				await waitFor(element(by.id('messagebox-input-thread')))
 					.toExist()

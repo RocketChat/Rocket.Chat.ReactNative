@@ -9,7 +9,7 @@ const reopenAndCheckServer = async server => {
 	await checkServer(server);
 };
 
-describe('Change server', () => {
+describe.skip('Change server', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
@@ -38,7 +38,7 @@ describe('Change server', () => {
 			.toBeVisible()
 			.withTimeout(6000);
 		await element(by.id('new-server-view-input')).replaceText(`${data.alternateServer}`);
-		await element(by.label('Connect')).tap();
+		await element(by.id('new-server-view-input')).tapReturnKey();
 		await waitFor(element(by.id('workspace-view')))
 			.toBeVisible()
 			.withTimeout(10000);

@@ -19,11 +19,11 @@ async function navigateToRoomActions() {
 		.withTimeout(5000);
 }
 
-describe('Join public room', () => {
-	let scrollViewType;
+describe.skip('Join public room', () => {
+	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ scrollViewType } = platformTypes[device.getPlatform()]);
+		({ alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 		await navigateToRoom();
@@ -155,21 +155,18 @@ describe('Join public room', () => {
 			await expect(element(by.id('room-actions-files'))).toBeVisible();
 			await expect(element(by.id('room-actions-mentioned'))).toBeVisible();
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
-			await element(by.id('room-actions-scrollview')).swipe('down');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 			await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			await expect(element(by.id('room-actions-notifications'))).toBeVisible();
-			await element(by.type(scrollViewType)).atIndex(0).swipe('up');
 			await expect(element(by.id('room-actions-leave-channel'))).toBeVisible();
 		});
 
 		it('should leave room', async () => {
 			await element(by.id('room-actions-leave-channel')).tap();
-			await waitFor(element(by.label('Yes, leave it!')))
+			await waitFor(element(by.label('Yes, leave it!').and(by.type(alertButtonType))))
 				.toBeVisible()
 				.withTimeout(5000);
-			await expect(element(by.label('Yes, leave it!'))).toBeVisible();
-			await element(by.label('Yes, leave it!')).tap();
+			await element(by.label('Yes, leave it!').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
 				.withTimeout(10000);

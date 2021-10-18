@@ -10,7 +10,7 @@ const {
 	pinMessage,
 	dismissReviewNag,
 	tryTapping,
-	mockMessageWithNag
+	platformTypes
 } = require('../../helpers/app');
 
 async function navigateToRoom(roomName) {
@@ -21,11 +21,13 @@ async function navigateToRoom(roomName) {
 		.withTimeout(5000);
 }
 
-describe('Room screen', () => {
+describe.skip('Room screen', () => {
 	const mainRoom = data.groups.private.name;
+	let alertButtonType;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await navigateToRoom(mainRoom);
@@ -299,15 +301,15 @@ describe('Room screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('reaction-picker-grimacing')).tap();
-				await dismissReviewNag();
-				await waitFor(element(by.id('message-reaction-:grimacing:')))
-					.toExist()
-					.withTimeout(60000);
+				// await dismissReviewNag();
+				// await waitFor(element(by.id('message-reaction-:grimacing:')))
+				// 	.toExist()
+				// 	.withTimeout(60000);
 			});
 
-			// it('should ask for review', async () => {
-			// 	await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
-			// });
+			it('should ask for review', async () => {
+				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
+			});
 			// Moved in previous test because toExist doesn't detect element while review popup covers it, on Android
 
 			it('should remove reaction', async () => {
@@ -349,6 +351,9 @@ describe('Room screen', () => {
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 				await element(by.label('Quote')).atIndex(0).tap();
 				await element(by.id('messagebox-input')).replaceText(`${data.random}quoted`);
+				await waitFor(element(by.id('messagebox-send-message')))
+					.toExist()
+					.withTimeout(2000);
 				await element(by.id('messagebox-send-message')).tap();
 
 				// TODO: test if quote was sent
@@ -382,8 +387,7 @@ describe('Room screen', () => {
 			});
 
 			it('should delete message', async () => {
-				await mockMessageWithNag('delete'); // SKipping emoji tests delays the nag on android
-
+				await mockMessage('delete');
 				await waitFor(element(by.label(`${data.random}delete`)).atIndex(0)).toBeVisible();
 				await element(by.label(`${data.random}delete`))
 					.atIndex(0)
@@ -400,8 +404,7 @@ describe('Room screen', () => {
 				await waitFor(element(by.label(deleteAlertMessage)).atIndex(0))
 					.toExist()
 					.withTimeout(10000);
-				await element(by.label('Delete')).tap();
-
+				await element(by.label('Delete').and(by.type(alertButtonType))).tap();
 				await waitFor(element(by.label(`${data.random}delete`)).atIndex(0))
 					.toNotExist()
 					.withTimeout(2000);

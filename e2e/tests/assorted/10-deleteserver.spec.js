@@ -1,7 +1,7 @@
 const data = require('../../data');
 const { sleep, navigateToLogin, login, checkServer, platformTypes } = require('../../helpers/app');
 
-describe('Delete server', () => {
+describe.skip('Delete server', () => {
 	let scrollViewType;
 	let alertButtonType;
 	before(async () => {
@@ -27,7 +27,7 @@ describe('Delete server', () => {
 			.toBeVisible()
 			.withTimeout(10000);
 		await element(by.id('new-server-view-input')).replaceText(`${data.alternateServer}`);
-		await element(by.label('Connect')).tap();
+		await element(by.id('new-server-view-input')).tapReturnKey();
 		await waitFor(element(by.id('workspace-view')))
 			.toBeVisible()
 			.withTimeout(10000);
@@ -41,7 +41,7 @@ describe('Delete server', () => {
 		await element(by.id('register-view-username')).replaceText(data.registeringUser3.username);
 		await element(by.id('register-view-email')).replaceText(data.registeringUser3.email);
 		await element(by.id('register-view-password')).replaceText(data.registeringUser3.password);
-		await element(by.type(scrollViewType)).atIndex(0).swipe('up');
+		// await element(by.type(scrollViewType)).atIndex(0).swipe('up');
 		await element(by.id('register-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view')))
 			.toBeVisible()

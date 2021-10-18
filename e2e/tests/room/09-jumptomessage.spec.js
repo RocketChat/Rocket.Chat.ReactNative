@@ -64,7 +64,7 @@ describe('Room', () => {
 			return; // 'Room' tests don't work well on Android currently
 		}
 		await navigateToRoom('jumping');
-		await waitFor(element(by.label('Quote first message')))
+		await waitFor(element(by.label('300')))
 			.toExist()
 			.withTimeout(5000);
 		await element(by.label('1')).atIndex(0).tap();
@@ -102,7 +102,7 @@ describe('Room', () => {
 			.withTimeout(5000);
 		let found = false;
 		while (!found) {
-			await element(by.id('room-view-messages')).atIndex(0).scroll(500, 'down');
+			await element(by.id('room-view-messages')).scroll(500, 'down');
 			try {
 				await expect(element(by.label('249'))).toExist();
 				found = true;

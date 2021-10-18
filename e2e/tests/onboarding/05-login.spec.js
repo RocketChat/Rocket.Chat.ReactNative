@@ -1,9 +1,11 @@
-const { navigateToLogin, tapBack } = require('../../helpers/app');
+const { navigateToLogin, tapBack, platformTypes } = require('../../helpers/app');
 const data = require('../../data');
 
 describe('Login screen', () => {
+	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
+		({ alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 	});
 
@@ -61,7 +63,7 @@ describe('Login screen', () => {
 			await waitFor(element(by.label('Your credentials were rejected! Please try again.')))
 				.toBeVisible()
 				.withTimeout(10000);
-			await element(by.label('OK')).tap();
+			await element(by.label('OK').and(by.type(alertButtonType))).tap();
 		});
 
 		it('should login with success', async () => {

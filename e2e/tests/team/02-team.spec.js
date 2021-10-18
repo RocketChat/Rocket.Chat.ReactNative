@@ -1,5 +1,5 @@
 const data = require('../../data');
-const { navigateToLogin, login, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes } = require('../../helpers/app');
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${roomName}`);
@@ -66,9 +66,11 @@ describe('Team', () => {
 	const user = data.users.alternate;
 	const room = `private${data.random}-channel-team`;
 	const existingRoom = data.groups.alternate.name;
+	let alertButtonType;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await navigateToRoom(team);
@@ -327,7 +329,7 @@ describe('Team', () => {
 				)
 					.toExist()
 					.withTimeout(2000);
-				await element(by.label('OK')).tap();
+				await element(by.label('OK').and(by.type(alertButtonType))).tap();
 				await waitFor(element(by.id('select-list-view-submit')))
 					.toExist()
 					.withTimeout(2000);
@@ -335,7 +337,7 @@ describe('Team', () => {
 				await waitFor(element(by.label('Last owner cannot be removed')))
 					.toExist()
 					.withTimeout(8000);
-				await element(by.label('OK')).tap();
+				await element(by.label('OK').and(by.type(alertButtonType))).tap();
 				await tapBack();
 				await waitFor(element(by.id('room-actions-view')))
 					.toExist()
@@ -436,7 +438,7 @@ describe('Team', () => {
 					)
 						.toExist()
 						.withTimeout(2000);
-					await element(by.label('OK')).tap();
+					await element(by.label('OK').and(by.type(alertButtonType))).tap();
 					await waitFor(element(by.id('select-list-view-submit')))
 						.toExist()
 						.withTimeout(2000);

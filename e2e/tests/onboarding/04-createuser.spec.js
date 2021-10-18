@@ -1,9 +1,11 @@
-const { navigateToRegister } = require('../../helpers/app');
+const { navigateToRegister, platformTypes } = require('../../helpers/app');
 const data = require('../../data');
 
 describe('Create user screen', () => {
+	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToRegister();
 	});
 
@@ -53,7 +55,7 @@ describe('Create user screen', () => {
 			await waitFor(element(by.label('Email already exists. [403]')).atIndex(0))
 				.toExist()
 				.withTimeout(10000);
-			await element(by.label('OK')).tap();
+			await element(by.label('OK').and(by.type(alertButtonType))).tap();
 		});
 
 		it('should submit username already taken and raise error', async () => {
@@ -65,7 +67,7 @@ describe('Create user screen', () => {
 			await waitFor(element(by.label('Username is already in use')).atIndex(0))
 				.toExist()
 				.withTimeout(10000);
-			await element(by.label('OK')).tap();
+			await element(by.label('OK').and(by.type(alertButtonType))).tap();
 		});
 
 		it('should register', async () => {

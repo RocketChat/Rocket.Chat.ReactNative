@@ -14,7 +14,7 @@ const goToRoomList = async () => {
 	await element(by.id('sidebar-chats')).tap();
 };
 
-describe('Rooms list screen', () => {
+describe.skip('Rooms list screen', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToLogin();
