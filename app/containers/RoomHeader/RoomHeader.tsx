@@ -109,7 +109,7 @@ const ActivityIndicator = ({ performingUsers, fontSize, theme, activityName }: T
 
 const SubTitle = React.memo(({ roomId, userActivity, subtitle, renderFunc, theme, scale }: TRoomHeaderSubTitle) => {
 	const fontSize = getSubTitleSize(scale);
-	if (userActivity.uploading?.[roomId]?.length) {
+	if (userActivity?.uploading?.[roomId]?.length) {
 		return (
 			<ActivityIndicator
 				performingUsers={userActivity.uploading[roomId]}
@@ -119,7 +119,7 @@ const SubTitle = React.memo(({ roomId, userActivity, subtitle, renderFunc, theme
 			/>
 		);
 	}
-	if (userActivity.recording?.[roomId]?.length) {
+	if (userActivity?.recording?.[roomId]?.length) {
 		return (
 			<ActivityIndicator
 				performingUsers={userActivity.recording[roomId]}
@@ -129,7 +129,7 @@ const SubTitle = React.memo(({ roomId, userActivity, subtitle, renderFunc, theme
 			/>
 		);
 	}
-	if (userActivity.typing?.[roomId]?.length) {
+	if (userActivity?.typing?.[roomId]?.length) {
 		return (
 			<ActivityIndicator performingUsers={userActivity.typing[roomId]} activityName='typing' fontSize={fontSize} theme={theme} />
 		);
