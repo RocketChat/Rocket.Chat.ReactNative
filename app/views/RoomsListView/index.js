@@ -506,20 +506,19 @@ class RoomsListView extends React.Component {
 			// type
 
 			if (groupByType) {
-				const discussions = chats.filter(s => s.prid);
-				const channels = chats.filter(s => s.t === 'c' && !s.prid);
-				const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
-				const direct = chats.filter(s => s.t === 'd' && !s.prid);
+				const teams = chats.filter(s => filterIsTeam(s));
+				const discussions = chats.filter(s => filterIsDiscussion(s));
+				const channels = chats.filter(s => (s.t === 'c' || s.t === 'p') && !filterIsDiscussion(s) && !filterIsTeam(s));
+				const direct = chats.filter(s => s.t === 'd' && !filterIsDiscussion(s) && !filterIsTeam(s));
 
 				const peerSupporter = chats.filter(s => s.t === 'd' && user?.customFields?.ConnectIds?.includes(s.name));
 
-				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS_HEADER, tempChats);
-				// end get peer supporters
+				tempChats = this.addRoomsGroup(teams, TEAMS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
-
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
-			} else if (showUnread || showFavorites) {
+				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS_HEADER, tempChats);
+			} else if (showUnread || showFavorites || isOmnichannelAgent) {
 				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
 				tempChats = chats;

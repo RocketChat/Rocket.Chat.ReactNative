@@ -15,7 +15,6 @@ const LeftButtons = React.memo(({
 			open={openEmoji}
 			close={closeEmoji}
 			theme={theme}
-
 		/>
 	);
 });
