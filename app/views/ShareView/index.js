@@ -21,6 +21,7 @@ import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
 import { canUploadFile } from '../../utils/media';
 import { isAndroid } from '../../utils/deviceInfo';
+import { userUploading } from '../../constants/userActivities';
 import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
@@ -168,7 +169,7 @@ class ShareView extends Component {
 		try {
 			// Send attachment
 			if (attachments.length) {
-				startPerformingAction(room.rid, 'user-uploading', { tmid: thread?.id });
+				startPerformingAction(room.rid, userUploading, { tmid: thread?.id });
 				await Promise.all(
 					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
 						if (canUpload) {
@@ -190,7 +191,7 @@ class ShareView extends Component {
 						return Promise.resolve();
 					})
 				);
-				stopPerformingAction(room.rid, 'user-uploading', { tmid: thread?.id });
+				stopPerformingAction(room.rid, userUploading, { tmid: thread?.id });
 
 				// Send text message
 			} else if (text.length) {
@@ -198,7 +199,7 @@ class ShareView extends Component {
 			}
 		} catch {
 			// Do nothing
-			stopPerformingAction(room.rid, 'user-uploading', { tmid: thread?.id });
+			stopPerformingAction(room.rid, userUploading, { tmid: thread?.id });
 		}
 
 		// if it's share extension this should close

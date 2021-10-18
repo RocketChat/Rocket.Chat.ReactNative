@@ -47,6 +47,7 @@ import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
+import { userRecording, userTyping, userUploading } from '../../constants/userActivities';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -617,7 +618,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			stopPerformingAction(rid, 'user-typing', { tmid, isTyping });
+			stopPerformingAction(rid, userTyping, { tmid, isTyping });
 			return;
 		}
 
@@ -626,7 +627,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 
 		this.typingTimeout = setTimeout(() => {
-			startPerformingAction(rid, 'user-typing', { tmid, isTyping });
+			startPerformingAction(rid, userTyping, { tmid, isTyping });
 			this.typingTimeout = false;
 		}, 1000);
 	};
@@ -786,9 +787,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const { rid, startPerformingAction, stopPerformingAction, tmid } = this.props;
 		this.setState({ recording: isRecording });
 		if (isRecording) {
-			startPerformingAction(rid, 'user-recording', { tmid });
+			startPerformingAction(rid, userRecording, { tmid });
 		} else {
-			stopPerformingAction(rid, 'user-recording', { tmid });
+			stopPerformingAction(rid, userRecording, { tmid });
 		}
 	};
 
@@ -798,9 +799,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					startPerformingAction(rid, 'user-uploading', { tmid });
+					startPerformingAction(rid, userUploading, { tmid });
 					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-					stopPerformingAction(rid, 'user-uploading', { tmid });
+					stopPerformingAction(rid, userUploading, { tmid });
 				}
 			} catch (e) {
 				log(e);

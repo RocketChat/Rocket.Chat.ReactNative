@@ -2,6 +2,7 @@ import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 
+import { userTyping } from '../../../constants/userActivities';
 import log from '../../../utils/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
@@ -95,11 +96,13 @@ export default class RoomSubscription {
 			if (rooms[0] !== _rid) {
 				return;
 			}
+			// To transform user-typing to USER_TYPING
+			const activity = userTyping.toUpperCase().split('-').join('_');
 			const [name, typing] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
 				if (typing) {
-					reduxStore.dispatch(addUserActivity(name, 'USER_TYPING', _rid));
+					reduxStore.dispatch(addUserActivity(name, activity, _rid));
 				} else {
 					reduxStore.dispatch(clearAllUserActivities(name, _rid));
 				}

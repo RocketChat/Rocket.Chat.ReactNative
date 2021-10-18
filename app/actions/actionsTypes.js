@@ -60,11 +60,7 @@ export const DEEP_LINKING = createRequestTypes('DEEP_LINKING', ['OPEN']);
 export const SORT_PREFERENCES = createRequestTypes('SORT_PREFERENCES', ['SET_ALL', 'SET']);
 export const SET_CUSTOM_EMOJIS = 'SET_CUSTOM_EMOJIS';
 export const SET_ACTIVE_USERS = 'SET_ACTIVE_USERS';
-export const CLEAR_ALL_USER_ACTIVITY = 'CLEAR_ALL_USER_ACTIVITY';
-export const REMOVE_ALL_ROOM_ACTIVITIES = 'REMOVE_ALL_ROOM_ACTIVITIES';
-export const USER_TYPING = createRequestTypes('USER_TYPING', ['ADD']);
-export const USER_RECORDING = createRequestTypes('USER_RECORDING', ['ADD']);
-export const USER_UPLOADING = createRequestTypes('USER_UPLOADING', ['ADD']);
+export const ACTIVITIES = createRequestTypes('ACTIVITIES', ['ADD', 'CLEAR_ALL_USER_ACTIVITY', 'REMOVE_ALL_ROOM_ACTIVITIES']);
 
 export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 	'SET_TOKEN',
