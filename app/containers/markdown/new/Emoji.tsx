@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 import { Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
@@ -7,18 +7,17 @@ import { themes } from '../../../constants/colors';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
 import CustomEmoji from '../../EmojiPicker/CustomEmoji';
-import MessageContext from '../../message/Context';
 
 interface IEmojiProps {
 	value: EmojiProps['value'];
 	style?: StyleProp<TextStyle>;
 	isBigEmoji?: boolean;
 	getCustomEmoji: Function;
+	baseUrl: string;
 }
 
-const Emoji = ({ value, style, isBigEmoji, getCustomEmoji }: IEmojiProps): JSX.Element => {
+const Emoji = ({ value, style, isBigEmoji, getCustomEmoji, baseUrl }: IEmojiProps): JSX.Element => {
 	const { theme } = useTheme();
-	const { baseUrl } = useContext(MessageContext);
 	const emojiUnicode = shortnameToUnicode(`:${value.value}:`);
 	const emoji = getCustomEmoji && getCustomEmoji(value.value);
 

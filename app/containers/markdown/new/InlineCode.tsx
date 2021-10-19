@@ -20,9 +20,9 @@ const InlineCode = ({ value, style = [] }: IInlineCodeProps): JSX.Element => {
 			style={[
 				{
 					...styles.codeInline,
-					color: themes[theme].bodyText,
-					backgroundColor: themes[theme].bannerBackground,
-					borderColor: themes[theme].borderColor
+					color: themes[theme!].bodyText,
+					backgroundColor: themes[theme!].bannerBackground,
+					borderColor: themes[theme!].borderColor
 				},
 				...style
 			]}>

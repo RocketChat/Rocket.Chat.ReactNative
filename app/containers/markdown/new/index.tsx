@@ -24,6 +24,7 @@ interface IBodyProps {
 	style: StyleProp<ViewStyle>[];
 	useRealName: boolean;
 	username: string;
+	baseUrl: string;
 }
 
 const isBigEmoji = (tokens: MarkdownAST): tokens is [BigEmojiProps] => tokens.length === 1 && tokens[0].type === 'BIG_EMOJI';
@@ -36,10 +37,11 @@ const Body = ({
 	username,
 	navToRoomInfo,
 	getCustomEmoji,
+	baseUrl,
 	style
 }: IBodyProps): JSX.Element => {
 	if (isBigEmoji(tokens)) {
-		return <BigEmoji value={tokens[0].value} getCustomEmoji={getCustomEmoji!} />;
+		return <BigEmoji value={tokens[0].value} getCustomEmoji={getCustomEmoji!} baseUrl={baseUrl} />;
 	}
 
 	return (
@@ -59,6 +61,7 @@ const Body = ({
 							<Paragraph
 								value={block.value}
 								navToRoomInfo={navToRoomInfo}
+								baseUrl={baseUrl}
 								getCustomEmoji={getCustomEmoji!}
 								channels={channels}
 								mentions={mentions}

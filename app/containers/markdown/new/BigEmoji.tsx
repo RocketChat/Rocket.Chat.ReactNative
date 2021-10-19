@@ -7,6 +7,7 @@ import Emoji from './Emoji';
 interface IBigEmojiProps {
 	value: BigEmojiProps['value'];
 	getCustomEmoji: Function;
+	baseUrl: string;
 }
 
 const styles = StyleSheet.create({
@@ -15,10 +16,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-const BigEmoji = ({ value, getCustomEmoji }: IBigEmojiProps): JSX.Element => (
+const BigEmoji = ({ value, getCustomEmoji, baseUrl }: IBigEmojiProps): JSX.Element => (
 	<View style={styles.container}>
 		{value.map(block => (
-			<Emoji value={block.value} isBigEmoji getCustomEmoji={getCustomEmoji} />
+			<Emoji value={block.value} isBigEmoji getCustomEmoji={getCustomEmoji} baseUrl={baseUrl} />
 		))}
 	</View>
 );

@@ -20,6 +20,7 @@ interface IParagraphProps {
 	style?: StyleProp<ViewStyle>[];
 	useRealName?: boolean;
 	username?: string;
+	baseUrl?: string;
 }
 
 const Paragraph = ({
@@ -30,6 +31,7 @@ const Paragraph = ({
 	username,
 	getCustomEmoji,
 	navToRoomInfo,
+	baseUrl,
 	style
 }: IParagraphProps): JSX.Element => {
 	const { theme } = useTheme();
@@ -43,6 +45,7 @@ const Paragraph = ({
 				username={username}
 				mentions={mentions}
 				channels={channels}
+				baseUrl={baseUrl}
 				getCustomEmoji={getCustomEmoji}
 				navToRoomInfo={navToRoomInfo}
 				style={style}

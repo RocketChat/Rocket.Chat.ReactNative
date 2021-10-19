@@ -24,6 +24,7 @@ interface IParagraphProps {
 	getCustomEmoji?: Function;
 	navToRoomInfo?: Function;
 	style?: StyleProp<ViewStyle>[];
+	baseUrl?: string;
 	useRealName?: boolean;
 	username?: string;
 }
@@ -36,6 +37,7 @@ const Inline = ({
 	username,
 	getCustomEmoji,
 	navToRoomInfo,
+	baseUrl,
 	style
 }: IParagraphProps): JSX.Element => (
 	<>
@@ -68,7 +70,7 @@ const Inline = ({
 						/>
 					);
 				case 'EMOJI':
-					return <Emoji value={block.value} getCustomEmoji={getCustomEmoji!} />;
+					return <Emoji value={block.value} getCustomEmoji={getCustomEmoji!} baseUrl={baseUrl!} />;
 				case 'MENTION_CHANNEL':
 					// @ts-ignore
 					return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} style={style} />;
