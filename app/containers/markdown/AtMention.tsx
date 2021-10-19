@@ -23,7 +23,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].mentionGroupColor
+						color: themes[theme!].mentionGroupColor
 					},
 					...style
 				]}>
@@ -35,11 +35,11 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	let mentionStyle = {};
 	if (mention === username) {
 		mentionStyle = {
-			color: themes[theme].mentionMeColor
+			color: themes[theme!].mentionMeColor
 		};
 	} else {
 		mentionStyle = {
-			color: themes[theme].mentionOtherColor
+			color: themes[theme!].mentionOtherColor
 		};
 	}
 
@@ -62,7 +62,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		);
 	}
 
-	return <Text style={[styles.text, { color: themes[theme].bodyText }, ...style]}>{`@${mention}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme!].bodyText }, ...style]}>{`@${mention}`}</Text>;
 });
 
 export default AtMention;

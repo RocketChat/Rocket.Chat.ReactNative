@@ -24,7 +24,7 @@ interface IParagraphProps {
 const Paragraph = ({ value, mentions, channels, useRealName, username, navToRoomInfo, style }: IParagraphProps): JSX.Element => {
 	const { theme } = useTheme();
 	return (
-		<Text style={[styles.text, style, { color: themes[theme].bodyText }]}>
+		<Text style={[styles.text, style, { color: themes[theme!].bodyText }]}>
 			<Inline
 				value={value}
 				// @ts-ignore

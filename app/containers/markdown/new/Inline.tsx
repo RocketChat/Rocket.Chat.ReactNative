@@ -23,8 +23,8 @@ interface IParagraphProps {
 	}[];
 	navToRoomInfo?: Function;
 	style?: StyleProp<ViewStyle>[];
-	useRealName: boolean;
-	username: string;
+	useRealName?: boolean;
+	username?: string;
 }
 
 const Inline = ({ value, mentions, channels, useRealName, username, navToRoomInfo, style }: IParagraphProps): JSX.Element => (
@@ -47,7 +47,9 @@ const Inline = ({ value, mentions, channels, useRealName, username, navToRoomInf
 					return (
 						<AtMention
 							mention={block.value.value}
+							// @ts-ignore
 							useRealName={useRealName}
+							// @ts-ignore
 							username={username}
 							// @ts-ignore
 							navToRoomInfo={navToRoomInfo}

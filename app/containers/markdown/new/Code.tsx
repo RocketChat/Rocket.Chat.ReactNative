@@ -20,9 +20,9 @@ const Code = ({ value, style }: ICodeProps): JSX.Element => {
 			style={[
 				{
 					...styles.codeBlock,
-					color: themes[theme].bodyText,
-					backgroundColor: themes[theme].bannerBackground,
-					borderColor: themes[theme].borderColor
+					color: themes[theme!].bodyText,
+					backgroundColor: themes[theme!].bannerBackground,
+					borderColor: themes[theme!].borderColor
 				},
 				...style
 			]}>

@@ -355,7 +355,8 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			channels,
 			navToRoomInfo,
 			useRealName,
-			username
+			username,
+			getCustomEmoji
 		} = this.props;
 
 		if (!msg) {
@@ -366,6 +367,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			return (
 				<NewMarkdown
 					username={username}
+					getCustomEmoji={getCustomEmoji}
 					useRealName={useRealName}
 					tokens={md}
 					style={style}
