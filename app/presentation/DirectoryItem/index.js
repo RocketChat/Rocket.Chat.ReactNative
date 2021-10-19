@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import Touch from '../../utils/touch';
 import Avatar from '../../containers/Avatar';
-import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
@@ -20,39 +19,37 @@ const DirectoryItemLabel = React.memo(({ text, theme }) => {
 
 const DirectoryItem = ({
 	title, description, avatar, onPress, testID, style, baseUrl, user, rightLabel, type, theme, icon, age, typeIcon
-}) => {
-	return (
-		<Touch
-			onPress={onPress}
-			style={{ backgroundColor: themes[theme].backgroundColor }}
-			testID={testID}
-			theme={theme}
-		>
-			<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
-				<Avatar
-					text={avatar}
-					size={70}
-					type={type}
-					style={styles.directoryItemAvatar}
-					baseUrl={baseUrl}
-					userId={user.id}
-					token={user.token}
-				/>
-				<View style={styles.directoryItemTextContainer}>
-					<View style={styles.directoryItemTextTitle}>
-						{/* <RoomTypeIcon type={type} theme={theme} /> */}
-						{typeIcon}
-						<Text style={[styles.directoryItemName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
-					</View>
-					{ description ? <Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{icon}{description}</Text> : null }
-					<Text style={[styles.directoryItemAge, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{age}</Text>
+}) => (
+	<Touch
+		onPress={onPress}
+		style={{ backgroundColor: themes[theme].backgroundColor }}
+		testID={testID}
+		theme={theme}
+	>
+		<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
+			<Avatar
+				text={avatar}
+				size={70}
+				type={type}
+				style={styles.directoryItemAvatar}
+				baseUrl={baseUrl}
+				userId={user.id}
+				token={user.token}
+			/>
+			<View style={styles.directoryItemTextContainer}>
+				<View style={styles.directoryItemTextTitle}>
+					{/* <RoomTypeIcon type={type} theme={theme} /> */}
+					{typeIcon}
+					<Text style={[styles.directoryItemName, { color: themes[theme].titleText }]} numberOfLines={1}>{title}</Text>
 				</View>
-				<DirectoryItemLabel text={rightLabel} theme={theme} />
-				<CustomIcon name='chevron-right' size={36} color='#38b000' />
+				{ description ? <Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{icon}{description}</Text> : null }
+				<Text style={[styles.directoryItemAge, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>{age}</Text>
 			</View>
-		</Touch>
-	);
-};
+			<DirectoryItemLabel text={rightLabel} theme={theme} />
+			<CustomIcon name='chevron-right' size={36} color='#38b000' />
+		</View>
+	</Touch>
+);
 
 DirectoryItem.propTypes = {
 	title: PropTypes.string.isRequired,
@@ -71,9 +68,7 @@ DirectoryItem.propTypes = {
 	testID: PropTypes.string.isRequired,
 	style: PropTypes.any,
 	rightLabel: PropTypes.string,
-	rid: PropTypes.string,
-	theme: PropTypes.string,
-	teamMain: PropTypes.bool
+	theme: PropTypes.string
 };
 
 DirectoryItemLabel.propTypes = {

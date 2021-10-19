@@ -14,6 +14,7 @@ import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
+import allSettled from 'promise.allsettled';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
@@ -67,6 +68,7 @@ const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
 const FAVORITES_HEADER = 'Favorites';
+const PEER_SUPPORTERS_HEADER = 'Peer_supporter';
 const DISCUSSIONS_HEADER = 'Discussions';
 const TEAMS_HEADER = 'Teams';
 const CHANNELS_HEADER = 'Channels';
@@ -103,7 +105,7 @@ const getItemLayout = (data, index) => ({
 	offset: ROW_HEIGHT * index,
 	index
 });
-const keyExtractor = item => item.rid;
+const keyExtractor = (item, index) => `${ item.rid + index }`;
 
 class RoomsListView extends React.Component {
 	static propTypes = {
@@ -146,12 +148,11 @@ class RoomsListView extends React.Component {
 
 	constructor(props) {
 		super(props);
-		console.time(`${ this.constructor.name } init`);
-		console.time(`${ this.constructor.name } mount`);
 
 		this.animated = false;
 		this.mounted = false;
 		this.count = 0;
+
 		this.state = {
 			searching: false,
 			search: [],
@@ -191,7 +192,6 @@ class RoomsListView extends React.Component {
 				this.backHandler.remove();
 			}
 		});
-		console.timeEnd(`${ this.constructor.name } mount`);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -315,7 +315,6 @@ class RoomsListView extends React.Component {
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
-		console.countReset(`${ this.constructor.name }.render calls`);
 	}
 
 	getHeader = () => {
@@ -435,9 +434,10 @@ class RoomsListView extends React.Component {
 				.observe();
 		}
 
-		this.querySubscription = observable.subscribe((data) => {
+		this.querySubscription = observable.subscribe(async(data) => {
 			let tempChats = [];
-			let chats = data;
+			let chats = data.map(i => i);
+			const filteredChats = chats.filter(s => s.t === 'd');
 
 			let chatsUpdate = [];
 			if (showUnread) {
@@ -481,10 +481,36 @@ class RoomsListView extends React.Component {
 				const discussions = chats.filter(s => filterIsDiscussion(s));
 				const channels = chats.filter(s => (s.t === 'c' || s.t === 'p') && !filterIsDiscussion(s) && !filterIsTeam(s));
 				const direct = chats.filter(s => s.t === 'd' && !filterIsDiscussion(s) && !filterIsTeam(s));
+
+				// get peer supporters
+				const peerSupporter = [];
+				const peerSupporterInfo = [];
+				for (let i = 0; i < filteredChats.length; i += 1) {
+					const item = filteredChats[i];
+					const id = this.getUidDirectMessage(item);
+					peerSupporterInfo.push(this.getInfo(id));
+				}
+				try {
+					this.internalSetState({
+						loading: true
+					});
+					const usersInfo = await allSettled(peerSupporterInfo);
+					usersInfo.forEach((i) => {
+						if (i.status === 'fulfilled' && i.value.user.roles.includes('Peer Supporter')) {
+							const chat = filteredChats.find(k => this.getUidDirectMessage(k) === i.value.user._id);
+							peerSupporter.push(chat);
+						}
+					});
+				} catch (e) {
+					console.error(e);
+				}
+				// end get peer supporters
+
 				tempChats = this.addRoomsGroup(teams, TEAMS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
+				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS_HEADER, tempChats);
 			} else if (showUnread || showFavorites || isOmnichannelAgent) {
 				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
@@ -576,6 +602,8 @@ class RoomsListView extends React.Component {
 	getUserPresence = uid => RocketChat.getUserPresence(uid)
 
 	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
+
+	getInfo = id => RocketChat.getUserInfo(id);
 
 	get isGrouping() {
 		const { showUnread, showFavorites, groupByType } = this.props;
@@ -902,6 +930,7 @@ class RoomsListView extends React.Component {
 			isMasterDetail,
 			width
 		} = this.props;
+
 		const id = this.getUidDirectMessage(item);
 
 		return (
@@ -976,7 +1005,6 @@ class RoomsListView extends React.Component {
 	};
 
 	render = () => {
-		console.count(`${ this.constructor.name }.render calls`);
 		const {
 			sortBy,
 			groupByType,

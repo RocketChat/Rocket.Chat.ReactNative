@@ -4,7 +4,6 @@ import {
 	View, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import * as List from '../../containers/List';
 
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';

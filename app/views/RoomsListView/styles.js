@@ -10,7 +10,7 @@ export default StyleSheet.create({
 		width: '100%'
 	},
 	dropdownContainerHeader: {
-		height: 41,
+		height: 50,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		alignItems: 'center',
 		flexDirection: 'row'

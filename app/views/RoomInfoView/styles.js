@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../Styles';
-import { themes } from '../../constants/colors';
 
 export default StyleSheet.create({
 	container: {
@@ -15,24 +14,21 @@ export default StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 20,
 		justifyContent: 'center',
-		marginLeft:30
+		marginLeft: 30
 	},
 	avatarContainer: {
 		minHeight: 240,
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 20,
-	
+		marginBottom: 20
 	},
 	avatarContainerDirectRoom: {
 		paddingVertical: 16,
 		minHeight: 320
 	},
 	avatar: {
-		marginHorizontal: 10,
-	
-	
+		marginHorizontal: 10
 	},
 	roomTitleContainer: {
 		paddingTop: 20,
@@ -95,33 +91,28 @@ export default StyleSheet.create({
 	roomButtonText: {
 		marginTop: 5
 	},
-	roomBadge:{
-		width:'50%',
-		marginTop:10,
+	roomBadge: {
+		width: '50%',
+		marginTop: 10,
 		elevation: 5,
-		shadowColor: "#000",
-        shadowOffset: {
-	           width: 0,
-	           height: 2,
-                    },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
 		backgroundColor: 'white'
 	},
-	deviceContainer:{
-		flexDirection:'row',
-		top:30,
-		marginBottom:30,
-		width:'100%'
+	deviceContainer: {
+		flexDirection: 'row',
+		top: 30,
+		marginBottom: 30,
+		width: '100%'
 	},
-	t1dView:{
-		marginLeft:'50%',
-		marginRight:'20%'
-	},
-	locationView:{
-		flexDirection:'row',
-		justifyContent:'center',
-		marginTop:10
+	t1dView: {
+		marginLeft: '50%',
+		marginRight: '20%'
 	},
 	centeredView: {
 		flex: 1,

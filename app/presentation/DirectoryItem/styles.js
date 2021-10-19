@@ -10,13 +10,13 @@ export default StyleSheet.create({
 		borderRadius: 11,
 		margin: 12,
 		elevation: 5,
-		shadowColor: "#000",
-        shadowOffset: {
-	           width: 0,
-	           height: 2,
-                    },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
 		backgroundColor: 'white'
 	},
 	directoryItemContainer: {
@@ -36,7 +36,7 @@ export default StyleSheet.create({
 	directoryItemTextContainer: {
 		flex: 1,
 		flexDirection: 'column',
-		justifyContent: 'center',
+		justifyContent: 'center'
 
 	},
 	directoryItemName: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { themes } from '../../../constants/colors';
 import BaseButton from './BaseButton';
 
 const ActionsButton = React.memo(({ theme, onPress }) => (
@@ -10,6 +10,7 @@ const ActionsButton = React.memo(({ theme, onPress }) => (
 		accessibilityLabel='Message_actions'
 		icon='add'
 		theme={theme}
+		color={themes[theme].tintColor}
 	/>
 ));
 
