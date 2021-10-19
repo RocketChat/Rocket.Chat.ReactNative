@@ -17,8 +17,8 @@ const Code = ({ value }: ICodeProps): JSX.Element => {
 	return (
 		<Text
 			style={[
+				styles.codeBlock,
 				{
-					...styles.codeBlock,
 					color: themes[theme!].bodyText,
 					backgroundColor: themes[theme!].bannerBackground,
 					borderColor: themes[theme!].borderColor

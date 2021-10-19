@@ -71,6 +71,7 @@ export default StyleSheet.create<any>({
 		resizeMode: 'contain'
 	},
 	codeInline: {
+		fontSize: 16,
 		...sharedStyles.textRegular,
 		...codeFontFamily,
 		borderWidth: 1,
@@ -79,6 +80,7 @@ export default StyleSheet.create<any>({
 		paddingTop: 2
 	},
 	codeBlock: {
+		fontSize: 16,
 		...sharedStyles.textRegular,
 		...codeFontFamily,
 		borderWidth: 1,
