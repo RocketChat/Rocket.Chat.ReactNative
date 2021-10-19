@@ -19,7 +19,7 @@ type TMessageImage = {
 
 const ImageProgress = createImageProgress(FastImage);
 
-const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
+const MessageImage = ({ img, theme }: TMessageImage) => (
 	<ImageProgress
 		style={[styles.inlineImage, { borderColor: themes[theme].borderColor }]}
 		source={{ uri: encodeURI(img) }}
@@ -29,7 +29,7 @@ const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
 			color: themes[theme].actionTintColor
 		}}
 	/>
-));
+);
 
 const Image = ({ value }: IImageProps): JSX.Element => {
 	const { theme } = useTheme();
