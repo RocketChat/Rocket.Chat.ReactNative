@@ -592,7 +592,7 @@ class RoomInfoView extends React.Component {
 				>
 					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser, isAdmin, isPeerSupporter, canConnect, isConnected)}
-						<View style={{ flexDirection: 'row' }}><View style={{ marginTop: 17 }}>{this.renderStatus(room, roomUser)}</View>
+						<View style={{ flexDirection: 'row' }}><View style={{ marginTop: '5%' }}>{this.renderStatus(room, roomUser)}</View>
 							<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, name, roomUser?.username, roomUser?.customFields?.Age, roomUser?.statusText, theme) }</View>
 						</View>
 						{this.isDirect ? this.renderPreContent(isAdmin, isPeerSupporter, canConnect, isConnected) : null}

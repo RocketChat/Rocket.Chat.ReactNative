@@ -104,6 +104,11 @@ export default StyleSheet.create({
 		shadowRadius: 3.84,
 		backgroundColor: 'white'
 	},
+	locationView:{
+		flexDirection:'row',
+		justifyContent:'center',
+		marginTop:10
+	},
 	deviceContainer: {
 		flexDirection: 'row',
 		top: 30,
