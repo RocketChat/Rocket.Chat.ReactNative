@@ -14,7 +14,7 @@ export const Drawer = React.memo(({ navigation, testID, ...props }) => (
 ));
 
 export const CloseModal = React.memo(({
-	navigation, testID, onPress = () => navigation.pop(), ...props
+	navigation, testID, route, onPress = () => navigation.goBack(), ...props
 }) => (
 	<Container left>
 		<Item iconName='close' onPress={onPress} testID={testID} {...props} />

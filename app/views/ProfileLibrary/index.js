@@ -152,6 +152,7 @@ class ProfileLibraryView extends React.Component {
 
 	onPressItem = (item) => {
 		const { type } = this.state;
+		console.log('type', type);
 		const { navigation } = this.props;
 		if (type === 'users') {
 			const navParam = {
@@ -160,7 +161,7 @@ class ProfileLibraryView extends React.Component {
 				isPeerSupporter: true
 			};
 			// alert(JSON.stringify(item));
-			navigation.navigate('RoomInfoView', navParam);
+			  navigation.navigate('RoomInfoView', navParam);
 		} else {
 			this.goRoom({
 				rid: item._id, name: item.name, t: 'c', search: true

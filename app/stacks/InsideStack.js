@@ -317,11 +317,22 @@ const ProfileLibraryStack = createStackNavigator();
 const ProfileLibraryStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
+
 		<ProfileLibraryStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
 			<ProfileLibraryStack.Screen
 				name='ProfileLibraryView'
 				component={ProfileLibraryView}
 				options={ProfileLibraryView.navigationOptions}
+			/>
+			<ProfileLibraryStack.Screen
+				name='RoomInfoView'
+				component={RoomInfoView}
+				options={RoomInfoView.navigationOptions}
+			/>
+			<ProfileLibraryStack.Screen
+				name='RoomView'
+				component={RoomView}
+				options={RoomView.navigationOptions}
 			/>
 		</ProfileLibraryStack.Navigator>
 	);

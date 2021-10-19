@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, ScrollView, Alert, Modal,Pressable,
+	View, Text, ScrollView, Alert, Modal, Pressable
 } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
@@ -117,9 +117,9 @@ class RoomInfoView extends React.Component {
 		const { navigation, route, theme } = this.props;
 		const t = route.params?.t;
 		const rid = route.params?.rid;
-		console.log('navigation',navigation)
+		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
-			headerLeft:()=> <CustomIcon name='chevron-left-big'  size={24} onPress={()=> Navigation.navigate('ProfileLibraryNavigator')} color={themes[theme].auxiliaryText} />,
+			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} testID='room-info-view' /> : undefined,
 			title: t === 'd' ? I18n.t('Profile') : I18n.t('Room_Info'),
 			headerRight: showEdit
 				? () => (
@@ -186,7 +186,9 @@ class RoomInfoView extends React.Component {
 		if (_.isEmpty(roomUser)) {
 			try {
 				const roomUserId = RocketChat.getUidDirectMessage(room);
+
 				const result = await RocketChat.getUserInfo(roomUserId);
+
 				if (result.success) {
 					const { user } = result;
 					const { roles } = user;
@@ -284,9 +286,11 @@ class RoomInfoView extends React.Component {
 			}
 		}
 	}
+
 	setModalVisible = (visible) => {
 		this.setState({ modalVisible: visible });
 	  }
+
 	connect = async() => {
 		const { user } = this.props;
 		const { roomUser } = this.state;
@@ -297,14 +301,13 @@ class RoomInfoView extends React.Component {
 				? username
 				: `${ user.customFields.ConnectIds },${ username }`;
 		}
-  
+
 		try {
-			
 			const result = await RocketChat.saveUserProfile({}, user.customFields);
-			 this.setModalVisible(true)	
+			 this.setModalVisible(true);
 		} catch (e) {
 			showErrorAlert(e.message, I18n.t('Oops'));
-		}  
+		}
 	}
 
 	message = async() => {
@@ -323,6 +326,7 @@ class RoomInfoView extends React.Component {
 
 	renderAvatar = (room, roomUser) => {
 		const { baseUrl, user, theme } = this.props;
+
 		let isPeerSupporter = false;
 		let embedVideoUrl = 'https://www.youtube.com/embed/';
 		const videoUrl = roomUser?.customFields?.VideoUrl;
@@ -393,44 +397,49 @@ class RoomInfoView extends React.Component {
 					baseUrl={baseUrl}
 					userId={user.id}
 					token={user.token}
-					
+
 				>
 					{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
 				</Avatar>
 			);
 		}
 	}
-	renderModal = () =>{
-		const { modalVisible,roomUser } = this.state;
-	return	<Modal
-		animationType="slide"
-		transparent={true}
-		visible={modalVisible}
-		onRequestClose={() => {
-		  Alert.alert("Modal has been closed.");
+
+	renderModal = () => {
+		const { modalVisible, roomUser } = this.state;
+		return	(
+			<Modal
+				animationType='slide'
+				transparent
+				visible={modalVisible}
+				onRequestClose={() => {
+		  Alert.alert('Modal has been closed.');
 		  this.setModalVisible(!modalVisible);
-		}}
-	  ><View style={styles.centeredView}>
-	  <View style={styles.modalView}>
-		<Text style={styles.modalText}>Get the conversation started!</Text>
-		<Text style={styles.modalText}>Introduce yourself to your new peer supporter!</Text>
-		<Pressable
-		  style={[styles.button, styles.buttonClose]}
-		  onPress={async() => {
-			this.setModalVisible(!modalVisible)
-			await this.createDirect()
-			this.goRoom();
+				}}
+			><View style={styles.centeredView}>
+				<View style={styles.modalView}>
+						<Text style={styles.modalText}>Get the conversation started!</Text>
+						<Text style={styles.modalText}>Introduce yourself to your new peer supporter!</Text>
+						<Pressable
+						style={[styles.button, styles.buttonClose]}
+						onPress={async() => {
+								this.setModalVisible(!modalVisible);
+								await this.createDirect();
+								this.goRoom();
 		  }}
-		><CustomIcon name="send-filled" color='white' size={20} />
-		  <Text style={styles.textStyle}>Message</Text>
-		</Pressable>
-	  </View>
-	</View></Modal>
+					><CustomIcon name='send-filled' color='white' size={20} />
+						<Text style={styles.textStyle}>Message</Text>
+					</Pressable>
+					</View>
+			</View>
+			</Modal>
+		);
 	}
+
 	renderStatus = (room, roomUser) => {
 		const { theme } = this.props;
 		let isPeerSupporter = false;
- 
+
 		if (roomUser !== null
 			&& roomUser !== undefined
 			&& roomUser.parsedRoles !== null
@@ -443,21 +452,23 @@ class RoomInfoView extends React.Component {
 			return null;
 		}
 	};
-	renderButton = (onPress, iconName, text,connect) => {
+
+	renderButton = (onPress, iconName, text, connect) => {
 		const { theme } = this.props;
 
-				const onActionPress = async() => {
-					try {
+		const onActionPress = async() => {
+			try {
 						  await this.createDirect();
 						 onPress();
-						
-					} catch {
-						EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
-					}
-				};
-		
-				return (
-					connect ? <Button style={{marginTop:10,borderRadius:20,width:'50%'}}
+			} catch {
+				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
+			}
+		};
+
+		return (
+			connect ? (
+				<Button
+					style={{ marginTop: 10, borderRadius: 20, width: '50%' }}
 					title={I18n.t('Connect')}
 					type='primary'
 					onPress={onActionPress}
@@ -465,43 +476,47 @@ class RoomInfoView extends React.Component {
 					testID='profile-library-view-connect'
 					theme={theme}
 					backgroundColor={themes[theme].connectButtonColor}
-				/>: <BorderlessButton
-						onPress={onActionPress}
-						style={styles.roomButton}
-					>
-						<CustomIcon
-							name={iconName}
-							size={30}
-							color={themes[theme].actionTintColor}
-						/>
-						<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
-					</BorderlessButton>
-				);
+				/>
+			) : (
+				<BorderlessButton
+					onPress={onActionPress}
+					style={styles.roomButton}
+				>
+					<CustomIcon
+						name={iconName}
+						size={30}
+						color={themes[theme].actionTintColor}
+					/>
+					<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
+				</BorderlessButton>
+			)
+		);
 	}
 
 	renderButtons = (isPeerSupporter, canConnect, isConnected) => {
 		const { jitsiEnabled, theme } = this.props;
 		const { saving } = this.state;
 
-		return (isPeerSupporter && !isConnected && canConnect) ? 
-		(<Button
-			style={{marginTop:10,borderRadius:20,width:'50%'}}
-				title={I18n.t('Connect')}
-				type='primary'
-				onPress={this.connect}
-				disabled={false}
-				testID='profile-library-view-connect'
-				loading={saving}
-				theme={theme}
-				backgroundColor={themes[theme].connectButtonColor}
-			/>
-					
-		) : (
-			<View style={styles.roomButtonsContainer}>
-				{this.renderButton(this.goRoom, 'message', I18n.t('Message'),true)}
-				{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call'),false) : null}
-			</View>
-		);
+		return (isPeerSupporter && !isConnected && canConnect)
+			? (
+				<Button
+					style={{ marginTop: 10, borderRadius: 20, width: '50%' }}
+					title={I18n.t('Connect')}
+					type='primary'
+					onPress={this.connect}
+					disabled={false}
+					testID='profile-library-view-connect'
+					loading={saving}
+					theme={theme}
+					backgroundColor={themes[theme].connectButtonColor}
+				/>
+
+			) : (
+				<View style={styles.roomButtonsContainer}>
+					{this.renderButton(this.goRoom, 'message', I18n.t('Message'), true)}
+					{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call'), false) : null}
+				</View>
+			);
 	}
 
 	renderContent = () => {
@@ -561,9 +576,9 @@ class RoomInfoView extends React.Component {
 			);
 		}
 	}
-	
+
 	render() {
-		const { room, roomUser,modalVisible } = this.state;
+		const { room, roomUser, modalVisible } = this.state;
 		const { theme, user, route } = this.props;
 
 		const isPeerSupporter = route.params?.isPeerSupporter;
@@ -599,10 +614,10 @@ class RoomInfoView extends React.Component {
 						{this.isDirect ? this.renderButtons(isPeerSupporter, canConnect, isConnected) : null}
 
 					</View>
-				
-		           {isConnected ? this.renderModal() : null}
+
+					{isConnected ? this.renderModal() : null}
 					{this.renderContent(isAdmin, isPeerSupporter, canConnect, isConnected)}
-		
+
 				</SafeAreaView>
 			</ScrollView>
 		);
