@@ -92,7 +92,7 @@
 		67EFF89A26E0420300265A72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 67EFF89726E0420200265A72 /* GoogleService-Info.plist */; };
 		67EFF89B26E0420300265A72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 67EFF89726E0420200265A72 /* GoogleService-Info.plist */; };
 		67EFF89C26E0420300265A72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 67EFF89726E0420200265A72 /* GoogleService-Info.plist */; };
-		69E4354C5D935D5EE022A7E5 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		69E4354C5D935D5EE022A7E5 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		7A14FCF4257FEB59005BDCD4 /* Official.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Official.xcassets */; };
 		7A3268F724F04FFE0050E241 /* custom.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A3268F524F04FFE0050E241 /* custom.ttf */; };
 		7AAB3E15257E6A6E00707CF6 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C8282511304100FEF824 /* Sender.swift */; };
@@ -419,7 +419,7 @@
 				7AAB3E3E257E6A6E00707CF6 /* libz.tbd in Frameworks */,
 				7AAB3E3F257E6A6E00707CF6 /* libWatermelonDB.a in Frameworks */,
 				55E724EAD95E79F984DCDF02 /* libPods-defaults-Rocket.Chat.a in Frameworks */,
-				69E4354C5D935D5EE022A7E5 /* (null) in Frameworks */,
+				69E4354C5D935D5EE022A7E5 /* BuildFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1202,8 +1202,8 @@
 				"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-frameworks.sh",
 				"${PODS_ROOT}/hermes-engine/destroot/Library/Frameworks/iphoneos/hermes.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiMeetSDK/JitsiMeetSDK.framework/JitsiMeetSDK",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/WebRTC/WebRTC.framework/WebRTC",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiMeetSDK/WebRTC.framework/WebRTC",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1347,8 +1347,8 @@
 				"${PODS_ROOT}/Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN-frameworks.sh",
 				"${PODS_ROOT}/hermes-engine/destroot/Library/Frameworks/iphoneos/hermes.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiMeetSDK/JitsiMeetSDK.framework/JitsiMeetSDK",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/WebRTC/WebRTC.framework/WebRTC",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/JitsiMeetSDK/WebRTC.framework/WebRTC",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1633,7 +1633,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1701,7 +1701,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
+					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

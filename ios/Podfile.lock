@@ -927,7 +927,7 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BugsnagReactNative: a97b3132c1854fd7bf92350fabd505e3ebdd7829
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  DoubleConversion: cde416483dac037923206447da6e1454df403714
+  DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   EXAppleAuthentication: 5b3da71bada29e2423d8ea27e5538ef0d75aba62
   EXAV: 86344030966e0da7e00556fbb97269d9ad16071d
   EXConstants: f907b3b6ce16e20d1750f22af1e095e924574bcb
@@ -940,7 +940,7 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: cd257fc6e07884a704a5674d362a6410933acb68
   EXWebBrowser: d37a5ffdea1b65947352bc001dd9f732463725d4
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 387ae700313b05a6816d6b4215080fa0d366fda5
+  FBReactNativeSpec: be8d3a4a4a189cbee3e9087a349b9b57fe7888b4
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
@@ -954,7 +954,7 @@ SPEC CHECKSUMS:
   Flipper-PeerTalk: 116d8f857dc6ef55c7a5a75ea3ceaafe878aadc9
   Flipper-RSocket: 127954abe8b162fcaf68d2134d34dc2bd7076154
   FlipperKit: 8a20b5c5fcf9436cac58551dc049867247f64b00
-  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   GoogleAppMeasurement: 8cd1f289d60e629cf16ab03363b9e89c776b9651
   GoogleDataTransport: 9a8a16f79feffc7f42096743de2a7c4815e84020
   GoogleDataTransportCCTSupport: 489c1265d2c85b68187a83a911913d190012158d
@@ -1051,4 +1051,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 59b963a6c152e590bae12d2f9701401829d5020d
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.0
