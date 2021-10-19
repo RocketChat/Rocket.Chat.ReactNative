@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { Text } from 'react-native';
 import { Code as CodeProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
@@ -9,10 +9,9 @@ import CodeLine from './CodeLine';
 
 interface ICodeProps {
 	value: CodeProps['value'];
-	style: StyleProp<TextStyle>[];
 }
 
-const Code = ({ value, style }: ICodeProps): JSX.Element => {
+const Code = ({ value }: ICodeProps): JSX.Element => {
 	const { theme } = useTheme();
 
 	return (
@@ -23,8 +22,7 @@ const Code = ({ value, style }: ICodeProps): JSX.Element => {
 					color: themes[theme!].bodyText,
 					backgroundColor: themes[theme!].bannerBackground,
 					borderColor: themes[theme!].borderColor
-				},
-				...style
+				}
 			]}>
 			{value.map(block => {
 				switch (block.type) {

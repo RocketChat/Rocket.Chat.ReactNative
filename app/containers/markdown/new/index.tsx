@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
 import { MarkdownAST, BigEmoji as BigEmojiProps } from '@rocket.chat/message-parser';
 
 import Quote from './Quote';
@@ -21,7 +20,6 @@ interface IBodyProps {
 	}[];
 	getCustomEmoji?: Function;
 	navToRoomInfo: Function;
-	style: StyleProp<ViewStyle>[];
 	useRealName: boolean;
 	username: string;
 	baseUrl: string;
@@ -37,8 +35,7 @@ const Body = ({
 	username,
 	navToRoomInfo,
 	getCustomEmoji,
-	baseUrl,
-	style
+	baseUrl
 }: IBodyProps): JSX.Element => {
 	if (isBigEmoji(tokens)) {
 		return <BigEmoji value={tokens[0].value} getCustomEmoji={getCustomEmoji!} baseUrl={baseUrl} />;
@@ -67,11 +64,10 @@ const Body = ({
 								mentions={mentions}
 								useRealName={useRealName}
 								username={username}
-								style={style}
 							/>
 						);
 					case 'CODE':
-						return <Code value={block.value} style={style} />;
+						return <Code value={block.value} />;
 					case 'HEADING':
 						return <Heading value={block.value} level={block.level} />;
 					default:

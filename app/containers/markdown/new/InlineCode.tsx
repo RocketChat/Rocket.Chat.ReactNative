@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { Text } from 'react-native';
 import { InlineCode as InlineCodeProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
@@ -9,22 +9,20 @@ import Plain from './Plain';
 
 interface IInlineCodeProps {
 	value: InlineCodeProps['value'];
-	style?: StyleProp<TextStyle>[];
 }
 
-const InlineCode = ({ value, style = [] }: IInlineCodeProps): JSX.Element => {
+const InlineCode = ({ value }: IInlineCodeProps): JSX.Element => {
 	const { theme } = useTheme();
 
 	return (
 		<Text
 			style={[
+				styles.codeInline,
 				{
-					...styles.codeInline,
 					color: themes[theme!].bodyText,
 					backgroundColor: themes[theme!].bannerBackground,
 					borderColor: themes[theme!].borderColor
-				},
-				...style
+				}
 			]}>
 			{(block => {
 				switch (block.type) {

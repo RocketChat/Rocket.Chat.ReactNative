@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Hashtag from '../Hashtag';
@@ -23,7 +22,6 @@ interface IParagraphProps {
 	}[];
 	getCustomEmoji?: Function;
 	navToRoomInfo?: Function;
-	style?: StyleProp<ViewStyle>[];
 	baseUrl?: string;
 	useRealName?: boolean;
 	username?: string;
@@ -37,8 +35,7 @@ const Inline = ({
 	username,
 	getCustomEmoji,
 	navToRoomInfo,
-	baseUrl,
-	style
+	baseUrl
 }: IParagraphProps): JSX.Element => (
 	<>
 		{value.map(block => {
@@ -66,16 +63,15 @@ const Inline = ({
 							// @ts-ignore
 							navToRoomInfo={navToRoomInfo}
 							mentions={mentions}
-							style={style}
 						/>
 					);
 				case 'EMOJI':
 					return <Emoji value={block.value} getCustomEmoji={getCustomEmoji!} baseUrl={baseUrl!} />;
 				case 'MENTION_CHANNEL':
 					// @ts-ignore
-					return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} style={style} />;
+					return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
 				case 'INLINE_CODE':
-					return <InlineCode value={block.value} style={style} />;
+					return <InlineCode value={block.value} />;
 				default:
 					return null;
 			}

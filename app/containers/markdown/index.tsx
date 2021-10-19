@@ -370,7 +370,6 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 					getCustomEmoji={getCustomEmoji}
 					useRealName={useRealName}
 					tokens={md}
-					style={style}
 					mentions={mentions}
 					channels={channels}
 					navToRoomInfo={navToRoomInfo}

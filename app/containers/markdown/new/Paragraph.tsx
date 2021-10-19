@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, ViewStyle } from 'react-native';
+import { Text } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import { UserMention } from '../../message/interfaces';
@@ -17,7 +17,6 @@ interface IParagraphProps {
 	}[];
 	getCustomEmoji: Function;
 	navToRoomInfo?: Function;
-	style?: StyleProp<ViewStyle>[];
 	useRealName?: boolean;
 	username?: string;
 	baseUrl?: string;
@@ -31,12 +30,11 @@ const Paragraph = ({
 	username,
 	getCustomEmoji,
 	navToRoomInfo,
-	baseUrl,
-	style
+	baseUrl
 }: IParagraphProps): JSX.Element => {
 	const { theme } = useTheme();
 	return (
-		<Text style={[styles.text, style, { color: themes[theme!].bodyText }]}>
+		<Text style={[styles.text, { color: themes[theme!].bodyText }]}>
 			<Inline
 				value={value}
 				// @ts-ignore
@@ -48,7 +46,6 @@ const Paragraph = ({
 				baseUrl={baseUrl}
 				getCustomEmoji={getCustomEmoji}
 				navToRoomInfo={navToRoomInfo}
-				style={style}
 			/>
 		</Text>
 	);
