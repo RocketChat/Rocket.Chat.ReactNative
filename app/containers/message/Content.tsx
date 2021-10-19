@@ -54,6 +54,7 @@ const Content = React.memo(
 					md={props.md}
 					baseUrl={baseUrl}
 					getCustomEmoji={props.getCustomEmoji}
+					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
 					isEdited={props.isEdited}
 					numberOfLines={isPreview ? 1 : 0}

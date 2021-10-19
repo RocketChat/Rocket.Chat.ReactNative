@@ -3,7 +3,6 @@ import { Image, Text } from 'react-native';
 import { Node, Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import removeMarkdown from 'remove-markdown';
-import { connect } from 'react-redux';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
@@ -22,7 +21,6 @@ import MarkdownTableCell from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
 import { isValidURL } from '../../utils/url';
-import { getUserSelector } from '../../selectors/login';
 import NewMarkdown from './new';
 
 interface IUser {
@@ -411,8 +409,4 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
-	enableMessageParser: getUserSelector(state).enableMessageParserEarlyAdoption
-});
-
-export default connect(mapStateToProps)(Markdown);
+export default Markdown;
