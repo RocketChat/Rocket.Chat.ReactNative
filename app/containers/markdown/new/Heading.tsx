@@ -16,7 +16,7 @@ const Heading = ({ value, level }: IHeadingProps): JSX.Element => {
 	const textStyle = styles[`heading${level}`];
 
 	return (
-		<Text style={[textStyle, { color: themes[theme].bodyText }]}>
+		<Text style={[textStyle, { color: themes[theme!].bodyText }]}>
 			{value.map(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':
