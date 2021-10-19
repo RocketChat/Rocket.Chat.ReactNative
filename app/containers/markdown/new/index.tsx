@@ -19,7 +19,7 @@ interface IBodyProps {
 		name: string;
 		_id: number;
 	}[];
-	getCustomEmoji: Function;
+	getCustomEmoji?: Function;
 	navToRoomInfo: Function;
 	style: StyleProp<ViewStyle>[];
 	useRealName: boolean;
@@ -39,7 +39,7 @@ const Body = ({
 	style
 }: IBodyProps): JSX.Element => {
 	if (isBigEmoji(tokens)) {
-		return <BigEmoji value={tokens[0].value} getCustomEmoji={getCustomEmoji} />;
+		return <BigEmoji value={tokens[0].value} getCustomEmoji={getCustomEmoji!} />;
 	}
 
 	return (
@@ -59,6 +59,7 @@ const Body = ({
 							<Paragraph
 								value={block.value}
 								navToRoomInfo={navToRoomInfo}
+								getCustomEmoji={getCustomEmoji!}
 								channels={channels}
 								mentions={mentions}
 								useRealName={useRealName}

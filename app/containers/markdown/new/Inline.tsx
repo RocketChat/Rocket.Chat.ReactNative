@@ -21,13 +21,23 @@ interface IParagraphProps {
 		name: string;
 		_id: number;
 	}[];
+	getCustomEmoji?: Function;
 	navToRoomInfo?: Function;
 	style?: StyleProp<ViewStyle>[];
 	useRealName?: boolean;
 	username?: string;
 }
 
-const Inline = ({ value, mentions, channels, useRealName, username, navToRoomInfo, style }: IParagraphProps): JSX.Element => (
+const Inline = ({
+	value,
+	mentions,
+	channels,
+	useRealName,
+	username,
+	getCustomEmoji,
+	navToRoomInfo,
+	style
+}: IParagraphProps): JSX.Element => (
 	<>
 		{value.map(block => {
 			switch (block.type) {
@@ -58,7 +68,7 @@ const Inline = ({ value, mentions, channels, useRealName, username, navToRoomInf
 						/>
 					);
 				case 'EMOJI':
-					return <Emoji value={block.value} />;
+					return <Emoji value={block.value} getCustomEmoji={getCustomEmoji!} />;
 				case 'MENTION_CHANNEL':
 					// @ts-ignore
 					return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} style={style} />;

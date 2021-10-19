@@ -15,13 +15,23 @@ interface IParagraphProps {
 		name: string;
 		_id: number;
 	}[];
+	getCustomEmoji: Function;
 	navToRoomInfo?: Function;
 	style?: StyleProp<ViewStyle>[];
 	useRealName?: boolean;
 	username?: string;
 }
 
-const Paragraph = ({ value, mentions, channels, useRealName, username, navToRoomInfo, style }: IParagraphProps): JSX.Element => {
+const Paragraph = ({
+	value,
+	mentions,
+	channels,
+	useRealName,
+	username,
+	getCustomEmoji,
+	navToRoomInfo,
+	style
+}: IParagraphProps): JSX.Element => {
 	const { theme } = useTheme();
 	return (
 		<Text style={[styles.text, style, { color: themes[theme!].bodyText }]}>
@@ -33,6 +43,7 @@ const Paragraph = ({ value, mentions, channels, useRealName, username, navToRoom
 				username={username}
 				mentions={mentions}
 				channels={channels}
+				getCustomEmoji={getCustomEmoji}
 				navToRoomInfo={navToRoomInfo}
 				style={style}
 			/>
