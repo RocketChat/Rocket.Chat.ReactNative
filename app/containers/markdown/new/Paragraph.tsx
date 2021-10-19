@@ -27,7 +27,9 @@ const Paragraph = ({ value, mentions, channels, useRealName, username, navToRoom
 		<Text style={[styles.text, style, { color: themes[theme].bodyText }]}>
 			<Inline
 				value={value}
+				// @ts-ignore
 				useRealName={useRealName}
+				// @ts-ignore
 				username={username}
 				mentions={mentions}
 				channels={channels}
