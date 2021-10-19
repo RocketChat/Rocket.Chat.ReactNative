@@ -1066,7 +1066,8 @@ const RocketChat = {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		const { user } = reduxStore.getState().login;
 		if (API_Use_REST_For_DDP_Calls) {
-			return this.post(`method.${isEmpty(user) ? 'callAnon' : 'call'}/${method}`, {
+			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
+			return this.post(`${url}/${method}`, {
 				message: EJSON.stringify({ method, params })
 			});
 		}
