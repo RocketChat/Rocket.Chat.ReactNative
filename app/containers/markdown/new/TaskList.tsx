@@ -1,28 +1,27 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { Tasks as TasksProps } from '@rocket.chat/message-parser';
 
 import Inline from './Inline';
+import styles from '../styles';
+import { themes } from '../../../constants/colors';
+import { useTheme } from '../../../theme';
 
 interface ITasksProps {
 	value: TasksProps['value'];
 }
 
 const TaskList = ({ value = [] }: ITasksProps): JSX.Element => {
-	console.log({ value });
+	const { theme } = useTheme();
 	return (
-		<Text
-			style={{
-				marginLeft: 0,
-				paddingLeft: 0
-			}}>
+		<View>
 			{value.map(item => (
-				<>
-					{item.status ? '- [x] ' : '- [] '}
+				<View style={styles.row}>
+					<Text style={[styles.text, { color: themes[theme!].bodyText }]}>{item.status ? '- [x] ' : '- [ ] '}</Text>
 					<Inline value={item.value} />
-				</>
+				</View>
 			))}
-		</Text>
+		</View>
 	);
 };
 

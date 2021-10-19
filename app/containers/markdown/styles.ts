@@ -32,6 +32,7 @@ export default StyleSheet.create<any>({
 	},
 	text: {
 		fontSize: 16,
+		flexShrink: 1,
 		...sharedStyles.textRegular
 	},
 	textInfo: {
