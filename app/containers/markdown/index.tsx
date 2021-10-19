@@ -109,7 +109,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	constructor(props: IMarkdownProps) {
 		super(props);
-		this.renderer = this.createRenderer();
+		if (!this.isNewMarkdown) {
+			this.renderer = this.createRenderer();
+		}
 	}
 
 	createRenderer = () =>
@@ -150,6 +152,11 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			},
 			renderParagraphsInLists: true
 		});
+
+	get isNewMarkdown(): boolean {
+		const { md, enableMessageParser } = this.props;
+		return enableMessageParser && !!md;
+	}
 
 	editedMessage = (ast: any) => {
 		const { isEdited } = this.props;
@@ -348,7 +355,6 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			theme,
 			style = [],
 			testID,
-			enableMessageParser,
 			mentions,
 			channels,
 			navToRoomInfo,
@@ -362,7 +368,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			return null;
 		}
 
-		if (enableMessageParser && md) {
+		if (this.isNewMarkdown) {
 			return (
 				<NewMarkdown
 					username={username}
