@@ -12073,6 +12073,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -12092,6 +12093,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -12176,6 +12178,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -12195,6 +12198,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -12279,6 +12283,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -12298,6 +12303,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -12557,6 +12563,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -12576,6 +12583,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -12660,6 +12668,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -12679,6 +12688,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -12763,6 +12773,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -12782,6 +12793,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -13005,6 +13017,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -13024,6 +13037,7 @@ exports[`Storyshots LoadMore black theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -13278,6 +13292,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -13297,6 +13312,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -13381,6 +13397,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -13400,6 +13417,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -13484,6 +13502,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -13503,6 +13522,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -13762,6 +13782,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -13781,6 +13802,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -13865,6 +13887,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -13884,6 +13907,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -13968,6 +13992,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -13987,6 +14012,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -14210,6 +14236,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -14229,6 +14256,7 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -14483,6 +14511,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -14502,6 +14531,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -14586,6 +14616,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -14605,6 +14636,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -14689,6 +14721,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -14708,6 +14741,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -14967,6 +15001,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -14986,6 +15021,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -15070,6 +15106,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -15089,6 +15126,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -15173,6 +15211,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -15192,6 +15231,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -15415,6 +15455,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -15434,6 +15475,7 @@ exports[`Storyshots LoadMore light theme 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -15510,6 +15552,7 @@ exports[`Storyshots Markdown Block quote 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -15528,6 +15571,7 @@ exports[`Storyshots Markdown Block quote 1`] = `
             Array [
               Object {
                 "backgroundColor": "transparent",
+                "flexShrink": 1,
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "400",
@@ -15558,6 +15602,7 @@ exports[`Storyshots Markdown Block quote 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -15576,6 +15621,7 @@ exports[`Storyshots Markdown Block quote 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -15616,6 +15662,7 @@ exports[`Storyshots Markdown Code 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -15634,6 +15681,7 @@ exports[`Storyshots Markdown Code 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -15665,6 +15713,7 @@ exports[`Storyshots Markdown Code 1`] = `
             "borderWidth": 1,
             "color": "#2f343d",
             "fontFamily": "Courier New",
+            "fontSize": 16,
             "fontWeight": "400",
             "paddingLeft": 2,
             "paddingTop": 2,
@@ -15681,6 +15730,7 @@ exports[`Storyshots Markdown Code 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -15699,6 +15749,7 @@ exports[`Storyshots Markdown Code 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -15730,6 +15781,7 @@ exports[`Storyshots Markdown Code 1`] = `
             "borderWidth": 1,
             "color": "#2f343d",
             "fontFamily": "Courier New",
+            "fontSize": 16,
             "fontWeight": "400",
             "paddingLeft": 2,
             "paddingTop": 2,
@@ -15746,6 +15798,7 @@ exports[`Storyshots Markdown Code 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -15777,6 +15830,7 @@ exports[`Storyshots Markdown Code 1`] = `
             "borderWidth": 1,
             "color": "#2f343d",
             "fontFamily": "Courier New",
+            "fontSize": 16,
             "fontWeight": "400",
             "paddingLeft": 2,
             "paddingTop": 2,
@@ -15793,6 +15847,7 @@ exports[`Storyshots Markdown Code 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -15825,6 +15880,7 @@ exports[`Storyshots Markdown Code 1`] = `
           "borderWidth": 1,
           "color": "#2f343d",
           "fontFamily": "Courier New",
+          "fontSize": 16,
           "fontWeight": "400",
           "padding": 4,
           "textAlign": "left",
@@ -15853,6 +15909,7 @@ exports[`Storyshots Markdown Edited 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -15871,6 +15928,7 @@ exports[`Storyshots Markdown Edited 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -15931,6 +15989,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -15949,6 +16008,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -15976,6 +16036,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -15994,6 +16055,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16023,6 +16085,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
           },
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16042,6 +16105,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
           },
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16059,6 +16123,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -16077,6 +16142,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16139,6 +16205,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16201,6 +16268,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16263,6 +16331,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -16281,6 +16350,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16333,6 +16403,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16414,6 +16485,7 @@ exports[`Storyshots Markdown Hashtag 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -16451,6 +16523,7 @@ exports[`Storyshots Markdown Hashtag 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16477,6 +16550,7 @@ exports[`Storyshots Markdown Hashtag 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16520,6 +16594,7 @@ exports[`Storyshots Markdown Headers 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16557,6 +16632,7 @@ exports[`Storyshots Markdown Headers 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16594,6 +16670,7 @@ exports[`Storyshots Markdown Headers 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16631,6 +16708,7 @@ exports[`Storyshots Markdown Headers 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16668,6 +16746,7 @@ exports[`Storyshots Markdown Headers 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16705,6 +16784,7 @@ exports[`Storyshots Markdown Headers 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16744,6 +16824,7 @@ exports[`Storyshots Markdown Image 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -16789,6 +16870,7 @@ exports[`Storyshots Markdown Links 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -16821,6 +16903,7 @@ exports[`Storyshots Markdown Links 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -16856,6 +16939,7 @@ exports[`Storyshots Markdown Links 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -16887,6 +16971,7 @@ exports[`Storyshots Markdown Links 1`] = `
             "borderWidth": 1,
             "color": "#2f343d",
             "fontFamily": "Courier New",
+            "fontSize": 16,
             "fontWeight": "400",
             "paddingLeft": 2,
             "paddingTop": 2,
@@ -16903,6 +16988,7 @@ exports[`Storyshots Markdown Links 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -16935,6 +17021,7 @@ exports[`Storyshots Markdown Links 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -16970,6 +17057,7 @@ exports[`Storyshots Markdown Links 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -17001,6 +17089,7 @@ exports[`Storyshots Markdown Links 1`] = `
             "borderWidth": 1,
             "color": "#2f343d",
             "fontFamily": "Courier New",
+            "fontSize": 16,
             "fontWeight": "400",
             "paddingLeft": 2,
             "paddingTop": 2,
@@ -17068,6 +17157,7 @@ exports[`Storyshots Markdown Lists 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17086,6 +17176,7 @@ exports[`Storyshots Markdown Lists 1`] = `
             Array [
               Object {
                 "backgroundColor": "transparent",
+                "flexShrink": 1,
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "400",
@@ -17155,6 +17246,7 @@ exports[`Storyshots Markdown Lists 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17173,6 +17265,7 @@ exports[`Storyshots Markdown Lists 1`] = `
             Array [
               Object {
                 "backgroundColor": "transparent",
+                "flexShrink": 1,
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "400",
@@ -17240,6 +17333,7 @@ exports[`Storyshots Markdown Lists 1`] = `
               Array [
                 Object {
                   "backgroundColor": "transparent",
+                  "flexShrink": 1,
                   "fontFamily": "System",
                   "fontSize": 16,
                   "fontWeight": "400",
@@ -17258,6 +17352,7 @@ exports[`Storyshots Markdown Lists 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -17329,6 +17424,7 @@ exports[`Storyshots Markdown Lists 1`] = `
               Array [
                 Object {
                   "backgroundColor": "transparent",
+                  "flexShrink": 1,
                   "fontFamily": "System",
                   "fontSize": 16,
                   "fontWeight": "400",
@@ -17347,6 +17443,7 @@ exports[`Storyshots Markdown Lists 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -17420,6 +17517,7 @@ exports[`Storyshots Markdown Lists 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17438,6 +17536,7 @@ exports[`Storyshots Markdown Lists 1`] = `
             Array [
               Object {
                 "backgroundColor": "transparent",
+                "flexShrink": 1,
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "400",
@@ -17507,6 +17606,7 @@ exports[`Storyshots Markdown Lists 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17525,6 +17625,7 @@ exports[`Storyshots Markdown Lists 1`] = `
             Array [
               Object {
                 "backgroundColor": "transparent",
+                "flexShrink": 1,
                 "fontFamily": "System",
                 "fontSize": 16,
                 "fontWeight": "400",
@@ -17570,6 +17671,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -17607,6 +17709,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17653,6 +17756,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17698,6 +17802,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17743,6 +17848,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17769,6 +17875,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17788,6 +17895,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -17825,6 +17933,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17871,6 +17980,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17916,6 +18026,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17961,6 +18072,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -17987,6 +18099,7 @@ exports[`Storyshots Markdown Mentions 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
@@ -18022,6 +18135,7 @@ exports[`Storyshots Markdown Preview 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -18042,6 +18156,7 @@ exports[`Storyshots Markdown Preview 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -18062,6 +18177,7 @@ exports[`Storyshots Markdown Preview 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -18082,6 +18198,7 @@ exports[`Storyshots Markdown Preview 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -18102,6 +18219,7 @@ exports[`Storyshots Markdown Preview 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -18231,6 +18349,7 @@ exports[`Storyshots Markdown Table 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -18285,6 +18404,7 @@ exports[`Storyshots Markdown Table 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -18358,6 +18478,7 @@ exports[`Storyshots Markdown Table 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -18412,6 +18533,7 @@ exports[`Storyshots Markdown Table 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -18482,6 +18604,7 @@ exports[`Storyshots Markdown Table 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -18536,6 +18659,7 @@ exports[`Storyshots Markdown Table 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -18599,6 +18723,7 @@ exports[`Storyshots Markdown Text 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -18617,6 +18742,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -18644,6 +18770,7 @@ exports[`Storyshots Markdown Text 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -18662,6 +18789,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -18689,6 +18817,7 @@ exports[`Storyshots Markdown Text 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -18707,6 +18836,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -18738,6 +18868,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -18769,6 +18900,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -18804,6 +18936,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -18843,6 +18976,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -18870,6 +19004,7 @@ exports[`Storyshots Markdown Text 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -18888,6 +19023,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -18915,6 +19051,7 @@ exports[`Storyshots Markdown Text 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
@@ -18933,6 +19070,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -18960,6 +19098,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -18990,6 +19129,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -19017,6 +19157,7 @@ exports[`Storyshots Markdown Text 1`] = `
         Array [
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
@@ -19249,6 +19390,7 @@ exports[`Storyshots Message Archived 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -19268,6 +19410,7 @@ exports[`Storyshots Message Archived 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -19504,6 +19647,7 @@ exports[`Storyshots Message Basic 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -19523,6 +19667,7 @@ exports[`Storyshots Message Basic 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -19746,6 +19891,7 @@ exports[`Storyshots Message Basic 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -19765,6 +19911,7 @@ exports[`Storyshots Message Basic 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -20030,6 +20177,7 @@ exports[`Storyshots Message Block Quote 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -20049,6 +20197,7 @@ exports[`Storyshots Message Block Quote 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -20304,6 +20453,7 @@ exports[`Storyshots Message Block Quote 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -20323,6 +20473,7 @@ exports[`Storyshots Message Block Quote 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -20354,6 +20505,7 @@ exports[`Storyshots Message Block Quote 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -20373,6 +20525,7 @@ exports[`Storyshots Message Block Quote 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -20609,6 +20762,7 @@ exports[`Storyshots Message Broadcast 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -20628,6 +20782,7 @@ exports[`Storyshots Message Broadcast 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -21030,6 +21185,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -21048,6 +21204,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -21107,6 +21264,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -21125,6 +21283,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -21240,6 +21399,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -21258,6 +21418,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -21317,6 +21478,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -21335,6 +21497,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -21450,6 +21613,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -21468,6 +21632,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -21527,6 +21692,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -21545,6 +21711,7 @@ exports[`Storyshots Message Colored attachments 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -21784,6 +21951,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -21803,6 +21971,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -21895,6 +22064,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -21913,6 +22083,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -21980,6 +22151,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -21998,6 +22170,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -22057,6 +22230,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -22075,6 +22249,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -22134,6 +22309,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -22152,6 +22328,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -22211,6 +22388,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -22229,6 +22407,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -22288,6 +22467,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -22306,6 +22486,7 @@ exports[`Storyshots Message Custom fields 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -22550,6 +22731,7 @@ exports[`Storyshots Message Custom style 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -22569,6 +22751,7 @@ exports[`Storyshots Message Custom style 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -22805,6 +22988,7 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -22824,6 +23008,7 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -23111,6 +23296,7 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -23130,6 +23316,7 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -23260,6 +23447,7 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -23279,6 +23467,7 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -23502,6 +23691,7 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -23521,6 +23711,7 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -23790,6 +23981,7 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -23809,6 +24001,7 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -25384,6 +25577,7 @@ exports[`Storyshots Message Edited 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -25403,6 +25597,7 @@ exports[`Storyshots Message Edited 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -25639,6 +25834,7 @@ exports[`Storyshots Message Editing 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -25658,6 +25854,7 @@ exports[`Storyshots Message Editing 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -25894,6 +26091,7 @@ exports[`Storyshots Message Emojis 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -25913,6 +26111,7 @@ exports[`Storyshots Message Emojis 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -26142,6 +26341,7 @@ exports[`Storyshots Message Emojis 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -26161,6 +26361,7 @@ exports[`Storyshots Message Emojis 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -26390,6 +26591,7 @@ exports[`Storyshots Message Emojis 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -26444,6 +26646,7 @@ exports[`Storyshots Message Emojis 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -26513,6 +26716,7 @@ exports[`Storyshots Message Emojis 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -26777,6 +26981,7 @@ exports[`Storyshots Message Emojis 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -27026,6 +27231,7 @@ exports[`Storyshots Message Emojis 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -27045,6 +27251,7 @@ exports[`Storyshots Message Emojis 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -27309,6 +27516,7 @@ exports[`Storyshots Message Emojis 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -27328,6 +27536,7 @@ exports[`Storyshots Message Emojis 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -27391,6 +27600,7 @@ exports[`Storyshots Message Emojis 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -27641,6 +27851,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -27660,6 +27871,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -27806,6 +28018,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -27825,6 +28038,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -28110,6 +28324,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -28129,6 +28344,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -28618,6 +28834,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -28769,6 +28986,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -29003,6 +29221,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -29022,6 +29241,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -29307,6 +29527,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -29326,6 +29547,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -29641,6 +29863,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -29660,6 +29883,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -29944,6 +30168,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -29963,6 +30188,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -30131,6 +30357,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -30150,6 +30377,7 @@ exports[`Storyshots Message Encrypted 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -30486,6 +30714,7 @@ exports[`Storyshots Message Error 1`] = `
                   Array [
                     Object {
                       "backgroundColor": "transparent",
+                      "flexShrink": 1,
                       "fontFamily": "System",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -30505,6 +30734,7 @@ exports[`Storyshots Message Error 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -30688,6 +30918,7 @@ exports[`Storyshots Message Error 1`] = `
                   Array [
                     Object {
                       "backgroundColor": "transparent",
+                      "flexShrink": 1,
                       "fontFamily": "System",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -30707,6 +30938,7 @@ exports[`Storyshots Message Error 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -30942,6 +31174,7 @@ exports[`Storyshots Message Full name 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -30961,6 +31194,7 @@ exports[`Storyshots Message Full name 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -31197,6 +31431,7 @@ exports[`Storyshots Message Grouped messages 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -31216,6 +31451,7 @@ exports[`Storyshots Message Grouped messages 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -31439,6 +31675,7 @@ exports[`Storyshots Message Grouped messages 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -31458,6 +31695,7 @@ exports[`Storyshots Message Grouped messages 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -31542,6 +31780,7 @@ exports[`Storyshots Message Grouped messages 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -31561,6 +31800,7 @@ exports[`Storyshots Message Grouped messages 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -31645,6 +31885,7 @@ exports[`Storyshots Message Grouped messages 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -31664,6 +31905,7 @@ exports[`Storyshots Message Grouped messages 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -31887,6 +32129,7 @@ exports[`Storyshots Message Grouped messages 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -31906,6 +32149,7 @@ exports[`Storyshots Message Grouped messages 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -32337,6 +32581,7 @@ exports[`Storyshots Message Lists 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -32356,6 +32601,7 @@ exports[`Storyshots Message Lists 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -32424,6 +32670,7 @@ exports[`Storyshots Message Lists 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -32443,6 +32690,7 @@ exports[`Storyshots Message Lists 1`] = `
                               Array [
                                 Object {
                                   "backgroundColor": "transparent",
+                                  "flexShrink": 1,
                                   "fontFamily": "System",
                                   "fontSize": 16,
                                   "fontWeight": "400",
@@ -32515,6 +32763,7 @@ exports[`Storyshots Message Lists 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -32534,6 +32783,7 @@ exports[`Storyshots Message Lists 1`] = `
                               Array [
                                 Object {
                                   "backgroundColor": "transparent",
+                                  "flexShrink": 1,
                                   "fontFamily": "System",
                                   "fontSize": 16,
                                   "fontWeight": "400",
@@ -32803,6 +33053,7 @@ exports[`Storyshots Message Lists 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -32822,6 +33073,7 @@ exports[`Storyshots Message Lists 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -32892,6 +33144,7 @@ exports[`Storyshots Message Lists 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -32911,6 +33164,7 @@ exports[`Storyshots Message Lists 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -33176,6 +33430,7 @@ exports[`Storyshots Message Lists 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -33195,6 +33450,7 @@ exports[`Storyshots Message Lists 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -33321,6 +33577,7 @@ exports[`Storyshots Message Lists 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -33340,6 +33597,7 @@ exports[`Storyshots Message Lists 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -33580,6 +33838,7 @@ exports[`Storyshots Message Mentions 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -33618,6 +33877,7 @@ exports[`Storyshots Message Mentions 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -33665,6 +33925,7 @@ exports[`Storyshots Message Mentions 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -33711,6 +33972,7 @@ exports[`Storyshots Message Mentions 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -33757,6 +34019,7 @@ exports[`Storyshots Message Mentions 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -33999,6 +34262,7 @@ exports[`Storyshots Message Mentions 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -34037,6 +34301,7 @@ exports[`Storyshots Message Mentions 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -34084,6 +34349,7 @@ exports[`Storyshots Message Mentions 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -34130,6 +34396,7 @@ exports[`Storyshots Message Mentions 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -34176,6 +34443,7 @@ exports[`Storyshots Message Mentions 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -34223,6 +34491,7 @@ exports[`Storyshots Message Mentions 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -34459,6 +34728,7 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -34478,6 +34748,7 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -34562,6 +34833,7 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -34581,6 +34853,7 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -34804,6 +35077,7 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -34823,6 +35097,7 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -34929,6 +35204,7 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -34948,6 +35224,7 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -35206,6 +35483,7 @@ exports[`Storyshots Message Message with reply 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -35225,6 +35503,7 @@ exports[`Storyshots Message Message with reply 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -35317,6 +35596,7 @@ exports[`Storyshots Message Message with reply 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -35335,6 +35615,7 @@ exports[`Storyshots Message Message with reply 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -35559,6 +35840,7 @@ exports[`Storyshots Message Message with reply 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -35578,6 +35860,7 @@ exports[`Storyshots Message Message with reply 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -35670,6 +35953,7 @@ exports[`Storyshots Message Message with reply 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -35688,6 +35972,7 @@ exports[`Storyshots Message Message with reply 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -35960,6 +36245,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -35979,6 +36265,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -36312,6 +36599,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -36463,6 +36751,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -36554,6 +36843,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -36705,6 +36995,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -36796,6 +37087,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -36947,6 +37239,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -37038,6 +37331,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -37189,6 +37483,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -37280,6 +37575,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -37431,6 +37727,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -37522,6 +37819,7 @@ exports[`Storyshots Message Message with thread 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -37898,6 +38196,7 @@ exports[`Storyshots Message Reactions 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -37917,6 +38216,7 @@ exports[`Storyshots Message Reactions 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -38561,6 +38861,7 @@ exports[`Storyshots Message Reactions 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -38580,6 +38881,7 @@ exports[`Storyshots Message Reactions 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -39601,6 +39903,7 @@ exports[`Storyshots Message Sequential thread messages following thread button 1
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -39620,6 +39923,7 @@ exports[`Storyshots Message Sequential thread messages following thread button 1
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -40007,6 +40311,7 @@ exports[`Storyshots Message Sequential thread messages following thread button 1
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -40152,6 +40457,7 @@ exports[`Storyshots Message Sequential thread messages following thread button 1
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -40399,6 +40705,7 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -40550,6 +40857,7 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -40695,6 +41003,7 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -40840,6 +41149,7 @@ exports[`Storyshots Message Sequential thread messages following thread reply 1`
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -41474,6 +41784,7 @@ exports[`Storyshots Message Static avatar 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -41493,6 +41804,7 @@ exports[`Storyshots Message Static avatar 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -44271,6 +44583,7 @@ exports[`Storyshots Message Temp 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -44290,6 +44603,7 @@ exports[`Storyshots Message Temp 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -44526,6 +44840,7 @@ exports[`Storyshots Message Thumbnail from server 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -44545,6 +44860,7 @@ exports[`Storyshots Message Thumbnail from server 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -44673,6 +44989,7 @@ exports[`Storyshots Message Thumbnail from server 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -44691,6 +45008,7 @@ exports[`Storyshots Message Thumbnail from server 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -44928,6 +45246,7 @@ exports[`Storyshots Message Time format 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -44947,6 +45266,7 @@ exports[`Storyshots Message Time format 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -45183,6 +45503,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -45202,6 +45523,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -45294,6 +45616,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -45312,6 +45635,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -45379,6 +45703,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -45397,6 +45722,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -45456,6 +45782,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -45488,6 +45815,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                               Array [
                                 Object {
                                   "backgroundColor": "transparent",
+                                  "flexShrink": 1,
                                   "fontFamily": "System",
                                   "fontSize": 16,
                                   "fontWeight": "400",
@@ -45591,6 +45919,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -45609,6 +45938,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -45676,6 +46006,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -45694,6 +46025,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -45753,6 +46085,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                           Array [
                             Object {
                               "backgroundColor": "transparent",
+                              "flexShrink": 1,
                               "fontFamily": "System",
                               "fontSize": 16,
                               "fontWeight": "400",
@@ -45771,6 +46104,7 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                             Array [
                               Object {
                                 "backgroundColor": "transparent",
+                                "flexShrink": 1,
                                 "fontFamily": "System",
                                 "fontSize": 16,
                                 "fontWeight": "400",
@@ -46388,6 +46722,7 @@ exports[`Storyshots Message URL 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -46407,6 +46742,7 @@ exports[`Storyshots Message URL 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -46900,6 +47236,7 @@ exports[`Storyshots Message With alias 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -46919,6 +47256,7 @@ exports[`Storyshots Message With alias 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -47161,6 +47499,7 @@ exports[`Storyshots Message With alias 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -47180,6 +47519,7 @@ exports[`Storyshots Message With alias 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -47542,6 +47882,7 @@ exports[`Storyshots Message With audio 1`] = `
                   Array [
                     Object {
                       "backgroundColor": "transparent",
+                      "flexShrink": 1,
                       "fontFamily": "System",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -47560,6 +47901,7 @@ exports[`Storyshots Message With audio 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -47678,6 +48020,7 @@ exports[`Storyshots Message With audio 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -47697,6 +48040,7 @@ exports[`Storyshots Message With audio 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -47907,6 +48251,7 @@ exports[`Storyshots Message With audio 1`] = `
                   Array [
                     Object {
                       "backgroundColor": "transparent",
+                      "flexShrink": 1,
                       "fontFamily": "System",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -47925,6 +48270,7 @@ exports[`Storyshots Message With audio 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -48568,6 +48914,7 @@ exports[`Storyshots Message With file 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -48586,6 +48933,7 @@ exports[`Storyshots Message With file 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -48615,6 +48963,7 @@ exports[`Storyshots Message With file 1`] = `
                   Array [
                     Object {
                       "backgroundColor": "transparent",
+                      "flexShrink": 1,
                       "fontFamily": "System",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -48633,6 +48982,7 @@ exports[`Storyshots Message With file 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -48795,6 +49145,7 @@ exports[`Storyshots Message With file 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -48813,6 +49164,7 @@ exports[`Storyshots Message With file 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -48842,6 +49194,7 @@ exports[`Storyshots Message With file 1`] = `
                   Array [
                     Object {
                       "backgroundColor": "transparent",
+                      "flexShrink": 1,
                       "fontFamily": "System",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -48860,6 +49213,7 @@ exports[`Storyshots Message With file 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -49207,6 +49561,7 @@ exports[`Storyshots Message With image 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -49225,6 +49580,7 @@ exports[`Storyshots Message With image 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -49526,6 +49882,7 @@ exports[`Storyshots Message With image 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -49544,6 +49901,7 @@ exports[`Storyshots Message With image 1`] = `
                         Array [
                           Object {
                             "backgroundColor": "transparent",
+                            "flexShrink": 1,
                             "fontFamily": "System",
                             "fontSize": 16,
                             "fontWeight": "400",
@@ -49859,6 +50217,7 @@ exports[`Storyshots Message With video 1`] = `
                   Array [
                     Object {
                       "backgroundColor": "transparent",
+                      "flexShrink": 1,
                       "fontFamily": "System",
                       "fontSize": 16,
                       "fontWeight": "400",
@@ -49877,6 +50236,7 @@ exports[`Storyshots Message With video 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -50246,6 +50606,7 @@ exports[`Storyshots Message Without header 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -50265,6 +50626,7 @@ exports[`Storyshots Message Without header 1`] = `
                       Array [
                         Object {
                           "backgroundColor": "transparent",
+                          "flexShrink": 1,
                           "fontFamily": "System",
                           "fontSize": 16,
                           "fontWeight": "400",
@@ -50341,12 +50703,12 @@ exports[`Storyshots NewMarkdown Block quote 1`] = `
           Array [
             Object {
               "backgroundColor": "transparent",
+              "flexShrink": 1,
               "fontFamily": "System",
               "fontSize": 16,
               "fontWeight": "400",
               "textAlign": "left",
             },
-            undefined,
             Object {
               "color": "#2f343d",
             },
@@ -50355,6 +50717,21 @@ exports[`Storyshots NewMarkdown Block quote 1`] = `
       >
         <Text
           accessibilityLabel="Rocket.Chat to the moon"
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "System",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              Object {
+                "color": "#2f343d",
+              },
+            ]
+          }
         >
           Rocket.Chat to the moon
         </Text>
@@ -50379,12 +50756,12 @@ exports[`Storyshots NewMarkdown Code 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        Array [],
         Object {
           "color": "#2f343d",
         },
@@ -50395,23 +50772,25 @@ exports[`Storyshots NewMarkdown Code 1`] = `
       style={
         Array [
           Object {
-            "backgroundColor": "#f1f2f4",
-            "borderColor": "#e1e5e8",
+            "backgroundColor": "transparent",
             "borderRadius": 4,
             "borderWidth": 1,
-            "color": "#2f343d",
             "fontFamily": "Courier New",
+            "fontSize": 16,
             "fontWeight": "400",
             "paddingLeft": 2,
             "paddingTop": 2,
             "textAlign": "left",
           },
+          Object {
+            "backgroundColor": "#f1f2f4",
+            "borderColor": "#e1e5e8",
+            "color": "#2f343d",
+          },
         ]
       }
     >
-      <Text
-        accessibilityLabel="inline code"
-      >
+      <Text>
         inline code
       </Text>
     </Text>
@@ -50420,15 +50799,19 @@ exports[`Storyshots NewMarkdown Code 1`] = `
     style={
       Array [
         Object {
-          "backgroundColor": "#f1f2f4",
-          "borderColor": "#e1e5e8",
+          "backgroundColor": "transparent",
           "borderRadius": 4,
           "borderWidth": 1,
-          "color": "#2f343d",
           "fontFamily": "Courier New",
+          "fontSize": 16,
           "fontWeight": "400",
           "padding": 4,
           "textAlign": "left",
+        },
+        Object {
+          "backgroundColor": "#f1f2f4",
+          "borderColor": "#e1e5e8",
+          "color": "#2f343d",
         },
       ]
     }
@@ -50473,7 +50856,6 @@ exports[`Storyshots NewMarkdown Emoji 1`] = `
             "fontWeight": "400",
             "textAlign": "left",
           },
-          undefined,
         ]
       }
     >
@@ -50500,7 +50882,6 @@ exports[`Storyshots NewMarkdown Emoji 1`] = `
             "fontWeight": "400",
             "textAlign": "left",
           },
-          undefined,
         ]
       }
     >
@@ -50519,7 +50900,6 @@ exports[`Storyshots NewMarkdown Emoji 1`] = `
             "fontWeight": "400",
             "textAlign": "left",
           },
-          undefined,
         ]
       }
     >
@@ -50538,7 +50918,6 @@ exports[`Storyshots NewMarkdown Emoji 1`] = `
             "fontWeight": "400",
             "textAlign": "left",
           },
-          undefined,
         ]
       }
     >
@@ -50550,12 +50929,12 @@ exports[`Storyshots NewMarkdown Emoji 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        undefined,
         Object {
           "color": "#2f343d",
         },
@@ -50570,12 +50949,12 @@ exports[`Storyshots NewMarkdown Emoji 1`] = `
           },
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
             "textAlign": "left",
           },
-          undefined,
         ]
       }
     >
@@ -50589,12 +50968,12 @@ exports[`Storyshots NewMarkdown Emoji 1`] = `
           },
           Object {
             "backgroundColor": "transparent",
+            "flexShrink": 1,
             "fontFamily": "System",
             "fontSize": 16,
             "fontWeight": "400",
             "textAlign": "left",
           },
-          undefined,
         ]
       }
     >
@@ -50619,12 +50998,12 @@ exports[`Storyshots NewMarkdown Hashtag 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        undefined,
         Object {
           "color": "#2f343d",
         },
@@ -50790,12 +51169,12 @@ exports[`Storyshots NewMarkdown Links 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        undefined,
         Object {
           "color": "#2f343d",
         },
@@ -50806,14 +51185,18 @@ exports[`Storyshots NewMarkdown Links 1`] = `
       onLongPress={[Function]}
       onPress={[Function]}
       style={
-        Object {
-          "backgroundColor": "transparent",
-          "color": "#1d74f5",
-          "fontFamily": "System",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#1d74f5",
+          },
+        ]
       }
     >
       https://rocket.chat
@@ -50824,12 +51207,12 @@ exports[`Storyshots NewMarkdown Links 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        undefined,
         Object {
           "color": "#2f343d",
         },
@@ -50840,14 +51223,18 @@ exports[`Storyshots NewMarkdown Links 1`] = `
       onLongPress={[Function]}
       onPress={[Function]}
       style={
-        Object {
-          "backgroundColor": "transparent",
-          "color": "#1d74f5",
-          "fontFamily": "System",
-          "fontSize": 16,
-          "fontWeight": "400",
-          "textAlign": "left",
-        }
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#1d74f5",
+          },
+        ]
       }
     >
       Markdown link
@@ -50870,61 +51257,95 @@ exports[`Storyshots NewMarkdown Lists 1`] = `
     <View
       style={
         Object {
-          "alignItems": "flex-start",
           "flexDirection": "row",
         }
       }
     >
       <Text
         style={
-          Object {
-            "backgroundColor": "transparent",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
         }
       >
-        <Text>
-          1
-          . 
-        </Text>
-        <Text
-          accessibilityLabel="Open Source"
-        >
-          Open Source
-        </Text>
+        - 
+      </Text>
+      <Text
+        accessibilityLabel="Open Source"
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        Open Source
       </Text>
     </View>
     <View
       style={
         Object {
-          "alignItems": "flex-start",
           "flexDirection": "row",
         }
       }
     >
       <Text
         style={
-          Object {
-            "backgroundColor": "transparent",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
         }
       >
-        <Text>
-          2
-          . 
-        </Text>
-        <Text
-          accessibilityLabel="Rocket.Chat"
-        >
-          Rocket.Chat
-        </Text>
+        - 
+      </Text>
+      <Text
+        accessibilityLabel="Rocket.Chat"
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        Rocket.Chat
       </Text>
     </View>
   </View>
@@ -50932,61 +51353,97 @@ exports[`Storyshots NewMarkdown Lists 1`] = `
     <View
       style={
         Object {
-          "alignItems": "flex-start",
           "flexDirection": "row",
         }
       }
     >
       <Text
         style={
-          Object {
-            "backgroundColor": "transparent",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
         }
       >
-        <Text>
-          1
-          . 
-        </Text>
-        <Text
-          accessibilityLabel="Open Source"
-        >
-          Open Source
-        </Text>
+        1
+        . 
+      </Text>
+      <Text
+        accessibilityLabel="Open Source"
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        Open Source
       </Text>
     </View>
     <View
       style={
         Object {
-          "alignItems": "flex-start",
           "flexDirection": "row",
         }
       }
     >
       <Text
         style={
-          Object {
-            "backgroundColor": "transparent",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "textAlign": "left",
-          }
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
         }
       >
-        <Text>
-          2
-          . 
-        </Text>
-        <Text
-          accessibilityLabel="Rocket.Chat"
-        >
-          Rocket.Chat
-        </Text>
+        2
+        . 
+      </Text>
+      <Text
+        accessibilityLabel="Rocket.Chat"
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
+      >
+        Rocket.Chat
       </Text>
     </View>
   </View>
@@ -51008,12 +51465,12 @@ exports[`Storyshots NewMarkdown Mentions 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        Array [],
         Object {
           "color": "#2f343d",
         },
@@ -51045,12 +51502,12 @@ exports[`Storyshots NewMarkdown Mentions 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        Array [],
         Object {
           "color": "#2f343d",
         },
@@ -51078,6 +51535,21 @@ exports[`Storyshots NewMarkdown Mentions 1`] = `
     </Text>
     <Text
       accessibilityLabel=" "
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
        
     </Text>
@@ -51102,6 +51574,21 @@ exports[`Storyshots NewMarkdown Mentions 1`] = `
     </Text>
     <Text
       accessibilityLabel=" "
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
        
     </Text>
@@ -51125,6 +51612,21 @@ exports[`Storyshots NewMarkdown Mentions 1`] = `
     </Text>
     <Text
       accessibilityLabel=" "
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
        
     </Text>
@@ -51165,12 +51667,12 @@ exports[`Storyshots NewMarkdown Text 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        undefined,
         Object {
           "color": "#2f343d",
         },
@@ -51179,6 +51681,21 @@ exports[`Storyshots NewMarkdown Text 1`] = `
   >
     <Text
       accessibilityLabel="This is Rocket.Chat"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       This is Rocket.Chat
     </Text>
@@ -51188,12 +51705,12 @@ exports[`Storyshots NewMarkdown Text 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        undefined,
         Object {
           "color": "#2f343d",
         },
@@ -51202,6 +51719,21 @@ exports[`Storyshots NewMarkdown Text 1`] = `
   >
     <Text
       accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     </Text>
@@ -51211,12 +51743,12 @@ exports[`Storyshots NewMarkdown Text 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        undefined,
         Object {
           "color": "#2f343d",
         },
@@ -51225,41 +51757,161 @@ exports[`Storyshots NewMarkdown Text 1`] = `
   >
     <Text
       accessibilityLabel="a"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       a
     </Text>
     <Text
       accessibilityLabel="b"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       b
     </Text>
     <Text
       accessibilityLabel="c"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       c
     </Text>
     <Text
       accessibilityLabel=""
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       
     </Text>
     <Text
       accessibilityLabel="d"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       d
     </Text>
     <Text
       accessibilityLabel=""
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       
     </Text>
     <Text
       accessibilityLabel=""
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       
     </Text>
     <Text
       accessibilityLabel="e"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       e
     </Text>
@@ -51269,12 +51921,12 @@ exports[`Storyshots NewMarkdown Text 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        undefined,
         Object {
           "color": "#2f343d",
         },
@@ -51283,6 +51935,21 @@ exports[`Storyshots NewMarkdown Text 1`] = `
   >
     <Text
       accessibilityLabel="a       b                                                                             c"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       a       b                                                                             c
     </Text>
@@ -51292,12 +51959,12 @@ exports[`Storyshots NewMarkdown Text 1`] = `
       Array [
         Object {
           "backgroundColor": "transparent",
+          "flexShrink": 1,
           "fontFamily": "System",
           "fontSize": 16,
           "fontWeight": "400",
           "textAlign": "left",
         },
-        undefined,
         Object {
           "color": "#2f343d",
         },
@@ -51306,6 +51973,21 @@ exports[`Storyshots NewMarkdown Text 1`] = `
   >
     <Text
       accessibilityLabel="Strong emphasis, aka bold, with "
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
       Strong emphasis, aka bold, with 
     </Text>
@@ -51321,12 +52003,42 @@ exports[`Storyshots NewMarkdown Text 1`] = `
     >
       <Text
         accessibilityLabel="asterisks"
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
       >
         asterisks
       </Text>
     </Text>
     <Text
       accessibilityLabel=" or "
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "flexShrink": 1,
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Object {
+            "color": "#2f343d",
+          },
+        ]
+      }
     >
        or 
     </Text>
@@ -51339,6 +52051,21 @@ exports[`Storyshots NewMarkdown Text 1`] = `
     >
       <Text
         accessibilityLabel="underscore"
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "System",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            Object {
+              "color": "#2f343d",
+            },
+          ]
+        }
       >
         underscore
       </Text>
@@ -59137,6 +59864,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -59554,6 +60282,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -59971,6 +60700,7 @@ exports[`Storyshots Room Item Expanded Room Item without Avatar 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -60384,6 +61114,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -60784,6 +61515,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -61184,6 +61916,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -61584,6 +62317,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -61999,6 +62733,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -62455,6 +63190,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -62911,6 +63647,7 @@ exports[`Storyshots Room Item Last Message 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -63810,6 +64547,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -64655,6 +65393,7 @@ exports[`Storyshots Room Item Tag 1`] = `
                     Array [
                       Object {
                         "backgroundColor": "transparent",
+                        "flexShrink": 1,
                         "fontFamily": "System",
                         "fontSize": 16,
                         "fontWeight": "400",
@@ -70996,6 +71735,7 @@ Array [
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -72522,6 +73262,7 @@ Array [
               Array [
                 Object {
                   "backgroundColor": "transparent",
+                  "flexShrink": 1,
                   "fontFamily": "System",
                   "fontSize": 16,
                   "fontWeight": "400",
@@ -72683,6 +73424,7 @@ Array [
               Array [
                 Object {
                   "backgroundColor": "transparent",
+                  "flexShrink": 1,
                   "fontFamily": "System",
                   "fontSize": 16,
                   "fontWeight": "400",
@@ -72848,6 +73590,7 @@ Array [
               Array [
                 Object {
                   "backgroundColor": "transparent",
+                  "flexShrink": 1,
                   "fontFamily": "System",
                   "fontSize": 16,
                   "fontWeight": "400",
@@ -73008,6 +73751,7 @@ Array [
               Array [
                 Object {
                   "backgroundColor": "transparent",
+                  "flexShrink": 1,
                   "fontFamily": "System",
                   "fontSize": 16,
                   "fontWeight": "400",
@@ -73168,6 +73912,7 @@ Array [
               Array [
                 Object {
                   "backgroundColor": "transparent",
+                  "flexShrink": 1,
                   "fontFamily": "System",
                   "fontSize": 16,
                   "fontWeight": "400",
@@ -73284,6 +74029,7 @@ Array [
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -73456,6 +74202,7 @@ preview
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -73943,6 +74690,7 @@ Array [
               Array [
                 Object {
                   "backgroundColor": "transparent",
+                  "flexShrink": 1,
                   "fontFamily": "System",
                   "fontSize": 16,
                   "fontWeight": "400",
@@ -74103,6 +74851,7 @@ Array [
               Array [
                 Object {
                   "backgroundColor": "transparent",
+                  "flexShrink": 1,
                   "fontFamily": "System",
                   "fontSize": 16,
                   "fontWeight": "400",
@@ -74264,6 +75013,7 @@ Array [
               Array [
                 Object {
                   "backgroundColor": "transparent",
+                  "flexShrink": 1,
                   "fontFamily": "System",
                   "fontSize": 16,
                   "fontWeight": "400",
@@ -76295,6 +77045,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -76661,6 +77412,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -77027,6 +77779,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -77380,6 +78133,7 @@ exports[`Storyshots Thread Messages.Item badge 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -77766,6 +78520,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -78116,6 +78871,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -78466,6 +79222,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -78816,6 +79573,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -79166,6 +79924,7 @@ exports[`Storyshots Thread Messages.Item content 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -79536,6 +80295,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -79889,6 +80649,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
@@ -80242,6 +81003,7 @@ exports[`Storyshots Thread Messages.Item themes 1`] = `
                 Array [
                   Object {
                     "backgroundColor": "transparent",
+                    "flexShrink": 1,
                     "fontFamily": "System",
                     "fontSize": 16,
                     "fontWeight": "400",
