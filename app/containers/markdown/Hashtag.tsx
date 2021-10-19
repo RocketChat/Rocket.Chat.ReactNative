@@ -16,7 +16,7 @@ interface IHashtag {
 	}[];
 }
 
-const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style }: IHashtag) => {
+const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
 	const { theme } = useTheme();
 
 	const handlePress = () => {

@@ -21,11 +21,13 @@ interface IBodyProps {
 	}[];
 	navToRoomInfo: Function;
 	style: StyleProp<ViewStyle>[];
+	useRealName: boolean;
+	username: string;
 }
 
 const isBigEmoji = (tokens: MarkdownAST): tokens is [BigEmojiProps] => tokens.length === 1 && tokens[0].type === 'BIG_EMOJI';
 
-const Body = ({ tokens, mentions, channels, navToRoomInfo, style }: IBodyProps): JSX.Element => {
+const Body = ({ tokens, mentions, channels, useRealName, username, navToRoomInfo, style }: IBodyProps): JSX.Element => {
 	if (isBigEmoji(tokens)) {
 		return <BigEmoji value={tokens[0].value} />;
 	}
@@ -49,6 +51,8 @@ const Body = ({ tokens, mentions, channels, navToRoomInfo, style }: IBodyProps):
 								navToRoomInfo={navToRoomInfo}
 								channels={channels}
 								mentions={mentions}
+								useRealName={useRealName}
+								username={username}
 								style={style}
 							/>
 						);

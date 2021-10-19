@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 
+import { useTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 import { events, logEvent } from '../../utils/log';
@@ -11,11 +12,11 @@ interface IAtMention {
 	navToRoomInfo: Function;
 	style: any;
 	useRealName: boolean;
-	theme: string;
 	mentions: any;
 }
 
-const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName, theme }: IAtMention) => {
+const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
+	const { theme } = useTheme();
 	if (mention === 'all' || mention === 'here') {
 		return (
 			<Text

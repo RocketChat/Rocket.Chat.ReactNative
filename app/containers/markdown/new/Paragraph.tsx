@@ -17,13 +17,23 @@ interface IParagraphProps {
 	}[];
 	navToRoomInfo?: Function;
 	style?: StyleProp<ViewStyle>[];
+	useRealName?: boolean;
+	username?: string;
 }
 
-const Paragraph: React.FC<IParagraphProps> = ({ value, mentions, channels, navToRoomInfo, style }) => {
+const Paragraph = ({ value, mentions, channels, useRealName, username, navToRoomInfo, style }: IParagraphProps): JSX.Element => {
 	const { theme } = useTheme();
 	return (
 		<Text style={[styles.text, style, { color: themes[theme].bodyText }]}>
-			<Inline value={value} mentions={mentions} channels={channels} navToRoomInfo={navToRoomInfo} style={style} />
+			<Inline
+				value={value}
+				useRealName={useRealName}
+				username={username}
+				mentions={mentions}
+				channels={channels}
+				navToRoomInfo={navToRoomInfo}
+				style={style}
+			/>
 		</Text>
 	);
 };

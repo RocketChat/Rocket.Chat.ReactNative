@@ -3,14 +3,15 @@ import { StyleProp, ViewStyle } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Hashtag from '../Hashtag';
+import AtMention from '../AtMention';
 import Link from './Link';
 import Plain from './Plain';
 import Bold from './Bold';
 import Strike from './Strike';
 import Italic from './Italic';
 import Emoji from './Emoji';
-import Mention from './Mention';
 import InlineCode from './InlineCode';
+import Image from './Image';
 import { UserMention } from '../../message/interfaces';
 
 interface IParagraphProps {
@@ -22,12 +23,16 @@ interface IParagraphProps {
 	}[];
 	navToRoomInfo?: Function;
 	style?: StyleProp<ViewStyle>[];
+	useRealName: boolean;
+	username: string;
 }
 
-const Inline = ({ value, mentions, channels, navToRoomInfo, style }: IParagraphProps): JSX.Element => (
+const Inline = ({ value, mentions, channels, useRealName, username, navToRoomInfo, style }: IParagraphProps): JSX.Element => (
 	<>
 		{value.map(block => {
 			switch (block.type) {
+				case 'IMAGE':
+					return <Image value={block.value} />;
 				case 'PLAIN_TEXT':
 					return <Plain value={block.value} />;
 				case 'BOLD':
@@ -39,8 +44,17 @@ const Inline = ({ value, mentions, channels, navToRoomInfo, style }: IParagraphP
 				case 'LINK':
 					return <Link value={block.value} />;
 				case 'MENTION_USER':
-					// @ts-ignore
-					return <Mention value={block.value} navToRoomInfo={navToRoomInfo} mentions={mentions} style={style} />;
+					return (
+						<AtMention
+							mention={block.value.value}
+							useRealName={useRealName}
+							username={username}
+							// @ts-ignore
+							navToRoomInfo={navToRoomInfo}
+							mentions={mentions}
+							style={style}
+						/>
+					);
 				case 'EMOJI':
 					return <Emoji value={block.value} />;
 				case 'MENTION_CHANNEL':

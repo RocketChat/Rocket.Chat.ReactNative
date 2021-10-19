@@ -246,7 +246,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderAtMention = ({ mentionName }: { mentionName: string }) => {
-		const { username, mentions, navToRoomInfo, useRealName, style, theme } = this.props;
+		const { username, mentions, navToRoomInfo, useRealName, style } = this.props;
 		return (
 			<MarkdownAtMention
 				mentions={mentions}
@@ -254,7 +254,6 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				useRealName={useRealName}
 				username={username}
 				navToRoomInfo={navToRoomInfo}
-				theme={theme}
 				style={style}
 			/>
 		);
@@ -354,7 +353,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			enableMessageParser,
 			mentions,
 			channels,
-			navToRoomInfo
+			navToRoomInfo,
+			useRealName,
+			username
 		} = this.props;
 
 		if (!msg) {
@@ -362,7 +363,17 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		}
 
 		if (enableMessageParser && md) {
-			return <NewMarkdown tokens={md} style={style} mentions={mentions} channels={channels} navToRoomInfo={navToRoomInfo} />;
+			return (
+				<NewMarkdown
+					username={username}
+					useRealName={useRealName}
+					tokens={md}
+					style={style}
+					mentions={mentions}
+					channels={channels}
+					navToRoomInfo={navToRoomInfo}
+				/>
+			);
 		}
 
 		let m = formatText(msg);
