@@ -1,8 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ScrollView, Share, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { StackNavigationProp, StackNavigationOptions } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
+import { Dispatch } from 'redux';
 
 import {
 	inviteLinksClear as inviteLinksClearAction,
@@ -20,22 +22,28 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../utils/log';
 import styles from './styles';
 
-class InviteUsersView extends React.Component {
-	static navigationOptions = () => ({
-		title: I18n.t('Invite_users')
-	});
+interface IInviteUsersView {
+	navigation: StackNavigationProp<any, 'InviteUsersView'>;
+	route: RouteProp<any, 'InviteUsersView'>;
+	theme: string;
+	timeDateFormat: string;
+	invite: {
+		url: string;
+		expires: number;
+		maxUses: number;
+		uses: number;
+	};
+	createInviteLink(rid: string): void;
+	clearInviteLink(): void;
+}
+class InviteUsersView extends React.Component<IInviteUsersView, any> {
+	private rid: string;
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		theme: PropTypes.string,
-		timeDateFormat: PropTypes.string,
-		invite: PropTypes.object,
-		createInviteLink: PropTypes.func,
-		clearInviteLink: PropTypes.func
+	static navigationOptions: StackNavigationOptions = {
+		title: I18n.t('Invite_users')
 	};
 
-	constructor(props) {
+	constructor(props: IInviteUsersView) {
 		super(props);
 		this.rid = props.route.params?.rid;
 	}
@@ -97,6 +105,7 @@ class InviteUsersView extends React.Component {
 	renderExpiration = () => {
 		const { theme } = this.props;
 		const expirationMessage = this.linkExpirationText();
+		// @ts-ignore
 		return <Markdown msg={expirationMessage} username='' baseUrl='' theme={theme} />;
 	};
 
@@ -104,10 +113,10 @@ class InviteUsersView extends React.Component {
 		const { theme, invite } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
+				{/* @ts-ignore*/}
 				<ScrollView
 					{...scrollPersistTaps}
 					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-					contentContainerStyle={styles.contentContainer}
 					showsVerticalScrollIndicator={false}>
 					<StatusBar />
 					<View style={styles.innerContainer}>
@@ -123,15 +132,15 @@ class InviteUsersView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	timeDateFormat: state.settings.Message_TimeAndDateFormat,
 	days: state.inviteLinks.days,
 	maxUses: state.inviteLinks.maxUses,
 	invite: state.inviteLinks.invite
 });
 
-const mapDispatchToProps = dispatch => ({
-	createInviteLink: rid => dispatch(inviteLinksCreateAction(rid)),
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	createInviteLink: (rid: string) => dispatch(inviteLinksCreateAction(rid)),
 	clearInviteLink: () => dispatch(inviteLinksClearAction())
 });
 
