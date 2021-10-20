@@ -4506,6 +4506,11 @@
   dependencies:
     source-map "^0.6.1"
 
+"@types/url-parse@^1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@types/url-parse/-/url-parse-1.4.4.tgz#ebeb0ec8b581318739cf73e9f9b186f610764255"
+  integrity sha512-KtQLad12+4T/NfSxpoDhmr22+fig3T7/08QCgmutYA6QSznSRmEtuL95GrhVV40/0otTEdFc+etRcCTqhh1q5Q==
+
 "@types/webpack-env@^1.15.0":
   version "1.15.2"
   resolved "https://registry.yarnpkg.com/@types/webpack-env/-/webpack-env-1.15.2.tgz#927997342bb9f4a5185a86e6579a0a18afc33b0a"
