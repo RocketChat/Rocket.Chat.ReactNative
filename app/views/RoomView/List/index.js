@@ -14,6 +14,7 @@ import { animateNextTransition } from '../../../utils/layoutAnimation';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { themes } from '../../../constants/colors';
 import debounce from '../../../utils/debounce';
+import { compareServerVersion, methods } from '../../../lib/utils';
 import List from './List';
 import NavBottomFAB from './NavBottomFAB';
 
@@ -43,7 +44,8 @@ class ListContainer extends React.Component {
 		tunread: PropTypes.array,
 		ignored: PropTypes.array,
 		navigation: PropTypes.object,
-		showMessageInMainThread: PropTypes.bool
+		showMessageInMainThread: PropTypes.bool,
+		serverVersion: PropTypes.string
 	};
 
 	constructor(props) {
@@ -131,7 +133,7 @@ class ListContainer extends React.Component {
 
 	query = async () => {
 		this.count += QUERY_SIZE;
-		const { rid, tmid, showMessageInMainThread } = this.props;
+		const { rid, tmid, showMessageInMainThread, serverVersion } = this.props;
 		const db = database.active;
 
 		// handle servers with version < 3.0.0
@@ -172,7 +174,14 @@ class ListContainer extends React.Component {
 				if (tmid && this.thread) {
 					messages = [...messages, this.thread];
 				}
-				messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
+
+				/**
+				 * Since 3.16.0 server version, the backend don't response with messages if
+				 * hide system message is enabled
+				 */
+				if (compareServerVersion(serverVersion, '3.16.0', methods.lowerThan) || hideSystemMessages.length) {
+					messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
+				}
 
 				if (this.mounted) {
 					this.setState({ messages }, () => this.update());
