@@ -1,23 +1,26 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, TextStyle } from 'react-native';
 
 import { themes } from '../../constants/colors';
+import { useTheme } from '../../theme';
 import styles from './styles';
 
 interface IHashtag {
 	hashtag: string;
 	navToRoomInfo: Function;
-	style: [];
-	theme: string;
+	style?: TextStyle[];
 	channels: {
+		[index: number]: string | number;
 		name: string;
 		_id: number;
 	}[];
 }
 
-const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [], theme }: IHashtag) => {
+const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
+	const { theme } = useTheme();
+
 	const handlePress = () => {
-		const index = channels.findIndex(channel => channel.name === hashtag);
+		const index = channels?.findIndex(channel => channel.name === hashtag);
 		const navParam = {
 			t: 'c',
 			rid: channels[index]._id
@@ -31,7 +34,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [], them
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].mentionOtherColor
+						color: themes[theme!].mentionOtherColor
 					},
 					...style
 				]}
@@ -40,7 +43,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [], them
 			</Text>
 		);
 	}
-	return <Text style={[styles.text, { color: themes[theme].bodyText }, ...style]}>{`#${hashtag}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme!].bodyText }, ...style]}>{`#${hashtag}`}</Text>;
 });
 
 export default Hashtag;
