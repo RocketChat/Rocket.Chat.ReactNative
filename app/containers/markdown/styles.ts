@@ -30,6 +30,10 @@ export default StyleSheet.create<any>({
 	del: {
 		textDecorationLine: 'line-through'
 	},
+	plainText: {
+		fontSize: 16,
+		flexShrink: 1
+	},
 	text: {
 		fontSize: 16,
 		...sharedStyles.textRegular
@@ -70,12 +74,16 @@ export default StyleSheet.create<any>({
 		resizeMode: 'contain'
 	},
 	codeInline: {
+		fontSize: 16,
 		...sharedStyles.textRegular,
 		...codeFontFamily,
 		borderWidth: 1,
-		borderRadius: 4
+		borderRadius: 4,
+		paddingLeft: 2,
+		paddingTop: 2
 	},
 	codeBlock: {
+		fontSize: 16,
 		...sharedStyles.textRegular,
 		...codeFontFamily,
 		borderWidth: 1,

@@ -1,6 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Keyboard, StyleSheet, Text, View } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -49,27 +50,37 @@ const styles = StyleSheet.create({
 	}
 });
 
-class RegisterView extends React.Component {
-	static navigationOptions = ({ route, navigation }) => ({
-		title: route.params?.title ?? 'Rocket.Chat',
+interface IProps {
+	navigation: StackNavigationProp<any>;
+	route: RouteProp<any, 'RegisterView'>;
+	server: string;
+	Site_Name: string;
+	Gitlab_URL: string;
+	CAS_enabled: boolean;
+	CAS_login_url: string;
+	Accounts_CustomFields: string;
+	Accounts_EmailVerification: boolean;
+	Accounts_ManuallyApproveNewUsers: boolean;
+	showLoginButton: boolean;
+	loginRequest: Function;
+	theme: string;
+}
+
+class RegisterView extends React.Component<IProps, any> {
+	private parsedCustomFields: any;
+	private usernameInput: any;
+	private passwordInput: any;
+	private emailInput: any;
+	private avatarUrl: any;
+
+	static navigationOptions = ({ route, navigation }: Partial<IProps>) => ({
+		title: route?.params?.title ?? 'Rocket.Chat',
 		headerRight: () => <HeaderButton.Legal testID='register-view-more' navigation={navigation} />
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		server: PropTypes.string,
-		Accounts_CustomFields: PropTypes.string,
-		Accounts_EmailVerification: PropTypes.bool,
-		Accounts_ManuallyApproveNewUsers: PropTypes.bool,
-		theme: PropTypes.string,
-		Site_Name: PropTypes.string,
-		loginRequest: PropTypes.func,
-		showLoginButton: PropTypes.bool
-	};
-
-	constructor(props) {
+	constructor(props: IProps) {
 		super(props);
-		const customFields = {};
+		const customFields: any = {};
 		this.parsedCustomFields = {};
 		if (props.Accounts_CustomFields) {
 			try {
@@ -78,7 +89,7 @@ class RegisterView extends React.Component {
 				log(e);
 			}
 		}
-		Object.keys(this.parsedCustomFields).forEach(key => {
+		Object.keys(this.parsedCustomFields).forEach((key: string) => {
 			if (this.parsedCustomFields[key].defaultValue) {
 				customFields[key] = this.parsedCustomFields[key].defaultValue;
 			}
@@ -101,7 +112,7 @@ class RegisterView extends React.Component {
 	valid = () => {
 		const { name, email, password, username, customFields } = this.state;
 		let requiredCheck = true;
-		Object.keys(this.parsedCustomFields).forEach(key => {
+		Object.keys(this.parsedCustomFields).forEach((key: string) => {
 			if (this.parsedCustomFields[key].required) {
 				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
 			}
@@ -138,7 +149,7 @@ class RegisterView extends React.Component {
 			} else {
 				await loginRequest({ user: email, password });
 			}
-		} catch (e) {
+		} catch (e: any) {
 			if (e.data?.errorType === 'username-invalid') {
 				return loginRequest({ user: email, password });
 			}
@@ -150,7 +161,7 @@ class RegisterView extends React.Component {
 		this.setState({ saving: false });
 	};
 
-	openContract = route => {
+	openContract = (route: string) => {
 		const { server, theme } = this.props;
 		if (!server) {
 			return;
@@ -167,19 +178,20 @@ class RegisterView extends React.Component {
 		try {
 			return Object.keys(this.parsedCustomFields).map((key, index, array) => {
 				if (this.parsedCustomFields[key].type === 'select') {
-					const options = this.parsedCustomFields[key].options.map(option => ({ label: option, value: option }));
+					const options = this.parsedCustomFields[key].options.map((option: string) => ({ label: option, value: option }));
 					return (
 						<RNPickerSelect
 							key={key}
 							items={options}
 							onValueChange={value => {
-								const newValue = {};
+								const newValue: { [key: string]: string | number } = {};
 								newValue[key] = value;
 								this.setState({ customFields: { ...customFields, ...newValue } });
 							}}
 							value={customFields[key]}>
 							<TextInput
-								inputRef={e => {
+								inputRef={(e: any) => {
+									// @ts-ignore
 									this[key] = e;
 								}}
 								placeholder={key}
@@ -193,20 +205,22 @@ class RegisterView extends React.Component {
 
 				return (
 					<TextInput
-						inputRef={e => {
+						inputRef={(e: any) => {
+							// @ts-ignore
 							this[key] = e;
 						}}
 						key={key}
 						label={key}
 						placeholder={key}
 						value={customFields[key]}
-						onChangeText={value => {
-							const newValue = {};
+						onChangeText={(value: string) => {
+							const newValue: { [key: string]: string | number } = {};
 							newValue[key] = value;
 							this.setState({ customFields: { ...customFields, ...newValue } });
 						}}
 						onSubmitEditing={() => {
 							if (array.length - 1 > index) {
+								// @ts-ignore
 								return this[array[index + 1]].focus();
 							}
 							this.avatarUrl.focus();
@@ -234,7 +248,7 @@ class RegisterView extends React.Component {
 						containerStyle={styles.inputContainer}
 						placeholder={I18n.t('Name')}
 						returnKeyType='next'
-						onChangeText={name => this.setState({ name })}
+						onChangeText={(name: string) => this.setState({ name })}
 						onSubmitEditing={() => {
 							this.usernameInput.focus();
 						}}
@@ -249,7 +263,7 @@ class RegisterView extends React.Component {
 						}}
 						placeholder={I18n.t('Username')}
 						returnKeyType='next'
-						onChangeText={username => this.setState({ username })}
+						onChangeText={(username: string) => this.setState({ username })}
 						onSubmitEditing={() => {
 							this.emailInput.focus();
 						}}
@@ -265,7 +279,7 @@ class RegisterView extends React.Component {
 						placeholder={I18n.t('Email')}
 						returnKeyType='next'
 						keyboardType='email-address'
-						onChangeText={email => this.setState({ email })}
+						onChangeText={(email: string) => this.setState({ email })}
 						onSubmitEditing={() => {
 							this.passwordInput.focus();
 						}}
@@ -281,7 +295,7 @@ class RegisterView extends React.Component {
 						placeholder={I18n.t('Password')}
 						returnKeyType='send'
 						secureTextEntry
-						onChangeText={value => this.setState({ password: value })}
+						onChangeText={(value: string) => this.setState({ password: value })}
 						onSubmitEditing={this.submit}
 						testID='register-view-password'
 						theme={theme}
@@ -334,7 +348,7 @@ class RegisterView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
 	Gitlab_URL: state.settings.API_Gitlab_URL,
@@ -346,8 +360,8 @@ const mapStateToProps = state => ({
 	showLoginButton: getShowLoginButton(state)
 });
 
-const mapDispatchToProps = dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
+const mapDispatchToProps = (dispatch: any) => ({
+	loginRequest: (params: any) => dispatch(loginRequestAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RegisterView));
