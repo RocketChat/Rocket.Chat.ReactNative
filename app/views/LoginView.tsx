@@ -58,7 +58,9 @@ interface IProps {
 	Accounts_PasswordReset: boolean;
 	Accounts_ShowFormLogin: boolean;
 	isFetching: boolean;
-	error: object;
+	error: {
+		error: string;
+	};
 	failure: boolean;
 	theme: string;
 	loginRequest: Function;
@@ -84,7 +86,7 @@ class LoginView extends React.Component<IProps, any> {
 	UNSAFE_componentWillReceiveProps(nextProps: IProps) {
 		const { error } = this.props;
 		if (nextProps.failure && !dequal(error, nextProps.error)) {
-			if (nextProps.error.error === 'error-invalid-email') {
+			if (nextProps.error?.error === 'error-invalid-email') {
 				this.resendEmailConfirmation();
 			} else {
 				Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
