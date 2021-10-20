@@ -1,7 +1,6 @@
 import React from 'react';
 import { Keyboard, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
-// eslint-disable-next-line import/no-unresolved
 import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -34,6 +33,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 
 interface IUser {
+	id: string;
 	name: string;
 	username: string;
 	emails: {
@@ -62,7 +62,10 @@ interface IProfileViewProps {
 }
 
 class ProfileView extends React.Component<IProfileViewProps> {
-	private customFields: any;
+	private name: any;
+	private username: any;
+	private email: any;
+
 	static navigationOptions = ({ navigation, isMasterDetail }: Partial<IProfileViewProps>) => {
 		const options: any = {
 			title: I18n.t('Profile')
@@ -85,7 +88,8 @@ class ProfileView extends React.Component<IProfileViewProps> {
 		currentPassword: null,
 		avatarUrl: null,
 		avatar: {
-			data: {}
+			data: {},
+			url: null
 		},
 		avatarSuggestions: {},
 		customFields: {}
@@ -115,7 +119,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 		}
 	}
 
-	setAvatar = (avatar: string) => {
+	setAvatar = (avatar: object) => {
 		const { Accounts_AllowUserAvatarChange } = this.props;
 
 		if (!Accounts_AllowUserAvatarChange) {
@@ -166,7 +170,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 		);
 	};
 
-	handleError = (e, func, action) => {
+	handleError = (e: any, func: string, action: string) => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
 		}
@@ -184,7 +188,16 @@ class ProfileView extends React.Component<IProfileViewProps> {
 
 		const { name, username, email, newPassword, currentPassword, avatar, customFields } = this.state;
 		const { user, setUser } = this.props;
-		const params = {};
+		const params: {
+			name?: string | null;
+			username?: string | null;
+			email: string | null;
+			newPassword: string | null;
+			currentPassword: any;
+		} = {
+			name: null,
+			username: null
+		};
 
 		// Name
 		if (user.name !== name) {
@@ -310,7 +323,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 		}
 	};
 
-	pickImageWithURL = avatarUrl => {
+	pickImageWithURL = (avatarUrl: string) => {
 		logEvent(events.PROFILE_PICK_AVATAR_WITH_URL);
 		this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' });
 	};
