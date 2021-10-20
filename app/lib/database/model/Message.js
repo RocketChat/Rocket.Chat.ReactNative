@@ -81,4 +81,6 @@ export default class Message extends Model {
 	@field('e2e') e2e;
 
 	@field('tshow') tshow;
+
+	@json('md', sanitizer) md;
 }
