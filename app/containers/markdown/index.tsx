@@ -3,6 +3,7 @@ import { Image, Text } from 'react-native';
 import { Node, Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import removeMarkdown from 'remove-markdown';
+import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import I18n from '../../i18n';
@@ -20,9 +21,20 @@ import MarkdownTableCell from './TableCell';
 import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
 import { isValidURL } from '../../utils/url';
+import NewMarkdown from './new';
+
+interface IUser {
+	_id: string;
+	username: string;
+	name: string;
+}
+
+type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
 
 interface IMarkdownProps {
 	msg: string;
+	md: MarkdownAST;
+	mentions: UserMention[];
 	getCustomEmoji: Function;
 	baseUrl: string;
 	username: string;
@@ -35,7 +47,7 @@ interface IMarkdownProps {
 		name: string;
 		_id: number;
 	}[];
-	mentions: object[];
+	enableMessageParser: boolean;
 	navToRoomInfo: Function;
 	preview: boolean;
 	theme: string;
@@ -97,7 +109,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	constructor(props: IMarkdownProps) {
 		super(props);
-		this.renderer = this.createRenderer();
+		if (!this.isNewMarkdown) {
+			this.renderer = this.createRenderer();
+		}
 	}
 
 	createRenderer = () =>
@@ -138,6 +152,11 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			},
 			renderParagraphsInLists: true
 		});
+
+	get isNewMarkdown(): boolean {
+		const { md, enableMessageParser } = this.props;
+		return enableMessageParser && !!md;
+	}
 
 	editedMessage = (ast: any) => {
 		const { isEdited } = this.props;
@@ -227,12 +246,12 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderHashtag = ({ hashtag }: { hashtag: string }) => {
-		const { channels, navToRoomInfo, style, theme } = this.props;
-		return <MarkdownHashtag hashtag={hashtag} channels={channels} navToRoomInfo={navToRoomInfo} theme={theme} style={style} />;
+		const { channels, navToRoomInfo, style } = this.props;
+		return <MarkdownHashtag hashtag={hashtag} channels={channels} navToRoomInfo={navToRoomInfo} style={style} />;
 	};
 
 	renderAtMention = ({ mentionName }: { mentionName: string }) => {
-		const { username, mentions, navToRoomInfo, useRealName, style, theme } = this.props;
+		const { username, mentions, navToRoomInfo, useRealName, style } = this.props;
 		return (
 			<MarkdownAtMention
 				mentions={mentions}
@@ -240,7 +259,6 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				useRealName={useRealName}
 				username={username}
 				navToRoomInfo={navToRoomInfo}
-				theme={theme}
 				style={style}
 			/>
 		);
@@ -329,10 +347,42 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	render() {
-		const { msg, numberOfLines, preview = false, theme, style = [], testID } = this.props;
+		const {
+			msg,
+			md,
+			numberOfLines,
+			preview = false,
+			theme,
+			style = [],
+			testID,
+			mentions,
+			channels,
+			navToRoomInfo,
+			useRealName,
+			username,
+			getCustomEmoji,
+			baseUrl,
+			onLinkPress
+		} = this.props;
 
 		if (!msg) {
 			return null;
+		}
+
+		if (this.isNewMarkdown) {
+			return (
+				<NewMarkdown
+					username={username}
+					baseUrl={baseUrl}
+					getCustomEmoji={getCustomEmoji}
+					useRealName={useRealName}
+					tokens={md}
+					mentions={mentions}
+					channels={channels}
+					navToRoomInfo={navToRoomInfo}
+					onLinkPress={onLinkPress}
+				/>
+			);
 		}
 
 		let m = formatText(msg);
