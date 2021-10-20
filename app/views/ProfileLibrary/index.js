@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
@@ -28,7 +28,12 @@ class ProfileLibraryView extends React.Component {
 			title: I18n.t('Profile_library')
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.Drawer navigation={navigation} />;
+			options.headerLeft = () => (
+				<HeaderButton.Drawer
+					navigation={navigation}
+					testID='profile-library-view-drawer'
+				/>
+			);
 		}
 		return options;
 	}
@@ -51,6 +56,7 @@ class ProfileLibraryView extends React.Component {
 		this.state = {
 			data: [],
 			loading: false,
+			refreshing: false,
 			text: '',
 			total: -1,
 			showOptionsDropdown: false,
@@ -65,13 +71,10 @@ class ProfileLibraryView extends React.Component {
 		logEvent(events.DIRECTORY_SEARCH_USERS);
 	}
 
-	userInfoObject = {};
-
 	onSearchChangeText = (text) => {
 		this.setState({ text });
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	load = debounce(async({ newSearch = false }) => {
 		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
@@ -96,25 +99,26 @@ class ProfileLibraryView extends React.Component {
 				sort: (type === 'users') ? { username: 1 } : { usersCount: -1 }
 			});
 			if (directories.success) {
+				const combinedResults = [];
 				const results = directories.result;
 
-				const userInfo = await Promise.all(results.map(async(item) => {
+				await Promise.all(results.map(async(item, index) => {
 					const user = await RocketChat.getUserInfo(item._id);
-					return { id: user.user.customFields };
+					combinedResults[index] = { ...item, customFields: user.user.customFields };
 				}));
-				userInfo.forEach(d => this.userInfoObject = { ...d, ...userInfo });
 
 				this.setState({
-					data: [...data, ...results],
+					data: [...data, ...combinedResults],
 					loading: false,
+					refreshing: false,
 					total: results.length
 				});
 			} else {
-				this.setState({ loading: false });
+				this.setState({ loading: false, refreshing: false });
 			}
 		} catch (e) {
 			log(e);
-			this.setState({ loading: false });
+			this.setState({ loading: false, refreshing: false });
 		}
 	}, 200)
 
@@ -170,16 +174,12 @@ class ProfileLibraryView extends React.Component {
 	}
 
 	renderHeader = () => (
-		<>
-			<SearchBox
-				onChangeText={this.onSearchChangeText}
-				onSubmitEditing={this.search}
-				testID='federation-view-search'
-			/>
-
-		</>
+		<SearchBox
+			onChangeText={this.onSearchChangeText}
+			onSubmitEditing={this.search}
+			testID='federation-view-search'
+		/>
 	)
-
 
 	renderItem = ({ item, index }) => {
 		const { data, type } = this.state;
@@ -193,7 +193,6 @@ class ProfileLibraryView extends React.Component {
 				borderColor: themes[theme].separatorColor
 			};
 		}
-		const PinIcon = () => <CustomIcon name='pin-map' size={15} color='#161a1d' />;
 		const commonProps = {
 			title: item.name,
 			onPress: () => this.onPressItem(item),
@@ -208,11 +207,11 @@ class ProfileLibraryView extends React.Component {
 			return (
 				<DirectoryItem
 					avatar={item.username}
-					description={this.userInfoObject[`${ index }`].id.Location}
+					description={item.customFields?.Location ?? ''}
 					rightLabel={item.federation && item.federation.peer}
 					type='d'
-					icon={PinIcon()}
-					age={`${ this.userInfoObject[`${ index }`].id.Age } years old`}
+					icon={<CustomIcon name='pin-map' size={15} color='#161a1d' />}
+					age={`${ item.customFields?.Age ?? '?' } years old`}
 					{...commonProps}
 				/>
 			);
@@ -232,7 +231,7 @@ class ProfileLibraryView extends React.Component {
 
 	render = () => {
 		const {
-			data, loading, showOptionsDropdown, type, globalUsers
+			data, loading, refreshing, showOptionsDropdown, type, globalUsers
 		} = this.state;
 		const { isFederationEnabled, theme } = this.props;
 
@@ -254,6 +253,18 @@ class ProfileLibraryView extends React.Component {
 					keyboardShouldPersistTaps='always'
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}
+					refreshControl={(
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={() => {
+								this.setState({
+									refreshing: true
+								});
+								this.load({ newSearch: true });
+							}}
+							tintColor={themes[theme].auxiliaryText}
+						/>
+					)}
 				/>
 				{showOptionsDropdown
 					? (
