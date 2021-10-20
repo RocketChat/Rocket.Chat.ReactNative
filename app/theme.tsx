@@ -3,14 +3,14 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 
 interface IThemeContextProps {
 	theme: string;
-	themePreferences: {
+	themePreferences?: {
 		currentTheme: 'automatic' | 'light';
 		darkLevel: string;
 	};
-	setTheme: (newTheme?: {}) => void;
+	setTheme?: (newTheme?: {}) => void;
 }
 
-export const ThemeContext = React.createContext<Partial<IThemeContextProps>>({ theme: 'light' });
+export const ThemeContext = React.createContext<IThemeContextProps>({ theme: 'light' });
 
 export function withTheme(Component: React.ComponentType<any>): (props: any) => JSX.Element {
 	const ThemedComponent = (props: any) => (
