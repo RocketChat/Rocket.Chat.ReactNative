@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Text, Keyboard, StyleSheet, View, BackHandler, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
@@ -7,6 +6,9 @@ import parse from 'url-parse';
 import { Q } from '@nozbe/watermelondb';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Orientation from 'react-native-orientation-locker';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Dispatch } from 'redux';
+import Model from '@nozbe/watermelondb/Model';
 
 import UserPreferences from '../../lib/userPreferences';
 import EventEmitter from '../../utils/events';
@@ -19,7 +21,6 @@ import FormContainer, { FormContainerInner } from '../../containers/FormContaine
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import { events, logEvent } from '../../utils/log';
-import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../utils/fetch';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -66,19 +67,32 @@ const styles = StyleSheet.create({
 	}
 });
 
-class NewServerView extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object,
-		theme: PropTypes.string,
-		connecting: PropTypes.bool.isRequired,
-		connectServer: PropTypes.func.isRequired,
-		selectServer: PropTypes.func.isRequired,
-		previousServer: PropTypes.string,
-		inviteLinksClear: PropTypes.func,
-		serverFinishAdd: PropTypes.func
-	};
+export interface IServer extends Model {
+	url: string;
+	username: string;
+}
+interface INewServerView {
+	navigation: StackNavigationProp<any, 'NewServerView'>;
+	theme: string;
+	connecting: boolean;
+	connectServer(server: string, username?: string, fromServerHistory?: boolean): void;
+	selectServer(server: string): void;
+	previousServer: string;
+	inviteLinksClear(): void;
+	serverFinishAdd(): void;
+	width: number;
+	height: number;
+}
 
-	constructor(props) {
+interface IState {
+	text: string;
+	connectingOpen: boolean;
+	certificate: any;
+	serversHistory: IServer[];
+}
+
+class NewServerView extends React.Component<INewServerView, IState> {
+	constructor(props: INewServerView) {
 		super(props);
 		if (!isTablet) {
 			Orientation.lockToPortrait();
@@ -131,21 +145,21 @@ class NewServerView extends React.Component {
 		return false;
 	};
 
-	onChangeText = text => {
+	onChangeText = (text: string) => {
 		this.setState({ text });
 		this.queryServerHistory(text);
 	};
 
-	queryServerHistory = async text => {
+	queryServerHistory = async (text?: string) => {
 		const db = database.servers;
 		try {
 			const serversHistoryCollection = db.get('servers_history');
 			let whereClause = [Q.where('username', Q.notEq(null)), Q.experimentalSortBy('updated_at', Q.desc), Q.experimentalTake(3)];
-			const likeString = sanitizeLikeString(text);
 			if (text) {
+				const likeString = sanitizeLikeString(text);
 				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
 			}
-			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();
+			const serversHistory = (await serversHistoryCollection.query(...whereClause).fetch()) as IServer[];
 			this.setState({ serversHistory });
 		} catch {
 			// Do nothing
@@ -158,7 +172,7 @@ class NewServerView extends React.Component {
 		selectServer(previousServer);
 	};
 
-	handleNewServerEvent = event => {
+	handleNewServerEvent = (event: { server: string }) => {
 		let { server } = event;
 		if (!server) {
 			return;
@@ -169,13 +183,11 @@ class NewServerView extends React.Component {
 		connectServer(server);
 	};
 
-	onPressServerHistory = serverHistory => {
-		this.setState({ text: serverHistory?.url }, () =>
-			this.submit({ fromServerHistory: true, username: serverHistory?.username })
-		);
+	onPressServerHistory = (serverHistory: IServer) => {
+		this.setState({ text: serverHistory.url }, () => this.submit(true, serverHistory?.username));
 	};
 
-	submit = async ({ fromServerHistory = false, username }) => {
+	submit = async (fromServerHistory?: boolean, username?: string) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
@@ -207,7 +219,7 @@ class NewServerView extends React.Component {
 		connectServer('https://open.rocket.chat');
 	};
 
-	basicAuth = async (server, text) => {
+	basicAuth = async (server: string, text: string) => {
 		try {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
@@ -222,14 +234,14 @@ class NewServerView extends React.Component {
 
 	chooseCertificate = async () => {
 		try {
-			const certificate = await SSLPinning.pickCertificate();
+			const certificate = await SSLPinning?.pickCertificate();
 			this.setState({ certificate });
 		} catch {
 			// Do nothing
 		}
 	};
 
-	completeUrl = url => {
+	completeUrl = (url: string) => {
 		const parsedUrl = parse(url, true);
 		if (parsedUrl.auth.length) {
 			url = parsedUrl.origin;
@@ -252,14 +264,11 @@ class NewServerView extends React.Component {
 		return url.replace(/\/+$/, '').replace(/\\/g, '/');
 	};
 
-	uriToPath = uri => uri.replace('file://', '');
-
-	saveCertificate = certificate => {
-		animateNextTransition();
-		this.setState({ certificate });
-	};
+	uriToPath = (uri: string) => uri.replace('file://', '');
 
 	handleRemove = () => {
+		// TODO: Remove ts-ignore when migrate the showConfirmationAlert
+		// @ts-ignore
 		showConfirmationAlert({
 			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
 			confirmationText: I18n.t('Remove'),
@@ -267,14 +276,15 @@ class NewServerView extends React.Component {
 		});
 	};
 
-	deleteServerHistory = async item => {
-		const { serversHistory } = this.state;
+	deleteServerHistory = async (item: IServer) => {
 		const db = database.servers;
 		try {
-			await db.action(async () => {
+			await db.write(async () => {
 				await item.destroyPermanently();
 			});
-			this.setState({ serversHistory: serversHistory.filter(server => server.id !== item.id) });
+			this.setState((prevstate: IState) => ({
+				serversHistory: prevstate.serversHistory.filter((server: IServer) => server.id !== item.id)
+			}));
 		} catch {
 			// Nothing
 		}
@@ -288,20 +298,21 @@ class NewServerView extends React.Component {
 				style={[
 					styles.certificatePicker,
 					{
-						marginBottom: verticalScale(previousServer && !isTablet ? 10 : 30, height)
+						marginBottom: verticalScale({ size: previousServer && !isTablet ? 10 : 30, height })
 					}
 				]}>
 				<Text
 					style={[
 						styles.chooseCertificateTitle,
-						{ color: themes[theme].auxiliaryText, fontSize: moderateScale(13, null, width) }
+						{ color: themes[theme].auxiliaryText, fontSize: moderateScale({ size: 13, width }) }
 					]}>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<TouchableOpacity
 					onPress={certificate ? this.handleRemove : this.chooseCertificate}
 					testID='new-server-choose-certificate'>
-					<Text style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale(13, null, width) }]}>
+					<Text
+						style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale({ size: 13, width }) }]}>
 						{certificate ?? I18n.t('Apply_Your_Certificate')}
 					</Text>
 				</TouchableOpacity>
@@ -321,10 +332,10 @@ class NewServerView extends React.Component {
 						style={[
 							styles.onboardingImage,
 							{
-								marginBottom: verticalScale(10, height),
-								marginTop: isTablet ? 0 : verticalScale(marginTop, height),
-								width: verticalScale(100, height),
-								height: verticalScale(100, height)
+								marginBottom: verticalScale({ size: 10, height }),
+								marginTop: isTablet ? 0 : verticalScale({ size: marginTop, height }),
+								width: verticalScale({ size: 100, height }),
+								height: verticalScale({ size: 100, height })
 							}
 						]}
 						source={require('../../static/images/logo.png')}
@@ -335,8 +346,8 @@ class NewServerView extends React.Component {
 							styles.title,
 							{
 								color: themes[theme].titleText,
-								fontSize: moderateScale(22, null, width),
-								marginBottom: verticalScale(8, height)
+								fontSize: moderateScale({ size: 22, width }),
+								marginBottom: verticalScale({ size: 8, height })
 							}
 						]}>
 						Rocket.Chat
@@ -346,8 +357,8 @@ class NewServerView extends React.Component {
 							styles.subtitle,
 							{
 								color: themes[theme].controlText,
-								fontSize: moderateScale(16, null, width),
-								marginBottom: verticalScale(30, height)
+								fontSize: moderateScale({ size: 16, width }),
+								marginBottom: verticalScale({ size: 30, height })
 							}
 						]}>
 						{I18n.t('Onboarding_subtitle')}
@@ -367,7 +378,7 @@ class NewServerView extends React.Component {
 						onPress={this.submit}
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
-						style={[styles.connectButton, { marginTop: verticalScale(16, height) }]}
+						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
 						theme={theme}
 						testID='new-server-view-button'
 					/>
@@ -377,8 +388,8 @@ class NewServerView extends React.Component {
 							styles.description,
 							{
 								color: themes[theme].auxiliaryText,
-								fontSize: moderateScale(14, null, width),
-								marginBottom: verticalScale(16, height)
+								fontSize: moderateScale({ size: 14, width }),
+								marginBottom: verticalScale({ size: 16, height })
 							}
 						]}>
 						{I18n.t('Onboarding_join_open_description')}
@@ -400,14 +411,15 @@ class NewServerView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	connecting: state.server.connecting,
 	previousServer: state.server.previousServer
 });
 
-const mapDispatchToProps = dispatch => ({
-	connectServer: (...params) => dispatch(serverRequest(...params)),
-	selectServer: server => dispatch(selectServerRequest(server)),
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	connectServer: (server: string, username: string & null, fromServerHistory?: boolean) =>
+		dispatch(serverRequest(server, username, fromServerHistory)),
+	selectServer: (server: string) => dispatch(selectServerRequest(server)),
 	inviteLinksClear: () => dispatch(inviteLinksClearAction()),
 	serverFinishAdd: () => dispatch(serverFinishAddAction())
 });

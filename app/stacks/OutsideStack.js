@@ -10,6 +10,7 @@ import NewServerView from '../views/NewServerView';
 import WorkspaceView from '../views/WorkspaceView';
 import LoginView from '../views/LoginView';
 import ForgotPasswordView from '../views/ForgotPasswordView';
+import SendEmailConfirmationView from '../views/SendEmailConfirmationView';
 import RegisterView from '../views/RegisterView';
 import LegalView from '../views/LegalView';
 import AuthenticationWebView from '../views/AuthenticationWebView';
@@ -25,6 +26,11 @@ const _OutsideStack = () => {
 			<Outside.Screen name='WorkspaceView' component={WorkspaceView} options={WorkspaceView.navigationOptions} />
 			<Outside.Screen name='LoginView' component={LoginView} options={LoginView.navigationOptions} />
 			<Outside.Screen name='ForgotPasswordView' component={ForgotPasswordView} options={ForgotPasswordView.navigationOptions} />
+			<Outside.Screen
+				name='SendEmailConfirmationView'
+				component={SendEmailConfirmationView}
+				options={SendEmailConfirmationView.navigationOptions}
+			/>
 			<Outside.Screen name='RegisterView' component={RegisterView} options={RegisterView.navigationOptions} />
 			<Outside.Screen name='LegalView' component={LegalView} options={LegalView.navigationOptions} />
 		</Outside.Navigator>

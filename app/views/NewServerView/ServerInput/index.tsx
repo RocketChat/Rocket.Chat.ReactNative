@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import TextInput from '../../../containers/TextInput';
 import * as List from '../../../containers/List';
 import { themes } from '../../../constants/colors';
 import I18n from '../../../i18n';
 import Item from './Item';
+import { IServer } from '../index';
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,7 +28,25 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ServerInput = ({ text, theme, serversHistory, onChangeText, onSubmit, onDelete, onPressServerHistory }) => {
+interface IServerInput {
+	text: string;
+	theme: string;
+	serversHistory: any[];
+	onChangeText(text: string): void;
+	onSubmit(): void;
+	onDelete(item: IServer): void;
+	onPressServerHistory(serverHistory: IServer): void;
+}
+
+const ServerInput = ({
+	text,
+	theme,
+	serversHistory,
+	onChangeText,
+	onSubmit,
+	onDelete,
+	onPressServerHistory
+}: IServerInput): JSX.Element => {
 	const [focused, setFocused] = useState(false);
 	return (
 		<View style={styles.container}>
@@ -66,16 +84,6 @@ const ServerInput = ({ text, theme, serversHistory, onChangeText, onSubmit, onDe
 			) : null}
 		</View>
 	);
-};
-
-ServerInput.propTypes = {
-	text: PropTypes.string,
-	theme: PropTypes.string,
-	serversHistory: PropTypes.array,
-	onChangeText: PropTypes.func,
-	onSubmit: PropTypes.func,
-	onDelete: PropTypes.func,
-	onPressServerHistory: PropTypes.func
 };
 
 export default ServerInput;
