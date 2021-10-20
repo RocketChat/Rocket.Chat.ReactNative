@@ -11,6 +11,9 @@ export default {
 	FP_FORGOT_PASSWORD: 'fp_forgot_password',
 	FP_FORGOT_PASSWORD_F: 'fp_forgot_password_f',
 
+	// SEND EMAIL CONFIRMATION VIEW
+	SEC_SEND_EMAIL_CONFIRMATION: 'sec_send_email_confirmation',
+
 	// REGISTER VIEW
 	REGISTER_DEFAULT_SIGN_UP: 'register_default_sign_up',
 	REGISTER_DEFAULT_SIGN_UP_F: 'register_default_sign_up_f',

@@ -120,6 +120,7 @@ class RoomView extends React.Component {
 		Message_Read_Receipt_Enabled: PropTypes.bool,
 		Hide_System_Messages: PropTypes.array,
 		baseUrl: PropTypes.string,
+		serverVersion: PropTypes.string,
 		customEmojis: PropTypes.object,
 		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
@@ -1154,7 +1155,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, reactionsModalVisible, selectedMessage, loading, reacting, showingBlockingLoader } = this.state;
-		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height } = this.props;
+		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion } = this.props;
 		const { rid, t, sysMes, bannerClosed, announcement } = room;
 
 		return (
@@ -1182,6 +1183,7 @@ class RoomView extends React.Component {
 					navigation={navigation}
 					hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
 					showMessageInMainThread={user.showMessageInMainThread}
+					serverVersion={serverVersion}
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}
@@ -1220,6 +1222,7 @@ const mapStateToProps = state => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
+	serverVersion: state.server.version,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
 	Hide_System_Messages: state.settings.Hide_System_Messages
 });

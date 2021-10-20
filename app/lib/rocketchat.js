@@ -5,6 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNFetchBlob from 'rn-fetch-blob';
+import isEmpty from 'lodash/isEmpty';
 
 import defaultSettings from '../constants/settings';
 import log from '../utils/log';
@@ -530,6 +531,10 @@ const RocketChat = {
 		return this.post('users.forgotPassword', { email }, false);
 	},
 
+	sendConfirmationEmail(email) {
+		return this.methodCallWrapper('sendConfirmationEmail', email);
+	},
+
 	loginTOTP(params, loginEmailPassword, isFromWebView = false) {
 		return new Promise(async (resolve, reject) => {
 			try {
@@ -622,7 +627,8 @@ const RocketChat = {
 			roles: result.me.roles,
 			avatarETag: result.me.avatarETag,
 			isFromWebView,
-			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true
+			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true,
+			enableMessageParserEarlyAdoption: result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true
 		};
 		return user;
 	},
@@ -1069,8 +1075,12 @@ const RocketChat = {
 	},
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
+		const { user } = reduxStore.getState().login;
 		if (API_Use_REST_For_DDP_Calls) {
-			return this.post(`method.call/${method}`, { message: EJSON.stringify({ method, params }) });
+			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
+			return this.post(`${url}/${method}`, {
+				message: EJSON.stringify({ method, params })
+			});
 		}
 		const parsedParams = params.map(param => {
 			if (param instanceof Date) {
