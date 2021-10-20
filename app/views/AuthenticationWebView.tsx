@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { WebView } from 'react-native-webview';
+import { WebView, WebViewNavigation } from 'react-native-webview';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 
 import RocketChat from '../lib/rocketchat';
 import { isIOS } from '../utils/deviceInfo';
@@ -40,17 +41,44 @@ window.addEventListener('popstate', function() {
 });
 `;
 
-class AuthenticationWebView extends React.PureComponent {
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		server: PropTypes.string,
-		Accounts_Iframe_api_url: PropTypes.bool,
-		Accounts_Iframe_api_method: PropTypes.bool,
-		theme: PropTypes.string
+interface IRoute {
+	params: {
+		authType: string;
+		url: string;
+		ssoToken?: string;
+	};
+}
+
+interface INavigationOption {
+	navigation: StackNavigationProp<any, 'AuthenticationWebView'>;
+	route: IRoute;
+}
+
+interface IAuthenticationWebView extends INavigationOption {
+	server: string;
+	Accounts_Iframe_api_url: string;
+	Accounts_Iframe_api_method: string;
+	theme: string;
+}
+
+interface IState {
+	logging: boolean;
+	loading: boolean;
+}
+
+class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, IState> {
+	private oauthRedirectRegex: RegExp;
+	private iframeRedirectRegex: RegExp;
+
+	static navigationOptions = ({ route, navigation }: INavigationOption) => {
+		const { authType } = route.params;
+		return {
+			headerLeft: () => <HeaderButton.CloseModal navigation={navigation} />,
+			title: ['saml', 'cas', 'iframe'].includes(authType) ? 'SSO' : 'OAuth'
+		};
 	};
 
-	constructor(props) {
+	constructor(props: IAuthenticationWebView) {
 		super(props);
 		this.state = {
 			logging: false,
@@ -71,7 +99,7 @@ class AuthenticationWebView extends React.PureComponent {
 		navigation.pop();
 	};
 
-	login = params => {
+	login = (params: any) => {
 		const { logging } = this.state;
 		if (logging) {
 			return;
@@ -89,7 +117,7 @@ class AuthenticationWebView extends React.PureComponent {
 	};
 
 	// Force 3s delay so the server has time to evaluate the token
-	debouncedLogin = debounce(params => this.login(params), 3000);
+	debouncedLogin = debounce((params: any) => this.login(params), 3000);
 
 	tryLogin = debounce(
 		async () => {
@@ -104,7 +132,7 @@ class AuthenticationWebView extends React.PureComponent {
 		true
 	);
 
-	onNavigationStateChange = webViewState => {
+	onNavigationStateChange = (webViewState: WebViewNavigation | WebViewMessage) => {
 		const url = decodeURIComponent(webViewState.url);
 		const { route } = this.props;
 		const { authType } = route.params;
@@ -180,18 +208,10 @@ class AuthenticationWebView extends React.PureComponent {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server,
 	Accounts_Iframe_api_url: state.settings.Accounts_Iframe_api_url,
 	Accounts_Iframe_api_method: state.settings.Accounts_Iframe_api_method
 });
-
-AuthenticationWebView.navigationOptions = ({ route, navigation }) => {
-	const { authType } = route.params;
-	return {
-		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} />,
-		title: ['saml', 'cas', 'iframe'].includes(authType) ? 'SSO' : 'OAuth'
-	};
-};
 
 export default connect(mapStateToProps)(withTheme(AuthenticationWebView));

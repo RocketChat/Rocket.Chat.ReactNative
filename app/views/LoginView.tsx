@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Alert, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
 
 import Button from '../containers/Button';
 import I18n from '../i18n';
@@ -46,31 +47,35 @@ const styles = StyleSheet.create({
 	}
 });
 
-class LoginView extends React.Component {
-	static navigationOptions = ({ route, navigation }) => ({
-		title: route.params?.title ?? 'Rocket.Chat',
+interface IProps {
+	navigation: StackNavigationProp<any>;
+	route: RouteProp<any, 'RegisterView'>;
+	Site_Name: string;
+	Accounts_RegistrationForm: string;
+	Accounts_RegistrationForm_LinkReplacementText: string;
+	Accounts_EmailOrUsernamePlaceholder: string;
+	Accounts_PasswordPlaceholder: string;
+	Accounts_PasswordReset: boolean;
+	Accounts_ShowFormLogin: boolean;
+	isFetching: boolean;
+	error: {
+		error: string;
+	};
+	failure: boolean;
+	theme: string;
+	loginRequest: Function;
+	inviteLinkToken: string;
+}
+
+class LoginView extends React.Component<IProps, any> {
+	private passwordInput: any;
+
+	static navigationOptions = ({ route, navigation }: Partial<IProps>) => ({
+		title: route?.params?.title ?? 'Rocket.Chat',
 		headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		Site_Name: PropTypes.string,
-		Accounts_RegistrationForm: PropTypes.string,
-		Accounts_RegistrationForm_LinkReplacementText: PropTypes.string,
-		Accounts_EmailOrUsernamePlaceholder: PropTypes.string,
-		Accounts_PasswordPlaceholder: PropTypes.string,
-		Accounts_PasswordReset: PropTypes.bool,
-		Accounts_ShowFormLogin: PropTypes.bool,
-		isFetching: PropTypes.bool,
-		error: PropTypes.object,
-		failure: PropTypes.bool,
-		theme: PropTypes.string,
-		loginRequest: PropTypes.func,
-		inviteLinkToken: PropTypes.string
-	};
-
-	constructor(props) {
+	constructor(props: IProps) {
 		super(props);
 		this.state = {
 			user: props.route.params?.username ?? '',
@@ -78,10 +83,10 @@ class LoginView extends React.Component {
 		};
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps: IProps) {
 		const { error } = this.props;
 		if (nextProps.failure && !dequal(error, nextProps.error)) {
-			if (nextProps.error.error === 'error-invalid-email') {
+			if (nextProps.error?.error === 'error-invalid-email') {
 				this.resendEmailConfirmation();
 			} else {
 				Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
@@ -156,7 +161,7 @@ class LoginView extends React.Component {
 					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
 					keyboardType='email-address'
 					returnKeyType='next'
-					onChangeText={value => this.setState({ user: value })}
+					onChangeText={(value: string) => this.setState({ user: value })}
 					onSubmitEditing={() => {
 						this.passwordInput.focus();
 					}}
@@ -176,7 +181,7 @@ class LoginView extends React.Component {
 					returnKeyType='send'
 					secureTextEntry
 					onSubmitEditing={this.submit}
-					onChangeText={value => this.setState({ password: value })}
+					onChangeText={(value: string) => this.setState({ password: value })}
 					testID='login-view-password'
 					textContentType='password'
 					autoCompleteType='password'
@@ -237,7 +242,7 @@ class LoginView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
 	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
@@ -252,8 +257,8 @@ const mapStateToProps = state => ({
 	inviteLinkToken: state.inviteLinks.token
 });
 
-const mapDispatchToProps = dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
+const mapDispatchToProps = (dispatch: any) => ({
+	loginRequest: (params: any) => dispatch(loginRequestAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginView));

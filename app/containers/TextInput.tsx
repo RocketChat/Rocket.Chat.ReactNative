@@ -146,17 +146,10 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
 				{label ? (
-					<Text
-						contentDescription={null}
-						// @ts-ignore
-						accessibilityLabel={null}
-						style={[styles.label, { color: themes[theme].titleText }, error?.error && { color: dangerColor }]}>
-						{label}
-					</Text>
+					<Text style={[styles.label, { color: themes[theme].titleText }, error?.error && { color: dangerColor }]}>{label}</Text>
 				) : null}
 				<View style={styles.wrap}>
 					<TextInput
-						/* @ts-ignore*/
 						style={[
 							styles.input,
 							iconLeft && styles.inputIconLeft,
@@ -173,7 +166,6 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 							inputStyle
 						]}
 						ref={inputRef}
-						/* @ts-ignore*/
 						autoCorrect={false}
 						autoCapitalize='none'
 						underlineColorAndroid='transparent'
@@ -181,8 +173,6 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 						testID={testID}
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
-						/* @ts-ignore*/
-						contentDescription={placeholder}
 						theme={theme}
 						{...inputProps}
 					/>
