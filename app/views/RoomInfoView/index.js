@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, ScrollView, Alert, Modal, Pressable
+	View, Text, ScrollView
 } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
@@ -82,7 +82,6 @@ class RoomInfoView extends React.Component {
 			room: room || { rid: this.rid, t: this.t },
 			roomUser: roomUser || {},
 			showEdit: false,
-			modalVisible: false,
 			connectButton: false
 		};
 	}
@@ -287,10 +286,6 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
-	setModalVisible = (visible) => {
-		this.setState({ modalVisible: visible });
-	  }
-
 	connect = async() => {
 		const { user } = this.props;
 		const { roomUser } = this.state;
@@ -304,7 +299,8 @@ class RoomInfoView extends React.Component {
 
 		try {
 			const result = await RocketChat.saveUserProfile({}, user.customFields);
-			 this.setModalVisible(true);
+			await this.createDirect();
+			this.goRoom();
 		} catch (e) {
 			showErrorAlert(e.message, I18n.t('Oops'));
 		}
@@ -405,36 +401,6 @@ class RoomInfoView extends React.Component {
 		}
 	}
 
-	renderModal = () => {
-		const { modalVisible, roomUser } = this.state;
-		return	(
-			<Modal
-				animationType='slide'
-				transparent
-				visible={modalVisible}
-				onRequestClose={() => {
-		  Alert.alert('Modal has been closed.');
-		  this.setModalVisible(!modalVisible);
-				}}
-			><View style={styles.centeredView}>
-				<View style={styles.modalView}>
-						<Text style={styles.modalText}>Get the conversation started!</Text>
-						<Text style={styles.modalText}>Introduce yourself to your new peer supporter!</Text>
-						<Pressable
-						style={[styles.button, styles.buttonClose]}
-						onPress={async() => {
-								this.setModalVisible(!modalVisible);
-								await this.createDirect();
-								this.goRoom();
-		  }}
-					><CustomIcon name='send-filled' color='white' size={20} />
-						<Text style={styles.textStyle}>Message</Text>
-					</Pressable>
-					</View>
-			</View>
-			</Modal>
-		);
-	}
 
 	renderStatus = (room, roomUser) => {
 		const { theme } = this.props;
@@ -466,30 +432,19 @@ class RoomInfoView extends React.Component {
 		};
 
 		return (
-			connect ? (
-				<Button
-					style={{ marginTop: 10, borderRadius: 20, width: '50%' }}
-					title={I18n.t('Connect')}
-					type='primary'
-					onPress={onActionPress}
-					disabled={false}
-					testID='profile-library-view-connect'
-					theme={theme}
-					backgroundColor={themes[theme].connectButtonColor}
+
+			<BorderlessButton
+				onPress={onActionPress}
+				style={styles.roomButton}
+			>
+				<CustomIcon
+					name={iconName}
+					size={30}
+					color={themes[theme].actionTintColor}
 				/>
-			) : (
-				<BorderlessButton
-					onPress={onActionPress}
-					style={styles.roomButton}
-				>
-					<CustomIcon
-						name={iconName}
-						size={30}
-						color={themes[theme].actionTintColor}
-					/>
-					<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
-				</BorderlessButton>
-			)
+				<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
+			</BorderlessButton>
+
 		);
 	}
 
@@ -513,8 +468,8 @@ class RoomInfoView extends React.Component {
 
 			) : (
 				<View style={styles.roomButtonsContainer}>
-					{this.renderButton(this.goRoom, 'message', I18n.t('Message'), true)}
-					{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call'), false) : null}
+					{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
+					{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
 				</View>
 			);
 	}
@@ -578,7 +533,7 @@ class RoomInfoView extends React.Component {
 	}
 
 	render() {
-		const { room, roomUser, modalVisible } = this.state;
+		const { room, roomUser } = this.state;
 		const { theme, user, route } = this.props;
 
 		const isPeerSupporter = route.params?.isPeerSupporter;
@@ -615,7 +570,7 @@ class RoomInfoView extends React.Component {
 
 					</View>
 
-					{isConnected ? this.renderModal() : null}
+
 					{this.renderContent(isAdmin, isPeerSupporter, canConnect, isConnected)}
 
 				</SafeAreaView>
