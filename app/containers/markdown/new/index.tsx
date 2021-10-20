@@ -10,6 +10,7 @@ import OrderedList from './OrderedList';
 import UnorderedList from './UnorderedList';
 import { UserMention } from '../../message/interfaces';
 import TaskList from './TaskList';
+import MarkdownContext from './MarkdownContext';
 
 interface IBodyProps {
 	tokens: MarkdownAST;
@@ -35,11 +36,20 @@ const Body = ({
 	getCustomEmoji,
 	baseUrl
 }: IBodyProps): JSX.Element => (
-	<>
+	<MarkdownContext.Provider
+		value={{
+			mentions,
+			channels,
+			useRealName,
+			username,
+			navToRoomInfo,
+			getCustomEmoji,
+			baseUrl
+		}}>
 		{tokens.map(block => {
 			switch (block.type) {
 				case 'BIG_EMOJI':
-					return <BigEmoji value={block.value} getCustomEmoji={getCustomEmoji!} baseUrl={baseUrl} />;
+					return <BigEmoji value={block.value} />;
 				case 'UNORDERED_LIST':
 					return <UnorderedList value={block.value} />;
 				case 'ORDERED_LIST':
@@ -49,18 +59,7 @@ const Body = ({
 				case 'QUOTE':
 					return <Quote value={block.value} />;
 				case 'PARAGRAPH':
-					return (
-						<Paragraph
-							value={block.value}
-							navToRoomInfo={navToRoomInfo}
-							baseUrl={baseUrl}
-							getCustomEmoji={getCustomEmoji!}
-							channels={channels}
-							mentions={mentions}
-							useRealName={useRealName}
-							username={username}
-						/>
-					);
+					return <Paragraph value={block.value} />;
 				case 'CODE':
 					return <Code value={block.value} />;
 				case 'HEADING':
@@ -69,7 +68,7 @@ const Body = ({
 					return null;
 			}
 		})}
-	</>
+	</MarkdownContext.Provider>
 );
 
 export default Body;

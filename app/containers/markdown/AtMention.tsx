@@ -10,7 +10,7 @@ interface IAtMention {
 	mention: string;
 	username: string;
 	navToRoomInfo: Function;
-	style: any;
+	style?: any;
 	useRealName: boolean;
 	mentions: any;
 }

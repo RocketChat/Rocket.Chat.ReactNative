@@ -18,8 +18,7 @@ const Quote = ({ value }: IQuoteProps): JSX.Element => {
 			<View style={[styles.quote, { backgroundColor: themes[theme!].borderColor }]} />
 			<View style={styles.childContainer}>
 				{value.map(item => (
-					// @ts-ignore
-					<Paragraph value={item.value} mentions={[]} />
+					<Paragraph value={item.value} />
 				))}
 			</View>
 		</View>

@@ -8,7 +8,7 @@ import styles from './styles';
 interface IHashtag {
 	hashtag: string;
 	navToRoomInfo: Function;
-	style: TextStyle[];
+	style?: TextStyle[];
 	channels: {
 		[index: number]: string | number;
 		name: string;
