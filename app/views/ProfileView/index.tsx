@@ -2,7 +2,7 @@ import React from 'react';
 import { Keyboard, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
-import SHA256 from 'js-sha256';
+import { sha256 } from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { dequal } from 'dequal';
@@ -42,8 +42,15 @@ interface IUser {
 		};
 	};
 	customFields: {
-		[index: string | number]: {};
+		[index: string | number]: string;
 	};
+}
+
+interface IAvatarButton {
+	key: React.Key;
+	child: React.ReactNode;
+	onPress: Function;
+	disabled: boolean;
 }
 
 interface IProfileViewProps {
@@ -65,6 +72,8 @@ class ProfileView extends React.Component<IProfileViewProps> {
 	private name: any;
 	private username: any;
 	private email: any;
+	private avatarUrl: any;
+	private newPassword: any;
 
 	static navigationOptions = ({ navigation, isMasterDetail }: Partial<IProfileViewProps>) => {
 		const options: any = {
@@ -188,16 +197,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 
 		const { name, username, email, newPassword, currentPassword, avatar, customFields } = this.state;
 		const { user, setUser } = this.props;
-		const params: {
-			name?: string | null;
-			username?: string | null;
-			email: string | null;
-			newPassword: string | null;
-			currentPassword: any;
-		} = {
-			name: null,
-			username: null
-		};
+		const params: any = {};
 
 		// Name
 		if (user.name !== name) {
@@ -221,7 +221,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 
 		// currentPassword
 		if (currentPassword) {
-			params.currentPassword = SHA256(currentPassword);
+			params.currentPassword = sha256(currentPassword);
 		}
 
 		const requirePassword = !!params.email || newPassword;
@@ -234,7 +234,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 					{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
 					{
 						text: I18n.t('Save'),
-						onPress: p => {
+						onPress: (p: string) => {
 							this.setState({ currentPassword: p });
 							this.submit();
 						}
@@ -323,12 +323,12 @@ class ProfileView extends React.Component<IProfileViewProps> {
 		}
 	};
 
-	pickImageWithURL = (avatarUrl: string) => {
+	pickImageWithURL = (avatarUrl: string | null) => {
 		logEvent(events.PROFILE_PICK_AVATAR_WITH_URL);
 		this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' });
 	};
 
-	renderAvatarButton = ({ key, child, onPress, disabled = false }) => {
+	renderAvatarButton = ({ key, child, onPress, disabled = false }: IAvatarButton) => {
 		const { theme } = this.props;
 		return (
 			<Touch
@@ -397,13 +397,13 @@ class ProfileView extends React.Component<IProfileViewProps> {
 			const parsedCustomFields = JSON.parse(Accounts_CustomFields);
 			return Object.keys(parsedCustomFields).map((key, index, array) => {
 				if (parsedCustomFields[key].type === 'select') {
-					const options = parsedCustomFields[key].options.map(option => ({ label: option, value: option }));
+					const options = parsedCustomFields[key].options.map((option: string) => ({ label: option, value: option }));
 					return (
 						<RNPickerSelect
 							key={key}
 							items={options}
 							onValueChange={value => {
-								const newValue = {};
+								const newValue: { [key: string]: string } = {};
 								newValue[key] = value;
 								this.setState({ customFields: { ...customFields, ...newValue } });
 							}}
@@ -432,7 +432,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 						placeholder={key}
 						value={customFields[key]}
 						onChangeText={value => {
-							const newValue = {};
+							const newValue: { [key: string]: string } = {};
 							newValue[key] = value;
 							this.setState({ customFields: { ...customFields, ...newValue } });
 						}}
@@ -502,7 +502,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 							label={I18n.t('Name')}
 							placeholder={I18n.t('Name')}
 							value={name}
-							onChangeText={value => this.setState({ name: value })}
+							onChangeText={(value: string) => this.setState({ name: value })}
 							onSubmitEditing={() => {
 								this.username.focus();
 							}}
