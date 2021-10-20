@@ -66,6 +66,7 @@ const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
 const FAVORITES_HEADER = 'Favorites';
+const TEAMS_HEADER = 'Teams';
 const PEER_SUPPORTERS_HEADER = 'Peer_supporter';
 const DISCUSSIONS_HEADER = 'Discussions';
 const CHANNELS_HEADER = 'Channels';
@@ -76,6 +77,8 @@ const QUERY_SIZE = 20;
 const filterIsUnread = s => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
 const filterIsFavorite = s => s.f;
 const filterIsOmnichannel = s => s.t === 'l';
+const filterIsTeam = s => s.teamMain;
+const filterIsDiscussion = s => s.prid;
 
 
 const shouldUpdateProps = [
@@ -512,12 +515,11 @@ class RoomsListView extends React.Component {
 				const direct = chats.filter(s => s.t === 'd' && !filterIsDiscussion(s) && !filterIsTeam(s));
 
 				const peerSupporter = chats.filter(s => s.t === 'd' && user?.customFields?.ConnectIds?.includes(s.name));
-
+				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(teams, TEAMS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
-				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS_HEADER, tempChats);
 			} else if (showUnread || showFavorites || isOmnichannelAgent) {
 				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
