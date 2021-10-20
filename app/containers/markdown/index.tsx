@@ -361,7 +361,8 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			useRealName,
 			username,
 			getCustomEmoji,
-			baseUrl
+			baseUrl,
+			onLinkPress
 		} = this.props;
 
 		if (!msg) {
@@ -379,6 +380,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 					mentions={mentions}
 					channels={channels}
 					navToRoomInfo={navToRoomInfo}
+					onLinkPress={onLinkPress}
 				/>
 			);
 		}

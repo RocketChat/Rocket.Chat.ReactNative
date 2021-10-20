@@ -20,6 +20,7 @@ interface IBodyProps {
 		_id: number;
 	}[];
 	getCustomEmoji?: Function;
+	onLinkPress?: Function;
 	navToRoomInfo: Function;
 	useRealName: boolean;
 	username: string;
@@ -34,7 +35,8 @@ const Body = ({
 	username,
 	navToRoomInfo,
 	getCustomEmoji,
-	baseUrl
+	baseUrl,
+	onLinkPress
 }: IBodyProps): JSX.Element => (
 	<MarkdownContext.Provider
 		value={{
@@ -44,7 +46,8 @@ const Body = ({
 			username,
 			navToRoomInfo,
 			getCustomEmoji,
-			baseUrl
+			baseUrl,
+			onLinkPress
 		}}>
 		{tokens.map(block => {
 			switch (block.type) {

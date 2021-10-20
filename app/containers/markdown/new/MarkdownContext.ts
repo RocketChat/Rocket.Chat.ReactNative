@@ -8,20 +8,21 @@ interface IMarkdownContext {
 		name: string;
 		_id: number;
 	}[];
-	navToRoomInfo: Function;
 	useRealName: boolean;
 	username: string;
 	baseUrl: string;
+	navToRoomInfo: Function;
 	getCustomEmoji?: Function;
+	onLinkPress?: Function;
 }
 
 const defaultState = {
 	mentions: [],
 	channels: [],
-	navToRoomInfo: () => {},
 	useRealName: false,
 	username: '',
-	baseUrl: ''
+	baseUrl: '',
+	navToRoomInfo: () => {}
 };
 
 const MarkdownContext = React.createContext<IMarkdownContext>(defaultState);

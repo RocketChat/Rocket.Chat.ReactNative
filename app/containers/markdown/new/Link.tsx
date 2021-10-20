@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Text, Clipboard } from 'react-native';
 import { Link as LinkProps } from '@rocket.chat/message-parser';
 
@@ -12,6 +12,7 @@ import { themes } from '../../../constants/colors';
 import Strike from './Strike';
 import Italic from './Italic';
 import Bold from './Bold';
+import MarkdownContext from './MarkdownContext';
 
 interface ILinkProps {
 	value: LinkProps['value'];
@@ -19,10 +20,14 @@ interface ILinkProps {
 
 const Link = ({ value }: ILinkProps): JSX.Element => {
 	const { theme } = useTheme();
+	const { onLinkPress } = useContext(MarkdownContext);
 	const { src, label } = value;
 	const handlePress = () => {
 		if (!src.value) {
 			return;
+		}
+		if (onLinkPress) {
+			return onLinkPress(src.value);
 		}
 		openLink(src.value, theme);
 	};
