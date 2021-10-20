@@ -357,7 +357,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 			unread,
 			blocks,
 			autoTranslate: autoTranslateMessage,
-			replies
+			replies,
+			md
 		} = item;
 
 		let message = msg;
@@ -391,6 +392,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 				<Message
 					id={id}
 					msg={message}
+					md={md}
 					rid={rid}
 					author={u}
 					ts={ts}

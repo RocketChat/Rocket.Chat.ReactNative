@@ -8,7 +8,6 @@ const initialState = {
 	searchText: '',
 	showServerDropdown: false,
 	closeServerDropdown: false,
-	showSortDropdown: false,
 	showSearchHeader: false
 };
 
@@ -55,16 +54,6 @@ export default function login(state = initialState, action) {
 			return {
 				...state,
 				showServerDropdown: !state.showServerDropdown
-			};
-		case types.ROOMS.CLOSE_SORT_DROPDOWN:
-			return {
-				...state,
-				closeSortDropdown: !state.closeSortDropdown
-			};
-		case types.ROOMS.TOGGLE_SORT_DROPDOWN:
-			return {
-				...state,
-				showSortDropdown: !state.showSortDropdown
 			};
 		case types.ROOMS.OPEN_SEARCH_HEADER:
 			return {

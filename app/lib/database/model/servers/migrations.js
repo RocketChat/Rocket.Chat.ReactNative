@@ -94,6 +94,15 @@ export default schemaMigrations({
 					columns: [{ name: 'is_from_webview', type: 'boolean', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 12,
+			steps: [
+				addColumns({
+					table: 'users',
+					columns: [{ name: 'enable_message_parser_early_adoption', type: 'boolean', isOptional: true }]
+				})
+			]
 		}
 	]
 });
