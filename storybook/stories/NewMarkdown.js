@@ -22,6 +22,15 @@ const styles = StyleSheet.create({
 	}
 });
 
+const getCustomEmoji = content => {
+	const customEmoji = {
+		marioparty: { name: content, extension: 'gif' },
+		nyan_rocket: { name: content, extension: 'png' }
+	}[content];
+	return customEmoji;
+};
+const baseUrl = 'https://open.rocket.chat';
+
 const simpleTextMsg = [
 	{
 		type: 'PARAGRAPH',
@@ -104,28 +113,24 @@ const boldOrUnderscoreMsg = [
 		type: 'PARAGRAPH',
 		value: [
 			{
-				type: 'PLAIN_TEXT',
-				value: 'Strong emphasis, aka bold, with '
-			},
-			{
 				type: 'BOLD',
 				value: [
 					{
 						type: 'PLAIN_TEXT',
-						value: 'asterisks'
+						value: 'This is bold'
 					}
 				]
 			},
 			{
 				type: 'PLAIN_TEXT',
-				value: ' or '
+				value: ' and '
 			},
 			{
 				type: 'ITALIC',
 				value: [
 					{
 						type: 'PLAIN_TEXT',
-						value: 'underscore'
+						value: 'this is italic'
 					}
 				]
 			}
@@ -235,7 +240,13 @@ const multipleMentions = [
 stories.add('Mentions', () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={allMentionTokens} mentions={allMentions} navToRoomInfo={() => {}} style={[]} />
-		<NewMarkdown tokens={multipleMentionTokens} mentions={multipleMentions} navToRoomInfo={() => {}} style={[]} />
+		<NewMarkdown
+			tokens={multipleMentionTokens}
+			mentions={multipleMentions}
+			navToRoomInfo={() => {}}
+			style={[]}
+			username='rocket.cat'
+		/>
 	</View>
 ));
 
@@ -248,6 +259,17 @@ const channelTokens = [
 				value: {
 					type: 'PLAIN_TEXT',
 					value: 'text_channel'
+				}
+			},
+			{
+				type: 'PLAIN_TEXT',
+				value: ' and '
+			},
+			{
+				type: 'MENTION_CHANNEL',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'not_a_channel'
 				}
 			}
 		]
@@ -268,21 +290,6 @@ stories.add('Hashtag', () => (
 ));
 
 const bigEmojiTokens = [
-	{
-		type: 'BIG_EMOJI',
-		value: [
-			{
-				type: 'EMOJI',
-				value: {
-					type: 'PLAIN_TEXT',
-					value: 'green_heart'
-				}
-			}
-		]
-	}
-];
-
-const multipleBigEmojiTokens = [
 	{
 		type: 'BIG_EMOJI',
 		value: [
@@ -328,6 +335,20 @@ const emojiTokens = [
 					type: 'PLAIN_TEXT',
 					value: 'facepalm'
 				}
+			},
+			{
+				type: 'EMOJI',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'nyan_rocket'
+				}
+			},
+			{
+				type: 'EMOJI',
+				value: {
+					type: 'PLAIN_TEXT',
+					value: 'marioparty'
+				}
 			}
 		]
 	}
@@ -336,8 +357,7 @@ const emojiTokens = [
 stories.add('Emoji', () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={bigEmojiTokens} />
-		<NewMarkdown tokens={multipleBigEmojiTokens} />
-		<NewMarkdown tokens={emojiTokens} />
+		<NewMarkdown tokens={emojiTokens} getCustomEmoji={getCustomEmoji} baseUrl={baseUrl} />
 	</View>
 ));
 

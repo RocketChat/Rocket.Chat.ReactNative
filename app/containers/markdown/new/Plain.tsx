@@ -13,7 +13,7 @@ interface IPlainProps {
 const Plain = ({ value }: IPlainProps): JSX.Element => {
 	const { theme } = useTheme();
 	return (
-		<Text accessibilityLabel={value} style={[styles.text, { color: themes[theme!].bodyText }]}>
+		<Text accessibilityLabel={value} style={[styles.plainText, { color: themes[theme!].bodyText }]}>
 			{value}
 		</Text>
 	);

@@ -30,9 +30,12 @@ export default StyleSheet.create<any>({
 	del: {
 		textDecorationLine: 'line-through'
 	},
+	plainText: {
+		fontSize: 16,
+		flexShrink: 1
+	},
 	text: {
 		fontSize: 16,
-		flexShrink: 1,
 		...sharedStyles.textRegular
 	},
 	textInfo: {
