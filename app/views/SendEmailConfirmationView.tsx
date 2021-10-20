@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
 
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -14,11 +15,7 @@ import sharedStyles from './Styles';
 
 interface ISendEmailConfirmationView {
 	navigation: StackNavigationProp<any, 'SendEmailConfirmationView'>;
-	route: {
-		params: {
-			user?: string;
-		};
-	};
+	route: RouteProp<any, 'SendEmailConfirmationView'>;
 }
 
 const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmationView): JSX.Element => {
@@ -64,7 +61,7 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 	}, []);
 
 	return (
-		<FormContainer theme={theme} testID='send-email-confirmation-view'>
+		<FormContainer theme={theme!} testID='send-email-confirmation-view'>
 			<FormContainerInner>
 				<TextInput
 					autoFocus
