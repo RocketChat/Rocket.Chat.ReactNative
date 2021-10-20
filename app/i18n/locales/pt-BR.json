@@ -679,5 +679,7 @@
   "Use": "Use",
   "Shortcut": "Atalho",
   "Content": "Conteúdo",
-  "No_canned_responses": "Não há respostas predefinidas"
+  "No_canned_responses": "Não há respostas predefinidas",
+  "Send_email_confirmation": "Enviar email de confirmação",
+  "sending_email_confirmation": "enviando email de confirmação"
 }
