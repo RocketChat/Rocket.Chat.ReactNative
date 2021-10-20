@@ -1,13 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Keyboard, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
+// eslint-disable-next-line import/no-unresolved
 import prompt from 'react-native-prompt-android';
 import SHA256 from 'js-sha256';
 import ImagePicker from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { dequal } from 'dequal';
 import omit from 'lodash/omit';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import Touch from '../../utils/touch';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -32,31 +33,47 @@ import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 
-class ProfileView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => {
-		const options = {
+interface IUser {
+	name: string;
+	username: string;
+	emails: {
+		[index: number]: {
+			address: string;
+		};
+	};
+	customFields: {
+		[index: string | number]: {};
+	};
+}
+
+interface IProfileViewProps {
+	user: IUser;
+	navigation: StackNavigationProp<any, 'ProfileView'>;
+	isMasterDetail?: boolean;
+	baseUrl: string;
+	Accounts_AllowEmailChange: boolean;
+	Accounts_AllowPasswordChange: boolean;
+	Accounts_AllowRealNameChange: boolean;
+	Accounts_AllowUserAvatarChange: boolean;
+	Accounts_AllowUsernameChange: boolean;
+	Accounts_CustomFields: string;
+	setUser: Function;
+	theme: string;
+}
+
+class ProfileView extends React.Component<IProfileViewProps> {
+	private customFields: any;
+	static navigationOptions = ({ navigation, isMasterDetail }: Partial<IProfileViewProps>) => {
+		const options: any = {
 			title: I18n.t('Profile')
 		};
 		if (!isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.Drawer navigation={navigation} />;
 		}
 		options.headerRight = () => (
-			<HeaderButton.Preferences onPress={() => navigation.navigate('UserPreferencesView')} testID='preferences-view-open' />
+			<HeaderButton.Preferences onPress={() => navigation?.navigate('UserPreferencesView')} testID='preferences-view-open' />
 		);
 		return options;
-	};
-
-	static propTypes = {
-		baseUrl: PropTypes.string,
-		user: PropTypes.object,
-		Accounts_AllowEmailChange: PropTypes.bool,
-		Accounts_AllowPasswordChange: PropTypes.bool,
-		Accounts_AllowRealNameChange: PropTypes.bool,
-		Accounts_AllowUserAvatarChange: PropTypes.bool,
-		Accounts_AllowUsernameChange: PropTypes.bool,
-		Accounts_CustomFields: PropTypes.string,
-		setUser: PropTypes.func,
-		theme: PropTypes.string
 	};
 
 	state = {
@@ -67,7 +84,9 @@ class ProfileView extends React.Component {
 		newPassword: null,
 		currentPassword: null,
 		avatarUrl: null,
-		avatar: {},
+		avatar: {
+			data: {}
+		},
 		avatarSuggestions: {},
 		customFields: {}
 	};
@@ -83,7 +102,7 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps: IProfileViewProps) {
 		const { user } = this.props;
 		/*
 		 * We need to ignore status because on Android ImagePicker
@@ -96,7 +115,7 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	setAvatar = avatar => {
+	setAvatar = (avatar: string) => {
 		const { Accounts_AllowUserAvatarChange } = this.props;
 
 		if (!Accounts_AllowUserAvatarChange) {
@@ -106,7 +125,7 @@ class ProfileView extends React.Component {
 		this.setState({ avatar });
 	};
 
-	init = user => {
+	init = (user?: IUser) => {
 		const { user: userProps } = this.props;
 		const { name, username, emails, customFields } = user || userProps;
 
@@ -421,6 +440,7 @@ class ProfileView extends React.Component {
 
 	logoutOtherLocations = () => {
 		logEvent(events.PL_OTHER_LOCATIONS);
+		// @ts-ignore
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_from_other_locations'),
 			confirmationText: I18n.t('Logout'),
@@ -568,7 +588,7 @@ class ProfileView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state),
 	Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange,
 	Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange,
@@ -579,8 +599,8 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server
 });
 
-const mapDispatchToProps = dispatch => ({
-	setUser: params => dispatch(setUserAction(params))
+const mapDispatchToProps = (dispatch: any) => ({
+	setUser: (params: any) => dispatch(setUserAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ProfileView));
