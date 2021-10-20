@@ -779,5 +779,6 @@
   "Shortcut": "Shortcut",
   "Content": "Content",
   "Sharing": "Sharing",
-  "No_canned_responses": "No canned responses"
+  "No_canned_responses": "No canned responses",
+	"Enable_Message_Parser": "Enable Message Parser"
 }
