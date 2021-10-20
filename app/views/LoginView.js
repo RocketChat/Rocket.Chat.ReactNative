@@ -81,7 +81,11 @@ class LoginView extends React.Component {
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { error } = this.props;
 		if (nextProps.failure && !dequal(error, nextProps.error)) {
-			Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
+			if (nextProps.error.error === 'error-invalid-email') {
+				this.resendEmailConfirmation();
+			} else {
+				Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
+			}
 		}
 	}
 
@@ -103,6 +107,12 @@ class LoginView extends React.Component {
 	forgotPassword = () => {
 		const { navigation, Site_Name } = this.props;
 		navigation.navigate('ForgotPasswordView', { title: Site_Name });
+	};
+
+	resendEmailConfirmation = () => {
+		const { user } = this.state;
+		const { navigation } = this.props;
+		navigation.navigate('SendEmailConfirmationView', { user });
 	};
 
 	valid = () => {
