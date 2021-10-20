@@ -3,7 +3,7 @@ import { Keyboard, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
 import { sha256 } from 'js-sha256';
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { dequal } from 'dequal';
 import omit from 'lodash/omit';
@@ -68,7 +68,31 @@ interface IProfileViewProps {
 	theme: string;
 }
 
-class ProfileView extends React.Component<IProfileViewProps> {
+interface IState {
+	saving: boolean;
+	name: string;
+	username: string;
+	email: string;
+	newPassword: string;
+	currentPassword: string;
+	avatarUrl: string;
+	avatar: {
+		data: {};
+		url: string;
+	};
+	avatarSuggestions: {
+		[service: string]: {
+			url: string;
+			blob: string;
+			contentType: string;
+		};
+	};
+	customFields: {
+		[key: string | number]: string;
+	};
+}
+
+class ProfileView extends React.Component<IProfileViewProps, any> {
 	private name: any;
 	private username: any;
 	private email: any;
@@ -88,17 +112,17 @@ class ProfileView extends React.Component<IProfileViewProps> {
 		return options;
 	};
 
-	state = {
+	state: IState = {
 		saving: false,
-		name: null,
-		username: null,
-		email: null,
-		newPassword: null,
-		currentPassword: null,
-		avatarUrl: null,
+		name: '',
+		username: '',
+		email: '',
+		newPassword: '',
+		currentPassword: '',
+		avatarUrl: '',
 		avatar: {
 			data: {},
-			url: null
+			url: ''
 		},
 		avatarSuggestions: {},
 		customFields: {}
@@ -315,7 +339,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 		};
 		try {
 			logEvent(events.PROFILE_PICK_AVATAR);
-			const response = await ImagePicker.openPicker(options);
+			const response: Image = await ImagePicker.openPicker(options);
 			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' });
 		} catch (error) {
 			logEvent(events.PROFILE_PICK_AVATAR_F);
@@ -410,6 +434,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 							value={customFields[key]}>
 							<RCTextInput
 								inputRef={e => {
+									// @ts-ignore
 									this[key] = e;
 								}}
 								label={key}
@@ -425,6 +450,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 				return (
 					<RCTextInput
 						inputRef={e => {
+							// @ts-ignore
 							this[key] = e;
 						}}
 						key={key}
@@ -438,6 +464,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 						}}
 						onSubmitEditing={() => {
 							if (array.length - 1 > index) {
+								// @ts-ignore
 								return this[array[index + 1]].focus();
 							}
 							this.avatarUrl.focus();
@@ -553,6 +580,7 @@ class ProfileView extends React.Component<IProfileViewProps> {
 							onChangeText={value => this.setState({ newPassword: value })}
 							onSubmitEditing={() => {
 								if (Accounts_CustomFields && Object.keys(customFields).length) {
+									// @ts-ignore
 									return this[Object.keys(customFields)[0]].focus();
 								}
 								this.avatarUrl.focus();
