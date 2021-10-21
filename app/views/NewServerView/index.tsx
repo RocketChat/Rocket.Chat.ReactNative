@@ -187,7 +187,7 @@ class NewServerView extends React.Component<INewServerView, IState> {
 		this.setState({ text: serverHistory.url }, () => this.submit(true, serverHistory?.username));
 	};
 
-	submit = async (fromServerHistory?: boolean, username?: string) => {
+	submit = async (fromServerHistory = false, username?: string) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
