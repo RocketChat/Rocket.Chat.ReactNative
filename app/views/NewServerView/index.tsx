@@ -374,14 +374,14 @@ class NewServerView extends React.Component<INewServerView, IState> {
 						theme={theme}
 						serversHistory={serversHistory}
 						onChangeText={this.onChangeText}
-						onSubmit={() => this.submit()}
+						onSubmit={this.submit}
 						onDelete={this.deleteServerHistory}
 						onPressServerHistory={this.onPressServerHistory}
 					/>
 					<Button
 						title={I18n.t('Connect')}
 						type='primary'
-						onPress={() => this.submit()}
+						onPress={this.submit}
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
 						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
