@@ -782,5 +782,8 @@
   "No_canned_responses": "No canned responses",
   "recording": "recording",
   "typing": "typing",
-  "uploading": "uploading"
+  "uploading": "uploading",
+  "Send_email_confirmation": "Send email confirmation",
+  "sending_email_confirmation": "sending email confirmation",
+	"Enable_Message_Parser": "Enable Message Parser"
 }

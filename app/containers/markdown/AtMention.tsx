@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 
+import { useTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 import { events, logEvent } from '../../utils/log';
@@ -9,20 +10,20 @@ interface IAtMention {
 	mention: string;
 	username: string;
 	navToRoomInfo: Function;
-	style: any;
+	style?: any;
 	useRealName: boolean;
-	theme: string;
 	mentions: any;
 }
 
-const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName, theme }: IAtMention) => {
+const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
+	const { theme } = useTheme();
 	if (mention === 'all' || mention === 'here') {
 		return (
 			<Text
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].mentionGroupColor
+						color: themes[theme!].mentionGroupColor
 					},
 					...style
 				]}>
@@ -34,11 +35,11 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	let mentionStyle = {};
 	if (mention === username) {
 		mentionStyle = {
-			color: themes[theme].mentionMeColor
+			color: themes[theme!].mentionMeColor
 		};
 	} else {
 		mentionStyle = {
-			color: themes[theme].mentionOtherColor
+			color: themes[theme!].mentionOtherColor
 		};
 	}
 
@@ -61,7 +62,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		);
 	}
 
-	return <Text style={[styles.text, { color: themes[theme].bodyText }, ...style]}>{`@${mention}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme!].bodyText }, ...style]}>{`@${mention}`}</Text>;
 });
 
 export default AtMention;
