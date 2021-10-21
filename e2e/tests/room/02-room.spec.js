@@ -21,7 +21,7 @@ async function navigateToRoom(roomName) {
 		.withTimeout(5000);
 }
 
-describe.skip('Room screen', () => {
+describe('Room screen', () => {
 	const mainRoom = data.groups.private.name;
 	let alertButtonType;
 

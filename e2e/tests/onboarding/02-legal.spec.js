@@ -1,6 +1,6 @@
 const { navigateToRegister, navigateToLogin } = require('../../helpers/app');
 
-describe.skip('Legal screen', () => {
+describe('Legal screen', () => {
 	describe('From Login', () => {
 		before(async () => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });

@@ -13,7 +13,7 @@ async function waitForToast() {
 	await sleep(300);
 }
 
-describe.skip('Profile screen', () => {
+describe('Profile screen', () => {
 	let textInputType;
 	let scrollViewType;
 	let alertButtonType;

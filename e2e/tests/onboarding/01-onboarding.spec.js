@@ -1,7 +1,7 @@
 const data = require('../../data');
 const { platformTypes } = require('../../helpers/app');
 
-describe.skip('Onboarding', () => {
+describe('Onboarding', () => {
 	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });

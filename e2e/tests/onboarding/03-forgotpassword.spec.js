@@ -1,7 +1,7 @@
 const data = require('../../data');
 const { navigateToLogin, platformTypes } = require('../../helpers/app');
 
-describe.skip('Forgot password screen', () => {
+describe('Forgot password screen', () => {
 	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });

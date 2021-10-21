@@ -1,5 +1,5 @@
 const data = require('../../data');
-const { navigateToLogin, login, tapBack, searchRoom, sleep } = require('../../helpers/app');
+const { navigateToLogin, login, tapBack, searchRoom, sleep, platformTypes } = require('../../helpers/app');
 
 const toBeConverted = `to-be-converted-${data.random}`;
 const toBeMoved = `to-be-moved-${data.random}`;
@@ -18,6 +18,9 @@ const createChannel = async room => {
 		.toExist()
 		.withTimeout(10000);
 	await element(by.id('create-channel-name')).replaceText(room);
+	await waitFor(element(by.id('create-channel-submit')))
+		.toExist()
+		.withTimeout(10000);
 	await element(by.id('create-channel-submit')).tap();
 	await waitFor(element(by.id('room-view')))
 		.toExist()
@@ -51,8 +54,10 @@ async function navigateToRoomActions(room) {
 }
 
 describe('Move/Convert Team', () => {
+	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});
@@ -72,7 +77,7 @@ describe('Move/Convert Team', () => {
 			await waitFor(element(by.label('You are converting this Channel to a Team. All Members will be kept.')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by.label('Convert')).tap();
+			await element(by.label('Convert').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('room-view')))
 				.toExist()
 				.withTimeout(20000);
@@ -123,7 +128,7 @@ describe('Move/Convert Team', () => {
 			)
 				.toExist()
 				.withTimeout(2000);
-			await element(by.label('Yes, move it!')).tap();
+			await element(by.label('Yes, move it!').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('room-view-header-team-channels')))
 				.toExist()
 				.withTimeout(10000);
@@ -160,7 +165,7 @@ describe('Move/Convert Team', () => {
 			await waitFor(element(by.label('You are converting this Team to a Channel')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by.label('Convert')).tap();
+			await element(by.label('Convert').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('room-view')))
 				.toExist()
 				.withTimeout(20000);

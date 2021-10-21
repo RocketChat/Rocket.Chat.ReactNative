@@ -19,7 +19,7 @@ async function navigateToRoomActions() {
 		.withTimeout(5000);
 }
 
-describe.skip('Join public room', () => {
+describe('Join public room', () => {
 	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });

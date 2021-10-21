@@ -26,7 +26,7 @@ const navToLanguage = async () => {
 		.withTimeout(10000);
 };
 
-describe.skip('i18n', () => {
+describe('i18n', () => {
 	before(async () => {});
 
 	describe('OS language', () => {

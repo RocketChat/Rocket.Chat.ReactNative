@@ -12,7 +12,7 @@ async function navigateToRoom(roomName) {
 		.withTimeout(5000);
 }
 
-describe.skip('Threads', () => {
+describe('Threads', () => {
 	const mainRoom = data.groups.private.name;
 
 	before(async () => {

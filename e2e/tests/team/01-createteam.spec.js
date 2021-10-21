@@ -44,8 +44,11 @@ describe('Create team screen', () => {
 		describe('Usage', () => {
 			it('should get invalid team name', async () => {
 				await element(by.id('create-channel-name')).replaceText(`${data.teams.private.name}`);
+				await waitFor(element(by.id('create-channel-submit')))
+					.toExist()
+					.withTimeout(2000);
 				await element(by.id('create-channel-submit')).tap();
-				await waitFor(element(by.label('OK')))
+				await waitFor(element(by.label('OK').and(by.type(alertButtonType))))
 					.toBeVisible()
 					.withTimeout(5000);
 				await element(by.label('OK').and(by.type(alertButtonType))).tap();
@@ -54,6 +57,9 @@ describe('Create team screen', () => {
 			it('should create private team', async () => {
 				await element(by.id('create-channel-name')).replaceText('');
 				await element(by.id('create-channel-name')).replaceText(teamName);
+				await waitFor(element(by.id('create-channel-submit')))
+					.toExist()
+					.withTimeout(2000);
 				await element(by.id('create-channel-submit')).tap();
 				await waitFor(element(by.id('room-view')))
 					.toExist()
@@ -89,7 +95,7 @@ describe('Create team screen', () => {
 			await waitFor(element(by.label('Yes, delete it!')))
 				.toExist()
 				.withTimeout(5000);
-			await element(by.label('Yes, delete it!')).tap();
+			await element(by.label('Yes, delete it!').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toExist()
 				.withTimeout(10000);

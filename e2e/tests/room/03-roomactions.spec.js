@@ -52,7 +52,7 @@ async function waitForToast() {
 	await sleep(1000);
 }
 
-describe.skip('Room actions screen', () => {
+describe('Room actions screen', () => {
 	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });

@@ -1,7 +1,7 @@
 const data = require('../../data');
 const { tapBack, navigateToLogin, login, tryTapping, platformTypes } = require('../../helpers/app');
 
-describe.skip('Create room screen', () => {
+describe('Create room screen', () => {
 	let alertButtonType;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });

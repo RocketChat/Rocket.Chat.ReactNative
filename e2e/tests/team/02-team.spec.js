@@ -158,6 +158,9 @@ describe('Team', () => {
 					.withTimeout(10000);
 				await element(by.id('create-channel-name')).replaceText('');
 				await element(by.id('create-channel-name')).replaceText(room);
+				await waitFor(element(by.id('create-channel-submit')))
+					.toExist()
+					.withTimeout(10000);
 				await element(by.id('create-channel-submit')).tap();
 
 				await waitFor(element(by.id('room-view')))
@@ -376,7 +379,7 @@ describe('Team', () => {
 
 				it('should remove member from team', async () => {
 					await openActionSheet('rocket.cat');
-					await swipeTillVisible(by.id('room-actions-scrollview'), by.id('action-sheet-remove-from-team'));
+					// await swipeTillVisible(by.id('room-actions-scrollview'), by.id('action-sheet-remove-from-team'));
 					await element(by.id('action-sheet-remove-from-team')).tap();
 					await waitFor(element(by.id('select-list-view')))
 						.toExist()

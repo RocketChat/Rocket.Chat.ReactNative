@@ -11,7 +11,7 @@ const navigateToRoom = async () => {
 		.withTimeout(5000);
 };
 
-describe.skip('Discussion', () => {
+describe('Discussion', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToLogin();

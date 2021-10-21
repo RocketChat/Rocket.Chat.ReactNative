@@ -9,7 +9,7 @@ const reopenAndCheckServer = async server => {
 	await checkServer(server);
 };
 
-describe.skip('Change server', () => {
+describe('Change server', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();

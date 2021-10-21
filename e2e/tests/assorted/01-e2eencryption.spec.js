@@ -5,7 +5,7 @@ const data = require('../../data');
 const testuser = data.users.regular;
 const otheruser = data.users.alternate;
 
-const checkServer = async server => {
+const checkServer = async (server) => {
 	const label = `Connected to ${server}`;
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
@@ -57,7 +57,7 @@ async function navigateSecurityPrivacy() {
 		.withTimeout(2000);
 }
 
-describe.skip('E2E Encryption', () => {
+describe('E2E Encryption', () => {
 	const room = `encrypted${data.random}`;
 	const newPassword = 'abc';
 	let alertButtonType;
@@ -195,7 +195,7 @@ describe.skip('E2E Encryption', () => {
 				await waitFor(element(by.label('Are you sure?')))
 					.toExist()
 					.withTimeout(2000);
-				await expect(element(by.label("Make sure you've saved it carefully somewhere else."))).toExist();
+				await expect(element(by.label('Make sure you\'ve saved it carefully somewhere else.'))).toExist();
 				await element(by.label('Yes, change it')).atIndex(0).tap();
 				await waitForToast();
 			});
@@ -281,7 +281,7 @@ describe.skip('E2E Encryption', () => {
 				await waitFor(element(by.label('Are you sure?')))
 					.toExist()
 					.withTimeout(2000);
-				await expect(element(by.label("You're going to be logged out."))).toExist();
+				await expect(element(by.label('You\'re going to be logged out.'))).toExist();
 				await element(by.label('Yes, reset it').and(by.type(alertButtonType))).tap();
 				// await waitFor(element(by.label('OK')))
 				// 	.toBeVisible()
@@ -291,7 +291,7 @@ describe.skip('E2E Encryption', () => {
 				await waitFor(element(by.id('workspace-view')))
 					.toBeVisible()
 					.withTimeout(10000);
-				await waitFor(element(by.label("You've been logged out by the server. Please log in again.")))
+				await waitFor(element(by.label('You\'ve been logged out by the server. Please log in again.')))
 					.toExist()
 					.withTimeout(2000);
 				await element(by.label('OK').and(by.type(alertButtonType))).tap();

@@ -12,7 +12,7 @@ const getDeepLink = (method, server, params) => {
 	return deeplink;
 };
 
-describe.skip('Deep linking', () => {
+describe('Deep linking', () => {
 	let userId;
 	let authToken;
 	let scrollViewType;

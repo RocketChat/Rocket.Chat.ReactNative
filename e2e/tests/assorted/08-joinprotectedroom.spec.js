@@ -20,7 +20,7 @@ async function openJoinCode() {
 		.withTimeout(5000);
 }
 
-describe.skip('Join protected room', () => {
+describe('Join protected room', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
