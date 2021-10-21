@@ -1,9 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FlatList, Text, View, RefreshControl } from 'react-native';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 
 import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
@@ -16,9 +16,43 @@ import { themes } from '../../constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 
-class ReadReceiptView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => {
-		const options = {
+interface IReceipts {
+	_id: string;
+	roomId: string;
+	userId: string;
+	messageId: string;
+	ts: string;
+	user?: {
+		_id: string;
+		name: string;
+		username: string;
+	};
+}
+
+interface IState {
+	loading: boolean;
+	receipts: IReceipts[];
+}
+
+interface INavigationOption {
+	navigation: StackNavigationProp<any, 'ReadReceiptView'>;
+	isMasterDetail: boolean;
+	route: {
+		params: {
+			messageId?: string;
+		};
+	};
+}
+
+interface IReadReceiptView extends INavigationOption {
+	Message_TimeAndDateFormat: string;
+	theme: string;
+}
+
+class ReadReceiptView extends React.Component<IReadReceiptView, IState> {
+	private messageId: string | undefined;
+	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOption) => {
+		const options: StackNavigationOptions = {
 			title: I18n.t('Read_Receipt')
 		};
 		if (isMasterDetail) {
@@ -27,13 +61,7 @@ class ReadReceiptView extends React.Component {
 		return options;
 	};
 
-	static propTypes = {
-		route: PropTypes.object,
-		Message_TimeAndDateFormat: PropTypes.string,
-		theme: PropTypes.string
-	};
-
-	constructor(props) {
+	constructor(props: IReadReceiptView) {
 		super(props);
 		this.messageId = props.route.params?.messageId;
 		this.state = {
@@ -46,7 +74,7 @@ class ReadReceiptView extends React.Component {
 		this.load();
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: IReadReceiptView, nextState: IState) {
 		const { loading, receipts } = this.state;
 		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -98,7 +126,7 @@ class ReadReceiptView extends React.Component {
 		);
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: IReceipts }) => {
 		const { theme, Message_TimeAndDateFormat } = this.props;
 		const time = moment(item.ts).format(Message_TimeAndDateFormat);
 		if (!item?.user?.username) {
@@ -152,7 +180,7 @@ class ReadReceiptView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	Message_TimeAndDateFormat: state.settings.Message_TimeAndDateFormat
 });
 
