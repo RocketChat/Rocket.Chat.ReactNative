@@ -13,15 +13,19 @@ export default StyleSheet.create({
 	item: {
 		paddingVertical: 10,
 		paddingHorizontal: 20,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		marginLeft: 30
 	},
 	avatarContainer: {
-		minHeight: 320,
+		minHeight: 240,
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 20,
-		paddingVertical: 8
+		marginBottom: 20
+	},
+	avatarContainerDirectRoom: {
+		paddingVertical: 16,
+		minHeight: 320
 	},
 	avatar: {
 		marginHorizontal: 10
@@ -44,6 +48,10 @@ export default StyleSheet.create({
 	roomTitleRow: {
 		flexDirection: 'row',
 		alignItems: 'center'
+	},
+	status: {
+		bottom: -4,
+		right: -4
 	},
 	itemLabel: {
 		marginBottom: 10,
@@ -82,5 +90,33 @@ export default StyleSheet.create({
 	},
 	roomButtonText: {
 		marginTop: 5
+	},
+	roomBadge: {
+		width: '50%',
+		marginTop: 10,
+		elevation: 5,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		backgroundColor: 'white'
+	},
+	deviceContainer: {
+		flexDirection: 'row',
+		top: 30,
+		marginBottom: 30,
+		width: '100%'
+	},
+	t1dView: {
+		marginLeft: '50%',
+		marginRight: '20%'
+	},
+	locationView: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		marginTop: 10
 	}
 });

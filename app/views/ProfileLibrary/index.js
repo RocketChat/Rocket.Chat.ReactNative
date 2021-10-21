@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-	View, FlatList
-} from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
-
 import RocketChat from '../../lib/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
 import sharedStyles from '../Styles';
@@ -16,12 +13,14 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
 import log, { logEvent, events } from '../../utils/log';
 import Options from './Options';
+import { CustomIcon } from '../../lib/Icons';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
+import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 class ProfileLibraryView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
@@ -29,7 +28,12 @@ class ProfileLibraryView extends React.Component {
 			title: I18n.t('Profile_library')
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.Drawer navigation={navigation} />;
+			options.headerLeft = () => (
+				<HeaderButton.Drawer
+					navigation={navigation}
+					testID='profile-library-view-drawer'
+				/>
+			);
 		}
 		return options;
 	}
@@ -52,6 +56,7 @@ class ProfileLibraryView extends React.Component {
 		this.state = {
 			data: [],
 			loading: false,
+			refreshing: false,
 			text: '',
 			total: -1,
 			showOptionsDropdown: false,
@@ -59,6 +64,7 @@ class ProfileLibraryView extends React.Component {
 			type: props.directoryDefaultView
 		};
 	}
+
 
 	componentDidMount() {
 		this.load({});
@@ -69,12 +75,10 @@ class ProfileLibraryView extends React.Component {
 		this.setState({ text });
 	}
 
-	// eslint-disable-next-line react/sort-comp
 	load = debounce(async({ newSearch = false }) => {
 		if (newSearch) {
 			this.setState({ data: [], total: -1, loading: false });
 		}
-
 		const {
 			loading, text, total, data: { length }
 		} = this.state;
@@ -95,19 +99,26 @@ class ProfileLibraryView extends React.Component {
 				sort: (type === 'users') ? { username: 1 } : { usersCount: -1 }
 			});
 			if (directories.success) {
+				const combinedResults = [];
 				const results = directories.result;
 
+				await Promise.all(results.map(async(item, index) => {
+					const user = await RocketChat.getUserInfo(item._id);
+					combinedResults[index] = { ...item, customFields: user.user.customFields };
+				}));
+
 				this.setState({
-					data: [...data, ...results],
+					data: [...data, ...combinedResults],
 					loading: false,
+					refreshing: false,
 					total: results.length
 				});
 			} else {
-				this.setState({ loading: false });
+				this.setState({ loading: false, refreshing: false });
 			}
 		} catch (e) {
 			log(e);
-			this.setState({ loading: false });
+			this.setState({ loading: false, refreshing: false });
 		}
 	}, 200)
 
@@ -162,24 +173,17 @@ class ProfileLibraryView extends React.Component {
 	}
 
 	renderHeader = () => (
-		<>
-			<SearchBox
-				onChangeText={this.onSearchChangeText}
-				onSubmitEditing={this.search}
-				testID='federation-view-search'
-			/>
-
-		</>
+		<SearchBox
+			onChangeText={this.onSearchChangeText}
+			onSubmitEditing={this.search}
+			testID='federation-view-search'
+		/>
 	)
-
-	renderSeparator = () => {
-		const { theme } = this.props;
-		return <View style={[sharedStyles.separator, styles.separator, { backgroundColor: themes[theme].separatorColor }]} />;
-	}
 
 	renderItem = ({ item, index }) => {
 		const { data, type } = this.state;
 		const { baseUrl, user, theme } = this.props;
+
 
 		let style;
 		if (index === data.length - 1) {
@@ -188,7 +192,6 @@ class ProfileLibraryView extends React.Component {
 				borderColor: themes[theme].separatorColor
 			};
 		}
-
 		const commonProps = {
 			title: item.name,
 			onPress: () => this.onPressItem(item),
@@ -203,17 +206,21 @@ class ProfileLibraryView extends React.Component {
 			return (
 				<DirectoryItem
 					avatar={item.username}
-					description={item.username}
+					description={item.customFields?.Location ?? ''}
 					rightLabel={item.federation && item.federation.peer}
 					type='d'
+					icon={<CustomIcon name='pin-map' size={15} color='#161a1d' />}
+					age={`${ item.customFields?.Age ?? '?' } years old`}
 					{...commonProps}
 				/>
 			);
 		}
+
 		return (
 			<DirectoryItem
 				avatar={item.name}
 				description={item.topic}
+				typeIcon={<RoomTypeIcon type={type} theme={theme} />}
 				rightLabel={I18n.t('N_users', { n: item.usersCount })}
 				type='c'
 				{...commonProps}
@@ -223,9 +230,10 @@ class ProfileLibraryView extends React.Component {
 
 	render = () => {
 		const {
-			data, loading, showOptionsDropdown, type, globalUsers
+			data, loading, refreshing, showOptionsDropdown, type, globalUsers
 		} = this.state;
 		const { isFederationEnabled, theme } = this.props;
+
 		return (
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
@@ -241,10 +249,21 @@ class ProfileLibraryView extends React.Component {
 					keyExtractor={item => item._id}
 					ListHeaderComponent={this.renderHeader}
 					renderItem={this.renderItem}
-					ItemSeparatorComponent={this.renderSeparator}
 					keyboardShouldPersistTaps='always'
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}
+					refreshControl={(
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={() => {
+								this.setState({
+									refreshing: true
+								});
+								this.load({ newSearch: true });
+							}}
+							tintColor={themes[theme].auxiliaryText}
+						/>
+					)}
 				/>
 				{showOptionsDropdown
 					? (

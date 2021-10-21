@@ -72,6 +72,7 @@ import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
+import VideoPlayerView from '../views/VideoPlayerView';
 
 import QueueListView from '../ee/omnichannel/views/QueueListView';
 import AddChannelTeamView from '../views/AddChannelTeamView';
@@ -326,6 +327,7 @@ const ProfileLibraryStackNavigator = () => {
 	);
 };
 
+
 // DrawerNavigator
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
@@ -430,6 +432,11 @@ const InsideStackNavigator = () => {
 				name='NewMessageStackNavigator'
 				component={NewMessageStackNavigator}
 				options={{ headerShown: false }}
+			/>
+			<InsideStack.Screen
+				name='VideoPlayerView'
+				component={VideoPlayerView}
+				options={{ headerShown: true }}
 			/>
 			<InsideStack.Screen
 				name='E2ESaveYourPasswordStackNavigator'

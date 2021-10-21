@@ -166,7 +166,7 @@ class Sidebar extends Component {
 		return (
 			<>
 				<SidebarItem
-					text={I18n.t('Chats')}
+					text={I18n.t('Home')}
 					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					testID='sidebar-chats'
@@ -215,7 +215,6 @@ class Sidebar extends Component {
 		const {
 			user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme
 		} = this.props;
-
 		if (!user) {
 			return null;
 		}

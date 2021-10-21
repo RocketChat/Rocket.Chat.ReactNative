@@ -4,7 +4,6 @@ import {
 	View, FlatList, Text
 } from 'react-native';
 import { connect } from 'react-redux';
-import * as List from '../../containers/List';
 
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
@@ -279,7 +278,6 @@ class DirectoryView extends React.Component {
 					keyExtractor={item => item._id}
 					ListHeaderComponent={this.renderHeader}
 					renderItem={this.renderItem}
-					ItemSeparatorComponent={List.Separator}
 					keyboardShouldPersistTaps='always'
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={() => this.load({})}

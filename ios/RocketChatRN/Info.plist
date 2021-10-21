@@ -5,7 +5,7 @@
 	<key>AppGroup</key>
 	<string>group.com.t1dreachout.app</string>
 	<key>BugsnagAPIKey</key>
-	<string/>
+	<string>a8d73b3358bd42a2966c9eefc34a96db</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
