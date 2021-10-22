@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Text } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Hashtag from '../Hashtag';
@@ -20,7 +21,7 @@ interface IParagraphProps {
 const Inline = ({ value }: IParagraphProps): JSX.Element => {
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 	return (
-		<>
+		<Text>
 			{value.map(block => {
 				switch (block.type) {
 					case 'IMAGE':
@@ -55,7 +56,7 @@ const Inline = ({ value }: IParagraphProps): JSX.Element => {
 						return null;
 				}
 			})}
-		</>
+		</Text>
 	);
 };
 
