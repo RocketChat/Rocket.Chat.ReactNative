@@ -59,6 +59,7 @@ export interface IUser {
 export type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
 
 export interface IMessageContent {
+	_id: string;
 	isTemp: boolean;
 	isInfo: boolean;
 	tmid: string;

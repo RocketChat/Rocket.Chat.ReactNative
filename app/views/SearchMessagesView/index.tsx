@@ -1,5 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
 import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
@@ -11,7 +12,7 @@ import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { IMessage, IMessageAttachments } from '../../containers/message/interfaces';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
@@ -29,9 +30,46 @@ import { compareServerVersion, methods } from '../../lib/utils';
 import styles from './styles';
 
 const QUERY_SIZE = 50;
-class SearchMessagesView extends React.Component {
-	static navigationOptions = ({ navigation, route }) => {
-		const options = {
+
+interface IState {
+	loading: boolean;
+	messages: IMessage[];
+	searchText: string;
+}
+interface INavigationOption {
+	navigation: StackNavigationProp<any, 'SearchMessagesView'>;
+	route: RouteProp<
+		{ SearchMessagesView: { showCloseModal?: boolean; rid: string; t: string; encrypted?: boolean } },
+		'SearchMessagesView'
+	>;
+}
+
+interface ISearchMessagesViewProps extends INavigationOption {
+	user: { id: string };
+	baseUrl: string;
+	serverVersion: string;
+	customEmojis: {
+		[key: string]: {
+			name: string;
+			extension: string;
+		};
+	};
+	theme: string;
+	useRealName: boolean;
+}
+class SearchMessagesView extends React.Component<ISearchMessagesViewProps, IState> {
+	private offset: number;
+
+	private rid: string;
+
+	private t: string;
+
+	private encrypted: boolean | undefined;
+
+	private room: { rid: any; name: any; fname: any; t: any } | null | undefined;
+
+	static navigationOptions = ({ navigation, route }: INavigationOption) => {
+		const options: StackNavigationOptions = {
 			title: I18n.t('Search')
 		};
 		const showCloseModal = route.params?.showCloseModal;
@@ -41,18 +79,7 @@ class SearchMessagesView extends React.Component {
 		return options;
 	};
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		user: PropTypes.object,
-		baseUrl: PropTypes.string,
-		serverVersion: PropTypes.string,
-		customEmojis: PropTypes.object,
-		theme: PropTypes.string,
-		useRealName: PropTypes.bool
-	};
-
-	constructor(props) {
+	constructor(props: ISearchMessagesViewProps) {
 		super(props);
 		this.state = {
 			loading: false,
@@ -60,8 +87,8 @@ class SearchMessagesView extends React.Component {
 			searchText: ''
 		};
 		this.offset = 0;
-		this.rid = props.route.params?.rid;
-		this.t = props.route.params?.t;
+		this.rid = props.route.params.rid;
+		this.t = props.route.params.t;
 		this.encrypted = props.route.params?.encrypted;
 	}
 
@@ -69,7 +96,7 @@ class SearchMessagesView extends React.Component {
 		this.room = await getRoomInfo(this.rid);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: ISearchMessagesViewProps, nextState: IState) {
 		const { loading, searchText, messages } = this.state;
 		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -88,11 +115,11 @@ class SearchMessagesView extends React.Component {
 	}
 
 	componentWillUnmount() {
-		this.search?.stop?.();
+		this.searchDebounced?.stop?.();
 	}
 
 	// Handle encrypted rooms search messages
-	searchMessages = async searchText => {
+	searchMessages = async (searchText: string) => {
 		if (!searchText) {
 			return [];
 		}
@@ -117,7 +144,7 @@ class SearchMessagesView extends React.Component {
 		}
 	};
 
-	getMessages = async (searchText, debounced) => {
+	getMessages = async (searchText: string, debounced?: boolean) => {
 		try {
 			const messages = await this.searchMessages(searchText);
 			this.setState(prevState => ({
@@ -130,17 +157,17 @@ class SearchMessagesView extends React.Component {
 		}
 	};
 
-	search = searchText => {
+	search = (searchText: string) => {
 		this.offset = 0;
 		this.setState({ searchText, loading: true, messages: [] });
 		this.searchDebounced(searchText);
 	};
 
-	searchDebounced = debounce(async searchText => {
+	searchDebounced = debounce(async (searchText: string) => {
 		await this.getMessages(searchText, true);
 	}, 1000);
 
-	getCustomEmoji = name => {
+	getCustomEmoji = (name: string) => {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {
@@ -149,12 +176,12 @@ class SearchMessagesView extends React.Component {
 		return null;
 	};
 
-	showAttachment = attachment => {
+	showAttachment = (attachment: IMessageAttachments) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
-	navToRoomInfo = navParam => {
+	navToRoomInfo = (navParam: IMessage) => {
 		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
 			return;
@@ -162,9 +189,9 @@ class SearchMessagesView extends React.Component {
 		navigation.navigate('RoomInfoView', navParam);
 	};
 
-	jumpToMessage = async ({ item }) => {
+	jumpToMessage = async ({ item }: { item: IMessage }) => {
 		const { navigation } = this.props;
-		let params = {
+		let params: any = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
 			t: this.t,
@@ -174,7 +201,7 @@ class SearchMessagesView extends React.Component {
 			navigation.pop();
 			params = {
 				...params,
-				tmid: item.tmid,
+				tmid: 'as',
 				name: await getThreadName(this.rid, item.tmid, item._id),
 				t: 'thread'
 			};
@@ -210,7 +237,7 @@ class SearchMessagesView extends React.Component {
 		);
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: IMessage }) => {
 		const { user, baseUrl, theme, useRealName } = this.props;
 		return (
 			<Message
@@ -249,7 +276,8 @@ class SearchMessagesView extends React.Component {
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
-				{...scrollPersistTaps}
+				keyboardShouldPersistTaps={'always'}
+				keyboardDismissMode={'interactive'}
 			/>
 		);
 	};
@@ -268,6 +296,7 @@ class SearchMessagesView extends React.Component {
 						testID='search-message-view-input'
 						theme={theme}
 					/>
+					{/* @ts-ignore */}
 					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} username='' baseUrl='' theme={theme} />
 					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 				</View>
@@ -277,7 +306,7 @@ class SearchMessagesView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
