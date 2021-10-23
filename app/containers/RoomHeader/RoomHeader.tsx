@@ -42,36 +42,36 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TUserActivity = {
+interface IUserActivity {
 	typing: { [rid: string]: [] };
 	uploading: { [rid: string]: [] };
 	recording: { [rid: string]: [] };
-};
+}
 
-type TRoomHeaderSubTitle = {
-	userActivity: TUserActivity;
+interface IRoomHeaderSubTitle {
+	userActivity: IUserActivity;
 	theme: string;
 	subtitle: string;
 	renderFunc: any;
 	scale: number;
 	roomId: string;
-};
+}
 
-type TActivityIndicator = {
+interface IActivityIndicator {
 	performingUsers: string[];
 	fontSize: number;
 	theme: string;
 	activityName: string;
-};
+}
 
-type TRoomHeaderHeaderTitle = {
+interface IRoomHeaderHeaderTitle {
 	title: string;
 	tmid: string;
 	prid: string;
 	scale: number;
 	theme: string;
 	testID: string;
-};
+}
 
 interface IRoomHeader {
 	title: string;
@@ -85,20 +85,15 @@ interface IRoomHeader {
 	teamMain: boolean;
 	status: string;
 	theme: string;
-	userActivity: TUserActivity;
+	userActivity: IUserActivity;
 	isGroupChat: boolean;
 	parentTitle: string;
 	onPress: Function;
 	testID: string;
 }
 
-const ActivityIndicator = ({ performingUsers, fontSize, theme, activityName }: TActivityIndicator) => {
-	let usersText;
-	if (performingUsers.length === 2) {
-		usersText = performingUsers.join(` ${I18n.t('and')} `);
-	} else {
-		usersText = performingUsers.join(', ');
-	}
+const ActivityIndicator = ({ performingUsers, fontSize, theme, activityName }: IActivityIndicator) => {
+	const usersText = performingUsers.length === 2 ? performingUsers.join(` ${I18n.t('and')} `) : performingUsers.join(', ');
 	return (
 		<Text style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} numberOfLines={1}>
 			<Text style={styles.typingUsers}>{usersText} </Text>
@@ -107,7 +102,7 @@ const ActivityIndicator = ({ performingUsers, fontSize, theme, activityName }: T
 	);
 };
 
-const SubTitle = React.memo(({ roomId, userActivity, subtitle, renderFunc, theme, scale }: TRoomHeaderSubTitle) => {
+const SubTitle = React.memo(({ roomId, userActivity, subtitle, renderFunc, theme, scale }: IRoomHeaderSubTitle) => {
 	const fontSize = getSubTitleSize(scale);
 	if (userActivity?.uploading?.[roomId]?.length) {
 		return (
@@ -156,7 +151,7 @@ const SubTitle = React.memo(({ roomId, userActivity, subtitle, renderFunc, theme
 	return null;
 });
 
-const HeaderTitle = React.memo(({ title, tmid, prid, scale, theme, testID }: TRoomHeaderHeaderTitle) => {
+const HeaderTitle = React.memo(({ title, tmid, prid, scale, theme, testID }: IRoomHeaderHeaderTitle) => {
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: themes[theme].headerTitleColor };
 	if (!tmid && !prid) {
 		return (
