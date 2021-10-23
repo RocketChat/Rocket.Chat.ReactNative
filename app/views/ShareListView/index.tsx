@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { BackHandler, FlatList, Keyboard, PermissionsAndroid, ScrollView, Text, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
@@ -25,6 +25,43 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
 import ShareListHeader from './Header';
 
+interface IFile {
+	value: string;
+	type: string;
+}
+
+interface IAttachment {
+	filename: string;
+	description: string;
+	size: number | undefined;
+	mime: any;
+	path: string;
+}
+
+interface IState {
+	searching: boolean;
+	searchText: string;
+	searchResults: [];
+	chats: [];
+	serversCount: number;
+	attachments: IAttachment[];
+	text: string;
+	loading: true;
+	serverInfo: null;
+	needsPermission: boolean;
+}
+
+interface INavigationOption {
+	navigation: StackNavigationProp<any, 'ShareListView'>;
+}
+
+interface IShareListViewProps extends INavigationOption {
+	server: string;
+	token: string;
+	userId: string;
+	theme: string;
+}
+
 const permission = {
 	title: I18n.t('Read_External_Permission'),
 	message: I18n.t('Read_External_Permission_Message')
@@ -33,16 +70,12 @@ const permission = {
 const getItemLayout = (data, index) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
 const keyExtractor = item => item.rid;
 
-class ShareListView extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object,
-		server: PropTypes.string,
-		token: PropTypes.string,
-		userId: PropTypes.string,
-		theme: PropTypes.string
-	};
+class ShareListView extends React.Component<IShareListViewProps, IState> {
+	private unsubscribeFocus: (() => void) | undefined;
 
-	constructor(props) {
+	private unsubscribeBlur: (() => void) | undefined;
+
+	constructor(props: IShareListViewProps) {
 		super(props);
 		this.state = {
 			searching: false,
@@ -70,7 +103,7 @@ class ShareListView extends React.Component {
 	async componentDidMount() {
 		const { server } = this.props;
 		try {
-			const data = await ShareExtension.data();
+			const data = (await ShareExtension.data()) as IFile[];
 			if (isAndroid) {
 				await this.askForPermission(data);
 			}
@@ -98,14 +131,14 @@ class ShareListView extends React.Component {
 		this.getSubscriptions(server);
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps: IShareListViewProps) {
 		const { server } = this.props;
 		if (nextProps.server !== server) {
 			this.getSubscriptions(nextProps.server);
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: IShareListViewProps, nextState: IState) {
 		const { searching, needsPermission } = this.state;
 		if (nextState.searching !== searching) {
 			return true;
@@ -178,16 +211,17 @@ class ShareListView extends React.Component {
 		});
 	};
 
-	// eslint-disable-next-line react/sort-comp
-	internalSetState = (...args) => {
+	internalSetState = (...args: any[]) => {
+		console.log('🚀 ~ file: index.tsx ~ line 215 ~ ShareListView ~ ...args', ...args);
 		const { navigation } = this.props;
 		if (navigation.isFocused()) {
 			animateNextTransition();
 		}
+		// @ts-ignore
 		this.setState(...args);
 	};
 
-	query = async text => {
+	query = async (text?: string) => {
 		const db = database.active;
 		const defaultWhereClause = [
 			Q.where('archived', false),
@@ -195,7 +229,7 @@ class ShareListView extends React.Component {
 			Q.experimentalSkip(0),
 			Q.experimentalTake(20),
 			Q.experimentalSortBy('room_updated_at', Q.desc)
-		];
+		] as (Q.WhereDescription | Q.Skip | Q.Take | Q.SortBy | Q.Or)[];
 		if (text) {
 			const likeString = sanitizeLikeString(text);
 			defaultWhereClause.push(Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))));
@@ -218,7 +252,8 @@ class ShareListView extends React.Component {
 		}));
 	};
 
-	getSubscriptions = async server => {
+	getSubscriptions = async (server: string) => {
+		console.log('🚀 ~ file: index.tsx ~ line 256 ~ ShareListView ~ server', server);
 		const serversDB = database.servers;
 
 		if (server) {
@@ -439,7 +474,7 @@ class ShareListView extends React.Component {
 	};
 }
 
-const mapStateToProps = ({ share }) => ({
+const mapStateToProps = ({ share }: any) => ({
 	userId: share.user && share.user.id,
 	token: share.user && share.user.token,
 	server: share.server.server
