@@ -14,7 +14,7 @@
   "error-delete-protected-role": "無法刪除受保護的角色",
   "error-department-not-found": "找不到部門",
   "error-direct-message-file-upload-not-allowed": "私人對話中不允許檔案分享",
-  "error-duplicate-channel-name": "名為「{{channel_name}}」的頻道已存在",
+  "error-duplicate-channel-name": "名為「{{room_name}}」的頻道已存在",
   "error-email-domain-blacklisted": "電子郵件網域被禁用",
   "error-email-send-failed": "嘗試發送電子郵件時出錯：{{message}}",
   "error-save-image": "錯誤，無法儲存圖片",
