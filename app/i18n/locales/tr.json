@@ -14,7 +14,7 @@
   "error-delete-protected-role": "Korunan bir rol silinemez!",
   "error-department-not-found": "Bölüm bulunamadı!",
   "error-direct-message-file-upload-not-allowed": "Özel iletilerde dosya paylaşımına izin verilmiyor!",
-  "error-duplicate-channel-name": "{{channel_name}} adında bir kanal var!",
+  "error-duplicate-channel-name": "{{room_name}} adında bir kanal var!",
   "error-email-domain-blacklisted": "E-posta alan adı kara listeye alındı!",
   "error-email-send-failed": "E-posta göndermeye çalışırken hata oluştu: {{message}}",
   "error-save-image": "Görüntüyü kaydederken hata oluştu!",
