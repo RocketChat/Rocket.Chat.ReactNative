@@ -81,8 +81,7 @@ class RoomInfoView extends React.Component {
 			saving: false,
 			room: room || { rid: this.rid, t: this.t },
 			roomUser: roomUser || {},
-			showEdit: false,
-			connectButton: false
+			showEdit: false
 		};
 	}
 
@@ -113,7 +112,7 @@ class RoomInfoView extends React.Component {
 
 	setHeader = () => {
 		const { roomUser, room, showEdit } = this.state;
-		const { navigation, route, theme } = this.props;
+		const { navigation, route } = this.props;
 		const t = route.params?.t;
 		const rid = route.params?.rid;
 		const showCloseModal = route.params?.showCloseModal;
@@ -298,7 +297,7 @@ class RoomInfoView extends React.Component {
 		}
 
 		try {
-			const result = await RocketChat.saveUserProfile({}, user.customFields);
+			await RocketChat.saveUserProfile({}, user.customFields);
 			await this.createDirect();
 			this.goRoom();
 		} catch (e) {
@@ -406,20 +405,20 @@ class RoomInfoView extends React.Component {
 			&& roomUser.parsedRoles !== undefined) {
 			isPeerSupporter = roomUser.parsedRoles.indexOf('Peer Supporter') > -1;
 		}
-		if (isPeerSupporter && roomUser._id) {
+		if (isPeerSupporter && roomUser && roomUser._id) {
 			return <Status style={[styles.status]} theme={theme} size={18} id={roomUser._id} />;
 		} else {
 			return null;
 		}
 	};
 
-	renderButton = (onPress, iconName, text, connect) => {
+	renderButton = (onPress, iconName, text) => {
 		const { theme } = this.props;
 
 		const onActionPress = async() => {
 			try {
-						  await this.createDirect();
-						 onPress();
+				await this.createDirect();
+				onPress();
 			} catch {
 				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') }) });
 			}

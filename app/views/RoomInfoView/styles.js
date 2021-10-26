@@ -124,8 +124,8 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: 22
-	  },
-	  modalView: {
+	},
+	modalView: {
 		margin: 20,
 		backgroundColor: 'white',
 		borderRadius: 20,
@@ -133,14 +133,14 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		shadowColor: '#000',
 		shadowOffset: {
-		  width: 0,
-		  height: 2
+			width: 0,
+			height: 2
 		},
 		shadowOpacity: 0.25,
 		shadowRadius: 4,
 		elevation: 5
-	  },
-	  button: {
+	},
+	button: {
 		borderRadius: 20,
 		padding: 10,
 		elevation: 2,
@@ -148,23 +148,22 @@ export default StyleSheet.create({
 		width: '50%',
 		shadowOpacity: 0.25,
 		shadowRadius: 4
-
-	  },
-	  buttonOpen: {
+	},
+	buttonOpen: {
 		backgroundColor: '#F194FF'
-	  },
-	  buttonClose: {
+	},
+	buttonClose: {
 		backgroundColor: '#2ed322'
-	  },
-	  textStyle: {
+	},
+	textStyle: {
 		color: 'white',
 		fontWeight: 'bold',
 		textAlign: 'center'
-	  },
-	  modalText: {
+	},
+	modalText: {
 		marginBottom: 15,
 		textAlign: 'center',
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textRegular
-	  }
+	}
 });
