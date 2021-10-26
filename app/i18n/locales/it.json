@@ -14,7 +14,7 @@
   "error-delete-protected-role": "Impossibile eliminare un ruolo protetto",
   "error-department-not-found": "Reparto non trovato",
   "error-direct-message-file-upload-not-allowed": "La condivisione di file non è autorizzata nei messaggi diretti",
-  "error-duplicate-channel-name": "Esiste già un canale con nome {{channel_name}}",
+  "error-duplicate-channel-name": "Esiste già un canale con nome {{room_name}}",
   "error-email-domain-blacklisted": "Il dominio e-mail è nella lista nera",
   "error-email-send-failed": "Errore nel tentativo di invio e-mail: {{message}}",
   "error-save-image": "Errore nel salvataggio dell'immagine",
