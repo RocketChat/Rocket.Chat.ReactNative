@@ -29,6 +29,9 @@ interface IPreview {
 	numberOfLines: number;
 	theme: string;
 	style: TextStyle[];
+	mention: string;
+	mentions: UserMention[];
+	useRealName: boolean;
 }
 
 interface IUser {
@@ -354,12 +357,15 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		return <MarkdownTableCell {...args} theme={theme} />;
 	};
 
-	renderPreview = ({ message, testID, numberOfLines, theme, style }: IPreview): JSX.Element => {
-		message = shortnameToUnicode(message);
-		// Removes sequential empty spaces
-		message = message.replace(/\s+/g, ' ');
-		message = removeMarkdown(message);
-		message = message.replace(/\n+/g, ' ');
+	renderPreview = ({ message, testID, numberOfLines, mention, mentions, useRealName, theme, style }: IPreview): JSX.Element => {
+		let user;
+		if (mentions) {
+			user = mentions?.find(m => m.username === mention);
+			if (useRealName && user?.name) {
+				message = message.replace(`@${user?.username}`, user!.name);
+			}
+		}
+
 		return (
 			<Text
 				accessibilityLabel={message}
@@ -395,8 +401,18 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		}
 
 		if (this.isNewMarkdown) {
-			if (preview && md[0].value[0].type !== 'MENTION_USER') {
-				return this.renderPreview({ message: msg, testID, numberOfLines, theme, style });
+			if (preview) {
+				const mention = md[0].value[0].type === 'MENTION_USER' ? md[0].value[0].value : { type: 'PLAIN_TEXT', value: '' };
+				return this.renderPreview({
+					message: msg,
+					testID,
+					numberOfLines,
+					mention: mention.value,
+					mentions,
+					useRealName,
+					theme,
+					style
+				});
 			}
 
 			return (
@@ -421,7 +437,20 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		m = m.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
 
 		if (preview) {
-			return this.renderPreview({ message: msg, testID, numberOfLines, theme, style });
+			m = shortnameToUnicode(m);
+			// Removes sequential empty spaces
+			m = m.replace(/\s+/g, ' ');
+			m = removeMarkdown(m);
+			m = m.replace(/\n+/g, ' ');
+			return (
+				<Text
+					accessibilityLabel={m}
+					style={[styles.text, { color: themes[theme].bodyText }, ...style]}
+					numberOfLines={numberOfLines}
+					testID={testID}>
+					{m}
+				</Text>
+			);
 		}
 
 		let ast = parser.parse(m);

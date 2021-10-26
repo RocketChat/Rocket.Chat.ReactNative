@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
+import Markdown from '../../app/containers/markdown';
 import NewMarkdown from '../../app/containers/markdown/new';
 import { themes } from '../../app/constants/colors';
 
@@ -623,5 +624,31 @@ stories.add('Lists', () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={unorederedListToken} />
 		<NewMarkdown tokens={orderedListToken} />
+	</View>
+));
+
+stories.add('Preview', () => (
+	<View style={styles.container}>
+		<Markdown
+			msg={
+				'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+			}
+			md={longTextMsg}
+			theme={theme}
+			numberOfLines={1}
+			preview
+		/>
+		<Markdown
+			msg='@rocket.cat @name1 @all @here @unknown #general #unknown'
+			md={allMentionTokens}
+			mentions={allMentions}
+			navToRoomInfo={() => {}}
+			style={[]}
+			theme={theme}
+			numberOfLines={1}
+			username='rocket.cat'
+			preview
+		/>
+		<Markdown md={bigEmojiTokens} getCustomEmoji={getCustomEmoji} theme={theme} numberOfLines={1} preview />
 	</View>
 ));
