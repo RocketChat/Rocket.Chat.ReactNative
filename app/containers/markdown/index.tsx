@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, Text } from 'react-native';
+import { Image, Text, TextStyle } from 'react-native';
 import { Node, Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import removeMarkdown from 'remove-markdown';
@@ -22,6 +22,14 @@ import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
 import { isValidURL } from '../../utils/url';
 import NewMarkdown from './new';
+
+interface IPreview {
+	message: string;
+	testID: string;
+	numberOfLines: number;
+	theme: string;
+	style: TextStyle[];
+}
 
 interface IUser {
 	_id: string;
@@ -346,6 +354,23 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		return <MarkdownTableCell {...args} theme={theme} />;
 	};
 
+	renderPreview = ({ message, testID, numberOfLines, theme, style }: IPreview): JSX.Element => {
+		message = shortnameToUnicode(message);
+		// Removes sequential empty spaces
+		message = message.replace(/\s+/g, ' ');
+		message = removeMarkdown(message);
+		message = message.replace(/\n+/g, ' ');
+		return (
+			<Text
+				accessibilityLabel={message}
+				style={[styles.text, { color: themes[theme].bodyText }, ...style]}
+				numberOfLines={numberOfLines}
+				testID={testID}>
+				{message}
+			</Text>
+		);
+	};
+
 	render() {
 		const {
 			msg,
@@ -371,21 +396,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 		if (this.isNewMarkdown) {
 			if (preview && md[0].value[0].type !== 'MENTION_USER') {
-				let m = formatText(msg);
-				m = m.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
-				m = shortnameToUnicode(m);
-				m = m.replace(/\s+/g, ' ');
-				m = removeMarkdown(m);
-				m = m.replace(/\n+/g, ' ');
-				return (
-					<Text
-						accessibilityLabel={m}
-						style={[styles.text, { color: themes[theme].bodyText }, ...style]}
-						numberOfLines={numberOfLines}
-						testID={testID}>
-						{m}
-					</Text>
-				);
+				return this.renderPreview({ message: msg, testID, numberOfLines, theme, style });
 			}
 
 			return (
@@ -410,20 +421,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		m = m.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
 
 		if (preview) {
-			m = shortnameToUnicode(m);
-			// Removes sequential empty spaces
-			m = m.replace(/\s+/g, ' ');
-			m = removeMarkdown(m);
-			m = m.replace(/\n+/g, ' ');
-			return (
-				<Text
-					accessibilityLabel={m}
-					style={[styles.text, { color: themes[theme].bodyText }, ...style]}
-					numberOfLines={numberOfLines}
-					testID={testID}>
-					{m}
-				</Text>
-			);
+			return this.renderPreview({ message: msg, testID, numberOfLines, theme, style });
 		}
 
 		let ast = parser.parse(m);
