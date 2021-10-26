@@ -31,17 +31,23 @@ import styles from './styles';
 
 const QUERY_SIZE = 50;
 
-interface IState {
+type TRouteParams = {
+	SearchMessagesView: {
+		showCloseModal?: boolean;
+		rid: string;
+		t: string;
+		encrypted?: boolean;
+	};
+};
+
+interface ISearchMessagesViewState {
 	loading: boolean;
 	messages: IMessage[];
 	searchText: string;
 }
 interface INavigationOption {
 	navigation: StackNavigationProp<any, 'SearchMessagesView'>;
-	route: RouteProp<
-		{ SearchMessagesView: { showCloseModal?: boolean; rid: string; t: string; encrypted?: boolean } },
-		'SearchMessagesView'
-	>;
+	route: RouteProp<TRouteParams, 'SearchMessagesView'>;
 }
 
 interface ISearchMessagesViewProps extends INavigationOption {
@@ -57,7 +63,7 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	theme: string;
 	useRealName: boolean;
 }
-class SearchMessagesView extends React.Component<ISearchMessagesViewProps, IState> {
+class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
 	private offset: number;
 
 	private rid: string;
@@ -96,7 +102,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, IStat
 		this.room = await getRoomInfo(this.rid);
 	}
 
-	shouldComponentUpdate(nextProps: ISearchMessagesViewProps, nextState: IState) {
+	shouldComponentUpdate(nextProps: ISearchMessagesViewProps, nextState: ISearchMessagesViewState) {
 		const { loading, searchText, messages } = this.state;
 		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
