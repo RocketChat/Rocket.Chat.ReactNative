@@ -25,7 +25,7 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 class ProfileLibraryView extends React.Component {
 	static navigationOptions = ({ navigation, isMasterDetail }) => {
 		const options = {
-			title: I18n.t('Profile_library')
+			title: I18n.t('PeerSupporterLibrary')
 		};
 		if (!isMasterDetail) {
 			options.headerLeft = () => (

@@ -173,7 +173,7 @@ class Sidebar extends Component {
 					current={this.currentItemKey === 'ChatsStackNavigator'}
 				/>
 				<SidebarItem
-					text={I18n.t('Profile_library')}
+					text={I18n.t('PeerSupporterLibrary')}
 					left={<CustomIcon name='contacts' size={20} color={themes[theme].titleText} />}
 					onPress={() => this.sidebarNavigate('ProfileLibraryNavigator')}
 					testID='sidebar-profile-library'
