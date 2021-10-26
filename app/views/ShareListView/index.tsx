@@ -1,6 +1,6 @@
 import React from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { BackHandler, FlatList, Keyboard, PermissionsAndroid, ScrollView, Text, View } from 'react-native';
+import { BackHandler, FlatList, Keyboard, PermissionsAndroid, ScrollView, Text, View, Rationale } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
@@ -38,16 +38,33 @@ interface IAttachment {
 	path: string;
 }
 
+interface IChat {
+	rid: string;
+	t: string;
+	name: string;
+	fname: string;
+	blocked: boolean;
+	blocker: boolean;
+	prid: string;
+	uids: string[];
+	usernames: string[];
+	topic: string;
+	description: string;
+}
+
+interface IServerInfo {
+	useRealName: boolean;
+}
 interface IState {
 	searching: boolean;
 	searchText: string;
-	searchResults: [];
-	chats: [];
+	searchResults: IChat[];
+	chats: IChat[];
 	serversCount: number;
 	attachments: IAttachment[];
 	text: string;
 	loading: true;
-	serverInfo: null;
+	serverInfo: IServerInfo;
 	needsPermission: boolean;
 }
 
@@ -62,13 +79,14 @@ interface IShareListViewProps extends INavigationOption {
 	theme: string;
 }
 
-const permission = {
+const permission: Rationale = {
 	title: I18n.t('Read_External_Permission'),
-	message: I18n.t('Read_External_Permission_Message')
+	message: I18n.t('Read_External_Permission_Message'),
+	buttonPositive: 'Ok'
 };
 
-const getItemLayout = (data, index) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
-const keyExtractor = item => item.rid;
+const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
+const keyExtractor = (item: IChat) => item.rid;
 
 class ShareListView extends React.Component<IShareListViewProps, IState> {
 	private unsubscribeFocus: (() => void) | undefined;
@@ -86,7 +104,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			attachments: [],
 			text: '',
 			loading: true,
-			serverInfo: null,
+			serverInfo: {} as IServerInfo,
 			needsPermission: isAndroid || false
 		};
 		this.setHeader();
@@ -212,7 +230,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	internalSetState = (...args: any[]) => {
-		console.log('🚀 ~ file: index.tsx ~ line 215 ~ ShareListView ~ ...args', ...args);
 		const { navigation } = this.props;
 		if (navigation.isFocused()) {
 			animateNextTransition();
@@ -234,10 +251,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			const likeString = sanitizeLikeString(text);
 			defaultWhereClause.push(Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))));
 		}
-		const data = await db
+		const data = (await db
 			.get('subscriptions')
 			.query(...defaultWhereClause)
-			.fetch();
+			.fetch()) as IChat[];
+
 		return data.map(item => ({
 			rid: item.rid,
 			t: item.t,
@@ -253,7 +271,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	getSubscriptions = async (server: string) => {
-		console.log('🚀 ~ file: index.tsx ~ line 256 ~ ShareListView ~ server', server);
 		const serversDB = database.servers;
 
 		if (server) {
@@ -277,7 +294,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		}
 	};
 
-	askForPermission = async data => {
+	askForPermission = async (data: IFile[]) => {
 		const mediaIndex = data.findIndex(item => item.type === 'media');
 		if (mediaIndex !== -1) {
 			const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, permission);
@@ -290,15 +307,14 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		return Promise.resolve();
 	};
 
-	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
+	uriToPath = (uri: string) => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
-	getRoomTitle = item => {
+	getRoomTitle = (item: IChat) => {
 		const { serverInfo } = this.state;
-		const { useRealName } = serverInfo;
-		return ((item.prid || useRealName) && item.fname) || item.name;
+		return ((item.prid || serverInfo?.useRealName) && item.fname) || item.name;
 	};
 
-	shareMessage = room => {
+	shareMessage = (room: IChat) => {
 		const { attachments, text, serverInfo } = this.state;
 		const { navigation } = this.props;
 
@@ -311,7 +327,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		});
 	};
 
-	search = async text => {
+	search = async (text: string) => {
 		const result = await this.query(text);
 		this.internalSetState({
 			searchResults: result,
@@ -338,7 +354,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		return false;
 	};
 
-	renderSectionHeader = header => {
+	renderSectionHeader = (header: string) => {
 		const { searching } = this.state;
 		const { theme } = this.props;
 		if (searching) {
@@ -355,10 +371,9 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		);
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: IChat }) => {
 		const { serverInfo } = this.state;
-		const { useRealName } = serverInfo;
-		const { userId, token, server, theme } = this.props;
+		const { theme } = this.props;
 		let description;
 		switch (item.t) {
 			case 'c':
@@ -368,7 +383,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				description = item.topic || item.description;
 				break;
 			case 'd':
-				description = useRealName ? item.name : item.fname;
+				description = serverInfo?.useRealName ? item.name : item.fname;
 				break;
 			default:
 				description = item.fname;
@@ -376,12 +391,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		}
 		return (
 			<DirectoryItem
-				user={{
-					id: userId,
-					token
-				}}
 				title={this.getRoomTitle(item)}
-				baseUrl={server}
 				avatar={RocketChat.getRoomAvatar(item)}
 				description={description}
 				type={item.prid ? 'discussion' : item.t}
