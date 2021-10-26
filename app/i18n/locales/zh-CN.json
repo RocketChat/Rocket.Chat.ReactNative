@@ -14,7 +14,7 @@
   "error-delete-protected-role": "无法删除受保护的角色",
   "error-department-not-found": "找不到部门",
   "error-direct-message-file-upload-not-allowed": "私人对话中不允许档案分享",
-  "error-duplicate-channel-name": "名为「{{channel_name}}」的频道已存在",
+  "error-duplicate-channel-name": "名为「{{room_name}}」的频道已存在",
   "error-email-domain-blacklisted": "电子邮件网域被禁用",
   "error-email-send-failed": "尝试发送电子邮件时出错：{{message}}",
   "error-save-image": "错误，无法保存图片",
