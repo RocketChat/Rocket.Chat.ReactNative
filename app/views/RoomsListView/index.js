@@ -13,8 +13,6 @@ import { dequal } from 'dequal';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
-
-import allSettled from 'promise.allsettled';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../../presentation/RoomItem';
@@ -68,9 +66,9 @@ const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
 const FAVORITES_HEADER = 'Favorites';
+const TEAMS_HEADER = 'Teams';
 const PEER_SUPPORTERS_HEADER = 'Peer_supporter';
 const DISCUSSIONS_HEADER = 'Discussions';
-const TEAMS_HEADER = 'Teams';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
 const OMNICHANNEL_HEADER = 'Open_Livechats';
@@ -81,6 +79,7 @@ const filterIsFavorite = s => s.f;
 const filterIsOmnichannel = s => s.t === 'l';
 const filterIsTeam = s => s.teamMain;
 const filterIsDiscussion = s => s.prid;
+
 
 const shouldUpdateProps = [
 	'searchText',
@@ -114,9 +113,12 @@ class RoomsListView extends React.Component {
 			id: PropTypes.string,
 			username: PropTypes.string,
 			token: PropTypes.string,
+			customFields: PropTypes.object,
 			statusLivechat: PropTypes.string,
 			roles: PropTypes.object
+
 		}),
+		custom: PropTypes.object,
 		server: PropTypes.string,
 		searchText: PropTypes.string,
 		changingServer: PropTypes.bool,
@@ -159,7 +161,9 @@ class RoomsListView extends React.Component {
 			loading: true,
 			chatsUpdate: [],
 			chats: [],
-			item: {}
+			item: {},
+			isUserLoaded: false
+
 		};
 		this.setHeader();
 		this.getSubscriptions();
@@ -194,11 +198,35 @@ class RoomsListView extends React.Component {
 		});
 	}
 
+
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		const {
-			loadingServer, searchText, server, changingServer
+			loadingServer, searchText, server, changingServer, user, groupByType
 		} = this.props;
+		let tempChats = [];
+		const chatsUpdate = [];
+		const { isUserLoaded, chats } = this.state;
+		if (groupByType) {
+			if (user !== nextProps.user) {
+				if (!isUserLoaded && nextProps.user.customFields) {
+					const peerSupporter = chats.filter(s => s.t === 'd' && nextProps.user.customFields?.ConnectIds?.includes(s.name));
+					const discussions = chats.filter(s => s.prid);
+					const channels = chats.filter(s => s.t === 'c' && !s.prid);
+					const direct = chats.filter(s => s.t === 'd' && !s.prid);
+					tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS_HEADER, tempChats);
+					tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
+					tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
+					tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
 
+					this.internalSetState({
+						chats: tempChats,
+						chatsUpdate,
+						loading: false
+					});
+					this.setState({ isUserLoaded: true });
+				}
+			}
+		}
 		// when the server is changed
 		if (server !== nextProps.server && loadingServer !== nextProps.loadingServer && nextProps.loadingServer) {
 			this.setState({ loading: true });
@@ -287,6 +315,7 @@ class RoomsListView extends React.Component {
 				&& prevProps.groupByType === groupByType
 				&& prevProps.showFavorites === showFavorites
 				&& prevProps.showUnread === showUnread
+
 			)
 		) {
 			this.getSubscriptions();
@@ -388,6 +417,7 @@ class RoomsListView extends React.Component {
 		}
 		return allData;
 	}
+	//    getUserData = (data) => data.filter(s => s.t === 'd' && user?.customFields?.ConnectIds?.includes(s.name));
 
 	getSubscriptions = async() => {
 		this.unsubscribeQuery();
@@ -434,12 +464,11 @@ class RoomsListView extends React.Component {
 				.observe();
 		}
 
-		this.querySubscription = observable.subscribe(async(data) => {
+		this.querySubscription = observable.subscribe((data) => {
 			let tempChats = [];
 			let chats = data.map(i => i);
-			const filteredChats = chats.filter(s => s.t === 'd');
-
 			let chatsUpdate = [];
+
 			if (showUnread) {
 				/**
 				 * If unread on top, we trigger re-render based on order changes and sub.alert
@@ -476,41 +505,19 @@ class RoomsListView extends React.Component {
 			}
 
 			// type
+
 			if (groupByType) {
 				const teams = chats.filter(s => filterIsTeam(s));
 				const discussions = chats.filter(s => filterIsDiscussion(s));
 				const channels = chats.filter(s => (s.t === 'c' || s.t === 'p') && !filterIsDiscussion(s) && !filterIsTeam(s));
 				const direct = chats.filter(s => s.t === 'd' && !filterIsDiscussion(s) && !filterIsTeam(s));
 
-				// get peer supporters
-				const peerSupporter = [];
-				const peerSupporterInfo = [];
-				for (let i = 0; i < filteredChats.length; i += 1) {
-					const item = filteredChats[i];
-					const id = this.getUidDirectMessage(item);
-					peerSupporterInfo.push(this.getInfo(id));
-				}
-				try {
-					this.internalSetState({
-						loading: true
-					});
-					const usersInfo = await allSettled(peerSupporterInfo);
-					usersInfo.forEach((i) => {
-						if (i.status === 'fulfilled' && i.value.user.roles.includes('Peer Supporter')) {
-							const chat = filteredChats.find(k => this.getUidDirectMessage(k) === i.value.user._id);
-							peerSupporter.push(chat);
-						}
-					});
-				} catch (e) {
-					console.error(e);
-				}
-				// end get peer supporters
-
+				const peerSupporter = chats.filter(s => s.t === 'd' && user?.customFields?.ConnectIds?.includes(s.name));
+				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(teams, TEAMS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 				tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
-				tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS_HEADER, tempChats);
 			} else if (showUnread || showFavorites || isOmnichannelAgent) {
 				tempChats = this.addRoomsGroup(chats, CHATS_HEADER, tempChats);
 			} else {
@@ -522,6 +529,7 @@ class RoomsListView extends React.Component {
 					chats: tempChats,
 					chatsUpdate,
 					loading: false
+
 				});
 			} else {
 				this.state.chats = tempChats;
@@ -923,7 +931,7 @@ class RoomsListView extends React.Component {
 
 		const { item: currentItem } = this.state;
 		const {
-			user: { username },
+			user,
 			StoreLastMessage,
 			useRealName,
 			theme,
@@ -932,14 +940,13 @@ class RoomsListView extends React.Component {
 		} = this.props;
 
 		const id = this.getUidDirectMessage(item);
-
 		return (
 			<RoomItem
 				item={item}
 				theme={theme}
 				id={id}
 				type={item.t}
-				username={username}
+				username={user.username}
 				showLastMessage={StoreLastMessage}
 				onPress={this.onPressItem}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
@@ -1019,6 +1026,7 @@ class RoomsListView extends React.Component {
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar />
+
 				{this.renderHeader()}
 				{this.renderScroll()}
 				{showSortDropdown ? (
@@ -1038,6 +1046,7 @@ class RoomsListView extends React.Component {
 
 const mapStateToProps = state => ({
 	user: getUserSelector(state),
+	// custom: state.login.user && state.login.user.customFields,
 	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,
 	changingServer: state.server.changingServer,
