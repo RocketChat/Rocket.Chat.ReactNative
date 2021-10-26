@@ -14,7 +14,6 @@ public class BasePackageList {
         new expo.modules.imageloader.ImageLoaderPackage(),
         new expo.modules.keepawake.KeepAwakePackage(),
         new expo.modules.localauthentication.LocalAuthenticationPackage(),
-        new expo.modules.permissions.PermissionsPackage(),
         new expo.modules.videothumbnails.VideoThumbnailsPackage(),
         new expo.modules.webbrowser.WebBrowserPackage()
     );

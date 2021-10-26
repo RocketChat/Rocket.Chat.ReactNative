@@ -1,9 +1,9 @@
 import React from 'react';
 import { Clipboard, Linking, Share } from 'react-native';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import CookieManager from '@react-native-cookies/cookies';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
@@ -29,8 +29,25 @@ import database from '../../lib/database';
 import { isFDroidBuild } from '../../constants/environment';
 import { getUserSelector } from '../../selectors/login';
 
-class SettingsView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => ({
+interface IProps {
+	navigation: StackNavigationProp<any, 'SettingsView'>;
+	server: {
+		version: string;
+		server: string;
+	};
+	theme: string;
+	isMasterDetail: boolean;
+	logout: Function;
+	selectServerRequest: Function;
+	user: {
+		roles: [];
+		id: string;
+	};
+	appStart: Function;
+}
+
+class SettingsView extends React.Component<IProps, any> {
+	static navigationOptions = ({ navigation, isMasterDetail }: Partial<IProps>) => ({
 		headerLeft: () =>
 			isMasterDetail ? (
 				<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
@@ -40,26 +57,12 @@ class SettingsView extends React.Component {
 		title: I18n.t('Settings')
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		server: PropTypes.object,
-		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool,
-		logout: PropTypes.func.isRequired,
-		selectServerRequest: PropTypes.func,
-		user: PropTypes.shape({
-			roles: PropTypes.array,
-			id: PropTypes.string
-		}),
-		appStart: PropTypes.func
-	};
-
 	checkCookiesAndLogout = async () => {
 		const { logout, user } = this.props;
 		const db = database.servers;
 		const usersCollection = db.get('users');
 		try {
-			const userRecord = await usersCollection.find(user.id);
+			const userRecord: any = await usersCollection.find(user.id);
 			if (userRecord.isFromWebView) {
 				showConfirmationAlert({
 					title: I18n.t('Clear_cookies_alert'),
@@ -84,6 +87,7 @@ class SettingsView extends React.Component {
 
 	handleLogout = () => {
 		logEvent(events.SE_LOG_OUT);
+		// @ts-ignore
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			confirmationText: I18n.t('Logout'),
@@ -93,6 +97,7 @@ class SettingsView extends React.Component {
 
 	handleClearCache = () => {
 		logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
+		/* @ts-ignore */
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
 			confirmationText: I18n.t('Clear'),
@@ -112,7 +117,8 @@ class SettingsView extends React.Component {
 		});
 	};
 
-	navigateToScreen = screen => {
+	navigateToScreen = (screen: string) => {
+		/* @ts-ignore */
 		logEvent(events[`SE_GO_${screen.replace('View', '').toUpperCase()}`]);
 		const { navigation } = this.props;
 		navigation.navigate(screen);
@@ -160,7 +166,7 @@ class SettingsView extends React.Component {
 		this.saveToClipboard(getReadableVersion);
 	};
 
-	saveToClipboard = async content => {
+	saveToClipboard = async (content: string) => {
 		await Clipboard.setString(content);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
@@ -293,16 +299,16 @@ class SettingsView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server,
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: any) => ({
 	logout: () => dispatch(logoutAction()),
-	selectServerRequest: params => dispatch(selectServerRequestAction(params)),
-	appStart: params => dispatch(appStartAction(params))
+	selectServerRequest: (params: any) => dispatch(selectServerRequestAction(params)),
+	appStart: (params: any) => dispatch(appStartAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SettingsView));
