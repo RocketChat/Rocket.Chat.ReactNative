@@ -370,6 +370,24 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		}
 
 		if (this.isNewMarkdown) {
+			if (preview && md[0].value[0].type !== 'MENTION_USER') {
+				let m = formatText(msg);
+				m = m.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
+				m = shortnameToUnicode(m);
+				m = m.replace(/\s+/g, ' ');
+				m = removeMarkdown(m);
+				m = m.replace(/\n+/g, ' ');
+				return (
+					<Text
+						accessibilityLabel={m}
+						style={[styles.text, { color: themes[theme].bodyText }, ...style]}
+						numberOfLines={numberOfLines}
+						testID={testID}>
+						{m}
+					</Text>
+				);
+			}
+
 			return (
 				<NewMarkdown
 					username={username}
