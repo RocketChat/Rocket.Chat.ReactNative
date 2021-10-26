@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import TextInput from '../../../presentation/TextInput';
 import I18n from '../../../i18n';
@@ -24,7 +23,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
+interface IHeader {
+	searching: boolean;
+	onChangeSearchText(text: string): void;
+	theme: string;
+}
+
+const Header = React.memo(({ searching, onChangeSearchText, theme }: IHeader) => {
 	const titleColorStyle = { color: themes[theme].headerTintColor };
 	const isLight = theme === 'light';
 	if (searching) {
@@ -42,11 +47,5 @@ const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
 	}
 	return <Text style={[styles.title, titleColorStyle]}>{I18n.t('Send_to')}</Text>;
 });
-
-Header.propTypes = {
-	searching: PropTypes.bool,
-	onChangeSearchText: PropTypes.func,
-	theme: PropTypes.string
-};
 
 export default Header;

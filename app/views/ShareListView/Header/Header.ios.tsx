@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
@@ -16,10 +15,18 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSearch, theme }) => {
+interface IHeader {
+	searching: boolean;
+	onChangeSearchText(text: string): void;
+	initSearch: Function;
+	cancelSearch: Function;
+	theme: string;
+}
+
+const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSearch, theme }: IHeader) => {
 	const [text, setText] = useState('');
 
-	const onChangeText = searchText => {
+	const onChangeText = (searchText: string) => {
 		onChangeSearchText(searchText);
 		setText(searchText);
 	};
@@ -58,13 +65,5 @@ const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSe
 		</View>
 	);
 });
-
-Header.propTypes = {
-	searching: PropTypes.bool,
-	onChangeSearchText: PropTypes.func,
-	initSearch: PropTypes.func,
-	cancelSearch: PropTypes.func,
-	theme: PropTypes.string
-};
 
 export default Header;
