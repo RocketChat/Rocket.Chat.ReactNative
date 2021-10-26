@@ -88,7 +88,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, IStat
 		};
 		this.offset = 0;
 		this.rid = props.route.params.rid;
-		this.t = props.route.params.t;
+		this.t = props.route.params?.t;
 		this.encrypted = props.route.params?.encrypted;
 	}
 
@@ -201,7 +201,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, IStat
 			navigation.pop();
 			params = {
 				...params,
-				tmid: 'as',
+				tmid: item.tmid,
 				name: await getThreadName(this.rid, item.tmid, item._id),
 				t: 'thread'
 			};
