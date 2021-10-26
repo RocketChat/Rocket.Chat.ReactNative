@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
 
 import TextInput from '../../../containers/TextInput';
 import * as List from '../../../containers/List';
@@ -28,11 +28,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IServerInput {
+interface IServerInput extends TextInputProps {
 	text: string;
 	theme: string;
 	serversHistory: any[];
-	onChangeText(text: string): void;
 	onSubmit(): void;
 	onDelete(item: IServer): void;
 	onPressServerHistory(serverHistory: IServer): void;
