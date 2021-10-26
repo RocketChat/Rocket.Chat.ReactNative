@@ -4,6 +4,7 @@ import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
 
 import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
@@ -29,28 +30,25 @@ interface IReceipts {
 	};
 }
 
-interface IState {
+interface IReadReceiptViewState {
 	loading: boolean;
 	receipts: IReceipts[];
 }
 
 interface INavigationOption {
 	navigation: StackNavigationProp<any, 'ReadReceiptView'>;
+	route: RouteProp<any, 'ReadReceiptView'>;
 	isMasterDetail: boolean;
-	route: {
-		params: {
-			messageId?: string;
-		};
-	};
 }
 
-interface IReadReceiptView extends INavigationOption {
+interface IReadReceiptViewProps extends INavigationOption {
 	Message_TimeAndDateFormat: string;
 	theme: string;
 }
 
-class ReadReceiptView extends React.Component<IReadReceiptView, IState> {
+class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceiptViewState> {
 	private messageId: string | undefined;
+
 	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOption) => {
 		const options: StackNavigationOptions = {
 			title: I18n.t('Read_Receipt')
@@ -61,7 +59,7 @@ class ReadReceiptView extends React.Component<IReadReceiptView, IState> {
 		return options;
 	};
 
-	constructor(props: IReadReceiptView) {
+	constructor(props: IReadReceiptViewProps) {
 		super(props);
 		this.messageId = props.route.params?.messageId;
 		this.state = {
@@ -74,7 +72,7 @@ class ReadReceiptView extends React.Component<IReadReceiptView, IState> {
 		this.load();
 	}
 
-	shouldComponentUpdate(nextProps: IReadReceiptView, nextState: IState) {
+	shouldComponentUpdate(nextProps: IReadReceiptViewProps, nextState: IReadReceiptViewState) {
 		const { loading, receipts } = this.state;
 		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
