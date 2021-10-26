@@ -33,7 +33,7 @@ interface IFile {
 interface IAttachment {
 	filename: string;
 	description: string;
-	size: number | undefined;
+	size: number;
 	mime: any;
 	path: string;
 }
@@ -136,7 +136,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				size: file.size,
 				mime: mime.lookup(file.uri),
 				path: file.uri
-			}));
+			})) as IAttachment[];
 			const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${item.value}\n${acc}`, '');
 			this.setState({
 				text,
