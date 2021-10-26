@@ -171,7 +171,7 @@ class RoomsListView extends React.Component {
 
 	componentDidMount() {
 		const {
-			navigation, closeServerDropdown, user
+			navigation, closeServerDropdown
 		} = this.props;
 		this.mounted = true;
 
@@ -212,14 +212,13 @@ class RoomsListView extends React.Component {
 					const peerSupporter = chats.filter(s => s.t === 'd' && nextProps.user.customFields?.ConnectIds?.includes(s.name));
 					const discussions = chats.filter(s => s.prid);
 					const channels = chats.filter(s => s.t === 'c' && !s.prid);
-					const privateGroup = chats.filter(s => s.t === 'p' && !s.prid);
 					const direct = chats.filter(s => s.t === 'd' && !s.prid);
 					tempChats = this.addRoomsGroup(peerSupporter, PEER_SUPPORTERS_HEADER, tempChats);
 					tempChats = this.addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
 					tempChats = this.addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
 					tempChats = this.addRoomsGroup(direct, DM_HEADER, tempChats);
 
-			  this.internalSetState({
+					this.internalSetState({
 						chats: tempChats,
 						chatsUpdate,
 						loading: false
@@ -428,8 +427,7 @@ class RoomsListView extends React.Component {
 			showUnread,
 			showFavorites,
 			groupByType,
-			  user,
-			  isUserLoaded
+			user
 		} = this.props;
 
 		const db = database.active;
@@ -980,7 +978,7 @@ class RoomsListView extends React.Component {
 		const {
 			loading, chats, search, searching
 		} = this.state;
-		const { theme, refreshing, user } = this.props;
+		const { theme, refreshing } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
