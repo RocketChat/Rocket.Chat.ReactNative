@@ -50,8 +50,7 @@ const longTextMsg = [
 		value: [
 			{
 				type: 'PLAIN_TEXT',
-				value:
-					'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+				value: longText
 			}
 		]
 	}
@@ -109,43 +108,13 @@ const sequentialEmptySpacesMsg = [
 	}
 ];
 
-const boldOrUnderscoreMsg = [
-	{
-		type: 'PARAGRAPH',
-		value: [
-			{
-				type: 'BOLD',
-				value: [
-					{
-						type: 'PLAIN_TEXT',
-						value: 'This is bold'
-					}
-				]
-			},
-			{
-				type: 'PLAIN_TEXT',
-				value: ' and '
-			},
-			{
-				type: 'ITALIC',
-				value: [
-					{
-						type: 'PLAIN_TEXT',
-						value: 'this is italic'
-					}
-				]
-			}
-		]
-	}
-];
-
 stories.add('Text', () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={simpleTextMsg} />
 		<NewMarkdown tokens={longTextMsg} />
 		<NewMarkdown tokens={lineBreakMsg} />
 		<NewMarkdown tokens={sequentialEmptySpacesMsg} />
-		<NewMarkdown tokens={boldOrUnderscoreMsg} />
+		<NewMarkdown tokens={[...simpleTextMsg, ...longTextMsg]} />
 	</View>
 ));
 
@@ -376,6 +345,20 @@ const blockQuoteTokens = [
 				]
 			}
 		]
+	},
+	{
+		type: 'QUOTE',
+		value: [
+			{
+				type: 'PARAGRAPH',
+				value: [
+					{
+						type: 'PLAIN_TEXT',
+						value: longText
+					}
+				]
+			}
+		]
 	}
 ];
 
@@ -547,14 +530,7 @@ const multilineCodeToken = [
 				type: 'CODE_LINE',
 				value: {
 					type: 'PLAIN_TEXT',
-					value: 'Multi line '
-				}
-			},
-			{
-				type: 'CODE_LINE',
-				value: {
-					type: 'PLAIN_TEXT',
-					value: 'Code'
+					value: 'Multi \nLine \nCode'
 				}
 			}
 		]

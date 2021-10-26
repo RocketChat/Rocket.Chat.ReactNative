@@ -4,6 +4,7 @@ import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Hashtag from '../Hashtag';
 import AtMention from '../AtMention';
+import styles from '../styles';
 import Link from './Link';
 import Plain from './Plain';
 import Bold from './Bold';
@@ -21,7 +22,7 @@ interface IParagraphProps {
 const Inline = ({ value }: IParagraphProps): JSX.Element => {
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 	return (
-		<Text>
+		<Text style={styles.inline}>
 			{value.map(block => {
 				switch (block.type) {
 					case 'IMAGE':
