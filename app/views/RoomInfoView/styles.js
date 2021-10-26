@@ -104,6 +104,11 @@ export default StyleSheet.create({
 		shadowRadius: 3.84,
 		backgroundColor: 'white'
 	},
+	locationView: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		marginTop: 10
+	},
 	deviceContainer: {
 		flexDirection: 'row',
 		top: 30,
@@ -114,9 +119,51 @@ export default StyleSheet.create({
 		marginLeft: '50%',
 		marginRight: '20%'
 	},
-	locationView: {
-		flexDirection: 'row',
+	centeredView: {
+		flex: 1,
 		justifyContent: 'center',
-		marginTop: 10
+		alignItems: 'center',
+		marginTop: 22
+	},
+	modalView: {
+		margin: 20,
+		backgroundColor: 'white',
+		borderRadius: 20,
+		padding: 35,
+		alignItems: 'center',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5
+	},
+	button: {
+		borderRadius: 20,
+		padding: 10,
+		elevation: 2,
+		flexDirection: 'row',
+		width: '50%',
+		shadowOpacity: 0.25,
+		shadowRadius: 4
+	},
+	buttonOpen: {
+		backgroundColor: '#F194FF'
+	},
+	buttonClose: {
+		backgroundColor: '#2ed322'
+	},
+	textStyle: {
+		color: 'white',
+		fontWeight: 'bold',
+		textAlign: 'center'
+	},
+	modalText: {
+		marginBottom: 15,
+		textAlign: 'center',
+		...sharedStyles.textAlignCenter,
+		...sharedStyles.textRegular
 	}
 });

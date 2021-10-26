@@ -163,7 +163,6 @@ class ProfileLibraryView extends React.Component {
 				t: 'd',
 				isPeerSupporter: true
 			};
-			// alert(JSON.stringify(item));
 			navigation.navigate('RoomInfoView', navParam);
 		} else {
 			this.goRoom({

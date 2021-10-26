@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ScrollView, Text, View } from 'react-native';
+import {
+	View, Text, ScrollView
+} from 'react-native';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import UAParser from 'ua-parser-js';
 import _ from 'lodash';
@@ -31,6 +34,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
 import { showErrorAlert } from '../../utils/info';
+
 
 const PERMISSION_EDIT_ROOM = 'edit-room';
 const getRoomTitle = (room, type, name, username, age, statusText, theme) => (type === 'd'
@@ -113,7 +117,7 @@ class RoomInfoView extends React.Component {
 		const rid = route.params?.rid;
 		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
-			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined,
+			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} testID='room-info-view' /> : undefined,
 			title: t === 'd' ? I18n.t('Profile') : I18n.t('Room_Info'),
 			headerRight: showEdit
 				? () => (
@@ -180,7 +184,9 @@ class RoomInfoView extends React.Component {
 		if (_.isEmpty(roomUser)) {
 			try {
 				const roomUserId = RocketChat.getUidDirectMessage(room);
+
 				const result = await RocketChat.getUserInfo(roomUserId);
+
 				if (result.success) {
 					const { user } = result;
 					const { roles } = user;
@@ -292,7 +298,6 @@ class RoomInfoView extends React.Component {
 
 		try {
 			await RocketChat.saveUserProfile({}, user.customFields);
-
 			await this.createDirect();
 			this.goRoom();
 		} catch (e) {
@@ -381,12 +386,14 @@ class RoomInfoView extends React.Component {
 					baseUrl={baseUrl}
 					userId={user.id}
 					token={user.token}
+
 				>
 					{this.t === 'd' && roomUser._id ? <Status style={[sharedStyles.status, styles.status]} theme={theme} size={24} id={roomUser._id} /> : null}
 				</Avatar>
 			);
 		}
 	}
+
 
 	renderStatus = (room, roomUser) => {
 		const { theme } = this.props;
@@ -398,14 +405,14 @@ class RoomInfoView extends React.Component {
 			&& roomUser.parsedRoles !== undefined) {
 			isPeerSupporter = roomUser.parsedRoles.indexOf('Peer Supporter') > -1;
 		}
-		if (isPeerSupporter && roomUser._id) {
+		if (isPeerSupporter && roomUser && roomUser._id) {
 			return <Status style={[styles.status]} theme={theme} size={18} id={roomUser._id} />;
 		} else {
 			return null;
 		}
 	};
 
-	renderButton = (onPress) => {
+	renderButton = (onPress, iconName, text) => {
 		const { theme } = this.props;
 
 		const onActionPress = async() => {
@@ -418,16 +425,19 @@ class RoomInfoView extends React.Component {
 		};
 
 		return (
-			<Button
-				style={{ marginTop: 10, borderRadius: 20, width: '50%' }}
-				title={I18n.t('Connect')}
-				type='primary'
+
+			<BorderlessButton
 				onPress={onActionPress}
-				disabled={false}
-				testID='profile-library-view-connect'
-				theme={theme}
-				backgroundColor={themes[theme].connectButtonColor}
-			/>
+				style={styles.roomButton}
+			>
+				<CustomIcon
+					name={iconName}
+					size={30}
+					color={themes[theme].actionTintColor}
+				/>
+				<Text style={[styles.roomButtonText, { color: themes[theme].actionTintColor }]}>{text}</Text>
+			</BorderlessButton>
+
 		);
 	}
 
@@ -438,7 +448,7 @@ class RoomInfoView extends React.Component {
 		return (isPeerSupporter && !isConnected && canConnect)
 			? (
 				<Button
-					style={{ marginTop: 10, borderRadius: 10 }}
+					style={{ marginTop: 10, borderRadius: 20, width: '50%' }}
 					title={I18n.t('Connect')}
 					type='primary'
 					onPress={this.connect}
@@ -448,9 +458,8 @@ class RoomInfoView extends React.Component {
 					theme={theme}
 					backgroundColor={themes[theme].connectButtonColor}
 				/>
-			)
-			: (
 
+			) : (
 				<View style={styles.roomButtonsContainer}>
 					{this.renderButton(this.goRoom, 'message', I18n.t('Message'))}
 					{jitsiEnabled ? this.renderButton(this.videoCall, 'camera', I18n.t('Video_call')) : null}
@@ -522,6 +531,7 @@ class RoomInfoView extends React.Component {
 
 		const isPeerSupporter = route.params?.isPeerSupporter;
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role)) !== undefined;
+
 		const peerIds = (user === null
 			|| user.customFields === null
 			|| user.customFields === undefined
@@ -530,12 +540,14 @@ class RoomInfoView extends React.Component {
 
 			? [] : user.customFields.ConnectIds.split(',');
 
+
 		const canConnect = !peerIds.includes(roomUser.username) && peerIds.length < 5 && !isAdmin;
 		const isConnected = peerIds.includes(roomUser.username) && !isAdmin;
 
 		const name = (isConnected) ? `${ roomUser?.name } ✅ ` : roomUser?.name;
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
+
 				<StatusBar theme={theme} />
 				<SafeAreaView
 					theme={theme}
@@ -543,14 +555,17 @@ class RoomInfoView extends React.Component {
 				>
 					<View style={[styles.avatarContainer, this.isDirect && styles.avatarContainerDirectRoom, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						{this.renderAvatar(room, roomUser, isAdmin, isPeerSupporter, canConnect, isConnected)}
-						<View style={{ flexDirection: 'row' }}><View style={{ marginTop: 17 }}>{this.renderStatus(room, roomUser)}</View>
+						<View style={{ flexDirection: 'row' }}><View style={{ marginTop: '5%' }}>{this.renderStatus(room, roomUser)}</View>
 							<View style={styles.roomTitleContainer}>{ getRoomTitle(room, this.t, name, roomUser?.username, roomUser?.customFields?.Age, roomUser?.statusText, theme) }</View>
 						</View>
 						{this.isDirect ? this.renderPreContent(isAdmin, isPeerSupporter, canConnect, isConnected) : null}
 						{this.isDirect ? this.renderButtons(isPeerSupporter, canConnect, isConnected) : null}
 
 					</View>
+
+
 					{this.renderContent(isAdmin, isPeerSupporter, canConnect, isConnected)}
+
 				</SafeAreaView>
 			</ScrollView>
 		);
