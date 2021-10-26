@@ -35,7 +35,7 @@ type TRouteParams = {
 	SearchMessagesView: {
 		showCloseModal?: boolean;
 		rid: string;
-		t: string;
+		t?: string;
 		encrypted?: boolean;
 	};
 };
@@ -68,7 +68,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	private rid: string;
 
-	private t: string;
+	private t: string | undefined;
 
 	private encrypted: boolean | undefined;
 
