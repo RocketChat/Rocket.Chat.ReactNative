@@ -12,6 +12,7 @@ import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { IMessage, IMessageAttachments } from '../../containers/message/interfaces';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
@@ -282,8 +283,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
-				keyboardShouldPersistTaps={'always'}
-				keyboardDismissMode={'interactive'}
+				{...scrollPersistTaps}
 			/>
 		);
 	};
