@@ -14,6 +14,7 @@ interface IMarkdownContext {
 	navToRoomInfo: Function;
 	getCustomEmoji?: Function;
 	onLinkPress?: Function;
+	preview: boolean;
 }
 
 const defaultState = {
@@ -22,7 +23,8 @@ const defaultState = {
 	useRealName: false,
 	username: '',
 	baseUrl: '',
-	navToRoomInfo: () => {}
+	navToRoomInfo: () => {},
+	preview: false
 };
 
 const MarkdownContext = React.createContext<IMarkdownContext>(defaultState);

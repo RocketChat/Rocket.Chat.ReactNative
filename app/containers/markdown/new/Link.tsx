@@ -20,7 +20,7 @@ interface ILinkProps {
 
 const Link = ({ value }: ILinkProps): JSX.Element => {
 	const { theme } = useTheme();
-	const { onLinkPress } = useContext(MarkdownContext);
+	const { onLinkPress, preview } = useContext(MarkdownContext);
 	const { src, label } = value;
 	const handlePress = () => {
 		if (!src.value) {
@@ -38,7 +38,10 @@ const Link = ({ value }: ILinkProps): JSX.Element => {
 	};
 
 	return (
-		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme!].actionTintColor }]}>
+		<Text
+			onPress={handlePress}
+			onLongPress={onLongPress}
+			style={[styles.link, !preview && { color: themes[theme!].actionTintColor }]}>
 			{(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':

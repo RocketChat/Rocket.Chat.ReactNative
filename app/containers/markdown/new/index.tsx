@@ -25,6 +25,7 @@ interface IBodyProps {
 	useRealName: boolean;
 	username: string;
 	baseUrl: string;
+	preview: boolean;
 }
 
 const Body = ({
@@ -36,7 +37,8 @@ const Body = ({
 	navToRoomInfo,
 	getCustomEmoji,
 	baseUrl,
-	onLinkPress
+	onLinkPress,
+	preview
 }: IBodyProps): JSX.Element => (
 	<MarkdownContext.Provider
 		value={{
@@ -47,7 +49,8 @@ const Body = ({
 			navToRoomInfo,
 			getCustomEmoji,
 			baseUrl,
-			onLinkPress
+			onLinkPress,
+			preview
 		}}>
 		{tokens.map(block => {
 			switch (block.type) {
