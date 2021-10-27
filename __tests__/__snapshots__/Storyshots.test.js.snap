@@ -18121,6 +18121,26 @@ exports[`Storyshots Markdown Preview 1`] = `
   >
     Testing: 😃 👍 :marioparty:
   </Text>
+  <Text
+    accessibilityLabel="Fallback from new md to old"
+    numberOfLines={1}
+    style={
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "textAlign": "left",
+        },
+        Object {
+          "color": "#2f343d",
+        },
+      ]
+    }
+  >
+    Fallback from new md to old
+  </Text>
 </View>
 `;
 
