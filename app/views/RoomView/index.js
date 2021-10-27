@@ -149,6 +149,7 @@ class RoomView extends React.Component {
 			prid
 		};
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
+		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? RocketChat.getUidDirectMessage(room);
 		this.state = {
 			joined: true,
@@ -209,6 +210,9 @@ class RoomView extends React.Component {
 			if (this.jumpToMessageId) {
 				this.jumpToMessage(this.jumpToMessageId);
 			}
+			if (this.jumpToThreadId && !this.jumpToMessageId) {
+				this.navToThread({ tmid: this.jumpToThreadId });
+			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
 			}
@@ -252,6 +256,10 @@ class RoomView extends React.Component {
 
 		if (route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
 			this.jumpToMessage(route?.params?.jumpToMessageId);
+		}
+
+		if (route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
+			this.navToThread({ tmid: route?.params?.jumpToThreadId });
 		}
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
@@ -872,7 +880,12 @@ class RoomView extends React.Component {
 		if (item.tmid) {
 			let name = item.tmsg;
 			if (!name) {
-				name = await this.getThreadName(item.tmid, item.id);
+				const result = await this.getThreadName(item.tmid, item.id);
+				// test if there isn't a thread
+				if (!result) {
+					return;
+				}
+				name = result;
 			}
 			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
