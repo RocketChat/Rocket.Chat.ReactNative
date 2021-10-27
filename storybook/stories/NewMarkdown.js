@@ -5,6 +5,7 @@ import { storiesOf } from '@storybook/react-native';
 
 import NewMarkdown from '../../app/containers/markdown/new';
 import { themes } from '../../app/constants/colors';
+import { longText } from '../utils';
 
 const stories = storiesOf('NewMarkdown', module);
 
@@ -49,8 +50,7 @@ const longTextMsg = [
 		value: [
 			{
 				type: 'PLAIN_TEXT',
-				value:
-					'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+				value: longText
 			}
 		]
 	}
@@ -108,43 +108,13 @@ const sequentialEmptySpacesMsg = [
 	}
 ];
 
-const boldOrUnderscoreMsg = [
-	{
-		type: 'PARAGRAPH',
-		value: [
-			{
-				type: 'BOLD',
-				value: [
-					{
-						type: 'PLAIN_TEXT',
-						value: 'This is bold'
-					}
-				]
-			},
-			{
-				type: 'PLAIN_TEXT',
-				value: ' and '
-			},
-			{
-				type: 'ITALIC',
-				value: [
-					{
-						type: 'PLAIN_TEXT',
-						value: 'this is italic'
-					}
-				]
-			}
-		]
-	}
-];
-
 stories.add('Text', () => (
 	<View style={styles.container}>
 		<NewMarkdown tokens={simpleTextMsg} />
 		<NewMarkdown tokens={longTextMsg} />
 		<NewMarkdown tokens={lineBreakMsg} />
 		<NewMarkdown tokens={sequentialEmptySpacesMsg} />
-		<NewMarkdown tokens={boldOrUnderscoreMsg} />
+		<NewMarkdown tokens={[...simpleTextMsg, ...longTextMsg]} />
 	</View>
 ));
 
@@ -375,6 +345,20 @@ const blockQuoteTokens = [
 				]
 			}
 		]
+	},
+	{
+		type: 'QUOTE',
+		value: [
+			{
+				type: 'PARAGRAPH',
+				value: [
+					{
+						type: 'PLAIN_TEXT',
+						value: longText
+					}
+				]
+			}
+		]
 	}
 ];
 
@@ -546,14 +530,7 @@ const multilineCodeToken = [
 				type: 'CODE_LINE',
 				value: {
 					type: 'PLAIN_TEXT',
-					value: 'Multi line '
-				}
-			},
-			{
-				type: 'CODE_LINE',
-				value: {
-					type: 'PLAIN_TEXT',
-					value: 'Code'
+					value: 'Multi \nLine \nCode'
 				}
 			}
 		]
@@ -567,53 +544,141 @@ stories.add('Code', () => (
 	</View>
 ));
 
+const items = [
+	[
+		{
+			type: 'PLAIN_TEXT',
+			value: 'Plain text '
+		},
+		{
+			type: 'EMOJI',
+			value: {
+				type: 'PLAIN_TEXT',
+				value: 'bulb'
+			}
+		},
+		{
+			type: 'ITALIC',
+			value: [
+				{
+					type: 'PLAIN_TEXT',
+					value: ' italic '
+				}
+			]
+		},
+		{
+			type: 'BOLD',
+			value: [
+				{
+					type: 'PLAIN_TEXT',
+					value: ' bold '
+				}
+			]
+		},
+		{
+			type: 'STRIKE',
+			value: [
+				{
+					type: 'PLAIN_TEXT',
+					value: ' strike '
+				}
+			]
+		},
+		{
+			type: 'MENTION_CHANNEL',
+			value: {
+				type: 'PLAIN_TEXT',
+				value: 'general'
+			}
+		},
+		{
+			type: 'LINK',
+			value: {
+				src: {
+					type: 'PLAIN_TEXT',
+					value: 'https://google.com'
+				},
+				label: {
+					type: 'PLAIN_TEXT',
+					value: ' link '
+				}
+			}
+		},
+		{
+			type: 'MENTION_USER',
+			value: {
+				type: 'PLAIN_TEXT',
+				value: 'rocket.cat'
+			}
+		},
+		{
+			type: 'INLINE_CODE',
+			value: {
+				type: 'PLAIN_TEXT',
+				value: ' inline code'
+			}
+		}
+	],
+	[
+		{
+			type: 'PLAIN_TEXT',
+			value: longText
+		}
+	]
+];
+
+const listItems = [
+	{
+		type: 'LIST_ITEM',
+		value: items[0]
+	},
+	{
+		type: 'LIST_ITEM',
+		value: items[1]
+	}
+];
+
 const unorederedListToken = [
 	{
 		type: 'UNORDERED_LIST',
-		value: [
-			{
-				type: 'LIST_ITEM',
-				value: [
-					{
-						type: 'PLAIN_TEXT',
-						value: 'Open Source'
-					}
-				]
-			},
-			{
-				type: 'LIST_ITEM',
-				value: [
-					{
-						type: 'PLAIN_TEXT',
-						value: 'Rocket.Chat'
-					}
-				]
-			}
-		]
+		value: listItems
 	}
 ];
 
 const orderedListToken = [
 	{
 		type: 'ORDERED_LIST',
+		value: listItems
+	}
+];
+
+const listMentions = [
+	{
+		_id: 'rocket.cat',
+		username: 'rocket.cat'
+	}
+];
+
+const listChannels = [
+	{
+		_id: 'general',
+		name: 'general'
+	}
+];
+
+const tasks = [
+	{
+		type: 'TASKS',
 		value: [
 			{
-				type: 'LIST_ITEM',
-				value: [
-					{
-						type: 'PLAIN_TEXT',
-						value: 'Open Source'
-					}
-				]
+				type: 'TASK',
+				status: true,
+				value: items[0]
 			},
 			{
-				type: 'LIST_ITEM',
-				value: [
-					{
-						type: 'PLAIN_TEXT',
-						value: 'Rocket.Chat'
-					}
-				]
+				type: 'TASK',
+				status: false,
+				value: items[1]
 			}
 		]
 	}
@@ -621,7 +686,8 @@ const orderedListToken = [
 
 stories.add('Lists', () => (
 	<View style={styles.container}>
-		<NewMarkdown tokens={unorederedListToken} />
-		<NewMarkdown tokens={orderedListToken} />
+		<NewMarkdown tokens={unorederedListToken} mentions={listMentions} channels={listChannels} />
+		<NewMarkdown tokens={orderedListToken} mentions={listMentions} channels={listChannels} />
+		<NewMarkdown tokens={tasks} mentions={listMentions} channels={listChannels} />
 	</View>
 ));

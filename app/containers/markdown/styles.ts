@@ -161,5 +161,8 @@ export default StyleSheet.create<any>({
 	},
 	alignRight: {
 		textAlign: 'right'
+	},
+	inline: {
+		flexShrink: 1
 	}
 });
