@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, Text, TextStyle } from 'react-native';
+import { Image, Text } from 'react-native';
 import { Node, Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import removeMarkdown from 'remove-markdown';
@@ -22,17 +22,6 @@ import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
 import { isValidURL } from '../../utils/url';
 import NewMarkdown from './new';
-
-interface IPreview {
-	message: string;
-	testID: string;
-	numberOfLines: number;
-	theme: string;
-	style: TextStyle[];
-	mention: string;
-	mentions: UserMention[];
-	useRealName: boolean;
-}
 
 interface IUser {
 	_id: string;
@@ -357,12 +346,16 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		return <MarkdownTableCell {...args} theme={theme} />;
 	};
 
-	renderPreview = ({ message, testID, numberOfLines, mention, mentions, useRealName, theme, style }: IPreview): JSX.Element => {
-		let user;
-		if (mentions) {
-			user = mentions?.find(m => m.username === mention);
-			if (useRealName && user?.name) {
-				message = message.replace(`@${user?.username}`, user!.name);
+	renderPreview = ({ msg, mentions, useRealName, numberOfLines, theme, testID, style }): JSX.Element => {
+		let message = formatText(msg);
+		message = message.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
+		if (mentions && useRealName) {
+			if (Array.isArray(mentions)) {
+				for (let i = 0; i < mentions.length; i++) {
+					message = message.replace(`@${mentions[i].username}`, mentions[i].name);
+				}
+			} else {
+				message = message.replace(`@${mentions.username}`, mentions.name);
 			}
 		}
 
@@ -402,17 +395,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 		if (this.isNewMarkdown) {
 			if (preview) {
-				const mention = md[0].value[0].type === 'MENTION_USER' ? md[0].value[0].value : { type: 'PLAIN_TEXT', value: '' };
-				return this.renderPreview({
-					message: msg,
-					testID,
-					numberOfLines,
-					mention: mention.value,
-					mentions,
-					useRealName,
-					theme,
-					style
-				});
+				return this.renderPreview({ msg, mentions, useRealName, numberOfLines, theme, testID, style });
 			}
 
 			return (

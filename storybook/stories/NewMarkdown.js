@@ -639,16 +639,31 @@ stories.add('Preview', () => (
 			preview
 		/>
 		<Markdown
-			msg='@rocket.cat @name1 @all @here @unknown #general #unknown'
-			md={allMentionTokens}
-			mentions={allMentions}
+			msg='@name @rocket.cat @here @all'
+			md={multipleMentionTokens}
+			mentions={multipleMentions}
 			navToRoomInfo={() => {}}
 			style={[]}
+			useRealName
 			theme={theme}
 			numberOfLines={1}
 			username='rocket.cat'
 			preview
 		/>
-		<Markdown md={bigEmojiTokens} getCustomEmoji={getCustomEmoji} theme={theme} numberOfLines={1} preview />
+		<Markdown
+			msg=':green_heart: :joy: :grin:'
+			md={bigEmojiTokens}
+			getCustomEmoji={getCustomEmoji}
+			theme={theme}
+			numberOfLines={1}
+			preview
+		/>
+		<Markdown
+			msg='[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
+			md={rocketChatLink}
+			theme={theme}
+			numberOfLines={1}
+			preview
+		/>
 	</View>
 ));
