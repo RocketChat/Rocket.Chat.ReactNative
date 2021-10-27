@@ -23,7 +23,7 @@ const Link = ({ value }: ILinkProps): JSX.Element => {
 	const { onLinkPress, preview } = useContext(MarkdownContext);
 	const { src, label } = value;
 	const handlePress = () => {
-		if (!src.value) {
+		if (!src.value || preview) {
 			return;
 		}
 		if (onLinkPress) {
