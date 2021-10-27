@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, Text } from 'react-native';
+import { Image, Text, TextStyle } from 'react-native';
 import { Node, Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import removeMarkdown from 'remove-markdown';
@@ -27,6 +27,16 @@ interface IUser {
 	_id: string;
 	username: string;
 	name: string;
+}
+
+interface IPreview {
+	msg: string;
+	testID: string;
+	numberOfLines: number;
+	theme: string;
+	style: TextStyle[];
+	mentions: IUser | IUser[];
+	useRealName: boolean;
 }
 
 type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
@@ -346,7 +356,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		return <MarkdownTableCell {...args} theme={theme} />;
 	};
 
-	renderPreview = ({ msg, mentions, useRealName, numberOfLines, theme, testID, style }): JSX.Element => {
+	renderPreview = ({ msg, mentions, useRealName, numberOfLines, theme, testID, style }: IPreview): JSX.Element => {
 		let message = formatText(msg);
 		message = message.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
 		if (mentions && useRealName) {
