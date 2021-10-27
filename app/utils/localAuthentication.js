@@ -100,19 +100,19 @@ export const checkHasPasscode = async ({ force = true, serverRecord }) => {
 };
 
 export const saveStatusLocalAuthentication = async ({ autoLock, autoLockTime, biometry, server }) => {
-	await UserPreferences.setBoolAsync(AUTO_LOCK + server, autoLock);
-	await UserPreferences.setStringAsync(AUTO_LOCK_TIME + server, autoLockTime.toString());
-	await UserPreferences.setBoolAsync(UNLOCK_FACE_ID + server, biometry);
+	await UserPreferences.setBoolAsync(`${AUTO_LOCK}${server}`, autoLock);
+	await UserPreferences.setIntAsync(`${AUTO_LOCK_TIME}${server}`, autoLockTime);
+	await UserPreferences.setBoolAsync(`${UNLOCK_FACE_ID}${server}`, biometry);
 };
 
-export const checkAutoLockAndTime = async server => {
-	const storedAutoLock = await UserPreferences.getBoolAsync(AUTO_LOCK + server);
-	const storedAutoLockTime = await UserPreferences.getStringAsync(AUTO_LOCK_TIME + server);
-	const storedBiometry = await UserPreferences.getBoolAsync(UNLOCK_FACE_ID + server);
+export const getAutoLockAndTime = async server => {
+	const storedAutoLock = await UserPreferences.getBoolAsync(`${AUTO_LOCK}${server}`);
+	const storedAutoLockTime = await UserPreferences.getIntAsync(`${AUTO_LOCK_TIME}${server}`);
+	const storedBiometry = await UserPreferences.getBoolAsync(`${UNLOCK_FACE_ID}${server}`);
 
 	return {
 		storedAutoLock,
-		storedAutoLockTime: Number.parseInt(storedAutoLockTime, 10),
+		storedAutoLockTime,
 		storedBiometry
 	};
 };
@@ -125,21 +125,27 @@ export const localAuthenticate = async server => {
 	let serverRecord;
 	try {
 		serverRecord = await serversCollection.find(server);
-
-		const { storedAutoLock, storedAutoLockTime, storedBiometry } = await checkAutoLockAndTime(server);
-		await serversDB.action(async () => {
-			await serverRecord.update(record => {
-				if (serverRecord.autoLock !== storedAutoLock && !Force_Screen_Lock) {
-					record.autoLock = storedAutoLock;
-				}
-				if (!Force_Screen_Lock || Force_Screen_Lock_After === 0) {
-					record.autoLockTime = storedAutoLockTime;
-				}
-				record.biometry = storedBiometry;
-			});
-		});
 	} catch (error) {
 		return Promise.reject();
+	}
+
+	if (serverRecord) {
+		const { storedAutoLock, storedAutoLockTime, storedBiometry } = await getAutoLockAndTime(server);
+		try {
+			await serversDB.action(async () => {
+				await serverRecord.update(record => {
+					if (serverRecord.autoLock !== storedAutoLock && !Force_Screen_Lock) {
+						record.autoLock = storedAutoLock;
+					}
+					if (!Force_Screen_Lock || Force_Screen_Lock_After === 0) {
+						record.autoLockTime = storedAutoLockTime;
+					}
+					record.biometry = storedBiometry;
+				});
+			});
+		} catch (error) {
+			return Promise.reject();
+		}
 	}
 
 	// if screen lock is enabled

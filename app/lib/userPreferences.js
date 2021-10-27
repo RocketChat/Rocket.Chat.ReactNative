@@ -37,6 +37,19 @@ class UserPreferences {
 		return this.mmkv.setBoolAsync(key, value);
 	}
 
+	async getIntAsync(key) {
+		try {
+			const value = await this.mmkv.getIntAsync(key);
+			return value;
+		} catch {
+			return null;
+		}
+	}
+
+	setIntAsync(key, value) {
+		return this.mmkv.setIntAsync(key, value);
+	}
+
 	async getMapAsync(key) {
 		try {
 			const value = await this.mmkv.getMapAsync(key);
