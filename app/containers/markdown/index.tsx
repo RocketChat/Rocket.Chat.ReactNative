@@ -369,7 +369,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			return null;
 		}
 
-		if (this.isNewMarkdown) {
+		if (this.isNewMarkdown && !preview) {
 			return (
 				<NewMarkdown
 					username={username}
