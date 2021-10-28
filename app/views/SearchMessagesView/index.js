@@ -24,8 +24,11 @@ import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
+import { isIOS } from '../../utils/deviceInfo';
+import { compareServerVersion, methods } from '../../lib/utils';
 import styles from './styles';
 
+const QUERY_SIZE = 50;
 class SearchMessagesView extends React.Component {
 	static navigationOptions = ({ navigation, route }) => {
 		const options = {
@@ -43,6 +46,7 @@ class SearchMessagesView extends React.Component {
 		route: PropTypes.object,
 		user: PropTypes.object,
 		baseUrl: PropTypes.string,
+		serverVersion: PropTypes.string,
 		customEmojis: PropTypes.object,
 		theme: PropTypes.string,
 		useRealName: PropTypes.bool
@@ -55,6 +59,7 @@ class SearchMessagesView extends React.Component {
 			messages: [],
 			searchText: ''
 		};
+		this.offset = 0;
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.encrypted = props.route.params?.encrypted;
@@ -88,6 +93,9 @@ class SearchMessagesView extends React.Component {
 
 	// Handle encrypted rooms search messages
 	searchMessages = async searchText => {
+		if (!searchText) {
+			return [];
+		}
 		// If it's a encrypted, room we'll search only on the local stored messages
 		if (this.encrypted) {
 			const db = database.active;
@@ -103,25 +111,33 @@ class SearchMessagesView extends React.Component {
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const result = await RocketChat.searchMessages(this.rid, searchText);
+		const result = await RocketChat.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
 		if (result.success) {
 			return result.messages;
 		}
 	};
 
-	search = debounce(async searchText => {
-		this.setState({ searchText, loading: true, messages: [] });
-
+	getMessages = async (searchText, debounced) => {
 		try {
 			const messages = await this.searchMessages(searchText);
-			this.setState({
-				messages: messages || [],
+			this.setState(prevState => ({
+				messages: debounced ? messages : [...prevState.messages, ...messages],
 				loading: false
-			});
+			}));
 		} catch (e) {
 			this.setState({ loading: false });
 			log(e);
 		}
+	};
+
+	search = searchText => {
+		this.offset = 0;
+		this.setState({ searchText, loading: true, messages: [] });
+		this.searchDebounced(searchText);
+	};
+
+	searchDebounced = debounce(async searchText => {
+		await this.getMessages(searchText, true);
 	}, 1000);
 
 	getCustomEmoji = name => {
@@ -168,6 +184,23 @@ class SearchMessagesView extends React.Component {
 		}
 	};
 
+	onEndReached = async () => {
+		const { serverVersion } = this.props;
+		const { searchText, messages, loading } = this.state;
+		if (
+			messages.length < this.offset ||
+			this.encrypted ||
+			loading ||
+			compareServerVersion(serverVersion, '3.17.0', methods.lowerThan)
+		) {
+			return;
+		}
+		this.setState({ loading: true });
+		this.offset += QUERY_SIZE;
+
+		await this.getMessages(searchText);
+	};
+
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
@@ -212,8 +245,10 @@ class SearchMessagesView extends React.Component {
 				renderItem={this.renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				keyExtractor={item => item._id}
-				onEndReached={this.load}
+				onEndReached={this.onEndReached}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				onEndReachedThreshold={0.5}
+				removeClippedSubviews={isIOS}
 				{...scrollPersistTaps}
 			/>
 		);
@@ -243,6 +278,7 @@ class SearchMessagesView extends React.Component {
 }
 
 const mapStateToProps = state => ({
+	serverVersion: state.server.version,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,

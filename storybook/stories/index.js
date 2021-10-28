@@ -12,6 +12,7 @@ import './HeaderButtons';
 import './UnreadBadge';
 import '../../app/views/ThreadMessagesView/Item.stories.js';
 import './Avatar';
+import './NewMarkdown';
 import '../../app/containers/BackgroundContainer/index.stories.js';
 import '../../app/containers/RoomHeader/RoomHeader.stories.js';
 import '../../app/views/RoomView/LoadMore/LoadMore.stories';

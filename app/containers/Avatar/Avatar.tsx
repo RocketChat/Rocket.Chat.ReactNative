@@ -85,7 +85,7 @@ const Avatar = React.memo(
 		}
 
 		return (
-			<View style={[avatarStyle, style]}>
+			<View style={[avatarStyle, style]} testID='avatar'>
 				{image}
 				{children}
 			</View>

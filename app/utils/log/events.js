@@ -11,6 +11,9 @@ export default {
 	FP_FORGOT_PASSWORD: 'fp_forgot_password',
 	FP_FORGOT_PASSWORD_F: 'fp_forgot_password_f',
 
+	// SEND EMAIL CONFIRMATION VIEW
+	SEC_SEND_EMAIL_CONFIRMATION: 'sec_send_email_confirmation',
+
 	// REGISTER VIEW
 	REGISTER_DEFAULT_SIGN_UP: 'register_default_sign_up',
 	REGISTER_DEFAULT_SIGN_UP_F: 'register_default_sign_up_f',
@@ -66,14 +69,17 @@ export default {
 	RL_TOGGLE_READ_F: 'rl_toggle_read_f',
 	RL_HIDE_CHANNEL: 'rl_hide_channel',
 	RL_HIDE_CHANNEL_F: 'rl_hide_channel_f',
-	RL_TOGGLE_SORT_DROPDOWN: 'rl_toggle_sort_dropdown',
-	RL_SORT_CHANNELS_BY_NAME: 'rl_sort_channels_by_name',
-	RL_SORT_CHANNELS_BY_ACTIVITY: 'rl_sort_channels_by_activity',
-	RL_SORT_CHANNELS_F: 'rl_sort_channels_f',
-	RL_GROUP_CHANNELS_BY_TYPE: 'rl_group_channels_by_type',
-	RL_GROUP_CHANNELS_BY_FAVORITE: 'rl_group_channels_by_favorite',
-	RL_GROUP_CHANNELS_BY_UNREAD: 'rl_group_channels_by_unread',
 	RL_CREATE_NEW_WORKSPACE: 'rl_create_new_workspace',
+
+	// DISPLAY PREFERENCES VIEW
+	DP_SORT_CHANNELS_BY_NAME: 'dp_sort_channels_by_name',
+	DP_SORT_CHANNELS_BY_ACTIVITY: 'dp_sort_channels_by_activity',
+	DP_GROUP_CHANNELS_BY_TYPE: 'dp_group_channels_by_type',
+	DP_GROUP_CHANNELS_BY_FAVORITE: 'dp_group_channels_by_favorite',
+	DP_GROUP_CHANNELS_BY_UNREAD: 'dp_group_channels_by_unread',
+	DP_TOGGLE_AVATAR: 'dp_toggle_avatar',
+	DP_DISPLAY_EXPANDED: 'dp_display_expanded',
+	DP_DISPLAY_CONDENSED: 'dp_display_condensed',
 
 	// QUEUE LIST VIEW
 	QL_GO_ROOM: 'ql_go_room',
