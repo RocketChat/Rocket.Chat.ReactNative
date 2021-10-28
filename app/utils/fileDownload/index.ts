@@ -10,17 +10,23 @@ interface IAttachment {
 
 const DOCUMENT_PATH = `${RNFetchBlob.fs.dirs.DownloadDir}/`;
 
-export const getExtensionType = (text: string) => text.split('.').pop();
+export const getExtensionType = (text: string): string | undefined => text.split('.').pop();
+
+export const getLocalFilePathFromFile = (attachment: IAttachment): string => {
+	const fileName = attachment.title.split('.')[0];
+	return `${DOCUMENT_PATH}${fileName}.${getExtensionType(attachment.title_link)}`;
+};
+
+export const verifyIfFileExist = (path: string): Promise<boolean> => RNFetchBlob.fs.exists(path);
 
 export const fileDownload = async (url: string, attachment: IAttachment) => {
-	const fileName = attachment.title.split('.')[0];
-	const path = `${DOCUMENT_PATH}${fileName}.${getExtensionType(attachment.title_link)}`;
+	const path = getLocalFilePathFromFile(attachment);
 	const options = {
 		path,
 		timeout: 10000,
 		indicator: true,
 		addAndroidDownloads: {
-			path: `${DOCUMENT_PATH}${fileName}.${getExtensionType(attachment.title_link)}`,
+			path,
 			description: 'downloading file...',
 			notification: true,
 			useDownloadManager: true
@@ -34,9 +40,15 @@ export const fileDownload = async (url: string, attachment: IAttachment) => {
 	return data;
 };
 
-export const filePreview = async (url: string, attachment: IAttachment) => {
-	const file = await fileDownload(url, attachment);
-	FileViewer.open(file)
+export const filePreview = async (url: string, attachment: IAttachment): Promise<void> => {
+	const path = getLocalFilePathFromFile(attachment);
+	let file;
+
+	if (!(await verifyIfFileExist(path))) {
+		file = await fileDownload(url, attachment);
+	}
+
+	FileViewer.open(file || path)
 		.then(res => {
 			console.log('entrou no then *************');
 			console.log(res);
