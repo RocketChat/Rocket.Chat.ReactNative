@@ -17,7 +17,6 @@ export const fileDownload = async (url: string, attachment: IAttachment) => {
 	const path = `${DOCUMENT_PATH}${fileName}.${getExtensionType(attachment.title_link)}`;
 	const options = {
 		path,
-		fileCache: true,
 		timeout: 10000,
 		indicator: true,
 		addAndroidDownloads: {
