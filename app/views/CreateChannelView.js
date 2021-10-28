@@ -21,6 +21,7 @@ import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';
 import { events, logEvent } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
+import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
@@ -79,10 +80,13 @@ class CreateChannelView extends React.Component {
 		users: PropTypes.array.isRequired,
 		user: PropTypes.shape({
 			id: PropTypes.string,
-			token: PropTypes.string
+			token: PropTypes.string,
+			roles: PropTypes.array
 		}),
 		theme: PropTypes.string,
-		teamId: PropTypes.string
+		teamId: PropTypes.string,
+		createPublicChannelPermission: PropTypes.array,
+		createPrivateChannelPermission: PropTypes.array
 	};
 
 	constructor(props) {
@@ -96,14 +100,20 @@ class CreateChannelView extends React.Component {
 			readOnly: false,
 			encrypted: false,
 			broadcast: false,
-			isTeam
+			isTeam,
+			permissions: []
 		};
 		this.setHeader();
 	}
 
+	componentDidMount() {
+		this.handleHasPermission();
+	}
+
 	shouldComponentUpdate(nextProps, nextState) {
-		const { channelName, type, readOnly, broadcast, encrypted } = this.state;
-		const { users, isFetching, encryptionEnabled, theme } = this.props;
+		const { channelName, type, readOnly, broadcast, encrypted, permissions } = this.state;
+		const { users, isFetching, encryptionEnabled, theme, createPublicChannelPermission, createPrivateChannelPermission } =
+			this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -122,16 +132,35 @@ class CreateChannelView extends React.Component {
 		if (nextState.broadcast !== broadcast) {
 			return true;
 		}
+		if (nextState.permissions !== permissions) {
+			return true;
+		}
 		if (nextProps.isFetching !== isFetching) {
 			return true;
 		}
 		if (nextProps.encryptionEnabled !== encryptionEnabled) {
 			return true;
 		}
+		if (!dequal(nextProps.createPublicChannelPermission, createPublicChannelPermission)) {
+			return true;
+		}
+		if (!dequal(nextProps.createPrivateChannelPermission, createPrivateChannelPermission)) {
+			return true;
+		}
 		if (!dequal(nextProps.users, users)) {
 			return true;
 		}
 		return false;
+	}
+
+	componentDidUpdate(prevProps) {
+		const { createPublicChannelPermission, createPrivateChannelPermission } = this.props;
+		if (
+			!dequal(createPublicChannelPermission, prevProps.createPublicChannelPermission) ||
+			!dequal(createPrivateChannelPermission, prevProps.createPrivateChannelPermission)
+		) {
+			this.handleHasPermission();
+		}
 	}
 
 	setHeader = () => {
@@ -208,12 +237,21 @@ class CreateChannelView extends React.Component {
 		);
 	};
 
+	handleHasPermission = async () => {
+		const { createPublicChannelPermission, createPrivateChannelPermission } = this.props;
+		const permissions = [createPublicChannelPermission, createPrivateChannelPermission];
+		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		this.setState({ permissions: permissionsToCreate });
+	};
+
 	renderType() {
-		const { type, isTeam } = this.state;
+		const { type, isTeam, permissions } = this.state;
+		const isDisabled = permissions.filter(r => r === true).length <= 1;
 
 		return this.renderSwitch({
 			id: 'type',
-			value: type,
+			value: permissions[1] ? type : false,
+			disabled: isDisabled,
 			label: isTeam ? 'Private_Team' : 'Private_Channel',
 			onValueChange: value => {
 				logEvent(events.CR_TOGGLE_TYPE);
@@ -373,7 +411,9 @@ const mapStateToProps = state => ({
 	isFetching: state.createChannel.isFetching,
 	encryptionEnabled: state.encryption.enabled,
 	users: state.selectedUsers.users,
-	user: getUserSelector(state)
+	user: getUserSelector(state),
+	createPublicChannelPermission: state.permissions['create-c'],
+	createPrivateChannelPermission: state.permissions['create-p']
 });
 
 const mapDispatchToProps = dispatch => ({

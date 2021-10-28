@@ -24,6 +24,7 @@ interface ITouchableProps {
 	theme: string;
 	isFocused: boolean;
 	swipeEnabled: boolean;
+	displayMode: string;
 }
 
 class Touchable extends React.Component<ITouchableProps, any> {
@@ -227,7 +228,7 @@ class Touchable extends React.Component<ITouchableProps, any> {
 	};
 
 	render() {
-		const { testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled } = this.props;
+		const { testID, isRead, width, favorite, children, theme, isFocused, swipeEnabled, displayMode } = this.props;
 
 		return (
 			<LongPressGestureHandler onHandlerStateChange={this.onLongPressHandlerStateChange}>
@@ -244,6 +245,7 @@ class Touchable extends React.Component<ITouchableProps, any> {
 								width={width}
 								onToggleReadPress={this.onToggleReadPress}
 								theme={theme}
+								displayMode={displayMode}
 							/>
 							<RightActions
 								transX={this.transXReverse}
@@ -252,6 +254,7 @@ class Touchable extends React.Component<ITouchableProps, any> {
 								toggleFav={this.toggleFav}
 								onHidePress={this.onHidePress}
 								theme={theme}
+								displayMode={displayMode}
 							/>
 							<Animated.View
 								style={{

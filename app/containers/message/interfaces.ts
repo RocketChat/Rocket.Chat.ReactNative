@@ -1,3 +1,5 @@
+import { MarkdownAST } from '@rocket.chat/message-parser';
+
 export interface IMessageAttachments {
 	attachments: any;
 	timeFormat: string;
@@ -48,12 +50,21 @@ export interface IMessageCallButton {
 	callJitsi: Function;
 }
 
+export interface IUser {
+	_id: string;
+	username: string;
+	name: string;
+}
+
+export type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
+
 export interface IMessageContent {
 	isTemp: boolean;
 	isInfo: boolean;
 	tmid: string;
 	isThreadRoom: boolean;
 	msg: string;
+	md: MarkdownAST;
 	theme: string;
 	isEdited: boolean;
 	isEncrypted: boolean;
@@ -62,7 +73,7 @@ export interface IMessageContent {
 		name: string;
 		_id: number;
 	}[];
-	mentions: object[];
+	mentions: UserMention[];
 	navToRoomInfo: Function;
 	useRealName: boolean;
 	isIgnored: boolean;
