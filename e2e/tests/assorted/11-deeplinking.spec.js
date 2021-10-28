@@ -1,6 +1,6 @@
 const data = require('../../data');
 const { tapBack, checkServer, navigateToRegister, platformTypes } = require('../../helpers/app');
-const { get, login } = require('../../helpers/data_setup');
+const { get, login, sendMessage } = require('../../helpers/data_setup');
 
 const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
 
@@ -16,13 +16,18 @@ describe('Deep linking', () => {
 	let userId;
 	let authToken;
 	let scrollViewType;
-
+	let threadId;
+	const threadMessage = `to-thread-${data.random}`;
 	before(async () => {
 		const loginResult = await login(data.users.regular.username, data.users.regular.password);
 		({ userId, authToken } = loginResult);
 		const deviceType = device.getPlatform();
 		amp = deviceType === 'android' ? '\\&' : '&';
 		({ scrollViewType } = platformTypes[deviceType]);
+		// create a thread with api
+		const result = await sendMessage(data.users.regular, data.groups.alternate2.name, threadMessage);
+		threadId = result.message._id;
+		await sendMessage(data.users.regular, result.message.rid, data.random, threadId);
 	});
 
 	describe('Authentication', () => {
@@ -91,6 +96,18 @@ describe('Deep linking', () => {
 					sourceApp: 'com.apple.mobilesafari'
 				});
 				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
+					.toExist()
+					.withTimeout(10000);
+			});
+
+			it('should navigate to the thread using path', async () => {
+				await device.launchApp({
+					permissions: { notifications: 'YES' },
+					newInstance: true,
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.alternate2.name}/thread/${threadId}`),
+					sourceApp: 'com.apple.mobilesafari'
+				});
+				await waitFor(element(by.id(`room-view-title-${threadMessage}`)))
 					.toExist()
 					.withTimeout(10000);
 			});

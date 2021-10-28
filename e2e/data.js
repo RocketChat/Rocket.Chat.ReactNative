@@ -45,6 +45,9 @@ const data = {
 		},
 		alternate: {
 			name: `detox-alternate-${value}`
+		},
+		alternate2: {
+			name: `detox-alternate2-${value}`
 		}
 	},
 	teams: {

@@ -116,11 +116,12 @@ const changeChannelJoinCode = async (roomId, joinCode) => {
 	}
 };
 
-const sendMessage = async (user, channel, msg) => {
+const sendMessage = async (user, channel, msg, tmid) => {
 	console.log(`Sending message to ${channel}`);
 	try {
 		await login(user.username, user.password);
-		await rocketchat.post('chat.postMessage', { channel, msg });
+		const response = await rocketchat.post('chat.postMessage', { channel, msg, tmid });
+		return response.data;
 	} catch (infoError) {
 		console.log(JSON.stringify(infoError));
 		throw new Error('Failed to find or create private group');
