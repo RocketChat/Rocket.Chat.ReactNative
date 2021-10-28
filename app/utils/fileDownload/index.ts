@@ -21,6 +21,10 @@ export const verifyIfFileExist = (path: string): Promise<boolean> => RNFetchBlob
 
 export const fileDownload = async (url: string, attachment: IAttachment) => {
 	const path = getLocalFilePathFromFile(attachment);
+	if (await verifyIfFileExist(path)) {
+		return path;
+	}
+
 	const options = {
 		path,
 		timeout: 10000,
@@ -41,14 +45,8 @@ export const fileDownload = async (url: string, attachment: IAttachment) => {
 };
 
 export const filePreview = async (url: string, attachment: IAttachment): Promise<void> => {
-	const path = getLocalFilePathFromFile(attachment);
-	let file;
-
-	if (!(await verifyIfFileExist(path))) {
-		file = await fileDownload(url, attachment);
-	}
-
-	FileViewer.open(file || path)
+	const file = await fileDownload(url, attachment);
+	FileViewer.open(file)
 		.then(res => {
 			console.log('entrou no then *************');
 			console.log(res);
