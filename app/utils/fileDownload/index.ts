@@ -4,7 +4,6 @@ import FileViewer from 'react-native-file-viewer';
 interface IAttachment {
 	title: string;
 	title_link: string;
-	title_link_download: boolean;
 	type: string;
 	description: string;
 }
