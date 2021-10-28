@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
@@ -11,6 +11,8 @@ import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import { filePreview } from '../../utils/fileDownload';
+import { formatAttachmentUrl } from '../../lib/utils';
 
 const styles = StyleSheet.create({
 	button: {
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IMessageReplyAttachment {
+export interface IMessageReplyAttachment {
 	author_name: string;
 	message_link: string;
 	ts: string;
@@ -120,7 +122,7 @@ interface IMessageFields {
 }
 
 interface IMessageReply {
-	attachment: Partial<IMessageReplyAttachment>;
+	attachment: IMessageReplyAttachment;
 	timeFormat: string;
 	index: number;
 	theme: string;
@@ -209,12 +211,14 @@ const Fields = React.memo(
 
 const Reply = React.memo(
 	({ attachment, timeFormat, index, getCustomEmoji, theme }: IMessageReply) => {
+		const [loading, setLoading] = useState(false);
+
 		if (!attachment) {
 			return null;
 		}
 		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
 
-		const onPress = () => {
+		const onPress = async () => {
 			let url = attachment.title_link || attachment.author_link;
 			if (attachment.message_link) {
 				return jumpToMessage(attachment.message_link);
@@ -223,10 +227,11 @@ const Reply = React.memo(
 				return;
 			}
 			if (attachment.type === 'file') {
-				if (!url.startsWith('http')) {
-					url = `${baseUrl}${url}`;
-				}
-				url = `${url}?rc_uid=${user.id}&rc_token=${user.token}`;
+				setLoading(true);
+				url = formatAttachmentUrl(attachment.title_link, user.id, user.token, baseUrl);
+				await filePreview(url, attachment);
+				setLoading(false);
+				return;
 			}
 			openLink(url, theme);
 		};
@@ -256,10 +261,16 @@ const Reply = React.memo(
 					]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}>
 					<View style={styles.attachmentContainer}>
-						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-						<UrlImage image={attachment.thumb_url} />
-						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
-						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+						{loading ? (
+							<ActivityIndicator size='small' />
+						) : (
+							<>
+								<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+								<UrlImage image={attachment.thumb_url} />
+								<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+								<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+							</>
+						)}
 					</View>
 				</Touchable>
 				{/* @ts-ignore*/}
