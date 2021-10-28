@@ -8,19 +8,24 @@ interface IAttachment {
 	description: string;
 }
 
-const DOCUMENT_PATH = `${RNFetchBlob.fs.dirs.DocumentDir}/`;
+const DOCUMENT_PATH = `${RNFetchBlob.fs.dirs.DownloadDir}/`;
 
 export const getExtensionType = (text: string) => text.split('.').pop();
 
 export const fileDownload = async (url: string, attachment: IAttachment) => {
 	const fileName = attachment.title.split('.')[0];
-
+	const path = `${DOCUMENT_PATH}${fileName}.${getExtensionType(attachment.title_link)}`;
 	const options = {
-		path: `${DOCUMENT_PATH}${fileName}.${getExtensionType(attachment.title_link)}`,
+		path,
 		fileCache: true,
 		timeout: 10000,
 		indicator: true,
-		overwrite: true
+		addAndroidDownloads: {
+			path: `${DOCUMENT_PATH}${fileName}.${getExtensionType(attachment.title_link)}`,
+			description: 'downloading file...',
+			notification: true,
+			useDownloadManager: true
+		}
 	};
 
 	const { data } = await RNFetchBlob.config(options)
