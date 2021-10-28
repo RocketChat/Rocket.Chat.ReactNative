@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
@@ -13,6 +13,7 @@ import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { filePreview } from '../../utils/fileDownload';
 import { formatAttachmentUrl } from '../../lib/utils';
+import RCActivityIndicator from '../ActivityIndicator';
 
 const styles = StyleSheet.create({
 	button: {
@@ -262,7 +263,7 @@ const Reply = React.memo(
 					background={Touchable.Ripple(themes[theme].bannerBackground)}>
 					<View style={styles.attachmentContainer}>
 						{loading ? (
-							<ActivityIndicator size='small' />
+							<RCActivityIndicator theme={theme} />
 						) : (
 							<>
 								<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
