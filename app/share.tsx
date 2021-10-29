@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
+import RNScreens from 'react-native-screens';
 
 import { defaultTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
 import UserPreferences from './lib/userPreferences';
@@ -25,6 +26,8 @@ import { setCurrentScreen } from './utils/log';
 import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
+
+RNScreens.enableFreeze(true);
 
 interface IDimensions {
 	width: number;

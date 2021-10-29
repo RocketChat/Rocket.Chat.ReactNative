@@ -31,7 +31,7 @@ import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
 import { isFDroidBuild } from './constants/environment';
 
-RNScreens.enableScreens();
+RNScreens.enableFreeze(true);
 
 interface IDimensions {
 	width: number;
