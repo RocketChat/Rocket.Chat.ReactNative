@@ -1,5 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import { FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
@@ -21,18 +22,26 @@ import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import debounce from '../utils/debounce';
 
+interface IState {
+	search: object[];
+	channels: any[];
+	selected: string[];
+	loading: boolean;
+}
+
+interface IAddExistingChannelView {
+	navigation: StackNavigationProp<any, 'AddExistingChannelView'>;
+	route: RouteProp<{ AddExistingChannelView: { teamId: string } }, 'AddExistingChannelView'>;
+	theme: string;
+	isMasterDetail: boolean;
+	addTeamChannelPermission: string[];
+}
+
 const QUERY_SIZE = 50;
 
-class AddExistingChannelView extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool,
-		addTeamChannelPermission: PropTypes.array
-	};
-
-	constructor(props) {
+class AddExistingChannelView extends React.Component<IAddExistingChannelView, IState> {
+	private teamId: string;
+	constructor(props: IAddExistingChannelView) {
 		super(props);
 		this.query();
 		this.teamId = props.route?.params?.teamId;
@@ -51,7 +60,7 @@ class AddExistingChannelView extends React.Component {
 
 		const options = {
 			headerTitle: I18n.t('Add_Existing_Channel')
-		};
+		} as StackNavigationOptions;
 
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
@@ -82,9 +91,10 @@ class AddExistingChannelView extends React.Component {
 				)
 				.fetch();
 
-			const asyncFilter = async channelsArray => {
+			// TODO: Refactor with Room Model
+			const asyncFilter = async (channelsArray: any[]) => {
 				const results = await Promise.all(
-					channelsArray.map(async channel => {
+					channelsArray.map(async (channel: any) => {
 						if (channel.prid) {
 							return false;
 						}
@@ -96,7 +106,7 @@ class AddExistingChannelView extends React.Component {
 					})
 				);
 
-				return channelsArray.filter((_v, index) => results[index]);
+				return channelsArray.filter((_v: any, index: number) => results[index]);
 			};
 			const channelFiltered = await asyncFilter(channels);
 			this.setState({ channels: channelFiltered });
@@ -105,7 +115,7 @@ class AddExistingChannelView extends React.Component {
 		}
 	};
 
-	onSearchChangeText = debounce(text => {
+	onSearchChangeText = debounce((text: string) => {
 		this.query(text);
 	}, 300);
 
@@ -126,7 +136,7 @@ class AddExistingChannelView extends React.Component {
 				this.setState({ loading: false });
 				goRoom({ item: result, isMasterDetail });
 			}
-		} catch (e) {
+		} catch (e: any) {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);
 			showErrorAlert(I18n.t(e.data.error), I18n.t('Add_Existing_Channel'), () => {});
 			this.setState({ loading: false });
@@ -137,17 +147,17 @@ class AddExistingChannelView extends React.Component {
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
-				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='add-existing-channel-view-search' />
+				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='add-existing-channel-view-search' />
 			</View>
 		);
 	};
 
-	isChecked = rid => {
+	isChecked = (rid: string) => {
 		const { selected } = this.state;
 		return selected.includes(rid);
 	};
 
-	toggleChannel = rid => {
+	toggleChannel = (rid: string) => {
 		const { selected } = this.state;
 
 		animateNextTransition();
@@ -161,7 +171,8 @@ class AddExistingChannelView extends React.Component {
 		}
 	};
 
-	renderItem = ({ item }) => {
+	// TODO: refactor with Room Model
+	renderItem = ({ item }: { item: any }) => {
 		const isChecked = this.isChecked(item.rid);
 		// TODO: reuse logic inside RoomTypeIcon
 		const icon = item.t === 'p' && !item.teamId ? 'channel-private' : 'channel-public';
@@ -207,7 +218,7 @@ class AddExistingChannelView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	isMasterDetail: state.app.isMasterDetail,
 	addTeamChannelPermission: state.permissions['add-team-channel']
 });
