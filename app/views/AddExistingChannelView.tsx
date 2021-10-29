@@ -23,7 +23,8 @@ import { showErrorAlert } from '../utils/info';
 import debounce from '../utils/debounce';
 
 interface IState {
-	search: object[];
+	// TODO: refactor with Room Model
+	search: any[];
 	channels: any[];
 	selected: string[];
 	loading: boolean;
