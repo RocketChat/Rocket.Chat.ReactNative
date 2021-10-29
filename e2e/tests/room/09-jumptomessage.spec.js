@@ -7,6 +7,9 @@ async function navigateToRoom(roomName) {
 	await waitFor(element(by.id('room-view')))
 		.toBeVisible()
 		.withTimeout(5000);
+	await waitFor(element(by.id(`room-view-title-${roomName}`)))
+		.toExist()
+		.withTimeout(5000);
 }
 
 async function clearCache() {
@@ -102,8 +105,8 @@ describe('Room', () => {
 			.withTimeout(5000);
 		let found = false;
 		while (!found) {
-			await element(by.id('room-view-messages')).scroll(500, 'down');
 			try {
+				await element(by.id('room-view-messages')).scroll(500, 'up');
 				await expect(element(by.label('249'))).toExist();
 				found = true;
 			} catch {
@@ -125,25 +128,28 @@ describe('Room', () => {
 		await element(by.id('search-message-view-input')).typeText('30\n');
 		await waitFor(element(by.label('30')).atIndex(0))
 			.toExist()
-			.withTimeout(5000);
+			.withTimeout(30000);
 		await element(by.label('30')).atIndex(0).tap();
 		await waitForLoading();
-		await expect(element(by.label('30'))).toExist();
+		await waitFor(element(by.label('30')).atIndex(0))
+			.toExist()
+			.withTimeout(30000);
 		await expect(element(by.label('31'))).toExist();
 		await expect(element(by.label('32'))).toExist();
-		await waitFor(element(by.label('32')))
-			.toBeVisible()
-			.withTimeout(5000);
 	});
 
 	it('should load newer and older messages', async () => {
-		await element(by.id('room-view-messages')).atIndex(0).swipe('down', 'fast', 0.8);
-		await waitFor(element(by.label('5')))
-			.toExist()
-			.withTimeout(10000);
-		await waitFor(element(by.label('Load Older')))
-			.toExist()
-			.withTimeout(5000);
+		let found = false;
+		while (!found) {
+			try {
+				await element(by.id('room-view-messages')).scroll(500, 'up');
+				await expect(element(by.label('Load Older'))).toBeVisible();
+				await expect(element(by.label('5'))).toExist();
+				found = true;
+			} catch {
+				//
+			}
+		}
 		await element(by.label('Load Older')).atIndex(0).tap();
 		await waitFor(element(by.label('4')))
 			.toExist()
@@ -190,9 +196,10 @@ describe('Room', () => {
 });
 
 const expectThreadMessages = async message => {
-	await waitFor(element(by.id('room-view-title-jumping-thread')))
+	await waitFor(element(by.id('room-view-title-thread 1')))
 		.toExist()
 		.withTimeout(5000);
+	await waitForLoading();
 	await expect(element(by.label(message))).toExist();
 };
 
@@ -203,21 +210,26 @@ describe('Threads', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by.label("Go to jumping-thread's thread")).atIndex(0).tap();
-		await waitForLoading();
 		await expectThreadMessages("Go to jumping-thread's thread");
 		await tapBack();
 	});
 
 	it('should tap on thread message from main room', async () => {
-		await waitFor(element(by.label('thread message sent to main room')).atIndex(0))
+		await waitFor(element(by.id('room-view-title-jumping-thread')))
 			.toExist()
 			.withTimeout(5000);
+		await waitFor(element(by.label('thread message sent to main room')))
+			.toExist()
+			.withTimeout(10000);
 		await element(by.label('thread message sent to main room')).atIndex(0).tap();
 		await expectThreadMessages('thread message sent to main room');
 		await tapBack();
 	});
 
 	it('should tap on quote', async () => {
+		await waitFor(element(by.id('room-view-title-jumping-thread')))
+			.toExist()
+			.withTimeout(5000);
 		await waitFor(element(by.label('quoted')))
 			.toExist()
 			.withTimeout(5000);
