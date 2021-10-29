@@ -179,7 +179,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				rid: item.drid,
 				prid: item.rid,
 				name: item.msg,
-				t: 'p'
+				t: 'c'
 			});
 		},
 		1000,

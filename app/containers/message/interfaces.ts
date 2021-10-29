@@ -138,7 +138,7 @@ export interface IMessageInner
 		IMessageThread,
 		IMessageAttachments,
 		IMessageBroadcast {
-	type: string;
+	type: 'discussion-created' | 'jitsi_call_started' | 'c' | 'd' | 'p' | 'l';
 	blocks: [];
 }
 
