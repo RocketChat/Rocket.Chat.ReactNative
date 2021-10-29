@@ -102,11 +102,11 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			</View>
 		);
 	}
-	const { onPress, onLongPress } = useContext(MessageContext);
+	const { onPress, onLongPress, onDiscussionPress } = useContext(MessageContext);
 	return (
 		<Touchable
 			onLongPress={onLongPress}
-			onPress={onPress}
+			onPress={() => (props.type !== 'discussion-created' ? onPress() : onDiscussionPress())}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp}
 			style={{ backgroundColor: props.highlighted ? themes[props.theme].headerBackground : null }}>
 			<View>
