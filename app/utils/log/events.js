@@ -154,7 +154,9 @@ export default {
 	SE_COPY_SERVER_VERSION: 'se_copy_server_version',
 	SE_CLEAR_LOCAL_SERVER_CACHE: 'se_clear_local_server_cache',
 	SE_LOG_OUT: 'se_log_out',
-	SE_GO_USER_NOTIFICATION_PREF: 'user_notification_pref',
+	
+	// USER PREFERENCE VIEW
+	UP_GO_USER_NOTIFICATION_PREF: 'up_go_user_notification_pref',
 
 	// SECURITY PRIVACY VIEW
 	SP_GO_E2EENCRYPTIONSECURITY: 'sp_go_e2e_encryption_security',
