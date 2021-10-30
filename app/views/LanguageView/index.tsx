@@ -18,7 +18,7 @@ import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
 import SafeAreaView from '../../containers/SafeAreaView';
 
-interface ILanguageView {
+interface ILanguageViewProps {
 	user: {
 		id: string;
 		language: string;
@@ -28,19 +28,23 @@ interface ILanguageView {
 	theme: string;
 }
 
-class LanguageView extends React.Component<ILanguageView, any> {
+interface ILanguageViewState {
+	language: string;
+}
+
+class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewState> {
 	static navigationOptions = () => ({
 		title: I18n.t('Change_Language')
 	});
 
-	constructor(props: ILanguageView) {
+	constructor(props: ILanguageViewProps) {
 		super(props);
 		this.state = {
 			language: props.user ? props.user.language : 'en'
 		};
 	}
 
-	shouldComponentUpdate(nextProps: any, nextState: any) {
+	shouldComponentUpdate(nextProps: ILanguageViewProps, nextState: ILanguageViewState) {
 		const { language } = this.state;
 		const { user, theme } = this.props;
 		if (nextProps.theme !== theme) {
