@@ -13,7 +13,7 @@
   "error-delete-protected-role": "保護されたロールは削除できません。",
   "error-department-not-found": "ロールが存在しません。",
   "error-direct-message-file-upload-not-allowed": "ダイレクトメッセージでのファイルのアップロードは許可されていません。",
-  "error-duplicate-channel-name": "{{channel_name}}と同名のチャンネルが存在します。",
+  "error-duplicate-channel-name": "{{room_name}}と同名のチャンネルが存在します。",
   "error-email-domain-blacklisted": "このドメインのメールアドレスはブラックリストに登録されています。",
   "error-email-send-failed": "次のメールアドレスの送信に失敗しました: {{message}}",
   "error-save-image": "画像の保存に失敗しました。",
