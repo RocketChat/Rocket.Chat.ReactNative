@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import sharedStyles from '../views/Styles';
@@ -50,23 +50,21 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IRCTextInputProps {
-	label: string;
-	error: {
+interface IRCTextInputProps extends TextInputProps {
+	label?: string;
+	error?: {
 		error: any;
 		reason: any;
 	};
-	loading: boolean;
-	secureTextEntry: boolean;
-	containerStyle: any;
-	inputStyle: object;
-	inputRef: any;
-	testID: string;
-	iconLeft: string;
-	iconRight: string;
-	placeholder: string;
-	left: JSX.Element;
-	onIconRightPress(): void;
+	loading?: boolean;
+	containerStyle?: StyleProp<ViewStyle>;
+	inputStyle?: TextStyle;
+	inputRef?: React.Ref<unknown>;
+	testID?: string;
+	iconLeft?: string;
+	iconRight?: string;
+	left?: JSX.Element;
+	onIconRightPress?(): void;
 	theme: string;
 }
 
@@ -148,17 +146,10 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 		return (
 			<View style={[styles.inputContainer, containerStyle]}>
 				{label ? (
-					<Text
-						contentDescription={null}
-						// @ts-ignore
-						accessibilityLabel={null}
-						style={[styles.label, { color: themes[theme].titleText }, error.error && { color: dangerColor }]}>
-						{label}
-					</Text>
+					<Text style={[styles.label, { color: themes[theme].titleText }, error?.error && { color: dangerColor }]}>{label}</Text>
 				) : null}
 				<View style={styles.wrap}>
 					<TextInput
-						/* @ts-ignore*/
 						style={[
 							styles.input,
 							iconLeft && styles.inputIconLeft,
@@ -168,14 +159,13 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 								borderColor: themes[theme].separatorColor,
 								color: themes[theme].titleText
 							},
-							error.error && {
+							error?.error && {
 								color: dangerColor,
 								borderColor: dangerColor
 							},
 							inputStyle
 						]}
 						ref={inputRef}
-						/* @ts-ignore*/
 						autoCorrect={false}
 						autoCapitalize='none'
 						underlineColorAndroid='transparent'
@@ -183,8 +173,6 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 						testID={testID}
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
-						/* @ts-ignore*/
-						contentDescription={placeholder}
 						theme={theme}
 						{...inputProps}
 					/>

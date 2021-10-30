@@ -106,7 +106,6 @@ export default StyleSheet.create<any>({
 	},
 	image: {
 		width: '100%',
-		// maxWidth: 400,
 		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
 		borderWidth: 1,
