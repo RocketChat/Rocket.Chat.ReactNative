@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, ScrollViewProps, StyleSheet, View } from 'react-native';
 
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
@@ -10,10 +10,10 @@ import AppVersion from './AppVersion';
 import { isTablet } from '../utils/deviceInfo';
 import SafeAreaView from './SafeAreaView';
 
-interface IFormContainer {
+interface IFormContainer extends ScrollViewProps {
 	theme: string;
 	testID: string;
-	children: JSX.Element;
+	children: React.ReactNode;
 }
 
 const styles = StyleSheet.create({

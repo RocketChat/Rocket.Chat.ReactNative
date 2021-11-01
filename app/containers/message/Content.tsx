@@ -51,8 +51,10 @@ const Content = React.memo(
 				// @ts-ignore
 				<Markdown
 					msg={props.msg}
+					md={props.md}
 					baseUrl={baseUrl}
 					getCustomEmoji={props.getCustomEmoji}
+					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
 					isEdited={props.isEdited}
 					numberOfLines={isPreview ? 1 : 0}
@@ -101,6 +103,9 @@ const Content = React.memo(
 			return false;
 		}
 		if (prevProps.isIgnored !== nextProps.isIgnored) {
+			return false;
+		}
+		if (!dequal(prevProps.md, nextProps.md)) {
 			return false;
 		}
 		if (!dequal(prevProps.mentions, nextProps.mentions)) {
