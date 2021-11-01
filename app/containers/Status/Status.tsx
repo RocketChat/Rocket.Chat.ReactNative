@@ -6,7 +6,7 @@ import { STATUS_COLORS } from '../../constants/colors';
 interface IStatus {
 	status: string;
 	size: number;
-	style: any;
+	style?: any;
 }
 
 const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: IStatus) => {
