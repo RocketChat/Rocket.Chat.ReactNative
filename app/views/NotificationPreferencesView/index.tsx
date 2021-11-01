@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Switch, Text } from 'react-native';
 import { RouteProp } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Model from '@nozbe/watermelondb/Model';
+import { Observable, Subscription } from 'rxjs';
 
 import database from '../../lib/database';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
@@ -29,9 +31,7 @@ interface INotificationPreferencesView {
 		{
 			NotificationPreferencesView: {
 				rid: string;
-				room: {
-					observe: Function;
-				};
+				room: Model;
 			};
 		},
 		'NotificationPreferencesView'
@@ -46,8 +46,8 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 
 	private mounted: boolean;
 	private rid: string | undefined;
-	private roomObservable: any;
-	private subscription: any;
+	private roomObservable?: Observable<Model>;
+	private subscription?: Subscription;
 
 	constructor(props: INotificationPreferencesView) {
 		super(props);
