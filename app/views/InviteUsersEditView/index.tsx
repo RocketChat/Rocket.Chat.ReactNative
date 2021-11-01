@@ -2,7 +2,7 @@ import React from 'react';
 import { TextInputProps, View } from 'react-native';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/core';
 import { Dispatch } from 'redux';
 
@@ -20,7 +20,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../utils/log';
 import styles from './styles';
 
-const OPTIONS: any = {
+const OPTIONS = {
 	days: [
 		{
 			label: '1',
@@ -69,14 +69,14 @@ const OPTIONS: any = {
 
 interface IInviteUsersEditView {
 	navigation: StackNavigationProp<any, 'InviteUsersEditView'>;
-	route: RouteProp<any, 'InviteUsersEditView'>;
+	route: RouteProp<{ InviteUsersEditView: { rid: string } }, 'InviteUsersEditView'>;
 	theme: string;
 	createInviteLink(rid: string): void;
-	inviteLinksSetParams(params: object): void;
+	inviteLinksSetParams(params: { [key: string]: number }): void;
 }
 
 class InviteUsersView extends React.Component<IInviteUsersEditView, any> {
-	static navigationOptions = () => ({
+	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Invite_users')
 	});
 
@@ -87,7 +87,7 @@ class InviteUsersView extends React.Component<IInviteUsersEditView, any> {
 		this.rid = props.route.params?.rid;
 	}
 
-	onValueChangePicker = (key: string, value: any) => {
+	onValueChangePicker = (key: string, value: number) => {
 		logEvent(events.IU_EDIT_SET_LINK_PARAM);
 		const { inviteLinksSetParams } = this.props;
 		const params = {
@@ -103,7 +103,7 @@ class InviteUsersView extends React.Component<IInviteUsersEditView, any> {
 		navigation.pop();
 	};
 
-	renderPicker = (key: string, first: string) => {
+	renderPicker = (key: 'days' | 'maxUses', first: string) => {
 		const { props }: any = this;
 		const { theme } = props;
 		const textInputStyle: TextInputProps = { style: { ...styles.pickerText, color: themes[theme].actionTintColor } };
