@@ -11,6 +11,9 @@ export default {
 	FP_FORGOT_PASSWORD: 'fp_forgot_password',
 	FP_FORGOT_PASSWORD_F: 'fp_forgot_password_f',
 
+	// SEND EMAIL CONFIRMATION VIEW
+	SEC_SEND_EMAIL_CONFIRMATION: 'sec_send_email_confirmation',
+
 	// REGISTER VIEW
 	REGISTER_DEFAULT_SIGN_UP: 'register_default_sign_up',
 	REGISTER_DEFAULT_SIGN_UP_F: 'register_default_sign_up_f',
@@ -151,7 +154,9 @@ export default {
 	SE_COPY_SERVER_VERSION: 'se_copy_server_version',
 	SE_CLEAR_LOCAL_SERVER_CACHE: 'se_clear_local_server_cache',
 	SE_LOG_OUT: 'se_log_out',
-	SE_GO_USER_NOTIFICATION_PREF: 'user_notification_pref',
+
+	// USER PREFERENCE VIEW
+	UP_GO_USER_NOTIFICATION_PREF: 'up_go_user_notification_pref',
 
 	// SECURITY PRIVACY VIEW
 	SP_GO_E2EENCRYPTIONSECURITY: 'sp_go_e2e_encryption_security',

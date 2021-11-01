@@ -116,7 +116,7 @@ const handleFailure = function handleFailure({ err, isTeam }) {
 				? I18n.t(err.data.errorType, { room_name: err.data.details.channel_name })
 				: actionError;
 		} else {
-			msg = err?.reason || (errorArray.includes(err?.data?.error) ? I18n.t(err.data.error) : err.data.error || actionError);
+			msg = err?.reason || (errorArray.includes(err?.data?.error) ? I18n.t(err.data.error) : err?.data?.error || actionError);
 		}
 		showErrorAlert(msg, isTeam ? I18n.t('Create_Team') : I18n.t('Create_Channel'));
 	}, 300);
