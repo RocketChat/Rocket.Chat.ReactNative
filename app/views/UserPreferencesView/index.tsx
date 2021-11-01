@@ -12,11 +12,11 @@ import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import RocketChat from '../../lib/rocketchat';
 
-interface IUserPreferencesView {
+interface IUserPreferencesViewProps {
 	navigation: StackNavigationProp<any, 'UserPreferencesView'>;
 }
 
-const UserPreferencesView = ({ navigation }: IUserPreferencesView): JSX.Element => {
+const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
 	const user = useSelector(state => getUserSelector(state));
 	const [enableParser, setEnableParser] = useState(user.enableMessageParserEarlyAdoption);
 
