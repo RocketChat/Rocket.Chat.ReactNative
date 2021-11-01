@@ -73,6 +73,8 @@ interface IInviteUsersEditView {
 	theme: string;
 	createInviteLink(rid: string): void;
 	inviteLinksSetParams(params: { [key: string]: number }): void;
+	days: number;
+	maxUses: number;
 }
 
 class InviteUsersView extends React.Component<IInviteUsersEditView, any> {
@@ -104,7 +106,7 @@ class InviteUsersView extends React.Component<IInviteUsersEditView, any> {
 	};
 
 	renderPicker = (key: 'days' | 'maxUses', first: string) => {
-		const { props }: any = this;
+		const { props } = this;
 		const { theme } = props;
 		const textInputStyle: TextInputProps = { style: { ...styles.pickerText, color: themes[theme].actionTintColor } };
 		const firstEl = [
