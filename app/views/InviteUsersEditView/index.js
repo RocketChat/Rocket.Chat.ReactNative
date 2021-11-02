@@ -65,7 +65,7 @@ const OPTIONS = {
 	]
 };
 
-class InviteUsersView extends React.Component {
+class InviteUsersEditView extends React.Component {
 	static navigationOptions = () => ({
 		title: I18n.t('Invite_users')
 	});
@@ -153,4 +153,4 @@ const mapDispatchToProps = dispatch => ({
 	createInviteLink: rid => dispatch(inviteLinksCreateAction(rid))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(InviteUsersView));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(InviteUsersEditView));
