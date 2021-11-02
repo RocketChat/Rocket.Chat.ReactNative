@@ -1,5 +1,5 @@
 import React from 'react';
-import { I18nManager, StyleSheet, TextInput, TextInputProps } from 'react-native';
+import { I18nManager, StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native';
 
 import { themes } from '../constants/colors';
 
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 });
 
 interface IThemedTextInput extends TextInputProps {
-	style: object;
+	style: StyleProp<TextStyle>;
 	theme: string;
 }
 
