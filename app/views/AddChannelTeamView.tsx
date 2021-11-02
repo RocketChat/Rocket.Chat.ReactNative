@@ -19,9 +19,9 @@ interface IAddChannelTeamView {
 }
 
 const setHeader = (navigation: TNavigation, isMasterDetail: boolean) => {
-	const options = {
+	const options: StackNavigationOptions = {
 		headerTitle: I18n.t('Add_Channel_to_Team')
-	} as StackNavigationOptions;
+	};
 
 	if (isMasterDetail) {
 		options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
