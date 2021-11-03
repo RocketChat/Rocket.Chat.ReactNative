@@ -51,12 +51,17 @@ const Video = React.memo(
 		if (!baseUrl) {
 			return null;
 		}
-		const onPress = () => {
+		const onPress = async () => {
 			if (isTypeSupported(file.video_type)) {
 				return showAttachment(file);
 			}
-			const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
-			downloadVideo(uri);
+
+			if (!isIOS) {
+				const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
+				await downloadVideo(uri);
+				return;
+			}
+			EventEmitter.emit(LISTENER, { message: I18n.t('Unsupported_format') });
 		};
 
 		const downloadVideo = async (uri: string) => {

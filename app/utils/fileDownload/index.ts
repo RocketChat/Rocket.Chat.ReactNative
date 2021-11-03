@@ -1,5 +1,9 @@
-import RNFetchBlob from 'rn-fetch-blob';
+import RNFetchBlob, { FetchBlobResponse } from 'rn-fetch-blob';
 import FileViewer from 'react-native-file-viewer';
+
+import EventEmitter from '../events';
+import { LISTENER } from '../../containers/Toast';
+import I18n from '../../i18n';
 
 interface IAttachment {
 	title: string;
@@ -19,7 +23,7 @@ export const getLocalFilePathFromFile = (attachment: IAttachment): string => {
 
 export const verifyIfFileExist = (path: string): Promise<boolean> => RNFetchBlob.fs.exists(path);
 
-export const fileDownload = async (url: string, attachment: IAttachment) => {
+export const fileDownload = async (url: string, attachment: IAttachment): Promise<FetchBlobResponse | string> => {
 	const path = getLocalFilePathFromFile(attachment);
 	if (await verifyIfFileExist(path)) {
 		return path;
@@ -31,28 +35,26 @@ export const fileDownload = async (url: string, attachment: IAttachment) => {
 		indicator: true,
 		addAndroidDownloads: {
 			path,
-			description: 'downloading file...',
 			notification: true,
 			useDownloadManager: true
 		}
 	};
 
-	const { data } = await RNFetchBlob.config(options)
-		.fetch('GET', url)
-		.then(res => res)
-		.catch(err => err);
-	return data;
+	return RNFetchBlob.config(options).fetch('GET', url);
 };
 
 export const filePreview = async (url: string, attachment: IAttachment): Promise<void> => {
 	const file = await fileDownload(url, attachment);
-	FileViewer.open(file)
-		.then(res => {
-			console.log('entrou no then *************');
-			console.log(res);
+	const path = file instanceof Object ? file.data : file;
+
+	if (file) {
+		FileViewer.open(path, {
+			showOpenWithDialog: true,
+			showAppsSuggestions: true
 		})
-		.catch(err => {
-			console.log('entrou no catch *************');
-			console.error(err);
-		});
+			.then(res => res)
+			.catch(() => {
+				EventEmitter.emit(LISTENER, { message: I18n.t('Downloaded_file') });
+			});
+	}
 };
