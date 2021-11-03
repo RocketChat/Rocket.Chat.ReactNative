@@ -1,7 +1,5 @@
 import React from 'react';
 
-// @ts-ignore
-// eslint-disable-next-line import/extensions,import/no-unresolved
 import Header from './Header';
 import { IShareListHeader } from './interface';
 
