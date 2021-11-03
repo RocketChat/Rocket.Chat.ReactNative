@@ -229,7 +229,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		});
 	};
 
-	internalSetState = (...args: any[]) => {
+	internalSetState = (...args: object[]) => {
 		const { navigation } = this.props;
 		if (navigation.isFocused()) {
 			animateNextTransition();
