@@ -21,13 +21,8 @@ export const getLocalFilePathFromFile = (attachment: IAttachment): string => {
 	return `${DOCUMENT_PATH}${fileName}.${getExtensionType(attachment.title_link)}`;
 };
 
-export const verifyIfFileExist = (path: string): Promise<boolean> => RNFetchBlob.fs.exists(path);
-
-export const fileDownload = async (url: string, attachment: IAttachment): Promise<FetchBlobResponse | string> => {
+export const fileDownload = (url: string, attachment: IAttachment): Promise<FetchBlobResponse> => {
 	const path = getLocalFilePathFromFile(attachment);
-	if (await verifyIfFileExist(path)) {
-		return path;
-	}
 
 	const options = {
 		path,
@@ -45,10 +40,8 @@ export const fileDownload = async (url: string, attachment: IAttachment): Promis
 
 export const filePreview = async (url: string, attachment: IAttachment): Promise<void> => {
 	const file = await fileDownload(url, attachment);
-	const path = file instanceof Object ? file.data : file;
-
 	if (file) {
-		FileViewer.open(path, {
+		FileViewer.open(file.data, {
 			showOpenWithDialog: true,
 			showAppsSuggestions: true
 		})
