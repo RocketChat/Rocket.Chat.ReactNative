@@ -5,6 +5,7 @@ import TextInput from '../../../presentation/TextInput';
 import I18n from '../../../i18n';
 import { themes } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
+import { IShareListHeader } from './interface';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,13 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IHeader {
-	searching: boolean;
-	onChangeSearchText(text: string): void;
-	theme: string;
-}
-
-const Header = React.memo(({ searching, onChangeSearchText, theme }: IHeader) => {
+const Header = React.memo(({ searching, onChangeSearchText, theme }: IShareListHeader) => {
 	const titleColorStyle = { color: themes[theme].headerTintColor };
 	const isLight = theme === 'light';
 	if (searching) {

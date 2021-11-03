@@ -7,6 +7,7 @@ import * as HeaderButton from '../../../containers/HeaderButton';
 import { themes } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
+import { IShareListHeaderIos } from './interface';
 
 const styles = StyleSheet.create({
 	container: {
@@ -15,15 +16,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IHeader {
-	searching: boolean;
-	onChangeSearchText(text: string): void;
-	initSearch: Function;
-	cancelSearch: Function;
-	theme: string;
-}
-
-const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSearch, theme }: IHeader) => {
+const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSearch, theme }: IShareListHeaderIos) => {
 	const [text, setText] = useState('');
 
 	const onChangeText = (searchText: string) => {

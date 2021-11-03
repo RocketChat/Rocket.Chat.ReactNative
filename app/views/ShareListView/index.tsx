@@ -63,7 +63,7 @@ interface IState {
 	serversCount: number;
 	attachments: IAttachment[];
 	text: string;
-	loading: true;
+	loading: boolean;
 	serverInfo: IServerInfo;
 	needsPermission: boolean;
 }
@@ -202,7 +202,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 						searching={searching}
 						initSearch={this.initSearch}
 						cancelSearch={this.cancelSearch}
-						search={this.search}
+						onChangeSearchText={this.search}
 						theme={theme}
 					/>
 				)
@@ -219,7 +219,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				) : (
 					<HeaderButton.CancelModal onPress={ShareExtension.close} testID='share-extension-close' />
 				),
-			headerTitle: () => <ShareListHeader searching={searching} search={this.search} theme={theme} />,
+			headerTitle: () => <ShareListHeader searching={searching} onChangeSearchText={this.search} theme={theme} />,
 			headerRight: () =>
 				searching ? null : (
 					<HeaderButton.Container>

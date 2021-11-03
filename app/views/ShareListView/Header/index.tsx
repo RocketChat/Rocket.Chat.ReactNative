@@ -3,18 +3,11 @@ import React from 'react';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import Header from './Header';
+import { IShareListHeader } from './interface';
 
-interface IShareListHeader {
-	searching: boolean;
-	initSearch?: () => void;
-	cancelSearch?: () => void;
-	search(text: string): void;
-	theme: string;
-}
-
-const ShareListHeader = React.memo(({ searching, initSearch, cancelSearch, search, theme }: IShareListHeader) => {
+const ShareListHeader = React.memo(({ searching, initSearch, cancelSearch, onChangeSearchText, theme }: IShareListHeader) => {
 	const onSearchChangeText = (text: string) => {
-		search(text.trim());
+		onChangeSearchText(text.trim());
 	};
 
 	return (

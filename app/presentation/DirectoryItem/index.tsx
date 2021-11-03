@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, ViewStyle } from 'react-native';
 
 import Touch from '../../utils/touch';
 import Avatar from '../../containers/Avatar';
@@ -21,7 +21,7 @@ interface IDirectoryItem {
 	type: string;
 	onPress(): void;
 	testID: string;
-	style?: any;
+	style?: ViewStyle;
 	rightLabel?: string;
 	rid?: string;
 	theme: string;
