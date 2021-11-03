@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
 });
 
 type TKey = 'desktopNotifications' | 'mobileNotifications' | 'emailNotificationMode';
-interface IState {
+
+interface IUserNotificationPreferencesViewState {
 	preferences: {
 		desktopNotifications?: string;
 		mobileNotifications?: string;
@@ -32,7 +33,7 @@ interface IState {
 	loading: boolean;
 }
 
-interface IUserNotificationPreferencesViewProp {
+interface IUserNotificationPreferencesViewProps {
 	navigation: StackNavigationProp<any, 'UserNotificationPreferencesView'>;
 	theme: string;
 	user: {
@@ -40,12 +41,15 @@ interface IUserNotificationPreferencesViewProp {
 	};
 }
 
-class UserNotificationPreferencesView extends React.Component<IUserNotificationPreferencesViewProp, IState> {
+class UserNotificationPreferencesView extends React.Component<
+	IUserNotificationPreferencesViewProps,
+	IUserNotificationPreferencesViewState
+> {
 	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Notification_Preferences')
 	});
 
-	constructor(props: IUserNotificationPreferencesViewProp) {
+	constructor(props: IUserNotificationPreferencesViewProps) {
 		super(props);
 		this.state = {
 			preferences: {},
