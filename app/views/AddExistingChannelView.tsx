@@ -22,7 +22,7 @@ import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import debounce from '../utils/debounce';
 
-interface IState {
+interface IAddExistingChannelViewState {
 	// TODO: refactor with Room Model
 	search: any[];
 	channels: any[];
@@ -30,7 +30,7 @@ interface IState {
 	loading: boolean;
 }
 
-interface IAddExistingChannelView {
+interface IAddExistingChannelViewProps {
 	navigation: StackNavigationProp<any, 'AddExistingChannelView'>;
 	route: RouteProp<{ AddExistingChannelView: { teamId: string } }, 'AddExistingChannelView'>;
 	theme: string;
@@ -40,9 +40,9 @@ interface IAddExistingChannelView {
 
 const QUERY_SIZE = 50;
 
-class AddExistingChannelView extends React.Component<IAddExistingChannelView, IState> {
+class AddExistingChannelView extends React.Component<IAddExistingChannelViewProps, IAddExistingChannelViewState> {
 	private teamId: string;
-	constructor(props: IAddExistingChannelView) {
+	constructor(props: IAddExistingChannelViewProps) {
 		super(props);
 		this.query();
 		this.teamId = props.route?.params?.teamId;
@@ -59,9 +59,9 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelView, IS
 		const { navigation, isMasterDetail } = this.props;
 		const { selected } = this.state;
 
-		const options = {
+		const options: StackNavigationOptions = {
 			headerTitle: I18n.t('Add_Existing_Channel')
-		} as StackNavigationOptions;
+		};
 
 		if (isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
