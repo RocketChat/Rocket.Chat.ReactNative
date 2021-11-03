@@ -139,7 +139,9 @@ class Sidebar extends Component<ISidebarProps, IState> {
 
 		if (roles) {
 			// Creating a new array with booleans values, than the every check if it is a truthy array
-			isAdmin = allPermissions.map(permission => permission.some(r => roles.indexOf(r) !== -1)).every(Boolean);
+			isAdmin = allPermissions
+				.map(permission => (permission ? permission.some(r => roles.indexOf(r) !== -1) : false))
+				.every(Boolean);
 		}
 		return isAdmin;
 	}
