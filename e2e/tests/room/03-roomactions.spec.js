@@ -421,6 +421,7 @@ describe('Room actions screen', () => {
 					.withTimeout(4000);
 				await element(by.id('select-users-view-search')).tap();
 				await element(by.id('select-users-view-search')).replaceText(user.username);
+				await sleep(300);
 				await waitFor(element(by.id(`select-users-view-item-${user.username}`)))
 					.toExist()
 					.withTimeout(10000);
