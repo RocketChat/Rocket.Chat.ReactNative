@@ -1,3 +1,7 @@
+import { TextInputProps } from 'react-native';
+
+import { IAttachment } from '../definition/IAttachment';
+import { IMessage } from '../definition/IMessage';
 import { IRoom, RoomType } from '../definition/IRoom';
 
 export type ChatsStackParamList = {
@@ -69,48 +73,103 @@ export type ChatsStackParamList = {
 		t: RoomType;
 		name: string;
 	};
-	AutoTranslateView: {};
-	DirectoryView: {};
-	NotificationPrefView: {};
-	VisitorNavigationView: {};
-	ForwardLivechatView: {};
-	LivechatEditView: {};
-	PickerView: {};
-	ThreadMessagesView: {};
-	TeamChannelsView: {};
-	CreateChannelView: {};
-	AddChannelTeamView: {};
-	AddExistingChannelView: {};
-	MarkdownTableView: {};
-	ReadReceiptsView: {};
-	QueueListView: {};
-	CannedResponsesListView: {};
-	CannedResponseDetail: {};
+	AutoTranslateView: {
+		rid: string;
+		room: IRoom;
+	};
+	DirectoryView: undefined;
+	NotificationPrefView: {
+		rid: string;
+		room: IRoom;
+	};
+	VisitorNavigationView: {
+		rid: string;
+	};
+	ForwardLivechatView: {
+		rid: string;
+	};
+	LivechatEditView: {
+		room: IRoom;
+		roomUser: any; // change
+	};
+	PickerView: {
+		title: string;
+		data: []; // change
+		value: any; // change
+		onChangeText: TextInputProps['onChangeText'];
+		goBack: Function;
+		onChangeValue: Function;
+	};
+	ThreadMessagesView: {
+		rid: string;
+		t: RoomType;
+	};
+	TeamChannelsView: {
+		teamId: string;
+	};
+	CreateChannelView: {
+		isTeam?: boolean; // to check
+		teamId?: string;
+	};
+	AddChannelTeamView: {
+		teamId?: string;
+		teamChannels: []; // change
+	};
+	AddExistingChannelView: {
+		teamId?: boolean;
+	};
+	MarkdownTableView: {
+		renderRows: Function;
+		tableWidth: number;
+	};
+	ReadReceiptsView: {
+		messageId: string;
+	};
+	QueueListView: undefined;
+	CannedResponsesListView: {
+		rid: string;
+	};
+	CannedResponseDetail: {
+		cannedResponse: {
+			shortcut: string;
+			text: string;
+			scopeName: string;
+			tags: string[];
+		};
+		room: IRoom;
+	};
 };
 
 export type ProfileStackParamList = {
-	ProfileView: {};
-	UserPreferencesView: {};
-	UserNotificationPrefView: {};
-	PickerView: {};
+	ProfileView: undefined;
+	UserPreferencesView: undefined;
+	UserNotificationPrefView: undefined;
+	PickerView: {
+		title: string;
+		data: []; // change
+		value: any; // change
+		onChangeText: TextInputProps['onChangeText'];
+		goBack: Function;
+		onChangeValue: Function;
+	};
 };
 
 export type SettingsStackParamList = {
-	SettingsView: {};
-	SecurityPrivacyView: {};
-	E2EEncryptionSecurityView: {};
-	LanguageView: {};
-	ThemeView: {};
-	DefaultBrowserView: {};
-	ScreenLockConfigView: {};
+	SettingsView: undefined;
+	SecurityPrivacyView: undefined;
+	E2EEncryptionSecurityView: undefined;
+	LanguageView: undefined;
+	ThemeView: undefined;
+	DefaultBrowserView: undefined;
+	ScreenLockConfigView: undefined;
 };
 
 export type AdminPanelStackParamList = {
-	AdminPanelView: {};
+	AdminPanelView: undefined;
 };
 
 export type DisplayPrefStackParamList = {
-	DisplayPrefsView: {};
+	DisplayPrefsView: undefined;
 };
 
 export type DrawerParamList = {
@@ -122,19 +181,34 @@ export type DrawerParamList = {
 };
 
 export type NewMessageStackParamList = {
-	NewMessageView: {};
-	SelectedUsersViewCreateChannel: {}; // to change
-	CreateChannelView: {};
-	CreateDiscussionView: {};
+	NewMessageView: undefined;
+	SelectedUsersViewCreateChannel: {
+		maxUsers: number;
+		showButton: boolean;
+		title: string;
+		buttonText: string;
+		nextAction: Function;
+	}; // to change
+	CreateChannelView: {
+		isTeam?: boolean; // to check
+		teamId?: string;
+	};
+	CreateDiscussionView: {
+		channel: IRoom;
+		message: IMessage;
+		showCloseModal: boolean;
+	};
 };
 
 export type E2ESaveYourPasswordStackParamList = {
-	E2ESaveYourPasswordView: {};
-	E2EHowItWorksView: {};
+	E2ESaveYourPasswordView: undefined;
+	E2EHowItWorksView: {
+		showCloseModal: boolean;
+	};
 };
 
 export type E2EEnterYourPasswordStackParamList = {
-	E2EEnterYourPasswordView: {};
+	E2EEnterYourPasswordView: undefined;
 };
 
 export type InsideStackParamList = {
@@ -142,9 +216,24 @@ export type InsideStackParamList = {
 	NewMessageStackNavigator: NewMessageStackParamList;
 	E2ESaveYourPasswordStackNavigator: E2ESaveYourPasswordStackParamList;
 	E2EEnterYourPasswordStackNavigator: E2EEnterYourPasswordStackParamList;
-	AttachmentView: {};
-	StatusView: {};
-	ShareView: {};
-	ModalBlockView: {};
-	JitsiMeetView: {};
+	AttachmentView: {
+		attachment: IAttachment;
+	};
+	StatusView: undefined;
+	ShareView: {
+		attachments: IAttachment[];
+		isShareView?: boolean;
+		serverInfo: {};
+		text: string;
+		room: IRoom;
+		thread: any; // change
+	};
+	ModalBlockView: {
+		data: any; // change;
+	};
+	JitsiMeetView: {
+		rid: string;
+		url: string;
+		onlyAudio?: boolean;
+	};
 };
