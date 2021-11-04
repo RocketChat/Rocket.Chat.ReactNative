@@ -64,6 +64,15 @@ interface IMessageItem {
 	pinned: boolean;
 }
 
+interface IParams {
+	rid?: string;
+	jumpToMessageId: string;
+	t?: string;
+	room: any;
+	tmid?: string;
+	name?: string;
+}
+
 class MessagesView extends React.Component<IMessagesViewProps, any> {
 	private rid?: string;
 	private t?: string;
@@ -122,7 +131,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 
 	jumpToMessage = async ({ item }: { item: IMessageItem }) => {
 		const { navigation, isMasterDetail } = this.props;
-		let params: any = {
+		let params: IParams = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
 			t: this.t,
