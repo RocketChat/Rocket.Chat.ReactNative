@@ -80,6 +80,24 @@ stories.add('Preview', () => (
 			username='rocket.cat'
 		/>
 		<Markdown msg='Testing: 😃 :+1: :marioparty:' getCustomEmoji={getCustomEmoji} theme={theme} numberOfLines={1} preview />
+		<Markdown
+			msg='Fallback from new md to old'
+			getCustomEmoji={getCustomEmoji}
+			theme={theme}
+			numberOfLines={1}
+			preview
+			md={[
+				{
+					type: 'PARAGRAPH',
+					value: [
+						{
+							type: 'PLAIN_TEXT',
+							value: 'This is Rocket.Chat'
+						}
+					]
+				}
+			]}
+		/>
 	</View>
 ));
 
