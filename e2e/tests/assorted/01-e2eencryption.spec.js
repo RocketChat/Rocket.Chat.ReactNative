@@ -5,7 +5,7 @@ const data = require('../../data');
 const testuser = data.users.regular;
 const otheruser = data.users.alternate;
 
-const checkServer = async (server) => {
+const checkServer = async server => {
 	const label = `Connected to ${server}`;
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
@@ -62,10 +62,11 @@ describe('E2E Encryption', () => {
 	const newPassword = 'abc';
 	let alertButtonType;
 	let scrollViewType;
+	let textMatcher;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ alertButtonType, scrollViewType } = platformTypes[device.getPlatform()]);
+		({ alertButtonType, scrollViewType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 	});
@@ -192,11 +193,11 @@ describe('E2E Encryption', () => {
 			it('should change password', async () => {
 				await element(by.id('e2e-encryption-security-view-password')).typeText(newPassword);
 				await element(by.id('e2e-encryption-security-view-change-password')).tap();
-				await waitFor(element(by.label('Are you sure?')))
+				await waitFor(element(by[textMatcher]('Are you sure?')))
 					.toExist()
 					.withTimeout(2000);
-				await expect(element(by.label('Make sure you\'ve saved it carefully somewhere else.'))).toExist();
-				await element(by.label('Yes, change it')).atIndex(0).tap();
+				await expect(element(by[textMatcher]("Make sure you've saved it carefully somewhere else."))).toExist();
+				await element(by[textMatcher]('Yes, change it')).atIndex(0).tap();
 				await waitForToast();
 			});
 
@@ -221,7 +222,7 @@ describe('E2E Encryption', () => {
 					.toBeVisible()
 					.withTimeout(2000);
 				await navigateToRoom(room);
-				await waitFor(element(by.label(`${data.random}message`)).atIndex(0))
+				await waitFor(element(by[textMatcher](`${data.random}message`)).atIndex(0))
 					.toExist()
 					.withTimeout(2000);
 			});
@@ -235,7 +236,7 @@ describe('E2E Encryption', () => {
 				await navigateToLogin();
 				await login(testuser.username, testuser.password);
 				await navigateToRoom(room);
-				await waitFor(element(by.label(`${data.random}message`)).atIndex(0))
+				await waitFor(element(by[textMatcher](`${data.random}message`)).atIndex(0))
 					.not.toExist()
 					.withTimeout(2000);
 				await expect(element(by.label('Encrypted message')).atIndex(0)).toExist();
@@ -260,7 +261,7 @@ describe('E2E Encryption', () => {
 					.not.toExist()
 					.withTimeout(10000);
 				await navigateToRoom(room);
-				await waitFor(element(by.label(`${data.random}message`)).atIndex(0))
+				await waitFor(element(by[textMatcher](`${data.random}message`)).atIndex(0))
 					.toExist()
 					.withTimeout(2000);
 			});
@@ -278,23 +279,25 @@ describe('E2E Encryption', () => {
 					.toBeVisible()
 					.withTimeout(2000);
 				await element(by.id('e2e-encryption-security-view-reset-key').and(by.label('Reset E2E Key'))).tap();
-				await waitFor(element(by.label('Are you sure?')))
+				await waitFor(element(by[textMatcher]('Are you sure?')))
 					.toExist()
 					.withTimeout(2000);
-				await expect(element(by.label('You\'re going to be logged out.'))).toExist();
-				await element(by.label('Yes, reset it').and(by.type(alertButtonType))).tap();
-				// await waitFor(element(by.label('OK')))
-				// 	.toBeVisible()
-				// 	.withTimeout(15000);
-				// await element(by.label('OK').and(by.type(alertButtonType))).tap();
+				await expect(element(by[textMatcher]("You're going to be logged out."))).toExist();
+				await element(by[textMatcher]('Yes, reset it').and(by.type(alertButtonType))).tap();
 				await sleep(2000);
+
+				await waitFor(element(by[textMatcher]('OK')))
+					.toBeVisible()
+					.withTimeout(15000);
+				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 				await waitFor(element(by.id('workspace-view')))
 					.toBeVisible()
 					.withTimeout(10000);
-				await waitFor(element(by.label('You\'ve been logged out by the server. Please log in again.')))
+
+				await waitFor(element(by[textMatcher]("You've been logged out by the server. Please log in again.")))
 					.toExist()
 					.withTimeout(2000);
-				await element(by.label('OK').and(by.type(alertButtonType))).tap();
+				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 				await element(by.id('workspace-view-login')).tap();
 				await waitFor(element(by.id('login-view')))
 					.toBeVisible()

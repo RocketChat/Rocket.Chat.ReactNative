@@ -6,13 +6,15 @@ const platformTypes = {
 		// Android types
 		alertButtonType: 'android.widget.Button',
 		scrollViewType: 'android.widget.ScrollView',
-		textInputType: 'android.widget.EditText'
+		textInputType: 'android.widget.EditText',
+		textMatcher: 'text'
 	},
 	ios: {
 		// iOS types
 		alertButtonType: '_UIAlertControllerActionView',
 		scrollViewType: 'UIScrollView',
-		textInputType: '_UIAlertControllerTextField'
+		textInputType: '_UIAlertControllerTextField',
+		textMatcher: 'label'
 	}
 };
 
@@ -67,7 +69,7 @@ async function login(username, password) {
 
 async function logout() {
 	const deviceType = device.getPlatform();
-	const { scrollViewType } = platformTypes[deviceType];
+	const { scrollViewType, textMatcher } = platformTypes[deviceType];
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
 		.toBeVisible()
@@ -82,11 +84,11 @@ async function logout() {
 	await element(by.type(scrollViewType)).atIndex(1).scrollTo('bottom');
 	await element(by.id('settings-logout')).tap();
 	const logoutAlertMessage = 'You will be logged out of this application.';
-	await waitFor(element(by.label(logoutAlertMessage)).atIndex(0))
+	await waitFor(element(by[textMatcher](logoutAlertMessage)).atIndex(0))
 		.toExist()
 		.withTimeout(10000);
-	await expect(element(by.label(logoutAlertMessage)).atIndex(0)).toExist();
-	await element(by.label('Logout')).atIndex(0).tap();
+	await expect(element(by[textMatcher](logoutAlertMessage)).atIndex(0)).toExist();
+	await element(by[textMatcher]('Logout')).atIndex(0).tap();
 	await waitFor(element(by.id('new-server-view')))
 		.toBeVisible()
 		.withTimeout(10000);
@@ -94,15 +96,17 @@ async function logout() {
 }
 
 async function mockMessage(message, isThread = false) {
+	const deviceType = device.getPlatform();
+	const { textMatcher } = platformTypes[deviceType];
 	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
 	await element(by.id(input)).tap();
 	await element(by.id(input)).typeText(`${data.random}${message}`);
 	await element(by.id('messagebox-send-message')).tap();
-	await waitFor(element(by.label(`${data.random}${message}`)))
+	await waitFor(element(by[textMatcher](`${data.random}${message}`)))
 		.toExist()
 		.withTimeout(60000);
-	await expect(element(by.label(`${data.random}${message}`))).toExist();
-	await element(by.label(`${data.random}${message}`))
+	await expect(element(by[textMatcher](`${data.random}${message}`))).toExist();
+	await element(by[textMatcher](`${data.random}${message}`))
 		.atIndex(0)
 		.tap();
 }
