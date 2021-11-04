@@ -4,6 +4,7 @@ import FileViewer from 'react-native-file-viewer';
 import EventEmitter from '../events';
 import { LISTENER } from '../../containers/Toast';
 import I18n from '../../i18n';
+import { DOCUMENTS_PATH, DOWNLOAD_PATH } from '../../constants/localPath';
 
 interface IAttachment {
 	title: string;
@@ -12,22 +13,21 @@ interface IAttachment {
 	description: string;
 }
 
-const DOCUMENT_PATH = `${RNFetchBlob.fs.dirs.DownloadDir}/`;
-
 export const getExtensionType = (text: string): string | undefined => text.split('.').pop();
 
-export const getLocalFilePathFromFile = (attachment: IAttachment): string => {
+export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => {
 	const fileName = attachment.title.split('.')[0];
-	return `${DOCUMENT_PATH}${fileName}.${getExtensionType(attachment.title_link)}`;
+	return `${localPath}${fileName}.${getExtensionType(attachment.title_link)}`;
 };
 
 export const fileDownload = (url: string, attachment: IAttachment): Promise<FetchBlobResponse> => {
-	const path = getLocalFilePathFromFile(attachment);
+	const path = getLocalFilePathFromFile(DOWNLOAD_PATH, attachment);
 
 	const options = {
 		path,
 		timeout: 10000,
 		indicator: true,
+		overwrite: true,
 		addAndroidDownloads: {
 			path,
 			notification: true,
@@ -38,8 +38,14 @@ export const fileDownload = (url: string, attachment: IAttachment): Promise<Fetc
 	return RNFetchBlob.config(options).fetch('GET', url);
 };
 
-export const filePreview = async (url: string, attachment: IAttachment): Promise<void> => {
-	const file = await fileDownload(url, attachment);
+export const fileDownloadAndPreview = async (url: string, attachment: IAttachment): Promise<void> => {
+	const path = getLocalFilePathFromFile(DOCUMENTS_PATH, attachment);
+	const file = await RNFetchBlob.config({
+		timeout: 10000,
+		indicator: true,
+		path
+	}).fetch('GET', url);
+
 	if (file) {
 		FileViewer.open(file.data, {
 			showOpenWithDialog: true,

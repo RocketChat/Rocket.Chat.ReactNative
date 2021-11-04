@@ -11,7 +11,7 @@ import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
-import { filePreview } from '../../utils/fileDownload';
+import { fileDownloadAndPreview } from '../../utils/fileDownload';
 import { formatAttachmentUrl } from '../../lib/utils';
 import RCActivityIndicator from '../ActivityIndicator';
 
@@ -230,7 +230,7 @@ const Reply = React.memo(
 			if (attachment.type === 'file') {
 				setLoading(true);
 				url = formatAttachmentUrl(attachment.title_link, user.id, user.token, baseUrl);
-				await filePreview(url, attachment);
+				await fileDownloadAndPreview(url, attachment);
 				setLoading(false);
 				return;
 			}
