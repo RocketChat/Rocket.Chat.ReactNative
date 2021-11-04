@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -9,6 +8,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
 import { allowPreview } from './utils';
+import { IItem } from './interfaces';
 
 const THUMB_SIZE = 64;
 
@@ -60,22 +60,25 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ThumbButton = isIOS ? TouchableOpacity : TouchableNativeFeedback;
+interface IThumbContent {
+	item: IItem;
+	theme: string;
+	isShareExtension: boolean;
+}
 
-const ThumbContent = React.memo(({ item, theme, isShareExtension }) => {
+const ThumbContent = React.memo(({ item, theme, isShareExtension }: IThumbContent) => {
 	const type = item?.mime;
 
 	if (type?.match(/image/)) {
 		// Disallow preview of images too big in order to prevent memory issues on iOS share extension
 		if (allowPreview(isShareExtension, item?.size)) {
 			return <Image source={{ uri: item.path }} style={[styles.thumb, { borderColor: themes[theme].borderColor }]} />;
-		} else {
-			return (
-				<View style={[styles.thumb, { borderColor: themes[theme].borderColor }]}>
-					<CustomIcon name='image' size={30} color={themes[theme].tintColor} />
-				</View>
-			);
 		}
+		return (
+			<View style={[styles.thumb, { borderColor: themes[theme].borderColor }]}>
+				<CustomIcon name='image' size={30} color={themes[theme].tintColor} />
+			</View>
+		);
 	}
 
 	if (type?.match(/video/)) {
@@ -85,23 +88,49 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }) => {
 					<CustomIcon name='camera' size={30} color={themes[theme].tintColor} />
 				</View>
 			);
-		} else {
-			const { uri } = item;
-			return (
-				<>
-					<Image source={{ uri }} style={styles.thumb} />
-					<CustomIcon name='camera-filled' size={20} color={themes[theme].buttonText} style={styles.videoThumbIcon} />
-				</>
-			);
 		}
+		const { uri } = item;
+		return (
+			<>
+				<Image source={{ uri }} style={styles.thumb} />
+				<CustomIcon name='camera-filled' size={20} color={themes[theme].buttonText} style={styles.videoThumbIcon} />
+			</>
+		);
 	}
 
 	// Multiple files upload of files different than image/video is not implemented, so there's no thumb
 	return null;
 });
 
-const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }) => (
-	<ThumbButton style={styles.item} onPress={() => onPress(item)} activeOpacity={0.7}>
+// isIOS ? TouchableOpacity : TouchableNativeFeedback
+
+interface IThumbButton {
+	onPress(): void;
+	children: JSX.Element;
+}
+
+const ThumbButton = ({ onPress, children }: IThumbButton) => {
+	if (isIOS) {
+		return (
+			<TouchableOpacity style={styles.item} onPress={onPress} activeOpacity={0.7}>
+				{children}
+			</TouchableOpacity>
+		);
+	}
+	return (
+		<TouchableNativeFeedback style={styles.item} onPress={onPress}>
+			{children}
+		</TouchableNativeFeedback>
+	);
+};
+
+interface IThumb extends IThumbContent {
+	onPress(item: IItem): void;
+	onRemove(item: IItem): void;
+}
+
+const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => (
+	<ThumbButton onPress={() => onPress(item)}>
 		<>
 			<ThumbContent item={item} theme={theme} isShareExtension={isShareExtension} />
 			<RectButton
@@ -121,7 +150,11 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }) => (
 	</ThumbButton>
 );
 
-const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRemove }) => {
+interface IThumbs extends IThumb {
+	attachments: IItem[];
+}
+
+const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {
 	if (attachments?.length > 1) {
 		return (
 			<FlatList
@@ -143,24 +176,5 @@ const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRe
 	}
 	return null;
 });
-Thumbs.propTypes = {
-	attachments: PropTypes.array,
-	theme: PropTypes.string,
-	isShareExtension: PropTypes.bool,
-	onPress: PropTypes.func,
-	onRemove: PropTypes.func
-};
-Thumb.propTypes = {
-	item: PropTypes.object,
-	theme: PropTypes.string,
-	isShareExtension: PropTypes.bool,
-	onPress: PropTypes.func,
-	onRemove: PropTypes.func
-};
-ThumbContent.propTypes = {
-	item: PropTypes.object,
-	theme: PropTypes.string,
-	isShareExtension: PropTypes.bool
-};
 
 export default Thumbs;
