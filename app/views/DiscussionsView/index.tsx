@@ -33,7 +33,7 @@ interface IDiscussionsViewProps {
 	};
 }
 
-interface IState {
+interface IDiscussionsViewState {
 	login?: {
 		user: object;
 	};
@@ -52,11 +52,11 @@ interface IState {
 const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Element => {
 	const rid = route.params?.rid;
 
-	const user = useSelector((state: IState) => state.login?.user);
-	const baseUrl = useSelector((state: IState) => state.server?.server);
-	const useRealName = useSelector((state: IState) => state.settings?.UI_Use_Real_Name);
-	const timeFormat = useSelector((state: IState) => state.settings?.Message_TimeFormat);
-	const isMasterDetail = useSelector((state: IState) => state.app?.isMasterDetail);
+	const user = useSelector((state: IDiscussionsViewState) => state.login?.user);
+	const baseUrl = useSelector((state: IDiscussionsViewState) => state.server?.server);
+	const useRealName = useSelector((state: IDiscussionsViewState) => state.settings?.UI_Use_Real_Name);
+	const timeFormat = useSelector((state: IDiscussionsViewState) => state.settings?.Message_TimeFormat);
+	const isMasterDetail = useSelector((state: IDiscussionsViewState) => state.app?.isMasterDetail);
 
 	const [loading, setLoading] = useState(false);
 	const [discussions, setDiscussions] = useState([]);
@@ -179,7 +179,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				rid: item.drid,
 				prid: item.rid,
 				name: item.msg,
-				t: 'c'
+				t: item.rid === 'GENERAL' ? 'c' : 'p'
 			});
 		},
 		1000,
@@ -211,7 +211,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}
 				keyExtractor={(item: any) => item.msg}
-				style={{ backgroundColor: themes[theme!].backgroundColor }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
 				maxToRenderPerBatch={5}
