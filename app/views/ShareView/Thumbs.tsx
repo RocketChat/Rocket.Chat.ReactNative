@@ -8,7 +8,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
 import { allowPreview } from './utils';
-import { IItem } from './interfaces';
+import { IAttachment } from './interfaces';
 
 const THUMB_SIZE = 64;
 
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 });
 
 interface IThumbContent {
-	item: IItem;
+	item: IAttachment;
 	theme: string;
 	isShareExtension: boolean;
 }
@@ -125,8 +125,8 @@ const ThumbButton = ({ onPress, children }: IThumbButton) => {
 };
 
 interface IThumb extends IThumbContent {
-	onPress(item: IItem): void;
-	onRemove(item: IItem): void;
+	onPress(item: IAttachment): void;
+	onRemove(item: IAttachment): void;
 }
 
 const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => (
@@ -150,8 +150,8 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 	</ThumbButton>
 );
 
-interface IThumbs extends IThumb {
-	attachments: IItem[];
+interface IThumbs extends Omit<IThumb, 'item'> {
+	attachments: IAttachment[];
 }
 
 const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {

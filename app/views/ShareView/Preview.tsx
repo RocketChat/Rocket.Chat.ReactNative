@@ -14,7 +14,7 @@ import I18n from '../../i18n';
 import { isAndroid } from '../../utils/deviceInfo';
 import { allowPreview } from './utils';
 import { THUMBS_HEIGHT } from './constants';
-import { IItem, IUseDimensions } from './interfaces';
+import { IAttachment, IUseDimensions } from './interfaces';
 
 const MESSAGEBOX_HEIGHT = 56;
 
@@ -56,7 +56,7 @@ const IconPreview = React.memo(({ iconName, title, description, theme, width, he
 ));
 
 interface IPreview {
-	item: IItem;
+	item: IAttachment;
 	theme: string;
 	isShareExtension: boolean;
 	length: number;
