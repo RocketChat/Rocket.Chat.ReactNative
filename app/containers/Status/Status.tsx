@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheetProperties } from 'react-native';
+import { StyleProp, TextStyle } from 'react-native';
 
 import { CustomIcon } from '../../lib/Icons';
 import { STATUS_COLORS } from '../../constants/colors';
@@ -7,14 +7,14 @@ import { STATUS_COLORS } from '../../constants/colors';
 interface IStatus {
 	status: string;
 	size: number;
-	style?: StyleSheetProperties;
+	style?: StyleProp<TextStyle>;
 }
 
 const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: IStatus) => {
 	const name = `status-${status}`;
 	const isNameValid = CustomIcon.hasIcon(name);
 	const iconName = isNameValid ? name : 'status-offline';
-	const calculatedStyle = [
+	const calculatedStyle: StyleProp<TextStyle> = [
 		{
 			width: size,
 			height: size,
