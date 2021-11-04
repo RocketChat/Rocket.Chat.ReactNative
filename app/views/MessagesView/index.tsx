@@ -3,6 +3,7 @@ import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
 
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -18,24 +19,33 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
 
-interface IMessagesView {
+type TMessagesViewRouteParams = {
+	MessagesView: {
+		rid: string;
+		t: string;
+		name: string;
+	};
+};
+
+interface IMessagesViewProps {
 	user: {
 		id: string;
 	};
 	baseUrl: string;
 	navigation: StackNavigationProp<any, 'MessagesView'>;
-	route: {
-		params?: {
-			rid: string;
-			t: string;
-			name: string | undefined;
-		};
-	};
-	customEmojis: [];
+	route: RouteProp<TMessagesViewRouteParams, 'MessagesView'>;
+	customEmojis: { [key: string]: string };
 	theme: string;
 	showActionSheet: Function;
 	useRealName: boolean;
 	isMasterDetail: boolean;
+}
+
+interface IMessagesViewState {
+	loading: boolean;
+	messages: [];
+	fileLoading: boolean;
+	total: number;
 }
 
 interface IMessageItem {
@@ -54,13 +64,13 @@ interface IMessageItem {
 	pinned: boolean;
 }
 
-class MessagesView extends React.Component<IMessagesView, any> {
-	private rid: string | undefined;
-	private t: string | undefined;
+class MessagesView extends React.Component<IMessagesViewProps, any> {
+	private rid?: string;
+	private t?: string;
 	private content: any;
 	private room: any;
 
-	constructor(props: IMessagesView) {
+	constructor(props: IMessagesViewProps) {
 		super(props);
 		this.state = {
 			loading: false,
@@ -77,7 +87,7 @@ class MessagesView extends React.Component<IMessagesView, any> {
 		this.load();
 	}
 
-	shouldComponentUpdate(nextProps: any, nextState: any) {
+	shouldComponentUpdate(nextProps: IMessagesViewProps, nextState: any) {
 		const { loading, messages, fileLoading } = this.state;
 		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -136,7 +146,7 @@ class MessagesView extends React.Component<IMessagesView, any> {
 		}
 	};
 
-	defineMessagesViewContent = (name?: string) => {
+	defineMessagesViewContent = (name: string) => {
 		const { user, baseUrl, theme, useRealName } = this.props;
 		const renderItemCommonProps = (item: IMessageItem) => ({
 			item,
@@ -257,7 +267,7 @@ class MessagesView extends React.Component<IMessagesView, any> {
 		}
 	};
 
-	getCustomEmoji = (name: any) => {
+	getCustomEmoji = (name: string) => {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {
@@ -287,7 +297,7 @@ class MessagesView extends React.Component<IMessagesView, any> {
 		try {
 			const result = await this.content.handleActionPress(message);
 			if (result.success) {
-				this.setState((prevState: any) => ({
+				this.setState((prevState: IMessagesViewState) => ({
 					messages: prevState.messages.filter((item: IMessageItem) => item._id !== message._id),
 					total: prevState.total - 1
 				}));
@@ -344,5 +354,4 @@ const mapStateToProps = (state: any) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-// @ts-ignore
 export default connect(mapStateToProps)(withTheme(withActionSheet(MessagesView)));
