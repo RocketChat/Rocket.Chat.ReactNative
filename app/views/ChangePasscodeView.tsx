@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 import Orientation from 'react-native-orientation-locker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
 import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
-import { withTheme } from '../theme';
+import { useTheme } from '../theme';
 import { hasNotch, isTablet } from '../utils/deviceInfo';
-import { TYPE } from '../containers/Passcode/constants';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../utils/events';
 import { CustomIcon } from '../lib/Icons';
@@ -27,9 +25,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ChangePasscodeView = React.memo(({ theme }) => {
+interface IArgs {
+	submit(passcode: string): void;
+	cancel(): void;
+	force: boolean;
+}
+
+const ChangePasscodeView = React.memo(() => {
 	const [visible, setVisible] = useState(false);
-	const [data, setData] = useState({});
+	const [data, setData] = useState<Partial<IArgs>>({});
+
+	const { theme } = useTheme();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -39,11 +45,11 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 		}
 	}, [data]);
 
-	const showChangePasscode = args => {
+	const showChangePasscode = (args: IArgs) => {
 		setData(args);
 	};
 
-	const onSubmit = passcode => {
+	const onSubmit = (passcode: string) => {
 		const { submit } = data;
 		if (submit) {
 			submit(passcode);
@@ -74,7 +80,7 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 
 	return (
 		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal}>
-			<PasscodeChoose theme={theme} type={TYPE.choose} finishProcess={onSubmit} force={data?.force} />
+			<PasscodeChoose theme={theme} finishProcess={onSubmit} force={data?.force} />
 			{!data?.force ? (
 				<Touchable onPress={onCancel} style={styles.close}>
 					<CustomIcon name='close' color={themes[theme].passcodePrimary} size={30} />
@@ -84,8 +90,4 @@ const ChangePasscodeView = React.memo(({ theme }) => {
 	);
 });
 
-ChangePasscodeView.propTypes = {
-	theme: PropTypes.string
-};
-
-export default withTheme(ChangePasscodeView);
+export default ChangePasscodeView;
