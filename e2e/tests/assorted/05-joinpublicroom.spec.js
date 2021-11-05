@@ -19,11 +19,12 @@ async function navigateToRoomActions() {
 		.withTimeout(5000);
 }
 
-describe('Join public room', () => {
+describe.skip('Join public room', () => {
 	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ alertButtonType } = platformTypes[device.getPlatform()]);
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 		await navigateToRoom();
@@ -163,10 +164,10 @@ describe('Join public room', () => {
 
 		it('should leave room', async () => {
 			await element(by.id('room-actions-leave-channel')).tap();
-			await waitFor(element(by.label('Yes, leave it!').and(by.type(alertButtonType))))
+			await waitFor(element(by[textMatcher]('Yes, leave it!').and(by.type(alertButtonType))))
 				.toBeVisible()
 				.withTimeout(5000);
-			await element(by.label('Yes, leave it!').and(by.type(alertButtonType))).tap();
+			await element(by[textMatcher]('Yes, leave it!').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
 				.withTimeout(10000);

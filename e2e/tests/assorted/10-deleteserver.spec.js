@@ -1,12 +1,12 @@
 const data = require('../../data');
 const { sleep, navigateToLogin, login, checkServer, platformTypes } = require('../../helpers/app');
 
-describe('Delete server', () => {
-	let scrollViewType;
+describe.skip('Delete server', () => {
 	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ alertButtonType, scrollViewType } = platformTypes[device.getPlatform()]);
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});
@@ -56,7 +56,7 @@ describe('Delete server', () => {
 			.toBeVisible()
 			.withTimeout(5000);
 		await element(by.id(`rooms-list-header-server-${data.server}`)).longPress(1500);
-		await element(by.label('Delete').and(by.type(alertButtonType))).tap();
+		await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
 			.toBeVisible()

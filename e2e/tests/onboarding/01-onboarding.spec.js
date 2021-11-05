@@ -3,9 +3,10 @@ const { platformTypes } = require('../../helpers/app');
 
 describe('Onboarding', () => {
 	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ alertButtonType } = platformTypes[device.getPlatform()]);
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await waitFor(element(by.id('new-server-view')))
 			.toBeVisible()
 			.withTimeout(20000);
@@ -25,10 +26,10 @@ describe('Onboarding', () => {
 		it('should enter an invalid server and get error', async () => {
 			await element(by.id('new-server-view-input')).replaceText('invalidtest');
 			await element(by.id('new-server-view-input')).tapReturnKey();
-			await waitFor(element(by.label('Oops!')))
+			await waitFor(element(by[textMatcher]('Oops!')))
 				.toExist()
 				.withTimeout(10000);
-			await element(by.label('OK').and(by.type(alertButtonType))).tap();
+			await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 		});
 
 		it('should tap on "Join our open workspace" and navigate', async () => {

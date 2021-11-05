@@ -1,15 +1,15 @@
 const data = require('../../data');
-const { navigateToLogin, login, checkServer } = require('../../helpers/app');
+const { navigateToLogin, login, checkServer, platformTypes } = require('../../helpers/app');
 
 const reopenAndCheckServer = async server => {
-	await device.launchApp({ permissions: { notifications: 'YES' } });
+	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
 	await waitFor(element(by.id('rooms-list-view')))
 		.toBeVisible()
 		.withTimeout(10000);
 	await checkServer(server);
 };
 
-describe('Change server', () => {
+describe.skip('Change server', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();

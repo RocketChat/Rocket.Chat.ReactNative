@@ -3,9 +3,10 @@ const { tapBack, navigateToLogin, login, tryTapping, platformTypes } = require('
 
 describe('Create room screen', () => {
 	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ alertButtonType } = platformTypes[device.getPlatform()]);
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});
@@ -128,11 +129,11 @@ describe('Create room screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('create-channel-submit')).tap();
-				await waitFor(element(by.label('A channel with name general exists')))
+				await waitFor(element(by[textMatcher]('A channel with name general exists')))
 					.toExist()
 					.withTimeout(60000);
-				await expect(element(by.label('A channel with name general exists'))).toExist();
-				await element(by.label('OK').and(by.type(alertButtonType))).tap();
+				await expect(element(by[textMatcher]('A channel with name general exists'))).toExist();
+				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 			});
 
 			it('should create public room', async () => {

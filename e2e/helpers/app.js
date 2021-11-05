@@ -18,6 +18,10 @@ const platformTypes = {
 	}
 };
 
+function sleep(ms) {
+	return new Promise(res => setTimeout(res, ms));
+}
+
 async function navigateToWorkspace(server = data.server) {
 	await waitFor(element(by.id('new-server-view')))
 		.toBeVisible()
@@ -99,8 +103,9 @@ async function mockMessage(message, isThread = false) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
 	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
-	await element(by.id(input)).tap();
-	await element(by.id(input)).typeText(`${data.random}${message}`);
+	// await element(by.id(input)).tap();
+	await element(by.id(input)).replaceText(`${data.random}${message}`);
+	await sleep(300);
 	await element(by.id('messagebox-send-message')).tap();
 	await waitFor(element(by[textMatcher](`${data.random}${message}`)))
 		.toExist()
@@ -166,17 +171,14 @@ async function tapBack() {
 	await element(by.id('header-back')).atIndex(0).tap();
 }
 
-function sleep(ms) {
-	return new Promise(res => setTimeout(res, ms));
-}
-
 async function searchRoom(room) {
 	await element(by.id('rooms-list-view-search')).tap();
 	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
 	await waitFor(element(by.id('rooms-list-view-search-input')))
 		.toExist()
 		.withTimeout(5000);
-	await element(by.id('rooms-list-view-search-input')).typeText(room);
+	await sleep(300);
+	await element(by.id('rooms-list-view-search-input')).replaceText(room);
 	await sleep(300);
 	await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 		.toBeVisible()

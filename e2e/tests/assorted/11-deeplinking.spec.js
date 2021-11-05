@@ -12,18 +12,20 @@ const getDeepLink = (method, server, params) => {
 	return deeplink;
 };
 
-describe('Deep linking', () => {
+describe.skip('Deep linking', () => {
 	let userId;
 	let authToken;
 	let scrollViewType;
 	let threadId;
+	let textMatcher;
+	let alertButtonType;
 	const threadMessage = `to-thread-${data.random}`;
 	before(async () => {
 		const loginResult = await login(data.users.regular.username, data.users.regular.password);
 		({ userId, authToken } = loginResult);
 		const deviceType = device.getPlatform();
 		amp = deviceType === 'android' ? '\\&' : '&';
-		({ scrollViewType } = platformTypes[deviceType]);
+		({ scrollViewType, textMatcher, alertButtonType } = platformTypes[deviceType]);
 		// create a thread with api
 		const result = await sendMessage(data.users.regular, data.groups.alternate2.name, threadMessage);
 		threadId = result.message._id;
@@ -37,7 +39,7 @@ describe('Deep linking', () => {
 				delete: true,
 				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=123${amp}token=abc`)
 			});
-			await waitFor(element(by.label("You've been logged out by the server. Please log in again.")))
+			await waitFor(element(by[textMatcher]("You've been logged out by the server. Please log in again.")))
 				.toExist()
 				.withTimeout(10000); // TODO: we need to improve this message
 		});
@@ -49,9 +51,9 @@ describe('Deep linking', () => {
 				url: getDeepLink(
 					DEEPLINK_METHODS.AUTH,
 					data.server,
-					`userId=${userId}&token=${authToken}${amp}path=group/${data.groups.private.name}`
-				),
-				sourceApp: 'com.apple.mobilesafari'
+					`userId=${userId}${amp}token=${authToken}${amp}path=group/${data.groups.private.name}`
+				)
+				// sourceApp: 'com.apple.mobilesafari' do we need this?
 			});
 			await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 				.toExist()

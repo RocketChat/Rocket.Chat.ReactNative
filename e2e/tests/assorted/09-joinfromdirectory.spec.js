@@ -18,7 +18,7 @@ async function navigateToRoom(search) {
 		.withTimeout(5000);
 }
 
-describe('Join room from directory', () => {
+describe.skip('Join room from directory', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
@@ -49,7 +49,7 @@ describe('Join room from directory', () => {
 			await navigateToRoom(data.users.alternate.username);
 		});
 
-		it('should search user and navigate', async () => {
+		it('should search team and navigate', async () => {
 			await tapBack();
 			await element(by.id('rooms-list-view-directory')).tap();
 			await waitFor(element(by.id('directory-view')))
