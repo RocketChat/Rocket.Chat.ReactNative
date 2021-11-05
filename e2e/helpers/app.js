@@ -103,49 +103,53 @@ async function mockMessage(message, isThread = false) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
 	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
-	// await element(by.id(input)).tap();
 	await element(by.id(input)).replaceText(`${data.random}${message}`);
 	await sleep(300);
 	await element(by.id('messagebox-send-message')).tap();
 	await waitFor(element(by[textMatcher](`${data.random}${message}`)))
 		.toExist()
 		.withTimeout(60000);
-	await expect(element(by[textMatcher](`${data.random}${message}`))).toExist();
 	await element(by[textMatcher](`${data.random}${message}`))
 		.atIndex(0)
 		.tap();
 }
 
 async function starMessage(message) {
+	const deviceType = device.getPlatform();
+	const { textMatcher } = platformTypes[deviceType];
 	const messageLabel = `${data.random}${message}`;
-	await element(by.label(messageLabel)).atIndex(0).longPress();
+	await element(by[textMatcher](messageLabel)).atIndex(0).longPress();
 	await expect(element(by.id('action-sheet'))).toExist();
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by.label('Star')).atIndex(0).tap();
+	await element(by[textMatcher]('Star')).atIndex(0).tap();
 	await waitFor(element(by.id('action-sheet')))
 		.not.toExist()
 		.withTimeout(5000);
 }
 
 async function pinMessage(message) {
+	const deviceType = device.getPlatform();
+	const { textMatcher } = platformTypes[deviceType];
 	const messageLabel = `${data.random}${message}`;
-	await waitFor(element(by.label(messageLabel)).atIndex(0)).toExist();
-	await element(by.label(messageLabel)).atIndex(0).longPress();
+	await waitFor(element(by[textMatcher](messageLabel)).atIndex(0)).toExist();
+	await element(by[textMatcher](messageLabel)).atIndex(0).longPress();
 	await expect(element(by.id('action-sheet'))).toExist();
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by.label('Pin')).atIndex(0).tap();
+	await element(by[textMatcher]('Pin')).atIndex(0).tap();
 	await waitFor(element(by.id('action-sheet')))
 		.not.toExist()
 		.withTimeout(5000);
 }
 
 async function dismissReviewNag() {
-	await waitFor(element(by.label('Are you enjoying this app?')))
+	const deviceType = device.getPlatform();
+	const { textMatcher } = platformTypes[deviceType];
+	await waitFor(element(by[textMatcher]('Are you enjoying this app?')))
 		.toExist()
 		.withTimeout(60000);
-	await element(by.label('No')).atIndex(0).tap(); // Tap `no` on ask for review alert
+	await element(by[textMatcher]('No')).atIndex(0).tap(); // Tap `no` on ask for review alert
 }
 
 async function mockMessageWithNag(message, isThread = false) {
