@@ -54,11 +54,12 @@ async function waitForToast() {
 
 describe('Room actions screen', () => {
 	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
-		({ alertButtonType } = platformTypes[device.getPlatform()]);
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 	});
 
 	describe('Render', () => {
@@ -238,19 +239,19 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.id('starred-messages-view')))
 					.toExist()
 					.withTimeout(2000);
-				await waitFor(element(by.label(`${data.random}messageToStar`).withAncestor(by.id('starred-messages-view'))))
+				await waitFor(element(by[textMatcher](`${data.random}messageToStar`).withAncestor(by.id('starred-messages-view'))))
 					.toExist()
 					.withTimeout(60000);
 
 				// Unstar message
-				await element(by.label(`${data.random}messageToStar`))
+				await element(by[textMatcher](`${data.random}messageToStar`))
 					.atIndex(0)
 					.longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.label('Unstar')).atIndex(0).tap();
+				await element(by[textMatcher]('Unstar')).atIndex(0).tap();
 
-				await waitFor(element(by.label(`${data.random}messageToStar`).withAncestor(by.id('starred-messages-view'))))
+				await waitFor(element(by[textMatcher](`${data.random}messageToStar`).withAncestor(by.id('starred-messages-view'))))
 					.toBeNotVisible()
 					.withTimeout(60000);
 				await backToActions();
@@ -278,18 +279,18 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.id('pinned-messages-view')))
 					.toExist()
 					.withTimeout(2000);
-				await waitFor(element(by.label(`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view'))))
+				await waitFor(element(by[textMatcher](`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view'))))
 					.toExist()
 					.withTimeout(6000);
-				await element(by.label(`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view')))
+				await element(by[textMatcher](`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view')))
 					.atIndex(0)
 					.longPress();
 
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.label('Unpin')).atIndex(0).tap();
+				await element(by[textMatcher]('Unpin')).atIndex(0).tap();
 
-				await waitFor(element(by.label(`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view'))))
+				await waitFor(element(by[textMatcher](`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view'))))
 					.not.toExist()
 					.withTimeout(6000);
 				await backToActions();
@@ -387,14 +388,14 @@ describe('Room actions screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('room-actions-leave-channel')).tap();
-				await waitFor(element(by.label('Yes, leave it!')))
+				await waitFor(element(by[textMatcher]('Yes, leave it!')))
 					.toExist()
 					.withTimeout(2000);
-				await element(by.label('Yes, leave it!').and(by.type(alertButtonType))).tap();
-				await waitFor(element(by.label('You are the last owner. Please set new owner before leaving the room.')))
+				await element(by[textMatcher]('Yes, leave it!').and(by.type(alertButtonType))).tap();
+				await waitFor(element(by[textMatcher]('You are the last owner. Please set new owner before leaving the room.')))
 					.toExist()
 					.withTimeout(8000);
-				await element(by.label('OK').and(by.type(alertButtonType))).tap();
+				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 				await waitFor(element(by.id('room-actions-view')))
 					.toExist()
 					.withTimeout(2000);
@@ -460,6 +461,7 @@ describe('Room actions screen', () => {
 						// Max tries three times, in case it does not register the click
 						try {
 							await element(by.id(`room-members-view-item-${username}`)).tap();
+							await sleep(300);
 							await waitFor(element(by.id('action-sheet')))
 								.toExist()
 								.withTimeout(5000);
@@ -504,11 +506,14 @@ describe('Room actions screen', () => {
 
 				it('should remove user from room', async () => {
 					await openActionSheet('rocket.cat');
-					await element(by.label('Remove from room')).atIndex(0).tap();
-					await waitFor(element(by.label('Are you sure?')))
+					await waitFor(element(by[textMatcher]('Remove from room')))
+						.toBeVisible()
+						.withTimeout(2000);
+					await element(by[textMatcher]('Remove from room')).atIndex(0).tap();
+					await waitFor(element(by[textMatcher]('Are you sure?')))
 						.toExist()
 						.withTimeout(5000);
-					await element(by.label('Yes, remove user!').and(by.type(alertButtonType))).tap();
+					await element(by[textMatcher]('Yes, remove user!').and(by.type(alertButtonType))).tap();
 					await waitFor(element(by.id('room-members-view-item-rocket.cat')))
 						.toBeNotVisible()
 						.withTimeout(60000);
@@ -581,24 +586,24 @@ describe('Room actions screen', () => {
 
 				it('should set/remove as mute', async () => {
 					await openActionSheet(user.username);
-					await element(by.label('Mute')).atIndex(0).tap();
-					await waitFor(element(by.label('Are you sure?')))
+					await element(by[textMatcher]('Mute')).atIndex(0).tap();
+					await waitFor(element(by[textMatcher]('Are you sure?')))
 						.toExist()
 						.withTimeout(5000);
-					await element(by.label('Mute').and(by.type(alertButtonType))).tap();
+					await element(by[textMatcher]('Mute').and(by.type(alertButtonType))).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					await element(by.label('Unmute')).atIndex(0).tap();
-					await waitFor(element(by.label('Are you sure?')))
+					await element(by[textMatcher]('Unmute')).atIndex(0).tap();
+					await waitFor(element(by[textMatcher]('Are you sure?')))
 						.toExist()
 						.withTimeout(5000);
-					await element(by.label('Unmute').and(by.type(alertButtonType))).tap();
+					await element(by[textMatcher]('Unmute').and(by.type(alertButtonType))).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
 					// Tests if Remove as mute worked
-					await waitFor(element(by.label('Mute')))
+					await waitFor(element(by[textMatcher]('Mute')))
 						.toExist()
 						.withTimeout(5000);
 					await closeActionSheet();
@@ -609,21 +614,21 @@ describe('Room actions screen', () => {
 					const channelName = `#${data.groups.private.name}`;
 					await sendMessage(user, channelName, message);
 					await openActionSheet(user.username);
-					await element(by.label('Ignore')).atIndex(0).tap();
+					await element(by[textMatcher]('Ignore')).atIndex(0).tap();
 					await waitForToast();
 					await backToActions();
 					await tapBack();
 					await waitFor(element(by.id('room-view')))
 						.toExist()
 						.withTimeout(60000);
-					await waitFor(element(by.label('Message ignored. Tap to display it.')).atIndex(0))
+					await waitFor(element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0))
 						.toExist()
 						.withTimeout(60000);
-					await element(by.label('Message ignored. Tap to display it.')).atIndex(0).tap();
-					await waitFor(element(by.label(message)).atIndex(0))
+					await element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0).tap();
+					await waitFor(element(by[textMatcher](message)).atIndex(0))
 						.toExist()
 						.withTimeout(60000);
-					await element(by.label(message)).atIndex(0).tap();
+					await element(by[textMatcher](message)).atIndex(0).tap();
 				});
 
 				it('should navigate to direct message', async () => {
@@ -640,7 +645,7 @@ describe('Room actions screen', () => {
 						.toExist()
 						.withTimeout(60000);
 					await openActionSheet(user.username);
-					await element(by.label('Direct message')).atIndex(0).tap();
+					await element(by[textMatcher]('Direct message')).atIndex(0).tap();
 					await waitFor(element(by.id('room-view')))
 						.toExist()
 						.withTimeout(60000);
@@ -663,11 +668,11 @@ describe('Room actions screen', () => {
 			it('should block/unblock user', async () => {
 				await waitFor(element(by.id('room-actions-block-user'))).toExist();
 				await element(by.id('room-actions-block-user')).tap();
-				await waitFor(element(by.label('Unblock user')))
+				await waitFor(element(by[textMatcher]('Unblock user')))
 					.toExist()
 					.withTimeout(60000);
 				await element(by.id('room-actions-block-user')).tap();
-				await waitFor(element(by.label('Block user')))
+				await waitFor(element(by[textMatcher]('Block user')))
 					.toExist()
 					.withTimeout(60000);
 			});

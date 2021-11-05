@@ -313,7 +313,6 @@ describe('Room screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('reaction-picker-grimacing')).tap();
-				// await dismissReviewNag();
 				await waitFor(element(by.id('message-reaction-:grimacing:')))
 					.toExist()
 					.withTimeout(60000);
@@ -322,7 +321,6 @@ describe('Room screen', () => {
 			// it('should ask for review', async () => {
 			// 	await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
 			// });
-			// Moved in previous test because toExist doesn't detect element while review popup covers it, on Android
 
 			it('should remove reaction', async () => {
 				await element(by.id('message-reaction-:grinning:')).tap();
