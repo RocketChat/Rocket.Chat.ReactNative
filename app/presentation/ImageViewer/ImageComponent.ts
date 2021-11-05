@@ -1,6 +1,6 @@
 import { types } from './types';
 
-export const ImageComponent = (type: string) => {
+export const ImageComponent = (type?: string) => {
 	let Component;
 	if (type === types.REACT_NATIVE_IMAGE) {
 		const { Image } = require('react-native');
