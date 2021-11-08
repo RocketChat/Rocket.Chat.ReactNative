@@ -42,6 +42,10 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IE2EEncryptionSecurityViewState {
+	newPassword: string;
+}
+
 interface IE2EEncryptionSecurityViewProps {
 	theme: string;
 	user: {
@@ -53,7 +57,7 @@ interface IE2EEncryptionSecurityViewProps {
 	logout(): void;
 }
 
-class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityViewProps, any> {
+class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityViewProps, IE2EEncryptionSecurityViewState> {
 	private newPasswordInputRef: TextInputComp | undefined;
 
 	static navigationOptions = (): StackNavigationOptions => ({
