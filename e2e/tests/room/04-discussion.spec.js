@@ -105,7 +105,7 @@ describe('Discussion', () => {
 	});
 
 	describe('Check RoomActionsView render', () => {
-		it('should navigete to RoomActionsView', async () => {
+		it('should navigate to RoomActionsView', async () => {
 			await waitFor(element(by.id('room-header')))
 				.toBeVisible()
 				.withTimeout(5000);
@@ -200,6 +200,17 @@ describe('Discussion', () => {
 			await element(by.id('room-actions-discussions')).tap();
 			await waitFor(element(by.id('discussions-view')))
 				.toBeVisible()
+				.withTimeout(5000);
+		});
+
+		it('should navigate to discussion', async () => {
+			const discussionName = `${data.random} Discussion NewMessageView`;
+			await waitFor(element(by.label(discussionName)).atIndex(0))
+				.toExist()
+				.withTimeout(5000);
+			await element(by.label(discussionName)).atIndex(0).tap();
+			await waitFor(element(by.id(`room-view-title-${discussionName}`)))
+				.toExist()
 				.withTimeout(5000);
 		});
 	});
