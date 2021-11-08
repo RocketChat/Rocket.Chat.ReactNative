@@ -108,7 +108,7 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 		navigation.setOptions(options);
 	};
 
-	getVideoRef = (ref: any) => (this.videoRef = ref);
+	getVideoRef = (ref: Video | null) => (this.videoRef = ref);
 
 	handleSave = async () => {
 		const { attachment } = this.state;
