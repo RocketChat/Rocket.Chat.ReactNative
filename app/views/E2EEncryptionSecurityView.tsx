@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import PropTypes from 'prop-types';
+import { StyleSheet, Text, View, TextInput as TextInputComp } from 'react-native';
+import { StackNavigationOptions } from '@react-navigation/stack';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
@@ -41,14 +42,29 @@ const styles = StyleSheet.create({
 	}
 });
 
-class E2EEncryptionSecurityView extends React.Component {
+interface IE2EEncryptionSecurityViewProps {
+	theme: string;
+	user: {
+		roles: string[];
+		id: string;
+	};
+	server: string;
+	encryptionEnabled: boolean;
+	logout(): void;
+}
+
+class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityViewProps, any> {
+	private newPasswordInputRef: TextInputComp | undefined;
+
+	static navigationOptions = (): StackNavigationOptions => ({
+		title: I18n.t('E2E_Encryption')
+	});
+
 	state = { newPassword: '' };
 
-	newPasswordInputRef = React.createRef();
+	onChangePasswordText = debounce((text: string) => this.setState({ newPassword: text }), 300);
 
-	onChangePasswordText = debounce(text => this.setState({ newPassword: text }), 300);
-
-	setNewPasswordRef = ref => (this.newPasswordInputRef = ref);
+	setNewPasswordRef = (ref: TextInputComp) => (this.newPasswordInputRef = ref);
 
 	changePassword = () => {
 		const { newPassword } = this.state;
@@ -170,29 +186,14 @@ class E2EEncryptionSecurityView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server,
 	user: getUserSelector(state),
 	encryptionEnabled: state.encryption.enabled
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
 	logout: () => dispatch(logoutAction(true))
 });
-
-E2EEncryptionSecurityView.navigationOptions = () => ({
-	title: I18n.t('E2E_Encryption')
-});
-
-E2EEncryptionSecurityView.propTypes = {
-	theme: PropTypes.string,
-	user: PropTypes.shape({
-		roles: PropTypes.array,
-		id: PropTypes.string
-	}),
-	server: PropTypes.string,
-	encryptionEnabled: PropTypes.bool,
-	logout: PropTypes.func
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(E2EEncryptionSecurityView));
