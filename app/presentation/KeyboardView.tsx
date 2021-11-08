@@ -7,8 +7,8 @@ interface IKeyboardViewProps {
 	style: any;
 	contentContainerStyle: any;
 	keyboardVerticalOffset: number;
-	scrollEnabled: boolean;
-	children: JSX.Element;
+	scrollEnabled?: boolean;
+	children: React.ReactNode;
 }
 
 export default class KeyboardView extends React.PureComponent<IKeyboardViewProps, any> {
