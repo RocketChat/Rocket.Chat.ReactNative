@@ -27,7 +27,7 @@ const Separator = React.memo(({ theme }: ISeparatorProps) => (
 	<View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />
 ));
 
-interface IState {
+interface ISidebarState {
 	showStatus: boolean;
 }
 
@@ -54,7 +54,7 @@ interface ISidebarProps {
 	viewPrivilegedSettingPermission: string[];
 }
 
-class Sidebar extends Component<ISidebarProps, IState> {
+class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	constructor(props: ISidebarProps) {
 		super(props);
 		this.state = {
@@ -62,7 +62,7 @@ class Sidebar extends Component<ISidebarProps, IState> {
 		};
 	}
 
-	shouldComponentUpdate(nextProps: ISidebarProps, nextState: IState) {
+	shouldComponentUpdate(nextProps: ISidebarProps, nextState: ISidebarState) {
 		const { showStatus } = this.state;
 		const {
 			Site_Name,
