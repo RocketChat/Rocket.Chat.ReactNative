@@ -123,8 +123,8 @@ class UserNotificationPreferencesView extends React.Component {
 								<List.Item
 									title='Alert'
 									testID='user-notification-preference-view-push-notification'
-									onPress={title => this.pickerSelection(title, 'mobileNotifications')}
-									right={() => this.renderPickerOption('mobileNotifications')}
+									onPress={title => this.pickerSelection(title, 'pushNotifications')}
+									right={() => this.renderPickerOption('pushNotifications')}
 								/>
 								<List.Separator />
 								<List.Info info='Push_Notifications_Alert_Info' />
