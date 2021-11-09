@@ -38,9 +38,9 @@ async function jitsiURL({ room }) {
 
 export function callJitsiWithoutServer(path) {
 	logEvent(events.RA_JITSI_VIDEO);
-	const { Jitsi_Domain, Jitsi_SSL } = reduxStore.getState().settings;
+	const { Jitsi_SSL } = reduxStore.getState().settings;
 	const protocol = Jitsi_SSL ? 'https://' : 'http://';
-	const url = `${protocol}${Jitsi_Domain}/${path}`;
+	const url = `${protocol}${path}`;
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio: false });
 }
 

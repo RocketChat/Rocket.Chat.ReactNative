@@ -123,8 +123,8 @@ const handleOpen = function* handleOpen({ params }) {
 			}
 		});
 
-		if (!host) {
-			RocketChat.callJitsiWithoutServer(params.path);
+		if (!host && params.fullURL) {
+			RocketChat.callJitsiWithoutServer(params.fullURL);
 			return;
 		}
 	}
