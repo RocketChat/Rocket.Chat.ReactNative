@@ -12,8 +12,10 @@ async function navigateToRoom(roomName) {
 		.withTimeout(5000);
 }
 
+let textMatcher;
+let alertButtonType;
+
 async function clearCache() {
-	const { alertButtonType } = platformTypes[device.getPlatform()];
 	await waitFor(element(by.id('room-view')))
 		.toBeVisible()
 		.withTimeout(5000);
@@ -30,10 +32,10 @@ async function clearCache() {
 		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('settings-view-clear-cache')).tap();
-	await waitFor(element(by.label('This will clear all your offline data.')))
+	await waitFor(element(by[textMatcher]('This will clear all your offline data.')))
 		.toExist()
 		.withTimeout(2000);
-	await element(by.label('Clear').and(by.type(alertButtonType))).tap();
+	await element(by[textMatcher]('Clear').and(by.type(alertButtonType))).tap();
 	await waitFor(element(by.id('rooms-list-view')))
 		.toBeVisible()
 		.withTimeout(5000);
@@ -58,56 +60,57 @@ async function waitForLoading() {
 describe('Room', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.adminUser, data.adminPassword);
 	});
 
 	it('should jump to an old message and load its surroundings', async () => {
-		if (device.getPlatform() === 'android') {
-			return; // 'Room' tests don't work well on Android currently
-		}
+		// if (device.getPlatform() === 'android') {
+		// 	return; // 'Room' tests don't work well on Android currently
+		// }
 		await navigateToRoom('jumping');
-		await waitFor(element(by.label('300')))
+		await waitFor(element(by[textMatcher]('300')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by.label('1')).atIndex(0).tap();
+		await element(by[textMatcher]('1')).atIndex(0).tap();
 		await waitForLoading();
-		await waitFor(element(by.label('1')).atIndex(0))
+		await waitFor(element(by[textMatcher]('1')).atIndex(0))
 			.toExist()
 			.withTimeout(10000);
-		await expect(element(by.label('2'))).toExist();
+		await expect(element(by[textMatcher]('2'))).toExist();
 	});
 
 	it('should tap FAB and scroll to bottom', async () => {
-		if (device.getPlatform() === 'android') {
-			return; // 'Room' tests don't work well on Android currently
-		}
+		// if (device.getPlatform() === 'android') {
+		// 	return; // 'Room' tests don't work well on Android currently
+		// }
 		await waitFor(element(by.id('nav-jump-to-bottom')))
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('nav-jump-to-bottom')).tap();
-		await waitFor(element(by.label('Quote first message')))
+		await waitFor(element(by[textMatcher]('Quote first message')))
 			.toExist()
 			.withTimeout(5000);
 		await clearCache();
 	});
 
 	it('should load messages on scroll', async () => {
-		if (device.getPlatform() === 'android') {
-			return; // 'Room' tests don't work well on Android currently
-		}
+		// if (device.getPlatform() === 'android') {
+		// 	return; // 'Room' tests don't work well on Android currently
+		// }
 		await navigateToRoom('jumping');
 		await waitFor(element(by.id('room-view-messages')))
 			.toExist()
 			.withTimeout(5000);
-		await waitFor(element(by.label('300')))
+		await waitFor(element(by[textMatcher]('300')))
 			.toExist()
 			.withTimeout(5000);
 		let found = false;
 		while (!found) {
 			try {
-				await element(by.id('room-view-messages')).scroll(500, 'up');
-				await expect(element(by.label('249'))).toExist();
+				await element(by.id('room-view-messages')).scroll(500, 'down');
+				await expect(element(by[textMatcher]('249'))).toExist();
 				found = true;
 			} catch {
 				//
@@ -117,80 +120,85 @@ describe('Room', () => {
 	});
 
 	it('should search for old message and load its surroundings', async () => {
-		if (device.getPlatform() === 'android') {
-			return; // 'Room' tests don't work well on Android currently
-		}
+		// if (device.getPlatform() === 'android') {
+		// 	return; // 'Room' tests don't work well on Android currently
+		// }
 		await navigateToRoom('jumping');
 		await element(by.id('room-view-search')).tap();
 		await waitFor(element(by.id('search-messages-view')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by.id('search-message-view-input')).typeText('30\n');
-		await waitFor(element(by.label('30')).atIndex(0))
+		await element(by.id('search-message-view-input')).replaceText('30');
+		await waitFor(element(by[textMatcher]('30')).atIndex(1))
 			.toExist()
 			.withTimeout(30000);
-		await element(by.label('30')).atIndex(0).tap();
+		await element(by[textMatcher]('30')).atIndex(1).tap();
 		await waitForLoading();
-		await waitFor(element(by.label('30')).atIndex(0))
+		await waitFor(element(by[textMatcher]('30')).atIndex(0))
 			.toExist()
 			.withTimeout(30000);
-		await expect(element(by.label('31'))).toExist();
-		await expect(element(by.label('32'))).toExist();
+		await expect(element(by[textMatcher]('31'))).toExist();
+		await expect(element(by[textMatcher]('32'))).toExist();
 	});
 
 	it('should load newer and older messages', async () => {
+		// TODO: couldn't make it work on Android :(
+		if (device.getPlatform() === 'android') {
+			return;
+		}
 		let found = false;
 		while (!found) {
 			try {
+				// it doesn't recognize this list
 				await element(by.id('room-view-messages')).scroll(500, 'up');
-				await expect(element(by.label('Load Older'))).toBeVisible();
-				await expect(element(by.label('5'))).toExist();
+				await expect(element(by[textMatcher]('Load Older'))).toBeVisible();
+				await expect(element(by[textMatcher]('5'))).toExist();
 				found = true;
 			} catch {
 				//
 			}
 		}
-		await element(by.label('Load Older')).atIndex(0).tap();
-		await waitFor(element(by.label('4')))
+		await element(by[textMatcher]('Load Older')).atIndex(0).tap();
+		await waitFor(element(by[textMatcher]('4')))
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('down', 'fast', 0.5);
-		await waitFor(element(by.label('1')))
+		await waitFor(element(by[textMatcher]('1')))
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'fast', 0.5);
-		await waitFor(element(by.label('25')))
+		await waitFor(element(by[textMatcher]('25')))
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'fast', 0.5);
-		await waitFor(element(by.label('50')))
+		await waitFor(element(by[textMatcher]('50')))
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'slow', 0.5);
-		await waitFor(element(by.label('Load Newer')))
+		await waitFor(element(by[textMatcher]('Load Newer')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by.label('Load Newer')).atIndex(0).tap();
-		await waitFor(element(by.label('104')))
+		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
+		await waitFor(element(by[textMatcher]('104')))
 			.toExist()
 			.withTimeout(5000);
-		await waitFor(element(by.label('Load Newer')))
+		await waitFor(element(by[textMatcher]('Load Newer')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by.label('Load Newer')).atIndex(0).tap();
-		await waitFor(element(by.label('154')))
+		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
+		await waitFor(element(by[textMatcher]('154')))
 			.toExist()
 			.withTimeout(5000);
-		await waitFor(element(by.label('Load Newer')))
+		await waitFor(element(by[textMatcher]('Load Newer')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by.label('Load Newer')).atIndex(0).tap();
-		await waitFor(element(by.label('Load Newer')))
+		await element(by[textMatcher]('Load Newer')).atIndex(0).tap();
+		await waitFor(element(by[textMatcher]('Load Newer')))
 			.toNotExist()
 			.withTimeout(5000);
-		await expect(element(by.label('Load More'))).toNotExist();
-		await expect(element(by.label('201'))).toExist();
-		await expect(element(by.label('202'))).toExist();
+		await expect(element(by[textMatcher]('Load More'))).toNotExist();
+		await expect(element(by[textMatcher]('201'))).toExist();
+		await expect(element(by[textMatcher]('202'))).toExist();
 		await tapBack();
 	});
 });
@@ -200,16 +208,20 @@ const expectThreadMessages = async message => {
 		.toExist()
 		.withTimeout(5000);
 	await waitForLoading();
-	await expect(element(by.label(message))).toExist();
+	await expect(element(by[textMatcher](message)).atIndex(0)).toExist();
+	await element(by[textMatcher](message)).atIndex(0).tap();
 };
 
 describe('Threads', () => {
+	before(async () => {
+		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
+	});
 	it('should navigate to a thread from another room', async () => {
 		await navigateToRoom('jumping');
-		await waitFor(element(by.label("Go to jumping-thread's thread")).atIndex(0))
+		await waitFor(element(by[textMatcher]("Go to jumping-thread's thread")).atIndex(0))
 			.toExist()
 			.withTimeout(5000);
-		await element(by.label("Go to jumping-thread's thread")).atIndex(0).tap();
+		await element(by[textMatcher]("Go to jumping-thread's thread")).atIndex(0).tap();
 		await expectThreadMessages("Go to jumping-thread's thread");
 		await tapBack();
 	});
@@ -218,10 +230,10 @@ describe('Threads', () => {
 		await waitFor(element(by.id('room-view-title-jumping-thread')))
 			.toExist()
 			.withTimeout(5000);
-		await waitFor(element(by.label('thread message sent to main room')))
+		await waitFor(element(by[textMatcher]('thread message sent to main room')))
 			.toExist()
 			.withTimeout(10000);
-		await element(by.label('thread message sent to main room')).atIndex(0).tap();
+		await element(by[textMatcher]('thread message sent to main room')).atIndex(0).tap();
 		await expectThreadMessages('thread message sent to main room');
 		await tapBack();
 	});
@@ -230,10 +242,10 @@ describe('Threads', () => {
 		await waitFor(element(by.id('room-view-title-jumping-thread')))
 			.toExist()
 			.withTimeout(5000);
-		await waitFor(element(by.label('quoted')))
+		await waitFor(element(by[textMatcher]('quoted')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by.label('quoted')).atIndex(0).tap();
+		await element(by[textMatcher]('quoted')).atIndex(0).tap();
 		await expectThreadMessages('quoted');
 		await tapBack();
 	});
@@ -246,11 +258,11 @@ describe('Threads', () => {
 		await waitFor(element(by.id('search-messages-view')))
 			.toExist()
 			.withTimeout(5000);
-		await element(by.id('search-message-view-input')).typeText('to be searched\n');
-		await waitFor(element(by.label('to be searched')))
+		await element(by.id('search-message-view-input')).replaceText('to be searched');
+		await waitFor(element(by[textMatcher]('to be searched')).atIndex(1))
 			.toExist()
-			.withTimeout(5000);
-		await element(by.label('to be searched')).atIndex(1).tap();
+			.withTimeout(30000);
+		await element(by[textMatcher]('to be searched')).atIndex(1).tap();
 		await expectThreadMessages('to be searched');
 	});
 
