@@ -5,9 +5,10 @@ const teamName = `team-${data.random}`;
 
 describe('Create team screen', () => {
 	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ alertButtonType } = platformTypes[device.getPlatform()]);
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});
@@ -48,10 +49,10 @@ describe('Create team screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('create-channel-submit')).tap();
-				await waitFor(element(by.label('OK').and(by.type(alertButtonType))))
+				await waitFor(element(by[textMatcher]('OK').and(by.type(alertButtonType))))
 					.toBeVisible()
 					.withTimeout(5000);
-				await element(by.label('OK').and(by.type(alertButtonType))).tap();
+				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 			});
 
 			it('should create private team', async () => {
@@ -92,10 +93,10 @@ describe('Create team screen', () => {
 			await element(by.id('room-info-view-edit-button')).tap();
 			await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
 			await element(by.id('room-info-edit-view-delete')).tap();
-			await waitFor(element(by.label('Yes, delete it!')))
+			await waitFor(element(by[textMatcher]('Yes, delete it!')))
 				.toExist()
 				.withTimeout(5000);
-			await element(by.label('Yes, delete it!').and(by.type(alertButtonType))).tap();
+			await element(by[textMatcher]('Yes, delete it!').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toExist()
 				.withTimeout(10000);

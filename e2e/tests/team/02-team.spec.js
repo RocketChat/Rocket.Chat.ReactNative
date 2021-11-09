@@ -17,6 +17,7 @@ async function openActionSheet(username) {
 	await sleep(300);
 	await expect(element(by.id('action-sheet'))).toExist();
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+	await element(by.id('action-sheet-handle')).swipe('up');
 }
 
 async function navigateToRoomActions() {
@@ -67,10 +68,11 @@ describe('Team', () => {
 	const room = `private${data.random}-channel-team`;
 	const existingRoom = data.groups.alternate.name;
 	let alertButtonType;
+	let textMatcher;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ alertButtonType } = platformTypes[device.getPlatform()]);
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await navigateToRoom(team);
@@ -325,22 +327,22 @@ describe('Team', () => {
 
 				await waitFor(
 					element(
-						by.label(
+						by[textMatcher](
 							'You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.'
 						)
 					)
 				)
 					.toExist()
 					.withTimeout(2000);
-				await element(by.label('OK').and(by.type(alertButtonType))).tap();
+				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 				await waitFor(element(by.id('select-list-view-submit')))
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('select-list-view-submit')).tap();
-				await waitFor(element(by.label('Last owner cannot be removed')))
+				await waitFor(element(by[textMatcher]('Last owner cannot be removed')))
 					.toExist()
 					.withTimeout(8000);
-				await element(by.label('OK').and(by.type(alertButtonType))).tap();
+				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 				await tapBack();
 				await waitFor(element(by.id('room-actions-view')))
 					.toExist()
@@ -380,6 +382,9 @@ describe('Team', () => {
 				it('should remove member from team', async () => {
 					await openActionSheet('rocket.cat');
 					// await swipeTillVisible(by.id('room-actions-scrollview'), by.id('action-sheet-remove-from-team'));
+					await waitFor(element(by.id('action-sheet-remove-from-team')))
+						.toBeVisible()
+						.withTimeout(2000);
 					await element(by.id('action-sheet-remove-from-team')).tap();
 					await waitFor(element(by.id('select-list-view')))
 						.toExist()
@@ -434,14 +439,14 @@ describe('Team', () => {
 
 					await waitFor(
 						element(
-							by.label(
+							by[textMatcher](
 								'You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.'
 							)
 						)
 					)
 						.toExist()
 						.withTimeout(2000);
-					await element(by.label('OK').and(by.type(alertButtonType))).tap();
+					await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 					await waitFor(element(by.id('select-list-view-submit')))
 						.toExist()
 						.withTimeout(2000);
