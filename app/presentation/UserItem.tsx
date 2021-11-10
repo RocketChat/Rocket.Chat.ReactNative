@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export interface IUserItem {
+interface IUserItem {
 	name: string;
 	username: string;
 	onPress(): void;

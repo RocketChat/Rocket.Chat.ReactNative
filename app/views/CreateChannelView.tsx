@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { FlatList, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Switch, Text, View, SwitchProps } from 'react-native';
 import { dequal } from 'dequal';
 
 import * as List from '../containers/List';
@@ -112,12 +112,9 @@ interface ICreateChannelViewProps {
 	createPrivateChannelPermission: string[];
 }
 
-interface ISwitch {
+interface ISwitch extends SwitchProps {
 	id: string;
-	value: boolean;
 	label: string;
-	onValueChange(value: boolean): void;
-	disabled?: boolean;
 }
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
