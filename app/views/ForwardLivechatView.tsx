@@ -66,8 +66,9 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 		try {
 			const result = await RocketChat.getDepartments();
 			if (result.success) {
-				const deps = result.departments as ILivechatDepartment[];
-				setDepartments(deps.map<IParsedData>(department => ({ label: department.name, value: department._id })));
+				setDepartments(
+					result.departments.map((department: ILivechatDepartment) => ({ label: department.name, value: department._id }))
+				);
 			}
 		} catch {
 			// do nothing
@@ -83,8 +84,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 				term
 			});
 			if (result.success) {
-				const usersItems = result.items as IUser[];
-				const parsedUsers = usersItems.map<IParsedData>(user => ({ label: user.username, value: user._id }));
+				const parsedUsers = result.items.map((user: IUser) => ({ label: user.username, value: user._id }));
 				setUsers(parsedUsers);
 				return parsedUsers;
 			}
