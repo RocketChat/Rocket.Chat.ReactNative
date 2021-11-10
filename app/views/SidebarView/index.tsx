@@ -23,6 +23,7 @@ interface ISeparatorProps {
 	theme: string;
 }
 
+// TODO: remove this
 const Separator = React.memo(({ theme }: ISeparatorProps) => (
 	<View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />
 ));
@@ -138,10 +139,12 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		let isAdmin = false;
 
 		if (roles) {
-			// Creating a new array with booleans values, than the every check if it is a truthy array
-			isAdmin = allPermissions
-				.map(permission => (permission ? permission.some(r => roles.indexOf(r) !== -1) : false))
-				.every(Boolean);
+			isAdmin = allPermissions.reduce((result: boolean, permission) => {
+				if (permission) {
+					return result || permission.some(r => roles.indexOf(r) !== -1);
+				}
+				return result;
+			}, false);
 		}
 		return isAdmin;
 	}
