@@ -4,6 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -40,7 +41,7 @@ interface IUser {
 	_id: string;
 }
 
-interface IParsedUser {
+interface IParsedData {
 	label: string;
 	value: string;
 }
@@ -53,9 +54,9 @@ interface IForwardLivechatViewProps {
 }
 
 const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForwardLivechatViewProps) => {
-	const [departments, setDepartments] = useState([]);
-	const [departmentId, setDepartment] = useState();
-	const [users, setUsers] = useState([] as IParsedUser[]);
+	const [departments, setDepartments] = useState<IParsedData[]>([]);
+	const [departmentId, setDepartment] = useState('');
+	const [users, setUsers] = useState<IParsedData[]>([]);
 	const [userId, setUser] = useState();
 	const [room, setRoom] = useState<IRoom>({});
 
@@ -65,9 +66,8 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 		try {
 			const result = await RocketChat.getDepartments();
 			if (result.success) {
-				setDepartments(
-					result.departments.map((department: ILivechatDepartment) => ({ label: department.name, value: department._id }))
-				);
+				const deps = result.departments as ILivechatDepartment[];
+				setDepartments(deps.map<IParsedData>(department => ({ label: department.name, value: department._id })));
 			}
 		} catch {
 			// do nothing
@@ -83,7 +83,8 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 				term
 			});
 			if (result.success) {
-				const parsedUsers = result.items.map((user: IUser) => ({ label: user.username, value: user._id } as IParsedUser));
+				const usersItems = result.items as IUser[];
+				const parsedUsers = usersItems.map<IParsedData>(user => ({ label: user.username, value: user._id }));
 				setUsers(parsedUsers);
 				return parsedUsers;
 			}
@@ -128,7 +129,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 	}, []);
 
 	useEffect(() => {
-		if (room) {
+		if (!isEmpty(room)) {
 			getUsers();
 			getDepartments();
 		}
