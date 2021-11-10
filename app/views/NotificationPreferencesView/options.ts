@@ -1,4 +1,18 @@
-export const OPTIONS = {
+interface IOptionsField {
+	label: string;
+	value: string | number;
+	second?: number;
+}
+export interface INotificationOptions {
+	[desktopNotifications: string]: IOptionsField[];
+	audioNotifications: IOptionsField[];
+	mobilePushNotifications: IOptionsField[];
+	emailNotifications: IOptionsField[];
+	desktopNotificationDuration: IOptionsField[];
+	audioNotificationValue: IOptionsField[];
+}
+
+export const OPTIONS: INotificationOptions = {
 	desktopNotifications: [
 		{
 			label: 'Default',
