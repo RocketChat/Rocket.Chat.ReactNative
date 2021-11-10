@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { DrawerNavigationState } from '@react-navigation/native';
 import { ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
@@ -18,38 +19,52 @@ import Navigation from '../../lib/Navigation';
 import SidebarItem from './SidebarItem';
 import styles from './styles';
 
-const Separator = React.memo(({ theme }) => <View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />);
-Separator.propTypes = {
-	theme: PropTypes.string
-};
+interface ISeparatorProps {
+	theme: string;
+}
 
-class Sidebar extends Component {
-	static propTypes = {
-		baseUrl: PropTypes.string,
-		navigation: PropTypes.object,
-		Site_Name: PropTypes.string.isRequired,
-		user: PropTypes.object,
-		state: PropTypes.string,
-		theme: PropTypes.string,
-		loadingServer: PropTypes.bool,
-		useRealName: PropTypes.bool,
-		allowStatusMessage: PropTypes.bool,
-		isMasterDetail: PropTypes.bool,
-		viewStatisticsPermission: PropTypes.object,
-		viewRoomAdministrationPermission: PropTypes.object,
-		viewUserAdministrationPermission: PropTypes.object,
-		viewPrivilegedSettingPermission: PropTypes.object
+// TODO: remove this
+const Separator = React.memo(({ theme }: ISeparatorProps) => (
+	<View style={[styles.separator, { borderColor: themes[theme].separatorColor }]} />
+));
+
+interface ISidebarState {
+	showStatus: boolean;
+}
+
+interface ISidebarProps {
+	baseUrl: string;
+	navigation: DrawerNavigationProp<any, 'Sidebar'>;
+	state: DrawerNavigationState<any>;
+	Site_Name: string;
+	user: {
+		statusText: string;
+		status: string;
+		username: string;
+		name: string;
+		roles: string[];
 	};
+	theme: string;
+	loadingServer: boolean;
+	useRealName: boolean;
+	allowStatusMessage: boolean;
+	isMasterDetail: boolean;
+	viewStatisticsPermission: string[];
+	viewRoomAdministrationPermission: string[];
+	viewUserAdministrationPermission: string[];
+	viewPrivilegedSettingPermission: string[];
+}
 
-	constructor(props) {
+class Sidebar extends Component<ISidebarProps, ISidebarState> {
+	constructor(props: ISidebarProps) {
 		super(props);
 		this.state = {
 			showStatus: false
 		};
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		const { showStatus, isAdmin } = this.state;
+	shouldComponentUpdate(nextProps: ISidebarProps, nextState: ISidebarState) {
+		const { showStatus } = this.state;
 		const {
 			Site_Name,
 			user,
@@ -91,9 +106,6 @@ class Sidebar extends Component {
 		if (nextProps.useRealName !== useRealName) {
 			return true;
 		}
-		if (nextState.isAdmin !== isAdmin) {
-			return true;
-		}
 		if (!dequal(nextProps.viewStatisticsPermission, viewStatisticsPermission)) {
 			return true;
 		}
@@ -127,7 +139,7 @@ class Sidebar extends Component {
 		let isAdmin = false;
 
 		if (roles) {
-			isAdmin = allPermissions.reduce((result, permission) => {
+			isAdmin = allPermissions.reduce((result: boolean, permission) => {
 				if (permission) {
 					return result || permission.some(r => roles.indexOf(r) !== -1);
 				}
@@ -137,7 +149,8 @@ class Sidebar extends Component {
 		return isAdmin;
 	}
 
-	sidebarNavigate = route => {
+	sidebarNavigate = (route: string) => {
+		// @ts-ignore
 		logEvent(events[`SIDEBAR_GO_${route.replace('StackNavigator', '').replace('View', '').toUpperCase()}`]);
 		Navigation.navigate(route);
 	};
@@ -242,7 +255,7 @@ class Sidebar extends Component {
 					]}
 					{...scrollPersistTaps}>
 					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
-						<View style={styles.header} theme={theme}>
+						<View style={styles.header}>
 							<Avatar text={user.username} style={styles.avatar} size={30} />
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
@@ -278,7 +291,7 @@ class Sidebar extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	Site_Name: state.settings.Site_Name,
 	user: getUserSelector(state),
 	baseUrl: state.server.server,
