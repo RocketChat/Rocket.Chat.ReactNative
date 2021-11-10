@@ -16,7 +16,7 @@ export interface IAvatar {
 	onPress(): void;
 	getCustomEmoji(): any;
 	avatarETag: string;
-	isStatic: boolean;
+	isStatic: boolean | string;
 	rid: string;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
