@@ -1,8 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { TextInputProps, View } from 'react-native';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
+import { Dispatch } from 'redux';
 
 import {
 	inviteLinksCreate as inviteLinksCreateAction,
@@ -65,25 +67,29 @@ const OPTIONS = {
 	]
 };
 
-class InviteUsersView extends React.Component {
-	static navigationOptions = () => ({
+interface IInviteUsersEditView {
+	navigation: StackNavigationProp<any, 'InviteUsersEditView'>;
+	route: RouteProp<{ InviteUsersEditView: { rid: string } }, 'InviteUsersEditView'>;
+	theme: string;
+	createInviteLink(rid: string): void;
+	inviteLinksSetParams(params: { [key: string]: number }): void;
+	days: number;
+	maxUses: number;
+}
+
+class InviteUsersView extends React.Component<IInviteUsersEditView, any> {
+	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Invite_users')
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		theme: PropTypes.string,
-		createInviteLink: PropTypes.func,
-		inviteLinksSetParams: PropTypes.func
-	};
+	private rid: string;
 
-	constructor(props) {
+	constructor(props: IInviteUsersEditView) {
 		super(props);
 		this.rid = props.route.params?.rid;
 	}
 
-	onValueChangePicker = (key, value) => {
+	onValueChangePicker = (key: string, value: number) => {
 		logEvent(events.IU_EDIT_SET_LINK_PARAM);
 		const { inviteLinksSetParams } = this.props;
 		const params = {
@@ -99,9 +105,10 @@ class InviteUsersView extends React.Component {
 		navigation.pop();
 	};
 
-	renderPicker = (key, first) => {
+	renderPicker = (key: 'days' | 'maxUses', first: string) => {
 		const { props } = this;
 		const { theme } = props;
+		const textInputStyle: TextInputProps = { style: { ...styles.pickerText, color: themes[theme].actionTintColor } };
 		const firstEl = [
 			{
 				label: I18n.t(first),
@@ -112,7 +119,7 @@ class InviteUsersView extends React.Component {
 			<RNPickerSelect
 				style={{ viewContainer: styles.viewContainer }}
 				value={props[key]}
-				textInputProps={{ style: { ...styles.pickerText, color: themes[theme].actionTintColor } }}
+				textInputProps={textInputStyle}
 				useNativeAndroidPickerStyle={false}
 				placeholder={{}}
 				onValueChange={value => this.onValueChangePicker(key, value)}
@@ -143,14 +150,14 @@ class InviteUsersView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	days: state.inviteLinks.days,
 	maxUses: state.inviteLinks.maxUses
 });
 
-const mapDispatchToProps = dispatch => ({
-	inviteLinksSetParams: params => dispatch(inviteLinksSetParamsAction(params)),
-	createInviteLink: rid => dispatch(inviteLinksCreateAction(rid))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	inviteLinksSetParams: (params: object) => dispatch(inviteLinksSetParamsAction(params)),
+	createInviteLink: (rid: string) => dispatch(inviteLinksCreateAction(rid))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(InviteUsersView));
