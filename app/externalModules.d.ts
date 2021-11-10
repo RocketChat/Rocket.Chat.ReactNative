@@ -10,3 +10,4 @@ declare module '@rocket.chat/sdk';
 declare module 'react-native-config-reader';
 declare module 'react-native-keycommands';
 declare module 'react-native-restart';
+declare module 'react-native-prompt-android';
