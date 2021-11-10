@@ -1,13 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Keyboard, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import prompt from 'react-native-prompt-android';
-import SHA256 from 'js-sha256';
-import ImagePicker from 'react-native-image-crop-picker';
+import { sha256 } from 'js-sha256';
+import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { dequal } from 'dequal';
 import omit from 'lodash/omit';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 import Touch from '../../utils/touch';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -31,43 +31,40 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
+import { IAvatar, IAvatarButton, INavigationOptions, IParams, IProfileViewProps, IProfileViewState, IUser } from './interfaces';
 
-class ProfileView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => {
-		const options = {
+class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> {
+	private name: any;
+	private username: any;
+	private email: any;
+	private avatarUrl: any;
+	private newPassword: any;
+
+	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOptions) => {
+		const options: StackNavigationOptions = {
 			title: I18n.t('Profile')
 		};
 		if (!isMasterDetail) {
 			options.headerLeft = () => <HeaderButton.Drawer navigation={navigation} />;
 		}
 		options.headerRight = () => (
-			<HeaderButton.Preferences onPress={() => navigation.navigate('UserPreferencesView')} testID='preferences-view-open' />
+			<HeaderButton.Preferences onPress={() => navigation?.navigate('UserPreferencesView')} testID='preferences-view-open' />
 		);
 		return options;
 	};
 
-	static propTypes = {
-		baseUrl: PropTypes.string,
-		user: PropTypes.object,
-		Accounts_AllowEmailChange: PropTypes.bool,
-		Accounts_AllowPasswordChange: PropTypes.bool,
-		Accounts_AllowRealNameChange: PropTypes.bool,
-		Accounts_AllowUserAvatarChange: PropTypes.bool,
-		Accounts_AllowUsernameChange: PropTypes.bool,
-		Accounts_CustomFields: PropTypes.string,
-		setUser: PropTypes.func,
-		theme: PropTypes.string
-	};
-
-	state = {
+	state: IProfileViewState = {
 		saving: false,
-		name: null,
-		username: null,
-		email: null,
-		newPassword: null,
-		currentPassword: null,
-		avatarUrl: null,
-		avatar: {},
+		name: '',
+		username: '',
+		email: '',
+		newPassword: '',
+		currentPassword: '',
+		avatarUrl: '',
+		avatar: {
+			data: {},
+			url: ''
+		},
 		avatarSuggestions: {},
 		customFields: {}
 	};
@@ -83,7 +80,7 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps: IProfileViewProps) {
 		const { user } = this.props;
 		/*
 		 * We need to ignore status because on Android ImagePicker
@@ -96,7 +93,7 @@ class ProfileView extends React.Component {
 		}
 	}
 
-	setAvatar = avatar => {
+	setAvatar = (avatar: IAvatar) => {
 		const { Accounts_AllowUserAvatarChange } = this.props;
 
 		if (!Accounts_AllowUserAvatarChange) {
@@ -106,7 +103,7 @@ class ProfileView extends React.Component {
 		this.setState({ avatar });
 	};
 
-	init = user => {
+	init = (user?: IUser) => {
 		const { user: userProps } = this.props;
 		const { name, username, emails, customFields } = user || userProps;
 
@@ -117,7 +114,10 @@ class ProfileView extends React.Component {
 			newPassword: null,
 			currentPassword: null,
 			avatarUrl: null,
-			avatar: {},
+			avatar: {
+				data: {},
+				url: ''
+			},
 			customFields: customFields || {}
 		});
 	};
@@ -142,12 +142,12 @@ class ProfileView extends React.Component {
 			!newPassword &&
 			user.emails &&
 			user.emails[0].address === email &&
-			!avatar.data &&
+			!avatar!.data &&
 			!customFieldsChanged
 		);
 	};
 
-	handleError = (e, func, action) => {
+	handleError = (e: any, func: string, action: string) => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
 		}
@@ -165,7 +165,7 @@ class ProfileView extends React.Component {
 
 		const { name, username, email, newPassword, currentPassword, avatar, customFields } = this.state;
 		const { user, setUser } = this.props;
-		const params = {};
+		const params = {} as IParams;
 
 		// Name
 		if (user.name !== name) {
@@ -189,7 +189,7 @@ class ProfileView extends React.Component {
 
 		// currentPassword
 		if (currentPassword) {
-			params.currentPassword = SHA256(currentPassword);
+			params.currentPassword = sha256(currentPassword);
 		}
 
 		const requirePassword = !!params.email || newPassword;
@@ -202,7 +202,7 @@ class ProfileView extends React.Component {
 					{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
 					{
 						text: I18n.t('Save'),
-						onPress: p => {
+						onPress: (p: string) => {
 							this.setState({ currentPassword: p });
 							this.submit();
 						}
@@ -217,7 +217,7 @@ class ProfileView extends React.Component {
 		}
 
 		try {
-			if (avatar.url) {
+			if (avatar!.url) {
 				try {
 					logEvent(events.PROFILE_SAVE_AVATAR);
 					await RocketChat.setAvatarFromService(avatar);
@@ -283,7 +283,7 @@ class ProfileView extends React.Component {
 		};
 		try {
 			logEvent(events.PROFILE_PICK_AVATAR);
-			const response = await ImagePicker.openPicker(options);
+			const response: Image = await ImagePicker.openPicker(options);
 			this.setAvatar({ url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' });
 		} catch (error) {
 			logEvent(events.PROFILE_PICK_AVATAR_F);
@@ -291,12 +291,12 @@ class ProfileView extends React.Component {
 		}
 	};
 
-	pickImageWithURL = avatarUrl => {
+	pickImageWithURL = (avatarUrl: string) => {
 		logEvent(events.PROFILE_PICK_AVATAR_WITH_URL);
 		this.setAvatar({ url: avatarUrl, data: avatarUrl, service: 'url' });
 	};
 
-	renderAvatarButton = ({ key, child, onPress, disabled = false }) => {
+	renderAvatarButton = ({ key, child, onPress, disabled = false }: IAvatarButton) => {
 		const { theme } = this.props;
 		return (
 			<Touch
@@ -331,7 +331,7 @@ class ProfileView extends React.Component {
 				})}
 				{this.renderAvatarButton({
 					child: <CustomIcon name='link' size={30} color={themes[theme].bodyText} />,
-					onPress: () => this.pickImageWithURL(avatarUrl),
+					onPress: () => this.pickImageWithURL(avatarUrl!),
 					disabled: !avatarUrl,
 					key: 'profile-view-avatar-url-button'
 				})}
@@ -365,19 +365,20 @@ class ProfileView extends React.Component {
 			const parsedCustomFields = JSON.parse(Accounts_CustomFields);
 			return Object.keys(parsedCustomFields).map((key, index, array) => {
 				if (parsedCustomFields[key].type === 'select') {
-					const options = parsedCustomFields[key].options.map(option => ({ label: option, value: option }));
+					const options = parsedCustomFields[key].options.map((option: string) => ({ label: option, value: option }));
 					return (
 						<RNPickerSelect
 							key={key}
 							items={options}
 							onValueChange={value => {
-								const newValue = {};
+								const newValue: { [key: string]: string } = {};
 								newValue[key] = value;
 								this.setState({ customFields: { ...customFields, ...newValue } });
 							}}
 							value={customFields[key]}>
 							<RCTextInput
 								inputRef={e => {
+									// @ts-ignore
 									this[key] = e;
 								}}
 								label={key}
@@ -393,6 +394,7 @@ class ProfileView extends React.Component {
 				return (
 					<RCTextInput
 						inputRef={e => {
+							// @ts-ignore
 							this[key] = e;
 						}}
 						key={key}
@@ -400,12 +402,13 @@ class ProfileView extends React.Component {
 						placeholder={key}
 						value={customFields[key]}
 						onChangeText={value => {
-							const newValue = {};
+							const newValue: { [key: string]: string } = {};
 							newValue[key] = value;
 							this.setState({ customFields: { ...customFields, ...newValue } });
 						}}
 						onSubmitEditing={() => {
 							if (array.length - 1 > index) {
+								// @ts-ignore
 								return this[array[index + 1]].focus();
 							}
 							this.avatarUrl.focus();
@@ -421,6 +424,7 @@ class ProfileView extends React.Component {
 
 	logoutOtherLocations = () => {
 		logEvent(events.PL_OTHER_LOCATIONS);
+		// @ts-ignore
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_from_other_locations'),
 			confirmationText: I18n.t('Logout'),
@@ -469,7 +473,7 @@ class ProfileView extends React.Component {
 							label={I18n.t('Name')}
 							placeholder={I18n.t('Name')}
 							value={name}
-							onChangeText={value => this.setState({ name: value })}
+							onChangeText={(value: string) => this.setState({ name: value })}
 							onSubmitEditing={() => {
 								this.username.focus();
 							}}
@@ -500,7 +504,7 @@ class ProfileView extends React.Component {
 							}}
 							label={I18n.t('Email')}
 							placeholder={I18n.t('Email')}
-							value={email}
+							value={email!}
 							onChangeText={value => this.setState({ email: value })}
 							onSubmitEditing={() => {
 								this.newPassword.focus();
@@ -516,10 +520,11 @@ class ProfileView extends React.Component {
 							}}
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
-							value={newPassword}
+							value={newPassword!}
 							onChangeText={value => this.setState({ newPassword: value })}
 							onSubmitEditing={() => {
 								if (Accounts_CustomFields && Object.keys(customFields).length) {
+									// @ts-ignore
 									return this[Object.keys(customFields)[0]].focus();
 								}
 								this.avatarUrl.focus();
@@ -537,7 +542,7 @@ class ProfileView extends React.Component {
 							}}
 							label={I18n.t('Avatar_Url')}
 							placeholder={I18n.t('Avatar_Url')}
-							value={avatarUrl}
+							value={avatarUrl!}
 							onChangeText={value => this.setState({ avatarUrl: value })}
 							onSubmitEditing={this.submit}
 							testID='profile-view-avatar-url'
@@ -568,7 +573,7 @@ class ProfileView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state),
 	Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange,
 	Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange,
@@ -579,8 +584,8 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server
 });
 
-const mapDispatchToProps = dispatch => ({
-	setUser: params => dispatch(setUserAction(params))
+const mapDispatchToProps = (dispatch: any) => ({
+	setUser: (params: any) => dispatch(setUserAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ProfileView));
