@@ -37,7 +37,7 @@ interface IReadReceiptViewState {
 
 interface INavigationOption {
 	navigation: StackNavigationProp<any, 'ReadReceiptView'>;
-	route: RouteProp<any, 'ReadReceiptView'>;
+	route: RouteProp<{ ReadReceiptView: { messageId: string } }, 'ReadReceiptView'>;
 	isMasterDetail: boolean;
 }
 
@@ -47,7 +47,7 @@ interface IReadReceiptViewProps extends INavigationOption {
 }
 
 class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceiptViewState> {
-	private messageId: string | undefined;
+	private messageId: string;
 
 	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOption) => {
 		const options: StackNavigationOptions = {
