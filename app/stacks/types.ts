@@ -1,8 +1,9 @@
+import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
 
-import { IAttachment } from '../definition/IAttachment';
-import { IMessage } from '../definition/IMessage';
-import { IRoom, RoomType } from '../definition/IRoom';
+import { IAttachment } from '../definitions/IAttachment';
+import { IMessage } from '../definitions/IMessage';
+import { IRoom, RoomType } from '../definitions/IRoom';
 
 export type ChatsStackParamList = {
 	RoomsListView: undefined;
@@ -173,11 +174,11 @@ export type DisplayPrefStackParamList = {
 };
 
 export type DrawerParamList = {
-	ChatsStackNavigator: ChatsStackParamList;
-	ProfileStackNavigator: ProfileStackParamList;
-	SettingsStackNavigator: SettingsStackParamList;
-	AdminPanelStackNavigator: AdminPanelStackParamList;
-	DisplayPrefStackNavigator: DisplayPrefStackParamList;
+	ChatsStackNavigator: NavigatorScreenParams<ChatsStackParamList>;
+	ProfileStackNavigator: NavigatorScreenParams<ProfileStackParamList>;
+	SettingsStackNavigator: NavigatorScreenParams<SettingsStackParamList>;
+	AdminPanelStackNavigator: NavigatorScreenParams<AdminPanelStackParamList>;
+	DisplayPrefStackNavigator: NavigatorScreenParams<DisplayPrefStackParamList>;
 };
 
 export type NewMessageStackParamList = {
@@ -212,10 +213,10 @@ export type E2EEnterYourPasswordStackParamList = {
 };
 
 export type InsideStackParamList = {
-	DrawerNavigator: DrawerParamList;
-	NewMessageStackNavigator: NewMessageStackParamList;
-	E2ESaveYourPasswordStackNavigator: E2ESaveYourPasswordStackParamList;
-	E2EEnterYourPasswordStackNavigator: E2EEnterYourPasswordStackParamList;
+	DrawerNavigator: NavigatorScreenParams<DrawerParamList>;
+	NewMessageStackNavigator: NavigatorScreenParams<NewMessageStackParamList>;
+	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
+	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
 	AttachmentView: {
 		attachment: IAttachment;
 	};
@@ -235,5 +236,24 @@ export type InsideStackParamList = {
 		rid: string;
 		url: string;
 		onlyAudio?: boolean;
+	};
+};
+
+export type OutsideParamList = {
+	NewServerView: undefined;
+	WorkspaceView: {};
+	LoginView: {};
+	ForgotPasswordView: {};
+	SendEmailConfirmationView: {};
+	RegisterView: {};
+	LegalView: {};
+};
+
+export type OutsideModalParamList = {
+	OutsideStack: NavigatorScreenParams<OutsideParamList>;
+	AuthenticationWebView: {
+		authType: string;
+		url: string;
+		ssoToken?: string;
 	};
 };

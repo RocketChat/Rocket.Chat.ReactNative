@@ -24,7 +24,7 @@ import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
 import EventEmitter from '../utils/events';
 import { updatePermission } from '../actions/permissions';
-import { TEAM_TYPE } from '../definition/ITeam';
+import { TEAM_TYPE } from '../definitions/ITeam';
 import { updateSettings } from '../actions/settings';
 import { compareServerVersion, methods } from './utils';
 import reduxStore from './createStore';
