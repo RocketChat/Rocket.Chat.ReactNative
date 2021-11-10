@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, Switch, Text } from 'react-native';
-import PropTypes from 'prop-types';
+import { RouteProp } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
+import Model from '@nozbe/watermelondb/Model';
+import { Observable, Subscription } from 'rxjs';
 
 import database from '../../lib/database';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
@@ -22,18 +25,31 @@ const styles = StyleSheet.create({
 	}
 });
 
-class NotificationPreferencesView extends React.Component {
+interface INotificationPreferencesView {
+	navigation: StackNavigationProp<any, 'NotificationPreferencesView'>;
+	route: RouteProp<
+		{
+			NotificationPreferencesView: {
+				rid: string;
+				room: Model;
+			};
+		},
+		'NotificationPreferencesView'
+	>;
+	theme: string;
+}
+
+class NotificationPreferencesView extends React.Component<INotificationPreferencesView, any> {
 	static navigationOptions = () => ({
 		title: I18n.t('Notification_Preferences')
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		theme: PropTypes.string
-	};
+	private mounted: boolean;
+	private rid: string | undefined;
+	private roomObservable?: Observable<Model>;
+	private subscription?: Subscription;
 
-	constructor(props) {
+	constructor(props: INotificationPreferencesView) {
 		super(props);
 		this.mounted = false;
 		this.rid = props.route.params?.rid;
@@ -43,10 +59,11 @@ class NotificationPreferencesView extends React.Component {
 		};
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable.subscribe(changes => {
+			this.subscription = this.roomObservable.subscribe((changes: any) => {
 				if (this.mounted) {
 					this.setState({ room: changes });
 				} else {
+					// @ts-ignore
 					this.state.room = changes;
 				}
 			});
@@ -63,7 +80,8 @@ class NotificationPreferencesView extends React.Component {
 		}
 	}
 
-	saveNotificationSettings = async (key, value, params) => {
+	saveNotificationSettings = async (key: string, value: string | boolean, params: any) => {
+		// @ts-ignore
 		logEvent(events[`NP_${key.toUpperCase()}`]);
 		const { room } = this.state;
 		const db = database.active;
@@ -71,7 +89,7 @@ class NotificationPreferencesView extends React.Component {
 		try {
 			await db.action(async () => {
 				await room.update(
-					protectedFunction(r => {
+					protectedFunction((r: any) => {
 						r[key] = value;
 					})
 				);
@@ -88,36 +106,38 @@ class NotificationPreferencesView extends React.Component {
 
 			await db.action(async () => {
 				await room.update(
-					protectedFunction(r => {
+					protectedFunction((r: any) => {
 						r[key] = room[key];
 					})
 				);
 			});
 		} catch (e) {
+			// @ts-ignore
 			logEvent(events[`NP_${key.toUpperCase()}_F`]);
 			log(e);
 		}
 	};
 
-	onValueChangeSwitch = (key, value) => this.saveNotificationSettings(key, value, { [key]: value ? '1' : '0' });
+	onValueChangeSwitch = (key: string, value: string | boolean) =>
+		this.saveNotificationSettings(key, value, { [key]: value ? '1' : '0' });
 
-	onValueChangePicker = (key, value) => this.saveNotificationSettings(key, value, { [key]: value.toString() });
+	onValueChangePicker = (key: string, value: string) => this.saveNotificationSettings(key, value, { [key]: value.toString() });
 
-	pickerSelection = (title, key) => {
+	pickerSelection = (title: string, key: string) => {
 		const { room } = this.state;
 		const { navigation } = this.props;
 		navigation.navigate('PickerView', {
 			title,
 			data: OPTIONS[key],
 			value: room[key],
-			onChangeValue: value => this.onValueChangePicker(key, value)
+			onChangeValue: (value: string) => this.onValueChangePicker(key, value)
 		});
 	};
 
-	renderPickerOption = key => {
+	renderPickerOption = (key: string) => {
 		const { room } = this.state;
 		const { theme } = this.props;
-		const text = room[key] ? OPTIONS[key].find(option => option.value === room[key]) : OPTIONS[key][0];
+		const text = room[key] ? OPTIONS[key].find((option: any) => option.value === room[key]) : OPTIONS[key][0];
 		return (
 			<Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>
 				{I18n.t(text?.label, { defaultValue: text?.label, second: text?.second })}
@@ -125,7 +145,7 @@ class NotificationPreferencesView extends React.Component {
 		);
 	};
 
-	renderSwitch = key => {
+	renderSwitch = (key: string) => {
 		const { room } = this.state;
 		return (
 			<Switch
@@ -181,7 +201,7 @@ class NotificationPreferencesView extends React.Component {
 						<List.Item
 							title='Alert'
 							testID='notification-preference-view-alert'
-							onPress={title => this.pickerSelection(title, 'desktopNotifications')}
+							onPress={(title: string) => this.pickerSelection(title, 'desktopNotifications')}
 							right={() => this.renderPickerOption('desktopNotifications')}
 						/>
 						<List.Separator />
@@ -193,7 +213,7 @@ class NotificationPreferencesView extends React.Component {
 						<List.Item
 							title='Alert'
 							testID='notification-preference-view-push-notification'
-							onPress={title => this.pickerSelection(title, 'mobilePushNotifications')}
+							onPress={(title: string) => this.pickerSelection(title, 'mobilePushNotifications')}
 							right={() => this.renderPickerOption('mobilePushNotifications')}
 						/>
 						<List.Separator />
@@ -205,21 +225,21 @@ class NotificationPreferencesView extends React.Component {
 						<List.Item
 							title='Audio'
 							testID='notification-preference-view-audio'
-							onPress={title => this.pickerSelection(title, 'audioNotifications')}
+							onPress={(title: string) => this.pickerSelection(title, 'audioNotifications')}
 							right={() => this.renderPickerOption('audioNotifications')}
 						/>
 						<List.Separator />
 						<List.Item
 							title='Sound'
 							testID='notification-preference-view-sound'
-							onPress={title => this.pickerSelection(title, 'audioNotificationValue')}
+							onPress={(title: string) => this.pickerSelection(title, 'audioNotificationValue')}
 							right={() => this.renderPickerOption('audioNotificationValue')}
 						/>
 						<List.Separator />
 						<List.Item
 							title='Notification_Duration'
 							testID='notification-preference-view-notification-duration'
-							onPress={title => this.pickerSelection(title, 'desktopNotificationDuration')}
+							onPress={(title: string) => this.pickerSelection(title, 'desktopNotificationDuration')}
 							right={() => this.renderPickerOption('desktopNotificationDuration')}
 						/>
 						<List.Separator />
@@ -230,7 +250,7 @@ class NotificationPreferencesView extends React.Component {
 						<List.Item
 							title='Alert'
 							testID='notification-preference-view-email-alert'
-							onPress={title => this.pickerSelection(title, 'emailNotifications')}
+							onPress={(title: string) => this.pickerSelection(title, 'emailNotifications')}
 							right={() => this.renderPickerOption('emailNotifications')}
 						/>
 						<List.Separator />
