@@ -71,6 +71,7 @@ export interface IServer extends Model {
 	url: string;
 	username: string;
 }
+
 interface INewServerView {
 	navigation: StackNavigationProp<any, 'NewServerView'>;
 	theme: string;
@@ -89,6 +90,11 @@ interface IState {
 	connectingOpen: boolean;
 	certificate: any;
 	serversHistory: IServer[];
+}
+
+interface ISubmitParams {
+	fromServerHistory?: boolean;
+	username?: string;
 }
 
 class NewServerView extends React.Component<INewServerView, IState> {
@@ -184,10 +190,10 @@ class NewServerView extends React.Component<INewServerView, IState> {
 	};
 
 	onPressServerHistory = (serverHistory: IServer) => {
-		this.setState({ text: serverHistory.url }, () => this.submit(true, serverHistory?.username));
+		this.setState({ text: serverHistory.url }, () => this.submit({ fromServerHistory: true, username: serverHistory?.username }));
 	};
 
-	submit = async (fromServerHistory?: boolean, username?: string) => {
+	submit = async ({ fromServerHistory = false, username }: ISubmitParams = {}) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { connectServer } = this.props;
