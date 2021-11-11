@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import RNRestart from 'react-native-restart';
+import { Dispatch } from 'redux';
 
 import RocketChat from '../../lib/rocketchat';
 import I18n, { LANGUAGES, isRTL } from '../../i18n';
@@ -18,26 +18,33 @@ import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
 import SafeAreaView from '../../containers/SafeAreaView';
 
-class LanguageView extends React.Component {
+interface ILanguageViewProps {
+	user: {
+		id: string;
+		language: string;
+	};
+	setUser(user: object): void;
+	appStart(params: any): void;
+	theme: string;
+}
+
+interface ILanguageViewState {
+	language: string;
+}
+
+class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewState> {
 	static navigationOptions = () => ({
 		title: I18n.t('Change_Language')
 	});
 
-	static propTypes = {
-		user: PropTypes.object,
-		setUser: PropTypes.func,
-		appStart: PropTypes.func,
-		theme: PropTypes.string
-	};
-
-	constructor(props) {
+	constructor(props: ILanguageViewProps) {
 		super(props);
 		this.state = {
 			language: props.user ? props.user.language : 'en'
 		};
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: ILanguageViewProps, nextState: ILanguageViewState) {
 		const { language } = this.state;
 		const { user, theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -52,12 +59,12 @@ class LanguageView extends React.Component {
 		return false;
 	}
 
-	formIsChanged = language => {
+	formIsChanged = (language: string) => {
 		const { user } = this.props;
 		return user.language !== language;
 	};
 
-	submit = async language => {
+	submit = async (language: string) => {
 		if (!this.formIsChanged(language)) {
 			return;
 		}
@@ -78,11 +85,11 @@ class LanguageView extends React.Component {
 		}
 	};
 
-	changeLanguage = async language => {
+	changeLanguage = async (language: string) => {
 		logEvent(events.LANG_SET_LANGUAGE);
 		const { user, setUser } = this.props;
 
-		const params = {};
+		const params: { language?: string } = {};
 
 		// language
 		if (user.language !== language) {
@@ -95,10 +102,10 @@ class LanguageView extends React.Component {
 
 			const serversDB = database.servers;
 			const usersCollection = serversDB.get('users');
-			await serversDB.action(async () => {
+			await serversDB.write(async () => {
 				try {
 					const userRecord = await usersCollection.find(user.id);
-					await userRecord.update(record => {
+					await userRecord.update((record: any) => {
 						record.language = params.language;
 					});
 				} catch (e) {
@@ -117,7 +124,7 @@ class LanguageView extends React.Component {
 		return <List.Icon name='check' color={themes[theme].tintColor} />;
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: { value: string; label: string } }) => {
 		const { value, label } = item;
 		const { language } = this.state;
 		const isSelected = language === value;
@@ -151,13 +158,13 @@ class LanguageView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state)
 });
 
-const mapDispatchToProps = dispatch => ({
-	setUser: params => dispatch(setUserAction(params)),
-	appStart: params => dispatch(appStartAction(params))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	setUser: (params: any) => dispatch(setUserAction(params)),
+	appStart: (params: any) => dispatch(appStartAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LanguageView));
