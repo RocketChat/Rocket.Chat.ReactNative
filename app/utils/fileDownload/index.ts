@@ -13,12 +13,7 @@ interface IAttachment {
 	description: string;
 }
 
-export const getExtensionType = (text: string): string | undefined => text.split('.').pop();
-
-export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => {
-	const fileName = attachment.title.split('.')[0];
-	return `${localPath}${fileName}.${getExtensionType(attachment.title_link)}`;
-};
+export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => `${localPath}${attachment.title}`;
 
 export const fileDownload = (url: string, attachment: IAttachment): Promise<FetchBlobResponse> => {
 	const path = getLocalFilePathFromFile(DOWNLOAD_PATH, attachment);
