@@ -1,7 +1,7 @@
 const data = require('../../data');
 const { sleep, navigateToLogin, login, checkServer, platformTypes } = require('../../helpers/app');
 
-describe.skip('Delete server', () => {
+describe('Delete server', () => {
 	let alertButtonType;
 	let textMatcher;
 	before(async () => {

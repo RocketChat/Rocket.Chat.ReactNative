@@ -7,7 +7,7 @@ async function waitForToast() {
 	await sleep(300);
 }
 
-describe.skip('Status screen', () => {
+describe('Status screen', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
@@ -45,6 +45,7 @@ describe.skip('Status screen', () => {
 				.withTimeout(2000);
 		});
 
+		// TODO: flaky
 		it('should change status text', async () => {
 			await element(by.id('status-view-input')).replaceText('status-text-new');
 			await element(by.id('status-view-submit')).tap();

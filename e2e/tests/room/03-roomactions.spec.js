@@ -507,7 +507,7 @@ describe('Room actions screen', () => {
 				it('should remove user from room', async () => {
 					await openActionSheet('rocket.cat');
 					await waitFor(element(by[textMatcher]('Remove from room')))
-						.toBeVisible()
+						.toExist()
 						.withTimeout(2000);
 					await element(by[textMatcher]('Remove from room')).atIndex(0).tap();
 					await waitFor(element(by[textMatcher]('Are you sure?')))

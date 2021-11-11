@@ -13,13 +13,13 @@ async function navigateToRoom() {
 }
 
 async function navigateToRoomActions() {
-	await element(by.id('room-header')).tap();
+	await element(by.id(`room-view-title-${room}`)).tap();
 	await waitFor(element(by.id('room-actions-view')))
 		.toBeVisible()
 		.withTimeout(5000);
 }
 
-describe.skip('Join public room', () => {
+describe('Join public room', () => {
 	let alertButtonType;
 	let textMatcher;
 	before(async () => {
@@ -87,7 +87,9 @@ describe.skip('Join public room', () => {
 			// });
 
 			it('should have members', async () => {
-				await expect(element(by.id('room-actions-members'))).toBeVisible();
+				await waitFor(element(by.id('room-actions-members')))
+					.toBeVisible()
+					.withTimeout(2000);
 			});
 
 			it('should have files', async () => {
@@ -173,7 +175,7 @@ describe.skip('Join public room', () => {
 				.withTimeout(10000);
 			await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 				.toBeNotVisible()
-				.withTimeout(60000); // TODO: Check if this is resolved on Android
+				.withTimeout(60000); // flaky on Android
 		});
 	});
 });

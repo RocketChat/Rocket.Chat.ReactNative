@@ -4,7 +4,7 @@ const data = require('../../data');
 
 const testuser = data.users.regular;
 
-describe.skip('Settings screen', () => {
+describe('Settings screen', () => {
 	let alertButtonType;
 	let textMatcher;
 	before(async () => {

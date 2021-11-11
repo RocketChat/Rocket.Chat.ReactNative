@@ -275,7 +275,8 @@ describe.skip('E2E Encryption', () => {
 					.withTimeout(2000);
 			});
 			it('should reset e2e key', async () => {
-				// too flaky on Android for now... let's fix it later
+				// FIXME: too flaky on Android for now... let's fix it later
+				// It's also flaky on iOS, but it works from time to time
 				if (device.getPlatform() === 'android') {
 					return;
 				}
@@ -294,7 +295,7 @@ describe.skip('E2E Encryption', () => {
 
 				await waitFor(element(by[textMatcher]("You've been logged out by the server. Please log in again.")))
 					.toExist()
-					.withTimeout(2000);
+					.withTimeout(20000);
 				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 				await waitFor(element(by.id('workspace-view')))
 					.toBeVisible()

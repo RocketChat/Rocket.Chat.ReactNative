@@ -152,7 +152,7 @@ describe('Move/Convert Team', () => {
 			await waitFor(element(by[textMatcher]('Convert to Channel')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by[textMatcher]('Convert to Channel')).tap();
+			await element(by[textMatcher]('Convert to Channel')).atIndex(0).tap();
 			await waitFor(element(by[textMatcher]('Converting Team to Channel')))
 				.toExist()
 				.withTimeout(2000);

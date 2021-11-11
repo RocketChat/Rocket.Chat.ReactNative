@@ -109,7 +109,8 @@ describe('Room', () => {
 		let found = false;
 		while (!found) {
 			try {
-				await element(by.id('room-view-messages')).scroll(500, 'down');
+				const direction = device.getPlatform() === 'android' ? 'down' : 'up';
+				await element(by.id('room-view-messages')).scroll(500, direction);
 				await expect(element(by[textMatcher]('249'))).toExist();
 				found = true;
 			} catch {
@@ -124,6 +125,7 @@ describe('Room', () => {
 		// 	return; // 'Room' tests don't work well on Android currently
 		// }
 		await navigateToRoom('jumping');
+		await sleep(1000); // wait for proper load the room
 		await element(by.id('room-view-search')).tap();
 		await waitFor(element(by.id('search-messages-view')))
 			.toExist()
@@ -216,6 +218,7 @@ describe('Threads', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
 	});
+
 	it('should navigate to a thread from another room', async () => {
 		await navigateToRoom('jumping');
 		await waitFor(element(by[textMatcher]("Go to jumping-thread's thread")).atIndex(0))

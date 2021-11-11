@@ -154,12 +154,12 @@ describe('Room screen', () => {
 				if (device.getPlatform() === 'ios') {
 					await element(by.id('messagebox-input')).typeText(message);
 					await element(by.id('messagebox-send-message')).tap();
-
-					await waitFor(element(by[textMatcher](fullMessage)))
+					const fullMessageMatcher = fullMessage.substr(1); // removes `@`
+					await waitFor(element(by[textMatcher](fullMessageMatcher)))
 						.toExist()
 						.withTimeout(60000);
-					await expect(element(by[textMatcher](fullMessage))).toExist();
-					await element(by[textMatcher](fullMessage)).atIndex(0).tap();
+					await expect(element(by[textMatcher](fullMessageMatcher))).toExist();
+					await element(by[textMatcher](fullMessageMatcher)).atIndex(0).tap();
 				} else {
 					await element(by.id('messagebox-input')).replaceText(fullMessage);
 					await element(by.id('messagebox-send-message')).tap();

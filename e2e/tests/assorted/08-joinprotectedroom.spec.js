@@ -1,5 +1,5 @@
 const data = require('../../data');
-const { navigateToLogin, login, mockMessage, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, searchRoom, sleep } = require('../../helpers/app');
 
 const testuser = data.users.regular;
 const room = data.channels.detoxpublicprotected.name;
@@ -14,13 +14,23 @@ async function navigateToRoom() {
 }
 
 async function openJoinCode() {
-	await element(by.id('room-view-join-button')).tap();
-	await waitFor(element(by.id('join-code')))
-		.toBeVisible()
-		.withTimeout(5000);
+	await waitFor(element(by.id('room-view-join-button')))
+		.toExist()
+		.withTimeout(2000);
+	let n = 0;
+	while (n < 3) {
+		try {
+			await element(by.id('room-view-join-button')).tap();
+			await waitFor(element(by.id('join-code')))
+				.toBeVisible()
+				.withTimeout(500);
+		} catch (error) {
+			n += 1;
+		}
+	}
 }
 
-describe.skip('Join protected room', () => {
+describe('Join protected room', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();

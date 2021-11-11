@@ -12,7 +12,7 @@ const getDeepLink = (method, server, params) => {
 	return deeplink;
 };
 
-describe.skip('Deep linking', () => {
+describe('Deep linking', () => {
 	let userId;
 	let authToken;
 	let scrollViewType;
@@ -64,7 +64,7 @@ describe.skip('Deep linking', () => {
 				.withTimeout(10000);
 			await checkServer(data.server);
 			await waitFor(element(by.id(`rooms-list-view-item-${data.groups.private.name}`)))
-				.toBeVisible()
+				.toExist()
 				.withTimeout(2000);
 		};
 

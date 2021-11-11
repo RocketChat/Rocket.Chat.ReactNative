@@ -27,7 +27,7 @@ async function navigateToRoomInfo(type) {
 
 async function swipe(direction) {
 	// await element(by.id('room-info-edit-view-list')).scroll(500, direction);
-	await element(by.id('room-info-edit-view-list')).swipe(direction);
+	await element(by.id('room-info-edit-view-list')).swipe(direction, 'fast', 0.8);
 }
 
 async function waitForToast() {
@@ -184,8 +184,8 @@ describe('Room info screen', () => {
 				await waitFor(element(by.id('room-info-view')))
 					.toExist()
 					.withTimeout(2000);
-				// await expect(element(by.id('room-info-view-name'))).toHaveLabel(`${privateRoomName}new`);
-				await expect(element(by.id('room-info-view-name'))).toHaveText(`${privateRoomName}new`);
+				const matcher = device.getPlatform() === 'android' ? 'toHaveText' : 'toHaveLabel';
+				await expect(element(by.id('room-info-view-name')))[matcher](`${privateRoomName}new`);
 				// change name to original
 				await element(by.id('room-info-view-edit-button')).tap();
 				await waitFor(element(by.id('room-info-edit-view')))
@@ -221,7 +221,7 @@ describe('Room info screen', () => {
 				await expect(element(by.id('room-info-edit-view-announcement'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-password'))).toHaveText('');
 				// await element(by.id('room-info-edit-view-list')).swipe('down', 'fast', 0.2);
-				await swipe('down');
+				// await swipe('down');
 				await expect(element(by.id('room-info-edit-view-t'))).toHaveToggleValue(true);
 				await expect(element(by.id('room-info-edit-view-ro'))).toHaveToggleValue(false);
 				await expect(element(by.id('room-info-edit-view-react-when-ro'))).toBeNotVisible();

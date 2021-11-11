@@ -18,7 +18,7 @@ async function navigateToRoom(search) {
 		.withTimeout(5000);
 }
 
-describe.skip('Join room from directory', () => {
+describe('Join room from directory', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();

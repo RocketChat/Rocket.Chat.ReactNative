@@ -176,6 +176,9 @@ async function tapBack() {
 }
 
 async function searchRoom(room) {
+	await waitFor(element(by.id('rooms-list-view')))
+		.toBeVisible()
+		.withTimeout(30000);
 	await element(by.id('rooms-list-view-search')).tap();
 	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
 	await waitFor(element(by.id('rooms-list-view-search-input')))
