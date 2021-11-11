@@ -66,6 +66,15 @@ interface IThumbContent {
 	isShareExtension: boolean;
 }
 
+interface IThumb extends IThumbContent {
+	onPress(item: IAttachment): void;
+	onRemove(item: IAttachment): void;
+}
+
+interface IThumbs extends Omit<IThumb, 'item'> {
+	attachments: IAttachment[];
+}
+
 const ThumbContent = React.memo(({ item, theme, isShareExtension }: IThumbContent) => {
 	const type = item?.mime;
 
@@ -102,35 +111,10 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }: IThumbConten
 	return null;
 });
 
-// isIOS ? TouchableOpacity : TouchableNativeFeedback
-
-interface IThumbButton {
-	onPress(): void;
-	children: JSX.Element;
-}
-
-const ThumbButton = ({ onPress, children }: IThumbButton) => {
-	if (isIOS) {
-		return (
-			<TouchableOpacity style={styles.item} onPress={onPress} activeOpacity={0.7}>
-				{children}
-			</TouchableOpacity>
-		);
-	}
-	return (
-		<TouchableNativeFeedback style={styles.item} onPress={onPress}>
-			{children}
-		</TouchableNativeFeedback>
-	);
-};
-
-interface IThumb extends IThumbContent {
-	onPress(item: IAttachment): void;
-	onRemove(item: IAttachment): void;
-}
+const ThumbButton: typeof React.Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 
 const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => (
-	<ThumbButton onPress={() => onPress(item)}>
+	<ThumbButton style={styles.item} onPress={() => onPress(item)} activeOpacity={0.7}>
 		<>
 			<ThumbContent item={item} theme={theme} isShareExtension={isShareExtension} />
 			<RectButton
@@ -149,10 +133,6 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 		</>
 	</ThumbButton>
 );
-
-interface IThumbs extends Omit<IThumb, 'item'> {
-	attachments: IAttachment[];
-}
 
 const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {
 	if (attachments?.length > 1) {
