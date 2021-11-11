@@ -107,17 +107,13 @@ describe('Move/Convert Team', () => {
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('room-actions-move-to-team')).tap();
-			await waitFor(element(by[textMatcher]('Move to Team')))
+			await waitFor(element(by[textMatcher]('Move to Team')).atIndex(0))
 				.toExist()
 				.withTimeout(2000);
 			await waitFor(element(by.id('select-list-view-submit')))
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('select-list-view-submit')).tap();
-			// await sleep(2000);
-			// await waitFor(element(by.id('select-list-view')))
-			// 	.toExist()
-			// 	.withTimeout(2000);
 			await waitFor(element(by[textMatcher]('Select Team')))
 				.toExist()
 				.withTimeout(2000);
@@ -153,12 +149,11 @@ describe('Move/Convert Team', () => {
 		it('should convert a team to a channel', async () => {
 			await navigateToRoomActions(toBeConverted);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
-			await waitFor(element(by.id('room-actions-convert-channel-to-team')))
+			await waitFor(element(by[textMatcher]('Convert to Channel')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by.id('room-actions-convert-channel-to-team')).tap();
-			await sleep(2000);
-			await waitFor(element(by.id('select-list-view')))
+			await element(by[textMatcher]('Convert to Channel')).tap();
+			await waitFor(element(by[textMatcher]('Converting Team to Channel')))
 				.toExist()
 				.withTimeout(2000);
 			await waitFor(element(by.id(`select-list-view-item-${toBeMoved}`)))
