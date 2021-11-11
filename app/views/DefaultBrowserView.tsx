@@ -56,7 +56,7 @@ interface IDefaultBrowserViewProps {
 }
 
 class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefaultBrowserViewState> {
-	private mounted: boolean | undefined;
+	private mounted?: boolean;
 
 	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Default_browser')
