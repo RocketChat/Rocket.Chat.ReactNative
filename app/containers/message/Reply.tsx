@@ -31,6 +31,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		padding: 15
 	},
+	backdrop: {
+		...StyleSheet.absoluteFillObject
+	},
 	authorContainer: {
 		flex: 1,
 		flexDirection: 'row',
@@ -87,7 +90,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export interface IMessageReplyAttachment {
+interface IMessageReplyAttachment {
 	author_name: string;
 	message_link: string;
 	ts: string;
@@ -261,18 +264,23 @@ const Reply = React.memo(
 						}
 					]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}>
-					<View style={styles.attachmentContainer}>
+					<>
 						{loading ? (
-							<RCActivityIndicator theme={theme} />
-						) : (
-							<>
-								<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-								<UrlImage image={attachment.thumb_url} />
-								<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
-								<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
-							</>
-						)}
-					</View>
+							<View
+								style={[
+									styles.backdrop,
+									{ backgroundColor: `${themes[theme].backdropColor}`, opacity: themes[theme].backdropOpacity }
+								]}>
+								<RCActivityIndicator theme={theme} />
+							</View>
+						) : null}
+						<View style={styles.attachmentContainer}>
+							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+							<UrlImage image={attachment.thumb_url} />
+							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+							<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+						</View>
+					</>
 				</Touchable>
 				{/* @ts-ignore*/}
 				<Markdown
