@@ -106,7 +106,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 	};
 
 	const submit = () => {
-		const transferData = { roomId: rid } as ITransferData;
+		const transferData: ITransferData = { roomId: rid };
 
 		if (!departmentId && !userId) {
 			return;
