@@ -40,7 +40,7 @@ interface IE2EEnterYourPasswordViewProps {
 }
 
 class E2EEnterYourPasswordView extends React.Component<IE2EEnterYourPasswordViewProps, IE2EEnterYourPasswordViewState> {
-	private passwordInput: TextInput | undefined;
+	private passwordInput?: TextInput;
 
 	static navigationOptions = ({ navigation }: Pick<IE2EEnterYourPasswordViewProps, 'navigation'>): StackNavigationOptions => ({
 		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='e2e-enter-your-password-view-close' />,
