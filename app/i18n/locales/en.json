@@ -784,5 +784,6 @@
   "sending_email_confirmation": "sending email confirmation",
   "Enable_Message_Parser": "Enable Message Parser",
   "Unsupported_format": "Unsupported format",
-  "Downloaded_file": "Downloaded file"
+  "Downloaded_file": "Downloaded file",
+  "Error_Download_file": "Error while downloading file"
 }

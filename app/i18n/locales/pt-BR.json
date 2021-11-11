@@ -735,5 +735,6 @@
   "Send_email_confirmation": "Enviar email de confirmação",
   "sending_email_confirmation": "enviando email de confirmação",
   "Unsupported_format": "Formato não suportado",
-  "Downloaded_file": "Arquivo baixado"
+  "Downloaded_file": "Arquivo baixado",
+  "Error_Download_file": "Erro ao baixar o arquivo"
 }

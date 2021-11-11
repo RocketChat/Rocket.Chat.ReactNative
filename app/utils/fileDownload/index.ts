@@ -47,8 +47,11 @@ export const fileDownloadAndPreview = async (url: string, attachment: IAttachmen
 			showAppsSuggestions: true
 		})
 			.then(res => res)
-			.catch(() => {
-				EventEmitter.emit(LISTENER, { message: I18n.t('Downloaded_file') });
+			.catch(async () => {
+				const file = await fileDownload(url, attachment);
+				file
+					? EventEmitter.emit(LISTENER, { message: I18n.t('Downloaded_file') })
+					: EventEmitter.emit(LISTENER, { message: I18n.t('Error_Download_file') });
 			});
 	}
 };
