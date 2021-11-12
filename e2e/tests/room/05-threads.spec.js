@@ -7,7 +7,8 @@ const {
 	sleep,
 	searchRoom,
 	mockMessageWithNag,
-	platformTypes
+	platformTypes,
+	dismissReviewNag
 } = require('../../helpers/app');
 
 async function navigateToRoom(roomName) {
@@ -175,6 +176,7 @@ describe('Threads', () => {
 			it('should navigate to thread from thread name', async () => {
 				const messageText = 'navthreadname';
 				await mockMessage('dummymessagebetweenthethread'); // TODO: Create a proper test for this elsewhere.
+				await dismissReviewNag();
 				await element(by.id(`message-thread-button-${thread}`)).tap();
 				await waitFor(element(by.id('messagebox-input-thread')))
 					.toExist()

@@ -318,15 +318,15 @@ describe('Room screen', () => {
 					.withTimeout(60000);
 			});
 
-			// it('should ask for review', async () => {
-			// 	await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
-			// });
-
 			it('should remove reaction', async () => {
 				await element(by.id('message-reaction-:grinning:')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:')))
 					.toBeNotVisible()
 					.withTimeout(60000);
+			});
+
+			it('should ask for review', async () => {
+				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
 			});
 
 			it('should edit message', async () => {
