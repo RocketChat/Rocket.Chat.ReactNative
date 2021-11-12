@@ -66,9 +66,6 @@ describe('Room', () => {
 	});
 
 	it('should jump to an old message and load its surroundings', async () => {
-		// if (device.getPlatform() === 'android') {
-		// 	return; // 'Room' tests don't work well on Android currently
-		// }
 		await navigateToRoom('jumping');
 		await waitFor(element(by[textMatcher]('300')))
 			.toExist()
@@ -82,9 +79,6 @@ describe('Room', () => {
 	});
 
 	it('should tap FAB and scroll to bottom', async () => {
-		// if (device.getPlatform() === 'android') {
-		// 	return; // 'Room' tests don't work well on Android currently
-		// }
 		await waitFor(element(by.id('nav-jump-to-bottom')))
 			.toExist()
 			.withTimeout(5000);
@@ -96,9 +90,6 @@ describe('Room', () => {
 	});
 
 	it('should load messages on scroll', async () => {
-		// if (device.getPlatform() === 'android') {
-		// 	return; // 'Room' tests don't work well on Android currently
-		// }
 		await navigateToRoom('jumping');
 		await waitFor(element(by.id('room-view-messages')))
 			.toExist()
@@ -121,9 +112,6 @@ describe('Room', () => {
 	});
 
 	it('should search for old message and load its surroundings', async () => {
-		// if (device.getPlatform() === 'android') {
-		// 	return; // 'Room' tests don't work well on Android currently
-		// }
 		await navigateToRoom('jumping');
 		await sleep(1000); // wait for proper load the room
 		await element(by.id('room-view-search')).tap();

@@ -381,7 +381,6 @@ describe('Team', () => {
 
 				it('should remove member from team', async () => {
 					await openActionSheet('rocket.cat');
-					// await swipeTillVisible(by.id('room-actions-scrollview'), by.id('action-sheet-remove-from-team'));
 					await waitFor(element(by.id('action-sheet-remove-from-team')))
 						.toBeVisible()
 						.withTimeout(2000);

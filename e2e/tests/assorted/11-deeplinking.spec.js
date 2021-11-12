@@ -53,7 +53,6 @@ describe('Deep linking', () => {
 					data.server,
 					`userId=${userId}${amp}token=${authToken}${amp}path=group/${data.groups.private.name}`
 				)
-				// sourceApp: 'com.apple.mobilesafari' do we need this?
 			});
 			await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 				.toExist()
@@ -94,8 +93,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.private.name}`),
-					sourceApp: 'com.apple.mobilesafari'
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.private.name}`)
 				});
 				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 					.toExist()
@@ -106,8 +104,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.alternate2.name}/thread/${threadId}`),
-					sourceApp: 'com.apple.mobilesafari'
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.alternate2.name}/thread/${threadId}`)
 				});
 				await waitFor(element(by.id(`room-view-title-${threadMessage}`)))
 					.toExist()
@@ -119,8 +116,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `rid=${roomResult.data.group._id}`),
-					sourceApp: 'com.apple.mobilesafari'
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `rid=${roomResult.data.group._id}`)
 				});
 				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 					.toExist()
@@ -144,8 +140,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.private.name}`),
-					sourceApp: 'com.apple.mobilesafari'
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.private.name}`)
 				});
 				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 					.toExist()

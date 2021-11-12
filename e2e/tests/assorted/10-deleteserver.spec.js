@@ -41,7 +41,6 @@ describe('Delete server', () => {
 		await element(by.id('register-view-username')).replaceText(data.registeringUser3.username);
 		await element(by.id('register-view-email')).replaceText(data.registeringUser3.email);
 		await element(by.id('register-view-password')).replaceText(data.registeringUser3.password);
-		// await element(by.type(scrollViewType)).atIndex(0).swipe('up');
 		await element(by.id('register-view-submit')).tap();
 		await waitFor(element(by.id('rooms-list-view')))
 			.toBeVisible()

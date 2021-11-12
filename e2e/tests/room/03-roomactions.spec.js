@@ -185,36 +185,12 @@ describe('Room actions screen', () => {
 	});
 
 	describe('Usage', () => {
-		describe('TDB', async () => {
-			// TODO: test into a jitsi call
-			// it('should NOT navigate to voice call', async() => {
-			// 	await waitFor(element(by.id('room-actions-voice'))).toExist();
-			// 	await element(by.id('room-actions-voice')).tap();
-			// 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
-			// 	await expect(element(by.id('room-actions-view'))).toExist();
-			// });
-			// TODO: test into a jitsi call
-			// it('should NOT navigate to video call', async() => {
-			// 	await element(by.id('room-actions-video')).tap();
-			// 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
-			// 	await expect(element(by.id('room-actions-view'))).toExist();
-			// });
-			// TODO: test share room link
-			// it('should NOT navigate to share room', async() => {
-			// 	await waitFor(element(by.id('room-actions-share'))).toExist();
-			// 	await element(by.id('room-actions-share')).tap();
-			// 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
-			// 	await expect(element(by.id('room-actions-view'))).toExist();
-			// });
-		});
-
 		describe('Common', () => {
 			it('should show mentioned messages', async () => {
 				await element(by.id('room-actions-mentioned')).tap();
 				await waitFor(element(by.id('mentioned-messages-view')))
 					.toExist()
 					.withTimeout(2000);
-				// await waitFor(element(by.label(` ${ data.random }mention`))).toExist().withTimeout(60000);
 				await backToActions();
 			});
 
@@ -295,24 +271,6 @@ describe('Room actions screen', () => {
 					.withTimeout(6000);
 				await backToActions();
 			});
-
-			// it('should search and find a message', async() => {
-
-			// 	//Go back to room and send a message
-			// 	await tapBack();
-			// 	await mockMessage('messageToFind');
-
-			// 	//Back into Room Actions
-			// 	await element(by.id('room-header')).tap();
-			// 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
-
-			// 	await element(by.id('room-actions-search')).tap();
-			// 	await waitFor(element(by.id('search-messages-view'))).toExist().withTimeout(2000);
-			// 	await expect(element(by.id('search-message-view-input'))).toExist();
-			// 	await element(by.id('search-message-view-input')).replaceText(`/${ data.random }messageToFind/`);
-			// 	await waitFor(element(by.label(`${ data.random }messageToFind`).withAncestor(by.id('search-messages-view')))).toExist().withTimeout(60000);
-			// 	await backToActions();
-			// });
 		});
 
 		describe('Notification', () => {

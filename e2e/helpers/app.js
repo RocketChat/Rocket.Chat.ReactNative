@@ -28,14 +28,6 @@ async function navigateToWorkspace(server = data.server) {
 		.withTimeout(60000);
 	await element(by.id('new-server-view-input')).replaceText(`${server}`);
 	await element(by.id('new-server-view-input')).tapReturnKey();
-	// try {
-	// 	await element(by.label('Connect')).atIndex(0).tap();
-	// } catch (error) {
-	// 	await waitFor(element(by.id(`server-history-${data.server}`)))
-	// 		.toBeVisible()
-	// 		.withTimeout(2000);
-	// 	await element(by.id(`server-history-${data.server}`)).tap();
-	// }
 	await waitFor(element(by.id('workspace-view')))
 		.toBeVisible()
 		.withTimeout(60000);
@@ -152,25 +144,6 @@ async function dismissReviewNag() {
 	await element(by[textMatcher]('No')).atIndex(0).tap(); // Tap `no` on ask for review alert
 }
 
-async function mockMessageWithNag(message, isThread = false) {
-	alert('remove me');
-	// const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
-	// await element(by.id(input)).tap();
-	// await element(by.id(input)).replaceText(`${data.random}${message}`);
-	// await waitFor(element(by.id('messagebox-send-message')))
-	// 	.toExist()
-	// 	.withTimeout(2000);
-	// await element(by.id('messagebox-send-message')).tap();
-	// await dismissReviewNag();
-	// await waitFor(element(by.label(`${data.random}${message}`)))
-	// 	.toExist()
-	// 	.withTimeout(60000);
-	// await expect(element(by.label(`${data.random}${message}`))).toExist();
-	// await element(by.label(`${data.random}${message}`))
-	// 	.atIndex(0)
-	// 	.tap();
-}
-
 async function tapBack() {
 	await element(by.id('header-back')).atIndex(0).tap();
 }
@@ -259,7 +232,6 @@ module.exports = {
 	searchRoom,
 	tryTapping,
 	checkServer,
-	mockMessageWithNag,
 	platformTypes,
 	prepareAndroid
 };

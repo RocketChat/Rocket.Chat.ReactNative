@@ -27,8 +27,6 @@ const navToLanguage = async () => {
 };
 
 describe('i18n', () => {
-	before(async () => {});
-
 	describe('OS language', () => {
 		it("OS set to 'en' and proper translate to 'en'", async () => {
 			if (device.getPlatform() === 'android') {

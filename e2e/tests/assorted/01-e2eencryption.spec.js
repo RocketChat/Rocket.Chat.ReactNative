@@ -57,7 +57,7 @@ async function navigateSecurityPrivacy() {
 		.withTimeout(2000);
 }
 
-describe.skip('E2E Encryption', () => {
+describe('E2E Encryption', () => {
 	const room = `encrypted${data.random}`;
 	const newPassword = 'abc';
 	let alertButtonType;
@@ -341,7 +341,6 @@ describe.skip('E2E Encryption', () => {
 				.withTimeout(60000);
 			await element(by.id('new-server-view-input')).typeText(`${data.alternateServer}`);
 			await element(by.id('new-server-view-input')).tapReturnKey();
-			// await element(by.label('Connect')).tap();
 			await waitFor(element(by.id('workspace-view')))
 				.toBeVisible()
 				.withTimeout(60000);
@@ -355,7 +354,6 @@ describe.skip('E2E Encryption', () => {
 			await element(by.id('register-view-username')).replaceText(data.registeringUser.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
-			element(by.type(scrollViewType)).atIndex(1).scrollTo('bottom');
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
