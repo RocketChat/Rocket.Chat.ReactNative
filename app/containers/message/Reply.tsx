@@ -263,7 +263,8 @@ const Reply = React.memo(
 							borderColor
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}>
+					background={Touchable.Ripple(themes[theme].bannerBackground)}
+					disabled={loading}>
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 						<UrlImage image={attachment.thumb_url} />
