@@ -58,7 +58,7 @@ interface IE2EEncryptionSecurityViewProps {
 }
 
 class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityViewProps, IE2EEncryptionSecurityViewState> {
-	private newPasswordInputRef: TextInputComp | undefined;
+	private newPasswordInputRef: any = React.createRef();
 
 	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('E2E_Encryption')
