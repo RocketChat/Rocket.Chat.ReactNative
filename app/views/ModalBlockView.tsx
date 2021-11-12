@@ -36,13 +36,18 @@ interface IValueBlockId {
 	blockId: string;
 }
 
-type TMapElementToState = [string, IValueBlockId];
+type TElementToState = [string, IValueBlockId];
 interface IActions {
 	actionId: string;
 	value: any;
 	blockId?: string;
 }
 
+interface IValues {
+	[key: string]: {
+		[key: string]: string;
+	};
+}
 interface IModalBlockViewState {
 	data: any;
 	loading: boolean;
@@ -62,7 +67,7 @@ interface IModalBlockViewProps {
 
 // eslint-disable-next-line no-sequences
 Object.fromEntries = Object.fromEntries || ((arr: any[]) => arr.reduce((acc, [k, v]) => ((acc[k] = v), acc), {}));
-const groupStateByBlockIdMap = (obj: any, [key, { blockId, value }]: TMapElementToState) => {
+const groupStateByBlockIdMap = (obj: any, [key, { blockId, value }]: TElementToState) => {
 	obj[blockId] = obj[blockId] || {};
 	obj[blockId][key] = value;
 	return obj;
@@ -91,7 +96,8 @@ const reduceState = (obj: any, el: any) =>
 
 class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockViewState> {
 	private submitting: boolean;
-	private values: any;
+
+	private values: IValues;
 
 	static navigationOptions = ({ route }: Pick<IModalBlockViewProps, 'route'>): StackNavigationOptions => {
 		const data = route.params?.data;
@@ -265,17 +271,6 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		const { values } = this;
 		const { view } = data;
 		const { blocks } = view;
-		console.log(
-			'🚀 ~ file: ModalBlockView.tsx ~ line 257 ~ ModalBlockView ~ render ~ theme, language',
-			theme,
-			language,
-			data,
-			loading,
-			errors,
-			blocks,
-			view,
-			values
-		);
 
 		return (
 			<KeyboardAwareScrollView
