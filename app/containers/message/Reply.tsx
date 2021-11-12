@@ -264,23 +264,22 @@ const Reply = React.memo(
 						}
 					]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}>
-					<>
+					<View style={styles.attachmentContainer}>
+						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+						<UrlImage image={attachment.thumb_url} />
+						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						{loading ? (
-							<View
-								style={[
-									styles.backdrop,
-									{ backgroundColor: `${themes[theme].backdropColor}`, opacity: themes[theme].backdropOpacity }
-								]}>
+							<View style={[styles.backdrop]}>
+								<View
+									style={[
+										styles.backdrop,
+										{ backgroundColor: themes[theme].bannerBackground, opacity: themes[theme].attachmentLoadingOpacity }
+									]}></View>
 								<RCActivityIndicator theme={theme} />
 							</View>
 						) : null}
-						<View style={styles.attachmentContainer}>
-							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-							<UrlImage image={attachment.thumb_url} />
-							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
-							<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
-						</View>
-					</>
+					</View>
 				</Touchable>
 				{/* @ts-ignore*/}
 				<Markdown
