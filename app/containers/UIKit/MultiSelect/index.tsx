@@ -22,8 +22,8 @@ interface IMultiSelect {
 	context?: number;
 	loading?: boolean;
 	multiselect?: boolean;
-	onSearch: Function;
-	onClose: Function;
+	onSearch?: Function;
+	onClose?: Function;
 	inputStyle: object;
 	value?: any[];
 	disabled?: boolean | object;
