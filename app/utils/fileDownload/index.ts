@@ -34,14 +34,14 @@ export const fileDownload = (url: string, attachment: IAttachment): Promise<Fetc
 };
 
 export const fileDownloadAndPreview = async (url: string, attachment: IAttachment): Promise<void> => {
-	const path = getLocalFilePathFromFile(DOCUMENTS_PATH, attachment);
-	const file = await RNFetchBlob.config({
-		timeout: 10000,
-		indicator: true,
-		path
-	}).fetch('GET', url);
+	try {
+		const path = getLocalFilePathFromFile(DOCUMENTS_PATH, attachment);
+		const file = await RNFetchBlob.config({
+			timeout: 10000,
+			indicator: true,
+			path
+		}).fetch('GET', url);
 
-	if (file) {
 		FileViewer.open(file.data, {
 			showOpenWithDialog: true,
 			showAppsSuggestions: true
@@ -53,5 +53,7 @@ export const fileDownloadAndPreview = async (url: string, attachment: IAttachmen
 					? EventEmitter.emit(LISTENER, { message: I18n.t('Downloaded_file') })
 					: EventEmitter.emit(LISTENER, { message: I18n.t('Error_Download_file') });
 			});
+	} catch (e) {
+		EventEmitter.emit(LISTENER, { message: I18n.t('Error_Download_file') });
 	}
 };
