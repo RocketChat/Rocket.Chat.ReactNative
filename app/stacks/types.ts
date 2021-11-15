@@ -241,12 +241,21 @@ export type InsideStackParamList = {
 
 export type OutsideParamList = {
 	NewServerView: undefined;
-	WorkspaceView: {};
-	LoginView: {};
-	ForgotPasswordView: {};
-	SendEmailConfirmationView: {};
-	RegisterView: {};
-	LegalView: {};
+	WorkspaceView: undefined;
+	LoginView: {
+		title: string;
+		username?: string;
+	};
+	ForgotPasswordView: {
+		title: string;
+	};
+	SendEmailConfirmationView: {
+		user?: string;
+	};
+	RegisterView: {
+		title: string;
+	};
+	LegalView: undefined;
 };
 
 export type OutsideModalParamList = {
