@@ -8,7 +8,7 @@ import I18n from '../../i18n';
 
 interface IPasscodeChoose {
 	theme: string;
-	force: boolean;
+	force?: boolean;
 	finishProcess: Function;
 }
 

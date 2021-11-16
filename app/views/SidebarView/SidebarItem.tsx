@@ -1,13 +1,22 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Touch from '../../utils/touch';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import styles from './styles';
 
-const Item = React.memo(({ left, right, text, onPress, testID, current, theme }) => (
+interface SidebarItemProps {
+	left: JSX.Element;
+	right: JSX.Element;
+	text: string;
+	current: boolean;
+	onPress(): void;
+	testID: string;
+	theme: string;
+}
+
+const Item = React.memo(({ left, right, text, onPress, testID, current, theme }: SidebarItemProps) => (
 	<Touch
 		key={testID}
 		testID={testID}
@@ -23,15 +32,5 @@ const Item = React.memo(({ left, right, text, onPress, testID, current, theme })
 		<View style={styles.itemHorizontal}>{right}</View>
 	</Touch>
 ));
-
-Item.propTypes = {
-	left: PropTypes.element,
-	right: PropTypes.element,
-	text: PropTypes.string,
-	current: PropTypes.bool,
-	onPress: PropTypes.func,
-	testID: PropTypes.string,
-	theme: PropTypes.string
-};
 
 export default withTheme(Item);
