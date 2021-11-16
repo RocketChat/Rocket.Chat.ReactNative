@@ -36,6 +36,14 @@ async function jitsiURL({ room }) {
 	return `${protocol}${domain}${prefix}${rname}${queryString}`;
 }
 
+export function callJitsiWithoutServer(path) {
+	logEvent(events.RA_JITSI_VIDEO);
+	const { Jitsi_SSL } = reduxStore.getState().settings;
+	const protocol = Jitsi_SSL ? 'https://' : 'http://';
+	const url = `${protocol}${path}`;
+	Navigation.navigate('JitsiMeetView', { url, onlyAudio: false });
+}
+
 async function callJitsi(room, onlyAudio = false) {
 	logEvent(onlyAudio ? events.RA_JITSI_AUDIO : events.RA_JITSI_VIDEO);
 	const url = await jitsiURL.call(this, { room });

@@ -63,10 +63,12 @@ const parseDeepLinking = (url: string) => {
 			}
 		}
 		const call = /^(https:\/\/)?jitsi.rocket.chat\//;
+		const fullURL = url;
+
 		if (url.match(call)) {
 			url = url.replace(call, '').trim();
 			if (url) {
-				return { path: url, isCall: true };
+				return { path: url, isCall: true, fullURL };
 			}
 		}
 	}
