@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
 import { themes } from '../../constants/colors';
@@ -22,20 +22,34 @@ const styles = StyleSheet.create({
 	}
 });
 
-class UserNotificationPreferencesView extends React.Component {
-	static navigationOptions = () => ({
+type TKey = 'desktopNotifications' | 'mobileNotifications' | 'emailNotificationMode';
+
+interface IUserNotificationPreferencesViewState {
+	preferences: {
+		desktopNotifications?: string;
+		mobileNotifications?: string;
+		emailNotificationMode?: string;
+	};
+	loading: boolean;
+}
+
+interface IUserNotificationPreferencesViewProps {
+	navigation: StackNavigationProp<any, 'UserNotificationPreferencesView'>;
+	theme: string;
+	user: {
+		id: string;
+	};
+}
+
+class UserNotificationPreferencesView extends React.Component<
+	IUserNotificationPreferencesViewProps,
+	IUserNotificationPreferencesViewState
+> {
+	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Notification_Preferences')
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		theme: PropTypes.string,
-		user: PropTypes.shape({
-			id: PropTypes.string
-		})
-	};
-
-	constructor(props) {
+	constructor(props: IUserNotificationPreferencesViewProps) {
 		super(props);
 		this.state = {
 			preferences: {},
@@ -51,43 +65,43 @@ class UserNotificationPreferencesView extends React.Component {
 		this.setState({ preferences, loading: true });
 	}
 
-	findDefaultOption = key => {
+	findDefaultOption = (key: TKey) => {
 		const { preferences } = this.state;
 		const option = preferences[key] ? OPTIONS[key].find(item => item.value === preferences[key]) : OPTIONS[key][0];
 		return option;
 	};
 
-	renderPickerOption = key => {
+	renderPickerOption = (key: TKey) => {
 		const { theme } = this.props;
 		const text = this.findDefaultOption(key);
-		return (
-			<Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>
-				{I18n.t(text?.label, { defaultValue: text?.label, second: text?.second })}
-			</Text>
-		);
+		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{I18n.t(text?.label)}</Text>;
 	};
 
-	pickerSelection = (title, key) => {
+	pickerSelection = (title: string, key: TKey) => {
 		const { preferences } = this.state;
 		const { navigation } = this.props;
 		let values = OPTIONS[key];
 
 		const defaultOption = this.findDefaultOption(key);
 		if (OPTIONS[key][0]?.value !== 'default') {
-			values = [{ label: `${I18n.t('Default')} (${I18n.t(defaultOption.label)})` }, ...OPTIONS[key]];
+			const defaultValue = { label: `${I18n.t('Default')} (${I18n.t(defaultOption?.label)})` } as {
+				label: string;
+				value: string;
+			};
+			values = [defaultValue, ...OPTIONS[key]];
 		}
 
 		navigation.navigate('PickerView', {
 			title,
 			data: values,
 			value: preferences[key],
-			onChangeValue: value => this.onValueChangePicker(key, value ?? defaultOption.value)
+			onChangeValue: (value: string) => this.onValueChangePicker(key, value ?? defaultOption?.value)
 		});
 	};
 
-	onValueChangePicker = (key, value) => this.saveNotificationPreferences({ [key]: value.toString() });
+	onValueChangePicker = (key: TKey, value: string) => this.saveNotificationPreferences({ [key]: value.toString() });
 
-	saveNotificationPreferences = async params => {
+	saveNotificationPreferences = async (params: { [key: string]: string }) => {
 		const { user } = this.props;
 		const { id } = user;
 		const result = await RocketChat.setUserPreferences(id, params);
@@ -111,7 +125,7 @@ class UserNotificationPreferencesView extends React.Component {
 								<List.Item
 									title='Alert'
 									testID='user-notification-preference-view-alert'
-									onPress={title => this.pickerSelection(title, 'desktopNotifications')}
+									onPress={(title: string) => this.pickerSelection(title, 'desktopNotifications')}
 									right={() => this.renderPickerOption('desktopNotifications')}
 								/>
 								<List.Separator />
@@ -123,7 +137,7 @@ class UserNotificationPreferencesView extends React.Component {
 								<List.Item
 									title='Alert'
 									testID='user-notification-preference-view-push-notification'
-									onPress={title => this.pickerSelection(title, 'mobileNotifications')}
+									onPress={(title: string) => this.pickerSelection(title, 'mobileNotifications')}
 									right={() => this.renderPickerOption('mobileNotifications')}
 								/>
 								<List.Separator />
@@ -135,7 +149,7 @@ class UserNotificationPreferencesView extends React.Component {
 								<List.Item
 									title='Alert'
 									testID='user-notification-preference-view-email-alert'
-									onPress={title => this.pickerSelection(title, 'emailNotificationMode')}
+									onPress={(title: string) => this.pickerSelection(title, 'emailNotificationMode')}
 									right={() => this.renderPickerOption('emailNotificationMode')}
 								/>
 								<List.Separator />
@@ -151,7 +165,7 @@ class UserNotificationPreferencesView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state)
 });
 
