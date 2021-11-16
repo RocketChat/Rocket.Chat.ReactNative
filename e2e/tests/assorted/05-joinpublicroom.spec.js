@@ -35,10 +35,6 @@ describe('Join public room', () => {
 			await expect(element(by.id('room-view'))).toBeVisible();
 		});
 
-		// it('should have messages list', async() => {
-		// 	await expect(element(by.id('room-view-messages'))).toBeVisible();
-		// });
-
 		// Render - Header
 		describe('Header', () => {
 			it('should have actions button ', async () => {
@@ -77,14 +73,6 @@ describe('Join public room', () => {
 			it('should have info', async () => {
 				await expect(element(by.id('room-actions-info'))).toBeVisible();
 			});
-
-			// it('should have voice', async() => {
-			// 	await expect(element(by.id('room-actions-voice'))).toBeVisible();
-			// });
-
-			// it('should have video', async() => {
-			// 	await expect(element(by.id('room-actions-video'))).toBeVisible();
-			// });
 
 			it('should have members', async () => {
 				await waitFor(element(by.id('room-actions-members')))
@@ -152,8 +140,6 @@ describe('Join public room', () => {
 			await navigateToRoomActions();
 			await expect(element(by.id('room-actions-view'))).toBeVisible();
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
-			// await expect(element(by.id('room-actions-voice'))).toBeVisible();
-			// await expect(element(by.id('room-actions-video'))).toBeVisible();
 			await expect(element(by.id('room-actions-members'))).toBeVisible();
 			await expect(element(by.id('room-actions-files'))).toBeVisible();
 			await expect(element(by.id('room-actions-mentioned'))).toBeVisible();
@@ -161,6 +147,7 @@ describe('Join public room', () => {
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 			await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			await expect(element(by.id('room-actions-notifications'))).toBeVisible();
+			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 			await expect(element(by.id('room-actions-leave-channel'))).toBeVisible();
 		});
 
