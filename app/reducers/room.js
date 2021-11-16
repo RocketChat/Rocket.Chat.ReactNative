@@ -49,13 +49,16 @@ export default function (state = initialState, action) {
 				...state,
 				isDeleting: false
 			};
-		case ROOM.START_PERFORMING_ACTION:
+		case ROOM.USER_TYPING:
+		case ROOM.USER_UPLOADING:
+		case ROOM.USER_RECORDING:
 			if (state.performingActions.includes(action.activity)) {
+				if (!action.performing) {
+					return { ...state, performingActions: [...state.performingActions.filter(activity => activity !== action.activity)] };
+				}
 				return { ...state };
 			}
 			return { ...state, performingActions: [...state.performingActions, action.activity] };
-		case ROOM.STOP_PERFORMING_ACTION:
-			return { ...state, performingActions: [...state.performingActions.filter(activity => activity !== action.activity)] };
 		default:
 			return state;
 	}

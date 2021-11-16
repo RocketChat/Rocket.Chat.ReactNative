@@ -11,7 +11,7 @@ import { Dispatch } from 'redux';
 
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
-import { startPerforming as startPerformingAction, stopPerforming as stopPerformingAction } from '../../actions/room';
+import { typing as typingAction, uploading as uploadingAction, recording as recordingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
@@ -48,7 +48,6 @@ import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
-import { userRecording, userTyping, userUploading } from '../../constants/userActivities';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -70,6 +69,12 @@ const libraryPickerConfig = {
 const videoPickerConfig = {
 	mediaType: 'video'
 };
+
+interface IPerformingActions {
+	rid: string;
+	options: { tmid: string; isTyping?: boolean };
+	performing: boolean;
+}
 
 interface IMessageBoxProps {
 	rid: string;
@@ -99,8 +104,9 @@ interface IMessageBoxProps {
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
-	startPerforming: Function;
-	stopPerforming: Function;
+	typing: ({ rid, options, performing }: IPerformingActions) => void;
+	uploading: ({ rid, options, performing }: IPerformingActions) => void;
+	recording: ({ rid, options, performing }: IPerformingActions) => void;
 	theme: string;
 	replyCancel(): void;
 	showSend: boolean;
@@ -610,7 +616,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	handleTyping = (isTyping: boolean) => {
-		const { startPerforming, stopPerforming, rid, sharing, tmid } = this.props;
+		const { rid, sharing, tmid, typing } = this.props;
 		if (sharing) {
 			return;
 		}
@@ -619,7 +625,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			stopPerforming(rid, userTyping, { tmid, isTyping });
+			typing({ rid, options: { tmid, isTyping }, performing: isTyping });
 			return;
 		}
 
@@ -628,7 +634,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 
 		this.typingTimeout = setTimeout(() => {
-			startPerforming(rid, userTyping, { tmid, isTyping });
+			typing({ rid, options: { tmid, isTyping }, performing: isTyping });
 			this.typingTimeout = false;
 		}, 1000);
 	};
@@ -785,24 +791,20 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	recordingCallback = (isRecording: boolean) => {
-		const { rid, startPerforming, stopPerforming, tmid } = this.props;
+		const { rid, tmid, recording } = this.props;
 		this.setState({ recording: isRecording });
-		if (isRecording) {
-			startPerforming(rid, userRecording, { tmid });
-		} else {
-			stopPerforming(rid, userRecording, { tmid });
-		}
+		recording({ rid, options: { tmid }, performing: isRecording });
 	};
 
 	finishAudioMessage = async (fileInfo: any) => {
-		const { rid, tmid, baseUrl: server, user, startPerforming, stopPerforming } = this.props;
+		const { rid, tmid, baseUrl: server, user, uploading } = this.props;
 
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					startPerforming(rid, userUploading, { tmid });
+					uploading({ rid, options: { tmid }, performing: true });
 					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-					stopPerforming(rid, userUploading, { tmid });
+					uploading({ rid, options: { tmid }, performing: false });
 				}
 			} catch (e) {
 				log(e);
@@ -1132,8 +1134,9 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	startPerforming: (rid: string, action: string, options: any) => dispatch(startPerformingAction(rid, action, options)),
-	stopPerforming: (rid: string, action: string, options: any) => dispatch(stopPerformingAction(rid, action, options))
+	typing: ({ rid, options, performing }: IPerformingActions) => dispatch(typingAction(rid, options, performing)),
+	uploading: ({ rid, options, performing }: IPerformingActions) => dispatch(uploadingAction(rid, options, performing)),
+	recording: ({ rid, options, performing }: IPerformingActions) => dispatch(recordingAction(rid, options, performing))
 });
 // @ts-ignore
 export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));
