@@ -14,7 +14,7 @@ interface IThemedTextInput extends TextInputProps {
 	theme: string;
 }
 
-const ThemedTextInput = React.forwardRef(({ style, theme, ...props }: IThemedTextInput, ref: any) => (
+const ThemedTextInput = React.forwardRef(({ style, theme, ...props }: IThemedTextInput, ref: React.Ref<TextInput>) => (
 	<TextInput
 		ref={ref}
 		style={[{ color: themes[theme].titleText }, style, styles.input]}

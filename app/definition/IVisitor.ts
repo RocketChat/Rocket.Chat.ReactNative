@@ -1,3 +1,11 @@
+export interface IVisitorEmail {
+	address: string;
+}
+
+export interface IVisitorPhone {
+	phoneNumber: string;
+}
+
 export interface IVisitor {
 	_id?: string;
 	token: string;
@@ -10,15 +18,7 @@ export interface IVisitor {
 	customFields?: {
 		[key: string]: any;
 	};
-	livechatData?: {
+	livechatData: {
 		[key: string]: any;
 	};
-}
-
-export interface IVisitorEmail {
-	address: string;
-}
-
-export interface IVisitorPhone {
-	phoneNumber: string;
 }

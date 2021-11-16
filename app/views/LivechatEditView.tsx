@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { ForwardedRef, Ref, RefAttributes, RefObject, useEffect, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput as RNTextInput, TextInputProps } from 'react-native';
 import { connect } from 'react-redux';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
@@ -53,17 +53,18 @@ interface IField {
 }
 
 interface IInputs {
+	[key: string]: string;
 	name: string;
 	email: string;
 	phone: string;
 	topic: string;
-	tags: string[];
+	tags: string;
 }
 
 type TParams = IVisitor & IInputs;
 
 interface IInputsRefs {
-	name: unknown;
+	name: RNTextInput;
 	phone: unknown;
 	topic: unknown;
 	[index: string]: unknown;
@@ -107,8 +108,10 @@ const LivechatEditView = ({
 	const [availableUserTags, setAvailableUserTags] = useState<string[]>([]);
 	const [permissions, setPermissions] = useState([]);
 
-	const params: Partial<TParams> = {};
-	const inputs: Partial<IInputsRefs> = {};
+	// const params: Partial<TParams> = {};
+	const params = {} as TParams;
+	const inputs = {} as IInputsRefs;
+	// const inputs = {} as ForwardedRef<RNTextInput>;
 
 	const livechat = route.params?.room ?? {};
 	const visitor = route.params?.roomUser ?? {};
@@ -157,10 +160,10 @@ const LivechatEditView = ({
 	};
 
 	const submit = async () => {
-		const userData: Partial<TParams> = { _id: visitor?._id };
+		const userData = { _id: visitor?._id } as TParams;
 
 		const { rid, sms } = livechat;
-		const roomData: Partial<TParams> = { _id: rid };
+		const roomData = { _id: rid } as TParams;
 
 		if (params.name) {
 			userData.name = params.name;
@@ -193,6 +196,7 @@ const LivechatEditView = ({
 		});
 
 		if (sms) {
+			// @ts-ignore
 			delete userData.phone;
 		}
 
@@ -236,7 +240,7 @@ const LivechatEditView = ({
 						defaultValue={visitor?.name}
 						onChangeText={text => onChangeText('name', text)}
 						onSubmitEditing={() => {
-							inputs?.name?.focus();
+							inputs.name.focus();
 						}}
 						theme={theme}
 						editable={!!permissions[0]}
@@ -328,6 +332,7 @@ const LivechatEditView = ({
 							onChangeText={text => onChangeText(key, text)}
 							onSubmitEditing={() => {
 								if (array.length - 1 > index) {
+									// @ts-ignore
 									return inputs[array[index + 1]].focus();
 								}
 								submit();
