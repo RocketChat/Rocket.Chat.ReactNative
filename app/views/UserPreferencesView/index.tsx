@@ -1,6 +1,6 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-native';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import I18n from '../../i18n';
@@ -12,7 +12,11 @@ import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import RocketChat from '../../lib/rocketchat';
 
-const UserPreferencesView = ({ navigation }) => {
+interface IUserPreferencesViewProps {
+	navigation: StackNavigationProp<any, 'UserPreferencesView'>;
+}
+
+const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
 	const user = useSelector(state => getUserSelector(state));
 	const [enableParser, setEnableParser] = useState(user.enableMessageParserEarlyAdoption);
 
@@ -22,12 +26,12 @@ const UserPreferencesView = ({ navigation }) => {
 		});
 	}, []);
 
-	const navigateToScreen = (screen, params) => {
-		logEvent(events[`SE_GO_${screen.replace('View', '').toUpperCase()}`]);
-		navigation.navigate(screen, params);
+	const navigateToScreen = (screen: string) => {
+		logEvent(events.UP_GO_USER_NOTIFICATION_PREF);
+		navigation.navigate(screen);
 	};
 
-	const toggleMessageParser = async value => {
+	const toggleMessageParser = async (value: boolean) => {
 		try {
 			await RocketChat.saveUserPreferences({ id: user.id, enableMessageParserEarlyAdoption: value });
 			setEnableParser(value);
@@ -66,10 +70,6 @@ const UserPreferencesView = ({ navigation }) => {
 			</List.Container>
 		</SafeAreaView>
 	);
-};
-
-UserPreferencesView.propTypes = {
-	navigation: PropTypes.object
 };
 
 export default UserPreferencesView;
