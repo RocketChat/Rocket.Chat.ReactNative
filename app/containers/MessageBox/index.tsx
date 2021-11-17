@@ -47,6 +47,7 @@ import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
+import { compareServerVersion, methods } from '../../lib/utils';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -109,6 +110,8 @@ interface IMessageBoxProps {
 	sharing: boolean;
 	isActionsEnabled: boolean;
 	usedCannedResponse: string;
+	uploadFilePermission: string[];
+	serverVersion: string;
 }
 
 interface IMessageBoxState {
@@ -185,35 +188,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.selection = { start: 0, end: 0 };
 		this.focused = false;
 
-		// MessageBox Actions
-		this.options = [
-			{
-				title: I18n.t('Take_a_photo'),
-				icon: 'camera-photo',
-				onPress: this.takePhoto
-			},
-			{
-				title: I18n.t('Take_a_video'),
-				icon: 'camera',
-				onPress: this.takeVideo
-			},
-			{
-				title: I18n.t('Choose_from_library'),
-				icon: 'image',
-				onPress: this.chooseFromLibrary
-			},
-			{
-				title: I18n.t('Choose_file'),
-				icon: 'attach',
-				onPress: this.chooseFile
-			},
-			{
-				title: I18n.t('Create_Discussion'),
-				icon: 'discussions',
-				onPress: this.createDiscussion
-			}
-		];
-
 		const libPickerLabels = {
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
@@ -277,6 +251,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			this.onChangeText(usedCannedResponse);
 		}
 
+		this.setOptions();
+
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			// didFocus
 			// We should wait pushed views be dismissed
@@ -293,7 +269,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps: any) {
-		const { isFocused, editing, replying, sharing, usedCannedResponse } = this.props;
+		const { isFocused, editing, replying, sharing, usedCannedResponse, uploadFilePermission } = this.props;
 		if (!isFocused?.()) {
 			return;
 		}
@@ -319,12 +295,15 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			clearTimeout(this.trackingTimeout);
 			this.trackingTimeout = false;
 		}
+		if (!dequal(nextProps.uploadFilePermission, uploadFilePermission)) {
+			this.setOptions();
+		}
 	}
 
-	shouldComponentUpdate(nextProps: any, nextState: any) {
+	shouldComponentUpdate(nextProps: IMessageBoxProps, nextState: IMessageBoxState) {
 		const { showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow, mentionLoading, trackingType } = this.state;
 
-		const { roomType, replying, editing, isFocused, message, theme, usedCannedResponse } = this.props;
+		const { roomType, replying, editing, isFocused, message, theme, usedCannedResponse, uploadFilePermission } = this.props;
 		if (nextProps.theme !== theme) {
 			return true;
 		}
@@ -367,6 +346,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (!dequal(nextProps.message?.id, message?.id)) {
 			return true;
 		}
+		if (!dequal(nextProps.uploadFilePermission, uploadFilePermission)) {
+			return true;
+		}
 		if (nextProps.usedCannedResponse !== usedCannedResponse) {
 			return true;
 		}
@@ -403,6 +385,47 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
+
+	setOptions = async () => {
+		const { uploadFilePermission, serverVersion } = this.props;
+		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission]);
+
+		const uploadActionsArray = [];
+		if (permissionToUpload[0] || compareServerVersion(serverVersion, '4.1.0', methods.lowerThan)) {
+			uploadActionsArray.push(
+				{
+					title: I18n.t('Take_a_photo'),
+					icon: 'camera-photo',
+					onPress: this.takePhoto
+				},
+				{
+					title: I18n.t('Take_a_video'),
+					icon: 'camera',
+					onPress: this.takeVideo
+				},
+				{
+					title: I18n.t('Choose_from_library'),
+					icon: 'image',
+					onPress: this.chooseFromLibrary
+				},
+				{
+					title: I18n.t('Choose_file'),
+					icon: 'attach',
+					onPress: this.chooseFile
+				}
+			);
+		}
+
+		// MessageBox Actions
+		this.options = [
+			...uploadActionsArray,
+			{
+				title: I18n.t('Create_Discussion'),
+				icon: 'discussions',
+				onPress: this.createDiscussion
+			}
+		];
+	};
 
 	onChangeText: any = (text: string): void => {
 		const isTextEmpty = text.length === 0;
@@ -1117,7 +1140,9 @@ const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state),
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
-	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled
+	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
+	uploadFilePermission: state.permissions['mobile-upload-file'],
+	serverVersion: state.server.version
 });
 
 const dispatchToProps = {
