@@ -12,3 +12,4 @@ declare module 'react-native-keycommands';
 declare module 'react-native-mime-types';
 declare module 'react-native-restart';
 declare module 'react-native-prompt-android';
+declare module 'react-native-jitsi-meet';
