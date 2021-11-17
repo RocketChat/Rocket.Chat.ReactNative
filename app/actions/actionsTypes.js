@@ -31,7 +31,8 @@ export const ROOM = createRequestTypes('ROOM', [
 	'FORWARD',
 	'USER_TYPING',
 	'USER_UPLOADING',
-	'USER_RECORDING'
+	'USER_RECORDING',
+	'REMOVE_ACTIVITY'
 ]);
 export const INQUIRY = createRequestTypes('INQUIRY', [
 	...defaultTypes,

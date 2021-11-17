@@ -5,22 +5,25 @@ import { delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import EventEmitter from '../utils/events';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
-import { removedRoom } from '../actions/room';
+import { removedRoom, removeActivity } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
 import log, { events, logEvent } from '../utils/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
 
-const watchUserActivity = function* watchUserActivity({ rid, options = {} }) {
-	const activities = yield select(state => state.room.performingActions) || [];
+const watchUserActivity = function* watchUserActivity({ rid, activity, extras = {}, performing }) {
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
 		yield take(types.LOGIN.SUCCESS);
 	}
 
 	try {
-		yield RocketChat.emitUserActivity({ room: rid, activities, extras: options });
+		if (!performing) {
+			yield put(removeActivity(activity));
+		}
+		const activities = yield select(state => state.room.performingActions) || [];
+		yield RocketChat.emitUserActivity({ room: rid, activities, extras, activity, performing });
 	} catch (e) {
 		log(e);
 	}

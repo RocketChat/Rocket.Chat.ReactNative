@@ -8,6 +8,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import isEmpty from 'lodash/isEmpty';
 
 import defaultSettings from '../constants/settings';
+import { userTyping } from '../constants/userActivities';
 import log from '../utils/log';
 import { getBundleId, isIOS } from '../utils/deviceInfo';
 import fetch from '../utils/fetch';
@@ -1010,7 +1011,7 @@ const RocketChat = {
 	onStreamData(...args) {
 		return this.sdk.onStreamData(...args);
 	},
-	emitUserActivity({ room, activities, extras = {} }) {
+	emitUserActivity({ room, activities, extras = {}, activity, performing }) {
 		const { login, settings, server } = reduxStore.getState();
 		const { UI_Use_Real_Name } = settings;
 		const { version: serverVersion } = server;
@@ -1019,7 +1020,7 @@ const RocketChat = {
 		if (compareServerVersion(serverVersion, '4.0.0', methods.greaterThanOrEqualTo)) {
 			return this.methodCall('stream-notify-room', `${room}/user-activity`, name, activities, extras);
 		} else {
-			return extras.hasOwnProperty('isTyping') && this.methodCall('stream-notify-room', `${room}/typing`, name, extras.isTyping);
+			return activity === userTyping && this.methodCall('stream-notify-room', `${room}/typing`, name, performing);
 		}
 	},
 	setUserPresenceAway() {
