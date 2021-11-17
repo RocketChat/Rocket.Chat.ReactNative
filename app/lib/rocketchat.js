@@ -1004,7 +1004,21 @@ const RocketChat = {
 		return this.sdk.subscribe(...args);
 	},
 	subscribeRoom(...args) {
-		return this.sdk.subscribeRoom(...args);
+		const { server } = reduxStore.getState();
+		const { version: serverVersion } = server;
+		const topic = 'stream-notify-room';
+		let eventUserTyping;
+		if (compareServerVersion(serverVersion, '4.0.0', methods.greaterThanOrEqualTo)) {
+			eventUserTyping = this.subscribe(topic, `${args[0]}/user-activity`, ...args);
+		} else {
+			eventUserTyping = this.subscribe(topic, `${args[0]}/typing`, ...args);
+		}
+
+		return Promise.all([
+			this.subscribe('stream-room-messages', args[0], ...args),
+			eventUserTyping,
+			this.subscribe(topic, `${args[0]}/deleteMessage`, ...args)
+		]);
 	},
 	unsubscribe(subscription) {
 		return this.sdk.unsubscribe(subscription);
