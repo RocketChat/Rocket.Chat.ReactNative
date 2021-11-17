@@ -1,6 +1,6 @@
 import React from 'react';
 // @ts-ignore
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import Avatar from '../containers/Avatar';
 import { CustomIcon } from '../lib/Icons';
@@ -44,8 +44,8 @@ interface IUserItem {
 	username: string;
 	onPress(): void;
 	testID: string;
-	onLongPress(): void;
-	style: any;
+	onLongPress?: () => void;
+	style?: StyleProp<ViewStyle>;
 	icon: string;
 	theme: string;
 }

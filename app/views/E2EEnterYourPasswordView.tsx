@@ -1,7 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -27,18 +28,26 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	}
 });
-class E2EEnterYourPasswordView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
+
+interface IE2EEnterYourPasswordViewState {
+	password: string;
+}
+
+interface IE2EEnterYourPasswordViewProps {
+	encryptionDecodeKey: (password: string) => void;
+	theme: string;
+	navigation: StackNavigationProp<any, 'E2EEnterYourPasswordView'>;
+}
+
+class E2EEnterYourPasswordView extends React.Component<IE2EEnterYourPasswordViewProps, IE2EEnterYourPasswordViewState> {
+	private passwordInput?: TextInput;
+
+	static navigationOptions = ({ navigation }: Pick<IE2EEnterYourPasswordViewProps, 'navigation'>): StackNavigationOptions => ({
 		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='e2e-enter-your-password-view-close' />,
 		title: I18n.t('Enter_Your_E2E_Password')
 	});
 
-	static propTypes = {
-		encryptionDecodeKey: PropTypes.func,
-		theme: PropTypes.string
-	};
-
-	constructor(props) {
+	constructor(props: IE2EEnterYourPasswordViewProps) {
 		super(props);
 		this.state = {
 			password: ''
@@ -65,12 +74,12 @@ class E2EEnterYourPasswordView extends React.Component {
 				<ScrollView
 					{...scrollPersistTaps}
 					style={sharedStyles.container}
-					contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}>
+					contentContainerStyle={sharedStyles.containerScrollView}>
 					<SafeAreaView
 						style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
 						testID='e2e-enter-your-password-view'>
 						<TextInput
-							inputRef={e => {
+							inputRef={(e: TextInput) => {
 								this.passwordInput = e;
 							}}
 							placeholder={I18n.t('Password')}
@@ -99,7 +108,7 @@ class E2EEnterYourPasswordView extends React.Component {
 	}
 }
 
-const mapDispatchToProps = dispatch => ({
-	encryptionDecodeKey: password => dispatch(encryptionDecodeKeyAction(password))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	encryptionDecodeKey: (password: string) => dispatch(encryptionDecodeKeyAction(password))
 });
 export default connect(null, mapDispatchToProps)(withTheme(E2EEnterYourPasswordView));
