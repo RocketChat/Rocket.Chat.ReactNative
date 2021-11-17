@@ -4,7 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
