@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { FlatList, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import { Dispatch } from 'redux';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { FlatList, ScrollView, StyleSheet, Switch, Text, View, SwitchProps } from 'react-native';
 import { dequal } from 'dequal';
 
 import * as List from '../containers/List';
@@ -66,30 +68,59 @@ const styles = StyleSheet.create({
 	}
 });
 
-class CreateChannelView extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		baseUrl: PropTypes.string,
-		create: PropTypes.func.isRequired,
-		removeUser: PropTypes.func.isRequired,
-		error: PropTypes.object,
-		failure: PropTypes.bool,
-		isFetching: PropTypes.bool,
-		encryptionEnabled: PropTypes.bool,
-		users: PropTypes.array.isRequired,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string,
-			roles: PropTypes.array
-		}),
-		theme: PropTypes.string,
-		teamId: PropTypes.string,
-		createPublicChannelPermission: PropTypes.array,
-		createPrivateChannelPermission: PropTypes.array
-	};
+interface IOtherUser {
+	_id: string;
+	name: string;
+	fname: string;
+}
 
-	constructor(props) {
+interface ICreateFunction extends Omit<ICreateChannelViewState, 'channelName' | 'permissions'> {
+	name: string;
+	users: string[];
+	teamId: string;
+}
+
+interface ICreateChannelViewState {
+	channelName: string;
+	type: boolean;
+	readOnly: boolean;
+	encrypted: boolean;
+	broadcast: boolean;
+	isTeam: boolean;
+	permissions: boolean[];
+}
+
+interface ICreateChannelViewProps {
+	navigation: StackNavigationProp<any, 'CreateChannelView'>;
+	route: RouteProp<{ CreateChannelView: { isTeam: boolean; teamId: string } }, 'CreateChannelView'>;
+	baseUrl: string;
+	create: (data: ICreateFunction) => void;
+	removeUser: (user: IOtherUser) => void;
+	error: object;
+	failure: boolean;
+	isFetching: boolean;
+	encryptionEnabled: boolean;
+	users: IOtherUser[];
+	user: {
+		id: string;
+		token: string;
+		roles: string[];
+	};
+	theme: string;
+	teamId: string;
+	createPublicChannelPermission: string[];
+	createPrivateChannelPermission: string[];
+}
+
+interface ISwitch extends SwitchProps {
+	id: string;
+	label: string;
+}
+
+class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
+	private teamId: string;
+
+	constructor(props: ICreateChannelViewProps) {
 		super(props);
 		const { route } = this.props;
 		const isTeam = route?.params?.isTeam || false;
@@ -110,7 +141,7 @@ class CreateChannelView extends React.Component {
 		this.handleHasPermission();
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: ICreateChannelViewProps, nextState: ICreateChannelViewState) {
 		const { channelName, type, readOnly, broadcast, encrypted, permissions } = this.state;
 		const { users, isFetching, encryptionEnabled, theme, createPublicChannelPermission, createPrivateChannelPermission } =
 			this.props;
@@ -153,7 +184,7 @@ class CreateChannelView extends React.Component {
 		return false;
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps: ICreateChannelViewProps) {
 		const { createPublicChannelPermission, createPrivateChannelPermission } = this.props;
 		if (
 			!dequal(createPublicChannelPermission, prevProps.createPublicChannelPermission) ||
@@ -172,7 +203,7 @@ class CreateChannelView extends React.Component {
 		});
 	};
 
-	toggleRightButton = channelName => {
+	toggleRightButton = (channelName: string) => {
 		const { navigation } = this.props;
 		navigation.setOptions({
 			headerRight: () =>
@@ -184,7 +215,7 @@ class CreateChannelView extends React.Component {
 		});
 	};
 
-	onChangeText = channelName => {
+	onChangeText = (channelName: string) => {
 		this.toggleRightButton(channelName);
 		this.setState({ channelName });
 	};
@@ -215,13 +246,13 @@ class CreateChannelView extends React.Component {
 		Review.pushPositiveEvent();
 	};
 
-	removeUser = user => {
+	removeUser = (user: IOtherUser) => {
 		logEvent(events.CR_REMOVE_USER);
 		const { removeUser } = this.props;
 		removeUser(user);
 	};
 
-	renderSwitch = ({ id, value, label, onValueChange, disabled = false }) => {
+	renderSwitch = ({ id, value, label, onValueChange, disabled = false }: ISwitch) => {
 		const { theme } = this.props;
 		return (
 			<View style={[styles.switchContainer, { backgroundColor: themes[theme].backgroundColor }]}>
@@ -253,7 +284,7 @@ class CreateChannelView extends React.Component {
 			value: permissions[1] ? type : false,
 			disabled: isDisabled,
 			label: isTeam ? 'Private_Team' : 'Private_Channel',
-			onValueChange: value => {
+			onValueChange: (value: boolean) => {
 				logEvent(events.CR_TOGGLE_TYPE);
 				// If we set the channel as public, encrypted status should be false
 				this.setState(({ encrypted }) => ({ type: value, encrypted: value && encrypted }));
@@ -313,8 +344,8 @@ class CreateChannelView extends React.Component {
 		});
 	}
 
-	renderItem = ({ item }) => {
-		const { baseUrl, user, theme } = this.props;
+	renderItem = ({ item }: { item: IOtherUser }) => {
+		const { theme } = this.props;
 
 		return (
 			<UserItem
@@ -323,8 +354,6 @@ class CreateChannelView extends React.Component {
 				onPress={() => this.removeUser(item)}
 				testID={`create-channel-view-item-${item.name}`}
 				icon='check'
-				baseUrl={baseUrl}
-				user={user}
 				theme={theme}
 			/>
 		);
@@ -348,7 +377,6 @@ class CreateChannelView extends React.Component {
 				]}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={List.Separator}
-				enableEmptySections
 				keyboardShouldPersistTaps='always'
 			/>
 		);
@@ -371,7 +399,6 @@ class CreateChannelView extends React.Component {
 							<TextInput
 								autoFocus
 								style={[styles.input, { backgroundColor: themes[theme].backgroundColor }]}
-								label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 								value={channelName}
 								onChangeText={this.onChangeText}
 								placeholder={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
@@ -406,7 +433,7 @@ class CreateChannelView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	baseUrl: state.server.server,
 	isFetching: state.createChannel.isFetching,
 	encryptionEnabled: state.encryption.enabled,
@@ -416,9 +443,9 @@ const mapStateToProps = state => ({
 	createPrivateChannelPermission: state.permissions['create-p']
 });
 
-const mapDispatchToProps = dispatch => ({
-	create: data => dispatch(createChannelRequestAction(data)),
-	removeUser: user => dispatch(removeUserAction(user))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	create: (data: ICreateFunction) => dispatch(createChannelRequestAction(data)),
+	removeUser: (user: IOtherUser) => dispatch(removeUserAction(user))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(CreateChannelView));
