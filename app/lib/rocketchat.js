@@ -55,7 +55,7 @@ import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 import sendMessage, { resendMessage } from './methods/sendMessage';
 import { cancelUpload, isUploadActive, sendFileMessage } from './methods/sendFileMessage';
-import callJitsi from './methods/callJitsi';
+import callJitsi, { callJitsiWithoutServer } from './methods/callJitsi';
 import logout, { removeServer } from './methods/logout';
 import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
@@ -77,6 +77,7 @@ const RocketChat = {
 	CURRENT_SERVER,
 	CERTIFICATE_KEY,
 	callJitsi,
+	callJitsiWithoutServer,
 	async subscribeRooms() {
 		if (!this.roomsSub) {
 			try {

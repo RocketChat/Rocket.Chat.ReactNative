@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import { NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
@@ -21,14 +22,71 @@ import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
 import { canUploadFile } from '../../utils/media';
 import { isAndroid } from '../../utils/deviceInfo';
-import { userUploading } from '../../constants/userActivities';
 import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
+import { IAttachment, IServer } from './interfaces';
 
-class ShareView extends Component {
-	constructor(props) {
+interface IPerformingActions {
+	rid: string;
+	extras: { tmid: string };
+	performing: boolean;
+}
+interface IShareViewState {
+	selected: IAttachment;
+	loading: boolean;
+	readOnly: boolean;
+	attachments: IAttachment[];
+	text: string;
+	// TODO: Refactor when migrate room
+	room: any;
+	thread: any;
+	maxFileSize: number;
+	mediaAllowList: number;
+}
+
+interface IShareViewProps {
+	// TODO: Refactor after react-navigation
+	navigation: StackNavigationProp<any, 'ShareView'>;
+	route: RouteProp<
+		{
+			ShareView: {
+				attachments: IAttachment[];
+				isShareView?: boolean;
+				isShareExtension: boolean;
+				serverInfo: IServer;
+				text: string;
+				room: any;
+				thread: any; // change
+			};
+		},
+		'ShareView'
+	>;
+	theme: string;
+	user: {
+		id: string;
+		username: string;
+		token: string;
+	};
+	server: string;
+	FileUpload_MediaTypeWhiteList?: number;
+	FileUpload_MaxFileSize?: number;
+	uploading: ({ rid, extras, performing }: IPerformingActions) => void;
+}
+
+interface IMessageBoxShareView {
+	text: string;
+	forceUpdate(): void;
+}
+
+class ShareView extends Component<IShareViewProps, IShareViewState> {
+	private messagebox: React.RefObject<IMessageBoxShareView>;
+	private files: any[];
+	private isShareExtension: boolean;
+	private serverInfo: any;
+
+	constructor(props: IShareViewProps) {
 		super(props);
 		this.messagebox = React.createRef();
 		this.files = props.route.params?.attachments ?? [];
@@ -36,7 +94,7 @@ class ShareView extends Component {
 		this.serverInfo = props.route.params?.serverInfo ?? {};
 
 		this.state = {
-			selected: {},
+			selected: {} as IAttachment,
 			loading: false,
 			readOnly: false,
 			attachments: [],
@@ -63,7 +121,7 @@ class ShareView extends Component {
 		const { room, thread, readOnly, attachments } = this.state;
 		const { navigation, theme } = this.props;
 
-		const options = {
+		const options: StackNavigationOptions = {
 			headerTitle: () => <Header room={room} thread={thread} />,
 			headerTitleAlign: 'left',
 			headerTintColor: themes[theme].previewTintColor
@@ -71,9 +129,7 @@ class ShareView extends Component {
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
-			options.headerLeft = () => (
-				<HeaderButton.CloseModal navigation={navigation} buttonStyle={{ color: themes[theme].previewTintColor }} />
-			);
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
 		}
 
 		if (!attachments.length && !readOnly) {
@@ -169,7 +225,7 @@ class ShareView extends Component {
 		try {
 			// Send attachment
 			if (attachments.length) {
-				uploading({ rid: room.rid, options: { tmid: thread?.id }, performing: true });
+				uploading({ rid: room.rid, extras: { tmid: thread?.id }, performing: true });
 				await Promise.all(
 					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
 						if (canUpload) {
@@ -191,15 +247,14 @@ class ShareView extends Component {
 						return Promise.resolve();
 					})
 				);
-				uploading({ rid: room.rid, options: { tmid: thread?.id }, performing: false });
-
+				uploading({ rid: room.rid, extras: { tmid: thread?.id }, performing: false });
 				// Send text message
 			} else if (text.length) {
 				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
 			}
 		} catch {
 			// Do nothing
-			uploading({ rid: room.rid, options: { tmid: thread?.id }, performing: false });
+			uploading({ rid: room.rid, extras: { tmid: thread?.id }, performing: false });
 		}
 
 		// if it's share extension this should close
@@ -208,10 +263,10 @@ class ShareView extends Component {
 		}
 	};
 
-	selectFile = item => {
+	selectFile = (item: IAttachment) => {
 		const { attachments, selected } = this.state;
 		if (attachments.length > 0) {
-			const { text } = this.messagebox.current;
+			const text = this.messagebox.current?.text;
 			const newAttachments = attachments.map(att => {
 				if (att.path === selected.path) {
 					att.description = text;
@@ -222,7 +277,7 @@ class ShareView extends Component {
 		}
 	};
 
-	removeFile = item => {
+	removeFile = (item: IAttachment) => {
 		const { selected, attachments } = this.state;
 		let newSelected;
 		if (item.path === selected.path) {
@@ -240,7 +295,7 @@ class ShareView extends Component {
 		});
 	};
 
-	onChangeText = text => {
+	onChangeText = (text: string) => {
 		this.setState({ text });
 	};
 
@@ -271,7 +326,8 @@ class ShareView extends Component {
 						navigation={navigation}
 						isFocused={navigation.isFocused}
 						iOSScrollBehavior={NativeModules.KeyboardTrackingViewManager?.KeyboardTrackingScrollBehaviorNone}
-						isActionsEnabled={false}>
+						isActionsEnabled={false}
+					>
 						<Thumbs
 							attachments={attachments}
 							theme={theme}
@@ -323,22 +379,7 @@ class ShareView extends Component {
 	}
 }
 
-ShareView.propTypes = {
-	navigation: PropTypes.object,
-	route: PropTypes.object,
-	theme: PropTypes.string,
-	user: PropTypes.shape({
-		id: PropTypes.string.isRequired,
-		username: PropTypes.string.isRequired,
-		token: PropTypes.string.isRequired
-	}),
-	server: PropTypes.string,
-	FileUpload_MediaTypeWhiteList: PropTypes.string,
-	FileUpload_MaxFileSize: PropTypes.string,
-	uploading: PropTypes.func
-};
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state),
 	server: state.share.server.server || state.server.server,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
@@ -346,7 +387,7 @@ const mapStateToProps = state => ({
 });
 
 const dispatchToProps = {
-	uploading: ({ rid, options, performing }) => uploadingAction(rid, options, performing)
+	uploading: ({ rid, extras, performing }: IPerformingActions) => uploadingAction(rid, extras, performing)
 };
 
 export default connect(mapStateToProps, dispatchToProps)(withTheme(ShareView));

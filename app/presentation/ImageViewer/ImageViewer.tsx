@@ -32,7 +32,8 @@ export const ImageViewer = ({ uri, imageComponentType, theme, width, height, ...
 			contentContainerStyle={[styles.scrollContent, width && { width }, height && { height }]}
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}
-			maximumZoomScale={2}>
+			maximumZoomScale={2}
+		>
 			<Component style={styles.image} resizeMode='contain' source={{ uri }} {...props} />
 		</ScrollView>
 	);

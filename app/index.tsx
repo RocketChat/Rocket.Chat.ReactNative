@@ -63,10 +63,12 @@ const parseDeepLinking = (url: string) => {
 			}
 		}
 		const call = /^(https:\/\/)?jitsi.rocket.chat\//;
+		const fullURL = url;
+
 		if (url.match(call)) {
 			url = url.replace(call, '').trim();
 			if (url) {
-				return { path: url, isCall: true };
+				return { path: url, isCall: true, fullURL };
 			}
 		}
 	}
@@ -214,7 +216,8 @@ export default class Root extends React.Component<{}, IState> {
 								theme,
 								themePreferences,
 								setTheme: this.setTheme
-							}}>
+							}}
+						>
 							<DimensionsContext.Provider
 								value={{
 									width,
@@ -222,7 +225,8 @@ export default class Root extends React.Component<{}, IState> {
 									scale,
 									fontScale,
 									setDimensions: this.setDimensions
-								}}>
+								}}
+							>
 								<ActionSheetProvider>
 									<AppContainer />
 									<TwoFactor />
