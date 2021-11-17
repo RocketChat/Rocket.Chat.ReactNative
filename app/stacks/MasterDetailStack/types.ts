@@ -5,12 +5,12 @@ import { IAttachment } from '../../definitions/IAttachment';
 import { IMessage } from '../../definitions/IMessage';
 import { IRoom, RoomType } from '../../definitions/IRoom';
 
-export type ChatsStackParamList = {
+export type MasterDetailChatsStackParamList = {
 	RoomView: undefined;
 };
 
-export type DrawerParamList = {
-	ChatsStackNavigator: NavigatorScreenParams<ChatsStackParamList>;
+export type MasterDetailDrawerParamList = {
+	ChatsStackNavigator: NavigatorScreenParams<MasterDetailChatsStackParamList>;
 };
 
 export type ModalStackParamList = {
@@ -167,7 +167,7 @@ export type ModalStackParamList = {
 };
 
 export type InsideStackParamList = {
-	DrawerNavigator: NavigatorScreenParams<DrawerParamList>;
+	DrawerNavigator: NavigatorScreenParams<MasterDetailDrawerParamList>;
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
 	AttachmentView: {
 		attachment: IAttachment;

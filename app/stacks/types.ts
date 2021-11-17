@@ -1,6 +1,7 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
 
+import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage } from '../definitions/IMessage';
 import { IRoom, RoomType } from '../definitions/IRoom';
@@ -224,7 +225,8 @@ export type InsideStackParamList = {
 	ShareView: {
 		attachments: IAttachment[];
 		isShareView?: boolean;
-		serverInfo: {};
+		isShareExtension: boolean;
+		serverInfo: IServer;
 		text: string;
 		room: IRoom;
 		thread: any; // change

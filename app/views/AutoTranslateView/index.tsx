@@ -11,7 +11,7 @@ import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../utils/log';
-import { IRoom } from '../../definition/IRoom';
+import { IRoom } from '../../definitions/IRoom';
 
 const styles = StyleSheet.create({
 	list: {

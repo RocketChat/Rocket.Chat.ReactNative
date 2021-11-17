@@ -18,22 +18,15 @@ import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
-
-type TMessagesViewRouteParams = {
-	MessagesView: {
-		rid: string;
-		t: string;
-		name: string;
-	};
-};
+import { ChatsStackParamList } from '../../stacks/types';
 
 interface IMessagesViewProps {
 	user: {
 		id: string;
 	};
 	baseUrl: string;
-	navigation: StackNavigationProp<any, 'MessagesView'>;
-	route: RouteProp<TMessagesViewRouteParams, 'MessagesView'>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'MessagesView'>;
+	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 	customEmojis: { [key: string]: string };
 	theme: string;
 	showActionSheet: Function;

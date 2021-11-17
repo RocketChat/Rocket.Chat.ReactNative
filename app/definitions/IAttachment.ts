@@ -1,5 +1,5 @@
 export interface IAttachment {
-	title: string;
+	title?: string;
 	title_link?: string;
 	image_url?: string;
 	image_type?: string;

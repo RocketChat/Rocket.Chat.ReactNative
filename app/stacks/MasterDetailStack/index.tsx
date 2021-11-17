@@ -60,10 +60,10 @@ import AddChannelTeamView from '../../views/AddChannelTeamView';
 import AddExistingChannelView from '../../views/AddExistingChannelView';
 import SelectListView from '../../views/SelectListView';
 import { ModalContainer } from './ModalContainer';
-import { ChatsStackParamList, DrawerParamList, InsideStackParamList, ModalStackParamList } from './types';
+import { MasterDetailChatsStackParamList, MasterDetailDrawerParamList, InsideStackParamList, ModalStackParamList } from './types';
 
 // ChatsStackNavigator
-const ChatsStack = createStackNavigator<ChatsStackParamList>();
+const ChatsStack = createStackNavigator<MasterDetailChatsStackParamList>();
 const ChatsStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
 
@@ -88,7 +88,7 @@ const ChatsStackNavigator = React.memo(() => {
 });
 
 // DrawerNavigator
-const Drawer = createDrawerNavigator<DrawerParamList>();
+const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
 const DrawerNavigator = React.memo(() => (
 	<Drawer.Navigator
 		drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />}
