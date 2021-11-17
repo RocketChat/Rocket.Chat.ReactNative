@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Video } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text } from 'react-native';
@@ -15,6 +14,7 @@ import I18n from '../../i18n';
 import { isAndroid } from '../../utils/deviceInfo';
 import { allowPreview } from './utils';
 import { THUMBS_HEIGHT } from './constants';
+import { IAttachment, IUseDimensions } from './interfaces';
 
 const MESSAGEBOX_HEIGHT = 56;
 
@@ -35,7 +35,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const IconPreview = React.memo(({ iconName, title, description, theme, width, height, danger }) => (
+interface IIconPreview {
+	iconName: string;
+	title: string;
+	description?: string;
+	theme: string;
+	width: number;
+	height: number;
+	danger?: boolean;
+}
+
+const IconPreview = React.memo(({ iconName, title, description, theme, width, height, danger }: IIconPreview) => (
 	<ScrollView
 		style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 		contentContainerStyle={[styles.fileContainer, { width, height }]}>
@@ -45,9 +55,16 @@ const IconPreview = React.memo(({ iconName, title, description, theme, width, he
 	</ScrollView>
 ));
 
-const Preview = React.memo(({ item, theme, isShareExtension, length }) => {
+interface IPreview {
+	item: IAttachment;
+	theme: string;
+	isShareExtension: boolean;
+	length: number;
+}
+
+const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview) => {
 	const type = item?.mime;
-	const { width, height } = useDimensions();
+	const { width, height } = useDimensions() as IUseDimensions;
 	const { isLandscape } = useOrientation();
 	const insets = useSafeAreaInsets();
 	const headerHeight = getHeaderHeight(isLandscape);
@@ -111,21 +128,5 @@ const Preview = React.memo(({ item, theme, isShareExtension, length }) => {
 		/>
 	);
 });
-Preview.propTypes = {
-	item: PropTypes.object,
-	theme: PropTypes.string,
-	isShareExtension: PropTypes.bool,
-	length: PropTypes.number
-};
-
-IconPreview.propTypes = {
-	iconName: PropTypes.string,
-	title: PropTypes.string,
-	description: PropTypes.string,
-	theme: PropTypes.string,
-	width: PropTypes.number,
-	height: PropTypes.number,
-	danger: PropTypes.bool
-};
 
 export default Preview;
