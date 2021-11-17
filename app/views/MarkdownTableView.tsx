@@ -1,21 +1,25 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 
-class MarkdownTableView extends React.Component {
-	static navigationOptions = () => ({
+interface IMarkdownTableViewProps {
+	route: RouteProp<
+		{ MarkdownTableView: { renderRows: (drawExtraBorders?: boolean) => JSX.Element; tableWidth: number } },
+		'MarkdownTableView'
+	>;
+	theme: string;
+}
+
+class MarkdownTableView extends React.Component<IMarkdownTableViewProps> {
+	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Table')
 	});
-
-	static propTypes = {
-		route: PropTypes.object,
-		theme: PropTypes.string
-	};
 
 	render() {
 		const { route, theme } = this.props;
