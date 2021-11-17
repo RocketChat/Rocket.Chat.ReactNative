@@ -65,6 +65,7 @@ export const themes: any = {
 		previewBackground: '#1F2329',
 		previewTintColor: '#ffffff',
 		backdropOpacity: 0.3,
+		attachmentLoadingOpacity: 0.7,
 		...mentions
 	},
 	dark: {
@@ -112,6 +113,7 @@ export const themes: any = {
 		previewBackground: '#030b1b',
 		previewTintColor: '#ffffff',
 		backdropOpacity: 0.9,
+		attachmentLoadingOpacity: 0.3,
 		...mentions
 	},
 	black: {
@@ -159,6 +161,7 @@ export const themes: any = {
 		previewBackground: '#000000',
 		previewTintColor: '#ffffff',
 		backdropOpacity: 0.9,
+		attachmentLoadingOpacity: 0.3,
 		...mentions
 	}
 };
