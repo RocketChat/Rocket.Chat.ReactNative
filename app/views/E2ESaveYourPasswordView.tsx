@@ -1,5 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Clipboard, ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -53,20 +54,26 @@ const styles = StyleSheet.create({
 	}
 });
 
-class E2ESaveYourPasswordView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
+interface IE2ESaveYourPasswordViewState {
+	password: string;
+}
+
+interface IE2ESaveYourPasswordViewProps {
+	server: string;
+	navigation: StackNavigationProp<any, 'E2ESaveYourPasswordView'>;
+	encryptionSetBanner(): void;
+	theme: string;
+}
+
+class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewProps, IE2ESaveYourPasswordViewState> {
+	private mounted: boolean;
+
+	static navigationOptions = ({ navigation }: Pick<IE2ESaveYourPasswordViewProps, 'navigation'>) => ({
 		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='e2e-save-your-password-view-close' />,
 		title: I18n.t('Save_Your_E2E_Password')
 	});
 
-	static propTypes = {
-		server: PropTypes.string,
-		navigation: PropTypes.object,
-		encryptionSetBanner: PropTypes.func,
-		theme: PropTypes.string
-	};
-
-	constructor(props) {
+	constructor(props: IE2ESaveYourPasswordViewProps) {
 		super(props);
 		this.mounted = false;
 		this.state = { password: '' };
@@ -83,8 +90,9 @@ class E2ESaveYourPasswordView extends React.Component {
 			// Set stored password on local state
 			const password = await UserPreferences.getStringAsync(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
 			if (this.mounted) {
-				this.setState({ password });
+				this.setState({ password: password! });
 			} else {
+				// @ts-ignore
 				this.state.password = password;
 			}
 		} catch {
@@ -164,10 +172,10 @@ class E2ESaveYourPasswordView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server
 });
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
 	encryptionSetBanner: () => dispatch(encryptionSetBannerAction())
 });
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(E2ESaveYourPasswordView));
