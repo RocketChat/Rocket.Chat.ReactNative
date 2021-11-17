@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-meet';
 import BackgroundTimer from 'react-native-background-timer';
 import { connect } from 'react-redux';
@@ -12,23 +13,36 @@ import { events, logEvent } from '../utils/log';
 import { isAndroid, isIOS } from '../utils/deviceInfo';
 import { withTheme } from '../theme';
 
-const formatUrl = (url, baseUrl, uriSize, avatarAuthURLFragment) =>
+const formatUrl = (url: string, baseUrl: string, uriSize: number, avatarAuthURLFragment: string) =>
 	`${baseUrl}/avatar/${url}?format=png&width=${uriSize}&height=${uriSize}${avatarAuthURLFragment}`;
-class JitsiMeetView extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		baseUrl: PropTypes.string,
-		theme: PropTypes.string,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			username: PropTypes.string,
-			name: PropTypes.string,
-			token: PropTypes.string
-		})
-	};
 
-	constructor(props) {
+interface IJitsiMeetViewState {
+	userInfo: {
+		displayName: string;
+		avatar: string;
+	};
+	loading: boolean;
+}
+
+interface IJitsiMeetViewProps {
+	navigation: StackNavigationProp<any, 'JitsiMeetView'>;
+	route: RouteProp<{ JitsiMeetView: { rid: string; url: string; onlyAudio?: boolean } }, 'JitsiMeetView'>;
+	baseUrl: string;
+	theme: string;
+	user: {
+		id: string;
+		username: string;
+		name: string;
+		token: string;
+	};
+}
+
+class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewState> {
+	private rid: string;
+	private url: string;
+	private jitsiTimeout: number | null;
+
+	constructor(props: IJitsiMeetViewProps) {
 		super(props);
 		this.rid = props.route.params?.rid;
 		this.url = props.route.params?.url;
@@ -82,14 +96,14 @@ class JitsiMeetView extends React.Component {
 	onConferenceJoined = () => {
 		logEvent(events.JM_CONFERENCE_JOIN);
 		if (this.rid) {
-			RocketChat.updateJitsiTimeout(this.rid).catch(e => console.log(e));
+			RocketChat.updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
 			if (this.jitsiTimeout) {
 				BackgroundTimer.clearInterval(this.jitsiTimeout);
 				BackgroundTimer.stopBackgroundTimer();
 				this.jitsiTimeout = null;
 			}
 			this.jitsiTimeout = BackgroundTimer.setInterval(() => {
-				RocketChat.updateJitsiTimeout(this.rid).catch(e => console.log(e));
+				RocketChat.updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
 			}, 10000);
 		}
 	};
@@ -120,7 +134,7 @@ class JitsiMeetView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state),
 	baseUrl: state.server.server
 });
