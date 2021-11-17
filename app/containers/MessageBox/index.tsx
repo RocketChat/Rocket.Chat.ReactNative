@@ -391,7 +391,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission]);
 
 		const uploadActionsArray = [];
-		if (permissionToUpload[0] || compareServerVersion(serverVersion, '4.1.0', methods.lowerThan)) {
+		if (permissionToUpload[0] || compareServerVersion(serverVersion, '4.2.0', methods.lowerThan)) {
 			uploadActionsArray.push(
 				{
 					title: I18n.t('Take_a_photo'),
