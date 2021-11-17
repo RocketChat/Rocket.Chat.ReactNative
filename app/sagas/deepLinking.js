@@ -122,6 +122,11 @@ const handleOpen = function* handleOpen({ params }) {
 				host = id;
 			}
 		});
+
+		if (!host && params.fullURL) {
+			RocketChat.callJitsiWithoutServer(params.fullURL);
+			return;
+		}
 	}
 
 	if (params.type === 'oauth') {
