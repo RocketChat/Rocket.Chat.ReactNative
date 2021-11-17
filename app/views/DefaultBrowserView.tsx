@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions } from '@react-navigation/stack';
 import { FlatList, Linking } from 'react-native';
 
 import I18n from '../i18n';
@@ -13,7 +13,14 @@ import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
 import { events, logEvent } from '../utils/log';
 
-const DEFAULT_BROWSERS = [
+type TValue = 'inApp' | 'systemDefault:' | 'googlechrome:' | 'firefox:' | 'brave:';
+
+interface IBrowsersValues {
+	title: string;
+	value: TValue;
+}
+
+const DEFAULT_BROWSERS: IBrowsersValues[] = [
 	{
 		title: 'In_app',
 		value: 'inApp'
@@ -24,7 +31,7 @@ const DEFAULT_BROWSERS = [
 	}
 ];
 
-const BROWSERS = [
+const BROWSERS: IBrowsersValues[] = [
 	{
 		title: 'Chrome',
 		value: 'googlechrome:'
@@ -39,16 +46,23 @@ const BROWSERS = [
 	}
 ];
 
-class DefaultBrowserView extends React.Component {
-	static navigationOptions = () => ({
+interface IDefaultBrowserViewState {
+	browser: any;
+	supported: any[];
+}
+
+interface IDefaultBrowserViewProps {
+	theme: string;
+}
+
+class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefaultBrowserViewState> {
+	private mounted?: boolean;
+
+	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Default_browser')
 	});
 
-	static propTypes = {
-		theme: PropTypes.string
-	};
-
-	constructor(props) {
+	constructor(props: IDefaultBrowserViewProps) {
 		super(props);
 		this.state = {
 			browser: null,
@@ -74,6 +88,7 @@ class DefaultBrowserView extends React.Component {
 						this.setState(({ supported }) => ({ supported: [...supported, browser] }));
 					} else {
 						const { supported } = this.state;
+						// @ts-ignore
 						this.state.supported = [...supported, browser];
 					}
 				}
@@ -81,7 +96,7 @@ class DefaultBrowserView extends React.Component {
 		});
 	};
 
-	isSelected = value => {
+	isSelected = (value: TValue) => {
 		const { browser } = this.state;
 		if (!browser && value === 'systemDefault:') {
 			return true;
@@ -89,7 +104,7 @@ class DefaultBrowserView extends React.Component {
 		return browser === value;
 	};
 
-	changeDefaultBrowser = async newBrowser => {
+	changeDefaultBrowser = async (newBrowser: TValue) => {
 		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
 		try {
 			const browser = newBrowser !== 'systemDefault:' ? newBrowser : null;
@@ -105,7 +120,7 @@ class DefaultBrowserView extends React.Component {
 		return <List.Icon name='check' color={themes[theme].tintColor} />;
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: IBrowsersValues }) => {
 		const { title, value } = item;
 		return (
 			<List.Item
