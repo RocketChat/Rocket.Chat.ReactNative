@@ -81,8 +81,7 @@ const Video = React.memo(
 				<Touchable
 					onPress={onPress}
 					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}
-				>
+					background={Touchable.Ripple(themes[theme].bannerBackground)}>
 					{loading ? (
 						<RCActivityIndicator theme={theme} />
 					) : (

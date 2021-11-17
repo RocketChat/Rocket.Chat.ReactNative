@@ -216,8 +216,7 @@ export default class Root extends React.Component<{}, IState> {
 								theme,
 								themePreferences,
 								setTheme: this.setTheme
-							}}
-						>
+							}}>
 							<DimensionsContext.Provider
 								value={{
 									width,
@@ -225,8 +224,7 @@ export default class Root extends React.Component<{}, IState> {
 									scale,
 									fontScale,
 									setDimensions: this.setDimensions
-								}}
-							>
+								}}>
 								<ActionSheetProvider>
 									<AppContainer />
 									<TwoFactor />
