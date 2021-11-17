@@ -9,5 +9,6 @@ declare module '@rocket.chat/ui-kit';
 declare module '@rocket.chat/sdk';
 declare module 'react-native-config-reader';
 declare module 'react-native-keycommands';
+declare module 'react-native-mime-types';
 declare module 'react-native-restart';
 declare module 'react-native-prompt-android';
