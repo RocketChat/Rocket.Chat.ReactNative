@@ -1,5 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../i18n';
@@ -24,7 +25,41 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = React.memo(({ item, selected, onItemPress, theme }) => (
+interface IData {
+	label: string;
+	value: string;
+	second?: string;
+}
+
+interface IItem {
+	item: IData;
+	selected: boolean;
+	onItemPress: () => void;
+	theme: string;
+}
+
+interface IPickerViewState {
+	data: IData[];
+	value: string;
+}
+
+interface IParams {
+	title: string;
+	value: string;
+	data: IData[];
+	onChangeText: (value: string) => IData[];
+	goBack: boolean;
+	onChange: Function;
+	onChangeValue: (value: string) => void;
+}
+
+interface IPickerViewProps {
+	navigation: StackNavigationProp<any, 'PickerView'>;
+	route: RouteProp<{ PickerView: IParams }, 'PickerView'>;
+	theme: string;
+}
+
+const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 	<List.Item
 		title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
 		right={selected && (() => <List.Icon name='check' color={themes[theme].tintColor} />)}
@@ -32,25 +67,15 @@ const Item = React.memo(({ item, selected, onItemPress, theme }) => (
 		translateTitle={false}
 	/>
 ));
-Item.propTypes = {
-	item: PropTypes.object,
-	selected: PropTypes.bool,
-	onItemPress: PropTypes.func,
-	theme: PropTypes.string
-};
 
-class PickerView extends React.PureComponent {
-	static navigationOptions = ({ route }) => ({
+class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState> {
+	private onSearch: (text: string) => IData[];
+
+	static navigationOptions = ({ route }: IPickerViewProps) => ({
 		title: route.params?.title ?? I18n.t('Select_an_option')
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		theme: PropTypes.string
-	};
-
-	constructor(props) {
+	constructor(props: IPickerViewProps) {
 		super(props);
 		const data = props.route.params?.data ?? [];
 		const value = props.route.params?.value;
@@ -59,7 +84,7 @@ class PickerView extends React.PureComponent {
 		this.onSearch = props.route.params?.onChangeText;
 	}
 
-	onChangeValue = value => {
+	onChangeValue = (value: string) => {
 		const { navigation, route } = this.props;
 		const goBack = route.params?.goBack ?? true;
 		const onChange = route.params?.onChangeValue ?? (() => {});
@@ -70,7 +95,7 @@ class PickerView extends React.PureComponent {
 	};
 
 	onChangeText = debounce(
-		async text => {
+		async (text: string) => {
 			if (this.onSearch) {
 				const data = await this.onSearch(text);
 				this.setState({ data });
