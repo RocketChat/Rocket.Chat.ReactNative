@@ -16,13 +16,14 @@ const styles = StyleSheet.create({
 
 interface IImageViewer {
 	uri: string;
-	imageComponentType: string;
+	imageComponentType?: string;
 	width: number;
 	height: number;
 	theme: string;
+	onLoadEnd?: () => void;
 }
 
-export const ImageViewer = ({ uri, imageComponentType, theme, width, height, ...props }: IImageViewer) => {
+export const ImageViewer = ({ uri, imageComponentType, theme, width, height, ...props }: IImageViewer): JSX.Element => {
 	const backgroundColor = themes[theme].previewBackground;
 	const Component = ImageComponent(imageComponentType);
 	return (

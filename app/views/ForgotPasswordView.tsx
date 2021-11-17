@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
-import PropTypes from 'prop-types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -14,15 +15,22 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
 
-class ForgotPasswordView extends React.Component {
-	static navigationOptions = ({ route }) => ({
+interface IForgotPasswordViewState {
+	email: string;
+	invalidEmail: boolean;
+	isFetching: boolean;
+}
+
+interface IForgotPasswordViewProps {
+	navigation: StackNavigationProp<any, 'ForgotPasswordView'>;
+	route: RouteProp<{ ForgotPasswordView: { title: string } }, 'ForgotPasswordView'>;
+	theme: string;
+}
+
+class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForgotPasswordViewState> {
+	static navigationOptions = ({ route }: Pick<IForgotPasswordViewProps, 'route'>) => ({
 		title: route.params?.title ?? 'Rocket.Chat'
 	});
-
-	static propTypes = {
-		navigation: PropTypes.object,
-		theme: PropTypes.string
-	};
 
 	state = {
 		email: '',
@@ -30,7 +38,7 @@ class ForgotPasswordView extends React.Component {
 		isFetching: false
 	};
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: IForgotPasswordViewProps, nextState: IForgotPasswordViewState) {
 		const { email, invalidEmail, isFetching } = this.state;
 		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -48,7 +56,7 @@ class ForgotPasswordView extends React.Component {
 		return false;
 	}
 
-	validate = email => {
+	validate = (email: string) => {
 		if (!isValidEmail(email)) {
 			this.setState({ invalidEmail: true });
 			return;
@@ -70,7 +78,7 @@ class ForgotPasswordView extends React.Component {
 				navigation.pop();
 				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 			}
-		} catch (e) {
+		} catch (e: any) {
 			logEvent(events.FP_FORGOT_PASSWORD_F);
 			const msg = (e.data && e.data.error) || I18n.t('There_was_an_error_while_action', { action: I18n.t('resetting_password') });
 			showErrorAlert(msg, I18n.t('Alert'));

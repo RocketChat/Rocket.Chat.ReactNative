@@ -148,6 +148,7 @@
 		"@types/lodash": "^4.14.171",
 		"@types/react": "^17.0.14",
 		"@types/react-native": "^0.62.7",
+		"@types/react-native-background-timer": "^2.0.0",
 		"@types/react-native-config-reader": "^4.1.0",
 		"@types/react-native-platform-touchable": "^1.1.2",
 		"@types/react-native-scrollable-tab-view": "^0.10.2",
