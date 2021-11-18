@@ -3,8 +3,9 @@ import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/core';
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 
+import { MasterDetailInsideStackParamList, ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -19,19 +20,31 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
+import { IRoom, RoomType } from '../../definitions/IRoom';
 
 interface IMessagesViewProps {
 	user: {
 		id: string;
 	};
 	baseUrl: string;
-	navigation: StackNavigationProp<ChatsStackParamList, 'MessagesView'>;
+	navigation: CompositeNavigationProp<
+		StackNavigationProp<ChatsStackParamList, 'MessagesView'>,
+		CompositeNavigationProp<StackNavigationProp<ModalStackParamList>, StackNavigationProp<MasterDetailInsideStackParamList>>
+	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 	customEmojis: { [key: string]: string };
 	theme: string;
 	showActionSheet: Function;
 	useRealName: boolean;
 	isMasterDetail: boolean;
+}
+
+interface IRoomInfoParam {
+	room: IRoom;
+	member: any;
+	rid: string;
+	t: RoomType;
+	joined: boolean;
 }
 
 interface IMessagesViewState {
@@ -114,7 +127,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 		});
 	};
 
-	navToRoomInfo = (navParam: { rid: string }) => {
+	navToRoomInfo = (navParam: IRoomInfoParam) => {
 		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
 			return;

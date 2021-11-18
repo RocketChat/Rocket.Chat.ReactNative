@@ -13,7 +13,7 @@ export type ChatsStackParamList = {
 		t: RoomType;
 		tmid?: string;
 		message?: string;
-		name: string;
+		name?: string;
 		fname: string;
 		prid?: string;
 		room: IRoom;

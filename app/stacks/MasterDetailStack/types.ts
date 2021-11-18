@@ -6,7 +6,19 @@ import { IMessage } from '../../definitions/IMessage';
 import { IRoom, RoomType } from '../../definitions/IRoom';
 
 export type MasterDetailChatsStackParamList = {
-	RoomView: undefined;
+	RoomView: {
+		rid: string;
+		t: RoomType;
+		tmid?: string;
+		message?: string;
+		name: string;
+		fname: string;
+		prid?: string;
+		room: IRoom;
+		jumpToMessageId?: string;
+		jumpToThreadId?: string;
+		roomUserId: string;
+	};
 };
 
 export type MasterDetailDrawerParamList = {
@@ -166,7 +178,7 @@ export type ModalStackParamList = {
 	E2EEncryptionSecurityView: undefined;
 };
 
-export type InsideStackParamList = {
+export type MasterDetailInsideStackParamList = {
 	DrawerNavigator: NavigatorScreenParams<MasterDetailDrawerParamList>;
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
 	AttachmentView: {

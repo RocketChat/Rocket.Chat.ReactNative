@@ -60,7 +60,12 @@ import AddChannelTeamView from '../../views/AddChannelTeamView';
 import AddExistingChannelView from '../../views/AddExistingChannelView';
 import SelectListView from '../../views/SelectListView';
 import { ModalContainer } from './ModalContainer';
-import { MasterDetailChatsStackParamList, MasterDetailDrawerParamList, InsideStackParamList, ModalStackParamList } from './types';
+import {
+	MasterDetailChatsStackParamList,
+	MasterDetailDrawerParamList,
+	MasterDetailInsideStackParamList,
+	ModalStackParamList
+} from './types';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<MasterDetailChatsStackParamList>();
@@ -256,7 +261,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 });
 
 // InsideStackNavigator
-const InsideStack = createStackNavigator<InsideStackParamList>();
+const InsideStack = createStackNavigator<MasterDetailInsideStackParamList>();
 const InsideStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
