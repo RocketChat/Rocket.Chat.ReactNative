@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -10,6 +13,7 @@ import RocketChat from '../lib/rocketchat';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
 import { forwardRoom as forwardRoomAction } from '../actions/room';
+import { ILivechatDepartment } from './definition/ILivechatDepartment';
 
 const styles = StyleSheet.create({
 	container: {
@@ -18,12 +22,43 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }) => {
-	const [departments, setDepartments] = useState([]);
-	const [departmentId, setDepartment] = useState();
-	const [users, setUsers] = useState([]);
+// TODO: Refactor when migrate room
+interface IRoom {
+	departmentId?: any;
+	servedBy?: {
+		_id: string;
+	};
+}
+
+interface ITransferData {
+	roomId: string;
+	userId?: string;
+	departmentId?: string;
+}
+
+interface IUser {
+	username: string;
+	_id: string;
+}
+
+interface IParsedData {
+	label: string;
+	value: string;
+}
+
+interface IForwardLivechatViewProps {
+	navigation: StackNavigationProp<any, 'ForwardLivechatView'>;
+	route: RouteProp<{ ForwardLivechatView: { rid: string } }, 'ForwardLivechatView'>;
+	theme: string;
+	forwardRoom: (rid: string, transferData: ITransferData) => void;
+}
+
+const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForwardLivechatViewProps) => {
+	const [departments, setDepartments] = useState<IParsedData[]>([]);
+	const [departmentId, setDepartment] = useState('');
+	const [users, setUsers] = useState<IParsedData[]>([]);
 	const [userId, setUser] = useState();
-	const [room, setRoom] = useState();
+	const [room, setRoom] = useState<IRoom>({});
 
 	const rid = route.params?.rid;
 
@@ -31,7 +66,9 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }) => {
 		try {
 			const result = await RocketChat.getDepartments();
 			if (result.success) {
-				setDepartments(result.departments.map(department => ({ label: department.name, value: department._id })));
+				setDepartments(
+					result.departments.map((department: ILivechatDepartment) => ({ label: department.name, value: department._id }))
+				);
 			}
 		} catch {
 			// do nothing
@@ -47,7 +84,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }) => {
 				term
 			});
 			if (result.success) {
-				const parsedUsers = result.items.map(user => ({ label: user.username, value: user._id }));
+				const parsedUsers = result.items.map((user: IUser) => ({ label: user.username, value: user._id }));
 				setUsers(parsedUsers);
 				return parsedUsers;
 			}
@@ -69,7 +106,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }) => {
 	};
 
 	const submit = () => {
-		const transferData = { roomId: rid };
+		const transferData: ITransferData = { roomId: rid };
 
 		if (!departmentId && !userId) {
 			return;
@@ -85,11 +122,14 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }) => {
 	};
 
 	useEffect(() => {
+		navigation.setOptions({
+			title: I18n.t('Forward_Chat')
+		});
 		getRoom();
 	}, []);
 
 	useEffect(() => {
-		if (room) {
+		if (!isEmpty(room)) {
 			getUsers();
 			getDepartments();
 		}
@@ -129,18 +169,9 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }) => {
 		</View>
 	);
 };
-ForwardLivechatView.propTypes = {
-	forwardRoom: PropTypes.func,
-	navigation: PropTypes.object,
-	route: PropTypes.object,
-	theme: PropTypes.string
-};
-ForwardLivechatView.navigationOptions = {
-	title: I18n.t('Forward_Chat')
-};
 
-const mapDispatchToProps = dispatch => ({
-	forwardRoom: (rid, transferData) => dispatch(forwardRoomAction(rid, transferData))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	forwardRoom: (rid: string, transferData: ITransferData) => dispatch(forwardRoomAction(rid, transferData))
 });
 
 export default connect(null, mapDispatchToProps)(withTheme(ForwardLivechatView));
