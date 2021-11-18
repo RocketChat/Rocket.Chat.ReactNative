@@ -8,10 +8,10 @@ import ActivityIndicator from '../../ActivityIndicator';
 import styles from './styles';
 
 interface IInput {
-	children: JSX.Element;
+	children?: JSX.Element;
 	onPress: Function;
 	theme: string;
-	inputStyle: object;
+	inputStyle?: object;
 	disabled?: boolean | object;
 	placeholder?: string;
 	loading?: boolean;
