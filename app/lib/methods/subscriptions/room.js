@@ -85,6 +85,12 @@ export default class RoomSubscription {
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
 
+	handleActionTimeout = ({ name, roomId, valueTimeout }) => {
+		reduxStore.dispatch(clearAllUserActivities(name, roomId));
+		clearTimeout(this.actionTimeouts[valueTimeout]);
+		delete this.actionTimeouts[valueTimeout];
+	};
+
 	handleNotifyRoomReceived = protectedFunction(ddpMessage => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		const { UI_Use_Real_Name } = reduxStore.getState().settings;
@@ -130,11 +136,19 @@ export default class RoomSubscription {
 				if (name !== user[key]) {
 					reduxStore.dispatch(addUserActivity(name, activity, roomId));
 				}
-				this.actionTimeouts[roomId] = setTimeout(() => {
-					reduxStore.dispatch(clearAllUserActivities(name, roomId));
-					clearTimeout(this.actionTimeouts[roomId]);
-					delete this.actionTimeouts[roomId];
-				}, TIME_OUT);
+
+				const valueTimeout = `${roomId}-${name}`;
+				if (this.actionTimeouts.hasOwnProperty(valueTimeout)) {
+					// Revalidate the timeouts every new interaction from the same user if he interacted before
+					clearTimeout(this.actionTimeouts[valueTimeout]);
+					this.actionTimeouts[valueTimeout] = setTimeout(() => {
+						this.handleActionTimeout({ name, roomId, valueTimeout });
+					}, TIME_OUT);
+				} else {
+					this.actionTimeouts[valueTimeout] = setTimeout(() => {
+						this.handleActionTimeout({ name, roomId, valueTimeout });
+					}, TIME_OUT);
+				}
 			});
 		}
 
