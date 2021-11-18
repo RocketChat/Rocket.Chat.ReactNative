@@ -1,7 +1,7 @@
-import React, { ForwardedRef, Ref, RefAttributes, RefObject, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { ScrollView, StyleSheet, Text, TextInput as RNTextInput, TextInputProps } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput as RNTextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
@@ -53,10 +53,10 @@ interface IField {
 }
 
 interface IInputs {
-	[key: string]: string;
+	[key: string]: string | undefined;
 	name: string;
 	email: string;
-	phone: string;
+	phone?: string;
 	topic: string;
 	tags: string;
 }
@@ -64,10 +64,10 @@ interface IInputs {
 type TParams = IVisitor & IInputs;
 
 interface IInputsRefs {
-	name: RNTextInput;
-	phone: unknown;
-	topic: unknown;
-	[index: string]: unknown;
+	name: RNTextInput | null;
+	phone: RNTextInput | null;
+	topic: RNTextInput | null;
+	[index: string]: RNTextInput | null;
 }
 
 interface ICustomFields {
@@ -77,17 +77,7 @@ interface ICustomFields {
 interface ILivechatEditViewProps {
 	user: any;
 	navigation: StackNavigationProp<any, 'LivechatEditView'>;
-	route: RouteProp<
-		{
-			LivechatEditView: {
-				// TODO: refactor when migrate room
-				room: any;
-				// TODO: refactor when migrate user
-				roomUser: IVisitor;
-			};
-		},
-		'LivechatEditView'
-	>;
+	route: RouteProp<any, 'LivechatEditView'>;
 	theme: string;
 	editOmnichannelContact: string[];
 	editLivechatRoomCustomfields: string[];
@@ -108,10 +98,8 @@ const LivechatEditView = ({
 	const [availableUserTags, setAvailableUserTags] = useState<string[]>([]);
 	const [permissions, setPermissions] = useState([]);
 
-	// const params: Partial<TParams> = {};
 	const params = {} as TParams;
 	const inputs = {} as IInputsRefs;
-	// const inputs = {} as ForwardedRef<RNTextInput>;
 
 	const livechat = route.params?.room ?? {};
 	const visitor = route.params?.roomUser ?? {};
@@ -196,7 +184,6 @@ const LivechatEditView = ({
 		});
 
 		if (sms) {
-			// @ts-ignore
 			delete userData.phone;
 		}
 
@@ -240,7 +227,7 @@ const LivechatEditView = ({
 						defaultValue={visitor?.name}
 						onChangeText={text => onChangeText('name', text)}
 						onSubmitEditing={() => {
-							inputs.name.focus();
+							inputs.name?.focus();
 						}}
 						theme={theme}
 						editable={!!permissions[0]}
@@ -253,7 +240,7 @@ const LivechatEditView = ({
 						defaultValue={visitor?.visitorEmails && visitor?.visitorEmails[0]?.address}
 						onChangeText={text => onChangeText('email', text)}
 						onSubmitEditing={() => {
-							inputs?.phone.focus();
+							inputs.phone?.focus();
 						}}
 						theme={theme}
 						editable={!!permissions[0]}
@@ -269,9 +256,9 @@ const LivechatEditView = ({
 							const keys = Object.keys(customFields?.visitor || {});
 							if (keys.length > 0) {
 								const key = keys[0];
-								inputs[key].focus();
+								inputs[key]?.focus();
 							} else {
-								inputs?.topic.focus();
+								inputs.topic?.focus();
 							}
 						}}
 						theme={theme}
@@ -287,9 +274,9 @@ const LivechatEditView = ({
 							onChangeText={text => onChangeText(key, text)}
 							onSubmitEditing={() => {
 								if (array.length - 1 > index) {
-									return inputs[array[index + 1][0]].focus();
+									return inputs[array[index + 1][0]]?.focus();
 								}
-								inputs?.topic.focus();
+								inputs.topic?.focus();
 							}}
 							theme={theme}
 							editable={!!permissions[0]}
@@ -322,7 +309,7 @@ const LivechatEditView = ({
 						inputStyle={styles.multiSelect}
 					/>
 
-					{Object.entries(customFields?.livechat || {}).map(([key, value], index, array) => (
+					{Object.entries(customFields?.livechat || {}).map(([key, value], index, array: any) => (
 						<TextInput
 							label={key}
 							defaultValue={value}
@@ -332,8 +319,7 @@ const LivechatEditView = ({
 							onChangeText={text => onChangeText(key, text)}
 							onSubmitEditing={() => {
 								if (array.length - 1 > index) {
-									// @ts-ignore
-									return inputs[array[index + 1]].focus();
+									return inputs[array[index + 1]]?.focus();
 								}
 								submit();
 							}}
