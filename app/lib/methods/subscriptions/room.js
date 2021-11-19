@@ -139,7 +139,7 @@ export default class RoomSubscription {
 					reduxStore.dispatch(addUserActivity(name, event, rid, tmid));
 				}
 
-				// For now we this just for the tmid, because the web isn't removing when is occious
+				// For now, we need this just for the tmid, because the web isn't removing when is idle
 				if (tmid) {
 					const valueTimeout = `${tmid}-${name}`;
 
