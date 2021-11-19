@@ -55,13 +55,15 @@ class UploadProgress extends Component {
 	static propTypes = {
 		width: PropTypes.number,
 		rid: PropTypes.string,
+		tmid: PropTypes.string,
 		theme: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		baseUrl: PropTypes.string.isRequired
+		baseUrl: PropTypes.string.isRequired,
+		uploading: PropTypes.func
 	};
 
 	constructor(props) {
@@ -125,7 +127,9 @@ class UploadProgress extends Component {
 	};
 
 	deleteUpload = async item => {
+		const { rid, tmid, uploading } = this.props;
 		try {
+			uploading({ rid, tmid, performing: false });
 			const db = database.active;
 			await db.action(async () => {
 				await item.destroyPermanently();
@@ -136,7 +140,9 @@ class UploadProgress extends Component {
 	};
 
 	cancelUpload = async item => {
+		const { rid, tmid, uploading } = this.props;
 		try {
+			uploading({ rid, tmid, performing: false });
 			await RocketChat.cancelUpload(item);
 		} catch (e) {
 			log(e);

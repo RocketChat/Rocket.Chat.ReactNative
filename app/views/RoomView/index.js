@@ -53,6 +53,7 @@ import Loading from '../../containers/Loading';
 import { goRoom } from '../../utils/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
+import { uploading as uploadingAction } from '../../actions/room';
 import RoomServices from './services';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
@@ -127,7 +128,8 @@ class RoomView extends React.Component {
 		replyBroadcast: PropTypes.func,
 		width: PropTypes.number,
 		height: PropTypes.number,
-		insets: PropTypes.object
+		insets: PropTypes.object,
+		uploading: PropTypes.func
 	};
 
 	constructor(props) {
@@ -1168,7 +1170,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, reactionsModalVisible, selectedMessage, loading, reacting, showingBlockingLoader } = this.state;
-		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion } = this.props;
+		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion, uploading } = this.props;
 		const { rid, t, sysMes, bannerClosed, announcement } = room;
 
 		return (
@@ -1209,7 +1211,7 @@ class RoomView extends React.Component {
 					height={height}
 					theme={theme}
 				/>
-				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} width={width} />
+				<UploadProgress rid={this.rid} tmid={this.tmid} user={user} baseUrl={baseUrl} width={width} uploading={uploading} />
 				<ReactionsModal
 					message={selectedMessage}
 					isVisible={reactionsModalVisible}
@@ -1241,7 +1243,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	replyBroadcast: message => dispatch(replyBroadcastAction(message))
+	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
+	uploading: ({ rid, tmid, performing }) => dispatch(uploadingAction(rid, tmid, performing))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));
