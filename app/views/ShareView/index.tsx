@@ -30,7 +30,7 @@ import { IAttachment, IServer } from './interfaces';
 
 interface IPerformingActions {
 	rid: string;
-	extras: { tmid: string };
+	tmid: string;
 	performing: boolean;
 }
 interface IShareViewState {
@@ -72,7 +72,7 @@ interface IShareViewProps {
 	server: string;
 	FileUpload_MediaTypeWhiteList?: number;
 	FileUpload_MaxFileSize?: number;
-	uploading: ({ rid, extras, performing }: IPerformingActions) => void;
+	uploading: ({ rid, tmid, performing }: IPerformingActions) => void;
 }
 
 interface IMessageBoxShareView {
@@ -225,7 +225,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		try {
 			// Send attachment
 			if (attachments.length) {
-				uploading({ rid: room.rid, extras: { tmid: thread?.id }, performing: true });
+				uploading({ rid: room.rid, tmid: thread?.id, performing: true });
 				await Promise.all(
 					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
 						if (canUpload) {
@@ -247,14 +247,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						return Promise.resolve();
 					})
 				);
-				uploading({ rid: room.rid, extras: { tmid: thread?.id }, performing: false });
+				uploading({ rid: room.rid, tmid: thread?.id, performing: false });
 				// Send text message
 			} else if (text.length) {
 				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
 			}
 		} catch {
 			// Do nothing
-			uploading({ rid: room.rid, extras: { tmid: thread?.id }, performing: false });
+			uploading({ rid: room.rid, tmid: thread?.id, performing: false });
 		}
 
 		// if it's share extension this should close
@@ -386,7 +386,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const dispatchToProps = {
-	uploading: ({ rid, extras, performing }: IPerformingActions) => uploadingAction(rid, extras, performing)
+	uploading: ({ rid, tmid, performing }: IPerformingActions) => uploadingAction(rid, tmid, performing)
 };
 
 export default connect(mapStateToProps, dispatchToProps)(withTheme(ShareView));

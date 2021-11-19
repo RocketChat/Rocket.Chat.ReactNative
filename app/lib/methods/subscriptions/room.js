@@ -122,7 +122,10 @@ export default class RoomSubscription {
 
 			const [name, events, options] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
-			const roomId = options?.tmid || _rid;
+			const rid = _rid;
+			const tmid = options?.tmid;
+
+			const roomId = tmid || rid;
 
 			if (!events.length) {
 				reduxStore.dispatch(clearAllUserActivities(name, roomId));
@@ -132,22 +135,25 @@ export default class RoomSubscription {
 			}
 
 			events.forEach(event => {
-				const activity = event.toUpperCase().split('-').join('_');
 				if (name !== user[key]) {
-					reduxStore.dispatch(addUserActivity(name, activity, roomId));
+					reduxStore.dispatch(addUserActivity(name, event, roomId));
 				}
 
-				const valueTimeout = `${roomId}-${name}`;
-				if (this.actionTimeouts.hasOwnProperty(valueTimeout)) {
-					// Revalidate the timeouts every new interaction from the same user if he interacted before
-					clearTimeout(this.actionTimeouts[valueTimeout]);
-					this.actionTimeouts[valueTimeout] = setTimeout(() => {
-						this.handleActionTimeout({ name, roomId, valueTimeout });
-					}, TIME_OUT);
-				} else {
-					this.actionTimeouts[valueTimeout] = setTimeout(() => {
-						this.handleActionTimeout({ name, roomId, valueTimeout });
-					}, TIME_OUT);
+				// For now we this just for the tmid, because the web isn't removing when is occious
+				if (tmid) {
+					const valueTimeout = `${tmid}-${name}`;
+
+					if (this.actionTimeouts.hasOwnProperty(valueTimeout)) {
+						// Revalidate the timeouts every new interaction from the same user if he interacted before
+						clearTimeout(this.actionTimeouts[valueTimeout]);
+						this.actionTimeouts[valueTimeout] = setTimeout(() => {
+							this.handleActionTimeout({ name, roomId, valueTimeout });
+						}, TIME_OUT);
+					} else {
+						this.actionTimeouts[valueTimeout] = setTimeout(() => {
+							this.handleActionTimeout({ name, roomId, valueTimeout });
+						}, TIME_OUT);
+					}
 				}
 			});
 		}

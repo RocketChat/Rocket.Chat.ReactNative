@@ -5,6 +5,8 @@ import { dequal } from 'dequal';
 import RoomHeader from './RoomHeader';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
+import { getActivitiesIndicatorSelector } from '../../selectors/usersActivity';
+import { userTyping, userRecording, userUploading } from '../../constants/userActivities';
 
 interface IRoomHeaderContainerProps {
 	title: string;
@@ -14,11 +16,6 @@ interface IRoomHeaderContainerProps {
 	prid: string;
 	tmid: string;
 	teamMain: boolean;
-	userActivity: {
-		typing?: string[];
-		recording?: string[];
-		uploading?: string[];
-	};
 	status: string;
 	statusText: string;
 	connecting: boolean;
@@ -31,11 +28,18 @@ interface IRoomHeaderContainerProps {
 	parentTitle: string;
 	isGroupChat: boolean;
 	testID: string;
+	usersActivity?: {
+		[key: string]: {
+			username: string;
+			activity: typeof userTyping | typeof userRecording | typeof userUploading;
+			count: number;
+		};
+	};
 }
 
 class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 	shouldComponentUpdate(nextProps: IRoomHeaderContainerProps) {
-		const { type, title, subtitle, status, statusText, connecting, connected, onPress, userActivity, width, height, teamMain } =
+		const { type, title, subtitle, status, statusText, connecting, connected, onPress, width, height, teamMain, usersActivity } =
 			this.props;
 		if (nextProps.type !== type) {
 			return true;
@@ -64,7 +68,7 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 		if (nextProps.height !== height) {
 			return true;
 		}
-		if (!dequal(nextProps.userActivity, userActivity)) {
+		if (!dequal(nextProps.usersActivity, usersActivity)) {
 			return true;
 		}
 		if (nextProps.onPress !== onPress) {
@@ -90,14 +94,14 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 			statusText,
 			connecting,
 			connected,
-			userActivity,
 			onPress,
 			roomUserId,
 			width,
 			height,
 			parentTitle,
 			isGroupChat,
-			testID
+			testID,
+			usersActivity
 		} = this.props;
 
 		let subtitle;
@@ -121,7 +125,7 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 				status={status}
 				width={width}
 				height={height}
-				userActivity={userActivity}
+				usersActivity={usersActivity}
 				widthOffset={widthOffset}
 				roomUserId={roomUserId}
 				connecting={connecting}
@@ -150,9 +154,9 @@ const mapStateToProps = (state: any, ownProps: any) => {
 	return {
 		connecting: state.meteor.connecting || state.server.loading,
 		connected: state.meteor.connected,
-		userActivity: state.usersActivity,
 		status,
-		statusText
+		statusText,
+		usersActivity: getActivitiesIndicatorSelector(state)
 	};
 };
 

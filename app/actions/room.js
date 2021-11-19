@@ -54,32 +54,32 @@ export function removedRoom() {
 	};
 }
 
-export function typing(rid, extras = {}, performing = false) {
+export function typing(rid, tmid, performing = false) {
 	return {
 		type: types.ROOM.USER_TYPING,
 		rid,
 		activity: userTyping,
-		extras,
+		tmid,
 		performing
 	};
 }
 
-export function uploading(rid, extras = {}, performing = false) {
+export function uploading(rid, tmid, performing = false) {
 	return {
 		type: types.ROOM.USER_UPLOADING,
 		rid,
 		activity: userUploading,
-		extras,
+		tmid,
 		performing
 	};
 }
 
-export function recording(rid, extras = {}, performing = false) {
+export function recording(rid, tmid, performing = false) {
 	return {
 		type: types.ROOM.USER_RECORDING,
 		rid,
 		activity: userRecording,
-		extras,
+		tmid,
 		performing
 	};
 }

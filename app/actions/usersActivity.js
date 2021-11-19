@@ -1,10 +1,8 @@
-import { ACTIVITIES } from './actionsTypes';
+import { USERS_ACTIVITY } from './actionsTypes';
 
-export function addUserActivity(username, actionType, roomId) {
-	const activity = actionType.split('_')[1].toLowerCase();
-
+export function addUserActivity(username, activity, roomId) {
 	return {
-		type: ACTIVITIES.ADD,
+		type: USERS_ACTIVITY.ADD,
 		roomId,
 		username,
 		activity
@@ -13,7 +11,7 @@ export function addUserActivity(username, actionType, roomId) {
 
 export function clearAllUserActivities(username, roomId) {
 	return {
-		type: ACTIVITIES.CLEAR_ALL_USER_ACTIVITY,
+		type: USERS_ACTIVITY.CLEAR_ALL_USER_ACTIVITY,
 		roomId,
 		username
 	};
@@ -21,6 +19,6 @@ export function clearAllUserActivities(username, roomId) {
 
 export function removeAllRoomActivities() {
 	return {
-		type: ACTIVITIES.REMOVE_ALL_ROOM_ACTIVITIES
+		type: USERS_ACTIVITY.REMOVE_ALL_ROOM_ACTIVITIES
 	};
 }

@@ -104,7 +104,6 @@
   "Apply_Your_Certificate": "Apply Your Certificate",
   "ARCHIVE": "ARCHIVE",
   "archive": "archive",
-  "are": "are",
   "Are_you_sure_question_mark": "Are you sure?",
   "Are_you_sure_you_want_to_leave_the_room": "Are you sure you want to leave the room {{room}}?",
   "Audio": "Audio",
@@ -271,11 +270,10 @@
   "In_app": "In-app",
   "In_App_And_Desktop": "In-app and Desktop",
   "In_App_and_Desktop_Alert_info": "Displays a banner at the top of the screen when app is open, and displays a notification on desktop",
-  "Invisible": "Invisible",
   "Invite": "Invite",
+  "Invisible": "Invisible",
   "is_a_valid_RocketChat_instance": "is a valid Rocket.Chat instance",
   "is_not_a_valid_RocketChat_instance": "is not a valid Rocket.Chat instance",
-  "is": "is",
   "Invalid_or_expired_invite_token": "Invalid or expired invite token",
   "Invalid_server_version": "The server you're trying to connect is using a version that's not supported by the app anymore: {{currentVersion}}.\n\nWe require version {{minVersion}}",
   "Invite_Link": "Invite Link",
@@ -788,5 +786,8 @@
   "Enable_Message_Parser": "Enable Message Parser",
   "Unsupported_format": "Unsupported format",
   "Downloaded_file": "Downloaded file",
-  "Error_Download_file": "Error while downloading file"
+  "Error_Download_file": "Error while downloading file",
+  "username_activity": "{{username}} is {{activity}} {{others}}",
+  "n_others": "and {{n}} others",
+  "one_other": "and 1 other"
 }

@@ -8,6 +8,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import Markdown from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
+import { userTyping, userRecording, userUploading } from '../../constants/userActivities';
 
 const HIT_SLOP = {
 	top: 5,
@@ -42,26 +43,21 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IUserActivity {
-	typing: { [rid: string]: [] };
-	uploading: { [rid: string]: [] };
-	recording: { [rid: string]: [] };
+interface IUsersActivity {
+	[key: string]: {
+		username: string;
+		activity: typeof userTyping | typeof userRecording | typeof userUploading;
+		count: number;
+	};
 }
 
 interface IRoomHeaderSubTitle {
-	userActivity: IUserActivity;
+	usersActivity: IUsersActivity;
 	theme: string;
 	subtitle: string;
 	renderFunc: any;
 	scale: number;
 	roomId: string;
-}
-
-interface IActivityIndicator {
-	performingUsers: string[];
-	fontSize: number;
-	theme: string;
-	activityName: string;
 }
 
 interface IRoomHeaderHeaderTitle {
@@ -85,50 +81,38 @@ interface IRoomHeader {
 	teamMain: boolean;
 	status: string;
 	theme: string;
-	userActivity: IUserActivity;
+	usersActivity: IUsersActivity;
 	isGroupChat: boolean;
 	parentTitle: string;
 	onPress: Function;
 	testID: string;
 }
 
-const ActivityIndicator = ({ performingUsers, fontSize, theme, activityName }: IActivityIndicator) => {
-	const usersText = performingUsers.length === 2 ? performingUsers.join(` ${I18n.t('and')} `) : performingUsers.join(', ');
-	return (
-		<Text style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-			<Text style={styles.typingUsers}>{usersText} </Text>
-			{performingUsers.length > 1 ? I18n.t('are') : I18n.t('is')} {I18n.t(activityName)}...
-		</Text>
-	);
-};
-
-const SubTitle = React.memo(({ roomId, userActivity, subtitle, renderFunc, theme, scale }: IRoomHeaderSubTitle) => {
+const SubTitle = React.memo(({ roomId, usersActivity, subtitle, renderFunc, theme, scale }: IRoomHeaderSubTitle) => {
 	const fontSize = getSubTitleSize(scale);
-	if (userActivity?.uploading?.[roomId]?.length) {
+
+	if (usersActivity?.[roomId] && usersActivity?.[roomId].count > 0) {
+		let others = '';
+		if (usersActivity[roomId].count > 2) {
+			others = I18n.t('n_others', { n: usersActivity[roomId].count - 1 });
+		}
+		if (usersActivity[roomId].count === 2) {
+			others = I18n.t('one_other');
+		}
+
+		const usersText = I18n.t('username_activity', {
+			username: usersActivity[roomId].username,
+			activity: usersActivity[roomId].activity.split('-')[1],
+			others
+		});
+
 		return (
-			<ActivityIndicator
-				performingUsers={userActivity.uploading[roomId]}
-				activityName='uploading'
-				fontSize={fontSize}
-				theme={theme}
-			/>
+			<Text style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+				<Text style={styles.typingUsers}>{usersText}...</Text>
+			</Text>
 		);
 	}
-	if (userActivity?.recording?.[roomId]?.length) {
-		return (
-			<ActivityIndicator
-				performingUsers={userActivity.recording[roomId]}
-				activityName='recording'
-				fontSize={fontSize}
-				theme={theme}
-			/>
-		);
-	}
-	if (userActivity?.typing?.[roomId]?.length) {
-		return (
-			<ActivityIndicator performingUsers={userActivity.typing[roomId]} activityName='typing' fontSize={fontSize} theme={theme} />
-		);
-	}
+
 	// renderFunc
 	if (renderFunc) {
 		return renderFunc();
@@ -184,13 +168,13 @@ const Header = React.memo(
 		isGroupChat,
 		teamMain,
 		testID,
-		userActivity
+		usersActivity
 	}: IRoomHeader) => {
 		const portrait = height > width;
 		let scale = 1;
 
 		if (!portrait && !tmid) {
-			if (!isEmpty(userActivity) || subtitle) {
+			if (!isEmpty(usersActivity) || subtitle) {
 				scale = 0.8;
 			}
 		}
@@ -225,7 +209,7 @@ const Header = React.memo(
 				</View>
 				<SubTitle
 					roomId={tmid || rid}
-					userActivity={userActivity}
+					usersActivity={usersActivity}
 					subtitle={subtitle}
 					theme={theme}
 					renderFunc={renderFunc}

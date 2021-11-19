@@ -11,8 +11,9 @@ import log, { events, logEvent } from '../utils/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
+import { userUploading } from '../constants/userActivities';
 
-const watchUserActivity = function* watchUserActivity({ rid, activity, extras = {}, performing }) {
+const watchUserActivity = function* watchUserActivity({ rid, activity, tmid, performing }) {
 	const auth = yield select(state => state.login.isAuthenticated);
 	if (!auth) {
 		yield take(types.LOGIN.SUCCESS);
@@ -23,7 +24,22 @@ const watchUserActivity = function* watchUserActivity({ rid, activity, extras = 
 			yield put(removeActivity(activity));
 		}
 		const activities = yield select(state => state.room.performingActions) || [];
-		yield RocketChat.emitUserActivity({ room: rid, activities, extras, activity, performing });
+		yield RocketChat.emitUserActivity({ room: rid, activities, extras: { tmid }, activity, performing });
+
+		// Watch the upload activity and until it receive false, will emit continuous each 4 sec that is uploading
+		if (activity === userUploading) {
+			yield delay(4000);
+			while (performing) {
+				yield RocketChat.emitUserActivity({ room: rid, activities, extras: { tmid }, activity, performing });
+			}
+		}
+
+		if (performing) {
+			// Delay to emit false when the user is idle
+			yield delay(5000);
+			yield RocketChat.emitUserActivity({ room: rid, activities: [], extras: { tmid }, activity, performing: false });
+			yield put(removeActivity(activity));
+		}
 	} catch (e) {
 		log(e);
 	}

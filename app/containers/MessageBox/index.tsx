@@ -72,7 +72,7 @@ const videoPickerConfig = {
 
 interface IPerformingActions {
 	rid: string;
-	extras: { tmid: string };
+	tmid: string;
 	performing: boolean;
 }
 
@@ -104,9 +104,9 @@ interface IMessageBoxProps {
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
-	typing: ({ rid, extras, performing }: IPerformingActions) => void;
-	uploading: ({ rid, extras, performing }: IPerformingActions) => void;
-	recording: ({ rid, extras, performing }: IPerformingActions) => void;
+	typing: ({ rid, tmid, performing }: IPerformingActions) => void;
+	uploading: ({ rid, tmid, performing }: IPerformingActions) => void;
+	recording: ({ rid, tmid, performing }: IPerformingActions) => void;
 	theme: string;
 	replyCancel(): void;
 	showSend: boolean;
@@ -625,7 +625,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			typing({ rid, extras: { tmid }, performing: isTyping });
+			typing({ rid, tmid, performing: isTyping });
 			return;
 		}
 
@@ -634,7 +634,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 
 		this.typingTimeout = setTimeout(() => {
-			typing({ rid, extras: { tmid }, performing: isTyping });
+			typing({ rid, tmid, performing: isTyping });
 			this.typingTimeout = false;
 		}, 1000);
 	};
@@ -793,7 +793,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	recordingCallback = (isRecording: boolean) => {
 		const { rid, tmid, recording } = this.props;
 		this.setState({ recording: isRecording });
-		recording({ rid, extras: { tmid }, performing: isRecording });
+		recording({ rid, tmid, performing: isRecording });
 	};
 
 	finishAudioMessage = async (fileInfo: any) => {
@@ -802,11 +802,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					uploading({ rid, extras: { tmid }, performing: true });
+					uploading({ rid, tmid, performing: true });
 					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-					uploading({ rid, extras: { tmid }, performing: false });
+					uploading({ rid, tmid, performing: false });
 				}
 			} catch (e) {
+				uploading({ rid, tmid, performing: false });
 				log(e);
 			}
 		}
@@ -1134,9 +1135,9 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	typing: ({ rid, extras, performing }: IPerformingActions) => dispatch(typingAction(rid, extras, performing)),
-	uploading: ({ rid, extras, performing }: IPerformingActions) => dispatch(uploadingAction(rid, extras, performing)),
-	recording: ({ rid, extras, performing }: IPerformingActions) => dispatch(recordingAction(rid, extras, performing))
+	typing: ({ rid, tmid, performing }: IPerformingActions) => dispatch(typingAction(rid, tmid, performing)),
+	uploading: ({ rid, tmid, performing }: IPerformingActions) => dispatch(uploadingAction(rid, tmid, performing)),
+	recording: ({ rid, tmid, performing }: IPerformingActions) => dispatch(recordingAction(rid, tmid, performing))
 });
 // @ts-ignore
 export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));

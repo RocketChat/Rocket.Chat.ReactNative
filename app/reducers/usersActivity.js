@@ -1,38 +1,46 @@
-import { ACTIVITIES } from '../actions/actionsTypes';
+import { USERS_ACTIVITY } from '../actions/actionsTypes';
 
-const initialState = {
-	typing: {},
-	recording: {},
-	uploading: {}
-};
+/**
+ * The state could be
+ * {
+ *	roomId?: {
+ *		username: action
+ *	},
+ *	tmid?: {
+ *		username: action
+ *	}
+ * }
+ */
+
+const initialState = {};
 
 export default function usersActivity(state = initialState, action) {
 	const { type, roomId, username, activity } = action;
 
 	switch (type) {
-		case ACTIVITIES.ADD:
-			if (state[activity]?.[roomId]) {
-				if (state[activity][roomId].includes(username)) {
-					return state;
-				}
-				return { ...state, [activity]: { ...state[activity], [roomId]: [...state[activity][roomId], username] } };
-			} else {
-				return { ...state, [activity]: { ...state[activity], [roomId]: [username] } };
+		case USERS_ACTIVITY.ADD:
+			if (state[roomId]) {
+				const obj = state[roomId];
+				delete obj[username];
+				return { ...state, [roomId]: { [username]: activity, ...obj } };
 			}
+			const add = {};
+			add[roomId] = { [username]: activity };
+			return { ...state, ...add };
 
-		case ACTIVITIES.CLEAR_ALL_USER_ACTIVITY:
-			const newState = {};
-			Object.keys(state).forEach(activity => {
-				newState[activity] = { ...state[activity] };
-				if (state[activity]?.[roomId]) {
-					const filteredUsers = state[activity][roomId].filter(u => u !== username);
-					newState[activity][roomId] = [...filteredUsers];
-				}
-			});
-			return { ...newState };
+		case USERS_ACTIVITY.CLEAR_ALL_USER_ACTIVITY:
+			const newState = Object.assign({}, state);
+			// We need to do this to delete correctly the roomId
+			const newRoomId = Object.assign({}, newState[roomId]);
+			delete newRoomId[username];
+			if (!Object.keys(newRoomId).length) {
+				delete newState[roomId];
+				return newState;
+			}
+			return { ...newState, ...{ [roomId]: newRoomId } };
 
-		case ACTIVITIES.REMOVE_ALL_ROOM_ACTIVITIES:
-			return { ...initialState };
+		case USERS_ACTIVITY.REMOVE_ALL_ROOM_ACTIVITIES:
+			return initialState;
 
 		default:
 			return state;
