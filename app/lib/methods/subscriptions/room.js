@@ -102,13 +102,11 @@ export default class RoomSubscription {
 			if (rooms[0] !== _rid) {
 				return;
 			}
-			// To transform user-typing to USER_TYPING
-			const activity = userTyping.toUpperCase().split('-').join('_');
 			const [name, typing] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
 				if (typing) {
-					reduxStore.dispatch(addUserActivity(name, activity, _rid));
+					reduxStore.dispatch(addUserActivity(name, userTyping, _rid));
 				} else {
 					reduxStore.dispatch(clearUserActivity(name, _rid));
 				}
