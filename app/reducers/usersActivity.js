@@ -28,7 +28,7 @@ export default function usersActivity(state = initialState, action) {
 			add[roomId] = { [username]: activity };
 			return { ...state, ...add };
 
-		case USERS_ACTIVITY.CLEAR_ALL_USER_ACTIVITY:
+		case USERS_ACTIVITY.CLEAR_USER_ACTIVITY:
 			const newState = Object.assign({}, state);
 			// We need to do this to delete correctly the roomId
 			const newRoomId = Object.assign({}, newState[roomId]);
@@ -39,7 +39,7 @@ export default function usersActivity(state = initialState, action) {
 			}
 			return { ...newState, ...{ [roomId]: newRoomId } };
 
-		case USERS_ACTIVITY.REMOVE_ALL_ROOM_ACTIVITIES:
+		case USERS_ACTIVITY.REMOVE_ROOM_USERS_ACTIVITY:
 			return initialState;
 
 		default:

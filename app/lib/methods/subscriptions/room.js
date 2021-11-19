@@ -8,7 +8,7 @@ import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../database';
 import reduxStore from '../../createStore';
-import { addUserActivity, clearAllUserActivities, removeAllRoomActivities } from '../../../actions/usersActivity';
+import { addUserActivity, clearUserActivity, removeRoomUsersActivity } from '../../../actions/usersActivity';
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
@@ -59,7 +59,7 @@ export default class RoomSubscription {
 				// do nothing
 			}
 		}
-		reduxStore.dispatch(removeAllRoomActivities());
+		reduxStore.dispatch(removeRoomUsersActivity());
 		this.removeListener(this.connectedListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
@@ -81,12 +81,12 @@ export default class RoomSubscription {
 	};
 
 	handleConnection = () => {
-		reduxStore.dispatch(removeAllRoomActivities());
+		reduxStore.dispatch(removeRoomUsersActivity());
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
 
 	handleActionTimeout = ({ name, roomId, valueTimeout }) => {
-		reduxStore.dispatch(clearAllUserActivities(name, roomId));
+		reduxStore.dispatch(clearUserActivity(name, roomId));
 		clearTimeout(this.actionTimeouts[valueTimeout]);
 		delete this.actionTimeouts[valueTimeout];
 	};
@@ -110,7 +110,7 @@ export default class RoomSubscription {
 				if (typing) {
 					reduxStore.dispatch(addUserActivity(name, activity, _rid));
 				} else {
-					reduxStore.dispatch(clearAllUserActivities(name, _rid));
+					reduxStore.dispatch(clearUserActivity(name, _rid));
 				}
 			}
 			return;
@@ -128,7 +128,7 @@ export default class RoomSubscription {
 			const roomId = tmid || rid;
 
 			if (!events.length) {
-				reduxStore.dispatch(clearAllUserActivities(name, roomId));
+				reduxStore.dispatch(clearUserActivity(name, roomId));
 				clearTimeout(this.actionTimeouts[roomId]);
 				delete this.actionTimeouts[roomId];
 				return;
@@ -136,7 +136,7 @@ export default class RoomSubscription {
 
 			events.forEach(event => {
 				if (name !== user[key]) {
-					reduxStore.dispatch(addUserActivity(name, event, roomId));
+					reduxStore.dispatch(addUserActivity(name, event, rid, tmid));
 				}
 
 				// For now we this just for the tmid, because the web isn't removing when is occious

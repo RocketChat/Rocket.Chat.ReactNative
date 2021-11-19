@@ -182,13 +182,12 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 };
 
 const root = function* root() {
-	const { LEAVE, DELETE, CLOSE, FORWARD, USER_TYPING, USER_UPLOADING, USER_RECORDING } = types.ROOM;
-	yield takeLatest(USER_TYPING, watchUserActivity);
-	yield takeLatest(USER_UPLOADING, watchUserActivity);
-	yield takeLatest(USER_RECORDING, watchUserActivity);
-	yield takeLatest(LEAVE, handleLeaveRoom);
-	yield takeLatest(DELETE, handleDeleteRoom);
-	yield takeLatest(CLOSE, handleCloseRoom);
-	yield takeLatest(FORWARD, handleForwardRoom);
+	yield takeLatest(types.ROOM.USER_TYPING, watchUserActivity);
+	yield takeLatest(types.ROOM.USER_UPLOADING, watchUserActivity);
+	yield takeLatest(types.ROOM.USER_RECORDING, watchUserActivity);
+	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
+	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
+	yield takeLatest(types.ROOM.CLOSE, handleCloseRoom);
+	yield takeLatest(types.ROOM.FORWARD, handleForwardRoom);
 };
 export default root;

@@ -57,7 +57,8 @@ interface IRoomHeaderSubTitle {
 	subtitle: string;
 	renderFunc: any;
 	scale: number;
-	roomId: string;
+	rid: string;
+	tmid: string;
 }
 
 interface IRoomHeaderHeaderTitle {
@@ -88,7 +89,8 @@ interface IRoomHeader {
 	testID: string;
 }
 
-const SubTitle = React.memo(({ roomId, usersActivity, subtitle, renderFunc, theme, scale }: IRoomHeaderSubTitle) => {
+const SubTitle = React.memo(({ rid, tmid, usersActivity, subtitle, renderFunc, theme, scale }: IRoomHeaderSubTitle) => {
+	const roomId = tmid || rid;
 	const fontSize = getSubTitleSize(scale);
 
 	if (usersActivity?.[roomId] && usersActivity?.[roomId].count > 0) {
@@ -208,7 +210,8 @@ const Header = React.memo(
 					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} theme={theme} testID={testID} />
 				</View>
 				<SubTitle
-					roomId={tmid || rid}
+					rid={rid}
+					tmid={tmid}
 					usersActivity={usersActivity}
 					subtitle={subtitle}
 					theme={theme}

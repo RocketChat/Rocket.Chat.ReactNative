@@ -1,24 +1,24 @@
 import { USERS_ACTIVITY } from './actionsTypes';
 
-export function addUserActivity(username, activity, roomId) {
+export function addUserActivity(username, activity, rid, tmid) {
 	return {
 		type: USERS_ACTIVITY.ADD,
-		roomId,
+		roomId: tmid || rid,
 		username,
 		activity
 	};
 }
 
-export function clearAllUserActivities(username, roomId) {
+export function clearUserActivity(username, roomId) {
 	return {
-		type: USERS_ACTIVITY.CLEAR_ALL_USER_ACTIVITY,
+		type: USERS_ACTIVITY.CLEAR_USER_ACTIVITY,
 		roomId,
 		username
 	};
 }
 
-export function removeAllRoomActivities() {
+export function removeRoomUsersActivity() {
 	return {
-		type: USERS_ACTIVITY.REMOVE_ALL_ROOM_ACTIVITIES
+		type: USERS_ACTIVITY.REMOVE_ROOM_USERS_ACTIVITY
 	};
 }
