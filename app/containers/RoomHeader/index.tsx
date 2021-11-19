@@ -6,7 +6,7 @@ import RoomHeader from './RoomHeader';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import { getActivitiesIndicatorSelector } from '../../selectors/usersActivity';
-import { userTyping, userRecording, userUploading } from '../../constants/userActivities';
+import { IUsersActivity } from './interfaces';
 
 interface IRoomHeaderContainerProps {
 	title: string;
@@ -28,13 +28,7 @@ interface IRoomHeaderContainerProps {
 	parentTitle: string;
 	isGroupChat: boolean;
 	testID: string;
-	usersActivity?: {
-		[key: string]: {
-			username: string;
-			activity: typeof userTyping | typeof userRecording | typeof userUploading;
-			count: number;
-		};
-	};
+	usersActivity?: IUsersActivity;
 }
 
 class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {

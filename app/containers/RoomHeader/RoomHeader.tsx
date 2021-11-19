@@ -8,7 +8,7 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import Markdown from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
-import { userTyping, userRecording, userUploading } from '../../constants/userActivities';
+import { IUsersActivity } from './interfaces';
 
 const HIT_SLOP = {
 	top: 5,
@@ -42,14 +42,6 @@ const styles = StyleSheet.create({
 		...sharedStyles.textSemibold
 	}
 });
-
-interface IUsersActivity {
-	[key: string]: {
-		username: string;
-		activity: typeof userTyping | typeof userRecording | typeof userUploading;
-		count: number;
-	};
-}
 
 interface IRoomHeaderSubTitle {
 	usersActivity: IUsersActivity;
