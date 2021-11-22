@@ -1,4 +1,4 @@
-import { userTyping, userUploading, userRecording } from '../constants/userActivities';
+import { USER_TYPING, USER_UPLOADING, USER_RECORDING } from '../constants/userActivities';
 import * as types from './actionsTypes';
 
 export function subscribeRoom(rid) {
@@ -54,39 +54,39 @@ export function removedRoom() {
 	};
 }
 
-export function typing(rid, tmid, performing = false) {
+export function userTyping(rid, tmid, performing = false) {
 	return {
 		type: types.ROOM.USER_TYPING,
 		rid,
-		activity: userTyping,
+		activity: USER_TYPING,
 		tmid,
 		performing
 	};
 }
 
-export function uploading(rid, tmid, performing = false) {
+export function userUploading(rid, tmid, performing = false) {
 	return {
 		type: types.ROOM.USER_UPLOADING,
 		rid,
-		activity: userUploading,
+		activity: USER_UPLOADING,
 		tmid,
 		performing
 	};
 }
 
-export function recording(rid, tmid, performing = false) {
+export function userRecording(rid, tmid, performing = false) {
 	return {
 		type: types.ROOM.USER_RECORDING,
 		rid,
-		activity: userRecording,
+		activity: USER_RECORDING,
 		tmid,
 		performing
 	};
 }
 
-export function removeActivity(activity) {
+export function removeUserActivity(activity) {
 	return {
-		type: types.ROOM.REMOVE_ACTIVITY,
+		type: types.ROOM.REMOVE_USER_ACTIVITY,
 		activity
 	};
 }

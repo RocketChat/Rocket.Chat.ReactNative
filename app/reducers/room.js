@@ -56,7 +56,7 @@ export default function (state = initialState, action) {
 				return { ...state };
 			}
 			return { ...state, performingActions: [...state.performingActions, action.activity] };
-		case ROOM.REMOVE_ACTIVITY:
+		case ROOM.REMOVE_USER_ACTIVITY:
 			return { ...state, performingActions: [...state.performingActions.filter(activity => activity !== action.activity)] };
 		default:
 			return state;

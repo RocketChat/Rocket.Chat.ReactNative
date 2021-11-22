@@ -11,7 +11,11 @@ import { Dispatch } from 'redux';
 
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
-import { typing as typingAction, uploading as uploadingAction, recording as recordingAction } from '../../actions/room';
+import {
+	userTyping as userTypingAction,
+	userUploading as userUploadingAction,
+	userRecording as userRecordingAction
+} from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
@@ -104,9 +108,9 @@ interface IMessageBoxProps {
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
-	typing: ({ rid, tmid, performing }: IPerformingActions) => void;
-	uploading: ({ rid, tmid, performing }: IPerformingActions) => void;
-	recording: ({ rid, tmid, performing }: IPerformingActions) => void;
+	userTyping: ({ rid, tmid, performing }: IPerformingActions) => void;
+	userUploading: ({ rid, tmid, performing }: IPerformingActions) => void;
+	userRecording: ({ rid, tmid, performing }: IPerformingActions) => void;
 	theme: string;
 	replyCancel(): void;
 	showSend: boolean;
@@ -616,7 +620,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	handleTyping = (isTyping: boolean) => {
-		const { rid, sharing, tmid, typing } = this.props;
+		const { rid, sharing, tmid, userTyping } = this.props;
 		if (sharing) {
 			return;
 		}
@@ -625,7 +629,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			typing({ rid, tmid, performing: isTyping });
+			userTyping({ rid, tmid, performing: isTyping });
 			return;
 		}
 
@@ -634,7 +638,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 
 		this.typingTimeout = setTimeout(() => {
-			typing({ rid, tmid, performing: isTyping });
+			userTyping({ rid, tmid, performing: isTyping });
 			this.typingTimeout = false;
 		}, 1000);
 	};
@@ -791,23 +795,23 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	recordingCallback = (isRecording: boolean) => {
-		const { rid, tmid, recording } = this.props;
+		const { rid, tmid, userRecording } = this.props;
 		this.setState({ recording: isRecording });
-		recording({ rid, tmid, performing: isRecording });
+		userRecording({ rid, tmid, performing: isRecording });
 	};
 
 	finishAudioMessage = async (fileInfo: any) => {
-		const { rid, tmid, baseUrl: server, user, uploading } = this.props;
+		const { rid, tmid, baseUrl: server, user, userUploading } = this.props;
 
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					uploading({ rid, tmid, performing: true });
+					userUploading({ rid, tmid, performing: true });
 					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-					uploading({ rid, tmid, performing: false });
+					userUploading({ rid, tmid, performing: false });
 				}
 			} catch (e) {
-				uploading({ rid, tmid, performing: false });
+				userUploading({ rid, tmid, performing: false });
 				log(e);
 			}
 		}
@@ -1135,9 +1139,9 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	typing: ({ rid, tmid, performing }: IPerformingActions) => dispatch(typingAction(rid, tmid, performing)),
-	uploading: ({ rid, tmid, performing }: IPerformingActions) => dispatch(uploadingAction(rid, tmid, performing)),
-	recording: ({ rid, tmid, performing }: IPerformingActions) => dispatch(recordingAction(rid, tmid, performing))
+	userTyping: ({ rid, tmid, performing }: IPerformingActions) => dispatch(userTypingAction(rid, tmid, performing)),
+	userUploading: ({ rid, tmid, performing }: IPerformingActions) => dispatch(userUploadingAction(rid, tmid, performing)),
+	userRecording: ({ rid, tmid, performing }: IPerformingActions) => dispatch(userRecordingAction(rid, tmid, performing))
 });
 // @ts-ignore
 export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));

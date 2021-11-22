@@ -9,16 +9,18 @@ export function addUserActivity(username, activity, rid, tmid) {
 	};
 }
 
-export function clearUserActivity(username, roomId) {
+export function clearUserActivity(username, rid, tmid) {
 	return {
 		type: USERS_ACTIVITY.CLEAR_USER_ACTIVITY,
-		roomId,
+		roomId: tmid || rid,
 		username
 	};
 }
 
-export function removeRoomUsersActivity() {
+// We don't need the param tmid here, because we don't subscribe directly to threads, just to rid
+export function removeRoomUsersActivity(rid) {
 	return {
-		type: USERS_ACTIVITY.REMOVE_ROOM_USERS_ACTIVITY
+		type: USERS_ACTIVITY.REMOVE_ROOM_USERS_ACTIVITY,
+		roomId: rid
 	};
 }

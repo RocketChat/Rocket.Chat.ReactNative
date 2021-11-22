@@ -99,7 +99,6 @@
   "Apply_Your_Certificate": "Aplicar certificado",
   "ARCHIVE": "ARQUIVAR",
   "archive": "arquivar",
-  "are": "estão",
   "Are_you_sure_question_mark": "Você tem certeza?",
   "Are_you_sure_you_want_to_leave_the_room": "Tem certeza de que deseja sair da sala {{room}}?",
   "Audio": "Áudio",
@@ -261,7 +260,6 @@
   "In_App_and_Desktop_Alert_info": "Exibe um banner na parte superior da tela quando o aplicativo é aberto e exibe uma notificação na área de trabalho",
   "Invisible": "Invisível",
   "Invite": "Convidar",
-  "is": "está",
   "Invalid_or_expired_invite_token": "Token de convite inválido ou vencido",
   "Invalid_server_version": "O servidor que você está conectando não é suportado mais por esta versão do aplicativo: {{currentVersion}}.\n\nEsta versão do aplicativo requer a versão {{minVersion}} do servidor para funcionar corretamente.",
   "Invite_Link": "Link de Convite",
@@ -739,5 +737,8 @@
   "sending_email_confirmation": "enviando email de confirmação",
   "Unsupported_format": "Formato não suportado",
   "Downloaded_file": "Arquivo baixado",
-  "Error_Download_file": "Erro ao baixar o arquivo"
+  "Error_Download_file": "Erro ao baixar o arquivo",
+  "username_activity": "{{username}} está {{activity}} {{others}}",
+  "n_others": "e {{n}} outros",
+  "one_other": "e 1 outro"
 }

@@ -32,7 +32,7 @@ export const ROOM = createRequestTypes('ROOM', [
 	'USER_TYPING',
 	'USER_UPLOADING',
 	'USER_RECORDING',
-	'REMOVE_ACTIVITY'
+	'REMOVE_USER_ACTIVITY'
 ]);
 export const INQUIRY = createRequestTypes('INQUIRY', [
 	...defaultTypes,

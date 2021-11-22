@@ -40,7 +40,11 @@ export default function usersActivity(state = initialState, action) {
 			return { ...newState, ...{ [roomId]: newRoomId } };
 
 		case USERS_ACTIVITY.REMOVE_ROOM_USERS_ACTIVITY:
-			return initialState;
+			const copyState = Object.assign({}, state);
+			if (copyState.hasOwnProperty(roomId)) {
+				delete copyState[roomId];
+			}
+			return copyState;
 
 		default:
 			return state;

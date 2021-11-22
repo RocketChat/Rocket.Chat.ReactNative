@@ -12,7 +12,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
-import { uploading as uploadingAction } from '../../actions/room';
+import { userUploading as userUploadingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
 import MessageBox from '../../containers/MessageBox';
@@ -72,7 +72,7 @@ interface IShareViewProps {
 	server: string;
 	FileUpload_MediaTypeWhiteList?: number;
 	FileUpload_MaxFileSize?: number;
-	uploading: ({ rid, tmid, performing }: IPerformingActions) => void;
+	userUploading: ({ rid, tmid, performing }: IPerformingActions) => void;
 }
 
 interface IMessageBoxShareView {
@@ -211,7 +211,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		await this.selectFile(selected);
 
 		const { attachments, room, text, thread } = this.state;
-		const { navigation, server, user, uploading } = this.props;
+		const { navigation, server, user, userUploading } = this.props;
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
@@ -225,7 +225,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		try {
 			// Send attachment
 			if (attachments.length) {
-				uploading({ rid: room.rid, tmid: thread?.id, performing: true });
+				userUploading({ rid: room.rid, tmid: thread?.id, performing: true });
 				await Promise.all(
 					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
 						if (canUpload) {
@@ -247,14 +247,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						return Promise.resolve();
 					})
 				);
-				uploading({ rid: room.rid, tmid: thread?.id, performing: false });
+				userUploading({ rid: room.rid, tmid: thread?.id, performing: false });
 				// Send text message
 			} else if (text.length) {
 				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
 			}
 		} catch {
 			// Do nothing
-			uploading({ rid: room.rid, tmid: thread?.id, performing: false });
+			userUploading({ rid: room.rid, tmid: thread?.id, performing: false });
 		}
 
 		// if it's share extension this should close
@@ -386,7 +386,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const dispatchToProps = {
-	uploading: ({ rid, tmid, performing }: IPerformingActions) => uploadingAction(rid, tmid, performing)
+	userUploading: ({ rid, tmid, performing }: IPerformingActions) => userUploadingAction(rid, tmid, performing)
 };
 
 export default connect(mapStateToProps, dispatchToProps)(withTheme(ShareView));

@@ -2,7 +2,7 @@ import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 
-import { userTyping } from '../../../constants/userActivities';
+import { USER_TYPING } from '../../../constants/userActivities';
 import log from '../../../utils/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
@@ -16,7 +16,7 @@ import { Encryption } from '../../encryption';
 import { compareServerVersion, methods } from '../../utils';
 
 const WINDOW_TIME = 1000;
-const TIME_OUT = 15000;
+const USER_ACTIVITY_TIME_OUT = 15000;
 export default class RoomSubscription {
 	constructor(rid) {
 		this.rid = rid;
@@ -26,7 +26,7 @@ export default class RoomSubscription {
 		this.messagesBatch = {};
 		this.threadsBatch = {};
 		this.threadMessagesBatch = {};
-		this.actionTimeouts = {};
+		this.usersActivityTimeout = {};
 	}
 
 	subscribe = async () => {
@@ -59,7 +59,7 @@ export default class RoomSubscription {
 				// do nothing
 			}
 		}
-		reduxStore.dispatch(removeRoomUsersActivity());
+		reduxStore.dispatch(removeRoomUsersActivity(this.rid));
 		this.removeListener(this.connectedListener);
 		this.removeListener(this.disconnectedListener);
 		this.removeListener(this.notifyRoomListener);
@@ -81,14 +81,14 @@ export default class RoomSubscription {
 	};
 
 	handleConnection = () => {
-		reduxStore.dispatch(removeRoomUsersActivity());
+		reduxStore.dispatch(removeRoomUsersActivity(this.rid));
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
 
-	handleActionTimeout = ({ name, roomId, valueTimeout }) => {
-		reduxStore.dispatch(clearUserActivity(name, roomId));
-		clearTimeout(this.actionTimeouts[valueTimeout]);
-		delete this.actionTimeouts[valueTimeout];
+	handleActionTimeout = ({ name, rid, tmid, valueTimeout }) => {
+		reduxStore.dispatch(clearUserActivity(name, rid, tmid));
+		clearTimeout(this.usersActivityTimeout[valueTimeout]);
+		delete this.usersActivityTimeout[valueTimeout];
 	};
 
 	handleNotifyRoomReceived = protectedFunction(ddpMessage => {
@@ -106,7 +106,7 @@ export default class RoomSubscription {
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			if (name !== user[key]) {
 				if (typing) {
-					reduxStore.dispatch(addUserActivity(name, userTyping, _rid));
+					reduxStore.dispatch(addUserActivity(name, USER_TYPING, _rid));
 				} else {
 					reduxStore.dispatch(clearUserActivity(name, _rid));
 				}
@@ -114,7 +114,7 @@ export default class RoomSubscription {
 			return;
 		}
 		if (ev === 'user-activity') {
-			if (rooms[0] !== _rid) {
+			if (!rooms.includes(_rid)) {
 				return;
 			}
 
@@ -123,12 +123,8 @@ export default class RoomSubscription {
 			const rid = _rid;
 			const tmid = options?.tmid;
 
-			const roomId = tmid || rid;
-
 			if (!events.length) {
-				reduxStore.dispatch(clearUserActivity(name, roomId));
-				clearTimeout(this.actionTimeouts[roomId]);
-				delete this.actionTimeouts[roomId];
+				reduxStore.dispatch(clearUserActivity(name, rid, tmid));
 				return;
 			}
 
@@ -138,19 +134,20 @@ export default class RoomSubscription {
 				}
 
 				// For now, we need this just for the tmid, because the web isn't removing when is idle
+				// TODO: Refactor this after
 				if (tmid) {
 					const valueTimeout = `${tmid}-${name}`;
 
-					if (this.actionTimeouts.hasOwnProperty(valueTimeout)) {
+					if (this.usersActivityTimeout.hasOwnProperty(valueTimeout)) {
 						// Revalidate the timeouts every new interaction from the same user if he interacted before
-						clearTimeout(this.actionTimeouts[valueTimeout]);
-						this.actionTimeouts[valueTimeout] = setTimeout(() => {
-							this.handleActionTimeout({ name, roomId, valueTimeout });
-						}, TIME_OUT);
+						clearTimeout(this.usersActivityTimeout[valueTimeout]);
+						this.usersActivityTimeout[valueTimeout] = setTimeout(() => {
+							this.handleActionTimeout({ name, rid, tmid, valueTimeout });
+						}, USER_ACTIVITY_TIME_OUT);
 					} else {
-						this.actionTimeouts[valueTimeout] = setTimeout(() => {
-							this.handleActionTimeout({ name, roomId, valueTimeout });
-						}, TIME_OUT);
+						this.usersActivityTimeout[valueTimeout] = setTimeout(() => {
+							this.handleActionTimeout({ name, rid, tmid, valueTimeout });
+						}, USER_ACTIVITY_TIME_OUT);
 					}
 				}
 			});

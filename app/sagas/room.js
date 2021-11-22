@@ -5,13 +5,13 @@ import { delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import EventEmitter from '../utils/events';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
-import { removedRoom, removeActivity } from '../actions/room';
+import { removedRoom, removeUserActivity } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
 import log, { events, logEvent } from '../utils/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
-import { userUploading } from '../constants/userActivities';
+import { USER_UPLOADING } from '../constants/userActivities';
 
 const watchUserActivity = function* watchUserActivity({ rid, activity, tmid, performing }) {
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -21,13 +21,13 @@ const watchUserActivity = function* watchUserActivity({ rid, activity, tmid, per
 
 	try {
 		if (!performing) {
-			yield put(removeActivity(activity));
+			yield put(removeUserActivity(activity));
 		}
 		const activities = yield select(state => state.room.performingActions) || [];
 		yield RocketChat.emitUserActivity({ room: rid, activities, extras: { tmid }, activity, performing });
 
 		// Watch the upload activity and until it receive false, will emit continuous each 4 sec that is uploading
-		if (activity === userUploading) {
+		if (activity === USER_UPLOADING) {
 			yield delay(4000);
 			while (performing) {
 				yield RocketChat.emitUserActivity({ room: rid, activities, extras: { tmid }, activity, performing });
@@ -38,7 +38,7 @@ const watchUserActivity = function* watchUserActivity({ rid, activity, tmid, per
 			// Delay to emit false when the user is idle
 			yield delay(5000);
 			yield RocketChat.emitUserActivity({ room: rid, activities: [], extras: { tmid }, activity, performing: false });
-			yield put(removeActivity(activity));
+			yield put(removeUserActivity(activity));
 		}
 	} catch (e) {
 		log(e);

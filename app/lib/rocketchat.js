@@ -8,7 +8,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import isEmpty from 'lodash/isEmpty';
 
 import defaultSettings from '../constants/settings';
-import { userTyping } from '../constants/userActivities';
+import { USER_TYPING } from '../constants/userActivities';
 import log from '../utils/log';
 import { getBundleId, isIOS } from '../utils/deviceInfo';
 import fetch from '../utils/fetch';
@@ -1014,6 +1014,7 @@ const RocketChat = {
 			eventUserTyping = this.subscribe(topic, `${args[0]}/typing`, ...args);
 		}
 
+		// From RocketChat/Rocket.Chat.js.SDK#mobile @lib/drivers/ddp.ts 561 ~ 568
 		return Promise.all([
 			this.subscribe('stream-room-messages', args[0], ...args),
 			eventUserTyping,
@@ -1035,7 +1036,7 @@ const RocketChat = {
 		if (compareServerVersion(serverVersion, '4.0.0', methods.greaterThanOrEqualTo)) {
 			return this.methodCall('stream-notify-room', `${room}/user-activity`, name, activities, extras);
 		} else {
-			return activity === userTyping && this.methodCall('stream-notify-room', `${room}/typing`, name, performing);
+			return activity === USER_TYPING && this.methodCall('stream-notify-room', `${room}/typing`, name, performing);
 		}
 	},
 	setUserPresenceAway() {
