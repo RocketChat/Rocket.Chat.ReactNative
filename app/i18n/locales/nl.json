@@ -782,5 +782,8 @@
   "No_canned_responses": "Geen standaardantwoorden",
   "Send_email_confirmation": "Stuur e-mailbevestiging",
   "sending_email_confirmation": "e-mailbevestiging aan het verzenden",
-  "Enable_Message_Parser": "Berichtparser inschakelen"
+  "Enable_Message_Parser": "Berichtparser inschakelen",
+  "Unsupported_format": "Niet ondersteund formaat",
+  "Downloaded_file": "Gedownload bestand",
+  "Error_Download_file": "Fout tijdens het downloaden van bestand"
 }
