@@ -5,7 +5,7 @@ import { dequal } from 'dequal';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 
-import { MasterDetailInsideStackParamList, ModalStackParamList } from '../../stacks/MasterDetailStack/types';
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -29,7 +29,7 @@ interface IMessagesViewProps {
 	baseUrl: string;
 	navigation: CompositeNavigationProp<
 		StackNavigationProp<ChatsStackParamList, 'MessagesView'>,
-		CompositeNavigationProp<StackNavigationProp<ModalStackParamList>, StackNavigationProp<MasterDetailInsideStackParamList>>
+		StackNavigationProp<MasterDetailInsideStackParamList>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 	customEmojis: { [key: string]: string };
@@ -71,17 +71,22 @@ interface IMessageItem {
 }
 
 interface IParams {
-	rid?: string;
-	jumpToMessageId: string;
-	t?: string;
-	room: any;
+	rid: string;
+	t: RoomType;
 	tmid?: string;
+	message?: string;
 	name?: string;
+	fname?: string;
+	prid?: string;
+	room: IRoom;
+	jumpToMessageId?: string;
+	jumpToThreadId?: string;
+	roomUserId?: string;
 }
 
 class MessagesView extends React.Component<IMessagesViewProps, any> {
-	private rid?: string;
-	private t?: string;
+	private rid: string;
+	private t: RoomType;
 	private content: any;
 	private room: any;
 
@@ -153,7 +158,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(this.rid, item.tmid, item._id),
-				t: 'thread'
+				t: RoomType.THREAD
 			};
 			navigation.push('RoomView', params);
 		} else {

@@ -1,6 +1,8 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
+import Model from '@nozbe/watermelondb/Model';
 
+import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage } from '../definitions/IMessage';
@@ -14,12 +16,12 @@ export type ChatsStackParamList = {
 		tmid?: string;
 		message?: string;
 		name?: string;
-		fname: string;
+		fname?: string;
 		prid?: string;
 		room: IRoom;
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
-		roomUserId: string;
+		roomUserId?: string;
 	};
 	RoomActionsView: {
 		room: IRoom;
@@ -58,11 +60,11 @@ export type ChatsStackParamList = {
 		showCloseModal?: boolean;
 	};
 	SelectedUsersView: {
-		maxUsers: number;
-		showButton: boolean;
-		title: string;
-		buttonText: string;
-		nextAction: Function;
+		maxUsers?: number;
+		showButton?: boolean;
+		title?: string;
+		buttonText?: string;
+		nextAction?: Function;
 	};
 	InviteUsersView: {
 		rid: string;
@@ -82,7 +84,7 @@ export type ChatsStackParamList = {
 	DirectoryView: undefined;
 	NotificationPrefView: {
 		rid: string;
-		room: IRoom;
+		room: Model;
 	};
 	VisitorNavigationView: {
 		rid: string;
@@ -92,14 +94,14 @@ export type ChatsStackParamList = {
 	};
 	LivechatEditView: {
 		room: IRoom;
-		roomUser: any; // change
+		roomUser: any; // TODO: Change
 	};
 	PickerView: {
 		title: string;
-		data: []; // change
-		value: any; // change
-		onChangeText: TextInputProps['onChangeText'];
-		goBack: Function;
+		data: IOptionsField[];
+		value?: any; // change
+		onChangeText?: (text: string) => IOptionsField[];
+		goBack?: Function;
 		onChangeValue: Function;
 	};
 	ThreadMessagesView: {
@@ -110,18 +112,19 @@ export type ChatsStackParamList = {
 		teamId: string;
 	};
 	CreateChannelView: {
-		isTeam?: boolean; // to check
+		isTeam?: boolean; // TODO: To check
 		teamId?: string;
 	};
 	AddChannelTeamView: {
 		teamId?: string;
-		teamChannels: []; // change
+		teamChannels: []; // TODO: Change
 	};
 	AddExistingChannelView: {
-		teamId?: boolean;
+		teamId?: string;
+		teamChannels: []; // TODO: Change
 	};
 	MarkdownTableView: {
-		renderRows: Function;
+		renderRows: (drawExtraBorders?: boolean) => JSX.Element;
 		tableWidth: number;
 	};
 	ReadReceiptsView: {
@@ -148,10 +151,10 @@ export type ProfileStackParamList = {
 	UserNotificationPrefView: undefined;
 	PickerView: {
 		title: string;
-		data: []; // change
-		value: any; // change
-		onChangeText: TextInputProps['onChangeText'];
-		goBack: Function;
+		data: IOptionsField[];
+		value: any; // TODO: Change
+		onChangeText?: TextInputProps['onChangeText'];
+		goBack?: Function;
 		onChangeValue: Function;
 	};
 };
@@ -185,14 +188,14 @@ export type DrawerParamList = {
 export type NewMessageStackParamList = {
 	NewMessageView: undefined;
 	SelectedUsersViewCreateChannel: {
-		maxUsers: number;
-		showButton: boolean;
-		title: string;
-		buttonText: string;
-		nextAction: Function;
-	}; // to change
+		maxUsers?: number;
+		showButton?: boolean;
+		title?: string;
+		buttonText?: string;
+		nextAction?: Function;
+	}; // TODO: Change
 	CreateChannelView: {
-		isTeam?: boolean; // to check
+		isTeam?: boolean; // TODO: To check
 		teamId?: string;
 	};
 	CreateDiscussionView: {
@@ -204,8 +207,8 @@ export type NewMessageStackParamList = {
 
 export type E2ESaveYourPasswordStackParamList = {
 	E2ESaveYourPasswordView: undefined;
-	E2EHowItWorksView: {
-		showCloseModal: boolean;
+	E2EHowItWorksView?: {
+		showCloseModal?: boolean;
 	};
 };
 

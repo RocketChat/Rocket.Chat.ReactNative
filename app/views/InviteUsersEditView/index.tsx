@@ -19,6 +19,7 @@ import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../utils/log';
 import styles from './styles';
+import { ChatsStackParamList } from '../../stacks/types';
 
 const OPTIONS = {
 	days: [
@@ -68,8 +69,8 @@ const OPTIONS = {
 };
 
 interface IInviteUsersEditViewProps {
-	navigation: StackNavigationProp<any, 'InviteUsersEditView'>;
-	route: RouteProp<{ InviteUsersEditView: { rid: string } }, 'InviteUsersEditView'>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'InviteUsersEditView'>;
+	route: RouteProp<ChatsStackParamList, 'InviteUsersEditView'>;
 	theme: string;
 	createInviteLink(rid: string): void;
 	inviteLinksSetParams(params: { [key: string]: number }): void;

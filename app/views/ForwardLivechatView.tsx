@@ -14,6 +14,7 @@ import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
 import { forwardRoom as forwardRoomAction } from '../actions/room';
 import { ILivechatDepartment } from './definition/ILivechatDepartment';
+import { ChatsStackParamList } from '../stacks/types';
 
 const styles = StyleSheet.create({
 	container: {
@@ -47,8 +48,8 @@ interface IParsedData {
 }
 
 interface IForwardLivechatViewProps {
-	navigation: StackNavigationProp<any, 'ForwardLivechatView'>;
-	route: RouteProp<{ ForwardLivechatView: { rid: string } }, 'ForwardLivechatView'>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'ForwardLivechatView'>;
+	route: RouteProp<ChatsStackParamList, 'ForwardLivechatView'>;
 	theme: string;
 	forwardRoom: (rid: string, transferData: ITransferData) => void;
 }
@@ -146,8 +147,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			title: I18n.t('Forward_to_department'),
 			value: room?.departmentId,
 			data: departments,
-			onChangeValue: setDepartment,
-			goBack: false
+			onChangeValue: setDepartment
 		});
 	};
 
@@ -156,8 +156,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			title: I18n.t('Forward_to_user'),
 			data: users,
 			onChangeValue: setUser,
-			onChangeText: getUsers,
-			goBack: false
+			onChangeText: getUsers
 		});
 	};
 

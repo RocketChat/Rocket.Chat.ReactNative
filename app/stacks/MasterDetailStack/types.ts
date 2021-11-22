@@ -11,13 +11,13 @@ export type MasterDetailChatsStackParamList = {
 		t: RoomType;
 		tmid?: string;
 		message?: string;
-		name: string;
-		fname: string;
+		name?: string;
+		fname?: string;
 		prid?: string;
 		room: IRoom;
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
-		roomUserId: string;
+		roomUserId?: string;
 	};
 };
 
@@ -179,7 +179,7 @@ export type ModalStackParamList = {
 };
 
 export type MasterDetailInsideStackParamList = {
-	DrawerNavigator: NavigatorScreenParams<MasterDetailDrawerParamList>;
+	DrawerNavigator: NavigatorScreenParams<Partial<MasterDetailDrawerParamList>>; // TODO: Changex
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
 	AttachmentView: {
 		attachment: IAttachment;

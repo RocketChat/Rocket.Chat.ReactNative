@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 });
 
 interface IProps {
-	navigation: StackNavigationProp<any>;
+	navigation: StackNavigationProp<OutsideParamList, 'RegisterView'>;
 	route: RouteProp<OutsideParamList, 'RegisterView'>;
 	server: string;
 	Site_Name: string;
