@@ -1,14 +1,12 @@
 import React from 'react';
-import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView, KeyboardAwareScrollViewProps } from '@codler/react-native-keyboard-aware-scroll-view';
 
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 
-interface IKeyboardViewProps {
-	style: any;
-	contentContainerStyle: any;
+interface IKeyboardViewProps extends KeyboardAwareScrollViewProps {
 	keyboardVerticalOffset: number;
-	scrollEnabled: boolean;
-	children: JSX.Element;
+	scrollEnabled?: boolean;
+	children: React.ReactNode;
 }
 
 export default class KeyboardView extends React.PureComponent<IKeyboardViewProps, any> {
@@ -22,9 +20,7 @@ export default class KeyboardView extends React.PureComponent<IKeyboardViewProps
 				contentContainerStyle={contentContainerStyle}
 				scrollEnabled={scrollEnabled}
 				alwaysBounceVertical={false}
-				extraHeight={keyboardVerticalOffset}
-				// @ts-ignore
-				behavior='position'>
+				extraHeight={keyboardVerticalOffset}>
 				{children}
 			</KeyboardAwareScrollView>
 		);

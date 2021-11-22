@@ -21,19 +21,19 @@ const DisplayPrefsView = props => {
 	const { theme } = useTheme();
 
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useSelector(state => state.sortPreferences);
+	const { isMasterDetail } = useSelector(state => state.app);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const { navigation, isMasterDetail } = props;
+		const { navigation } = props;
 		navigation.setOptions({
-			title: I18n.t('Display'),
-			headerLeft: () =>
-				isMasterDetail ? (
-					<HeaderButton.CloseModal navigation={navigation} testID='display-view-close' />
-				) : (
-					<HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />
-				)
+			title: I18n.t('Display')
 		});
+		if (!isMasterDetail) {
+			navigation.setOptions({
+				headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />
+			});
+		}
 	}, []);
 
 	const setSortPreference = async param => {
