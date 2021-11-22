@@ -54,7 +54,8 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 						});
 					});
 				} catch (e) {
-					return log(e);
+					log(e)
+					reject(e);
 				}
 			}
 
