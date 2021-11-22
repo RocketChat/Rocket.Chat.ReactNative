@@ -5,7 +5,7 @@ const initialState = {
 	isDeleting: false,
 	rooms: [],
 	threads: [],
-	performingActions: []
+	performingActivity: []
 };
 
 export default function (state = initialState, action) {
@@ -52,12 +52,12 @@ export default function (state = initialState, action) {
 		case ROOM.USER_TYPING:
 		case ROOM.USER_UPLOADING:
 		case ROOM.USER_RECORDING:
-			if (state.performingActions.includes(action.activity)) {
+			if (state.performingActivity.includes(action.activity)) {
 				return { ...state };
 			}
-			return { ...state, performingActions: [...state.performingActions, action.activity] };
+			return { ...state, performingActivity: [...state.performingActivity, action.activity] };
 		case ROOM.REMOVE_USER_ACTIVITY:
-			return { ...state, performingActions: [...state.performingActions.filter(activity => activity !== action.activity)] };
+			return { ...state, performingActivity: [...state.performingActivity.filter(activity => activity !== action.activity)] };
 		default:
 			return state;
 	}

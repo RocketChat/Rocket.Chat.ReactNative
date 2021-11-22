@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { NativeModules, Text, View } from 'react-native';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 
@@ -28,7 +29,7 @@ import Header from './Header';
 import styles from './styles';
 import { IAttachment, IServer } from './interfaces';
 
-interface IPerformingActions {
+interface IPerformingActivity {
 	rid: string;
 	tmid: string;
 	performing: boolean;
@@ -72,7 +73,7 @@ interface IShareViewProps {
 	server: string;
 	FileUpload_MediaTypeWhiteList?: number;
 	FileUpload_MaxFileSize?: number;
-	userUploading: ({ rid, tmid, performing }: IPerformingActions) => void;
+	userUploading: ({ rid, tmid, performing }: IPerformingActivity) => void;
 }
 
 interface IMessageBoxShareView {
@@ -385,8 +386,8 @@ const mapStateToProps = (state: any) => ({
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });
 
-const dispatchToProps = {
-	userUploading: ({ rid, tmid, performing }: IPerformingActions) => userUploadingAction(rid, tmid, performing)
-};
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	userUploading: ({ rid, tmid, performing }: IPerformingActivity) => dispatch(userUploadingAction(rid, tmid, performing))
+});
 
-export default connect(mapStateToProps, dispatchToProps)(withTheme(ShareView));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ShareView));

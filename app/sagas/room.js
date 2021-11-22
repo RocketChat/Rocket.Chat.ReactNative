@@ -23,7 +23,7 @@ const watchUserActivity = function* watchUserActivity({ rid, activity, tmid, per
 		if (!performing) {
 			yield put(removeUserActivity(activity));
 		}
-		const activities = yield select(state => state.room.performingActions) || [];
+		const activities = yield select(state => state.room.performingActivity) || [];
 		yield RocketChat.emitUserActivity({ room: rid, activities, extras: { tmid }, activity, performing });
 
 		// Watch the upload activity and until it receive false, will emit continuous each 4 sec that is uploading

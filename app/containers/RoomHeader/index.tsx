@@ -5,7 +5,7 @@ import { dequal } from 'dequal';
 import RoomHeader from './RoomHeader';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
-import { getActivitiesIndicatorSelector } from '../../selectors/usersActivity';
+import { getUsersActivitiesSelector } from '../../selectors/usersActivity';
 import { IUsersActivity } from './interfaces';
 
 interface IRoomHeaderContainerProps {
@@ -150,7 +150,7 @@ const mapStateToProps = (state: any, ownProps: any) => {
 		connected: state.meteor.connected,
 		status,
 		statusText,
-		usersActivity: getActivitiesIndicatorSelector(state)
+		usersActivity: getUsersActivitiesSelector(state)
 	};
 };
 

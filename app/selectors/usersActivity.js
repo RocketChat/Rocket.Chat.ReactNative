@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import isEmpty from 'lodash/isEmpty';
 
-const getActivitiesIndicator = state => {
+const getUsersActivitiesIndicator = state => {
 	if (isEmpty(state.usersActivity)) {
 		return;
 	}
@@ -24,4 +24,4 @@ const getActivitiesIndicator = state => {
 	return result;
 };
 
-export const getActivitiesIndicatorSelector = createSelector([getActivitiesIndicator], activities => activities);
+export const getUsersActivitiesSelector = createSelector([getUsersActivitiesIndicator], activities => activities);

@@ -74,7 +74,7 @@ const videoPickerConfig = {
 	mediaType: 'video'
 };
 
-interface IPerformingActions {
+interface IPerformingActivity {
 	rid: string;
 	tmid: string;
 	performing: boolean;
@@ -108,9 +108,9 @@ interface IMessageBoxProps {
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
-	userTyping: ({ rid, tmid, performing }: IPerformingActions) => void;
-	userUploading: ({ rid, tmid, performing }: IPerformingActions) => void;
-	userRecording: ({ rid, tmid, performing }: IPerformingActions) => void;
+	userTyping: ({ rid, tmid, performing }: IPerformingActivity) => void;
+	userUploading: ({ rid, tmid, performing }: IPerformingActivity) => void;
+	userRecording: ({ rid, tmid, performing }: IPerformingActivity) => void;
 	theme: string;
 	replyCancel(): void;
 	showSend: boolean;
@@ -794,10 +794,10 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ showEmojiKeyboard: true });
 	};
 
-	recordingCallback = (isRecording: boolean) => {
+	recordingCallback = (recording: boolean) => {
 		const { rid, tmid, userRecording } = this.props;
-		this.setState({ recording: isRecording });
-		userRecording({ rid, tmid, performing: isRecording });
+		this.setState({ recording });
+		userRecording({ rid, tmid, performing: recording });
 	};
 
 	finishAudioMessage = async (fileInfo: any) => {
@@ -1139,9 +1139,9 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	userTyping: ({ rid, tmid, performing }: IPerformingActions) => dispatch(userTypingAction(rid, tmid, performing)),
-	userUploading: ({ rid, tmid, performing }: IPerformingActions) => dispatch(userUploadingAction(rid, tmid, performing)),
-	userRecording: ({ rid, tmid, performing }: IPerformingActions) => dispatch(userRecordingAction(rid, tmid, performing))
+	userTyping: ({ rid, tmid, performing }: IPerformingActivity) => dispatch(userTypingAction(rid, tmid, performing)),
+	userUploading: ({ rid, tmid, performing }: IPerformingActivity) => dispatch(userUploadingAction(rid, tmid, performing)),
+	userRecording: ({ rid, tmid, performing }: IPerformingActivity) => dispatch(userRecordingAction(rid, tmid, performing))
 });
 // @ts-ignore
 export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));

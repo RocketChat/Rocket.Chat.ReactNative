@@ -1035,9 +1035,8 @@ const RocketChat = {
 		const name = UI_Use_Real_Name ? user.name : user.username;
 		if (compareServerVersion(serverVersion, '4.0.0', methods.greaterThanOrEqualTo)) {
 			return this.methodCall('stream-notify-room', `${room}/user-activity`, name, activities, extras);
-		} else {
-			return activity === USER_TYPING && this.methodCall('stream-notify-room', `${room}/typing`, name, performing);
 		}
+		return activity === USER_TYPING && this.methodCall('stream-notify-room', `${room}/typing`, name, performing);
 	},
 	setUserPresenceAway() {
 		return this.methodCall('UserPresence:away');
