@@ -99,7 +99,7 @@ export type ChatsStackParamList = {
 	PickerView: {
 		title: string;
 		data: IOptionsField[];
-		value?: any; // change
+		value?: any; // TODO: Change
 		onChangeText?: (text: string) => IOptionsField[];
 		goBack?: Function;
 		onChangeValue: Function;
@@ -232,10 +232,10 @@ export type InsideStackParamList = {
 		serverInfo: IServer;
 		text: string;
 		room: IRoom;
-		thread: any; // change
+		thread: any; // TODO: Change
 	};
 	ModalBlockView: {
-		data: any; // change;
+		data: any; // TODO: Change;
 	};
 	JitsiMeetView: {
 		rid: string;

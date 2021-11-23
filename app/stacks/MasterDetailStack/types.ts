@@ -74,7 +74,7 @@ export type ModalStackParamList = {
 	};
 	AddChannelTeamView: {
 		teamId?: string;
-		teamChannels: []; // change
+		teamChannels: []; // TODO: Change
 	};
 	AddExistingChannelView: {
 		teamId?: boolean;
@@ -117,12 +117,12 @@ export type ModalStackParamList = {
 	};
 	LivechatEditView: {
 		room: IRoom;
-		roomUser: any; // change
+		roomUser: any; // TODO: Change
 	};
 	PickerView: {
 		title: string;
-		data: []; // change
-		value: any; // change
+		data: []; // TODO: Change
+		value: any; // TODO: Change
 		onChangeText: TextInputProps['onChangeText'];
 		goBack: Function;
 		onChangeValue: Function;
@@ -157,9 +157,9 @@ export type ModalStackParamList = {
 		title: string;
 		buttonText: string;
 		nextAction: Function;
-	}; // to change
+	}; // TODO: Change
 	CreateChannelView: {
-		isTeam?: boolean; // to check
+		isTeam?: boolean; // TODO: To check
 		teamId?: string;
 	};
 	CreateDiscussionView: {
@@ -179,13 +179,13 @@ export type ModalStackParamList = {
 };
 
 export type MasterDetailInsideStackParamList = {
-	DrawerNavigator: NavigatorScreenParams<Partial<MasterDetailDrawerParamList>>; // TODO: Changex
+	DrawerNavigator: NavigatorScreenParams<Partial<MasterDetailDrawerParamList>>; // TODO: Change
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
 	AttachmentView: {
 		attachment: IAttachment;
 	};
 	ModalBlockView: {
-		data: any; // change;
+		data: any; // TODO: Change
 	};
 	JitsiMeetView: {
 		rid: string;
@@ -198,6 +198,6 @@ export type MasterDetailInsideStackParamList = {
 		serverInfo: {};
 		text: string;
 		room: IRoom;
-		thread: any; // change
+		thread: any; // TODO: Change
 	};
 };
