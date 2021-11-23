@@ -1419,6 +1419,7 @@ Array [
         </Text>
       </View>
       <View
+        accessibilityLabel="Use"
         accessible={true}
         focusable={true}
         onClick={[Function]}
@@ -1581,6 +1582,7 @@ Array [
         </Text>
       </View>
       <View
+        accessibilityLabel="Use"
         accessible={true}
         focusable={true}
         onClick={[Function]}
@@ -4620,7 +4622,6 @@ exports[`Storyshots List alert 1`] = `
       }
     >
       <View
-        accessibilityLabel="Chats"
         style={
           Array [
             Object {
@@ -4725,7 +4726,6 @@ exports[`Storyshots List alert 1`] = `
       }
     >
       <View
-        accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
         style={
           Array [
             Object {
@@ -4830,7 +4830,6 @@ exports[`Storyshots List alert 1`] = `
       }
     >
       <View
-        accessibilityLabel="Chats"
         style={
           Array [
             Object {
@@ -4975,7 +4974,6 @@ exports[`Storyshots List alert 1`] = `
       }
     >
       <View
-        accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
         style={
           Array [
             Object {
@@ -5277,7 +5275,6 @@ exports[`Storyshots List pressable 1`] = `
       }
     />
     <View
-      accessibilityLabel="Press me"
       style={
         Array [
           Object {
@@ -5347,7 +5344,6 @@ exports[`Storyshots List pressable 1`] = `
       }
     />
     <View
-      accessibilityLabel="I'm disabled"
       style={
         Array [
           Object {
@@ -5494,7 +5490,6 @@ exports[`Storyshots List title and subtitle 1`] = `
       }
     >
       <View
-        accessibilityLabel="Chats"
         style={
           Array [
             Object {
@@ -5572,7 +5567,6 @@ exports[`Storyshots List title and subtitle 1`] = `
       }
     >
       <View
-        accessibilityLabel="Chats"
         style={
           Array [
             Object {
@@ -5669,7 +5663,6 @@ exports[`Storyshots List title and subtitle 1`] = `
       }
     >
       <View
-        accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
         style={
           Array [
             Object {
@@ -5878,7 +5871,6 @@ exports[`Storyshots List with FlatList 1`] = `
           }
         >
           <View
-            accessibilityLabel={0}
             style={
               Array [
                 Object {
@@ -5961,7 +5953,6 @@ exports[`Storyshots List with FlatList 1`] = `
           }
         >
           <View
-            accessibilityLabel={1}
             style={
               Array [
                 Object {
@@ -6044,7 +6035,6 @@ exports[`Storyshots List with FlatList 1`] = `
           }
         >
           <View
-            accessibilityLabel={2}
             style={
               Array [
                 Object {
@@ -6127,7 +6117,6 @@ exports[`Storyshots List with FlatList 1`] = `
           }
         >
           <View
-            accessibilityLabel={3}
             style={
               Array [
                 Object {
@@ -6210,7 +6199,6 @@ exports[`Storyshots List with FlatList 1`] = `
           }
         >
           <View
-            accessibilityLabel={4}
             style={
               Array [
                 Object {
@@ -6293,7 +6281,6 @@ exports[`Storyshots List with FlatList 1`] = `
           }
         >
           <View
-            accessibilityLabel={5}
             style={
               Array [
                 Object {
@@ -6376,7 +6363,6 @@ exports[`Storyshots List with FlatList 1`] = `
           }
         >
           <View
-            accessibilityLabel={6}
             style={
               Array [
                 Object {
@@ -6459,7 +6445,6 @@ exports[`Storyshots List with FlatList 1`] = `
           }
         >
           <View
-            accessibilityLabel={7}
             style={
               Array [
                 Object {
@@ -6542,7 +6527,6 @@ exports[`Storyshots List with FlatList 1`] = `
           }
         >
           <View
-            accessibilityLabel={8}
             style={
               Array [
                 Object {
@@ -6625,7 +6609,6 @@ exports[`Storyshots List with FlatList 1`] = `
           }
         >
           <View
-            accessibilityLabel={9}
             style={
               Array [
                 Object {
@@ -6810,7 +6793,6 @@ exports[`Storyshots List with bigger font 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -6979,7 +6961,6 @@ exports[`Storyshots List with bigger font 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -7226,7 +7207,6 @@ exports[`Storyshots List with bigger font 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -7395,7 +7375,6 @@ exports[`Storyshots List with bigger font 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -7683,7 +7662,6 @@ exports[`Storyshots List with black theme 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -7852,7 +7830,6 @@ exports[`Storyshots List with black theme 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -8099,7 +8076,6 @@ exports[`Storyshots List with black theme 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -8268,7 +8244,6 @@ exports[`Storyshots List with black theme 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -8509,7 +8484,6 @@ exports[`Storyshots List with custom colors 1`] = `
       }
     >
       <View
-        accessibilityLabel="Chats"
         style={
           Array [
             Object {
@@ -8580,7 +8554,6 @@ exports[`Storyshots List with custom colors 1`] = `
       }
     />
     <View
-      accessibilityLabel="Press me!"
       style={
         Array [
           Object {
@@ -8738,7 +8711,6 @@ exports[`Storyshots List with dark theme 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -8907,7 +8879,6 @@ exports[`Storyshots List with dark theme 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -9154,7 +9125,6 @@ exports[`Storyshots List with dark theme 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -9323,7 +9293,6 @@ exports[`Storyshots List with dark theme 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -9564,7 +9533,6 @@ exports[`Storyshots List with icon 1`] = `
       }
     >
       <View
-        accessibilityLabel="Icon Left"
         style={
           Array [
             Object {
@@ -9682,7 +9650,6 @@ exports[`Storyshots List with icon 1`] = `
       }
     >
       <View
-        accessibilityLabel="Icon Right"
         style={
           Array [
             Object {
@@ -9800,7 +9767,6 @@ exports[`Storyshots List with icon 1`] = `
       }
     >
       <View
-        accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
         style={
           Array [
             Object {
@@ -9977,7 +9943,6 @@ exports[`Storyshots List with icon 1`] = `
       }
     >
       <View
-        accessibilityLabel="Show Action Indicator"
         style={
           Array [
             Object {
@@ -10155,7 +10120,6 @@ exports[`Storyshots List with section and info 1`] = `
           }
         >
           <View
-            accessibilityLabel="Section Item"
             style={
               Array [
                 Object {
@@ -10233,7 +10197,6 @@ exports[`Storyshots List with section and info 1`] = `
           }
         >
           <View
-            accessibilityLabel="Section Item"
             style={
               Array [
                 Object {
@@ -10332,7 +10295,6 @@ exports[`Storyshots List with section and info 1`] = `
           }
         >
           <View
-            accessibilityLabel="Section Item"
             style={
               Array [
                 Object {
@@ -10410,7 +10372,6 @@ exports[`Storyshots List with section and info 1`] = `
           }
         >
           <View
-            accessibilityLabel="Section Item"
             style={
               Array [
                 Object {
@@ -10537,7 +10498,6 @@ exports[`Storyshots List with section and info 1`] = `
           }
         >
           <View
-            accessibilityLabel="Section Item"
             style={
               Array [
                 Object {
@@ -10615,7 +10575,6 @@ exports[`Storyshots List with section and info 1`] = `
           }
         >
           <View
-            accessibilityLabel="Section Item"
             style={
               Array [
                 Object {
@@ -10769,7 +10728,6 @@ exports[`Storyshots List with section and info 1`] = `
           }
         >
           <View
-            accessibilityLabel="Section Item"
             style={
               Array [
                 Object {
@@ -10847,7 +10805,6 @@ exports[`Storyshots List with section and info 1`] = `
           }
         >
           <View
-            accessibilityLabel="Section Item"
             style={
               Array [
                 Object {
@@ -11035,7 +10992,6 @@ exports[`Storyshots List with small font 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -11204,7 +11160,6 @@ exports[`Storyshots List with small font 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -11451,7 +11406,6 @@ exports[`Storyshots List with small font 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -11620,7 +11574,6 @@ exports[`Storyshots List with small font 1`] = `
           }
         />
         <View
-          accessibilityLabel="Chats"
           style={
             Array [
               Object {
@@ -41293,6 +41246,7 @@ exports[`Storyshots Message Show a button as attachment 1`] = `
                 Test Button
               </Text>
               <View
+                accessibilityLabel="Text button"
                 accessible={true}
                 focusable={true}
                 onClick={[Function]}
