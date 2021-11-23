@@ -53,7 +53,7 @@ import Loading from '../../containers/Loading';
 import { goRoom } from '../../utils/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
-import { uploading as uploadingAction } from '../../actions/room';
+import { userUploading as userUploadingAction } from '../../actions/room';
 import RoomServices from './services';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
@@ -129,7 +129,7 @@ class RoomView extends React.Component {
 		width: PropTypes.number,
 		height: PropTypes.number,
 		insets: PropTypes.object,
-		uploading: PropTypes.func
+		userUploading: PropTypes.func
 	};
 
 	constructor(props) {
@@ -1170,7 +1170,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, reactionsModalVisible, selectedMessage, loading, reacting, showingBlockingLoader } = this.state;
-		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion, uploading } = this.props;
+		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion, userUploading } = this.props;
 		const { rid, t, sysMes, bannerClosed, announcement } = room;
 
 		return (
@@ -1211,7 +1211,7 @@ class RoomView extends React.Component {
 					height={height}
 					theme={theme}
 				/>
-				<UploadProgress rid={this.rid} tmid={this.tmid} user={user} baseUrl={baseUrl} width={width} uploading={uploading} />
+				<UploadProgress rid={this.rid} tmid={this.tmid} user={user} baseUrl={baseUrl} width={width} uploading={userUploading} />
 				<ReactionsModal
 					message={selectedMessage}
 					isVisible={reactionsModalVisible}
@@ -1244,7 +1244,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
-	uploading: ({ rid, tmid, performing }) => dispatch(uploadingAction(rid, tmid, performing))
+	userUploading: ({ rid, tmid, performing }) => dispatch(userUploadingAction(rid, tmid, performing))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));
