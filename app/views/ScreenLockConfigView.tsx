@@ -18,6 +18,18 @@ import { events, logEvent } from '../utils/log';
 
 const DEFAULT_BIOMETRY = false;
 
+interface IServerRecords extends Model {
+	autoLock?: boolean;
+	autoLockTime?: number;
+	biometry?: boolean;
+}
+
+interface IItem {
+	title: string;
+	value: number;
+	disabled?: boolean;
+}
+
 interface IScreenLockConfigViewProps {
 	theme: string;
 	server: string;
@@ -32,17 +44,6 @@ interface IScreenLockConfigViewState {
 	biometryLabel: null;
 }
 
-interface IServerRecords extends Model {
-	autoLock?: boolean;
-	autoLockTime?: number;
-	biometry?: boolean;
-}
-
-interface IItem {
-	title: string;
-	value: number;
-	disabled?: boolean;
-}
 class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
 	private serverRecord?: IServerRecords;
 
