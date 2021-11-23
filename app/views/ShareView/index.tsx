@@ -4,6 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
+import { Q } from '@nozbe/watermelondb';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
@@ -154,6 +155,16 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 	};
 
+	getPermissionMobileUpload = async () => {
+		const db = database.active;
+		const permissionsCollection = db.get('permissions');
+		const uploadFilePermissionFetch = await permissionsCollection.query(Q.where('id', Q.like('mobile-upload-file'))).fetch();
+		const uploadFilePermission = uploadFilePermissionFetch[0]?.roles;
+		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission]);
+		// uploadFilePermission as undefined is considered that there isn't this permission, so all can upload file.
+		return !uploadFilePermission || permissionToUpload[0];
+	};
+
 	getReadOnly = async () => {
 		const { room } = this.state;
 		const { user } = this.props;
@@ -163,10 +174,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	getAttachments = async () => {
 		const { mediaAllowList, maxFileSize } = this.state;
+		const permissionToUploadFile = await this.getPermissionMobileUpload();
+
 		const items = await Promise.all(
 			this.files.map(async item => {
 				// Check server settings
-				const { success: canUpload, error } = canUploadFile(item, mediaAllowList, maxFileSize);
+				const { success: canUpload, error } = canUploadFile(item, mediaAllowList, maxFileSize, permissionToUploadFile);
 				item.canUpload = canUpload;
 				item.error = error;
 
