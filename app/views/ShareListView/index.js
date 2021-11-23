@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BackHandler, FlatList, Keyboard, PermissionsAndroid, ScrollView, Text, View } from 'react-native';
+import { Alert, BackHandler, FlatList, Keyboard, PermissionsAndroid, ScrollView, Text, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
@@ -54,7 +54,8 @@ class ShareListView extends React.Component {
 			text: '',
 			loading: true,
 			serverInfo: null,
-			needsPermission: isAndroid || false
+			needsPermission: isAndroid || false,
+			permissionToUploadFile: false
 		};
 		this.setHeader();
 		if (isAndroid) {
@@ -96,6 +97,7 @@ class ShareListView extends React.Component {
 		}
 
 		this.getSubscriptions(server);
+		this.getPermissionMobileUpload();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -106,11 +108,14 @@ class ShareListView extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		const { searching, needsPermission } = this.state;
+		const { searching, needsPermission, permissionToUploadFile } = this.state;
 		if (nextState.searching !== searching) {
 			return true;
 		}
 		if (nextState.needsPermission !== needsPermission) {
+			return true;
+		}
+		if (nextState.permissionToUploadFile !== permissionToUploadFile) {
 			return true;
 		}
 
@@ -263,9 +268,24 @@ class ShareListView extends React.Component {
 		return ((item.prid || useRealName) && item.fname) || item.name;
 	};
 
+	getPermissionMobileUpload = async () => {
+		const db = database.active;
+		const permissionsCollection = db.get('permissions');
+		const uploadFilePermissionFetch = await permissionsCollection.query(Q.where('id', Q.like('mobile-upload-file'))).fetch();
+		const uploadFilePermission = uploadFilePermissionFetch[0]?.roles;
+		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission]);
+		// uploadFilePermission as undefined is considered that there isn't this permission, so all can upload file.
+		this.setState({ permissionToUploadFile: !uploadFilePermission || permissionToUpload[0] });
+	};
+
 	shareMessage = room => {
-		const { attachments, text, serverInfo } = this.state;
+		const { attachments, text, serverInfo, permissionToUploadFile } = this.state;
 		const { navigation } = this.props;
+
+		if (attachments.length > 0 && !permissionToUploadFile) {
+			// TODO: Check what is to do here
+			return;
+		}
 
 		navigation.navigate('ShareView', {
 			room,

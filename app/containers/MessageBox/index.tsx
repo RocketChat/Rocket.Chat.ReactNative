@@ -47,7 +47,6 @@ import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
-import { compareServerVersion, methods } from '../../lib/utils';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -387,11 +386,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	setOptions = async () => {
-		const { uploadFilePermission, serverVersion } = this.props;
+		const { uploadFilePermission } = this.props;
 		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission]);
 
 		const uploadActionsArray = [];
-		if (permissionToUpload[0] || compareServerVersion(serverVersion, '4.2.0', methods.lowerThan)) {
+		// uploadFilePermission as undefined is considered that there isn't this permission, so all can upload file.
+		if (permissionToUpload[0] || !uploadFilePermission) {
 			uploadActionsArray.push(
 				{
 					title: I18n.t('Take_a_photo'),
@@ -1141,8 +1141,7 @@ const mapStateToProps = (state: any) => ({
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
-	uploadFilePermission: state.permissions['mobile-upload-file'],
-	serverVersion: state.server.version
+	uploadFilePermission: state.permissions['mobile-upload-file']
 });
 
 const dispatchToProps = {
