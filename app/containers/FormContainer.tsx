@@ -27,13 +27,11 @@ export const FormContainerInner = ({ children }: { children: React.ReactNode }):
 );
 
 const FormContainer = ({ children, theme, testID, ...props }: IFormContainer): JSX.Element => (
-	// @ts-ignore
 	<KeyboardView
 		style={{ backgroundColor: themes[theme].backgroundColor }}
 		contentContainerStyle={sharedStyles.container}
 		keyboardVerticalOffset={128}>
 		<StatusBar />
-		{/* @ts-ignore*/}
 		<ScrollView
 			style={sharedStyles.container}
 			contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
