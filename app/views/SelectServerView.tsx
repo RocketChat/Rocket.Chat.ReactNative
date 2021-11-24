@@ -60,7 +60,6 @@ class SelectServerView extends React.Component<ISelectServerViewProps, ISelectSe
 
 	render() {
 		const { servers } = this.state;
-		console.log('🚀 ~ file: SelectServerView.tsx ~ line 53 ~ SelectServerView ~ render ~ this.state', this.state, this.props);
 		return (
 			<SafeAreaView>
 				<StatusBar />
