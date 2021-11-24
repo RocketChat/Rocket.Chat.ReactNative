@@ -73,15 +73,13 @@ interface ISelectedUsersViewProps {
 }
 
 class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelectedUsersViewState> {
-	// TODO: Refactor React.RefObject
-	private flatlist: any;
+	private flatlist?: FlatList;
 
 	private querySubscription?: Subscription;
 
 	constructor(props: ISelectedUsersViewProps) {
 		super(props);
 		this.init();
-		this.flatlist = React.createRef<FlatList>();
 		const maxUsers = props.route.params?.maxUsers;
 		this.state = {
 			maxUsers,
