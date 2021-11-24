@@ -49,7 +49,7 @@ interface ISelectListViewProps {
 				data: IData[];
 				title: string;
 				infoText: string;
-				nextAction(): void;
+				nextAction(selected: string[]): void;
 				showAlert(): void;
 				isSearch: boolean;
 				onSearch(text: string): IData[];
