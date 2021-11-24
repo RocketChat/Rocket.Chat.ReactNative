@@ -215,7 +215,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		);
 	};
 
-	setFlatListRef = (ref: any) => (this.flatlist = ref);
+	setFlatListRef = (ref: FlatList) => (this.flatlist = ref);
 
 	onContentSizeChange = () => this.flatlist?.scrollToEnd({ animated: true });
 
