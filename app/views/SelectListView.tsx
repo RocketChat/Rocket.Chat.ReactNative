@@ -213,7 +213,6 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 
 	render() {
 		const { data, isSearching, dataFiltered } = this.state;
-		console.log('🚀 ~ file: SelectListView.tsx ~ line 201 ~ SelectListView ~ render ~ this.state', this.state);
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='select-list-view'>
