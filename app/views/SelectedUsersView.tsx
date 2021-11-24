@@ -1,9 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Dispatch } from 'redux';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import { FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 import { Q } from '@nozbe/watermelondb';
+import { Subscription } from 'rxjs';
 
 import * as List from '../containers/List';
 import database from '../lib/database';
@@ -24,31 +27,61 @@ import SafeAreaView from '../containers/SafeAreaView';
 import sharedStyles from './Styles';
 
 const ITEM_WIDTH = 250;
-const getItemLayout = (_, index) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
+const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
 
-class SelectedUsersView extends React.Component {
-	static propTypes = {
-		baseUrl: PropTypes.string,
-		addUser: PropTypes.func.isRequired,
-		removeUser: PropTypes.func.isRequired,
-		reset: PropTypes.func.isRequired,
-		users: PropTypes.array,
-		loading: PropTypes.bool,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string,
-			username: PropTypes.string,
-			name: PropTypes.string
-		}),
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		theme: PropTypes.string
+interface IUser {
+	_id: string;
+	name: string;
+	fname: string;
+	search?: boolean;
+	// username is used when is from searching
+	username?: string;
+}
+interface ISelectedUsersViewState {
+	maxUsers: number;
+	search: IUser[];
+	chats: IUser[];
+}
+
+interface ISelectedUsersViewProps {
+	navigation: StackNavigationProp<any, 'SelectedUsersView'>;
+	route: RouteProp<
+		{
+			SelectedUsersView: {
+				maxUsers: number;
+				showButton: boolean;
+				title: string;
+				buttonText: string;
+				nextAction(): void;
+			};
+		},
+		'SelectedUsersView'
+	>;
+	baseUrl: string;
+	addUser(user: IUser): void;
+	removeUser(user: IUser): void;
+	reset(): void;
+	users: IUser[];
+	loading: boolean;
+	user: {
+		id: string;
+		token: string;
+		username: string;
+		name: string;
 	};
+	theme: string;
+}
 
-	constructor(props) {
+class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelectedUsersViewState> {
+	// TODO: Refactor React.RefObject
+	private flatlist: any;
+
+	private querySubscription?: Subscription;
+
+	constructor(props: ISelectedUsersViewProps) {
 		super(props);
 		this.init();
-		this.flatlist = React.createRef();
+		this.flatlist = React.createRef<FlatList>();
 		const maxUsers = props.route.params?.maxUsers;
 		this.state = {
 			maxUsers,
@@ -62,7 +95,7 @@ class SelectedUsersView extends React.Component {
 		this.setHeader(props.route.params?.showButton);
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps: ISelectedUsersViewProps) {
 		if (this.isGroupChat()) {
 			const { users } = this.props;
 			if (prevProps.users.length !== users.length) {
@@ -80,7 +113,7 @@ class SelectedUsersView extends React.Component {
 	}
 
 	// showButton can be sent as route params or updated by the component
-	setHeader = showButton => {
+	setHeader = (showButton: boolean) => {
 		const { navigation, route } = this.props;
 		const title = route.params?.title ?? I18n.t('Select_Users');
 		const buttonText = route.params?.buttonText ?? I18n.t('Next');
@@ -107,7 +140,8 @@ class SelectedUsersView extends React.Component {
 				.query(Q.where('t', 'd'))
 				.observeWithColumns(['room_updated_at']);
 
-			this.querySubscription = observable.subscribe(data => {
+			// TODO: Refactor when migrate room
+			this.querySubscription = observable.subscribe((data: any) => {
 				const chats = orderBy(data, ['roomUpdatedAt'], ['desc']);
 				this.setState({ chats });
 			});
@@ -116,11 +150,11 @@ class SelectedUsersView extends React.Component {
 		}
 	};
 
-	onSearchChangeText(text) {
+	onSearchChangeText(text: string) {
 		this.search(text);
 	}
 
-	search = async text => {
+	search = async (text: string) => {
 		const result = await RocketChat.search({ text, filterRooms: false });
 		this.setState({
 			search: result
@@ -132,12 +166,12 @@ class SelectedUsersView extends React.Component {
 		return maxUsers > 2;
 	};
 
-	isChecked = username => {
+	isChecked = (username: string) => {
 		const { users } = this.props;
 		return users.findIndex(el => el.name === username) !== -1;
 	};
 
-	toggleUser = user => {
+	toggleUser = (user: IUser) => {
 		const { maxUsers } = this.state;
 		const {
 			addUser,
@@ -163,29 +197,29 @@ class SelectedUsersView extends React.Component {
 		}
 	};
 
-	_onPressItem = (id, item = {}) => {
+	_onPressItem = (id: string, item = {} as IUser) => {
 		if (item.search) {
-			this.toggleUser({ _id: item._id, name: item.username, fname: item.name });
+			this.toggleUser({ _id: item._id, name: item.username!, fname: item.name });
 		} else {
 			this.toggleUser({ _id: item._id, name: item.name, fname: item.fname });
 		}
 	};
 
-	_onPressSelectedItem = item => this.toggleUser(item);
+	_onPressSelectedItem = (item: IUser) => this.toggleUser(item);
 
 	renderHeader = () => {
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='select-users-view-search' />
+				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='select-users-view-search' />
 				{this.renderSelected()}
 			</View>
 		);
 	};
 
-	setFlatListRef = ref => (this.flatlist = ref);
+	setFlatListRef = (ref: any) => (this.flatlist = ref);
 
-	onContentSizeChange = () => this.flatlist.scrollToEnd({ animated: true });
+	onContentSizeChange = () => this.flatlist?.scrollToEnd({ animated: true });
 
 	renderSelected = () => {
 		const { users, theme } = this.props;
@@ -204,35 +238,32 @@ class SelectedUsersView extends React.Component {
 				style={[sharedStyles.separatorTop, { borderColor: themes[theme].separatorColor }]}
 				contentContainerStyle={{ marginVertical: 5 }}
 				renderItem={this.renderSelectedItem}
-				enableEmptySections
 				keyboardShouldPersistTaps='always'
 				horizontal
 			/>
 		);
 	};
 
-	renderSelectedItem = ({ item }) => {
-		const { baseUrl, user, theme } = this.props;
+	renderSelectedItem = ({ item }: { item: IUser }) => {
+		const { theme } = this.props;
 		return (
 			<UserItem
 				name={item.fname}
 				username={item.name}
 				onPress={() => this._onPressSelectedItem(item)}
 				testID={`selected-user-${item.name}`}
-				baseUrl={baseUrl}
 				style={{ paddingRight: 15 }}
-				user={user}
 				theme={theme}
 			/>
 		);
 	};
 
-	renderItem = ({ item, index }) => {
+	renderItem = ({ item, index }: { item: IUser; index: number }) => {
 		const { search, chats } = this.state;
-		const { baseUrl, user, theme } = this.props;
+		const { theme } = this.props;
 
 		const name = item.search ? item.name : item.fname;
-		const username = item.search ? item.username : item.name;
+		const username = item.search ? item.username! : item.name;
 		let style = { borderColor: themes[theme].separatorColor };
 		if (index === 0) {
 			style = { ...style, ...sharedStyles.separatorTop };
@@ -249,10 +280,8 @@ class SelectedUsersView extends React.Component {
 				username={username}
 				onPress={() => this._onPressItem(item._id, item)}
 				testID={`select-users-view-item-${item.name}`}
-				icon={this.isChecked(username) ? 'check' : null}
-				baseUrl={baseUrl}
+				icon={this.isChecked(username) ? 'check' : ''}
 				style={style}
-				user={user}
 				theme={theme}
 			/>
 		);
@@ -275,7 +304,6 @@ class SelectedUsersView extends React.Component {
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={this.renderHeader}
 				contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
-				enableEmptySections
 				keyboardShouldPersistTaps='always'
 			/>
 		);
@@ -293,16 +321,16 @@ class SelectedUsersView extends React.Component {
 	};
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	baseUrl: state.server.server,
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading,
 	user: getUserSelector(state)
 });
 
-const mapDispatchToProps = dispatch => ({
-	addUser: user => dispatch(addUserAction(user)),
-	removeUser: user => dispatch(removeUserAction(user)),
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	addUser: (user: IUser) => dispatch(addUserAction(user)),
+	removeUser: (user: IUser) => dispatch(removeUserAction(user)),
 	reset: () => dispatch(resetAction())
 });
 
