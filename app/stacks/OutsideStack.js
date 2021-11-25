@@ -6,7 +6,7 @@ import { ThemeContext } from '../theme';
 import { ModalAnimation, StackAnimation, defaultHeader, themedHeader } from '../utils/navigation';
 
 // Outside Stack
-import NewServerView from '../views/NewServerView';
+// import NewServerView from '../views/NewServerView';
 import WorkspaceView from '../views/WorkspaceView';
 import LoginView from '../views/LoginView';
 import ForgotPasswordView from '../views/ForgotPasswordView';
@@ -22,6 +22,7 @@ const _OutsideStack = () => {
 
 	return (
 		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			{/* <Outside.Screen name='NewServerView' component={NewServerView} options={NewServerView.navigationOptions} /> */}
 			<Outside.Screen name='WorkspaceView' component={WorkspaceView} options={WorkspaceView.navigationOptions} />
 			<Outside.Screen name='LoginView' component={LoginView} options={LoginView.navigationOptions} />
 			<Outside.Screen name='ForgotPasswordView' component={ForgotPasswordView} options={ForgotPasswordView.navigationOptions} />
