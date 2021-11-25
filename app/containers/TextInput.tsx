@@ -58,7 +58,7 @@ interface IRCTextInputProps extends TextInputProps {
 	};
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
-	inputStyle?: TextStyle;
+	inputStyle?: StyleProp<TextStyle>;
 	inputRef?: React.Ref<unknown>;
 	testID?: string;
 	iconLeft?: string;

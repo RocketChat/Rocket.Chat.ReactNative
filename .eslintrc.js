@@ -2,7 +2,7 @@ module.exports = {
 	settings: {
 		'import/resolver': {
 			node: {
-				extensions: ['.js', '.ios.js', '.android.js', '.native.js', '.ts', '.tsx']
+				extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js', '.native.js']
 			}
 		}
 	},

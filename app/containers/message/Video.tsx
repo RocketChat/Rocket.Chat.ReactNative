@@ -1,15 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
-import openLink from '../../utils/openLink';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import { fileDownload } from '../../utils/fileDownload';
+import EventEmitter from '../../utils/events';
+import { LISTENER } from '../Toast';
+import I18n from '../../i18n';
+import RCActivityIndicator from '../ActivityIndicator';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: any) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -27,6 +31,9 @@ const styles = StyleSheet.create({
 
 interface IMessageVideo {
 	file: {
+		title: string;
+		title_link: string;
+		type: string;
 		video_type: string;
 		video_url: string;
 		description: string;
@@ -39,15 +46,34 @@ interface IMessageVideo {
 const Video = React.memo(
 	({ file, showAttachment, getCustomEmoji, theme }: IMessageVideo) => {
 		const { baseUrl, user } = useContext(MessageContext);
+		const [loading, setLoading] = useState(false);
+
 		if (!baseUrl) {
 			return null;
 		}
-		const onPress = () => {
+		const onPress = async () => {
 			if (isTypeSupported(file.video_type)) {
 				return showAttachment(file);
 			}
-			const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
-			openLink(uri, theme);
+
+			if (!isIOS) {
+				const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
+				await downloadVideo(uri);
+				return;
+			}
+			EventEmitter.emit(LISTENER, { message: I18n.t('Unsupported_format') });
+		};
+
+		const downloadVideo = async (uri: string) => {
+			setLoading(true);
+			const fileDownloaded = await fileDownload(uri, file);
+			setLoading(false);
+
+			if (fileDownloaded) {
+				EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
+				return;
+			}
+			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-video') });
 		};
 
 		return (
@@ -56,7 +82,11 @@ const Video = React.memo(
 					onPress={onPress}
 					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}>
-					<CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />
+					{loading ? (
+						<RCActivityIndicator theme={theme} />
+					) : (
+						<CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />
+					)}
 				</Touchable>
 				{/* @ts-ignore*/}
 				<Markdown
