@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TKey = 'desktopNotifications' | 'mobileNotifications' | 'emailNotificationMode';
+type TKey = 'desktopNotifications' | 'pushNotifications' | 'emailNotificationMode';
 
 interface IUserNotificationPreferencesViewState {
 	preferences: {
 		desktopNotifications?: string;
-		mobileNotifications?: string;
+		pushNotifications?: string;
 		emailNotificationMode?: string;
 	};
 	loading: boolean;
@@ -137,8 +137,8 @@ class UserNotificationPreferencesView extends React.Component<
 								<List.Item
 									title='Alert'
 									testID='user-notification-preference-view-push-notification'
-									onPress={(title: string) => this.pickerSelection(title, 'mobileNotifications')}
-									right={() => this.renderPickerOption('mobileNotifications')}
+									onPress={(title: string) => this.pickerSelection(title, 'pushNotifications')}
+									right={() => this.renderPickerOption('pushNotifications')}
 								/>
 								<List.Separator />
 								<List.Info info='Push_Notifications_Alert_Info' />

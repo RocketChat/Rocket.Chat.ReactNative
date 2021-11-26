@@ -19,7 +19,7 @@ const commonOptions = [
 
 export const OPTIONS = {
 	desktopNotifications: commonOptions,
-	mobileNotifications: commonOptions,
+	pushNotifications: commonOptions,
 	emailNotificationMode: [
 		{
 			label: 'Email_Notification_Mode_All',
