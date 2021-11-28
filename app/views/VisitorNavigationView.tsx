@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text } from 'react-native';
-import PropTypes from 'prop-types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
-import { withTheme } from '../theme';
+import { useTheme } from '../theme';
 import RocketChat from '../lib/rocketchat';
 import { themes } from '../constants/colors';
 import openLink from '../utils/openLink';
@@ -21,19 +22,23 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ item }) => (
+const Item = ({ item }: { item: { navigation?: { page?: any } } }) => (
 	<List.Item
 		title={item.navigation?.page?.title || I18n.t('Empty_title')}
 		onPress={() => openLink(item.navigation?.page?.location?.href)}
 		translateTitle={false}
 	/>
 );
-Item.propTypes = {
-	item: PropTypes.object
-};
 
-const VisitorNavigationView = ({ route, theme }) => {
-	let offset;
+interface IVisitorNavigationViewProps {
+	navigation: StackNavigationProp<any, 'VisitorNavigationView'>;
+	route: RouteProp<{ VisitorNavigationView: { rid: string } }, 'VisitorNavigationView'>;
+}
+
+const VisitorNavigationView = ({ navigation, route }: IVisitorNavigationViewProps): JSX.Element => {
+	const { theme } = useTheme();
+
+	let offset: number;
 	let total = 0;
 	const [pages, setPages] = useState([]);
 
@@ -54,6 +59,12 @@ const VisitorNavigationView = ({ route, theme }) => {
 	};
 
 	useEffect(() => {
+		navigation.setOptions({
+			title: I18n.t('Navigation_history')
+		});
+	}, []);
+
+	useEffect(() => {
 		getPages();
 	}, []);
 
@@ -67,7 +78,7 @@ const VisitorNavigationView = ({ route, theme }) => {
 		<SafeAreaView>
 			<FlatList
 				data={pages}
-				renderItem={({ item }) => <Item item={item} theme={theme} />}
+				renderItem={({ item }) => <Item item={item} />}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={List.Separator}
 				ListHeaderComponent={List.Separator}
@@ -82,12 +93,5 @@ const VisitorNavigationView = ({ route, theme }) => {
 		</SafeAreaView>
 	);
 };
-VisitorNavigationView.propTypes = {
-	theme: PropTypes.string,
-	route: PropTypes.object
-};
-VisitorNavigationView.navigationOptions = {
-	title: I18n.t('Navigation_history')
-};
 
-export default withTheme(VisitorNavigationView);
+export default VisitorNavigationView;
