@@ -155,3 +155,155 @@ index e7c914b..891cf93 100644
          return;
      }
      
+diff --git a/android/build.gradle b/android/build.gradle
+index 81daca5..308e3a1 100644
+--- a/node_modules/react-native-mmkv-storage/android/build.gradle
++++ b/node_modules/react-native-mmkv-storage/android/build.gradle
+@@ -43,6 +43,6 @@ repositories {
+ dependencies {
+     implementation 'com.facebook.react:react-native:+'
+     implementation 'com.tencent:mmkv-static:1.2.1'
+-    implementation "com.scottyab:secure-preferences-lib:0.1.4"
++    implementation "androidx.security:security-crypto:1.0.0"
+ }
+-  
+\ No newline at end of file
++  
+diff --git a/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/Constants.java b/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/Constants.java
+index 0e336d9..8503394 100644
+--- a/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/Constants.java
++++ b/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/Constants.java
+@@ -8,7 +8,7 @@ public class Constants {
+     public static final String KEYSTORE_PROVIDER_3 = "AndroidOpenSSL";
+ 
+     public static final String RSA_ALGORITHM = "RSA/ECB/PKCS1Padding";
+-    public static final String AES_ALGORITHM = "AES/ECB/PKCS5Padding";
++    public static final String AES_ALGORITHM = "AES/GCM/NoPadding";
+ 
+     public static final String TAG = "RNSecureStorage";
+ 
+@@ -16,6 +16,7 @@ public class Constants {
+     public static final String SKS_KEY_FILENAME = "SKS_KEY_FILE";
+     public static final String SKS_DATA_FILENAME = "SKS_DATA_FILE";
+ 
++    public static final String AES_IV_FILENAME = "__iv";
+ 
+     public static final int DATA_TYPE_STRING = 1;
+     public static final int DATA_TYPE_INT = 2;
+diff --git a/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/SecureKeystore.java b/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/SecureKeystore.java
+index b733e2f..0e11892 100644
+--- a/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/SecureKeystore.java
++++ b/node_modules/react-native-mmkv-storage/android/src/main/java/com/ammarahmed/mmkv/SecureKeystore.java
+@@ -8,13 +8,14 @@ import android.security.KeyPairGeneratorSpec;
+ import android.util.Log;
+ 
+ import androidx.annotation.Nullable;
++import androidx.security.crypto.EncryptedSharedPreferences;
++import androidx.security.crypto.MasterKeys;
+ 
+ import com.facebook.react.bridge.Callback;
+ import com.facebook.react.bridge.ReactApplicationContext;
+ import com.facebook.react.bridge.ReactMethod;
+ import com.facebook.react.bridge.ReadableMap;
+ import com.facebook.react.uimanager.IllegalViewOperationException;
+-import com.securepreferences.SecurePreferences;
+ 
+ import java.io.ByteArrayInputStream;
+ import java.io.ByteArrayOutputStream;
+@@ -25,6 +26,7 @@ import java.security.GeneralSecurityException;
+ import java.security.KeyPairGenerator;
+ import java.security.KeyStore;
+ import java.security.PrivateKey;
++import java.security.SecureRandom;
+ import java.security.PublicKey;
+ import java.util.ArrayList;
+ import java.util.Calendar;
+@@ -37,6 +39,7 @@ import javax.crypto.KeyGenerator;
+ import javax.crypto.SecretKey;
+ import javax.crypto.spec.SecretKeySpec;
+ import javax.security.auth.x500.X500Principal;
++import javax.crypto.spec.IvParameterSpec;
+ 
+ public class SecureKeystore {
+ 
+@@ -53,7 +56,17 @@ public class SecureKeystore {
+ 
+         reactContext = reactApplicationContext;
+         if (!useKeystore()) {
+-            prefs = new SecurePreferences(reactApplicationContext, (String) null, "e4b001df9a082298dd090bb7455c45d92fbd5ddd.xml");
++            try {
++                prefs = EncryptedSharedPreferences.create(
++                        "e4b001df9a082298dd090bb7455c45d92fbd5dda.xml",
++                        MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
++                        reactContext,
++                        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
++                        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
++                );
++            } catch (Exception e) {
++                e.printStackTrace();
++            }
+         }
+     }
+ 
+@@ -64,6 +77,19 @@ public class SecureKeystore {
+                 directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
+     }
+ 
++    private IvParameterSpec getIv(Context context) throws IOException {
++        byte[] iv;
++        if(Storage.exists(context, Constants.AES_IV_FILENAME)){
++            iv = Storage.readValues(context, Constants.AES_IV_FILENAME );
++        }
++        else {
++            iv = new byte[16];
++            new SecureRandom().nextBytes(iv);
++            Storage.writeValues(context, Constants.AES_IV_FILENAME, iv);
++        }
++        return new IvParameterSpec(iv);
++    }
++
+ 
+     public void setSecureKey(String key, String value, @Nullable ReadableMap options, Callback callback) {
+ 
+@@ -254,9 +280,9 @@ public class SecureKeystore {
+         return encryptCipherText(cipher, plainTextBytes);
+     }
+ 
+-    private byte[] encryptAesPlainText(SecretKey secretKey, String plainText) throws GeneralSecurityException, IOException {
++    private byte[] encryptAesPlainText(SecretKey secretKey, IvParameterSpec iv, String plainText) throws GeneralSecurityException, IOException {
+         Cipher cipher = Cipher.getInstance(Constants.AES_ALGORITHM);
+-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
++        cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
+         return encryptCipherText(cipher, plainText);
+     }
+ 
+@@ -293,7 +319,7 @@ public class SecureKeystore {
+ 
+     public void setCipherText(Context context, String alias, String input) throws GeneralSecurityException, IOException {
+         Storage.writeValues(context, Constants.SKS_DATA_FILENAME + alias,
+-                encryptAesPlainText(getOrCreateSecretKey(context, alias), input));
++                encryptAesPlainText(getOrCreateSecretKey(context, alias), getIv(context), input));
+     }
+ 
+     private PrivateKey getPrivateKey(String alias) throws GeneralSecurityException, IOException {
+@@ -308,9 +334,9 @@ public class SecureKeystore {
+         return decryptCipherText(cipher, cipherTextBytes);
+     }
+ 
+-    private byte[] decryptAesCipherText(SecretKey secretKey, byte[] cipherTextBytes) throws GeneralSecurityException, IOException {
++    private byte[] decryptAesCipherText(SecretKey secretKey, IvParameterSpec iv, byte[] cipherTextBytes) throws GeneralSecurityException, IOException {
+         Cipher cipher = Cipher.getInstance(Constants.AES_ALGORITHM);
+-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
++        cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
+         return decryptCipherText(cipher, cipherTextBytes);
+     }
+ 
+@@ -335,7 +361,7 @@ public class SecureKeystore {
+     public String getPlainText(Context context, String alias) throws GeneralSecurityException, IOException {
+         SecretKey secretKey = getSymmetricKey(context, alias);
+         byte[] cipherTextBytes = Storage.readValues(context, Constants.SKS_DATA_FILENAME + alias);
+-        return new String(decryptAesCipherText(secretKey, cipherTextBytes), "UTF-8");
++        return new String(decryptAesCipherText(secretKey, getIv(context), cipherTextBytes), "UTF-8");
+     }
+ 
+     public boolean exists(Context context, String alias) throws IOException {
