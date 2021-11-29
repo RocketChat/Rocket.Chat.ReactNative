@@ -219,7 +219,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		if (!autoLock) {
 			return null;
 		}
-		let items = this.defaultAutoLockOptions as IItem[];
+		let items: IItem[] = this.defaultAutoLockOptions;
 		if (Force_Screen_Lock && Force_Screen_Lock_After > 0) {
 			items = [
 				{
