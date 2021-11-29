@@ -212,7 +212,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	setUser: (user: Partial<IUser>) => dispatch(setUserAction(user))
+	setUser: (user: IUser) => dispatch(setUserAction(user))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(StatusView));
