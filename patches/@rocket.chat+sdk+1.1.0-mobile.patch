@@ -1,0 +1,152 @@
+diff --git a/node_modules/@rocket.chat/sdk/lib/api/api.ts b/node_modules/@rocket.chat/sdk/lib/api/api.ts
+index 0faaabd..078a854 100644
+--- a/node_modules/@rocket.chat/sdk/lib/api/api.ts
++++ b/node_modules/@rocket.chat/sdk/lib/api/api.ts
+@@ -44,7 +44,7 @@ import * as settings from '../settings';
+ // export async function login (user: ICredentialsAPI = { username, password }) {
+ //   this.logger.info(`[API] Logging in ${user.username}`)
+ //   if (currentLogin !== null) {
+-//     this.logger.debug(`[API] Already logged in`)
++//     console.log(`[API] Already logged in`)
+ //     if (currentLogin.username === user.username) return currentLogin.result
+ //     else await logout()
+ //   }
+@@ -67,7 +67,7 @@ import * as settings from '../settings';
+ // /** Logout a user at end of API calls */
+ // export function logout () {
+ //   if (currentLogin === null) {
+-//     this.logger.debug(`[API] Already logged out`)
++//     console.log(`[API] Already logged out`)
+ //     return Promise.resolve()
+ //   }
+ //   this.logger.info(`[API] Logging out ${ currentLogin.username }`)
+@@ -154,6 +154,7 @@ class Client implements IClient {
+     }).then(this.handle)
+   }
+   private async handle (r: any) {
++    console.log('🚀 ~ file: api.ts ~ line 157 ~ Client ~ handle ~ r', r);
+     const { status } = r
+     const data = await r.json()
+ 
+@@ -189,7 +190,8 @@ export default class Api extends EventEmitter {
+   constructor ({ client, host, logger = Logger }: any) {
+     super()
+     this.client = client || new Client({ host } as any)
+-    this.logger = Logger
++    this.logger = logger
++    console.log('🚀 ~ file: api.ts ~ line 193 ~ Api ~ constructor ~ this.logger', this.logger, Logger);
+     this.controller = new AbortController();
+   }
+ 
+@@ -217,10 +219,10 @@ export default class Api extends EventEmitter {
+     ignore?: RegExp,
+     options?: any
+ 	) => {
+-    this.logger && this.logger.debug(`[API] ${ method } ${ endpoint }: ${ JSON.stringify(data) }`)
++    console.log(`[API] ${ method } ${ endpoint }: ${ JSON.stringify(data) }`, this.client, this)
+     try {
+       if (auth && !this.loggedIn()) {
+-        throw new Error('')
++        throw new Error('line 224')
+       }
+ 
+       const { signal } = this.controller;
+@@ -236,11 +238,11 @@ export default class Api extends EventEmitter {
+       }
+       if (!result) throw new Error(`API ${ method } ${ endpoint } result undefined`)
+       if (!this.success(result, ignore)) throw result
+-      this.logger && this.logger.debug(`[API] ${method} ${endpoint} result ${result.status}`)
++      console.log(`[API] ${method} ${endpoint} result ${result.status}`)
+       const hasDataInsideResult = result && !result.data
+       return (method === 'DELETE') && hasDataInsideResult ? result : result.data
+     } catch (err) {
+-      this.logger && this.logger.error(`[API] POST error(${ endpoint }): ${ JSON.stringify(err) }`)
++      console.log(`[API] POST error(${ endpoint }): ${ JSON.stringify(err) }`)
+       throw err
+     }
+   }
+diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+index 7e9b144..8d29f55 100644
+--- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
++++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+@@ -452,6 +452,7 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+     }
+     this.ddp = new Socket({ ...this.config, logger })
+     this.logger = logger
++    console.log('🚀 ~ file: ddp.ts ~ line 455 ~ DDPDriver ~ constructor ~ this.logger', this.logger);
+   }
+ 
+ 	/**
+@@ -481,24 +482,24 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+ 
+       this.ddp.on('open', () => this.emit('connected')) // echo ddp event
+ 
+-      let cancelled = false
+-      const rejectionTimeout = setTimeout(() => {
+-        this.logger.info(`[driver] Timeout (${config.timeout})`)
+-        const err = new Error('Socket connection timeout')
+-        cancelled = true
+-        reject(err)
+-      }, config.timeout)
+-
+-			// if to avoid condition where timeout happens before listener to 'connected' is added
+-			// and this listener is not removed (because it was added after the removal)
+-      if (!cancelled) {
++      // let cancelled = false
++      // const rejectionTimeout = setTimeout(() => {
++      //   this.logger.info(`[driver] Timeout (${config.timeout})`)
++      //   const err = new Error('Socket connection timeout')
++      //   cancelled = true
++      //   reject(err)
++      // }, config.timeout)
++
++			// // if to avoid condition where timeout happens before listener to 'connected' is added
++			// // and this listener is not removed (because it was added after the removal)
++      // if (!cancelled) {
+         this.once('connected', () => {
+           this.logger.info('[driver] Connected')
+-          if (cancelled) return this.ddp.close() // cancel if already rejected
+-          clearTimeout(rejectionTimeout)
++          // if (cancelled) return this.ddp.close() // cancel if already rejected
++          // clearTimeout(rejectionTimeout)
+           resolve(this as IDriver)
+         })
+-      }
++      // }
+     })
+   }
+ 
+diff --git a/node_modules/@rocket.chat/sdk/lib/log.ts b/node_modules/@rocket.chat/sdk/lib/log.ts
+index 3366e55..36c7c3f 100644
+--- a/node_modules/@rocket.chat/sdk/lib/log.ts
++++ b/node_modules/@rocket.chat/sdk/lib/log.ts
+@@ -8,24 +8,25 @@ import { ILogger } from '../interfaces'
+ /** Temp logging, should override form adapter's log */
+ class InternalLog implements ILogger {
+   debug (...args: any[]) {
+-    // console.log(...args)
++    console.log(...args)
+   }
+   info (...args: any[]) {
+-    // console.log(...args)
++    console.log(...args)
+   }
+   warning (...args: any[]) {
+-    // console.log(...args)
++    console.log(...args)
+   }
+   warn (...args: any[]) { // legacy method
+     return this.warning(...args)
+   }
+   error (...args: any[]) {
+-    // console.log(...args)
++    console.log(...args)
+   }
+ }
+ 
+ /** Default basic console logging */
+ export let logger: ILogger = new InternalLog()
++console.log('🚀 ~ file: log.ts ~ line 29 ~ logger', logger);
+ 
+ /** Substitute logging handler */
+ export function replaceLog (externalLog: ILogger) {
