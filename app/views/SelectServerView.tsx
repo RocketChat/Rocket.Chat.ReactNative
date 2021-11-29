@@ -17,8 +17,8 @@ const keyExtractor = (item: IServer) => item.id;
 
 interface IServer extends Model {
 	id: string;
-	iconURL: string;
-	name: string;
+	iconURL?: string;
+	name?: string;
 }
 
 interface ISelectServerViewState {
@@ -40,7 +40,7 @@ class SelectServerView extends React.Component<ISelectServerViewProps, ISelectSe
 	async componentDidMount() {
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
-		const servers = (await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch()) as IServer[];
+		const servers: IServer[] = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch();
 		this.setState({ servers });
 	}
 
