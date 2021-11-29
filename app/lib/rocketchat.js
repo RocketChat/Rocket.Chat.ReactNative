@@ -255,11 +255,11 @@ const RocketChat = {
 						console.log('connect error', err);
 
 						// when `connect` raises an error, we try again in 10 seconds
-						this.connectTimeout = setTimeout(() => {
-							if (this.sdk?.client?.host === server) {
-								sdkConnect();
-							}
-						}, 10000);
+						// this.connectTimeout = setTimeout(() => {
+						// 	if (this.sdk?.client?.host === server) {
+						// 		sdkConnect();
+						// 	}
+						// }, 10000);
 					});
 
 			sdkConnect();
