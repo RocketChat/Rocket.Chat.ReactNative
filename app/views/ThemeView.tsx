@@ -58,8 +58,8 @@ interface ITheme {
 }
 
 interface IThemePreference {
-	currentTheme: string;
-	darkLevel: string;
+	currentTheme?: string;
+	darkLevel?: string;
 }
 
 interface IThemeViewProps {
@@ -89,7 +89,7 @@ class ThemeView extends React.Component<IThemeViewProps> {
 		const { themePreferences } = this.props;
 		const { darkLevel, currentTheme } = themePreferences;
 		const { value, group } = item;
-		let changes = {} as Partial<IThemePreference>;
+		let changes: IThemePreference = {};
 		if (group === THEME_GROUP && currentTheme !== value) {
 			logEvent(events.THEME_SET_THEME_GROUP, { theme_group: value });
 			changes = { currentTheme: value };
@@ -101,7 +101,7 @@ class ThemeView extends React.Component<IThemeViewProps> {
 		this.setTheme(changes);
 	};
 
-	setTheme = async (theme: Partial<IThemePreference>) => {
+	setTheme = async (theme: IThemePreference) => {
 		const { setTheme, themePreferences } = this.props;
 		const newTheme = { ...themePreferences, ...theme };
 		setTheme(newTheme);
