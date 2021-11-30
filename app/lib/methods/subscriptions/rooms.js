@@ -22,7 +22,6 @@ import { E2E_MESSAGE_TYPE } from '../../encryption/constants';
 const removeListener = listener => listener.stop();
 
 let connectedListener;
-let disconnectedListener;
 let streamListener;
 let subServer;
 let queue = {};
@@ -255,10 +254,6 @@ const debouncedUpdate = subscription => {
 };
 
 export default function subscribeRooms() {
-	const handleConnection = () => {
-		store.dispatch(roomsRequest());
-	};
-
 	const handleStreamMessageReceived = protectedFunction(async ddpMessage => {
 		const db = database.active;
 
@@ -392,10 +387,6 @@ export default function subscribeRooms() {
 			connectedListener.then(removeListener);
 			connectedListener = false;
 		}
-		if (disconnectedListener) {
-			disconnectedListener.then(removeListener);
-			disconnectedListener = false;
-		}
 		if (streamListener) {
 			streamListener.then(removeListener);
 			streamListener = false;
@@ -407,8 +398,6 @@ export default function subscribeRooms() {
 		}
 	};
 
-	connectedListener = this.sdk.onStreamData('connected', handleConnection);
-	// disconnectedListener = this.sdk.onStreamData('close', handleConnection);
 	streamListener = this.sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
 
 	try {
