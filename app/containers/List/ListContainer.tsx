@@ -11,10 +11,9 @@ const styles = StyleSheet.create({
 });
 
 interface IListContainer {
-	children: JSX.Element;
+	children: React.ReactNode;
 }
 const ListContainer = React.memo(({ children, ...props }: IListContainer) => (
-	// @ts-ignore
 	<ScrollView
 		contentContainerStyle={styles.container}
 		scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444

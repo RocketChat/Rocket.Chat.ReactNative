@@ -8,9 +8,9 @@ import styles from './styles';
 
 interface SidebarItemProps {
 	left: JSX.Element;
-	right: JSX.Element;
+	right?: JSX.Element;
 	text: string;
-	current: boolean;
+	current?: boolean;
 	onPress(): void;
 	testID: string;
 	theme: string;

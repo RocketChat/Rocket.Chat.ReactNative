@@ -5,15 +5,16 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
 import Orientation from 'react-native-orientation-locker';
 
-import { withTheme } from '../theme';
+import { useTheme } from '../theme';
 import EventEmitter from '../utils/events';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../constants/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';
 import { PasscodeEnter } from '../containers/Passcode';
 
-const ScreenLockedView = ({ theme }) => {
+const ScreenLockedView = () => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState({});
+	const { theme } = useTheme();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -61,8 +62,4 @@ const ScreenLockedView = ({ theme }) => {
 	);
 };
 
-ScreenLockedView.propTypes = {
-	theme: PropTypes.string
-};
-
-export default withTheme(ScreenLockedView);
+export default ScreenLockedView;
