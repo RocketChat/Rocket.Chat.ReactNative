@@ -167,6 +167,8 @@ export type SettingsStackParamList = {
 	ThemeView: undefined;
 	DefaultBrowserView: undefined;
 	ScreenLockConfigView: undefined;
+	ProfileView: undefined;
+	DisplayPrefsView: undefined;
 };
 
 export type AdminPanelStackParamList = {

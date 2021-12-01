@@ -48,7 +48,7 @@ interface ISettingsViewProps {
 }
 
 class SettingsView extends React.Component<ISettingsViewProps, any> {
-	static navigationOptions = ({ navigation, isMasterDetail }: Partial<ISettingsViewProps>) => ({
+	static navigationOptions = ({ navigation, isMasterDetail }: ISettingsViewProps) => ({
 		headerLeft: () =>
 			isMasterDetail ? (
 				<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
@@ -118,7 +118,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 		});
 	};
 
-	navigateToScreen = (screen: string) => {
+	navigateToScreen = (screen: keyof SettingsStackParamList) => {
 		/* @ts-ignore */
 		logEvent(events[`SE_GO_${screen.replace('View', '').toUpperCase()}`]);
 		const { navigation } = this.props;
