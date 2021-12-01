@@ -72,7 +72,7 @@ interface ITeamChannelsViewState {
 	loadingMore: boolean;
 	data: IItem[];
 	isSearching: boolean;
-	searchText: string;
+	searchText: string | null;
 	search: IItem[];
 	end: boolean;
 	showCreate: boolean;
@@ -298,7 +298,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		Keyboard.dismiss();
 		this.setState(
 			{
-				searchText: '',
+				searchText: null,
 				isSearching: false,
 				search: [],
 				loadingMore: false,
