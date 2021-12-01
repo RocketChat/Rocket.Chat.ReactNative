@@ -256,6 +256,10 @@ const RocketChat = {
 			});
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
+				const { connected } = reduxStore.getState().meteor;
+				if (connected) {
+					return;
+				}
 				reduxStore.dispatch(connectSuccess());
 				const { server: currentServer } = reduxStore.getState().server;
 				if (user && user.token && server === currentServer) {

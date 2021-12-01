@@ -66,7 +66,7 @@ index 0faaabd..078a854 100644
      }
    }
 diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
-index 7e9b144..8942226 100644
+index 7e9b144..63fb2d9 100644
 --- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
 @@ -69,7 +69,7 @@ export class Socket extends EventEmitter {
@@ -78,15 +78,16 @@ index 7e9b144..8942226 100644
      }
  
      this.host = `${hostToWS(this.config.host, this.config.useSsl)}/websocket`
-@@ -452,6 +452,7 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
-     }
-     this.ddp = new Socket({ ...this.config, logger })
-     this.logger = logger
-+    console.log('🚀 ~ file: ddp.ts ~ line 455 ~ DDPDriver ~ constructor ~ this.logger', this.logger);
+@@ -128,7 +128,7 @@ export class Socket extends EventEmitter {
+     this.session = connected.session
+     this.ping().catch((err) => this.logger.error(`[ddp] Unable to ping server: ${err.message}`))
+     this.emit('open')
+-    if (this.resume) await this.login(this.resume)
++    // if (this.resume) await this.login(this.resume)
+     return callback(this.connection)
    }
  
- 	/**
-@@ -481,24 +482,24 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+@@ -481,24 +481,24 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
  
        this.ddp.on('open', () => this.emit('connected')) // echo ddp event
  
