@@ -71,7 +71,7 @@ interface ILoginViewProps {
 class LoginView extends React.Component<ILoginViewProps, any> {
 	private passwordInput: any;
 
-	static navigationOptions = ({ route, navigation }: Partial<ILoginViewProps>) => ({
+	static navigationOptions = ({ route, navigation }: ILoginViewProps) => ({
 		title: route?.params?.title ?? 'Rocket.Chat',
 		headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
 	});
