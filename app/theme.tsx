@@ -12,7 +12,7 @@ interface IThemeContextProps {
 
 export const ThemeContext = React.createContext<IThemeContextProps>({ theme: 'light' });
 
-export function withTheme(Component: any) {
+export function withTheme(Component: any): any {
 	const ThemedComponent = (props: any) => (
 		<ThemeContext.Consumer>{contexts => <Component {...props} {...contexts} />}</ThemeContext.Consumer>
 	);
