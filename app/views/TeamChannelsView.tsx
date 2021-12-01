@@ -39,7 +39,7 @@ const PERMISSION_EDIT_TEAM_CHANNEL = 'edit-team-channel';
 const PERMISSION_REMOVE_TEAM_CHANNEL = 'remove-team-channel';
 const PERMISSION_ADD_TEAM_CHANNEL = 'add-team-channel';
 
-const getItemLayout = (data: IItem[] | undefined | null, index: number) => ({
+const getItemLayout = (data: IItem[] | null | undefined, index: number) => ({
 	length: data?.length || 0,
 	offset: ROW_HEIGHT * index,
 	index
