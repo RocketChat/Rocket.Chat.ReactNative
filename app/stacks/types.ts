@@ -100,8 +100,8 @@ export type ChatsStackParamList = {
 		title: string;
 		data: IOptionsField[];
 		value?: any; // TODO: Change
-		onChangeText?: (text: string) => IOptionsField[];
-		goBack?: Function;
+		onChangeText?: Function;
+		goBack?: boolean;
 		onChangeValue: Function;
 	};
 	ThreadMessagesView: {
