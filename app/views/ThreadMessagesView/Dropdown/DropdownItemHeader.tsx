@@ -1,11 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { FILTER } from '../filters';
 import I18n from '../../../i18n';
 import DropdownItem from './DropdownItem';
 
-const DropdownItemHeader = ({ currentFilter, onPress }) => {
+interface IDropdownItemHeader {
+	currentFilter: string;
+	onPress: () => void;
+}
+
+const DropdownItemHeader = ({ currentFilter, onPress }: IDropdownItemHeader): JSX.Element => {
 	let text;
 	switch (currentFilter) {
 		case FILTER.FOLLOWING:
@@ -19,11 +23,6 @@ const DropdownItemHeader = ({ currentFilter, onPress }) => {
 			break;
 	}
 	return <DropdownItem text={text} iconName='filter' onPress={onPress} />;
-};
-
-DropdownItemHeader.propTypes = {
-	currentFilter: PropTypes.string,
-	onPress: PropTypes.func
 };
 
 export default DropdownItemHeader;

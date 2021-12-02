@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Animated, Easing, TouchableWithoutFeedback } from 'react-native';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
 import { themes } from '../../../constants/colors';
@@ -14,17 +13,19 @@ import DropdownItemHeader from './DropdownItemHeader';
 
 const ANIMATION_DURATION = 200;
 
-class Dropdown extends React.Component {
-	static propTypes = {
-		isMasterDetail: PropTypes.bool,
-		theme: PropTypes.string,
-		insets: PropTypes.object,
-		currentFilter: PropTypes.string,
-		onClose: PropTypes.func,
-		onFilterSelected: PropTypes.func
-	};
+interface IDropdownProps {
+	isMasterDetail: boolean;
+	theme: string;
+	insets: EdgeInsets;
+	currentFilter: string;
+	onClose: () => void;
+	onFilterSelected: (value: string) => void;
+}
 
-	constructor(props) {
+class Dropdown extends React.Component<IDropdownProps> {
+	private animatedValue: Animated.Value;
+
+	constructor(props: IDropdownProps) {
 		super(props);
 		this.animatedValue = new Animated.Value(0);
 	}
