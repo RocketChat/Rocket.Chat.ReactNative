@@ -1,46 +1,35 @@
 const data = require('../../data');
+const { platformTypes } = require('../../helpers/app');
 
 describe('Onboarding', () => {
+	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		await waitFor(element(by.id('onboarding-view')))
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
+		await waitFor(element(by.id('new-server-view')))
 			.toBeVisible()
 			.withTimeout(20000);
 	});
 
 	describe('Render', () => {
 		it('should have onboarding screen', async () => {
-			await expect(element(by.id('onboarding-view'))).toBeVisible();
+			await expect(element(by.id('new-server-view'))).toBeVisible();
 		});
 
-		it('should have "Join a workspace"', async () => {
-			await expect(element(by.id('join-workspace'))).toBeVisible();
-		});
-
-		it('should have "Create a new workspace"', async () => {
-			await expect(element(by.id('create-workspace-button'))).toBeVisible();
+		it('should have "Join our open workspace"', async () => {
+			await expect(element(by.id('new-server-view-open'))).toBeVisible();
 		});
 	});
 
 	describe('Usage', () => {
-		// it('should navigate to create new workspace', async() => {
-		// 	// webviews are not supported by detox: https://github.com/wix/detox/issues/136#issuecomment-306591554
-		// });
-
-		it('should navigate to join a workspace', async () => {
-			await element(by.id('join-workspace')).tap();
-			await waitFor(element(by.id('new-server-view')))
-				.toBeVisible()
-				.withTimeout(60000);
-		});
-
 		it('should enter an invalid server and get error', async () => {
-			await element(by.id('new-server-view-input')).typeText('invalidtest\n');
-			const errorText = 'Oops!';
-			await waitFor(element(by.text(errorText)))
-				.toBeVisible()
-				.withTimeout(60000);
-			await element(by.text('OK')).tap();
+			await element(by.id('new-server-view-input')).replaceText('invalidtest');
+			await element(by.id('new-server-view-input')).tapReturnKey();
+			await waitFor(element(by[textMatcher]('Oops!')))
+				.toExist()
+				.withTimeout(10000);
+			await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 		});
 
 		it('should tap on "Join our open workspace" and navigate', async () => {
@@ -52,14 +41,11 @@ describe('Onboarding', () => {
 
 		it('should enter a valid server without login services and navigate to login', async () => {
 			await device.launchApp({ newInstance: true });
-			await waitFor(element(by.id('onboarding-view')))
-				.toBeVisible()
-				.withTimeout(2000);
-			await element(by.id('join-workspace')).tap();
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
-				.withTimeout(60000);
-			await element(by.id('new-server-view-input')).typeText(`${data.server}\n`);
+				.withTimeout(5000);
+			await element(by.id('new-server-view-input')).replaceText(data.server);
+			await element(by.id('new-server-view-input')).tapReturnKey();
 			await waitFor(element(by.id('workspace-view')))
 				.toBeVisible()
 				.withTimeout(60000);

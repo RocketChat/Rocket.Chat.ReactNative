@@ -120,6 +120,7 @@ class RoomView extends React.Component {
 		Message_Read_Receipt_Enabled: PropTypes.bool,
 		Hide_System_Messages: PropTypes.array,
 		baseUrl: PropTypes.string,
+		serverVersion: PropTypes.string,
 		customEmojis: PropTypes.object,
 		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
@@ -148,6 +149,7 @@ class RoomView extends React.Component {
 			prid
 		};
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
+		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? RocketChat.getUidDirectMessage(room);
 		this.state = {
 			joined: true,
@@ -208,6 +210,9 @@ class RoomView extends React.Component {
 			if (this.jumpToMessageId) {
 				this.jumpToMessage(this.jumpToMessageId);
 			}
+			if (this.jumpToThreadId && !this.jumpToMessageId) {
+				this.navToThread({ tmid: this.jumpToThreadId });
+			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
 			}
@@ -251,6 +256,10 @@ class RoomView extends React.Component {
 
 		if (route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
 			this.jumpToMessage(route?.params?.jumpToMessageId);
+		}
+
+		if (route?.params?.jumpToThreadId !== prevProps.route?.params?.jumpToThreadId) {
+			this.navToThread({ tmid: route?.params?.jumpToThreadId });
 		}
 
 		if (appState === 'foreground' && appState !== prevProps.appState && this.rid) {
@@ -362,6 +371,7 @@ class RoomView extends React.Component {
 		const t = room?.t;
 		const teamMain = room?.teamMain;
 		const teamId = room?.teamId;
+		const encrypted = room?.encrypted;
 		const { id: userId, token } = user;
 		const avatar = room?.name;
 		const visitor = room?.visitor;
@@ -424,6 +434,7 @@ class RoomView extends React.Component {
 					teamMain={teamMain}
 					joined={joined}
 					t={t}
+					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
 				/>
@@ -433,7 +444,7 @@ class RoomView extends React.Component {
 
 	goRoomActionsView = screen => {
 		logEvent(events.ROOM_GO_RA);
-		const { room, member } = this.state;
+		const { room, member, joined } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', {
@@ -443,7 +454,8 @@ class RoomView extends React.Component {
 					t: this.t,
 					room,
 					member,
-					showCloseModal: !!screen
+					showCloseModal: !!screen,
+					joined
 				}
 			});
 		} else {
@@ -451,7 +463,8 @@ class RoomView extends React.Component {
 				rid: this.rid,
 				t: this.t,
 				room,
-				member
+				member,
+				joined
 			});
 		}
 	};
@@ -867,7 +880,12 @@ class RoomView extends React.Component {
 		if (item.tmid) {
 			let name = item.tmsg;
 			if (!name) {
-				name = await this.getThreadName(item.tmid, item.id);
+				const result = await this.getThreadName(item.tmid, item.id);
+				// test if there isn't a thread
+				if (!result) {
+					return;
+				}
+				name = result;
 			}
 			if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
 				name = I18n.t('Encrypted_message');
@@ -1057,8 +1075,10 @@ class RoomView extends React.Component {
 	};
 
 	renderFooter = () => {
-		const { joined, room, selectedMessage, editing, replying, replyWithMention, readOnly } = this.state;
-		const { navigation, theme } = this.props;
+		const { joined, room, selectedMessage, editing, replying, replyWithMention, readOnly, loading } = this.state;
+		const { navigation, theme, route } = this.props;
+
+		const usedCannedResponse = route?.params?.usedCannedResponse;
 
 		if (!this.rid) {
 			return null;
@@ -1074,6 +1094,7 @@ class RoomView extends React.Component {
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
+						enabled={!loading}
 						theme={theme}>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
@@ -1118,6 +1139,7 @@ class RoomView extends React.Component {
 				replyCancel={this.onReplyCancel}
 				getCustomEmoji={this.getCustomEmoji}
 				navigation={navigation}
+				usedCannedResponse={usedCannedResponse}
 			/>
 		);
 	};
@@ -1146,7 +1168,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, reactionsModalVisible, selectedMessage, loading, reacting, showingBlockingLoader } = this.state;
-		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height } = this.props;
+		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion } = this.props;
 		const { rid, t, sysMes, bannerClosed, announcement } = room;
 
 		return (
@@ -1174,6 +1196,7 @@ class RoomView extends React.Component {
 					navigation={navigation}
 					hideSystemMessages={Array.isArray(sysMes) ? sysMes : Hide_System_Messages}
 					showMessageInMainThread={user.showMessageInMainThread}
+					serverVersion={serverVersion}
 				/>
 				{this.renderFooter()}
 				{this.renderActions()}
@@ -1212,6 +1235,7 @@ const mapStateToProps = state => ({
 	Message_TimeFormat: state.settings.Message_TimeFormat,
 	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
+	serverVersion: state.server.version,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
 	Hide_System_Messages: state.settings.Hide_System_Messages
 });

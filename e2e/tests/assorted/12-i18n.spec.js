@@ -29,6 +29,9 @@ const navToLanguage = async () => {
 describe('i18n', () => {
 	describe('OS language', () => {
 		it("OS set to 'en' and proper translate to 'en'", async () => {
+			if (device.getPlatform() === 'android') {
+				return; // FIXME: Passing language with launch parameters doesn't work with Android
+			}
 			await device.launchApp({
 				...defaultLaunchArgs,
 				languageAndLocale: {
@@ -37,14 +40,16 @@ describe('i18n', () => {
 				},
 				delete: true
 			});
-			await waitFor(element(by.id('onboarding-view')))
+			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(20000);
-			await expect(element(by.id('join-workspace').and(by.label('Join a workspace')))).toBeVisible();
-			await expect(element(by.id('create-workspace-button').and(by.label('Create a new workspace')))).toBeVisible();
+			await expect(element(by.id('new-server-view-open').and(by.label('Join our open workspace')))).toBeVisible();
 		});
 
 		it("OS set to unavailable language and fallback to 'en'", async () => {
+			if (device.getPlatform() === 'android') {
+				return; // FIXME: Passing language with launch parameters doesn't work with Android
+			}
 			await device.launchApp({
 				...defaultLaunchArgs,
 				languageAndLocale: {
@@ -52,11 +57,10 @@ describe('i18n', () => {
 					locale: 'es-MX'
 				}
 			});
-			await waitFor(element(by.id('onboarding-view')))
+			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(20000);
-			await expect(element(by.id('join-workspace').and(by.label('Join a workspace')))).toBeVisible();
-			await expect(element(by.id('create-workspace-button').and(by.label('Create a new workspace')))).toBeVisible();
+			await expect(element(by.id('new-server-view-open').and(by.label('Join our open workspace')))).toBeVisible();
 		});
 
 		/**
@@ -71,15 +75,12 @@ describe('i18n', () => {
 		// 			locale: "nl"
 		// 		}
 		// 	});
-		// 	await waitFor(element(by.id('onboarding-view'))).toBeVisible().withTimeout(20000);
-		// 	await expect(element(by.id('join-workspace').and(by.label('Word lid van een werkruimte')))).toBeVisible();
-		// 	await expect(element(by.id('create-workspace-button').and(by.label('Een nieuwe werkruimte aanmaken')))).toBeVisible();
 		// });
 	});
 
 	describe('Rocket.Chat language', () => {
 		before(async () => {
-			await device.launchApp(defaultLaunchArgs);
+			await device.launchApp({ ...defaultLaunchArgs, delete: true });
 			await navigateToLogin();
 			await login(testuser.username, testuser.password);
 		});
@@ -118,7 +119,7 @@ describe('i18n', () => {
 
 		it("should set unsupported language and fallback to 'en'", async () => {
 			await post('users.setPreferences', { data: { language: 'eo' } }); // Set language to Esperanto
-			await device.launchApp(defaultLaunchArgs);
+			await device.launchApp({ ...defaultLaunchArgs, newInstance: true });
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
 				.withTimeout(10000);

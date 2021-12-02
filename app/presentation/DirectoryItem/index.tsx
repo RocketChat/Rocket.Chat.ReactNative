@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, ViewStyle } from 'react-native';
 
 import Touch from '../../utils/touch';
 import Avatar from '../../containers/Avatar';
@@ -10,7 +10,7 @@ import { themes } from '../../constants/colors';
 export { ROW_HEIGHT };
 
 interface IDirectoryItemLabel {
-	text: string;
+	text?: string;
 	theme: string;
 }
 
@@ -21,11 +21,11 @@ interface IDirectoryItem {
 	type: string;
 	onPress(): void;
 	testID: string;
-	style: any;
-	rightLabel: string;
-	rid: string;
+	style?: ViewStyle;
+	rightLabel?: string;
+	rid?: string;
 	theme: string;
-	teamMain: boolean;
+	teamMain?: boolean;
 }
 
 const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => {
@@ -47,7 +47,7 @@ const DirectoryItem = ({
 	rid,
 	theme,
 	teamMain
-}: IDirectoryItem) => (
+}: IDirectoryItem): JSX.Element => (
 	<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID} theme={theme}>
 		<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
 			<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />

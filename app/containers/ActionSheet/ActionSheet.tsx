@@ -3,7 +3,7 @@ import { Keyboard, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { State, TapGestureHandler } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
-import Animated, { Easing, Extrapolate, Value, interpolate } from 'react-native-reanimated';
+import Animated, { Easing, Extrapolate, Value, interpolateNode } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { useBackHandler } from '@react-native-community/hooks';
 
@@ -124,7 +124,11 @@ const ActionSheet = React.memo(
 
 		const renderFooter = () =>
 			data?.hasCancel ? (
-				<Button onPress={hide} style={[styles.button, { backgroundColor: themes[theme].auxiliaryBackground }]} theme={theme}>
+				<Button
+					onPress={hide}
+					style={[styles.button, { backgroundColor: themes[theme].auxiliaryBackground }]}
+					theme={theme}
+					accessibilityLabel={I18n.t('Cancel')}>
 					<Text style={[styles.text, { color: themes[theme].bodyText }]}>{I18n.t('Cancel')}</Text>
 				</Button>
 			) : null;
@@ -132,11 +136,12 @@ const ActionSheet = React.memo(
 		const renderItem = ({ item }: any) => <Item item={item} hide={hide} theme={theme} />;
 
 		const animatedPosition = React.useRef(new Value(0));
-		const opacity = interpolate(animatedPosition.current, {
+		// TODO: Similar to https://github.com/wcandillon/react-native-redash/issues/307#issuecomment-827442320
+		const opacity = interpolateNode(animatedPosition.current, {
 			inputRange: [0, 1],
 			outputRange: [0, themes[theme].backdropOpacity],
 			extrapolate: Extrapolate.CLAMP
-		});
+		}) as any;
 
 		return (
 			<>

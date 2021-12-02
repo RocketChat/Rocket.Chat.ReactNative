@@ -2,7 +2,7 @@ module.exports = {
 	settings: {
 		'import/resolver': {
 			node: {
-				extensions: ['.js', '.ios.js', '.android.js', '.native.js', '.ts', '.tsx']
+				extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js', '.native.js']
 			}
 		}
 	},
@@ -235,7 +235,8 @@ module.exports = {
 						ignoreRestSiblings: true
 					}
 				],
-				'new-cap': 'off'
+				'new-cap': 'off',
+				'lines-between-class-members': 'off'
 			},
 			globals: {
 				JSX: true

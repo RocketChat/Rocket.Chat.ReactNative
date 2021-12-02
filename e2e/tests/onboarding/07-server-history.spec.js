@@ -11,7 +11,6 @@ describe('Server history', () => {
 			await navigateToLogin();
 			await login(data.users.regular.username, data.users.regular.password);
 			await logout();
-			await element(by.id('join-workspace')).tap();
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(60000);
@@ -26,10 +25,10 @@ describe('Server history', () => {
 
 		it('should tap on a server history and navigate to login', async () => {
 			await element(by.id(`server-history-${data.server}`)).tap();
-			await waitFor(element(by.id('login-view')))
+			await waitFor(element(by.id('login-view-email')))
 				.toBeVisible()
 				.withTimeout(5000);
-			await expect(element(by.id('login-view-email'))).toHaveText(data.users.regular.username);
+			await expect(element(by.label(data.users.regular.username).withAncestor(by.id('login-view-email'))));
 		});
 
 		it('should delete server from history', async () => {

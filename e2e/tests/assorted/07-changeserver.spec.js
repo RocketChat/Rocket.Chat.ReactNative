@@ -1,11 +1,11 @@
 const data = require('../../data');
-const { navigateToLogin, login, checkServer } = require('../../helpers/app');
+const { navigateToLogin, login, checkServer, platformTypes } = require('../../helpers/app');
 
 const reopenAndCheckServer = async server => {
-	await device.launchApp({ permissions: { notifications: 'YES' } });
+	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
 	await waitFor(element(by.id('rooms-list-view')))
 		.toBeVisible()
-		.withTimeout(6000);
+		.withTimeout(10000);
 	await checkServer(server);
 };
 
@@ -19,17 +19,26 @@ describe('Change server', () => {
 			.withTimeout(10000);
 	});
 
-	it('should login to server, add new server, close the app, open the app and show previous logged server', async () => {
+	it('should open the dropdown button, have the server add button and create workspace button', async () => {
 		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await element(by.id('rooms-list-header-server-add')).tap();
+		await waitFor(element(by.id('rooms-list-header-server-add')))
+			.toBeVisible()
+			.withTimeout(5000);
+		await waitFor(element(by.id('rooms-list-header-create-workspace-button')))
+			.toBeVisible()
+			.withTimeout(5000);
+	});
 
+	it('should login to server, add new server, close the app, open the app and show previous logged server', async () => {
+		await element(by.id('rooms-list-header-server-add')).tap();
 		await waitFor(element(by.id('new-server-view')))
 			.toBeVisible()
 			.withTimeout(6000);
-		await element(by.id('new-server-view-input')).typeText(`${data.alternateServer}\n`);
+		await element(by.id('new-server-view-input')).replaceText(`${data.alternateServer}`);
+		await element(by.id('new-server-view-input')).tapReturnKey();
 		await waitFor(element(by.id('workspace-view')))
 			.toBeVisible()
 			.withTimeout(10000);

@@ -43,7 +43,11 @@ const Content = React.memo(
 			content = <Text style={[styles.text, { color: themes[props.theme].bodyText }]}>{I18n.t('Sent_an_attachment')}</Text>;
 		} else if (props.isEncrypted) {
 			content = (
-				<Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{I18n.t('Encrypted_message')}</Text>
+				<Text
+					style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}
+					accessibilityLabel={I18n.t('Encrypted_message')}>
+					{I18n.t('Encrypted_message')}
+				</Text>
 			);
 		} else {
 			const { baseUrl, user, onLinkPress } = useContext(MessageContext);
@@ -51,8 +55,10 @@ const Content = React.memo(
 				// @ts-ignore
 				<Markdown
 					msg={props.msg}
+					md={props.md}
 					baseUrl={baseUrl}
 					getCustomEmoji={props.getCustomEmoji}
+					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
 					isEdited={props.isEdited}
 					numberOfLines={isPreview ? 1 : 0}
@@ -101,6 +107,9 @@ const Content = React.memo(
 			return false;
 		}
 		if (prevProps.isIgnored !== nextProps.isIgnored) {
+			return false;
+		}
+		if (!dequal(prevProps.md, nextProps.md)) {
 			return false;
 		}
 		if (!dequal(prevProps.mentions, nextProps.mentions)) {

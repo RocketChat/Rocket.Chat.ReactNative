@@ -5,6 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNFetchBlob from 'rn-fetch-blob';
+import isEmpty from 'lodash/isEmpty';
 
 import defaultSettings from '../constants/settings';
 import log from '../utils/log';
@@ -53,7 +54,7 @@ import loadMissedMessages from './methods/loadMissedMessages';
 import loadThreadMessages from './methods/loadThreadMessages';
 import sendMessage, { resendMessage } from './methods/sendMessage';
 import { cancelUpload, isUploadActive, sendFileMessage } from './methods/sendFileMessage';
-import callJitsi from './methods/callJitsi';
+import callJitsi, { callJitsiWithoutServer } from './methods/callJitsi';
 import logout, { removeServer } from './methods/logout';
 import UserPreferences from './userPreferences';
 import { Encryption } from './encryption';
@@ -75,6 +76,7 @@ const RocketChat = {
 	CURRENT_SERVER,
 	CERTIFICATE_KEY,
 	callJitsi,
+	callJitsiWithoutServer,
 	async subscribeRooms() {
 		if (!this.roomsSub) {
 			try {
@@ -530,6 +532,10 @@ const RocketChat = {
 		return this.post('users.forgotPassword', { email }, false);
 	},
 
+	sendConfirmationEmail(email) {
+		return this.methodCallWrapper('sendConfirmationEmail', email);
+	},
+
 	loginTOTP(params, loginEmailPassword, isFromWebView = false) {
 		return new Promise(async (resolve, reject) => {
 			try {
@@ -622,7 +628,8 @@ const RocketChat = {
 			roles: result.me.roles,
 			avatarETag: result.me.avatarETag,
 			isFromWebView,
-			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true
+			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true,
+			enableMessageParserEarlyAdoption: result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true
 		};
 		return user;
 	},
@@ -1039,15 +1046,32 @@ const RocketChat = {
 		}
 		return this.post('subscriptions.read', { rid: roomId });
 	},
-	getRoomMembers(rid, allUsers, skip = 0, limit = 10) {
+	async getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
+		const serverVersion = reduxStore.getState().server.version;
+		if (compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)) {
+			const params = {
+				roomId: rid,
+				offset: skip,
+				count: limit,
+				...(type !== 'all' && { 'status[]': type }),
+				...(filter && { filter })
+			};
+			// RC 3.16.0
+			const result = await this.sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
+			return result?.members;
+		}
 		// RC 0.42.0
-		return this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
+		const result = await this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
+		return result?.records;
 	},
-
 	methodCallWrapper(method, ...params) {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
+		const { user } = reduxStore.getState().login;
 		if (API_Use_REST_For_DDP_Calls) {
-			return this.post(`method.call/${method}`, { message: EJSON.stringify({ method, params }) });
+			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
+			return this.post(`${url}/${method}`, {
+				message: EJSON.stringify({ method, params })
+			});
 		}
 		const parsedParams = params.map(param => {
 			if (param instanceof Date) {
@@ -1148,6 +1172,19 @@ const RocketChat = {
 	getCustomFields() {
 		// RC 2.2.0
 		return this.sdk.get('livechat/custom-fields');
+	},
+
+	getListCannedResponse({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }) {
+		const params = {
+			offset,
+			count,
+			...(departmentId && { departmentId }),
+			...(text && { text }),
+			...(scope && { scope })
+		};
+
+		// RC 3.17.0
+		return this.sdk.get('canned-responses', params);
 	},
 
 	getUidDirectMessage(room) {
@@ -1354,17 +1391,19 @@ const RocketChat = {
 	 * Returns an array of boolean for each permission from permissions arg
 	 */
 	async hasPermission(permissions, rid) {
-		const db = database.active;
-		const subsCollection = db.get('subscriptions');
 		let roomRoles = [];
-		try {
-			// get the room from database
-			const room = await subsCollection.find(rid);
-			// get room roles
-			roomRoles = room.roles || [];
-		} catch (error) {
-			console.log('hasPermission -> Room not found');
-			return permissions.map(() => false);
+		if (rid) {
+			const db = database.active;
+			const subsCollection = db.get('subscriptions');
+			try {
+				// get the room from database
+				const room = await subsCollection.find(rid);
+				// get room roles
+				roomRoles = room.roles || [];
+			} catch (error) {
+				console.log('hasPermission -> Room not found');
+				return permissions.map(() => false);
+			}
 		}
 
 		try {
@@ -1511,11 +1550,13 @@ const RocketChat = {
 			messageId
 		});
 	},
-	searchMessages(roomId, searchText) {
+	searchMessages(roomId, searchText, count, offset) {
 		// RC 0.60.0
 		return this.sdk.get('chat.search', {
 			roomId,
-			searchText
+			searchText,
+			count,
+			offset
 		});
 	},
 	toggleFollowMessage(mid, follow) {

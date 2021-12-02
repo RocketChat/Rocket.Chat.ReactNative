@@ -8,7 +8,7 @@ import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks'
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
-import { ROOT_INSIDE, ROOT_NEW_SERVER, appInit, appStart } from '../actions/app';
+import { ROOT_INSIDE, ROOT_OUTSIDE, appInit, appStart } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
 import { loginRequest } from '../actions/login';
@@ -45,8 +45,10 @@ const navigate = function* navigate({ params }) {
 	if (params.path || params.rid) {
 		let type;
 		let name;
+		let jumpToThreadId;
 		if (params.path) {
-			[type, name] = params.path.split('/');
+			// Following this pattern: {channelType}/{channelName}/thread/{threadId}
+			[type, name, , jumpToThreadId] = params.path.split('/');
 		}
 		if (type !== 'invite' || params.rid) {
 			const room = yield RocketChat.canOpenRoom(params);
@@ -65,14 +67,19 @@ const navigate = function* navigate({ params }) {
 				if (focusedRooms.includes(room.rid)) {
 					// if there's one room on the list or last room is the one
 					if (focusedRooms.length === 1 || focusedRooms[0] === room.rid) {
-						yield goRoom({ item, isMasterDetail, jumpToMessageId });
+						if (jumpToThreadId) {
+							// With this conditional when there is a jumpToThreadId we can avoid the thread open again
+							// above other thread and the room could call again the thread
+							popToRoot({ isMasterDetail });
+						}
+						yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 					} else {
 						popToRoot({ isMasterDetail });
-						yield goRoom({ item, isMasterDetail, jumpToMessageId });
+						yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 					}
 				} else {
 					popToRoot({ isMasterDetail });
-					yield goRoom({ item, isMasterDetail, jumpToMessageId });
+					yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 				}
 
 				if (params.isCall) {
@@ -115,6 +122,11 @@ const handleOpen = function* handleOpen({ params }) {
 				host = id;
 			}
 		});
+
+		if (!host && params.fullURL) {
+			RocketChat.callJitsiWithoutServer(params.fullURL);
+			return;
+		}
 	}
 
 	if (params.type === 'oauth') {
@@ -180,7 +192,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield fallbackNavigation();
 			return;
 		}
-		yield put(appStart({ root: ROOT_NEW_SERVER }));
+		yield put(appStart({ root: ROOT_OUTSIDE }));
 		yield put(serverInitAdd(server));
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });

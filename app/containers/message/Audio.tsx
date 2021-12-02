@@ -43,7 +43,7 @@ interface IMessageAudioState {
 const mode = {
 	allowsRecordingIOS: false,
 	playsInSilentModeIOS: true,
-	staysActiveInBackground: false,
+	staysActiveInBackground: true,
 	shouldDuckAndroid: true,
 	playThroughEarpieceAndroid: false,
 	interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
