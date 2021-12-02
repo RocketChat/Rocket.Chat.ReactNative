@@ -1,9 +1,12 @@
-const { navigateToRegister } = require('../../helpers/app');
+const { navigateToRegister, platformTypes } = require('../../helpers/app');
 const data = require('../../data');
 
 describe('Create user screen', () => {
+	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToRegister();
 	});
 
@@ -50,10 +53,10 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-email')).replaceText(data.users.existing.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by.text('Email already exists. [403]')).atIndex(0))
+			await waitFor(element(by[textMatcher]('Email already exists. [403]')).atIndex(0))
 				.toExist()
 				.withTimeout(10000);
-			await element(by.text('OK')).tap();
+			await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 		});
 
 		it('should submit username already taken and raise error', async () => {
@@ -62,10 +65,10 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-email')).replaceText(data.registeringUser.email);
 			await element(by.id('register-view-password')).replaceText(data.registeringUser.password);
 			await element(by.id('register-view-submit')).tap();
-			await waitFor(element(by.text('Username is already in use')).atIndex(0))
+			await waitFor(element(by[textMatcher]('Username is already in use')).atIndex(0))
 				.toExist()
 				.withTimeout(10000);
-			await element(by.text('OK')).tap();
+			await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 		});
 
 		it('should register', async () => {

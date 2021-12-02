@@ -1,10 +1,13 @@
 const data = require('../../data');
-const { tapBack, checkServer, navigateToRegister } = require('../../helpers/app');
+const { tapBack, checkServer, navigateToRegister, platformTypes } = require('../../helpers/app');
 const { get, login, sendMessage } = require('../../helpers/data_setup');
 
 const DEEPLINK_METHODS = { AUTH: 'auth', ROOM: 'room' };
+
+let amp = '&';
+
 const getDeepLink = (method, server, params) => {
-	const deeplink = `rocketchat://${method}?host=${server.replace(/^(http:\/\/|https:\/\/)/, '')}&${params}`;
+	const deeplink = `rocketchat://${method}?host=${server.replace(/^(http:\/\/|https:\/\/)/, '')}${amp}${params}`;
 	console.log(`Deeplinking to: ${deeplink}`);
 	return deeplink;
 };
@@ -12,11 +15,17 @@ const getDeepLink = (method, server, params) => {
 describe('Deep linking', () => {
 	let userId;
 	let authToken;
+	let scrollViewType;
 	let threadId;
+	let textMatcher;
+	let alertButtonType;
 	const threadMessage = `to-thread-${data.random}`;
 	before(async () => {
 		const loginResult = await login(data.users.regular.username, data.users.regular.password);
 		({ userId, authToken } = loginResult);
+		const deviceType = device.getPlatform();
+		amp = deviceType === 'android' ? '\\&' : '&';
+		({ scrollViewType, textMatcher, alertButtonType } = platformTypes[deviceType]);
 		// create a thread with api
 		const result = await sendMessage(data.users.regular, data.groups.alternate2.name, threadMessage);
 		threadId = result.message._id;
@@ -28,10 +37,9 @@ describe('Deep linking', () => {
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
 				delete: true,
-				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, 'userId=123&token=abc'),
-				sourceApp: 'com.apple.mobilesafari'
+				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=123${amp}token=abc`)
 			});
-			await waitFor(element(by.text("You've been logged out by the server. Please log in again.")))
+			await waitFor(element(by[textMatcher]("You've been logged out by the server. Please log in again.")))
 				.toExist()
 				.withTimeout(10000); // TODO: we need to improve this message
 		});
@@ -43,9 +51,8 @@ describe('Deep linking', () => {
 				url: getDeepLink(
 					DEEPLINK_METHODS.AUTH,
 					data.server,
-					`userId=${userId}&token=${authToken}&path=group/${data.groups.private.name}`
-				),
-				sourceApp: 'com.apple.mobilesafari'
+					`userId=${userId}${amp}token=${authToken}${amp}path=group/${data.groups.private.name}`
+				)
 			});
 			await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 				.toExist()
@@ -56,7 +63,7 @@ describe('Deep linking', () => {
 				.withTimeout(10000);
 			await checkServer(data.server);
 			await waitFor(element(by.id(`rooms-list-view-item-${data.groups.private.name}`)))
-				.toBeVisible()
+				.toExist()
 				.withTimeout(2000);
 		};
 
@@ -70,7 +77,8 @@ describe('Deep linking', () => {
 			await element(by.id('register-view-name')).replaceText(data.registeringUser4.username);
 			await element(by.id('register-view-username')).replaceText(data.registeringUser4.username);
 			await element(by.id('register-view-email')).replaceText(data.registeringUser4.email);
-			await element(by.id('register-view-password')).typeText(data.registeringUser4.password);
+			await element(by.id('register-view-password')).replaceText(data.registeringUser4.password);
+			await element(by.type(scrollViewType)).atIndex(0).scrollTo('bottom');
 			await element(by.id('register-view-submit')).tap();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
@@ -85,8 +93,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.private.name}`),
-					sourceApp: 'com.apple.mobilesafari'
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.private.name}`)
 				});
 				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 					.toExist()
@@ -97,8 +104,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.alternate2.name}/thread/${threadId}`),
-					sourceApp: 'com.apple.mobilesafari'
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.alternate2.name}/thread/${threadId}`)
 				});
 				await waitFor(element(by.id(`room-view-title-${threadMessage}`)))
 					.toExist()
@@ -110,8 +116,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `rid=${roomResult.data.group._id}`),
-					sourceApp: 'com.apple.mobilesafari'
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `rid=${roomResult.data.group._id}`)
 				});
 				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 					.toExist()
@@ -135,8 +140,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.private.name}`),
-					sourceApp: 'com.apple.mobilesafari'
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, data.server, `path=group/${data.groups.private.name}`)
 				});
 				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 					.toExist()
@@ -147,8 +151,7 @@ describe('Deep linking', () => {
 				await device.launchApp({
 					permissions: { notifications: 'YES' },
 					newInstance: true,
-					url: getDeepLink(DEEPLINK_METHODS.ROOM, 'https://google.com'),
-					sourceApp: 'com.apple.mobilesafari'
+					url: getDeepLink(DEEPLINK_METHODS.ROOM, 'https://google.com')
 				});
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()

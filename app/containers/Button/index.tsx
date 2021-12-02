@@ -70,6 +70,7 @@ export default class Button extends React.PureComponent<Partial<IButtonProps>, a
 					disabled && styles.disabled,
 					style
 				]}
+				accessibilityLabel={title}
 				{...otherProps}>
 				{loading ? (
 					<ActivityIndicator color={textColor} />
