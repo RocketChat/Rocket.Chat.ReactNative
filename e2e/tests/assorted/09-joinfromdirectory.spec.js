@@ -10,7 +10,7 @@ async function navigateToRoom(search) {
 		.withTimeout(10000);
 	await sleep(300); // app takes some time to animate
 	await element(by.id(`directory-view-item-${search}`)).tap();
-	await waitFor(element(by.id('room-view')))
+	await waitFor(element(by.id('room-view')).atIndex(0))
 		.toExist()
 		.withTimeout(5000);
 	await waitFor(element(by.id(`room-view-title-${search}`)))
@@ -44,20 +44,20 @@ describe('Join room from directory', () => {
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('directory-view-dropdown')).tap();
-			await element(by.label('Users')).tap();
-			await element(by.label('Search by')).tap();
+			await element(by.label('Users')).atIndex(0).tap();
+			await element(by.label('Search by')).atIndex(0).tap();
 			await navigateToRoom(data.users.alternate.username);
 		});
 
-		it('should search user and navigate', async () => {
+		it('should search team and navigate', async () => {
 			await tapBack();
 			await element(by.id('rooms-list-view-directory')).tap();
 			await waitFor(element(by.id('directory-view')))
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('directory-view-dropdown')).tap();
-			await element(by.label('Teams')).tap();
-			await element(by.label('Search by')).tap();
+			await element(by.label('Teams')).atIndex(0).tap();
+			await element(by.label('Search by')).atIndex(0).tap();
 			await navigateToRoom(data.teams.private.name);
 		});
 	});
