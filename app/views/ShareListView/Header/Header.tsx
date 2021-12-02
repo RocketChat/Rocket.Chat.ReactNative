@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import TextInput from '../../../presentation/TextInput';
 import I18n from '../../../i18n';
 import { themes } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
+import { IShareListHeader } from './interface';
 
 const styles = StyleSheet.create({
 	container: {
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
+const Header = React.memo(({ searching, onChangeSearchText, theme }: IShareListHeader) => {
 	const titleColorStyle = { color: themes[theme].headerTintColor };
 	const isLight = theme === 'light';
 	if (searching) {
@@ -42,11 +42,5 @@ const Header = React.memo(({ searching, onChangeSearchText, theme }) => {
 	}
 	return <Text style={[styles.title, titleColorStyle]}>{I18n.t('Send_to')}</Text>;
 });
-
-Header.propTypes = {
-	searching: PropTypes.bool,
-	onChangeSearchText: PropTypes.func,
-	theme: PropTypes.string
-};
 
 export default Header;
