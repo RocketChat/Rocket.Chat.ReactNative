@@ -75,7 +75,7 @@ interface IPerformingActivity {
 }
 
 interface IPerformingUploadActivity extends IPerformingActivity {
-	fileName: string;
+	filesName: string[];
 }
 
 interface IMessageBoxProps {
@@ -107,7 +107,7 @@ interface IMessageBoxProps {
 	editRequest: Function;
 	onSubmit: Function;
 	userTyping: ({ rid, tmid, performing }: IPerformingActivity) => void;
-	userUploading: ({ rid, tmid, performing, fileName }: IPerformingUploadActivity) => void;
+	userUploading: ({ rid, tmid, performing, filesName }: IPerformingUploadActivity) => void;
 	userRecording: ({ rid, tmid, performing }: IPerformingActivity) => void;
 	theme: string;
 	replyCancel(): void;
@@ -754,14 +754,14 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	openShareView = (attachments: any) => {
-		const { message, replyCancel, replyWithMention } = this.props;
+		const { message, replyCancel, replyWithMention, userUploading } = this.props;
 		// Start a thread with an attachment
 		let { thread } = this;
 		if (replyWithMention) {
 			thread = message;
 			replyCancel();
 		}
-		Navigation.navigate('ShareView', { room: this.room, thread, attachments });
+		Navigation.navigate('ShareView', { room: this.room, thread, attachments, userUploading });
 	};
 
 	createDiscussion = () => {
@@ -802,15 +802,15 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const { rid, tmid, baseUrl: server, user, userUploading } = this.props;
 
 		if (fileInfo) {
-			const fileName = fileInfo?.name;
+			const filesName: string[] = [fileInfo?.name];
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					userUploading({ rid, tmid, performing: true, fileName });
+					userUploading({ rid, tmid, performing: true, filesName });
 					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-					userUploading({ rid, tmid, performing: false, fileName });
+					userUploading({ rid, tmid, performing: false, filesName });
 				}
 			} catch (e) {
-				userUploading({ rid, tmid, performing: false, fileName });
+				userUploading({ rid, tmid, performing: false, filesName });
 				log(e);
 			}
 		}

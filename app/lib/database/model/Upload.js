@@ -12,6 +12,8 @@ export default class Upload extends Model {
 
 	@relation('subscriptions', 'rid') subscription;
 
+	@field('tmid') tmid;
+
 	@field('name') name;
 
 	@field('description') description;

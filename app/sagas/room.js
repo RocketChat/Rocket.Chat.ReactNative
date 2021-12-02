@@ -5,45 +5,12 @@ import { delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import EventEmitter from '../utils/events';
 import Navigation from '../lib/Navigation';
 import * as types from '../actions/actionsTypes';
-import { removedRoom, removeUserActivity } from '../actions/room';
+import { removedRoom } from '../actions/room';
 import RocketChat from '../lib/rocketchat';
 import log, { events, logEvent } from '../utils/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
-import { USER_UPLOADING } from '../constants/userActivities';
-
-const watchUserActivity = function* watchUserActivity({ rid, activity, tmid, performing }) {
-	const auth = yield select(state => state.login.isAuthenticated);
-	if (!auth) {
-		yield take(types.LOGIN.SUCCESS);
-	}
-
-	try {
-		if (!performing) {
-			yield put(removeUserActivity(activity));
-		}
-		const activities = yield select(state => state.room.performingActivity) || [];
-		yield RocketChat.emitUserActivity({ room: rid, activities, extras: { tmid }, activity, performing });
-
-		// Watch the upload activity and until it receive false, will emit continuous each 4 sec that is uploading
-		if (activity === USER_UPLOADING) {
-			yield delay(4000);
-			while (performing) {
-				yield RocketChat.emitUserActivity({ room: rid, activities, extras: { tmid }, activity, performing });
-			}
-		}
-
-		if (performing) {
-			// Delay to emit false when the user is idle
-			yield delay(5000);
-			yield RocketChat.emitUserActivity({ room: rid, activities: [], extras: { tmid }, activity, performing: false });
-			yield put(removeUserActivity(activity));
-		}
-	} catch (e) {
-		log(e);
-	}
-};
 
 const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
@@ -182,9 +149,6 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 };
 
 const root = function* root() {
-	yield takeLatest(types.ROOM.USER_TYPING, watchUserActivity);
-	yield takeLatest(types.ROOM.USER_UPLOADING, watchUserActivity);
-	yield takeLatest(types.ROOM.USER_RECORDING, watchUserActivity);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
 	yield takeLatest(types.ROOM.CLOSE, handleCloseRoom);

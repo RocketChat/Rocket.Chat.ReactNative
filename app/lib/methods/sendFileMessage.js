@@ -38,6 +38,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 			const uploadUrl = `${server}/api/v1/rooms.upload/${rid}`;
 
 			fileInfo.rid = rid;
+			fileInfo.tmid = tmid;
 
 			const db = database.active;
 			const uploadsCollection = db.get('uploads');

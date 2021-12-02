@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 14,
+	version: 15,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -222,7 +222,8 @@ export default appSchema({
 				{ name: 'type', type: 'string', isOptional: true },
 				{ name: 'store', type: 'string', isOptional: true },
 				{ name: 'progress', type: 'number' },
-				{ name: 'error', type: 'boolean' }
+				{ name: 'error', type: 'boolean' },
+				{ name: 'tmid', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

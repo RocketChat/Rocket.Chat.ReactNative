@@ -11,6 +11,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Touch from '../../utils/touch';
 import { replyBroadcast as replyBroadcastAction } from '../../actions/messages';
+import { uploadingSend as uploadingSendAction, uploadingRemove as uploadingRemoveAction } from '../../actions/usersActivity';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -126,10 +127,12 @@ class RoomView extends React.Component {
 		isMasterDetail: PropTypes.bool,
 		theme: PropTypes.string,
 		replyBroadcast: PropTypes.func,
+		uploadingSend: PropTypes.func,
+		uploadingRemove: PropTypes.func,
 		width: PropTypes.number,
 		height: PropTypes.number,
 		insets: PropTypes.object,
-		userUploading: PropTypes.func
+		uploadings: PropTypes.object
 	};
 
 	constructor(props) {
@@ -187,9 +190,6 @@ class RoomView extends React.Component {
 		this.joinCode = React.createRef();
 		this.flatList = React.createRef();
 		this.mounted = false;
-
-		// Object with filename as key and the number of setInterval
-		this.uploadingSend = {};
 
 		// we don't need to subscribe to threads
 		if (this.rid && !this.tmid) {
@@ -924,27 +924,35 @@ class RoomView extends React.Component {
 		);
 	};
 
-	userUploading = ({ rid, tmid, performing, fileName }) => {
-		if (!fileName) {
-			return;
-		}
+	userUploading = ({ rid, tmid, performing, filesName }) => {
+		const { uploadingSend, uploadingRemove, uploadings } = this.props;
 
-		if (performing && this.uploadingSend?.[fileName]) {
-			return;
-		}
+		filesName.forEach(fileName => {
+			if (!fileName) {
+				return;
+			}
 
-		if (performing) {
-			// Fire immediately the emit
-			RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
-			this.uploadingSend[fileName] = setInterval(() => {
+			// Name that will be the key at state from redux
+			const nameUploaded = `${tmid || rid}-${fileName}`;
+
+			if (performing && uploadings[nameUploaded]) {
+				return;
+			}
+
+			if (performing) {
+				// Fire immediately the emit
 				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
-			}, 2000);
-		}
+				const intervalValue = setInterval(() => {
+					RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
+				}, 2000);
+				uploadingSend(nameUploaded, intervalValue);
+			}
 
-		if (!performing) {
-			clearInterval(this.uploadingSend?.[fileName]);
-			RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
-		}
+			if (!performing) {
+				uploadingRemove(nameUploaded);
+				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
+			}
+		});
 	};
 
 	navToThread = async item => {
@@ -1286,14 +1294,7 @@ class RoomView extends React.Component {
 					height={height}
 					theme={theme}
 				/>
-				<UploadProgress
-					rid={this.rid}
-					tmid={this.tmid}
-					user={user}
-					baseUrl={baseUrl}
-					width={width}
-					uploading={this.userUploading}
-				/>
+				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} width={width} userUploading={this.userUploading} />
 				<ReactionsModal
 					message={selectedMessage}
 					isVisible={reactionsModalVisible}
@@ -1321,11 +1322,14 @@ const mapStateToProps = state => ({
 	baseUrl: state.server.server,
 	serverVersion: state.server.version,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
-	Hide_System_Messages: state.settings.Hide_System_Messages
+	Hide_System_Messages: state.settings.Hide_System_Messages,
+	uploadings: state.usersActivity.uploadingSend
 });
 
 const mapDispatchToProps = dispatch => ({
-	replyBroadcast: message => dispatch(replyBroadcastAction(message))
+	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
+	uploadingSend: (name, intervalValue) => dispatch(uploadingSendAction(name, intervalValue)),
+	uploadingRemove: name => dispatch(uploadingRemoveAction(name))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));

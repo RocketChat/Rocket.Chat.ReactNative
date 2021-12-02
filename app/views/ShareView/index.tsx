@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { NativeModules, Text, View } from 'react-native';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 
@@ -13,7 +12,6 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
-import { userUploading as userUploadingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
 import MessageBox from '../../containers/MessageBox';
@@ -33,6 +31,7 @@ interface IPerformingActivity {
 	rid: string;
 	tmid: string;
 	performing: boolean;
+	filesName: string[];
 }
 interface IShareViewState {
 	selected: IAttachment;
@@ -60,6 +59,7 @@ interface IShareViewProps {
 				text: string;
 				room: any;
 				thread: any; // change
+				userUploading: ({ rid, tmid, performing, filesName }: IPerformingActivity) => void;
 			};
 		},
 		'ShareView'
@@ -73,7 +73,6 @@ interface IShareViewProps {
 	server: string;
 	FileUpload_MediaTypeWhiteList?: number;
 	FileUpload_MaxFileSize?: number;
-	userUploading: ({ rid, tmid, performing }: IPerformingActivity) => void;
 }
 
 interface IMessageBoxShareView {
@@ -86,6 +85,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: any;
+	private userUploading: ({ rid, tmid, performing, filesName }: IPerformingActivity) => void;
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -93,6 +93,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
 		this.serverInfo = props.route.params?.serverInfo ?? {};
+		this.userUploading = props.route.params?.userUploading;
 
 		this.state = {
 			selected: {} as IAttachment,
@@ -212,7 +213,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		await this.selectFile(selected);
 
 		const { attachments, room, text, thread } = this.state;
-		const { navigation, server, user, userUploading } = this.props;
+		const { navigation, server, user } = this.props;
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
@@ -223,13 +224,15 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			navigation.pop();
 		}
 
+		const filesName: string[] = [];
 		try {
 			// Send attachment
 			if (attachments.length) {
-				userUploading({ rid: room.rid, tmid: thread?.id, performing: true });
 				await Promise.all(
 					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
 						if (canUpload) {
+							filesName.push(name);
+							this.userUploading({ rid: room.rid, tmid: thread?.id, performing: true, filesName: [name] });
 							return RocketChat.sendFileMessage(
 								room.rid,
 								{
@@ -248,14 +251,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						return Promise.resolve();
 					})
 				);
-				userUploading({ rid: room.rid, tmid: thread?.id, performing: false });
+				this.userUploading({ rid: room.rid, tmid: thread?.id, performing: false, filesName });
 				// Send text message
 			} else if (text.length) {
 				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
 			}
 		} catch {
 			// Do nothing
-			userUploading({ rid: room.rid, tmid: thread?.id, performing: false });
+			this.userUploading({ rid: room.rid, tmid: thread?.id, performing: false, filesName });
 		}
 
 		// if it's share extension this should close
@@ -386,8 +389,4 @@ const mapStateToProps = (state: any) => ({
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	userUploading: ({ rid, tmid, performing }: IPerformingActivity) => dispatch(userUploadingAction(rid, tmid, performing))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ShareView));
+export default connect(mapStateToProps, null)(withTheme(ShareView));

@@ -199,6 +199,15 @@ export default schemaMigrations({
 					columns: [{ name: 'md', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 15,
+			steps: [
+				addColumns({
+					table: 'uploads',
+					columns: [{ name: 'tmid', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });

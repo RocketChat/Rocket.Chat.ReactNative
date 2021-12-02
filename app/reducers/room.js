@@ -4,8 +4,7 @@ const initialState = {
 	rid: null,
 	isDeleting: false,
 	rooms: [],
-	threads: [],
-	performingActivity: []
+	uploadingSend: {}
 };
 
 export default function (state = initialState, action) {
@@ -49,15 +48,13 @@ export default function (state = initialState, action) {
 				...state,
 				isDeleting: false
 			};
-		case ROOM.USER_TYPING:
-		case ROOM.USER_UPLOADING:
-		case ROOM.USER_RECORDING:
-			if (state.performingActivity.includes(action.activity)) {
-				return { ...state };
-			}
-			return { ...state, performingActivity: [...state.performingActivity, action.activity] };
-		case ROOM.REMOVE_USER_ACTIVITY:
-			return { ...state, performingActivity: [...state.performingActivity.filter(activity => activity !== action.activity)] };
+		case ROOM.UPLOADING_SEND:
+			return { ...state, uploadingSend: { ...state.uploadingSend, [action.name]: action.intervalValue } };
+		case ROOM.UPLOADING_REMOVE:
+			const uploadingSendState = Object.assign({}, state.uploadingSend);
+			clearInterval(uploadingSendState[action.name]);
+			delete uploadingSendState[action.name];
+			return { ...state, uploadingSend: { ...uploadingSendState } };
 		default:
 			return state;
 	}
