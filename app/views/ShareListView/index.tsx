@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { BackHandler, FlatList, Keyboard, PermissionsAndroid, ScrollView, Text, View } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { BackHandler, FlatList, Keyboard, PermissionsAndroid, ScrollView, Text, View, Rationale } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
@@ -25,24 +25,75 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
 import ShareListHeader from './Header';
 
-const permission = {
+interface IFile {
+	value: string;
+	type: string;
+}
+
+interface IAttachment {
+	filename: string;
+	description: string;
+	size: number;
+	mime: any;
+	path: string;
+}
+
+interface IChat {
+	rid: string;
+	t: string;
+	name: string;
+	fname: string;
+	blocked: boolean;
+	blocker: boolean;
+	prid: string;
+	uids: string[];
+	usernames: string[];
+	topic: string;
+	description: string;
+}
+
+interface IServerInfo {
+	useRealName: boolean;
+}
+interface IState {
+	searching: boolean;
+	searchText: string;
+	searchResults: IChat[];
+	chats: IChat[];
+	serversCount: number;
+	attachments: IAttachment[];
+	text: string;
+	loading: boolean;
+	serverInfo: IServerInfo;
+	needsPermission: boolean;
+}
+
+interface INavigationOption {
+	navigation: StackNavigationProp<any, 'ShareListView'>;
+}
+
+interface IShareListViewProps extends INavigationOption {
+	server: string;
+	token: string;
+	userId: string;
+	theme: string;
+}
+
+const permission: Rationale = {
 	title: I18n.t('Read_External_Permission'),
-	message: I18n.t('Read_External_Permission_Message')
+	message: I18n.t('Read_External_Permission_Message'),
+	buttonPositive: 'Ok'
 };
 
-const getItemLayout = (data, index) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
-const keyExtractor = item => item.rid;
+const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
+const keyExtractor = (item: IChat) => item.rid;
 
-class ShareListView extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object,
-		server: PropTypes.string,
-		token: PropTypes.string,
-		userId: PropTypes.string,
-		theme: PropTypes.string
-	};
+class ShareListView extends React.Component<IShareListViewProps, IState> {
+	private unsubscribeFocus: (() => void) | undefined;
 
-	constructor(props) {
+	private unsubscribeBlur: (() => void) | undefined;
+
+	constructor(props: IShareListViewProps) {
 		super(props);
 		this.state = {
 			searching: false,
@@ -53,7 +104,7 @@ class ShareListView extends React.Component {
 			attachments: [],
 			text: '',
 			loading: true,
-			serverInfo: null,
+			serverInfo: {} as IServerInfo,
 			needsPermission: isAndroid || false
 		};
 		this.setHeader();
@@ -70,7 +121,7 @@ class ShareListView extends React.Component {
 	async componentDidMount() {
 		const { server } = this.props;
 		try {
-			const data = await ShareExtension.data();
+			const data = (await ShareExtension.data()) as IFile[];
 			if (isAndroid) {
 				await this.askForPermission(data);
 			}
@@ -85,7 +136,7 @@ class ShareListView extends React.Component {
 				size: file.size,
 				mime: mime.lookup(file.uri),
 				path: file.uri
-			}));
+			})) as IAttachment[];
 			const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${item.value}\n${acc}`, '');
 			this.setState({
 				text,
@@ -98,14 +149,14 @@ class ShareListView extends React.Component {
 		this.getSubscriptions(server);
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps: IShareListViewProps) {
 		const { server } = this.props;
 		if (nextProps.server !== server) {
 			this.getSubscriptions(nextProps.server);
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: IShareListViewProps, nextState: IState) {
 		const { searching, needsPermission } = this.state;
 		if (nextState.searching !== searching) {
 			return true;
@@ -151,7 +202,7 @@ class ShareListView extends React.Component {
 						searching={searching}
 						initSearch={this.initSearch}
 						cancelSearch={this.cancelSearch}
-						search={this.search}
+						onChangeSearchText={this.search}
 						theme={theme}
 					/>
 				)
@@ -168,7 +219,7 @@ class ShareListView extends React.Component {
 				) : (
 					<HeaderButton.CancelModal onPress={ShareExtension.close} testID='share-extension-close' />
 				),
-			headerTitle: () => <ShareListHeader searching={searching} search={this.search} theme={theme} />,
+			headerTitle: () => <ShareListHeader searching={searching} onChangeSearchText={this.search} theme={theme} />,
 			headerRight: () =>
 				searching ? null : (
 					<HeaderButton.Container>
@@ -178,16 +229,16 @@ class ShareListView extends React.Component {
 		});
 	};
 
-	// eslint-disable-next-line react/sort-comp
-	internalSetState = (...args) => {
+	internalSetState = (...args: object[]) => {
 		const { navigation } = this.props;
 		if (navigation.isFocused()) {
 			animateNextTransition();
 		}
+		// @ts-ignore
 		this.setState(...args);
 	};
 
-	query = async text => {
+	query = async (text?: string) => {
 		const db = database.active;
 		const defaultWhereClause = [
 			Q.where('archived', false),
@@ -195,15 +246,16 @@ class ShareListView extends React.Component {
 			Q.experimentalSkip(0),
 			Q.experimentalTake(20),
 			Q.experimentalSortBy('room_updated_at', Q.desc)
-		];
+		] as (Q.WhereDescription | Q.Skip | Q.Take | Q.SortBy | Q.Or)[];
 		if (text) {
 			const likeString = sanitizeLikeString(text);
 			defaultWhereClause.push(Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))));
 		}
-		const data = await db
+		const data = (await db
 			.get('subscriptions')
 			.query(...defaultWhereClause)
-			.fetch();
+			.fetch()) as IChat[];
+
 		return data.map(item => ({
 			rid: item.rid,
 			t: item.t,
@@ -218,7 +270,7 @@ class ShareListView extends React.Component {
 		}));
 	};
 
-	getSubscriptions = async server => {
+	getSubscriptions = async (server: string) => {
 		const serversDB = database.servers;
 
 		if (server) {
@@ -242,7 +294,7 @@ class ShareListView extends React.Component {
 		}
 	};
 
-	askForPermission = async data => {
+	askForPermission = async (data: IFile[]) => {
 		const mediaIndex = data.findIndex(item => item.type === 'media');
 		if (mediaIndex !== -1) {
 			const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, permission);
@@ -255,15 +307,14 @@ class ShareListView extends React.Component {
 		return Promise.resolve();
 	};
 
-	uriToPath = uri => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
+	uriToPath = (uri: string) => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
-	getRoomTitle = item => {
+	getRoomTitle = (item: IChat) => {
 		const { serverInfo } = this.state;
-		const { useRealName } = serverInfo;
-		return ((item.prid || useRealName) && item.fname) || item.name;
+		return ((item.prid || serverInfo?.useRealName) && item.fname) || item.name;
 	};
 
-	shareMessage = room => {
+	shareMessage = (room: IChat) => {
 		const { attachments, text, serverInfo } = this.state;
 		const { navigation } = this.props;
 
@@ -276,7 +327,7 @@ class ShareListView extends React.Component {
 		});
 	};
 
-	search = async text => {
+	search = async (text: string) => {
 		const result = await this.query(text);
 		this.internalSetState({
 			searchResults: result,
@@ -303,7 +354,7 @@ class ShareListView extends React.Component {
 		return false;
 	};
 
-	renderSectionHeader = header => {
+	renderSectionHeader = (header: string) => {
 		const { searching } = this.state;
 		const { theme } = this.props;
 		if (searching) {
@@ -320,10 +371,9 @@ class ShareListView extends React.Component {
 		);
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: IChat }) => {
 		const { serverInfo } = this.state;
-		const { useRealName } = serverInfo;
-		const { userId, token, server, theme } = this.props;
+		const { theme } = this.props;
 		let description;
 		switch (item.t) {
 			case 'c':
@@ -333,7 +383,7 @@ class ShareListView extends React.Component {
 				description = item.topic || item.description;
 				break;
 			case 'd':
-				description = useRealName ? item.name : item.fname;
+				description = serverInfo?.useRealName ? item.name : item.fname;
 				break;
 			default:
 				description = item.fname;
@@ -341,12 +391,7 @@ class ShareListView extends React.Component {
 		}
 		return (
 			<DirectoryItem
-				user={{
-					id: userId,
-					token
-				}}
 				title={this.getRoomTitle(item)}
-				baseUrl={server}
 				avatar={RocketChat.getRoomAvatar(item)}
 				description={description}
 				type={item.prid ? 'discussion' : item.t}
@@ -439,7 +484,7 @@ class ShareListView extends React.Component {
 	};
 }
 
-const mapStateToProps = ({ share }) => ({
+const mapStateToProps = ({ share }: any) => ({
 	userId: share.user && share.user.id,
 	token: share.user && share.user.token,
 	server: share.server.server

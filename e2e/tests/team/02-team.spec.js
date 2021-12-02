@@ -1,5 +1,5 @@
 const data = require('../../data');
-const { navigateToLogin, login, tapBack, sleep, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, tapBack, sleep, searchRoom, platformTypes } = require('../../helpers/app');
 
 async function navigateToRoom(roomName) {
 	await searchRoom(`${roomName}`);
@@ -17,6 +17,7 @@ async function openActionSheet(username) {
 	await sleep(300);
 	await expect(element(by.id('action-sheet'))).toExist();
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+	await element(by.id('action-sheet-handle')).swipe('up');
 }
 
 async function navigateToRoomActions() {
@@ -37,10 +38,28 @@ async function backToActions() {
 }
 async function closeActionSheet() {
 	await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
+	await waitFor(element(by.id('action-sheet-handle')))
+		.toBeNotVisible()
+		.withTimeout(3000);
+	await sleep(200);
 }
 
 async function waitForToast() {
 	await sleep(1000);
+}
+
+async function swipeTillVisible(container, find, direction = 'up', delta = 0.3, speed = 'slow') {
+	let found = false;
+	while (!found) {
+		try {
+			await element(container).swipe(direction, speed, delta);
+			await sleep(200);
+			await expect(element(find)).toBeVisible();
+			found = true;
+		} catch (e) {
+			//
+		}
+	}
 }
 
 describe('Team', () => {
@@ -48,9 +67,12 @@ describe('Team', () => {
 	const user = data.users.alternate;
 	const room = `private${data.random}-channel-team`;
 	const existingRoom = data.groups.alternate.name;
+	let alertButtonType;
+	let textMatcher;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await navigateToRoom(team);
@@ -86,7 +108,7 @@ describe('Team', () => {
 
 		describe('Team Channels Header', () => {
 			it('should have actions button ', async () => {
-				await expect(element(by.id('room-header'))).toExist();
+				await expect(element(by.id('room-header')).atIndex(0)).toExist();
 			});
 
 			it('should have team channels button ', async () => {
@@ -124,6 +146,9 @@ describe('Team', () => {
 				await element(by.id('add-channel-team-view-create-channel')).tap();
 
 				await element(by.id('select-users-view-search')).replaceText('rocket.cat');
+				await waitFor(element(by.id('select-users-view-item-rocket.cat')))
+					.toBeVisible()
+					.withTimeout(5000);
 				await element(by.id('select-users-view-item-rocket.cat')).tap();
 				await waitFor(element(by.id('selected-user-rocket.cat')))
 					.toBeVisible()
@@ -134,7 +159,10 @@ describe('Team', () => {
 					.toExist()
 					.withTimeout(10000);
 				await element(by.id('create-channel-name')).replaceText('');
-				await element(by.id('create-channel-name')).typeText(room);
+				await element(by.id('create-channel-name')).replaceText(room);
+				await waitFor(element(by.id('create-channel-submit')))
+					.toExist()
+					.withTimeout(10000);
 				await element(by.id('create-channel-submit')).tap();
 
 				await waitFor(element(by.id('room-view')))
@@ -156,9 +184,9 @@ describe('Team', () => {
 					.toExist()
 					.withTimeout(60000);
 				await expect(element(by.id(`room-view-title-${room}`))).toExist();
-				await expect(element(by.id('room-view-header-team-channels'))).toExist();
-				await expect(element(by.id('room-view-header-threads'))).toExist();
-				await expect(element(by.id('room-view-search'))).toExist();
+				await expect(element(by.id('room-view-header-team-channels')).atIndex(0)).toExist();
+				await expect(element(by.id('room-view-header-threads')).atIndex(0)).toExist();
+				await expect(element(by.id('room-view-search')).atIndex(0)).toExist();
 				await tapBack();
 			});
 
@@ -186,7 +214,7 @@ describe('Team', () => {
 				await expect(element(by.id('room-view-header-team-channels'))).toExist();
 				await element(by.id('room-view-header-team-channels')).tap();
 
-				await waitFor(element(by.id(`rooms-list-view-item-${existingRoom}`)))
+				await waitFor(element(by.id(`rooms-list-view-item-${existingRoom}`)).atIndex(0))
 					.toExist()
 					.withTimeout(10000);
 			});
@@ -195,7 +223,8 @@ describe('Team', () => {
 				await element(by.id(`rooms-list-view-item-${existingRoom}`))
 					.atIndex(0)
 					.longPress();
-
+				await sleep(500);
+				await swipeTillVisible(by.id('action-sheet-remove-from-team'), by.id('action-sheet-delete'));
 				await waitFor(element(by.id('action-sheet-auto-join')))
 					.toBeVisible()
 					.withTimeout(5000);
@@ -224,7 +253,7 @@ describe('Team', () => {
 				await waitFor(element(by.id('auto-join-tag')))
 					.toBeNotVisible()
 					.withTimeout(5000);
-				await waitFor(element(by.id(`rooms-list-view-item-${existingRoom}`)))
+				await waitFor(element(by.id(`rooms-list-view-item-${existingRoom}`)).atIndex(0))
 					.toExist()
 					.withTimeout(6000);
 			});
@@ -298,22 +327,22 @@ describe('Team', () => {
 
 				await waitFor(
 					element(
-						by.label(
+						by[textMatcher](
 							'You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.'
 						)
 					)
 				)
 					.toExist()
 					.withTimeout(2000);
-				await element(by.text('OK')).tap();
+				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 				await waitFor(element(by.id('select-list-view-submit')))
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('select-list-view-submit')).tap();
-				await waitFor(element(by.text('Last owner cannot be removed')))
+				await waitFor(element(by[textMatcher]('Last owner cannot be removed')))
 					.toExist()
 					.withTimeout(8000);
-				await element(by.text('OK')).tap();
+				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 				await tapBack();
 				await waitFor(element(by.id('room-actions-view')))
 					.toExist()
@@ -352,6 +381,9 @@ describe('Team', () => {
 
 				it('should remove member from team', async () => {
 					await openActionSheet('rocket.cat');
+					await waitFor(element(by.id('action-sheet-remove-from-team')))
+						.toBeVisible()
+						.withTimeout(2000);
 					await element(by.id('action-sheet-remove-from-team')).tap();
 					await waitFor(element(by.id('select-list-view')))
 						.toExist()
@@ -406,14 +438,14 @@ describe('Team', () => {
 
 					await waitFor(
 						element(
-							by.label(
+							by[textMatcher](
 								'You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.'
 							)
 						)
 					)
 						.toExist()
 						.withTimeout(2000);
-					await element(by.text('OK')).tap();
+					await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 					await waitFor(element(by.id('select-list-view-submit')))
 						.toExist()
 						.withTimeout(2000);

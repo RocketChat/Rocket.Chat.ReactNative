@@ -1,4 +1,4 @@
-const { navigateToLogin, login, sleep } = require('../../helpers/app');
+const { navigateToLogin, login, sleep, platformTypes } = require('../../helpers/app');
 const data = require('../../data');
 
 const profileChangeUser = data.users.profileChanges;
@@ -14,8 +14,14 @@ async function waitForToast() {
 }
 
 describe('Profile screen', () => {
+	let textInputType;
+	let scrollViewType;
+	let alertButtonType;
+	let textMatcher;
+
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ textInputType, scrollViewType, alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(profileChangeUser.username, profileChangeUser.password);
 		await element(by.id('rooms-list-view-sidebar')).tap();
@@ -92,8 +98,8 @@ describe('Profile screen', () => {
 	describe('Usage', () => {
 		it('should change name and username', async () => {
 			await element(by.id('profile-view-name')).replaceText(`${profileChangeUser.username}new`);
-			await element(by.id('profile-view-username')).typeText(`${profileChangeUser.username}new`);
-			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
+			await element(by.id('profile-view-username')).replaceText(`${profileChangeUser.username}new`);
+			await element(by.type(scrollViewType)).atIndex(1).swipe('up');
 			await element(by.id('profile-view-submit')).tap();
 			await waitForToast();
 		});
@@ -102,12 +108,13 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${data.random}@rocket.chat`);
 			await element(by.id('profile-view-new-password')).replaceText(`${profileChangeUser.password}new`);
 			await element(by.id('profile-view-submit')).tap();
-			await element(by.type('_UIAlertControllerTextField')).typeText(`${profileChangeUser.password}\n`);
+			await element(by.type(textInputType)).replaceText(`${profileChangeUser.password}`);
+			await element(by[textMatcher]('Save').and(by.type(alertButtonType))).tap();
 			await waitForToast();
 		});
 
 		it('should reset avatar', async () => {
-			await element(by.type('UIScrollView')).atIndex(1).swipe('up');
+			await element(by.type(scrollViewType)).atIndex(1).swipe('up');
 			await element(by.id('profile-view-reset-avatar')).tap();
 			await waitForToast();
 		});
