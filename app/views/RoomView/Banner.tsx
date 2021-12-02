@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { BorderlessButton, ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 
@@ -9,8 +8,16 @@ import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 
+interface IRoomBannerProps {
+	text: string;
+	title: string;
+	theme: string;
+	bannerClosed: boolean;
+	closeBanner(): void;
+}
+
 const Banner = React.memo(
-	({ text, title, theme, bannerClosed, closeBanner }) => {
+	({ text, title, theme, bannerClosed, closeBanner }: IRoomBannerProps) => {
 		const [showModal, openModal] = useState(false);
 
 		const toggleModal = () => openModal(prevState => !prevState);
@@ -22,6 +29,7 @@ const Banner = React.memo(
 						style={[styles.bannerContainer, { backgroundColor: themes[theme].bannerBackground }]}
 						testID='room-view-banner'
 						onPress={toggleModal}>
+						{/* @ts-ignore*/}
 						<Markdown msg={text} theme={theme} numberOfLines={1} style={[styles.bannerText]} preview />
 						<BorderlessButton onPress={closeBanner}>
 							<CustomIcon color={themes[theme].auxiliaryText} name='close' size={20} />
@@ -37,6 +45,7 @@ const Banner = React.memo(
 						<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
 							<Text style={[styles.bannerModalTitle, { color: themes[theme].auxiliaryText }]}>{title}</Text>
 							<ScrollView style={styles.modalScrollView}>
+								{/* @ts-ignore*/}
 								<Markdown msg={text} theme={theme} />
 							</ScrollView>
 						</View>
@@ -50,13 +59,5 @@ const Banner = React.memo(
 	(prevProps, nextProps) =>
 		prevProps.text === nextProps.text && prevProps.theme === nextProps.theme && prevProps.bannerClosed === nextProps.bannerClosed
 );
-
-Banner.propTypes = {
-	text: PropTypes.string,
-	title: PropTypes.string,
-	theme: PropTypes.string,
-	bannerClosed: PropTypes.bool,
-	closeBanner: PropTypes.func
-};
 
 export default Banner;
