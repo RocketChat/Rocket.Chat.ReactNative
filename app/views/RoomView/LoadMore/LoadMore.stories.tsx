@@ -28,7 +28,7 @@ stories.add('basic', () => (
 	</>
 ));
 
-const ThemeStory = ({ theme }) => (
+const ThemeStory = ({ theme }: { theme: string }) => (
 	<ThemeContext.Provider value={{ theme }}>
 		<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<LoadMore load={load} type={MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK} />
