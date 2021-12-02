@@ -201,4 +201,5 @@ const mapStateToProps = (state: any) => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withTheme(EmojiPicker));
+// TODO - remove this as any, at the new PR to fix the HOC erros
+export default connect(mapStateToProps)(withTheme(EmojiPicker)) as any;
