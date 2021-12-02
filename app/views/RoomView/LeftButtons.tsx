@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { HeaderBackButton } from '@react-navigation/stack';
 
@@ -13,11 +12,37 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IRoomLeftButtons {
+	tmid: string;
+	unreadsCount: number;
+	navigation: any; // TODO - change this after merge react navigation
+	baseUrl: string;
+	userId: string;
+	token: string;
+	title: string;
+	t: string;
+	theme: string;
+	goRoomActionsView: Function;
+	isMasterDetail: boolean;
+}
+
 const LeftButtons = React.memo(
-	({ tmid, unreadsCount, navigation, baseUrl, userId, token, title, t, theme, goRoomActionsView, isMasterDetail }) => {
+	({
+		tmid,
+		unreadsCount,
+		navigation,
+		baseUrl,
+		userId,
+		token,
+		title,
+		t,
+		theme,
+		goRoomActionsView,
+		isMasterDetail
+	}: IRoomLeftButtons) => {
 		if (!isMasterDetail || tmid) {
-			const onPress = useCallback(() => navigation.goBack());
-			const label = unreadsCount > 99 ? '+99' : unreadsCount || ' ';
+			const onPress = useCallback(() => navigation.goBack(), []);
+			const label: any = unreadsCount > 99 ? '+99' : unreadsCount || ' ';
 			const labelLength = label.length ? label.length : 1;
 			const marginLeft = -2 * labelLength;
 			const fontSize = labelLength > 1 ? 14 : 17;
@@ -38,19 +63,5 @@ const LeftButtons = React.memo(
 		return null;
 	}
 );
-
-LeftButtons.propTypes = {
-	tmid: PropTypes.string,
-	unreadsCount: PropTypes.number,
-	navigation: PropTypes.object,
-	baseUrl: PropTypes.string,
-	userId: PropTypes.string,
-	token: PropTypes.string,
-	title: PropTypes.string,
-	t: PropTypes.string,
-	theme: PropTypes.string,
-	goRoomActionsView: PropTypes.func,
-	isMasterDetail: PropTypes.bool
-};
 
 export default LeftButtons;
