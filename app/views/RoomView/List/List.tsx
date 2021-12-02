@@ -1,7 +1,6 @@
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
-import PropTypes from 'prop-types';
 
 import { isIOS } from '../../../utils/deviceInfo';
 import scrollPersistTaps from '../../../utils/scrollPersistTaps';
@@ -17,11 +16,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const List = ({ listRef, ...props }) => (
+interface IRoomListProps {
+	listRef: any;
+}
+
+const List = ({ listRef, ...props }: IRoomListProps) => (
+	// @ts-ignore
 	<AnimatedFlatList
 		testID='room-view-messages'
 		ref={listRef}
-		keyExtractor={item => item.id}
+		keyExtractor={(item: any) => item.id}
 		contentContainerStyle={styles.contentContainer}
 		style={styles.list}
 		inverted
@@ -34,9 +38,5 @@ const List = ({ listRef, ...props }) => (
 		{...scrollPersistTaps}
 	/>
 );
-
-List.propTypes = {
-	listRef: PropTypes.object
-};
 
 export default List;

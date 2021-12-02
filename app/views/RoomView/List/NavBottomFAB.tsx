@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 import Animated, { call, cond, greaterOrEq, useCode } from 'react-native-reanimated';
 
 import { themes } from '../../../constants/colors';
@@ -30,11 +29,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NavBottomFAB = ({ y, onPress, isThread }) => {
+interface IRoomNavBottomFAB {
+	y: number;
+	onPress: Function;
+	isThread: boolean;
+}
+
+const NavBottomFAB = ({ y, onPress, isThread }: IRoomNavBottomFAB) => {
 	const { theme } = useTheme();
 	const [show, setShow] = useState(false);
-	const handleOnPress = useCallback(() => onPress());
-	const toggle = v => setShow(v);
+	const handleOnPress = useCallback(() => onPress(), []); // TODO - check this
+	const toggle = (v: boolean) => setShow(v);
 
 	useCode(
 		() =>
@@ -63,12 +68,6 @@ const NavBottomFAB = ({ y, onPress, isThread }) => {
 			</Touch>
 		</Animated.View>
 	);
-};
-
-NavBottomFAB.propTypes = {
-	y: Animated.Value,
-	onPress: PropTypes.func,
-	isThread: PropTypes.bool
 };
 
 export default NavBottomFAB;
