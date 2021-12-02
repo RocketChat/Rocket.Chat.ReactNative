@@ -1,15 +1,17 @@
 // const OTP = require('otp.js');
 // const GA = OTP.googleAuthenticator;
 
-const { navigateToLogin, login, mockMessage, tapBack, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes } = require('../../helpers/app');
 const data = require('../../data');
 
 const testuser = data.users.regular;
 const otheruser = data.users.alternate;
 
 describe('Broadcast room', () => {
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 	});
@@ -101,7 +103,7 @@ describe('Broadcast room', () => {
 	});
 
 	it('should have the message created earlier', async () => {
-		await waitFor(element(by.label(`${data.random}message`)))
+		await waitFor(element(by[textMatcher](`${data.random}message`)))
 			.toExist()
 			.withTimeout(60000);
 	});
