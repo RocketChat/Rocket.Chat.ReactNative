@@ -55,7 +55,7 @@ const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 ));
 
 class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState> {
-	private onSearch?: (text: string) => IOptionsField[];
+	private onSearch?: ((text: string) => IOptionsField[]) | ((term?: string | undefined) => Promise<any>);
 
 	static navigationOptions = ({ route }: IPickerViewProps) => ({
 		title: route.params?.title ?? I18n.t('Select_an_option')

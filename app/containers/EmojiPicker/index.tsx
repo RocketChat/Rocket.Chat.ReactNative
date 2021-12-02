@@ -31,7 +31,7 @@ interface IEmojiPickerProps {
 	customEmojis?: any;
 	style: object;
 	theme?: string;
-	onEmojiSelected?: Function;
+	onEmojiSelected?: (emoji: any) => void;
 	tabEmojiStyle?: object;
 }
 
@@ -97,7 +97,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 				const content = emoji;
 				this._addFrequentlyUsed({ content, isCustom: false });
 				const shortname = `:${emoji}:`;
-				onEmojiSelected!(shortnameToUnicode(shortname), shortname);
+				onEmojiSelected!(shortnameToUnicode(shortname));
 			}
 		} catch (e) {
 			log(e);
@@ -201,4 +201,4 @@ const mapStateToProps = (state: any) => ({
 	customEmojis: state.customEmojis
 });
 
-export default connect(mapStateToProps)(withTheme(EmojiPicker));
+export default connect(mapStateToProps)(withTheme(EmojiPicker)) as any;

@@ -26,11 +26,7 @@ const _OutsideStack = () => {
 			<Outside.Screen name='WorkspaceView' component={WorkspaceView} options={WorkspaceView.navigationOptions} />
 			<Outside.Screen name='LoginView' component={LoginView} options={LoginView.navigationOptions} />
 			<Outside.Screen name='ForgotPasswordView' component={ForgotPasswordView} options={ForgotPasswordView.navigationOptions} />
-			<Outside.Screen
-				name='SendEmailConfirmationView'
-				component={SendEmailConfirmationView}
-				options={SendEmailConfirmationView.navigationOptions}
-			/>
+			<Outside.Screen name='SendEmailConfirmationView' component={SendEmailConfirmationView} />
 			<Outside.Screen name='RegisterView' component={RegisterView} options={RegisterView.navigationOptions} />
 			<Outside.Screen name='LegalView' component={LegalView} options={LegalView.navigationOptions} />
 		</Outside.Navigator>

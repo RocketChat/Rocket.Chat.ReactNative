@@ -306,4 +306,4 @@ const mapStateToProps = (state: any) => ({
 	viewPrivilegedSettingPermission: state.permissions['view-privileged-setting']
 });
 
-export default connect(mapStateToProps)(withTheme(Sidebar));
+export default connect(mapStateToProps)(withTheme(Sidebar)) as any;

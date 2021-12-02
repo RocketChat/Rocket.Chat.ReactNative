@@ -96,6 +96,7 @@ const ChatsStackNavigator = React.memo(() => {
 const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
 const DrawerNavigator = React.memo(() => (
 	<Drawer.Navigator
+		// @ts-ignore
 		drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />}
 		drawerType='permanent'>
 		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
@@ -129,11 +130,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				/>
 				<ModalStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
 				<ModalStack.Screen name='InviteUsersView' component={InviteUsersView} options={InviteUsersView.navigationOptions} />
-				<ModalStack.Screen
-					name='AddChannelTeamView'
-					component={AddChannelTeamView}
-					options={AddChannelTeamView.navigationOptions}
-				/>
+				<ModalStack.Screen name='AddChannelTeamView' component={AddChannelTeamView} />
 				<ModalStack.Screen
 					name='AddExistingChannelView'
 					component={AddExistingChannelView}
@@ -171,16 +168,8 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={ForwardLivechatView}
 					options={ForwardLivechatView.navigationOptions}
 				/>
-				<ModalStack.Screen
-					name='CannedResponsesListView'
-					component={CannedResponsesListView}
-					options={CannedResponsesListView.navigationOptions}
-				/>
-				<ModalStack.Screen
-					name='CannedResponseDetail'
-					component={CannedResponseDetail}
-					options={CannedResponseDetail.navigationOptions}
-				/>
+				<ModalStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
+				<ModalStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 				<ModalStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
 				<ModalStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
@@ -235,21 +224,13 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={E2EEnterYourPasswordView}
 					options={E2EEnterYourPasswordView.navigationOptions}
 				/>
-				<ModalStack.Screen
-					name='UserPreferencesView'
-					component={UserPreferencesView}
-					options={UserPreferencesView.navigationOptions}
-				/>
+				<ModalStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 				<ModalStack.Screen
 					name='UserNotificationPrefView'
 					component={UserNotificationPrefView}
 					options={UserNotificationPrefView.navigationOptions}
 				/>
-				<ModalStack.Screen
-					name='SecurityPrivacyView'
-					component={SecurityPrivacyView}
-					options={SecurityPrivacyView.navigationOptions}
-				/>
+				<ModalStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
 				<ModalStack.Screen
 					name='E2EEncryptionSecurityView'
 					component={E2EEncryptionSecurityView}
