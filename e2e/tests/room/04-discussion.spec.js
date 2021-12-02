@@ -1,4 +1,4 @@
-const { navigateToLogin, login, mockMessage, tapBack, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes } = require('../../helpers/app');
 const data = require('../../data');
 
 const channel = data.groups.private.name;
@@ -12,8 +12,10 @@ const navigateToRoom = async () => {
 };
 
 describe('Discussion', () => {
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
+		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});
@@ -24,12 +26,12 @@ describe('Discussion', () => {
 		await waitFor(element(by.id('new-message-view')))
 			.toExist()
 			.withTimeout(2000);
-		await element(by.label('Create Discussion')).atIndex(0).tap();
+		await element(by[textMatcher]('Create Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view')))
 			.toExist()
 			.withTimeout(60000);
 		await expect(element(by.id('create-discussion-view'))).toExist();
-		await element(by.label('Select a Channel...')).tap();
+		await element(by[textMatcher]('Select a Channel...')).tap();
 		await element(by.id('multi-select-search')).replaceText(`${channel}`);
 		await waitFor(element(by.id(`multi-select-item-${channel}`)))
 			.toExist()
@@ -59,7 +61,7 @@ describe('Discussion', () => {
 		await waitFor(element(by.id('action-sheet')))
 			.toExist()
 			.withTimeout(2000);
-		await element(by.label('Create Discussion')).atIndex(0).tap();
+		await element(by[textMatcher]('Create Discussion')).atIndex(0).tap();
 		await waitFor(element(by.id('create-discussion-view')))
 			.toExist()
 			.withTimeout(2000);
@@ -86,11 +88,11 @@ describe('Discussion', () => {
 
 		it('should create discussion', async () => {
 			const discussionName = `${data.random}message`;
-			await element(by.label(discussionName)).atIndex(0).longPress();
+			await element(by[textMatcher](discussionName)).atIndex(0).longPress();
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by.label('Start a Discussion')).atIndex(0).tap();
+			await element(by[textMatcher]('Start a Discussion')).atIndex(0).tap();
 			await waitFor(element(by.id('create-discussion-view')))
 				.toExist()
 				.withTimeout(2000);
@@ -136,6 +138,7 @@ describe('Discussion', () => {
 		});
 
 		it('should have starred', async () => {
+			await element(by.id('room-actions-scrollview')).swipe('up', 'slow', 0.5);
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
 		});
 
