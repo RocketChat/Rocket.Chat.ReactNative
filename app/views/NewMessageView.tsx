@@ -1,11 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
-import * as List from '../containers/List';
 
+import * as List from '../containers/List';
 import Touch from '../utils/touch';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
@@ -18,7 +19,6 @@ import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
-import { getUserSelector } from '../selectors/login';
 import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
@@ -47,33 +47,54 @@ const styles = StyleSheet.create({
 	}
 });
 
-class NewMessageView extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
+interface IButton {
+	onPress: () => void;
+	testID: string;
+	title: string;
+	icon: string;
+	first?: boolean;
+}
+
+interface ISearch {
+	_id: string;
+	status: string;
+	username: string;
+	avatarETag: string;
+	outside: boolean;
+	rid: string;
+	name: string;
+	t: string;
+	search: boolean;
+}
+
+interface INewMessageViewState {
+	search: ISearch[];
+	// TODO: Refactor when migrate room
+	chats: any[];
+	permissions: boolean[];
+}
+
+interface INewMessageViewProps {
+	navigation: StackNavigationProp<any, 'NewMessageView'>;
+	create: (params: { group: boolean }) => void;
+	maxUsers: number;
+	theme: string;
+	isMasterDetail: boolean;
+	serverVersion: string;
+	createTeamPermission: string[];
+	createDirectMessagePermission: string[];
+	createPublicChannelPermission: string[];
+	createPrivateChannelPermission: string[];
+	createDiscussionPermission: string[];
+}
+
+class NewMessageView extends React.Component<INewMessageViewProps, INewMessageViewState> {
+	static navigationOptions = ({ navigation }: INewMessageViewProps): StackNavigationOptions => ({
 		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='new-message-view-close' />,
 		title: I18n.t('New_Message')
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		baseUrl: PropTypes.string,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string,
-			roles: PropTypes.array
-		}),
-		create: PropTypes.func,
-		maxUsers: PropTypes.number,
-		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool,
-		serverVersion: PropTypes.string,
-		createTeamPermission: PropTypes.array,
-		createDirectMessagePermission: PropTypes.array,
-		createPublicChannelPermission: PropTypes.array,
-		createPrivateChannelPermission: PropTypes.array,
-		createDiscussionPermission: PropTypes.array
-	};
-
-	constructor(props) {
+	constructor(props: INewMessageViewProps) {
 		super(props);
 		this.init();
 		this.state = {
@@ -102,7 +123,7 @@ class NewMessageView extends React.Component {
 		this.handleHasPermission();
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps: INewMessageViewProps) {
 		const {
 			createTeamPermission,
 			createPublicChannelPermission,
@@ -122,7 +143,7 @@ class NewMessageView extends React.Component {
 		}
 	}
 
-	onSearchChangeText(text) {
+	onSearchChangeText(text: string) {
 		this.search(text);
 	}
 
@@ -131,7 +152,7 @@ class NewMessageView extends React.Component {
 		return navigation.pop();
 	};
 
-	search = async text => {
+	search = async (text: string) => {
 		const result = await RocketChat.search({ text, filterRooms: false });
 		this.setState({
 			search: result
@@ -162,7 +183,8 @@ class NewMessageView extends React.Component {
 		});
 	};
 
-	goRoom = item => {
+	// TODO: Refactor when migrate room
+	goRoom = (item: any) => {
 		logEvent(events.NEW_MSG_CHAT_WITH_USER);
 		const { isMasterDetail, navigation } = this.props;
 		if (isMasterDetail) {
@@ -171,7 +193,7 @@ class NewMessageView extends React.Component {
 		goRoom({ item, isMasterDetail });
 	};
 
-	renderButton = ({ onPress, testID, title, icon, first }) => {
+	renderButton = ({ onPress, testID, title, icon, first }: IButton) => {
 		const { theme } = this.props;
 		return (
 			<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID} theme={theme}>
@@ -218,7 +240,7 @@ class NewMessageView extends React.Component {
 
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
-				<SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='new-message-view-search' />
+				<SearchBox onChangeText={(text: string) => this.onSearchChangeText(text)} testID='new-message-view-search' />
 				<View style={styles.buttonContainer}>
 					{permissions[0] || permissions[1]
 						? this.renderButton({
@@ -258,9 +280,10 @@ class NewMessageView extends React.Component {
 		);
 	};
 
-	renderItem = ({ item, index }) => {
+	// TODO: Refactor when migrate room
+	renderItem = ({ item, index }: { item: ISearch | any; index: number }) => {
 		const { search, chats } = this.state;
-		const { baseUrl, user, theme } = this.props;
+		const { theme } = this.props;
 
 		let style = { borderColor: themes[theme].separatorColor };
 		if (index === 0) {
@@ -277,10 +300,8 @@ class NewMessageView extends React.Component {
 				name={item.search ? item.name : item.fname}
 				username={item.search ? item.username : item.name}
 				onPress={() => this.goRoom(item)}
-				baseUrl={baseUrl}
 				testID={`new-message-view-item-${item.name}`}
 				style={style}
-				user={user}
 				theme={theme}
 			/>
 		);
@@ -313,12 +334,10 @@ class NewMessageView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
-	baseUrl: state.server.server,
 	maxUsers: state.settings.DirectMesssage_maxUsers || 1,
-	user: getUserSelector(state),
 	createTeamPermission: state.permissions['create-team'],
 	createDirectMessagePermission: state.permissions['create-d'],
 	createPublicChannelPermission: state.permissions['create-c'],
@@ -326,8 +345,8 @@ const mapStateToProps = state => ({
 	createDiscussionPermission: state.permissions['start-discussion']
 });
 
-const mapDispatchToProps = dispatch => ({
-	create: params => dispatch(createChannelRequest(params))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	create: (params: { group: boolean }) => dispatch(createChannelRequest(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewMessageView));
