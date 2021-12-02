@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
@@ -10,28 +9,30 @@ import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import styles from './styles';
 
+interface IRoomReactionPickerProps {
+	baseUrl: string;
+	message: {
+		id: string;
+	};
+	show: boolean;
+	isMasterDetail: boolean;
+	reactionClose(): void;
+	onEmojiSelected(shortname: string, messageId: string): void;
+	width: number;
+	height: number;
+	theme: string;
+}
+
 const margin = isAndroid ? 40 : 20;
 const maxSize = 400;
 
-class ReactionPicker extends React.Component {
-	static propTypes = {
-		baseUrl: PropTypes.string.isRequired,
-		message: PropTypes.object,
-		show: PropTypes.bool,
-		isMasterDetail: PropTypes.bool,
-		reactionClose: PropTypes.func,
-		onEmojiSelected: PropTypes.func,
-		width: PropTypes.number,
-		height: PropTypes.number,
-		theme: PropTypes.string
-	};
-
-	shouldComponentUpdate(nextProps) {
+class ReactionPicker extends React.Component<IRoomReactionPickerProps, any> {
+	shouldComponentUpdate(nextProps: IRoomReactionPickerProps) {
 		const { show, width, height } = this.props;
 		return nextProps.show !== show || width !== nextProps.width || height !== nextProps.height;
 	}
 
-	onEmojiSelected = (emoji, shortname) => {
+	onEmojiSelected = (emoji: string, shortname: string) => {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
@@ -68,18 +69,14 @@ class ReactionPicker extends React.Component {
 						}
 					]}
 					testID='reaction-picker'>
-					<EmojiPicker
-						// tabEmojiStyle={tabEmojiStyle}
-						onEmojiSelected={this.onEmojiSelected}
-						baseUrl={baseUrl}
-					/>
+					<EmojiPicker onEmojiSelected={this.onEmojiSelected} baseUrl={baseUrl} />
 				</View>
 			</Modal>
 		) : null;
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	baseUrl: state.server.server,
 	isMasterDetail: state.app.isMasterDetail
 });
