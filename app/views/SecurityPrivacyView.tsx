@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-native';
-import PropTypes from 'prop-types';
+import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useSelector } from 'react-redux';
 
@@ -20,11 +20,15 @@ import {
 import SafeAreaView from '../containers/SafeAreaView';
 import { isFDroidBuild } from '../constants/environment';
 
-const SecurityPrivacyView = ({ navigation }) => {
+interface ISecurityPrivacyViewProps {
+	navigation: StackNavigationProp<any, 'SecurityPrivacyView'>;
+}
+
+const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Element => {
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
 
-	const e2eEnabled = useSelector(state => state.settings.E2E_Enable);
+	const e2eEnabled = useSelector((state: any) => state.settings.E2E_Enable);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -32,21 +36,22 @@ const SecurityPrivacyView = ({ navigation }) => {
 		});
 	}, []);
 
-	const toggleCrashReport = value => {
-		logEvent(events.SE_TOGGLE_CRASH_REPORT);
+	const toggleCrashReport = (value: boolean) => {
+		logEvent(events.SP_TOGGLE_CRASH_REPORT);
 		AsyncStorage.setItem(CRASH_REPORT_KEY, JSON.stringify(value));
 		setCrashReportState(value);
 		toggleCrashErrorsReport(value);
 	};
 
-	const toggleAnalyticsEvents = value => {
-		logEvent(events.SE_TOGGLE_ANALYTICS_EVENTS);
+	const toggleAnalyticsEvents = (value: boolean) => {
+		logEvent(events.SP_TOGGLE_ANALYTICS_EVENTS);
 		AsyncStorage.setItem(ANALYTICS_EVENTS_KEY, JSON.stringify(value));
 		setAnalyticsEventsState(value);
 		toggleAnalyticsEventsReport(value);
 	};
 
-	const navigateToScreen = screen => {
+	const navigateToScreen = (screen: 'E2EEncryptionSecurityView' | 'ScreenLockConfigView') => {
+		// @ts-ignore
 		logEvent(events[`SP_GO_${screen.replace('View', '').toUpperCase()}`]);
 		navigation.navigate(screen);
 	};
@@ -104,10 +109,6 @@ const SecurityPrivacyView = ({ navigation }) => {
 			</List.Container>
 		</SafeAreaView>
 	);
-};
-
-SecurityPrivacyView.propTypes = {
-	navigation: PropTypes.object
 };
 
 export default SecurityPrivacyView;

@@ -20,7 +20,7 @@ interface IPasscodeBase {
 	previousPasscode?: string;
 	title: string;
 	subtitle?: string;
-	showBiometry?: string;
+	showBiometry?: boolean;
 	onEndProcess: Function;
 	onError?: Function;
 	onBiometryPress?(): void;

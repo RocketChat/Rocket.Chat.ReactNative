@@ -1,9 +1,12 @@
 const data = require('../../data');
-const { navigateToLogin } = require('../../helpers/app');
+const { navigateToLogin, platformTypes } = require('../../helpers/app');
 
 describe('Forgot password screen', () => {
+	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await element(by.id('login-view-forgot-password')).tap();
 		await waitFor(element(by.id('forgot-password-view')))
@@ -29,10 +32,10 @@ describe('Forgot password screen', () => {
 		it('should reset password and navigate to login', async () => {
 			await element(by.id('forgot-password-view-email')).replaceText(data.users.existing.email);
 			await element(by.id('forgot-password-view-submit')).tap();
-			await waitFor(element(by.text('OK')))
+			await waitFor(element(by[textMatcher]('OK')))
 				.toExist()
 				.withTimeout(10000);
-			await element(by.text('OK')).tap();
+			await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('login-view')))
 				.toBeVisible()
 				.withTimeout(60000);
