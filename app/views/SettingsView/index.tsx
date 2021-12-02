@@ -182,7 +182,7 @@ class SettingsView extends React.Component<IProps, any> {
 		return (
 			<SafeAreaView testID='settings-view'>
 				<StatusBar />
-				<List.Container testID='settings-view-list'>
+				<List.Container>
 					{isMasterDetail ? (
 						<>
 							<List.Section>

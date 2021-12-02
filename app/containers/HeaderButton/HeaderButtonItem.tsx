@@ -8,7 +8,7 @@ import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 
 interface IHeaderButtonItem {
-	title: string;
+	title?: string;
 	iconName?: string;
 	onPress(): void;
 	testID?: string;

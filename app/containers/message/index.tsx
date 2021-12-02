@@ -40,7 +40,7 @@ interface IMessageContainerProps {
 	status: number;
 	isIgnored: boolean;
 	highlighted: boolean;
-	getCustomEmoji(): void;
+	getCustomEmoji(name: string): void;
 	onLongPress: Function;
 	onReactionPress: Function;
 	onEncryptedPress: Function;
