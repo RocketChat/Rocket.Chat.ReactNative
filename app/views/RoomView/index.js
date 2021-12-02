@@ -11,7 +11,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Touch from '../../utils/touch';
 import { replyBroadcast as replyBroadcastAction } from '../../actions/messages';
-import { uploadingSend as uploadingSendAction, uploadingRemove as uploadingRemoveAction } from '../../actions/usersActivity';
+import { uploadingSend as uploadingSendAction, uploadingRemove as uploadingRemoveAction } from '../../actions/room';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -1323,7 +1323,7 @@ const mapStateToProps = state => ({
 	serverVersion: state.server.version,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
 	Hide_System_Messages: state.settings.Hide_System_Messages,
-	uploadings: state.usersActivity.uploadingSend
+	uploadings: state.room.uploadingSend
 });
 
 const mapDispatchToProps = dispatch => ({
