@@ -29,6 +29,9 @@ const navToLanguage = async () => {
 describe('i18n', () => {
 	describe('OS language', () => {
 		it("OS set to 'en' and proper translate to 'en'", async () => {
+			if (device.getPlatform() === 'android') {
+				return; // FIXME: Passing language with launch parameters doesn't work with Android
+			}
 			await device.launchApp({
 				...defaultLaunchArgs,
 				languageAndLocale: {
@@ -44,6 +47,9 @@ describe('i18n', () => {
 		});
 
 		it("OS set to unavailable language and fallback to 'en'", async () => {
+			if (device.getPlatform() === 'android') {
+				return; // FIXME: Passing language with launch parameters doesn't work with Android
+			}
 			await device.launchApp({
 				...defaultLaunchArgs,
 				languageAndLocale: {
@@ -74,7 +80,7 @@ describe('i18n', () => {
 
 	describe('Rocket.Chat language', () => {
 		before(async () => {
-			await device.launchApp(defaultLaunchArgs);
+			await device.launchApp({ ...defaultLaunchArgs, delete: true });
 			await navigateToLogin();
 			await login(testuser.username, testuser.password);
 		});
@@ -113,7 +119,7 @@ describe('i18n', () => {
 
 		it("should set unsupported language and fallback to 'en'", async () => {
 			await post('users.setPreferences', { data: { language: 'eo' } }); // Set language to Esperanto
-			await device.launchApp(defaultLaunchArgs);
+			await device.launchApp({ ...defaultLaunchArgs, newInstance: true });
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
 				.withTimeout(10000);
