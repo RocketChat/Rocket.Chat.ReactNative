@@ -69,11 +69,6 @@ interface IRCTextInputProps extends TextInputProps {
 }
 
 export default class RCTextInput extends React.PureComponent<IRCTextInputProps, any> {
-	static defaultProps = {
-		error: {},
-		theme: 'light'
-	};
-
 	state = {
 		showPassword: false
 	};
