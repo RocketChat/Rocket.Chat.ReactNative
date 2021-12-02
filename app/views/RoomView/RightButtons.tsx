@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import { Subscription } from 'rxjs';
+import Model from '@nozbe/watermelondb/Model';
 
 import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
@@ -9,22 +10,25 @@ import { getUserSelector } from '../../selectors/login';
 import { events, logEvent } from '../../utils/log';
 import { isTeamRoom } from '../../utils/room';
 
-class RightButtonsContainer extends Component {
-	static propTypes = {
-		userId: PropTypes.string,
-		threadsEnabled: PropTypes.bool,
-		rid: PropTypes.string,
-		t: PropTypes.string,
-		tmid: PropTypes.string,
-		teamId: PropTypes.string,
-		navigation: PropTypes.object,
-		isMasterDetail: PropTypes.bool,
-		toggleFollowThread: PropTypes.func,
-		joined: PropTypes.bool,
-		encrypted: PropTypes.bool
-	};
+interface IRoomRightButtonsContainerProps {
+	userId: string;
+	threadsEnabled: boolean;
+	rid: string;
+	t: string;
+	tmid: string;
+	teamId: string;
+	navigation: any; // TODO - change this after merge react navigation
+	isMasterDetail: boolean;
+	toggleFollowThread: Function;
+	joined: boolean;
+	encrypted: boolean;
+}
 
-	constructor(props) {
+class RightButtonsContainer extends Component<IRoomRightButtonsContainerProps, any> {
+	private threadSubscription?: Subscription;
+	private subSubscription?: Subscription;
+
+	constructor(props: IRoomRightButtonsContainerProps) {
 		super(props);
 		this.state = {
 			isFollowingThread: true,
@@ -56,7 +60,7 @@ class RightButtonsContainer extends Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: IRoomRightButtonsContainerProps, nextState: any) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
 		const { teamId } = this.props;
 		if (nextProps.teamId !== teamId) {
@@ -86,26 +90,26 @@ class RightButtonsContainer extends Component {
 		}
 	}
 
-	observeThread = threadRecord => {
+	observeThread = (threadRecord: Model) => {
 		const threadObservable = threadRecord.observe();
 		this.threadSubscription = threadObservable.subscribe(thread => this.updateThread(thread));
 	};
 
-	updateThread = thread => {
+	updateThread = (thread: any) => {
 		const { userId } = this.props;
 		this.setState({
-			isFollowingThread: thread.replies && !!thread.replies.find(t => t === userId)
+			isFollowingThread: thread.replies && !!thread.replies.find((t: string) => t === userId)
 		});
 	};
 
-	observeSubscription = subRecord => {
+	observeSubscription = (subRecord: Model) => {
 		const subObservable = subRecord.observe();
 		this.subSubscription = subObservable.subscribe(sub => {
 			this.updateSubscription(sub);
 		});
 	};
 
-	updateSubscription = sub => {
+	updateSubscription = (sub: any) => {
 		this.setState({
 			tunread: sub?.tunread,
 			tunreadUser: sub?.tunreadUser,
@@ -194,7 +198,7 @@ class RightButtonsContainer extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	userId: getUserSelector(state).id,
 	threadsEnabled: state.settings.Threads_enabled,
 	isMasterDetail: state.app.isMasterDetail

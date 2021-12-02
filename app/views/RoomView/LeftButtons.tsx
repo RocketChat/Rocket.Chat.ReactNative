@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IRoomLeftButtons {
+interface IRoomLeftButtonsProps {
 	tmid: string;
 	unreadsCount: number;
 	navigation: any; // TODO - change this after merge react navigation
@@ -39,7 +39,7 @@ const LeftButtons = React.memo(
 		theme,
 		goRoomActionsView,
 		isMasterDetail
-	}: IRoomLeftButtons) => {
+	}: IRoomLeftButtonsProps) => {
 		if (!isMasterDetail || tmid) {
 			const onPress = useCallback(() => navigation.goBack(), []);
 			const label: any = unreadsCount > 99 ? '+99' : unreadsCount || ' ';
