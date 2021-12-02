@@ -1,5 +1,15 @@
 const data = require('../../data');
-const { navigateToLogin, login, tapBack, sleep, searchRoom, mockMessage, starMessage, pinMessage } = require('../../helpers/app');
+const {
+	navigateToLogin,
+	login,
+	tapBack,
+	sleep,
+	searchRoom,
+	mockMessage,
+	starMessage,
+	pinMessage,
+	platformTypes
+} = require('../../helpers/app');
 const { sendMessage } = require('../../helpers/data_setup');
 
 async function navigateToRoomActions(type) {
@@ -43,10 +53,13 @@ async function waitForToast() {
 }
 
 describe('Room actions screen', () => {
+	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 	});
 
 	describe('Render', () => {
@@ -172,36 +185,12 @@ describe('Room actions screen', () => {
 	});
 
 	describe('Usage', () => {
-		describe('TDB', async () => {
-			// TODO: test into a jitsi call
-			// it('should NOT navigate to voice call', async() => {
-			// 	await waitFor(element(by.id('room-actions-voice'))).toExist();
-			// 	await element(by.id('room-actions-voice')).tap();
-			// 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
-			// 	await expect(element(by.id('room-actions-view'))).toExist();
-			// });
-			// TODO: test into a jitsi call
-			// it('should NOT navigate to video call', async() => {
-			// 	await element(by.id('room-actions-video')).tap();
-			// 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
-			// 	await expect(element(by.id('room-actions-view'))).toExist();
-			// });
-			// TODO: test share room link
-			// it('should NOT navigate to share room', async() => {
-			// 	await waitFor(element(by.id('room-actions-share'))).toExist();
-			// 	await element(by.id('room-actions-share')).tap();
-			// 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(2000);
-			// 	await expect(element(by.id('room-actions-view'))).toExist();
-			// });
-		});
-
 		describe('Common', () => {
 			it('should show mentioned messages', async () => {
 				await element(by.id('room-actions-mentioned')).tap();
 				await waitFor(element(by.id('mentioned-messages-view')))
 					.toExist()
 					.withTimeout(2000);
-				// await waitFor(element(by.text(` ${ data.random }mention`))).toExist().withTimeout(60000);
 				await backToActions();
 			});
 
@@ -220,23 +209,25 @@ describe('Room actions screen', () => {
 					.withTimeout(5000);
 
 				// Go to starred messages
+				await element(by.id('room-actions-view')).swipe('up');
+				await waitFor(element(by.id('room-actions-starred'))).toExist();
 				await element(by.id('room-actions-starred')).tap();
 				await waitFor(element(by.id('starred-messages-view')))
 					.toExist()
 					.withTimeout(2000);
-				await waitFor(element(by.label(`${data.random}messageToStar`).withAncestor(by.id('starred-messages-view'))))
+				await waitFor(element(by[textMatcher](`${data.random}messageToStar`).withAncestor(by.id('starred-messages-view'))))
 					.toExist()
 					.withTimeout(60000);
 
 				// Unstar message
-				await element(by.label(`${data.random}messageToStar`))
+				await element(by[textMatcher](`${data.random}messageToStar`))
 					.atIndex(0)
 					.longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.label('Unstar')).atIndex(0).tap();
+				await element(by[textMatcher]('Unstar')).atIndex(0).tap();
 
-				await waitFor(element(by.label(`${data.random}messageToStar`).withAncestor(by.id('starred-messages-view'))))
+				await waitFor(element(by[textMatcher](`${data.random}messageToStar`).withAncestor(by.id('starred-messages-view'))))
 					.toBeNotVisible()
 					.withTimeout(60000);
 				await backToActions();
@@ -261,40 +252,22 @@ describe('Room actions screen', () => {
 				await waitFor(element(by.id('pinned-messages-view')))
 					.toExist()
 					.withTimeout(2000);
-				await waitFor(element(by.label(`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view'))))
+				await waitFor(element(by[textMatcher](`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view'))))
 					.toExist()
 					.withTimeout(6000);
-				await element(by.label(`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view')))
+				await element(by[textMatcher](`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view')))
 					.atIndex(0)
 					.longPress();
 
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-				await element(by.label('Unpin')).atIndex(0).tap();
+				await element(by[textMatcher]('Unpin')).atIndex(0).tap();
 
-				await waitFor(element(by.label(`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view'))))
+				await waitFor(element(by[textMatcher](`${data.random}messageToPin`).withAncestor(by.id('pinned-messages-view'))))
 					.not.toExist()
 					.withTimeout(6000);
 				await backToActions();
 			});
-
-			// it('should search and find a message', async() => {
-
-			// 	//Go back to room and send a message
-			// 	await tapBack();
-			// 	await mockMessage('messageToFind');
-
-			// 	//Back into Room Actions
-			// 	await element(by.id('room-header')).tap();
-			// 	await waitFor(element(by.id('room-actions-view'))).toExist().withTimeout(5000);
-
-			// 	await element(by.id('room-actions-search')).tap();
-			// 	await waitFor(element(by.id('search-messages-view'))).toExist().withTimeout(2000);
-			// 	await expect(element(by.id('search-message-view-input'))).toExist();
-			// 	await element(by.id('search-message-view-input')).replaceText(`/${ data.random }messageToFind/`);
-			// 	await waitFor(element(by.label(`${ data.random }messageToFind`).withAncestor(by.id('search-messages-view')))).toExist().withTimeout(60000);
-			// 	await backToActions();
-			// });
 		});
 
 		describe('Notification', () => {
@@ -370,14 +343,14 @@ describe('Room actions screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('room-actions-leave-channel')).tap();
-				await waitFor(element(by.text('Yes, leave it!')))
+				await waitFor(element(by[textMatcher]('Yes, leave it!')))
 					.toExist()
 					.withTimeout(2000);
-				await element(by.text('Yes, leave it!')).tap();
-				await waitFor(element(by.text('You are the last owner. Please set new owner before leaving the room.')))
+				await element(by[textMatcher]('Yes, leave it!').and(by.type(alertButtonType))).tap();
+				await waitFor(element(by[textMatcher]('You are the last owner. Please set new owner before leaving the room.')))
 					.toExist()
 					.withTimeout(8000);
-				await element(by.text('OK')).tap();
+				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
 				await waitFor(element(by.id('room-actions-view')))
 					.toExist()
 					.withTimeout(2000);
@@ -404,6 +377,7 @@ describe('Room actions screen', () => {
 					.withTimeout(4000);
 				await element(by.id('select-users-view-search')).tap();
 				await element(by.id('select-users-view-search')).replaceText(user.username);
+				await sleep(300);
 				await waitFor(element(by.id(`select-users-view-item-${user.username}`)))
 					.toExist()
 					.withTimeout(10000);
@@ -437,14 +411,30 @@ describe('Room actions screen', () => {
 					await waitFor(element(by.id(`room-members-view-item-${username}`)))
 						.toExist()
 						.withTimeout(5000);
-					await element(by.id(`room-members-view-item-${username}`)).tap();
-					await sleep(300);
-					await expect(element(by.id('action-sheet'))).toExist();
-					await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+					let n = 0;
+					while (n < 3) {
+						// Max tries three times, in case it does not register the click
+						try {
+							await element(by.id(`room-members-view-item-${username}`)).tap();
+							await sleep(300);
+							await waitFor(element(by.id('action-sheet')))
+								.toExist()
+								.withTimeout(5000);
+							await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+							await element(by.id('action-sheet-handle')).swipe('up');
+							return;
+						} catch (e) {
+							n += 1;
+						}
+					}
 				};
 
 				const closeActionSheet = async () => {
 					await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
+					await waitFor(element(by.id('action-sheet')))
+						.toBeNotVisible()
+						.withTimeout(1000);
+					await sleep(100);
 				};
 
 				it('should show all users', async () => {
@@ -471,11 +461,14 @@ describe('Room actions screen', () => {
 
 				it('should remove user from room', async () => {
 					await openActionSheet('rocket.cat');
-					await element(by.label('Remove from room')).atIndex(0).tap();
-					await waitFor(element(by.label('Are you sure?')))
+					await waitFor(element(by[textMatcher]('Remove from room')))
+						.toExist()
+						.withTimeout(2000);
+					await element(by[textMatcher]('Remove from room')).atIndex(0).tap();
+					await waitFor(element(by[textMatcher]('Are you sure?')))
 						.toExist()
 						.withTimeout(5000);
-					await element(by.label('Yes, remove user!').and(by.type('_UIAlertControllerActionView'))).tap();
+					await element(by[textMatcher]('Yes, remove user!').and(by.type(alertButtonType))).tap();
 					await waitFor(element(by.id('room-members-view-item-rocket.cat')))
 						.toBeNotVisible()
 						.withTimeout(60000);
@@ -548,24 +541,24 @@ describe('Room actions screen', () => {
 
 				it('should set/remove as mute', async () => {
 					await openActionSheet(user.username);
-					await element(by.label('Mute')).atIndex(0).tap();
-					await waitFor(element(by.label('Are you sure?')))
+					await element(by[textMatcher]('Mute')).atIndex(0).tap();
+					await waitFor(element(by[textMatcher]('Are you sure?')))
 						.toExist()
 						.withTimeout(5000);
-					await element(by.label('Mute').and(by.type('_UIAlertControllerActionView'))).tap();
+					await element(by[textMatcher]('Mute').and(by.type(alertButtonType))).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
-					await element(by.label('Unmute')).atIndex(0).tap();
-					await waitFor(element(by.label('Are you sure?')))
+					await element(by[textMatcher]('Unmute')).atIndex(0).tap();
+					await waitFor(element(by[textMatcher]('Are you sure?')))
 						.toExist()
 						.withTimeout(5000);
-					await element(by.label('Unmute').and(by.type('_UIAlertControllerActionView'))).tap();
+					await element(by[textMatcher]('Unmute').and(by.type(alertButtonType))).tap();
 					await waitForToast();
 
 					await openActionSheet(user.username);
 					// Tests if Remove as mute worked
-					await waitFor(element(by.label('Mute')))
+					await waitFor(element(by[textMatcher]('Mute')))
 						.toExist()
 						.withTimeout(5000);
 					await closeActionSheet();
@@ -576,21 +569,21 @@ describe('Room actions screen', () => {
 					const channelName = `#${data.groups.private.name}`;
 					await sendMessage(user, channelName, message);
 					await openActionSheet(user.username);
-					await element(by.label('Ignore')).atIndex(0).tap();
+					await element(by[textMatcher]('Ignore')).atIndex(0).tap();
 					await waitForToast();
 					await backToActions();
 					await tapBack();
 					await waitFor(element(by.id('room-view')))
 						.toExist()
 						.withTimeout(60000);
-					await waitFor(element(by.label('Message ignored. Tap to display it.')).atIndex(0))
+					await waitFor(element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0))
 						.toExist()
 						.withTimeout(60000);
-					await element(by.label('Message ignored. Tap to display it.')).atIndex(0).tap();
-					await waitFor(element(by.label(message)).atIndex(0))
+					await element(by[textMatcher]('Message ignored. Tap to display it.')).atIndex(0).tap();
+					await waitFor(element(by[textMatcher](message)).atIndex(0))
 						.toExist()
 						.withTimeout(60000);
-					await element(by.label(message)).atIndex(0).tap();
+					await element(by[textMatcher](message)).atIndex(0).tap();
 				});
 
 				it('should navigate to direct message', async () => {
@@ -607,7 +600,7 @@ describe('Room actions screen', () => {
 						.toExist()
 						.withTimeout(60000);
 					await openActionSheet(user.username);
-					await element(by.label('Direct message')).atIndex(0).tap();
+					await element(by[textMatcher]('Direct message')).atIndex(0).tap();
 					await waitFor(element(by.id('room-view')))
 						.toExist()
 						.withTimeout(60000);
@@ -630,11 +623,11 @@ describe('Room actions screen', () => {
 			it('should block/unblock user', async () => {
 				await waitFor(element(by.id('room-actions-block-user'))).toExist();
 				await element(by.id('room-actions-block-user')).tap();
-				await waitFor(element(by.label('Unblock user')))
+				await waitFor(element(by[textMatcher]('Unblock user')))
 					.toExist()
 					.withTimeout(60000);
 				await element(by.id('room-actions-block-user')).tap();
-				await waitFor(element(by.label('Block user')))
+				await waitFor(element(by[textMatcher]('Block user')))
 					.toExist()
 					.withTimeout(60000);
 			});

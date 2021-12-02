@@ -1,6 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { FlatList, StyleSheet } from 'react-native';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
 import I18n from '../i18n';
@@ -53,23 +54,29 @@ const styles = StyleSheet.create({
 	}
 });
 
-class StatusView extends React.Component {
-	static propTypes = {
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			status: PropTypes.string,
-			statusText: PropTypes.string
-		}),
-		theme: PropTypes.string,
-		navigation: PropTypes.object,
-		isMasterDetail: PropTypes.bool,
-		setUser: PropTypes.func,
-		Accounts_AllowInvisibleStatusOption: PropTypes.bool
-	};
+interface IUser {
+	id: string;
+	status: string;
+	statusText: string;
+}
 
-	constructor(props) {
+interface IStatusViewState {
+	statusText: string;
+	loading: boolean;
+}
+
+interface IStatusViewProps {
+	navigation: StackNavigationProp<any, 'StatusView'>;
+	user: IUser;
+	theme: string;
+	isMasterDetail: boolean;
+	setUser: (user: Partial<IUser>) => void;
+	Accounts_AllowInvisibleStatusOption: boolean;
+}
+
+class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
+	constructor(props: IStatusViewProps) {
 		super(props);
-
 		const { statusText } = props.user;
 		this.state = { statusText: statusText || '', loading: false };
 		this.setHeader();
@@ -103,7 +110,7 @@ class StatusView extends React.Component {
 		navigation.goBack();
 	};
 
-	setCustomStatus = async statusText => {
+	setCustomStatus = async (statusText: string) => {
 		const { user, setUser } = this.props;
 
 		this.setState({ loading: true });
@@ -147,7 +154,7 @@ class StatusView extends React.Component {
 		);
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: { id: string; name: string } }) => {
 		const { statusText } = this.state;
 		const { user, setUser } = this.props;
 		const { id, name } = item;
@@ -155,6 +162,7 @@ class StatusView extends React.Component {
 			<List.Item
 				title={name}
 				onPress={async () => {
+					// @ts-ignore
 					logEvent(events[`STATUS_${item.id.toUpperCase()}`]);
 					if (user.status !== item.id) {
 						try {
@@ -162,7 +170,7 @@ class StatusView extends React.Component {
 							if (result.success) {
 								setUser({ status: item.id });
 							}
-						} catch (e) {
+						} catch (e: any) {
 							showErrorAlert(I18n.t(e.data.errorType));
 							logEvent(events.SET_STATUS_FAIL);
 							log(e);
@@ -197,14 +205,14 @@ class StatusView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	Accounts_AllowInvisibleStatusOption: state.settings.Accounts_AllowInvisibleStatusOption ?? true
 });
 
-const mapDispatchToProps = dispatch => ({
-	setUser: user => dispatch(setUserAction(user))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	setUser: (user: IUser) => dispatch(setUserAction(user))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(StatusView));

@@ -54,6 +54,10 @@ allprojects {
         }
 
         maven {
+            url "$rootDir/../node_modules/detox/Detox-android"
+        }
+
+        maven {
             url jitsi_url
         }
 

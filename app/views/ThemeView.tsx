@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -51,18 +51,29 @@ if (supportSystemTheme()) {
 const themeGroup = THEMES.filter(item => item.group === THEME_GROUP);
 const darkGroup = THEMES.filter(item => item.group === DARK_GROUP);
 
-class ThemeView extends React.Component {
-	static navigationOptions = () => ({
+interface ITheme {
+	label: string;
+	value: string;
+	group: string;
+}
+
+interface IThemePreference {
+	currentTheme?: string;
+	darkLevel?: string;
+}
+
+interface IThemeViewProps {
+	theme: string;
+	themePreferences: IThemePreference;
+	setTheme(newTheme?: IThemePreference): void;
+}
+
+class ThemeView extends React.Component<IThemeViewProps> {
+	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Theme')
 	});
 
-	static propTypes = {
-		theme: PropTypes.string,
-		themePreferences: PropTypes.object,
-		setTheme: PropTypes.func
-	};
-
-	isSelected = item => {
+	isSelected = (item: ITheme) => {
 		const { themePreferences } = this.props;
 		const { group } = item;
 		const { darkLevel, currentTheme } = themePreferences;
@@ -74,11 +85,11 @@ class ThemeView extends React.Component {
 		}
 	};
 
-	onClick = item => {
+	onClick = (item: ITheme) => {
 		const { themePreferences } = this.props;
 		const { darkLevel, currentTheme } = themePreferences;
 		const { value, group } = item;
-		let changes = {};
+		let changes: IThemePreference = {};
 		if (group === THEME_GROUP && currentTheme !== value) {
 			logEvent(events.THEME_SET_THEME_GROUP, { theme_group: value });
 			changes = { currentTheme: value };
@@ -90,7 +101,7 @@ class ThemeView extends React.Component {
 		this.setTheme(changes);
 	};
 
-	setTheme = async theme => {
+	setTheme = async (theme: IThemePreference) => {
 		const { setTheme, themePreferences } = this.props;
 		const newTheme = { ...themePreferences, ...theme };
 		setTheme(newTheme);
@@ -102,7 +113,7 @@ class ThemeView extends React.Component {
 		return <List.Icon name='check' color={themes[theme].tintColor} />;
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: ITheme }) => {
 		const { label, value } = item;
 		return (
 			<>
