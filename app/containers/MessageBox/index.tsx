@@ -7,15 +7,9 @@ import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { Dispatch } from 'redux';
 
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
-import {
-	userTyping as userTypingAction,
-	userUploading as userUploadingAction,
-	userRecording as userRecordingAction
-} from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
@@ -80,6 +74,10 @@ interface IPerformingActivity {
 	performing: boolean;
 }
 
+interface IPerformingUploadActivity extends IPerformingActivity {
+	fileName: string;
+}
+
 interface IMessageBoxProps {
 	rid: string;
 	baseUrl: string;
@@ -109,7 +107,7 @@ interface IMessageBoxProps {
 	editRequest: Function;
 	onSubmit: Function;
 	userTyping: ({ rid, tmid, performing }: IPerformingActivity) => void;
-	userUploading: ({ rid, tmid, performing }: IPerformingActivity) => void;
+	userUploading: ({ rid, tmid, performing, fileName }: IPerformingUploadActivity) => void;
 	userRecording: ({ rid, tmid, performing }: IPerformingActivity) => void;
 	theme: string;
 	replyCancel(): void;
@@ -804,14 +802,15 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const { rid, tmid, baseUrl: server, user, userUploading } = this.props;
 
 		if (fileInfo) {
+			const fileName = fileInfo?.name;
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					userUploading({ rid, tmid, performing: true });
+					userUploading({ rid, tmid, performing: true, fileName });
 					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-					userUploading({ rid, tmid, performing: false });
+					userUploading({ rid, tmid, performing: false, fileName });
 				}
 			} catch (e) {
-				userUploading({ rid, tmid, performing: false });
+				userUploading({ rid, tmid, performing: false, fileName });
 				log(e);
 			}
 		}
@@ -1138,10 +1137,5 @@ const mapStateToProps = (state: any) => ({
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	userTyping: ({ rid, tmid, performing }: IPerformingActivity) => dispatch(userTypingAction(rid, tmid, performing)),
-	userUploading: ({ rid, tmid, performing }: IPerformingActivity) => dispatch(userUploadingAction(rid, tmid, performing)),
-	userRecording: ({ rid, tmid, performing }: IPerformingActivity) => dispatch(userRecordingAction(rid, tmid, performing))
-});
 // @ts-ignore
-export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));
+export default connect(mapStateToProps, null, null, { forwardRef: true })(withActionSheet(MessageBox));

@@ -1027,12 +1027,13 @@ const RocketChat = {
 	onStreamData(...args) {
 		return this.sdk.onStreamData(...args);
 	},
-	emitUserActivity({ room, activities, extras = {}, activity, performing }) {
+	emitUserActivity({ room, extras = {}, activity, performing }) {
 		const { login, settings, server } = reduxStore.getState();
 		const { UI_Use_Real_Name } = settings;
 		const { version: serverVersion } = server;
 		const { user } = login;
 		const name = UI_Use_Real_Name ? user.name : user.username;
+		const activities = performing ? [activity] : [];
 		if (compareServerVersion(serverVersion, '4.0.0', methods.greaterThanOrEqualTo)) {
 			return this.methodCall('stream-notify-room', `${room}/user-activity`, name, activities, extras);
 		}

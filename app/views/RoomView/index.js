@@ -53,7 +53,7 @@ import Loading from '../../containers/Loading';
 import { goRoom } from '../../utils/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
-import { userUploading as userUploadingAction } from '../../actions/room';
+import { USER_RECORDING, USER_TYPING, USER_UPLOADING } from '../../constants/userActivities';
 import RoomServices from './services';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
@@ -187,6 +187,9 @@ class RoomView extends React.Component {
 		this.joinCode = React.createRef();
 		this.flatList = React.createRef();
 		this.mounted = false;
+
+		// Object with filename as key and the number of setInterval
+		this.uploadingSend = {};
 
 		// we don't need to subscribe to threads
 		if (this.rid && !this.tmid) {
@@ -875,6 +878,75 @@ class RoomView extends React.Component {
 		}
 	};
 
+	userTyping = ({ rid, tmid, performing }) => {
+		if (this.typingRemove) {
+			clearTimeout(this.typingRemove);
+			this.typingRemove = 0;
+		}
+
+		if (performing) {
+			this.typingRemove = setTimeout(() => {
+				this.userTyping({ rid, tmid, performing: false });
+			}, 5000);
+		}
+
+		RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_TYPING });
+	};
+
+	userRecording = ({ rid, tmid, performing }) => {
+		if (this.recordingRemove) {
+			clearTimeout(this.recordingRemove);
+			this.recordingRemove = 0;
+		}
+
+		if (performing) {
+			// recording remove is to set false the recording if the user was recording and click on back instead cancel the recording
+			this.recordingRemove = setTimeout(() => {
+				this.userRecording({ rid, tmid, performing: false });
+			}, 5000);
+		}
+
+		if (this.recordingSend && performing) {
+			return;
+		}
+
+		if (this.recordingSend && !performing) {
+			clearTimeout(this.recordingSend);
+		}
+
+		// Recording Send is a variable to send the true each time, instead send the same value continuously
+		this.recordingSend = setTimeout(
+			() => {
+				this.recordingSend = 0;
+				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_RECORDING });
+			},
+			performing ? 2000 : 100
+		);
+	};
+
+	userUploading = ({ rid, tmid, performing, fileName }) => {
+		if (!fileName) {
+			return;
+		}
+
+		if (performing && this.uploadingSend?.[fileName]) {
+			return;
+		}
+
+		if (performing) {
+			// Fire immediately the emit
+			RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
+			this.uploadingSend[fileName] = setInterval(() => {
+				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
+			}, 2000);
+		}
+
+		if (!performing) {
+			clearInterval(this.uploadingSend?.[fileName]);
+			RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
+		}
+	};
+
 	navToThread = async item => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
@@ -1142,6 +1214,9 @@ class RoomView extends React.Component {
 				getCustomEmoji={this.getCustomEmoji}
 				navigation={navigation}
 				usedCannedResponse={usedCannedResponse}
+				userTyping={this.userTyping}
+				userRecording={this.userRecording}
+				userUploading={this.userUploading}
 			/>
 		);
 	};
@@ -1170,7 +1245,7 @@ class RoomView extends React.Component {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, reactionsModalVisible, selectedMessage, loading, reacting, showingBlockingLoader } = this.state;
-		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion, userUploading } = this.props;
+		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion } = this.props;
 		const { rid, t, sysMes, bannerClosed, announcement } = room;
 
 		return (
@@ -1211,7 +1286,14 @@ class RoomView extends React.Component {
 					height={height}
 					theme={theme}
 				/>
-				<UploadProgress rid={this.rid} tmid={this.tmid} user={user} baseUrl={baseUrl} width={width} uploading={userUploading} />
+				<UploadProgress
+					rid={this.rid}
+					tmid={this.tmid}
+					user={user}
+					baseUrl={baseUrl}
+					width={width}
+					uploading={this.userUploading}
+				/>
 				<ReactionsModal
 					message={selectedMessage}
 					isVisible={reactionsModalVisible}
@@ -1243,8 +1325,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	replyBroadcast: message => dispatch(replyBroadcastAction(message)),
-	userUploading: ({ rid, tmid, performing }) => dispatch(userUploadingAction(rid, tmid, performing))
+	replyBroadcast: message => dispatch(replyBroadcastAction(message))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));
