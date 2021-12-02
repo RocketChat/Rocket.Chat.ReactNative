@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
@@ -11,9 +10,15 @@ import { LOCAL_AUTHENTICATE_EMITTER } from '../constants/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';
 import { PasscodeEnter } from '../containers/Passcode';
 
-const ScreenLockedView = () => {
+interface IData {
+	submit?: () => void;
+	hasBiometry?: boolean;
+}
+
+const ScreenLockedView = (): JSX.Element => {
 	const [visible, setVisible] = useState(false);
-	const [data, setData] = useState({});
+	const [data, setData] = useState<IData>({});
+
 	const { theme } = useTheme();
 
 	useDeepCompareEffect(() => {
@@ -24,7 +29,7 @@ const ScreenLockedView = () => {
 		}
 	}, [data]);
 
-	const showScreenLock = args => {
+	const showScreenLock = (args: IData) => {
 		setData(args);
 	};
 
@@ -57,7 +62,7 @@ const ScreenLockedView = () => {
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
 			animationOut='fadeOut'>
-			<PasscodeEnter theme={theme} hasBiometry={data?.hasBiometry} finishProcess={onSubmit} />
+			<PasscodeEnter theme={theme} hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
 		</Modal>
 	);
 };

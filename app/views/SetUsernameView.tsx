@@ -1,8 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { Dispatch } from 'redux';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import Orientation from 'react-native-orientation-locker';
+import { RouteProp } from '@react-navigation/native';
 
 import { loginRequest as loginRequestAction } from '../actions/login';
 import TextInput from '../containers/TextInput';
@@ -27,21 +29,27 @@ const styles = StyleSheet.create({
 	}
 });
 
-class SetUsernameView extends React.Component {
-	static navigationOptions = ({ route }) => ({
+interface ISetUsernameViewState {
+	username: string;
+	saving: boolean;
+}
+
+interface ISetUsernameViewProps {
+	navigation: StackNavigationProp<any, 'SetUsernameView'>;
+	route: RouteProp<{ SetUsernameView: { title: string } }, 'SetUsernameView'>;
+	server: string;
+	userId: string;
+	loginRequest: ({ resume }: { resume: string }) => void;
+	token: string;
+	theme: string;
+}
+
+class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernameViewState> {
+	static navigationOptions = ({ route }: Pick<ISetUsernameViewProps, 'route'>): StackNavigationOptions => ({
 		title: route.params?.title
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		server: PropTypes.string,
-		userId: PropTypes.string,
-		loginRequest: PropTypes.func,
-		token: PropTypes.string,
-		theme: PropTypes.string
-	};
-
-	constructor(props) {
+	constructor(props: ISetUsernameViewProps) {
 		super(props);
 		this.state = {
 			username: '',
@@ -61,7 +69,7 @@ class SetUsernameView extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: ISetUsernameViewProps, nextState: ISetUsernameViewState) {
 		const { username, saving } = this.state;
 		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -88,7 +96,7 @@ class SetUsernameView extends React.Component {
 		try {
 			await RocketChat.saveUserProfile({ username });
 			await loginRequest({ resume: token });
-		} catch (e) {
+		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));
 		}
 		this.setState({ saving: false });
@@ -136,13 +144,13 @@ class SetUsernameView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server,
 	token: getUserSelector(state).token
 });
 
-const mapDispatchToProps = dispatch => ({
-	loginRequest: params => dispatch(loginRequestAction(params))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	loginRequest: (params: { resume: string }) => dispatch(loginRequestAction(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SetUsernameView));
