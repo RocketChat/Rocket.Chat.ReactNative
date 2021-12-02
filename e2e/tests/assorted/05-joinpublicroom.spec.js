@@ -1,5 +1,5 @@
 const data = require('../../data');
-const { navigateToLogin, login, mockMessage, tapBack, searchRoom } = require('../../helpers/app');
+const { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes } = require('../../helpers/app');
 
 const testuser = data.users.regular;
 const room = data.channels.detoxpublic.name;
@@ -7,21 +7,24 @@ const room = data.channels.detoxpublic.name;
 async function navigateToRoom() {
 	await searchRoom(room);
 	await element(by.id(`rooms-list-view-item-${room}`)).tap();
-	await waitFor(element(by.id('room-view')))
-		.toBeVisible()
+	await waitFor(element(by.id('room-view')).atIndex(0))
+		.toExist()
 		.withTimeout(5000);
 }
 
 async function navigateToRoomActions() {
-	await element(by.id('room-header')).tap();
+	await element(by.id(`room-view-title-${room}`)).tap();
 	await waitFor(element(by.id('room-actions-view')))
 		.toBeVisible()
 		.withTimeout(5000);
 }
 
 describe('Join public room', () => {
+	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 		await navigateToRoom();
@@ -31,10 +34,6 @@ describe('Join public room', () => {
 		it('should have room screen', async () => {
 			await expect(element(by.id('room-view'))).toBeVisible();
 		});
-
-		// it('should have messages list', async() => {
-		// 	await expect(element(by.id('room-view-messages'))).toBeVisible();
-		// });
 
 		// Render - Header
 		describe('Header', () => {
@@ -75,16 +74,10 @@ describe('Join public room', () => {
 				await expect(element(by.id('room-actions-info'))).toBeVisible();
 			});
 
-			// it('should have voice', async() => {
-			// 	await expect(element(by.id('room-actions-voice'))).toBeVisible();
-			// });
-
-			// it('should have video', async() => {
-			// 	await expect(element(by.id('room-actions-video'))).toBeVisible();
-			// });
-
 			it('should have members', async () => {
-				await expect(element(by.id('room-actions-members'))).toBeVisible();
+				await waitFor(element(by.id('room-actions-members')))
+					.toBeVisible()
+					.withTimeout(2000);
 			});
 
 			it('should have files', async () => {
@@ -147,32 +140,29 @@ describe('Join public room', () => {
 			await navigateToRoomActions();
 			await expect(element(by.id('room-actions-view'))).toBeVisible();
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
-			// await expect(element(by.id('room-actions-voice'))).toBeVisible();
-			// await expect(element(by.id('room-actions-video'))).toBeVisible();
 			await expect(element(by.id('room-actions-members'))).toBeVisible();
 			await expect(element(by.id('room-actions-files'))).toBeVisible();
 			await expect(element(by.id('room-actions-mentioned'))).toBeVisible();
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
-			await element(by.id('room-actions-scrollview')).swipe('down');
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 			await expect(element(by.id('room-actions-pinned'))).toBeVisible();
 			await expect(element(by.id('room-actions-notifications'))).toBeVisible();
+			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
 			await expect(element(by.id('room-actions-leave-channel'))).toBeVisible();
 		});
 
 		it('should leave room', async () => {
 			await element(by.id('room-actions-leave-channel')).tap();
-			await waitFor(element(by.text('Yes, leave it!')))
+			await waitFor(element(by[textMatcher]('Yes, leave it!').and(by.type(alertButtonType))))
 				.toBeVisible()
 				.withTimeout(5000);
-			await expect(element(by.text('Yes, leave it!'))).toBeVisible();
-			await element(by.text('Yes, leave it!')).tap();
+			await element(by[textMatcher]('Yes, leave it!').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
 				.withTimeout(10000);
 			await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 				.toBeNotVisible()
-				.withTimeout(60000);
+				.withTimeout(60000); // flaky on Android
 		});
 	});
 });
