@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
+import { Observable, Subscription } from 'rxjs';
+import Model from '@nozbe/watermelondb/Model';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -51,20 +52,34 @@ const styles = StyleSheet.create({
 	}
 });
 
-class UploadProgress extends Component {
-	static propTypes = {
-		width: PropTypes.number,
-		rid: PropTypes.string,
-		theme: PropTypes.string,
-		user: PropTypes.shape({
-			id: PropTypes.string.isRequired,
-			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired
-		}),
-		baseUrl: PropTypes.string.isRequired
+interface IRoomUploadProgressProps {
+	width: number;
+	rid: string;
+	theme: string;
+	user: {
+		id: string;
+		username: string;
+		token: string;
 	};
+	baseUrl: string;
+}
 
-	constructor(props) {
+interface IItem {
+	name: string;
+	error: boolean;
+	progress: number;
+	path: string;
+	update: Function;
+	destroyPermanently(): void;
+}
+
+class UploadProgress extends Component<IRoomUploadProgressProps, any> {
+	private mounted: boolean;
+	private ranInitialUploadCheck: boolean;
+	private uploadsSubscription?: Subscription;
+	private uploadsObservable?: Observable<Model>;
+
+	constructor(props: IRoomUploadProgressProps) {
 		super(props);
 		this.mounted = false;
 		this.ranInitialUploadCheck = false;
@@ -93,10 +108,11 @@ class UploadProgress extends Component {
 		const db = database.active;
 		this.uploadsObservable = db.collections.get('uploads').query(Q.where('rid', rid)).observeWithColumns(['progress', 'error']);
 
-		this.uploadsSubscription = this.uploadsObservable.subscribe(uploads => {
+		this.uploadsSubscription = this.uploadsObservable?.subscribe(uploads => {
 			if (this.mounted) {
 				this.setState({ uploads });
 			} else {
+				// @ts-ignore
 				this.state.uploads = uploads;
 			}
 			if (!this.ranInitialUploadCheck) {
@@ -108,7 +124,7 @@ class UploadProgress extends Component {
 	uploadCheck = () => {
 		this.ranInitialUploadCheck = true;
 		const { uploads } = this.state;
-		uploads.forEach(async u => {
+		uploads.forEach(async (u: IItem) => {
 			if (!RocketChat.isUploadActive(u.path)) {
 				try {
 					const db = database.active;
@@ -124,7 +140,7 @@ class UploadProgress extends Component {
 		});
 	};
 
-	deleteUpload = async item => {
+	deleteUpload = async (item: IItem) => {
 		try {
 			const db = database.active;
 			await db.action(async () => {
@@ -135,7 +151,7 @@ class UploadProgress extends Component {
 		}
 	};
 
-	cancelUpload = async item => {
+	cancelUpload = async (item: { path: string }) => {
 		try {
 			await RocketChat.cancelUpload(item);
 		} catch (e) {
@@ -143,7 +159,7 @@ class UploadProgress extends Component {
 		}
 	};
 
-	tryAgain = async item => {
+	tryAgain = async (item: IItem) => {
 		const { rid, baseUrl: server, user } = this.props;
 
 		try {
@@ -159,7 +175,7 @@ class UploadProgress extends Component {
 		}
 	};
 
-	renderItemContent = item => {
+	renderItemContent = (item: IItem) => {
 		const { width, theme } = this.props;
 
 		if (!item.error) {
@@ -196,7 +212,7 @@ class UploadProgress extends Component {
 	};
 
 	// TODO: transform into stateless and update based on its own observable changes
-	renderItem = (item, index) => {
+	renderItem = (item: IItem, index: number) => {
 		const { theme } = this.props;
 
 		return (
@@ -217,7 +233,7 @@ class UploadProgress extends Component {
 
 	render() {
 		const { uploads } = this.state;
-		return <ScrollView style={styles.container}>{uploads.map((item, i) => this.renderItem(item, i))}</ScrollView>;
+		return <ScrollView style={styles.container}>{uploads.map((item: IItem, i: number) => this.renderItem(item, i))}</ScrollView>;
 	}
 }
 
