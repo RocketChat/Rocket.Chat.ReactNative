@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import I18n from '../../i18n';
@@ -34,7 +33,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DateSeparator = React.memo(({ ts, unread, theme }) => {
+interface IRoomDateSeparatorProps {
+	ts: Date;
+	unread: boolean;
+	theme: string;
+}
+
+const DateSeparator = React.memo(({ ts, unread, theme }: IRoomDateSeparatorProps) => {
 	const date = ts ? moment(ts).format('LL') : null;
 	const unreadLine = { backgroundColor: themes[theme].dangerColor };
 	const unreadText = { color: themes[theme].dangerColor };
@@ -62,11 +67,5 @@ const DateSeparator = React.memo(({ ts, unread, theme }) => {
 		</View>
 	);
 });
-
-DateSeparator.propTypes = {
-	ts: PropTypes.instanceOf(Date),
-	unread: PropTypes.bool,
-	theme: PropTypes.string
-};
 
 export default DateSeparator;
