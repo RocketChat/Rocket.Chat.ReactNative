@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -35,7 +34,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = React.memo(({ room, thread, theme }) => {
+interface IHeader {
+	room: { prid?: string; t?: string };
+	thread: { id?: string };
+	theme: string;
+}
+
+const Header = React.memo(({ room, thread, theme }: IHeader) => {
 	let type;
 	if (thread?.id) {
 		type = 'thread';
@@ -88,10 +93,5 @@ const Header = React.memo(({ room, thread, theme }) => {
 		</View>
 	);
 });
-Header.propTypes = {
-	room: PropTypes.object,
-	thread: PropTypes.object,
-	theme: PropTypes.string
-};
 
 export default withTheme(Header);
