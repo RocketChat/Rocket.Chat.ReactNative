@@ -33,6 +33,8 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 import EventEmitter from '../../utils/events';
 import { LISTENER } from '../../containers/Toast';
 import SearchHeader from '../../containers/SearchHeader';
+import { ChatsStackParamList } from '../../stacks/types';
+import { RoomType } from '../../definitions/IRoom';
 import { FILTER } from './filters';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import Dropdown from './Dropdown';
@@ -94,8 +96,8 @@ interface IThreadMessagesViewState {
 }
 
 interface IThreadMessagesViewProps {
-	navigation: StackNavigationProp<any, 'ThreadMessagesView'>;
-	route: RouteProp<{ ThreadMessagesView: { rid: string; t: string } }, 'ThreadMessagesView'>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'ThreadMessagesView'>;
+	route: RouteProp<ChatsStackParamList, 'ThreadMessagesView'>;
 	user: any;
 	baseUrl: string;
 	useRealName: boolean;
@@ -432,7 +434,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				rid: item.subscription.id,
 				tmid: item.id,
 				name: makeThreadName(item),
-				t: 'thread',
+				t: RoomType.THREAD,
 				roomUserId: RocketChat.getUidDirectMessage(subscription)
 			});
 		},
