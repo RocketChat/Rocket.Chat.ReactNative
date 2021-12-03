@@ -25,7 +25,6 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	backdrop: {
-		// https://reactnative.dev/docs/stylesheet#absolutefill-vs-absolutefillobject
 		...StyleSheet.absoluteFillObject
 	}
 });
