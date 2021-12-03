@@ -1,5 +1,5 @@
-export const FILTER = {
-	ALL: 'All',
-	FOLLOWING: 'Following',
-	UNREAD: 'Unread'
-};
+export enum FILTER {
+	ALL = 'All',
+	FOLLOWING = 'Following',
+	UNREAD = 'Unread'
+}
