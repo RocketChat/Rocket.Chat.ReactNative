@@ -18,6 +18,16 @@ const styles = StyleSheet.create({
 
 interface IRoomListProps {
 	listRef: any;
+	onScroll?: any;
+	scrollEventThrottle?: number;
+	data?: any;
+	renderItem?: Function;
+	onEndReached?: Function;
+	ListFooterComponent?: Function;
+	onScrollToIndexFailed?: Function;
+	onViewableItemsChanged?: Function;
+	viewabilityConfig?: any;
+	refreshControl?: any;
 }
 
 const List = ({ listRef, ...props }: IRoomListProps) => (
