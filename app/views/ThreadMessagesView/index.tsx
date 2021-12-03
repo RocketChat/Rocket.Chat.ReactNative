@@ -449,7 +449,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	};
 
 	// helper to query threads
-	getFilteredThreads = (messages: any, subscription: any /** TODO: Refactor when migrate room */, currentFilter?: FILTER) => {
+	getFilteredThreads = (messages: any, subscription: any, currentFilter?: FILTER) => {
 		// const { currentFilter } = this.state;
 		const { user } = this.props;
 		if (currentFilter === FILTER.FOLLOWING) {
