@@ -3760,7 +3760,7 @@
 
 "@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile-connectivity":
   version "1.1.0-mobile"
-  resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/2d377a7f85661dcb7b0f3b9a3fc2083a5d6d48de"
+  resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/3456c34537b6f15a9ae0a8870630c8fb8ec50cc5"
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"
