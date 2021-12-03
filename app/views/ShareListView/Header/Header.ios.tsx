@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 
@@ -8,6 +7,7 @@ import * as HeaderButton from '../../../containers/HeaderButton';
 import { themes } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
+import { IShareListHeaderIos } from './interface';
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,10 +16,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSearch, theme }) => {
+const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSearch, theme }: IShareListHeaderIos) => {
 	const [text, setText] = useState('');
 
-	const onChangeText = searchText => {
+	const onChangeText = (searchText: string) => {
 		onChangeSearchText(searchText);
 		setText(searchText);
 	};
@@ -58,13 +58,5 @@ const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSe
 		</View>
 	);
 });
-
-Header.propTypes = {
-	searching: PropTypes.bool,
-	onChangeSearchText: PropTypes.func,
-	initSearch: PropTypes.func,
-	cancelSearch: PropTypes.func,
-	theme: PropTypes.string
-};
 
 export default Header;

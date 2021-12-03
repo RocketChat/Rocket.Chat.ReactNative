@@ -782,5 +782,8 @@
   "No_canned_responses": "Pas de réponses standardisées",
   "Send_email_confirmation": "Envoyer un e-mail de confirmation",
   "sending_email_confirmation": "envoi d'e-mail de confirmation",
-  "Enable_Message_Parser": "Activer le parseur de messages"
+  "Enable_Message_Parser": "Activer le parseur de messages",
+  "Unsupported_format": "Format non supporté",
+  "Downloaded_file": "Fichier téléchargé",
+  "Error_Download_file": "Erreur lors du téléchargement du fichier"
 }
