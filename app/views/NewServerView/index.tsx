@@ -33,6 +33,7 @@ import { isTablet } from '../../utils/deviceInfo';
 import { verticalScale, moderateScale } from '../../utils/scaling';
 import { withDimensions } from '../../dimensions';
 import ServerInput from './ServerInput';
+import { OutsideParamList } from '../../stacks/types';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
@@ -73,7 +74,7 @@ export interface IServer extends Model {
 }
 
 interface INewServerView {
-	navigation: StackNavigationProp<any, 'NewServerView'>;
+	navigation: StackNavigationProp<OutsideParamList, 'NewServerView'>;
 	theme: string;
 	connecting: boolean;
 	connectServer(server: string, username?: string, fromServerHistory?: boolean): void;

@@ -5,6 +5,7 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 import CookieManager from '@react-native-cookies/cookies';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { SettingsStackParamList } from '../../stacks/types';
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { themes } from '../../constants/colors';
@@ -29,8 +30,8 @@ import database from '../../lib/database';
 import { isFDroidBuild } from '../../constants/environment';
 import { getUserSelector } from '../../selectors/login';
 
-interface IProps {
-	navigation: StackNavigationProp<any, 'SettingsView'>;
+interface ISettingsViewProps {
+	navigation: StackNavigationProp<SettingsStackParamList, 'SettingsView'>;
 	server: {
 		version: string;
 		server: string;
@@ -46,8 +47,8 @@ interface IProps {
 	appStart: Function;
 }
 
-class SettingsView extends React.Component<IProps, any> {
-	static navigationOptions = ({ navigation, isMasterDetail }: Partial<IProps>) => ({
+class SettingsView extends React.Component<ISettingsViewProps, any> {
+	static navigationOptions = ({ navigation, isMasterDetail }: ISettingsViewProps) => ({
 		headerLeft: () =>
 			isMasterDetail ? (
 				<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
@@ -117,7 +118,7 @@ class SettingsView extends React.Component<IProps, any> {
 		});
 	};
 
-	navigateToScreen = (screen: string) => {
+	navigateToScreen = (screen: keyof SettingsStackParamList) => {
 		/* @ts-ignore */
 		logEvent(events[`SE_GO_${screen.replace('View', '').toUpperCase()}`]);
 		const { navigation } = this.props;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, Switch, Text } from 'react-native';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 import Loading from '../../containers/Loading';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -89,7 +90,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 				  )
 				: null,
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
-		});
+		} as StackNavigationOptions);
 	};
 
 	submit = () => {

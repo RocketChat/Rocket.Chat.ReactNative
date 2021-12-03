@@ -1,6 +1,8 @@
 import React from 'react';
 import { FlatList, StyleSheet, Switch } from 'react-native';
+import { RouteProp } from '@react-navigation/core';
 
+import { ChatsStackParamList } from '../../stacks/types';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
@@ -9,6 +11,7 @@ import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../utils/log';
+import { IRoom } from '../../definitions/IRoom';
 
 const styles = StyleSheet.create({
 	list: {
@@ -16,19 +19,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IRoom {
-	observe: Function;
-	autoTranslateLanguage: boolean;
-	autoTranslate: boolean;
-}
-
 interface IAutoTranslateViewProps {
-	route: {
-		params: {
-			rid?: string;
-			room?: IRoom;
-		};
-	};
+	route: RouteProp<ChatsStackParamList, 'AutoTranslateView'>;
 	theme: string;
 }
 

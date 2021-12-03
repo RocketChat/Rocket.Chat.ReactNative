@@ -11,6 +11,8 @@ import * as List from '../containers/List';
 import SearchBox from '../containers/SearchBox';
 import SafeAreaView from '../containers/SafeAreaView';
 import sharedStyles from './Styles';
+import { ChatsStackParamList } from '../stacks/types';
+import { IOptionsField } from './NotificationPreferencesView/options';
 
 const styles = StyleSheet.create({
 	search: {
@@ -25,37 +27,21 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IData {
-	label: string;
-	value: string;
-	second?: string;
-}
-
 interface IItem {
-	item: IData;
+	item: IOptionsField;
 	selected: boolean;
 	onItemPress: () => void;
 	theme: string;
 }
 
 interface IPickerViewState {
-	data: IData[];
+	data: IOptionsField[];
 	value: string;
-}
-
-interface IParams {
-	title: string;
-	value: string;
-	data: IData[];
-	onChangeText: (value: string) => IData[];
-	goBack: boolean;
-	onChange: Function;
-	onChangeValue: (value: string) => void;
 }
 
 interface IPickerViewProps {
-	navigation: StackNavigationProp<any, 'PickerView'>;
-	route: RouteProp<{ PickerView: IParams }, 'PickerView'>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'PickerView'>;
+	route: RouteProp<ChatsStackParamList, 'PickerView'>;
 	theme: string;
 }
 
@@ -69,7 +55,7 @@ const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 ));
 
 class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState> {
-	private onSearch: (text: string) => IData[];
+	private onSearch?: ((text: string) => IOptionsField[]) | ((term?: string | undefined) => Promise<any>);
 
 	static navigationOptions = ({ route }: IPickerViewProps) => ({
 		title: route.params?.title ?? I18n.t('Select_an_option')
@@ -126,13 +112,13 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 				{this.renderSearch()}
 				<FlatList
 					data={data}
-					keyExtractor={item => item.value}
+					keyExtractor={item => item.value as string}
 					renderItem={({ item }) => (
 						<Item
 							item={item}
 							theme={theme}
 							selected={!this.onSearch && (value || data[0]?.value) === item.value}
-							onItemPress={() => this.onChangeValue(item.value)}
+							onItemPress={() => this.onChangeValue(item.value as string)}
 						/>
 					)}
 					ItemSeparatorComponent={List.Separator}
