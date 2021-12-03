@@ -5,6 +5,7 @@ import { NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 
+import { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import Loading from '../../containers/Loading';
@@ -25,7 +26,8 @@ import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
-import { IAttachment, IServer } from './interfaces';
+import { IAttachment } from './interfaces';
+import { IRoom } from '../../definitions/IRoom';
 
 interface IShareViewState {
 	selected: IAttachment;
@@ -33,30 +35,15 @@ interface IShareViewState {
 	readOnly: boolean;
 	attachments: IAttachment[];
 	text: string;
-	// TODO: Refactor when migrate room
-	room: any;
-	thread: any;
+	room: IRoom;
+	thread: any; // change
 	maxFileSize: number;
 	mediaAllowList: number;
 }
 
 interface IShareViewProps {
-	// TODO: Refactor after react-navigation
-	navigation: StackNavigationProp<any, 'ShareView'>;
-	route: RouteProp<
-		{
-			ShareView: {
-				attachments: IAttachment[];
-				isShareView?: boolean;
-				isShareExtension: boolean;
-				serverInfo: IServer;
-				text: string;
-				room: any;
-				thread: any; // change
-			};
-		},
-		'ShareView'
-	>;
+	navigation: StackNavigationProp<InsideStackParamList, 'ShareView'>;
+	route: RouteProp<InsideStackParamList, 'ShareView'>;
 	theme: string;
 	user: {
 		id: string;

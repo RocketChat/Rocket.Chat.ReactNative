@@ -5,13 +5,7 @@ import EventEmitter from '../events';
 import { LISTENER } from '../../containers/Toast';
 import I18n from '../../i18n';
 import { DOCUMENTS_PATH, DOWNLOAD_PATH } from '../../constants/localPath';
-
-interface IAttachment {
-	title: string;
-	title_link: string;
-	type: string;
-	description: string;
-}
+import { IAttachment } from '../../definitions/IAttachment';
 
 export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => `${localPath}${attachment.title}`;
 

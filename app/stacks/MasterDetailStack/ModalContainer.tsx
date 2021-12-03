@@ -1,9 +1,16 @@
 import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import PropTypes from 'prop-types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { NavigationContainerProps } from '@react-navigation/core';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
+
+interface IModalContainer extends NavigationContainerProps {
+	navigation: StackNavigationProp<any>;
+	children: React.ReactNode;
+	theme: string;
+}
 
 const styles = StyleSheet.create({
 	root: {
@@ -12,11 +19,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	backdrop: {
-		...StyleSheet.absoluteFill
+		...StyleSheet.absoluteFillObject
 	}
 });
 
-export const ModalContainer = ({ navigation, children, theme }) => (
+export const ModalContainer = ({ navigation, children, theme }: IModalContainer): JSX.Element => (
 	<View style={[styles.root, { backgroundColor: `${themes[theme].backdropColor}70` }]}>
 		<TouchableWithoutFeedback onPress={() => navigation.pop()}>
 			<View style={styles.backdrop} />
@@ -24,9 +31,3 @@ export const ModalContainer = ({ navigation, children, theme }) => (
 		<View style={sharedStyles.modalFormSheet}>{children}</View>
 	</View>
 );
-
-ModalContainer.propTypes = {
-	navigation: PropTypes.object,
-	children: PropTypes.element,
-	theme: PropTypes.string
-};

@@ -21,6 +21,7 @@ import { animateNextTransition } from '../utils/layoutAnimation';
 import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import debounce from '../utils/debounce';
+import { ChatsStackParamList } from '../stacks/types';
 
 interface IAddExistingChannelViewState {
 	// TODO: refactor with Room Model
@@ -31,8 +32,8 @@ interface IAddExistingChannelViewState {
 }
 
 interface IAddExistingChannelViewProps {
-	navigation: StackNavigationProp<any, 'AddExistingChannelView'>;
-	route: RouteProp<{ AddExistingChannelView: { teamId: string } }, 'AddExistingChannelView'>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
+	route: RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
 	theme: string;
 	isMasterDetail: boolean;
 	addTeamChannelPermission: string[];
@@ -41,7 +42,7 @@ interface IAddExistingChannelViewProps {
 const QUERY_SIZE = 50;
 
 class AddExistingChannelView extends React.Component<IAddExistingChannelViewProps, IAddExistingChannelViewState> {
-	private teamId: string;
+	private teamId?: string;
 	constructor(props: IAddExistingChannelViewProps) {
 		super(props);
 		this.query();

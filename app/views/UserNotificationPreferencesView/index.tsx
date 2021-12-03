@@ -14,6 +14,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
+import { ProfileStackParamList } from '../../stacks/types';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -34,7 +35,7 @@ interface IUserNotificationPreferencesViewState {
 }
 
 interface IUserNotificationPreferencesViewProps {
-	navigation: StackNavigationProp<any, 'UserNotificationPreferencesView'>;
+	navigation: StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>;
 	theme: string;
 	user: {
 		id: string;
