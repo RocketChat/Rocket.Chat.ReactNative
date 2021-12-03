@@ -1,13 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { InteractionManager, Text, View } from 'react-native';
+import { FlatList, InteractionManager, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
-import { Q } from '@nozbe/watermelondb';
+import { Model, Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
 
 import Touch from '../../utils/touch';
 import { replyBroadcast as replyBroadcastAction } from '../../actions/messages';
@@ -64,6 +65,10 @@ import JoinCode from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
 import List from './List';
+import { ChatsStackParamList } from '../../stacks/types';
+import { RoomType } from '../../definitions/IRoom';
+import { IAttachment } from '../../definitions/IAttachment';
+import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -102,40 +107,70 @@ const roomAttrsUpdate = [
 	'teamId'
 ];
 
-class RoomView extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		user: PropTypes.shape({
-			id: PropTypes.string.isRequired,
-			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired,
-			showMessageInMainThread: PropTypes.bool
-		}),
-		appState: PropTypes.string,
-		useRealName: PropTypes.bool,
-		isAuthenticated: PropTypes.bool,
-		Message_GroupingPeriod: PropTypes.number,
-		Message_TimeFormat: PropTypes.string,
-		Message_Read_Receipt_Enabled: PropTypes.bool,
-		Hide_System_Messages: PropTypes.array,
-		baseUrl: PropTypes.string,
-		serverVersion: PropTypes.string,
-		customEmojis: PropTypes.object,
-		isMasterDetail: PropTypes.bool,
-		theme: PropTypes.string,
-		replyBroadcast: PropTypes.func,
-		width: PropTypes.number,
-		height: PropTypes.number,
-		insets: PropTypes.object
+interface IRoomViewProps {
+	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
+	route: RouteProp<ChatsStackParamList, 'RoomView'>;
+	user: {
+		id: string;
+		username: string;
+		token: string;
+		showMessageInMainThread: boolean;
 	};
+	appState: string;
+	useRealName: boolean;
+	isAuthenticated: boolean;
+	Message_GroupingPeriod: number;
+	Message_TimeFormat: string;
+	Message_Read_Receipt_Enabled: boolean;
+	Hide_System_Messages: [];
+	baseUrl: string;
+	serverVersion: string;
+	customEmojis: object;
+	isMasterDetail: boolean;
+	theme: string;
+	replyBroadcast: Function;
+	width: number;
+	height: number;
+	insets: {
+		left: boolean;
+		right: boolean;
+	};
+}
 
-	constructor(props) {
+class RoomView extends React.Component<IRoomViewProps, any> {
+	private rid: string;
+	private t: RoomType;
+	private tmid?: string;
+	private jumpToMessageId?: string;
+	private jumpToThreadId?: string;
+	private messagebox: React.RefObject<typeof MessageBox>;
+	private list: React.RefObject<List>;
+	private joinCode: React.RefObject<typeof JoinCode>;
+	private flatList: React.RefObject<FlatList>;
+	private mounted: boolean;
+	private sub?: RoomClass;
+	private offset?: number;
+	private didMountInteraction?: {
+		then: (onfulfilled?: () => any, onrejected?: () => any) => Promise<any>;
+		done: (...args: any[]) => any;
+		cancel: () => void;
+	};
+	private willBlurListener?: any; // TODO remove this any
+	private subSubscription?: any; // TODO remove this any
+	private queryUnreads?: any; // TODO remove this any
+	private retryInit: any;
+	private retryInitTimeout?: ReturnType<typeof setTimeout>;
+	private retryFindCount: any;
+	private retryFindTimeout?: ReturnType<typeof setTimeout>;
+	private messageErrorActions: any;
+	private messageActions: any;
+
+	constructor(props: IRoomViewProps) {
 		super(props);
 		console.time(`${this.constructor.name} init`);
 		console.time(`${this.constructor.name} mount`);
-		this.rid = props.route.params?.rid;
-		this.t = props.route.params?.t;
+		this.rid = props.route.params.rid;
+		this.t = props.route.params.t;
 		this.tmid = props.route.params?.tmid;
 		const selectedMessage = props.route.params?.message;
 		const name = props.route.params?.name;
@@ -224,7 +259,7 @@ class RoomView extends React.Component {
 		console.timeEnd(`${this.constructor.name} mount`);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: any) {
 		const { state } = this;
 		const { roomUpdate, member } = state;
 		const { appState, theme, insets, route } = this.props;
@@ -250,7 +285,7 @@ class RoomView extends React.Component {
 		return roomAttrsUpdate.some(key => !dequal(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevProps: IRoomViewProps, prevState: any) {
 		const { roomUpdate } = this.state;
 		const { appState, insets, route } = this.props;
 
@@ -304,7 +339,7 @@ class RoomView extends React.Component {
 		this.mounted = false;
 		if (!editing && this.messagebox && this.messagebox.current) {
 			const { text } = this.messagebox.current;
-			let obj;
+			let obj: any; // TODO - test the threadsCollection.find return to change this any;
 			if (this.tmid) {
 				try {
 					const threadsCollection = db.get('threads');
@@ -318,7 +353,8 @@ class RoomView extends React.Component {
 			if (obj) {
 				try {
 					await db.action(async () => {
-						await obj.update(r => {
+						await obj.update((r: any) => {
+							// TODO - change this any
 							r.draftMessage = text;
 						});
 					});
@@ -360,7 +396,7 @@ class RoomView extends React.Component {
 		const prid = room?.prid;
 		const isGroupChat = RocketChat.isGroupChat(room);
 		let title = route.params?.name;
-		let parentTitle;
+		let parentTitle: string;
 		if ((room.id || room.rid) && !tmid) {
 			title = RocketChat.getRoomTitle(room);
 		}
@@ -442,7 +478,8 @@ class RoomView extends React.Component {
 		});
 	};
 
-	goRoomActionsView = screen => {
+	// goRoomActionsView = (screen?: keyof ChatsStackParamList) => {
+	goRoomActionsView = (screen: any) => {
 		logEvent(events.ROOM_GO_RA);
 		const { room, member, joined } = this.state;
 		const { navigation, isMasterDetail } = this.props;
@@ -493,7 +530,8 @@ class RoomView extends React.Component {
 					} else {
 						this.setLastOpen(null);
 					}
-					RoomServices.readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
+					// RoomServices.readMessages(room.rid, newLastOpen, true).catch(e => console.log(e)); this function receives true automatic
+					RoomServices.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
 				}
 			}
 
@@ -533,7 +571,7 @@ class RoomView extends React.Component {
 		return {};
 	};
 
-	findAndObserveRoom = async rid => {
+	findAndObserveRoom = async (rid: string) => {
 		try {
 			const db = database.active;
 			const subCollection = await db.get('subscriptions');
@@ -569,27 +607,29 @@ class RoomView extends React.Component {
 		delete this.sub;
 	};
 
-	observeRoom = room => {
+	observeRoom = (room: Model) => {
 		const observable = room.observe();
-		this.subSubscription = observable.subscribe(changes => {
-			const roomUpdate = roomAttrsUpdate.reduce((ret, attr) => {
+		this.subSubscription = observable.subscribe((changes: any) => {
+			const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr: any) => {
 				ret[attr] = changes[attr];
 				return ret;
 			}, {});
 			if (this.mounted) {
 				this.internalSetState({ room: changes, roomUpdate });
 			} else {
+				// @ts-ignore
 				this.state.room = changes;
+				// @ts-ignore
 				this.state.roomUpdate = roomUpdate;
 			}
 		});
 	};
 
-	errorActionsShow = message => {
+	errorActionsShow = (message: string) => {
 		this.messageErrorActions?.showMessageErrorActions(message);
 	};
 
-	onEditInit = message => {
+	onEditInit = (message: { id: string; subscription: { id: string }; attachments: any; msg: string }) => {
 		const newMessage = {
 			id: message.id,
 			subscription: {
@@ -604,7 +644,7 @@ class RoomView extends React.Component {
 		this.setState({ selectedMessage: {}, editing: false });
 	};
 
-	onEditRequest = async message => {
+	onEditRequest = async (message: string) => {
 		this.setState({ selectedMessage: {}, editing: false });
 		try {
 			await RocketChat.editMessage(message);
@@ -613,7 +653,7 @@ class RoomView extends React.Component {
 		}
 	};
 
-	onReplyInit = (message, mention) => {
+	onReplyInit = (message: string, mention: string) => {
 		this.setState({
 			selectedMessage: message,
 			replying: true,
@@ -625,7 +665,7 @@ class RoomView extends React.Component {
 		this.setState({ selectedMessage: {}, replying: false, replyWithMention: false });
 	};
 
-	onReactionInit = message => {
+	onReactionInit = (message: string) => {
 		this.setState({ selectedMessage: message, reacting: true });
 	};
 
@@ -633,16 +673,16 @@ class RoomView extends React.Component {
 		this.setState({ selectedMessage: {}, reacting: false });
 	};
 
-	onMessageLongPress = message => {
+	onMessageLongPress = (message: string) => {
 		this.messageActions?.showMessageActions(message);
 	};
 
-	showAttachment = attachment => {
+	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
-	onReactionPress = async (shortname, messageId) => {
+	onReactionPress = async (shortname: string, messageId: string) => {
 		try {
 			await RocketChat.setReaction(shortname, messageId);
 			this.onReactionClose();
@@ -652,7 +692,7 @@ class RoomView extends React.Component {
 		}
 	};
 
-	onReactionLongPress = message => {
+	onReactionLongPress = (message: string) => {
 		this.setState({ selectedMessage: message, reactionsModalVisible: true });
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
@@ -665,7 +705,7 @@ class RoomView extends React.Component {
 		logEvent(events.ROOM_ENCRYPTED_PRESS);
 		const { navigation, isMasterDetail } = this.props;
 
-		const screen = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
+		const screen: ModalStackParamList = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
 
 		if (isMasterDetail) {
 			return navigation.navigate('ModalStackNavigator', screen);
@@ -706,7 +746,7 @@ class RoomView extends React.Component {
 
 	onThreadPress = debounce(item => this.navToThread(item), 1000, true);
 
-	shouldNavigateToRoom = message => {
+	shouldNavigateToRoom = (message: { tmid: string; rid: string }) => {
 		if (message.tmid && message.tmid === this.tmid) {
 			return false;
 		}
@@ -716,14 +756,14 @@ class RoomView extends React.Component {
 		return true;
 	};
 
-	jumpToMessageByUrl = async messageUrl => {
+	jumpToMessageByUrl = async (messageUrl: string) => {
 		if (!messageUrl) {
 			return;
 		}
 		try {
 			this.setState({ showingBlockingLoader: true });
 			const parsedUrl = parse(messageUrl, true);
-			const messageId = parsedUrl.query.msg;
+			const messageId: any = parsedUrl.query.msg;
 			await this.jumpToMessage(messageId);
 			this.setState({ showingBlockingLoader: false });
 		} catch (e) {
@@ -732,7 +772,7 @@ class RoomView extends React.Component {
 		}
 	};
 
-	jumpToMessage = async messageId => {
+	jumpToMessage = async (messageId: string) => {
 		try {
 			this.setState({ showingBlockingLoader: true });
 			const message = await RoomServices.getMessageInfo(messageId);
@@ -755,8 +795,8 @@ class RoomView extends React.Component {
 				if (message.fromServer && !message.tmid) {
 					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid });
 				}
-				await Promise.race([this.list.current.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
-				this.list.current.cancelJumpToMessage();
+				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
+				this.list.current?.cancelJumpToMessage();
 			}
 		} catch (e) {
 			log(e);
@@ -765,7 +805,7 @@ class RoomView extends React.Component {
 		}
 	};
 
-	replyBroadcast = message => {
+	replyBroadcast = (message: string) => {
 		const { replyBroadcast } = this.props;
 		replyBroadcast(message);
 	};
@@ -775,7 +815,7 @@ class RoomView extends React.Component {
 		EventEmitter.removeListener('connected', this.handleConnected);
 	};
 
-	handleRoomRemoved = ({ rid }) => {
+	handleRoomRemoved = ({ rid }: {rid: string}) => {
 		const { room } = this.state;
 		if (rid === this.rid) {
 			Navigation.navigate('RoomsListView');
@@ -784,14 +824,14 @@ class RoomView extends React.Component {
 		}
 	};
 
-	internalSetState = (...args) => {
+	internalSetState = (...args: any) => {
 		if (!this.mounted) {
 			return;
 		}
 		this.setState(...args);
 	};
 
-	sendMessage = (message, tmid, tshow) => {
+	sendMessage = (message: string, tmid: string, tshow: string) => {
 		logEvent(events.ROOM_SEND_MESSAGE);
 		const { user } = this.props;
 		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user, tshow).then(() => {
@@ -803,7 +843,7 @@ class RoomView extends React.Component {
 		});
 	};
 
-	getCustomEmoji = name => {
+	getCustomEmoji = (name: any) => {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {
@@ -1225,7 +1265,7 @@ class RoomView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
@@ -1240,8 +1280,8 @@ const mapStateToProps = state => ({
 	Hide_System_Messages: state.settings.Hide_System_Messages
 });
 
-const mapDispatchToProps = dispatch => ({
-	replyBroadcast: message => dispatch(replyBroadcastAction(message))
+const mapDispatchToProps = (dispatch: any) => ({
+	replyBroadcast: (message: any) => dispatch(replyBroadcastAction(message))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));

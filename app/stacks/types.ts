@@ -7,8 +7,11 @@ import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage } from '../definitions/IMessage';
 import { IRoom, RoomType } from '../definitions/IRoom';
+import { ModalStackParamList } from './MasterDetailStack/types';
 
 export type ChatsStackParamList = {
+	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
+	// E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	RoomsListView: undefined;
 	RoomView: {
 		rid: string;
@@ -142,6 +145,9 @@ export type ChatsStackParamList = {
 			tags: string[];
 		};
 		room: IRoom;
+	};
+	AttachmentView: {
+		attachment: IAttachment;
 	};
 };
 
