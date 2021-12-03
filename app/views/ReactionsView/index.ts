@@ -1,7 +1,7 @@
 import React from 'react';
-import {
-	View, Text, TouchableOpacity
-} from 'react-native';
+// @ts-ignore
+import { View, Text, TouchableOpacity } from 'react-native';
+
 import { connect } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/core';
@@ -35,10 +35,11 @@ interface IReactionsLabelProps {
 	theme: string;
 }
 
-class RenderLabel extends React.PureComponent<IReactionsLabelProps> {
+class TabLabel extends React.PureComponent<IReactionsLabelProps> {
 	constructor(props: IReactionsLabelProps) {
-		super(props)
+		super(props);
 	}
+
 	render = () => {
 		const { name, baseUrl, getCustomEmoji, reactions, page, theme } = this.props;
 
@@ -50,7 +51,7 @@ class RenderLabel extends React.PureComponent<IReactionsLabelProps> {
 					customEmojiStyle={sharedStyles.reactionCustomEmoji}
 					baseUrl={baseUrl}
 					getCustomEmoji={getCustomEmoji}
-				/>
+				></Emoji>
 				<Text style={{...sharedStyles.textBold, color: themes[theme].bodyText }}>
 					{reactions[page].usernames.length}
 				</Text>
@@ -85,7 +86,7 @@ class ReactionsView extends React.PureComponent<IReactionsViewProps> {
 				key={`${ name }`}
 				onPress={() => onPressHandler(pageIndex)}
 			>
-				<RenderLabel getCustomEmoji={this.getCustomEmoji} reactions={reactions} baseUrl={baseUrl} name={name} page={pageIndex} theme={theme} />
+				<TabLabel getCustomEmoji={this.getCustomEmoji} reactions={reactions} baseUrl={baseUrl} name={name} page={pageIndex} theme={theme} />
 			</TouchableOpacity>
 		);
 	}
