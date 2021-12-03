@@ -25,7 +25,6 @@ import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
 import { MESSAGE_TYPE_ANY_LOAD, MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
 import debounce from '../../utils/debounce';
-import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, isTeamRoom, makeThreadName } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
@@ -68,7 +67,6 @@ import List from './List';
 const stateAttrsUpdate = [
 	'joined',
 	'lastOpen',
-	'reactionsModalVisible',
 	'canAutoTranslate',
 	'selectedMessage',
 	'loading',
@@ -157,7 +155,6 @@ class RoomView extends React.Component {
 			roomUpdate: {},
 			member: {},
 			lastOpen: null,
-			reactionsModalVisible: false,
 			selectedMessage: selectedMessage || {},
 			canAutoTranslate: false,
 			loading: true,
@@ -653,12 +650,12 @@ class RoomView extends React.Component {
 	};
 
 	onReactionLongPress = message => {
-		this.setState({ selectedMessage: message, reactionsModalVisible: true });
+		const { navigation } = this.props;
+		const options = {
+			reactions: message.reactions || []
+		};
+		navigation.navigate('ReactionsView', options);
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-	};
-
-	onCloseReactionsModal = () => {
-		this.setState({ selectedMessage: {}, reactionsModalVisible: false });
 	};
 
 	onEncryptedPress = () => {
@@ -1167,7 +1164,7 @@ class RoomView extends React.Component {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, reactionsModalVisible, selectedMessage, loading, reacting, showingBlockingLoader } = this.state;
+		const { room, selectedMessage, loading, reacting, showingBlockingLoader } = this.state;
 		const { user, baseUrl, theme, navigation, Hide_System_Messages, width, height, serverVersion } = this.props;
 		const { rid, t, sysMes, bannerClosed, announcement } = room;
 
@@ -1210,14 +1207,6 @@ class RoomView extends React.Component {
 					theme={theme}
 				/>
 				<UploadProgress rid={this.rid} user={user} baseUrl={baseUrl} width={width} />
-				<ReactionsModal
-					message={selectedMessage}
-					isVisible={reactionsModalVisible}
-					user={user}
-					baseUrl={baseUrl}
-					onClose={this.onCloseReactionsModal}
-					getCustomEmoji={this.getCustomEmoji}
-				/>
 				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
 				<Loading visible={showingBlockingLoader} />
 			</SafeAreaView>

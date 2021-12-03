@@ -34,7 +34,8 @@ export default msg => {
 		msg.reactions = Object.keys(msg.reactions).map(key => ({
 			_id: `${msg._id}${key}`,
 			emoji: key,
-			usernames: msg.reactions[key].usernames
+			usernames: msg.reactions[key].usernames,
+			names: msg.reactions[key].names
 		}));
 	}
 	if (msg.translations && Object.keys(msg.translations).length) {

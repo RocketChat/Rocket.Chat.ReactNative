@@ -46,6 +46,7 @@ import UserPreferencesView from '../../views/UserPreferencesView';
 import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
 import SecurityPrivacyView from '../../views/SecurityPrivacyView';
 import E2EEncryptionSecurityView from '../../views/E2EEncryptionSecurityView';
+import ReactionsView from '../../views/ReactionsView';
 
 // InsideStackNavigator
 import AttachmentView from '../../views/AttachmentView';
@@ -245,6 +246,11 @@ const ModalStackNavigator = React.memo(({ navigation }) => {
 					name='E2EEncryptionSecurityView'
 					component={E2EEncryptionSecurityView}
 					options={E2EEncryptionSecurityView.navigationOptions}
+				/>
+				<ModalStack.Screen
+				name='ReactionsView'
+				component={ReactionsView}
+				options={ReactionsView.navigationOptions}
 				/>
 			</ModalStack.Navigator>
 		</ModalContainer>
