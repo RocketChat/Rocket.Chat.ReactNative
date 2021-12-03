@@ -137,7 +137,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		};
 		this.setHeader();
 		this.initSubscription();
-		this.subscribeMessages({});
+		this.subscribeMessages();
 	}
 
 	componentDidMount() {
@@ -226,13 +226,13 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				this.setState({ subscription: data });
 			});
 
-			this.subscribeMessages({ subscription });
+			this.subscribeMessages(subscription);
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	subscribeMessages = ({ subscription, searchText }: { subscription?: any; searchText?: string }) => {
+	subscribeMessages = (subscription?: any, searchText?: string) => {
 		try {
 			const db = database.active;
 
@@ -414,13 +414,13 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ isSearching: false, searchText: '' }, () => {
 			const { subscription } = this.state;
 			this.setHeader();
-			this.subscribeMessages({ subscription });
+			this.subscribeMessages(subscription);
 		});
 	};
 
 	onSearchChangeText = debounce((searchText: string) => {
 		const { subscription } = this.state;
-		this.setState({ searchText }, () => this.subscribeMessages({ subscription, searchText }));
+		this.setState({ searchText }, () => this.subscribeMessages(subscription, searchText));
 	}, 300);
 
 	onThreadPress = debounce(
