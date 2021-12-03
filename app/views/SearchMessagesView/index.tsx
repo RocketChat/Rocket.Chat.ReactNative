@@ -1,11 +1,13 @@
 import React from 'react';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/core';
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
+import { IRoom, RoomType } from '../../definitions/IRoom';
+import { IAttachment } from '../../definitions/IAttachment';
 import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
@@ -13,7 +15,7 @@ import debounce from '../../utils/debounce';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { IMessage, IMessageAttachments } from '../../containers/message/interfaces';
+import { IMessage } from '../../containers/message/interfaces';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
@@ -29,26 +31,30 @@ import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { isIOS } from '../../utils/deviceInfo';
 import { compareServerVersion, methods } from '../../lib/utils';
 import styles from './styles';
+import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 
 const QUERY_SIZE = 50;
-
-type TRouteParams = {
-	SearchMessagesView: {
-		showCloseModal?: boolean;
-		rid: string;
-		t?: string;
-		encrypted?: boolean;
-	};
-};
 
 interface ISearchMessagesViewState {
 	loading: boolean;
 	messages: IMessage[];
 	searchText: string;
 }
+
+interface IRoomInfoParam {
+	room: IRoom;
+	member: any;
+	rid: string;
+	t: RoomType;
+	joined: boolean;
+}
+
 interface INavigationOption {
-	navigation: StackNavigationProp<any, 'SearchMessagesView'>;
-	route: RouteProp<TRouteParams, 'SearchMessagesView'>;
+	navigation: CompositeNavigationProp<
+		StackNavigationProp<ChatsStackParamList, 'SearchMessagesView'>,
+		StackNavigationProp<InsideStackParamList>
+	>;
+	route: RouteProp<ChatsStackParamList, 'SearchMessagesView'>;
 }
 
 interface ISearchMessagesViewProps extends INavigationOption {
@@ -183,12 +189,12 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		return null;
 	};
 
-	showAttachment = (attachment: IMessageAttachments) => {
+	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
-	navToRoomInfo = (navParam: IMessage) => {
+	navToRoomInfo = (navParam: IRoomInfoParam) => {
 		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
 			return;
