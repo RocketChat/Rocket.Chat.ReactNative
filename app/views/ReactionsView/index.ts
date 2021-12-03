@@ -1,7 +1,5 @@
 import React from 'react';
-// @ts-ignore
 import { View, Text, TouchableOpacity } from 'react-native';
-
 import { connect } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/core';
@@ -44,16 +42,18 @@ class TabLabel extends React.PureComponent<IReactionsLabelProps> {
 		const { name, baseUrl, getCustomEmoji, reactions, page, theme } = this.props;
 
 		return (
-			<View style={sharedStyles.tabView}>
+			<View style={ sharedStyles.tabView }>
 				<Emoji
 					content={name}
 					standardEmojiStyle={sharedStyles.reactionEmoji}
 					customEmojiStyle={sharedStyles.reactionCustomEmoji}
 					baseUrl={baseUrl}
 					getCustomEmoji={getCustomEmoji}
-				></Emoji>
-				<Text style={{...sharedStyles.textBold, color: themes[theme].bodyText }}>
-					{reactions[page].usernames.length}
+				/>
+				<Text style={{
+					...sharedStyles.textBold, color: themes[theme].bodyText
+				}}>
+					{ reactions[page]?.usernames?.length }
 				</Text>
 			</View>
 		);
