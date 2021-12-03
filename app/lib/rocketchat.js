@@ -240,7 +240,7 @@ const RocketChat = {
 			}
 
 			// The app can't reconnect if reopen interval is 5s while in development
-			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 10000 : 5000 });
+			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 			this.getSettings();
 
 			this.sdk
@@ -263,7 +263,8 @@ const RocketChat = {
 				}
 				reduxStore.dispatch(connectSuccess());
 				const { server: currentServer } = reduxStore.getState().server;
-				if (user && user.token && server === currentServer) {
+				const { user } = reduxStore.getState().login;
+				if (user?.token && server === currentServer) {
 					reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 				}
 			});
