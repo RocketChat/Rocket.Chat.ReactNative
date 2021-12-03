@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import parse from 'url-parse';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
+import { RouteProp } from '@react-navigation/core';
 
+import { OutsideModalParamList } from '../stacks/types';
 import RocketChat from '../lib/rocketchat';
 import { isIOS } from '../utils/deviceInfo';
 import StatusBar from '../containers/StatusBar';
@@ -41,17 +43,9 @@ window.addEventListener('popstate', function() {
 });
 `;
 
-interface IRoute {
-	params: {
-		authType: string;
-		url: string;
-		ssoToken?: string;
-	};
-}
-
 interface INavigationOption {
-	navigation: StackNavigationProp<any, 'AuthenticationWebView'>;
-	route: IRoute;
+	navigation: StackNavigationProp<OutsideModalParamList, 'AuthenticationWebView'>;
+	route: RouteProp<OutsideModalParamList, 'AuthenticationWebView'>;
 }
 
 interface IAuthenticationWebView extends INavigationOption {

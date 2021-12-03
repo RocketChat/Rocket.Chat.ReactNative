@@ -15,6 +15,7 @@ import TextInput from '../containers/TextInput';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import LoginServices from '../containers/LoginServices';
 import sharedStyles from './Styles';
+import { OutsideParamList } from '../stacks/types';
 
 const styles = StyleSheet.create({
 	registerDisabled: {
@@ -47,9 +48,9 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IProps {
-	navigation: StackNavigationProp<any>;
-	route: RouteProp<any, 'RegisterView'>;
+interface ILoginViewProps {
+	navigation: StackNavigationProp<OutsideParamList, 'LoginView'>;
+	route: RouteProp<OutsideParamList, 'LoginView'>;
 	Site_Name: string;
 	Accounts_RegistrationForm: string;
 	Accounts_RegistrationForm_LinkReplacementText: string;
@@ -67,15 +68,15 @@ interface IProps {
 	inviteLinkToken: string;
 }
 
-class LoginView extends React.Component<IProps, any> {
+class LoginView extends React.Component<ILoginViewProps, any> {
 	private passwordInput: any;
 
-	static navigationOptions = ({ route, navigation }: Partial<IProps>) => ({
+	static navigationOptions = ({ route, navigation }: ILoginViewProps) => ({
 		title: route?.params?.title ?? 'Rocket.Chat',
 		headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
 	});
 
-	constructor(props: IProps) {
+	constructor(props: ILoginViewProps) {
 		super(props);
 		this.state = {
 			user: props.route.params?.username ?? '',
@@ -83,7 +84,7 @@ class LoginView extends React.Component<IProps, any> {
 		};
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps: IProps) {
+	UNSAFE_componentWillReceiveProps(nextProps: ILoginViewProps) {
 		const { error } = this.props;
 		if (nextProps.failure && !dequal(error, nextProps.error)) {
 			if (nextProps.error?.error === 'error-invalid-email') {
