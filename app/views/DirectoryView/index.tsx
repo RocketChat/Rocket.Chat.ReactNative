@@ -1,7 +1,9 @@
 import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import { StackNavigationProp } from '@react-navigation/stack';
 
+import { ChatsStackParamList } from '../../stacks/types';
 import * as List from '../../containers/List';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
@@ -24,7 +26,7 @@ import styles from './styles';
 import Options from './Options';
 
 interface IDirectoryViewProps {
-	navigation: object;
+	navigation: StackNavigationProp<ChatsStackParamList, 'DirectoryView'>;
 	baseUrl: string;
 	isFederationEnabled: boolean;
 	user: {

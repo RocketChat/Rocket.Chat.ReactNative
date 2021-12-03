@@ -2,7 +2,9 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { StackNavigationProp, StackNavigationOptions } from '@react-navigation/stack';
 import { connect } from 'react-redux';
+import { CompositeNavigationProp } from '@react-navigation/core';
 
+import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import { themes } from '../../constants/colors';
@@ -13,8 +15,10 @@ import ServerAvatar from './ServerAvatar';
 import styles from './styles';
 
 interface IWorkSpaceProp {
-	// TODO: waiting for the RootStackParamList https://reactnavigation.org/docs/typescript/#type-checking-screens
-	navigation: StackNavigationProp<any, 'WorkspaceView'>;
+	navigation: CompositeNavigationProp<
+		StackNavigationProp<OutsideParamList, 'WorkspaceView'>,
+		StackNavigationProp<OutsideModalParamList>
+	>;
 	theme: string;
 	Site_Name: string;
 	Site_Url: string;
