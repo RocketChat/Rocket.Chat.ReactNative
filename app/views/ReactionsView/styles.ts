@@ -39,5 +39,20 @@ export default StyleSheet.create({
 	userTitle: {
 		marginLeft: 10,
 		fontSize: 15
+	},
+	activeTabLine: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		height: 2,
+		bottom: 0
+	},
+	tabLine: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		height: 2,
+		backgroundColor: 'rgba(0,0,0,0.05)',
+		bottom: 0
 	}
 });

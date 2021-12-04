@@ -650,10 +650,15 @@ class RoomView extends React.Component {
 	};
 
 	onReactionLongPress = message => {
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		const options = {
 			reactions: message.reactions || []
 		};
+		const screen = { screen: 'ReactionsView', params: options };
+		if (isMasterDetail) {
+			screen.showCloseModal = true;
+			navigation.navigate('ModalStackNavigator', screen);
+		}
 		navigation.navigate('ReactionsView', options);
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
