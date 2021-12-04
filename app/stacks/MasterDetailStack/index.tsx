@@ -237,7 +237,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={E2EEncryptionSecurityView}
 					options={E2EEncryptionSecurityView.navigationOptions}
 				/>
-				<ModalStack.Screen name='ReactionsView' component={ReactionsView} options={ReactionsView.navigationOptions} />
+				<ModalStack.Screen name='ReactionsView' component={ReactionsView} />
 			</ModalStack.Navigator>
 		</ModalContainer>
 	);
