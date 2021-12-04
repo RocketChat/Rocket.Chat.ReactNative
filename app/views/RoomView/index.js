@@ -656,7 +656,7 @@ class RoomView extends React.Component {
 		};
 		const screen = { screen: 'ReactionsView', params: options };
 		if (isMasterDetail) {
-			screen.showCloseModal = true;
+			screen.params.showCloseModal = true;
 			navigation.navigate('ModalStackNavigator', screen);
 		}
 		navigation.navigate('ReactionsView', options);
