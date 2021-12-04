@@ -9,6 +9,7 @@ import * as HeaderButton from '../containers/HeaderButton';
 import Markdown from '../containers/markdown';
 import { withTheme } from '../theme';
 import I18n from '../i18n';
+import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
 
 const styles = StyleSheet.create({
 	container: {
@@ -23,8 +24,8 @@ const styles = StyleSheet.create({
 });
 
 interface INavigation {
-	navigation: StackNavigationProp<any, 'E2EHowItWorksView'>;
-	route: RouteProp<{ E2EHowItWorksView: { showCloseModal: boolean } }, 'E2EHowItWorksView'>;
+	navigation: StackNavigationProp<E2ESaveYourPasswordStackParamList, 'E2EHowItWorksView'>;
+	route: RouteProp<E2ESaveYourPasswordStackParamList, 'E2EHowItWorksView'>;
 }
 
 interface IE2EHowItWorksViewProps extends INavigation {
