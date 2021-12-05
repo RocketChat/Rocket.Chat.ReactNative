@@ -1,6 +1,7 @@
 import React from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import { StackNavigationOptions } from '@react-navigation/stack';
+
+import { TOptions } from './definitions/navigationTypes';
 
 interface IThemeContextProps {
 	theme: string;
@@ -10,10 +11,6 @@ interface IThemeContextProps {
 	};
 	setTheme?: (newTheme?: {}) => void;
 }
-
-type TOptions = {
-	navigationOptions?: StackNavigationOptions;
-};
 
 export const ThemeContext = React.createContext<IThemeContextProps>({ theme: 'light' });
 

@@ -1,10 +1,15 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
-import { IRoom } from './definitions/IRoom';
-import { IServer } from './definitions/IServer';
-import { IAttachment } from './definitions/IAttachment';
-import { MasterDetailInsideStackParamList } from './stacks/MasterDetailStack/types';
-import { OutsideParamList, InsideStackParamList } from './stacks/types';
+import { IRoom } from './IRoom';
+import { IServer } from './IServer';
+import { IAttachment } from './IAttachment';
+import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
+import { OutsideParamList, InsideStackParamList } from '../stacks/types';
+
+export type TOptions = {
+	navigationOptions?: StackNavigationOptions;
+};
 
 export type SetUsernameStackParamList = {
 	SetUsernameView: {

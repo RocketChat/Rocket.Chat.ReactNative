@@ -2,6 +2,8 @@ import React from 'react';
 import { Dimensions } from 'react-native';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
+import { TOptions } from './definitions/navigationTypes';
+
 export interface IDimensionsContextProps {
 	width: number;
 	height?: number;
@@ -22,10 +24,11 @@ export interface IDimensionsContextProps {
 
 export const DimensionsContext = React.createContext<Partial<IDimensionsContextProps>>(Dimensions.get('window'));
 
-export function withDimensions(Component: any): any {
+export function withDimensions<T extends object>(Component: React.ComponentType<T> & TOptions): typeof Component {
 	const DimensionsComponent = (props: any) => (
 		<DimensionsContext.Consumer>{contexts => <Component {...props} {...contexts} />}</DimensionsContext.Consumer>
 	);
+	DimensionsComponent.navigationOptions = Component.navigationOptions;
 	hoistNonReactStatics(DimensionsComponent, Component);
 	return DimensionsComponent;
 }

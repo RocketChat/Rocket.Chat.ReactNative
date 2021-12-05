@@ -9,7 +9,7 @@ import { ICON_SIZE } from './constants';
 interface IListIcon {
 	theme?: string;
 	name: string;
-	color: string;
+	color?: string;
 	style?: ViewStyle;
 	testID?: string;
 }
