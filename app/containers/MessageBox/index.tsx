@@ -181,7 +181,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			showCommandPreview: false,
 			command: {},
 			tshow: false,
-			mentionLoading: false
+			mentionLoading: false,
+			permissionToUpload: true
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -268,7 +269,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps: any) {
-		const { isFocused, editing, replying, sharing, usedCannedResponse } = this.props;
+		const { isFocused, editing, replying, sharing, usedCannedResponse, uploadFilePermission } = this.props;
 		if (!isFocused?.()) {
 			return;
 		}
@@ -297,7 +298,17 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	shouldComponentUpdate(nextProps: IMessageBoxProps, nextState: IMessageBoxState) {
-		const { showEmojiKeyboard, showSend, recording, mentions, commandPreview, tshow, mentionLoading, trackingType } = this.state;
+		const {
+			showEmojiKeyboard,
+			showSend,
+			recording,
+			mentions,
+			commandPreview,
+			tshow,
+			mentionLoading,
+			trackingType,
+			permissionToUpload
+		} = this.state;
 
 		const { roomType, replying, editing, isFocused, message, theme, usedCannedResponse, uploadFilePermission } = this.props;
 		if (nextProps.theme !== theme) {
@@ -331,6 +342,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return true;
 		}
 		if (nextState.tshow !== tshow) {
+			return true;
+		}
+		if (nextState.permissionToUpload !== permissionToUpload) {
 			return true;
 		}
 		if (!dequal(nextState.mentions, mentions)) {
@@ -418,6 +432,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					onPress: this.chooseFile
 				}
 			);
+			this.setState({ permissionToUpload: true });
+		} else {
+			this.setState({ permissionToUpload: false });
 		}
 
 		// MessageBox Actions
@@ -995,8 +1012,17 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	renderContent = () => {
-		const { recording, showEmojiKeyboard, showSend, mentions, trackingType, commandPreview, showCommandPreview, mentionLoading } =
-			this.state;
+		const {
+			recording,
+			showEmojiKeyboard,
+			showSend,
+			mentions,
+			trackingType,
+			commandPreview,
+			showCommandPreview,
+			mentionLoading,
+			permissionToUpload
+		} = this.state;
 		const {
 			editing,
 			message,
@@ -1022,7 +1048,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		const recordAudio =
 			showSend || !Message_AudioRecorderEnabled ? null : (
-				<RecordAudio theme={theme} recordingCallback={this.recordingCallback} onFinish={this.finishAudioMessage} />
+				<RecordAudio
+					theme={theme}
+					recordingCallback={this.recordingCallback}
+					onFinish={this.finishAudioMessage}
+					permissionToUpload={permissionToUpload}
+				/>
 			);
 
 		const commandsPreviewAndMentions = !recording ? (

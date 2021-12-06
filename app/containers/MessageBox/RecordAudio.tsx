@@ -192,9 +192,11 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 	};
 
 	render() {
-		const { theme } = this.props;
+		const { theme, permissionToUpload } = this.props;
 		const { isRecording, isRecorderActive } = this.state;
-
+		if (!permissionToUpload) {
+			return null;
+		}
 		if (!isRecording && !isRecorderActive) {
 			return (
 				<BorderlessButton
