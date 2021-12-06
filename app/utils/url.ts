@@ -1,4 +1,4 @@
-export const isValidURL = url => {
+export const isValidURL = (url: string): boolean => {
 	const pattern = new RegExp(
 		'^(https?:\\/\\/)?' + // protocol
 			'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -12,4 +12,4 @@ export const isValidURL = url => {
 };
 
 // Use useSsl: false only if server url starts with http://
-export const useSsl = url => !/http:\/\//.test(url);
+export const useSsl = (url: string): boolean => !/http:\/\//.test(url);

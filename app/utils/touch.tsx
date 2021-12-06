@@ -1,19 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 
 import { themes } from '../constants/colors';
 
-class Touch extends React.Component {
-	setNativeProps(props) {
+interface ITouchProps extends RectButtonProps {
+	children: React.ReactNode;
+	theme: string;
+	accessibilityLabel?: string;
+	testID?: string;
+}
+
+class Touch extends React.Component<ITouchProps> {
+	private ref: any;
+
+	setNativeProps(props: ITouchProps): void {
 		this.ref.setNativeProps(props);
 	}
 
-	getRef = ref => {
+	getRef = (ref: RectButton): void => {
 		this.ref = ref;
 	};
 
-	render() {
+	render(): JSX.Element {
 		const { children, onPress, theme, underlayColor, ...props } = this.props;
 
 		return (
@@ -29,12 +37,5 @@ class Touch extends React.Component {
 		);
 	}
 }
-
-Touch.propTypes = {
-	children: PropTypes.node,
-	onPress: PropTypes.func,
-	theme: PropTypes.string,
-	underlayColor: PropTypes.string
-};
 
 export default Touch;
