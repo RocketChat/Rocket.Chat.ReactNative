@@ -176,6 +176,10 @@ export type ModalStackParamList = {
 	UserNotificationPrefView: undefined;
 	SecurityPrivacyView: undefined;
 	E2EEncryptionSecurityView: undefined;
+	ReactionsView: {
+		showCloseModal: boolean | undefined;
+		reactions: [];
+	};
 };
 
 export type MasterDetailInsideStackParamList = {

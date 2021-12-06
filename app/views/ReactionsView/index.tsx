@@ -72,7 +72,6 @@ class ReactionsView extends React.PureComponent<IReactionsViewProps> {
 	setHeader = () => {
 		const { navigation, route } = this.props;
 		const showCloseModal = route.params?.showCloseModal;
-		console.debug({ showCloseModal });
 		navigation.setOptions({
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined,
 			title: I18n.t('Reactions')
@@ -113,6 +112,10 @@ class ReactionsView extends React.PureComponent<IReactionsViewProps> {
 			<View style={[sharedStyles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 				<SafeAreaView testID='reactions-view'>
 					<ScrollableTabView
+						contentProps={{
+							keyboardShouldPersistTaps: 'always',
+							keyboardDismissMode: 'none'
+						}}
 						renderTabBar={() => (
 							<ScrollableTabBar
 								underlineStyle={{ backgroundColor: themes[theme].auxiliaryTintColor }}

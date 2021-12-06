@@ -51,5 +51,8 @@ export default StyleSheet.create({
 		height: 2,
 		backgroundColor: 'rgba(0,0,0,0.05)',
 		bottom: 0
+	},
+	textBold: {
+		fontWeight: 'bold'
 	}
 });

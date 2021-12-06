@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
 import UserItem from '../../presentation/UserItem';
+import * as List from '../../containers/List';
 
 interface ITabPageProps {
 	reaction: any;
@@ -30,7 +31,14 @@ class TabPage extends React.PureComponent<ITabPageProps> {
 			username: u,
 			name: names[i]
 		}));
-		return <FlatList data={users} keyExtractor={item => `row-${item.username}`} renderItem={this.renderItem} />;
+		return (
+			<FlatList
+				data={users}
+				ItemSeparatorComponent={List.Separator}
+				keyExtractor={item => `row-${item.username}`}
+				renderItem={this.renderItem}
+			/>
+		);
 	};
 }
 

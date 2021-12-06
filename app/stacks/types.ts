@@ -143,6 +143,10 @@ export type ChatsStackParamList = {
 		};
 		room: IRoom;
 	};
+	ReactionsView: {
+		showCloseModal: boolean | undefined;
+		reactions: [];
+	};
 };
 
 export type ProfileStackParamList = {
