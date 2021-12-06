@@ -405,10 +405,15 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	setOptions = async () => {
 		const { uploadFilePermission, rid } = this.props;
-		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission], rid);
 
-		// uploadFilePermission as undefined is considered that there isn't this permission, so all can upload file.
-		this.setState({ permissionToUpload: permissionToUpload[0] || !uploadFilePermission });
+		// Servers older than 4.2
+		if (!uploadFilePermission) {
+			this.setState({ permissionToUpload: true });
+			return;
+		}
+
+		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission], rid);
+		this.setState({ permissionToUpload: permissionToUpload[0] });
 	};
 
 	onChangeText: any = (text: string): void => {
