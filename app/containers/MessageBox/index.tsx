@@ -407,45 +407,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const { uploadFilePermission, rid } = this.props;
 		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission], rid);
 
-		const uploadActionsArray = [];
 		// uploadFilePermission as undefined is considered that there isn't this permission, so all can upload file.
-		if (permissionToUpload[0] || !uploadFilePermission) {
-			uploadActionsArray.push(
-				{
-					title: I18n.t('Take_a_photo'),
-					icon: 'camera-photo',
-					onPress: this.takePhoto
-				},
-				{
-					title: I18n.t('Take_a_video'),
-					icon: 'camera',
-					onPress: this.takeVideo
-				},
-				{
-					title: I18n.t('Choose_from_library'),
-					icon: 'image',
-					onPress: this.chooseFromLibrary
-				},
-				{
-					title: I18n.t('Choose_file'),
-					icon: 'attach',
-					onPress: this.chooseFile
-				}
-			);
-			this.setState({ permissionToUpload: true });
-		} else {
-			this.setState({ permissionToUpload: false });
-		}
-
-		// MessageBox Actions
-		this.options = [
-			...uploadActionsArray,
-			{
-				title: I18n.t('Create_Discussion'),
-				icon: 'discussions',
-				onPress: this.createDiscussion
-			}
-		];
+		this.setState({ permissionToUpload: permissionToUpload[0] || !uploadFilePermission });
 	};
 
 	onChangeText: any = (text: string): void => {
@@ -810,8 +773,41 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	showMessageBoxActions = () => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
+		const { permissionToUpload } = this.state;
 		const { showActionSheet } = this.props;
-		showActionSheet({ options: this.options });
+
+		const options = [];
+		if (permissionToUpload) {
+			options.push(
+				{
+					title: I18n.t('Take_a_photo'),
+					icon: 'camera-photo',
+					onPress: this.takePhoto
+				},
+				{
+					title: I18n.t('Take_a_video'),
+					icon: 'camera',
+					onPress: this.takeVideo
+				},
+				{
+					title: I18n.t('Choose_from_library'),
+					icon: 'image',
+					onPress: this.chooseFromLibrary
+				},
+				{
+					title: I18n.t('Choose_file'),
+					icon: 'attach',
+					onPress: this.chooseFile
+				}
+			);
+		}
+
+		options.push({
+			title: I18n.t('Create_Discussion'),
+			icon: 'discussions',
+			onPress: this.createDiscussion
+		});
+		showActionSheet({ options });
 	};
 
 	editCancel = () => {
