@@ -126,6 +126,7 @@ interface IMessageBoxState {
 	};
 	tshow: boolean;
 	mentionLoading: boolean;
+	permissionToUpload: boolean;
 }
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
@@ -269,7 +270,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps: any) {
-		const { isFocused, editing, replying, sharing, usedCannedResponse, uploadFilePermission } = this.props;
+		const { isFocused, editing, replying, sharing, usedCannedResponse } = this.props;
 		if (!isFocused?.()) {
 			return;
 		}

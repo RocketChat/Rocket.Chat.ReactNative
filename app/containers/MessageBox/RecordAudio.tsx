@@ -13,6 +13,7 @@ import { events, logEvent } from '../../utils/log';
 
 interface IMessageBoxRecordAudioProps {
 	theme: string;
+	permissionToUpload: boolean;
 	recordingCallback: Function;
 	onFinish: Function;
 }
