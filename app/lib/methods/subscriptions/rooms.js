@@ -8,7 +8,6 @@ import messagesStatus from '../../../constants/messagesStatus';
 import log from '../../../utils/log';
 import random from '../../../utils/random';
 import store from '../../createStore';
-import { roomsRequest } from '../../../actions/rooms';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
