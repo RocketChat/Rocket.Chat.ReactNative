@@ -26,6 +26,7 @@ import { getHeaderHeight } from '../containers/Header';
 import StatusBar from '../containers/StatusBar';
 import { InsideStackParamList } from '../stacks/types';
 import { IAttachment } from '../definitions/IAttachment';
+import RocketChat from '../lib/rocketchat';
 
 const styles = StyleSheet.create({
 	container: {
@@ -51,6 +52,7 @@ interface IAttachmentViewProps {
 		token: string;
 	};
 	Allow_Save_Media_to_Gallery: boolean;
+	downloadFilePermission: string[];
 }
 
 class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentViewState> {
@@ -79,9 +81,25 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 		}
 	}
 
-	setHeader = () => {
-		const { route, navigation, theme, Allow_Save_Media_to_Gallery } = this.props;
+	canSaveToGallery = async () => {
+		const { Allow_Save_Media_to_Gallery, downloadFilePermission, rid } = this.props;
+		if (!Allow_Save_Media_to_Gallery) {
+			return false;
+		}
+
+		// Servers older than 4.2
+		if (!downloadFilePermission) {
+			return true;
+		}
+
+		const permissionToDownload = await RocketChat.hasPermission([downloadFilePermission]);
+		return permissionToDownload[0];
+	};
+
+	setHeader = async () => {
+		const { route, navigation, theme } = this.props;
 		const attachment = route.params?.attachment;
+		const canSaveToGallery = await this.canSaveToGallery();
 		let { title } = attachment;
 		try {
 			title = decodeURI(title);
@@ -91,8 +109,7 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 		const options = {
 			title,
 			headerLeft: () => <HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} />,
-			headerRight: () =>
-				Allow_Save_Media_to_Gallery ? <HeaderButton.Download testID='save-image' onPress={this.handleSave} /> : null,
+			headerRight: () => (canSaveToGallery ? <HeaderButton.Download testID='save-image' onPress={this.handleSave} /> : null),
 			headerBackground: () => <View style={{ flex: 1, backgroundColor: themes[theme].previewBackground }} />,
 			headerTintColor: themes[theme].previewTintColor,
 			headerTitleStyle: { color: themes[theme].previewTintColor, marginHorizontal: 10 }
@@ -193,7 +210,8 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 const mapStateToProps = (state: any) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
-	Allow_Save_Media_to_Gallery: state.settings.Allow_Save_Media_to_Gallery ?? true
+	Allow_Save_Media_to_Gallery: state.settings.Allow_Save_Media_to_Gallery ?? true,
+	downloadFilePermission: state.permissions['mobile-download-file']
 });
 
 export default connect(mapStateToProps)(withTheme(withDimensions(withSafeAreaInsets(AttachmentView))));
