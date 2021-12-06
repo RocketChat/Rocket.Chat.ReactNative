@@ -20,7 +20,6 @@ import { E2E_MESSAGE_TYPE } from '../../encryption/constants';
 
 const removeListener = listener => listener.stop();
 
-let connectedListener;
 let streamListener;
 let subServer;
 let queue = {};
@@ -382,10 +381,6 @@ export default function subscribeRooms() {
 	});
 
 	const stop = () => {
-		if (connectedListener) {
-			connectedListener.then(removeListener);
-			connectedListener = false;
-		}
 		if (streamListener) {
 			streamListener.then(removeListener);
 			streamListener = false;
