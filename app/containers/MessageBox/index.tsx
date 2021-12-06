@@ -268,7 +268,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps: any) {
-		const { isFocused, editing, replying, sharing, usedCannedResponse, uploadFilePermission } = this.props;
+		const { isFocused, editing, replying, sharing, usedCannedResponse } = this.props;
 		if (!isFocused?.()) {
 			return;
 		}
@@ -293,9 +293,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (this.trackingTimeout) {
 			clearTimeout(this.trackingTimeout);
 			this.trackingTimeout = false;
-		}
-		if (!dequal(nextProps.uploadFilePermission, uploadFilePermission)) {
-			this.setOptions();
 		}
 	}
 
@@ -354,6 +351,13 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		return false;
 	}
 
+	componentDidUpdate(prevProps: IMessageBoxProps) {
+		const { uploadFilePermission } = this.props;
+		if (!dequal(prevProps.uploadFilePermission, uploadFilePermission)) {
+			this.setOptions();
+		}
+	}
+
 	componentWillUnmount() {
 		console.countReset(`${this.constructor.name}.render calls`);
 		if (this.onChangeText && this.onChangeText.stop) {
@@ -386,8 +390,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 
 	setOptions = async () => {
-		const { uploadFilePermission } = this.props;
-		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission]);
+		const { uploadFilePermission, rid } = this.props;
+		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission], rid);
 
 		const uploadActionsArray = [];
 		// uploadFilePermission as undefined is considered that there isn't this permission, so all can upload file.
