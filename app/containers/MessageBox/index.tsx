@@ -1148,4 +1148,4 @@ const dispatchToProps = {
 	typing: (rid: any, status: any) => userTypingAction(rid, status)
 };
 // @ts-ignore
-export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox));
+export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox)) as any;

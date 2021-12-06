@@ -17,6 +17,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import log, { events, logEvent } from '../../utils/log';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
+import { ChatsStackParamList } from '../../stacks/types';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -26,16 +27,8 @@ const styles = StyleSheet.create({
 });
 
 interface INotificationPreferencesView {
-	navigation: StackNavigationProp<any, 'NotificationPreferencesView'>;
-	route: RouteProp<
-		{
-			NotificationPreferencesView: {
-				rid: string;
-				room: Model;
-			};
-		},
-		'NotificationPreferencesView'
-	>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>;
+	route: RouteProp<ChatsStackParamList, 'NotificationPrefView'>;
 	theme: string;
 }
 
