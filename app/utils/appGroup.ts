@@ -4,7 +4,7 @@ import { isIOS } from './deviceInfo';
 
 const { AppGroup } = NativeModules;
 
-const appGroup = {
+const appGroup: { path: string } = {
 	path: isIOS ? AppGroup.path : ''
 };
 

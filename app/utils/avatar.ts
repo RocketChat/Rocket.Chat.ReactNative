@@ -1,21 +1,35 @@
 import { compareServerVersion, methods } from '../lib/utils';
+import { RoomType } from '../definitions/IRoom';
 
-const formatUrl = (url, size, query) => `${url}?format=png&size=${size}${query}`;
+const formatUrl = (url: string, size: number, query: string) => `${url}?format=png&size=${size}${query}`;
+
+interface IAvatarURL {
+	type: string;
+	text: string;
+	size?: number;
+	user: { id: string; token: string };
+	avatar?: string;
+	server: string;
+	avatarETag: string;
+	rid?: string;
+	blockUnauthenticatedAccess: boolean;
+	serverVersion: string;
+}
 
 export const avatarURL = ({
 	type,
 	text,
 	size = 25,
-	user = {},
+	user,
 	avatar,
 	server,
 	avatarETag,
 	rid,
 	blockUnauthenticatedAccess,
 	serverVersion
-}) => {
+}: IAvatarURL): string => {
 	let room;
-	if (type === 'd') {
+	if (type === RoomType.DIRECT) {
 		room = text;
 	} else if (rid && !compareServerVersion(serverVersion, '3.6.0', methods.lowerThan)) {
 		room = `room/${rid}`;
