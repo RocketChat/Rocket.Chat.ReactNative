@@ -81,4 +81,4 @@ const mapStateToProps = (state: any) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(ReactionPicker));
+export default connect(mapStateToProps)(withTheme(ReactionPicker)) as any;

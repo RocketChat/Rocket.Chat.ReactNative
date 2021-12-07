@@ -46,6 +46,7 @@ interface IRoomListContainerProps {
 	navigation: any; // TODO - change this after merge with navigation ts;
 	showMessageInMainThread: boolean;
 	serverVersion: string;
+	t?: string; // TODO - verify if this props exist
 }
 
 class ListContainer extends React.Component<IRoomListContainerProps, any> {

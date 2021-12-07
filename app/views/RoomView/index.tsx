@@ -140,7 +140,7 @@ interface IRoomItem {
 	id?: string;
 	tmid?: string;
 	tmsg?: string;
-	t?: RoomType;
+	t?: any;
 	e2e?: string;
 	tlm?: string;
 	rid?: string;
@@ -732,7 +732,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 				rid: item.drid,
 				prid: item.rid,
 				name: item.msg,
-				t: 'p'
+				t: RoomType.GROUP
 			});
 		},
 		1000,
@@ -907,7 +907,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	getBadgeColor = (messageId: string) => {
+	getBadgeColor = (messageId?: string) => {
 		const { room } = this.state;
 		const { theme } = this.props;
 		return getBadgeColor({ subscription: room, theme, messageId });
@@ -948,7 +948,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 				rid: this.rid,
 				tmid: item.tmid,
 				name,
-				t: 'thread',
+				t: RoomType.THREAD,
 				roomUserId,
 				jumpToMessageId: item.id
 			});
@@ -959,7 +959,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 				rid: this.rid,
 				tmid: item.id,
 				name: makeThreadName(item),
-				t: 'thread',
+				t: RoomType.THREAD,
 				roomUserId
 			});
 		}
