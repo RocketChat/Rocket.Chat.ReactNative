@@ -1,14 +1,11 @@
+import { RouteProp } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import { NewMessageStackParamList } from '../../stacks/types';
+
 export interface ICreateChannelViewProps {
-	navigation: any;
-	route: {
-		params?: {
-			channel: string;
-			message: {
-				msg: string;
-			};
-			showCloseModal: boolean;
-		};
-	};
+	navigation: StackNavigationProp<NewMessageStackParamList, 'CreateDiscussionView'>;
+	route: RouteProp<NewMessageStackParamList, 'CreateDiscussionView'>;
 	server: string;
 	user: {
 		id: string;

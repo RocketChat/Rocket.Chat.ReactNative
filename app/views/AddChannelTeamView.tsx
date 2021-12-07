@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import { CompositeNavigationProp } from '@react-navigation/core';
 
 import * as List from '../containers/List';
 import StatusBar from '../containers/StatusBar';
@@ -9,16 +10,24 @@ import { useTheme } from '../theme';
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
-
-type TNavigation = StackNavigationProp<any, 'AddChannelTeamView'>;
+import { ChatsStackParamList, DrawerParamList, NewMessageStackParamList } from '../stacks/types';
 
 interface IAddChannelTeamView {
-	route: RouteProp<{ AddChannelTeamView: { teamId: string; teamChannels: object[] } }, 'AddChannelTeamView'>;
-	navigation: TNavigation;
+	navigation: CompositeNavigationProp<
+		StackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>,
+		CompositeNavigationProp<StackNavigationProp<NewMessageStackParamList>, StackNavigationProp<DrawerParamList>>
+	>;
+	route: RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;
 	isMasterDetail: boolean;
 }
 
-const setHeader = (navigation: TNavigation, isMasterDetail: boolean) => {
+const setHeader = ({
+	navigation,
+	isMasterDetail
+}: {
+	navigation: StackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>;
+	isMasterDetail: boolean;
+}) => {
 	const options: StackNavigationOptions = {
 		headerTitle: I18n.t('Add_Channel_to_Team')
 	};
@@ -35,7 +44,7 @@ const AddChannelTeamView = ({ navigation, route, isMasterDetail }: IAddChannelTe
 	const { theme } = useTheme();
 
 	useEffect(() => {
-		setHeader(navigation, isMasterDetail);
+		setHeader({ navigation, isMasterDetail });
 	}, []);
 
 	return (

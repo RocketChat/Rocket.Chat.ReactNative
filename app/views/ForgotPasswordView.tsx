@@ -14,6 +14,7 @@ import { themes } from '../constants/colors';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
+import { OutsideParamList } from '../stacks/types';
 
 interface IForgotPasswordViewState {
 	email: string;
@@ -22,8 +23,8 @@ interface IForgotPasswordViewState {
 }
 
 interface IForgotPasswordViewProps {
-	navigation: StackNavigationProp<any, 'ForgotPasswordView'>;
-	route: RouteProp<{ ForgotPasswordView: { title: string } }, 'ForgotPasswordView'>;
+	navigation: StackNavigationProp<OutsideParamList, 'ForgotPasswordView'>;
+	route: RouteProp<OutsideParamList, 'ForgotPasswordView'>;
 	theme: string;
 }
 

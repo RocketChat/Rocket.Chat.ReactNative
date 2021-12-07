@@ -18,6 +18,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/Navigation';
 import SidebarItem from './SidebarItem';
 import styles from './styles';
+import { DrawerParamList } from '../../stacks/types';
 
 interface ISeparatorProps {
 	theme: string;
@@ -34,8 +35,8 @@ interface ISidebarState {
 
 interface ISidebarProps {
 	baseUrl: string;
-	navigation: DrawerNavigationProp<any, 'Sidebar'>;
-	state: DrawerNavigationState<any>;
+	navigation: DrawerNavigationProp<DrawerParamList>;
+	state: DrawerNavigationState<DrawerParamList>;
 	Site_Name: string;
 	user: {
 		statusText: string;
@@ -305,4 +306,4 @@ const mapStateToProps = (state: any) => ({
 	viewPrivilegedSettingPermission: state.permissions['view-privileged-setting']
 });
 
-export default connect(mapStateToProps)(withTheme(Sidebar));
+export default connect(mapStateToProps)(withTheme(Sidebar)) as any;

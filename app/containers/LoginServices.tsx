@@ -423,4 +423,4 @@ const mapStateToProps = (state: any) => ({
 	services: state.login.services
 });
 
-export default connect(mapStateToProps)(withTheme(LoginServices));
+export default connect(mapStateToProps)(withTheme(LoginServices)) as any;
