@@ -132,9 +132,6 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 
 	componentWillUnmount() {
 		this.unsubscribeMessages();
-		// if (this.onEndReached && this.onEndReached.stop) {
-		// 	this.onEndReached.stop();
-		// }
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
 		}
