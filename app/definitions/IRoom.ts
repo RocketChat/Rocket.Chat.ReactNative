@@ -24,5 +24,6 @@ export interface IRoom extends IRocketChatRecord {
 	autoTranslateLanguage?: boolean;
 	autoTranslate?: boolean;
 	observe?: Function;
-	usedCannedResponse: string;
+	usedCannedResponse?: string;
+	bannerClosed?: boolean;
 }

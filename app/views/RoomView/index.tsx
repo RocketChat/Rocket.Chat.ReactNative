@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, InteractionManager, Text, View } from 'react-native';
+import { InteractionManager, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import moment from 'moment';
@@ -66,9 +66,8 @@ import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
 import List from './List';
 import { ChatsStackParamList } from '../../stacks/types';
-import { RoomType } from '../../definitions/IRoom';
+import { IRoom, RoomType } from '../../definitions/IRoom';
 import { IAttachment } from '../../definitions/IAttachment';
-import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -125,7 +124,7 @@ interface IRoomViewProps {
 	Hide_System_Messages: [];
 	baseUrl: string;
 	serverVersion: string;
-	customEmojis: object;
+	customEmojis: [key: string];
 	isMasterDetail: boolean;
 	theme: string;
 	replyBroadcast: Function;
@@ -158,8 +157,8 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 	private jumpToThreadId?: string;
 	private messagebox: React.RefObject<typeof MessageBox>;
 	private list: React.RefObject<List>;
-	private joinCode: React.RefObject<typeof JoinCode>;
-	private flatList: React.RefObject<FlatList>;
+	private joinCode?: React.ForwardedRef<typeof JoinCode>;
+	private flatList: any;
 	private mounted: boolean;
 	private sub?: RoomClass;
 	private offset?: number;
@@ -718,7 +717,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		logEvent(events.ROOM_ENCRYPTED_PRESS);
 		const { navigation, isMasterDetail } = this.props;
 
-		const screen: ModalStackParamList = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
+		const screen: any = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
 
 		if (isMasterDetail) {
 			return navigation.navigate('ModalStackNavigator', screen);
@@ -748,16 +747,16 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 			.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(this.rid)))
 			.observeWithColumns(['unread']);
 
-		this.queryUnreads = observable.subscribe(data => {
+		this.queryUnreads = observable.subscribe((data: any) => {
 			const { unreadsCount } = this.state;
-			const newUnreadsCount = data.filter(s => s.unread > 0).reduce((a, b) => a + (b.unread || 0), 0);
+			const newUnreadsCount = data.filter((s: any) => s.unread > 0).reduce((a: any, b: any) => a + (b.unread || 0), 0);
 			if (unreadsCount !== newUnreadsCount) {
 				this.setState({ unreadsCount: newUnreadsCount }, () => this.setHeader());
 			}
 		});
 	};
 
-	onThreadPress = debounce(item => this.navToThread(item), 1000, true);
+	onThreadPress = debounce((item: IRoomItem) => this.navToThread(item), 1000, true);
 
 	shouldNavigateToRoom = (message: { tmid: string; rid: string }) => {
 		if (message.tmid && message.tmid === this.tmid) {
@@ -841,6 +840,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		if (!this.mounted) {
 			return;
 		}
+		// @ts-ignore
 		this.setState(...args);
 	};
 
@@ -884,7 +884,8 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 			} else {
 				const { joinCodeRequired } = room;
 				if (joinCodeRequired) {
-					this.joinCode.current?.show();
+					// @ts-ignore
+					this.joinCode?.current?.show();
 				} else {
 					await RocketChat.joinRoom(this.rid, null, this.t);
 					this.onJoin();
@@ -1024,7 +1025,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		try {
 			const db = database.active;
 			await db.action(async () => {
-				await room.update(r => {
+				await room.update((r: IRoom) => {
 					r.bannerClosed = true;
 				});
 			});

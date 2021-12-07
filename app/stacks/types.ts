@@ -11,7 +11,7 @@ import { ModalStackParamList } from './MasterDetailStack/types';
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
-	// E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
+	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	RoomsListView: undefined;
 	RoomView: {
 		rid: string;
