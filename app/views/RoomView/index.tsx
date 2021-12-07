@@ -132,22 +132,22 @@ interface IRoomViewProps {
 	width: number;
 	height: number;
 	insets: {
-		left: boolean;
-		right: boolean;
+		left: number;
+		right: number;
 	};
 }
 
 interface IRoomItem {
-	id: string;
-	tmid: string;
-	tmsg: string;
-	t: RoomType;
-	e2e: string;
-	tlm: string;
-	rid: string;
-	ts: Date;
-	status: any;
-	u: { _id: string };
+	id?: string;
+	tmid?: string;
+	tmsg?: string;
+	t?: RoomType;
+	e2e?: string;
+	tlm?: string;
+	rid?: string;
+	ts?: Date;
+	status?: any;
+	u?: { _id: string };
 }
 
 class RoomView extends React.Component<IRoomViewProps, any> {
@@ -189,7 +189,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		const name = props.route.params?.name;
 		const fname = props.route.params?.fname;
 		const prid = props.route.params?.prid;
-		const room = props.route.params?.room ?? {
+		const room: any = props.route.params?.room ?? {
 			rid: this.rid,
 			t: this.t,
 			name,
@@ -727,7 +727,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 	};
 
 	onDiscussionPress = debounce(
-		item => {
+		(item: any) => {
 			const { navigation } = this.props;
 			navigation.push('RoomView', {
 				rid: item.drid,
@@ -785,10 +785,10 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	jumpToMessage = async (messageId: string) => {
+	jumpToMessage = async (messageId?: string) => {
 		try {
 			this.setState({ showingBlockingLoader: true });
-			const message = await RoomServices.getMessageInfo(messageId);
+			const message = await RoomServices.getMessageInfo(messageId!);
 
 			if (!message) {
 				return;
@@ -895,7 +895,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	getThreadName = (tmid: string, messageId: string) => getThreadName(this.rid, tmid, messageId);
+	getThreadName = (tmid: string, messageId?: string) => getThreadName(this.rid, tmid, messageId);
 
 	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
 		try {
