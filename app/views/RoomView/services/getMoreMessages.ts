@@ -5,8 +5,17 @@ import {
 } from '../../../constants/messageTypeLoad';
 import RocketChat from '../../../lib/rocketchat';
 
-// TODO - after merge navigation ts
-const getMoreMessages = ({ rid, t, tmid, loaderItem }: any) => {
+interface IGetMoreMessages {
+	rid: string;
+	t?: string;
+	tmid?: string;
+	loaderItem: {
+		t: string;
+		ts: Date;
+	};
+}
+
+const getMoreMessages = ({ rid, t, tmid, loaderItem }: IGetMoreMessages) => {
 	if ([MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK].includes(loaderItem.t)) {
 		return RocketChat.loadMessagesForRoom({
 			rid,

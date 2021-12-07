@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 interface IRoomLoadMoreProps {
-	load(): Promise<unknown>;
+	load(): any;
 	type?: string;
 	runOnRender?: boolean;
 }

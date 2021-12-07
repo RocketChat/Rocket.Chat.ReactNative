@@ -136,12 +136,18 @@ interface IRoomViewProps {
 	};
 }
 
-interface IRoomItem {
+export interface IRoomItem {
 	id?: string;
-	t?: any;
-	ts?: Date;
+	t: any;
+	rid: string;
+	tmid?: string;
+	ts: Date;
 	status?: any;
 	u?: { _id: string };
+	loaderItem: {
+		t: string;
+		ts: Date;
+	};
 }
 
 interface INavToThread {
@@ -1043,7 +1049,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		return room?.ignored?.includes?.(message?.u?._id) ?? false;
 	};
 
-	onLoadMoreMessages = (loaderItem: any): any =>
+	onLoadMoreMessages = (loaderItem: IRoomItem) =>
 		RoomServices.getMoreMessages({
 			rid: this.rid,
 			tmid: this.tmid,
