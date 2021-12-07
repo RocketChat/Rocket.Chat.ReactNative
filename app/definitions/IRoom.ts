@@ -26,4 +26,5 @@ export interface IRoom extends IRocketChatRecord {
 	observe?: Function;
 	usedCannedResponse?: string;
 	bannerClosed?: boolean;
+	lastOpen?: Date;
 }

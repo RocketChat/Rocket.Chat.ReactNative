@@ -138,15 +138,19 @@ interface IRoomViewProps {
 
 interface IRoomItem {
 	id?: string;
-	tmid?: string;
-	tmsg?: string;
 	t?: any;
-	e2e?: string;
-	tlm?: string;
-	rid?: string;
 	ts?: Date;
 	status?: any;
 	u?: { _id: string };
+}
+
+interface INavToThread {
+	id?: string;
+	tmsg?: string;
+	t?: any;
+	e2e?: string;
+	tmid?: string;
+	tlm?: string;
 }
 
 class RoomView extends React.Component<IRoomViewProps, any> {
@@ -927,7 +931,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	navToThread = async (item: IRoomItem) => {
+	navToThread = async (item: INavToThread) => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
 
@@ -965,7 +969,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	navToRoom = async (message: IRoomItem) => {
+	navToRoom = async (message: { rid: string; id: string }) => {
 		const { navigation, isMasterDetail } = this.props;
 		const roomInfo: any = await getRoomInfo(message.rid);
 		return goRoom({
