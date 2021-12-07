@@ -2,6 +2,7 @@ import { RouteProp } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { NewMessageStackParamList } from '../../stacks/types';
+import { RoomType } from '../../definitions/IRoom';
 
 export interface ICreateChannelViewProps {
 	navigation: StackNavigationProp<NewMessageStackParamList, 'CreateDiscussionView'>;
@@ -15,7 +16,7 @@ export interface ICreateChannelViewProps {
 	loading: boolean;
 	result: {
 		rid: string;
-		t: string;
+		t: RoomType;
 		prid: string;
 	};
 	failure: boolean;

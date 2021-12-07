@@ -1,11 +1,12 @@
 import log from './log';
 
 class EventEmitter {
+	private events: { [key: string]: any };
 	constructor() {
 		this.events = {};
 	}
 
-	addEventListener(event, listener) {
+	addEventListener(event: string, listener: any) {
 		if (typeof this.events[event] !== 'object') {
 			this.events[event] = [];
 		}
@@ -13,7 +14,7 @@ class EventEmitter {
 		return listener;
 	}
 
-	removeListener(event, listener) {
+	removeListener(event: string, listener: any) {
 		if (typeof this.events[event] === 'object') {
 			const idx = this.events[event].indexOf(listener);
 			if (idx > -1) {
@@ -25,9 +26,9 @@ class EventEmitter {
 		}
 	}
 
-	emit(event, ...args) {
+	emit(event: string, ...args: any[]) {
 		if (typeof this.events[event] === 'object') {
-			this.events[event].forEach(listener => {
+			this.events[event].forEach((listener: any) => {
 				try {
 					listener.apply(this, args);
 				} catch (e) {

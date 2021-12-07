@@ -1,4 +1,10 @@
-export const canUploadFile = (file, allowList, maxFileSize) => {
+import { IAttachment } from '../views/ShareView/interfaces';
+
+export const canUploadFile = (
+	file: IAttachment,
+	allowList: string,
+	maxFileSize: number
+): { success: boolean; error?: string } => {
 	if (!(file && file.path)) {
 		return { success: true };
 	}
@@ -10,11 +16,11 @@ export const canUploadFile = (file, allowList, maxFileSize) => {
 		return { success: true };
 	}
 	const allowedMime = allowList.split(',');
-	if (allowedMime.includes(file.mime)) {
+	if (allowedMime.includes(file.mime!)) {
 		return { success: true };
 	}
 	const wildCardGlob = '/*';
-	const wildCards = allowedMime.filter(item => item.indexOf(wildCardGlob) > 0);
+	const wildCards = allowedMime.filter((item: string) => item.indexOf(wildCardGlob) > 0);
 	if (file.mime && wildCards.includes(file.mime.replace(/(\/.*)$/, wildCardGlob))) {
 		return { success: true };
 	}

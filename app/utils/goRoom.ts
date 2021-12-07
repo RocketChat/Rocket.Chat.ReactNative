@@ -1,7 +1,8 @@
+import { IRoom, RoomType } from '../definitions/IRoom';
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
 
-const navigate = ({ item, isMasterDetail, ...props }) => {
+const navigate = ({ item, isMasterDetail, ...props }: { item: IItem; isMasterDetail: boolean; navigationMethod?: any }) => {
 	let navigationMethod = props.navigationMethod ?? Navigation.navigate;
 
 	if (isMasterDetail) {
@@ -20,7 +21,22 @@ const navigate = ({ item, isMasterDetail, ...props }) => {
 	});
 };
 
-export const goRoom = async ({ item = {}, isMasterDetail = false, ...props }) => {
+interface IItem extends Partial<IRoom> {
+	rid: string;
+	name: string;
+	t: RoomType;
+}
+
+export const goRoom = async ({
+	item,
+	isMasterDetail = false,
+	...props
+}: {
+	item: IItem;
+	isMasterDetail: boolean;
+	navigationMethod?: any;
+	jumpToMessageId?: string;
+}): Promise<void> => {
 	if (item.t === 'd' && item.search) {
 		// if user is using the search we need first to join/create room
 		try {
@@ -30,8 +46,8 @@ export const goRoom = async ({ item = {}, isMasterDetail = false, ...props }) =>
 				return navigate({
 					item: {
 						rid: result.room._id,
-						name: username,
-						t: 'd'
+						name: username!,
+						t: RoomType.DIRECT
 					},
 					isMasterDetail,
 					...props

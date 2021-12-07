@@ -1,16 +1,18 @@
 import RocketChat from '../lib/rocketchat';
 import reduxStore from '../lib/createStore';
+import { IRoom } from '../definitions/IRoom';
 
-const canPostReadOnly = async ({ rid }) => {
+const canPostReadOnly = async ({ rid }: { rid: string }) => {
 	// TODO: this is not reactive. If this permission changes, the component won't be updated
 	const postReadOnlyPermission = reduxStore.getState().permissions['post-readonly'];
 	const permission = await RocketChat.hasPermission([postReadOnlyPermission], rid);
 	return permission[0];
 };
 
-const isMuted = (room, user) => room && room.muted && room.muted.find && !!room.muted.find(m => m === user.username);
+const isMuted = (room: IRoom, user: { username: any }) =>
+	room && room.muted && room.muted.find && !!room.muted.find(m => m === user.username);
 
-export const isReadOnly = async (room, user) => {
+export const isReadOnly = async (room: IRoom, user: { id?: string; username: string; token?: string }): Promise<boolean> => {
 	if (room.archived) {
 		return true;
 	}
