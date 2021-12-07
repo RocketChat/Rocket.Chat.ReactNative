@@ -6,6 +6,7 @@ import { dequal } from 'dequal';
 import { Value, event } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 import Model from '@nozbe/watermelondb/Model';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import database from '../../../lib/database';
 import RocketChat from '../../../lib/rocketchat';
@@ -18,6 +19,7 @@ import debounce from '../../../utils/debounce';
 import { compareServerVersion, methods } from '../../../lib/utils';
 import List from './List';
 import NavBottomFAB from './NavBottomFAB';
+import { ChatsStackParamList } from '../../../stacks/types';
 
 const QUERY_SIZE = 50;
 
@@ -43,7 +45,7 @@ interface IRoomListContainerProps {
 	hideSystemMessages: any[];
 	tunread: [];
 	ignored: [];
-	navigation: any; // TODO - change this after merge with navigation ts;
+	navigation: StackNavigationProp<ChatsStackParamList>;
 	showMessageInMainThread: boolean;
 	serverVersion: string;
 	t?: string; // TODO - verify if this props exist
@@ -130,9 +132,9 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 
 	componentWillUnmount() {
 		this.unsubscribeMessages();
-		if (this.onEndReached && this.onEndReached.stop) {
-			this.onEndReached.stop();
-		}
+		// if (this.onEndReached && this.onEndReached.stop) {
+		// 	this.onEndReached.stop();
+		// }
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
 		}
@@ -176,6 +178,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 				Q.experimentalTake(this.count)
 			];
 			if (!showMessageInMainThread) {
+				// @ts-ignore
 				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
 			}
 			this.messagesObservable = db.collections
@@ -196,7 +199,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 				 * hide system message is enabled
 				 */
 				if (compareServerVersion(serverVersion, '3.16.0', methods.lowerThan) || hideSystemMessages.length) {
-					messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
+					messages = messages.filter((m: { t: string }) => !m.t || !hideSystemMessages?.includes(m.t));
 				}
 
 				if (this.mounted) {
