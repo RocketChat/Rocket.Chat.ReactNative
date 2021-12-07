@@ -30,4 +30,6 @@ export interface IRoom extends IRocketChatRecord {
 	ro?: boolean;
 	muted?: string[];
 	joinCodeRequired?: boolean;
+	blocked?: boolean;
+	blocker?: boolean;
 }

@@ -1,4 +1,4 @@
-const localeKeys = {
+const localeKeys: { [key: string]: string } = {
 	en: 'en',
 	ru: 'ru',
 	'pt-BR': 'pt-br',
@@ -13,4 +13,4 @@ const localeKeys = {
 	'zh-TW': 'zh-tw'
 };
 
-export const toMomentLocale = locale => localeKeys[locale];
+export const toMomentLocale = (locale: string): string => localeKeys[locale];

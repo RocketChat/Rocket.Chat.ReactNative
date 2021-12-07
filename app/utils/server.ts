@@ -3,7 +3,7 @@
 	url = 'https://open.rocket.chat/method'
 	hostname = 'open.rocket.chat'
 */
-export const extractHostname = url => {
+export const extractHostname = (url: string): string => {
 	let hostname;
 
 	if (url.indexOf('//') > -1) {

@@ -30,6 +30,7 @@ import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
 import { isFDroidBuild } from './constants/environment';
+import { IThemePreference } from './definitions/ITheme';
 
 RNScreens.enableScreens();
 
@@ -175,7 +176,7 @@ export default class Root extends React.Component<{}, IState> {
 	setTheme = (newTheme = {}) => {
 		// change theme state
 		this.setState(
-			prevState => newThemeState(prevState, newTheme),
+			prevState => newThemeState(prevState, newTheme as IThemePreference),
 			() => {
 				const { themePreferences } = this.state;
 				// subscribe to Appearance changes

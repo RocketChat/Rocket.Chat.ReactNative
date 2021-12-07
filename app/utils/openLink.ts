@@ -14,7 +14,7 @@ const scheme = {
 	brave: 'brave:'
 };
 
-const appSchemeURL = (url, browser) => {
+const appSchemeURL = (url: string, browser: string) => {
 	let schemeUrl = url;
 	const parsedUrl = parse(url, true);
 	const { protocol } = parsedUrl;
@@ -35,7 +35,7 @@ const appSchemeURL = (url, browser) => {
 	return schemeUrl;
 };
 
-const openLink = async (url, theme = 'light') => {
+const openLink = async (url: string, theme = 'light'): Promise<void> => {
 	try {
 		const browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
 
@@ -43,11 +43,12 @@ const openLink = async (url, theme = 'light') => {
 			await WebBrowser.openBrowserAsync(url, {
 				toolbarColor: themes[theme].headerBackground,
 				controlsColor: themes[theme].headerTintColor,
-				collapseToolbar: true,
+				// https://github.com/expo/expo/pull/4923
+				enableBarCollapsing: true,
 				showTitle: true
 			});
 		} else {
-			const schemeUrl = appSchemeURL(url, browser.replace(':', ''));
+			const schemeUrl = appSchemeURL(url, browser!.replace(':', ''));
 			await Linking.openURL(schemeUrl);
 		}
 	} catch {
