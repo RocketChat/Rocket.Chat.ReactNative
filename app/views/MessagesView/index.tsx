@@ -21,6 +21,7 @@ import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import { IRoom, RoomType } from '../../definitions/IRoom';
+import { IAttachment } from '../../definitions/IAttachment';
 
 interface IMessagesViewProps {
 	user: {
@@ -296,9 +297,10 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 		return null;
 	};
 
-	showAttachment = (attachment: any) => {
+	showAttachment = (attachment: IAttachment) => {
 		const { navigation } = this.props;
-		navigation.navigate('AttachmentView', { attachment });
+		// @ts-ignore
+		navigation.navigate('AttachmentView', { attachment, rid: this.rid });
 	};
 
 	onLongPress = (message: IMessageItem) => {

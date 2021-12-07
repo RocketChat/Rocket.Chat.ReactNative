@@ -639,7 +639,7 @@ class RoomView extends React.Component {
 
 	showAttachment = attachment => {
 		const { navigation } = this.props;
-		navigation.navigate('AttachmentView', { attachment });
+		navigation.navigate('AttachmentView', { attachment, rid: this.rid });
 	};
 
 	onReactionPress = async (shortname, messageId) => {
