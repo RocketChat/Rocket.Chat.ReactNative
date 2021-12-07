@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 });
 
 interface IRoomLeftButtonsProps {
-	tmid: string;
+	tmid?: string;
 	unreadsCount: number;
 	navigation: any; // TODO - change this after merge react navigation
 	baseUrl: string;

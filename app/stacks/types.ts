@@ -25,6 +25,7 @@ export type ChatsStackParamList = {
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
 		roomUserId?: string;
+		usedCannedResponse?: boolean;
 	};
 	RoomActionsView: {
 		room: IRoom;
@@ -48,6 +49,7 @@ export type ChatsStackParamList = {
 		member: any;
 		rid: string;
 		t: RoomType;
+		showCloseModal?: boolean;
 	};
 	RoomInfoEditView: {
 		rid: string;

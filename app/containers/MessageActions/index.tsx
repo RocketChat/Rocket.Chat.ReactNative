@@ -23,7 +23,7 @@ interface IMessageActions {
 		autoTranslate: any;
 		reactWhenReadOnly: any;
 	};
-	tmid: string;
+	tmid?: string;
 	user: {
 		id: string | number;
 	};

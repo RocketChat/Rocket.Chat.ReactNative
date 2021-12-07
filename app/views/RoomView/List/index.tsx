@@ -36,11 +36,11 @@ const onScroll = ({ y }: any) =>
 interface IRoomListContainerProps {
 	renderRow: Function;
 	rid: string;
-	tmid: string;
+	tmid?: string;
 	theme: string;
 	loading: boolean;
 	listRef: any;
-	hideSystemMessages: [];
+	hideSystemMessages: any[];
 	tunread: [];
 	ignored: [];
 	navigation: any; // TODO - change this after merge with navigation ts;

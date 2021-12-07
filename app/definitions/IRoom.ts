@@ -5,7 +5,8 @@ export enum RoomType {
 	DIRECT = 'd',
 	CHANNEL = 'c',
 	OMNICHANNEL = 'l',
-	THREAD = 'thread'
+	THREAD = 'thread',
+	E2E_MESSAGE_TYPE = 'e2e'
 }
 
 export interface IRoom extends IRocketChatRecord {

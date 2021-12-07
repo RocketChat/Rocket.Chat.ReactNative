@@ -15,13 +15,14 @@ interface IRoomRightButtonsContainerProps {
 	threadsEnabled: boolean;
 	rid: string;
 	t: string;
-	tmid: string;
+	tmid?: string;
 	teamId: string;
 	navigation: any; // TODO - change this after merge react navigation
 	isMasterDetail: boolean;
 	toggleFollowThread: Function;
 	joined: boolean;
 	encrypted: boolean;
+	teamMain?: string; // TODO - verify if this props exist
 }
 
 class RightButtonsContainer extends Component<IRoomRightButtonsContainerProps, any> {

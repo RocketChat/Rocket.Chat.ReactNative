@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 });
 
 interface IRoomDateSeparatorProps {
-	ts: Date;
+	ts: Date | null;
 	unread: boolean;
 	theme: string;
 }

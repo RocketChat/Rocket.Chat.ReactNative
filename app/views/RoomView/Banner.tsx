@@ -14,6 +14,7 @@ interface IRoomBannerProps {
 	theme: string;
 	bannerClosed: boolean;
 	closeBanner(): void;
+	rid?: string; // TODO - verify if this props exist
 }
 
 const Banner = React.memo(

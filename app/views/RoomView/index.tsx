@@ -137,6 +137,19 @@ interface IRoomViewProps {
 	};
 }
 
+interface IRoomItem {
+	id: string;
+	tmid: string;
+	tmsg: string;
+	t: RoomType;
+	e2e: string;
+	tlm: string;
+	rid: string;
+	ts: Date;
+	status: any;
+	u: { _id: string };
+}
+
 class RoomView extends React.Component<IRoomViewProps, any> {
 	private rid: string;
 	private t: RoomType;
@@ -479,7 +492,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 	};
 
 	// goRoomActionsView = (screen?: keyof ChatsStackParamList) => {
-	goRoomActionsView = (screen: any) => {
+	goRoomActionsView = (screen?: any) => {
 		logEvent(events.ROOM_GO_RA);
 		const { room, member, joined } = this.state;
 		const { navigation, isMasterDetail } = this.props;
@@ -653,7 +666,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	onReplyInit = (message: string, mention: string) => {
+	onReplyInit = (message: string, mention: boolean) => {
 		this.setState({
 			selectedMessage: message,
 			replying: true,
@@ -815,7 +828,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		EventEmitter.removeListener('connected', this.handleConnected);
 	};
 
-	handleRoomRemoved = ({ rid }: {rid: string}) => {
+	handleRoomRemoved = ({ rid }: { rid: string }) => {
 		const { room } = this.state;
 		if (rid === this.rid) {
 			Navigation.navigate('RoomsListView');
@@ -852,7 +865,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		return null;
 	};
 
-	setLastOpen = lastOpen => this.setState({ lastOpen });
+	setLastOpen = (lastOpen: Date | null) => this.setState({ lastOpen });
 
 	onJoin = () => {
 		this.internalSetState({
@@ -882,9 +895,9 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	getThreadName = (tmid, messageId) => getThreadName(this.rid, tmid, messageId);
+	getThreadName = (tmid: string, messageId: string) => getThreadName(this.rid, tmid, messageId);
 
-	toggleFollowThread = async (isFollowingThread, tmid) => {
+	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
 		try {
 			await RocketChat.toggleFollowMessage(tmid ?? this.tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
@@ -893,13 +906,13 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	getBadgeColor = messageId => {
+	getBadgeColor = (messageId: string) => {
 		const { room } = this.state;
 		const { theme } = this.props;
 		return getBadgeColor({ subscription: room, theme, messageId });
 	};
 
-	navToRoomInfo = navParam => {
+	navToRoomInfo = (navParam: ChatsStackParamList['RoomInfoView']) => {
 		const { navigation, user, isMasterDetail } = this.props;
 		logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
 		if (navParam.rid === user.id) {
@@ -913,7 +926,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	navToThread = async item => {
+	navToThread = async (item: IRoomItem) => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
 
@@ -951,9 +964,9 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	navToRoom = async message => {
+	navToRoom = async (message: IRoomItem) => {
 		const { navigation, isMasterDetail } = this.props;
-		const roomInfo = await getRoomInfo(message.rid);
+		const roomInfo: any = await getRoomInfo(message.rid);
 		return goRoom({
 			item: roomInfo,
 			isMasterDetail,
@@ -972,11 +985,11 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	handleCommands = ({ event }) => {
+	handleCommands = ({ event }: any) => {
 		if (this.rid) {
 			const { input } = event;
 			if (handleCommandScroll(event)) {
-				const offset = input === 'UIKeyInputUpArrow' ? 100 : -100;
+				const offset: any = input === 'UIKeyInputUpArrow' ? 100 : -100;
 				this.offset += offset;
 				this.flatList?.scrollToOffset({ offset: this.offset });
 			} else if (handleCommandRoomActions(event)) {
@@ -992,7 +1005,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	blockAction = ({ actionId, appId, value, blockId, rid, mid }) =>
+	blockAction = ({ actionId, appId, value, blockId, rid, mid }: any) =>
 		RocketChat.triggerBlockAction({
 			blockId,
 			actionId,
@@ -1020,12 +1033,12 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	isIgnored = message => {
+	isIgnored = (message: IRoomItem) => {
 		const { room } = this.state;
 		return room?.ignored?.includes?.(message?.u?._id) ?? false;
 	};
 
-	onLoadMoreMessages = loaderItem =>
+	onLoadMoreMessages = (loaderItem: any): any =>
 		RoomServices.getMoreMessages({
 			rid: this.rid,
 			tmid: this.tmid,
@@ -1033,7 +1046,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 			loaderItem
 		});
 
-	renderItem = (item, previousItem, highlightedMessage) => {
+	renderItem = (item: IRoomItem, previousItem: IRoomItem, highlightedMessage: any) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
 			this.props;
