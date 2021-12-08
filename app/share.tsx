@@ -132,7 +132,7 @@ class Root extends React.Component<{}, IState> {
 		setCurrentScreen(currentRouteName);
 	};
 
-	setTheme = (newTheme = {}) => {
+	setTheme = (newTheme: any = {}) => {
 		// change theme state
 		this.setState(
 			prevState => newThemeState(prevState, newTheme),
