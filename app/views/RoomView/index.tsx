@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ForwardedRef } from 'react';
 import { InteractionManager, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
@@ -185,8 +185,8 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private retryFindCount?: number;
 	private retryFindTimeout?: ReturnType<typeof setTimeout>;
-	private messageErrorActions: any;
-	private messageActions: any;
+	private messageErrorActions?: React.ForwardedRef<typeof MessageErrorActions>;
+	private messageActions?: React.ForwardedRef<typeof MessageActions>;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -648,6 +648,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 	};
 
 	errorActionsShow = (message: string) => {
+		// @ts-ignore
 		this.messageErrorActions?.showMessageErrorActions(message);
 	};
 
@@ -696,6 +697,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 	};
 
 	onMessageLongPress = (message: string) => {
+		// @ts-ignore
 		this.messageActions?.showMessageActions(message);
 	};
 
@@ -1214,7 +1216,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		return (
 			<>
 				<MessageActions
-					ref={ref => (this.messageActions = ref)}
+					ref={(ref: ForwardedRef<typeof MessageActions>) => (this.messageActions = ref)}
 					tmid={this.tmid}
 					room={room}
 					user={user}
@@ -1224,7 +1226,10 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 					onReactionPress={this.onReactionPress}
 					isReadOnly={readOnly}
 				/>
-				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
+				<MessageErrorActions
+					ref={(ref: ForwardedRef<typeof MessageErrorActions>) => (this.messageErrorActions = ref)}
+					tmid={this.tmid}
+				/>
 			</>
 		);
 	};
