@@ -46,7 +46,7 @@ interface IUserItem {
 	testID: string;
 	onLongPress?: () => void;
 	style?: StyleProp<ViewStyle>;
-	icon?: string;
+	icon?: string | null;
 	theme: string;
 }
 

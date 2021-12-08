@@ -1,5 +1,4 @@
 import React from 'react';
-import { Dispatch } from 'redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { FlatList, View } from 'react-native';
@@ -268,7 +267,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 				username={username}
 				onPress={() => this._onPressItem(item._id, item)}
 				testID={`select-users-view-item-${item.name}`}
-				icon={this.isChecked(username) ? 'check' : ''}
+				icon={this.isChecked(username) ? 'check' : null}
 				style={style}
 				theme={theme}
 			/>
@@ -316,9 +315,9 @@ const mapStateToProps = (state: any) => ({
 	user: getUserSelector(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	addUser: (user: IUser) => dispatch(addUserAction(user)),
-	removeUser: (user: IUser) => dispatch(removeUserAction(user)),
+const mapDispatchToProps = (dispatch: any) => ({
+	addUser: (user: any) => dispatch(addUserAction(user)),
+	removeUser: (user: any) => dispatch(removeUserAction(user)),
 	reset: () => dispatch(resetAction())
 });
 
