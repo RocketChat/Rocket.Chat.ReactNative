@@ -25,6 +25,7 @@ import { addUser as addUserAction, removeUser as removeUserAction, reset as rese
 import { showErrorAlert } from '../utils/info';
 import SafeAreaView from '../containers/SafeAreaView';
 import sharedStyles from './Styles';
+import { ChatsStackParamList } from '../stacks/types';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
@@ -38,25 +39,14 @@ interface IUser {
 	username?: string;
 }
 interface ISelectedUsersViewState {
-	maxUsers: number;
+	maxUsers?: number;
 	search: IUser[];
 	chats: IUser[];
 }
 
 interface ISelectedUsersViewProps {
-	navigation: StackNavigationProp<any, 'SelectedUsersView'>;
-	route: RouteProp<
-		{
-			SelectedUsersView: {
-				maxUsers: number;
-				showButton: boolean;
-				title: string;
-				buttonText: string;
-				nextAction(): void;
-			};
-		},
-		'SelectedUsersView'
-	>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
+	route: RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
 	baseUrl: string;
 	addUser(user: IUser): void;
 	removeUser(user: IUser): void;
@@ -111,7 +101,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	}
 
 	// showButton can be sent as route params or updated by the component
-	setHeader = (showButton: boolean) => {
+	setHeader = (showButton?: boolean) => {
 		const { navigation, route } = this.props;
 		const title = route.params?.title ?? I18n.t('Select_Users');
 		const buttonText = route.params?.buttonText ?? I18n.t('Next');
@@ -161,7 +151,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 
 	isGroupChat = () => {
 		const { maxUsers } = this.state;
-		return maxUsers > 2;
+		return maxUsers! > 2;
 	};
 
 	isChecked = (username: string) => {
