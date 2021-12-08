@@ -16,16 +16,17 @@ import {
 } from '../constants/localAuthentication';
 import I18n from '../i18n';
 import { setLocalAuthenticated } from '../actions/login';
+import { IServerRecord } from '../definitions/IServer';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
-export const saveLastLocalAuthenticationSession = async (server, serverRecord) => {
+export const saveLastLocalAuthenticationSession = async (server: string, serverRecord?: IServerRecord): Promise<void> => {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
-	await serversDB.action(async () => {
+	await serversDB.write(async () => {
 		try {
 			if (!serverRecord) {
-				serverRecord = await serversCollection.find(server);
+				serverRecord = (await serversCollection.find(server)) as IServerRecord;
 			}
 			await serverRecord.update(record => {
 				record.lastLocalAuthenticatedSession = new Date();
@@ -36,31 +37,31 @@ export const saveLastLocalAuthenticationSession = async (server, serverRecord) =
 	});
 };
 
-export const resetAttempts = () => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
+export const resetAttempts = (): Promise<void> => AsyncStorage.multiRemove([LOCKED_OUT_TIMER_KEY, ATTEMPTS_KEY]);
 
-const openModal = hasBiometry =>
-	new Promise(resolve => {
+const openModal = (hasBiometry: boolean) =>
+	new Promise<void>(resolve => {
 		EventEmitter.emit(LOCAL_AUTHENTICATE_EMITTER, {
 			submit: () => resolve(),
 			hasBiometry
 		});
 	});
 
-const openChangePasscodeModal = ({ force }) =>
-	new Promise((resolve, reject) => {
+const openChangePasscodeModal = ({ force }: { force: boolean }) =>
+	new Promise<string>((resolve, reject) => {
 		EventEmitter.emit(CHANGE_PASSCODE_EMITTER, {
-			submit: passcode => resolve(passcode),
+			submit: (passcode: string) => resolve(passcode),
 			cancel: () => reject(),
 			force
 		});
 	});
 
-export const changePasscode = async ({ force = false }) => {
+export const changePasscode = async ({ force = false }: { force: boolean }): Promise<void> => {
 	const passcode = await openChangePasscodeModal({ force });
 	await UserPreferences.setStringAsync(PASSCODE_KEY, sha256(passcode));
 };
 
-export const biometryAuth = force =>
+export const biometryAuth = (force?: boolean): Promise<LocalAuthentication.LocalAuthenticationResult> =>
 	LocalAuthentication.authenticateAsync({
 		disableDeviceFallback: true,
 		cancelLabel: force ? I18n.t('Dont_activate') : I18n.t('Local_authentication_biometry_fallback'),
@@ -71,11 +72,11 @@ export const biometryAuth = force =>
  * It'll help us to get the permission to use FaceID
  * and enable/disable the biometry when user put their first passcode
  */
-const checkBiometry = async serverRecord => {
+const checkBiometry = async (serverRecord: IServerRecord) => {
 	const serversDB = database.servers;
 
 	const result = await biometryAuth(true);
-	await serversDB.action(async () => {
+	await serversDB.write(async () => {
 		try {
 			await serverRecord.update(record => {
 				record.biometry = !!result?.success;
@@ -86,7 +87,13 @@ const checkBiometry = async serverRecord => {
 	});
 };
 
-export const checkHasPasscode = async ({ force = true, serverRecord }) => {
+export const checkHasPasscode = async ({
+	force = true,
+	serverRecord
+}: {
+	force?: boolean;
+	serverRecord: IServerRecord;
+}): Promise<{ newPasscode?: boolean } | void> => {
 	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
 	if (!storedPasscode) {
 		await changePasscode({ force });
@@ -96,13 +103,13 @@ export const checkHasPasscode = async ({ force = true, serverRecord }) => {
 	return Promise.resolve();
 };
 
-export const localAuthenticate = async server => {
+export const localAuthenticate = async (server: string): Promise<void> => {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 
-	let serverRecord;
+	let serverRecord: IServerRecord;
 	try {
-		serverRecord = await serversCollection.find(server);
+		serverRecord = (await serversCollection.find(server)) as IServerRecord;
 	} catch (error) {
 		return Promise.reject();
 	}
@@ -125,7 +132,7 @@ export const localAuthenticate = async server => {
 			const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 
 			// if last authenticated session is older than configured auto lock time, authentication is required
-			if (diffToLastSession >= serverRecord?.autoLockTime) {
+			if (diffToLastSession >= serverRecord.autoLockTime!) {
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
 
@@ -150,7 +157,7 @@ export const localAuthenticate = async server => {
 	}
 };
 
-export const supportedBiometryLabel = async () => {
+export const supportedBiometryLabel = async (): Promise<string | null> => {
 	try {
 		const enrolled = await LocalAuthentication.isEnrolledAsync();
 
