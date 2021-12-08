@@ -32,6 +32,7 @@ export type ModalStackParamList = {
 		rid: string;
 		t: RoomType;
 		joined: boolean;
+		showCloseModal?: boolean;
 	};
 	RoomInfoView: {
 		room: IRoom;

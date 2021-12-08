@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
-import { HeaderBackButton } from '@react-navigation/stack';
+import { HeaderBackButton, StackNavigationProp } from '@react-navigation/stack';
 
 import { themes } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
+import { ChatsStackParamList } from '../../stacks/types';
 
 const styles = StyleSheet.create({
 	avatar: {
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
 interface IRoomLeftButtonsProps {
 	tmid?: string;
 	unreadsCount: number;
-	navigation: any; // TODO - change this after merge react navigation
+	navigation: StackNavigationProp<ChatsStackParamList>;
 	baseUrl: string;
 	userId: string;
 	token: string;
