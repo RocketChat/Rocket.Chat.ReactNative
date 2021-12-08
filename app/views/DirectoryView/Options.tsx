@@ -63,7 +63,11 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 		}
 
 		return (
-			<Touch onPress={() => changeType(itemType)} style={styles.dropdownItemButton} theme={theme}>
+			<Touch
+				onPress={() => changeType(itemType)}
+				style={styles.dropdownItemButton}
+				theme={theme}
+				accessibilityLabel={I18n.t(text)}>
 				<View style={styles.dropdownItemContainer}>
 					<CustomIcon style={[styles.dropdownItemIcon, { color: themes[theme].bodyText }]} size={22} name={icon} />
 					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
@@ -90,7 +94,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 				</TouchableWithoutFeedback>
 				<Animated.View
 					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}>
-					<Touch onPress={this.close} theme={theme}>
+					<Touch onPress={this.close} theme={theme} accessibilityLabel={I18n.t('Search_by')}>
 						<View
 							style={[
 								styles.dropdownContainerHeader,

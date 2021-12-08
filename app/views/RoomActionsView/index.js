@@ -918,7 +918,6 @@ class RoomActionsView extends React.Component {
 									event: this.convertTeamToChannel
 								})
 							}
-							testID='room-actions-convert-channel-to-team'
 							left={() => <List.Icon name='channel-public' />}
 							showActionIndicator
 						/>

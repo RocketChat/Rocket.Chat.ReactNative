@@ -1,4 +1,4 @@
-interface IOptionsField {
+export interface IOptionsField {
 	label: string;
 	value: string | number;
 	second?: number;
