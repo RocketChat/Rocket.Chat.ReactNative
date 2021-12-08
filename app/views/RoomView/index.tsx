@@ -138,11 +138,11 @@ interface IRoomViewProps {
 
 export interface IRoomItem {
 	id?: string;
-	t: any;
+	t: string;
 	rid: string;
 	tmid?: string;
 	ts: Date;
-	status?: any;
+	status?: string;
 	u?: { _id: string };
 	loaderItem: {
 		t: string;
@@ -153,7 +153,7 @@ export interface IRoomItem {
 interface INavToThread {
 	id?: string;
 	tmsg?: string;
-	t?: any;
+	t?: string;
 	e2e?: string;
 	tmid?: string;
 	tlm?: string;

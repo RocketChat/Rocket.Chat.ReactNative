@@ -38,7 +38,7 @@ interface IRoomNavBottomFAB {
 const NavBottomFAB = ({ y, onPress, isThread }: IRoomNavBottomFAB) => {
 	const { theme } = useTheme();
 	const [show, setShow] = useState(false);
-	const handleOnPress = useCallback(() => onPress(), []); // TODO - check this
+	const handleOnPress = useCallback(() => onPress(), []);
 	const toggle = (v: boolean) => setShow(v);
 
 	useCode(
