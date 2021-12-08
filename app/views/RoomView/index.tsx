@@ -181,9 +181,9 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 	private willBlurListener?: { remove(): void };
 	private subSubscription?: { unsubscribe(): void };
 	private queryUnreads?: { unsubscribe(): void };
-	private retryInit: any;
+	private retryInit?: number;
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
-	private retryFindCount: any;
+	private retryFindCount?: number;
 	private retryFindTimeout?: ReturnType<typeof setTimeout>;
 	private messageErrorActions: any;
 	private messageActions: any;
@@ -563,7 +563,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 			this.setState({ canAutoTranslate, member, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
-			this.retryInit = this.retryInit + 1 || 1;
+			this.retryInit = this.retryInit! + 1 || 1;
 			if (this.retryInit <= 1) {
 				this.retryInitTimeout = setTimeout(() => {
 					this.init();
@@ -611,7 +611,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 			if (this.rid) {
 				// We navigate to RoomView before the Room is inserted to the local db
 				// So we retry just to make sure we have the right content
-				this.retryFindCount = this.retryFindCount + 1 || 1;
+				this.retryFindCount = this.retryFindCount! + 1 || 1;
 				if (this.retryFindCount <= 3) {
 					this.retryFindTimeout = setTimeout(() => {
 						this.findAndObserveRoom(rid);
