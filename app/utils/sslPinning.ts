@@ -14,6 +14,7 @@ const RCSSLPinning = Platform.select({
 			new Promise(async (resolve, reject) => {
 				try {
 					const res = await DocumentPicker.pick({
+						// @ts-ignore
 						type: ['com.rsa.pkcs-12']
 					});
 					const { uri, name } = res;
@@ -49,7 +50,7 @@ const RCSSLPinning = Platform.select({
 					reject(e);
 				}
 			}),
-		setCertificate: async (alias, server) => {
+		setCertificate: async (alias: any, server: string) => {
 			if (alias) {
 				const certificate = await UserPreferences.getMapAsync(alias);
 				await UserPreferences.setMapAsync(extractHostname(server), certificate);
