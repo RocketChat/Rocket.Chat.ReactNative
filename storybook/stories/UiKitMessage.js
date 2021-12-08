@@ -4,7 +4,6 @@ import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
 import MessageContext from '../../app/containers/message/Context';
-import { KitContext } from '../../app/containers/UIKit/utils';
 import { UiKitMessage } from '../../app/containers/UIKit';
 import { themes } from '../../app/constants/colors';
 
@@ -45,15 +44,6 @@ const messageDecorator = story => (
 	</MessageContext.Provider>
 );
 
-const kitDecorator = story => (
-	<KitContext.Provider
-		value={{
-			rid: 'rid'
-		}}>
-		{story()}
-	</KitContext.Provider>
-);
-
 const stories = storiesOf('UiKitMessage', module)
 	.addDecorator(story => <SafeAreaView style={styles.container}>{story()}</SafeAreaView>)
 	.addDecorator(story => (
@@ -61,8 +51,7 @@ const stories = storiesOf('UiKitMessage', module)
 			{story()}
 		</ScrollView>
 	))
-	.addDecorator(messageDecorator)
-	.addDecorator(kitDecorator);
+	.addDecorator(messageDecorator);
 
 const Section = () =>
 	UiKitMessage([

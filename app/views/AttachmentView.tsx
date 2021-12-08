@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
 
 interface IAttachmentViewState {
 	attachment: IAttachment;
-	rid: string;
 	loading: boolean;
 }
 
@@ -63,8 +62,7 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 	constructor(props: IAttachmentViewProps) {
 		super(props);
 		const attachment = props.route.params?.attachment;
-		const rid = props.route.params?.rid;
-		this.state = { attachment, rid, loading: true };
+		this.state = { attachment, loading: true };
 		this.setHeader();
 	}
 
@@ -84,8 +82,7 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 	}
 
 	canSaveToGallery = async () => {
-		const { rid } = this.state;
-		const { Allow_Save_Media_to_Gallery, downloadFilePermission } = this.props;
+		const { Allow_Save_Media_to_Gallery, downloadFilePermission, rid } = this.props;
 		if (!Allow_Save_Media_to_Gallery) {
 			return false;
 		}
@@ -95,7 +92,7 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 			return true;
 		}
 
-		const permissionToDownload = await RocketChat.hasPermission([downloadFilePermission], rid);
+		const permissionToDownload = await RocketChat.hasPermission([downloadFilePermission]);
 		return permissionToDownload[0];
 	};
 

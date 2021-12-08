@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import ImageContainer from '../message/Image';
 import Navigation from '../../lib/Navigation';
-import { KitContext } from './utils';
 
 const styles = StyleSheet.create({
 	image: {
@@ -47,8 +46,7 @@ export const Thumb = ({ element, size = 88 }: IThumb) => (
 );
 
 export const Media = ({ element, theme }: IMedia) => {
-	const { rid } = useContext(KitContext);
-	const showAttachment = (attachment: any) => Navigation.navigate('AttachmentView', { attachment, rid });
+	const showAttachment = (attachment: any) => Navigation.navigate('AttachmentView', { attachment });
 	const { imageUrl } = element;
 	// @ts-ignore
 	return <ImageContainer file={{ image_url: imageUrl }} imageUrl={imageUrl} showAttachment={showAttachment} theme={theme} />;

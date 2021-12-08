@@ -225,7 +225,6 @@ export type InsideStackParamList = {
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
 	AttachmentView: {
 		attachment: IAttachment;
-		rid: string;
 	};
 	StatusView: undefined;
 	ShareView: {
