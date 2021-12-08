@@ -16,6 +16,7 @@ import { CONTAINER_TYPES, MODAL_ACTIONS } from '../lib/methods/actions';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/Navigation';
 import sharedStyles from './Styles';
+import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 
 const styles = StyleSheet.create({
 	container: {
@@ -55,8 +56,8 @@ interface IModalBlockViewState {
 }
 
 interface IModalBlockViewProps {
-	navigation: StackNavigationProp<any, 'ModalBlockView'>;
-	route: RouteProp<{ ModalBlockView: { data: any } }, 'ModalBlockView'>;
+	navigation: StackNavigationProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
+	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	theme: string;
 	language: string;
 	user: {
