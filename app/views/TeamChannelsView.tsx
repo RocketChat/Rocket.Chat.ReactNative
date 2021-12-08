@@ -1,10 +1,11 @@
 import React from 'react';
 import { Alert, FlatList, Keyboard } from 'react-native';
-import PropTypes from 'prop-types';
+import { RouteProp } from '@react-navigation/native';
+import { Dispatch } from 'redux';
 import { Q } from '@nozbe/watermelondb';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
-import { HeaderBackButton } from '@react-navigation/stack';
+import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 
 import StatusBar from '../containers/StatusBar';
 import RoomHeader from '../containers/RoomHeader';
@@ -38,35 +39,74 @@ const PERMISSION_EDIT_TEAM_CHANNEL = 'edit-team-channel';
 const PERMISSION_REMOVE_TEAM_CHANNEL = 'remove-team-channel';
 const PERMISSION_ADD_TEAM_CHANNEL = 'add-team-channel';
 
-const getItemLayout = (data, index) => ({
-	length: data.length,
+const getItemLayout = (data: IItem[] | null | undefined, index: number) => ({
+	length: data?.length || 0,
 	offset: ROW_HEIGHT * index,
 	index
 });
-const keyExtractor = item => item._id;
+const keyExtractor = (item: IItem) => item._id;
 
-class TeamChannelsView extends React.Component {
-	static propTypes = {
-		route: PropTypes.object,
-		navigation: PropTypes.object,
-		isMasterDetail: PropTypes.bool,
-		insets: PropTypes.object,
-		theme: PropTypes.string,
-		useRealName: PropTypes.bool,
-		width: PropTypes.number,
-		StoreLastMessage: PropTypes.bool,
-		addTeamChannelPermission: PropTypes.array,
-		editTeamChannelPermission: PropTypes.array,
-		removeTeamChannelPermission: PropTypes.array,
-		deleteCPermission: PropTypes.array,
-		deletePPermission: PropTypes.array,
-		showActionSheet: PropTypes.func,
-		deleteRoom: PropTypes.func,
-		showAvatar: PropTypes.bool,
-		displayMode: PropTypes.string
-	};
+// This interface comes from request RocketChat.getTeamListRoom
+interface IItem {
+	_id: string;
+	fname: string;
+	customFields: object;
+	broadcast: boolean;
+	encrypted: boolean;
+	name: string;
+	t: string;
+	msgs: number;
+	usersCount: number;
+	u: { _id: string; name: string };
+	ts: string;
+	ro: boolean;
+	teamId: string;
+	default: boolean;
+	sysMes: boolean;
+	_updatedAt: string;
+	teamDefault: boolean;
+}
 
-	constructor(props) {
+interface ITeamChannelsViewState {
+	loading: boolean;
+	loadingMore: boolean;
+	data: IItem[];
+	isSearching: boolean;
+	searchText: string | null;
+	search: IItem[];
+	end: boolean;
+	showCreate: boolean;
+}
+
+interface ITeamChannelsViewProps {
+	route: RouteProp<{ TeamChannelsView: { teamId: string } }, 'TeamChannelsView'>;
+	navigation: StackNavigationProp<any, 'TeamChannelsView'>;
+	isMasterDetail: boolean;
+	insets: EdgeInsets;
+	theme: string;
+	useRealName: boolean;
+	width: number;
+	StoreLastMessage: boolean;
+	addTeamChannelPermission: string[];
+	editTeamChannelPermission: string[];
+	removeTeamChannelPermission: string[];
+	deleteCPermission: string[];
+	deletePPermission: string[];
+	showActionSheet: (options: any) => void;
+	deleteRoom: (rid: string, t: string) => void;
+	showAvatar: boolean;
+	displayMode: string;
+}
+class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChannelsViewState> {
+	private teamId: string;
+
+	// TODO: Refactor when migrate room
+	private teamChannels: any;
+
+	// TODO: Refactor when migrate room
+	private team: any;
+
+	constructor(props: ITeamChannelsViewProps) {
 		super(props);
 		this.teamId = props.route.params?.teamId;
 		this.state = {
@@ -95,7 +135,7 @@ class TeamChannelsView extends React.Component {
 		try {
 			const subCollection = db.get('subscriptions');
 			this.teamChannels = await subCollection.query(Q.where('team_id', Q.eq(this.teamId)));
-			this.team = this.teamChannels?.find(channel => channel.teamMain);
+			this.team = this.teamChannels?.find((channel: any) => channel.teamMain);
 			this.setHeader();
 
 			if (!this.team) {
@@ -140,7 +180,7 @@ class TeamChannelsView extends React.Component {
 					loading: false,
 					loadingMore: false,
 					end: result.rooms.length < API_FETCH_COUNT
-				};
+				} as ITeamChannelsViewState;
 
 				if (isSearching) {
 					newState.search = [...search, ...result.rooms];
@@ -170,7 +210,7 @@ class TeamChannelsView extends React.Component {
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 2 });
 
 		if (isSearching) {
-			const options = {
+			const options: StackNavigationOptions = {
 				headerTitleAlign: 'left',
 				headerLeft: () => (
 					<HeaderButton.Container left>
@@ -187,7 +227,7 @@ class TeamChannelsView extends React.Component {
 			return navigation.setOptions(options);
 		}
 
-		const options = {
+		const options: StackNavigationOptions = {
 			headerShown: true,
 			headerTitleAlign: 'left',
 			headerTitleContainerStyle: {
@@ -232,7 +272,7 @@ class TeamChannelsView extends React.Component {
 		this.setState({ isSearching: true }, () => this.setHeader());
 	};
 
-	onSearchChangeText = debounce(searchText => {
+	onSearchChangeText = debounce((searchText: string) => {
 		this.setState(
 			{
 				searchText,
@@ -270,7 +310,7 @@ class TeamChannelsView extends React.Component {
 		);
 	};
 
-	goRoomActionsView = screen => {
+	goRoomActionsView = (screen: string) => {
 		logEvent(events.TC_GO_ACTIONS);
 		const { team } = this;
 		const { navigation, isMasterDetail } = this.props;
@@ -293,12 +333,12 @@ class TeamChannelsView extends React.Component {
 		}
 	};
 
-	getRoomTitle = item => RocketChat.getRoomTitle(item);
+	getRoomTitle = (item: IItem) => RocketChat.getRoomTitle(item);
 
-	getRoomAvatar = item => RocketChat.getRoomAvatar(item);
+	getRoomAvatar = (item: IItem) => RocketChat.getRoomAvatar(item);
 
 	onPressItem = debounce(
-		async item => {
+		async (item: IItem) => {
 			logEvent(events.TC_GO_ROOM);
 			const { navigation, isMasterDetail } = this.props;
 			try {
@@ -314,7 +354,7 @@ class TeamChannelsView extends React.Component {
 					navigation.pop();
 				}
 				goRoom({ item: params, isMasterDetail, navigationMethod: navigation.push });
-			} catch (e) {
+			} catch (e: any) {
 				if (e.data.error === 'not-allowed') {
 					showErrorAlert(I18n.t('error-not-allowed'));
 				} else {
@@ -326,7 +366,7 @@ class TeamChannelsView extends React.Component {
 		true
 	);
 
-	toggleAutoJoin = async item => {
+	toggleAutoJoin = async (item: IItem) => {
 		logEvent(events.TC_TOGGLE_AUTOJOIN);
 		try {
 			const { data } = this.state;
@@ -346,7 +386,7 @@ class TeamChannelsView extends React.Component {
 		}
 	};
 
-	remove = item => {
+	remove = (item: IItem) => {
 		Alert.alert(
 			I18n.t('Confirmation'),
 			I18n.t('Remove_Team_Room_Warning'),
@@ -365,7 +405,7 @@ class TeamChannelsView extends React.Component {
 		);
 	};
 
-	removeRoom = async item => {
+	removeRoom = async (item: IItem) => {
 		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const { data } = this.state;
@@ -380,7 +420,7 @@ class TeamChannelsView extends React.Component {
 		}
 	};
 
-	delete = item => {
+	delete = (item: IItem) => {
 		logEvent(events.TC_DELETE_ROOM);
 		const { deleteRoom } = this.props;
 
@@ -402,7 +442,7 @@ class TeamChannelsView extends React.Component {
 		);
 	};
 
-	showChannelActions = async item => {
+	showChannelActions = async (item: IItem) => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		const {
 			showActionSheet,
@@ -464,7 +504,7 @@ class TeamChannelsView extends React.Component {
 		showActionSheet({ options });
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: IItem }) => {
 		const { StoreLastMessage, useRealName, theme, width, showAvatar, displayMode } = this.props;
 		return (
 			<RoomItem
@@ -534,7 +574,7 @@ class TeamChannelsView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
@@ -549,8 +589,8 @@ const mapStateToProps = state => ({
 	displayMode: state.sortPreferences.displayMode
 });
 
-const mapDispatchToProps = dispatch => ({
-	deleteRoom: (rid, t) => dispatch(deleteRoomAction(rid, t))
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	deleteRoom: (rid: string, t: string) => dispatch(deleteRoomAction(rid, t))
 });
 
 export default connect(
