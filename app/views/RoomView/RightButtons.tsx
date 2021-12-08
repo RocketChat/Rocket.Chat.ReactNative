@@ -3,26 +3,28 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Subscription } from 'rxjs';
 import Model from '@nozbe/watermelondb/Model';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import { events, logEvent } from '../../utils/log';
 import { isTeamRoom } from '../../utils/room';
+import { ChatsStackParamList } from '../../stacks/types';
+import { RoomType } from '../../definitions/IRoom';
 
 interface IRoomRightButtonsContainerProps {
 	userId: string;
 	threadsEnabled: boolean;
 	rid: string;
-	t: string;
+	t: RoomType;
 	tmid?: string;
 	teamId: string;
-	navigation: any; // TODO - change this after merge react navigation
+	navigation: StackNavigationProp<ChatsStackParamList>;
 	isMasterDetail: boolean;
 	toggleFollowThread: Function;
 	joined: boolean;
 	encrypted: boolean;
-	teamMain?: string; // TODO - verify if this props exist
 }
 
 class RightButtonsContainer extends Component<IRoomRightButtonsContainerProps, any> {
@@ -147,7 +149,7 @@ class RightButtonsContainer extends Component<IRoomRightButtonsContainerProps, a
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', {
 				screen: 'SearchMessagesView',
-				params: { rid, showCloseModal: true, encrypted }
+				params: { rid, t, showCloseModal: true, encrypted }
 			});
 		} else {
 			navigation.navigate('SearchMessagesView', { rid, t, encrypted });

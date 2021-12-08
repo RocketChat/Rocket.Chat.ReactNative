@@ -489,7 +489,6 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 					rid={rid}
 					tmid={tmid}
 					teamId={teamId}
-					teamMain={teamMain}
 					joined={joined}
 					t={t}
 					encrypted={encrypted}
