@@ -11,9 +11,10 @@ import * as List from '../../containers/List';
 import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import RocketChat from '../../lib/rocketchat';
+import { ProfileStackParamList } from '../../stacks/types';
 
 interface IUserPreferencesViewProps {
-	navigation: StackNavigationProp<any, 'UserPreferencesView'>;
+	navigation: StackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
@@ -26,7 +27,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 		});
 	}, []);
 
-	const navigateToScreen = (screen: string) => {
+	const navigateToScreen = (screen: keyof ProfileStackParamList) => {
 		logEvent(events.UP_GO_USER_NOTIFICATION_PREF);
 		navigation.navigate(screen);
 	};

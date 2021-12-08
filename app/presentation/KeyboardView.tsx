@@ -4,7 +4,8 @@ import { KeyboardAwareScrollView, KeyboardAwareScrollViewProps } from '@codler/r
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 
 interface IKeyboardViewProps extends KeyboardAwareScrollViewProps {
-	keyboardVerticalOffset: number;
+	keyboardVerticalOffset?: number;
+	scrollEnabled?: boolean;
 	children: React.ReactNode;
 }
 

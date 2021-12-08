@@ -26,7 +26,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-class WithoutServerView extends React.Component<any, any> {
+interface IWithoutServerViewProps {
+	theme: string;
+}
+
+class WithoutServerView extends React.Component<IWithoutServerViewProps> {
 	static navigationOptions = () => ({
 		title: 'Rocket.Chat',
 		headerLeft: () => <HeaderButton.CancelModal onPress={ShareExtension.close} testID='share-extension-close' />
