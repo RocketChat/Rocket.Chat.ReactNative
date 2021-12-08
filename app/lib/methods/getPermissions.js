@@ -56,8 +56,7 @@ const PERMISSIONS = [
 	'edit-omnichannel-contact',
 	'edit-livechat-room-customfields',
 	'view-canned-responses',
-	'mobile-upload-file',
-	'mobile-download-file'
+	'mobile-upload-file'
 ];
 
 export async function setPermissions() {
