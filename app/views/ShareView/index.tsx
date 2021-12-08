@@ -143,11 +143,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	getPermissionMobileUpload = async () => {
+		const { room } = this.state;
 		const db = database.active;
 		const permissionsCollection = db.get('permissions');
 		const uploadFilePermissionFetch = await permissionsCollection.query(Q.where('id', Q.like('mobile-upload-file'))).fetch();
 		const uploadFilePermission = uploadFilePermissionFetch[0]?.roles;
-		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission]);
+		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission], room.rid);
 		// uploadFilePermission as undefined is considered that there isn't this permission, so all can upload file.
 		return !uploadFilePermission || permissionToUpload[0];
 	};
