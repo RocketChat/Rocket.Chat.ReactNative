@@ -19,6 +19,7 @@ import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../utils/log';
 import styles from './styles';
+import { ChatsStackParamList } from '../../stacks/types';
 
 const OPTIONS = {
 	days: [
@@ -67,9 +68,9 @@ const OPTIONS = {
 	]
 };
 
-interface IInviteUsersEditView {
-	navigation: StackNavigationProp<any, 'InviteUsersEditView'>;
-	route: RouteProp<{ InviteUsersEditView: { rid: string } }, 'InviteUsersEditView'>;
+interface IInviteUsersEditViewProps {
+	navigation: StackNavigationProp<ChatsStackParamList, 'InviteUsersEditView'>;
+	route: RouteProp<ChatsStackParamList, 'InviteUsersEditView'>;
 	theme: string;
 	createInviteLink(rid: string): void;
 	inviteLinksSetParams(params: { [key: string]: number }): void;
@@ -77,14 +78,14 @@ interface IInviteUsersEditView {
 	maxUses: number;
 }
 
-class InviteUsersView extends React.Component<IInviteUsersEditView, any> {
+class InviteUsersEditView extends React.Component<IInviteUsersEditViewProps, any> {
 	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Invite_users')
 	});
 
 	private rid: string;
 
-	constructor(props: IInviteUsersEditView) {
+	constructor(props: IInviteUsersEditViewProps) {
 		super(props);
 		this.rid = props.route.params?.rid;
 	}
@@ -160,4 +161,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 	createInviteLink: (rid: string) => dispatch(inviteLinksCreateAction(rid))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(InviteUsersView));
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(InviteUsersEditView));

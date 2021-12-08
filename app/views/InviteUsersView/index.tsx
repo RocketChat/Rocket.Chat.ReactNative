@@ -6,6 +6,7 @@ import { StackNavigationProp, StackNavigationOptions } from '@react-navigation/s
 import { RouteProp } from '@react-navigation/core';
 import { Dispatch } from 'redux';
 
+import { ChatsStackParamList } from '../../stacks/types';
 import {
 	inviteLinksClear as inviteLinksClearAction,
 	inviteLinksCreate as inviteLinksCreateAction
@@ -22,9 +23,9 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../utils/log';
 import styles from './styles';
 
-interface IInviteUsersView {
-	navigation: StackNavigationProp<any, 'InviteUsersView'>;
-	route: RouteProp<any, 'InviteUsersView'>;
+interface IInviteUsersViewProps {
+	navigation: StackNavigationProp<ChatsStackParamList, 'InviteUsersView'>;
+	route: RouteProp<ChatsStackParamList, 'InviteUsersView'>;
 	theme: string;
 	timeDateFormat: string;
 	invite: {
@@ -36,14 +37,14 @@ interface IInviteUsersView {
 	createInviteLink(rid: string): void;
 	clearInviteLink(): void;
 }
-class InviteUsersView extends React.Component<IInviteUsersView, any> {
+class InviteUsersView extends React.Component<IInviteUsersViewProps, any> {
 	private rid: string;
 
 	static navigationOptions: StackNavigationOptions = {
 		title: I18n.t('Invite_users')
 	};
 
-	constructor(props: IInviteUsersView) {
+	constructor(props: IInviteUsersViewProps) {
 		super(props);
 		this.rid = props.route.params?.rid;
 	}

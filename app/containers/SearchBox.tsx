@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextInputProps, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import TextInput from '../presentation/TextInput';
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 });
 
 interface ISearchBox {
-	onChangeText: () => void;
+	onChangeText: TextInputProps['onChangeText'];
 	onSubmitEditing: () => void;
 	hasCancel: boolean;
 	onCancelPress: Function;
