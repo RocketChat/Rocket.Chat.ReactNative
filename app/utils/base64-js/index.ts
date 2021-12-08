@@ -1,8 +1,8 @@
 /* eslint-disable no-bitwise */
 // https://github.com/beatgammit/base64-js/blob/master/index.js
 
-const lookup = [];
-const revLookup = [];
+const lookup: any[] = [];
+const revLookup: number[] = [];
 const Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
 const code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -16,7 +16,7 @@ for (let i = 0, len = code.length; i < len; i += 1) {
 revLookup['-'.charCodeAt(0)] = 62;
 revLookup['_'.charCodeAt(0)] = 63;
 
-const getLens = b64 => {
+const getLens = (b64: string | string[]) => {
 	const len = b64.length;
 
 	// We're encoding some strings not multiple of 4, so, disable this check
@@ -37,16 +37,17 @@ const getLens = b64 => {
 };
 
 // base64 is 4/3 + up to two characters of the original data
-export const byteLength = b64 => {
+export const byteLength = (b64: string) => {
 	const lens = getLens(b64);
 	const validLen = lens[0];
 	const placeHoldersLen = lens[1];
 	return ((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
 };
 
-const _byteLength = (b64, validLen, placeHoldersLen) => ((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
+const _byteLength = (b64: any, validLen: number, placeHoldersLen: number) =>
+	((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
 
-export const toByteArray = b64 => {
+export const toByteArray = (b64: string) => {
 	let tmp;
 	const lens = getLens(b64);
 	const validLen = lens[0];
@@ -92,10 +93,10 @@ export const toByteArray = b64 => {
 	return arr;
 };
 
-const tripletToBase64 = num =>
+const tripletToBase64 = (num: number) =>
 	lookup[(num >> 18) & 0x3f] + lookup[(num >> 12) & 0x3f] + lookup[(num >> 6) & 0x3f] + lookup[num & 0x3f];
 
-const encodeChunk = (uint8, start, end) => {
+const encodeChunk = (uint8: number[] | Uint8Array, start: number, end: number) => {
 	let tmp;
 	const output = [];
 	for (let i = start; i < end; i += 3) {
@@ -105,7 +106,7 @@ const encodeChunk = (uint8, start, end) => {
 	return output.join('');
 };
 
-export const fromByteArray = uint8 => {
+export const fromByteArray = (uint8: number[] | Uint8Array) => {
 	let tmp;
 	const len = uint8.length;
 	const extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes

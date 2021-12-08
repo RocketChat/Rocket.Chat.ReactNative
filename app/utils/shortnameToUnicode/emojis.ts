@@ -3,7 +3,7 @@
 /* eslint-disable object-curly-spacing */
 /* eslint-disable comma-spacing */
 /* eslint-disable key-spacing */
-const emojis = {
+const emojis: { [key: string]: string } = {
 	':england:': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
 	':scotland:': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
 	':wales:': '🏴󠁧󠁢󠁷󠁬󠁳󠁿',

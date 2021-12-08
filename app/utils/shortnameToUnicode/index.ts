@@ -2,11 +2,11 @@ import emojis from './emojis';
 import ascii, { asciiRegexp } from './ascii';
 
 const shortnamePattern = new RegExp(/:[-+_a-z0-9]+:/, 'gi');
-const replaceShortNameWithUnicode = shortname => emojis[shortname] || shortname;
+const replaceShortNameWithUnicode = (shortname: string) => emojis[shortname] || shortname;
 const regAscii = new RegExp(`((\\s|^)${asciiRegexp}(?=\\s|$|[!,.?]))`, 'gi');
 
-const unescapeHTML = string => {
-	const unescaped = {
+const unescapeHTML = (string: string) => {
+	const unescaped: { [key: string]: string } = {
 		'&amp;': '&',
 		'&#38;': '&',
 		'&#x26;': '&',
@@ -27,7 +27,7 @@ const unescapeHTML = string => {
 	return string.replace(/&(?:amp|#38|#x26|lt|#60|#x3C|gt|#62|#x3E|apos|#39|#x27|quot|#34|#x22);/gi, match => unescaped[match]);
 };
 
-const shortnameToUnicode = str => {
+const shortnameToUnicode = (str: string): string => {
 	str = str.replace(shortnamePattern, replaceShortNameWithUnicode);
 
 	str = str.replace(regAscii, (entire, m1, m2, m3) => {

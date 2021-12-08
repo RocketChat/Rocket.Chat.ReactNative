@@ -3,7 +3,7 @@
 /* eslint-disable object-curly-spacing */
 /* eslint-disable comma-spacing */
 /* eslint-disable key-spacing */
-const ascii = {
+const ascii: { [key: string]: string } = {
 	'*\\0/*': '🙆',
 	'*\\O/*': '🙆',
 	'-___-': '😑',
