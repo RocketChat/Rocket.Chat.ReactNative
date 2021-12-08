@@ -20,6 +20,7 @@ import { compareServerVersion, methods } from '../../../lib/utils';
 import List from './List';
 import NavBottomFAB from './NavBottomFAB';
 import { ChatsStackParamList } from '../../../stacks/types';
+import { IRoomItem } from '../index';
 
 const QUERY_SIZE = 50;
 
@@ -270,7 +271,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 		return null;
 	};
 
-	handleScrollToIndexFailed = (params: any) => {
+	handleScrollToIndexFailed = (params: { highestMeasuredFrameIndex: number }) => {
 		const { listRef } = this.props;
 		listRef.current.getNode().scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 	};
@@ -324,7 +325,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 		return null;
 	};
 
-	renderItem = ({ item, index }: { item: any; index: number }) => {
+	renderItem = ({ item, index }: { item: IRoomItem; index: number }) => {
 		const { messages, highlightedMessage } = this.state;
 		const { renderRow } = this.props;
 		return renderRow(item, messages[index + 1], highlightedMessage);
