@@ -57,7 +57,7 @@ interface IListItemContent {
 	title?: string;
 	subtitle?: string;
 	left?: Function;
-	right?: Function;
+	right?: (() => JSX.Element) | null;
 	disabled?: boolean;
 	testID?: string;
 	theme?: string;
@@ -132,8 +132,8 @@ const Button: React.FC<IListItemButton> = React.memo(({ onPress, backgroundColor
 	</Touch>
 ));
 
-interface IListItem {
-	onPress: Function;
+interface IListItem extends IListItemContent {
+	onPress?: Function;
 	theme?: string;
 	backgroundColor?: string;
 }

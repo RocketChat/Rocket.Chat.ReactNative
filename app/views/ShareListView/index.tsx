@@ -53,6 +53,9 @@ interface IChat {
 }
 
 interface IServerInfo {
+	id: string;
+	iconURL: string;
+	name: string;
 	useRealName: boolean;
 }
 interface IState {
