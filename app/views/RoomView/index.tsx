@@ -1250,7 +1250,6 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 					ref={this.list}
 					listRef={this.flatList}
 					rid={rid}
-					t={t}
 					tmid={this.tmid}
 					theme={theme}
 					tunread={room?.tunread}

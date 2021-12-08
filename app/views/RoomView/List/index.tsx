@@ -48,7 +48,6 @@ interface IRoomListContainerProps {
 	navigation: StackNavigationProp<ChatsStackParamList>;
 	showMessageInMainThread: boolean;
 	serverVersion: string;
-	t?: string; // TODO - verify if this props exist
 }
 
 class ListContainer extends React.Component<IRoomListContainerProps, any> {
