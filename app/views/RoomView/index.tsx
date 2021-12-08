@@ -177,9 +177,10 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		done: (...args: any[]) => any;
 		cancel: () => void;
 	};
-	private willBlurListener?: any; // TODO remove this any
-	private subSubscription?: any; // TODO remove this any
-	private queryUnreads?: any; // TODO remove this any
+
+	private willBlurListener?: { remove(): void };
+	private subSubscription?: { unsubscribe(): void };
+	private queryUnreads?: { unsubscribe(): void };
 	private retryInit: any;
 	private retryInitTimeout?: ReturnType<typeof setTimeout>;
 	private retryFindCount: any;
