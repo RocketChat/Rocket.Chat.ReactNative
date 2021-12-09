@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
 
 interface IRoomListProps extends FlatListProps<IRoomItem> {
 	listRef: React.Ref<FlatList>;
+	// listRef: React.MutableRefObject<AnimatedComponent<typeof FlatList>>;
 }
 
 const List = ({ listRef, ...props }: IRoomListProps): JSX.Element => (
