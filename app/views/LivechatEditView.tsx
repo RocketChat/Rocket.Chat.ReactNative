@@ -18,8 +18,9 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { IVisitor } from '../definition/IVisitor';
-import { ITagsOmnichannel } from '../definition/ITagsOmnichannel';
+import { IVisitor } from '../definitions/IVisitor';
+import { ITagsOmnichannel } from '../definitions/ITagsOmnichannel';
+import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
@@ -53,12 +54,12 @@ interface IField {
 }
 
 interface IInputs {
-	[key: string]: string | undefined;
+	[key: string]: string | string[] | undefined;
 	name: string;
 	email: string;
 	phone?: string;
 	topic: string;
-	tags: string;
+	tag: string[];
 }
 
 type TParams = IVisitor & IInputs;
@@ -76,8 +77,8 @@ interface ICustomFields {
 }
 interface ILivechatEditViewProps {
 	user: any;
-	navigation: StackNavigationProp<any, 'LivechatEditView'>;
-	route: RouteProp<any, 'LivechatEditView'>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
+	route: RouteProp<ChatsStackParamList, 'LivechatEditView'>;
 	theme: string;
 	editOmnichannelContact: string[];
 	editLivechatRoomCustomfields: string[];

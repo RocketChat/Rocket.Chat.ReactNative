@@ -13,8 +13,8 @@ export interface IVisitor {
 	updatedAt?: Date;
 	name: string;
 	department?: string;
-	phone?: Array<IVisitorPhone>;
-	visitorEmails?: Array<IVisitorEmail>;
+	phone?: IVisitorPhone[];
+	visitorEmails?: IVisitorEmail[];
 	customFields?: {
 		[key: string]: any;
 	};
