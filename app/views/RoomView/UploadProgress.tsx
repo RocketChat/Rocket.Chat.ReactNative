@@ -69,8 +69,8 @@ interface IItem {
 	error: boolean;
 	progress: number;
 	path: string;
-	update: Function;
-	destroyPermanently(): void;
+	update(param: () => void): void;
+	destroyPermanently(): Promise<void>;
 }
 
 class UploadProgress extends Component<IRoomUploadProgressProps, any> {
