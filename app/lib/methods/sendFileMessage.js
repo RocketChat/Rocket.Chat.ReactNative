@@ -1,6 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
+// eslint-disable-next-line import/extensions, import/no-unresolved
 import FileUpload from '../../utils/fileUpload';
 import database from '../database';
 import log from '../../utils/log';
