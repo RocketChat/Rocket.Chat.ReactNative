@@ -7,6 +7,26 @@ import I18n from '../i18n';
 import { extractHostname } from './server';
 
 const { SSLPinning } = NativeModules;
+const { documentDirectory } = FileSystem;
+
+const extractFileScheme = (path: string) => path.replace('file://', ''); // file:// isn't allowed by obj-C
+
+const getPath = (name: string) => `${documentDirectory}/${name}`;
+
+interface ICertificate {
+	path: string;
+	password: string;
+}
+
+const persistCertificate = async (name: string, password: string) => {
+	const certificatePath = getPath(name);
+	const certificate: ICertificate = {
+		path: extractFileScheme(certificatePath),
+		password
+	};
+	await UserPreferences.setMapAsync(name, certificate);
+	return certificate;
+};
 
 const RCSSLPinning = Platform.select({
 	ios: {
@@ -26,17 +46,9 @@ const RCSSLPinning = Platform.select({
 								text: 'OK',
 								onPress: async password => {
 									try {
-										const certificatePath = `${FileSystem.documentDirectory}/${name}`;
-
+										const certificatePath = getPath(name);
 										await FileSystem.copyAsync({ from: uri, to: certificatePath });
-
-										const certificate = {
-											path: certificatePath.replace('file://', ''), // file:// isn't allowed by obj-C
-											password
-										};
-
-										await UserPreferences.setMapAsync(name, certificate);
-
+										await persistCertificate(name, password!);
 										resolve(name);
 									} catch (e) {
 										reject(e);
@@ -50,16 +62,19 @@ const RCSSLPinning = Platform.select({
 					reject(e);
 				}
 			}),
-		setCertificate: async (alias: any, server: string) => {
-			if (alias) {
-				const certificate = await UserPreferences.getMapAsync(alias);
+		setCertificate: async (name: string, server: string) => {
+			if (name) {
+				let certificate = (await UserPreferences.getMapAsync(name)) as ICertificate;
+				if (!certificate.path.match(extractFileScheme(documentDirectory!))) {
+					certificate = await persistCertificate(name, certificate.password);
+				}
 				await UserPreferences.setMapAsync(extractHostname(server), certificate);
 			}
 		}
 	},
 	android: {
 		pickCertificate: () => SSLPinning?.pickCertificate(),
-		setCertificate: alias => SSLPinning?.setCertificate(alias)
+		setCertificate: name => SSLPinning?.setCertificate(name)
 	}
 });
 
