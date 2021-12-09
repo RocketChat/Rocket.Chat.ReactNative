@@ -1,12 +1,14 @@
 import { Animated, Easing } from 'react-native';
-import { HeaderStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
+import { HeaderStyleInterpolators, TransitionPreset, TransitionPresets } from '@react-navigation/stack';
+// eslint-disable-next-line import/no-unresolved
+import { StackCardStyleInterpolator, TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
 
 import { isAndroid } from '../deviceInfo';
 import conditional from './conditional';
 
 const { multiply } = Animated;
 
-const forFadeFromCenter = ({ current, closing }) => {
+const forFadeFromCenter: StackCardStyleInterpolator = ({ current, closing }) => {
 	const opacity = conditional(
 		closing,
 		current.progress,
@@ -23,7 +25,7 @@ const forFadeFromCenter = ({ current, closing }) => {
 	};
 };
 
-const FadeIn = {
+const FadeIn: TransitionSpec = {
 	animation: 'timing',
 	config: {
 		duration: 250,
@@ -31,7 +33,7 @@ const FadeIn = {
 	}
 };
 
-const FadeOut = {
+const FadeOut: TransitionSpec = {
 	animation: 'timing',
 	config: {
 		duration: 150,
@@ -48,7 +50,7 @@ export const FadeFromCenterModal = {
 	cardStyleInterpolator: forFadeFromCenter
 };
 
-const forStackAndroid = ({ current, inverted, layouts: { screen } }) => {
+const forStackAndroid: StackCardStyleInterpolator = ({ current, inverted, layouts: { screen } }) => {
 	const translateX = multiply(
 		current.progress.interpolate({
 			inputRange: [0, 1],
@@ -70,7 +72,7 @@ const forStackAndroid = ({ current, inverted, layouts: { screen } }) => {
 	};
 };
 
-const StackAndroid = {
+const StackAndroid: TransitionPreset = {
 	gestureDirection: 'horizontal',
 	transitionSpec: {
 		open: FadeIn,
