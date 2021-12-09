@@ -1,4 +1,4 @@
 export interface IRocketChatRecord {
-	id: string;
+	_id: string;
 	updatedAt: Date;
 }

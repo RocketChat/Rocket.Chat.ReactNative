@@ -31,13 +31,13 @@ export type ChatsStackParamList = {
 		joined: boolean;
 	};
 	SelectListView: {
-		data: any;
+		data: IRoom[];
 		title: string;
 		infoText: string;
-		nextAction: Function;
-		showAlert: boolean;
+		nextAction: (selected: string[]) => void;
+		showAlert: () => void;
 		isSearch: boolean;
-		onSearch: Function;
+		onSearch: (text: string) => Partial<IRoom[]>;
 		isRadio?: boolean;
 	};
 	RoomInfoView: {

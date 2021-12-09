@@ -13,7 +13,7 @@ interface IRoomHeaderContainerProps {
 	prid: string;
 	tmid: string;
 	teamMain: boolean;
-	usersTyping: string;
+	usersTyping: string[];
 	status: string;
 	statusText: string;
 	connecting: boolean;

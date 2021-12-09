@@ -25,6 +25,8 @@ import { IRoom, RoomType } from '../../definitions/IRoom';
 interface IMessagesViewProps {
 	user: {
 		id: string;
+		username: string;
+		token: string;
 	};
 	baseUrl: string;
 	navigation: CompositeNavigationProp<

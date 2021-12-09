@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
@@ -10,7 +10,7 @@ interface IListIcon {
 	theme?: string;
 	name: string;
 	color?: string;
-	style?: ViewStyle;
+	style?: StyleProp<ViewStyle>;
 	testID?: string;
 }
 

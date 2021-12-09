@@ -17,6 +17,7 @@ interface IMessageContainerProps {
 		username: string;
 		token: string;
 	};
+	msg?: string;
 	rid?: string;
 	timeFormat: string;
 	style?: ViewStyle;

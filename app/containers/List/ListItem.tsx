@@ -57,7 +57,7 @@ interface IListItemContent {
 	title?: string;
 	subtitle?: string;
 	left?: Function;
-	right?: (() => JSX.Element) | null;
+	right?: () => JSX.Element | null;
 	disabled?: boolean;
 	testID?: string;
 	theme?: string;
