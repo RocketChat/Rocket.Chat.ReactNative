@@ -21,8 +21,7 @@ export default function usersActivity(state = initialState, action) {
 		case USERS_ACTIVITY.ADD:
 			if (state[roomId]) {
 				const obj = state[roomId];
-				delete obj[username];
-				return { ...state, [roomId]: { [username]: activity, ...obj } };
+				return { ...state, [roomId]: { ...obj, [username]: activity } };
 			}
 			const add = {};
 			add[roomId] = { [username]: activity };
