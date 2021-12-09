@@ -1519,23 +1519,11 @@ const RocketChat = {
 		return types[t];
 	},
 	getFiles(roomId, type, offset) {
-		const serverVersion = reduxStore.getState().server.version;
 		// RC 0.59.0
 		return this.sdk.get(`${this.roomTypeToApiType(type)}.files`, {
 			roomId,
 			offset,
-			sort: { uploadedAt: -1 },
-			...(compareServerVersion(serverVersion, '4.2.0', methods.lowerThan) && {
-				fields: {
-					name: 1,
-					description: 1,
-					size: 1,
-					type: 1,
-					uploadedAt: 1,
-					url: 1,
-					userId: 1
-				}
-			})
+			sort: { uploadedAt: -1 }
 		});
 	},
 	getMessages(roomId, type, query, offset) {
