@@ -878,7 +878,7 @@ class RoomView extends React.Component {
 		}
 	};
 
-	userTyping = ({ rid, tmid, performing }) => {
+	userTyping = async ({ rid, tmid, performing }) => {
 		if (this.typingRemove) {
 			clearTimeout(this.typingRemove);
 			this.typingRemove = 0;
@@ -890,7 +890,11 @@ class RoomView extends React.Component {
 			}, 5000);
 		}
 
-		RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_TYPING });
+		try {
+			await RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_TYPING });
+		} catch (e) {
+			log(e);
+		}
 	};
 
 	userRecording = ({ rid, tmid, performing }) => {
