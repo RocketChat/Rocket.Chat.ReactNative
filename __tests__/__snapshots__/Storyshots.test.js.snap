@@ -1419,6 +1419,7 @@ Array [
         </Text>
       </View>
       <View
+        accessibilityLabel="Use"
         accessible={true}
         focusable={true}
         onClick={[Function]}
@@ -1581,6 +1582,7 @@ Array [
         </Text>
       </View>
       <View
+        accessibilityLabel="Use"
         accessible={true}
         focusable={true}
         onClick={[Function]}
@@ -41244,6 +41246,7 @@ exports[`Storyshots Message Show a button as attachment 1`] = `
                 Test Button
               </Text>
               <View
+                accessibilityLabel="Text button"
                 accessible={true}
                 focusable={true}
                 onClick={[Function]}

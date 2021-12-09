@@ -19,6 +19,7 @@ import Button from '../containers/Button';
 import { withTheme } from '../theme';
 import I18n from '../i18n';
 import sharedStyles from './Styles';
+import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
 
 const styles = StyleSheet.create({
 	container: {
@@ -60,7 +61,7 @@ interface IE2ESaveYourPasswordViewState {
 
 interface IE2ESaveYourPasswordViewProps {
 	server: string;
-	navigation: StackNavigationProp<any, 'E2ESaveYourPasswordView'>;
+	navigation: StackNavigationProp<E2ESaveYourPasswordStackParamList, 'E2ESaveYourPasswordView'>;
 	encryptionSetBanner(): void;
 	theme: string;
 }

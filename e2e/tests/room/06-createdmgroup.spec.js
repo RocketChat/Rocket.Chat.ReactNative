@@ -1,9 +1,11 @@
 const data = require('../../data');
-const { navigateToLogin, login } = require('../../helpers/app');
+const { navigateToLogin, login, platformTypes } = require('../../helpers/app');
 
 describe('Group DM', () => {
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 	});
@@ -29,7 +31,7 @@ describe('Group DM', () => {
 
 		describe('Usage', () => {
 			it('should navigate to create DM', async () => {
-				await element(by.label('Create Direct Messages')).tap();
+				await element(by[textMatcher]('Create Direct Messages')).tap();
 			});
 
 			it('should add users', async () => {

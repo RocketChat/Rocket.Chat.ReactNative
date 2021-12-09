@@ -1,7 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Switch } from 'react-native';
 import { connect } from 'react-redux';
+import { StackNavigationOptions } from '@react-navigation/stack';
+import Model from '@nozbe/watermelondb/Model';
+import { Subscription } from 'rxjs';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
@@ -16,19 +18,42 @@ import { events, logEvent } from '../utils/log';
 
 const DEFAULT_BIOMETRY = false;
 
-class ScreenLockConfigView extends React.Component {
-	static navigationOptions = () => ({
+interface IServerRecords extends Model {
+	autoLock?: boolean;
+	autoLockTime?: number;
+	biometry?: boolean;
+}
+
+interface IItem {
+	title: string;
+	value: number;
+	disabled?: boolean;
+}
+
+interface IScreenLockConfigViewProps {
+	theme: string;
+	server: string;
+	Force_Screen_Lock: boolean;
+	Force_Screen_Lock_After: number;
+}
+
+interface IScreenLockConfigViewState {
+	autoLock?: boolean;
+	autoLockTime?: number | null;
+	biometry?: boolean;
+	biometryLabel: null;
+}
+
+class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
+	private serverRecord?: IServerRecords;
+
+	private observable?: Subscription;
+
+	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Screen_lock')
 	});
 
-	static propTypes = {
-		theme: PropTypes.string,
-		server: PropTypes.string,
-		Force_Screen_Lock: PropTypes.string,
-		Force_Screen_Lock_After: PropTypes.string
-	};
-
-	constructor(props) {
+	constructor(props: IScreenLockConfigViewProps) {
 		super(props);
 		this.state = {
 			autoLock: false,
@@ -104,7 +129,7 @@ class ScreenLockConfigView extends React.Component {
 		logEvent(events.SLC_SAVE_SCREEN_LOCK);
 		const { autoLock, autoLockTime, biometry } = this.state;
 		const serversDB = database.servers;
-		await serversDB.action(async () => {
+		await serversDB.write(async () => {
 			await this.serverRecord?.update(record => {
 				record.autoLock = autoLock;
 				record.autoLockTime = autoLockTime === null ? DEFAULT_AUTO_LOCK : autoLockTime;
@@ -113,7 +138,7 @@ class ScreenLockConfigView extends React.Component {
 		});
 	};
 
-	changePasscode = async ({ force }) => {
+	changePasscode = async ({ force }: { force: boolean }) => {
 		logEvent(events.SLC_CHANGE_PASSCODE);
 		await changePasscode({ force });
 	};
@@ -144,12 +169,12 @@ class ScreenLockConfigView extends React.Component {
 		);
 	};
 
-	isSelected = value => {
+	isSelected = (value: number) => {
 		const { autoLockTime } = this.state;
 		return autoLockTime === value;
 	};
 
-	changeAutoLockTime = autoLockTime => {
+	changeAutoLockTime = (autoLockTime: number) => {
 		logEvent(events.SLC_CHANGE_AUTOLOCK_TIME);
 		this.setState({ autoLockTime }, () => this.save());
 	};
@@ -159,7 +184,7 @@ class ScreenLockConfigView extends React.Component {
 		return <List.Icon name='check' color={themes[theme].tintColor} />;
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: IItem }) => {
 		const { title, value, disabled } = item;
 		return (
 			<>
@@ -194,7 +219,7 @@ class ScreenLockConfigView extends React.Component {
 		if (!autoLock) {
 			return null;
 		}
-		let items = this.defaultAutoLockOptions;
+		let items: IItem[] = this.defaultAutoLockOptions;
 		if (Force_Screen_Lock && Force_Screen_Lock_After > 0) {
 			items = [
 				{
@@ -262,7 +287,7 @@ class ScreenLockConfigView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	server: state.server.server,
 	Force_Screen_Lock: state.settings.Force_Screen_Lock,
 	Force_Screen_Lock_After: state.settings.Force_Screen_Lock_After

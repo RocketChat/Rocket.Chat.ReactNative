@@ -43,7 +43,11 @@ const Content = React.memo(
 			content = <Text style={[styles.text, { color: themes[props.theme].bodyText }]}>{I18n.t('Sent_an_attachment')}</Text>;
 		} else if (props.isEncrypted) {
 			content = (
-				<Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{I18n.t('Encrypted_message')}</Text>
+				<Text
+					style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}
+					accessibilityLabel={I18n.t('Encrypted_message')}>
+					{I18n.t('Encrypted_message')}
+				</Text>
 			);
 		} else {
 			const { baseUrl, user, onLinkPress } = useContext(MessageContext);

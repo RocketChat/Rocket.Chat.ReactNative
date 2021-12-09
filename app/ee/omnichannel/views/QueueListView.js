@@ -161,4 +161,5 @@ const mapStateToProps = state => ({
 	showAvatar: state.sortPreferences.showAvatar,
 	displayMode: state.sortPreferences.displayMode
 });
+
 export default connect(mapStateToProps)(withDimensions(withTheme(QueueListView)));

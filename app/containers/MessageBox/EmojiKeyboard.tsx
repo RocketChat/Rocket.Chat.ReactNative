@@ -13,7 +13,7 @@ interface IMessageBoxEmojiKeyboard {
 }
 
 export default class EmojiKeyboard extends React.PureComponent<IMessageBoxEmojiKeyboard, any> {
-	private readonly baseUrl: any;
+	private readonly baseUrl: string;
 
 	constructor(props: IMessageBoxEmojiKeyboard) {
 		super(props);

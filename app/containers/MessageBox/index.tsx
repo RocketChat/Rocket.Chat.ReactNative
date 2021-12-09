@@ -1138,4 +1138,4 @@ const mapStateToProps = (state: any) => ({
 });
 
 // @ts-ignore
-export default connect(mapStateToProps, null, null, { forwardRef: true })(withActionSheet(MessageBox));
+export default connect(mapStateToProps, null, null, { forwardRef: true })(withActionSheet(MessageBox)) as any;
