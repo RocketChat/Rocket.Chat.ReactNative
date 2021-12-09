@@ -411,7 +411,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		true
 	);
 
-	getBadgeColor = (item: any) => {
+	getBadgeColor = (item: IThreadModel) => {
 		const { subscription } = this.state;
 		const { theme } = this.props;
 		return getBadgeColor({ subscription, theme, messageId: item?.id });
@@ -456,7 +456,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 	};
 
-	renderItem = ({ item }: { item: any }) => {
+	renderItem = ({ item }: { item: IThreadModel }) => {
 		const { user, navigation, baseUrl, useRealName } = this.props;
 		const badgeColor = this.getBadgeColor(item);
 		return (
