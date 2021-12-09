@@ -904,7 +904,6 @@ class RoomView extends React.Component {
 		}
 
 		if (performing) {
-			// recording remove is to set false the recording if the user was recording and click on back instead cancel the recording
 			this.recordingRemove = setTimeout(() => {
 				this.userRecording({ rid, tmid, performing: false });
 			}, 5000);
@@ -918,7 +917,6 @@ class RoomView extends React.Component {
 			clearTimeout(this.recordingSend);
 		}
 
-		// Recording Send is a variable to send the true each time, instead send the same value continuously
 		this.recordingSend = setTimeout(
 			() => {
 				this.recordingSend = 0;
