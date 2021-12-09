@@ -40,7 +40,7 @@ export const logServerVersion = (serverVersion: string): void => {
 	};
 };
 
-export const logEvent = (eventName: string, payload: { [key: string]: any }): void => {
+export const logEvent = (eventName: string, payload?: { [key: string]: any }): void => {
 	try {
 		if (!isFDroidBuild) {
 			analytics().logEvent(eventName, payload);
@@ -68,7 +68,7 @@ export const toggleAnalyticsEventsReport = (value: boolean): boolean => {
 	return (reportAnalyticsEvents = value);
 };
 
-export default (e: { message: string }): void => {
+export default (e: any): void => {
 	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
 		bugsnag.notify(e, (event: { addMetadata: (arg0: string, arg1: {}) => void }) => {
 			event.addMetadata('details', { ...metadata });
