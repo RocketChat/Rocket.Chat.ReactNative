@@ -627,7 +627,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			userTyping({ rid, tmid, performing: isTyping });
+			userTyping({ rid, tmid, performing: false });
 			return;
 		}
 
