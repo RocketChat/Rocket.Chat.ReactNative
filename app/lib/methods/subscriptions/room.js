@@ -85,18 +85,11 @@ export default class RoomSubscription {
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
 
-	handleActionTimeout = ({ name, rid, tmid, valueTimeout }) => {
-		reduxStore.dispatch(clearUserActivity(name, rid, tmid));
-		clearTimeout(this.usersActivityTimeout[valueTimeout]);
-		delete this.usersActivityTimeout[valueTimeout];
-	};
-
 	handleNotifyRoomReceived = protectedFunction(ddpMessage => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		const { UI_Use_Real_Name } = reduxStore.getState().settings;
 		const { user } = reduxStore.getState().login;
 		const { rooms } = reduxStore.getState().room;
-		const { version: serverVersion } = reduxStore.getState().server;
 
 		if (ev === 'typing') {
 			if (rooms[0] !== _rid) {
@@ -134,21 +127,15 @@ export default class RoomSubscription {
 				}
 
 				// For now, we need this just for the tmid, because the web isn't removing when is idle
-				// TODO: Refactor this after
 				if (tmid) {
-					const valueTimeout = `${tmid}-${name}`;
+					const valueTimeout = `${tmid}-${name}-${activity}`;
 
-					if (this.usersActivityTimeout.hasOwnProperty(valueTimeout)) {
-						// Revalidate the timeouts every new interaction from the same user if he interacted before
+					if (this.usersActivityTimeout[valueTimeout]) {
 						clearTimeout(this.usersActivityTimeout[valueTimeout]);
-						this.usersActivityTimeout[valueTimeout] = setTimeout(() => {
-							this.handleActionTimeout({ name, rid, tmid, valueTimeout });
-						}, USER_ACTIVITY_TIME_OUT);
-					} else {
-						this.usersActivityTimeout[valueTimeout] = setTimeout(() => {
-							this.handleActionTimeout({ name, rid, tmid, valueTimeout });
-						}, USER_ACTIVITY_TIME_OUT);
 					}
+					this.usersActivityTimeout[valueTimeout] = setTimeout(() => {
+						reduxStore.dispatch(clearUserActivity(name, rid, tmid));
+					}, USER_ACTIVITY_TIME_OUT);
 				}
 			});
 		}
