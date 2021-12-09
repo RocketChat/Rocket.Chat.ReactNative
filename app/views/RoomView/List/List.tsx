@@ -1,9 +1,10 @@
 import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, FlatListProps, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { isIOS } from '../../../utils/deviceInfo';
 import scrollPersistTaps from '../../../utils/scrollPersistTaps';
+import { IRoomItem } from '../index';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -16,26 +17,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IRoomListProps {
-	listRef: any;
-	onScroll?: any;
-	scrollEventThrottle?: number;
-	data?: any;
-	renderItem?: Function;
-	onEndReached?: Function;
-	ListFooterComponent?: Function;
-	onScrollToIndexFailed?: Function;
-	onViewableItemsChanged?: Function;
-	viewabilityConfig?: any;
-	refreshControl?: any;
+interface IRoomListProps extends FlatListProps<IRoomItem> {
+	listRef: React.Ref<FlatList>;
 }
 
-const List = ({ listRef, ...props }: IRoomListProps) => (
-	// @ts-ignore
+const List = ({ listRef, ...props }: IRoomListProps): JSX.Element => (
 	<AnimatedFlatList
 		testID='room-view-messages'
 		ref={listRef}
-		keyExtractor={(item: any) => item.id}
+		// @ts-ignore
+		keyExtractor={(item: IRoomItem) => item.id}
 		contentContainerStyle={styles.contentContainer}
 		style={styles.list}
 		inverted

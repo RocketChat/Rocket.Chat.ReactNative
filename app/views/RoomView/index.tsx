@@ -137,7 +137,7 @@ interface IRoomViewProps {
 }
 
 export interface IRoomItem {
-	id?: string;
+	id: string;
 	t: string;
 	rid: string;
 	tmid?: string;
