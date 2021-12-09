@@ -34,45 +34,15 @@ import EventEmitter from '../../utils/events';
 import { LISTENER } from '../../containers/Toast';
 import SearchHeader from '../../containers/SearchHeader';
 import { ChatsStackParamList } from '../../stacks/types';
-import { RoomType } from '../../definitions/IRoom';
-import { FILTER } from './filters';
+import { IRoomModel, RoomType } from '../../definitions/IRoom';
+import { IThreadResult, IThreadModel } from '../../definitions/IThread';
+import { Filter } from './filters';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import Dropdown from './Dropdown';
 import Item from './Item';
 import styles from './styles';
 
 const API_FETCH_COUNT = 50;
-
-interface IFileThread {
-	_id: string;
-	name: string;
-	type: string;
-}
-interface IUserCreateThread {
-	_id: string;
-	username: string;
-	name: string;
-}
-
-interface IThreadResult {
-	_id: string;
-	rid: string;
-	ts: string;
-	msg: string;
-	file?: IFileThread;
-	files?: IFileThread[];
-	groupable?: boolean;
-	attachments?: any[];
-	md?: any[];
-	u: IUserCreateThread;
-	_updatedAt: string;
-	urls: any[];
-	mentions: any[];
-	channels: any[];
-	replies: string[];
-	tcount: number;
-	tlm: string;
-}
 
 interface IResultFetch {
 	threads: IThreadResult[];
@@ -86,11 +56,10 @@ interface IThreadMessagesViewState {
 	loading: boolean;
 	end: boolean;
 	messages: any[];
-	displayingThreads: any[];
-	// TODO: Refactor when migrate room
-	subscription: any;
+	displayingThreads: IThreadModel[];
+	subscription: IRoomModel;
 	showFilterDropdown: boolean;
-	currentFilter: FILTER;
+	currentFilter: Filter;
 	isSearching: boolean;
 	searchText: string;
 }
@@ -129,9 +98,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			end: false,
 			messages: [],
 			displayingThreads: [],
-			subscription: {},
+			subscription: {} as IRoomModel,
 			showFilterDropdown: false,
-			currentFilter: FILTER.ALL,
+			currentFilter: Filter.All,
 			isSearching: false,
 			searchText: ''
 		};
@@ -219,10 +188,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			const db = database.active;
 
 			// subscription query
-			// TODO: Refactor when migrate room
-			const subscription = await db.collections.get('subscriptions').find(this.rid);
+			const subscription = (await db.collections.get('subscriptions').find(this.rid)) as IRoomModel;
 			const observable = subscription.observe();
-			this.subSubscription = observable.subscribe((data: any) => {
+			this.subSubscription = observable.subscribe(data => {
 				this.setState({ subscription: data });
 			});
 
@@ -232,7 +200,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 	};
 
-	subscribeMessages = (subscription?: any, searchText?: string) => {
+	subscribeMessages = (subscription?: IRoomModel, searchText?: string) => {
 		try {
 			const db = database.active;
 
@@ -250,10 +218,11 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				.get('threads')
 				.query(...whereClause)
 				.observeWithColumns(['updated_at']);
-			// TODO: Refactor when migrate room
+
+			// TODO: Refactor when migrate messages
 			this.messagesSubscription = this.messagesObservable.subscribe((messages: any) => {
 				const { currentFilter } = this.state;
-				const displayingThreads = this.getFilteredThreads(messages, subscription, currentFilter);
+				const displayingThreads = this.getFilteredThreads(messages, subscription!, currentFilter);
 				if (this.mounted) {
 					this.setState({ messages, displayingThreads });
 				} else {
@@ -306,7 +275,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			const db: Database = database.active;
 			const threadsCollection = db.get('threads');
 			// TODO: Refactor when migrate room
-			const allThreadsRecords: any[] = await subscription.threads.fetch();
+			const allThreadsRecords = await subscription.threads.fetch();
 			let threadsToCreate: any[] = [];
 			let threadsToUpdate: any[] = [];
 			let threadsToDelete: any[] = [];
@@ -316,7 +285,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				// filter threads
 				threadsToCreate = update.filter(i1 => !allThreadsRecords.find(i2 => i1._id === i2.id));
 				threadsToUpdate = allThreadsRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
-				threadsToCreate = threadsToCreate.map((thread: IThreadResult) =>
+				threadsToCreate = threadsToCreate.map(thread =>
 					threadsCollection.prepareCreate(
 						protectedFunction((t: any) => {
 							t._raw = sanitizedRaw({ id: thread._id }, threadsCollection.schema);
@@ -449,13 +418,13 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	};
 
 	// helper to query threads
-	getFilteredThreads = (messages: any, subscription: any, currentFilter?: FILTER) => {
+	getFilteredThreads = (messages: any, subscription: IRoomModel, currentFilter?: Filter): IThreadModel[] => {
 		// const { currentFilter } = this.state;
 		const { user } = this.props;
-		if (currentFilter === FILTER.FOLLOWING) {
+		if (currentFilter === Filter.Following) {
 			return messages?.filter((item: { replies: any[] }) => item?.replies?.find(u => u === user.id));
 		}
-		if (currentFilter === FILTER.UNREAD) {
+		if (currentFilter === Filter.Unread) {
 			return messages?.filter((item: { id: string }) => subscription?.tunread?.includes(item?.id));
 		}
 		return messages;
@@ -472,7 +441,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	closeFilterDropdown = () => this.setState({ showFilterDropdown: false });
 
-	onFilterSelected = (filter: FILTER) => {
+	onFilterSelected = (filter: Filter) => {
 		const { messages, subscription } = this.state;
 		const displayingThreads = this.getFilteredThreads(messages, subscription, filter);
 		this.setState({ currentFilter: filter, displayingThreads });
@@ -525,9 +494,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		const { theme } = this.props;
 		if (!messages?.length || !displayingThreads?.length) {
 			let text;
-			if (currentFilter === FILTER.FOLLOWING) {
+			if (currentFilter === Filter.Following) {
 				text = I18n.t('No_threads_following');
-			} else if (currentFilter === FILTER.UNREAD) {
+			} else if (currentFilter === Filter.Unread) {
 				text = I18n.t('No_threads_unread');
 			} else {
 				text = I18n.t('No_threads');

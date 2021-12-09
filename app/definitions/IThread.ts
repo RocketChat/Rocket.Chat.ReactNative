@@ -6,6 +6,31 @@ import { IReaction } from './IReaction';
 import { RoomType } from './IRoom';
 import { IUrl } from './IUrl';
 
+interface IFileThread {
+	_id: string;
+	name: string;
+	type: string;
+}
+export interface IThreadResult {
+	_id: string;
+	rid: string;
+	ts: string;
+	msg: string;
+	file?: IFileThread;
+	files?: IFileThread[];
+	groupable?: boolean;
+	attachments?: IAttachment[];
+	md?: any[];
+	u: { _id: string; username: string; name: string };
+	_updatedAt: string;
+	urls: any[];
+	mentions: any[];
+	channels: any[];
+	replies: string[];
+	tcount: number;
+	tlm: string;
+}
+
 export interface IThread {
 	id: string;
 	msg: string;

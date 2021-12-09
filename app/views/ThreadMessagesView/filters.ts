@@ -1,5 +1,5 @@
-export enum FILTER {
-	ALL = 'All',
-	FOLLOWING = 'Following',
-	UNREAD = 'Unread'
+export enum Filter {
+	All = 'All',
+	Following = 'Following',
+	Unread = 'Unread'
 }

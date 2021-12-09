@@ -7,7 +7,7 @@ import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
 import { headerHeight } from '../../../containers/Header';
 import * as List from '../../../containers/List';
-import { FILTER } from '../filters';
+import { Filter } from '../filters';
 import DropdownItemFilter from './DropdownItemFilter';
 import DropdownItemHeader from './DropdownItemHeader';
 
@@ -17,7 +17,7 @@ interface IDropdownProps {
 	isMasterDetail: boolean;
 	theme: string;
 	insets: EdgeInsets;
-	currentFilter: string;
+	currentFilter: Filter;
 	onClose: () => void;
 	onFilterSelected: (value: string) => void;
 }
@@ -86,9 +86,9 @@ class Dropdown extends React.Component<IDropdownProps> {
 					]}>
 					<DropdownItemHeader currentFilter={currentFilter} onPress={this.close} />
 					<List.Separator />
-					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.ALL} onPress={onFilterSelected} />
-					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.FOLLOWING} onPress={onFilterSelected} />
-					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.UNREAD} onPress={onFilterSelected} />
+					<DropdownItemFilter currentFilter={currentFilter} value={Filter.All} onPress={onFilterSelected} />
+					<DropdownItemFilter currentFilter={currentFilter} value={Filter.Following} onPress={onFilterSelected} />
+					<DropdownItemFilter currentFilter={currentFilter} value={Filter.Unread} onPress={onFilterSelected} />
 				</Animated.View>
 			</>
 		);

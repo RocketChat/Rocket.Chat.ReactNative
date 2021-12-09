@@ -1,21 +1,21 @@
 import React from 'react';
 
-import { FILTER } from '../filters';
+import { Filter } from '../filters';
 import I18n from '../../../i18n';
 import DropdownItem from './DropdownItem';
 
 interface IDropdownItemHeader {
-	currentFilter: string;
+	currentFilter: Filter;
 	onPress: () => void;
 }
 
 const DropdownItemHeader = ({ currentFilter, onPress }: IDropdownItemHeader): JSX.Element => {
 	let text;
 	switch (currentFilter) {
-		case FILTER.FOLLOWING:
+		case Filter.Following:
 			text = I18n.t('Threads_displaying_following');
 			break;
-		case FILTER.UNREAD:
+		case Filter.Unread:
 			text = I18n.t('Threads_displaying_unread');
 			break;
 		default:
