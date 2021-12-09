@@ -127,7 +127,7 @@ interface IRoomViewProps {
 	customEmojis: [key: string];
 	isMasterDetail: boolean;
 	theme: string;
-	replyBroadcast: Function;
+	replyBroadcast(message: string): void;
 	width: number;
 	height: number;
 	insets: {
