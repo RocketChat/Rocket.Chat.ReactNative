@@ -118,19 +118,19 @@ export default class RoomSubscription {
 				return;
 			}
 
-			const [name, events, options] = ddpMessage.fields.args;
+			const [name, activities, options] = ddpMessage.fields.args;
 			const key = UI_Use_Real_Name ? 'name' : 'username';
 			const rid = _rid;
 			const tmid = options?.tmid;
 
-			if (!events.length) {
+			if (!activities.length) {
 				reduxStore.dispatch(clearUserActivity(name, rid, tmid));
 				return;
 			}
 
-			events.forEach(event => {
+			activities.forEach(activity => {
 				if (name !== user[key]) {
-					reduxStore.dispatch(addUserActivity(name, event, rid, tmid));
+					reduxStore.dispatch(addUserActivity(name, activity, rid, tmid));
 				}
 
 				// For now, we need this just for the tmid, because the web isn't removing when is idle
