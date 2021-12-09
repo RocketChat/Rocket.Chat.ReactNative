@@ -4,13 +4,13 @@ import { isFDroidBuild } from '../../constants/environment';
 import events from './events';
 
 const analytics = firebaseAnalytics || '';
-let bugsnag = '';
-let crashlytics;
+let bugsnag: any = '';
+let crashlytics: any;
 let reportCrashErrors = true;
 let reportAnalyticsEvents = true;
 
-export const getReportCrashErrorsValue = () => reportCrashErrors;
-export const getReportAnalyticsEventsValue = () => reportAnalyticsEvents;
+export const getReportCrashErrorsValue = (): boolean => reportCrashErrors;
+export const getReportAnalyticsEventsValue = (): boolean => reportAnalyticsEvents;
 
 if (!isFDroidBuild) {
 	bugsnag = require('@bugsnag/react-native').default;
@@ -18,7 +18,7 @@ if (!isFDroidBuild) {
 		onBreadcrumb() {
 			return reportAnalyticsEvents;
 		},
-		onError(error) {
+		onError(error: { breadcrumbs: string[] }) {
 			if (!reportAnalyticsEvents) {
 				error.breadcrumbs = [];
 			}
@@ -34,13 +34,13 @@ export { events };
 
 let metadata = {};
 
-export const logServerVersion = serverVersion => {
+export const logServerVersion = (serverVersion: string): void => {
 	metadata = {
 		serverVersion
 	};
 };
 
-export const logEvent = (eventName, payload) => {
+export const logEvent = (eventName: string, payload: { [key: string]: any }): void => {
 	try {
 		if (!isFDroidBuild) {
 			analytics().logEvent(eventName, payload);
@@ -51,26 +51,26 @@ export const logEvent = (eventName, payload) => {
 	}
 };
 
-export const setCurrentScreen = currentScreen => {
+export const setCurrentScreen = (currentScreen: string): void => {
 	if (!isFDroidBuild) {
 		analytics().setCurrentScreen(currentScreen);
 		bugsnag.leaveBreadcrumb(currentScreen, { type: 'navigation' });
 	}
 };
 
-export const toggleCrashErrorsReport = value => {
+export const toggleCrashErrorsReport = (value: boolean): boolean => {
 	crashlytics().setCrashlyticsCollectionEnabled(value);
 	return (reportCrashErrors = value);
 };
 
-export const toggleAnalyticsEventsReport = value => {
+export const toggleAnalyticsEventsReport = (value: boolean): boolean => {
 	analytics().setAnalyticsCollectionEnabled(value);
 	return (reportAnalyticsEvents = value);
 };
 
-export default e => {
+export default (e: { message: string }): void => {
 	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
-		bugsnag.notify(e, event => {
+		bugsnag.notify(e, (event: { addMetadata: (arg0: string, arg1: {}) => void }) => {
 			event.addMetadata('details', { ...metadata });
 		});
 		if (!isFDroidBuild) {
