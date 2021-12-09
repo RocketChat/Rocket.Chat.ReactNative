@@ -98,7 +98,7 @@ export default class RoomSubscription {
 		const { rooms } = reduxStore.getState().room;
 		const { version: serverVersion } = reduxStore.getState().server;
 
-		if (ev === 'typing' && compareServerVersion(serverVersion, '4.0.0', methods.lowerThan)) {
+		if (ev === 'typing') {
 			if (rooms[0] !== _rid) {
 				return;
 			}
