@@ -1,19 +1,23 @@
 class Upload {
+	xhr: XMLHttpRequest;
+
+	formData: FormData;
+
 	constructor() {
 		this.xhr = new XMLHttpRequest();
 		this.formData = new FormData();
 	}
 
-	then = callback => {
+	then = (callback: (arg0: { respInfo: XMLHttpRequest }) => any) => {
 		this.xhr.onload = () => callback({ respInfo: this.xhr });
 		this.xhr.send(this.formData);
 	};
 
-	catch = callback => {
+	catch = (callback: ((this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) => any) | null) => {
 		this.xhr.onerror = callback;
 	};
 
-	uploadProgress = callback => {
+	uploadProgress = (callback: (arg0: number, arg1: number) => any) => {
 		this.xhr.upload.onprogress = ({ total, loaded }) => callback(loaded, total);
 	};
 
@@ -23,8 +27,16 @@ class Upload {
 	};
 }
 
+interface IData {
+	name: string;
+	uri?: string;
+	type: string;
+	filename: string;
+	data: any;
+}
+
 class FileUpload {
-	fetch = (method, url, headers, data) => {
+	fetch = (method: string, url: string, headers: { [x: string]: string }, data: IData[]) => {
 		const upload = new Upload();
 		upload.xhr.open(method, url);
 
@@ -35,6 +47,7 @@ class FileUpload {
 		data.forEach(item => {
 			if (item.uri) {
 				upload.formData.append(item.name, {
+					// @ts-ignore
 					uri: item.uri,
 					type: item.type,
 					name: item.filename

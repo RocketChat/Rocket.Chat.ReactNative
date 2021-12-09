@@ -1,7 +1,9 @@
 import RNFetchBlob from 'rn-fetch-blob';
 
+type Methods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
+
 class FileUpload {
-	fetch = (method, url, headers, data) => {
+	fetch = (method: Methods, url: string, headers: { [key: string]: string }, data: any[]) => {
 		const formData = data.map(item => {
 			if (item.uri) {
 				return {
