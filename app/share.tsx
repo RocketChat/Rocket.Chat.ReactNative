@@ -14,6 +14,7 @@ import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
+import { IThemePreference } from './definitions/ITheme';
 import ScreenLockedView from './views/ScreenLockedView';
 // Outside Stack
 import WithoutServersView from './views/WithoutServersView';
@@ -132,10 +133,10 @@ class Root extends React.Component<{}, IState> {
 		setCurrentScreen(currentRouteName);
 	};
 
-	setTheme = (newTheme: any = {}) => {
+	setTheme = (newTheme = {}) => {
 		// change theme state
 		this.setState(
-			prevState => newThemeState(prevState, newTheme),
+			prevState => newThemeState(prevState, newTheme as IThemePreference),
 			() => {
 				const { themePreferences } = this.state;
 				// subscribe to Appearance changes

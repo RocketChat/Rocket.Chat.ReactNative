@@ -2,6 +2,7 @@ import log from './log';
 
 class EventEmitter {
 	private events: { [key: string]: any };
+
 	constructor() {
 		this.events = {};
 	}
