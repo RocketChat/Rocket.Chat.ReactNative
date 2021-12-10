@@ -11,7 +11,10 @@ const { dispatch } = reduxStore;
  * We have sendFileMessage, fileUpload, etc
  */
 class UploadClass {
+	private intervals: { [key: string]: number } = {};
+
 	userUploading = ({ rid, tmid, performing, files }: { rid: string; tmid: string; files: any[]; performing: boolean }) => {
+		console.log('🚀 ~ file: Upload.ts ~ line 17 ~ UploadClass ~ tmid', tmid);
 		// const { uploadingSend, uploadingRemove, uploadings } = this.props;
 		const { uploadingSend: uploading } = reduxStore.getState().room;
 
@@ -22,6 +25,7 @@ class UploadClass {
 
 			// Name that will be the key at state from redux
 			const nameUploaded = `${tmid || rid}-${file.name}`;
+			console.log('🚀 ~ file: Upload.ts ~ line 28 ~ UploadClass ~ nameUploaded', nameUploaded);
 
 			if (performing && uploading[nameUploaded]) {
 				return;
@@ -29,13 +33,18 @@ class UploadClass {
 
 			if (performing) {
 				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
-				const intervalValue = setInterval(() => {
+				console.log('🚀 ~ file: Upload.ts ~ line 36 ~ UploadClass ~ tmid', tmid);
+				this.intervals[nameUploaded] = setInterval(() => {
 					RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
 				}, 2000);
-				dispatch(uploadingSend(nameUploaded, intervalValue));
+				dispatch(uploadingSend(nameUploaded));
 			}
 
 			if (!performing) {
+				if (this.intervals[nameUploaded]) {
+					clearInterval(this.intervals[nameUploaded]);
+					delete this.intervals[nameUploaded];
+				}
 				dispatch(uploadingRemove(nameUploaded));
 				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
 			}
@@ -51,11 +60,18 @@ class UploadClass {
 			// if (this.canUploadFile(fileInfo)) {
 			// userUploading({ rid, tmid, performing: true, filesName });
 			this.userUploading({ rid, tmid, files, performing: true });
+			await new Promise(res => {
+				setTimeout(() => {
+					res();
+				}, 25000);
+			});
 			// await RocketChat.sendFileMessage(rid, files[0], tmid, server, user);
+			this.userUploading({ rid, tmid, files, performing: false });
 			// userUploading({ rid, tmid, performing: false, filesName });
 			// }
 		} catch (e) {
 			// userUploading({ rid, tmid, performing: false, filesName });
+			this.userUploading({ rid, tmid, files, performing: false });
 			console.error(e);
 		}
 	}

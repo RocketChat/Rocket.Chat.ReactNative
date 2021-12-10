@@ -53,11 +53,10 @@ export function removedRoom() {
 	};
 }
 
-export function uploadingSend(name, intervalValue) {
+export function uploadingSend(name) {
 	return {
 		type: types.ROOM.UPLOADING_SEND,
-		name,
-		intervalValue
+		name
 	};
 }
 
