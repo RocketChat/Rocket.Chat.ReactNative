@@ -1025,6 +1025,13 @@ const RocketChat = {
 		return this.sdk.onStreamData(...args);
 	},
 	emitUserActivity({ room, extras = {}, activity, performing }) {
+		console.log(
+			'🚀 ~ file: rocketchat.js ~ line 1028 ~ emitUserActivity ~ oom, extras = {}, activity, performing',
+			room,
+			extras,
+			activity,
+			performing
+		);
 		const { login, settings, server } = reduxStore.getState();
 		const { UI_Use_Real_Name } = settings;
 		const { version: serverVersion } = server;

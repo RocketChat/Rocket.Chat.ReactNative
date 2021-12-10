@@ -21,17 +21,7 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	'OPEN_SEARCH_HEADER',
 	'CLOSE_SEARCH_HEADER'
 ]);
-export const ROOM = createRequestTypes('ROOM', [
-	'SUBSCRIBE',
-	'UNSUBSCRIBE',
-	'LEAVE',
-	'DELETE',
-	'REMOVED',
-	'CLOSE',
-	'FORWARD',
-	'UPLOADING_SEND',
-	'UPLOADING_REMOVE'
-]);
+export const ROOM = createRequestTypes('ROOM', ['SUBSCRIBE', 'UNSUBSCRIBE', 'LEAVE', 'DELETE', 'REMOVED', 'CLOSE', 'FORWARD']);
 export const INQUIRY = createRequestTypes('INQUIRY', [
 	...defaultTypes,
 	'SET_ENABLED',

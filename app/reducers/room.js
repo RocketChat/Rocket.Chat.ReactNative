@@ -3,8 +3,7 @@ import { ROOM } from '../actions/actionsTypes';
 const initialState = {
 	rid: null,
 	isDeleting: false,
-	rooms: [],
-	uploadingSend: {}
+	rooms: []
 };
 
 export default function (state = initialState, action) {
@@ -48,12 +47,6 @@ export default function (state = initialState, action) {
 				...state,
 				isDeleting: false
 			};
-		case ROOM.UPLOADING_SEND:
-			return { ...state, uploadingSend: { ...state.uploadingSend } };
-		case ROOM.UPLOADING_REMOVE:
-			const uploadingSendState = Object.assign({}, state.uploadingSend);
-			delete uploadingSendState[action.name];
-			return { ...state, uploadingSend: { ...uploadingSendState } };
 		default:
 			return state;
 	}

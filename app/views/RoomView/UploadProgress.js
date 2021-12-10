@@ -61,8 +61,7 @@ class UploadProgress extends Component {
 			username: PropTypes.string.isRequired,
 			token: PropTypes.string.isRequired
 		}),
-		baseUrl: PropTypes.string.isRequired,
-		userUploading: PropTypes.func
+		baseUrl: PropTypes.string.isRequired
 	};
 
 	constructor(props) {
@@ -126,10 +125,7 @@ class UploadProgress extends Component {
 	};
 
 	deleteUpload = async item => {
-		const { rid, userUploading } = this.props;
 		try {
-			// item?.tmid is a props that came from DB and specify if the upload was began from tmid
-			userUploading({ rid, tmid: item?.tmid, performing: false, filesName: [item.name] });
 			const db = database.active;
 			await db.action(async () => {
 				await item.destroyPermanently();
@@ -140,10 +136,8 @@ class UploadProgress extends Component {
 	};
 
 	cancelUpload = async item => {
-		const { rid, userUploading } = this.props;
+		console.log('🚀 ~ file: UploadProgress.js ~ line 139 ~ UploadProgress ~ item', item);
 		try {
-			// item?.tmid is a props that came from DB and specify if the upload was began from tmid
-			userUploading({ rid, tmid: item?.tmid, performing: false, filesName: [item.name] });
 			await RocketChat.cancelUpload(item);
 		} catch (e) {
 			log(e);

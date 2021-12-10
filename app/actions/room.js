@@ -52,17 +52,3 @@ export function removedRoom() {
 		type: types.ROOM.REMOVED
 	};
 }
-
-export function uploadingSend(name) {
-	return {
-		type: types.ROOM.UPLOADING_SEND,
-		name
-	};
-}
-
-export function uploadingRemove(name) {
-	return {
-		type: types.ROOM.UPLOADING_REMOVE,
-		name
-	};
-}

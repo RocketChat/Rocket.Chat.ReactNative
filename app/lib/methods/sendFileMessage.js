@@ -4,6 +4,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import FileUpload from '../../utils/fileUpload';
 import database from '../database';
 import log from '../../utils/log';
+import { Upload } from '../Upload';
 
 const uploadQueue = {};
 
@@ -14,6 +15,7 @@ export function isUploadActive(path) {
 export async function cancelUpload(item) {
 	if (uploadQueue[item.path]) {
 		try {
+			Upload.userUploading({ rid: item.rid, tmid: item?.tmid, performing: false, files: [item] });
 			await uploadQueue[item.path].cancel();
 		} catch {
 			// Do nothing
