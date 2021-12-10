@@ -7,7 +7,7 @@ interface IAvatarURL {
 	type: string;
 	text: string;
 	size?: number;
-	user: { id: string; token: string };
+	user: { id?: string; token?: string };
 	avatar?: string;
 	server: string;
 	avatarETag: string;
@@ -20,7 +20,7 @@ export const avatarURL = ({
 	type,
 	text,
 	size = 25,
-	user,
+	user = {},
 	avatar,
 	server,
 	avatarETag,
