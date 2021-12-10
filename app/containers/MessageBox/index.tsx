@@ -8,6 +8,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
+import { Upload } from '../../lib/Upload';
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
 import RocketChat from '../../lib/rocketchat';
@@ -802,17 +803,18 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const { rid, tmid, baseUrl: server, user, userUploading } = this.props;
 
 		if (fileInfo) {
-			const filesName: string[] = [fileInfo?.name];
-			try {
-				if (this.canUploadFile(fileInfo)) {
-					userUploading({ rid, tmid, performing: true, filesName });
-					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-					userUploading({ rid, tmid, performing: false, filesName });
-				}
-			} catch (e) {
-				userUploading({ rid, tmid, performing: false, filesName });
-				log(e);
-			}
+			Upload.send({ rid, tmid, files: [fileInfo] });
+			// const filesName: string[] = [fileInfo?.name];
+			// try {
+			// 	if (this.canUploadFile(fileInfo)) {
+			// 		userUploading({ rid, tmid, performing: true, filesName });
+			// 		await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
+			// 		userUploading({ rid, tmid, performing: false, filesName });
+			// 	}
+			// } catch (e) {
+			// 	userUploading({ rid, tmid, performing: false, filesName });
+			// 	log(e);
+			// }
 		}
 	};
 
