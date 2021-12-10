@@ -124,7 +124,7 @@ interface IRoomViewProps {
 	Hide_System_Messages: [];
 	baseUrl: string;
 	serverVersion: string;
-	customEmojis: [key: string];
+	customEmojis: { [key: string]: string };
 	isMasterDetail: boolean;
 	theme: string;
 	replyBroadcast(message: string): void;
@@ -652,7 +652,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		this.messageErrorActions?.showMessageErrorActions(message);
 	};
 
-	onEditInit = (message: { id: string; subscription: { id: string }; attachments: any; msg: string }) => {
+	onEditInit = (message: { id: string; subscription: { id: string }; attachments: IAttachment[]; msg: string }) => {
 		const newMessage = {
 			id: message.id,
 			subscription: {
@@ -787,7 +787,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		try {
 			this.setState({ showingBlockingLoader: true });
 			const parsedUrl = parse(messageUrl, true);
-			const messageId: any = parsedUrl.query.msg;
+			const messageId = parsedUrl.query.msg;
 			await this.jumpToMessage(messageId);
 			this.setState({ showingBlockingLoader: false });
 		} catch (e) {
@@ -868,7 +868,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		});
 	};
 
-	getCustomEmoji = (name: any) => {
+	getCustomEmoji = (name: string) => {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {
