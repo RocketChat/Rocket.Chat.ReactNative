@@ -31,13 +31,13 @@ const styles = StyleSheet.create({
 
 interface IUnreadBadge {
 	theme?: string;
-	unread: number;
-	userMentions: number;
-	groupMentions: number;
+	unread?: number;
+	userMentions?: number;
+	groupMentions?: number;
 	style?: ViewStyle;
-	tunread: [];
-	tunreadUser: [];
-	tunreadGroup: [];
+	tunread?: [];
+	tunreadUser?: [];
+	tunreadGroup?: [];
 	small?: boolean;
 }
 

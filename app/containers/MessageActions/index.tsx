@@ -18,7 +18,7 @@ import events from '../../utils/log/events';
 
 interface IMessageActions {
 	room: {
-		rid: string | number;
+		rid: string;
 		autoTranslateLanguage: any;
 		autoTranslate: any;
 		reactWhenReadOnly: any;

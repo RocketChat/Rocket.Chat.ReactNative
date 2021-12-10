@@ -21,6 +21,7 @@ export interface IRoom extends IRocketChatRecord {
 	encrypted?: boolean;
 	alert?: boolean;
 	visitor?: boolean;
+	reactWhenReadOnly?: boolean;
 	autoTranslateLanguage?: boolean;
 	autoTranslate?: boolean;
 	observe?: Function;

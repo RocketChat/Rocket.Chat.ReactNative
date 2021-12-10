@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../lib/Icons';
@@ -43,6 +43,7 @@ interface IThreadDetails {
 	item: {
 		tcount: number | string;
 		replies: any;
+		tlm?: string;
 		id: string;
 	};
 	user: {
@@ -50,8 +51,8 @@ interface IThreadDetails {
 	};
 	badgeColor: string;
 	toggleFollowThread: Function;
-	style: object;
-	theme: string;
+	style: ViewStyle;
+	theme?: string;
 }
 
 const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style, theme }: IThreadDetails) => {
@@ -75,15 +76,15 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style, them
 		<View style={[styles.container, style]}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
-					<CustomIcon name='threads' size={24} color={themes[theme].auxiliaryText} />
-					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+					<CustomIcon name='threads' size={24} color={themes[theme!].auxiliaryText} />
+					<Text style={[styles.detailText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
 						{tcount}
 					</Text>
 				</View>
 
 				<View style={styles.detailContainer}>
-					<CustomIcon name='user' size={24} color={themes[theme].auxiliaryText} />
-					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+					<CustomIcon name='user' size={24} color={themes[theme!].auxiliaryText} />
+					<Text style={[styles.detailText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
 						{replies}
 					</Text>
 				</View>
@@ -95,7 +96,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style, them
 					<CustomIcon
 						size={24}
 						name={isFollowing ? 'notification' : 'notification-disabled'}
-						color={themes[theme].auxiliaryTintColor}
+						color={themes[theme!].auxiliaryTintColor}
 					/>
 				</Touchable>
 			</View>
