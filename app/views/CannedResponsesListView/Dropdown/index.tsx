@@ -1,31 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Animated, Easing, FlatList, TouchableWithoutFeedback } from 'react-native';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
 import { headerHeight } from '../../../containers/Header';
 import * as List from '../../../containers/List';
+import { IDepartment } from '../interfaces';
 import DropdownItemFilter from './DropdownItemFilter';
 import DropdownItemHeader from './DropdownItemHeader';
 import { ROW_HEIGHT } from './DropdownItem';
 
 const ANIMATION_DURATION = 200;
 
-class Dropdown extends React.Component {
-	static propTypes = {
-		isMasterDetail: PropTypes.bool,
-		theme: PropTypes.string,
-		insets: PropTypes.object,
-		currentDepartment: PropTypes.object,
-		onClose: PropTypes.func,
-		onDepartmentSelected: PropTypes.func,
-		departments: PropTypes.array
-	};
+interface IDropdownProps {
+	isMasterDetail: boolean;
+	theme: string;
+	insets: EdgeInsets;
+	currentDepartment: IDepartment;
+	onClose: () => void;
+	onDepartmentSelected: (value: IDepartment) => void;
+	departments: IDepartment[];
+}
 
-	constructor(props) {
+class Dropdown extends React.Component<IDropdownProps> {
+	private animatedValue: Animated.Value;
+
+	constructor(props: IDropdownProps) {
 		super(props);
 		this.animatedValue = new Animated.Value(0);
 	}
