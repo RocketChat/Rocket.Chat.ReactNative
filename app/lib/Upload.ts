@@ -10,34 +10,33 @@ import { USER_UPLOADING } from '../constants/userActivities';
 class UploadClass {
 	private intervals: { [key: string]: number } = {};
 
+	private isUploadingAnotherFile = ({ rid, fileKey }: { rid: string; fileKey: string }): boolean =>
+		Object.keys(this.intervals).some(key => key !== fileKey && key.match(new RegExp(rid)));
+
 	userUploading = ({ rid, tmid, performing, files }: { rid: string; tmid: string; files: any[]; performing: boolean }) => {
 		console.log('🚀 ~ file: Upload.ts ~ line 14 ~ UploadClass ~ rid, tmid, performing, files', rid, tmid, performing, files);
 		files.forEach(file => {
 			if (!file) {
 				return;
 			}
-
-			// Name that will be the key at state from redux
-			const nameUploaded = `${tmid || rid}-${file.name}`;
-			console.log('🚀 ~ file: Upload.ts ~ line 28 ~ UploadClass ~ nameUploaded', nameUploaded);
-
-			if (performing && this.intervals[nameUploaded]) {
-				return;
-			}
+			const roomId = tmid || rid;
+			const fileKey = `${roomId}-${file.name}`;
 
 			if (performing) {
 				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
-				this.intervals[nameUploaded] = setInterval(() => {
+				this.intervals[fileKey] = setInterval(() => {
 					RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
 				}, 2000);
 			}
 
 			if (!performing) {
-				if (this.intervals[nameUploaded]) {
-					clearInterval(this.intervals[nameUploaded]);
-					delete this.intervals[nameUploaded];
+				if (!this.isUploadingAnotherFile({ rid: roomId, fileKey })) {
+					RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
 				}
-				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
+				if (this.intervals[fileKey]) {
+					clearInterval(this.intervals[fileKey]);
+					delete this.intervals[fileKey];
+				}
 			}
 		});
 	};
