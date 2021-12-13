@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { HeaderBackButton } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -26,6 +26,9 @@ import CannedResponseItem from './CannedResponseItem';
 import Dropdown from './Dropdown';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import styles from './styles';
+import { ICannedResponse, IDepartment } from '../../definitions/ICannedResponse';
+import { ChatsStackParamList } from '../../stacks/types';
+import { IRoom } from '../../definitions/IRoom';
 
 const COUNT = 25;
 
@@ -42,14 +45,19 @@ const fixedScopes = [
 		_id: 'user',
 		name: I18n.t('Private')
 	}
-];
+] as IDepartment[];
 
-const CannedResponsesListView = ({ navigation, route }) => {
-	const [room, setRoom] = useState(null);
+interface ICannedResponsesListViewProps {
+	navigation: StackNavigationProp<ChatsStackParamList, 'CannedResponsesListView'>;
+	route: RouteProp<ChatsStackParamList, 'CannedResponsesListView'>;
+}
 
-	const [cannedResponses, setCannedResponses] = useState([]);
-	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState([]);
-	const [departments, setDepartments] = useState([]);
+const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps): JSX.Element => {
+	const [room, setRoom] = useState<IRoom>(null!);
+
+	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);
+	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState<ICannedResponse[]>([]);
+	const [departments, setDepartments] = useState<IDepartment[]>([]);
 
 	// states used by the filter in Header and Dropdown
 	const [isSearching, setIsSearching] = useState(false);
@@ -65,8 +73,8 @@ const CannedResponsesListView = ({ navigation, route }) => {
 
 	const insets = useSafeAreaInsets();
 	const { theme } = useTheme();
-	const { isMasterDetail } = useSelector(state => state.app);
-	const { rooms } = useSelector(state => state.room);
+	const { isMasterDetail } = useSelector((state: any) => state.app);
+	const { rooms } = useSelector((state: any) => state.room);
 
 	const getRoomFromDb = async () => {
 		const { rid } = route.params;
@@ -93,21 +101,21 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		}
 	}, 300);
 
-	const goToDetail = item => {
+	const goToDetail = (item: ICannedResponse) => {
 		navigation.navigate('CannedResponseDetail', { cannedResponse: item, room });
 	};
 
-	const navigateToRoom = item => {
+	const navigateToRoom = (item: ICannedResponse) => {
 		if (!room) {
 			return;
 		}
-		const { name, username } = room;
+		const { name } = room;
+		console.log('🚀 ~ file: index.tsx ~ line 113 ~ navigateToRoom ~ room', room);
 		const params = {
 			rid: room.rid,
 			name: RocketChat.getRoomTitle({
 				t: room.t,
-				fname: name,
-				name: username
+				fname: name
 			}),
 			t: room.t,
 			roomUserId: RocketChat.getUidDirectMessage(room),
@@ -130,7 +138,17 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		}
 	};
 
-	const getListCannedResponse = async ({ text, department, depId, debounced }) => {
+	const getListCannedResponse = async ({
+		text,
+		department,
+		depId,
+		debounced
+	}: {
+		text: string;
+		department: string;
+		depId: string;
+		debounced: boolean;
+	}) => {
 		try {
 			const res = await RocketChat.getListCannedResponse({
 				text,
@@ -188,13 +206,13 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		setOffset(0);
 	};
 
-	const onChangeText = text => {
+	const onChangeText = (text: string) => {
 		newSearch();
 		setSearchText(text);
 		searchCallback(text, scope, departmentId);
 	};
 
-	const onDepartmentSelect = value => {
+	const onDepartmentSelect = (value: IDepartment) => {
 		let department = '';
 		let depId = '';
 
@@ -225,7 +243,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 		await getListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
 	};
 
-	const getHeader = () => {
+	const getHeader = (): StackNavigationOptions => {
 		if (isSearching) {
 			const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: 1 });
 			return {
@@ -235,7 +253,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 						<HeaderButton.Item
 							iconName='close'
 							onPress={() => {
-								onChangeText();
+								onChangeText('');
 								setIsSearching(false);
 							}}
 						/>
@@ -250,7 +268,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 			};
 		}
 
-		const options = {
+		const options: StackNavigationOptions = {
 			headerLeft: () => (
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),
@@ -320,7 +338,7 @@ const CannedResponsesListView = ({ navigation, route }) => {
 				renderItem={({ item }) => (
 					<CannedResponseItem
 						theme={theme}
-						scope={item.scopeName}
+						scope={item.scopeName!}
 						shortcut={item.shortcut}
 						tags={item?.tags}
 						text={item.text}
@@ -353,11 +371,6 @@ const CannedResponsesListView = ({ navigation, route }) => {
 			) : null}
 		</SafeAreaView>
 	);
-};
-
-CannedResponsesListView.propTypes = {
-	navigation: PropTypes.object,
-	route: PropTypes.object
 };
 
 export default CannedResponsesListView;

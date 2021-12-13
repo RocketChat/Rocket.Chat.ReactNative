@@ -7,7 +7,7 @@ import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
 import { headerHeight } from '../../../containers/Header';
 import * as List from '../../../containers/List';
-import { IDepartment } from '../interfaces';
+import { IDepartment } from '../../../definitions/ICannedResponse';
 import DropdownItemFilter from './DropdownItemFilter';
 import DropdownItemHeader from './DropdownItemHeader';
 import { ROW_HEIGHT } from './DropdownItem';

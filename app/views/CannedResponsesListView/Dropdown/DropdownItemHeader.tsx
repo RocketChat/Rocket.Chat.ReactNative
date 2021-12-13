@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IDepartment } from '../interfaces';
+import { IDepartment } from '../../../definitions/ICannedResponse';
 import DropdownItem from './DropdownItem';
 
 interface IDropdownItemHeader {
