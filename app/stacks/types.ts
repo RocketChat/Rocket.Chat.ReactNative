@@ -86,9 +86,6 @@ export type ChatsStackParamList = {
 		rid: string;
 		room: Model;
 	};
-	VisitorNavigationView: {
-		rid: string;
-	};
 	ForwardLivechatView: {
 		rid: string;
 	};

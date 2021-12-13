@@ -1138,10 +1138,6 @@ const RocketChat = {
 		// RC 0.36.0
 		return this.methodCallWrapper('livechat:transfer', transferData);
 	},
-	getPagesLivechat(rid, offset) {
-		// RC 2.3.0
-		return this.sdk.get(`livechat/visitors.pagesVisited/${rid}?count=50&offset=${offset}`);
-	},
 	getDepartmentInfo(departmentId) {
 		// RC 2.2.0
 		return this.sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
