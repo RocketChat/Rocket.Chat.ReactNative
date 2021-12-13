@@ -71,7 +71,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ label, content, theme, testID }: { label: string; content?: string; theme: string; testID?: string }) =>
+interface IItem {
+	label: string;
+	content?: string;
+	theme: string;
+	testID?: string;
+}
+
+const Item = ({ label, content, theme, testID }: IItem) =>
 	content ? (
 		<View style={styles.item} testID={testID}>
 			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>
@@ -101,12 +108,13 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 
 	const navigateToRoom = (item: ICannedResponse) => {
 		const { room } = route.params;
-		const { name } = room;
+		const { name, username } = room;
 		const params = {
 			rid: room.rid,
 			name: RocketChat.getRoomTitle({
 				t: room.t,
-				fname: name
+				fname: name,
+				name: username
 			}),
 			t: room.t,
 			roomUserId: RocketChat.getUidDirectMessage(room),
