@@ -21,6 +21,7 @@
   "error-save-video": "Error while saving video",
   "error-field-unavailable": "{{field}} is already in use :(",
   "error-file-too-large": "File is too large",
+  "error-not-permission-to-upload-file": "You don't have permission to upload files",
   "error-importer-not-defined": "The importer was not defined correctly, it is missing the Import class.",
   "error-input-is-not-a-valid-field": "{{input}} is not a valid {{field}}",
   "error-invalid-actionlink": "Invalid action link",
