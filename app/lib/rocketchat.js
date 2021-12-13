@@ -1520,16 +1520,7 @@ const RocketChat = {
 		return this.sdk.get(`${this.roomTypeToApiType(type)}.files`, {
 			roomId,
 			offset,
-			sort: { uploadedAt: -1 },
-			fields: {
-				name: 1,
-				description: 1,
-				size: 1,
-				type: 1,
-				uploadedAt: 1,
-				url: 1,
-				userId: 1
-			}
+			sort: { uploadedAt: -1 }
 		});
 	},
 	getMessages(roomId, type, query, offset) {
