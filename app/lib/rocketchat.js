@@ -239,37 +239,34 @@ const RocketChat = {
 				this.code = null;
 			}
 
-			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+			// The app can't reconnect if reopen interval is 5s while in development
+			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 			this.getSettings();
 
-			const sdkConnect = () =>
-				this.sdk
-					.connect()
-					.then(() => {
-						const { server: currentServer } = reduxStore.getState().server;
-						if (user && user.token && server === currentServer) {
-							reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
-						}
-					})
-					.catch(err => {
-						console.log('connect error', err);
-
-						// when `connect` raises an error, we try again in 10 seconds
-						this.connectTimeout = setTimeout(() => {
-							if (this.sdk?.client?.host === server) {
-								sdkConnect();
-							}
-						}, 10000);
-					});
-
-			sdkConnect();
+			this.sdk
+				.connect()
+				.then(() => {
+					console.log('connected');
+				})
+				.catch(err => {
+					console.log('connect error', err);
+				});
 
 			this.connectingListener = this.sdk.onStreamData('connecting', () => {
 				reduxStore.dispatch(connectRequest());
 			});
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
+				const { connected } = reduxStore.getState().meteor;
+				if (connected) {
+					return;
+				}
 				reduxStore.dispatch(connectSuccess());
+				const { server: currentServer } = reduxStore.getState().server;
+				const { user } = reduxStore.getState().login;
+				if (user?.token && server === currentServer) {
+					reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
+				}
 			});
 
 			this.closeListener = this.sdk.onStreamData('close', () => {
