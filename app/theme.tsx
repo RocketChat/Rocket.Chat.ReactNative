@@ -23,4 +23,4 @@ export function withTheme<T extends object>(Component: React.ComponentType<T> & 
 	return ThemedComponent;
 }
 
-export const useTheme = () => React.useContext(ThemeContext);
+export const useTheme = (): IThemeContextProps => React.useContext(ThemeContext);

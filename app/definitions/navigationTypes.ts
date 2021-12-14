@@ -7,8 +7,14 @@ import { IAttachment } from './IAttachment';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { OutsideParamList, InsideStackParamList } from '../stacks/types';
 
+interface INavigationProps {
+	route?: any;
+	navigation?: any;
+	isMasterDetail?: boolean;
+}
+
 export type TNavigationOptions = {
-	navigationOptions?(param: object): StackNavigationOptions;
+	navigationOptions?(props: INavigationProps): StackNavigationOptions;
 };
 
 export type SetUsernameStackParamList = {

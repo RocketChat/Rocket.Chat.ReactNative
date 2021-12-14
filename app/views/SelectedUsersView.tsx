@@ -34,7 +34,6 @@ interface IUser {
 	name: string;
 	fname: string;
 	search?: boolean;
-	// username is used when is from searching
 	username?: string;
 }
 interface ISelectedUsersViewState {

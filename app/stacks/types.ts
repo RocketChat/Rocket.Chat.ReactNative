@@ -64,7 +64,7 @@ export type ChatsStackParamList = {
 		showButton?: boolean;
 		title?: string;
 		buttonText?: string;
-		nextAction?: Function;
+		nextAction?(): void;
 	};
 	InviteUsersView: {
 		rid: string;
