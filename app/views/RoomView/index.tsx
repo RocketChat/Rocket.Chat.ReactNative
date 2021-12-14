@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import parse from 'url-parse';
 import moment from 'moment';
 import * as Haptics from 'expo-haptics';
-import { Model, Q } from '@nozbe/watermelondb';
+import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -199,13 +199,15 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		const name = props.route.params?.name;
 		const fname = props.route.params?.fname;
 		const prid = props.route.params?.prid;
-		const room: any = props.route.params?.room ?? {
-			rid: this.rid,
-			t: this.t,
-			name,
-			fname,
-			prid
-		};
+		const room =
+			props.route.params?.room ??
+			({
+				rid: this.rid,
+				t: this.t,
+				name,
+				fname,
+				prid
+			} as IRoom);
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
 		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? RocketChat.getUidDirectMessage(room);
@@ -629,22 +631,24 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		delete this.sub;
 	};
 
-	observeRoom = (room: Model) => {
-		const observable = room.observe();
-		this.subSubscription = observable.subscribe((changes: any) => {
-			const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr: any) => {
-				ret[attr] = changes[attr];
-				return ret;
-			}, {});
-			if (this.mounted) {
-				this.internalSetState({ room: changes, roomUpdate });
-			} else {
-				// @ts-ignore
-				this.state.room = changes;
-				// @ts-ignore
-				this.state.roomUpdate = roomUpdate;
-			}
-		});
+	observeRoom = (room: IRoom) => {
+		if (room.observe) {
+			const observable = room.observe();
+			this.subSubscription = observable.subscribe((changes: any) => {
+				const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr: any) => {
+					ret[attr] = changes[attr];
+					return ret;
+				}, {});
+				if (this.mounted) {
+					this.internalSetState({ room: changes, roomUpdate });
+				} else {
+					// @ts-ignore
+					this.state.room = changes;
+					// @ts-ignore
+					this.state.roomUpdate = roomUpdate;
+				}
+			});
+		}
 	};
 
 	errorActionsShow = (message: string) => {

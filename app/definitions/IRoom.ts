@@ -1,3 +1,6 @@
+import { Observable } from 'rxjs';
+import Model from '@nozbe/watermelondb/Model';
+
 import { IRocketChatRecord } from './IRocketChatRecord';
 
 export enum RoomType {
@@ -23,7 +26,7 @@ export interface IRoom extends IRocketChatRecord {
 	visitor?: boolean;
 	autoTranslateLanguage?: boolean;
 	autoTranslate?: boolean;
-	observe?: Function;
+	observe?(): Observable<Model>;
 	usedCannedResponse?: string;
 	bannerClosed?: boolean;
 	lastOpen?: Date;
