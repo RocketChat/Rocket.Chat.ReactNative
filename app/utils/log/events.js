@@ -253,7 +253,6 @@ export default {
 	RA_GO_AUTOTRANSLATE: 'ra_go_autotranslate',
 	RA_GO_NOTIFICATIONPREF: 'ra_go_notification_pref',
 	RA_GO_FORWARDLIVECHAT: 'ra_go_forward_livechat',
-	RA_GO_VISITORNAVIGATION: 'ra_go_visitor_navigation',
 	RA_SHARE: 'ra_share',
 	RA_LEAVE: 'ra_leave',
 	RA_LEAVE_F: 'ra_leave_f',
