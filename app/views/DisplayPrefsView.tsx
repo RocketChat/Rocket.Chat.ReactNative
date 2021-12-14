@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Switch } from 'react-native';
 import { RadioButton } from 'react-native-ui-lib';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setPreference } from '../actions/sortPreferences';
@@ -16,12 +16,29 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { ICON_SIZE } from '../containers/List/constants';
 import log, { events, logEvent } from '../utils/log';
 import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../constants/constantDisplayMode';
+import { SettingsStackParamList } from '../stacks/types';
 
-const DisplayPrefsView = props => {
+interface IParam {
+	sortBy?: 'alphabetical' | 'activity';
+	groupByType?: boolean;
+	showFavorites?: boolean;
+	showUnread?: boolean;
+	showAvatar?: boolean;
+	displayMode?: typeof DISPLAY_MODE_EXPANDED | typeof DISPLAY_MODE_CONDENSED;
+}
+
+interface IDisplayPrefsView {
+	navigation: StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>;
+	isMasterDetail: boolean;
+}
+
+const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 	const { theme } = useTheme();
 
-	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useSelector(state => state.sortPreferences);
-	const { isMasterDetail } = useSelector(state => state.app);
+	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useSelector(
+		(state: any) => state.sortPreferences
+	);
+	const { isMasterDetail } = useSelector((state: any) => state.app);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -36,7 +53,7 @@ const DisplayPrefsView = props => {
 		}
 	}, []);
 
-	const setSortPreference = async param => {
+	const setSortPreference = async (param: IParam) => {
 		try {
 			dispatch(setPreference(param));
 			await RocketChat.saveSortPreference(param);
@@ -85,15 +102,15 @@ const DisplayPrefsView = props => {
 		await setSortPreference({ displayMode: DISPLAY_MODE_CONDENSED });
 	};
 
-	const renderCheckBox = value => (
+	const renderCheckBox = (value: boolean) => (
 		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? themes[theme].actionTintColor : null} />
 	);
 
-	const renderAvatarSwitch = value => (
+	const renderAvatarSwitch = (value: boolean) => (
 		<Switch value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
 	);
 
-	const renderRadio = value => (
+	const renderRadio = (value: boolean) => (
 		<RadioButton
 			selected={!!value}
 			color={value ? themes[theme].actionTintColor : themes[theme].auxiliaryText}
@@ -184,9 +201,6 @@ const DisplayPrefsView = props => {
 	);
 };
 
-DisplayPrefsView.propTypes = {
-	navigation: PropTypes.object,
-	isMasterDetail: PropTypes.bool
-};
+DisplayPrefsView.propTypes = {};
 
 export default DisplayPrefsView;
