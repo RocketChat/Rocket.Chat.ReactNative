@@ -7,7 +7,7 @@ import { IAttachment } from './IAttachment';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { OutsideParamList, InsideStackParamList } from '../stacks/types';
 
-export type TOptions = {
+export type TNavigationOptions = {
 	navigationOptions?: StackNavigationOptions;
 };
 
