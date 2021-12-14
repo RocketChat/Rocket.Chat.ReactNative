@@ -8,7 +8,7 @@ import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/ty
 import { OutsideParamList, InsideStackParamList } from '../stacks/types';
 
 export type TNavigationOptions = {
-	navigationOptions?: StackNavigationOptions;
+	navigationOptions?(param: object): StackNavigationOptions;
 };
 
 export type SetUsernameStackParamList = {

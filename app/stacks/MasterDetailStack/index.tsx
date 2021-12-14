@@ -117,7 +117,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen
 					name='RoomActionsView'
 					component={RoomActionsView}
-					options={props => RoomActionsView.navigationOptions({ ...props, isMasterDetail: true })}
+					options={props => RoomActionsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='RoomInfoView' component={RoomInfoView} options={RoomInfoView.navigationOptions} />
 				<ModalStack.Screen name='SelectListView' component={SelectListView} />
@@ -146,12 +146,12 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen
 					name='DirectoryView'
 					component={DirectoryView}
-					options={props => DirectoryView.navigationOptions({ ...props, isMasterDetail: true })}
+					options={props => DirectoryView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen
 					name='QueueListView'
 					component={QueueListView}
-					options={props => QueueListView.navigationOptions({ ...props, isMasterDetail: true })}
+					options={props => QueueListView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen
 					name='NotificationPrefView'
@@ -178,12 +178,12 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen
 					name='ReadReceiptsView'
 					component={ReadReceiptsView}
-					options={props => ReadReceiptsView.navigationOptions({ ...props, isMasterDetail: true })}
+					options={props => ReadReceiptsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen
 					name='SettingsView'
 					component={SettingsView}
-					options={props => SettingsView.navigationOptions({ ...props, isMasterDetail: true })}
+					options={props => SettingsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='LanguageView' component={LanguageView} options={LanguageView.navigationOptions} />
 				<ModalStack.Screen name='ThemeView' component={ThemeView} options={ThemeView.navigationOptions} />
@@ -201,13 +201,13 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen
 					name='ProfileView'
 					component={ProfileView}
-					options={props => ProfileView.navigationOptions({ ...props, isMasterDetail: true })}
+					options={props => ProfileView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
 				<ModalStack.Screen
 					name='AdminPanelView'
 					component={AdminPanelView}
-					options={props => AdminPanelView.navigationOptions({ ...props, isMasterDetail: true })}
+					options={props => AdminPanelView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='NewMessageView' component={NewMessageView} options={NewMessageView.navigationOptions} />
 				<ModalStack.Screen name='SelectedUsersViewCreateChannel' component={SelectedUsersView} />
