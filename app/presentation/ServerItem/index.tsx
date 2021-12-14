@@ -44,7 +44,7 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck, theme }: 
 						priority: FastImage.priority.high
 					}}
 					// @ts-ignore
-					// defaultSource={defaultLogo}
+					defaultSource={defaultLogo}
 					style={styles.serverIcon}
 					onError={() => console.log('err_loading_server_icon')}
 				/>
