@@ -836,15 +836,20 @@ const RocketChat = {
 		return this.post('teams.removeRoom', { roomId, teamId });
 	},
 	leaveTeam({ teamName, rooms }) {
+		const serverVersion = reduxStore.getState().server.version;
 		// RC 3.13.0
-		return this.post('teams.leave', { teamName, ...(rooms.length && { rooms }) });
+		return this.post('teams.leave', {
+			teamName,
+			...((compareServerVersion(serverVersion, '4.2.0', methods.lowerThan) || rooms.length) && { rooms })
+		});
 	},
-	removeTeamMember({ teamId, teamName, userId, rooms }) {
+	removeTeamMember({ teamId, userId, rooms }) {
+		const serverVersion = reduxStore.getState().server.version;
 		// RC 3.13.0
 		return this.post('teams.removeMember', {
 			teamId,
 			userId,
-			...(rooms.length && { rooms })
+			...((compareServerVersion(serverVersion, '4.2.0', methods.lowerThan) || rooms.length) && { rooms })
 		});
 	},
 	updateTeamRoom({ roomId, isDefault }) {
