@@ -985,7 +985,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 
 	navToRoom = async (message: { rid: string; id: string }) => {
 		const { navigation, isMasterDetail } = this.props;
-		const roomInfo: any = await getRoomInfo(message.rid);
+		const roomInfo = (await getRoomInfo(message.rid)) as IRoom;
 		return goRoom({
 			item: roomInfo,
 			isMasterDetail,
