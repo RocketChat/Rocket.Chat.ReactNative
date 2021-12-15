@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent, RefreshControl, ViewToken } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 import moment from 'moment';
 import { dequal } from 'dequal';
@@ -25,7 +25,7 @@ import { IThread } from '../../../definitions/IThread';
 
 const QUERY_SIZE = 50;
 
-const onScroll = ({ y }: any) =>
+const onScroll = ({ y }: { y: Value<number> }) =>
 	event(
 		[
 			{
@@ -57,15 +57,15 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 	private mounted: boolean;
 	private animated: boolean;
 	private jumping: boolean;
-	private y: any;
-	private onScroll: (...args: any[]) => void;
-	private unsubscribeFocus: any;
+	private y: Value<number>;
+	private onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+	private unsubscribeFocus: () => void;
 	private viewabilityConfig: { itemVisiblePercentThreshold: number };
-	private highlightedMessageTimeout: any;
+	private highlightedMessageTimeout?: ReturnType<typeof setTimeout> | false;
 	private thread?: IThread;
 	private messagesObservable?: Observable<Model>;
 	private messagesSubscription?: Subscription;
-	private viewableItems: any;
+	private viewableItems?: ViewToken[];
 
 	constructor(props: IRoomListContainerProps) {
 		super(props);
@@ -286,7 +286,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 			if (index > -1) {
 				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
 				await new Promise(res => setTimeout(res, 300));
-				if (!this.viewableItems.map((vi: { key: string }) => vi.key).includes(messageId)) {
+				if (!this.viewableItems?.map((vi: { key: string }) => vi.key).includes(messageId)) {
 					if (!this.jumping) {
 						return resolve();
 					}
@@ -332,7 +332,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 		return renderRow(item, messages[index + 1], highlightedMessage);
 	};
 
-	onViewableItemsChanged = ({ viewableItems }: any) => {
+	onViewableItemsChanged = ({ viewableItems }: { viewableItems: ViewToken[] }) => {
 		this.viewableItems = viewableItems;
 	};
 

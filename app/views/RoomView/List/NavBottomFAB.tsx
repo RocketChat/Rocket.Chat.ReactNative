@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { call, cond, greaterOrEq, useCode } from 'react-native-reanimated';
+import Animated, { call, cond, greaterOrEq, useCode, Value } from 'react-native-reanimated';
 
 import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 });
 
 interface IRoomNavBottomFAB {
-	y: number;
+	y: Value<number>;
 	onPress: Function;
 	isThread: boolean;
 }
