@@ -69,6 +69,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { IRoom, IRoomModel, RoomType } from '../../definitions/IRoom';
 import { IAttachment } from '../../definitions/IAttachment';
 import { IThread } from '../../definitions/IThread';
+import { ISubscriptions } from '../../definitions/ISubscriptions';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -764,9 +765,9 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 			.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(this.rid)))
 			.observeWithColumns(['unread']);
 
-		this.queryUnreads = observable.subscribe((data: any) => {
+		this.queryUnreads = observable.subscribe((data: ISubscriptions[]) => {
 			const { unreadsCount } = this.state;
-			const newUnreadsCount = data.filter((s: any) => s.unread > 0).reduce((a: any, b: any) => a + (b.unread || 0), 0);
+			const newUnreadsCount = data.filter(s => s.unread > 0).reduce((a, b) => a + (b.unread || 0), 0);
 			if (unreadsCount !== newUnreadsCount) {
 				this.setState({ unreadsCount: newUnreadsCount }, () => this.setHeader());
 			}
