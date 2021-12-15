@@ -66,8 +66,9 @@ import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
 import List from './List';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IRoom, RoomType } from '../../definitions/IRoom';
+import { IRoom, IRoomModel, RoomType } from '../../definitions/IRoom';
 import { IAttachment } from '../../definitions/IAttachment';
+import { IThread } from '../../definitions/IThread';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -364,7 +365,8 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		this.mounted = false;
 		if (!editing && this.messagebox && this.messagebox.current) {
 			const { text } = this.messagebox.current;
-			let obj: any; // TODO - test the threadsCollection.find return to change this any;
+			let obj: IRoomModel = room; // TODO - test the threadsCollection.find return to change this any;
+
 			if (this.tmid) {
 				try {
 					const threadsCollection = db.get('threads');
@@ -372,13 +374,12 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 				} catch (e) {
 					// Do nothing
 				}
-			} else {
-				obj = room;
 			}
+
 			if (obj) {
 				try {
 					await db.action(async () => {
-						await obj.update((r: any) => {
+						await obj.update(r => {
 							// TODO - change this any
 							r.draftMessage = text;
 						});
@@ -742,7 +743,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 	};
 
 	onDiscussionPress = debounce(
-		(item: any) => {
+		(item: IThread) => {
 			const { navigation } = this.props;
 			navigation.push('RoomView', {
 				rid: item.drid,

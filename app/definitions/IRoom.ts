@@ -30,4 +30,7 @@ export interface IRoom extends IRocketChatRecord {
 	usedCannedResponse?: string;
 	bannerClosed?: boolean;
 	lastOpen?: Date;
+	draftMessage?: string;
 }
+
+export type IRoomModel = IRoom & Model;

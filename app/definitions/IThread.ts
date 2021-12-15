@@ -27,7 +27,7 @@ export interface IThread {
 	edited_by: { username: string };
 	reactions: IReaction[];
 	role: null;
-	drid: null;
+	drid: string;
 	dcount: null;
 	dlm: null;
 	tmid: string;
