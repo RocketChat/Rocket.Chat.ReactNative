@@ -21,6 +21,7 @@ import List from './List';
 import NavBottomFAB from './NavBottomFAB';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { IRoomItem } from '../index';
+import { IThread } from '../../../definitions/IThread';
 
 const QUERY_SIZE = 50;
 
@@ -61,7 +62,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 	private unsubscribeFocus: any;
 	private viewabilityConfig: { itemVisiblePercentThreshold: number };
 	private highlightedMessageTimeout: any;
-	private thread: any;
+	private thread?: IThread;
 	private messagesObservable?: Observable<Model>;
 	private messagesSubscription?: Subscription;
 	private viewableItems: any;
