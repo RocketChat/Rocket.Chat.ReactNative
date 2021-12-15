@@ -837,15 +837,14 @@ const RocketChat = {
 	},
 	leaveTeam({ teamName, rooms }) {
 		// RC 3.13.0
-		return this.post('teams.leave', { teamName, rooms });
+		return this.post('teams.leave', { teamName, ...(rooms.length && { rooms }) });
 	},
 	removeTeamMember({ teamId, teamName, userId, rooms }) {
 		// RC 3.13.0
 		return this.post('teams.removeMember', {
 			teamId,
-			teamName,
 			userId,
-			rooms
+			...(rooms.length && { rooms })
 		});
 	},
 	updateTeamRoom({ roomId, isDefault }) {
