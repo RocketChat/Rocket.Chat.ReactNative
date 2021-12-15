@@ -161,6 +161,15 @@ interface INavToThread {
 	tlm?: string;
 }
 
+interface IBlockAction {
+	actionId: string;
+	appId: string;
+	value: string;
+	blockId: string;
+	rid: string;
+	mid: string;
+}
+
 class RoomView extends React.Component<IRoomViewProps, any> {
 	private rid: string;
 	private t: RoomType;
@@ -1024,7 +1033,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		}
 	};
 
-	blockAction = ({ actionId, appId, value, blockId, rid, mid }: any) =>
+	blockAction = ({ actionId, appId, value, blockId, rid, mid }: IBlockAction) =>
 		RocketChat.triggerBlockAction({
 			blockId,
 			actionId,
@@ -1065,7 +1074,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 			loaderItem
 		});
 
-	renderItem = (item: IRoomItem, previousItem: IRoomItem, highlightedMessage: any) => {
+	renderItem = (item: IRoomItem, previousItem: IRoomItem, highlightedMessage: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
 			this.props;
