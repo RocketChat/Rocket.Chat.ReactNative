@@ -15,4 +15,4 @@ export const supportSystemTheme = () => {
 };
 
 // Tablet info
-export const isTablet = DeviceInfo.isTablet();
+export const isTablet = DeviceInfo.isTablet() || DeviceInfo.getDeviceType() === 'Desktop';
