@@ -62,6 +62,9 @@ export type ModalStackParamList = {
 		t: RoomType;
 		encrypted?: boolean;
 		showCloseModal?: boolean;
+		room?: IRoom;
+		member?: any;
+		joined?: boolean;
 	};
 	SelectedUsersView: {
 		maxUsers: number;

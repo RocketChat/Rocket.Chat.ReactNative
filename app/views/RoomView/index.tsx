@@ -8,7 +8,7 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/core';
+import { NavigatorScreenParams, RouteProp } from '@react-navigation/core';
 
 import Touch from '../../utils/touch';
 import { replyBroadcast as replyBroadcastAction } from '../../actions/messages';
@@ -70,6 +70,7 @@ import { IRoom, IRoomModel, RoomType } from '../../definitions/IRoom';
 import { IAttachment } from '../../definitions/IAttachment';
 import { IThread } from '../../definitions/IThread';
 import { ISubscriptions } from '../../definitions/ISubscriptions';
+import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -513,8 +514,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		});
 	};
 
-	// goRoomActionsView = (screen?: keyof ChatsStackParamList) => {
-	goRoomActionsView = (screen?: any) => {
+	goRoomActionsView = (screen?: 'SearchMessagesView' | 'RoomActionsView') => {
 		logEvent(events.ROOM_GO_RA);
 		const { room, member, joined } = this.state;
 		const { navigation, isMasterDetail } = this.props;
@@ -744,7 +744,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		logEvent(events.ROOM_ENCRYPTED_PRESS);
 		const { navigation, isMasterDetail } = this.props;
 
-		const screen: any = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
+		const screen: NavigatorScreenParams<ModalStackParamList> = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
 
 		if (isMasterDetail) {
 			return navigation.navigate('ModalStackNavigator', screen);
