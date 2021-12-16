@@ -470,7 +470,8 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 			headerLeft: () => (
 				<LeftButtons
 					tmid={tmid}
-					unreadsCount={unreadsCount}
+					// TODO - remove this type after craete the Room state
+					unreadsCount={unreadsCount as number & string}
 					navigation={navigation}
 					baseUrl={baseUrl}
 					userId={userId}
@@ -1018,7 +1019,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 			const { input } = event;
 			if (handleCommandScroll(event)) {
 				const offset: number = input === 'UIKeyInputUpArrow' ? 100 : -100;
-				this.offset += offset;
+				this.offset! += offset;
 				this.flatList?.scrollToOffset({ offset: this.offset });
 			} else if (handleCommandRoomActions(event)) {
 				this.goRoomActionsView();
