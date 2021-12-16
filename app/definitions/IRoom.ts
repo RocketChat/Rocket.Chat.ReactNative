@@ -32,4 +32,4 @@ export interface IRoom extends IRocketChatRecord, ISubscriptions {
 	draftMessage?: string;
 }
 
-export type IRoomModel = IRoom & Model;
+export type TRoomModel = IRoom & Model;
