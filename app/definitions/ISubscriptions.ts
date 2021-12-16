@@ -9,6 +9,16 @@ export interface ISubscriptions {
 	tunread: string;
 	tunreadUser: string;
 	tunreadGroup: string;
+	joinCodeRequired: boolean;
+	alert: boolean;
+	userMentions: object;
+	ls: Date;
+	jitsiTimeout: number;
+	ignored: any;
+	announcement: string;
+	sysMes: string;
+	archived: string;
+	broadcast: string;
 }
 
 export type TSubscriptionsModel = ISubscriptions & Model;

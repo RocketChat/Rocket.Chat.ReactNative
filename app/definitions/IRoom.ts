@@ -1,7 +1,7 @@
-import { Observable } from 'rxjs';
 import Model from '@nozbe/watermelondb/Model';
 
 import { IRocketChatRecord } from './IRocketChatRecord';
+import { ISubscriptions } from './ISubscriptions';
 
 export enum RoomType {
 	GROUP = 'p',
@@ -12,7 +12,7 @@ export enum RoomType {
 	E2E_MESSAGE_TYPE = 'e2e'
 }
 
-export interface IRoom extends IRocketChatRecord {
+export interface IRoom extends IRocketChatRecord, ISubscriptions {
 	rid: string;
 	t: RoomType;
 	name: string;
@@ -26,9 +26,8 @@ export interface IRoom extends IRocketChatRecord {
 	visitor?: boolean;
 	autoTranslateLanguage?: boolean;
 	autoTranslate?: boolean;
-	observe?(): Observable<Model>;
 	usedCannedResponse?: string;
-	bannerClosed?: boolean;
+	bannerClosed: boolean;
 	lastOpen?: Date;
 	draftMessage?: string;
 }
