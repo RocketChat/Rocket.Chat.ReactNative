@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 
 interface IRoomLeftButtonsProps {
 	tmid?: string;
-	unreadsCount: number;
+	unreadsCount: number & string;
 	navigation: StackNavigationProp<ChatsStackParamList>;
 	baseUrl: string;
 	userId: string;
@@ -43,7 +43,7 @@ const LeftButtons = React.memo(
 	}: IRoomLeftButtonsProps) => {
 		if (!isMasterDetail || tmid) {
 			const onPress = useCallback(() => navigation.goBack(), []);
-			const label: any = unreadsCount > 99 ? '+99' : unreadsCount || ' ';
+			const label = unreadsCount > 99 ? '+99' : unreadsCount || ' ';
 			const labelLength = label.length ? label.length : 1;
 			const marginLeft = -2 * labelLength;
 			const fontSize = labelLength > 1 ? 14 : 17;
