@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
 import Markdown from '../../app/containers/markdown';
+import Preview from '../../app/containers/markdown/Preview';
 import { themes } from '../../app/constants/colors';
 
 const theme = 'light';
@@ -62,14 +63,13 @@ stories.add('Edited', () => (
 
 stories.add('Preview', () => (
 	<View style={styles.container}>
-		<Markdown msg={longText} theme={theme} numberOfLines={1} preview />
-		<Markdown msg={lineBreakText} theme={theme} numberOfLines={1} preview />
-		<Markdown msg={sequentialEmptySpacesText} theme={theme} numberOfLines={1} preview />
-		<Markdown
+		<Preview msg={longText} theme={theme} numberOfLines={1} />
+		<Preview msg={lineBreakText} theme={theme} numberOfLines={1} />
+		<Preview msg={sequentialEmptySpacesText} theme={theme} numberOfLines={1} />
+		<Preview
 			msg='@rocket.cat @name1 @all @here @unknown #general #unknown'
 			theme={theme}
 			numberOfLines={1}
-			preview
 			mentions={[
 				{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat' },
 				{ _id: 'random2', name: 'Name', username: 'name1' },
@@ -79,13 +79,12 @@ stories.add('Preview', () => (
 			channels={[{ _id: '123', name: 'test-channel' }]}
 			username='rocket.cat'
 		/>
-		<Markdown msg='Testing: 😃 :+1: :marioparty:' getCustomEmoji={getCustomEmoji} theme={theme} numberOfLines={1} preview />
-		<Markdown
+		<Preview msg='Testing: 😃 :+1: :marioparty:' getCustomEmoji={getCustomEmoji} theme={theme} numberOfLines={1} />
+		<Preview
 			msg='Fallback from new md to old'
 			getCustomEmoji={getCustomEmoji}
 			theme={theme}
 			numberOfLines={1}
-			preview
 			md={[
 				{
 					type: 'PARAGRAPH',
