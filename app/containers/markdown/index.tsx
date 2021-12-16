@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Image, Text } from 'react-native';
+import { Image, StyleProp, Text, TextStyle } from 'react-native';
 import { Node, Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
-import removeMarkdown from 'remove-markdown';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
-import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 import MarkdownLink from './Link';
@@ -22,6 +20,7 @@ import mergeTextNodes from './mergeTextNodes';
 import styles from './styles';
 import { isValidURL } from '../../utils/url';
 import NewMarkdown from './new';
+import { formatText } from './formatText';
 
 interface IUser {
 	_id: string;
@@ -52,20 +51,13 @@ interface IMarkdownProps {
 	preview: boolean;
 	theme: string;
 	testID: string;
-	style: any;
+	style: StyleProp<TextStyle>[];
 	onLinkPress: Function;
 }
 
 type TLiteral = {
 	literal: string;
 };
-
-// Support <http://link|Text>
-const formatText = (text: string) =>
-	text.replace(
-		new RegExp('(?:<|<)((?:https|http):\\/\\/[^\\|]+)\\|(.+?)(?=>|>)(?:>|>)', 'gm'),
-		(match, url, title) => `[${title}](${url})`
-	);
 
 const emojiRanges = [
 	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
@@ -350,11 +342,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		const {
 			msg,
 			md,
-			numberOfLines,
 			preview = false,
-			theme,
-			style = [],
-			testID,
 			mentions,
 			channels,
 			navToRoomInfo,
@@ -390,24 +378,6 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
 		// Return: 'Test'
 		m = m.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
-
-		if (preview) {
-			m = shortnameToUnicode(m);
-			// Removes sequential empty spaces
-			m = m.replace(/\s+/g, ' ');
-			m = removeMarkdown(m);
-			m = m.replace(/\n+/g, ' ');
-			return (
-				<Text
-					accessibilityLabel={m}
-					style={[styles.text, { color: themes[theme].bodyText }, ...style]}
-					numberOfLines={numberOfLines}
-					testID={testID}>
-					{m}
-				</Text>
-			);
-		}
-
 		let ast = parser.parse(m);
 		ast = mergeTextNodes(ast);
 		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
