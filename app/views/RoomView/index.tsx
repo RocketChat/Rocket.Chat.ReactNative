@@ -66,13 +66,27 @@ import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
 import List from './List';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IRoom, IRoomModel, RoomType } from '../../definitions/IRoom';
+import { IRoom, TRoomModel, RoomType } from '../../definitions/IRoom';
 import { IAttachment } from '../../definitions/IAttachment';
 import { IThread } from '../../definitions/IThread';
 import { ISubscriptions } from '../../definitions/ISubscriptions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 
-const stateAttrsUpdate = [
+type TStateAttrsUpdate =
+	| 'joined'
+	| 'lastOpen'
+	| 'reactionsModalVisible'
+	| 'canAutoTranslate'
+	| 'selectedMessage'
+	| 'loading'
+	| 'editing'
+	| 'replying'
+	| 'reacting'
+	| 'readOnly'
+	| 'member'
+	| 'showingBlockingLoader';
+
+const stateAttrsUpdate: TStateAttrsUpdate[] = [
 	'joined',
 	'lastOpen',
 	'reactionsModalVisible',
@@ -86,7 +100,30 @@ const stateAttrsUpdate = [
 	'member',
 	'showingBlockingLoader'
 ];
-const roomAttrsUpdate = [
+
+type TRoomAttrsUpdate =
+	| 'f'
+	| 'ro'
+	| 'blocked'
+	| 'blocker'
+	| 'archived'
+	| 'tunread'
+	| 'muted'
+	| 'ignored'
+	| 'jitsiTimeout'
+	| 'announcement'
+	| 'sysMes'
+	| 'topic'
+	| 'name'
+	| 'fname'
+	| 'roles'
+	| 'bannerClosed'
+	| 'visitor'
+	| 'joinCodeRequired'
+	| 'teamMain'
+	| 'teamId';
+
+const roomAttrsUpdate: TRoomAttrsUpdate[] = [
 	'f',
 	'ro',
 	'blocked',
@@ -139,6 +176,28 @@ interface IRoomViewProps {
 	};
 }
 
+interface IRoomViewState {
+	joined: boolean;
+	room: TRoomModel;
+	roomUpdate: Partial<IRoom>;
+	member: {
+		statusText?: string;
+	};
+	lastOpen: Date | null;
+	reactionsModalVisible: boolean;
+	selectedMessage: {};
+	canAutoTranslate: boolean;
+	loading: boolean;
+	showingBlockingLoader: boolean;
+	editing: boolean;
+	replying: boolean;
+	replyWithMention: boolean;
+	reacting: boolean;
+	readOnly: boolean;
+	unreadsCount: number | null;
+	roomUserId: string;
+}
+
 export interface IRoomItem {
 	id: string;
 	t: string;
@@ -171,7 +230,7 @@ interface IBlockAction {
 	mid: string;
 }
 
-class RoomView extends React.Component<IRoomViewProps, any> {
+class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid: string;
 	private t: RoomType;
 	private tmid?: string;
@@ -219,7 +278,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 				name,
 				fname,
 				prid
-			} as IRoom);
+			} as TRoomModel);
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
 		this.jumpToThreadId = props.route.params?.jumpToThreadId;
 		const roomUserId = props.route.params?.roomUserId ?? RocketChat.getUidDirectMessage(room);
@@ -296,7 +355,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		console.timeEnd(`${this.constructor.name} mount`);
 	}
 
-	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: any) {
+	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
 		const { roomUpdate, member } = state;
 		const { appState, theme, insets, route } = this.props;
@@ -322,7 +381,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		return roomAttrsUpdate.some(key => !dequal(nextState.roomUpdate[key], roomUpdate[key]));
 	}
 
-	componentDidUpdate(prevProps: IRoomViewProps, prevState: any) {
+	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
 		const { roomUpdate } = this.state;
 		const { appState, insets, route } = this.props;
 
@@ -376,7 +435,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 		this.mounted = false;
 		if (!editing && this.messagebox && this.messagebox.current) {
 			const { text } = this.messagebox.current;
-			let obj: IRoomModel = room; // TODO - test the threadsCollection.find return to change this any;
+			let obj = room; // TODO - test the threadsCollection.find return to change this any;
 
 			if (this.tmid) {
 				try {
@@ -504,10 +563,10 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 				<RightButtons
 					rid={rid}
 					tmid={tmid}
-					teamId={teamId}
+					teamId={teamId!}
 					joined={joined}
 					t={t}
-					encrypted={encrypted}
+					encrypted={encrypted!}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
 				/>
@@ -1086,7 +1145,7 @@ class RoomView extends React.Component<IRoomViewProps, any> {
 			dateSeparator = item.ts;
 			showUnreadSeparator = moment(item.ts).isAfter(lastOpen);
 		} else {
-			showUnreadSeparator = lastOpen && moment(item.ts).isSameOrAfter(lastOpen) && moment(previousItem.ts).isBefore(lastOpen);
+			showUnreadSeparator = lastOpen! && moment(item.ts).isSameOrAfter(lastOpen) && moment(previousItem.ts).isBefore(lastOpen);
 			if (!moment(item.ts).isSame(previousItem.ts, 'day')) {
 				dateSeparator = item.ts;
 			}

@@ -6,7 +6,7 @@ import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage } from '../definitions/IMessage';
-import { IRoom, RoomType } from '../definitions/IRoom';
+import { IRoom, TRoomModel, RoomType } from '../definitions/IRoom';
 import { ModalStackParamList } from './MasterDetailStack/types';
 
 export type ChatsStackParamList = {
@@ -21,7 +21,7 @@ export type ChatsStackParamList = {
 		name?: string;
 		fname?: string;
 		prid?: string;
-		room?: IRoom;
+		room?: TRoomModel;
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
 		roomUserId?: string;

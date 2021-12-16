@@ -15,14 +15,10 @@ import { showConfirmationAlert } from '../../utils/info';
 import { useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT } from './Header';
 import events from '../../utils/log/events';
+import { IRoom } from '../../definitions/IRoom';
 
 interface IMessageActions {
-	room: {
-		rid: string | number;
-		autoTranslateLanguage: any;
-		autoTranslate: any;
-		reactWhenReadOnly: any;
-	};
+	room: IRoom;
 	tmid?: string;
 	user: {
 		id: string | number;

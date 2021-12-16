@@ -19,6 +19,15 @@ export interface ISubscriptions {
 	sysMes: string;
 	archived: string;
 	broadcast: string;
+	autoTranslateLanguage: string;
+	autoTranslate: boolean;
+	reactWhenReadOnly: boolean;
+	f: boolean;
+	ro: boolean;
+	blocked: boolean;
+	blocker: boolean;
+	muted: boolean;
+	roles: string;
 }
 
 export type TSubscriptionsModel = ISubscriptions & Model;

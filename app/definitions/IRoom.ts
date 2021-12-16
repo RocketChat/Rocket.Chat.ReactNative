@@ -24,8 +24,6 @@ export interface IRoom extends IRocketChatRecord, ISubscriptions {
 	teamId?: string;
 	encrypted?: boolean;
 	visitor?: boolean;
-	autoTranslateLanguage?: boolean;
-	autoTranslate?: boolean;
 	usedCannedResponse?: string;
 	bannerClosed: boolean;
 	lastOpen?: Date;

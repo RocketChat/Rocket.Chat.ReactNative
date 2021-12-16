@@ -45,7 +45,7 @@ interface IRoomListContainerProps {
 	loading: boolean;
 	listRef: React.RefObject<FlatList>;
 	hideSystemMessages: any[];
-	tunread: [];
+	tunread: string;
 	ignored: [];
 	navigation: StackNavigationProp<ChatsStackParamList>;
 	showMessageInMainThread: boolean;
