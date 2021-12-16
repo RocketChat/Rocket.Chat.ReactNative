@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Subscription } from 'rxjs';
-import Model from '@nozbe/watermelondb/Model';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -12,6 +11,8 @@ import { events, logEvent } from '../../utils/log';
 import { isTeamRoom } from '../../utils/room';
 import { ChatsStackParamList } from '../../stacks/types';
 import { RoomType } from '../../definitions/IRoom';
+import { IThread, TThreadModel } from '../../definitions/IThread';
+import { ISubscriptions, TSubscriptionsModel } from '../../definitions/ISubscriptions';
 
 interface IRoomRightButtonsContainerProps {
 	userId: string;
@@ -93,26 +94,26 @@ class RightButtonsContainer extends Component<IRoomRightButtonsContainerProps, a
 		}
 	}
 
-	observeThread = (threadRecord: Model) => {
+	observeThread = (threadRecord: TThreadModel) => {
 		const threadObservable = threadRecord.observe();
 		this.threadSubscription = threadObservable.subscribe(thread => this.updateThread(thread));
 	};
 
-	updateThread = (thread: any) => {
+	updateThread = (thread: IThread) => {
 		const { userId } = this.props;
 		this.setState({
 			isFollowingThread: thread.replies && !!thread.replies.find((t: string) => t === userId)
 		});
 	};
 
-	observeSubscription = (subRecord: Model) => {
+	observeSubscription = (subRecord: TSubscriptionsModel) => {
 		const subObservable = subRecord.observe();
 		this.subSubscription = subObservable.subscribe(sub => {
 			this.updateSubscription(sub);
 		});
 	};
 
-	updateSubscription = (sub: any) => {
+	updateSubscription = (sub: ISubscriptions) => {
 		this.setState({
 			tunread: sub?.tunread,
 			tunreadUser: sub?.tunreadUser,

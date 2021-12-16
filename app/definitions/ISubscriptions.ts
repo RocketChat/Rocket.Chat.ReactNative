@@ -1,13 +1,14 @@
 import Model from '@nozbe/watermelondb/Model';
 
-import { IRoom } from './IRoom';
-
 export interface ISubscriptions {
 	_id: string;
 	name: string;
 	fname: string;
 	rid: string;
 	unread: number;
+	tunread: string;
+	tunreadUser: string;
+	tunreadGroup: string;
 }
 
-export type ISubscriptionsModel = IRoom & Model;
+export type TSubscriptionsModel = ISubscriptions & Model;
