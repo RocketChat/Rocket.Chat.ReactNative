@@ -19,6 +19,8 @@ export function subscribeUsersPresence() {
 		this.activeUsersSubTimeout = setTimeout(() => {
 			this.sdk.subscribe('activeUsers');
 		}, 5000);
+	} else if (compareServerVersion(serverVersion, '4.1.0', methods.greaterThanOrEqualTo)) {
+		this.sdk.subscribe('stream-user-presence', ' user-presence');
 	} else {
 		this.sdk.subscribe('stream-notify-logged', 'user-status');
 	}

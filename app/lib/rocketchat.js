@@ -231,6 +231,10 @@ const RocketChat = {
 				this.notifyLoggedListener.then(this.stopListener);
 			}
 
+			if (this.userPresenceListener) {
+				this.userPresenceListener.then(this.stopListener);
+			}
+
 			this.unsubscribeRooms();
 
 			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
@@ -303,10 +307,41 @@ const RocketChat = {
 					}
 				})
 			);
+			const userPresence = ddpMessage => {
+				this.activeUsers = this.activeUsers || {};
+				if (!this._setUserTimer) {
+					this._setUserTimer = setTimeout(() => {
+						const activeUsersBatch = this.activeUsers;
+						InteractionManager.runAfterInteractions(() => {
+							reduxStore.dispatch(setActiveUsers(activeUsersBatch));
+						});
+						this._setUserTimer = null;
+						return (this.activeUsers = {});
+					}, 10000);
+				}
+				const userStatus = ddpMessage.fields.args[0];
+				const [id, , status, statusText] = userStatus;
+				this.activeUsers[id] = { status: STATUSES[status], statusText };
 
+				const { user: loggedUser } = reduxStore.getState().login;
+				if (loggedUser && loggedUser.id === id) {
+					reduxStore.dispatch(setUser({ status: STATUSES[status], statusText }));
+				}
+			};
 			this.rolesListener = this.sdk.onStreamData(
 				'stream-roles',
 				protectedFunction(ddpMessage => onRolesChanged(ddpMessage))
+			);
+
+			this.userPresenceListener = this.sdk.onStreamData(
+				'stream-user-presence',
+				protectedFunction(ddpMessage => {
+					const { eventName } = ddpMessage.fields;
+					if (/user-presence/.test(eventName)) {
+						userPresence(ddpMessage);
+					}
+					resolve();
+				})
 			);
 
 			this.notifyLoggedListener = this.sdk.onStreamData(
@@ -314,25 +349,7 @@ const RocketChat = {
 				protectedFunction(async ddpMessage => {
 					const { eventName } = ddpMessage.fields;
 					if (/user-status/.test(eventName)) {
-						this.activeUsers = this.activeUsers || {};
-						if (!this._setUserTimer) {
-							this._setUserTimer = setTimeout(() => {
-								const activeUsersBatch = this.activeUsers;
-								InteractionManager.runAfterInteractions(() => {
-									reduxStore.dispatch(setActiveUsers(activeUsersBatch));
-								});
-								this._setUserTimer = null;
-								return (this.activeUsers = {});
-							}, 10000);
-						}
-						const userStatus = ddpMessage.fields.args[0];
-						const [id, , status, statusText] = userStatus;
-						this.activeUsers[id] = { status: STATUSES[status], statusText };
-
-						const { user: loggedUser } = reduxStore.getState().login;
-						if (loggedUser && loggedUser.id === id) {
-							reduxStore.dispatch(setUser({ status: STATUSES[status], statusText }));
-						}
+						userPresence(ddpMessage);
 					} else if (/updateAvatar/.test(eventName)) {
 						const { username, etag } = ddpMessage.fields.args[0];
 						const db = database.active;
