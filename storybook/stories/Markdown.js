@@ -4,7 +4,6 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
 import Markdown, { MarkdownPreview } from '../../app/containers/markdown';
-import Preview from '../../app/containers/markdown/Preview';
 import { themes } from '../../app/constants/colors';
 
 const theme = 'light';
