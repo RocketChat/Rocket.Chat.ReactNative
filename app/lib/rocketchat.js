@@ -840,7 +840,7 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.leave', {
 			teamName,
-			...((compareServerVersion(serverVersion, '4.2', methods.lowerThan) || rooms?.length) && { rooms })
+			...((compareServerVersion(serverVersion, '4.2.0', methods.lowerThan) || rooms?.length) && { rooms })
 		});
 	},
 	removeTeamMember({ teamId, userId, rooms }) {
