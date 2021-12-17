@@ -50,7 +50,7 @@ const Content = React.memo(
 				</Text>
 			);
 		} else if (isPreview) {
-			content = <MarkdownPreview msg={props.msg} theme={props.theme} />;
+			content = <MarkdownPreview msg={props.msg} />;
 		} else {
 			const { baseUrl, user, onLinkPress } = useContext(MessageContext);
 			content = (

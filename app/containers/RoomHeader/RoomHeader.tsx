@@ -101,9 +101,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, theme, scale }
 
 	// subtitle
 	if (subtitle) {
-		return (
-			<MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} theme={theme} />
-		);
+		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} />;
 	}
 
 	return null;
@@ -119,7 +117,7 @@ const HeaderTitle = React.memo(({ title, tmid, prid, scale, theme, testID }: TRo
 		);
 	}
 
-	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} theme={theme} testID={testID} />;
+	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
 });
 
 const Header = React.memo(

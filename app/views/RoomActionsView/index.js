@@ -726,13 +726,11 @@ class RoomActionsView extends React.Component {
 							<MarkdownPreview
 								msg={t === 'd' ? `@${name}` : topic}
 								style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
-								theme={theme}
 							/>
 							{room.t === 'd' && (
 								<MarkdownPreview
 									msg={member.statusText}
 									style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
-									theme={theme}
 								/>
 							)}
 						</View>

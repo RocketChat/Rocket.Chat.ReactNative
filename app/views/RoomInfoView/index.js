@@ -42,7 +42,7 @@ const getRoomTitle = (room, type, name, username, statusText, theme) =>
 			)}
 			{!!statusText && (
 				<View testID='room-info-view-custom-status'>
-					<MarkdownPreview msg={statusText} style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]} theme={theme} />
+					<MarkdownPreview msg={statusText} style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]} />
 				</View>
 			)}
 		</>

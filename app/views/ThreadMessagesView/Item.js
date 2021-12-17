@@ -91,7 +91,6 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 							msg={makeThreadName(item)}
 							baseUrl={baseUrl}
 							username={username}
-							theme={theme}
 							numberOfLines={2}
 							style={[styles.markdown]}
 						/>

@@ -50,14 +50,7 @@ class MessageParser extends UiKitParserMessage {
 
 		const isContext = context === BLOCK_CONTEXT.CONTEXT;
 		if (isContext) {
-			return (
-				<MarkdownPreview
-					msg={text}
-					theme={theme}
-					style={[isContext && { color: themes[theme].auxiliaryText }]}
-					numberOfLines={0}
-				/>
-			);
+			return <MarkdownPreview msg={text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />;
 		}
 		return <Markdown msg={text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} />;
 	}

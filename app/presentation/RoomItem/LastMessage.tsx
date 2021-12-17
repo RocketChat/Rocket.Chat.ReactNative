@@ -75,7 +75,6 @@ const LastMessage = React.memo(
 			})}
 			style={[styles.markdownText, { color: alert ? themes[theme].bodyText : themes[theme].auxiliaryText }]}
 			numberOfLines={2}
-			theme={theme}
 			testID='room-item-last-message'
 		/>
 	),

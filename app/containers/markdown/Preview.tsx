@@ -5,20 +5,22 @@ import removeMarkdown from 'remove-markdown';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import { themes } from '../../constants/colors';
 import { formatText } from './formatText';
+import { useTheme } from '../../theme';
 import styles from './styles';
 
 interface IMarkdownPreview {
 	msg: string;
 	numberOfLines?: number;
-	theme: string;
 	testID?: string;
 	style?: StyleProp<TextStyle>[];
 }
 
-const MarkdownPreview = ({ msg, numberOfLines = 1, testID, theme, style = [] }: IMarkdownPreview): React.ReactElement | null => {
+const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdownPreview): React.ReactElement | null => {
 	if (!msg) {
 		return null;
 	}
+
+	const { theme } = useTheme();
 
 	let m = formatText(msg);
 

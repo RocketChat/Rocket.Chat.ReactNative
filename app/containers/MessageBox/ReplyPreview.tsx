@@ -76,7 +76,7 @@ const ReplyPreview = React.memo(
 						</Text>
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
-					<MarkdownPreview msg={message.msg} theme={theme} />
+					<MarkdownPreview msg={message.msg} />
 				</View>
 				<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 			</View>
