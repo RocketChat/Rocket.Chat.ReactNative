@@ -153,10 +153,7 @@ const Description = React.memo(
 			return null;
 		}
 		const { baseUrl, user } = useContext(MessageContext);
-		return (
-			// @ts-ignore
-			<Markdown msg={text} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
-		);
+		return <Markdown msg={text} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />;
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.attachment.text !== nextProps.attachment.text) {
@@ -196,7 +193,6 @@ const Fields = React.memo(
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>{field.title}</Text>
-						{/* @ts-ignore*/}
 						<Markdown
 							msg={field.value}
 							baseUrl={baseUrl}
@@ -282,7 +278,6 @@ const Reply = React.memo(
 						) : null}
 					</View>
 				</Touchable>
-				{/* @ts-ignore*/}
 				<Markdown
 					msg={attachment.description!}
 					baseUrl={baseUrl}

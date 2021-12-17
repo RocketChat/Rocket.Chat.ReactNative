@@ -280,7 +280,6 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
-				{/* @ts-ignore*/}
 				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 			</>
 		);

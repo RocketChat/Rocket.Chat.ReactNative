@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import Markdown from '../markdown';
+import Preview from '../markdown/Preview';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
@@ -43,9 +43,13 @@ const styles = StyleSheet.create({
 interface IMessageBoxReplyPreview {
 	replying: boolean;
 	message: {
+		id: any;
 		ts: Date;
 		msg: string;
-		u: any;
+		u: {
+			username?: string;
+			name?: string;
+		};
 	};
 	Message_TimeFormat: string;
 	close(): void;
@@ -57,17 +61,7 @@ interface IMessageBoxReplyPreview {
 }
 
 const ReplyPreview = React.memo(
-	({
-		message,
-		Message_TimeFormat,
-		baseUrl,
-		username,
-		replying,
-		getCustomEmoji,
-		close,
-		theme,
-		useRealName
-	}: IMessageBoxReplyPreview) => {
+	({ message, Message_TimeFormat, replying, close, theme, useRealName }: IMessageBoxReplyPreview) => {
 		if (!replying) {
 			return null;
 		}
@@ -82,16 +76,7 @@ const ReplyPreview = React.memo(
 						</Text>
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
-					{/* @ts-ignore*/}
-					<Markdown
-						msg={message.msg}
-						baseUrl={baseUrl}
-						username={username}
-						getCustomEmoji={getCustomEmoji}
-						numberOfLines={1}
-						preview
-						theme={theme}
-					/>
+					<Preview msg={message.msg} numberOfLines={1} theme={theme} />
 				</View>
 				<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 			</View>

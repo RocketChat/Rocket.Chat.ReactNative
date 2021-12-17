@@ -73,10 +73,13 @@ interface IMessageBoxProps {
 	rid: string;
 	baseUrl: string;
 	message: {
-		u: {
-			username: string;
-		};
 		id: any;
+		ts: Date;
+		msg: string;
+		u: {
+			username?: string;
+			name?: string;
+		};
 	};
 	replying: boolean;
 	editing: boolean;
@@ -1068,7 +1071,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		const replyPreview = !recording ? (
 			<ReplyPreview
-				// @ts-ignore
 				message={message}
 				close={replyCancel}
 				username={user.username}

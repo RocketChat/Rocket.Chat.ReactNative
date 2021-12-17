@@ -88,7 +88,6 @@ const Video = React.memo(
 						<CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />
 					)}
 				</Touchable>
-				{/* @ts-ignore*/}
 				<Markdown
 					msg={file.description}
 					baseUrl={baseUrl}

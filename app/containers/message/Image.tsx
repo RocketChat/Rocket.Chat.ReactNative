@@ -66,7 +66,6 @@ const ImageContainer = React.memo(
 				<Button theme={theme} onPress={onPress}>
 					<View>
 						<MessageImage img={img} theme={theme} />
-						{/* @ts-ignore */}
 						<Markdown
 							msg={file.description}
 							baseUrl={baseUrl}
