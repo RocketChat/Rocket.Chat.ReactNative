@@ -62,7 +62,6 @@ const Content = React.memo(
 					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
 					isEdited={props.isEdited}
-					numberOfLines={0}
 					channels={props.channels}
 					mentions={props.mentions}
 					navToRoomInfo={props.navToRoomInfo}

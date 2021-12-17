@@ -106,7 +106,7 @@ class InviteUsersView extends React.Component<IInviteUsersViewProps, any> {
 	renderExpiration = () => {
 		const { theme } = this.props;
 		const expirationMessage = this.linkExpirationText();
-		return <Markdown msg={expirationMessage} username='' baseUrl='' theme={theme} />;
+		return <Markdown msg={expirationMessage} theme={theme} />;
 	};
 
 	render() {
