@@ -9,15 +9,15 @@ import styles from './styles';
 
 interface IPreview {
 	msg: string;
-	numberOfLines: number;
+	numberOfLines?: number;
 	theme: string;
 	testID?: string;
 	style?: StyleProp<TextStyle>[];
 }
 
-const Preview = ({ msg, numberOfLines, testID, theme, style = [] }: IPreview): JSX.Element => {
+const Preview = ({ msg, numberOfLines = 1, testID, theme, style = [] }: IPreview): React.ReactElement | null => {
 	if (!msg) {
-		return <></>;
+		return null;
 	}
 
 	let m = formatText(msg);
