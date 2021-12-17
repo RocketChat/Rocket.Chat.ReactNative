@@ -12070,7 +12070,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -12089,7 +12088,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Hey!"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -12173,7 +12171,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -12192,7 +12189,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -12276,7 +12272,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -12295,7 +12290,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Older message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -12554,7 +12548,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -12573,7 +12566,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -12657,7 +12649,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -12676,7 +12667,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the third message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -12760,7 +12750,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -12779,7 +12768,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the second message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -13002,7 +12990,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -13021,7 +13008,6 @@ exports[`Storyshots LoadMore black theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the first message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -13275,7 +13261,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -13294,7 +13279,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Hey!"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -13378,7 +13362,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -13397,7 +13380,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -13481,7 +13463,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -13500,7 +13481,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Older message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -13759,7 +13739,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -13778,7 +13757,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -13862,7 +13840,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -13881,7 +13858,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the third message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -13965,7 +13941,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -13984,7 +13959,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the second message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -14207,7 +14181,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -14226,7 +14199,6 @@ exports[`Storyshots LoadMore dark theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the first message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -14480,7 +14452,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -14499,7 +14470,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Hey!"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -14583,7 +14553,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -14602,7 +14571,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -14686,7 +14654,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -14705,7 +14672,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Older message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -14964,7 +14930,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -14983,7 +14948,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -15067,7 +15031,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -15086,7 +15049,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the third message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -15170,7 +15132,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -15189,7 +15150,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the second message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -15412,7 +15372,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -15431,7 +15390,6 @@ exports[`Storyshots LoadMore light theme 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the first message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -19272,7 +19230,6 @@ exports[`Storyshots Message Archived 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -19291,7 +19248,6 @@ exports[`Storyshots Message Archived 1`] = `
                 >
                   <Text
                     accessibilityLabel="This message is inside an archived room"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -19527,7 +19483,6 @@ exports[`Storyshots Message Basic 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -19546,7 +19501,6 @@ exports[`Storyshots Message Basic 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -19769,7 +19723,6 @@ exports[`Storyshots Message Basic 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -19788,7 +19741,6 @@ exports[`Storyshots Message Basic 1`] = `
                 >
                   <Text
                     accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -20053,7 +20005,6 @@ exports[`Storyshots Message Block Quote 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -20072,7 +20023,6 @@ exports[`Storyshots Message Block Quote 1`] = `
                     >
                       <Text
                         accessibilityLabel="Testing block quote"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -20327,7 +20277,6 @@ exports[`Storyshots Message Block Quote 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -20346,7 +20295,6 @@ exports[`Storyshots Message Block Quote 1`] = `
                     >
                       <Text
                         accessibilityLabel="Testing block quote"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -20377,7 +20325,6 @@ exports[`Storyshots Message Block Quote 1`] = `
                   </View>
                 </View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -20396,7 +20343,6 @@ exports[`Storyshots Message Block Quote 1`] = `
                 >
                   <Text
                     accessibilityLabel="Testing block quote"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -20632,7 +20578,6 @@ exports[`Storyshots Message Broadcast 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -20651,7 +20596,6 @@ exports[`Storyshots Message Broadcast 1`] = `
                 >
                   <Text
                     accessibilityLabel="Broadcasted message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -21807,7 +21751,6 @@ exports[`Storyshots Message Custom fields 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -21826,7 +21769,6 @@ exports[`Storyshots Message Custom fields 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -22573,7 +22515,6 @@ exports[`Storyshots Message Custom style 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -22592,7 +22533,6 @@ exports[`Storyshots Message Custom style 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -22828,7 +22768,6 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -22847,7 +22786,6 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                 >
                   <Text
                     accessibilityLabel="Fourth message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -23134,7 +23072,6 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -23153,7 +23090,6 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                 >
                   <Text
                     accessibilityLabel="Third message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -23283,7 +23219,6 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -23302,7 +23237,6 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                 >
                   <Text
                     accessibilityLabel="Second message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -23525,7 +23459,6 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -23544,7 +23477,6 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                 >
                   <Text
                     accessibilityLabel="Second message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -23813,7 +23745,6 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -23832,7 +23763,6 @@ exports[`Storyshots Message Date and Unread separators 1`] = `
                 >
                   <Text
                     accessibilityLabel="First message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -25407,7 +25337,6 @@ exports[`Storyshots Message Edited 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -25426,7 +25355,6 @@ exports[`Storyshots Message Edited 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -25662,7 +25590,6 @@ exports[`Storyshots Message Editing 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -25681,7 +25608,6 @@ exports[`Storyshots Message Editing 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message being edited"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -25917,7 +25843,6 @@ exports[`Storyshots Message Emojis 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -25936,7 +25861,6 @@ exports[`Storyshots Message Emojis 1`] = `
                 >
                   <Text
                     accessibilityLabel="👊🤙👏"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -26165,7 +26089,6 @@ exports[`Storyshots Message Emojis 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -26184,7 +26107,6 @@ exports[`Storyshots Message Emojis 1`] = `
                 >
                   <Text
                     accessibilityLabel="👏"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -26413,7 +26335,6 @@ exports[`Storyshots Message Emojis 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -26467,7 +26388,6 @@ exports[`Storyshots Message Emojis 1`] = `
                   </View>
                   <Text
                     accessibilityLabel=" "
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -26536,7 +26456,6 @@ exports[`Storyshots Message Emojis 1`] = `
                   </View>
                   <Text
                     accessibilityLabel=" "
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -26800,7 +26719,6 @@ exports[`Storyshots Message Emojis 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -27049,7 +26967,6 @@ exports[`Storyshots Message Emojis 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -27068,7 +26985,6 @@ exports[`Storyshots Message Emojis 1`] = `
                 >
                   <Text
                     accessibilityLabel="🤙"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -27332,7 +27248,6 @@ exports[`Storyshots Message Emojis 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -27351,7 +27266,6 @@ exports[`Storyshots Message Emojis 1`] = `
                 >
                   <Text
                     accessibilityLabel="🤙"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -27414,7 +27328,6 @@ exports[`Storyshots Message Emojis 1`] = `
                   </View>
                   <Text
                     accessibilityLabel="🤙🤙"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -27664,7 +27577,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -27683,7 +27595,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     >
                       <Text
                         accessibilityLabel="Message"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -27829,7 +27740,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -27848,7 +27758,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     >
                       <Text
                         accessibilityLabel="Message Encrypted without Header"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -28133,7 +28042,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -28152,7 +28060,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     >
                       <Text
                         accessibilityLabel="Message Encrypted with Reactions"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -29026,7 +28933,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -29045,7 +28951,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     >
                       <Text
                         accessibilityLabel="Temp message encrypted"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -29330,7 +29235,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -29349,7 +29253,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     >
                       <Text
                         accessibilityLabel="Message Edited encrypted"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -29664,7 +29567,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -29683,7 +29585,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                   >
                     <Text
                       accessibilityLabel="This message has error and is encrypted"
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -29967,7 +29868,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -29986,7 +29886,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     >
                       <Text
                         accessibilityLabel="Read Receipt encrypted with Header"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -30154,7 +30053,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -30173,7 +30071,6 @@ exports[`Storyshots Message Encrypted 1`] = `
                     >
                       <Text
                         accessibilityLabel="Read Receipt encrypted without Header"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -30509,7 +30406,6 @@ exports[`Storyshots Message Error 1`] = `
             </View>
             <View>
               <Text
-                numberOfLines={0}
                 style={
                   Array [
                     Object {
@@ -30528,7 +30424,6 @@ exports[`Storyshots Message Error 1`] = `
               >
                 <Text
                   accessibilityLabel="This message has error"
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -30711,7 +30606,6 @@ exports[`Storyshots Message Error 1`] = `
             </View>
             <View>
               <Text
-                numberOfLines={0}
                 style={
                   Array [
                     Object {
@@ -30730,7 +30624,6 @@ exports[`Storyshots Message Error 1`] = `
               >
                 <Text
                   accessibilityLabel="This message has error too"
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -30965,7 +30858,6 @@ exports[`Storyshots Message Full name 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -30984,7 +30876,6 @@ exports[`Storyshots Message Full name 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -31220,7 +31111,6 @@ exports[`Storyshots Message Grouped messages 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -31239,7 +31129,6 @@ exports[`Storyshots Message Grouped messages 1`] = `
                 >
                   <Text
                     accessibilityLabel="..."
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -31462,7 +31351,6 @@ exports[`Storyshots Message Grouped messages 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -31481,7 +31369,6 @@ exports[`Storyshots Message Grouped messages 1`] = `
                 >
                   <Text
                     accessibilityLabel="Different user"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -31565,7 +31452,6 @@ exports[`Storyshots Message Grouped messages 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -31584,7 +31470,6 @@ exports[`Storyshots Message Grouped messages 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the third message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -31668,7 +31553,6 @@ exports[`Storyshots Message Grouped messages 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -31687,7 +31571,6 @@ exports[`Storyshots Message Grouped messages 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the second message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -31910,7 +31793,6 @@ exports[`Storyshots Message Grouped messages 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -31929,7 +31811,6 @@ exports[`Storyshots Message Grouped messages 1`] = `
                 >
                   <Text
                     accessibilityLabel="This is the first message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -32360,7 +32241,6 @@ exports[`Storyshots Message Lists 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -32379,7 +32259,6 @@ exports[`Storyshots Message Lists 1`] = `
                     >
                       <Text
                         accessibilityLabel="Dogs"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -32447,7 +32326,6 @@ exports[`Storyshots Message Lists 1`] = `
                         }
                       >
                         <Text
-                          numberOfLines={0}
                           style={
                             Array [
                               Object {
@@ -32466,7 +32344,6 @@ exports[`Storyshots Message Lists 1`] = `
                         >
                           <Text
                             accessibilityLabel="cats"
-                            numberOfLines={0}
                             style={
                               Array [
                                 Object {
@@ -32538,7 +32415,6 @@ exports[`Storyshots Message Lists 1`] = `
                         }
                       >
                         <Text
-                          numberOfLines={0}
                           style={
                             Array [
                               Object {
@@ -32557,7 +32433,6 @@ exports[`Storyshots Message Lists 1`] = `
                         >
                           <Text
                             accessibilityLabel="cats"
-                            numberOfLines={0}
                             style={
                               Array [
                                 Object {
@@ -32826,7 +32701,6 @@ exports[`Storyshots Message Lists 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -32845,7 +32719,6 @@ exports[`Storyshots Message Lists 1`] = `
                     >
                       <Text
                         accessibilityLabel="Dogs"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -32915,7 +32788,6 @@ exports[`Storyshots Message Lists 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -32934,7 +32806,6 @@ exports[`Storyshots Message Lists 1`] = `
                     >
                       <Text
                         accessibilityLabel="Cats"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -33199,7 +33070,6 @@ exports[`Storyshots Message Lists 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -33218,7 +33088,6 @@ exports[`Storyshots Message Lists 1`] = `
                     >
                       <Text
                         accessibilityLabel="Dogs"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -33344,7 +33213,6 @@ exports[`Storyshots Message Lists 1`] = `
                     }
                   >
                     <Text
-                      numberOfLines={0}
                       style={
                         Array [
                           Object {
@@ -33363,7 +33231,6 @@ exports[`Storyshots Message Lists 1`] = `
                     >
                       <Text
                         accessibilityLabel="Cats"
-                        numberOfLines={0}
                         style={
                           Array [
                             Object {
@@ -33603,7 +33470,6 @@ exports[`Storyshots Message Mentions 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -33641,7 +33507,6 @@ exports[`Storyshots Message Mentions 1`] = `
                   </Text>
                   <Text
                     accessibilityLabel=" "
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -33688,7 +33553,6 @@ exports[`Storyshots Message Mentions 1`] = `
                   </Text>
                   <Text
                     accessibilityLabel=" "
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -33734,7 +33598,6 @@ exports[`Storyshots Message Mentions 1`] = `
                   </Text>
                   <Text
                     accessibilityLabel=" "
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -33780,7 +33643,6 @@ exports[`Storyshots Message Mentions 1`] = `
                   </Text>
                   <Text
                     accessibilityLabel=" "
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -34022,7 +33884,6 @@ exports[`Storyshots Message Mentions 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -34060,7 +33921,6 @@ exports[`Storyshots Message Mentions 1`] = `
                   </Text>
                   <Text
                     accessibilityLabel=" Lorem ipsum dolor "
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -34107,7 +33967,6 @@ exports[`Storyshots Message Mentions 1`] = `
                   </Text>
                   <Text
                     accessibilityLabel=" sit amet, "
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -34153,7 +34012,6 @@ exports[`Storyshots Message Mentions 1`] = `
                   </Text>
                   <Text
                     accessibilityLabel=" consectetur adipiscing "
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -34199,7 +34057,6 @@ exports[`Storyshots Message Mentions 1`] = `
                   </Text>
                   <Text
                     accessibilityLabel=" elit, sed do eiusmod tempor "
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -34246,7 +34103,6 @@ exports[`Storyshots Message Mentions 1`] = `
                   </Text>
                   <Text
                     accessibilityLabel=" incididunt ut labore et dolore magna aliqua."
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -34482,7 +34338,6 @@ exports[`Storyshots Message Message with read receipt 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -34501,7 +34356,6 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -34585,7 +34439,6 @@ exports[`Storyshots Message Message with read receipt 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -34604,7 +34457,6 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -34827,7 +34679,6 @@ exports[`Storyshots Message Message with read receipt 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -34846,7 +34697,6 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -34952,7 +34802,6 @@ exports[`Storyshots Message Message with read receipt 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -34971,7 +34820,6 @@ exports[`Storyshots Message Message with read receipt 1`] = `
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -35229,7 +35077,6 @@ exports[`Storyshots Message Message with reply 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -35248,7 +35095,6 @@ exports[`Storyshots Message Message with reply 1`] = `
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -35582,7 +35428,6 @@ exports[`Storyshots Message Message with reply 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -35601,7 +35446,6 @@ exports[`Storyshots Message Message with reply 1`] = `
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -35983,7 +35827,6 @@ exports[`Storyshots Message Message with thread 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -36002,7 +35845,6 @@ exports[`Storyshots Message Message with thread 1`] = `
                 >
                   <Text
                     accessibilityLabel="How are you?"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -37921,7 +37763,6 @@ exports[`Storyshots Message Reactions 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -37940,7 +37781,6 @@ exports[`Storyshots Message Reactions 1`] = `
                 >
                   <Text
                     accessibilityLabel="Reactions"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -38584,7 +38424,6 @@ exports[`Storyshots Message Reactions 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -38603,7 +38442,6 @@ exports[`Storyshots Message Reactions 1`] = `
                 >
                   <Text
                     accessibilityLabel="Multiple Reactions"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -39624,7 +39462,6 @@ exports[`Storyshots Message Sequential thread messages following thread button 1
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -39643,7 +39480,6 @@ exports[`Storyshots Message Sequential thread messages following thread button 1
                 >
                   <Text
                     accessibilityLabel="How are you?"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -41498,7 +41334,6 @@ exports[`Storyshots Message Static avatar 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -41517,7 +41352,6 @@ exports[`Storyshots Message Static avatar 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -44295,7 +44129,6 @@ exports[`Storyshots Message Temp 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -44314,7 +44147,6 @@ exports[`Storyshots Message Temp 1`] = `
                 >
                   <Text
                     accessibilityLabel="Temp message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -44550,7 +44382,6 @@ exports[`Storyshots Message Thumbnail from server 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -44569,7 +44400,6 @@ exports[`Storyshots Message Thumbnail from server 1`] = `
                 >
                   <Text
                     accessibilityLabel="this is a thumbnail"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -44952,7 +44782,6 @@ exports[`Storyshots Message Time format 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -44971,7 +44800,6 @@ exports[`Storyshots Message Time format 1`] = `
                 >
                   <Text
                     accessibilityLabel="Testing"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -45207,7 +45035,6 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -45226,7 +45053,6 @@ exports[`Storyshots Message Two short custom fields with markdown 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -46412,7 +46238,6 @@ exports[`Storyshots Message URL 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -46431,7 +46256,6 @@ exports[`Storyshots Message URL 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message "
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -46924,7 +46748,6 @@ exports[`Storyshots Message With alias 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -46943,7 +46766,6 @@ exports[`Storyshots Message With alias 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -47185,7 +47007,6 @@ exports[`Storyshots Message With alias 1`] = `
               </View>
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -47204,7 +47025,6 @@ exports[`Storyshots Message With alias 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -47702,7 +47522,6 @@ exports[`Storyshots Message With audio 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -47721,7 +47540,6 @@ exports[`Storyshots Message With audio 1`] = `
                 >
                   <Text
                     accessibilityLabel="First message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
@@ -50270,7 +50088,6 @@ exports[`Storyshots Message Without header 1`] = `
             >
               <View>
                 <Text
-                  numberOfLines={0}
                   style={
                     Array [
                       Object {
@@ -50289,7 +50106,6 @@ exports[`Storyshots Message Without header 1`] = `
                 >
                   <Text
                     accessibilityLabel="Message"
-                    numberOfLines={0}
                     style={
                       Array [
                         Object {
