@@ -20,3 +20,5 @@ export interface IEmojiCategory {
 	style: any;
 	tabLabel: string;
 }
+
+export type TGetCustomEmoji = (name: string) => IEmoji | null;

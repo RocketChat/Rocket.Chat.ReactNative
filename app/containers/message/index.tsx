@@ -9,6 +9,7 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import messagesStatus from '../../constants/messagesStatus';
 import { withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 interface IMessageContainerProps {
 	item: any;
@@ -40,7 +41,7 @@ interface IMessageContainerProps {
 	status: number;
 	isIgnored: boolean;
 	highlighted: boolean;
-	getCustomEmoji(): void;
+	getCustomEmoji: TGetCustomEmoji;
 	onLongPress: Function;
 	onReactionPress: Function;
 	onEncryptedPress: Function;

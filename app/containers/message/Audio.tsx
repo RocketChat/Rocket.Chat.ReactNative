@@ -15,6 +15,7 @@ import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 interface IButton {
 	loading: boolean;
@@ -29,7 +30,7 @@ interface IMessageAudioProps {
 		description: string;
 	};
 	theme: string;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	scale: number;
 }
 

@@ -10,7 +10,7 @@ import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
-import { IEmoji } from '../EmojiPicker/interfaces';
+import { IEmoji } from '../../definitions/IEmoji';
 
 interface IHeader {
 	handleReaction: Function;

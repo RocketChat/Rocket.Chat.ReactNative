@@ -13,6 +13,7 @@ import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { fileDownloadAndPreview } from '../../utils/fileDownload';
 import { formatAttachmentUrl } from '../../lib/utils';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import RCActivityIndicator from '../ActivityIndicator';
 
 const styles = StyleSheet.create({
@@ -115,14 +116,14 @@ interface IMessageTitle {
 
 interface IMessageDescription {
 	attachment: Partial<IMessageReplyAttachment>;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
 
 interface IMessageFields {
 	attachment: Partial<IMessageReplyAttachment>;
 	theme: string;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 }
 
 interface IMessageReply {
@@ -130,7 +131,7 @@ interface IMessageReply {
 	timeFormat: string;
 	index: number;
 	theme: string;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 }
 
 const Title = React.memo(({ attachment, timeFormat, theme }: IMessageTitle) => {

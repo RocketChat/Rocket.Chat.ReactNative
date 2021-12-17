@@ -17,7 +17,7 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { IEmoji } from './interfaces';
+import { IEmoji } from '../../definitions/IEmoji';
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',

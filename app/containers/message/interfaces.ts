@@ -1,10 +1,12 @@
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
+
 export interface IMessageAttachments {
 	attachments: any;
 	timeFormat: string;
 	showAttachment: Function;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
 
@@ -26,7 +28,7 @@ export interface IMessageAvatar {
 	};
 	small?: boolean;
 	navToRoomInfo: Function;
-	getCustomEmoji(): void;
+	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
 
@@ -69,7 +71,7 @@ export interface IMessageContent {
 	theme: string;
 	isEdited: boolean;
 	isEncrypted: boolean;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	channels: {
 		name: string;
 		_id: number;
@@ -93,7 +95,7 @@ export interface IMessageEmoji {
 	baseUrl: string;
 	standardEmojiStyle: object;
 	customEmojiStyle: object;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 }
 
 export interface IMessageThread {

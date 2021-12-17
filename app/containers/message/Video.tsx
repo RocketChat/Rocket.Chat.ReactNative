@@ -14,6 +14,7 @@ import EventEmitter from '../../utils/events';
 import { LISTENER } from '../Toast';
 import I18n from '../../i18n';
 import RCActivityIndicator from '../ActivityIndicator';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: any) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -39,7 +40,7 @@ interface IMessageVideo {
 		description: string;
 	};
 	showAttachment: Function;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
 

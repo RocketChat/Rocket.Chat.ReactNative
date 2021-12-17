@@ -22,6 +22,7 @@ import { isValidURL } from '../../utils/url';
 import NewMarkdown from './new';
 import { formatText } from './formatText';
 import { UserMention, UserChannel } from './interfaces';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 export { default as MarkdownPreview } from './Preview';
 
@@ -30,7 +31,7 @@ interface IMarkdownProps {
 	theme: string;
 	md?: MarkdownAST;
 	mentions?: UserMention[];
-	getCustomEmoji?: Function;
+	getCustomEmoji?: TGetCustomEmoji;
 	baseUrl?: string;
 	username?: string;
 	tmid?: string;

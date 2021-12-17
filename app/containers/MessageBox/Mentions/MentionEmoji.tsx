@@ -6,7 +6,7 @@ import shortnameToUnicode from '../../../utils/shortnameToUnicode';
 import styles from '../styles';
 import MessageboxContext from '../Context';
 import CustomEmoji from '../../EmojiPicker/CustomEmoji';
-import { IEmoji } from '../../EmojiPicker/interfaces';
+import { IEmoji } from '../../../definitions/IEmoji';
 
 interface IMessageBoxMentionEmoji {
 	item: IEmoji;
