@@ -303,7 +303,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		};
 		this.setHeader();
 
-		if (room && room.observe) {
+		if (room && room.observe()) {
 			this.observeRoom(room);
 		} else if (this.rid) {
 			this.findAndObserveRoom(this.rid);
@@ -702,11 +702,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		delete this.sub;
 	};
 
-	observeRoom = (room: IRoom) => {
+	observeRoom = (room: TRoomModel) => {
 		if (room.observe) {
 			const observable = room.observe();
-			this.subSubscription = observable.subscribe((changes: any) => {
-				const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr: any) => {
+			this.subSubscription = observable.subscribe(changes => {
+				const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr) => {
 					ret[attr] = changes[attr];
 					return ret;
 				}, {});
