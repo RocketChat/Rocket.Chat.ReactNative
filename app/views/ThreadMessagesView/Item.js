@@ -7,7 +7,7 @@ import { withTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
-import Preview from '../../containers/markdown/Preview';
+import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import ThreadDetails from '../../containers/ThreadDetails';
 
@@ -87,7 +87,7 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
-						<Preview
+						<MarkdownPreview
 							msg={makeThreadName(item)}
 							baseUrl={baseUrl}
 							username={username}

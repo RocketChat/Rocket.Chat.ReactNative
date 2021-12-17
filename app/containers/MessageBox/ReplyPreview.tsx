@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 import { connect } from 'react-redux';
 
-import Preview from '../markdown/Preview';
+import { MarkdownPreview } from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
@@ -76,7 +76,7 @@ const ReplyPreview = React.memo(
 						</Text>
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
-					<Preview msg={message.msg} numberOfLines={1} theme={theme} />
+					<MarkdownPreview msg={message.msg} theme={theme} />
 				</View>
 				<CustomIcon name='close' color={themes[theme].auxiliaryText} size={20} style={styles.close} onPress={close} />
 			</View>

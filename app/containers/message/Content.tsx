@@ -4,8 +4,7 @@ import { dequal } from 'dequal';
 
 import I18n from '../../i18n';
 import styles from './styles';
-import Markdown from '../markdown';
-import Preview from '../markdown/Preview';
+import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME, getInfoMessage } from './utils';
 import { themes } from '../../constants/colors';
@@ -51,7 +50,7 @@ const Content = React.memo(
 				</Text>
 			);
 		} else if (isPreview) {
-			content = <Preview msg={props.msg} numberOfLines={1} theme={props.theme} />;
+			content = <MarkdownPreview msg={props.msg} theme={props.theme} />;
 		} else {
 			const { baseUrl, user, onLinkPress } = useContext(MessageContext);
 			content = (

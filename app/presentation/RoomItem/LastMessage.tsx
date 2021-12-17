@@ -3,7 +3,7 @@ import { dequal } from 'dequal';
 
 import I18n from '../../i18n';
 import styles from './styles';
-import Preview from '../../containers/markdown/Preview';
+import { MarkdownPreview } from '../../containers/markdown';
 import { themes } from '../../constants/colors';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
@@ -65,7 +65,7 @@ const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProp
 
 const LastMessage = React.memo(
 	({ lastMessage, type, showLastMessage, username, alert, useRealName, theme }: ILastMessage) => (
-		<Preview
+		<MarkdownPreview
 			msg={formatMsg({
 				lastMessage,
 				type,

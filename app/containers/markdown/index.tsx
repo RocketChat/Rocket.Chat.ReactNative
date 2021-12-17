@@ -22,6 +22,8 @@ import { isValidURL } from '../../utils/url';
 import NewMarkdown from './new';
 import { formatText } from './formatText';
 
+export { default as MarkdownPreview } from './Preview';
+
 interface IUser {
 	_id: string;
 	username: string;

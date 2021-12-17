@@ -21,7 +21,7 @@ import StatusBar from '../../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import * as HeaderButton from '../../containers/HeaderButton';
-import Preview from '../../containers/markdown/Preview';
+import { MarkdownPreview } from '../../containers/markdown';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { E2E_ROOM_TYPES } from '../../lib/encryption/constants';
@@ -723,18 +723,16 @@ class RoomActionsView extends React.Component {
 									</Text>
 								</View>
 							)}
-							<Preview
+							<MarkdownPreview
 								msg={t === 'd' ? `@${name}` : topic}
 								style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
-								numberOfLines={1}
 								theme={theme}
 							/>
 							{room.t === 'd' && (
-								<Preview
+								<MarkdownPreview
 									msg={member.statusText}
 									style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
 									theme={theme}
-									numberOfLines={1}
 								/>
 							)}
 						</View>

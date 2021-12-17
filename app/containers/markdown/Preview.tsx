@@ -7,7 +7,7 @@ import { themes } from '../../constants/colors';
 import { formatText } from './formatText';
 import styles from './styles';
 
-interface IPreview {
+interface IMarkdownPreview {
 	msg: string;
 	numberOfLines?: number;
 	theme: string;
@@ -15,7 +15,7 @@ interface IPreview {
 	style?: StyleProp<TextStyle>[];
 }
 
-const Preview = ({ msg, numberOfLines = 1, testID, theme, style = [] }: IPreview): React.ReactElement | null => {
+const MarkdownPreview = ({ msg, numberOfLines = 1, testID, theme, style = [] }: IMarkdownPreview): React.ReactElement | null => {
 	if (!msg) {
 		return null;
 	}
@@ -41,4 +41,4 @@ const Preview = ({ msg, numberOfLines = 1, testID, theme, style = [] }: IPreview
 	);
 };
 
-export default Preview;
+export default MarkdownPreview;
