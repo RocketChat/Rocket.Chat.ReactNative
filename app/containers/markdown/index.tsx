@@ -234,13 +234,13 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderAtMention = ({ mentionName }: { mentionName: string }) => {
-		const { username, mentions, navToRoomInfo, useRealName, style } = this.props;
+		const { username = '', mentions, navToRoomInfo, useRealName = false, style } = this.props;
 		return (
 			<MarkdownAtMention
 				mentions={mentions}
 				mention={mentionName}
-				useRealName={!!useRealName}
-				username={username!}
+				useRealName={useRealName}
+				username={username}
 				navToRoomInfo={navToRoomInfo!}
 				style={style}
 			/>
@@ -248,13 +248,13 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderEmoji = ({ literal }: TLiteral) => {
-		const { getCustomEmoji, baseUrl, customEmojis, style, theme } = this.props;
+		const { getCustomEmoji, baseUrl = '', customEmojis, style, theme } = this.props;
 		return (
 			<MarkdownEmoji
 				literal={literal}
 				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
 				getCustomEmoji={getCustomEmoji}
-				baseUrl={baseUrl!}
+				baseUrl={baseUrl}
 				customEmojis={customEmojis}
 				style={style}
 				theme={theme}
@@ -330,8 +330,18 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	render() {
-		const { msg, md, mentions, channels, navToRoomInfo, useRealName, username, getCustomEmoji, baseUrl, onLinkPress } =
-			this.props;
+		const {
+			msg,
+			md,
+			mentions,
+			channels,
+			navToRoomInfo,
+			useRealName = false,
+			username = '',
+			getCustomEmoji,
+			baseUrl = '',
+			onLinkPress
+		} = this.props;
 
 		if (!msg) {
 			return null;

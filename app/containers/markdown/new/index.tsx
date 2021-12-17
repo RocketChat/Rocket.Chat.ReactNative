@@ -20,9 +20,9 @@ interface IBodyProps {
 	getCustomEmoji?: Function;
 	onLinkPress?: Function;
 	navToRoomInfo?: Function;
-	useRealName?: boolean;
-	username?: string;
-	baseUrl?: string;
+	useRealName: boolean;
+	username: string;
+	baseUrl: string;
 }
 
 const Body = ({
