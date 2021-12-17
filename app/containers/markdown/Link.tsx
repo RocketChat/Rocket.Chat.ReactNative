@@ -12,7 +12,7 @@ interface ILink {
 	children: JSX.Element;
 	link: string;
 	theme: string;
-	onLinkPress: Function;
+	onLinkPress?: Function;
 }
 
 const Link = React.memo(({ children, link, theme, onLinkPress }: ILink) => {

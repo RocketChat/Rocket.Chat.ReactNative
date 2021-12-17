@@ -32,27 +32,26 @@ type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
 
 interface IMarkdownProps {
 	msg: string;
-	md: MarkdownAST;
-	mentions: UserMention[];
-	getCustomEmoji: Function;
-	baseUrl: string;
-	username: string;
-	tmid: string;
-	isEdited: boolean;
-	numberOfLines: number;
-	customEmojis: boolean;
-	useRealName: boolean;
-	channels: {
+	theme: string;
+	md?: MarkdownAST;
+	mentions?: UserMention[];
+	getCustomEmoji?: Function;
+	baseUrl?: string;
+	username?: string;
+	tmid?: string;
+	isEdited?: boolean;
+	numberOfLines?: number;
+	customEmojis?: boolean;
+	useRealName?: boolean;
+	channels?: {
 		name: string;
 		_id: number;
 	}[];
-	enableMessageParser: boolean;
-	navToRoomInfo: Function;
-	preview: boolean;
-	theme: string;
-	testID: string;
-	style: StyleProp<TextStyle>[];
-	onLinkPress: Function;
+	enableMessageParser?: boolean;
+	navToRoomInfo?: Function;
+	testID?: string;
+	style?: StyleProp<TextStyle>[];
+	onLinkPress?: Function;
 }
 
 type TLiteral = {
@@ -145,7 +144,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			renderParagraphsInLists: true
 		});
 
-	get isNewMarkdown(): boolean {
+	get isNewMarkdown(): boolean | undefined {
 		const { md, enableMessageParser } = this.props;
 		return enableMessageParser && !!md;
 	}
@@ -239,7 +238,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	renderHashtag = ({ hashtag }: { hashtag: string }) => {
 		const { channels, navToRoomInfo, style } = this.props;
-		return <MarkdownHashtag hashtag={hashtag} channels={channels} navToRoomInfo={navToRoomInfo} style={style} />;
+		return <MarkdownHashtag hashtag={hashtag} channels={channels} navToRoomInfo={navToRoomInfo!} style={style} />;
 	};
 
 	renderAtMention = ({ mentionName }: { mentionName: string }) => {
@@ -248,9 +247,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			<MarkdownAtMention
 				mentions={mentions}
 				mention={mentionName}
-				useRealName={useRealName}
-				username={username}
-				navToRoomInfo={navToRoomInfo}
+				useRealName={!!useRealName}
+				username={username!}
+				navToRoomInfo={navToRoomInfo!}
 				style={style}
 			/>
 		);
@@ -263,7 +262,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				literal={literal}
 				isMessageContainsOnlyEmoji={this.isMessageContainsOnlyEmoji}
 				getCustomEmoji={getCustomEmoji}
-				baseUrl={baseUrl}
+				baseUrl={baseUrl!}
 				customEmojis={customEmojis}
 				style={style}
 				theme={theme}
@@ -339,25 +338,14 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	render() {
-		const {
-			msg,
-			md,
-			preview = false,
-			mentions,
-			channels,
-			navToRoomInfo,
-			useRealName,
-			username,
-			getCustomEmoji,
-			baseUrl,
-			onLinkPress
-		} = this.props;
+		const { msg, md, mentions, channels, navToRoomInfo, useRealName, username, getCustomEmoji, baseUrl, onLinkPress } =
+			this.props;
 
 		if (!msg) {
 			return null;
 		}
 
-		if (this.isNewMarkdown && !preview) {
+		if (this.isNewMarkdown) {
 			return (
 				<NewMarkdown
 					username={username}

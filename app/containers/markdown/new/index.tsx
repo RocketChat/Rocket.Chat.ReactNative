@@ -13,18 +13,18 @@ import TaskList from './TaskList';
 import MarkdownContext from './MarkdownContext';
 
 interface IBodyProps {
-	tokens: MarkdownAST;
-	mentions: UserMention[];
-	channels: {
+	tokens?: MarkdownAST;
+	mentions?: UserMention[];
+	channels?: {
 		name: string;
 		_id: number;
 	}[];
 	getCustomEmoji?: Function;
 	onLinkPress?: Function;
-	navToRoomInfo: Function;
-	useRealName: boolean;
-	username: string;
-	baseUrl: string;
+	navToRoomInfo?: Function;
+	useRealName?: boolean;
+	username?: string;
+	baseUrl?: string;
 }
 
 const Body = ({
@@ -49,7 +49,7 @@ const Body = ({
 			baseUrl,
 			onLinkPress
 		}}>
-		{tokens.map(block => {
+		{tokens?.map(block => {
 			switch (block.type) {
 				case 'BIG_EMOJI':
 					return <BigEmoji value={block.value} />;

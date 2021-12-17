@@ -5,6 +5,7 @@ import { dequal } from 'dequal';
 import I18n from '../../i18n';
 import styles from './styles';
 import Markdown from '../markdown';
+import Preview from '../markdown/Preview';
 import User from './User';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME, getInfoMessage } from './utils';
 import { themes } from '../../constants/colors';
@@ -49,10 +50,11 @@ const Content = React.memo(
 					{I18n.t('Encrypted_message')}
 				</Text>
 			);
+		} else if (isPreview) {
+			content = <Preview msg={props.msg} numberOfLines={1} theme={props.theme} />;
 		} else {
 			const { baseUrl, user, onLinkPress } = useContext(MessageContext);
 			content = (
-				// @ts-ignore
 				<Markdown
 					msg={props.msg}
 					md={props.md}
@@ -61,8 +63,7 @@ const Content = React.memo(
 					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
 					isEdited={props.isEdited}
-					numberOfLines={isPreview ? 1 : 0}
-					preview={isPreview}
+					numberOfLines={0}
 					channels={props.channels}
 					mentions={props.mentions}
 					navToRoomInfo={props.navToRoomInfo}

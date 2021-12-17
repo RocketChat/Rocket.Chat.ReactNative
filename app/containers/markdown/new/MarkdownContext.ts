@@ -3,15 +3,15 @@ import React from 'react';
 import { UserMention } from '../../message/interfaces';
 
 interface IMarkdownContext {
-	mentions: UserMention[];
-	channels: {
+	mentions?: UserMention[];
+	channels?: {
 		name: string;
 		_id: number;
 	}[];
-	useRealName: boolean;
-	username: string;
-	baseUrl: string;
-	navToRoomInfo: Function;
+	useRealName?: boolean;
+	username?: string;
+	baseUrl?: string;
+	navToRoomInfo?: Function;
 	getCustomEmoji?: Function;
 	onLinkPress?: Function;
 }

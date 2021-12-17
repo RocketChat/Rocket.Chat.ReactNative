@@ -12,7 +12,7 @@ interface IPreview {
 	numberOfLines: number;
 	theme: string;
 	testID?: string;
-	style: StyleProp<TextStyle>[];
+	style?: StyleProp<TextStyle>[];
 }
 
 const Preview = ({ msg, numberOfLines, testID, theme, style = [] }: IPreview): JSX.Element => {
