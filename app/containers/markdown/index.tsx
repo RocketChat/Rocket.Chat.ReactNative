@@ -21,16 +21,9 @@ import styles from './styles';
 import { isValidURL } from '../../utils/url';
 import NewMarkdown from './new';
 import { formatText } from './formatText';
+import { UserMention, UserChannel } from './interfaces';
 
 export { default as MarkdownPreview } from './Preview';
-
-interface IUser {
-	_id: string;
-	username: string;
-	name: string;
-}
-
-type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
 
 interface IMarkdownProps {
 	msg: string;
@@ -45,10 +38,7 @@ interface IMarkdownProps {
 	numberOfLines?: number;
 	customEmojis?: boolean;
 	useRealName?: boolean;
-	channels?: {
-		name: string;
-		_id: number;
-	}[];
+	channels?: UserChannel[];
 	enableMessageParser?: boolean;
 	navToRoomInfo?: Function;
 	testID?: string;

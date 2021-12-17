@@ -3,17 +3,14 @@ import { Text, TextStyle, StyleProp } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';
+import { UserChannel } from './interfaces';
 import styles from './styles';
 
 interface IHashtag {
 	hashtag: string;
 	navToRoomInfo: Function;
 	style?: StyleProp<TextStyle>[];
-	channels?: {
-		[index: number]: string | number;
-		name: string;
-		_id: number;
-	}[];
+	channels?: UserChannel[];
 }
 
 const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
