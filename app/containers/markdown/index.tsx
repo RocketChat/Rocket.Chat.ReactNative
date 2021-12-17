@@ -136,9 +136,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			renderParagraphsInLists: true
 		});
 
-	get isNewMarkdown(): boolean | undefined {
+	get isNewMarkdown(): boolean {
 		const { md, enableMessageParser } = this.props;
-		return enableMessageParser && !!md;
+		return !!enableMessageParser && !!md;
 	}
 
 	editedMessage = (ast: any) => {
