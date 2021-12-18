@@ -84,7 +84,7 @@ export type ChatsStackParamList = {
 	};
 	AutoTranslateView: {
 		rid: string;
-		room: IRoom;
+		room: TRoomModel;
 	};
 	DirectoryView: undefined;
 	NotificationPrefView: {

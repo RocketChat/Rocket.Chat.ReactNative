@@ -20,7 +20,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IRoom, RoomType } from '../../definitions/IRoom';
+import { IRoom, RoomType, TRoomModel } from '../../definitions/IRoom';
 
 interface IMessagesViewProps {
 	user: {
@@ -78,7 +78,7 @@ interface IParams {
 	name?: string;
 	fname?: string;
 	prid?: string;
-	room: IRoom;
+	room: TRoomModel;
 	jumpToMessageId?: string;
 	jumpToThreadId?: string;
 	roomUserId?: string;
