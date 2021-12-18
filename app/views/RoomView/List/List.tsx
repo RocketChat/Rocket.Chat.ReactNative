@@ -5,6 +5,7 @@ import Animated from 'react-native-reanimated';
 import { isIOS } from '../../../utils/deviceInfo';
 import scrollPersistTaps from '../../../utils/scrollPersistTaps';
 import { IRoomItem } from '../index';
+import { IMessage } from '../../../definitions/IMessage';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IRoomListProps extends FlatListProps<IRoomItem> {
+interface IRoomListProps extends FlatListProps<IRoomItem | IMessage> {
 	listRef: React.Ref<FlatList>;
 }
 

@@ -5,7 +5,6 @@ import moment from 'moment';
 import { dequal } from 'dequal';
 import { Value, event } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
-import Model from '@nozbe/watermelondb/Model';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import database from '../../../lib/database';
@@ -22,6 +21,7 @@ import NavBottomFAB from './NavBottomFAB';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { IRoomItem } from '../index';
 import { IThread } from '../../../definitions/IThread';
+import { IMessage, TMessageModel } from '../../../definitions/IMessage';
 
 const QUERY_SIZE = 50;
 
@@ -52,7 +52,13 @@ interface IRoomListContainerProps {
 	serverVersion: string;
 }
 
-class ListContainer extends React.Component<IRoomListContainerProps, any> {
+interface IRoomListContainerState {
+	messages: TMessageModel[];
+	refreshing: boolean;
+	highlightedMessage: string | null;
+}
+
+class ListContainer extends React.Component<IRoomListContainerProps, IRoomListContainerState> {
 	private count: number;
 	private mounted: boolean;
 	private animated: boolean;
@@ -63,7 +69,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 	private viewabilityConfig: { itemVisiblePercentThreshold: number };
 	private highlightedMessageTimeout?: ReturnType<typeof setTimeout> | false;
 	private thread?: IThread;
-	private messagesObservable?: Observable<Model>;
+	private messagesObservable?: Observable<TMessageModel[]>;
 	private messagesSubscription?: Subscription;
 	private viewableItems?: ViewToken[];
 
@@ -97,7 +103,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 		console.timeEnd(`${this.constructor.name} mount`);
 	}
 
-	shouldComponentUpdate(nextProps: IRoomListContainerProps, nextState: any) {
+	shouldComponentUpdate(nextProps: IRoomListContainerProps, nextState: IRoomListContainerState) {
 		const { refreshing, highlightedMessage } = this.state;
 		const { hideSystemMessages, theme, tunread, ignored, loading } = this.props;
 		if (theme !== nextProps.theme) {
@@ -187,8 +193,9 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 
 		if (rid) {
 			this.unsubscribeMessages();
-			this.messagesSubscription = this.messagesObservable?.subscribe((messages: any) => {
+			this.messagesSubscription = this.messagesObservable?.subscribe((messages: TMessageModel[]) => {
 				if (tmid && this.thread) {
+					// @ts-ignore
 					messages = [...messages, this.thread];
 				}
 
@@ -197,7 +204,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 				 * hide system message is enabled
 				 */
 				if (compareServerVersion(serverVersion, '3.16.0', methods.lowerThan) || hideSystemMessages.length) {
-					messages = messages.filter((m: { t: string }) => !m.t || !hideSystemMessages?.includes(m.t));
+					messages = messages.filter((m: TMessageModel) => !m.t || !hideSystemMessages?.includes(m.t));
 				}
 
 				if (this.mounted) {
@@ -282,7 +289,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 			this.jumping = true;
 			const { messages } = this.state;
 			const { listRef } = this.props;
-			const index = messages.findIndex((item: { id: string }) => item.id === messageId);
+			const index = messages.findIndex((item: TMessageModel) => item.id === messageId);
 			if (index > -1) {
 				listRef.current?.scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
 				await new Promise(res => setTimeout(res, 300));
@@ -326,7 +333,7 @@ class ListContainer extends React.Component<IRoomListContainerProps, any> {
 		return null;
 	};
 
-	renderItem = ({ item, index }: { item: IRoomItem; index: number }) => {
+	renderItem = ({ item, index }: { item: IRoomItem | IMessage; index: number }) => {
 		const { messages, highlightedMessage } = this.state;
 		const { renderRow } = this.props;
 		return renderRow(item, messages[index + 1], highlightedMessage);

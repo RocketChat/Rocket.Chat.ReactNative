@@ -71,6 +71,7 @@ import { IAttachment } from '../../definitions/IAttachment';
 import { IThread } from '../../definitions/IThread';
 import { ISubscriptions } from '../../definitions/ISubscriptions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
+import { IMessage } from '../../definitions/IMessage';
 
 type TStateAttrsUpdate =
 	| 'joined'
@@ -751,7 +752,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	onReplyInit = (message: string, mention: boolean) => {
+	onReplyInit = (message: IMessage, mention: boolean) => {
 		this.setState({
 			selectedMessage: message,
 			replying: true,
@@ -1086,7 +1087,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.goRoomActionsView('SearchMessagesView');
 			} else if (handleCommandReplyLatest(event)) {
 				if (this.list && this.list.current) {
-					const message = this.list.current.getLastMessage();
+					const message = this.list.current.getLastMessage() as IMessage;
 					this.onReplyInit(message, false);
 				}
 			}
