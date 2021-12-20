@@ -3,6 +3,16 @@ import RocketChat from './rocketchat';
 import reduxStore from './createStore';
 import { USER_UPLOADING } from '../constants/userActivities';
 
+// TODO: evaluate it later
+interface IFileInfo {
+	name: string;
+	mime: string;
+	type: string;
+	store: string;
+	path: string;
+	size: number;
+}
+
 /**
  * TODO: We should evaluate this on the rearchitecture
  * We have sendFileMessage, fileUpload, etc
@@ -11,13 +21,13 @@ class UploadClass {
 	private rooms: {
 		[key: string]: {
 			interval?: number;
-			files: object[];
+			files: IFileInfo[];
 		};
 	} = {};
 
-	private isUploadingAnotherFile = ({ rid, tmid, files }: { rid: string; tmid: string; files: unknown[] }): boolean => {
+	private isUploadingAnotherFile = ({ rid, tmid, files }: { rid: string; tmid: string; files: IFileInfo[] }): boolean => {
 		const room = this.getRoom({ rid, tmid });
-		return room.files.some((classFile: unknown) => files.some((file: unknown) => file.name !== classFile.name));
+		return room.files.some(classFile => files.some(file => file.name !== classFile.name));
 	};
 
 	private getRoom = ({ rid, tmid }: { rid: string; tmid: string }) => this.rooms[tmid || rid];
@@ -37,7 +47,7 @@ class UploadClass {
 		}
 	};
 
-	private stopUploading = ({ rid, tmid, files }: { rid: string; tmid: string; files: unknown[] }) => {
+	private stopUploading = ({ rid, tmid, files }: { rid: string; tmid: string; files: IFileInfo[] }) => {
 		const room = this.getRoom({ rid, tmid });
 		if (this.isUploadingAnotherFile({ rid, tmid, files })) {
 			this.rooms[tmid || rid].files = this.rooms[tmid || rid].files.filter(
@@ -50,7 +60,7 @@ class UploadClass {
 		}
 	};
 
-	async send({ rid, tmid, files }: { rid: string; tmid: string; files: unknown[] }) {
+	async send({ rid, tmid, files }: { rid: string; tmid: string; files: IFileInfo[] }) {
 		const { server } = reduxStore.getState().server;
 		const { user } = reduxStore.getState().login;
 
