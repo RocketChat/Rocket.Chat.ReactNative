@@ -8,65 +8,49 @@ import { USER_UPLOADING } from '../constants/userActivities';
  * We have sendFileMessage, fileUpload, etc
  */
 class UploadClass {
-	private intervals: { [key: string]: number } = {};
-
 	private rooms: {
-		[key: string]: number;
+		[key: string]: {
+			interval?: number;
+			files: object[];
+		};
 	} = {};
 
-	private isUploadingAnotherFile = ({ rid, fileKey }: { rid: string; fileKey: string }): boolean =>
-		Object.keys(this.intervals).some(key => key !== fileKey && key.match(new RegExp(rid)));
+	private isUploadingAnotherFile = ({ rid, tmid, files }: { rid: string; tmid: string; files: unknown[] }): boolean => {
+		const room = this.getRoom({ rid, tmid });
+		return room.files.some((classFile: unknown) => files.some((file: unknown) => file.name !== classFile.name));
+	};
 
 	private getRoom = ({ rid, tmid }: { rid: string; tmid: string }) => this.rooms[tmid || rid];
 
-	private startUploading = ({ rid, tmid }: { rid: string; tmid: string }) => {
+	private startUploading = ({ rid, tmid, files }: { rid: string; tmid: string; files: any[] }) => {
 		const room = this.getRoom({ rid, tmid });
 		if (!room) {
-			this.rooms[tmid || rid] = setInterval(() => {
+			this.rooms[tmid || rid] = {
+				files: []
+			};
+		}
+		this.rooms[tmid || rid].files = [...this.rooms[tmid || rid].files, ...files];
+		if (!this.rooms[tmid || rid].interval) {
+			this.rooms[tmid || rid].interval = setInterval(() => {
 				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing: true, activity: USER_UPLOADING });
 			}, 2000);
 		}
 	};
 
-	private stopUploading = ({ rid, tmid }: { rid: string; tmid: string }) => {
+	private stopUploading = ({ rid, tmid, files }: { rid: string; tmid: string; files: unknown[] }) => {
 		const room = this.getRoom({ rid, tmid });
-		// if (!this.isUploadingAnotherFile({ rid: roomId, fileKey })) {
-		RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing: false, activity: USER_UPLOADING });
-		clearInterval(room);
-		delete this.rooms[tmid || rid];
-		// }
-	};
-
-	userUploading = ({ rid, tmid, performing, files }: { rid: string; tmid: string; files: any[]; performing: boolean }) => {
-		console.log('🚀 ~ file: Upload.ts ~ line 14 ~ UploadClass ~ rid, tmid, performing, files', rid, tmid, performing, files);
-		files.forEach(file => {
-			if (!file) {
-				return;
-			}
-			const roomId = tmid || rid;
-			const fileKey = `${roomId}-${file.name}`;
-
-			if (performing) {
-				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
-				this.intervals[fileKey] = setInterval(() => {
-					RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
-				}, 2000);
-			}
-
-			if (!performing) {
-				if (!this.isUploadingAnotherFile({ rid: roomId, fileKey })) {
-					RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
-				}
-				if (this.intervals[fileKey]) {
-					clearInterval(this.intervals[fileKey]);
-					delete this.intervals[fileKey];
-				}
-			}
-		});
+		if (this.isUploadingAnotherFile({ rid, tmid, files })) {
+			this.rooms[tmid || rid].files = this.rooms[tmid || rid].files.filter(
+				classFile => !files.some(file => file.name === classFile.name)
+			);
+		} else {
+			RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing: false, activity: USER_UPLOADING });
+			clearInterval(room.interval);
+			delete this.rooms[tmid || rid];
+		}
 	};
 
 	async send({ rid, tmid, files }: { rid: string; tmid: string; files: unknown[] }) {
-		console.log('Upload.send Upload.send Upload.send Upload.send Upload.send ', rid, tmid, files);
 		const { server } = reduxStore.getState().server;
 		const { user } = reduxStore.getState().login;
 
@@ -77,19 +61,20 @@ class UploadClass {
 			// }
 			// if (this.canUploadFile(fileInfo)) {
 			// this.userUploading({ rid, tmid, files, performing: true });
-			this.startUploading({ rid, tmid });
+			this.startUploading({ rid, tmid, files });
 			await new Promise(res => {
 				setTimeout(() => {
+					console.log('end', files);
 					res();
-				}, 25000);
+				}, 15000);
 			});
 			// await RocketChat.sendFileMessage(rid, files[0], tmid, server, user);
 			// this.userUploading({ rid, tmid, files, performing: false });
-			this.stopUploading({ rid, tmid });
+			this.stopUploading({ rid, tmid, files });
 			// }
 		} catch (e) {
 			// this.userUploading({ rid, tmid, files, performing: false });
-			this.stopUploading({ rid, tmid });
+			this.stopUploading({ rid, tmid, files });
 			console.error(e);
 		}
 	}

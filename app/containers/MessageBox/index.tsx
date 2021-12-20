@@ -803,7 +803,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const { rid, tmid, baseUrl: server, user, userUploading } = this.props;
 
 		if (fileInfo) {
-			Upload.send({ rid, tmid, files: [fileInfo] });
+			try {
+				await Upload.send({ rid, tmid, files: [fileInfo] });
+			} catch (error) {
+				console.error(error);
+			}
 			// const filesName: string[] = [fileInfo?.name];
 			// try {
 			// 	if (this.canUploadFile(fileInfo)) {
