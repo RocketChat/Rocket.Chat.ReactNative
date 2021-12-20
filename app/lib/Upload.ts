@@ -5,7 +5,8 @@ import { USER_UPLOADING } from '../constants/userActivities';
 // TODO: evaluate it later
 interface IFileInfo {
 	name: string;
-	mime: string;
+	description?: string;
+	// mime: string;
 	type: string;
 	store: string;
 	path: string;
@@ -26,14 +27,17 @@ class UploadClass {
 
 	private isUploadingAnotherFile = ({ roomKey, files }: { roomKey: string; files: IFileInfo[] }): boolean => {
 		const room = this.getRoom({ roomKey });
+		if (room.files.length === files.length) {
+			return !room.files.every(classFile => files.some(file => file.name === classFile.name));
+		}
 		return room.files.some(classFile => files.some(file => file.name !== classFile.name));
 	};
 
 	private getRoom = ({ roomKey }: { roomKey: string }) => this.rooms[roomKey];
 
-	private getRoomKey = ({ rid, tmid }: { rid: string; tmid: string }): string => tmid || rid;
+	private getRoomKey = ({ rid, tmid }: { rid: string; tmid?: string }): string => tmid || rid;
 
-	private startUploading = ({ rid, tmid, files }: { rid: string; tmid: string; files: IFileInfo[] }) => {
+	private startUploading = ({ rid, tmid, files }: { rid: string; tmid?: string; files: IFileInfo[] }) => {
 		const roomKey = this.getRoomKey({ rid, tmid });
 		const room = this.getRoom({ roomKey });
 		if (!room) {
@@ -49,7 +53,7 @@ class UploadClass {
 		}
 	};
 
-	private stopUploading = ({ rid, tmid, files }: { rid: string; tmid: string; files: IFileInfo[] }) => {
+	private stopUploading = ({ rid, tmid, files }: { rid: string; tmid?: string; files: IFileInfo[] }) => {
 		const roomKey = this.getRoomKey({ rid, tmid });
 		const room = this.getRoom({ roomKey });
 		if (this.isUploadingAnotherFile({ roomKey, files })) {
@@ -71,20 +75,15 @@ class UploadClass {
 		user
 	}: {
 		rid: string;
-		tmid: string;
+		tmid?: string;
 		files: IFileInfo[];
 		server: string;
 		user: { id: string; token: string };
 	}) {
 		try {
 			this.startUploading({ rid, tmid, files });
-			// await new Promise(res => {
-			// 	setTimeout(() => {
-			// 		console.log('end', files);
-			// 		res();
-			// 	}, 15000);
-			// });
-			await RocketChat.sendFileMessage(rid, files[0], tmid, server, user);
+			// await new Promise(res => {setTimeout(() => {console.log('end', files);res();}, 15000);});
+			await Promise.all(files.map(file => RocketChat.sendFileMessage(rid, file, tmid, server, user)));
 			this.stopUploading({ rid, tmid, files });
 		} catch (e) {
 			this.stopUploading({ rid, tmid, files });

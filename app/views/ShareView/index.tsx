@@ -28,6 +28,7 @@ import Header from './Header';
 import styles from './styles';
 import { IAttachment } from './interfaces';
 import { IRoom } from '../../definitions/IRoom';
+import { Upload } from '../../lib/Upload';
 
 interface IPerformingActivity {
 	rid: string;
@@ -214,30 +215,18 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		try {
 			// Send attachment
 			if (attachments.length) {
-				await Promise.all(
-					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
-						if (canUpload) {
-							filesName.push(name);
-							this.userUploading({ rid: room.rid, tmid: thread?.id, performing: true, filesName: [name] });
-							return RocketChat.sendFileMessage(
-								room.rid,
-								{
-									name,
-									description,
-									size,
-									type,
-									path,
-									store: 'Uploads'
-								},
-								thread?.id,
-								server,
-								{ id: user.id, token: user.token }
-							);
-						}
-						return Promise.resolve();
-					})
-				);
-				this.userUploading({ rid: room.rid, tmid: thread?.id, performing: false, filesName });
+				const uploadableFiles: any = attachments
+					.filter(attachment => attachment.canUpload)
+					.map(attachment => ({
+						name: attachment.filename,
+						type: attachment.mime,
+						description: attachment.description,
+						size: attachment.size,
+						path: attachment.path,
+						store: 'Uploads'
+					}));
+				await Upload.send({ rid: room.rid, tmid: room.tmid, files: uploadableFiles, server, user });
+
 				// Send text message
 			} else if (text.length) {
 				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
