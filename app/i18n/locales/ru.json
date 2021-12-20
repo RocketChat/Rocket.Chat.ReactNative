@@ -21,6 +21,7 @@
   "error-save-video": "Ошибка при попытке сохранить видео",
   "error-field-unavailable": "{{field}} уже используется :(",
   "error-file-too-large": "Файл слишком большой",
+  "error-not-permission-to-upload-file": "У вас нет разрешения на загрузку файлов",
   "error-importer-not-defined": "Импортер не был определен правильно, ему не хватает класса Import.",
   "error-input-is-not-a-valid-field": "{{input}} недействительно {{field}}",
   "error-invalid-actionlink": "Недействительная ссылка действия",
