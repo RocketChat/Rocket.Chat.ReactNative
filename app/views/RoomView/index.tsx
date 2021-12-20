@@ -244,11 +244,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private mounted: boolean;
 	private sub?: RoomClass;
 	private offset?: number;
-	private didMountInteraction?: {
-		then: (onfulfilled?: () => any, onrejected?: () => any) => Promise<any>;
-		done: (...args: any[]) => any;
-		cancel: () => void;
-	};
+	private didMountInteraction?: { cancel: () => void };
 
 	private willBlurListener?: { remove(): void };
 	private subSubscription?: { unsubscribe(): void };
