@@ -18,44 +18,48 @@ interface IFileInfo {
  */
 class UploadClass {
 	private rooms: {
-		[key: string]: {
+		[roomKey: string]: {
 			interval?: number;
 			files: IFileInfo[];
 		};
 	} = {};
 
-	private isUploadingAnotherFile = ({ rid, tmid, files }: { rid: string; tmid: string; files: IFileInfo[] }): boolean => {
-		const room = this.getRoom({ rid, tmid });
+	private isUploadingAnotherFile = ({ roomKey, files }: { roomKey: string; files: IFileInfo[] }): boolean => {
+		const room = this.getRoom({ roomKey });
 		return room.files.some(classFile => files.some(file => file.name !== classFile.name));
 	};
 
-	private getRoom = ({ rid, tmid }: { rid: string; tmid: string }) => this.rooms[tmid || rid];
+	private getRoom = ({ roomKey }: { roomKey: string }) => this.rooms[roomKey];
+
+	private getRoomKey = ({ rid, tmid }: { rid: string; tmid: string }): string => tmid || rid;
 
 	private startUploading = ({ rid, tmid, files }: { rid: string; tmid: string; files: any[] }) => {
-		const room = this.getRoom({ rid, tmid });
+		const roomKey = this.getRoomKey({ rid, tmid });
+		const room = this.getRoom({ roomKey });
 		if (!room) {
-			this.rooms[tmid || rid] = {
+			this.rooms[roomKey] = {
 				files: []
 			};
 		}
-		this.rooms[tmid || rid].files = [...this.rooms[tmid || rid].files, ...files];
-		if (!this.rooms[tmid || rid].interval) {
-			this.rooms[tmid || rid].interval = setInterval(() => {
+		this.rooms[roomKey].files = [...this.rooms[roomKey].files, ...files];
+		if (!this.rooms[roomKey].interval) {
+			this.rooms[roomKey].interval = setInterval(() => {
 				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing: true, activity: USER_UPLOADING });
 			}, 2000);
 		}
 	};
 
 	private stopUploading = ({ rid, tmid, files }: { rid: string; tmid: string; files: IFileInfo[] }) => {
-		const room = this.getRoom({ rid, tmid });
-		if (this.isUploadingAnotherFile({ rid, tmid, files })) {
-			this.rooms[tmid || rid].files = this.rooms[tmid || rid].files.filter(
+		const roomKey = this.getRoomKey({ rid, tmid });
+		const room = this.getRoom({ roomKey });
+		if (this.isUploadingAnotherFile({ roomKey, files })) {
+			this.rooms[roomKey].files = this.rooms[roomKey].files.filter(
 				classFile => !files.some(file => file.name === classFile.name)
 			);
 		} else {
 			RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing: false, activity: USER_UPLOADING });
 			clearInterval(room.interval);
-			delete this.rooms[tmid || rid];
+			delete this.rooms[roomKey];
 		}
 	};
 
