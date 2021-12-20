@@ -33,7 +33,7 @@ class UploadClass {
 
 	private getRoomKey = ({ rid, tmid }: { rid: string; tmid: string }): string => tmid || rid;
 
-	private startUploading = ({ rid, tmid, files }: { rid: string; tmid: string; files: any[] }) => {
+	private startUploading = ({ rid, tmid, files }: { rid: string; tmid: string; files: IFileInfo[] }) => {
 		const roomKey = this.getRoomKey({ rid, tmid });
 		const room = this.getRoom({ roomKey });
 		if (!room) {
