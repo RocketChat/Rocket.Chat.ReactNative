@@ -9,3 +9,5 @@ export interface UserChannel {
 	name: string;
 	_id: number;
 }
+
+export type TOnLinkPress = (link: string) => void;

@@ -9,7 +9,7 @@ import Code from './Code';
 import BigEmoji from './BigEmoji';
 import OrderedList from './OrderedList';
 import UnorderedList from './UnorderedList';
-import { UserMention, UserChannel } from '../interfaces';
+import { UserMention, UserChannel, TOnLinkPress } from '../interfaces';
 import TaskList from './TaskList';
 import MarkdownContext from './MarkdownContext';
 
@@ -18,7 +18,7 @@ interface IBodyProps {
 	mentions?: UserMention[];
 	channels?: UserChannel[];
 	getCustomEmoji?: Function;
-	onLinkPress?: Function;
+	onLinkPress?: TOnLinkPress;
 	navToRoomInfo?: Function;
 	useRealName: boolean;
 	username: string;

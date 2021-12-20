@@ -296,7 +296,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		}
 	};
 
-	onLinkPress = (link: any) => {
+	onLinkPress = (link: string): void => {
 		const { item, theme, jumpToMessage } = this.props;
 		const isMessageLink = item?.attachments?.findIndex((att: any) => att?.message_link === link) !== -1;
 		if (isMessageLink) {
