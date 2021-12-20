@@ -800,7 +800,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	finishAudioMessage = async (fileInfo: any) => {
-		const { rid, tmid, baseUrl: server, user, userUploading } = this.props;
+		const { rid, tmid, baseUrl: server, user } = this.props;
 
 		if (fileInfo) {
 			try {
@@ -810,17 +810,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			} catch (e) {
 				log(e);
 			}
-			// const filesName: string[] = [fileInfo?.name];
-			// try {
-			// 	if (this.canUploadFile(fileInfo)) {
-			// 		userUploading({ rid, tmid, performing: true, filesName });
-			// 		await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
-			// 		userUploading({ rid, tmid, performing: false, filesName });
-			// 	}
-			// } catch (e) {
-			// 	userUploading({ rid, tmid, performing: false, filesName });
-			// 	log(e);
-			// }
 		}
 	};
 
