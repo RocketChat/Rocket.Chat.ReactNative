@@ -1,6 +1,5 @@
 import log from '../utils/log';
 import RocketChat from './rocketchat';
-import reduxStore from './createStore';
 import { USER_UPLOADING } from '../constants/userActivities';
 
 // TODO: evaluate it later
@@ -60,32 +59,32 @@ class UploadClass {
 		}
 	};
 
-	async send({ rid, tmid, files }: { rid: string; tmid: string; files: IFileInfo[] }) {
-		const { server } = reduxStore.getState().server;
-		const { user } = reduxStore.getState().login;
-
+	async send({
+		rid,
+		tmid,
+		files,
+		server,
+		user
+	}: {
+		rid: string;
+		tmid: string;
+		files: IFileInfo[];
+		server: string;
+		user: { id: string; token: string };
+	}) {
 		try {
-			// const room = this.getRoom({ rid, tmid });
-			// if (!room) {
-			// 	this.rooms[tmid || rid] = {}
-			// }
-			// if (this.canUploadFile(fileInfo)) {
-			// this.userUploading({ rid, tmid, files, performing: true });
 			this.startUploading({ rid, tmid, files });
-			await new Promise(res => {
-				setTimeout(() => {
-					console.log('end', files);
-					res();
-				}, 15000);
-			});
-			// await RocketChat.sendFileMessage(rid, files[0], tmid, server, user);
-			// this.userUploading({ rid, tmid, files, performing: false });
+			// await new Promise(res => {
+			// 	setTimeout(() => {
+			// 		console.log('end', files);
+			// 		res();
+			// 	}, 15000);
+			// });
+			await RocketChat.sendFileMessage(rid, files[0], tmid, server, user);
 			this.stopUploading({ rid, tmid, files });
-			// }
 		} catch (e) {
-			// this.userUploading({ rid, tmid, files, performing: false });
 			this.stopUploading({ rid, tmid, files });
-			console.error(e);
+			log(e);
 		}
 	}
 }
