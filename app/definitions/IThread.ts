@@ -11,11 +11,11 @@ export interface IThread {
 	msg: string;
 	t: RoomType;
 	rid: string;
-	_updated_at: Date;
+	_updatedAt: Date;
 	ts: Date;
 	u: { _id: string; username: string; name: string };
 	alias: any;
-	parse_urls: any;
+	parseUrls: any;
 	groupable: boolean;
 	avatar: string;
 	emoji: any;
@@ -24,20 +24,20 @@ export interface IThread {
 	status: number;
 	pinned: boolean;
 	starred: boolean;
-	edited_by: { username: string };
+	editedBy: { username: string };
 	reactions: IReaction[];
 	role: string;
 	drid: string;
 	dcount: number;
 	dlm: number;
 	tmid: string;
-	tcount: 2;
+	tcount: number;
 	tlm: Date;
 	replies: string[];
 	mentions: IMention[];
 	channels: [];
 	unread: boolean;
-	auto_translate: boolean;
+	autoTranslate: boolean;
 	translations: any;
 	e2e: any;
 }
