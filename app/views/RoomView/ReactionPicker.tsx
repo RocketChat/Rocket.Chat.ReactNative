@@ -8,12 +8,11 @@ import { isAndroid } from '../../utils/deviceInfo';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import styles from './styles';
+import { IMessage } from '../../definitions/IMessage';
 
 interface IRoomReactionPickerProps {
 	baseUrl: string;
-	message: {
-		id: string;
-	};
+	message: IMessage;
 	show: boolean;
 	isMasterDetail: boolean;
 	reactionClose(): void;
@@ -81,4 +80,5 @@ const mapStateToProps = (state: any) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
+// TODO remove this any after merge the HOCs PR
 export default connect(mapStateToProps)(withTheme(ReactionPicker)) as any;
