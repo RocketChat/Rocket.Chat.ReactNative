@@ -41,6 +41,7 @@ interface IMarkdownProps {
 	useRealName?: boolean;
 	channels?: UserChannel[];
 	enableMessageParser?: boolean;
+	// TODO: Refactor when migrate Room
 	navToRoomInfo?: Function;
 	testID?: string;
 	style?: StyleProp<TextStyle>[];
