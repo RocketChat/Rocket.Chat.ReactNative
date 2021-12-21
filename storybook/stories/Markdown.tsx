@@ -5,6 +5,7 @@ import { storiesOf } from '@storybook/react-native';
 
 import Markdown, { MarkdownPreview } from '../../app/containers/markdown';
 import { themes } from '../../app/constants/colors';
+import { TGetCustomEmoji, IEmoji } from '../../app/definitions/IEmoji';
 
 const theme = 'light';
 
@@ -33,12 +34,12 @@ d
 e`;
 const sequentialEmptySpacesText = 'a       b                                                                             c';
 
-const getCustomEmoji = content => {
+const getCustomEmoji: TGetCustomEmoji = content => {
 	const customEmoji = {
 		marioparty: { name: content, extension: 'gif' },
 		react_rocket: { name: content, extension: 'png' },
 		nyan_rocket: { name: content, extension: 'png' }
-	}[content];
+	}[content] as IEmoji;
 	return customEmoji;
 };
 

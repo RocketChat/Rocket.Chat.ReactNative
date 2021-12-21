@@ -7,7 +7,7 @@ export interface UserMention {
 export interface UserChannel {
 	[index: number]: string | number;
 	name: string;
-	_id: number;
+	_id: string;
 }
 
 export type TOnLinkPress = (link: string) => void;

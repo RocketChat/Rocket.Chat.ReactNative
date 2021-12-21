@@ -1,5 +1,6 @@
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
+import { UserChannel } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 export interface IMessageAttachments {
@@ -72,10 +73,7 @@ export interface IMessageContent {
 	isEdited: boolean;
 	isEncrypted: boolean;
 	getCustomEmoji: TGetCustomEmoji;
-	channels: {
-		name: string;
-		_id: number;
-	}[];
+	channels: UserChannel[];
 	mentions: UserMention[];
 	navToRoomInfo: Function;
 	useRealName: boolean;
