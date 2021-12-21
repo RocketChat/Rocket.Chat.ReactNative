@@ -49,7 +49,7 @@ export interface IThread {
 	status: number;
 	pinned: null;
 	starred: null;
-	edited_by: { username: string };
+	editedBy: { username: string };
 	reactions: IReaction[];
 	role: null;
 	drid: null;
@@ -62,7 +62,7 @@ export interface IThread {
 	mentions: IMention[];
 	channels: [];
 	unread: boolean;
-	auto_translate: boolean;
+	autoTranslate: boolean;
 	translations: any;
 	e2e: any;
 }
