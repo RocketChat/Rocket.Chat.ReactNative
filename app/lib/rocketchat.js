@@ -1138,10 +1138,6 @@ const RocketChat = {
 		// RC 0.36.0
 		return this.methodCallWrapper('livechat:transfer', transferData);
 	},
-	getPagesLivechat(rid, offset) {
-		// RC 2.3.0
-		return this.sdk.get(`livechat/visitors.pagesVisited/${rid}?count=50&offset=${offset}`);
-	},
 	getDepartmentInfo(departmentId) {
 		// RC 2.2.0
 		return this.sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
@@ -1520,16 +1516,7 @@ const RocketChat = {
 		return this.sdk.get(`${this.roomTypeToApiType(type)}.files`, {
 			roomId,
 			offset,
-			sort: { uploadedAt: -1 },
-			fields: {
-				name: 1,
-				description: 1,
-				size: 1,
-				type: 1,
-				uploadedAt: 1,
-				url: 1,
-				userId: 1
-			}
+			sort: { uploadedAt: -1 }
 		});
 	},
 	getMessages(roomId, type, query, offset) {
