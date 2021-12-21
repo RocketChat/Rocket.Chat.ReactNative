@@ -21,22 +21,13 @@ import UserItem from '../presentation/UserItem';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import { ApplicationState, BaseScreen } from '../types';
+import { ApplicationState, BaseScreen, IUser } from '../types';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
-
-interface IUser {
-	_id: string;
-	name: string;
-	fname: string;
-	search?: boolean;
-	// username is used when is from searching
-	username?: string;
-}
 
 type State = {
 	users: IUser[];
