@@ -235,7 +235,6 @@ export type InsideStackParamList = {
 		text: string;
 		room: IRoom;
 		thread: any; // TODO: Change
-		userUploading: any;
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;

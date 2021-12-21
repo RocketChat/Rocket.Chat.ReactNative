@@ -926,37 +926,6 @@ class RoomView extends React.Component {
 		);
 	};
 
-	userUploading = ({ rid, tmid, performing, filesName }) => {
-		const { uploadingSend, uploadingRemove, uploadings } = this.props;
-
-		filesName.forEach(fileName => {
-			if (!fileName) {
-				return;
-			}
-
-			// Name that will be the key at state from redux
-			const nameUploaded = `${tmid || rid}-${fileName}`;
-
-			if (performing && uploadings[nameUploaded]) {
-				return;
-			}
-
-			if (performing) {
-				// Fire immediately the emit
-				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
-				const intervalValue = setInterval(() => {
-					RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
-				}, 2000);
-				uploadingSend(nameUploaded, intervalValue);
-			}
-
-			if (!performing) {
-				uploadingRemove(nameUploaded);
-				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_UPLOADING });
-			}
-		});
-	};
-
 	navToThread = async item => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
@@ -1226,7 +1195,6 @@ class RoomView extends React.Component {
 				usedCannedResponse={usedCannedResponse}
 				userTyping={this.userTyping}
 				userRecording={this.userRecording}
-				userUploading={this.userUploading}
 			/>
 		);
 	};
@@ -1296,14 +1264,7 @@ class RoomView extends React.Component {
 					height={height}
 					theme={theme}
 				/>
-				<UploadProgress
-					rid={this.rid}
-					tmid={this.tmid}
-					user={user}
-					baseUrl={baseUrl}
-					width={width}
-					userUploading={this.userUploading}
-				/>
+				<UploadProgress rid={this.rid} tmid={this.tmid} user={user} baseUrl={baseUrl} width={width} />
 				<ReactionsModal
 					message={selectedMessage}
 					isVisible={reactionsModalVisible}
