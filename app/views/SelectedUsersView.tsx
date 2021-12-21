@@ -1,30 +1,30 @@
-import React from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { Q } from '@nozbe/watermelondb';
 import { RouteProp } from '@react-navigation/native';
+import orderBy from 'lodash/orderBy';
+import React from 'react';
 import { FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
-import orderBy from 'lodash/orderBy';
-import { Q } from '@nozbe/watermelondb';
 import { Subscription } from 'rxjs';
 
+import { addUser, removeUser, reset } from '../actions/selectedUsers';
+import { themes } from '../constants/colors';
+import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
+import Loading from '../containers/Loading';
+import SafeAreaView from '../containers/SafeAreaView';
+import SearchBox from '../containers/SearchBox';
+import StatusBar from '../containers/StatusBar';
+import I18n from '../i18n';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
-import Loading from '../containers/Loading';
-import I18n from '../i18n';
-import log, { events, logEvent } from '../utils/log';
-import SearchBox from '../containers/SearchBox';
-import * as HeaderButton from '../containers/HeaderButton';
-import StatusBar from '../containers/StatusBar';
-import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
 import { getUserSelector } from '../selectors/login';
-import { addUser as addUserAction, removeUser as removeUserAction, reset as resetAction } from '../actions/selectedUsers';
-import { showErrorAlert } from '../utils/info';
-import SafeAreaView from '../containers/SafeAreaView';
-import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
+import { withTheme } from '../theme';
+import { ApplicationState, BaseScreen } from '../types';
+import { showErrorAlert } from '../utils/info';
+import log, { events, logEvent } from '../utils/log';
+import sharedStyles from './Styles';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
@@ -37,19 +37,8 @@ interface IUser {
 	// username is used when is from searching
 	username?: string;
 }
-interface ISelectedUsersViewState {
-	maxUsers?: number;
-	search: IUser[];
-	chats: IUser[];
-}
 
-interface ISelectedUsersViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
-	route: RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
-	baseUrl: string;
-	addUser(user: IUser): void;
-	removeUser(user: IUser): void;
-	reset(): void;
+type State = {
 	users: IUser[];
 	loading: boolean;
 	user: {
@@ -58,7 +47,17 @@ interface ISelectedUsersViewProps {
 		username: string;
 		name: string;
 	};
-	theme: string;
+	baseUrl: string;
+};
+
+interface ISelectedUsersViewState {
+	maxUsers?: number;
+	search: IUser[];
+	chats: IUser[];
+}
+
+interface ISelectedUsersViewProps extends BaseScreen, State {
+	route: RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
 }
 
 class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelectedUsersViewState> {
@@ -75,9 +74,9 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 			search: [],
 			chats: []
 		};
-		const { user } = this.props;
+		const { user, dispatch } = this.props;
 		if (this.isGroupChat()) {
-			props.addUser({ _id: user.id, name: user.username, fname: user.name });
+			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name }));
 		}
 		this.setHeader(props.route.params?.showButton);
 	}
@@ -92,8 +91,8 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	}
 
 	componentWillUnmount() {
-		const { reset } = this.props;
-		reset();
+		const { dispatch } = this.props;
+		dispatch(reset());
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
@@ -161,8 +160,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	toggleUser = (user: IUser) => {
 		const { maxUsers } = this.state;
 		const {
-			addUser,
-			removeUser,
+			dispatch,
 			users,
 			user: { username }
 		} = this.props;
@@ -177,10 +175,10 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 				return showErrorAlert(I18n.t('Max_number_of_users_allowed_is_number', { maxUsers }), I18n.t('Oops'));
 			}
 			logEvent(events.SELECTED_USERS_ADD_USER);
-			addUser(user);
+			dispatch(addUser(user));
 		} else {
 			logEvent(events.SELECTED_USERS_REMOVE_USER);
-			removeUser(user);
+			dispatch(removeUser(user));
 		}
 	};
 
@@ -308,17 +306,11 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	};
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: ApplicationState) => ({
 	baseUrl: state.server.server,
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading,
 	user: getUserSelector(state)
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-	addUser: (user: any) => dispatch(addUserAction(user)),
-	removeUser: (user: any) => dispatch(removeUserAction(user)),
-	reset: () => dispatch(resetAction())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SelectedUsersView));
+export default connect(mapStateToProps)(withTheme(SelectedUsersView));
