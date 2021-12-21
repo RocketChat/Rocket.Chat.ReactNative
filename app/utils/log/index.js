@@ -77,6 +77,6 @@ export default e => {
 			crashlytics().recordError(e);
 		}
 	} else {
-		console.log(e);
+		console.error(e);
 	}
 };

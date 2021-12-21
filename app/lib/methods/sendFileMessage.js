@@ -3,8 +3,6 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import FileUpload from '../../utils/fileUpload';
 import database from '../database';
-import log from '../../utils/log';
-import { Upload } from '../Upload';
 
 const uploadQueue = {};
 
@@ -15,7 +13,6 @@ export function isUploadActive(path) {
 export async function cancelUpload(item) {
 	if (uploadQueue[item.path]) {
 		try {
-			Upload.userUploading({ rid: item.rid, tmid: item?.tmid, performing: false, files: [item] });
 			await uploadQueue[item.path].cancel();
 		} catch {
 			// Do nothing
@@ -26,7 +23,7 @@ export async function cancelUpload(item) {
 				await item.destroyPermanently();
 			});
 		} catch (e) {
-			log(e);
+			throw e;
 		}
 		delete uploadQueue[item.path];
 	}
@@ -57,7 +54,8 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 						});
 					});
 				} catch (e) {
-					return log(e);
+					reject(e);
+					return;
 				}
 			}
 
@@ -100,7 +98,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 						});
 					});
 				} catch (e) {
-					log(e);
+					reject(e);
 				}
 			});
 
@@ -113,7 +111,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 						});
 						resolve(response);
 					} catch (e) {
-						log(e);
+						reject(e);
 					}
 				} else {
 					try {
@@ -123,13 +121,9 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 							});
 						});
 					} catch (e) {
-						log(e);
-					}
-					try {
-						reject(response);
-					} catch (e) {
 						reject(e);
 					}
+					reject(response);
 				}
 			});
 
@@ -141,12 +135,12 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 						});
 					});
 				} catch (e) {
-					log(e);
+					reject(e);
 				}
 				reject(error);
 			});
 		} catch (e) {
-			log(e);
+			reject(e);
 		}
 	});
 }

@@ -11,6 +11,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../Styles';
 import { withTheme } from '../../theme';
+import { Upload } from '../../lib/Upload';
 
 const styles = StyleSheet.create({
 	container: {
@@ -55,6 +56,7 @@ class UploadProgress extends Component {
 	static propTypes = {
 		width: PropTypes.number,
 		rid: PropTypes.string,
+		tmid: PropTypes.string,
 		theme: PropTypes.string,
 		user: PropTypes.shape({
 			id: PropTypes.string.isRequired,
@@ -136,7 +138,6 @@ class UploadProgress extends Component {
 	};
 
 	cancelUpload = async item => {
-		console.log('🚀 ~ file: UploadProgress.js ~ line 139 ~ UploadProgress ~ item', item);
 		try {
 			await RocketChat.cancelUpload(item);
 		} catch (e) {
@@ -145,7 +146,7 @@ class UploadProgress extends Component {
 	};
 
 	tryAgain = async item => {
-		const { rid, baseUrl: server, user } = this.props;
+		const { rid, tmid, baseUrl: server, user } = this.props;
 
 		try {
 			const db = database.active;
@@ -154,7 +155,15 @@ class UploadProgress extends Component {
 					item.error = false;
 				});
 			});
-			await RocketChat.sendFileMessage(rid, item, undefined, server, user);
+			const file = {
+				name: item.name,
+				description: item.description,
+				type: item.type,
+				store: item.store,
+				path: item.path,
+				size: item.size
+			};
+			await Upload.send({ rid, tmid, files: [file], server, user });
 		} catch (e) {
 			log(e);
 		}
