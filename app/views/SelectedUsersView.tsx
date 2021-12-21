@@ -29,7 +29,15 @@ import sharedStyles from './Styles';
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
 
-type State = {
+interface ISelectedUsersViewState {
+	maxUsers?: number;
+	search: IUser[];
+	chats: IUser[];
+}
+
+interface ISelectedUsersViewProps extends BaseScreen {
+	route: RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
+	// REDUX STATE
 	users: IUser[];
 	loading: boolean;
 	user: {
@@ -39,16 +47,6 @@ type State = {
 		name: string;
 	};
 	baseUrl: string;
-};
-
-interface ISelectedUsersViewState {
-	maxUsers?: number;
-	search: IUser[];
-	chats: IUser[];
-}
-
-interface ISelectedUsersViewProps extends BaseScreen, State {
-	route: RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
 }
 
 class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelectedUsersViewState> {
