@@ -1,14 +1,15 @@
 import { Action } from 'redux';
 
-import { ActiveUsers } from '../reducers/activeUsers';
+import { IActiveUsers } from '../reducers/activeUsers';
 import { SET_ACTIVE_USERS } from './actionsTypes';
 
 export interface SetActiveUsers extends Action {
-	type: typeof SET_ACTIVE_USERS;
-	activeUsers: ActiveUsers;
+	activeUsers: IActiveUsers;
 }
 
-export const setActiveUsers = (activeUsers: ActiveUsers): SetActiveUsers => ({
+export type IActionActiveUsers = SetActiveUsers;
+
+export const setActiveUsers = (activeUsers: IActiveUsers): SetActiveUsers => ({
 	type: SET_ACTIVE_USERS,
 	activeUsers
 });

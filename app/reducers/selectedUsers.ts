@@ -1,11 +1,17 @@
+import { IUser, ApplicationActions } from '../types';
 import { SELECTED_USERS } from '../actions/actionsTypes';
 
-const initialState = {
+export interface ISelectedUsers {
+	users: IUser[];
+	loading: boolean;
+}
+
+const initialState: ISelectedUsers = {
 	users: [],
 	loading: false
 };
 
-export default function (state = initialState, action) {
+export default function (state = initialState, action: ApplicationActions): ISelectedUsers {
 	switch (action.type) {
 		case SELECTED_USERS.ADD_USER:
 			return {

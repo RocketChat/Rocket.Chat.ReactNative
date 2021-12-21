@@ -1,12 +1,15 @@
-import { SetActiveUsers } from '../../actions/activeUsers';
-import { ActiveUsers } from '../../reducers/activeUsers';
+import { IActionSelectedUsers } from '../../actions/selectedUsers';
+import { IActionActiveUsers } from '../../actions/activeUsers';
+// REDUCERS
+import { IActiveUsers } from '../../reducers/activeUsers';
+import { ISelectedUsers } from '../../reducers/selectedUsers';
 
 export interface ApplicationState {
 	settings: any;
 	login: any;
 	meteor: any;
 	server: any;
-	selectedUsers: any;
+	selectedUsers: ISelectedUsers;
 	createChannel: any;
 	app: any;
 	room: any;
@@ -14,7 +17,7 @@ export interface ApplicationState {
 	sortPreferences: any;
 	share: any;
 	customEmojis: any;
-	activeUsers: ActiveUsers;
+	activeUsers: IActiveUsers;
 	usersTyping: any;
 	inviteLinks: any;
 	createDiscussion: any;
@@ -25,4 +28,4 @@ export interface ApplicationState {
 	roles: any;
 }
 
-export type ApplicationActions = SetActiveUsers;
+export type ApplicationActions = IActionActiveUsers & IActionSelectedUsers;

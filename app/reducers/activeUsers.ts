@@ -1,20 +1,13 @@
-import { SetActiveUsers } from '../actions/activeUsers';
+import { ActiveUser, ApplicationActions } from '../types';
 import { SET_ACTIVE_USERS } from '../actions/actionsTypes';
 
-type UserStatus = 'online' | 'offline';
-
-interface ActiveUser {
-	readonly status: UserStatus;
-	readonly statusText?: string;
-}
-
-export interface ActiveUsers {
+export interface IActiveUsers {
 	[key: string]: ActiveUser;
 }
 
-const initialState: ActiveUsers = {};
+const initialState: IActiveUsers = {};
 
-export default function activeUsers(state = initialState, action: SetActiveUsers): ActiveUsers {
+export default function activeUsers(state = initialState, action: ApplicationActions): IActiveUsers {
 	switch (action.type) {
 		case SET_ACTIVE_USERS:
 			return {
