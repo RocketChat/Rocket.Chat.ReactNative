@@ -30,12 +30,6 @@ import { IAttachment } from './interfaces';
 import { IRoom } from '../../definitions/IRoom';
 import { Upload } from '../../lib/Upload';
 
-interface IPerformingActivity {
-	rid: string;
-	tmid: string;
-	performing: boolean;
-	filesName: string[];
-}
 interface IShareViewState {
 	selected: IAttachment;
 	loading: boolean;
@@ -72,7 +66,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: any;
-	private userUploading: ({ rid, tmid, performing, filesName }: IPerformingActivity) => void;
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -80,7 +73,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
 		this.serverInfo = props.route.params?.serverInfo ?? {};
-		this.userUploading = props.route.params?.userUploading;
 
 		this.state = {
 			selected: {} as IAttachment,
@@ -211,7 +203,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			navigation.pop();
 		}
 
-		const filesName: string[] = [];
 		try {
 			// Send attachment
 			if (attachments.length) {
@@ -225,7 +216,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						path: attachment.path,
 						store: 'Uploads'
 					}));
-				await Upload.send({ rid: room.rid, tmid: room.tmid, files: uploadableFiles, server, user });
+				await Upload.send({ rid: room.rid, tmid: thread?.id, files: uploadableFiles, server, user });
 
 				// Send text message
 			} else if (text.length) {
@@ -233,7 +224,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			}
 		} catch {
 			// Do nothing
-			this.userUploading({ rid: room.rid, tmid: thread?.id, performing: false, filesName });
 		}
 
 		// if it's share extension this should close
@@ -364,4 +354,4 @@ const mapStateToProps = (state: any) => ({
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize
 });
 
-export default connect(mapStateToProps, null)(withTheme(ShareView));
+export default connect(mapStateToProps)(withTheme(ShareView));
