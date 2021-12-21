@@ -17,7 +17,7 @@ interface IFileInfo {
  * TODO: We should evaluate this on the rearchitecture
  * We have sendFileMessage, fileUpload, etc
  */
-class UploadClass {
+class UserActivityClass {
 	private rooms: {
 		[roomKey: string]: {
 			interval?: number;
@@ -37,7 +37,7 @@ class UploadClass {
 
 	private getRoomKey = ({ rid, tmid }: { rid: string; tmid?: string }): string => tmid || rid;
 
-	private startUploading = ({ rid, tmid, files }: { rid: string; tmid?: string; files: IFileInfo[] }) => {
+	private startUploadActivity = ({ rid, tmid, files }: { rid: string; tmid?: string; files: IFileInfo[] }) => {
 		const roomKey = this.getRoomKey({ rid, tmid });
 		const room = this.getRoom({ roomKey });
 		if (!room) {
@@ -53,7 +53,7 @@ class UploadClass {
 		}
 	};
 
-	private stopUploading = ({ rid, tmid, files }: { rid: string; tmid?: string; files: IFileInfo[] }) => {
+	private stopUploadActivity = ({ rid, tmid, files }: { rid: string; tmid?: string; files: IFileInfo[] }) => {
 		const roomKey = this.getRoomKey({ rid, tmid });
 		const room = this.getRoom({ roomKey });
 		if (this.isUploadingAnotherFile({ roomKey, files })) {
@@ -67,7 +67,7 @@ class UploadClass {
 		}
 	};
 
-	async send({
+	async upload({
 		rid,
 		tmid,
 		files,
@@ -81,15 +81,15 @@ class UploadClass {
 		user: { id: string; token: string };
 	}) {
 		try {
-			this.startUploading({ rid, tmid, files });
+			this.startUploadActivity({ rid, tmid, files });
 			// await new Promise(res => {setTimeout(() => {console.log('end', files);res();}, 15000);});
 			await Promise.all(files.map(file => RocketChat.sendFileMessage(rid, file, tmid, server, user)));
-			this.stopUploading({ rid, tmid, files });
+			this.stopUploadActivity({ rid, tmid, files });
 		} catch (e) {
-			this.stopUploading({ rid, tmid, files });
+			this.stopUploadActivity({ rid, tmid, files });
 			log(e);
 		}
 	}
 }
 
-export const Upload = new UploadClass();
+export const UserActivity = new UserActivityClass();

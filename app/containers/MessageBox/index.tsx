@@ -8,7 +8,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-import { Upload } from '../../lib/Upload';
+import { UserActivity } from '../../lib/UserActivity';
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput from '../../presentation/TextInput';
 import RocketChat from '../../lib/rocketchat';
@@ -73,10 +73,6 @@ interface IPerformingActivity {
 	rid: string;
 	tmid: string;
 	performing: boolean;
-}
-
-interface IPerformingUploadActivity extends IPerformingActivity {
-	filesName: string[];
 }
 
 interface IMessageBoxProps {
@@ -804,7 +800,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					await Upload.send({ rid, tmid, files: [fileInfo], server, user });
+					await UserActivity.upload({ rid, tmid, files: [fileInfo], server, user });
 				}
 			} catch (e) {
 				log(e);

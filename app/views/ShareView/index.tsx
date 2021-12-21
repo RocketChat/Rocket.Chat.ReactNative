@@ -28,7 +28,7 @@ import Header from './Header';
 import styles from './styles';
 import { IAttachment } from './interfaces';
 import { IRoom } from '../../definitions/IRoom';
-import { Upload } from '../../lib/Upload';
+import { UserActivity } from '../../lib/UserActivity';
 
 interface IShareViewState {
 	selected: IAttachment;
@@ -216,7 +216,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						path: attachment.path,
 						store: 'Uploads'
 					}));
-				await Upload.send({ rid: room.rid, tmid: thread?.id, files: uploadableFiles, server, user });
+				await UserActivity.upload({ rid: room.rid, tmid: thread?.id, files: uploadableFiles, server, user });
 
 				// Send text message
 			} else if (text.length) {

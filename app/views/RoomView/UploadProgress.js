@@ -11,7 +11,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../Styles';
 import { withTheme } from '../../theme';
-import { Upload } from '../../lib/Upload';
+import { UserActivity } from '../../lib/UserActivity';
 
 const styles = StyleSheet.create({
 	container: {
@@ -163,7 +163,7 @@ class UploadProgress extends Component {
 				path: item.path,
 				size: item.size
 			};
-			await Upload.send({ rid, tmid, files: [file], server, user });
+			await UserActivity.upload({ rid, tmid, files: [file], server, user });
 		} catch (e) {
 			log(e);
 		}
