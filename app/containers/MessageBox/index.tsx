@@ -47,6 +47,7 @@ import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
+import { IMessage } from '../../definitions/IMessage';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -72,15 +73,7 @@ const videoPickerConfig = {
 interface IMessageBoxProps {
 	rid: string;
 	baseUrl: string;
-	message: {
-		id: any;
-		ts: Date;
-		msg: string;
-		u: {
-			username?: string;
-			name?: string;
-		};
-	};
+	message: IMessage;
 	replying: boolean;
 	editing: boolean;
 	threadsEnabled: boolean;

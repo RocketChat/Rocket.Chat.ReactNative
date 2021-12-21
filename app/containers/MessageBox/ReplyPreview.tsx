@@ -7,6 +7,7 @@ import { MarkdownPreview } from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
+import { IMessage } from '../../definitions/IMessage';
 
 const styles = StyleSheet.create({
 	container: {
@@ -42,15 +43,7 @@ const styles = StyleSheet.create({
 
 interface IMessageBoxReplyPreview {
 	replying: boolean;
-	message: {
-		id: any;
-		ts: Date;
-		msg: string;
-		u: {
-			username?: string;
-			name?: string;
-		};
-	};
+	message: IMessage;
 	Message_TimeFormat: string;
 	close(): void;
 	baseUrl: string;
