@@ -7,19 +7,4 @@ export interface BaseScreen {
 	theme: string;
 }
 
-export interface IUser {
-	_id: string;
-	name: string;
-	fname: string;
-	search?: boolean;
-	// username is used when is from searching
-	username?: string;
-}
-
-type UserStatus = 'online' | 'offline';
-export interface ActiveUser {
-	status: UserStatus;
-	statusText?: string;
-}
-
 export * from './redux';

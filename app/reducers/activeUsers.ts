@@ -1,5 +1,11 @@
-import { ActiveUser, ApplicationActions } from '../definitions';
+import { ApplicationActions } from '../definitions';
 import { SET_ACTIVE_USERS } from '../actions/actionsTypes';
+
+type UserStatus = 'online' | 'offline';
+export interface ActiveUser {
+	status: UserStatus;
+	statusText?: string;
+}
 
 export interface IActiveUsers {
 	[key: string]: ActiveUser;

@@ -14,14 +14,15 @@ import Loading from '../containers/Loading';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import StatusBar from '../containers/StatusBar';
+import { ApplicationState, BaseScreen } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
+import { ISelectedUser } from '../reducers/selectedUsers';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import { ApplicationState, BaseScreen, IUser } from '../definitions';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
@@ -31,14 +32,14 @@ const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: 
 
 interface ISelectedUsersViewState {
 	maxUsers?: number;
-	search: IUser[];
-	chats: IUser[];
+	search: ISelectedUser[];
+	chats: ISelectedUser[];
 }
 
 interface ISelectedUsersViewProps extends BaseScreen {
 	route: RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
 	// REDUX STATE
-	users: IUser[];
+	users: ISelectedUser[];
 	loading: boolean;
 	user: {
 		id: string;
@@ -146,7 +147,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		return users.findIndex(el => el.name === username) !== -1;
 	};
 
-	toggleUser = (user: IUser) => {
+	toggleUser = (user: ISelectedUser) => {
 		const { maxUsers } = this.state;
 		const {
 			dispatch,
@@ -171,7 +172,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		}
 	};
 
-	_onPressItem = (id: string, item = {} as IUser) => {
+	_onPressItem = (id: string, item = {} as ISelectedUser) => {
 		if (item.search) {
 			this.toggleUser({ _id: item._id, name: item.username!, fname: item.name });
 		} else {
@@ -179,7 +180,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		}
 	};
 
-	_onPressSelectedItem = (item: IUser) => this.toggleUser(item);
+	_onPressSelectedItem = (item: ISelectedUser) => this.toggleUser(item);
 
 	renderHeader = () => {
 		const { theme } = this.props;
@@ -218,7 +219,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		);
 	};
 
-	renderSelectedItem = ({ item }: { item: IUser }) => {
+	renderSelectedItem = ({ item }: { item: ISelectedUser }) => {
 		const { theme } = this.props;
 		return (
 			<UserItem
@@ -232,7 +233,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		);
 	};
 
-	renderItem = ({ item, index }: { item: IUser; index: number }) => {
+	renderItem = ({ item, index }: { item: ISelectedUser; index: number }) => {
 		const { search, chats } = this.state;
 		const { theme } = this.props;
 
