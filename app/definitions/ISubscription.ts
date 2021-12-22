@@ -1,3 +1,8 @@
+import Collection from '@nozbe/watermelondb/Collection';
+
+import { ILastMessage, TMessageModel } from './IMessage';
+import { IServedBy } from './IServedBy';
+
 export enum SubscriptionType {
 	GROUP = 'p',
 	DIRECT = 'd',
@@ -6,13 +11,13 @@ export enum SubscriptionType {
 	THREAD = 'thread'
 }
 
-export interface IUserMessage {
+export interface IVisitor {
 	_id: string;
 	username: string;
-	name: string;
+	token: string;
+	status: string;
+	lastMessageTs: Date;
 }
-
-// export interface ILastMessage {"_id":string,"rid":string,"tshow":boolean,"tmid":string,"msg":string,"ts":Date,"u":IUserMessage,"_updatedAt":Date,"urls":string[],"mentions":[],"channels":[],"md":[{"type":"PARAGRAPH","value":[{"type":"PLAIN_TEXT","value":"olaaa"}]}],"attachments":[],"reactions":[],"unread":false,"status":0}
 
 export interface ISubscription {
 	_id: string; // _id belongs watermelonDB
@@ -55,39 +60,24 @@ export interface ISubscription {
 	jitsiTimeout: number;
 	autoTranslate?: boolean;
 	autoTranslateLanguage?: boolean;
-	// lastMessage:
-	// messages
-	// threads
-	// threadMessages
-	// hideUnreadStatus
-	// sysMes
-	// uids
-	// usernames
-	// visitor
-	// departmentId
-	// servedBy
-	// livechatData
-	// tags
-	// E2EKey
-	// encrypted
-	// e2eKeyId
-	// avatarETag
-	// teamId
-	// teamMain
+	lastMessage: ILastMessage;
+	hideUnreadStatus: boolean;
+	sysMes?: string[] | boolean;
+	uids?: string[];
+	usernames?: string[];
+	visitor?: IVisitor;
+	departmentId?: string;
+	servedBy?: IServedBy;
+	livechatData?: any;
+	tags?: string[];
+	E2EKey?: string;
+	encrypted?: boolean;
+	e2eKeyId?: string;
+	avatarETag?: string;
+	teamId?: string;
+	teamMain?: boolean;
+	messages: Collection<TMessageModel>;
+	// threads: Collection<TThreadsModel>
+	// threadMessages: Collection<TThreadMessagesModel>
+	// uploads: Collection<TUploadsModel>
 }
-// updatedAt: Date;
-// rid: string;
-// t: SubscriptionType;
-// name: string;
-// fname: string;
-// prid?: string;
-// tmid?: string;
-// topic?: string;
-// teamMain?: boolean;
-// teamId?: string;
-// encrypted?: boolean;
-// visitor?: boolean;
-// autoTranslateLanguage?: boolean;
-// autoTranslate?: boolean;
-// observe?: Function;
-// usedCannedResponse: string;

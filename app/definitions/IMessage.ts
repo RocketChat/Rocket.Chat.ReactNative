@@ -3,7 +3,7 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReactions';
-import { RoomType } from './IRoom';
+import { SubscriptionType } from './ISubscription';
 
 interface IUserMessage {
 	_id: string;
@@ -29,9 +29,28 @@ export interface ITranslations {
 	value: string;
 }
 
+export interface ILastMessage {
+	_id: string;
+	rid: string;
+	tshow: boolean;
+	tmid: string;
+	msg: string;
+	ts: Date;
+	u: IUserMessage;
+	_updatedAt: Date;
+	urls: string[];
+	mentions: IUserMention[];
+	channels: IUserChannel[];
+	md: MarkdownAST;
+	attachments: IAttachment[];
+	reactions: IReaction[];
+	unread: boolean;
+	status: boolean;
+}
+
 export interface IMessage {
 	msg: string;
-	t?: RoomType;
+	t?: SubscriptionType;
 	ts: Date;
 	u: IUserMessage;
 	subscription: { id: string };
