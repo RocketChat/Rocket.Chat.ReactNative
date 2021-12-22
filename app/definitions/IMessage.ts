@@ -1,3 +1,4 @@
+import Model from '@nozbe/watermelondb/Model';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
@@ -66,3 +67,5 @@ export interface IMessage {
 	tshow: boolean;
 	md: MarkdownAST;
 }
+
+export type TMessageModel = IMessage & Model;
