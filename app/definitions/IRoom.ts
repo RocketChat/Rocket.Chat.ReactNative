@@ -1,3 +1,5 @@
+import Model from '@nozbe/watermelondb/Model';
+
 import { IServedBy } from './IServedBy';
 
 export interface IRoom {
@@ -14,3 +16,5 @@ export interface IRoom {
 	tags?: string[];
 	avatarETag?: string;
 }
+
+export type TRoomModel = IRoom & Model;
