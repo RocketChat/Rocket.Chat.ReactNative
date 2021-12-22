@@ -2,10 +2,10 @@ import Model from '@nozbe/watermelondb/Model';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
-import { IReaction } from './IReactions';
+import { IReaction } from './IReaction';
 import { SubscriptionType } from './ISubscription';
 
-interface IUserMessage {
+export interface IUserMessage {
 	_id: string;
 	username?: string;
 	name?: string;
