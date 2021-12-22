@@ -33,7 +33,6 @@ describe('test selectedUsers reducer', () => {
 	});
 
 	it('should return loading after call action', async () => {
-		const user = { _id: 'user.id', name: 'user.username', fname: 'user.name' };
 		mockedStore.dispatch(setLoading(true));
 		const state = mockedStore.getState().selectedUsers.loading;
 		expect(state).toEqual(true);
