@@ -1,27 +1,16 @@
-import { IRocketChatRecord } from './IRocketChatRecord';
+import { IServedBy } from './IServedBy';
 
-export enum RoomType {
-	GROUP = 'p',
-	DIRECT = 'd',
-	CHANNEL = 'c',
-	OMNICHANNEL = 'l',
-	THREAD = 'thread'
-}
-
-export interface IRoom extends IRocketChatRecord {
-	rid: string;
-	t: RoomType;
-	name: string;
-	fname: string;
-	prid?: string;
-	tmid?: string;
-	topic?: string;
-	teamMain?: boolean;
-	teamId?: string;
-	encrypted?: boolean;
-	visitor?: boolean;
-	autoTranslateLanguage?: boolean;
-	autoTranslate?: boolean;
-	observe?: Function;
-	usedCannedResponse: string;
+export interface IRoom {
+	id: string;
+	customFields: string[];
+	broadcast: boolean;
+	encrypted: boolean;
+	e2eKeyId?: string;
+	ro: boolean;
+	v: string[];
+	servedBy: IServedBy;
+	departmentId: string;
+	livechatData?: any;
+	tags?: string[];
+	avatarETag?: string;
 }
