@@ -6,7 +6,7 @@ export interface ISelectedUsers {
 	loading: boolean;
 }
 
-const initialState: ISelectedUsers = {
+export const initialState: ISelectedUsers = {
 	users: [],
 	loading: false
 };

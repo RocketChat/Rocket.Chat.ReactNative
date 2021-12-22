@@ -5,7 +5,7 @@ export interface IActiveUsers {
 	[key: string]: ActiveUser;
 }
 
-const initialState: IActiveUsers = {};
+export const initialState: IActiveUsers = {};
 
 export default function activeUsers(state = initialState, action: ApplicationActions): IActiveUsers {
 	switch (action.type) {

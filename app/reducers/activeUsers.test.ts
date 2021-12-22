@@ -1,11 +1,11 @@
 import { setActiveUsers } from '../actions/activeUsers';
-import { IActiveUsers } from './activeUsers';
+import { IActiveUsers, initialState } from './activeUsers';
 import { mockedStore } from './mockedStore';
 
 describe('test reducer', () => {
-	it('should return {} as initial state', () => {
+	it('should return initial state', () => {
 		const state = mockedStore.getState().activeUsers;
-		expect(state).toEqual({});
+		expect(state).toEqual(initialState);
 	});
 	it('should return modified store after action', () => {
 		const activeUsers: IActiveUsers = { any: { status: 'online', statusText: 'any' } };

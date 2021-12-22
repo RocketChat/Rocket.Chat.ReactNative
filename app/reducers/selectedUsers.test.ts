@@ -1,12 +1,8 @@
 import { addUser, reset, setLoading, removeUser } from '../actions/selectedUsers';
 import { mockedStore } from './mockedStore';
+import { initialState } from './selectedUsers';
 
 describe('test selectedUsers reducer', () => {
-	const initialState = {
-		users: [],
-		loading: false
-	};
-
 	it('should return initial state', () => {
 		const state = mockedStore.getState().selectedUsers;
 		expect(state).toEqual(initialState);
@@ -26,7 +22,7 @@ describe('test selectedUsers reducer', () => {
 		expect(state).toEqual([]);
 	});
 
-	it('should return initialState after reset', () => {
+	it('should return initial state after reset', () => {
 		mockedStore.dispatch(reset());
 		const state = mockedStore.getState().selectedUsers;
 		expect(state).toEqual(initialState);
