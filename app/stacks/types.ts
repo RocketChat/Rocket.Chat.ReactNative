@@ -6,7 +6,7 @@ import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage } from '../definitions/IMessage';
-import { ISubscription, SubscriptionType } from '../definitions/ISubscription';
+import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 
 export type ChatsStackParamList = {
 	RoomsListView: undefined;
@@ -79,7 +79,7 @@ export type ChatsStackParamList = {
 	};
 	AutoTranslateView: {
 		rid: string;
-		room: ISubscription;
+		room: TSubscriptionModel;
 	};
 	DirectoryView: undefined;
 	NotificationPrefView: {

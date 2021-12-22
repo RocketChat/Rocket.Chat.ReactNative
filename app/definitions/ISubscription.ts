@@ -1,4 +1,5 @@
 import Collection from '@nozbe/watermelondb/Collection';
+import Model from '@nozbe/watermelondb/Model';
 
 import { ILastMessage, TMessageModel } from './IMessage';
 import { IServedBy } from './IServedBy';
@@ -81,3 +82,5 @@ export interface ISubscription {
 	// threadMessages: Collection<TThreadMessagesModel>
 	// uploads: Collection<TUploadsModel>
 }
+
+export type TSubscriptionModel = ISubscription & Model;
