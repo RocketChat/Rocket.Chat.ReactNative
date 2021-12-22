@@ -69,12 +69,6 @@ const videoPickerConfig = {
 	mediaType: 'video'
 };
 
-interface IPerformingActivity {
-	rid: string;
-	tmid: string;
-	performing: boolean;
-}
-
 interface IMessageBoxProps {
 	rid: string;
 	baseUrl: string;
@@ -103,8 +97,6 @@ interface IMessageBoxProps {
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
-	userTyping: ({ rid, tmid, performing }: IPerformingActivity) => void;
-	userRecording: ({ rid, tmid, performing }: IPerformingActivity) => void;
 	theme: string;
 	replyCancel(): void;
 	showSend: boolean;
@@ -614,7 +606,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	handleTyping = (isTyping: boolean) => {
-		const { rid, sharing, tmid, userTyping } = this.props;
+		const { rid, sharing, tmid } = this.props;
 		if (sharing) {
 			return;
 		}
@@ -623,7 +615,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				clearTimeout(this.typingTimeout);
 				this.typingTimeout = false;
 			}
-			userTyping({ rid, tmid, performing: false });
+			UserActivity.userTyping({ rid, tmid, performing: false });
 			return;
 		}
 
@@ -632,7 +624,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 
 		this.typingTimeout = setTimeout(() => {
-			userTyping({ rid, tmid, performing: isTyping });
+			UserActivity.userTyping({ rid, tmid, performing: isTyping });
 			this.typingTimeout = false;
 		}, 1000);
 	};
@@ -789,9 +781,9 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	recordingCallback = (recording: boolean) => {
-		const { rid, tmid, userRecording } = this.props;
+		const { rid, tmid } = this.props;
 		this.setState({ recording });
-		userRecording({ rid, tmid, performing: recording });
+		UserActivity.userRecording({ rid, tmid, performing: recording });
 	};
 
 	finishAudioMessage = async (fileInfo: any) => {

@@ -1,6 +1,6 @@
 import log from '../utils/log';
 import RocketChat from './rocketchat';
-import { USER_UPLOADING } from '../constants/userActivities';
+import { USER_RECORDING, USER_TYPING, USER_UPLOADING } from '../constants/userActivities';
 
 // TODO: evaluate it later
 interface IFileInfo {
@@ -24,6 +24,57 @@ class UserActivityClass {
 			files: IFileInfo[];
 		};
 	} = {};
+	private typingRemove?: number;
+	private recordingRemove?: number;
+	private recordingSend?: number;
+
+	userTyping = async ({ rid, tmid, performing }: { rid: string; tmid: string; performing: boolean }) => {
+		if (this.typingRemove) {
+			clearTimeout(this.typingRemove);
+			this.typingRemove = 0;
+		}
+
+		if (performing) {
+			this.typingRemove = setTimeout(() => {
+				this.userTyping({ rid, tmid, performing: false });
+			}, 5000);
+		}
+
+		try {
+			await RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_TYPING });
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	userRecording = ({ rid, tmid, performing }: { rid: string; tmid: string; performing: boolean }) => {
+		if (this.recordingRemove) {
+			clearTimeout(this.recordingRemove);
+			this.recordingRemove = 0;
+		}
+
+		if (performing) {
+			this.recordingRemove = setTimeout(() => {
+				this.userRecording({ rid, tmid, performing: false });
+			}, 5000);
+		}
+
+		if (this.recordingSend && performing) {
+			return;
+		}
+
+		if (this.recordingSend && !performing) {
+			clearTimeout(this.recordingSend);
+		}
+
+		this.recordingSend = setTimeout(
+			() => {
+				this.recordingSend = 0;
+				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_RECORDING });
+			},
+			performing ? 2000 : 100
+		);
+	};
 
 	private isUploadingAnotherFile = ({ roomKey, files }: { roomKey: string; files: IFileInfo[] }): boolean => {
 		const room = this.getRoom({ roomKey });

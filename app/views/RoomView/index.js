@@ -878,54 +878,6 @@ class RoomView extends React.Component {
 		}
 	};
 
-	userTyping = async ({ rid, tmid, performing }) => {
-		if (this.typingRemove) {
-			clearTimeout(this.typingRemove);
-			this.typingRemove = 0;
-		}
-
-		if (performing) {
-			this.typingRemove = setTimeout(() => {
-				this.userTyping({ rid, tmid, performing: false });
-			}, 5000);
-		}
-
-		try {
-			await RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_TYPING });
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	userRecording = ({ rid, tmid, performing }) => {
-		if (this.recordingRemove) {
-			clearTimeout(this.recordingRemove);
-			this.recordingRemove = 0;
-		}
-
-		if (performing) {
-			this.recordingRemove = setTimeout(() => {
-				this.userRecording({ rid, tmid, performing: false });
-			}, 5000);
-		}
-
-		if (this.recordingSend && performing) {
-			return;
-		}
-
-		if (this.recordingSend && !performing) {
-			clearTimeout(this.recordingSend);
-		}
-
-		this.recordingSend = setTimeout(
-			() => {
-				this.recordingSend = 0;
-				RocketChat.emitUserActivity({ room: rid, extras: { tmid }, performing, activity: USER_RECORDING });
-			},
-			performing ? 2000 : 100
-		);
-	};
-
 	navToThread = async item => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
@@ -1193,8 +1145,6 @@ class RoomView extends React.Component {
 				getCustomEmoji={this.getCustomEmoji}
 				navigation={navigation}
 				usedCannedResponse={usedCannedResponse}
-				userTyping={this.userTyping}
-				userRecording={this.userRecording}
 			/>
 		);
 	};
