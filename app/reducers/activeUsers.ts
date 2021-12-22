@@ -1,4 +1,4 @@
-import { ActiveUser, ApplicationActions } from '../types';
+import { ActiveUser, ApplicationActions } from '../definitions';
 import { SET_ACTIVE_USERS } from '../actions/actionsTypes';
 
 export interface IActiveUsers {

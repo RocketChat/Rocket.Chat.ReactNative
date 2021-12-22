@@ -1,4 +1,4 @@
-import { IUser, ApplicationActions } from '../types';
+import { IUser, ApplicationActions } from '../definitions';
 import { SELECTED_USERS } from '../actions/actionsTypes';
 
 export interface ISelectedUsers {

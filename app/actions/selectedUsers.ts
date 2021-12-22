@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { IUser } from '../types';
+import { IUser } from '../definitions';
 import * as types from './actionsTypes';
 
 type User = {

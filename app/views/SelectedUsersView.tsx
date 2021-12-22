@@ -21,7 +21,7 @@ import UserItem from '../presentation/UserItem';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
-import { ApplicationState, BaseScreen, IUser } from '../types';
+import { ApplicationState, BaseScreen, IUser } from '../definitions';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
