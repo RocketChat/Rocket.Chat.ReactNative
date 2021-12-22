@@ -24,7 +24,7 @@ export function addUser(user: IUser): IAction {
 
 export function removeUser(user: IUser): IAction {
 	return {
-		type: types.DEEP_LINKING,
+		type: types.SELECTED_USERS.REMOVE_USER,
 		user
 	};
 }
