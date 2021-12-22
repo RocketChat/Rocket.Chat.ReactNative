@@ -58,7 +58,6 @@ export interface IMessage {
 	t?: SubscriptionType;
 	ts: Date;
 	u: IUserMessage;
-	subscription: { id: string };
 	alias: string;
 	parseUrls: boolean;
 	groupable: boolean;
@@ -90,6 +89,7 @@ export interface IMessage {
 	e2e: string;
 	tshow: boolean;
 	md: MarkdownAST;
+	subscription: { id: string };
 }
 
 export type TMessageModel = IMessage & Model;

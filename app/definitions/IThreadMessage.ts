@@ -1,3 +1,5 @@
+import Model from '@nozbe/watermelondb/Model';
+
 import { IAttachment } from './IAttachment';
 import { IEditedBy, ITranslations, IUserChannel, IUserMention, IUserMessage } from './IMessage';
 import { IReaction } from './IReaction';
@@ -8,7 +10,6 @@ export interface IThreadMessage {
 	t?: SubscriptionType;
 	ts: Date;
 	u: IUserMessage;
-	subscription: { id: string };
 	alias: string;
 	parseUrls: boolean;
 	groupable: boolean;
@@ -36,4 +37,7 @@ export interface IThreadMessage {
 	autoTranslate: boolean;
 	translations: ITranslations[];
 	e2e: string;
+	subscription: { id: string };
 }
+
+export type TThreadMessageModel = IThreadMessage & Model;

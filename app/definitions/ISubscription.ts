@@ -4,6 +4,7 @@ import Model from '@nozbe/watermelondb/Model';
 import { ILastMessage, TMessageModel } from './IMessage';
 import { IServedBy } from './IServedBy';
 import { TThreadModel } from './IThread';
+import { TThreadMessageModel } from './IThreadMessage';
 
 export enum SubscriptionType {
 	GROUP = 'p',
@@ -80,7 +81,7 @@ export interface ISubscription {
 	teamMain?: boolean;
 	messages: Collection<TMessageModel>;
 	threads: Collection<TThreadModel>;
-	// threadMessages: Collection<TThreadMessagesModel>
+	threadMessages: Collection<TThreadMessageModel>;
 	// uploads: Collection<TUploadsModel>
 }
 
