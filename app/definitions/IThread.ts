@@ -2,7 +2,7 @@ import Model from '@nozbe/watermelondb/Model';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
-import { IUserChannel, IUserMention, IUserMessage } from './IMessage';
+import { IEditedBy, IUserChannel, IUserMention, IUserMessage } from './IMessage';
 import { IReaction } from './IReaction';
 import { SubscriptionType } from './ISubscription';
 import { IUrl } from './IUrl';
@@ -41,17 +41,17 @@ export interface IThread {
 	_updatedAt: Date;
 	ts: Date;
 	u: IUserMessage;
-	alias: any;
-	parseUrls: any;
+	alias: string;
+	parseUrls: boolean;
 	groupable: boolean;
 	avatar: string;
-	emoji: any;
+	emoji: string;
 	attachments: IAttachment[];
 	urls: IUrl[];
 	status: number;
 	pinned: boolean;
 	starred: boolean;
-	editedBy: { _id: string; username: string };
+	editedBy: IEditedBy;
 	reactions: IReaction[];
 	role: string;
 	drid: string;
@@ -66,7 +66,7 @@ export interface IThread {
 	unread: boolean;
 	autoTranslate: boolean;
 	translations: any;
-	e2e: any;
+	e2e: string;
 }
 
 export type TThreadModel = IThread & Model;

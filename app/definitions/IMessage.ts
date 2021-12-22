@@ -21,6 +21,11 @@ export interface IUserChannel {
 	_id: string;
 }
 
+export interface IEditedBy {
+	_id: string;
+	username: string;
+}
+
 export type TOnLinkPress = (link: string) => void;
 
 export interface ITranslations {
@@ -65,7 +70,7 @@ export interface IMessage {
 	status: number;
 	pinned: boolean;
 	starred: boolean;
-	editedBy?: { _id: string; username: string };
+	editedBy?: IEditedBy;
 	reactions: IReaction[];
 	role: string;
 	drid: string;
