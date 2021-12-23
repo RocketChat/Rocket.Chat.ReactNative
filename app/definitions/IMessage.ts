@@ -56,7 +56,6 @@ export interface ILastMessage {
 export interface IMessage {
 	msg?: string;
 	t?: SubscriptionType;
-	rid: string;
 	ts: Date;
 	u: IUserMessage;
 	alias: string;
