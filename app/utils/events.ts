@@ -7,7 +7,7 @@ class EventEmitter {
 		this.events = {};
 	}
 
-	addEventListener(event: string, listener: any) {
+	addEventListener(event: string, listener: Function) {
 		if (typeof this.events[event] !== 'object') {
 			this.events[event] = [];
 		}
@@ -15,7 +15,7 @@ class EventEmitter {
 		return listener;
 	}
 
-	removeListener(event: string, listener: any) {
+	removeListener(event: string, listener: Function) {
 		if (typeof this.events[event] === 'object') {
 			const idx = this.events[event].indexOf(listener);
 			if (idx > -1) {
@@ -29,7 +29,7 @@ class EventEmitter {
 
 	emit(event: string, ...args: any[]) {
 		if (typeof this.events[event] === 'object') {
-			this.events[event].forEach((listener: any) => {
+			this.events[event].forEach((listener: Function) => {
 				try {
 					listener.apply(this, args);
 				} catch (e) {

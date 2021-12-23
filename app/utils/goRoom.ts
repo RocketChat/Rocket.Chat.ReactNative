@@ -1,8 +1,17 @@
+import { ChatsStackParamList } from '../stacks/types';
 import { IRoom, RoomType } from '../definitions/IRoom';
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
 
-const navigate = ({ item, isMasterDetail, ...props }: { item: IItem; isMasterDetail: boolean; navigationMethod?: any }) => {
+const navigate = ({
+	item,
+	isMasterDetail,
+	...props
+}: {
+	item: IItem;
+	isMasterDetail: boolean;
+	navigationMethod?: () => ChatsStackParamList;
+}) => {
 	let navigationMethod = props.navigationMethod ?? Navigation.navigate;
 
 	if (isMasterDetail) {

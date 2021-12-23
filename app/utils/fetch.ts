@@ -29,7 +29,7 @@ export const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';
 
 RocketChatSettings.customHeaders = headers;
 
-export default (url: string, options: any = {}): Promise<Response> => {
+export default (url: string, options: { headers?: Headers; signal?: AbortSignal } = {}): Promise<Response> => {
 	let customOptions = { ...options, headers: RocketChatSettings.customHeaders };
 	if (options && options.headers) {
 		customOptions = { ...customOptions, headers: { ...options.headers, ...customOptions.headers } };
