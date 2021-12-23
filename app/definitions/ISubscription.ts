@@ -1,5 +1,5 @@
-import Collection from '@nozbe/watermelondb/Collection';
 import Model from '@nozbe/watermelondb/Model';
+import Relation from '@nozbe/watermelondb/Relation';
 
 import { ILastMessage, TMessageModel } from './IMessage';
 import { IServedBy } from './IServedBy';
@@ -80,10 +80,11 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
-	messages: Collection<TMessageModel>;
-	threads: Collection<TThreadModel>;
-	threadMessages: Collection<TThreadMessageModel>;
-	uploads: Collection<TUploadModel>;
+	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
+	messages: Relation<TMessageModel>;
+	threads: Relation<TThreadModel>;
+	threadMessages: Relation<TThreadMessageModel>;
+	uploads: Relation<TUploadModel>;
 }
 
 export type TSubscriptionModel = ISubscription & Model;
