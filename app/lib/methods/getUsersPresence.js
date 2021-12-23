@@ -19,9 +19,7 @@ export function subscribeUsersPresence() {
 		this.activeUsersSubTimeout = setTimeout(() => {
 			this.sdk.subscribe('activeUsers');
 		}, 5000);
-	} else if (compareServerVersion(serverVersion, '4.1.0', methods.greaterThanOrEqualTo)) {
-		this.sdk.subscribe('stream-user-presence', ' user-presence');
-	} else {
+	} else if (compareServerVersion(serverVersion, '4.1.0', methods.lowerThan)) {
 		this.sdk.subscribe('stream-notify-logged', 'user-status');
 	}
 
@@ -54,6 +52,8 @@ export default async function getUsersPresence() {
 		try {
 			// RC 1.1.0
 			const result = await this.sdk.get('users.presence', params);
+			console.log({ params });
+			this.sdk.subscribe('stream-user-presence', params);
 			if (result.success) {
 				const { users } = result;
 
@@ -103,17 +103,20 @@ export default async function getUsersPresence() {
 let usersTimer = null;
 export function getUserPresence(uid) {
 	const auth = reduxStore.getState().login.isAuthenticated;
+	const serverVersion = reduxStore.getState().server.version;
 
-	if (!usersTimer) {
-		usersTimer = setTimeout(() => {
-			if (auth && ids.length) {
-				getUsersPresence.call(this);
-			}
-			usersTimer = null;
-		}, 2000);
-	}
+	if (compareServerVersion(serverVersion, '4.1.0', methods.lowerThan)) {
+		if (!usersTimer) {
+			usersTimer = setTimeout(() => {
+				if (auth && ids.length) {
+					getUsersPresence.call(this);
+				}
+				usersTimer = null;
+			}, 2000);
+		}
 
-	if (uid) {
-		ids.push(uid);
+		if (uid) {
+			ids.push(uid);
+		}
 	}
 }

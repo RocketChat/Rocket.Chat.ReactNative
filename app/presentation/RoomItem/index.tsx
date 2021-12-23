@@ -21,7 +21,7 @@ interface IRoomItemContainerProps {
 	toggleRead(): void;
 	hideChannel(): void;
 	useRealName: boolean;
-	getUserPresence: Function;
+	getUserPresence(uid: string): void;
 	connected: boolean;
 	theme: string;
 	isFocused: boolean;

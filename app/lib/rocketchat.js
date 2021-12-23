@@ -338,7 +338,7 @@ const RocketChat = {
 				protectedFunction(ddpMessage => {
 					const { eventName } = ddpMessage.fields;
 					if (/user-presence/.test(eventName)) {
-						userPresence(ddpMessage);
+						// userPresence(ddpMessage);
 					}
 					resolve();
 				})
