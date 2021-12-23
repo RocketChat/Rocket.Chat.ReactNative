@@ -7,17 +7,17 @@ import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 
-class AvatarContainer extends React.Component<Partial<IAvatar>, any> {
+class AvatarContainer extends React.Component<IAvatar, any> {
 	private mounted: boolean;
 
-	private subscription!: any;
+	private subscription: any;
 
 	static defaultProps = {
 		text: '',
 		type: 'd'
 	};
 
-	constructor(props: Partial<IAvatar>) {
+	constructor(props: IAvatar) {
 		super(props);
 		this.mounted = false;
 		this.state = { avatarETag: '' };
@@ -82,7 +82,7 @@ class AvatarContainer extends React.Component<Partial<IAvatar>, any> {
 	render() {
 		const { avatarETag } = this.state;
 		const { serverVersion } = this.props;
-		return <Avatar avatarETag={avatarETag} serverVersion={serverVersion} {...this.props} />;
+		return <Avatar {...this.props} avatarETag={avatarETag} serverVersion={serverVersion} />;
 	}
 }
 

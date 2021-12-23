@@ -1,16 +1,16 @@
 import { IFile } from './interfaces';
 
 class Upload {
-	xhr: XMLHttpRequest;
+	public xhr: XMLHttpRequest;
 
-	formData: FormData;
+	public formData: FormData;
 
 	constructor() {
 		this.xhr = new XMLHttpRequest();
 		this.formData = new FormData();
 	}
 
-	then = (callback: (arg0: { respInfo: XMLHttpRequest }) => any) => {
+	then = (callback: (param: { respInfo: XMLHttpRequest }) => XMLHttpRequest) => {
 		this.xhr.onload = () => callback({ respInfo: this.xhr });
 		this.xhr.send(this.formData);
 	};
@@ -19,7 +19,7 @@ class Upload {
 		this.xhr.onerror = callback;
 	};
 
-	uploadProgress = (callback: (arg0: number, arg1: number) => any) => {
+	uploadProgress = (callback: (param: number, arg1: number) => any) => {
 		this.xhr.upload.onprogress = ({ total, loaded }) => callback(loaded, total);
 	};
 

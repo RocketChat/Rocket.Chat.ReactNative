@@ -37,10 +37,7 @@ interface IDimensions {
 
 interface IState {
 	theme: string;
-	themePreferences: {
-		currentTheme: 'automatic' | 'light';
-		darkLevel: string;
-	};
+	themePreferences: IThemePreference;
 	root: any;
 	width: number;
 	height: number;

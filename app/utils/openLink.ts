@@ -14,7 +14,7 @@ const scheme = {
 	brave: 'brave:'
 };
 
-const appSchemeURL = (url: string, browser: string) => {
+const appSchemeURL = (url: string, browser: string): string => {
 	let schemeUrl = url;
 	const parsedUrl = parse(url, true);
 	const { protocol } = parsedUrl;

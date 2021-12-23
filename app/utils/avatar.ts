@@ -1,20 +1,8 @@
 import { compareServerVersion, methods } from '../lib/utils';
 import { RoomType } from '../definitions/IRoom';
+import { IAvatar } from '../containers/Avatar/interfaces';
 
 const formatUrl = (url: string, size: number, query: string) => `${url}?format=png&size=${size}${query}`;
-
-interface IAvatarURL {
-	type: string;
-	text: string;
-	size?: number;
-	user: { id?: string; token?: string };
-	avatar?: string;
-	server: string;
-	avatarETag: string;
-	rid?: string;
-	blockUnauthenticatedAccess: boolean;
-	serverVersion: string;
-}
 
 export const avatarURL = ({
 	type,
@@ -27,7 +15,7 @@ export const avatarURL = ({
 	rid,
 	blockUnauthenticatedAccess,
 	serverVersion
-}: IAvatarURL): string => {
+}: IAvatar): string => {
 	let room;
 	if (type === RoomType.DIRECT) {
 		room = text;

@@ -29,7 +29,7 @@ const Avatar = React.memo(
 		size = 25,
 		borderRadius = 4,
 		type = RoomType.DIRECT
-	}: Partial<IAvatar>) => {
+	}: IAvatar) => {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
 		}
@@ -57,15 +57,15 @@ const Avatar = React.memo(
 			if (!isStatic) {
 				uri = avatarURL({
 					type,
-					text: text!,
+					text,
 					size,
-					user: user!,
+					user,
 					avatar,
 					server,
-					avatarETag: avatarETag!,
-					serverVersion: serverVersion!,
+					avatarETag,
+					serverVersion,
 					rid,
-					blockUnauthenticatedAccess: blockUnauthenticatedAccess!
+					blockUnauthenticatedAccess
 				});
 			}
 

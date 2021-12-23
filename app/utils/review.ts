@@ -15,7 +15,7 @@ const reviewDelay = 2000;
 const numberOfDays = 7;
 const numberOfPositiveEvent = 5;
 
-const daysBetween = (date1: Date, date2: Date) => {
+const daysBetween = (date1: Date, date2: Date): number => {
 	const one_day = 1000 * 60 * 60 * 24;
 	const date1_ms = date1.getTime();
 	const date2_ms = date2.getTime();

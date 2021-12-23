@@ -2,13 +2,13 @@ import { Appearance } from 'react-native-appearance';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import setRootViewColor from 'rn-root-view';
 
-import { IThemePreference } from '../definitions/ITheme';
+import { IThemePreference, TThemeMode } from '../definitions/ITheme';
 import { themes } from '../constants/colors';
 import { isAndroid } from './deviceInfo';
 
 let themeListener: { remove: () => void } | null;
 
-export const defaultTheme = (): string => {
+export const defaultTheme = (): TThemeMode => {
 	const systemTheme = Appearance.getColorScheme();
 	if (systemTheme && systemTheme !== 'no-preference') {
 		return systemTheme;
@@ -25,7 +25,7 @@ export const getTheme = (themePreferences: IThemePreference): string => {
 	return theme === 'dark' ? darkLevel : 'light';
 };
 
-export const newThemeState = (prevState: any, newTheme: IThemePreference) => {
+export const newThemeState = (prevState: { themePreferences: IThemePreference }, newTheme: IThemePreference) => {
 	// new theme preferences
 	const themePreferences = {
 		...prevState.themePreferences,

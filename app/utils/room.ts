@@ -1,13 +1,14 @@
 import moment from 'moment';
 
-import { IRoom } from '../definitions/IRoom';
+import { IRoom, RoomType } from '../definitions/IRoom';
 import { themes } from '../constants/colors';
 import I18n from '../i18n';
+import { IAttachment } from '../definitions/IAttachment';
 
 export const isBlocked = (room: IRoom): boolean => {
 	if (room) {
 		const { t, blocked, blocker } = room;
-		if (t === 'd' && (blocked || blocker)) {
+		if (t === RoomType.DIRECT && (blocked || blocker)) {
 			return true;
 		}
 	}
@@ -42,10 +43,11 @@ export const getBadgeColor = ({
 	messageId,
 	theme
 }: {
+	// TODO: Refactor when migrate model folder
 	subscription: any;
 	messageId: string;
 	theme: string;
-}): any => {
+}): string | undefined => {
 	if (subscription?.tunreadUser?.includes(messageId)) {
 		return themes[theme].mentionMeColor;
 	}
@@ -57,7 +59,7 @@ export const getBadgeColor = ({
 	}
 };
 
-export const makeThreadName = (messageRecord: { id?: string | undefined; msg?: any; attachments?: any }): string =>
-	messageRecord.msg || messageRecord?.attachments[0]?.title;
+export const makeThreadName = (messageRecord: { id?: string; msg?: string; attachments?: IAttachment[] }): string | undefined =>
+	messageRecord.msg || messageRecord.attachments![0].title;
 
 export const isTeamRoom = ({ teamId, joined }: { teamId: string; joined: boolean }): boolean => !!teamId && joined;

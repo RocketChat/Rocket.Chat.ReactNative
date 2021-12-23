@@ -9,7 +9,7 @@ const canPostReadOnly = async ({ rid }: { rid: string }) => {
 	return permission[0];
 };
 
-const isMuted = (room: IRoom, user: { username: any }) =>
+const isMuted = (room: IRoom, user: { username: string }) =>
 	room && room.muted && room.muted.find && !!room.muted.find(m => m === user.username);
 
 export const isReadOnly = async (room: IRoom, user: { id?: string; username: string; token?: string }): Promise<boolean> => {
