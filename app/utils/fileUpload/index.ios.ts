@@ -1,3 +1,5 @@
+import { IFile } from './interfaces';
+
 class Upload {
 	xhr: XMLHttpRequest;
 
@@ -27,16 +29,8 @@ class Upload {
 	};
 }
 
-interface IData {
-	name: string;
-	uri?: string;
-	type: string;
-	filename: string;
-	data: any;
-}
-
 class FileUpload {
-	fetch = (method: string, url: string, headers: { [x: string]: string }, data: IData[]) => {
+	fetch = (method: string, url: string, headers: { [x: string]: string }, data: IFile[]) => {
 		const upload = new Upload();
 		upload.xhr.open(method, url);
 

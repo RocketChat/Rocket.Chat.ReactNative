@@ -1,7 +1,7 @@
 /* eslint-disable no-bitwise */
 // https://github.com/beatgammit/base64-js/blob/master/index.js
 
-const lookup: any[] = [];
+const lookup: string[] = [];
 const revLookup: number[] = [];
 const Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
 
@@ -16,7 +16,7 @@ for (let i = 0, len = code.length; i < len; i += 1) {
 revLookup['-'.charCodeAt(0)] = 62;
 revLookup['_'.charCodeAt(0)] = 63;
 
-const getLens = (b64: string | string[]) => {
+const getLens = (b64: string) => {
 	const len = b64.length;
 
 	// We're encoding some strings not multiple of 4, so, disable this check
@@ -44,7 +44,7 @@ export const byteLength = (b64: string) => {
 	return ((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
 };
 
-const _byteLength = (b64: any, validLen: number, placeHoldersLen: number) =>
+const _byteLength = (b64: string, validLen: number, placeHoldersLen: number) =>
 	((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
 
 export const toByteArray = (b64: string) => {
