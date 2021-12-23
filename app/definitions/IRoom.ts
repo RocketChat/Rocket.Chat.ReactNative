@@ -7,13 +7,13 @@ export interface IRoom {
 	customFields: string[];
 	broadcast: boolean;
 	encrypted: boolean;
-	e2eKeyId?: string;
 	ro: boolean;
-	v: string[];
-	servedBy: IServedBy;
-	departmentId: string;
+	v?: string[];
+	servedBy?: IServedBy;
+	departmentId?: string;
 	livechatData?: any;
 	tags?: string[];
+	e2eKeyId?: string;
 	avatarETag?: string;
 }
 
