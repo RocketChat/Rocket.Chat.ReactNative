@@ -5,6 +5,7 @@ import { ILastMessage, TMessageModel } from './IMessage';
 import { IServedBy } from './IServedBy';
 import { TThreadModel } from './IThread';
 import { TThreadMessageModel } from './IThreadMessage';
+import { TUploadModel } from './IUpload';
 
 export enum SubscriptionType {
 	GROUP = 'p',
@@ -82,7 +83,7 @@ export interface ISubscription {
 	messages: Collection<TMessageModel>;
 	threads: Collection<TThreadModel>;
 	threadMessages: Collection<TThreadMessageModel>;
-	// uploads: Collection<TUploadsModel>
+	uploads: Collection<TUploadModel>;
 }
 
 export type TSubscriptionModel = ISubscription & Model;
