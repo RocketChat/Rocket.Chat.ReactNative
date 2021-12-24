@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import TextInput from '../../../presentation/TextInput';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../constants/colors';
-import { CustomIcon } from '../../../lib/Icons';
+// import { CustomIcon } from '../../../lib/Icons';
 import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { useOrientation } from '../../../dimensions';
 
@@ -38,11 +38,11 @@ const Header = React.memo(
 		isFetching,
 		serverName,
 		server,
-		showServerDropdown,
+		// showServerDropdown,
 		showSearchHeader,
 		theme,
-		onSearchChangeText,
-		onPress
+		onSearchChangeText
+		// onPress
 	}) => {
 		const titleColorStyle = { color: themes[theme].headerTitleColor };
 		const isLight = theme === 'light';
@@ -77,38 +77,36 @@ const Header = React.memo(
 		}
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
-					<View style={styles.button}>
-						<Text
-							style={[styles.title, isFetching && styles.serverSmall, titleColorStyle, { fontSize: titleFontSize }]}
-							numberOfLines={1}>
-							{serverName}
-						</Text>
-						<CustomIcon
+				{/* <TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'> */}
+				<View style={styles.button}>
+					<Text
+						style={[styles.title, isFetching && styles.serverSmall, titleColorStyle, { fontSize: titleFontSize }]}
+						numberOfLines={1}>
+						{serverName}
+					</Text>
+					{/* <CustomIcon
 							name='chevron-down'
 							color={themes[theme].headerTintColor}
 							style={[showServerDropdown && styles.upsideDown]}
 							size={18}
-						/>
-					</View>
-					{subtitle ? (
-						<Text
-							testID='rooms-list-header-server-subtitle'
-							style={[styles.subtitle, { color: themes[theme].auxiliaryText, fontSize: subTitleFontSize }]}
-							numberOfLines={1}>
-							{subtitle}
-						</Text>
-					) : null}
-				</TouchableOpacity>
+						/> */}
+				</View>
+				{subtitle ? (
+					<Text
+						testID='rooms-list-header-server-subtitle'
+						style={[styles.subtitle, { color: themes[theme].auxiliaryText, fontSize: subTitleFontSize }]}
+						numberOfLines={1}>
+						{subtitle}
+					</Text>
+				) : null}
+				{/* </TouchableOpacity> */}
 			</View>
 		);
 	}
 );
 
 Header.propTypes = {
-	showServerDropdown: PropTypes.bool.isRequired,
 	showSearchHeader: PropTypes.bool.isRequired,
-	onPress: PropTypes.func.isRequired,
 	onSearchChangeText: PropTypes.func.isRequired,
 	connecting: PropTypes.bool,
 	connected: PropTypes.bool,
