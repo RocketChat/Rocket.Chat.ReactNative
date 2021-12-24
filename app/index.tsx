@@ -31,6 +31,7 @@ import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
 import { isFDroidBuild } from './constants/environment';
 import { IThemePreference } from './definitions/ITheme';
+import { ICommand } from './definitions/ICommand';
 
 RNScreens.enableScreens();
 
@@ -189,7 +190,7 @@ export default class Root extends React.Component<{}, IState> {
 	initTablet = () => {
 		const { width } = this.state;
 		this.setMasterDetail(width);
-		this.onKeyCommands = KeyCommandsEmitter.addListener('onKeyCommand', (command: unknown) => {
+		this.onKeyCommands = KeyCommandsEmitter.addListener('onKeyCommand', (command: ICommand) => {
 			EventEmitter.emit(KEY_COMMAND, { event: command });
 		});
 	};

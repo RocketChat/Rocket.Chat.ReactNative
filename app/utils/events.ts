@@ -1,4 +1,16 @@
+import { ICommand } from '../definitions/ICommand';
 import log from './log';
+
+type TEventEmitterEmmitArgs =
+	| { rid: string }
+	| { message: string }
+	| { method: string }
+	| { invalid: boolean }
+	| { force: boolean }
+	| { hasBiometry: boolean }
+	| { event: string | ICommand }
+	| { cancel: () => void }
+	| { submit: (param: string) => void };
 
 class EventEmitter {
 	private events: { [key: string]: any };
@@ -27,7 +39,7 @@ class EventEmitter {
 		}
 	}
 
-	emit(event: string, ...args: any[]) {
+	emit(event: string, ...args: TEventEmitterEmmitArgs[]) {
 		if (typeof this.events[event] === 'object') {
 			this.events[event].forEach((listener: Function) => {
 				try {
