@@ -5,6 +5,7 @@ import { RouteProp } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
 
+import { OutsideParamList } from '../stacks/types';
 import log, { events, logEvent } from '../utils/log';
 import Button from '../containers/Button';
 import I18n from '../i18n';
@@ -51,8 +52,8 @@ const styles = StyleSheet.create({
 });
 
 interface IProps {
-	navigation: StackNavigationProp<any>;
-	route: RouteProp<any, 'RegisterView'>;
+	navigation: StackNavigationProp<OutsideParamList, 'RegisterView'>;
+	route: RouteProp<OutsideParamList, 'RegisterView'>;
 	server: string;
 	Site_Name: string;
 	Gitlab_URL: string;

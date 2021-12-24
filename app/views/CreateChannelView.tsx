@@ -25,6 +25,7 @@ import { events, logEvent } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
+import { ChatsStackParamList } from '../stacks/types';
 
 const styles = StyleSheet.create({
 	container: {
@@ -91,8 +92,8 @@ interface ICreateChannelViewState {
 }
 
 interface ICreateChannelViewProps {
-	navigation: StackNavigationProp<any, 'CreateChannelView'>;
-	route: RouteProp<{ CreateChannelView: { isTeam: boolean; teamId: string } }, 'CreateChannelView'>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'CreateChannelView'>;
+	route: RouteProp<ChatsStackParamList, 'CreateChannelView'>;
 	baseUrl: string;
 	create: (data: ICreateFunction) => void;
 	removeUser: (user: IOtherUser) => void;
@@ -118,7 +119,7 @@ interface ISwitch extends SwitchProps {
 }
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
-	private teamId: string;
+	private teamId?: string;
 
 	constructor(props: ICreateChannelViewProps) {
 		super(props);
@@ -240,7 +241,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			broadcast,
 			encrypted,
 			isTeam,
-			teamId: this.teamId
+			teamId: this.teamId!
 		});
 
 		Review.pushPositiveEvent();

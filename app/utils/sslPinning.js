@@ -7,6 +7,21 @@ import I18n from '../i18n';
 import { extractHostname } from './server';
 
 const { SSLPinning } = NativeModules;
+const { documentDirectory } = FileSystem;
+
+const extractFileScheme = path => path.replace('file://', ''); // file:// isn't allowed by obj-C
+
+const getPath = name => `${documentDirectory}/${name}`;
+
+const persistCertificate = async (name, password) => {
+	const certificatePath = getPath(name);
+	const certificate = {
+		path: extractFileScheme(certificatePath),
+		password
+	};
+	await UserPreferences.setMapAsync(name, certificate);
+	return certificate;
+};
 
 const RCSSLPinning = Platform.select({
 	ios: {
@@ -25,17 +40,9 @@ const RCSSLPinning = Platform.select({
 								text: 'OK',
 								onPress: async password => {
 									try {
-										const certificatePath = `${FileSystem.documentDirectory}/${name}`;
-
+										const certificatePath = getPath(name);
 										await FileSystem.copyAsync({ from: uri, to: certificatePath });
-
-										const certificate = {
-											path: certificatePath.replace('file://', ''), // file:// isn't allowed by obj-C
-											password
-										};
-
-										await UserPreferences.setMapAsync(name, certificate);
-
+										await persistCertificate(name, password);
 										resolve(name);
 									} catch (e) {
 										reject(e);
@@ -49,16 +56,19 @@ const RCSSLPinning = Platform.select({
 					reject(e);
 				}
 			}),
-		setCertificate: async (alias, server) => {
-			if (alias) {
-				const certificate = await UserPreferences.getMapAsync(alias);
+		setCertificate: async (name, server) => {
+			if (name) {
+				let certificate = await UserPreferences.getMapAsync(name);
+				if (!certificate.path.match(extractFileScheme(documentDirectory))) {
+					certificate = await persistCertificate(name, certificate.password);
+				}
 				await UserPreferences.setMapAsync(extractHostname(server), certificate);
 			}
 		}
 	},
 	android: {
 		pickCertificate: () => SSLPinning?.pickCertificate(),
-		setCertificate: alias => SSLPinning?.setCertificate(alias)
+		setCertificate: name => SSLPinning?.setCertificate(name)
 	}
 });
 
