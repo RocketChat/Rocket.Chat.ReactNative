@@ -25,7 +25,7 @@ export interface IRoom extends IRocketChatRecord {
 	observe?: Function;
 	usedCannedResponse: string;
 	livechatData?: {
-		[key: string]: any;
+		[key: string]: string;
 	};
 	tags?: string[];
 	sms?: string;
