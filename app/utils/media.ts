@@ -3,13 +3,17 @@ import { IAttachment } from '../views/ShareView/interfaces';
 export const canUploadFile = (
 	file: IAttachment,
 	allowList: string,
-	maxFileSize: number
+	maxFileSize: number,
+	permissionToUploadFile: boolean
 ): { success: boolean; error?: string } => {
 	if (!(file && file.path)) {
 		return { success: true };
 	}
 	if (maxFileSize > -1 && file.size > maxFileSize) {
 		return { success: false, error: 'error-file-too-large' };
+	}
+	if (!permissionToUploadFile) {
+		return { success: false, error: 'error-not-permission-to-upload-file' };
 	}
 	// if white list is empty, all media types are enabled
 	if (!allowList || allowList === '*') {
