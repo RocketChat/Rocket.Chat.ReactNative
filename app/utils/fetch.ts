@@ -34,6 +34,7 @@ export default (url: string, options: { headers?: Headers; signal?: AbortSignal 
 	if (options && options.headers) {
 		customOptions = { ...customOptions, headers: { ...options.headers, ...customOptions.headers } };
 	}
+	// TODO: Refactor when migrate rocketchat.js
 	// @ts-ignore
 	if (RocketChat.controller) {
 		// @ts-ignore
