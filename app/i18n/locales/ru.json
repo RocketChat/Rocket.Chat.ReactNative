@@ -330,7 +330,6 @@
   "N_users": "{{n}} пользователи",
   "N_channels": "{{n}} каналов",
   "Name": "Имя",
-  "Navigation_history": "История навигации",
   "Never": "Никогда",
   "New_Message": "Новое сообщение",
   "New_Password": "Новый пароль",
@@ -782,5 +781,8 @@
   "No_canned_responses": "Нет заготовленных ответов",
   "Send_email_confirmation": "Отправить электронное письмо с подтверждением",
   "sending_email_confirmation": "отправка подтверждения по электронной почте",
-  "Enable_Message_Parser": "Включить парсер сообщений"
+  "Enable_Message_Parser": "Включить парсер сообщений",
+  "Unsupported_format": "Неподдерживаемый формат",
+  "Downloaded_file": "Скачанный файл",
+  "Error_Download_file": "Ошибка при скачивании файла"
 }

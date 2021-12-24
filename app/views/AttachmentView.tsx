@@ -24,6 +24,8 @@ import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
 import { getHeaderHeight } from '../containers/Header';
 import StatusBar from '../containers/StatusBar';
+import { InsideStackParamList } from '../stacks/types';
+import { IAttachment } from '../definitions/IAttachment';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,24 +33,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-// TODO: refactor when react-navigation is done
-export interface IAttachment {
-	title: string;
-	title_link?: string;
-	image_url?: string;
-	image_type?: string;
-	video_url?: string;
-	video_type?: string;
-}
-
 interface IAttachmentViewState {
 	attachment: IAttachment;
 	loading: boolean;
 }
 
 interface IAttachmentViewProps {
-	navigation: StackNavigationProp<any, 'AttachmentView'>;
-	route: RouteProp<{ AttachmentView: { attachment: IAttachment } }, 'AttachmentView'>;
+	navigation: StackNavigationProp<InsideStackParamList, 'AttachmentView'>;
+	route: RouteProp<InsideStackParamList, 'AttachmentView'>;
 	theme: string;
 	baseUrl: string;
 	width: number;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
-import { Q } from '@nozbe/watermelondb';
+import { Q, Model } from '@nozbe/watermelondb';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
@@ -12,29 +12,39 @@ import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 
-const getItemLayout = (data, index) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
-const keyExtractor = item => item.id;
+const getItemLayout = (data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
+const keyExtractor = (item: IServer) => item.id;
 
-class SelectServerView extends React.Component {
-	static navigationOptions = () => ({
+interface IServer extends Model {
+	id: string;
+	iconURL?: string;
+	name?: string;
+}
+
+interface ISelectServerViewState {
+	servers: IServer[];
+}
+
+interface ISelectServerViewProps {
+	navigation: StackNavigationProp<any, 'SelectServerView'>;
+	server: string;
+}
+
+class SelectServerView extends React.Component<ISelectServerViewProps, ISelectServerViewState> {
+	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Select_Server')
 	});
 
-	static propTypes = {
-		server: PropTypes.string,
-		navigation: PropTypes.object
-	};
-
-	state = { servers: [] };
+	state = { servers: [] as IServer[] };
 
 	async componentDidMount() {
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
-		const servers = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch();
+		const servers: IServer[] = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch();
 		this.setState({ servers });
 	}
 
-	select = async server => {
+	select = async (server: string) => {
 		const { server: currentServer, navigation } = this.props;
 
 		navigation.navigate('ShareListView');
@@ -43,7 +53,7 @@ class SelectServerView extends React.Component {
 		}
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: IServer }) => {
 		const { server } = this.props;
 		return <ServerItem onPress={() => this.select(item.id)} item={item} hasCheck={item.id === server} />;
 	};
@@ -62,7 +72,6 @@ class SelectServerView extends React.Component {
 					ItemSeparatorComponent={List.Separator}
 					ListHeaderComponent={List.Separator}
 					ListFooterComponent={List.Separator}
-					enableEmptySections
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
 				/>
@@ -71,7 +80,7 @@ class SelectServerView extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ share }) => ({
+const mapStateToProps = ({ share }: any) => ({
 	server: share.server.server
 });
 

@@ -7,12 +7,10 @@ import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
+import { ChatsStackParamList } from '../stacks/types';
 
 interface IMarkdownTableViewProps {
-	route: RouteProp<
-		{ MarkdownTableView: { renderRows: (drawExtraBorders?: boolean) => JSX.Element; tableWidth: number } },
-		'MarkdownTableView'
-	>;
+	route: RouteProp<ChatsStackParamList, 'MarkdownTableView'>;
 	theme: string;
 }
 

@@ -1,11 +1,15 @@
-const { navigateToLogin, login } = require('../../helpers/app');
+const { navigateToLogin, login, platformTypes } = require('../../helpers/app');
+
 const data = require('../../data');
 
 const testuser = data.users.regular;
 
 describe('Settings screen', () => {
+	let alertButtonType;
+	let textMatcher;
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(testuser.username, testuser.password);
 		await waitFor(element(by.id('rooms-list-view')))
@@ -72,10 +76,10 @@ describe('Settings screen', () => {
 				.toBeVisible()
 				.withTimeout(2000);
 			await element(by.id('settings-view-clear-cache')).tap();
-			await waitFor(element(by.text('This will clear all your offline data.')))
+			await waitFor(element(by[textMatcher]('This will clear all your offline data.')))
 				.toExist()
 				.withTimeout(2000);
-			await element(by.label('Clear').and(by.type('_UIAlertControllerActionView'))).tap();
+			await element(by[textMatcher]('Clear').and(by.type(alertButtonType))).tap();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
 				.withTimeout(5000);

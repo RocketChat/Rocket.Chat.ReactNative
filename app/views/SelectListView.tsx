@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { RadioButton } from 'react-native-ui-lib';
+import { RouteProp } from '@react-navigation/native';
 
 import log from '../utils/log';
 import * as List from '../containers/List';
@@ -25,15 +26,58 @@ const styles = StyleSheet.create({
 	}
 });
 
-class SelectListView extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool
-	};
+interface IData {
+	rid: string;
+	name: string;
+	t?: string;
+	teamMain?: boolean;
+	alert?: boolean;
+}
 
-	constructor(props) {
+interface ISelectListViewState {
+	data: IData[];
+	dataFiltered: IData[];
+	isSearching: boolean;
+	selected: string[];
+}
+
+interface ISelectListViewProps {
+	navigation: StackNavigationProp<any, 'SelectListView'>;
+	route: RouteProp<
+		{
+			SelectView: {
+				data: IData[];
+				title: string;
+				infoText: string;
+				nextAction(selected: string[]): void;
+				showAlert(): void;
+				isSearch: boolean;
+				onSearch(text: string): IData[];
+				isRadio: boolean;
+			};
+		},
+		'SelectView'
+	>;
+	theme: string;
+	isMasterDetail: boolean;
+}
+
+class SelectListView extends React.Component<ISelectListViewProps, ISelectListViewState> {
+	private title: string;
+
+	private infoText: string;
+
+	private nextAction: (selected: string[]) => void;
+
+	private showAlert: () => void;
+
+	private isSearch: boolean;
+
+	private onSearch: (text: string) => IData[];
+
+	private isRadio: boolean;
+
+	constructor(props: ISelectListViewProps) {
 		super(props);
 		const data = props.route?.params?.data;
 		this.title = props.route?.params?.title;
@@ -56,7 +100,7 @@ class SelectListView extends React.Component {
 		const { navigation, isMasterDetail } = this.props;
 		const { selected } = this.state;
 
-		const options = {
+		const options: StackNavigationOptions = {
 			headerTitle: I18n.t(this.title)
 		};
 
@@ -87,7 +131,7 @@ class SelectListView extends React.Component {
 		return (
 			<View style={{ backgroundColor: themes[theme].auxiliaryBackground }}>
 				<SearchBox
-					onChangeText={text => this.search(text)}
+					onChangeText={(text: string) => this.search(text)}
 					testID='select-list-view-search'
 					onCancelPress={() => this.setState({ isSearching: false })}
 				/>
@@ -95,7 +139,7 @@ class SelectListView extends React.Component {
 		);
 	};
 
-	search = async text => {
+	search = async (text: string) => {
 		try {
 			this.setState({ isSearching: true });
 			const result = await this.onSearch(text);
@@ -105,12 +149,12 @@ class SelectListView extends React.Component {
 		}
 	};
 
-	isChecked = rid => {
+	isChecked = (rid: string) => {
 		const { selected } = this.state;
 		return selected.includes(rid);
 	};
 
-	toggleItem = rid => {
+	toggleItem = (rid: string) => {
 		const { selected } = this.state;
 
 		animateNextTransition();
@@ -126,7 +170,7 @@ class SelectListView extends React.Component {
 		}
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: IData }) => {
 		const { theme } = this.props;
 		const { selected } = this.state;
 
@@ -187,7 +231,7 @@ class SelectListView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
