@@ -65,10 +65,10 @@ interface IInputs {
 type TParams = IVisitor & IInputs;
 
 interface IInputsRefs {
+	[index: string]: RNTextInput | null;
 	name: RNTextInput | null;
 	phone: RNTextInput | null;
 	topic: RNTextInput | null;
-	[index: string]: RNTextInput | null;
 }
 
 interface ICustomFields {
@@ -76,6 +76,7 @@ interface ICustomFields {
 	livechat?: { [key: string]: string };
 }
 interface ILivechatEditViewProps {
+	// TODO: Refactor when migrate models
 	user: any;
 	navigation: StackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
 	route: RouteProp<ChatsStackParamList, 'LivechatEditView'>;
