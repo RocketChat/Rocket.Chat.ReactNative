@@ -15,16 +15,20 @@ import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import { ICON_SIZE } from '../containers/List/constants';
 import log, { events, logEvent } from '../utils/log';
-import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../constants/constantDisplayMode';
+import { DisplayMode, SortBy } from '../constants/constantDisplayMode';
 import { SettingsStackParamList } from '../stacks/types';
 
+type TDisplayMode = typeof DisplayMode.CONDENSED | typeof DisplayMode.EXPANDED;
+
+type TSortBy = typeof SortBy.ACTIVITY | typeof SortBy.ALPHABETICAL;
+
 interface IParam {
-	sortBy?: 'alphabetical' | 'activity';
+	sortBy?: TSortBy;
 	groupByType?: boolean;
 	showFavorites?: boolean;
 	showUnread?: boolean;
 	showAvatar?: boolean;
-	displayMode?: typeof DISPLAY_MODE_EXPANDED | typeof DISPLAY_MODE_CONDENSED;
+	displayMode?: TDisplayMode;
 }
 
 interface IDisplayPrefsView {
@@ -64,12 +68,12 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 
 	const sortByName = async () => {
 		logEvent(events.DP_SORT_CHANNELS_BY_NAME);
-		await setSortPreference({ sortBy: 'alphabetical' });
+		await setSortPreference({ sortBy: SortBy.ALPHABETICAL });
 	};
 
 	const sortByActivity = async () => {
 		logEvent(events.DP_SORT_CHANNELS_BY_ACTIVITY);
-		await setSortPreference({ sortBy: 'activity' });
+		await setSortPreference({ sortBy: SortBy.ACTIVITY });
 	};
 
 	const toggleGroupByType = async () => {
@@ -94,12 +98,12 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 
 	const displayExpanded = async () => {
 		logEvent(events.DP_DISPLAY_EXPANDED);
-		await setSortPreference({ displayMode: DISPLAY_MODE_EXPANDED });
+		await setSortPreference({ displayMode: DisplayMode.EXPANDED });
 	};
 
 	const displayCondensed = async () => {
 		logEvent(events.DP_DISPLAY_CONDENSED);
-		await setSortPreference({ displayMode: DISPLAY_MODE_CONDENSED });
+		await setSortPreference({ displayMode: DisplayMode.CONDENSED });
 	};
 
 	const renderCheckBox = (value: boolean) => (
@@ -128,7 +132,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 						left={() => <List.Icon name='view-extended' />}
 						title='Expanded'
 						testID='display-pref-view-expanded'
-						right={() => renderRadio(displayMode === DISPLAY_MODE_EXPANDED)}
+						right={() => renderRadio(displayMode === DisplayMode.EXPANDED)}
 						onPress={displayExpanded}
 					/>
 					<List.Separator />
@@ -136,7 +140,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 						left={() => <List.Icon name='view-medium' />}
 						title='Condensed'
 						testID='display-pref-view-condensed'
-						right={() => renderRadio(displayMode === DISPLAY_MODE_CONDENSED)}
+						right={() => renderRadio(displayMode === DisplayMode.CONDENSED)}
 						onPress={displayCondensed}
 					/>
 					<List.Separator />
@@ -156,7 +160,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 						testID='display-pref-view-activity'
 						left={() => <List.Icon name='clock' />}
 						onPress={sortByActivity}
-						right={() => renderRadio(sortBy === 'activity')}
+						right={() => renderRadio(sortBy === SortBy.ACTIVITY)}
 					/>
 					<List.Separator />
 					<List.Item
@@ -164,7 +168,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 						testID='display-pref-view-name'
 						left={() => <List.Icon name='sort-az' />}
 						onPress={sortByName}
-						right={() => renderRadio(sortBy === 'alphabetical')}
+						right={() => renderRadio(sortBy === SortBy.ALPHABETICAL)}
 					/>
 					<List.Separator />
 				</List.Section>
