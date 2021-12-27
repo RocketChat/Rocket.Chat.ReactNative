@@ -1,8 +1,9 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { setUser } from '../../actions/login';
 import I18n from '../../i18n';
 import log, { logEvent, events } from '../../utils/log';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -20,6 +21,7 @@ interface IUserPreferencesViewProps {
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
 	const user = useSelector(state => getUserSelector(state));
 	const [enableParser, setEnableParser] = useState(user.enableMessageParserEarlyAdoption);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -34,8 +36,9 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 
 	const toggleMessageParser = async (value: boolean) => {
 		try {
-			await RocketChat.saveUserPreferences({ id: user.id, enableMessageParserEarlyAdoption: value });
 			setEnableParser(value);
+			dispatch(setUser({ enableMessageParserEarlyAdoption: value }));
+			await RocketChat.saveUserPreferences({ id: user.id, enableMessageParserEarlyAdoption: value });
 		} catch (e) {
 			log(e);
 		}
