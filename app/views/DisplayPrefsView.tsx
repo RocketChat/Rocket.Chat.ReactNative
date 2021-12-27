@@ -23,12 +23,12 @@ type TDisplayMode = typeof DisplayMode.CONDENSED | typeof DisplayMode.EXPANDED;
 type TSortBy = typeof SortBy.ACTIVITY | typeof SortBy.ALPHABETICAL;
 
 interface IParam {
-	sortBy?: TSortBy;
-	groupByType?: boolean;
-	showFavorites?: boolean;
-	showUnread?: boolean;
-	showAvatar?: boolean;
-	displayMode?: TDisplayMode;
+	sortBy: TSortBy;
+	groupByType: boolean;
+	showFavorites: boolean;
+	showUnread: boolean;
+	showAvatar: boolean;
+	displayMode: TDisplayMode;
 }
 
 interface IDisplayPrefsView {
@@ -57,7 +57,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 		}
 	}, []);
 
-	const setSortPreference = async (param: IParam) => {
+	const setSortPreference = async (param: Partial<IParam>) => {
 		try {
 			dispatch(setPreference(param));
 			await RocketChat.saveSortPreference(param);
