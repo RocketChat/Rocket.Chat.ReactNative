@@ -1,4 +1,4 @@
-export interface IFile {
+export interface IFileUpload {
 	name: string;
 	uri?: string;
 	type: string;

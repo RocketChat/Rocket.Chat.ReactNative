@@ -1,11 +1,11 @@
 import RNFetchBlob from 'rn-fetch-blob';
 
-import { IFile } from './interfaces';
+import { IFileUpload } from './interfaces';
 
 type TMethods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
 
 class FileUpload {
-	fetch = (method: TMethods, url: string, headers: { [key: string]: string }, data: IFile[]) => {
+	fetch = (method: TMethods, url: string, headers: { [key: string]: string }, data: IFileUpload[]) => {
 		const formData = data.map(item => {
 			if (item.uri) {
 				return {
