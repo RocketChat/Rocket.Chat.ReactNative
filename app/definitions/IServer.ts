@@ -17,4 +17,4 @@ export interface IServer {
 	E2E_Enable: boolean;
 }
 
-export interface IServerRecord extends IServer, Model {}
+export type TServerModel = IServer & Model;

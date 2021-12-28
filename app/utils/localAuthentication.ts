@@ -16,17 +16,17 @@ import {
 } from '../constants/localAuthentication';
 import I18n from '../i18n';
 import { setLocalAuthenticated } from '../actions/login';
-import { IServerRecord } from '../definitions/IServer';
+import { TServerModel } from '../definitions/IServer';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
-export const saveLastLocalAuthenticationSession = async (server: string, serverRecord?: IServerRecord): Promise<void> => {
+export const saveLastLocalAuthenticationSession = async (server: string, serverRecord?: TServerModel): Promise<void> => {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 	await serversDB.write(async () => {
 		try {
 			if (!serverRecord) {
-				serverRecord = (await serversCollection.find(server)) as IServerRecord;
+				serverRecord = (await serversCollection.find(server)) as TServerModel;
 			}
 			await serverRecord.update(record => {
 				record.lastLocalAuthenticatedSession = new Date();
@@ -72,7 +72,7 @@ export const biometryAuth = (force?: boolean): Promise<LocalAuthentication.Local
  * It'll help us to get the permission to use FaceID
  * and enable/disable the biometry when user put their first passcode
  */
-const checkBiometry = async (serverRecord: IServerRecord) => {
+const checkBiometry = async (serverRecord: TServerModel) => {
 	const serversDB = database.servers;
 
 	const result = await biometryAuth(true);
@@ -92,7 +92,7 @@ export const checkHasPasscode = async ({
 	serverRecord
 }: {
 	force?: boolean;
-	serverRecord: IServerRecord;
+	serverRecord: TServerModel;
 }): Promise<{ newPasscode?: boolean } | void> => {
 	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
 	if (!storedPasscode) {
@@ -107,9 +107,9 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 
-	let serverRecord: IServerRecord;
+	let serverRecord: TServerModel;
 	try {
-		serverRecord = (await serversCollection.find(server)) as IServerRecord;
+		serverRecord = (await serversCollection.find(server)) as TServerModel;
 	} catch (error) {
 		return Promise.reject();
 	}

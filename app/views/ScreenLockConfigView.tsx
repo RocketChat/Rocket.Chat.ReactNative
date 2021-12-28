@@ -14,7 +14,7 @@ import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../uti
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';
-import { IServerRecord } from '../definitions/IServer';
+import { TServerModel } from '../definitions/IServer';
 
 const DEFAULT_BIOMETRY = false;
 
@@ -39,7 +39,7 @@ interface IScreenLockConfigViewState {
 }
 
 class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
-	private serverRecord?: IServerRecord;
+	private serverRecord?: TServerModel;
 
 	private observable?: Subscription;
 
@@ -92,7 +92,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
 		try {
-			this.serverRecord = (await serversCollection.find(server)) as IServerRecord;
+			this.serverRecord = (await serversCollection.find(server)) as TServerModel;
 			this.setState({
 				autoLock: this.serverRecord?.autoLock,
 				autoLockTime: this.serverRecord?.autoLockTime === null ? DEFAULT_AUTO_LOCK : this.serverRecord?.autoLockTime,
