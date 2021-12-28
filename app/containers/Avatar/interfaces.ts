@@ -1,7 +1,7 @@
 export interface IAvatar {
 	server?: string;
 	style?: any;
-	text?: string;
+	text: string;
 	avatar?: string;
 	emoji?: string;
 	size?: number;

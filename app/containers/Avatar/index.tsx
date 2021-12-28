@@ -55,7 +55,7 @@ class AvatarContainer extends React.Component<IAvatar, any> {
 		try {
 			if (this.isDirect) {
 				const { text } = this.props;
-				const [user] = await usersCollection.query(Q.where('username', text!)).fetch();
+				const [user] = await usersCollection.query(Q.where('username', text)).fetch();
 				record = user;
 			} else {
 				const { rid } = this.props;
