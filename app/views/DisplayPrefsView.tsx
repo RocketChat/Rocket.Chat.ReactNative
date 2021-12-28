@@ -18,17 +18,13 @@ import log, { events, logEvent } from '../utils/log';
 import { DisplayMode, SortBy } from '../constants/constantDisplayMode';
 import { SettingsStackParamList } from '../stacks/types';
 
-type TDisplayMode = typeof DisplayMode.CONDENSED | typeof DisplayMode.EXPANDED;
-
-type TSortBy = typeof SortBy.ACTIVITY | typeof SortBy.ALPHABETICAL;
-
 interface IParam {
-	sortBy: TSortBy;
+	sortBy: SortBy;
 	groupByType: boolean;
 	showFavorites: boolean;
 	showUnread: boolean;
 	showAvatar: boolean;
-	displayMode: TDisplayMode;
+	displayMode: DisplayMode;
 }
 
 interface IDisplayPrefsView {
