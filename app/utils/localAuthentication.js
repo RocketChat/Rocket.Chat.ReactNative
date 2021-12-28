@@ -13,7 +13,7 @@ import {
 	ATTEMPTS_KEY,
 	PASSCODE_KEY,
 	CHANGE_PASSCODE_EMITTER,
-	UNLOCK_FACE_ID,
+	UNLOCK_BIOMETRY,
 	AUTO_LOCK,
 	AUTO_LOCK_TIME
 } from '../constants/localAuthentication';
@@ -102,13 +102,13 @@ export const checkHasPasscode = async ({ force = true, serverRecord }) => {
 export const saveStatusLocalAuthentication = async ({ autoLock, autoLockTime, biometry, server }) => {
 	await UserPreferences.setBoolAsync(`${AUTO_LOCK}${server}`, autoLock);
 	await UserPreferences.setIntAsync(`${AUTO_LOCK_TIME}${server}`, autoLockTime);
-	await UserPreferences.setBoolAsync(`${UNLOCK_FACE_ID}${server}`, biometry);
+	await UserPreferences.setBoolAsync(`${UNLOCK_BIOMETRY}${server}`, biometry);
 };
 
 export const getAutoLockAndTime = async server => {
 	const storedAutoLock = await UserPreferences.getBoolAsync(`${AUTO_LOCK}${server}`);
 	const storedAutoLockTime = await UserPreferences.getIntAsync(`${AUTO_LOCK_TIME}${server}`);
-	const storedBiometry = await UserPreferences.getBoolAsync(`${UNLOCK_FACE_ID}${server}`);
+	const storedBiometry = await UserPreferences.getBoolAsync(`${UNLOCK_BIOMETRY}${server}`);
 
 	return {
 		storedAutoLock,
