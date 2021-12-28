@@ -63,8 +63,8 @@ export interface IThread {
 	channels: [];
 	unread: boolean;
 	autoTranslate: boolean;
-	translations: any;
-	e2e: any;
+	translations: string;
+	e2e: string;
 }
 
 export type IThreadModel = IThread & Model;
