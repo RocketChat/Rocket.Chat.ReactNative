@@ -9,6 +9,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { AdminPanelStackParamList } from '../../stacks/types';
 
 interface IAdminPanelViewProps {
 	baseUrl: string;
@@ -16,7 +17,7 @@ interface IAdminPanelViewProps {
 }
 
 interface INavigationOptions {
-	navigation: DrawerScreenProps<any>;
+	navigation: DrawerScreenProps<AdminPanelStackParamList, 'AdminPanelView'>;
 	isMasterDetail: boolean;
 }
 

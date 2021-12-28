@@ -22,7 +22,7 @@ export interface IDimensionsContextProps {
 
 export const DimensionsContext = React.createContext<Partial<IDimensionsContextProps>>(Dimensions.get('window'));
 
-export function withDimensions(Component: any) {
+export function withDimensions(Component: any): any {
 	const DimensionsComponent = (props: any) => (
 		<DimensionsContext.Consumer>{contexts => <Component {...props} {...contexts} />}</DimensionsContext.Consumer>
 	);

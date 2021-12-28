@@ -17,7 +17,7 @@ export const useActionSheet = () => useContext(context);
 
 const { Provider, Consumer } = context;
 
-export const withActionSheet = (Component: React.FC) =>
+export const withActionSheet = (Component: any): any =>
 	forwardRef((props: any, ref: ForwardedRef<any>) => (
 		<Consumer>{(contexts: any) => <Component {...props} {...contexts} ref={ref} />}</Consumer>
 	));

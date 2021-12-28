@@ -6,7 +6,6 @@ import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest
 const removeListener = listener => listener.stop();
 
 let connectedListener;
-let disconnectedListener;
 let queueListener;
 
 const streamTopic = 'stream-livechat-inquiry-queue-observer';
@@ -48,10 +47,6 @@ export default function subscribeInquiry() {
 			connectedListener.then(removeListener);
 			connectedListener = false;
 		}
-		if (disconnectedListener) {
-			disconnectedListener.then(removeListener);
-			disconnectedListener = false;
-		}
 		if (queueListener) {
 			queueListener.then(removeListener);
 			queueListener = false;
@@ -59,7 +54,6 @@ export default function subscribeInquiry() {
 	};
 
 	connectedListener = RocketChat.onStreamData('connected', handleConnection);
-	disconnectedListener = RocketChat.onStreamData('close', handleConnection);
 	queueListener = RocketChat.onStreamData(streamTopic, handleQueueMessageReceived);
 
 	try {

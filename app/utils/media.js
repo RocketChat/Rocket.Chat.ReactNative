@@ -1,9 +1,12 @@
-export const canUploadFile = (file, allowList, maxFileSize) => {
+export const canUploadFile = (file, allowList, maxFileSize, permissionToUploadFile) => {
 	if (!(file && file.path)) {
 		return { success: true };
 	}
 	if (maxFileSize > -1 && file.size > maxFileSize) {
 		return { success: false, error: 'error-file-too-large' };
+	}
+	if (!permissionToUploadFile) {
+		return { success: false, error: 'error-not-permission-to-upload-file' };
 	}
 	// if white list is empty, all media types are enabled
 	if (!allowList || allowList === '*') {

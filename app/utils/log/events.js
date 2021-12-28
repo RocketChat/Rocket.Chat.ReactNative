@@ -155,6 +155,9 @@ export default {
 	SE_CLEAR_LOCAL_SERVER_CACHE: 'se_clear_local_server_cache',
 	SE_LOG_OUT: 'se_log_out',
 
+	// USER PREFERENCE VIEW
+	UP_GO_USER_NOTIFICATION_PREF: 'up_go_user_notification_pref',
+
 	// SECURITY PRIVACY VIEW
 	SP_GO_E2EENCRYPTIONSECURITY: 'sp_go_e2e_encryption_security',
 	SP_GO_SCREENLOCKCONFIG: 'sp_go_screen_lock_cfg',
@@ -250,7 +253,6 @@ export default {
 	RA_GO_AUTOTRANSLATE: 'ra_go_autotranslate',
 	RA_GO_NOTIFICATIONPREF: 'ra_go_notification_pref',
 	RA_GO_FORWARDLIVECHAT: 'ra_go_forward_livechat',
-	RA_GO_VISITORNAVIGATION: 'ra_go_visitor_navigation',
 	RA_SHARE: 'ra_share',
 	RA_LEAVE: 'ra_leave',
 	RA_LEAVE_F: 'ra_leave_f',

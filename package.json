@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.21.0",
+	"version": "4.23.0",
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
@@ -87,6 +87,7 @@
 		"react-native-document-picker": "5.2.0",
 		"react-native-easy-grid": "^0.2.2",
 		"react-native-easy-toast": "^1.2.0",
+		"react-native-file-viewer": "^2.1.4",
 		"react-native-gesture-handler": "^1.10.3",
 		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker",
 		"react-native-image-progress": "^1.1.1",
@@ -147,6 +148,7 @@
 		"@types/lodash": "^4.14.171",
 		"@types/react": "^17.0.14",
 		"@types/react-native": "^0.62.7",
+		"@types/react-native-background-timer": "^2.0.0",
 		"@types/react-native-config-reader": "^4.1.0",
 		"@types/react-native-platform-touchable": "^1.1.2",
 		"@types/react-native-scrollable-tab-view": "^0.10.2",
@@ -237,6 +239,18 @@
 						}
 					}
 				}
+			},
+			"and.emu.debug": {
+				"device": "Pixel_API_28_AOSP",
+				"type": "android.emulator",
+				"binaryPath": "android/app/build/outputs/apk/e2ePlay/debug/app-e2e-play-debug.apk",
+				"build": "cd android && ./gradlew app:assembleE2ePlayDebug app:assembleE2ePlayDebugAndroidTest -DtestBuildType=debug && cd .."
+			},
+			"and.emu.release": {
+				"device": "Pixel_API_28_AOSP",
+				"type": "android.emulator",
+				"binaryPath": "android/app/build/outputs/apk/e2ePlay/release/app-e2e-play-release.apk",
+				"build": "cd android && ./gradlew app:assembleE2ePlayRelease app:assembleE2ePlayReleaseAndroidTest -DtestBuildType=release && cd .."
 			}
 		}
 	}

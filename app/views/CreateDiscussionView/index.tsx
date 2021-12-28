@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, Switch, Text } from 'react-native';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 import Loading from '../../containers/Loading';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -89,7 +90,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 				  )
 				: null,
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
-		});
+		} as StackNavigationOptions);
 	};
 
 	submit = () => {
@@ -150,14 +151,12 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 		const { name, users, encrypted } = this.state;
 		const { server, user, loading, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
 		return (
-			// @ts-ignore
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}>
 				<StatusBar />
 				<SafeAreaView testID='create-discussion-view' style={styles.container}>
-					{/* @ts-ignore*/}
 					<ScrollView {...scrollPersistTaps}>
 						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel
