@@ -132,7 +132,7 @@ const RoomItem = ({
 			displayMode={displayMode}
 			showAvatar={showAvatar}
 			showLastMessage={showLastMessage}>
-			{showLastMessage && displayMode === DisplayMode.EXPANDED ? (
+			{showLastMessage && displayMode === DisplayMode.Expanded ? (
 				<>
 					<View style={styles.titleContainer}>
 						{showAvatar ? (

@@ -2,12 +2,12 @@ import { SORT_PREFERENCES } from '../actions/actionsTypes';
 import { DisplayMode, SortBy } from '../constants/constantDisplayMode';
 
 const initialState = {
-	sortBy: SortBy.ACTIVITY,
+	sortBy: SortBy.Activity,
 	groupByType: false,
 	showFavorites: false,
 	showUnread: false,
 	showAvatar: true,
-	displayMode: DisplayMode.EXPANDED
+	displayMode: DisplayMode.Expanded
 };
 
 export default (state = initialState, action) => {

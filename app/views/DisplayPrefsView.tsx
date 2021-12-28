@@ -64,12 +64,12 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 
 	const sortByName = async () => {
 		logEvent(events.DP_SORT_CHANNELS_BY_NAME);
-		await setSortPreference({ sortBy: SortBy.ALPHABETICAL });
+		await setSortPreference({ sortBy: SortBy.Alphabetical });
 	};
 
 	const sortByActivity = async () => {
 		logEvent(events.DP_SORT_CHANNELS_BY_ACTIVITY);
-		await setSortPreference({ sortBy: SortBy.ACTIVITY });
+		await setSortPreference({ sortBy: SortBy.Activity });
 	};
 
 	const toggleGroupByType = async () => {
@@ -94,12 +94,12 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 
 	const displayExpanded = async () => {
 		logEvent(events.DP_DISPLAY_EXPANDED);
-		await setSortPreference({ displayMode: DisplayMode.EXPANDED });
+		await setSortPreference({ displayMode: DisplayMode.Expanded });
 	};
 
 	const displayCondensed = async () => {
 		logEvent(events.DP_DISPLAY_CONDENSED);
-		await setSortPreference({ displayMode: DisplayMode.CONDENSED });
+		await setSortPreference({ displayMode: DisplayMode.Condensed });
 	};
 
 	const renderCheckBox = (value: boolean) => (
@@ -128,7 +128,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 						left={() => <List.Icon name='view-extended' />}
 						title='Expanded'
 						testID='display-pref-view-expanded'
-						right={() => renderRadio(displayMode === DisplayMode.EXPANDED)}
+						right={() => renderRadio(displayMode === DisplayMode.Expanded)}
 						onPress={displayExpanded}
 					/>
 					<List.Separator />
@@ -136,7 +136,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 						left={() => <List.Icon name='view-medium' />}
 						title='Condensed'
 						testID='display-pref-view-condensed'
-						right={() => renderRadio(displayMode === DisplayMode.CONDENSED)}
+						right={() => renderRadio(displayMode === DisplayMode.Condensed)}
 						onPress={displayCondensed}
 					/>
 					<List.Separator />
@@ -156,7 +156,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 						testID='display-pref-view-activity'
 						left={() => <List.Icon name='clock' />}
 						onPress={sortByActivity}
-						right={() => renderRadio(sortBy === SortBy.ACTIVITY)}
+						right={() => renderRadio(sortBy === SortBy.Activity)}
 					/>
 					<List.Separator />
 					<List.Item
@@ -164,7 +164,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 						testID='display-pref-view-name'
 						left={() => <List.Icon name='sort-az' />}
 						onPress={sortByName}
-						right={() => renderRadio(sortBy === SortBy.ALPHABETICAL)}
+						right={() => renderRadio(sortBy === SortBy.Alphabetical)}
 					/>
 					<List.Separator />
 				</List.Section>

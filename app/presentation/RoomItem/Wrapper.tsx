@@ -25,7 +25,7 @@ interface IWrapper {
 
 const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }: IWrapper) => (
 	<View
-		style={[styles.container, displayMode === DisplayMode.CONDENSED && styles.containerCondensed]}
+		style={[styles.container, displayMode === DisplayMode.Condensed && styles.containerCondensed]}
 		accessibilityLabel={accessibilityLabel}>
 		<IconOrAvatar theme={theme} displayMode={displayMode} {...props} />
 		<View
@@ -34,7 +34,7 @@ const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }:
 				{
 					borderColor: themes[theme].separatorColor
 				},
-				displayMode === DisplayMode.CONDENSED && styles.condensedPaddingVertical
+				displayMode === DisplayMode.Condensed && styles.condensedPaddingVertical
 			]}>
 			{children}
 		</View>

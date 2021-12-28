@@ -22,11 +22,11 @@ const IconOrAvatar = ({
 }) => {
 	if (showAvatar) {
 		return (
-			<Avatar text={avatar} size={displayMode === DisplayMode.CONDENSED ? 36 : 48} type={type} style={styles.avatar} rid={rid} />
+			<Avatar text={avatar} size={displayMode === DisplayMode.Condensed ? 36 : 48} type={type} style={styles.avatar} rid={rid} />
 		);
 	}
 
-	if (displayMode === DisplayMode.EXPANDED && showLastMessage) {
+	if (displayMode === DisplayMode.Expanded && showLastMessage) {
 		return (
 			<View style={styles.typeIcon}>
 				<TypeIcon

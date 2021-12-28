@@ -40,7 +40,7 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 		reverse
 	);
 
-	const isCondensed = displayMode === DisplayMode.CONDENSED;
+	const isCondensed = displayMode === DisplayMode.Condensed;
 	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
 
 	return (
@@ -87,7 +87,7 @@ export const RightActions = React.memo(
 			reverse
 		);
 
-		const isCondensed = displayMode === DisplayMode.CONDENSED;
+		const isCondensed = displayMode === DisplayMode.Condensed;
 		const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
 
 		return (

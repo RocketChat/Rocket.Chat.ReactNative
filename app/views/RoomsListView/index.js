@@ -453,7 +453,7 @@ class RoomsListView extends React.Component {
 
 		const defaultWhereClause = [Q.where('archived', false), Q.where('open', true)];
 
-		if (sortBy === SortBy.ALPHABETICAL) {
+		if (sortBy === SortBy.Alphabetical) {
 			defaultWhereClause.push(Q.experimentalSortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
 		} else {
 			defaultWhereClause.push(Q.experimentalSortBy('room_updated_at', Q.desc));
@@ -973,7 +973,7 @@ class RoomsListView extends React.Component {
 		const { loading, chats, search, searching } = this.state;
 		const { theme, refreshing, displayMode } = this.props;
 
-		const height = displayMode === DisplayMode.CONDENSED ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
+		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;

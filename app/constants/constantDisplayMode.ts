@@ -1,9 +1,9 @@
 export enum DisplayMode {
-	CONDENSED = 'condensed',
-	EXPANDED = 'expanded'
+	Condensed = 'condensed',
+	Expanded = 'expanded'
 }
 
 export enum SortBy {
-	ALPHABETICAL = 'alphabetical',
-	ACTIVITY = 'activity'
+	Alphabetical = 'alphabetical',
+	Activity = 'activity'
 }
