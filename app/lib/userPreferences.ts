@@ -7,7 +7,7 @@ const MMKV = new MMKVStorage.Loader()
 	.initialize();
 
 class UserPreferences {
-	mmkv: MMKVStorage.API;
+	private mmkv: MMKVStorage.API;
 	constructor() {
 		this.mmkv = MMKV;
 	}
