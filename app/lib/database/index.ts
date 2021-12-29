@@ -32,9 +32,9 @@ if (__DEV__ && isIOS) {
 	console.log(appGroupPath);
 }
 
-const getDatabasePath = name => `${appGroupPath}${name}${isOfficial ? '' : '-experimental'}.db`;
+const getDatabasePath = (name: string) => `${appGroupPath}${name}${isOfficial ? '' : '-experimental'}.db`;
 
-export const getDatabase = (database = '') => {
+export const getDatabase = (database = ''): Database => {
 	const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
 	const dbName = getDatabasePath(path);
 
@@ -64,8 +64,14 @@ export const getDatabase = (database = '') => {
 	});
 };
 
+interface IDatabases {
+	shareDB?: Database;
+	serversDB: Database;
+	activeDB?: Database;
+}
+
 class DB {
-	databases = {
+	databases: IDatabases = {
 		serversDB: new Database({
 			adapter: new SQLiteAdapter({
 				dbName: getDatabasePath('default'),
@@ -76,8 +82,9 @@ class DB {
 		})
 	};
 
-	get active() {
-		return this.databases.shareDB || this.databases.activeDB;
+	// Expected at least one database
+	get active(): Database {
+		return this.databases.shareDB || this.databases.activeDB!;
 	}
 
 	get share() {
@@ -119,7 +126,7 @@ class DB {
 		});
 	}
 
-	setActiveDB(database) {
+	setActiveDB(database: string) {
 		this.databases.activeDB = getDatabase(database);
 	}
 }
