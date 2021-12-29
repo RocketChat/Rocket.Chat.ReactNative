@@ -1,14 +1,14 @@
 import { ApplicationActions } from '../definitions';
 import { SET_ACTIVE_USERS } from '../actions/actionsTypes';
 
-type UserStatus = 'online' | 'offline';
-export interface ActiveUser {
-	status: UserStatus;
+type TUserStatus = 'online' | 'offline';
+export interface IActiveUser {
+	status: TUserStatus;
 	statusText?: string;
 }
 
 export interface IActiveUsers {
-	[key: string]: ActiveUser;
+	[key: string]: IActiveUser;
 }
 
 export const initialState: IActiveUsers = {};

@@ -1,5 +1,5 @@
-import { IActionSelectedUsers } from '../../actions/selectedUsers';
-import { IActionActiveUsers } from '../../actions/activeUsers';
+import { TActionSelectedUsers } from '../../actions/selectedUsers';
+import { TActionActiveUsers } from '../../actions/activeUsers';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
@@ -28,4 +28,4 @@ export interface ApplicationState {
 	roles: any;
 }
 
-export type ApplicationActions = IActionActiveUsers & IActionSelectedUsers;
+export type ApplicationActions = TActionActiveUsers & TActionSelectedUsers;

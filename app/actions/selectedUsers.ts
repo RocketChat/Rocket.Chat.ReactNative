@@ -3,17 +3,17 @@ import { Action } from 'redux';
 import { ISelectedUser } from '../reducers/selectedUsers';
 import * as types from './actionsTypes';
 
-type User = {
+type TUser = {
 	user: ISelectedUser;
 };
 
-type IAction = Action & User;
+type IAction = Action & TUser;
 
-interface SetLoading extends Action {
+interface ISetLoading extends Action {
 	loading: boolean;
 }
 
-export type IActionSelectedUsers = IAction & SetLoading;
+export type TActionSelectedUsers = IAction & ISetLoading;
 
 export function addUser(user: ISelectedUser): IAction {
 	return {
@@ -35,7 +35,7 @@ export function reset(): Action {
 	};
 }
 
-export function setLoading(loading: boolean): SetLoading {
+export function setLoading(loading: boolean): ISetLoading {
 	return {
 		type: types.SELECTED_USERS.SET_LOADING,
 		loading
