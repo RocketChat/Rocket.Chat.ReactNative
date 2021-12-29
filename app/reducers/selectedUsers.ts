@@ -1,4 +1,4 @@
-import { ApplicationActions } from '../definitions';
+import { TApplicationActions } from '../definitions';
 import { SELECTED_USERS } from '../actions/actionsTypes';
 
 export interface ISelectedUser {
@@ -20,7 +20,7 @@ export const initialState: ISelectedUsers = {
 	loading: false
 };
 
-export default function (state = initialState, action: ApplicationActions): ISelectedUsers {
+export default function (state = initialState, action: TApplicationActions): ISelectedUsers {
 	switch (action.type) {
 		case SELECTED_USERS.ADD_USER:
 			return {

@@ -4,7 +4,7 @@ import { TActionActiveUsers } from '../../actions/activeUsers';
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
 
-export interface ApplicationState {
+export interface IApplicationState {
 	settings: any;
 	login: any;
 	meteor: any;
@@ -28,4 +28,4 @@ export interface ApplicationState {
 	roles: any;
 }
 
-export type ApplicationActions = TActionActiveUsers & TActionSelectedUsers;
+export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers;

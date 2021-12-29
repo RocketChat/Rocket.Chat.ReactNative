@@ -14,7 +14,7 @@ import Loading from '../containers/Loading';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import StatusBar from '../containers/StatusBar';
-import { ApplicationState, BaseScreen } from '../definitions';
+import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
@@ -36,7 +36,7 @@ interface ISelectedUsersViewState {
 	chats: ISelectedUser[];
 }
 
-interface ISelectedUsersViewProps extends BaseScreen {
+interface ISelectedUsersViewProps extends IBaseScreen {
 	route: RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
 	// REDUX STATE
 	users: ISelectedUser[];
@@ -296,7 +296,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	};
 }
 
-const mapStateToProps = (state: ApplicationState) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading,

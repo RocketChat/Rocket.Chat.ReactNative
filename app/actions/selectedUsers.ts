@@ -7,22 +7,22 @@ type TUser = {
 	user: ISelectedUser;
 };
 
-type IAction = Action & TUser;
+type TAction = Action & TUser;
 
 interface ISetLoading extends Action {
 	loading: boolean;
 }
 
-export type TActionSelectedUsers = IAction & ISetLoading;
+export type TActionSelectedUsers = TAction & ISetLoading;
 
-export function addUser(user: ISelectedUser): IAction {
+export function addUser(user: ISelectedUser): TAction {
 	return {
 		type: types.SELECTED_USERS.ADD_USER,
 		user
 	};
 }
 
-export function removeUser(user: ISelectedUser): IAction {
+export function removeUser(user: ISelectedUser): TAction {
 	return {
 		type: types.SELECTED_USERS.REMOVE_USER,
 		user

@@ -1,4 +1,4 @@
-import { ApplicationActions } from '../definitions';
+import { TApplicationActions } from '../definitions';
 import { SET_ACTIVE_USERS } from '../actions/actionsTypes';
 
 type TUserStatus = 'online' | 'offline';
@@ -13,7 +13,7 @@ export interface IActiveUsers {
 
 export const initialState: IActiveUsers = {};
 
-export default function activeUsers(state = initialState, action: ApplicationActions): IActiveUsers {
+export default function activeUsers(state = initialState, action: TApplicationActions): IActiveUsers {
 	switch (action.type) {
 		case SET_ACTIVE_USERS:
 			return {
