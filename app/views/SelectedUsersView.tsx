@@ -1,5 +1,4 @@
 import { Q } from '@nozbe/watermelondb';
-import { RouteProp } from '@react-navigation/native';
 import orderBy from 'lodash/orderBy';
 import React from 'react';
 import { FlatList, View } from 'react-native';
@@ -36,8 +35,7 @@ interface ISelectedUsersViewState {
 	chats: ISelectedUser[];
 }
 
-interface ISelectedUsersViewProps extends IBaseScreen {
-	route: RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
+interface ISelectedUsersViewProps extends IBaseScreen<ChatsStackParamList, 'SelectedUsersView'> {
 	// REDUX STATE
 	users: ISelectedUser[];
 	loading: boolean;
