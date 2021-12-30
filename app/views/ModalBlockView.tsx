@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 
@@ -15,6 +16,7 @@ import { CONTAINER_TYPES, MODAL_ACTIONS } from '../lib/methods/actions';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/Navigation';
 import sharedStyles from './Styles';
+import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 
 const styles = StyleSheet.create({
 	container: {
@@ -30,14 +32,49 @@ const styles = StyleSheet.create({
 	}
 });
 
-Object.fromEntries = Object.fromEntries || (arr => arr.reduce((acc, [k, v]) => ((acc[k] = v), acc), {}));
-const groupStateByBlockIdMap = (obj, [key, { blockId, value }]) => {
+interface IValueBlockId {
+	value: string;
+	blockId: string;
+}
+
+type TElementToState = [string, IValueBlockId];
+interface IActions {
+	actionId: string;
+	value: any;
+	blockId?: string;
+}
+
+interface IValues {
+	[key: string]: {
+		[key: string]: string;
+	};
+}
+interface IModalBlockViewState {
+	data: any;
+	loading: boolean;
+	errors?: any;
+}
+
+interface IModalBlockViewProps {
+	navigation: StackNavigationProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
+	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
+	theme: string;
+	language: string;
+	user: {
+		id: string;
+		token: string;
+	};
+}
+
+// eslint-disable-next-line no-sequences
+Object.fromEntries = Object.fromEntries || ((arr: any[]) => arr.reduce((acc, [k, v]) => ((acc[k] = v), acc), {}));
+const groupStateByBlockIdMap = (obj: any, [key, { blockId, value }]: TElementToState) => {
 	obj[blockId] = obj[blockId] || {};
 	obj[blockId][key] = value;
 	return obj;
 };
-const groupStateByBlockId = obj => Object.entries(obj).reduce(groupStateByBlockIdMap, {});
-const filterInputFields = ({ element, elements = [] }) => {
+const groupStateByBlockId = (obj: { [key: string]: any }) => Object.entries(obj).reduce(groupStateByBlockIdMap, {});
+const filterInputFields = ({ element, elements = [] }: { element: any; elements?: any[] }) => {
 	if (element && element.initialValue) {
 		return true;
 	}
@@ -45,7 +82,8 @@ const filterInputFields = ({ element, elements = [] }) => {
 		return true;
 	}
 };
-const mapElementToState = ({ element, blockId, elements = [] }) => {
+
+const mapElementToState = ({ element, blockId, elements = [] }: { element: any; blockId: string; elements?: any[] }): any => {
 	if (elements.length) {
 		return elements
 			.map(e => ({ element: e, blockId }))
@@ -54,10 +92,15 @@ const mapElementToState = ({ element, blockId, elements = [] }) => {
 	}
 	return [element.actionId, { value: element.initialValue, blockId }];
 };
-const reduceState = (obj, el) => (Array.isArray(el[0]) ? { ...obj, ...Object.fromEntries(el) } : { ...obj, [el[0]]: el[1] });
+const reduceState = (obj: any, el: any) =>
+	Array.isArray(el[0]) ? { ...obj, ...Object.fromEntries(el) } : { ...obj, [el[0]]: el[1] };
 
-class ModalBlockView extends React.Component {
-	static navigationOptions = ({ route }) => {
+class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockViewState> {
+	private submitting: boolean;
+
+	private values: IValues;
+
+	static navigationOptions = ({ route }: Pick<IModalBlockViewProps, 'route'>): StackNavigationOptions => {
 		const data = route.params?.data;
 		const { view } = data;
 		const { title } = view;
@@ -66,18 +109,7 @@ class ModalBlockView extends React.Component {
 		};
 	};
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		theme: PropTypes.string,
-		language: PropTypes.string,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string
-		})
-	};
-
-	constructor(props) {
+	constructor(props: IModalBlockViewProps) {
 		super(props);
 		this.submitting = false;
 		const data = props.route.params?.data;
@@ -95,7 +127,7 @@ class ModalBlockView extends React.Component {
 		EventEmitter.addEventListener(viewId, this.handleUpdate);
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps: IModalBlockViewProps) {
 		const { navigation, route } = this.props;
 		const oldData = prevProps.route.params?.data ?? {};
 		const newData = route.params?.data ?? {};
@@ -128,7 +160,7 @@ class ModalBlockView extends React.Component {
 							/>
 						</HeaderButton.Container>
 				  )
-				: null,
+				: undefined,
 			headerRight: submit
 				? () => (
 						<HeaderButton.Container>
@@ -140,13 +172,13 @@ class ModalBlockView extends React.Component {
 							/>
 						</HeaderButton.Container>
 				  )
-				: null
+				: undefined
 		});
 	};
 
-	handleUpdate = ({ type, ...data }) => {
+	handleUpdate = ({ type, ...data }: { type: string }) => {
 		if ([MODAL_ACTIONS.ERRORS].includes(type)) {
-			const { errors } = data;
+			const { errors }: any = data;
 			this.setState({ errors });
 		} else {
 			this.setState({ data });
@@ -154,7 +186,7 @@ class ModalBlockView extends React.Component {
 		}
 	};
 
-	cancel = async ({ closeModal }) => {
+	cancel = async ({ closeModal }: { closeModal?: () => void }) => {
 		const { data } = this.state;
 		const { appId, viewId, view } = data;
 
@@ -210,7 +242,7 @@ class ModalBlockView extends React.Component {
 		this.setState({ loading: false });
 	};
 
-	action = async ({ actionId, value, blockId }) => {
+	action = async ({ actionId, value, blockId }: IActions) => {
 		const { data } = this.state;
 		const { mid, appId, viewId } = data;
 		await RocketChat.triggerBlockAction({
@@ -227,7 +259,7 @@ class ModalBlockView extends React.Component {
 		this.changeState({ actionId, value, blockId });
 	};
 
-	changeState = ({ actionId, value, blockId = 'default' }) => {
+	changeState = ({ actionId, value, blockId = 'default' }: IActions) => {
 		this.values[actionId] = {
 			blockId,
 			value
@@ -266,7 +298,7 @@ class ModalBlockView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
 	language: state.login.user && state.login.user.language
 });
 
