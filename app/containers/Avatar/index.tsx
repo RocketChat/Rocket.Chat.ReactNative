@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import { Observable } from 'rxjs';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
+import { TSubscriptionModel } from '../../definitions/ISubscription';
 import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 
@@ -59,15 +61,16 @@ class AvatarContainer extends React.Component<Partial<IAvatar>, any> {
 				record = user;
 			} else {
 				const { rid } = this.props;
-				record = await subsCollection.find(rid);
+				record = await subsCollection.find(rid!);
 			}
 		} catch {
 			// Record not found
 		}
 
 		if (record) {
-			const observable = record.observe();
-			this.subscription = observable.subscribe((r: any) => {
+			// TODO: Refactor this
+			const observable = record.observe() as Observable<TSubscriptionModel>;
+			this.subscription = observable.subscribe(r => {
 				const { avatarETag } = r;
 				if (this.mounted) {
 					this.setState({ avatarETag });

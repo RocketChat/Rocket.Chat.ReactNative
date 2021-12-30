@@ -25,6 +25,7 @@ import serversSchema from './schema/servers';
 import appSchema from './schema/app';
 import migrations from './model/migrations';
 import serversMigrations from './model/servers/migrations';
+import { TAppDatabase } from './interfaces';
 
 const appGroupPath = isIOS ? appGroup.path : '';
 
@@ -65,9 +66,9 @@ export const getDatabase = (database = ''): Database => {
 };
 
 interface IDatabases {
-	shareDB?: Database;
+	shareDB?: TAppDatabase;
 	serversDB: Database;
-	activeDB?: Database;
+	activeDB?: TAppDatabase;
 }
 
 class DB {
@@ -83,7 +84,7 @@ class DB {
 	};
 
 	// Expected at least one database
-	get active(): Database {
+	get active(): TAppDatabase {
 		return this.databases.shareDB || this.databases.activeDB!;
 	}
 
@@ -123,11 +124,11 @@ class DB {
 				Setting,
 				User
 			]
-		});
+		}) as TAppDatabase;
 	}
 
 	setActiveDB(database: string) {
-		this.databases.activeDB = getDatabase(database);
+		this.databases.activeDB = getDatabase(database) as TAppDatabase;
 	}
 }
 

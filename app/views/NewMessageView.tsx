@@ -153,7 +153,9 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 	};
 
 	search = async (text: string) => {
-		const result = await RocketChat.search({ text, filterRooms: false });
+		// TODO: When migrate rocketchat.js pass the param ISearch to there and the return should be
+		// ISearch | TSubscriptionModel, this because we do a local search too
+		const result = (await RocketChat.search({ text, filterRooms: false })) as unknown as ISearch[];
 		this.setState({
 			search: result
 		});

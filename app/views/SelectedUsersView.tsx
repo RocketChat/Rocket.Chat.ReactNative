@@ -142,7 +142,9 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	}
 
 	search = async (text: string) => {
-		const result = await RocketChat.search({ text, filterRooms: false });
+		// TODO: When migrate rocketchat.js pass the param IUser to there and the return should be
+		// IUser | TSubscriptionModel, this because we do a local search too
+		const result = (await RocketChat.search({ text, filterRooms: false })) as unknown as IUser[];
 		this.setState({
 			search: result
 		});

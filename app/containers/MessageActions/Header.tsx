@@ -10,6 +10,7 @@ import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
+import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
 import { IEmoji } from '../EmojiPicker/interfaces';
 
 interface IHeader {
@@ -63,7 +64,14 @@ const styles = StyleSheet.create({
 
 const keyExtractor = (item: any) => item?.id || item;
 
-const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face', 'smiley'];
+const DEFAULT_EMOJIS = [
+	'clap',
+	'+1',
+	'heart_eyes',
+	'grinning',
+	'thinking_face',
+	'smiley'
+] as unknown as TFrequentlyUsedEmojiModel[];
 
 const HeaderItem = React.memo(({ item, onReaction, server, theme }: THeaderItem) => (
 	<Button
@@ -90,7 +98,7 @@ const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
 ));
 
 const Header = React.memo(({ handleReaction, server, message, isMasterDetail, theme }: IHeader) => {
-	const [items, setItems] = useState([]);
+	const [items, setItems] = useState<TFrequentlyUsedEmojiModel[]>([]);
 	const { width, height }: any = useDimensions();
 
 	const setEmojis = async () => {
