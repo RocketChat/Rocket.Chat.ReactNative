@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch } from 'react-native';
 import { connect } from 'react-redux';
 import { StackNavigationOptions } from '@react-navigation/stack';
-import Model from '@nozbe/watermelondb/Model';
 import { Subscription } from 'rxjs';
 
 import I18n from '../i18n';
@@ -15,14 +14,9 @@ import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../uti
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';
+import { TServerModel } from '../definitions/IServer';
 
 const DEFAULT_BIOMETRY = false;
-
-interface IServerRecords extends Model {
-	autoLock?: boolean;
-	autoLockTime?: number;
-	biometry?: boolean;
-}
 
 interface IItem {
 	title: string;
@@ -38,14 +32,14 @@ interface IScreenLockConfigViewProps {
 }
 
 interface IScreenLockConfigViewState {
-	autoLock?: boolean;
-	autoLockTime?: number | null;
-	biometry?: boolean;
-	biometryLabel: null;
+	autoLock: boolean;
+	autoLockTime: number | null;
+	biometry: boolean;
+	biometryLabel: string | null;
 }
 
 class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
-	private serverRecord?: IServerRecords;
+	private serverRecord?: TServerModel;
 
 	private observable?: Subscription;
 
@@ -121,7 +115,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	 */
 	observe = () => {
 		this.observable = this.serverRecord?.observe()?.subscribe(({ biometry }) => {
-			this.setState({ biometry });
+			this.setState({ biometry: !!biometry });
 		});
 	};
 
@@ -132,7 +126,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		await serversDB.write(async () => {
 			await this.serverRecord?.update(record => {
 				record.autoLock = autoLock;
-				record.autoLockTime = autoLockTime === null ? DEFAULT_AUTO_LOCK : autoLockTime;
+				record.autoLockTime = autoLockTime === null ? DEFAULT_AUTO_LOCK : autoLockTime!;
 				record.biometry = biometry === null ? DEFAULT_BIOMETRY : biometry;
 			});
 		});

@@ -33,7 +33,7 @@ import { verticalScale, moderateScale } from '../../utils/scaling';
 import { withDimensions } from '../../dimensions';
 import ServerInput from './ServerInput';
 import { OutsideParamList } from '../../stacks/types';
-import { TServerHistory } from '../../definitions/IServerHistory';
+import { TServerHistoryModel } from '../../definitions/IServerHistory';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
@@ -85,7 +85,7 @@ interface IState {
 	text: string;
 	connectingOpen: boolean;
 	certificate: any;
-	serversHistory: TServerHistory[];
+	serversHistory: TServerHistoryModel[];
 }
 
 interface ISubmitParams {
@@ -161,7 +161,7 @@ class NewServerView extends React.Component<INewServerView, IState> {
 				const likeString = sanitizeLikeString(text);
 				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
 			}
-			const serversHistory = (await serversHistoryCollection.query(...whereClause).fetch()) as TServerHistory[];
+			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();
 			this.setState({ serversHistory });
 		} catch {
 			// Do nothing
@@ -185,7 +185,7 @@ class NewServerView extends React.Component<INewServerView, IState> {
 		connectServer(server);
 	};
 
-	onPressServerHistory = (serverHistory: TServerHistory) => {
+	onPressServerHistory = (serverHistory: TServerHistoryModel) => {
 		this.setState({ text: serverHistory.url }, () => this.submit({ fromServerHistory: true, username: serverHistory?.username }));
 	};
 
@@ -278,14 +278,14 @@ class NewServerView extends React.Component<INewServerView, IState> {
 		});
 	};
 
-	deleteServerHistory = async (item: TServerHistory) => {
+	deleteServerHistory = async (item: TServerHistoryModel) => {
 		const db = database.servers;
 		try {
 			await db.write(async () => {
 				await item.destroyPermanently();
 			});
 			this.setState((prevstate: IState) => ({
-				serversHistory: prevstate.serversHistory.filter((server: TServerHistory) => server.id !== item.id)
+				serversHistory: prevstate.serversHistory.filter((server: TServerHistoryModel) => server.id !== item.id)
 			}));
 		} catch {
 			// Nothing

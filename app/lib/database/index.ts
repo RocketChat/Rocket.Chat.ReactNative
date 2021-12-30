@@ -25,7 +25,7 @@ import serversSchema from './schema/servers';
 import appSchema from './schema/app';
 import migrations from './model/migrations';
 import serversMigrations from './model/servers/migrations';
-import { TAppDatabase } from './interfaces';
+import { TAppDatabase, TServerDatabase } from './interfaces';
 
 const appGroupPath = isIOS ? appGroup.path : '';
 
@@ -67,7 +67,7 @@ export const getDatabase = (database = ''): Database => {
 
 interface IDatabases {
 	shareDB?: TAppDatabase;
-	serversDB: Database;
+	serversDB: TServerDatabase;
 	activeDB?: TAppDatabase;
 }
 
@@ -80,7 +80,7 @@ class DB {
 				migrations: serversMigrations
 			}),
 			modelClasses: [Server, LoggedUser, ServersHistory]
-		})
+		}) as TServerDatabase
 	};
 
 	// Expected at least one database
