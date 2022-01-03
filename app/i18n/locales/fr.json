@@ -21,6 +21,7 @@
   "error-save-video": "Erreur en sauvegardant la vidéo",
   "error-field-unavailable": "{{field}} est déjà utilisé: (",
   "error-file-too-large": "Le fichier est trop grand",
+  "error-not-permission-to-upload-file": "Vous n'êtes pas autorisé à envoyer des fichiers",
   "error-importer-not-defined": "L'importateur n'a pas été défini correctement, il manque la classe Import.",
   "error-input-is-not-a-valid-field": "{{input}} n'est pas un {{field}} valide",
   "error-invalid-actionlink": "Lien d'action non valide",
