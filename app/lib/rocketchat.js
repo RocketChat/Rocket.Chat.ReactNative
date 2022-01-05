@@ -835,10 +835,10 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.removeRoom', { roomId, teamId });
 	},
-	leaveTeam({ teamName, rooms }) {
+	leaveTeam({ teamId, rooms }) {
 		// RC 3.13.0
 		return this.post('teams.leave', {
-			teamName,
+			teamId,
 			// RC 4.2.0
 			...(rooms?.length && { rooms })
 		});
