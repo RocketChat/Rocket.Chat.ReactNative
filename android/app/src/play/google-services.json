@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "140360724196",
+    "project_id": "rox-chat-96d3a",
+    "storage_bucket": "rox-chat-96d3a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140360724196:android:1d70a7076edc8c34be86f1",
+        "android_client_info": {
+          "package_name": "rox.chat.reactnative"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "140360724196-1p2on7mmvoo1a3tgftadj8i6qli3bbjf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKTJRwFY1OqNLbHqW_CoDajcLPSdYLRWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "140360724196-1p2on7mmvoo1a3tgftadj8i6qli3bbjf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "140360724196-9q811jl2tn3l6qsbnvhfa904st01vmro.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "rox.chat.reactnative"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

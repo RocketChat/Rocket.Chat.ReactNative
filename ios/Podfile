@@ -8,7 +8,7 @@ def all_pods
   use_unimodules!
   use_react_native!(
     :path => config[:reactNativePath],
-    :hermes_enabled => true
+    :hermes_enabled => false
   )
   use_flipper!()
 end

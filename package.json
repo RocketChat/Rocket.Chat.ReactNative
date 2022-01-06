@@ -42,7 +42,6 @@
     "@react-native-firebase/analytics": "^7.3.1",
     "@react-native-firebase/app": "^8.2.0",
     "@react-native-firebase/crashlytics": "^8.1.2",
-    "@react-native-firebase/remote-config": "^12.8.0",
     "@react-navigation/drawer": "5.12.5",
     "@react-navigation/native": "5.9.4",
     "@react-navigation/stack": "5.14.5",
