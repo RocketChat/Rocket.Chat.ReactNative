@@ -23,12 +23,13 @@ import { withTheme } from '../../theme';
 import SidebarView from '../SidebarView';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
-import { ROOT_LOADING, appStart as appStartAction } from '../../actions/app';
+import { appStart as appStartAction } from '../../actions/app';
 import { onReviewPress } from '../../utils/review';
 import SafeAreaView from '../../containers/SafeAreaView';
 import database from '../../lib/database';
 import { isFDroidBuild } from '../../constants/environment';
 import { getUserSelector } from '../../selectors/login';
+import { RootEnum } from '../../definitions';
 
 interface ISettingsViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'SettingsView'>;
@@ -108,7 +109,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 					appStart,
 					selectServerRequest
 				} = this.props;
-				appStart({ root: ROOT_LOADING, text: I18n.t('Clear_cache_loading') });
+				appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') });
 				await RocketChat.clearCache({ server });
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();

@@ -50,6 +50,8 @@ import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
 import { DISPLAY_MODE_CONDENSED } from '../../constants/constantDisplayMode';
+import { RootEnum } from '../../definitions';
+
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader from './ListHeader';
@@ -862,7 +864,7 @@ class RoomsListView extends React.Component {
 			}
 		} else if (handleCommandAddNewServer(event)) {
 			batch(() => {
-				appStart({ root: ROOT_OUTSIDE });
+				appStart({ root: RootEnum.ROOT_OUTSIDE });
 				initAdd(server);
 			});
 		}

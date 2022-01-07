@@ -13,10 +13,11 @@ import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { ROOT_INSIDE, ROOT_LOADING, appStart as appStartAction } from '../../actions/app';
+import { appStart as appStartAction } from '../../actions/app';
 import { getUserSelector } from '../../selectors/login';
 import database from '../../lib/database';
 import SafeAreaView from '../../containers/SafeAreaView';
+import { RootEnum } from '../../definitions';
 
 interface ILanguageViewProps {
 	user: {
@@ -73,7 +74,7 @@ class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewStat
 
 		const shouldRestart = isRTL(language) || isRTL(user.language);
 
-		await appStart({ root: ROOT_LOADING, text: I18n.t('Change_language_loading') });
+		await appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Change_language_loading') });
 
 		// shows loading for at least 300ms
 		await Promise.all([this.changeLanguage(language), new Promise(resolve => setTimeout(resolve, 300))]);
@@ -81,7 +82,7 @@ class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewStat
 		if (shouldRestart) {
 			await RNRestart.Restart();
 		} else {
-			await appStart({ root: ROOT_INSIDE });
+			await appStart({ root: RootEnum.ROOT_INSIDE });
 		}
 	};
 
