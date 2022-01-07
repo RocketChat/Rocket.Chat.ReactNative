@@ -1,8 +1,10 @@
 import { TActionSelectedUsers } from '../../actions/selectedUsers';
 import { TActionActiveUsers } from '../../actions/activeUsers';
+import { TActionApp } from '../../actions/app';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
+import { IApp } from '../../reducers/app';
 
 export interface IApplicationState {
 	settings: any;
@@ -11,7 +13,7 @@ export interface IApplicationState {
 	server: any;
 	selectedUsers: ISelectedUsers;
 	createChannel: any;
-	app: any;
+	app: IApp;
 	room: any;
 	rooms: any;
 	sortPreferences: any;
@@ -28,4 +30,4 @@ export interface IApplicationState {
 	roles: any;
 }
 
-export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers;
+export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers & TActionApp;

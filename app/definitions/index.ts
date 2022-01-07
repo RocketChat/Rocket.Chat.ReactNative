@@ -10,3 +10,4 @@ export interface IBaseScreen<T extends Record<string, object | undefined>, S ext
 }
 
 export * from './redux';
+export * from './redux/TRootEnum';
