@@ -1,9 +1,9 @@
 import { TActionApp } from '../actions/app';
-import { TRootEnum } from '../definitions';
+import { RootEnum } from '../definitions';
 import { APP, APP_STATE } from '../actions/actionsTypes';
 
 export interface IApp {
-	root?: TRootEnum;
+	root?: RootEnum;
 	isMasterDetail: boolean;
 	text?: string;
 	ready: boolean;
@@ -11,7 +11,7 @@ export interface IApp {
 	background: boolean;
 }
 
-const initialState: IApp = {
+export const initialState: IApp = {
 	root: undefined,
 	isMasterDetail: false,
 	text: undefined,

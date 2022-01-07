@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { TRootEnum } from '../definitions';
+import { RootEnum } from '../definitions';
 import { APP } from './actionsTypes';
 
 export const ROOT_OUTSIDE = 'outside';
@@ -9,7 +9,7 @@ export const ROOT_LOADING = 'loading';
 export const ROOT_SET_USERNAME = 'setUsername';
 
 interface IAppStart extends Action {
-	root: TRootEnum;
+	root: RootEnum;
 	text?: string;
 }
 
@@ -19,7 +19,7 @@ interface ISetMasterDetail extends Action {
 
 export type TActionApp = IAppStart & ISetMasterDetail;
 
-export function appStart({ root, ...args }: { root: TRootEnum }): IAppStart {
+export function appStart({ root, ...args }: { root: RootEnum }): IAppStart {
 	return {
 		type: APP.START,
 		root,
