@@ -1197,23 +1197,6 @@ class RoomActionsView extends React.Component {
 								<List.Separator />
 							</>
 						) : null}
-
-						{['l'].includes(t) && !this.isOmnichannelPreview ? (
-							<>
-								<List.Item
-									title='Navigation_history'
-									onPress={() =>
-										this.onPressTouchable({
-											route: 'VisitorNavigationView',
-											params: { rid }
-										})
-									}
-									left={() => <List.Icon name='history' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
 					</List.Section>
 
 					{this.renderLastSection()}

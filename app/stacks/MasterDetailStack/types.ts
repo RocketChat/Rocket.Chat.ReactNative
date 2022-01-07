@@ -97,9 +97,6 @@ export type ModalStackParamList = {
 		rid: string;
 		room: IRoom;
 	};
-	VisitorNavigationView: {
-		rid: string;
-	};
 	ForwardLivechatView: {
 		rid: string;
 	};
