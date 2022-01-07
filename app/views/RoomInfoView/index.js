@@ -209,10 +209,11 @@ class RoomInfoView extends React.Component {
 			try {
 				const { roles } = roomUser;
 				if (roles && roles.length) {
-					roomUser.parsedRoles = await this.parseRoles(roles);
+					const parsedRoles = await this.parseRoles(roles);
+					this.setState({ roomUser: { ...roomUser, parsedRoles } });
+				} else {
+					this.setState({ roomUser });
 				}
-
-				this.setState({ roomUser });
 			} catch (e) {
 				// do nothing
 			}
