@@ -2,7 +2,7 @@
 // TODO BUMP LIB VERSION
 import { NotificationsAndroid, PendingNotifications, Notification } from 'react-native-notifications';
 
-import { INotification } from '.';
+import { INotification } from '../../definitions/INotification';
 
 class PushNotification {
 	onNotification: (notification: Notification) => void;

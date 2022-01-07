@@ -4,7 +4,7 @@ import NotificationsIOS, { NotificationAction, NotificationCategory, Notificatio
 
 import reduxStore from '../../lib/createStore';
 import I18n from '../../i18n';
-import { INotification } from '.';
+import { INotification } from '../../definitions/INotification';
 
 class PushNotification {
 	onNotification: (notification: Notification) => void;

@@ -4,26 +4,7 @@ import store from '../../lib/createStore';
 import { deepLinkingOpen } from '../../actions/deepLinking';
 import { isFDroidBuild } from '../../constants/environment';
 import PushNotification from './push';
-
-export interface INotification {
-	message: string;
-	style: string;
-	ejson: string;
-	collapse_key: string;
-	notId: string;
-	msgcnt: string;
-	title: string;
-	from: string;
-	image: string;
-	soundname: string;
-	// only for info
-	'google.delivered_priority': string;
-	'google.original_priority': string;
-	'google.message_id': string;
-	'google.sent_time': number;
-	'google.c.sender.id': string;
-	'google.ttl': number;
-}
+import { INotification, RoomType } from '../../definitions';
 
 interface IEjson {
 	rid: string;
@@ -46,8 +27,8 @@ export const onNotification = (notification: INotification): void => {
 				p: 'group',
 				l: 'channels'
 			};
-			let roomName = type === 'd' ? sender.username : name;
-			if (type === 'l') {
+			let roomName = type === RoomType.DIRECT ? sender.username : name;
+			if (type === RoomType.OMNICHANNEL) {
 				roomName = sender.name;
 			}
 
