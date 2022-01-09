@@ -318,6 +318,31 @@ describe('Room screen', () => {
 					.withTimeout(60000);
 			});
 
+			it('should show reaction screen on long press reaction', async () => {
+				await element(by.id('message-reaction-:grimacing:')).longPress();
+				await waitFor(element(by.id('reaction-tab-:grinning:-active')))
+					.toExist()
+					.withTimeout(1000);
+				await waitFor(element(by.id('reaction-tab-:grimacing:')))
+					.toExist()
+					.withTimeout(1000);
+				await waitFor(element(by.id('reactions-tabView-:grinning:')))
+					.toBeVisible()
+					.withTimeout(1000);
+				await element(by.id('reactions-tabView-:grinning:')).swipe('left', 'fast', 0.5);
+				await waitFor(element(by.id('reactions-tabView-:grinning:')))
+					.toBeNotVisible()
+					.withTimeout(1000);
+				await waitFor(element(by.id('reaction-tab-:grinning:-active')))
+					.toNotExist()
+					.withTimeout(1000);
+				await element(by.id('reaction-tab-:grimacing:')).tap();
+				await waitFor(element(by.id('reaction-tab-:grimacing:-active')))
+					.toExist()
+					.withTimeout(1000);
+				await tapBack();
+			});
+
 			it('should remove reaction', async () => {
 				await element(by.id('message-reaction-:grinning:')).tap();
 				await waitFor(element(by.id('message-reaction-:grinning:')))

@@ -37,6 +37,7 @@ class TabPage extends React.PureComponent<ITabPageProps> {
 				ItemSeparatorComponent={List.Separator}
 				keyExtractor={item => `row-${item.username}`}
 				renderItem={this.renderItem}
+				testID={`reactions-tabView-${this.props.reaction.emoji}`}
 			/>
 		);
 	};
