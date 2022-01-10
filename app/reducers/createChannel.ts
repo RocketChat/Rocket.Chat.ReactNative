@@ -1,13 +1,21 @@
+import { TApplicationActions } from '../definitions';
 import { CREATE_CHANNEL } from '../actions/actionsTypes';
 
-const initialState = {
+export interface ICreateChannel {
+	isFetching: boolean;
+	failure: boolean;
+	result: Record<string, string>;
+	error: Record<string, string>;
+}
+
+export const initialState: ICreateChannel = {
 	isFetching: false,
 	failure: false,
 	result: {},
 	error: {}
 };
 
-export default function (state = initialState, action) {
+export default function (state = initialState, action: TApplicationActions): ICreateChannel {
 	switch (action.type) {
 		case CREATE_CHANNEL.REQUEST:
 			return {

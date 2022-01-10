@@ -1,11 +1,13 @@
 import { TActionSelectedUsers } from '../../actions/selectedUsers';
 import { TActionActiveUsers } from '../../actions/activeUsers';
 import { TActionApp } from '../../actions/app';
+import { TActionCreateApp } from '../../actions/createChannel';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { IApp } from '../../reducers/app';
 import { IConnect } from '../../reducers/connect';
+import { ICreateChannel } from '../../reducers/createChannel';
 
 export interface IApplicationState {
 	settings: any;
@@ -13,7 +15,7 @@ export interface IApplicationState {
 	meteor: IConnect;
 	server: any;
 	selectedUsers: ISelectedUsers;
-	createChannel: any;
+	createChannel: ICreateChannel;
 	app: IApp;
 	room: any;
 	rooms: any;
@@ -31,4 +33,4 @@ export interface IApplicationState {
 	roles: any;
 }
 
-export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers & TActionApp;
+export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers & TActionApp & TActionCreateApp;
