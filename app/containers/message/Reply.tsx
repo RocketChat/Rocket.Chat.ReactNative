@@ -92,19 +92,19 @@ const styles = StyleSheet.create({
 });
 
 interface IMessageTitle {
-	attachment: Partial<IAttachment>;
+	attachment: IAttachment;
 	timeFormat: string;
 	theme: string;
 }
 
 interface IMessageDescription {
-	attachment: Partial<IAttachment>;
+	attachment: IAttachment;
 	getCustomEmoji: Function;
 	theme: string;
 }
 
 interface IMessageFields {
-	attachment: Partial<IAttachment>;
+	attachment: IAttachment;
 	theme: string;
 	getCustomEmoji: Function;
 }

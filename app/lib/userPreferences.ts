@@ -7,11 +7,12 @@ const MMKV = new MMKVStorage.Loader()
 	.initialize();
 
 class UserPreferences {
+	private mmkv: MMKVStorage.API;
 	constructor() {
 		this.mmkv = MMKV;
 	}
 
-	async getStringAsync(key) {
+	async getStringAsync(key: string) {
 		try {
 			const value = await this.mmkv.getStringAsync(key);
 			return value;
@@ -20,11 +21,11 @@ class UserPreferences {
 		}
 	}
 
-	setStringAsync(key, value) {
+	setStringAsync(key: string, value: string) {
 		return this.mmkv.setStringAsync(key, value);
 	}
 
-	async getBoolAsync(key) {
+	async getBoolAsync(key: string) {
 		try {
 			const value = await this.mmkv.getBoolAsync(key);
 			return value;
@@ -33,11 +34,11 @@ class UserPreferences {
 		}
 	}
 
-	setBoolAsync(key, value) {
+	setBoolAsync(key: string, value: boolean) {
 		return this.mmkv.setBoolAsync(key, value);
 	}
 
-	async getMapAsync(key) {
+	async getMapAsync(key: string) {
 		try {
 			const value = await this.mmkv.getMapAsync(key);
 			return value;
@@ -46,11 +47,11 @@ class UserPreferences {
 		}
 	}
 
-	setMapAsync(key, value) {
+	setMapAsync(key: string, value: object) {
 		return this.mmkv.setMapAsync(key, value);
 	}
 
-	removeItem(key) {
+	removeItem(key: string) {
 		return this.mmkv.removeItem(key);
 	}
 }
