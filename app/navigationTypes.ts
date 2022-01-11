@@ -1,6 +1,6 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 
-import { IRoom } from './definitions/IRoom';
+import { ISubscription } from './definitions/ISubscription';
 import { IServer } from './definitions/IServer';
 import { IAttachment } from './definitions/IAttachment';
 import { MasterDetailInsideStackParamList } from './stacks/MasterDetailStack/types';
@@ -28,7 +28,7 @@ export type ShareInsideStackParamList = {
 		isShareExtension: boolean;
 		serverInfo: IServer;
 		text: string;
-		room: IRoom;
+		room: ISubscription;
 		thread: any; // TODO: Change
 	};
 	SelectServerView: undefined;

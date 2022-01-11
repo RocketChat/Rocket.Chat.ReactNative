@@ -1,3 +1,5 @@
+import Model from '@nozbe/watermelondb/Model';
+
 export interface IServer {
 	name: string;
 	iconURL: string;
@@ -14,3 +16,5 @@ export interface IServer {
 	enterpriseModules: string;
 	E2E_Enable: boolean;
 }
+
+export type TServerModel = IServer & Model;

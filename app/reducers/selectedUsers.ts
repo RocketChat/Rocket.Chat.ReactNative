@@ -1,11 +1,26 @@
+import { TApplicationActions } from '../definitions';
 import { SELECTED_USERS } from '../actions/actionsTypes';
 
-const initialState = {
+export interface ISelectedUser {
+	_id: string;
+	name: string;
+	fname: string;
+	search?: boolean;
+	// username is used when is from searching
+	username?: string;
+}
+
+export interface ISelectedUsers {
+	users: ISelectedUser[];
+	loading: boolean;
+}
+
+export const initialState: ISelectedUsers = {
 	users: [],
 	loading: false
 };
 
-export default function (state = initialState, action) {
+export default function (state = initialState, action: TApplicationActions): ISelectedUsers {
 	switch (action.type) {
 		case SELECTED_USERS.ADD_USER:
 			return {
