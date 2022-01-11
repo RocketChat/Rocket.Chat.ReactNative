@@ -8,7 +8,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Orientation from 'react-native-orientation-locker';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Dispatch } from 'redux';
-import Model from '@nozbe/watermelondb/Model';
 
 import UserPreferences from '../../lib/userPreferences';
 import EventEmitter from '../../utils/events';
@@ -34,6 +33,7 @@ import { verticalScale, moderateScale } from '../../utils/scaling';
 import { withDimensions } from '../../dimensions';
 import ServerInput from './ServerInput';
 import { OutsideParamList } from '../../stacks/types';
+import { TServerHistory } from '../../definitions/IServerHistory';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
@@ -68,11 +68,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export interface IServer extends Model {
-	url: string;
-	username: string;
-}
-
 interface INewServerView {
 	navigation: StackNavigationProp<OutsideParamList, 'NewServerView'>;
 	theme: string;
@@ -90,7 +85,7 @@ interface IState {
 	text: string;
 	connectingOpen: boolean;
 	certificate: any;
-	serversHistory: IServer[];
+	serversHistory: TServerHistory[];
 }
 
 interface ISubmitParams {
@@ -166,7 +161,7 @@ class NewServerView extends React.Component<INewServerView, IState> {
 				const likeString = sanitizeLikeString(text);
 				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
 			}
-			const serversHistory = (await serversHistoryCollection.query(...whereClause).fetch()) as IServer[];
+			const serversHistory = (await serversHistoryCollection.query(...whereClause).fetch()) as TServerHistory[];
 			this.setState({ serversHistory });
 		} catch {
 			// Do nothing
@@ -190,7 +185,7 @@ class NewServerView extends React.Component<INewServerView, IState> {
 		connectServer(server);
 	};
 
-	onPressServerHistory = (serverHistory: IServer) => {
+	onPressServerHistory = (serverHistory: TServerHistory) => {
 		this.setState({ text: serverHistory.url }, () => this.submit({ fromServerHistory: true, username: serverHistory?.username }));
 	};
 
@@ -283,14 +278,14 @@ class NewServerView extends React.Component<INewServerView, IState> {
 		});
 	};
 
-	deleteServerHistory = async (item: IServer) => {
+	deleteServerHistory = async (item: TServerHistory) => {
 		const db = database.servers;
 		try {
 			await db.write(async () => {
 				await item.destroyPermanently();
 			});
 			this.setState((prevstate: IState) => ({
-				serversHistory: prevstate.serversHistory.filter((server: IServer) => server.id !== item.id)
+				serversHistory: prevstate.serversHistory.filter((server: TServerHistory) => server.id !== item.id)
 			}));
 		} catch {
 			// Nothing
