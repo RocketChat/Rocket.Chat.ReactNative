@@ -1,36 +1,42 @@
-import { TActionSelectedUsers } from '../../actions/selectedUsers';
 import { TActionActiveUsers } from '../../actions/activeUsers';
 import { TActionApp } from '../../actions/app';
 import { TActionCreateChannel } from '../../actions/createChannel';
+import { TActionEncryption } from '../../actions/encryption';
+import { TActionSelectedUsers } from '../../actions/selectedUsers';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
-import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { IApp } from '../../reducers/app';
 import { IConnect } from '../../reducers/connect';
 import { ICreateChannel } from '../../reducers/createChannel';
+import { IEncryption } from '../../reducers/encryption';
+import { ISelectedUsers } from '../../reducers/selectedUsers';
 
 export interface IApplicationState {
-	settings: any;
+	activeUsers: IActiveUsers;
+	app: IApp;
+	createChannel: ICreateChannel;
+	createDiscussion: any;
+	customEmojis: any;
+	encryption: IEncryption;
+	enterpriseModules: any;
+	inquiry: any;
+	inviteLinks: any;
 	login: any;
 	meteor: IConnect;
-	server: any;
-	selectedUsers: ISelectedUsers;
-	createChannel: ICreateChannel;
-	app: IApp;
-	room: any;
-	rooms: any;
-	sortPreferences: any;
-	share: any;
-	customEmojis: any;
-	activeUsers: IActiveUsers;
-	usersTyping: any;
-	inviteLinks: any;
-	createDiscussion: any;
-	inquiry: any;
-	enterpriseModules: any;
-	encryption: any;
 	permissions: any;
 	roles: any;
+	room: any;
+	rooms: any;
+	selectedUsers: ISelectedUsers;
+	server: any;
+	settings: any;
+	share: any;
+	sortPreferences: any;
+	usersTyping: any;
 }
 
-export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers & TActionApp & TActionCreateChannel;
+export type TApplicationActions = TActionActiveUsers &
+	TActionSelectedUsers &
+	TActionApp &
+	TActionCreateChannel &
+	TActionEncryption;
