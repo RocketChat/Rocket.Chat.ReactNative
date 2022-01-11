@@ -9,7 +9,7 @@ import { themes } from '../../constants/colors';
 import Markdown from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import ThreadDetails from '../../containers/ThreadDetails';
-import { IThreadModel } from '../../definitions/IThread';
+import { TThreadModel } from '../../definitions/IThread';
 
 const styles = StyleSheet.create({
 	container: {
@@ -57,13 +57,13 @@ const styles = StyleSheet.create({
 });
 
 interface IItem {
-	item: IThreadModel;
+	item: TThreadModel;
 	baseUrl: string;
 	theme: string;
 	useRealName: boolean;
 	user: any;
 	badgeColor: string;
-	onPress: (item: IThreadModel) => void;
+	onPress: (item: TThreadModel) => void;
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
 
@@ -93,7 +93,7 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 						<Markdown
 							msg={makeThreadName(item)}
 							baseUrl={baseUrl}
-							username={username}
+							username={username!}
 							theme={theme}
 							numberOfLines={2}
 							style={[styles.markdown]}

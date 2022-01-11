@@ -34,13 +34,13 @@ import EventEmitter from '../../utils/events';
 import { LISTENER } from '../../containers/Toast';
 import SearchHeader from '../../containers/SearchHeader';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IRoomModel, RoomType } from '../../definitions/IRoom';
-import { IThreadResult, IThreadModel } from '../../definitions/IThread';
+import { IThreadResult, TThreadModel } from '../../definitions/IThread';
 import { Filter } from './filters';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import Dropdown from './Dropdown';
 import Item from './Item';
 import styles from './styles';
+import { SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 
 const API_FETCH_COUNT = 50;
 
@@ -56,8 +56,8 @@ interface IThreadMessagesViewState {
 	loading: boolean;
 	end: boolean;
 	messages: any[];
-	displayingThreads: IThreadModel[];
-	subscription: IRoomModel;
+	displayingThreads: TThreadModel[];
+	subscription: TSubscriptionModel;
 	showFilterDropdown: boolean;
 	currentFilter: Filter;
 	isSearching: boolean;
@@ -98,7 +98,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			end: false,
 			messages: [],
 			displayingThreads: [],
-			subscription: {} as IRoomModel,
+			subscription: {} as TSubscriptionModel,
 			showFilterDropdown: false,
 			currentFilter: Filter.All,
 			isSearching: false,
@@ -188,7 +188,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			const db = database.active;
 
 			// subscription query
-			const subscription = (await db.collections.get('subscriptions').find(this.rid)) as IRoomModel;
+			const subscription = (await db.collections.get('subscriptions').find(this.rid)) as TSubscriptionModel;
 			const observable = subscription.observe();
 			this.subSubscription = observable.subscribe(data => {
 				this.setState({ subscription: data });
@@ -200,7 +200,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 	};
 
-	subscribeMessages = (subscription?: IRoomModel, searchText?: string) => {
+	subscribeMessages = (subscription?: TSubscriptionModel, searchText?: string) => {
 		try {
 			const db = database.active;
 
@@ -275,7 +275,8 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			const db: Database = database.active;
 			const threadsCollection = db.get('threads');
 			// TODO: Refactor when migrate room
-			const allThreadsRecords = await subscription.threads.fetch();
+			// @ts-ignore
+			const allThreadsRecords = (await subscription.threads.fetch()) as TThreadModel[];
 			let threadsToCreate: any[] = [];
 			let threadsToUpdate: any[] = [];
 			let threadsToDelete: any[] = [];
@@ -283,8 +284,8 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			if (update && update.length) {
 				update = update.map(m => buildMessage(m));
 				// filter threads
-				threadsToCreate = update.filter(i1 => !allThreadsRecords.find(i2 => i1._id === i2.id));
-				threadsToUpdate = allThreadsRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
+				threadsToCreate = update.filter(i1 => allThreadsRecords.find((i2: { id: string }) => i1._id === i2.id));
+				threadsToUpdate = allThreadsRecords.filter((i1: { id: string }) => update.find(i2 => i1.id === i2._id));
 				threadsToCreate = threadsToCreate.map(thread =>
 					threadsCollection.prepareCreate(
 						protectedFunction((t: any) => {
@@ -305,7 +306,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			}
 
 			if (remove && remove.length) {
-				threadsToDelete = allThreadsRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
+				threadsToDelete = allThreadsRecords.filter((i1: { id: string }) => remove.find(i2 => i1.id === i2._id));
 				threadsToDelete = threadsToDelete.map(t => t.prepareDestroyPermanently());
 			}
 
@@ -403,7 +404,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				rid: item.subscription.id,
 				tmid: item.id,
 				name: makeThreadName(item),
-				t: RoomType.THREAD,
+				t: SubscriptionType.THREAD,
 				roomUserId: RocketChat.getUidDirectMessage(subscription)
 			});
 		},
@@ -411,14 +412,14 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		true
 	);
 
-	getBadgeColor = (item: IThreadModel) => {
+	getBadgeColor = (item: TThreadModel) => {
 		const { subscription } = this.state;
 		const { theme } = this.props;
 		return getBadgeColor({ subscription, theme, messageId: item?.id });
 	};
 
 	// helper to query threads
-	getFilteredThreads = (messages: any, subscription: IRoomModel, currentFilter?: Filter): IThreadModel[] => {
+	getFilteredThreads = (messages: any, subscription: TSubscriptionModel, currentFilter?: Filter): TThreadModel[] => {
 		// const { currentFilter } = this.state;
 		const { user } = this.props;
 		if (currentFilter === Filter.Following) {
@@ -456,7 +457,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 	};
 
-	renderItem = ({ item }: { item: IThreadModel }) => {
+	renderItem = ({ item }: { item: TThreadModel }) => {
 		const { user, navigation, baseUrl, useRealName } = this.props;
 		const badgeColor = this.getBadgeColor(item);
 		return (
