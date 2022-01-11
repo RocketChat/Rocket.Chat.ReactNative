@@ -49,7 +49,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
-import { DISPLAY_MODE_CONDENSED } from '../../constants/constantDisplayMode';
+import { DisplayMode, SortBy } from '../../constants/constantDisplayMode';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader from './ListHeader';
@@ -453,7 +453,7 @@ class RoomsListView extends React.Component {
 
 		const defaultWhereClause = [Q.where('archived', false), Q.where('open', true)];
 
-		if (sortBy === 'alphabetical') {
+		if (sortBy === SortBy.Alphabetical) {
 			defaultWhereClause.push(Q.experimentalSortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
 		} else {
 			defaultWhereClause.push(Q.experimentalSortBy('room_updated_at', Q.desc));
@@ -973,7 +973,7 @@ class RoomsListView extends React.Component {
 		const { loading, chats, search, searching } = this.state;
 		const { theme, refreshing, displayMode } = this.props;
 
-		const height = displayMode === DISPLAY_MODE_CONDENSED ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
+		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		if (loading) {
 			return <ActivityIndicator theme={theme} />;
