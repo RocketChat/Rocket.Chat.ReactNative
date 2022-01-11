@@ -13,6 +13,7 @@ import { fileDownload } from '../../utils/fileDownload';
 import EventEmitter from '../../utils/events';
 import { LISTENER } from '../Toast';
 import I18n from '../../i18n';
+import { IAttachment } from '../../definitions/IAttachment';
 import RCActivityIndicator from '../ActivityIndicator';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
@@ -31,14 +32,7 @@ const styles = StyleSheet.create({
 });
 
 interface IMessageVideo {
-	file: {
-		title: string;
-		title_link: string;
-		type: string;
-		video_type: string;
-		video_url: string;
-		description: string;
-	};
+	file: IAttachment;
 	showAttachment: Function;
 	getCustomEmoji: TGetCustomEmoji;
 	theme: string;

@@ -13,6 +13,7 @@ import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { fileDownloadAndPreview } from '../../utils/fileDownload';
 import { formatAttachmentUrl } from '../../lib/utils';
+import { IAttachment } from '../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import RCActivityIndicator from '../ActivityIndicator';
 
@@ -91,43 +92,26 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IMessageReplyAttachment {
-	author_name: string;
-	message_link: string;
-	ts: string;
-	text: string;
-	title: string;
-	short: boolean;
-	value: string;
-	title_link: string;
-	author_link: string;
-	type: string;
-	color: string;
-	description: string;
-	fields: IMessageReplyAttachment[];
-	thumb_url: string;
-}
-
 interface IMessageTitle {
-	attachment: Partial<IMessageReplyAttachment>;
+	attachment: IAttachment;
 	timeFormat: string;
 	theme: string;
 }
 
 interface IMessageDescription {
-	attachment: Partial<IMessageReplyAttachment>;
+	attachment: IAttachment;
 	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
 
 interface IMessageFields {
-	attachment: Partial<IMessageReplyAttachment>;
+	attachment: IAttachment;
 	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 }
 
 interface IMessageReply {
-	attachment: IMessageReplyAttachment;
+	attachment: IAttachment;
 	timeFormat: string;
 	index: number;
 	theme: string;
@@ -195,7 +179,7 @@ const Fields = React.memo(
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>{field.title}</Text>
 						<Markdown
-							msg={field.value}
+							msg={field.value!}
 							baseUrl={baseUrl}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
