@@ -15,8 +15,8 @@ const Roles = ({ roles, theme }) =>
 			<View style={styles.rolesContainer}>
 				{roles.map(role =>
 					role ? (
-						<View style={[styles.roleBadge, { backgroundColor: themes[theme].auxiliaryBackground }]} key={role}>
-							<Text style={styles.role}>{role}</Text>
+						<View style={[styles.roleBadge, { backgroundColor: themes[theme].chatComponentBackground }]} key={role}>
+							<Text style={[styles.role, { color: themes[theme].titleText }]}>{role}</Text>
 						</View>
 					) : null
 				)}
