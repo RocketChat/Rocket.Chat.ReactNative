@@ -10,9 +10,9 @@ import database from '../../lib/database';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../constants/colors';
-import { RoomType } from '../../definitions/IRoom';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
+import { SubscriptionType } from '../../definitions/ISubscription';
 
 interface IUser {
 	name: string;
@@ -65,7 +65,7 @@ const SelectUsers = ({
 	const getAvatar = (item: any) =>
 		avatarURL({
 			text: RocketChat.getRoomAvatar(item),
-			type: RoomType.DIRECT,
+			type: SubscriptionType.DIRECT,
 			user: { id: userId, token },
 			server,
 			avatarETag: item.avatarETag,

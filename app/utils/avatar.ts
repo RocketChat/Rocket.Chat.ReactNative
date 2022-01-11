@@ -1,5 +1,5 @@
 import { compareServerVersion, methods } from '../lib/utils';
-import { RoomType } from '../definitions/IRoom';
+import { SubscriptionType } from '../definitions/ISubscription';
 import { IAvatar } from '../containers/Avatar/interfaces';
 
 const formatUrl = (url: string, size: number, query: string) => `${url}?format=png&size=${size}${query}`;
@@ -17,7 +17,7 @@ export const avatarURL = ({
 	serverVersion
 }: IAvatar): string => {
 	let room;
-	if (type === RoomType.DIRECT) {
+	if (type === SubscriptionType.DIRECT) {
 		room = text;
 	} else if (rid && !compareServerVersion(serverVersion, '3.6.0', methods.lowerThan)) {
 		room = `room/${rid}`;

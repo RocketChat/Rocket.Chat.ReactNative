@@ -1,7 +1,7 @@
 import { ChatsStackParamList } from '../stacks/types';
-import { IRoom, RoomType } from '../definitions/IRoom';
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
+import { ISubscription, SubscriptionType } from '../definitions/ISubscription';
 
 const navigate = ({
 	item,
@@ -30,10 +30,10 @@ const navigate = ({
 	});
 };
 
-interface IItem extends Partial<IRoom> {
+interface IItem extends Partial<ISubscription> {
 	rid: string;
 	name: string;
-	t: RoomType;
+	t: SubscriptionType;
 }
 
 export const goRoom = async ({
@@ -56,7 +56,7 @@ export const goRoom = async ({
 					item: {
 						rid: result.room._id,
 						name: username!,
-						t: RoomType.DIRECT
+						t: SubscriptionType.DIRECT
 					},
 					isMasterDetail,
 					...props

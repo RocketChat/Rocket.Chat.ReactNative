@@ -1,14 +1,14 @@
 import moment from 'moment';
 
-import { IRoom, RoomType } from '../definitions/IRoom';
 import { themes } from '../constants/colors';
 import I18n from '../i18n';
 import { IAttachment } from '../definitions/IAttachment';
+import { ISubscription, SubscriptionType } from '../definitions/ISubscription';
 
-export const isBlocked = (room: IRoom): boolean => {
+export const isBlocked = (room: ISubscription): boolean => {
 	if (room) {
 		const { t, blocked, blocker } = room;
-		if (t === RoomType.DIRECT && (blocked || blocker)) {
+		if (t === SubscriptionType.DIRECT && (blocked || blocker)) {
 			return true;
 		}
 	}
