@@ -9,7 +9,7 @@ import { useTheme } from '../../theme';
 import styles from './styles';
 
 interface IMarkdownPreview {
-	msg: string;
+	msg?: string;
 	numberOfLines?: number;
 	testID?: string;
 	style?: StyleProp<TextStyle>[];
