@@ -79,6 +79,7 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
+	username?: string;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
 	messages: Relation<TMessageModel>;
 	threads: Relation<TThreadModel>;

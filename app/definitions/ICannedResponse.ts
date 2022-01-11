@@ -26,6 +26,6 @@ export interface ICannedResponse {
 	tags: string[];
 	createdBy: { _id: string; username: string };
 	userId: string;
-	scopeName?: string;
+	scopeName: string;
 	departmentId?: string;
 }

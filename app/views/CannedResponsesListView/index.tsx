@@ -28,7 +28,7 @@ import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import styles from './styles';
 import { ICannedResponse, IDepartment } from '../../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IRoom } from '../../definitions/IRoom';
+import { ISubscription } from '../../definitions/ISubscription';
 
 const COUNT = 25;
 
@@ -53,7 +53,7 @@ interface ICannedResponsesListViewProps {
 }
 
 const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps): JSX.Element => {
-	const [room, setRoom] = useState<IRoom>(null!);
+	const [room, setRoom] = useState<ISubscription>(null!);
 
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);
 	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState<ICannedResponse[]>([]);

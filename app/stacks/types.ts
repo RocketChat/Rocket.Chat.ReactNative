@@ -7,6 +7,7 @@ import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
+import { ICannedResponse } from '../definitions/ICannedResponse';
 
 export type ChatsStackParamList = {
 	RoomsListView: undefined;
@@ -18,7 +19,7 @@ export type ChatsStackParamList = {
 		name?: string;
 		fname?: string;
 		prid?: string;
-		room: ISubscription;
+		room?: ISubscription;
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
 		roomUserId?: string;
@@ -132,12 +133,7 @@ export type ChatsStackParamList = {
 		rid: string;
 	};
 	CannedResponseDetail: {
-		cannedResponse: {
-			shortcut: string;
-			text: string;
-			scopeName: string;
-			tags: string[];
-		};
+		cannedResponse: ICannedResponse;
 		room: ISubscription;
 	};
 };
