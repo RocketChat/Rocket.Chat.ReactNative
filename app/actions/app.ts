@@ -14,7 +14,12 @@ interface ISetMasterDetail extends Action {
 
 export type TActionApp = IAppStart & ISetMasterDetail;
 
-export function appStart({ root, ...args }: { root: RootEnum }): IAppStart {
+interface Params {
+	root: RootEnum;
+	[key: string]: any;
+}
+
+export function appStart({ root, ...args }: Params): IAppStart {
 	return {
 		type: APP.START,
 		root,
