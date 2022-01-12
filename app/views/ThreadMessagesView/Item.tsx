@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
@@ -10,6 +9,7 @@ import { themes } from '../../constants/colors';
 import Markdown from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import ThreadDetails from '../../containers/ThreadDetails';
+import { TThreadModel } from '../../definitions/IThread';
 
 const styles = StyleSheet.create({
 	container: {
@@ -56,7 +56,18 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, toggleFollowThread }) => {
+interface IItem {
+	item: TThreadModel;
+	baseUrl: string;
+	theme: string;
+	useRealName: boolean;
+	user: any;
+	badgeColor: string;
+	onPress: (item: TThreadModel) => void;
+	toggleFollowThread: (isFollowing: boolean, id: string) => void;
+}
+
+const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem) => {
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
 	if (item?.ts) {
@@ -69,16 +80,7 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 			testID={`thread-messages-view-${item.msg}`}
 			style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<View style={styles.container}>
-				<Avatar
-					style={styles.avatar}
-					text={item?.u?.username}
-					size={36}
-					borderRadius={4}
-					baseUrl={baseUrl}
-					userId={user?.id}
-					token={user?.token}
-					theme={theme}
-				/>
+				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} theme={theme} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
 						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
@@ -87,10 +89,11 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
+						{/* @ts-ignore */}
 						<Markdown
 							msg={makeThreadName(item)}
 							baseUrl={baseUrl}
-							username={username}
+							username={username!}
 							theme={theme}
 							numberOfLines={2}
 							style={[styles.markdown]}
@@ -103,17 +106,6 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 			</View>
 		</Touchable>
 	);
-};
-
-Item.propTypes = {
-	item: PropTypes.object,
-	baseUrl: PropTypes.string,
-	theme: PropTypes.string,
-	useRealName: PropTypes.bool,
-	user: PropTypes.object,
-	badgeColor: PropTypes.string,
-	onPress: PropTypes.func,
-	toggleFollowThread: PropTypes.func
 };
 
 export default withTheme(Item);
