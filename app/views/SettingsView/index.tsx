@@ -88,7 +88,6 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 
 	handleLogout = () => {
 		logEvent(events.SE_LOG_OUT);
-		// @ts-ignore
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			confirmationText: I18n.t('Logout'),
@@ -98,7 +97,6 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 
 	handleClearCache = () => {
 		logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
-		/* @ts-ignore */
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
 			confirmationText: I18n.t('Clear'),
