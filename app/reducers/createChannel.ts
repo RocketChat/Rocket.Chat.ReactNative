@@ -1,11 +1,28 @@
 import { TApplicationActions } from '../definitions';
 import { CREATE_CHANNEL } from '../actions/actionsTypes';
 
+interface ICreateChannelResult {
+	name: string;
+	users: string[];
+	teamId: string;
+	type: boolean;
+	readOnly: boolean;
+	encrypted: boolean;
+	broadcast: boolean;
+	isTeam: boolean;
+}
+
+interface ICreateChannelResultOnlyGroup {
+	group: boolean;
+}
+
+export type TCreateChannelResult = ICreateChannelResult | ICreateChannelResultOnlyGroup;
+
 export interface ICreateChannel {
 	isFetching: boolean;
 	failure: boolean;
-	result: Record<string, string>;
-	error: Record<string, string>;
+	result: TCreateChannelResult | {};
+	error: any;
 }
 
 export const initialState: ICreateChannel = {

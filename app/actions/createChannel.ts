@@ -1,29 +1,14 @@
 import { Action } from 'redux';
 
+import { TCreateChannelResult } from '../reducers/createChannel';
 import { CREATE_CHANNEL } from './actionsTypes';
 
-interface ICreateChannelRequestData {
-	name: string;
-	users: string[];
-	teamId: string;
-	type: boolean;
-	readOnly: boolean;
-	encrypted: boolean;
-	broadcast: boolean;
-	isTeam: boolean;
-}
-
-interface ICreateChannelRequestDataGroup {
-	group: boolean;
-}
-
-type TData = ICreateChannelRequestData | ICreateChannelRequestDataGroup;
 interface ICreateChannelRequest extends Action {
-	data: TData;
+	data: TCreateChannelResult;
 }
 
 interface ICreateChannelSuccess extends Action {
-	data: TData;
+	data: TCreateChannelResult;
 }
 
 interface ICreateChannelFailure extends Action {
@@ -33,14 +18,14 @@ interface ICreateChannelFailure extends Action {
 
 export type TActionCreateChannel = ICreateChannelRequest & ICreateChannelSuccess & ICreateChannelFailure;
 
-export function createChannelRequest({ ...data }: TData): ICreateChannelRequest {
+export function createChannelRequest({ ...data }: TCreateChannelResult): ICreateChannelRequest {
 	return {
 		type: CREATE_CHANNEL.REQUEST,
 		data
 	};
 }
 
-export function createChannelSuccess({ ...data }: TData): ICreateChannelSuccess {
+export function createChannelSuccess({ ...data }: TCreateChannelResult): ICreateChannelSuccess {
 	return {
 		type: CREATE_CHANNEL.SUCCESS,
 		data
