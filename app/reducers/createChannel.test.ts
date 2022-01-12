@@ -3,21 +3,32 @@ import { initialState } from './createChannel';
 import { mockedStore } from './mockedStore';
 
 describe('test reducer', () => {
+	const data = {
+		name: 'test',
+		users: ['diego', 'karla'],
+		type: true,
+		readOnly: true,
+		broadcast: true,
+		encrypted: true,
+		isTeam: true,
+		teamId: 'xxx'
+	};
+
 	it('should return initial state', () => {
 		const { createChannel } = mockedStore.getState();
 		expect(createChannel).toEqual(initialState);
 	});
 
 	it('should return correct createChannel state after dispatch createChannelRequest action', () => {
-		mockedStore.dispatch(createChannelRequest({}));
+		mockedStore.dispatch(createChannelRequest(data));
 		const { createChannel } = mockedStore.getState();
 		expect(createChannel).toEqual({ isFetching: true, failure: false, error: {}, result: {} });
 	});
 
 	it('should return correct createChannel state after dispatch createChannelSuccess action', () => {
-		mockedStore.dispatch(createChannelSuccess({ data: true }));
+		mockedStore.dispatch(createChannelSuccess(data));
 		const { createChannel } = mockedStore.getState();
-		expect(createChannel).toEqual({ isFetching: false, failure: false, result: { data: true }, error: {} });
+		expect(createChannel).toEqual({ isFetching: false, failure: false, result: { ...data }, error: {} });
 	});
 
 	it('should return correct createChannel state after dispatch createChannelFailure action', () => {
@@ -26,7 +37,7 @@ describe('test reducer', () => {
 		expect(createChannel).toEqual({
 			isFetching: false,
 			failure: true,
-			result: { data: true },
+			result: { ...data },
 			error: { err: true }
 		});
 	});
