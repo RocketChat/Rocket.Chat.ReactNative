@@ -424,7 +424,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 	logoutOtherLocations = () => {
 		logEvent(events.PL_OTHER_LOCATIONS);
-		// @ts-ignore
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_from_other_locations'),
 			confirmationText: I18n.t('Logout'),
