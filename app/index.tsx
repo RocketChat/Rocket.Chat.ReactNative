@@ -30,6 +30,8 @@ import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
 import { isFDroidBuild } from './constants/environment';
+import { IThemePreference } from './definitions/ITheme';
+import { ICommand } from './definitions/ICommand';
 
 RNScreens.enableScreens();
 
@@ -42,10 +44,7 @@ interface IDimensions {
 
 interface IState {
 	theme: string;
-	themePreferences: {
-		currentTheme: 'automatic' | 'light';
-		darkLevel: string;
-	};
+	themePreferences: IThemePreference;
 	width: number;
 	height: number;
 	scale: number;
@@ -175,7 +174,7 @@ export default class Root extends React.Component<{}, IState> {
 	setTheme = (newTheme = {}) => {
 		// change theme state
 		this.setState(
-			prevState => newThemeState(prevState, newTheme),
+			prevState => newThemeState(prevState, newTheme as IThemePreference),
 			() => {
 				const { themePreferences } = this.state;
 				// subscribe to Appearance changes
@@ -191,7 +190,7 @@ export default class Root extends React.Component<{}, IState> {
 	initTablet = () => {
 		const { width } = this.state;
 		this.setMasterDetail(width);
-		this.onKeyCommands = KeyCommandsEmitter.addListener('onKeyCommand', (command: unknown) => {
+		this.onKeyCommands = KeyCommandsEmitter.addListener('onKeyCommand', (command: ICommand) => {
 			EventEmitter.emit(KEY_COMMAND, { event: command });
 		});
 	};

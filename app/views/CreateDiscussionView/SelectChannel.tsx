@@ -32,8 +32,6 @@ const SelectChannel = ({
 	}, 300);
 
 	const getAvatar = (item: any) =>
-		// TODO: remove this ts-ignore when migrate the file: app/utils/avatar.js
-		// @ts-ignore
 		avatarURL({
 			text: RocketChat.getRoomAvatar(item),
 			type: item.t,
