@@ -25,6 +25,6 @@ export default StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	backdrop: {
-		...StyleSheet.absoluteFill
+		...StyleSheet.absoluteFillObject
 	}
 });

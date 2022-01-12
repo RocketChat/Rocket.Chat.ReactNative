@@ -1,17 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import I18n from '../../../i18n';
 import DropdownItem from './DropdownItem';
 
-const DropdownItemFilter = ({ currentFilter, value, onPress }) => (
+interface IDropdownItemFilter {
+	currentFilter: string;
+	value: string;
+	onPress: (value: string) => void;
+}
+
+const DropdownItemFilter = ({ currentFilter, value, onPress }: IDropdownItemFilter): JSX.Element => (
 	<DropdownItem text={I18n.t(value)} iconName={currentFilter === value ? 'check' : null} onPress={() => onPress(value)} />
 );
-
-DropdownItemFilter.propTypes = {
-	currentFilter: PropTypes.string,
-	value: PropTypes.string,
-	onPress: PropTypes.func
-};
 
 export default DropdownItemFilter;
