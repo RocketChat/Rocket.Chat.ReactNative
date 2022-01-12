@@ -67,7 +67,7 @@ interface IItem {
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
 
-const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem) => {
+const Item = ({ item, theme, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem) => {
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
 	if (item?.ts) {
@@ -89,13 +89,7 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
-						<MarkdownPreview
-							msg={makeThreadName(item)}
-							baseUrl={baseUrl}
-							username={username!}
-							numberOfLines={2}
-							style={[styles.markdown]}
-						/>
+						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} />
 						{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
 					</View>
 					<ThreadDetails item={item} user={user} toggleFollowThread={toggleFollowThread} style={styles.threadDetails} />

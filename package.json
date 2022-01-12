@@ -6,7 +6,7 @@
 		"start": "react-native start",
 		"test": "jest",
 		"test-update": "jest --updateSnapshot",
-		"lint": "eslint . && tsc",
+		"lint": "tsc",
 		"prettier-lint": "prettier --write . && yarn lint",
 		"ci": "npm run precommit && codecov",
 		"ios": "npx react-native run-ios",
