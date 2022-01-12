@@ -12,6 +12,7 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
+import { SubscriptionType } from '../../definitions/ISubscription';
 
 interface IUser {
 	name: string;
@@ -62,11 +63,9 @@ const SelectUsers = ({
 	}, 300);
 
 	const getAvatar = (item: any) =>
-		// TODO: remove this ts-ignore when migrate the file: app/utils/avatar.js
-		// @ts-ignore
 		avatarURL({
 			text: RocketChat.getRoomAvatar(item),
-			type: 'd',
+			type: SubscriptionType.DIRECT,
 			user: { id: userId, token },
 			server,
 			avatarETag: item.avatarETag,
