@@ -24,7 +24,7 @@ import { goRoom } from '../utils/goRoom';
 import SafeAreaView from '../containers/SafeAreaView';
 import { compareServerVersion, methods } from '../lib/utils';
 import sharedStyles from './Styles';
-import { IBaseScreen } from '../definitions';
+import { IApplicationState, IBaseScreen } from '../definitions';
 
 const QUERY_SIZE = 50;
 
@@ -331,7 +331,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
 	maxUsers: state.settings.DirectMesssage_maxUsers || 1,

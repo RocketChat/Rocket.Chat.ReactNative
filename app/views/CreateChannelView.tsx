@@ -23,7 +23,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
-import { IBaseScreen } from '../definitions';
+import { IApplicationState, IBaseScreen } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -421,7 +421,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	isFetching: state.createChannel.isFetching,
 	encryptionEnabled: state.encryption.enabled,
