@@ -1,12 +1,8 @@
-import { RouteProp } from '@react-navigation/core';
-import { StackNavigationProp } from '@react-navigation/stack';
-
 import { NewMessageStackParamList } from '../../stacks/types';
 import { SubscriptionType } from '../../definitions/ISubscription';
+import { IBaseScreen } from '../../definitions';
 
-export interface ICreateChannelViewProps {
-	navigation: StackNavigationProp<NewMessageStackParamList, 'CreateDiscussionView'>;
-	route: RouteProp<NewMessageStackParamList, 'CreateDiscussionView'>;
+export interface ICreateChannelViewProps extends IBaseScreen<NewMessageStackParamList, 'CreateDiscussionView'> {
 	server: string;
 	user: {
 		id: string;
@@ -23,7 +19,6 @@ export interface ICreateChannelViewProps {
 	error: {
 		reason: string;
 	};
-	theme: string;
 	isMasterDetail: boolean;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
