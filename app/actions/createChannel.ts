@@ -17,7 +17,7 @@ interface ICreateChannelFailure extends Action {
 	isTeam: boolean;
 }
 
-export type TActionCreateApp = ICreateChannelRequest & ICreateChannelSuccess & ICreateChannelFailure;
+export type TActionCreateChannel = ICreateChannelRequest & ICreateChannelSuccess & ICreateChannelFailure;
 
 export function createChannelRequest(data: any): ICreateChannelRequest {
 	return {
