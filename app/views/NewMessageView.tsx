@@ -1,7 +1,6 @@
 import React from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationOptions } from '@react-navigation/stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
@@ -25,6 +24,7 @@ import { goRoom } from '../utils/goRoom';
 import SafeAreaView from '../containers/SafeAreaView';
 import { compareServerVersion, methods } from '../lib/utils';
 import sharedStyles from './Styles';
+import { IBaseScreen } from '../definitions';
 
 const QUERY_SIZE = 50;
 
@@ -74,11 +74,8 @@ interface INewMessageViewState {
 	permissions: boolean[];
 }
 
-interface INewMessageViewProps {
-	navigation: StackNavigationProp<any, 'NewMessageView'>;
-	create: (params: { group: boolean }) => void;
+interface INewMessageViewProps extends IBaseScreen<any, 'NewMessageView'> {
 	maxUsers: number;
-	theme: string;
 	isMasterDetail: boolean;
 	serverVersion: string;
 	createTeamPermission: string[];
@@ -175,9 +172,9 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 
 	createGroupChat = () => {
 		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
-		const { create, maxUsers, navigation } = this.props;
+		const { dispatch, maxUsers, navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', {
-			nextAction: () => create({ group: true }),
+			nextAction: () => dispatch(createChannelRequest({ group: true })),
 			buttonText: I18n.t('Create'),
 			maxUsers
 		});
@@ -345,8 +342,4 @@ const mapStateToProps = (state: any) => ({
 	createDiscussionPermission: state.permissions['start-discussion']
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	create: (params: { group: boolean }) => dispatch(createChannelRequest(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewMessageView));
+export default connect(mapStateToProps)(withTheme(NewMessageView));

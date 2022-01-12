@@ -4,12 +4,28 @@ import { CREATE_CHANNEL } from './actionsTypes';
 
 // TODO FIX DATA VALUE
 
+interface ICreateChannelRequestData {
+	name: string;
+	users: string[];
+	teamId: string;
+	type: boolean;
+	readOnly: boolean;
+	encrypted: boolean;
+	broadcast: boolean;
+	isTeam: boolean;
+}
+
+interface ICreateChannelRequestDataGroup {
+	group: boolean;
+}
+
+type TData = ICreateChannelRequestData | ICreateChannelRequestDataGroup;
 interface ICreateChannelRequest extends Action {
-	data: any;
+	data: TData;
 }
 
 interface ICreateChannelSuccess extends Action {
-	data: any;
+	data: TData;
 }
 
 interface ICreateChannelFailure extends Action {
@@ -19,14 +35,14 @@ interface ICreateChannelFailure extends Action {
 
 export type TActionCreateChannel = ICreateChannelRequest & ICreateChannelSuccess & ICreateChannelFailure;
 
-export function createChannelRequest(data: any): ICreateChannelRequest {
+export function createChannelRequest({ ...data }: TData): ICreateChannelRequest {
 	return {
 		type: CREATE_CHANNEL.REQUEST,
 		data
 	};
 }
 
-export function createChannelSuccess(data: any): ICreateChannelSuccess {
+export function createChannelSuccess({ ...data }: TData): ICreateChannelSuccess {
 	return {
 		type: CREATE_CHANNEL.SUCCESS,
 		data
