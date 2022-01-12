@@ -7,6 +7,7 @@ export * from './IMessage';
 export * from './INotification';
 export * from './IRoom';
 export * from './IServer';
+export * from './ISubscription';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: StackNavigationProp<T, S>;

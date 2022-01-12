@@ -4,7 +4,7 @@ import store from '../../lib/createStore';
 import { deepLinkingOpen } from '../../actions/deepLinking';
 import { isFDroidBuild } from '../../constants/environment';
 import PushNotification from './push';
-import { INotification, RoomType } from '../../definitions';
+import { INotification, SubscriptionType } from '../../definitions';
 
 interface IEjson {
 	rid: string;
@@ -27,8 +27,8 @@ export const onNotification = (notification: INotification): void => {
 				p: 'group',
 				l: 'channels'
 			};
-			let roomName = type === RoomType.DIRECT ? sender.username : name;
-			if (type === RoomType.OMNICHANNEL) {
+			let roomName = type === SubscriptionType.DIRECT ? sender.username : name;
+			if (type === SubscriptionType.OMNICHANNEL) {
 				roomName = sender.name;
 			}
 
