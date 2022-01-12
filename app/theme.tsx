@@ -18,7 +18,7 @@ export function withTheme<T extends object>(Component: React.ComponentType<T> & 
 	const ThemedComponent = (props: T) => (
 		<ThemeContext.Consumer>{contexts => <Component {...props} {...contexts} />}</ThemeContext.Consumer>
 	);
-	ThemedComponent.navigationOptions = Component.navigationOptions;
+
 	hoistNonReactStatics(ThemedComponent, Component);
 	return ThemedComponent;
 }

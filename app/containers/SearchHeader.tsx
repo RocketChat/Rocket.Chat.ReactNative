@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { withTheme } from '../theme';
 import sharedStyles from '../views/Styles';
@@ -47,8 +46,4 @@ const SearchHeader = ({ theme, onSearchChangeText }: ISearchHeader) => {
 	);
 };
 
-SearchHeader.propTypes = {
-	theme: PropTypes.string,
-	onSearchChangeText: PropTypes.func
-};
 export default withTheme(SearchHeader);

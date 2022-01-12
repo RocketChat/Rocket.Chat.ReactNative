@@ -28,7 +28,7 @@ export function withDimensions<T extends object>(Component: React.ComponentType<
 	const DimensionsComponent = (props: T) => (
 		<DimensionsContext.Consumer>{contexts => <Component {...props} {...contexts} />}</DimensionsContext.Consumer>
 	);
-	DimensionsComponent.navigationOptions = Component.navigationOptions;
+
 	hoistNonReactStatics(DimensionsComponent, Component);
 	return DimensionsComponent;
 }

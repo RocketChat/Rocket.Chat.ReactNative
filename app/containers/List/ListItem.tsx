@@ -121,7 +121,7 @@ interface IListItemButton {
 	underlayColor?: string;
 }
 
-const Button: React.FC<IListItemButton> = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListItemButton) => (
+const Button = React.memo<IListItemButton>(({ onPress, backgroundColor, underlayColor, ...props }: IListItemButton) => (
 	<Touch
 		onPress={() => onPress!(props.title)}
 		style={{ backgroundColor: backgroundColor || themes[props.theme!].backgroundColor }}
@@ -138,7 +138,7 @@ interface IListItem extends IListItemContent {
 	backgroundColor?: string;
 }
 
-const ListItem: React.FC<IListItem> = React.memo(({ ...props }: IListItem) => {
+const ListItem = React.memo<IListItem>(({ ...props }: IListItem) => {
 	if (props.onPress) {
 		return <Button {...props} />;
 	}

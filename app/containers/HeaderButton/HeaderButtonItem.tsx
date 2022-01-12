@@ -10,7 +10,7 @@ import sharedStyles from '../../views/Styles';
 interface IHeaderButtonItem {
 	title?: string;
 	iconName?: string;
-	onPress: (() => void) | (({ closeModal }: { closeModal?: (() => void) | undefined }) => Promise<void>);
+	onPress: <T>(arg: T) => void;
 	testID?: string;
 	theme?: string;
 	badge?(): void;
