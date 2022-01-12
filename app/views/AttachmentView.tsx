@@ -123,7 +123,11 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 
 		this.setState({ loading: true });
 		try {
-			const extension = image_url ? `.${mime.extension(image_type) || 'jpg'}` : `.${mime.extension(video_type) || 'mp4'}`;
+			const extension = image_url
+				? `.${mime.extension(image_type) || 'jpg'}`
+				: `.${(video_type === 'video/quicktime' && 'mov') || mime.extension(video_type) || 'mp4'}`;
+			// The return of mime.extension('video/quicktime') is .qt,
+			// this format the iOS isn't recognize and can't save on gallery
 			const documentDir = `${RNFetchBlob.fs.dirs.DocumentDir}/`;
 			const path = `${documentDir + sha256(url!) + extension}`;
 			const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment);

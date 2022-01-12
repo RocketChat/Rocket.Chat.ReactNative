@@ -2,13 +2,11 @@ import React from 'react';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { TNavigationOptions } from './definitions/navigationTypes';
+import { IThemePreference } from './definitions/ITheme';
 
 interface IThemeContextProps {
 	theme: string;
-	themePreferences?: {
-		currentTheme: 'automatic' | 'light';
-		darkLevel: string;
-	};
+	themePreferences?: IThemePreference;
 	setTheme?: (newTheme?: {}) => void;
 }
 
