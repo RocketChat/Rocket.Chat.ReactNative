@@ -3,18 +3,18 @@ import { NavigatorScreenParams } from '@react-navigation/core';
 
 import { IAttachment } from '../../definitions/IAttachment';
 import { IMessage } from '../../definitions/IMessage';
-import { IRoom, RoomType } from '../../definitions/IRoom';
+import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 		tmid?: string;
 		message?: string;
 		name?: string;
 		fname?: string;
 		prid?: string;
-		room: IRoom;
+		room: ISubscription;
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
 		roomUserId?: string;
@@ -27,17 +27,17 @@ export type MasterDetailDrawerParamList = {
 
 export type ModalStackParamList = {
 	RoomActionsView: {
-		room: IRoom;
+		room: ISubscription;
 		member: any;
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 		joined: boolean;
 	};
 	RoomInfoView: {
-		room: IRoom;
+		room: ISubscription;
 		member: any;
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 	};
 	SelectListView: {
 		data: any;
@@ -54,11 +54,11 @@ export type ModalStackParamList = {
 	};
 	RoomMembersView: {
 		rid: string;
-		room: IRoom;
+		room: ISubscription;
 	};
 	SearchMessagesView: {
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 		encrypted?: boolean;
 		showCloseModal?: boolean;
 	};
@@ -84,18 +84,18 @@ export type ModalStackParamList = {
 	};
 	MessagesView: {
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 		name: string;
 	};
 	AutoTranslateView: {
 		rid: string;
-		room: IRoom;
+		room: ISubscription;
 	};
 	DirectoryView: undefined;
 	QueueListView: undefined;
 	NotificationPrefView: {
 		rid: string;
-		room: IRoom;
+		room: ISubscription;
 	};
 	ForwardLivechatView: {
 		rid: string;
@@ -110,10 +110,10 @@ export type ModalStackParamList = {
 			scopeName: string;
 			tags: string[];
 		};
-		room: IRoom;
+		room: ISubscription;
 	};
 	LivechatEditView: {
-		room: IRoom;
+		room: ISubscription;
 		roomUser: any; // TODO: Change
 	};
 	PickerView: {
@@ -126,7 +126,7 @@ export type ModalStackParamList = {
 	};
 	ThreadMessagesView: {
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 	};
 	TeamChannelsView: {
 		teamId: string;
@@ -160,7 +160,7 @@ export type ModalStackParamList = {
 		teamId?: string;
 	};
 	CreateDiscussionView: {
-		channel: IRoom;
+		channel: ISubscription;
 		message: IMessage;
 		showCloseModal: boolean;
 	};
@@ -194,7 +194,7 @@ export type MasterDetailInsideStackParamList = {
 		isShareView?: boolean;
 		serverInfo: {};
 		text: string;
-		room: IRoom;
+		room: ISubscription;
 		thread: any; // TODO: Change
 	};
 };

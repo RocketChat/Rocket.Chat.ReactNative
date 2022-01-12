@@ -305,8 +305,6 @@ const MessageActions = React.memo(
 			};
 
 			const handleDelete = (message: any) => {
-				// TODO - migrate this function for ts when fix the lint erros
-				// @ts-ignore
 				showConfirmationAlert({
 					message: I18n.t('You_will_not_be_able_to_recover_this_message'),
 					confirmationText: I18n.t('Delete'),

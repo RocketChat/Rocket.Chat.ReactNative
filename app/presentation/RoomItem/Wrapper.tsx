@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { themes } from '../../constants/colors';
-import { DISPLAY_MODE_CONDENSED } from '../../constants/constantDisplayMode';
+import { DisplayMode } from '../../constants/constantDisplayMode';
 import IconOrAvatar from './IconOrAvatar';
 import styles from './styles';
 
@@ -25,7 +25,7 @@ interface IWrapper {
 
 const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }: IWrapper) => (
 	<View
-		style={[styles.container, displayMode === DISPLAY_MODE_CONDENSED && styles.containerCondensed]}
+		style={[styles.container, displayMode === DisplayMode.Condensed && styles.containerCondensed]}
 		accessibilityLabel={accessibilityLabel}>
 		<IconOrAvatar theme={theme} displayMode={displayMode} {...props} />
 		<View
@@ -34,7 +34,7 @@ const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }:
 				{
 					borderColor: themes[theme].separatorColor
 				},
-				displayMode === DISPLAY_MODE_CONDENSED && styles.condensedPaddingVertical
+				displayMode === DisplayMode.Condensed && styles.condensedPaddingVertical
 			]}>
 			{children}
 		</View>
