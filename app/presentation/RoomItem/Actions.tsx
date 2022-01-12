@@ -5,7 +5,7 @@ import { RectButton } from 'react-native-gesture-handler';
 import { isRTL } from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
-import { DISPLAY_MODE_CONDENSED } from '../../constants/constantDisplayMode';
+import { DisplayMode } from '../../constants/constantDisplayMode';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 
 interface ILeftActions {
@@ -40,7 +40,7 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 		reverse
 	);
 
-	const isCondensed = displayMode === DISPLAY_MODE_CONDENSED;
+	const isCondensed = displayMode === DisplayMode.Condensed;
 	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
 
 	return (
@@ -87,7 +87,7 @@ export const RightActions = React.memo(
 			reverse
 		);
 
-		const isCondensed = displayMode === DISPLAY_MODE_CONDENSED;
+		const isCondensed = displayMode === DisplayMode.Condensed;
 		const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
 
 		return (
