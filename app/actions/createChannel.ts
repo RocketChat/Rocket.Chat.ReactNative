@@ -2,8 +2,6 @@ import { Action } from 'redux';
 
 import { CREATE_CHANNEL } from './actionsTypes';
 
-// TODO FIX DATA VALUE
-
 interface ICreateChannelRequestData {
 	name: string;
 	users: string[];
