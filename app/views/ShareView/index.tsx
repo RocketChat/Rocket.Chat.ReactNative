@@ -39,7 +39,7 @@ interface IShareViewState {
 	room: ISubscription;
 	thread: any; // change
 	maxFileSize: number;
-	mediaAllowList: number;
+	mediaAllowList: string;
 }
 
 interface IShareViewProps {
@@ -52,7 +52,7 @@ interface IShareViewProps {
 		token: string;
 	};
 	server: string;
-	FileUpload_MediaTypeWhiteList?: number;
+	FileUpload_MediaTypeWhiteList?: string;
 	FileUpload_MaxFileSize?: number;
 }
 
