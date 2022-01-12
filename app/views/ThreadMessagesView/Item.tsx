@@ -89,8 +89,8 @@ const Item = ({ item, baseUrl, theme, useRealName, user, badgeColor, onPress, to
 						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
-						{/* @ts-ignore */}
 						<Markdown
+							// @ts-ignore
 							msg={makeThreadName(item)}
 							baseUrl={baseUrl}
 							username={username!}
