@@ -3,11 +3,12 @@ import { TActionActiveUsers } from '../../actions/activeUsers';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
+import { IConnect } from '../../reducers/connect';
 
 export interface IApplicationState {
 	settings: any;
 	login: any;
-	meteor: any;
+	meteor: IConnect;
 	server: any;
 	selectedUsers: ISelectedUsers;
 	createChannel: any;
