@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-device-info/android/build.gradle b/node_modules/react-native-device-info/android/build.gradle
-index 952667b..03cf7fd 100644
+index de22598..eafedfe 100644
 --- a/node_modules/react-native-device-info/android/build.gradle
 +++ b/node_modules/react-native-device-info/android/build.gradle
 @@ -51,16 +51,19 @@ repositories {
