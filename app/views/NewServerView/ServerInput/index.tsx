@@ -5,8 +5,8 @@ import TextInput from '../../../containers/TextInput';
 import * as List from '../../../containers/List';
 import { themes } from '../../../constants/colors';
 import I18n from '../../../i18n';
+import { TServerHistory } from '../../../definitions/IServerHistory';
 import Item from './Item';
-import { IServer } from '../index';
 
 const styles = StyleSheet.create({
 	container: {
@@ -33,8 +33,8 @@ interface IServerInput extends TextInputProps {
 	theme: string;
 	serversHistory: any[];
 	onSubmit(): void;
-	onDelete(item: IServer): void;
-	onPressServerHistory(serverHistory: IServer): void;
+	onDelete(item: TServerHistory): void;
+	onPressServerHistory(serverHistory: TServerHistory): void;
 }
 
 const ServerInput = ({
