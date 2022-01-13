@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 interface IListItemContent {
 	title?: string;
 	subtitle?: string;
-	left?: Function;
+	left?: () => JSX.Element | null;
 	right?: () => JSX.Element | null;
 	disabled?: boolean;
 	testID?: string;
@@ -112,9 +112,12 @@ const Content = React.memo(
 	)
 );
 
-interface IListItemButton {
-	title?: string;
+interface IListButtonPress {
 	onPress?: Function;
+}
+
+interface IListItemButton extends IListButtonPress {
+	title?: string;
 	disabled?: boolean;
 	theme?: string;
 	backgroundColor?: string;
@@ -132,9 +135,7 @@ const Button = React.memo<IListItemButton>(({ onPress, backgroundColor, underlay
 	</Touch>
 ));
 
-interface IListItem extends IListItemContent {
-	onPress?: Function;
-	theme?: string;
+interface IListItem extends IListItemContent, IListButtonPress {
 	backgroundColor?: string;
 }
 
