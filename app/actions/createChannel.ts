@@ -18,14 +18,14 @@ interface ICreateChannelFailure extends Action {
 
 export type TActionCreateChannel = ICreateChannelRequest & ICreateChannelSuccess & ICreateChannelFailure;
 
-export function createChannelRequest({ ...data }: TCreateChannelResult): ICreateChannelRequest {
+export function createChannelRequest(data: TCreateChannelResult): ICreateChannelRequest {
 	return {
 		type: CREATE_CHANNEL.REQUEST,
 		data
 	};
 }
 
-export function createChannelSuccess({ ...data }: TCreateChannelResult): ICreateChannelSuccess {
+export function createChannelSuccess(data: TCreateChannelResult): ICreateChannelSuccess {
 	return {
 		type: CREATE_CHANNEL.SUCCESS,
 		data
