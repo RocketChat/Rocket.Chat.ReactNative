@@ -127,7 +127,7 @@ const Button = React.memo<IListItemButton>(({ onPress, backgroundColor, underlay
 		style={{ backgroundColor: backgroundColor || themes[props.theme!].backgroundColor }}
 		underlayColor={underlayColor}
 		enabled={!props.disabled}
-		theme={props.theme}>
+		theme={props.theme!}>
 		<Content {...props} />
 	</Touch>
 ));

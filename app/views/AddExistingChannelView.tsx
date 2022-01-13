@@ -197,7 +197,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 			<FlatList
 				data={search.length > 0 ? search : channels}
 				extraData={this.state}
-				keyExtractor={item => item._id}
+				keyExtractor={item => item.id}
 				ListHeaderComponent={this.renderHeader}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={List.Separator}

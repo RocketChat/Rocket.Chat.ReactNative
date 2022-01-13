@@ -6,6 +6,7 @@ import { CustomIcon } from '../lib/Icons';
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
 import { withTheme } from '../theme';
+import { TThreadModel } from '../definitions/IThread';
 
 const styles = StyleSheet.create({
 	container: {
@@ -40,16 +41,11 @@ const styles = StyleSheet.create({
 });
 
 interface IThreadDetails {
-	item: {
-		tcount: number | string;
-		replies: any;
-		tlm?: string;
-		id: string;
-	};
+	item: Partial<TThreadModel>;
 	user: {
 		id: string;
 	};
-	badgeColor: string;
+	badgeColor?: string;
 	toggleFollowThread: Function;
 	style: ViewStyle;
 	theme?: string;
@@ -57,17 +53,13 @@ interface IThreadDetails {
 
 const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style, theme }: IThreadDetails) => {
 	let { tcount } = item;
-	if (tcount >= 1000) {
+	if (tcount! >= 1000) {
 		tcount = '+999';
-	} else if (tcount >= 100) {
-		tcount = '+99';
 	}
 
-	let replies = item?.replies?.length ?? 0;
+	let replies: number | string = item?.replies?.length ?? 0;
 	if (replies >= 1000) {
 		replies = '+999';
-	} else if (replies >= 100) {
-		replies = '+99';
 	}
 
 	const isFollowing = item.replies?.find((u: any) => u === user?.id);
