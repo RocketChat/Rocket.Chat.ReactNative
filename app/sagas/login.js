@@ -100,7 +100,7 @@ const registerPushToken = function* registerPushToken() {
 };
 
 const fetchUsersPresence = function* fetchUserPresence() {
-	yield RocketChat.getUsersPresence();
+	// yield RocketChat.getUsersPresence();
 	RocketChat.subscribeUsersPresence();
 };
 

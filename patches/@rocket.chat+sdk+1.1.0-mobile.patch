@@ -1,0 +1,40 @@
+diff --git a/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
+index eaf7eae..591c1b9 100644
+--- a/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
++++ b/node_modules/@rocket.chat/sdk/lib/clients/Rocketchat.ts
+@@ -37,6 +37,7 @@ export default class RocketChatClient extends ClientRest implements ISocket {
+   async checkAndReopen (): Promise<any> { return (await this.socket as ISocket).checkAndReopen() }
+   async onStreamData (event: string, cb: ICallback): Promise<any> { return (await this.socket as ISocket).onStreamData(event, cb) }
+   async subscribe (topic: string, ...args: any[]): Promise<ISubscription> { return (await this.socket as ISocket).subscribe(topic, ...args) }
++  async subscribeRaw (...args: any[]): Promise<ISubscription> { return (await this.socket as ISocket).subscribeRaw(...args) }
+   async unsubscribe (subscription: ISubscription): Promise<any> { return (await this.socket as ISocket).unsubscribe(subscription) }
+   async unsubscribeAll (): Promise<any> { return (await this.socket as ISocket).unsubscribeAll() }
+   async subscribeRoom (rid: string, ...args: any[]): Promise<ISubscription[]> { return (await this.socket as IDriver).subscribeRoom(rid, ...args) }
+diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+index fe50e77..eb39f7e 100644
+--- a/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
++++ b/node_modules/@rocket.chat/sdk/lib/drivers/ddp.ts
+@@ -508,6 +508,11 @@ export class DDPDriver extends EventEmitter implements ISocket, IDriver {
+     return this.ddp.subscribe(topic, [eventname, { 'useCollection': false, 'args': args }])
+   }
+ 
++  subscribeRaw = (...args: any[]): Promise<ISubscription> => {
++    this.logger.info(`[DDP driver] Raw Subscribing to ${JSON.stringify(args)}`)
++    return this.ddp.subscribe(...args)
++  }    
++
+   subscribeNotifyAll = (): Promise< any> => {
+     const topic = 'stream-notify-all'
+     return Promise.all([
+diff --git a/node_modules/@rocket.chat/sdk/lib/drivers/index.ts b/node_modules/@rocket.chat/sdk/lib/drivers/index.ts
+index e944a1d..29597d7 100644
+--- a/node_modules/@rocket.chat/sdk/lib/drivers/index.ts
++++ b/node_modules/@rocket.chat/sdk/lib/drivers/index.ts
+@@ -18,6 +18,7 @@ export interface ISocket {
+   disconnect (): Promise<ISocket>
+   checkAndReopen (): Promise<ISocket>
+   subscribe (topic: string, ...args: any[]): Promise<ISubscription>
++  subscribeRaw (...args: any[]): Promise<ISubscription>
+   unsubscribe (subscription: ISubscription): Promise<ISocket>
+   unsubscribeAll (): Promise<ISocket>
+ 

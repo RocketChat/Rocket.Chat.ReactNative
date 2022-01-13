@@ -19,7 +19,7 @@ export function subscribeUsersPresence() {
 		this.activeUsersSubTimeout = setTimeout(() => {
 			this.sdk.subscribe('activeUsers');
 		}, 5000);
-	} else {
+	} else if (compareServerVersion(serverVersion, '4.1.0', methods.lowerThan)) {
 		this.sdk.subscribe('stream-notify-logged', 'user-status');
 	}
 
@@ -34,6 +34,7 @@ let ids = [];
 export default async function getUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
 	const { user: loggedUser } = reduxStore.getState().login;
+	console.log('🚀 ~ file: getUsersPresence.js ~ line 46 ~ getUsersPresence ~ ids', ids);
 
 	// if server is greather than or equal 1.1.0
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '1.1.0')) {
@@ -52,6 +53,9 @@ export default async function getUsersPresence() {
 		try {
 			// RC 1.1.0
 			const result = await this.sdk.get('users.presence', params);
+			if (compareServerVersion(serverVersion, '4.1.0', methods.greaterThanOrEqualTo)) {
+				this.sdk.subscribeRaw('stream-user-presence', ['', { added: ids }]);
+			}
 			if (result.success) {
 				const { users } = result;
 
@@ -100,13 +104,14 @@ export default async function getUsersPresence() {
 
 let usersTimer = null;
 export function getUserPresence(uid) {
+	console.log('🚀 ~ file: getUsersPresence.js ~ line 106 ~ getUserPresence ~ uid', uid);
 	const auth = reduxStore.getState().login.isAuthenticated;
 
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {
-			if (auth && ids.length) {
-				getUsersPresence.call(this);
-			}
+			// if (auth && ids.length) {
+			getUsersPresence.call(this);
+			// }
 			usersTimer = null;
 		}, 2000);
 	}

@@ -30,7 +30,7 @@ import { compareServerVersion } from './utils';
 import reduxStore from './createStore';
 import database from './database';
 import subscribeRooms from './methods/subscriptions/rooms';
-import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
+import { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
 import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
@@ -307,6 +307,32 @@ const RocketChat = {
 				'stream-roles',
 				protectedFunction(ddpMessage => onRolesChanged(ddpMessage))
 			);
+
+			// TODO: refactor to reuse it on `user-status` event
+			this.sdk.onStreamData('stream-user-presence', ddpMessage => {
+				console.log('🚀 ~ file: getUsersPresence.js ~ line 56 ~ getUsersPresence ~ ddpMessage', ddpMessage);
+
+				this.activeUsers = this.activeUsers || {};
+				if (!this._setUserTimer) {
+					this._setUserTimer = setTimeout(() => {
+						const activeUsersBatch = this.activeUsers;
+						InteractionManager.runAfterInteractions(() => {
+							reduxStore.dispatch(setActiveUsers(activeUsersBatch));
+						});
+						this._setUserTimer = null;
+						return (this.activeUsers = {});
+					}, 10000);
+				}
+				const userStatus = ddpMessage.fields.args[0];
+				const { uid } = ddpMessage.fields;
+				const [, status, statusText] = userStatus;
+				this.activeUsers[uid] = { status: STATUSES[status], statusText };
+
+				const { user: loggedUser } = reduxStore.getState().login;
+				if (loggedUser && loggedUser.id === uid) {
+					reduxStore.dispatch(setUser({ status: STATUSES[status], statusText }));
+				}
+			});
 
 			this.notifyLoggedListener = this.sdk.onStreamData(
 				'stream-notify-logged',
@@ -1650,7 +1676,6 @@ const RocketChat = {
 			this.activeUsers[ddpMessage.id] = { status: ddpMessage.fields.status };
 		}
 	},
-	getUsersPresence,
 	getUserPresence,
 	subscribeUsersPresence,
 	getDirectory({ query, count, offset, sort }) {
