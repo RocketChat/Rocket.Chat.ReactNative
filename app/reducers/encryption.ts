@@ -1,11 +1,18 @@
 import { ENCRYPTION } from '../actions/actionsTypes';
+import { TApplicationActions } from '../definitions';
 
-const initialState = {
+export interface IEncryption {
+	enabled: boolean;
+	// TODO
+	banner: any;
+}
+
+export const initialState: IEncryption = {
 	enabled: false,
 	banner: null
 };
 
-export default function encryption(state = initialState, action) {
+export default function encryption(state = initialState, action: TApplicationActions): IEncryption {
 	switch (action.type) {
 		case ENCRYPTION.SET:
 			return {
