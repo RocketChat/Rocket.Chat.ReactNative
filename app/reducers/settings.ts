@@ -1,8 +1,12 @@
+import { IActionSettings } from '../actions/settings';
 import { SETTINGS } from '../actions/actionsTypes';
 
-const initialState = {};
+// TODO UPDATE SETTINGS TYPE
+export type ISettings = Record<string, any>;
 
-export default (state = initialState, action) => {
+export const initialState: ISettings = {};
+
+export default (state = initialState, action: IActionSettings): ISettings => {
 	switch (action.type) {
 		case SETTINGS.ADD:
 			return {
