@@ -3,6 +3,7 @@ import { TActionActiveUsers } from '../../actions/activeUsers';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
+import { TActionUserTyping } from '../../actions/usersTyping';
 
 export interface IApplicationState {
 	settings: any;
@@ -28,4 +29,4 @@ export interface IApplicationState {
 	roles: any;
 }
 
-export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers;
+export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers & TActionUserTyping;
