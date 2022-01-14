@@ -1,4 +1,4 @@
-import { TActionShareUser } from '../actions/share';
+import { TActionShare } from '../actions/share';
 import { SHARE } from '../actions/actionsTypes';
 
 export interface IShareUser {
@@ -21,7 +21,7 @@ export const initialState: IShare = {
 	settings: {}
 };
 
-export default function share(state = initialState, action: TActionShareUser): IShare {
+export default function share(state = initialState, action: TActionShare): IShare {
 	switch (action.type) {
 		case SHARE.SELECT_SERVER:
 			return {
