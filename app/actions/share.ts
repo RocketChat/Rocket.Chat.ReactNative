@@ -16,7 +16,7 @@ interface IShareSetUser extends Action {
 	user: IShareUser;
 }
 
-export type TActionShareUser = IShareSelectServer & IShareSetSettings & IShareSetUser;
+export type TActionShare = IShareSelectServer & IShareSetSettings & IShareSetUser;
 
 export function shareSelectServer(server: any): IShareSelectServer {
 	return {
