@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../lib/Icons';
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
-import { withTheme } from '../theme';
+import { useTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,8 +41,7 @@ const styles = StyleSheet.create({
 
 interface IThreadDetails {
 	item: {
-		tcount?: number | string;
-		dcount?: number | string;
+		tcount: number | string;
 		replies?: any;
 		id: string;
 	};
@@ -53,25 +52,20 @@ interface IThreadDetails {
 	toggleFollowThread: Function;
 	thread: boolean;
 	time: string;
-	style: object;
-	theme: string;
+	style: ViewStyle;
 }
 
-const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, thread, time, style, theme }: IThreadDetails) => {
-	const { tcount, dcount } = item;
-	let count = tcount || dcount;
+const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails) => {
+	const { theme } = useTheme();
+	let { tcount } = item;
 
-	if (count! >= 1000) {
-		count = '+999';
-	} else if (count! >= 100) {
-		count = '+99';
+	if (tcount >= 1000) {
+		tcount = '+999';
 	}
 
 	let replies = item?.replies?.length ?? 0;
 	if (replies >= 1000) {
 		replies = '+999';
-	} else if (replies >= 100) {
-		replies = '+99';
 	}
 
 	const isFollowing = item.replies?.find((u: any) => u === user?.id);
@@ -80,34 +74,31 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, thread, tim
 		<View style={[styles.container, style]}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
-					<CustomIcon name={thread ? 'threads' : 'discussions'} size={24} color={themes[theme].auxiliaryText} />
-					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-						{count}
+					<CustomIcon name={'threads'} size={24} color={themes[theme!].auxiliaryText} />
+					<Text style={[styles.detailText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
+						{tcount}
 					</Text>
 				</View>
 
 				<View style={styles.detailContainer}>
-					<CustomIcon name={thread ? 'user' : 'clock'} size={24} color={themes[theme].auxiliaryText} />
-					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
-						{thread ? replies : time}
+					<CustomIcon name={'user'} size={24} color={themes[theme!].auxiliaryText} />
+					<Text style={[styles.detailText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
+						{replies}
 					</Text>
 				</View>
 			</View>
-
-			{thread ? (
-				<View style={styles.badgeContainer}>
-					{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
-					<Touchable onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
-						<CustomIcon
-							size={24}
-							name={isFollowing ? 'notification' : 'notification-disabled'}
-							color={themes[theme].auxiliaryTintColor}
-						/>
-					</Touchable>
-				</View>
-			) : null}
+			<View style={styles.badgeContainer}>
+				{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
+				<Touchable onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
+					<CustomIcon
+						size={24}
+						name={isFollowing ? 'notification' : 'notification-disabled'}
+						color={themes[theme!].auxiliaryTintColor}
+					/>
+				</Touchable>
+			</View>
 		</View>
 	);
 };
 
-export default withTheme(ThreadDetails);
+export default ThreadDetails;

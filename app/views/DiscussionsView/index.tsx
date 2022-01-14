@@ -20,22 +20,37 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
 import RocketChat from '../../lib/rocketchat';
 import SearchHeader from '../../containers/SearchHeader';
-import Item from '../ThreadMessagesView/Item';
+import Item from './Item';
 import styles from './styles';
 
 const API_FETCH_COUNT = 50;
 
+interface IItem {
+	rid: string;
+	drid: string;
+	prid: string;
+	id: string;
+	u: {
+		username: string;
+	};
+	dcount: string | number;
+	replies?: any;
+	msg: string;
+	ts: string;
+}
+
 interface IDiscussionsViewProps {
 	navigation: StackNavigationProp<any, 'DiscussionsView'>;
 	route: RouteProp<any, 'DiscussionsView'>;
-	item: {
-		msg: string;
-	};
+	item: IItem;
 }
 
 interface IDiscussionsViewState {
-	login?: {
-		user: object;
+	login: {
+		user: {
+			id: string;
+			token: string;
+		};
 	};
 	server: {
 		server: string;
@@ -54,8 +69,6 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 
 	const user = useSelector((state: IDiscussionsViewState) => state.login?.user);
 	const baseUrl = useSelector((state: IDiscussionsViewState) => state.server?.server);
-	const useRealName = useSelector((state: IDiscussionsViewState) => state.settings?.UI_Use_Real_Name);
-	const timeFormat = useSelector((state: IDiscussionsViewState) => state.settings?.Message_TimeFormat);
 	const isMasterDetail = useSelector((state: IDiscussionsViewState) => state.app?.isMasterDetail);
 
 	const [loading, setLoading] = useState(false);
@@ -174,7 +187,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 	}, [navigation, isSearching]);
 
 	const onDiscussionPress = debounce(
-		(item: any) => {
+		(item: IItem) => {
 			navigation.push('RoomView', {
 				rid: item.drid,
 				prid: item.rid,
@@ -186,16 +199,14 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 		true
 	);
 
-	const renderItem = ({ item }: any) => (
+	const renderItem = ({ item }: { item: IItem }) => (
 		<Item
 			{...{
 				item,
 				user,
 				navigation,
-				baseUrl,
-				useRealName
+				baseUrl
 			}}
-			timeFormat={timeFormat}
 			onPress={onDiscussionPress}
 		/>
 	);
@@ -218,7 +229,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				windowSize={10}
 				initialNumToRender={7}
 				removeClippedSubviews={isIOS}
-				onEndReached={() => (isSearching ? searchTotal > API_FETCH_COUNT ?? load() : total > API_FETCH_COUNT ?? load())}
+				onEndReached={() => (searchTotal || total) > API_FETCH_COUNT ?? load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				scrollIndicatorInsets={{ right: 1 }}
