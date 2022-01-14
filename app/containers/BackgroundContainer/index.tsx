@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 const BackgroundContainer = ({ theme, text, loading }: IBackgroundContainer) => (
 	<View style={styles.container}>
 		<ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />
-		{text ? <Text style={[styles.text, { color: themes[theme].auxiliaryTintColor }]}>{text}</Text> : null}
+		{text && !loading ? <Text style={[styles.text, { color: themes[theme].auxiliaryTintColor }]}>{text}</Text> : null}
 		{loading ? <ActivityIndicator style={styles.text} color={themes[theme].auxiliaryTintColor} /> : null}
 	</View>
 );
