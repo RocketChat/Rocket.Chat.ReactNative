@@ -45,7 +45,7 @@ interface ISidebarProps {
 		name: string;
 		roles: string[];
 	};
-	theme: string;
+	theme?: string;
 	loadingServer: boolean;
 	useRealName: boolean;
 	allowStatusMessage: boolean;
@@ -177,12 +177,13 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
 		return (
 			<>
-				<Separator theme={theme} />
+				<Separator theme={theme!} />
 				<SidebarItem
 					text={I18n.t('Admin_Panel')}
-					left={<CustomIcon name='settings' size={20} color={themes[theme].titleText} />}
+					left={<CustomIcon name='settings' size={20} color={themes[theme!].titleText} />}
 					onPress={() => this.sidebarNavigate(routeName)}
 					testID='sidebar-admin'
+					theme={theme!}
 					current={this.currentItemKey === routeName}
 				/>
 			</>
@@ -195,30 +196,34 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			<>
 				<SidebarItem
 					text={I18n.t('Chats')}
-					left={<CustomIcon name='message' size={20} color={themes[theme].titleText} />}
+					left={<CustomIcon name='message' size={20} color={themes[theme!].titleText} />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					testID='sidebar-chats'
+					theme={theme!}
 					current={this.currentItemKey === 'ChatsStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
-					left={<CustomIcon name='user' size={20} color={themes[theme].titleText} />}
+					left={<CustomIcon name='user' size={20} color={themes[theme!].titleText} />}
 					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
 					testID='sidebar-profile'
+					theme={theme!}
 					current={this.currentItemKey === 'ProfileStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Display')}
-					left={<CustomIcon name='sort' size={20} color={themes[theme].titleText} />}
+					left={<CustomIcon name='sort' size={20} color={themes[theme!].titleText} />}
 					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
 					testID='sidebar-display'
+					theme={theme!}
 					current={this.currentItemKey === 'DisplayPrefStackNavigator'}
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
-					left={<CustomIcon name='administration' size={20} color={themes[theme].titleText} />}
+					left={<CustomIcon name='administration' size={20} color={themes[theme!].titleText} />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					testID='sidebar-settings'
+					theme={theme!}
 					current={this.currentItemKey === 'SettingsStackNavigator'}
 				/>
 				{this.renderAdmin()}
@@ -232,7 +237,8 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			<SidebarItem
 				text={user.statusText || I18n.t('Edit_Status')}
 				left={<Status size={24} status={user?.status} />}
-				right={<CustomIcon name='edit' size={20} color={themes[theme].titleText} />}
+				theme={theme!}
+				right={<CustomIcon name='edit' size={20} color={themes[theme!].titleText} />}
 				onPress={() => this.sidebarNavigate('StatusView')}
 				testID='sidebar-custom-status'
 			/>
@@ -246,12 +252,12 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme].focusedBackground }} vertical={isMasterDetail}>
+			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme!].focusedBackground }} vertical={isMasterDetail}>
 				<ScrollView
 					style={[
 						styles.container,
 						{
-							backgroundColor: isMasterDetail ? themes[theme].backgroundColor : themes[theme].focusedBackground
+							backgroundColor: isMasterDetail ? themes[theme!].backgroundColor : themes[theme!].focusedBackground
 						}
 					]}
 					{...scrollPersistTaps}>
@@ -260,12 +266,12 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 							<Avatar text={user.username} style={styles.avatar} size={30} />
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
-									<Text numberOfLines={1} style={[styles.username, { color: themes[theme].titleText }]}>
+									<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].titleText }]}>
 										{useRealName ? user.name : user.username}
 									</Text>
 								</View>
 								<Text
-									style={[styles.currentServerText, { color: themes[theme].titleText }]}
+									style={[styles.currentServerText, { color: themes[theme!].titleText }]}
 									numberOfLines={1}
 									accessibilityLabel={`Connected to ${baseUrl}`}>
 									{Site_Name}
@@ -274,14 +280,14 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 						</View>
 					</TouchableWithoutFeedback>
 
-					<Separator theme={theme} />
+					<Separator theme={theme!} />
 
 					{allowStatusMessage ? this.renderCustomStatus() : null}
 					{!isMasterDetail ? (
 						<>
-							<Separator theme={theme} />
+							<Separator theme={theme!} />
 							{this.renderNavigation()}
-							<Separator theme={theme} />
+							<Separator theme={theme!} />
 						</>
 					) : (
 						<>{this.renderAdmin()}</>

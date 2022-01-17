@@ -1,10 +1,21 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
-import { ISubscription } from './definitions/ISubscription';
-import { IServer } from './definitions/IServer';
-import { IAttachment } from './definitions/IAttachment';
-import { MasterDetailInsideStackParamList } from './stacks/MasterDetailStack/types';
-import { OutsideParamList, InsideStackParamList } from './stacks/types';
+import { ISubscription } from './ISubscription';
+import { IServer } from './IServer';
+import { IAttachment } from './IAttachment';
+import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
+import { OutsideParamList, InsideStackParamList } from '../stacks/types';
+
+interface INavigationProps {
+	route?: any;
+	navigation?: any;
+	isMasterDetail?: boolean;
+}
+
+export type TNavigationOptions = {
+	navigationOptions?(props: INavigationProps): StackNavigationOptions;
+};
 
 export type SetUsernameStackParamList = {
 	SetUsernameView: {

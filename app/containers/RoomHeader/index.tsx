@@ -13,7 +13,7 @@ interface IRoomHeaderContainerProps {
 	prid: string;
 	tmid: string;
 	teamMain: boolean;
-	usersTyping: string;
+	usersTyping: [];
 	status: string;
 	statusText: string;
 	connecting: boolean;
@@ -79,14 +79,12 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 			teamMain,
 			prid,
 			tmid,
-			widthOffset,
 			status = 'offline',
 			statusText,
 			connecting,
 			connected,
 			usersTyping,
 			onPress,
-			roomUserId,
 			width,
 			height,
 			parentTitle,
@@ -115,9 +113,6 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 				width={width}
 				height={height}
 				usersTyping={usersTyping}
-				widthOffset={widthOffset}
-				roomUserId={roomUserId}
-				connecting={connecting}
 				parentTitle={parentTitle}
 				isGroupChat={isGroupChat}
 				testID={testID}
