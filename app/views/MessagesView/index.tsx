@@ -25,6 +25,8 @@ import { ISubscription, SubscriptionType } from '../../definitions/ISubscription
 interface IMessagesViewProps {
 	user: {
 		id: string;
+		username: string;
+		token: string;
 	};
 	baseUrl: string;
 	navigation: CompositeNavigationProp<

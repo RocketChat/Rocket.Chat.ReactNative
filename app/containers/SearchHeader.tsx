@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { withDimensions } from '../dimensions';
+import { useOrientation } from '../dimensions';
 import { isIOS, isTablet } from '../utils/deviceInfo';
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
@@ -23,13 +23,11 @@ interface ISearchHeaderProps {
 	placeholder: string;
 	theme: string;
 	testID: string;
-	width: number;
-	height: number;
 }
 
-const SearchHeader = ({ onSearchChangeText, placeholder, theme, testID, width, height }: ISearchHeaderProps) => {
+const SearchHeader = ({ onSearchChangeText, placeholder, theme, testID }: ISearchHeaderProps) => {
 	const isLight = theme === 'light';
-	const isLandscape = width > height;
+	const { isLandscape } = useOrientation();
 	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
 	const titleFontSize = 16 * scale;
 
@@ -47,4 +45,4 @@ const SearchHeader = ({ onSearchChangeText, placeholder, theme, testID, width, h
 	);
 };
 
-export default withDimensions(SearchHeader);
+export default SearchHeader;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInputProps, View } from 'react-native';
+import { NativeSyntheticEvent, StyleSheet, Text, TextInputFocusEventData, TextInputProps, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import TextInput from '../presentation/TextInput';
@@ -45,13 +45,15 @@ const styles = StyleSheet.create({
 });
 
 interface ISearchBox {
+	value?: string;
 	onChangeText: TextInputProps['onChangeText'];
-	onSubmitEditing: () => void;
-	hasCancel: boolean;
-	onCancelPress: Function;
-	theme: string;
-	inputRef: any;
+	onSubmitEditing?: () => void;
+	hasCancel?: boolean;
+	onCancelPress?: Function;
+	theme?: string;
+	inputRef?: React.Ref<unknown>;
 	testID?: string;
+	onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }
 
 const CancelButton = (onCancelPress: Function, theme: string) => (
@@ -73,10 +75,10 @@ const SearchBox = ({
 	<View
 		style={[
 			styles.container,
-			{ backgroundColor: isIOS ? themes[theme].headerBackground : themes[theme].headerSecondaryBackground }
+			{ backgroundColor: isIOS ? themes[theme!].headerBackground : themes[theme!].headerSecondaryBackground }
 		]}>
-		<View style={[styles.searchBox, { backgroundColor: themes[theme].searchboxBackground }]}>
-			<CustomIcon name='search' size={14} color={themes[theme].auxiliaryText} />
+		<View style={[styles.searchBox, { backgroundColor: themes[theme!].searchboxBackground }]}>
+			<CustomIcon name='search' size={14} color={themes[theme!].auxiliaryText} />
 			<TextInput
 				ref={inputRef}
 				autoCapitalize='none'
@@ -90,11 +92,11 @@ const SearchBox = ({
 				underlineColorAndroid='transparent'
 				onChangeText={onChangeText}
 				onSubmitEditing={onSubmitEditing}
-				theme={theme}
+				theme={theme!}
 				{...props}
 			/>
 		</View>
-		{hasCancel ? CancelButton(onCancelPress, theme) : null}
+		{hasCancel ? CancelButton(onCancelPress!, theme!) : null}
 	</View>
 );
 

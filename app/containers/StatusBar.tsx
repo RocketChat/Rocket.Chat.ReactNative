@@ -5,9 +5,9 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 
 interface IStatusBar {
-	theme: string;
-	barStyle: any;
-	backgroundColor: string;
+	theme?: string;
+	barStyle?: any;
+	backgroundColor?: string;
 }
 
 const StatusBar = React.memo(({ theme, barStyle, backgroundColor }: IStatusBar) => {
@@ -17,7 +17,7 @@ const StatusBar = React.memo(({ theme, barStyle, backgroundColor }: IStatusBar) 
 			barStyle = 'dark-content';
 		}
 	}
-	return <StatusBarRN backgroundColor={backgroundColor ?? themes[theme].headerBackground} barStyle={barStyle} animated />;
+	return <StatusBarRN backgroundColor={backgroundColor ?? themes[theme!].headerBackground} barStyle={barStyle} animated />;
 });
 
 export default withTheme(StatusBar);

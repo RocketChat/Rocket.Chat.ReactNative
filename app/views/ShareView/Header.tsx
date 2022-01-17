@@ -5,7 +5,7 @@ import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import RocketChat from '../../lib/rocketchat';
 import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../utils/room';
@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
 interface IHeader {
 	room: { prid?: string; t?: string };
 	thread: { id?: string };
-	theme: string;
 }
 
-const Header = React.memo(({ room, thread, theme }: IHeader) => {
+const Header = React.memo(({ room, thread }: IHeader) => {
+	const { theme } = useTheme();
 	let type;
 	if (thread?.id) {
 		type = 'thread';
@@ -94,4 +94,4 @@ const Header = React.memo(({ room, thread, theme }: IHeader) => {
 	);
 });
 
-export default withTheme(Header);
+export default Header;

@@ -58,7 +58,11 @@ interface INavigationOption {
 }
 
 interface ISearchMessagesViewProps extends INavigationOption {
-	user: { id: string };
+	user: {
+		id: string;
+		username: string;
+		token: string;
+	};
 	baseUrl: string;
 	serverVersion: string;
 	customEmojis: {
