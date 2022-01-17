@@ -148,7 +148,6 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 					<SearchHeader
 						onSearchChangeText={this.onSearchChangeText}
 						placeholder='Search'
-						theme={theme}
 						testID='thread-messages-view-search-header'
 					/>
 				),
@@ -558,8 +557,7 @@ const mapStateToProps = (state: any) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
-	isMasterDetail: state.app.isMasterDetail,
-	Message_TimeFormat: state.settings.Message_TimeFormat
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withTheme(withSafeAreaInsets(ThreadMessagesView)));
