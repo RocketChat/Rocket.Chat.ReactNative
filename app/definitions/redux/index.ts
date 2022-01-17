@@ -3,6 +3,7 @@ import { IActionRoles } from '../../actions/roles';
 import { TActionSelectedUsers } from '../../actions/selectedUsers';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
+import { IRoles } from '../../reducers/roles';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
 
 export interface IApplicationState {
@@ -26,7 +27,7 @@ export interface IApplicationState {
 	enterpriseModules: any;
 	encryption: any;
 	permissions: any;
-	roles: any;
+	roles: IRoles;
 }
 
 export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers & IActionRoles;
