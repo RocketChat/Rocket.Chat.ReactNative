@@ -127,7 +127,7 @@ class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefa
 				title={I18n.t(title, { defaultValue: title })}
 				onPress={() => this.changeDefaultBrowser(value)}
 				testID={`default-browser-view-${title}`}
-				right={this.isSelected(value) ? this.renderIcon : null}
+				right={() => (this.isSelected(value) ? this.renderIcon() : null)}
 				translateTitle={false}
 			/>
 		);
