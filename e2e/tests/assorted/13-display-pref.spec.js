@@ -1,4 +1,4 @@
-const { login, navigateToLogin } = require('../../helpers/app');
+const { login, navigateToLogin, sleep } = require('../../helpers/app');
 const data = require('../../data');
 
 const goToDisplayPref = async () => {
@@ -14,7 +14,7 @@ const goToRoomList = async () => {
 	await element(by.id('sidebar-chats')).tap();
 };
 
-describe('Rooms list screen', () => {
+describe('Display prefs', () => {
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToLogin();
@@ -89,7 +89,9 @@ describe('Rooms list screen', () => {
 				await expect(element(by.id('display-pref-view-avatar-switch'))).toBeVisible();
 				await element(by.id('display-pref-view-avatar-switch')).tap();
 				await goToRoomList();
-				await expect(element(by.id('avatar'))).not.toBeVisible();
+				await waitFor(element(by.id('avatar').withAncestor(by.id('rooms-list-view-item-general'))))
+					.not.toBeVisible()
+					.withTimeout(2000);
 			});
 		});
 	});

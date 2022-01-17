@@ -178,6 +178,14 @@ class RoomInfoView extends React.Component {
 		}
 	};
 
+	parseRoles = roleArray =>
+		Promise.all(
+			roleArray.map(async role => {
+				const description = await this.getRoleDescription(role);
+				return description;
+			})
+		);
+
 	loadUser = async () => {
 		const { room, roomUser } = this.state;
 
@@ -189,17 +197,24 @@ class RoomInfoView extends React.Component {
 					const { user } = result;
 					const { roles } = user;
 					if (roles && roles.length) {
-						user.parsedRoles = await Promise.all(
-							roles.map(async role => {
-								const description = await this.getRoleDescription(role);
-								return description;
-							})
-						);
+						user.parsedRoles = await this.parseRoles(roles);
 					}
 
 					this.setState({ roomUser: user });
 				}
 			} catch {
+				// do nothing
+			}
+		} else {
+			try {
+				const { roles } = roomUser;
+				if (roles && roles.length) {
+					const parsedRoles = await this.parseRoles(roles);
+					this.setState({ roomUser: { ...roomUser, parsedRoles } });
+				} else {
+					this.setState({ roomUser });
+				}
+			} catch (e) {
 				// do nothing
 			}
 		}

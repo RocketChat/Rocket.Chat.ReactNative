@@ -5,6 +5,7 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 import CookieManager from '@react-native-cookies/cookies';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { SettingsStackParamList } from '../../stacks/types';
 import { logout as logoutAction } from '../../actions/login';
 import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
 import { themes } from '../../constants/colors';
@@ -29,8 +30,8 @@ import database from '../../lib/database';
 import { isFDroidBuild } from '../../constants/environment';
 import { getUserSelector } from '../../selectors/login';
 
-interface IProps {
-	navigation: StackNavigationProp<any, 'SettingsView'>;
+interface ISettingsViewProps {
+	navigation: StackNavigationProp<SettingsStackParamList, 'SettingsView'>;
 	server: {
 		version: string;
 		server: string;
@@ -46,8 +47,8 @@ interface IProps {
 	appStart: Function;
 }
 
-class SettingsView extends React.Component<IProps, any> {
-	static navigationOptions = ({ navigation, isMasterDetail }: Partial<IProps>) => ({
+class SettingsView extends React.Component<ISettingsViewProps, any> {
+	static navigationOptions = ({ navigation, isMasterDetail }: ISettingsViewProps) => ({
 		headerLeft: () =>
 			isMasterDetail ? (
 				<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
@@ -87,7 +88,6 @@ class SettingsView extends React.Component<IProps, any> {
 
 	handleLogout = () => {
 		logEvent(events.SE_LOG_OUT);
-		// @ts-ignore
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			confirmationText: I18n.t('Logout'),
@@ -97,7 +97,6 @@ class SettingsView extends React.Component<IProps, any> {
 
 	handleClearCache = () => {
 		logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
-		/* @ts-ignore */
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
 			confirmationText: I18n.t('Clear'),
@@ -117,7 +116,7 @@ class SettingsView extends React.Component<IProps, any> {
 		});
 	};
 
-	navigateToScreen = (screen: string) => {
+	navigateToScreen = (screen: keyof SettingsStackParamList) => {
 		/* @ts-ignore */
 		logEvent(events[`SE_GO_${screen.replace('View', '').toUpperCase()}`]);
 		const { navigation } = this.props;

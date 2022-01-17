@@ -5,6 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { avatarURL } from '../../utils/avatar';
+import { SubscriptionType } from '../../definitions/ISubscription';
 import Emoji from '../markdown/Emoji';
 import { IAvatar } from './interfaces';
 
@@ -27,8 +28,8 @@ const Avatar = React.memo(
 		text,
 		size = 25,
 		borderRadius = 4,
-		type = 'd'
-	}: Partial<IAvatar>) => {
+		type = SubscriptionType.DIRECT
+	}: IAvatar) => {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
 		}

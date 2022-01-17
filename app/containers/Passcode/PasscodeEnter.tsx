@@ -15,7 +15,7 @@ import I18n from '../../i18n';
 
 interface IPasscodePasscodeEnter {
 	theme: string;
-	hasBiometry: string;
+	hasBiometry: boolean;
 	finishProcess: Function;
 }
 

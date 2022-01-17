@@ -24,6 +24,8 @@ import { getUserSelector } from '../selectors/login';
 import { withDimensions } from '../dimensions';
 import { getHeaderHeight } from '../containers/Header';
 import StatusBar from '../containers/StatusBar';
+import { InsideStackParamList } from '../stacks/types';
+import { IAttachment } from '../definitions/IAttachment';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,24 +33,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-// TODO: refactor when react-navigation is done
-export interface IAttachment {
-	title: string;
-	title_link?: string;
-	image_url?: string;
-	image_type?: string;
-	video_url?: string;
-	video_type?: string;
-}
-
 interface IAttachmentViewState {
 	attachment: IAttachment;
 	loading: boolean;
 }
 
 interface IAttachmentViewProps {
-	navigation: StackNavigationProp<any, 'AttachmentView'>;
-	route: RouteProp<{ AttachmentView: { attachment: IAttachment } }, 'AttachmentView'>;
+	navigation: StackNavigationProp<InsideStackParamList, 'AttachmentView'>;
+	route: RouteProp<InsideStackParamList, 'AttachmentView'>;
 	theme: string;
 	baseUrl: string;
 	width: number;
@@ -131,7 +123,11 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 
 		this.setState({ loading: true });
 		try {
-			const extension = image_url ? `.${mime.extension(image_type) || 'jpg'}` : `.${mime.extension(video_type) || 'mp4'}`;
+			const extension = image_url
+				? `.${mime.extension(image_type) || 'jpg'}`
+				: `.${(video_type === 'video/quicktime' && 'mov') || mime.extension(video_type) || 'mp4'}`;
+			// The return of mime.extension('video/quicktime') is .qt,
+			// this format the iOS isn't recognize and can't save on gallery
 			const documentDir = `${RNFetchBlob.fs.dirs.DocumentDir}/`;
 			const path = `${documentDir + sha256(url!) + extension}`;
 			const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment);

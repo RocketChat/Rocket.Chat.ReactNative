@@ -1,6 +1,8 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 
+import { ProfileStackParamList } from '../../stacks/types';
+
 export interface IUser {
 	id: string;
 	name: string;
@@ -24,21 +26,19 @@ export interface IParams {
 }
 
 export interface IAvatarButton {
-	key: React.Key;
+	key: string;
 	child: React.ReactNode;
-	onPress: Function;
+	onPress: () => void;
 	disabled: boolean;
 }
 
 export interface INavigationOptions {
-	navigation: StackNavigationProp<any, 'ProfileView'>;
+	navigation: StackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 	isMasterDetail?: boolean;
 }
 
 export interface IProfileViewProps {
 	user: IUser;
-	navigation: StackNavigationProp<any, 'ProfileView'>;
-	isMasterDetail?: boolean;
 	baseUrl: string;
 	Accounts_AllowEmailChange: boolean;
 	Accounts_AllowPasswordChange: boolean;

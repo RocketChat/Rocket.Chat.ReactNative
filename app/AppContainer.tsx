@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
+import { SetUsernameStackParamList, StackParamList } from './navigationTypes';
 import Navigation from './lib/Navigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './utils/navigation';
 import { ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE, ROOT_SET_USERNAME } from './actions/app';
@@ -17,7 +18,7 @@ import { ThemeContext } from './theme';
 import { setCurrentScreen } from './utils/log';
 
 // SetUsernameStack
-const SetUsername = createStackNavigator();
+const SetUsername = createStackNavigator<SetUsernameStackParamList>();
 const SetUsernameStack = () => (
 	<SetUsername.Navigator screenOptions={defaultHeader}>
 		<SetUsername.Screen name='SetUsernameView' component={SetUsernameView} />
@@ -25,7 +26,7 @@ const SetUsernameStack = () => (
 );
 
 // App
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<StackParamList>();
 const App = React.memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	if (!root) {
 		return null;

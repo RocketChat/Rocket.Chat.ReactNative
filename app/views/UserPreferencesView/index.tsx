@@ -1,8 +1,9 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Switch } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { setUser } from '../../actions/login';
 import I18n from '../../i18n';
 import log, { logEvent, events } from '../../utils/log';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -11,14 +12,15 @@ import * as List from '../../containers/List';
 import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import RocketChat from '../../lib/rocketchat';
+import { ProfileStackParamList } from '../../stacks/types';
 
 interface IUserPreferencesViewProps {
-	navigation: StackNavigationProp<any, 'UserPreferencesView'>;
+	navigation: StackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
-	const user = useSelector(state => getUserSelector(state));
-	const [enableParser, setEnableParser] = useState(user.enableMessageParserEarlyAdoption);
+	const { enableMessageParserEarlyAdoption, id } = useSelector(state => getUserSelector(state));
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -26,22 +28,22 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 		});
 	}, []);
 
-	const navigateToScreen = (screen: string) => {
+	const navigateToScreen = (screen: keyof ProfileStackParamList) => {
 		logEvent(events.UP_GO_USER_NOTIFICATION_PREF);
 		navigation.navigate(screen);
 	};
 
 	const toggleMessageParser = async (value: boolean) => {
 		try {
-			await RocketChat.saveUserPreferences({ id: user.id, enableMessageParserEarlyAdoption: value });
-			setEnableParser(value);
+			dispatch(setUser({ enableMessageParserEarlyAdoption: value }));
+			await RocketChat.saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
 		} catch (e) {
 			log(e);
 		}
 	};
 
-	const renderMessageParserSwitch = () => (
-		<Switch value={enableParser} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleMessageParser} />
+	const renderMessageParserSwitch = (value: boolean) => (
+		<Switch value={value} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleMessageParser} />
 	);
 
 	return (
@@ -63,7 +65,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 					<List.Item
 						title='Enable_Message_Parser'
 						testID='preferences-view-enable-message-parser'
-						right={() => renderMessageParserSwitch()}
+						right={() => renderMessageParserSwitch(enableMessageParserEarlyAdoption)}
 					/>
 					<List.Separator />
 				</List.Section>

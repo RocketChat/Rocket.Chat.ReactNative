@@ -24,7 +24,7 @@ import { selectServerFailure } from '../actions/server';
 import { useSsl } from '../utils/url';
 import EventEmitter from '../utils/events';
 import { updatePermission } from '../actions/permissions';
-import { TEAM_TYPE } from '../definition/ITeam';
+import { TEAM_TYPE } from '../definitions/ITeam';
 import { updateSettings } from '../actions/settings';
 import { compareServerVersion, methods } from './utils';
 import reduxStore from './createStore';
@@ -239,37 +239,34 @@ const RocketChat = {
 				this.code = null;
 			}
 
-			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+			// The app can't reconnect if reopen interval is 5s while in development
+			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 			this.getSettings();
 
-			const sdkConnect = () =>
-				this.sdk
-					.connect()
-					.then(() => {
-						const { server: currentServer } = reduxStore.getState().server;
-						if (user && user.token && server === currentServer) {
-							reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
-						}
-					})
-					.catch(err => {
-						console.log('connect error', err);
-
-						// when `connect` raises an error, we try again in 10 seconds
-						this.connectTimeout = setTimeout(() => {
-							if (this.sdk?.client?.host === server) {
-								sdkConnect();
-							}
-						}, 10000);
-					});
-
-			sdkConnect();
+			this.sdk
+				.connect()
+				.then(() => {
+					console.log('connected');
+				})
+				.catch(err => {
+					console.log('connect error', err);
+				});
 
 			this.connectingListener = this.sdk.onStreamData('connecting', () => {
 				reduxStore.dispatch(connectRequest());
 			});
 
 			this.connectedListener = this.sdk.onStreamData('connected', () => {
+				const { connected } = reduxStore.getState().meteor;
+				if (connected) {
+					return;
+				}
 				reduxStore.dispatch(connectSuccess());
+				const { server: currentServer } = reduxStore.getState().server;
+				const { user } = reduxStore.getState().login;
+				if (user?.token && server === currentServer) {
+					reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
+				}
 			});
 
 			this.closeListener = this.sdk.onStreamData('close', () => {
@@ -848,17 +845,21 @@ const RocketChat = {
 		// RC 3.13.0
 		return this.post('teams.removeRoom', { roomId, teamId });
 	},
-	leaveTeam({ teamName, rooms }) {
+	leaveTeam({ teamId, rooms }) {
 		// RC 3.13.0
-		return this.post('teams.leave', { teamName, rooms });
+		return this.post('teams.leave', {
+			teamId,
+			// RC 4.2.0
+			...(rooms?.length && { rooms })
+		});
 	},
-	removeTeamMember({ teamId, teamName, userId, rooms }) {
+	removeTeamMember({ teamId, userId, rooms }) {
 		// RC 3.13.0
 		return this.post('teams.removeMember', {
 			teamId,
-			teamName,
 			userId,
-			rooms
+			// RC 4.2.0
+			...(rooms?.length && { rooms })
 		});
 	},
 	updateTeamRoom({ roomId, isDefault }) {
@@ -1150,10 +1151,6 @@ const RocketChat = {
 	forwardLivechat(transferData) {
 		// RC 0.36.0
 		return this.methodCallWrapper('livechat:transfer', transferData);
-	},
-	getPagesLivechat(rid, offset) {
-		// RC 2.3.0
-		return this.sdk.get(`livechat/visitors.pagesVisited/${rid}?count=50&offset=${offset}`);
 	},
 	getDepartmentInfo(departmentId) {
 		// RC 2.2.0
@@ -1533,16 +1530,7 @@ const RocketChat = {
 		return this.sdk.get(`${this.roomTypeToApiType(type)}.files`, {
 			roomId,
 			offset,
-			sort: { uploadedAt: -1 },
-			fields: {
-				name: 1,
-				description: 1,
-				size: 1,
-				type: 1,
-				uploadedAt: 1,
-				url: 1,
-				userId: 1
-			}
+			sort: { uploadedAt: -1 }
 		});
 	},
 	getMessages(roomId, type, query, offset) {

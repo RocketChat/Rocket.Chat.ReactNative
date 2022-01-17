@@ -1,5 +1,5 @@
 const data = require('../../data');
-const { navigateToLogin, login, searchRoom, sleep } = require('../../helpers/app');
+const { navigateToLogin, login, searchRoom, sleep, platformTypes } = require('../../helpers/app');
 const { sendMessage } = require('../../helpers/data_setup');
 
 async function navigateToRoom(user) {
@@ -12,9 +12,11 @@ async function navigateToRoom(user) {
 
 describe('Mark as unread', () => {
 	const user = data.users.alternate.username;
+	let textMatcher;
 
 	before(async () => {
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(data.users.regular.username, data.users.regular.password);
 		await navigateToRoom(user);
@@ -26,16 +28,16 @@ describe('Mark as unread', () => {
 				const message = `${data.random}message-mark-as-unread`;
 				const channelName = `@${data.users.regular.username}`;
 				await sendMessage(data.users.alternate, channelName, message);
-				await waitFor(element(by.label(message)).atIndex(0))
+				await waitFor(element(by[textMatcher](message)).atIndex(0))
 					.toExist()
 					.withTimeout(30000);
 				await sleep(300);
-				await element(by.label(message)).atIndex(0).longPress();
+				await element(by[textMatcher](message)).atIndex(0).longPress();
 				await waitFor(element(by.id('action-sheet-handle')))
 					.toBeVisible()
 					.withTimeout(3000);
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by.label('Mark Unread')).atIndex(0).tap();
+				await element(by[textMatcher]('Mark Unread')).atIndex(0).tap();
 				await waitFor(element(by.id('rooms-list-view')))
 					.toExist()
 					.withTimeout(5000);

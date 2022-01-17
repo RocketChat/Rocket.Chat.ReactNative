@@ -514,7 +514,7 @@ PODS:
     - React-Core
   - RNDateTimePicker (3.5.2):
     - React-Core
-  - RNDeviceInfo (8.1.3):
+  - RNDeviceInfo (8.4.8):
     - React-Core
   - RNFastImage (8.2.0):
     - React
@@ -950,7 +950,7 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: 442c3abadb51a81551a3b53705b7560de390e6f7
   EXWebBrowser: 76783ba5dcb8699237746ecf41a9643d428a4cc5
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 686ac17e193dcf7d5df4d772b224504dd2f3ad81
+  FBReactNativeSpec: 8a1012a62d7a3d667376b413656d780b8e4680ce
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
@@ -1028,7 +1028,7 @@ SPEC CHECKSUMS:
   RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
-  RNDeviceInfo: 8d3a29207835f972bce883723882980143270d55
+  RNDeviceInfo: 0400a6d0c94186d1120c3cbd97b23abc022187a9
   RNFastImage: f40d202ea2367239f71bc7cf11315f4bebab85b4
   RNFBAnalytics: dae6d7b280ba61c96e1bbdd34aca3154388f025e
   RNFBApp: 6fd8a7e757135d4168bf033a8812c241af7363a0
@@ -1055,4 +1055,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 9fd323641c96f6bf98b309066332c3ff95b9cf15
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
