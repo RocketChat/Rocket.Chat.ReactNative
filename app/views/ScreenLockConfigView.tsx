@@ -185,7 +185,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 				<List.Item
 					title={title}
 					onPress={() => this.changeAutoLockTime(value)}
-					right={this.isSelected(value) ? this.renderIcon : null}
+					right={() => (this.isSelected(value) ? this.renderIcon() : null)}
 					disabled={disabled}
 					translateTitle={false}
 				/>

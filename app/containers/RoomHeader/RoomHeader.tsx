@@ -68,11 +68,11 @@ interface IRoomHeader {
 	tmid: string;
 	teamMain: boolean;
 	status: string;
-	theme: string;
+	theme?: string;
 	usersTyping: [];
 	isGroupChat: boolean;
 	parentTitle: string;
-	onPress: Function;
+	onPress: () => void;
 	testID: string;
 }
 
@@ -164,7 +164,7 @@ const Header = React.memo(
 			renderFunc = () => (
 				<View style={styles.titleContainer}>
 					<RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />
-					<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+					<Text style={[styles.subtitle, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
 						{parentTitle}
 					</Text>
 				</View>
@@ -186,9 +186,15 @@ const Header = React.memo(
 					{tmid ? null : (
 						<RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />
 					)}
-					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} theme={theme} testID={testID} />
+					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} theme={theme!} testID={testID} />
 				</View>
-				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} theme={theme} renderFunc={renderFunc} scale={scale} />
+				<SubTitle
+					usersTyping={tmid ? [] : usersTyping}
+					subtitle={subtitle}
+					theme={theme!}
+					renderFunc={renderFunc}
+					scale={scale}
+				/>
 			</TouchableOpacity>
 		);
 	}
