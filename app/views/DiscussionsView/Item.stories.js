@@ -50,7 +50,7 @@ const listDecorator = story => (
 	</ScrollView>
 );
 
-const stories = storiesOf('Thread Messages.Item', module)
+const stories = storiesOf('Discussions.Item', module)
 	.addDecorator(listDecorator)
 	.addDecorator(story => <Provider store={store}>{story()}</Provider>);
 
@@ -66,7 +66,7 @@ stories.add('content', () => (
 		<List.Separator />
 		<BaseItem
 			item={{
-				tcount: 1000,
+				dcount: 1000,
 				replies: [...new Array(1000)]
 			}}
 		/>
@@ -79,22 +79,6 @@ stories.add('content', () => (
 		/>
 		<List.Separator />
 		<BaseItem useRealName />
-	</>
-));
-
-stories.add('badge', () => (
-	<>
-		<BaseItem badgeColor={themes.light.mentionMeColor} />
-		<List.Separator />
-		<BaseItem badgeColor={themes.light.mentionGroupColor} />
-		<List.Separator />
-		<BaseItem badgeColor={themes.light.tunreadColor} />
-		<BaseItem
-			item={{
-				msg: longText
-			}}
-			badgeColor={themes.light.tunreadColor}
-		/>
 	</>
 ));
 

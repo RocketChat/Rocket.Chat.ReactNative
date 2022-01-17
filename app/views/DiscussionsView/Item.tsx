@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
+import moment from 'moment';
 
 import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
@@ -65,7 +66,8 @@ interface IItem {
 const Item = ({ item, baseUrl, user, onPress }: IItem): JSX.Element => {
 	const { theme } = useTheme();
 	const username = item?.u?.username;
-	const date = formatDateThreads(item.ts);
+	const messageTime = moment(item.ts).format('LT');
+	const messageDate = formatDateThreads(item.ts);
 
 	return (
 		<Touchable
@@ -79,7 +81,7 @@ const Item = ({ item, baseUrl, user, onPress }: IItem): JSX.Element => {
 						<Text style={[styles.title, { color: themes[theme!].titleText }]} numberOfLines={1}>
 							{username}
 						</Text>
-						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{date}</Text>
+						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{messageTime}</Text>
 					</View>
 					<View style={styles.messageContainer}>
 						{/* @ts-ignore */}
@@ -93,7 +95,7 @@ const Item = ({ item, baseUrl, user, onPress }: IItem): JSX.Element => {
 							preview
 						/>
 					</View>
-					<DiscussionDetails item={item} user={user} time={date} style={styles.discussionDetails} />
+					<DiscussionDetails item={item} user={user} time={messageDate} style={styles.discussionDetails} />
 				</View>
 			</View>
 		</Touchable>

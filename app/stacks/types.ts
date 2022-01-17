@@ -53,7 +53,9 @@ export type ChatsStackParamList = {
 		rid: string;
 		room: ISubscription;
 	};
-	DiscussionsView: undefined;
+	DiscussionsView: {
+		rid: string;
+	};
 	SearchMessagesView: {
 		rid: string;
 		t: SubscriptionType;

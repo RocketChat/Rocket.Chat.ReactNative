@@ -5,6 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/core';
 
+import { SubscriptionType } from '../../definitions';
+import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
@@ -20,29 +22,16 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
 import RocketChat from '../../lib/rocketchat';
 import SearchHeader from '../../containers/SearchHeader';
+import { TThreadModel } from '../../definitions/IThread';
 import Item from './Item';
 import styles from './styles';
 
 const API_FETCH_COUNT = 50;
 
-interface IItem {
-	rid: string;
-	drid: string;
-	prid: string;
-	id: string;
-	u: {
-		username: string;
-	};
-	dcount: string | number;
-	replies?: any;
-	msg: string;
-	ts: string;
-}
-
 interface IDiscussionsViewProps {
-	navigation: StackNavigationProp<any, 'DiscussionsView'>;
-	route: RouteProp<any, 'DiscussionsView'>;
-	item: IItem;
+	navigation: StackNavigationProp<ChatsStackParamList, 'DiscussionsView'>;
+	route: RouteProp<ChatsStackParamList, 'DiscussionsView'>;
+	item: TThreadModel;
 }
 
 interface IDiscussionsViewState {
@@ -187,19 +176,19 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 	}, [navigation, isSearching]);
 
 	const onDiscussionPress = debounce(
-		(item: IItem) => {
+		(item: TThreadModel) => {
 			navigation.push('RoomView', {
-				rid: item.drid,
+				rid: item.drid!,
 				prid: item.rid,
 				name: item.msg,
-				t: item.rid === 'GENERAL' ? 'c' : 'p'
+				t: item.rid! === 'GENERAL' ? SubscriptionType.CHANNEL : SubscriptionType.GROUP
 			});
 		},
 		1000,
 		true
 	);
 
-	const renderItem = ({ item }: { item: IItem }) => (
+	const renderItem = ({ item }: { item: TThreadModel }) => (
 		<Item
 			{...{
 				item,
