@@ -10,7 +10,7 @@ import { withTheme } from '../../../theme';
 interface IMessageBoxCommandsPreview {
 	commandPreview: [];
 	showCommandPreview: boolean;
-	theme: string;
+	theme?: string;
 }
 
 const CommandsPreview = React.memo(
@@ -21,7 +21,7 @@ const CommandsPreview = React.memo(
 		return (
 			<FlatList
 				testID='commandbox-container'
-				style={[styles.mentionList, { backgroundColor: themes[theme].messageboxBackground }]}
+				style={[styles.mentionList, { backgroundColor: themes[theme!].messageboxBackground }]}
 				data={commandPreview}
 				renderItem={({ item }) => <Item item={item} theme={theme} />}
 				keyExtractor={(item: any) => item.id}
