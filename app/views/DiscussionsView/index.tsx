@@ -130,7 +130,6 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 					<SearchHeader
 						placeholder='Search Messages'
 						onSearchChangeText={onSearchChangeText}
-						theme={theme}
 						testID='discussion-messages-view-search-header'
 					/>
 				),
