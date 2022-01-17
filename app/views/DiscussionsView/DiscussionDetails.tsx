@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 
+import { TThreadModel } from '../../definitions/IThread';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../Styles';
@@ -29,11 +30,7 @@ const styles = StyleSheet.create({
 });
 
 interface IDiscussionDetails {
-	item: {
-		dcount: number | string;
-		replies?: any;
-		id: string;
-	};
+	item: TThreadModel;
 	user: {
 		id: string;
 	};
@@ -45,7 +42,7 @@ const DiscussionDetails = ({ item, time, style }: IDiscussionDetails) => {
 	const { theme } = useTheme();
 	let { dcount } = item;
 
-	if (dcount >= 1000) {
+	if (dcount! >= 1000) {
 		dcount = '+999';
 	}
 

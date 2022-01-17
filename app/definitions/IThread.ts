@@ -61,10 +61,10 @@ export interface IThread {
 	reactions?: IReaction[];
 	role?: string;
 	drid?: string;
-	dcount?: number;
+	dcount?: number | string;
 	dlm?: number;
 	tmid?: string;
-	tcount?: number;
+	tcount?: number | string;
 	tlm?: Date;
 	replies?: string[];
 	mentions?: IUserMention[];

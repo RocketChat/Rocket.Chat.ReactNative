@@ -41,25 +41,23 @@ const styles = StyleSheet.create({
 
 interface IThreadDetails {
 	item: {
-		tcount: number | string;
+		tcount?: string | number;
 		replies?: any;
 		id: string;
 	};
 	user: {
 		id: string;
 	};
-	badgeColor: string;
+	badgeColor?: string;
 	toggleFollowThread: Function;
-	thread: boolean;
-	time: string;
 	style: ViewStyle;
 }
 
-const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails) => {
+const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails): JSX.Element => {
 	const { theme } = useTheme();
 	let { tcount } = item;
 
-	if (tcount >= 1000) {
+	if (tcount! >= 1000) {
 		tcount = '+999';
 	}
 
