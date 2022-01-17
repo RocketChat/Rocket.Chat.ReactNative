@@ -48,7 +48,7 @@ interface IPickerViewProps {
 const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 	<List.Item
 		title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
-		right={selected && (() => <List.Icon name='check' color={themes[theme].tintColor} />)}
+		right={() => (selected ? <List.Icon name='check' color={themes[theme].tintColor} /> : null)}
 		onPress={onItemPress}
 		translateTitle={false}
 	/>

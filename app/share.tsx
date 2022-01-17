@@ -26,7 +26,7 @@ import { setCurrentScreen } from './utils/log';
 import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
-import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './navigationTypes';
+import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
 
 interface IDimensions {
 	width: number;

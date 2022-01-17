@@ -17,7 +17,7 @@ interface IHeader {
 	server: string;
 	message: object;
 	isMasterDetail: boolean;
-	theme: string;
+	theme?: string;
 }
 
 interface THeaderItem {
@@ -117,19 +117,19 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 	const onReaction = ({ emoji }: { emoji: IEmoji }) => handleReaction(emoji, message);
 
 	const renderItem = useCallback(
-		({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme} />,
+		({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme!} />,
 		[]
 	);
 
-	const renderFooter = useCallback(() => <HeaderFooter onReaction={onReaction} theme={theme} />, []);
+	const renderFooter = useCallback(() => <HeaderFooter onReaction={onReaction} theme={theme!} />, []);
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+		<View style={[styles.container, { backgroundColor: themes[theme!].focusedBackground }]}>
 			<FlatList
 				data={items}
 				renderItem={renderItem}
 				ListFooterComponent={renderFooter}
-				style={{ backgroundColor: themes[theme].focusedBackground }}
+				style={{ backgroundColor: themes[theme!].focusedBackground }}
 				keyExtractor={keyExtractor}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}
