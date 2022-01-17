@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { useOrientation } from '../dimensions';
-import { isIOS, isTablet } from '../utils/deviceInfo';
-import { themes } from '../constants/colors';
+import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
+import { themes } from '../constants/colors';
 import TextInput from '../presentation/TextInput';
+import { isIOS, isTablet } from '../utils/deviceInfo';
+import { useOrientation } from '../dimensions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,11 +22,11 @@ const styles = StyleSheet.create({
 interface ISearchHeaderProps {
 	onSearchChangeText?: (text: string) => void;
 	placeholder: string;
-	theme: string;
 	testID: string;
 }
 
-const SearchHeader = ({ onSearchChangeText, placeholder, theme, testID }: ISearchHeaderProps) => {
+const SearchHeader = ({ onSearchChangeText, placeholder, testID }: ISearchHeaderProps) => {
+	const { theme } = useTheme();
 	const isLight = theme === 'light';
 	const { isLandscape } = useOrientation();
 	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;

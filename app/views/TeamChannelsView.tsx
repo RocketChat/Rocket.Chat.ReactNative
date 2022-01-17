@@ -221,7 +221,6 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 					<SearchHeader
 						onSearchChangeText={this.onSearchChangeText}
 						placeholder='Search Channels'
-						theme={theme}
 						testID='team-channels-view-search-header'
 					/>
 				),

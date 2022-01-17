@@ -66,8 +66,13 @@ interface IItem {
 const Item = ({ item, baseUrl, user, onPress }: IItem): JSX.Element => {
 	const { theme } = useTheme();
 	const username = item?.u?.username;
-	const messageTime = moment(item.ts).format('LT');
-	const messageDate = formatDateThreads(item.ts);
+	let messageTime;
+	let messageDate;
+
+	if (item?.ts) {
+		messageTime = moment(item.ts).format('LT');
+		messageDate = formatDateThreads(item.ts);
+	}
 
 	return (
 		<Touchable

@@ -65,7 +65,7 @@ export interface IThread {
 	dlm?: number;
 	tmid?: string;
 	tcount?: number | string;
-	tlm?: Date;
+	tlm?: string;
 	replies?: string[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];

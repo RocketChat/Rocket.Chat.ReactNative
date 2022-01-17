@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { useTheme, withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
@@ -69,7 +69,10 @@ interface IItem {
 const Item = ({ item, baseUrl, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem) => {
 	const { theme } = useTheme();
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
-	const time = formatDateThreads(item.ts!);
+	let time;
+	if (item?.ts) {
+		time = formatDateThreads(item.ts);
+	}
 
 	return (
 		<Touchable
@@ -105,4 +108,4 @@ const Item = ({ item, baseUrl, useRealName, user, badgeColor, onPress, toggleFol
 	);
 };
 
-export default withTheme(Item);
+export default Item;
