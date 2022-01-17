@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 export const LISTENER = 'Toast';
 
 interface IToastProps {
-	theme: string;
+	theme?: string;
 }
 
 class Toast extends React.Component<IToastProps, any> {
@@ -61,8 +61,8 @@ class Toast extends React.Component<IToastProps, any> {
 				ref={this.getToastRef}
 				// @ts-ignore
 				position='center'
-				style={[styles.toast, { backgroundColor: themes[theme].toastBackground }]}
-				textStyle={[styles.text, { color: themes[theme].buttonText }]}
+				style={[styles.toast, { backgroundColor: themes[theme!].toastBackground }]}
+				textStyle={[styles.text, { color: themes[theme!].buttonText }]}
 				opacity={0.9}
 			/>
 		);

@@ -15,7 +15,6 @@ import ActivityIndicator from '../containers/ActivityIndicator';
 import { CONTAINER_TYPES, MODAL_ACTIONS } from '../lib/methods/actions';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/Navigation';
-import sharedStyles from './Styles';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 
 const styles = StyleSheet.create({
@@ -25,10 +24,6 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		paddingVertical: 16
-	},
-	submit: {
-		...sharedStyles.textSemibold,
-		fontSize: 16
 	}
 });
 
@@ -152,24 +147,14 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 			headerLeft: close
 				? () => (
 						<HeaderButton.Container>
-							<HeaderButton.Item
-								title={textParser([close.text])}
-								style={styles.submit}
-								onPress={this.cancel}
-								testID='close-modal-uikit'
-							/>
+							<HeaderButton.Item title={textParser([close.text])} onPress={this.cancel} testID='close-modal-uikit' />
 						</HeaderButton.Container>
 				  )
 				: undefined,
 			headerRight: submit
 				? () => (
 						<HeaderButton.Container>
-							<HeaderButton.Item
-								title={textParser([submit.text])}
-								style={styles.submit}
-								onPress={this.submit}
-								testID='submit-modal-uikit'
-							/>
+							<HeaderButton.Item title={textParser([submit.text])} onPress={this.submit} testID='submit-modal-uikit' />
 						</HeaderButton.Container>
 				  )
 				: undefined

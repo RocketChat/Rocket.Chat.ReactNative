@@ -38,17 +38,17 @@ const styles = StyleSheet.create({
 });
 
 interface IMessageUser {
-	isHeader: boolean;
-	hasError: boolean;
+	isHeader?: boolean;
+	hasError?: boolean;
 	useRealName: boolean;
-	author: {
+	author?: {
 		_id: string;
-		name: string;
-		username: string;
+		name?: string;
+		username?: string;
 	};
-	alias: string;
-	ts: Date;
-	timeFormat: string;
+	alias?: string;
+	ts?: Date;
+	timeFormat?: string;
 	theme: string;
 	navToRoomInfo: Function;
 	type: string;
@@ -59,16 +59,16 @@ const User = React.memo(
 		if (isHeader || hasError) {
 			const navParam = {
 				t: 'd',
-				rid: author._id
+				rid: author!._id
 			};
 			const { user } = useContext(MessageContext);
-			const username = (useRealName && author.name) || author.username;
+			const username = (useRealName && author!.name) || author!.username;
 			const aliasUsername = alias ? (
 				<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>
 			) : null;
 			const time = moment(ts).format(timeFormat);
 			const onUserPress = () => navToRoomInfo(navParam);
-			const isDisabled = author._id === user.id;
+			const isDisabled = author!._id === user.id;
 
 			const textContent = (
 				<>
