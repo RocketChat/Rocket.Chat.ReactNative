@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 
 interface IThreadDetails {
 	item: {
-		tcount?: string | number;
+		tcount?: number | string;
 		replies?: any;
 		id: string;
 	};
