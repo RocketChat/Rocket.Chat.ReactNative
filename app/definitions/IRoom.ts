@@ -1,9 +1,16 @@
 import Model from '@nozbe/watermelondb/Model';
 
 import { IServedBy } from './IServedBy';
+import { SubscriptionType } from './ISubscription';
 
 export interface IRoom {
 	id: string;
+	rid: string;
+	prid: string;
+	t: SubscriptionType;
+	name: string;
+	teamMain: boolean;
+	alert?: boolean;
 	customFields: string[];
 	broadcast: boolean;
 	encrypted: boolean;

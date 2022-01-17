@@ -29,9 +29,9 @@ export const CloseModal = React.memo(
 export const CancelModal = React.memo(({ onPress, testID }: Partial<IHeaderButtonCommon>) => (
 	<Container left>
 		{isIOS ? (
-			<Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} />
+			<Item title={I18n.t('Cancel')} onPress={onPress!} testID={testID} />
 		) : (
-			<Item iconName='close' onPress={onPress} testID={testID} />
+			<Item iconName='close' onPress={onPress!} testID={testID} />
 		)}
 	</Container>
 ));
@@ -39,19 +39,19 @@ export const CancelModal = React.memo(({ onPress, testID }: Partial<IHeaderButto
 // Right
 export const More = React.memo(({ onPress, testID }: Partial<IHeaderButtonCommon>) => (
 	<Container>
-		<Item iconName='kebab' onPress={onPress} testID={testID} />
+		<Item iconName='kebab' onPress={onPress!} testID={testID} />
 	</Container>
 ));
 
 export const Download = React.memo(({ onPress, testID, ...props }: Partial<IHeaderButtonCommon>) => (
 	<Container>
-		<Item iconName='download' onPress={onPress} testID={testID} {...props} />
+		<Item iconName='download' onPress={onPress!} testID={testID} {...props} />
 	</Container>
 ));
 
 export const Preferences = React.memo(({ onPress, testID, ...props }: Partial<IHeaderButtonCommon>) => (
 	<Container>
-		<Item iconName='settings' onPress={onPress} testID={testID} {...props} />
+		<Item iconName='settings' onPress={onPress!} testID={testID} {...props} />
 	</Container>
 ));
 

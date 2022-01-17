@@ -11,9 +11,9 @@ const styles = StyleSheet.create({
 });
 
 interface IListSection {
-	children: JSX.Element;
-	title: string;
-	translateTitle: boolean;
+	children: React.ReactNode;
+	title?: string;
+	translateTitle?: boolean;
 }
 
 const ListSection = React.memo(({ children, title, translateTitle }: IListSection) => (

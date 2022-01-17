@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
 interface ILoadingProps {
 	visible: boolean;
-	theme: string;
+	theme?: string;
 }
 
 class Loading extends React.PureComponent<ILoadingProps, any> {
@@ -97,7 +97,7 @@ class Loading extends React.PureComponent<ILoadingProps, any> {
 
 		const opacityAnimation = opacity.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, themes[theme].backdropOpacity],
+			outputRange: [0, themes[theme!].backdropOpacity],
 			extrapolate: 'clamp'
 		});
 
@@ -109,7 +109,7 @@ class Loading extends React.PureComponent<ILoadingProps, any> {
 							{
 								// @ts-ignore
 								...StyleSheet.absoluteFill,
-								backgroundColor: themes[theme].backdropColor,
+								backgroundColor: themes[theme!].backdropColor,
 								opacity: opacityAnimation
 							}
 						]}
