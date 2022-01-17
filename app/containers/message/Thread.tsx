@@ -24,10 +24,8 @@ const Thread = React.memo(
 					item={{
 						tcount,
 						replies,
-						tlm,
 						id
 					}}
-					thread
 					user={user}
 					badgeColor={threadBadgeColor}
 					toggleFollowThread={toggleFollowThread}

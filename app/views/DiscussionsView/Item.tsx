@@ -9,6 +9,7 @@ import { themes } from '../../constants/colors';
 import Markdown from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import DiscussionDetails from './DiscussionDetails';
+import { TThreadModel } from '../../definitions/IThread';
 
 const styles = StyleSheet.create({
 	container: {
@@ -49,16 +50,7 @@ const styles = StyleSheet.create({
 });
 
 interface IItem {
-	item: {
-		id: string;
-		u: {
-			username: string;
-		};
-		dcount: string | number;
-		replies?: any;
-		msg: string;
-		ts: string;
-	};
+	item: TThreadModel;
 	baseUrl: string;
 	user: {
 		id: string;
@@ -92,9 +84,9 @@ const Item = ({ item, baseUrl, user, onPress }: IItem): JSX.Element => {
 					<View style={styles.messageContainer}>
 						{/* @ts-ignore */}
 						<Markdown
-							msg={makeThreadName(item)}
+							msg={makeThreadName(item)!}
 							baseUrl={baseUrl}
-							username={username}
+							username={username!}
 							theme={theme!}
 							numberOfLines={2}
 							style={[styles.markdown]}
