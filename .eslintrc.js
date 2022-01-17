@@ -17,14 +17,15 @@ module.exports = {
 			legacyDecorators: true
 		}
 	},
-	plugins: ['react', 'jsx-a11y', 'import', 'react-native', '@babel'],
+	plugins: ['react', 'jsx-a11y', 'import', 'react-native', '@babel', 'jest'],
 	env: {
 		browser: true,
 		commonjs: true,
 		es6: true,
 		node: true,
 		jquery: true,
-		mocha: true
+		mocha: true,
+		'jest/globals': true
 	},
 	rules: {
 		'import/extensions': [

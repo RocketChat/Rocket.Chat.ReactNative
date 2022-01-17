@@ -84,7 +84,7 @@ export interface IMessageContent {
 export interface IMessageDiscussion {
 	msg: string;
 	dcount: number;
-	dlm: string;
+	dlm: Date;
 	theme: string;
 }
 

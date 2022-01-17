@@ -918,7 +918,6 @@ class RoomActionsView extends React.Component {
 									event: this.convertTeamToChannel
 								})
 							}
-							testID='room-actions-convert-channel-to-team'
 							left={() => <List.Icon name='channel-public' />}
 							showActionIndicator
 						/>
@@ -1213,23 +1212,6 @@ class RoomActionsView extends React.Component {
 										})
 									}
 									left={() => <List.Icon name='undo' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['l'].includes(t) && !this.isOmnichannelPreview ? (
-							<>
-								<List.Item
-									title='Navigation_history'
-									onPress={() =>
-										this.onPressTouchable({
-											route: 'VisitorNavigationView',
-											params: { rid }
-										})
-									}
-									left={() => <List.Icon name='history' />}
 									showActionIndicator
 								/>
 								<List.Separator />

@@ -16,6 +16,7 @@ import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
+import { ChatsStackParamList } from '../../stacks/types';
 
 interface IReceipts {
 	_id: string;
@@ -36,8 +37,8 @@ interface IReadReceiptViewState {
 }
 
 interface INavigationOption {
-	navigation: StackNavigationProp<any, 'ReadReceiptView'>;
-	route: RouteProp<{ ReadReceiptView: { messageId: string } }, 'ReadReceiptView'>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'ReadReceiptsView'>;
+	route: RouteProp<ChatsStackParamList, 'ReadReceiptsView'>;
 	isMasterDetail: boolean;
 }
 

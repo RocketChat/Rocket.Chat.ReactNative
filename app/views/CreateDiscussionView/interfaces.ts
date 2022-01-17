@@ -1,14 +1,12 @@
+import { RouteProp } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import { NewMessageStackParamList } from '../../stacks/types';
+import { SubscriptionType } from '../../definitions/ISubscription';
+
 export interface ICreateChannelViewProps {
-	navigation: any;
-	route: {
-		params?: {
-			channel: string;
-			message: {
-				msg: string;
-			};
-			showCloseModal: boolean;
-		};
-	};
+	navigation: StackNavigationProp<NewMessageStackParamList, 'CreateDiscussionView'>;
+	route: RouteProp<NewMessageStackParamList, 'CreateDiscussionView'>;
 	server: string;
 	user: {
 		id: string;
@@ -18,7 +16,7 @@ export interface ICreateChannelViewProps {
 	loading: boolean;
 	result: {
 		rid: string;
-		t: string;
+		t: SubscriptionType;
 		prid: string;
 	};
 	failure: boolean;

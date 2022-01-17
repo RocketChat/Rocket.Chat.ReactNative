@@ -3,8 +3,9 @@ import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/core';
+import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -18,27 +19,32 @@ import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
-
-type TMessagesViewRouteParams = {
-	MessagesView: {
-		rid: string;
-		t: string;
-		name: string;
-	};
-};
+import { ChatsStackParamList } from '../../stacks/types';
+import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 
 interface IMessagesViewProps {
 	user: {
 		id: string;
 	};
 	baseUrl: string;
-	navigation: StackNavigationProp<any, 'MessagesView'>;
-	route: RouteProp<TMessagesViewRouteParams, 'MessagesView'>;
+	navigation: CompositeNavigationProp<
+		StackNavigationProp<ChatsStackParamList, 'MessagesView'>,
+		StackNavigationProp<MasterDetailInsideStackParamList>
+	>;
+	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 	customEmojis: { [key: string]: string };
 	theme: string;
 	showActionSheet: Function;
 	useRealName: boolean;
 	isMasterDetail: boolean;
+}
+
+interface IRoomInfoParam {
+	room: ISubscription;
+	member: any;
+	rid: string;
+	t: SubscriptionType;
+	joined: boolean;
 }
 
 interface IMessagesViewState {
@@ -65,17 +71,22 @@ interface IMessageItem {
 }
 
 interface IParams {
-	rid?: string;
-	jumpToMessageId: string;
-	t?: string;
-	room: any;
+	rid: string;
+	t: SubscriptionType;
 	tmid?: string;
+	message?: string;
 	name?: string;
+	fname?: string;
+	prid?: string;
+	room: ISubscription;
+	jumpToMessageId?: string;
+	jumpToThreadId?: string;
+	roomUserId?: string;
 }
 
 class MessagesView extends React.Component<IMessagesViewProps, any> {
-	private rid?: string;
-	private t?: string;
+	private rid: string;
+	private t: SubscriptionType;
 	private content: any;
 	private room: any;
 
@@ -121,7 +132,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 		});
 	};
 
-	navToRoomInfo = (navParam: { rid: string }) => {
+	navToRoomInfo = (navParam: IRoomInfoParam) => {
 		const { navigation, user } = this.props;
 		if (navParam.rid === user.id) {
 			return;
@@ -147,7 +158,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(this.rid, item.tmid, item._id),
-				t: 'thread'
+				t: SubscriptionType.THREAD
 			};
 			navigation.push('RoomView', params);
 		} else {

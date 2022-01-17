@@ -14,6 +14,7 @@ import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
+import { IThemePreference } from './definitions/ITheme';
 import ScreenLockedView from './views/ScreenLockedView';
 // Outside Stack
 import WithoutServersView from './views/WithoutServersView';
@@ -25,6 +26,7 @@ import { setCurrentScreen } from './utils/log';
 import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
+import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './navigationTypes';
 
 interface IDimensions {
 	width: number;
@@ -35,10 +37,7 @@ interface IDimensions {
 
 interface IState {
 	theme: string;
-	themePreferences: {
-		currentTheme: 'automatic' | 'light';
-		darkLevel: string;
-	};
+	themePreferences: IThemePreference;
 	root: any;
 	width: number;
 	height: number;
@@ -46,7 +45,7 @@ interface IState {
 	fontScale: number;
 }
 
-const Inside = createStackNavigator();
+const Inside = createStackNavigator<ShareInsideStackParamList>();
 const InsideStack = () => {
 	const { theme } = useContext(ThemeContext);
 
@@ -65,24 +64,19 @@ const InsideStack = () => {
 	);
 };
 
-const Outside = createStackNavigator();
+const Outside = createStackNavigator<ShareOutsideStackParamList>();
 const OutsideStack = () => {
 	const { theme } = useContext(ThemeContext);
 
 	return (
 		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			<Outside.Screen
-				name='WithoutServersView'
-				component={WithoutServersView}
-				/* @ts-ignore*/
-				options={WithoutServersView.navigationOptions}
-			/>
+			<Outside.Screen name='WithoutServersView' component={WithoutServersView} options={WithoutServersView.navigationOptions} />
 		</Outside.Navigator>
 	);
 };
 
 // App
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<ShareAppStackParamList>();
 export const App = ({ root }: any) => (
 	<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 		<>
@@ -112,7 +106,7 @@ class Root extends React.Component<{}, IState> {
 		this.init();
 	}
 
-	componentWillUnmount() {
+	componentWillUnmount(): void {
 		RocketChat.closeShareExtension();
 		unsubscribeTheme();
 	}
@@ -139,7 +133,7 @@ class Root extends React.Component<{}, IState> {
 	setTheme = (newTheme = {}) => {
 		// change theme state
 		this.setState(
-			prevState => newThemeState(prevState, newTheme),
+			prevState => newThemeState(prevState, newTheme as IThemePreference),
 			() => {
 				const { themePreferences } = this.state;
 				// subscribe to Appearance changes

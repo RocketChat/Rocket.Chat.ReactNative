@@ -17,6 +17,7 @@ import KeyboardView from '../presentation/KeyboardView';
 import StatusBar from '../containers/StatusBar';
 import { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
+import { E2EEnterYourPasswordStackParamList } from '../stacks/types';
 
 const styles = StyleSheet.create({
 	container: {
@@ -36,7 +37,7 @@ interface IE2EEnterYourPasswordViewState {
 interface IE2EEnterYourPasswordViewProps {
 	encryptionDecodeKey: (password: string) => void;
 	theme: string;
-	navigation: StackNavigationProp<any, 'E2EEnterYourPasswordView'>;
+	navigation: StackNavigationProp<E2EEnterYourPasswordStackParamList, 'E2EEnterYourPasswordView'>;
 }
 
 class E2EEnterYourPasswordView extends React.Component<IE2EEnterYourPasswordViewProps, IE2EEnterYourPasswordViewState> {

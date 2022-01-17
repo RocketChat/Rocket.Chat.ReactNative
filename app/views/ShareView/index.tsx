@@ -4,7 +4,9 @@ import { RouteProp } from '@react-navigation/native';
 import { NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
+import { Q } from '@nozbe/watermelondb';
 
+import { InsideStackParamList } from '../../stacks/types';
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import Loading from '../../containers/Loading';
@@ -25,7 +27,8 @@ import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
-import { IAttachment, IServer } from './interfaces';
+import { IAttachment } from './interfaces';
+import { ISubscription } from '../../definitions/ISubscription';
 
 interface IShareViewState {
 	selected: IAttachment;
@@ -33,30 +36,15 @@ interface IShareViewState {
 	readOnly: boolean;
 	attachments: IAttachment[];
 	text: string;
-	// TODO: Refactor when migrate room
-	room: any;
-	thread: any;
+	room: ISubscription;
+	thread: any; // change
 	maxFileSize: number;
-	mediaAllowList: number;
+	mediaAllowList: string;
 }
 
 interface IShareViewProps {
-	// TODO: Refactor after react-navigation
-	navigation: StackNavigationProp<any, 'ShareView'>;
-	route: RouteProp<
-		{
-			ShareView: {
-				attachments: IAttachment[];
-				isShareView?: boolean;
-				isShareExtension: boolean;
-				serverInfo: IServer;
-				text: string;
-				room: any;
-				thread: any; // change
-			};
-		},
-		'ShareView'
-	>;
+	navigation: StackNavigationProp<InsideStackParamList, 'ShareView'>;
+	route: RouteProp<InsideStackParamList, 'ShareView'>;
 	theme: string;
 	user: {
 		id: string;
@@ -64,7 +52,7 @@ interface IShareViewProps {
 		token: string;
 	};
 	server: string;
-	FileUpload_MediaTypeWhiteList?: number;
+	FileUpload_MediaTypeWhiteList?: string;
 	FileUpload_MaxFileSize?: number;
 }
 
@@ -154,6 +142,17 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 	};
 
+	getPermissionMobileUpload = async () => {
+		const { room } = this.state;
+		const db = database.active;
+		const permissionsCollection = db.get('permissions');
+		const uploadFilePermissionFetch = await permissionsCollection.query(Q.where('id', Q.like('mobile-upload-file'))).fetch();
+		const uploadFilePermission = uploadFilePermissionFetch[0]?.roles;
+		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission], room.rid);
+		// uploadFilePermission as undefined is considered that there isn't this permission, so all can upload file.
+		return !uploadFilePermission || permissionToUpload[0];
+	};
+
 	getReadOnly = async () => {
 		const { room } = this.state;
 		const { user } = this.props;
@@ -163,10 +162,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	getAttachments = async () => {
 		const { mediaAllowList, maxFileSize } = this.state;
+		const permissionToUploadFile = await this.getPermissionMobileUpload();
+
 		const items = await Promise.all(
 			this.files.map(async item => {
 				// Check server settings
-				const { success: canUpload, error } = canUploadFile(item, mediaAllowList, maxFileSize);
+				const { success: canUpload, error } = canUploadFile(item, mediaAllowList, maxFileSize, permissionToUploadFile);
 				item.canUpload = canUpload;
 				item.error = error;
 
