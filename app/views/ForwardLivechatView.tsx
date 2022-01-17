@@ -63,13 +63,16 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 
 	const rid = route.params?.rid;
 
-	const getDepartments = async () => {
+	const getDepartments = async (text = '') => {
 		try {
-			const result = await RocketChat.getDepartments();
+			const result = await RocketChat.getDepartments(text);
 			if (result.success) {
-				setDepartments(
-					result.departments.map((department: ILivechatDepartment) => ({ label: department.name, value: department._id }))
-				);
+				const parsedDepartments = result.departments.map((department: ILivechatDepartment) => ({
+					label: department.name,
+					value: department._id
+				}));
+				setDepartments(parsedDepartments);
+				return parsedDepartments;
 			}
 		} catch {
 			// do nothing
@@ -148,6 +151,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			value: room?.departmentId,
 			data: departments,
 			onChangeValue: setDepartment,
+			onChangeText: getDepartments,
 			goBack: false
 		});
 	};
