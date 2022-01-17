@@ -11,7 +11,7 @@ export interface ISetSearch extends Action {
 }
 
 export interface IRoomsFailure extends Action {
-	err: string;
+	err: Record<string, any> | string;
 }
 
 export type IRoomsAction = IRoomsRequest & ISetSearch & IRoomsFailure;

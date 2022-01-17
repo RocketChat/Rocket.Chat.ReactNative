@@ -5,7 +5,7 @@ export interface IRooms {
 	isFetching: boolean;
 	refreshing: boolean;
 	failure: boolean;
-	errorMessage: Record<string, any>;
+	errorMessage: Record<string, any> | string;
 	searchText: string;
 	showServerDropdown: boolean;
 	closeServerDropdown: boolean;
