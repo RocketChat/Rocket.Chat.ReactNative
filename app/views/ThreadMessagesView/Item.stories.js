@@ -2,7 +2,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { ScrollView } from 'react-native';
-import { combineReducers, createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 import * as List from '../../containers/List';
