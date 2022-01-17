@@ -30,7 +30,7 @@ interface IMessageAudioProps {
 	};
 	theme: string;
 	getCustomEmoji: Function;
-	scale: number;
+	scale?: number;
 }
 
 interface IMessageAudioState {

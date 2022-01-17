@@ -18,9 +18,9 @@ interface IServerItem {
 		name: string;
 	};
 	onPress(): void;
-	onLongPress(): void;
-	hasCheck: boolean;
-	theme: string;
+	onLongPress?(): void;
+	hasCheck?: boolean;
+	theme?: string;
 }
 
 const defaultLogo = require('../../static/images/logo.png');
@@ -31,10 +31,10 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck, theme }: 
 		onLongPress={() => onLongPress?.()}
 		testID={`rooms-list-header-server-${item.id}`}
 		android_ripple={{
-			color: themes[theme].bannerBackground
+			color: themes[theme!].bannerBackground
 		}}
 		style={({ pressed }: any) => ({
-			backgroundColor: isIOS && pressed ? themes[theme].bannerBackground : themes[theme].backgroundColor
+			backgroundColor: isIOS && pressed ? themes[theme!].bannerBackground : themes[theme!].backgroundColor
 		})}>
 		<View style={styles.serverItemContainer}>
 			{item.iconURL ? (
@@ -52,14 +52,14 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck, theme }: 
 				<FastImage source={defaultLogo} style={styles.serverIcon} />
 			)}
 			<View style={styles.serverTextContainer}>
-				<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].titleText }]}>
+				<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme!].titleText }]}>
 					{item.name || item.id}
 				</Text>
-				<Text numberOfLines={1} style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>
+				<Text numberOfLines={1} style={[styles.serverUrl, { color: themes[theme!].auxiliaryText }]}>
 					{item.id}
 				</Text>
 			</View>
-			{hasCheck ? <Check theme={theme} /> : null}
+			{hasCheck ? <Check theme={theme!} /> : null}
 		</View>
 	</Pressable>
 ));

@@ -68,8 +68,8 @@ interface IMessageUrl {
 }
 
 interface IMessageUrls {
-	urls: any;
-	theme: string;
+	urls?: any;
+	theme?: string;
 }
 
 const UrlImage = React.memo(
@@ -156,7 +156,7 @@ const Urls = React.memo(
 			return null;
 		}
 
-		return urls.map((url: any, index: number) => <Url url={url} key={url.url} index={index} theme={theme} />);
+		return urls.map((url: any, index: number) => <Url url={url} key={url.url} index={index} theme={theme!} />);
 	},
 	(oldProps, newProps) => dequal(oldProps.urls, newProps.urls) && oldProps.theme === newProps.theme
 );
