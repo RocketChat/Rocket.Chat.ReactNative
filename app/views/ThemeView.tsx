@@ -117,7 +117,7 @@ class ThemeView extends React.Component<IThemeViewProps> {
 					title={label}
 					onPress={() => this.onClick(item)}
 					testID={`theme-view-${value}`}
-					right={this.isSelected(item) ? this.renderIcon : null}
+					right={() => (this.isSelected(item) ? this.renderIcon() : null)}
 				/>
 				<List.Separator />
 			</>

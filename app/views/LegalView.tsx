@@ -15,9 +15,9 @@ interface ILegalView {
 }
 
 class LegalView extends React.Component<ILegalView, any> {
-	static navigationOptions: StackNavigationOptions = {
+	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Legal')
-	};
+	});
 
 	onPressItem = ({ route }: { route: string }) => {
 		const { server, theme } = this.props;

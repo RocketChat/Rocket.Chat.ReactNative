@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { RadioButton } from 'react-native-ui-lib';
 import { RouteProp } from '@react-navigation/native';
 
+import { ChatsStackParamList } from '../stacks/types';
 import log from '../utils/log';
 import * as List from '../containers/List';
 import I18n from '../i18n';
@@ -17,6 +18,7 @@ import { animateNextTransition } from '../utils/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
+import { IRoom } from '../definitions/IRoom';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -26,38 +28,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IData {
-	rid: string;
-	name: string;
-	t?: string;
-	teamMain?: boolean;
-	alert?: boolean;
-}
-
 interface ISelectListViewState {
-	data: IData[];
-	dataFiltered: IData[];
+	data: IRoom[];
+	dataFiltered?: IRoom[];
 	isSearching: boolean;
 	selected: string[];
 }
 
 interface ISelectListViewProps {
-	navigation: StackNavigationProp<any, 'SelectListView'>;
-	route: RouteProp<
-		{
-			SelectView: {
-				data: IData[];
-				title: string;
-				infoText: string;
-				nextAction(selected: string[]): void;
-				showAlert(): void;
-				isSearch: boolean;
-				onSearch(text: string): IData[];
-				isRadio: boolean;
-			};
-		},
-		'SelectView'
-	>;
+	navigation: StackNavigationProp<ChatsStackParamList, 'SelectListView'>;
+	route: RouteProp<ChatsStackParamList, 'SelectListView'>;
 	theme: string;
 	isMasterDetail: boolean;
 }
@@ -73,9 +53,9 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 
 	private isSearch: boolean;
 
-	private onSearch: (text: string) => IData[];
+	private onSearch: (text: string) => Partial<IRoom[]>;
 
-	private isRadio: boolean;
+	private isRadio?: boolean;
 
 	constructor(props: ISelectListViewProps) {
 		super(props);
@@ -142,7 +122,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	search = async (text: string) => {
 		try {
 			this.setState({ isSearching: true });
-			const result = await this.onSearch(text);
+			const result = (await this.onSearch(text)) as IRoom[];
 			this.setState({ dataFiltered: result });
 		} catch (e) {
 			log(e);
@@ -170,19 +150,19 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		}
 	};
 
-	renderItem = ({ item }: { item: IData }) => {
+	renderItem = ({ item }: { item: Partial<IRoom> }) => {
 		const { theme } = this.props;
 		const { selected } = this.state;
 
 		const channelIcon = item.t === 'p' ? 'channel-private' : 'channel-public';
 		const teamIcon = item.t === 'p' ? 'teams-private' : 'teams';
 		const icon = item.teamMain ? teamIcon : channelIcon;
-		const checked = this.isChecked(item.rid) ? 'check' : null;
+		const checked = this.isChecked(item.rid!) ? 'check' : '';
 
 		const showRadio = () => (
 			<RadioButton
 				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
-				selected={selected.includes(item.rid)}
+				selected={selected.includes(item.rid!)}
 				color={themes[theme].actionTintColor}
 				size={ICON_SIZE}
 			/>
@@ -202,7 +182,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					title={item.name}
 					translateTitle={false}
 					testID={`select-list-view-item-${item.name}`}
-					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
+					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid!))}
 					alert={item.alert}
 					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
