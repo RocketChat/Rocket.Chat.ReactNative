@@ -19,7 +19,7 @@ import styles from './styles';
 export const TWO_FACTOR = 'TWO_FACTOR';
 
 interface ITwoFactor {
-	theme: string;
+	theme?: string;
 	isMasterDetail: boolean;
 }
 
@@ -87,7 +87,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 		setData({});
 	};
 
-	const color = themes[theme].titleText;
+	const color = themes[theme!].titleText;
 	return (
 		<Modal
 			// @ts-ignore
@@ -101,7 +101,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 					style={[
 						styles.content,
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-						{ backgroundColor: themes[theme].backgroundColor }
+						{ backgroundColor: themes[theme!].backgroundColor }
 					]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
@@ -128,7 +128,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 						<Button
 							title={I18n.t('Cancel')}
 							type='secondary'
-							backgroundColor={themes[theme].chatComponentBackground}
+							backgroundColor={themes[theme!].chatComponentBackground}
 							style={styles.button}
 							onPress={onCancel}
 							theme={theme}

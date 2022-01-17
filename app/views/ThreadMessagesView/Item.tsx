@@ -61,7 +61,7 @@ interface IItem {
 	baseUrl: string;
 	useRealName: boolean;
 	user: any;
-	badgeColor: string;
+	badgeColor?: string;
 	onPress: (item: TThreadModel) => void;
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
@@ -69,10 +69,7 @@ interface IItem {
 const Item = ({ item, baseUrl, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem) => {
 	const { theme } = useTheme();
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
-	let date;
-	if (item?.ts) {
-		date = formatDateThreads(item.ts);
-	}
+	const time = formatDateThreads(item.ts!);
 
 	return (
 		<Touchable
@@ -86,7 +83,7 @@ const Item = ({ item, baseUrl, useRealName, user, badgeColor, onPress, toggleFol
 						<Text style={[styles.title, { color: themes[theme!].titleText }]} numberOfLines={1}>
 							{username}
 						</Text>
-						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{date}</Text>
+						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
 						<Markdown
