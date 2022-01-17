@@ -21,6 +21,7 @@
   "error-save-video": "Fout bij het opslaan van video",
   "error-field-unavailable": "{{field}} is al in gebruik :(",
   "error-file-too-large": "Bestand is te groot",
+  "error-not-permission-to-upload-file": "Je hebt geen toestemming om bestanden up te loaden",
   "error-importer-not-defined": "De importeur is niet correct gedefinieerd, de klasse Import ontbreekt.",
   "error-input-is-not-a-valid-field": "{{input}} is geen geldig {{field}}",
   "error-invalid-actionlink": "Ongeldige actielink",
