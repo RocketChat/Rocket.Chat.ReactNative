@@ -1,7 +1,9 @@
-import { TActionSelectedUsers } from '../../actions/selectedUsers';
 import { TActionActiveUsers } from '../../actions/activeUsers';
+import { TActionInviteLinks } from '../../actions/inviteLinks';
+import { TActionSelectedUsers } from '../../actions/selectedUsers';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
+import { IInviteLinks } from '../../reducers/inviteLinks';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
 
 export interface IApplicationState {
@@ -19,7 +21,7 @@ export interface IApplicationState {
 	customEmojis: any;
 	activeUsers: IActiveUsers;
 	usersTyping: any;
-	inviteLinks: any;
+	inviteLinks: IInviteLinks;
 	createDiscussion: any;
 	inquiry: any;
 	enterpriseModules: any;
@@ -28,4 +30,4 @@ export interface IApplicationState {
 	roles: any;
 }
 
-export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers;
+export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers & TActionInviteLinks;
