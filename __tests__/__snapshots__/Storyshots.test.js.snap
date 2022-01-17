@@ -1928,6 +1928,2438 @@ Array [
 ]
 `;
 
+exports[`Storyshots Discussions.Item content 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#ffffff",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              Object {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+              ]
+            }
+          >
+            <FastImageView
+              resizeMode="cover"
+              source={
+                Object {
+                  "headers": undefined,
+                  "priority": "high",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0d0e12",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#9ca2a8",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
+                  Object {
+                    "flex": 1,
+                  },
+                ]
+              }
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                },
+                Object {
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#ffffff",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              Object {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+              ]
+            }
+          >
+            <FastImageView
+              resizeMode="cover"
+              source={
+                Object {
+                  "headers": undefined,
+                  "priority": "high",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0d0e12",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#9ca2a8",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
+                  Object {
+                    "flex": 1,
+                  },
+                ]
+              }
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </Text>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                },
+                Object {
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#ffffff",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              Object {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+              ]
+            }
+          >
+            <FastImageView
+              resizeMode="cover"
+              source={
+                Object {
+                  "headers": undefined,
+                  "priority": "high",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0d0e12",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#9ca2a8",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
+                  Object {
+                    "flex": 1,
+                  },
+                ]
+              }
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                },
+                Object {
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  +999
+                </Text>
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#ffffff",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-"
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              Object {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+              ]
+            }
+          >
+            <FastImageView
+              resizeMode="cover"
+              source={
+                Object {
+                  "headers": undefined,
+                  "priority": "high",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0d0e12",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#9ca2a8",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Attachment title"
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
+                  Object {
+                    "flex": 1,
+                  },
+                ]
+              }
+            >
+              Attachment title
+            </Text>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                },
+                Object {
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#ffffff",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              Object {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+              ]
+            }
+          >
+            <FastImageView
+              resizeMode="cover"
+              source={
+                Object {
+                  "headers": undefined,
+                  "priority": "high",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0d0e12",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#9ca2a8",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
+                  Object {
+                    "flex": 1,
+                  },
+                ]
+              }
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                },
+                Object {
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Storyshots Discussions.Item themes 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#ffffff",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              Object {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+              ]
+            }
+          >
+            <FastImageView
+              resizeMode="cover"
+              source={
+                Object {
+                  "headers": undefined,
+                  "priority": "high",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#0d0e12",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#9ca2a8",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#2f343d",
+                  },
+                  Object {
+                    "flex": 1,
+                  },
+                ]
+              }
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                },
+                Object {
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9ca2a8",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9ca2a8",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#030b1b",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              Object {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+              ]
+            }
+          >
+            <FastImageView
+              resizeMode="cover"
+              source={
+                Object {
+                  "headers": undefined,
+                  "priority": "high",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#f9f9f9",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#9297a2",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#cbced1",
+                  },
+                  Object {
+                    "flex": 1,
+                  },
+                ]
+              }
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                },
+                Object {
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9297a2",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9297a2",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#9297a2",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#9297a2",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "backgroundColor": "#000000",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              Object {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                Object {
+                  "borderRadius": 4,
+                  "height": 36,
+                  "width": 36,
+                },
+              ]
+            }
+          >
+            <FastImageView
+              resizeMode="cover"
+              source={
+                Object {
+                  "headers": undefined,
+                  "priority": "high",
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=36",
+                }
+              }
+              style={
+                Object {
+                  "bottom": 0,
+                  "left": 0,
+                  "position": "absolute",
+                  "right": 0,
+                  "top": 0,
+                }
+              }
+            />
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "System",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#f9f9f9",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#b2b8c6",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                Array [
+                  Object {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "System",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "textAlign": "left",
+                  },
+                  Object {
+                    "color": "#cbced1",
+                  },
+                  Object {
+                    "flex": 1,
+                  },
+                ]
+              }
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                },
+                Object {
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                Object {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#b2b8c6",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#b2b8c6",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#b2b8c6",
+                        "fontSize": 24,
+                      },
+                      undefined,
+                      Object {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      Object {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    Array [
+                      Object {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "System",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      Object {
+                        "color": "#b2b8c6",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "height": 0.5,
+          },
+          undefined,
+          Object {
+            "backgroundColor": "#cbcbcc",
+          },
+        ]
+      }
+    />
+  </View>
+</RCTScrollView>
+`;
+
 exports[`Storyshots Header Buttons badge 1`] = `
 <RNCSafeAreaView
   edges={
