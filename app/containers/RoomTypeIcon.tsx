@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 
 import { CustomIcon } from '../lib/Icons';
 import { STATUS_COLORS, themes } from '../constants/colors';
@@ -13,13 +13,13 @@ const styles = StyleSheet.create({
 });
 
 interface IRoomTypeIcon {
-	theme: string;
+	theme?: string;
 	type: string;
-	isGroupChat: boolean;
-	teamMain: boolean;
-	status: string;
-	size: number;
-	style: any;
+	isGroupChat?: boolean;
+	teamMain?: boolean;
+	status?: string;
+	size?: number;
+	style?: ViewStyle;
 }
 
 const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, teamMain, size = 16 }: IRoomTypeIcon) => {
@@ -27,11 +27,13 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, team
 		return null;
 	}
 
-	const color = themes[theme].titleText;
+	const color = themes[theme!].titleText;
 	const iconStyle = [styles.icon, { color }, style];
 
 	if (type === 'd' && !isGroupChat) {
-		return <Status style={[iconStyle, { color: STATUS_COLORS[status] ?? STATUS_COLORS.offline }]} size={size} status={status} />;
+		return (
+			<Status style={[iconStyle, { color: STATUS_COLORS[status!] ?? STATUS_COLORS.offline }]} size={size} status={status!} />
+		);
 	}
 
 	// TODO: move this to a separate function
