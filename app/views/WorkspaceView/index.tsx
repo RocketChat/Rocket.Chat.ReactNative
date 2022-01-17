@@ -35,9 +35,9 @@ interface IWorkSpaceProp {
 }
 
 class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
-	static navigationOptions: StackNavigationOptions = {
+	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Your_workspace')
-	};
+	});
 
 	get showRegistrationButton() {
 		const { registrationForm, inviteLinkToken, Accounts_iframe_enabled } = this.props;

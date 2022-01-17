@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, ViewStyle } from 'react-native';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -17,53 +17,55 @@ interface IMessageContainerProps {
 		username: string;
 		token: string;
 	};
-	rid: string;
+	msg?: string;
+	rid?: string;
 	timeFormat: string;
-	style: any;
-	archived: boolean;
-	broadcast: boolean;
-	previousItem: {
+	style?: ViewStyle;
+	archived?: boolean;
+	broadcast?: boolean;
+	previousItem?: {
 		ts: any;
 		u: any;
 		groupable: any;
-		id: any;
-		tmid: any;
+		id: string;
+		tmid: string;
 		status: any;
 	};
+	isHeader: boolean;
 	baseUrl: string;
-	Message_GroupingPeriod: number;
-	isReadReceiptEnabled: boolean;
+	Message_GroupingPeriod?: number;
+	isReadReceiptEnabled?: boolean;
 	isThreadRoom: boolean;
 	useRealName: boolean;
-	autoTranslateRoom: boolean;
-	autoTranslateLanguage: string;
-	status: number;
-	isIgnored: boolean;
-	highlighted: boolean;
-	getCustomEmoji(): void;
-	onLongPress: Function;
-	onReactionPress: Function;
-	onEncryptedPress: Function;
-	onDiscussionPress: Function;
-	onThreadPress: Function;
-	errorActionsShow: Function;
-	replyBroadcast: Function;
-	reactionInit: Function;
-	fetchThreadName: Function;
-	showAttachment: Function;
-	onReactionLongPress: Function;
-	navToRoomInfo: Function;
-	callJitsi: Function;
-	blockAction: Function;
-	onAnswerButtonPress: Function;
+	autoTranslateRoom?: boolean;
+	autoTranslateLanguage?: string;
+	status?: number;
+	isIgnored?: boolean;
+	highlighted?: boolean;
+	getCustomEmoji(name: string): void;
+	onLongPress?: Function;
+	onReactionPress?: Function;
+	onEncryptedPress?: Function;
+	onDiscussionPress?: Function;
+	onThreadPress?: Function;
+	errorActionsShow?: Function;
+	replyBroadcast?: Function;
+	reactionInit?: Function;
+	fetchThreadName?: Function;
+	showAttachment?: Function;
+	onReactionLongPress?: Function;
+	navToRoomInfo?: Function;
+	callJitsi?: Function;
+	blockAction?: Function;
+	onAnswerButtonPress?: Function;
 	theme: string;
-	threadBadgeColor: string;
-	toggleFollowThread: Function;
-	jumpToMessage: Function;
+	threadBadgeColor?: string;
+	toggleFollowThread?: Function;
+	jumpToMessage?: Function;
 	onPress: Function;
 }
 
-class MessageContainer extends React.Component<IMessageContainerProps, any> {
+class MessageContainer extends React.Component<IMessageContainerProps> {
 	static defaultProps = {
 		getCustomEmoji: () => {},
 		onLongPress: () => {},
@@ -224,7 +226,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 				previousItem.ts.toDateString() === item.ts.toDateString() &&
 				previousItem.u.username === item.u.username &&
 				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
-				item.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
+				item.ts - previousItem.ts < Message_GroupingPeriod! * 1000 &&
 				previousItem.tmid === item.tmid
 			) {
 				return false;
@@ -299,7 +301,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		const { item, theme, jumpToMessage } = this.props;
 		const isMessageLink = item?.attachments?.findIndex((att: any) => att?.message_link === link) !== -1;
 		if (isMessageLink) {
-			return jumpToMessage(link);
+			return jumpToMessage!(link);
 		}
 		openLink(link, theme);
 	};
@@ -365,7 +367,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 		// "autoTranslateRoom" and "autoTranslateLanguage" are properties from the subscription
 		// "autoTranslateMessage" is a toggle between "View Original" and "Translate" state
 		if (autoTranslateRoom && autoTranslateMessage) {
-			message = getMessageTranslation(item, autoTranslateLanguage) || message;
+			message = getMessageTranslation(item, autoTranslateLanguage!) || message;
 		}
 
 		return (
@@ -393,7 +395,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 					id={id}
 					msg={message}
 					md={md}
-					rid={rid}
+					rid={rid!}
 					author={u}
 					ts={ts}
 					type={t}
@@ -407,10 +409,10 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 					emoji={emoji}
 					timeFormat={timeFormat}
 					style={style}
-					archived={archived}
-					broadcast={broadcast}
+					archived={archived!}
+					broadcast={broadcast!}
 					useRealName={useRealName}
-					isReadReceiptEnabled={isReadReceiptEnabled}
+					isReadReceiptEnabled={isReadReceiptEnabled!}
 					unread={unread}
 					role={role}
 					drid={drid}
@@ -420,10 +422,10 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 					tcount={tcount}
 					tlm={tlm}
 					tmsg={tmsg}
-					fetchThreadName={fetchThreadName}
+					fetchThreadName={fetchThreadName!}
 					mentions={mentions}
 					channels={channels}
-					isIgnored={this.isIgnored}
+					isIgnored={this.isIgnored!}
 					isEdited={editedBy && !!editedBy.username}
 					isHeader={this.isHeader}
 					isThreadReply={this.isThreadReply}
@@ -433,13 +435,13 @@ class MessageContainer extends React.Component<IMessageContainerProps, any> {
 					isTemp={this.isTemp}
 					isEncrypted={this.isEncrypted}
 					hasError={this.hasError}
-					showAttachment={showAttachment}
+					showAttachment={showAttachment!}
 					getCustomEmoji={getCustomEmoji}
-					navToRoomInfo={navToRoomInfo}
-					callJitsi={callJitsi}
-					blockAction={blockAction}
+					navToRoomInfo={navToRoomInfo!}
+					callJitsi={callJitsi!}
+					blockAction={blockAction!}
 					theme={theme}
-					highlighted={highlighted}
+					highlighted={highlighted!}
 				/>
 			</MessageContext.Provider>
 		);

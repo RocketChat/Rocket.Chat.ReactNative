@@ -11,14 +11,15 @@ import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
+import { ShareInsideStackParamList } from '../definitions/navigationTypes';
 
 const getItemLayout = (data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = (item: IServer) => item.id;
 
 interface IServer extends Model {
 	id: string;
-	iconURL?: string;
-	name?: string;
+	iconURL: string;
+	name: string;
 }
 
 interface ISelectServerViewState {
@@ -26,7 +27,7 @@ interface ISelectServerViewState {
 }
 
 interface ISelectServerViewProps {
-	navigation: StackNavigationProp<any, 'SelectServerView'>;
+	navigation: StackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>;
 	server: string;
 }
 
@@ -40,7 +41,7 @@ class SelectServerView extends React.Component<ISelectServerViewProps, ISelectSe
 	async componentDidMount() {
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
-		const servers: IServer[] = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch();
+		const servers = (await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch()) as IServer[];
 		this.setState({ servers });
 	}
 
