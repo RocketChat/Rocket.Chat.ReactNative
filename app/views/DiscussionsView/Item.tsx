@@ -66,8 +66,8 @@ interface IItem {
 const Item = ({ item, baseUrl, user, onPress }: IItem): JSX.Element => {
 	const { theme } = useTheme();
 	const username = item?.u?.username;
-	let messageTime;
-	let messageDate;
+	let messageTime: string;
+	let messageDate: string;
 
 	if (item?.ts) {
 		messageTime = moment(item.ts).format('LT');
@@ -86,7 +86,7 @@ const Item = ({ item, baseUrl, user, onPress }: IItem): JSX.Element => {
 						<Text style={[styles.title, { color: themes[theme!].titleText }]} numberOfLines={1}>
 							{username}
 						</Text>
-						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{messageTime}</Text>
+						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{messageTime!}</Text>
 					</View>
 					<View style={styles.messageContainer}>
 						{/* @ts-ignore */}
@@ -100,7 +100,7 @@ const Item = ({ item, baseUrl, user, onPress }: IItem): JSX.Element => {
 							preview
 						/>
 					</View>
-					<DiscussionDetails item={item} user={user} time={messageDate} style={styles.discussionDetails} />
+					<DiscussionDetails item={item} user={user} time={messageDate!} style={styles.discussionDetails} />
 				</View>
 			</View>
 		</Touchable>
