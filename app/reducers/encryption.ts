@@ -1,15 +1,15 @@
 import { ENCRYPTION } from '../actions/actionsTypes';
 import { TApplicationActions } from '../definitions';
 
+export type IBanner = string;
 export interface IEncryption {
 	enabled: boolean;
-	// TODO
-	banner: any;
+	banner: IBanner;
 }
 
 export const initialState: IEncryption = {
 	enabled: false,
-	banner: null
+	banner: ''
 };
 
 export default function encryption(state = initialState, action: TApplicationActions): IEncryption {

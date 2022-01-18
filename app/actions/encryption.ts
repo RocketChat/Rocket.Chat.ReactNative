@@ -1,14 +1,15 @@
 import { Action } from 'redux';
 
+import { IBanner } from '../reducers/encryption';
 import { ENCRYPTION } from './actionsTypes';
 
 export interface IEncryptionSet extends Action {
 	enabled: boolean;
-	banner: any;
+	banner: IBanner;
 }
 
 export interface IEncryptionSetBanner extends Action {
-	banner: any;
+	banner: IBanner;
 }
 export interface IEncryptionDecodeKey extends Action {
 	password: string;
@@ -28,7 +29,7 @@ export function encryptionStop(): Action {
 	};
 }
 
-export function encryptionSet(enabled = false, banner: any = null): IEncryptionSet {
+export function encryptionSet(enabled = false, banner: IBanner = ''): IEncryptionSet {
 	return {
 		type: ENCRYPTION.SET,
 		enabled,
@@ -36,7 +37,7 @@ export function encryptionSet(enabled = false, banner: any = null): IEncryptionS
 	};
 }
 
-export function encryptionSetBanner(banner: any = null): IEncryptionSetBanner {
+export function encryptionSetBanner(banner: IBanner = ''): IEncryptionSetBanner {
 	return {
 		type: ENCRYPTION.SET_BANNER,
 		banner
