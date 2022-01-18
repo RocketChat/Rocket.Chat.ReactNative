@@ -12,7 +12,7 @@ import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import { IPreferences } from '../definitions';
+import { IApplicationState, IPreferences } from '../definitions';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { SettingsStackParamList } from '../stacks/types';
@@ -28,7 +28,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 	const { theme } = useTheme();
 
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useSelector(
-		(state: any) => state.sortPreferences
+		(state: IApplicationState) => state.sortPreferences
 	);
 	const { isMasterDetail } = useSelector((state: any) => state.app);
 	const dispatch = useDispatch();
