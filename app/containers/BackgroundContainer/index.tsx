@@ -6,9 +6,9 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 
 interface IBackgroundContainer {
-	text: string;
-	theme: string;
-	loading: boolean;
+	text?: string;
+	theme?: string;
+	loading?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
 const BackgroundContainer = ({ theme, text, loading }: IBackgroundContainer) => (
 	<View style={styles.container}>
 		<ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />
-		{text ? <Text style={[styles.text, { color: themes[theme].auxiliaryTintColor }]}>{text}</Text> : null}
-		{loading ? <ActivityIndicator style={styles.text} color={themes[theme].auxiliaryTintColor} /> : null}
+		{text ? <Text style={[styles.text, { color: themes[theme!].auxiliaryTintColor }]}>{text}</Text> : null}
+		{loading ? <ActivityIndicator style={styles.text} color={themes[theme!].auxiliaryTintColor} /> : null}
 	</View>
 );
 

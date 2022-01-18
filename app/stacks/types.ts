@@ -2,6 +2,7 @@ import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
 import Model from '@nozbe/watermelondb/Model';
 
+import { IRoom } from '../definitions/IRoom';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
@@ -31,13 +32,13 @@ export type ChatsStackParamList = {
 		joined: boolean;
 	};
 	SelectListView: {
-		data: any;
+		data: IRoom[];
 		title: string;
 		infoText: string;
-		nextAction: Function;
-		showAlert: boolean;
+		nextAction: (selected: string[]) => void;
+		showAlert: () => void;
 		isSearch: boolean;
-		onSearch: Function;
+		onSearch: (text: string) => Partial<IRoom[]>;
 		isRadio?: boolean;
 	};
 	RoomInfoView: {
@@ -64,7 +65,7 @@ export type ChatsStackParamList = {
 		showButton?: boolean;
 		title?: string;
 		buttonText?: string;
-		nextAction?: Function;
+		nextAction?(): void;
 	};
 	InviteUsersView: {
 		rid: string;
