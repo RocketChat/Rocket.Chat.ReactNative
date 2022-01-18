@@ -54,25 +54,31 @@ interface IForwardLivechatViewProps {
 	forwardRoom: (rid: string, transferData: ITransferData) => void;
 }
 
+const COUNT_DEPARTMENT = 50;
+
 const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForwardLivechatViewProps) => {
 	const [departments, setDepartments] = useState<IParsedData[]>([]);
 	const [departmentId, setDepartment] = useState('');
+	const [departmentTotal, setDepartmentTotal] = useState(0);
+	const [departmentOffset, setDepartmentOffset] = useState(0);
 	const [users, setUsers] = useState<IParsedData[]>([]);
 	const [userId, setUser] = useState();
 	const [room, setRoom] = useState<IRoom>({});
 
 	const rid = route.params?.rid;
 
-	const getDepartments = async (text = '') => {
+	const getDepartments = async (text = '', offset = 0) => {
 		try {
-			const result = await RocketChat.getDepartments(text);
+			const result = await RocketChat.getDepartments({ count: COUNT_DEPARTMENT, text, offset });
 			if (result.success) {
 				const parsedDepartments = result.departments.map((department: ILivechatDepartment) => ({
 					label: department.name,
 					value: department._id
 				}));
 				setDepartments(parsedDepartments);
-				return parsedDepartments;
+				setDepartmentTotal(result?.total);
+				setDepartmentOffset(result?.offset);
+				return { data: parsedDepartments, total: result?.total, offset: result?.offset };
 			}
 		} catch {
 			// do nothing
@@ -90,12 +96,11 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			if (result.success) {
 				const parsedUsers = result.items.map((user: IUser) => ({ label: user.username, value: user._id }));
 				setUsers(parsedUsers);
-				return parsedUsers;
+				return { data: parsedUsers };
 			}
 		} catch {
 			// do nothing
 		}
-		return [];
 	};
 
 	const getRoom = async () => {
@@ -152,6 +157,10 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			data: departments,
 			onChangeValue: setDepartment,
 			onChangeText: getDepartments,
+			onEndReached: getDepartments,
+			offset: departmentOffset,
+			total: departmentTotal,
+			count: COUNT_DEPARTMENT,
 			goBack: false
 		});
 	};

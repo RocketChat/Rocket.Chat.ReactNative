@@ -37,6 +37,9 @@ interface IItem {
 interface IPickerViewState {
 	data: IOptionsField[];
 	value: string;
+	offset: number;
+	total: number;
+	text: string;
 }
 
 interface IPickerViewProps {
@@ -55,7 +58,9 @@ const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 ));
 
 class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState> {
-	private onSearch?: ((text: string) => IOptionsField[]) | ((term?: string | undefined) => Promise<any>);
+	private onSearch?: (text?: string) => Promise<{ data: IOptionsField[] } | undefined>;
+
+	private count: number;
 
 	static navigationOptions = ({ route }: IPickerViewProps) => ({
 		title: route.params?.title ?? I18n.t('Select_an_option')
@@ -65,9 +70,12 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 		super(props);
 		const data = props.route.params?.data ?? [];
 		const value = props.route.params?.value;
-		this.state = { data, value };
+		const total = props.route.params?.total ?? 0;
+		const offset = props.route.params?.offset ?? 0;
+		this.state = { data, value, offset, total, text: '' };
 
 		this.onSearch = props.route.params?.onChangeText;
+		this.count = props.route.params?.count ?? 0;
 	}
 
 	onChangeValue = (value: string) => {
@@ -84,12 +92,26 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 		async (text: string) => {
 			if (this.onSearch) {
 				const data = await this.onSearch(text);
-				this.setState({ data });
+				if (data?.data) {
+					this.setState({ ...data, text });
+				}
 			}
 		},
 		300,
 		true
 	);
+
+	onEndReached = async () => {
+		const { route } = this.props;
+		const { data, offset, total, text } = this.state;
+		const onEndReached = route.params?.onEndReached;
+		if (onEndReached && offset + this.count < total) {
+			const val = await onEndReached(text, offset + this.count);
+			if (val?.data) {
+				this.setState({ ...val, data: [...data, ...val.data] });
+			}
+		}
+	};
 
 	renderSearch() {
 		if (!this.onSearch) {
@@ -121,6 +143,8 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 							onItemPress={() => this.onChangeValue(item.value as string)}
 						/>
 					)}
+					onEndReached={() => this.onEndReached()}
+					onEndReachedThreshold={0.5}
 					ItemSeparatorComponent={List.Separator}
 					ListHeaderComponent={List.Separator}
 					ListFooterComponent={List.Separator}

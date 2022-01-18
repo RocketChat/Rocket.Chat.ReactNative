@@ -1146,9 +1146,11 @@ const RocketChat = {
 		// RC 2.2.0
 		return this.sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
 	},
-	getDepartments(text) {
+	getDepartments({ count, offset, text }) {
 		const params = {
-			...(text && { text })
+			...(text && { text }),
+			count,
+			offset
 		};
 		// RC 2.2.0
 		return this.sdk.get('livechat/department', params);
