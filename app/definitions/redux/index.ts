@@ -1,14 +1,17 @@
+// ACTIONS
 import { TActionSelectedUsers } from '../../actions/selectedUsers';
 import { TActionActiveUsers } from '../../actions/activeUsers';
+import { TActionServer } from '../../actions/server';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
+import { IServer } from '../../reducers/server';
 
 export interface IApplicationState {
 	settings: any;
 	login: any;
 	meteor: any;
-	server: any;
+	server: IServer;
 	selectedUsers: ISelectedUsers;
 	createChannel: any;
 	app: any;
@@ -28,4 +31,4 @@ export interface IApplicationState {
 	roles: any;
 }
 
-export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers;
+export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers & TActionServer;
