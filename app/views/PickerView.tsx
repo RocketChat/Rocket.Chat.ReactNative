@@ -105,8 +105,9 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 		const { route } = this.props;
 		const { data, offset, total, text } = this.state;
 		const onEndReached = route.params?.onEndReached;
-		if (onEndReached && offset + this.count < total) {
-			const val = await onEndReached(text, offset + this.count);
+		const newOffset = offset + this.count;
+		if (onEndReached && newOffset < total) {
+			const val = await onEndReached(text, newOffset);
 			if (val?.data) {
 				this.setState({ ...val, data: [...data, ...val.data] });
 			}
