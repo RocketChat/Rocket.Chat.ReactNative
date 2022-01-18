@@ -9,20 +9,20 @@ describe('test encryption reducer', () => {
 	});
 
 	it('should return modified store after encryptionSet', () => {
-		mockedStore.dispatch(encryptionSet(true, true));
+		mockedStore.dispatch(encryptionSet(true, 'BANNER'));
 		const state = mockedStore.getState().encryption;
-		expect(state).toEqual({ banner: true, enabled: true });
+		expect(state).toEqual({ banner: 'BANNER', enabled: true });
 	});
 
 	it('should return empty store after encryptionInit', () => {
 		mockedStore.dispatch(encryptionInit());
 		const state = mockedStore.getState().encryption;
-		expect(state).toEqual({ banner: null, enabled: false });
+		expect(state).toEqual({ banner: '', enabled: false });
 	});
 
 	it('should return initial state after encryptionSetBanner', () => {
-		mockedStore.dispatch(encryptionSetBanner(true));
+		mockedStore.dispatch(encryptionSetBanner('BANNER_NEW'));
 		const state = mockedStore.getState().encryption;
-		expect(state).toEqual({ banner: true, enabled: false });
+		expect(state).toEqual({ banner: 'BANNER_NEW', enabled: false });
 	});
 });
