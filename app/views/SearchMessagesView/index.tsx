@@ -1,37 +1,38 @@
-import React from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
-import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
-import { connect } from 'react-redux';
+import { CompositeNavigationProp } from '@react-navigation/core';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { dequal } from 'dequal';
+import React from 'react';
+import { FlatList, Text, View } from 'react-native';
+import { connect } from 'react-redux';
 
-import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
-import { IAttachment } from '../../definitions/IAttachment';
-import RCTextInput from '../../containers/TextInput';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import Markdown from '../../containers/markdown';
-import debounce from '../../utils/debounce';
-import RocketChat from '../../lib/rocketchat';
-import Message from '../../containers/message';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { IMessage } from '../../containers/message/interfaces';
-import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
-import log from '../../utils/log';
 import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
-import SafeAreaView from '../../containers/SafeAreaView';
+import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
+import Markdown from '../../containers/markdown';
+import Message from '../../containers/message';
+import { IMessage } from '../../containers/message/interfaces';
+import SafeAreaView from '../../containers/SafeAreaView';
+import StatusBar from '../../containers/StatusBar';
+import RCTextInput from '../../containers/TextInput';
+import { IApplicationState, IBaseScreen } from '../../definitions';
+import { IAttachment } from '../../definitions/IAttachment';
+import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
+import I18n from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
-import { isIOS } from '../../utils/deviceInfo';
+import getThreadName from '../../lib/methods/getThreadName';
+import RocketChat from '../../lib/rocketchat';
 import { compareServerVersion, methods } from '../../lib/utils';
+import { getUserSelector } from '../../selectors/login';
+import { ChatsStackParamList, InsideStackParamList } from '../../stacks/types';
+import { withTheme } from '../../theme';
+import debounce from '../../utils/debounce';
+import { isIOS } from '../../utils/deviceInfo';
+import log from '../../utils/log';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import styles from './styles';
-import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 
 const QUERY_SIZE = 50;
 
@@ -49,12 +50,11 @@ interface IRoomInfoParam {
 	joined: boolean;
 }
 
-interface INavigationOption {
+interface INavigationOption extends IBaseScreen<ChatsStackParamList, 'SearchMessagesView'> {
 	navigation: CompositeNavigationProp<
 		StackNavigationProp<ChatsStackParamList, 'SearchMessagesView'>,
 		StackNavigationProp<InsideStackParamList>
 	>;
-	route: RouteProp<ChatsStackParamList, 'SearchMessagesView'>;
 }
 
 interface ISearchMessagesViewProps extends INavigationOption {
@@ -67,7 +67,6 @@ interface ISearchMessagesViewProps extends INavigationOption {
 			extension: string;
 		};
 	};
-	theme: string;
 	useRealName: boolean;
 }
 class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
@@ -318,7 +317,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	serverVersion: state.server.version,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
