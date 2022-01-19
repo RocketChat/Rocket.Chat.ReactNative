@@ -54,15 +54,16 @@ if (isAndroid) {
 
 const imagePickerConfig = {
 	cropping: true,
-	compressImageQuality: 0.8,
 	avoidEmptySpaceAroundImage: false,
-	freeStyleCropEnabled: true
+	freeStyleCropEnabled: true,
+	forceJpg: true
 };
 
 const libraryPickerConfig = {
 	multiple: true,
 	compressVideoPreset: 'Passthrough',
-	mediaType: 'any'
+	mediaType: 'any',
+	forceJpg: true
 };
 
 const videoPickerConfig = {
