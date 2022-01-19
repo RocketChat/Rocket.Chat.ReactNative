@@ -86,7 +86,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	private messagesSubscription?: Subscription;
 
-	private messagesObservable!: Observable<Model>;
+	private messagesObservable?: Observable<Model>;
 
 	constructor(props: IThreadMessagesViewProps) {
 		super(props);
@@ -220,9 +220,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				.observeWithColumns(['updated_at']);
 
 			// TODO: Refactor when migrate messages
-			this.messagesSubscription = this.messagesObservable.subscribe((messages: any) => {
+			this.messagesSubscription = this.messagesObservable?.subscribe((messages: any) => {
 				const { currentFilter } = this.state;
-				const displayingThreads = this.getFilteredThreads(messages, subscription!, currentFilter);
+				const displayingThreads = this.getFilteredThreads(messages, subscription, currentFilter);
 				if (this.mounted) {
 					this.setState({ messages, displayingThreads });
 				} else {
@@ -419,7 +419,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	};
 
 	// helper to query threads
-	getFilteredThreads = (messages: any, subscription: TSubscriptionModel, currentFilter?: Filter): TThreadModel[] => {
+	getFilteredThreads = (messages: any, subscription?: TSubscriptionModel, currentFilter?: Filter): TThreadModel[] => {
 		// const { currentFilter } = this.state;
 		const { user } = this.props;
 		if (currentFilter === Filter.Following) {
