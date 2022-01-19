@@ -12,7 +12,7 @@ export interface IServer {
 	changingServer: boolean;
 }
 
-const initialState: IServer = {
+export const initialState: IServer = {
 	connecting: false,
 	connected: false,
 	failure: false,
