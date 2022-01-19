@@ -39,7 +39,7 @@ interface IPickerViewState {
 	value: string;
 	offset: number;
 	total: number;
-	text: string;
+	searchText: string;
 }
 
 interface IPickerViewProps {
@@ -72,7 +72,7 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 		const value = props.route.params?.value;
 		const total = props.route.params?.total ?? 0;
 		const offset = props.route.params?.offset ?? 0;
-		this.state = { data, value, offset, total, text: '' };
+		this.state = { data, value, offset, total, searchText: '' };
 
 		this.onSearch = props.route.params?.onChangeText;
 		this.count = props.route.params?.count ?? 0;
@@ -89,11 +89,11 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 	};
 
 	onChangeText = debounce(
-		async (text: string) => {
+		async (searchText: string) => {
 			if (this.onSearch) {
-				const data = await this.onSearch(text);
+				const data = await this.onSearch(searchText);
 				if (data?.data) {
-					this.setState({ ...data, text });
+					this.setState({ ...data, searchText });
 				}
 			}
 		},
@@ -103,11 +103,11 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 
 	onEndReached = async () => {
 		const { route } = this.props;
-		const { data, offset, total, text } = this.state;
+		const { data, offset, total, searchText } = this.state;
 		const onEndReached = route.params?.onEndReached;
 		const newOffset = offset + this.count;
 		if (onEndReached && newOffset < total) {
-			const val = await onEndReached(text, newOffset);
+			const val = await onEndReached(searchText, newOffset);
 			if (val?.data) {
 				this.setState({ ...val, data: [...data, ...val.data] });
 			}

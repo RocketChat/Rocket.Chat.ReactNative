@@ -75,9 +75,11 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 					label: department.name,
 					value: department._id
 				}));
-				setDepartments(parsedDepartments);
-				setDepartmentTotal(result?.total);
-				setDepartmentOffset(result?.offset);
+				if (!text && !offset) {
+					setDepartments(parsedDepartments);
+					setDepartmentTotal(result?.total);
+					setDepartmentOffset(result?.offset);
+				}
 				return { data: parsedDepartments, total: result?.total, offset: result?.offset };
 			}
 		} catch {
@@ -95,7 +97,9 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			});
 			if (result.success) {
 				const parsedUsers = result.items.map((user: IUser) => ({ label: user.username, value: user._id }));
-				setUsers(parsedUsers);
+				if (!term) {
+					setUsers(parsedUsers);
+				}
 				return { data: parsedUsers };
 			}
 		} catch {
