@@ -67,7 +67,7 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 		if (roomType === 'channel') {
 			result = yield RocketChat.leaveRoom(room.rid, room.t);
 		} else if (roomType === 'team') {
-			result = yield RocketChat.leaveTeam({ teamName: room.name, ...(selected && { rooms: selected }) });
+			result = yield RocketChat.leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) });
 		}
 
 		if (result?.success) {

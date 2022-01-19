@@ -33,8 +33,8 @@ interface IScreenLockConfigViewProps {
 
 interface IScreenLockConfigViewState {
 	autoLock: boolean;
-	autoLockTime: number | null;
-	biometry: boolean;
+	autoLockTime?: number | null;
+	biometry?: boolean;
 	biometryLabel: string | null;
 }
 
@@ -145,7 +145,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 				const { autoLock } = this.state;
 				if (autoLock) {
 					try {
-						await checkHasPasscode({ force: false, serverRecord: this.serverRecord });
+						await checkHasPasscode({ force: false, serverRecord: this.serverRecord! });
 					} catch {
 						this.toggleAutoLock();
 					}
@@ -185,7 +185,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 				<List.Item
 					title={title}
 					onPress={() => this.changeAutoLockTime(value)}
-					right={this.isSelected(value) ? this.renderIcon : null}
+					right={() => (this.isSelected(value) ? this.renderIcon() : null)}
 					disabled={disabled}
 					translateTitle={false}
 				/>

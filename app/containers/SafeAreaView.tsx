@@ -12,16 +12,16 @@ const styles = StyleSheet.create({
 });
 
 interface ISafeAreaView {
-	testID: string;
-	theme: string;
-	vertical: boolean;
-	style: object;
-	children: JSX.Element;
+	testID?: string;
+	theme?: string;
+	vertical?: boolean;
+	style?: object;
+	children: React.ReactNode;
 }
 
 const SafeAreaView = React.memo(({ style, children, testID, theme, vertical = true, ...props }: ISafeAreaView) => (
 	<SafeAreaContext
-		style={[styles.view, { backgroundColor: themes[theme].auxiliaryBackground }, style]}
+		style={[styles.view, { backgroundColor: themes[theme!].auxiliaryBackground }, style]}
 		edges={vertical ? ['right', 'left'] : undefined}
 		testID={testID}
 		{...props}>

@@ -27,7 +27,9 @@ export const SYSTEM_MESSAGES = [
 	'au',
 	'ru',
 	'ul',
+	'ult',
 	'uj',
+	'ujt',
 	'ut',
 	'rm',
 	'user-muted',
@@ -51,8 +53,10 @@ export const SYSTEM_MESSAGE_TYPES = {
 	MESSAGE_PINNED: 'message_pinned',
 	MESSAGE_SNIPPETED: 'message_snippeted',
 	USER_JOINED_CHANNEL: 'uj',
+	USER_JOINED_TEAM: 'ujt',
 	USER_JOINED_DISCUSSION: 'ut',
-	USER_LEFT_CHANNEL: 'ul'
+	USER_LEFT_CHANNEL: 'ul',
+	USER_LEFT_TEAM: 'ult'
 };
 
 export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
@@ -60,8 +64,10 @@ export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
 	SYSTEM_MESSAGE_TYPES.MESSAGE_PINNED,
 	SYSTEM_MESSAGE_TYPES.MESSAGE_SNIPPETED,
 	SYSTEM_MESSAGE_TYPES.USER_JOINED_CHANNEL,
+	SYSTEM_MESSAGE_TYPES.USER_JOINED_TEAM,
 	SYSTEM_MESSAGE_TYPES.USER_JOINED_DISCUSSION,
-	SYSTEM_MESSAGE_TYPES.USER_LEFT_CHANNEL
+	SYSTEM_MESSAGE_TYPES.USER_LEFT_CHANNEL,
+	SYSTEM_MESSAGE_TYPES.USER_LEFT_TEAM
 ];
 
 type TInfoMessage = {
@@ -78,6 +84,9 @@ export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage) => {
 	if (type === 'uj') {
 		return I18n.t('Has_joined_the_channel');
 	}
+	if (type === 'ujt') {
+		return I18n.t('Has_joined_the_team');
+	}
 	if (type === 'ut') {
 		return I18n.t('Has_joined_the_conversation');
 	}
@@ -92,6 +101,9 @@ export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage) => {
 	}
 	if (type === 'ul') {
 		return I18n.t('Has_left_the_channel');
+	}
+	if (type === 'ult') {
+		return I18n.t('Has_left_the_team');
 	}
 	if (type === 'ru') {
 		return I18n.t('User_removed_by', { userRemoved: msg, userBy: username });

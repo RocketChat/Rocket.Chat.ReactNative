@@ -269,11 +269,10 @@ class NewServerView extends React.Component<INewServerView, IState> {
 	uriToPath = (uri: string) => uri.replace('file://', '');
 
 	handleRemove = () => {
-		// TODO: Remove ts-ignore when migrate the showConfirmationAlert
-		// @ts-ignore
 		showConfirmationAlert({
 			message: I18n.t('You_will_unset_a_certificate_for_this_server'),
 			confirmationText: I18n.t('Remove'),
+			// @ts-ignore
 			onPress: this.setState({ certificate: null }) // We not need delete file from DocumentPicker because it is a temp file
 		});
 	};
