@@ -22,6 +22,7 @@ import { ICreateDiscussion } from '../../reducers/createDiscussion';
 import { IEncryption } from '../../reducers/encryption';
 import { IInviteLinks } from '../../reducers/inviteLinks';
 import { IRoles } from '../../reducers/roles';
+import { IRoom } from '../../reducers/room';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { IServer } from '../../reducers/server';
 import { ISettings } from '../../reducers/settings';
@@ -35,7 +36,7 @@ export interface IApplicationState {
 	selectedUsers: ISelectedUsers;
 	app: IApp;
 	createChannel: ICreateChannel;
-	room: any;
+	room: IRoom;
 	rooms: any;
 	sortPreferences: any;
 	share: IShare;

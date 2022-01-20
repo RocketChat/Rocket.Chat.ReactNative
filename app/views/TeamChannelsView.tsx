@@ -4,6 +4,7 @@ import React from 'react';
 import { Alert, FlatList, Keyboard } from 'react-native';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { deleteRoom } from '../actions/room';
 import { themes } from '../constants/colors';
@@ -31,6 +32,7 @@ import { isIOS } from '../utils/deviceInfo';
 import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
+
 
 const API_FETCH_COUNT = 25;
 const PERMISSION_DELETE_C = 'delete-c';
@@ -97,6 +99,7 @@ interface ITeamChannelsViewProps extends IProps {
 	showActionSheet: (options: any) => void;
 	showAvatar: boolean;
 	displayMode: string;
+	dispatch: Dispatch;
 }
 class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChannelsViewState> {
 	private teamId: string;
