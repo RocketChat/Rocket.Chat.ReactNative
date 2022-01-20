@@ -7,7 +7,6 @@ import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { Observable, Subscription } from 'rxjs';
-import Model from '@nozbe/watermelondb/Model';
 import Database from '@nozbe/watermelondb/Database';
 
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -86,7 +85,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	private messagesSubscription?: Subscription;
 
-	private messagesObservable!: Observable<Model>;
+	private messagesObservable?: Observable<TThreadModel[]>;
 
 	constructor(props: IThreadMessagesViewProps) {
 		super(props);
@@ -214,7 +213,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				whereClause.push(Q.where('msg', Q.like(`%${sanitizeLikeString(searchText.trim())}%`)));
 			}
 
-			this.messagesObservable = db.collections
+			this.messagesObservable = db
 				.get('threads')
 				.query(...whereClause)
 				.observeWithColumns(['updated_at']);

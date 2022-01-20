@@ -19,7 +19,7 @@ export type ChatsStackParamList = {
 		name?: string;
 		fname?: string;
 		prid?: string;
-		room: ISubscription;
+		room?: ISubscription;
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
 		roomUserId?: string;
