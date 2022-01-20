@@ -1,8 +1,9 @@
 import { IActionSettings } from '../actions/settings';
 import { SETTINGS } from '../actions/actionsTypes';
 
-// TODO UPDATE SETTINGS TYPE
-export type ISettings = Record<string, any>;
+export type TSettings = string | number | boolean;
+
+export type ISettings = Record<string, TSettings>;
 
 export const initialState: ISettings = {};
 
