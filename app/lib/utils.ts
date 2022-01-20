@@ -1,4 +1,4 @@
-import { coerce, gt, gte, lt, lte } from 'semver';
+import { coerce, gt, gte, lt, lte, SemVer } from 'semver';
 
 export const formatAttachmentUrl = (attachmentUrl: string, userId: string, token: string, server: string): string => {
 	if (attachmentUrl.startsWith('http')) {
@@ -10,19 +10,14 @@ export const formatAttachmentUrl = (attachmentUrl: string, userId: string, token
 	return encodeURI(`${server}${attachmentUrl}?rc_uid=${userId}&rc_token=${token}`);
 };
 
-export const methods = {
-	lowerThan: lt,
-	lowerThanOrEqualTo: lte,
-	greaterThan: gt,
-	greaterThanOrEqualTo: gte
-} as const;
+type TMethods = typeof lt | typeof gt | typeof gte | typeof lte;
 
-type ValueOf<T> = T[keyof T];
+type TFunc<T> = T;
 
 export const compareServerVersion = (
 	currentServerVersion: string,
 	versionToCompare: string,
-	func: ValueOf<typeof methods>
-): boolean => currentServerVersion && func(coerce(currentServerVersion), versionToCompare);
+	func: TFunc<TMethods>
+): boolean | string | null => currentServerVersion && func(coerce(currentServerVersion) as string | SemVer, versionToCompare);
 
 export const generateLoadMoreId = (id: string): string => `load-more-${id}`;
