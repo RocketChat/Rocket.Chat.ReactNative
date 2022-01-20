@@ -133,8 +133,8 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 	updateFrequentlyUsed = async () => {
 		const db = database.active;
 		const frequentlyUsedRecords = await db.get('frequently_used_emojis').query().fetch();
-		let frequentlyUsed = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
-		frequentlyUsed = frequentlyUsed.map(item => {
+		let frequentlyUsed: any[] = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
+		frequentlyUsed = frequentlyUsed.map((item: TFrequentlyUsedEmojiModel) => {
 			if (item.isCustom) {
 				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
 			}
