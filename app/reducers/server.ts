@@ -1,4 +1,4 @@
-import { TApplicationActions } from '../definitions';
+import { TActionServer } from '../actions/server';
 import { SERVER } from '../actions/actionsTypes';
 
 export interface IServer {
@@ -23,7 +23,7 @@ export const initialState: IServer = {
 	changingServer: false
 };
 
-export default function server(state = initialState, action: TApplicationActions): IServer {
+export default function server(state = initialState, action: TActionServer): IServer {
 	switch (action.type) {
 		case SERVER.REQUEST:
 			return {
