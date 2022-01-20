@@ -46,7 +46,7 @@ export default function server(state = initialState, action: TApplicationActions
 				connecting: true,
 				connected: false,
 				loading: true,
-				changingServer: action.changeServer!
+				changingServer: action.changeServer
 			};
 		case SERVER.SELECT_SUCCESS:
 			return {
