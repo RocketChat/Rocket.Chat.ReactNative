@@ -14,7 +14,7 @@ interface IMessageBoxCommandsPreviewItem {
 		id: string;
 		value: string;
 	};
-	theme: string;
+	theme?: string;
 }
 
 const Item = ({ item, theme }: IMessageBoxCommandsPreviewItem) => {
@@ -37,7 +37,7 @@ const Item = ({ item, theme }: IMessageBoxCommandsPreviewItem) => {
 					{loading ? <ActivityIndicator theme={theme} /> : null}
 				</FastImage>
 			) : (
-				<CustomIcon name='attach' size={36} color={themes[theme].actionTintColor} />
+				<CustomIcon name='attach' size={36} color={themes[theme!].actionTintColor} />
 			)}
 		</TouchableOpacity>
 	);
