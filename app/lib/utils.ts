@@ -10,14 +10,16 @@ export const formatAttachmentUrl = (attachmentUrl: string, userId: string, token
 	return encodeURI(`${server}${attachmentUrl}?rc_uid=${userId}&rc_token=${token}`);
 };
 
-type TMethods = typeof lt | typeof gt | typeof gte | typeof lte;
+const methods = {
+	lowerThan: lt,
+	lowerThanOrEqualTo: lte,
+	greaterThan: gt,
+	greaterThanOrEqualTo: gte
+};
 
-type TFunc<T> = T;
+type TMethod = 'lowerThan' | 'lowerThanOrEqualTo' | 'greaterThan' | 'greaterThanOrEqualTo';
 
-export const compareServerVersion = (
-	currentServerVersion: string,
-	versionToCompare: string,
-	func: TFunc<TMethods>
-): boolean | string | null => currentServerVersion && func(coerce(currentServerVersion) as string | SemVer, versionToCompare);
+export const compareServerVersion = (currentServerVersion: string, versionToCompare: string, method: TMethod): boolean =>
+	(currentServerVersion && methods[method](coerce(currentServerVersion) as string | SemVer, versionToCompare)) as boolean;
 
 export const generateLoadMoreId = (id: string): string => `load-more-${id}`;
