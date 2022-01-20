@@ -160,7 +160,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			value: room?.departmentId,
 			data: departments,
 			onChangeValue: setDepartment,
-			onChangeText: getDepartments,
+			// onChangeText: getDepartments,
 			onEndReached: getDepartments,
 			offset: departmentOffset,
 			total: departmentTotal,

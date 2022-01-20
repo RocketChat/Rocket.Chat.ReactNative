@@ -17,13 +17,17 @@ import { IOptionsField } from './NotificationPreferencesView/options';
 const styles = StyleSheet.create({
 	search: {
 		width: '100%',
-		height: 56
+		height: 56,
+		marginBottom: 32
 	},
 	noResult: {
 		fontSize: 16,
 		paddingVertical: 56,
 		...sharedStyles.textSemibold,
 		...sharedStyles.textAlignCenter
+	},
+	listNoHeader: {
+		marginTop: 32
 	}
 });
 
@@ -116,13 +120,16 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 
 	renderSearch() {
 		if (!this.onSearch) {
-			return null;
+			return <List.Separator style={styles.listNoHeader} />;
 		}
 
 		return (
-			<View style={styles.search}>
-				<SearchBox onChangeText={this.onChangeText} />
-			</View>
+			<>
+				<View style={styles.search}>
+					<SearchBox onChangeText={this.onChangeText} />
+				</View>
+				<List.Separator />
+			</>
 		);
 	}
 
@@ -132,7 +139,7 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 
 		return (
 			<SafeAreaView>
-				{this.renderSearch()}
+				{/* {this.renderSearch()} */}
 				<FlatList
 					data={data}
 					keyExtractor={item => item.value as string}
@@ -147,12 +154,11 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 					onEndReached={() => this.onEndReached()}
 					onEndReachedThreshold={0.5}
 					ItemSeparatorComponent={List.Separator}
-					ListHeaderComponent={List.Separator}
+					ListHeaderComponent={() => this.renderSearch()}
 					ListFooterComponent={List.Separator}
 					ListEmptyComponent={() => (
 						<Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
 					)}
-					contentContainerStyle={[List.styles.contentContainerStyleFlatList]}
 				/>
 			</SafeAreaView>
 		);
