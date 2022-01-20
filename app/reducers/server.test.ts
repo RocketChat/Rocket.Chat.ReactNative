@@ -1,4 +1,12 @@
-import { selectServerRequest, selectServerSuccess } from '../actions/server';
+import {
+	selectServerRequest,
+	serverRequest,
+	selectServerSuccess,
+	serverInitAdd,
+	serverFailure,
+	serverFinishAdd,
+	selectServerFailure
+} from '../actions/server';
 import { mockedStore } from './mockedStore';
 import { initialState } from './server';
 
@@ -6,6 +14,21 @@ describe('test server reducer', () => {
 	it('should return initial state', () => {
 		const state = mockedStore.getState().server;
 		expect(state).toEqual(initialState);
+	});
+
+	it('should return modified store after serverRequest', () => {
+		const server = 'https://open.rocket.chat/';
+		mockedStore.dispatch(serverRequest(server));
+		const state = mockedStore.getState().server;
+		const manipulated = { ...initialState, connecting: true, failure: false };
+		expect(state).toEqual(manipulated);
+	});
+
+	it('should return modified store after selectServerFailure', () => {
+		mockedStore.dispatch(selectServerFailure());
+		const state = mockedStore.getState().server;
+		const manipulated = { ...initialState, connecting: false, connected: false, loading: false, changingServer: false };
+		expect(state).toEqual(manipulated);
 	});
 
 	it('should return modified store after selectServer', () => {
@@ -16,11 +39,30 @@ describe('test server reducer', () => {
 	});
 
 	it('should return modified store after selectServerSucess', () => {
-		const serverStr = 'https://mobile.rocket.chat/';
-		const versionStr = '4.1.0';
-		mockedStore.dispatch(selectServerSuccess(serverStr, versionStr));
-		const { server, version } = mockedStore.getState().server;
-		expect(server).toEqual(serverStr);
-		expect(version).toEqual(versionStr);
+		const server = 'https://open.rocket.chat/';
+		const version = '4.1.0';
+		mockedStore.dispatch(selectServerSuccess(server, version));
+		const state = mockedStore.getState().server;
+		const manipulated = { ...initialState, server, version, connected: true, loading: false };
+		expect(state).toEqual(manipulated);
+	});
+
+	it('should return modified store after serverRequestInitAdd', () => {
+		const previousServer = 'https://mobile.rocket.chat';
+		mockedStore.dispatch(serverInitAdd(previousServer));
+		const state = mockedStore.getState().server.previousServer;
+		expect(state).toEqual(previousServer);
+	});
+
+	it('should return modified store after serverFinishAdd', () => {
+		mockedStore.dispatch(serverFinishAdd());
+		const state = mockedStore.getState().server.previousServer;
+		expect(state).toEqual(null);
+	});
+
+	it('should return modified store after serverRequestFailure', () => {
+		mockedStore.dispatch(serverFailure('error'));
+		const state = mockedStore.getState().server;
+		expect(state.failure).toEqual(true);
 	});
 });
