@@ -5,8 +5,8 @@ import { SERVER } from './actionsTypes';
 interface ISelectServer extends Action {
 	server: string;
 	version?: string;
-	fetchVersion?: boolean;
-	changeServer?: boolean;
+	fetchVersion: boolean;
+	changeServer: boolean;
 }
 
 interface ISelectServerSuccess extends Action {
