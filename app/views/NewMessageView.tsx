@@ -23,7 +23,7 @@ import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
 import SafeAreaView from '../containers/SafeAreaView';
-import { compareServerVersion, methods } from '../lib/utils';
+import { compareServerVersion } from '../lib/utils';
 import sharedStyles from './Styles';
 
 const QUERY_SIZE = 50;
@@ -251,7 +251,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 								first: true
 						  })
 						: null}
-					{compareServerVersion(serverVersion, '3.13.0', methods.greaterThanOrEqualTo) && permissions[2]
+					{compareServerVersion(serverVersion, '3.13.0', 'greaterThanOrEqualTo') && permissions[2]
 						? this.renderButton({
 								onPress: this.createTeam,
 								title: I18n.t('Create_Team'),
