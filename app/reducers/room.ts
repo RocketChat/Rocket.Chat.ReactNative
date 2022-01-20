@@ -9,7 +9,7 @@ export interface IRoom {
 	rooms: IRoomRecord;
 }
 
-const initialState: IRoom = {
+export const initialState: IRoom = {
 	rid: '',
 	isDeleting: false,
 	rooms: []

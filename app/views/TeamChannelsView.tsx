@@ -441,7 +441,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => dispatch(deleteRoom(item._id, item.t))
+					// VERIFY ON PR
+					onPress: () => dispatch(deleteRoom(item._id, item))
 				}
 			],
 			{ cancelable: false }

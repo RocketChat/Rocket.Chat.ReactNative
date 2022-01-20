@@ -25,12 +25,12 @@ type TRoom = Record<string, any>;
 interface ILeaveRoom extends Action {
 	roomType: string;
 	room: TRoom;
-	selected: ISelected;
+	selected?: ISelected;
 }
 
 interface IDeleteRoom extends Action {
 	roomType: string;
-	room: string;
+	room: TRoom;
 	selected?: ISelected;
 }
 
@@ -47,7 +47,6 @@ interface IUserTyping extends Action {
 export type TActionsRoom = TSubscribeRoom & TUnsubscribeRoom & TCloseRoom & ILeaveRoom & IDeleteRoom & IForwardRoom & IUserTyping;
 
 export function subscribeRoom(rid: string): TSubscribeRoom {
-	console.log(rid);
 	return {
 		type: ROOM.SUBSCRIBE,
 		rid
@@ -61,7 +60,7 @@ export function unsubscribeRoom(rid: string): TUnsubscribeRoom {
 	};
 }
 
-export function leaveRoom(roomType: string, room: TRoom, selected: ISelected): ILeaveRoom {
+export function leaveRoom(roomType: string, room: TRoom, selected?: ISelected): ILeaveRoom {
 	return {
 		type: ROOM.LEAVE,
 		room,
@@ -70,7 +69,7 @@ export function leaveRoom(roomType: string, room: TRoom, selected: ISelected): I
 	};
 }
 
-export function deleteRoom(roomType: string, room: string, selected?: ISelected): IDeleteRoom {
+export function deleteRoom(roomType: string, room: TRoom, selected?: ISelected): IDeleteRoom {
 	return {
 		type: ROOM.DELETE,
 		room,
