@@ -219,9 +219,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				.observeWithColumns(['updated_at']);
 
 			// TODO: Refactor when migrate messages
-			this.messagesSubscription = this.messagesObservable.subscribe((messages: any) => {
+			this.messagesSubscription = this.messagesObservable.subscribe(messages => {
 				const { currentFilter } = this.state;
-				const displayingThreads = this.getFilteredThreads(messages, subscription!, currentFilter);
+				const displayingThreads = this.getFilteredThreads(messages, subscription, currentFilter);
 				if (this.mounted) {
 					this.setState({ messages, displayingThreads });
 				} else {
@@ -418,14 +418,14 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	};
 
 	// helper to query threads
-	getFilteredThreads = (messages: any, subscription: TSubscriptionModel, currentFilter?: Filter): TThreadModel[] => {
+	getFilteredThreads = (messages: TThreadModel[], subscription?: TSubscriptionModel, currentFilter?: Filter): TThreadModel[] => {
 		// const { currentFilter } = this.state;
 		const { user } = this.props;
 		if (currentFilter === Filter.Following) {
-			return messages?.filter((item: { replies: any[] }) => item?.replies?.find(u => u === user.id));
+			return messages?.filter(item => item?.replies?.find(u => u === user.id));
 		}
 		if (currentFilter === Filter.Unread) {
-			return messages?.filter((item: { id: string }) => subscription?.tunread?.includes(item?.id));
+			return messages?.filter(item => subscription?.tunread?.includes(item?.id));
 		}
 		return messages;
 	};
