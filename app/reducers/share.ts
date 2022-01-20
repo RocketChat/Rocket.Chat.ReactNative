@@ -1,5 +1,12 @@
-import { TActionShare } from '../actions/share';
+import { TActionsShare } from '../actions/share';
 import { SHARE } from '../actions/actionsTypes';
+
+export interface IShareServer {
+	server: string;
+	version: string;
+}
+
+export type TShareSettings = Record<string, string | number | boolean>;
 
 export interface IShareUser {
 	id: string;
@@ -8,11 +15,10 @@ export interface IShareUser {
 	roles: string[];
 }
 
-interface IShare {
+export interface IShare {
 	user: IShareUser | {};
-	// TODO: NEED MORE ACCURATE TYPES
-	server: Record<string, string> | {};
-	settings: Record<string, string> | {};
+	server: IShareServer | {};
+	settings: TShareSettings;
 }
 
 export const initialState: IShare = {
@@ -21,7 +27,7 @@ export const initialState: IShare = {
 	settings: {}
 };
 
-export default function share(state = initialState, action: TActionShare): IShare {
+export default function share(state = initialState, action: TActionsShare): IShare {
 	switch (action.type) {
 		case SHARE.SELECT_SERVER:
 			return {

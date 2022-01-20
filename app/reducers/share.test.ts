@@ -8,24 +8,34 @@ describe('test share reducer', () => {
 		expect(state).toEqual(initialState);
 	});
 
-	it('should return modified store after call shareSetUser action', () => {
-		const user = { id: 'xxx', token: 'xxx', username: 'diego', roles: ['admin'] };
+	it('should return modified store after shareSelectServer', () => {
+		const server = {
+			server: 'https://open.rocket.chat',
+			version: '4.4.0'
+		};
+		mockedStore.dispatch(shareSelectServer(server));
+		const state = mockedStore.getState().share.server;
+		expect(state).toEqual(server);
+	});
+
+	it('should return modified store after shareSetSettings', () => {
+		const settings = {
+			Admin: false
+		};
+		mockedStore.dispatch(shareSetSettings(settings));
+		const state = mockedStore.getState().share.settings;
+		expect(state).toEqual(settings);
+	});
+
+	it('should return modified store after shareSetUser', () => {
+		const user = {
+			id: 'dig-joy',
+			token: 'token',
+			username: 'rocket.chat',
+			roles: ['admin']
+		};
 		mockedStore.dispatch(shareSetUser(user));
-		const state = mockedStore.getState().share;
-		expect(state.user).toEqual(user);
-	});
-
-	it('should return correctly store after call shareSetSettings action', () => {
-		const obj = { share: true };
-		mockedStore.dispatch(shareSetSettings(obj));
-		const { settings } = mockedStore.getState().share;
-		expect(settings).toEqual(obj);
-	});
-
-	it('should return correctly store after call shareSelectServer action', () => {
-		const obj = { server: 'rocket' };
-		mockedStore.dispatch(shareSelectServer(obj));
-		const { server } = mockedStore.getState().share;
-		expect(server).toEqual(obj);
+		const state = mockedStore.getState().share.user;
+		expect(state).toEqual(user);
 	});
 });

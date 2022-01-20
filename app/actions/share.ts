@@ -1,31 +1,30 @@
 import { Action } from 'redux';
 
-import { IShareUser } from '../reducers/share';
+import { IShareServer, IShareUser, TShareSettings } from '../reducers/share';
 import { SHARE } from './actionsTypes';
 
-// TODO: NEED MORE ACCURATE TYPES
 interface IShareSelectServer extends Action {
-	server: any;
+	server: IShareServer;
 }
 
 interface IShareSetSettings extends Action {
-	settings: any;
+	settings: TShareSettings;
 }
 
 interface IShareSetUser extends Action {
 	user: IShareUser;
 }
 
-export type TActionShare = IShareSelectServer & IShareSetSettings & IShareSetUser;
+export type TActionsShare = IShareSelectServer & IShareSetSettings & IShareSetUser;
 
-export function shareSelectServer(server: any): IShareSelectServer {
+export function shareSelectServer(server: IShareServer): IShareSelectServer {
 	return {
 		type: SHARE.SELECT_SERVER,
 		server
 	};
 }
 
-export function shareSetSettings(settings: any): IShareSetSettings {
+export function shareSetSettings(settings: TShareSettings): IShareSetSettings {
 	return {
 		type: SHARE.SET_SETTINGS,
 		settings

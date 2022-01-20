@@ -1,9 +1,9 @@
 import { TActionActiveUsers } from '../../actions/activeUsers';
 import { TActionSelectedUsers } from '../../actions/selectedUsers';
-import { TActionShare } from '../../actions/share';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
+import { IShare } from '../../reducers/share';
 
 export interface IApplicationState {
 	settings: any;
@@ -16,7 +16,7 @@ export interface IApplicationState {
 	room: any;
 	rooms: any;
 	sortPreferences: any;
-	share: any;
+	share: IShare;
 	customEmojis: any;
 	activeUsers: IActiveUsers;
 	usersTyping: any;
@@ -29,4 +29,4 @@ export interface IApplicationState {
 	roles: any;
 }
 
-export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers & TActionShare;
+export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers;
