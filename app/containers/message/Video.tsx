@@ -51,7 +51,7 @@ const Video = React.memo(
 			}
 
 			if (!isIOS) {
-				const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
+				const uri = formatAttachmentUrl(file.video_url!, user.id, user.token, baseUrl);
 				await downloadVideo(uri);
 				return;
 			}
