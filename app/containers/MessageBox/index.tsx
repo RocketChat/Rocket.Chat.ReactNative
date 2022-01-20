@@ -27,7 +27,7 @@ import LeftButtons from './LeftButtons';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import RightButtons from './RightButtons';
-import { isAndroid, isTablet } from '../../utils/deviceInfo';
+import { isAndroid, isIOS, isTablet } from '../../utils/deviceInfo';
 import { canUploadFile } from '../../utils/media';
 import EventEmiter from '../../utils/events';
 import { KEY_COMMAND, handleCommandShowUpload, handleCommandSubmit, handleCommandTyping } from '../../commands';
@@ -131,7 +131,7 @@ interface IMessageBoxState {
 }
 
 const forceJpgExtension = (attachment: ImageOrVideo) => {
-	if (attachment.mime === 'image/jpeg' && attachment.filename) {
+	if (isIOS && attachment.mime === 'image/jpeg' && attachment.filename) {
 		const regex = new RegExp(/.heic$/i);
 		if (attachment.filename.match(regex)) {
 			attachment.filename = attachment.filename.replace(regex, '.jpg');
