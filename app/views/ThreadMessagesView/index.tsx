@@ -187,7 +187,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			const db = database.active;
 
 			// subscription query
-			const subscription = (await db.collections.get('subscriptions').find(this.rid)) as TSubscriptionModel;
+			const subscription = await db.get('subscriptions').find(this.rid);
 			const observable = subscription.observe();
 			this.subSubscription = observable.subscribe(data => {
 				this.setState({ subscription: data });

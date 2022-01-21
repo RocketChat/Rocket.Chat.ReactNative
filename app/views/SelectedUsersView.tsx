@@ -109,10 +109,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	init = async () => {
 		try {
 			const db = database.active;
-			const observable = await db.collections
-				.get('subscriptions')
-				.query(Q.where('t', 'd'))
-				.observeWithColumns(['room_updated_at']);
+			const observable = await db.get('subscriptions').query(Q.where('t', 'd')).observeWithColumns(['room_updated_at']);
 
 			// TODO: Refactor when migrate room
 			this.querySubscription = observable.subscribe((data: any) => {
