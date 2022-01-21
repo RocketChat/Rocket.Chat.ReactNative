@@ -1,6 +1,6 @@
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
-import { UserChannel } from '../markdown/interfaces';
+import { UserChannel, UserMention } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 export interface IMessageAttachments {
@@ -54,12 +54,11 @@ export interface IMessageCallButton {
 }
 
 export interface IUser {
-	_id: string;
+	id: string;
 	username: string;
+	token: string;
 	name: string;
 }
-
-export type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
 
 export interface IMessageContent {
 	_id: string;

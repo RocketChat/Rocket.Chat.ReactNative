@@ -58,11 +58,11 @@ const styles = StyleSheet.create({
 
 interface IItem {
 	item: TThreadModel;
-	baseUrl: string;
-	theme: string;
+	baseUrl?: string;
+	theme?: string;
 	useRealName: boolean;
 	user: any;
-	badgeColor: string;
+	badgeColor?: string;
 	onPress: (item: TThreadModel) => void;
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
@@ -78,15 +78,15 @@ const Item = ({ item, theme, useRealName, user, badgeColor, onPress, toggleFollo
 		<Touchable
 			onPress={() => onPress(item)}
 			testID={`thread-messages-view-${item.msg}`}
-			style={{ backgroundColor: themes[theme].backgroundColor }}>
+			style={{ backgroundColor: themes[theme!].backgroundColor }}>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} theme={theme} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: themes[theme!].titleText }]} numberOfLines={1}>
 							{username}
 						</Text>
-						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
+						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
 						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} />

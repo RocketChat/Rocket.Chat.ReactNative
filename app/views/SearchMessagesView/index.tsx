@@ -32,6 +32,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import { compareServerVersion, methods } from '../../lib/utils';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
+import { IEmoji } from '../../definitions/IEmoji';
 
 const QUERY_SIZE = 50;
 
@@ -58,14 +59,15 @@ interface INavigationOption {
 }
 
 interface ISearchMessagesViewProps extends INavigationOption {
-	user: { id: string };
+	user: {
+		id: string;
+		username: string;
+		token: string;
+	};
 	baseUrl: string;
 	serverVersion: string;
 	customEmojis: {
-		[key: string]: {
-			name: string;
-			extension: string;
-		};
+		[key: string]: IEmoji;
 	};
 	theme: string;
 	useRealName: boolean;

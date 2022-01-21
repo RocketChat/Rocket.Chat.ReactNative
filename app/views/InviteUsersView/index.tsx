@@ -40,9 +40,9 @@ interface IInviteUsersViewProps {
 class InviteUsersView extends React.Component<IInviteUsersViewProps, any> {
 	private rid: string;
 
-	static navigationOptions: StackNavigationOptions = {
+	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Invite_users')
-	};
+	});
 
 	constructor(props: IInviteUsersViewProps) {
 		super(props);

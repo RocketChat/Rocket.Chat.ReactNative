@@ -25,7 +25,7 @@ interface IMessageReaction {
 }
 
 interface IMessageReactions {
-	reactions: object[];
+	reactions?: object[];
 	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
