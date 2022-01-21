@@ -252,7 +252,7 @@ class Encryption {
 						return;
 					}
 					return message.prepareUpdate(
-						protectedFunction(m => {
+						protectedFunction((m: IMessage) => {
 							Object.assign(m, newMessage);
 						})
 					);

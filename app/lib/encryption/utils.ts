@@ -33,20 +33,19 @@ export const bufferToB64URI = (buffer: Iterable<number>): string => {
 	return base64;
 };
 // SimpleCrypto.utils.convertArrayBufferToUtf8 is not working with unicode emoji
-export const bufferToUtf8 = (buffer: Iterable<number>): string => {
+export const bufferToUtf8 = (buffer: ArrayBuffer): string => {
 	const uintArray = new Uint8Array(buffer);
 	const encodedString = String.fromCharCode.apply(null, uintArray as unknown as number[]);
 	const decodedString = decodeURIComponent(escape(encodedString));
 	return decodedString;
 };
-export const splitVectorData = (text: string): string[] => {
+export const splitVectorData = (text: ArrayBuffer): ArrayBuffer[] => {
 	const vector = text.slice(0, 16);
 	const data = text.slice(16);
 	return [vector, data];
 };
 
-// @ts-ignore
-export const joinVectorData = (vector, data): ArrayBufferLike => {
+export const joinVectorData = (vector: ArrayBuffer, data: ArrayBuffer): ArrayBufferLike => {
 	const output = new Uint8Array(vector.byteLength + data.byteLength);
 	output.set(new Uint8Array(vector), 0);
 	output.set(new Uint8Array(data), vector.byteLength);
@@ -59,4 +58,4 @@ export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uin
 	// @ts-ignore
 	return new ByteBuffer.wrap(thing).toString('binary');
 };
-export const randomPassword = () => `${random(3)}-${random(3)}-${random(3)}`.toLowerCase();
+export const randomPassword = (): string => `${random(3)}-${random(3)}-${random(3)}`.toLowerCase();
