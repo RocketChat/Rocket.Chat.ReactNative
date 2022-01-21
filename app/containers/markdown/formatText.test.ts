@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { formatText } from './formatText';
 
 describe('FormatText', () => {

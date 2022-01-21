@@ -7,6 +7,7 @@ import { themes } from '../../constants/colors';
 import { formatText } from './formatText';
 import { useTheme } from '../../theme';
 import styles from './styles';
+import { formatHyperlink } from './formatHyperlink';
 
 interface IMarkdownPreview {
 	msg?: string;
@@ -23,10 +24,7 @@ const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdo
 	const { theme } = useTheme();
 
 	let m = formatText(msg);
-
-	// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
-	// Return: 'Test'
-	m = m.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
+	m = formatHyperlink(m);
 	m = shortnameToUnicode(m);
 	// Removes sequential empty spaces
 	m = m.replace(/\s+/g, ' ');

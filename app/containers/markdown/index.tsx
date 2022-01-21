@@ -23,6 +23,7 @@ import NewMarkdown from './new';
 import { formatText } from './formatText';
 import { UserMention, UserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { formatHyperlink } from './formatHyperlink';
 
 export { default as MarkdownPreview } from './Preview';
 
@@ -366,10 +367,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		}
 
 		let m = formatText(msg);
-
-		// Ex: '[ ](https://open.rocket.chat/group/test?msg=abcdef)  Test'
-		// Return: 'Test'
-		m = m.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
+		m = formatHyperlink(m);
 		let ast = parser.parse(m);
 		ast = mergeTextNodes(ast);
 		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
