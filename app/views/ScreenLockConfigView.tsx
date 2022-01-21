@@ -126,7 +126,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		await serversDB.write(async () => {
 			await this.serverRecord?.update(record => {
 				record.autoLock = autoLock;
-				record.autoLockTime = autoLockTime === null ? DEFAULT_AUTO_LOCK : autoLockTime!;
+				record.autoLockTime = autoLockTime === null ? DEFAULT_AUTO_LOCK : autoLockTime;
 				record.biometry = biometry === null ? DEFAULT_BIOMETRY : biometry;
 			});
 		});
