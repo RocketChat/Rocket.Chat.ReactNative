@@ -2,6 +2,7 @@ import EJSON from 'ejson';
 import { Base64 } from 'js-base64';
 import SimpleCrypto from 'react-native-simple-crypto';
 
+import { IMessage } from '../../definitions';
 import RocketChat from '../rocketchat';
 import Deferred from '../../utils/deferred';
 import debounce from '../../utils/debounce';
@@ -21,7 +22,12 @@ import {
 import { Encryption } from './index';
 
 export default class EncryptionRoom {
-	constructor(roomId, userId) {
+	ready: boolean;
+	roomId: string;
+	userId: string;
+	establishing: boolean;
+	readyPromise: Deferred;
+	constructor(roomId: string, userId: string) {
 		this.ready = false;
 		this.roomId = roomId;
 		this.userId = userId;
@@ -139,7 +145,7 @@ export default class EncryptionRoom {
 	);
 
 	// Create an encrypted key for this room based on users
-	encryptRoomKey = async () => {
+	encryptRoomKey = async (): Promise<void> => {
 		const result = await RocketChat.e2eGetUsersOfRoomWithoutKey(this.roomId);
 		if (result.success) {
 			const { users } = result;
@@ -148,7 +154,7 @@ export default class EncryptionRoom {
 	};
 
 	// Encrypt the room key to each user in
-	encryptRoomKeyForUser = async user => {
+	encryptRoomKeyForUser = async (user): Promise<void> => {
 		if (user?.e2e?.public_key) {
 			const { public_key: publicKey } = user.e2e;
 			const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
@@ -158,7 +164,7 @@ export default class EncryptionRoom {
 	};
 
 	// Provide this room key to a user
-	provideKeyToUser = async keyId => {
+	provideKeyToUser = async (keyId): Promise<void> => {
 		// Don't provide a key if the keyId received
 		// is different than the current one
 		if (this.keyID !== keyId) {
@@ -169,7 +175,7 @@ export default class EncryptionRoom {
 	};
 
 	// Encrypt text
-	encryptText = async text => {
+	encryptText = async (text): Promise<string> => {
 		text = utf8ToBuffer(text);
 		const vector = await SimpleCrypto.utils.randomBytes(16);
 		const data = await SimpleCrypto.AES.encrypt(text, this.roomKey, vector);
@@ -178,7 +184,7 @@ export default class EncryptionRoom {
 	};
 
 	// Encrypt messages
-	encrypt = async message => {
+	encrypt = async (message: IMessage) => {
 		if (!this.ready) {
 			return message;
 		}
@@ -207,7 +213,7 @@ export default class EncryptionRoom {
 	};
 
 	// Decrypt text
-	decryptText = async msg => {
+	decryptText = async (msg: string) => {
 		msg = b64ToBuffer(msg.slice(12));
 		const [vector, cipherText] = splitVectorData(msg);
 
