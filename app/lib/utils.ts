@@ -17,9 +17,11 @@ const methods = {
 	greaterThanOrEqualTo: gte
 };
 
-type TMethod = 'lowerThan' | 'lowerThanOrEqualTo' | 'greaterThan' | 'greaterThanOrEqualTo';
-
-export const compareServerVersion = (currentServerVersion: string, versionToCompare: string, method: TMethod): boolean =>
+export const compareServerVersion = (
+	currentServerVersion: string,
+	versionToCompare: string,
+	method: keyof typeof methods
+): boolean =>
 	(currentServerVersion && methods[method](coerce(currentServerVersion) as string | SemVer, versionToCompare)) as boolean;
 
 export const generateLoadMoreId = (id: string): string => `load-more-${id}`;
