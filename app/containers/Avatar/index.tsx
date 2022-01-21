@@ -61,7 +61,9 @@ class AvatarContainer extends React.Component<IAvatar, any> {
 				record = user;
 			} else {
 				const { rid } = this.props;
-				record = await subsCollection.find(rid!);
+				if (rid) {
+					record = await subsCollection.find(rid);
+				}
 			}
 		} catch {
 			// Record not found
