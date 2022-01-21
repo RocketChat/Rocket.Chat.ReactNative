@@ -15995,7 +15995,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
     }
   >
     <Text
-      accessibilityLabel="Shortnames: "
+      accessibilityLabel="Shortnames: 😂👍"
       style={
         Array [
           Object {
@@ -16019,45 +16019,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
         ]
       }
     >
-      Shortnames: 
-    </Text>
-    <Text
-      style={
-        Array [
-          Object {
-            "color": "#2f343d",
-          },
-          Object {
-            "backgroundColor": "transparent",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "textAlign": "left",
-          },
-          Object {},
-        ]
-      }
-    >
-      😂
-    </Text>
-    <Text
-      style={
-        Array [
-          Object {
-            "color": "#2f343d",
-          },
-          Object {
-            "backgroundColor": "transparent",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "textAlign": "left",
-          },
-          Object {},
-        ]
-      }
-    >
-      👍
+      Shortnames: 😂👍
     </Text>
   </Text>
   <Text
@@ -16282,7 +16244,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
     }
   >
     <Text
-      accessibilityLabel="😃 "
+      accessibilityLabel="😃 👍 "
       style={
         Array [
           Object {
@@ -16312,59 +16274,7 @@ exports[`Storyshots Markdown Emoji 1`] = `
         ]
       }
     >
-      😃 
-    </Text>
-    <Text
-      style={
-        Array [
-          Object {
-            "color": "#2f343d",
-          },
-          Object {
-            "backgroundColor": "transparent",
-            "fontFamily": "System",
-            "fontSize": 30,
-            "fontWeight": "400",
-            "textAlign": "left",
-          },
-          Object {},
-        ]
-      }
-    >
-      👍
-    </Text>
-    <Text
-      accessibilityLabel=" "
-      style={
-        Array [
-          Object {
-            "backgroundColor": "transparent",
-            "fontFamily": "System",
-            "fontSize": 16,
-            "fontWeight": "400",
-            "textAlign": "left",
-          },
-          Array [
-            Object {
-              "backgroundColor": "transparent",
-              "fontFamily": "System",
-              "fontSize": 30,
-              "fontWeight": "400",
-              "textAlign": "left",
-            },
-            Object {
-              "alignItems": "flex-start",
-              "flexDirection": "row",
-              "flexWrap": "wrap",
-              "justifyContent": "flex-start",
-              "marginBottom": 0,
-              "marginTop": 0,
-            },
-          ],
-        ]
-      }
-    >
-       
+      😃 👍 
     </Text>
     <View
       style={
@@ -18156,459 +18066,147 @@ exports[`Storyshots Markdown Table 1`] = `
     }
   }
 >
-  <View
-    accessible={true}
-    focusable={true}
-    onClick={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
+  <Text
     style={
-      Object {
-        "opacity": 1,
-      }
+      Array [
+        Object {
+          "backgroundColor": "transparent",
+          "fontFamily": "System",
+          "fontSize": 16,
+          "fontWeight": "400",
+          "textAlign": "left",
+        },
+        undefined,
+        Object {
+          "color": "#2f343d",
+        },
+      ]
     }
   >
-    <RCTScrollView
-      contentContainerStyle={
-        Object {
-          "width": 200,
-        }
-      }
-      scrollEnabled={false}
-      showsVerticalScrollIndicator={false}
-      style={
-        Array [
-          Object {
-            "borderBottomWidth": 1,
-            "borderRightWidth": 1,
-          },
-          Object {
-            "borderColor": "#e1e5e8",
-            "maxHeight": 300,
-            "maxWidth": 200,
-          },
-        ]
-      }
-    >
-      <View>
-        <View
-          style={
-            Array [
-              Object {
-                "borderLeftWidth": 1,
-                "borderTopWidth": 1,
-              },
-              Object {
-                "borderColor": "#e1e5e8",
-              },
-            ]
-          }
-        >
-          <View
-            style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "borderColor": "#e1e5e8",
-                },
-                Object {
-                  "borderBottomWidth": 1,
-                },
-              ]
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "justifyContent": "flex-start",
-                    "paddingHorizontal": 13,
-                    "paddingVertical": 6,
-                  },
-                  Object {
-                    "borderColor": "#e1e5e8",
-                  },
-                  Object {
-                    "borderRightWidth": 1,
-                  },
-                  Object {
-                    "width": 100,
-                  },
-                ]
-              }
-            >
-              <Text
-                style={
-                  Array [
-                    null,
-                    Object {
-                      "color": "#2f343d",
-                    },
-                  ]
-                }
-              >
-                <Text
-                  accessibilityLabel="First Header"
-                  style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      Array [
-                        Object {},
-                        Object {
-                          "borderLeftWidth": 1,
-                          "borderTopWidth": 1,
-                        },
-                        undefined,
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  First Header
-                </Text>
-              </Text>
-            </View>
-            <View
-              style={
-                Array [
-                  Object {
-                    "justifyContent": "flex-start",
-                    "paddingHorizontal": 13,
-                    "paddingVertical": 6,
-                  },
-                  Object {
-                    "borderColor": "#e1e5e8",
-                  },
-                  Object {
-                    "width": 100,
-                  },
-                ]
-              }
-            >
-              <Text
-                style={
-                  Array [
-                    null,
-                    Object {
-                      "color": "#2f343d",
-                    },
-                  ]
-                }
-              >
-                <Text
-                  accessibilityLabel="Second Header"
-                  style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      Array [
-                        Object {},
-                        Object {
-                          "borderLeftWidth": 1,
-                          "borderTopWidth": 1,
-                        },
-                        undefined,
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  Second Header
-                </Text>
-              </Text>
-            </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "borderColor": "#e1e5e8",
-                },
-                Object {
-                  "borderBottomWidth": 1,
-                },
-              ]
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "justifyContent": "flex-start",
-                    "paddingHorizontal": 13,
-                    "paddingVertical": 6,
-                  },
-                  Object {
-                    "borderColor": "#e1e5e8",
-                  },
-                  Object {
-                    "borderRightWidth": 1,
-                  },
-                  Object {
-                    "width": 100,
-                  },
-                ]
-              }
-            >
-              <Text
-                style={
-                  Array [
-                    null,
-                    Object {
-                      "color": "#2f343d",
-                    },
-                  ]
-                }
-              >
-                <Text
-                  accessibilityLabel="Content from cell 1"
-                  style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      Array [
-                        Object {},
-                        Object {
-                          "borderLeftWidth": 1,
-                          "borderTopWidth": 1,
-                        },
-                        undefined,
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  Content from cell 1
-                </Text>
-              </Text>
-            </View>
-            <View
-              style={
-                Array [
-                  Object {
-                    "justifyContent": "flex-start",
-                    "paddingHorizontal": 13,
-                    "paddingVertical": 6,
-                  },
-                  Object {
-                    "borderColor": "#e1e5e8",
-                  },
-                  Object {
-                    "width": 100,
-                  },
-                ]
-              }
-            >
-              <Text
-                style={
-                  Array [
-                    null,
-                    Object {
-                      "color": "#2f343d",
-                    },
-                  ]
-                }
-              >
-                <Text
-                  accessibilityLabel="Content from cell 2"
-                  style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      Array [
-                        Object {},
-                        Object {
-                          "borderLeftWidth": 1,
-                          "borderTopWidth": 1,
-                        },
-                        undefined,
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  Content from cell 2
-                </Text>
-              </Text>
-            </View>
-          </View>
-          <View
-            style={
-              Array [
-                Object {
-                  "flexDirection": "row",
-                },
-                Object {
-                  "borderColor": "#e1e5e8",
-                },
-              ]
-            }
-          >
-            <View
-              style={
-                Array [
-                  Object {
-                    "justifyContent": "flex-start",
-                    "paddingHorizontal": 13,
-                    "paddingVertical": 6,
-                  },
-                  Object {
-                    "borderColor": "#e1e5e8",
-                  },
-                  Object {
-                    "borderRightWidth": 1,
-                  },
-                  Object {
-                    "width": 100,
-                  },
-                ]
-              }
-            >
-              <Text
-                style={
-                  Array [
-                    null,
-                    Object {
-                      "color": "#2f343d",
-                    },
-                  ]
-                }
-              >
-                <Text
-                  accessibilityLabel="Content in the first column"
-                  style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      Array [
-                        Object {},
-                        Object {
-                          "borderLeftWidth": 1,
-                          "borderTopWidth": 1,
-                        },
-                        undefined,
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  Content in the first column
-                </Text>
-              </Text>
-            </View>
-            <View
-              style={
-                Array [
-                  Object {
-                    "justifyContent": "flex-start",
-                    "paddingHorizontal": 13,
-                    "paddingVertical": 6,
-                  },
-                  Object {
-                    "borderColor": "#e1e5e8",
-                  },
-                  Object {
-                    "width": 100,
-                  },
-                ]
-              }
-            >
-              <Text
-                style={
-                  Array [
-                    null,
-                    Object {
-                      "color": "#2f343d",
-                    },
-                  ]
-                }
-              >
-                <Text
-                  accessibilityLabel="Content in the second column"
-                  style={
-                    Array [
-                      Object {
-                        "backgroundColor": "transparent",
-                        "fontFamily": "System",
-                        "fontSize": 16,
-                        "fontWeight": "400",
-                        "textAlign": "left",
-                      },
-                      Array [
-                        Object {},
-                        Object {
-                          "borderLeftWidth": 1,
-                          "borderTopWidth": 1,
-                        },
-                        undefined,
-                        undefined,
-                      ],
-                    ]
-                  }
-                >
-                  Content in the second column
-                </Text>
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    </RCTScrollView>
     <Text
+      accessibilityLabel="First Header | Second Header
+"
       style={
         Array [
           Object {
             "backgroundColor": "transparent",
             "fontFamily": "System",
             "fontSize": 16,
-            "fontStyle": "italic",
             "fontWeight": "400",
             "textAlign": "left",
           },
-          Object {
-            "color": "#9ca2a8",
-          },
+          Array [
+            Object {},
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "flexWrap": "wrap",
+              "justifyContent": "flex-start",
+              "marginBottom": 0,
+              "marginTop": 0,
+            },
+          ],
         ]
       }
     >
-      Click to see full table
+      First Header | Second Header
     </Text>
-  </View>
+    <Text>
+      
+
+    </Text>
+    <Text
+      accessibilityLabel="------------ | -------------
+"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Array [
+            Object {},
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "flexWrap": "wrap",
+              "justifyContent": "flex-start",
+              "marginBottom": 0,
+              "marginTop": 0,
+            },
+          ],
+        ]
+      }
+    >
+      ------------ | -------------
+    </Text>
+    <Text>
+      
+
+    </Text>
+    <Text
+      accessibilityLabel="Content from cell 1 | Content from cell 2
+"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Array [
+            Object {},
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "flexWrap": "wrap",
+              "justifyContent": "flex-start",
+              "marginBottom": 0,
+              "marginTop": 0,
+            },
+          ],
+        ]
+      }
+    >
+      Content from cell 1 | Content from cell 2
+    </Text>
+    <Text>
+      
+
+    </Text>
+    <Text
+      accessibilityLabel="Content in the first column | Content in the second column"
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "fontFamily": "System",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "textAlign": "left",
+          },
+          Array [
+            Object {},
+            Object {
+              "alignItems": "flex-start",
+              "flexDirection": "row",
+              "flexWrap": "wrap",
+              "justifyContent": "flex-start",
+              "marginBottom": 0,
+              "marginTop": 0,
+            },
+          ],
+        ]
+      }
+    >
+      Content in the first column | Content in the second column
+    </Text>
+  </Text>
 </View>
 `;
 
