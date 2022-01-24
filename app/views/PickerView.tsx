@@ -118,28 +118,12 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 		}
 	};
 
-	renderSearch() {
-		if (!this.onSearch) {
-			return <List.Separator style={styles.listNoHeader} />;
-		}
-
-		return (
-			<>
-				<View style={styles.search}>
-					<SearchBox onChangeText={this.onChangeText} />
-				</View>
-				<List.Separator />
-			</>
-		);
-	}
-
 	render() {
 		const { data, value } = this.state;
 		const { theme } = this.props;
 
 		return (
 			<SafeAreaView>
-				{/* {this.renderSearch()} */}
 				<FlatList
 					data={data}
 					keyExtractor={item => item.value as string}
@@ -154,7 +138,18 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 					onEndReached={() => this.onEndReached()}
 					onEndReachedThreshold={0.5}
 					ItemSeparatorComponent={List.Separator}
-					ListHeaderComponent={() => this.renderSearch()}
+					ListHeaderComponent={
+						!this.onSearch ? (
+							<List.Separator style={styles.listNoHeader} />
+						) : (
+							<>
+								<View style={styles.search}>
+									<SearchBox onChangeText={this.onChangeText} />
+								</View>
+								<List.Separator />
+							</>
+						)
+					}
 					ListFooterComponent={List.Separator}
 					ListEmptyComponent={() => (
 						<Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
