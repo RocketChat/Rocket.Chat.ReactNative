@@ -39,9 +39,6 @@ const styles = StyleSheet.create({
 	avatar: {
 		marginRight: 8
 	},
-	discussionDetails: {
-		marginTop: 8
-	},
 	messageContainer: {
 		flexDirection: 'row'
 	},
@@ -53,21 +50,17 @@ const styles = StyleSheet.create({
 interface IItem {
 	item: TThreadModel;
 	baseUrl: string;
-	user: {
-		id: string;
-		token: string;
-	};
 	onPress: {
 		(...args: any[]): void;
 		stop(): void;
 	};
 }
 
-const Item = ({ item, baseUrl, user, onPress }: IItem): JSX.Element => {
+const Item = ({ item, baseUrl, onPress }: IItem): JSX.Element => {
 	const { theme } = useTheme();
 	const username = item?.u?.username;
-	let messageTime: string;
-	let messageDate: string;
+	let messageTime = '';
+	let messageDate = '';
 
 	if (item?.ts) {
 		messageTime = moment(item.ts).format('LT');
@@ -102,7 +95,7 @@ const Item = ({ item, baseUrl, user, onPress }: IItem): JSX.Element => {
 							/>
 						) : null}
 					</View>
-					<DiscussionDetails item={item} user={user} date={messageDate!} style={styles.discussionDetails} />
+					{messageDate ? <DiscussionDetails item={item} date={messageDate} /> : null}
 				</View>
 			</View>
 		</Touchable>

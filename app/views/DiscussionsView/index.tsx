@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/core';
 
-import { SubscriptionType } from '../../definitions';
+import { IApplicationState, SubscriptionType } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -34,31 +34,11 @@ interface IDiscussionsViewProps {
 	item: TThreadModel;
 }
 
-interface IDiscussionsViewState {
-	login: {
-		user: {
-			id: string;
-			token: string;
-		};
-	};
-	server: {
-		server: string;
-	};
-	settings: {
-		UI_Use_Real_Name: boolean;
-		Message_TimeFormat: string;
-	};
-	app: {
-		isMasterDetail: boolean;
-	};
-}
-
 const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Element => {
 	const rid = route.params?.rid;
 
-	const user = useSelector((state: IDiscussionsViewState) => state.login?.user);
-	const baseUrl = useSelector((state: IDiscussionsViewState) => state.server?.server);
-	const isMasterDetail = useSelector((state: IDiscussionsViewState) => state.app?.isMasterDetail);
+	const baseUrl = useSelector((state: IApplicationState) => state.server?.server);
+	const isMasterDetail = useSelector((state: IApplicationState) => state.app?.isMasterDetail);
 
 	const [loading, setLoading] = useState(false);
 	const [discussions, setDiscussions] = useState([]);
@@ -187,7 +167,6 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 		<Item
 			{...{
 				item,
-				user,
 				baseUrl
 			}}
 			onPress={onDiscussionPress}
@@ -209,7 +188,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
-				onEndReached={() => (searchTotal || total) > API_FETCH_COUNT ?? load()}
+				onEndReached={() => (isSearching ? searchTotal : total) > API_FETCH_COUNT ?? load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 				scrollIndicatorInsets={{ right: 1 }}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { TThreadModel } from '../../definitions/IThread';
 import { CustomIcon } from '../../lib/Icons';
@@ -10,6 +10,7 @@ import { useTheme } from '../../theme';
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		marginTop: 8,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},
@@ -31,23 +32,19 @@ const styles = StyleSheet.create({
 
 interface IDiscussionDetails {
 	item: TThreadModel;
-	user: {
-		id: string;
-	};
 	date: string;
-	style: ViewStyle;
 }
 
-const DiscussionDetails = ({ item, date, style }: IDiscussionDetails) => {
+const DiscussionDetails = ({ item, date }: IDiscussionDetails): JSX.Element => {
 	const { theme } = useTheme();
 	let { dcount } = item;
 
-	if (dcount! >= 1000) {
+	if (dcount && dcount >= 1000) {
 		dcount = '+999';
 	}
 
 	return (
-		<View style={[styles.container, style]}>
+		<View style={[styles.container]}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
 					<CustomIcon name={'discussions'} size={24} color={themes[theme!].auxiliaryText} />
