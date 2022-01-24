@@ -20,6 +20,26 @@ export const initLocalSettings = function* initLocalSettings() {
 
 const restore = function* restore() {
 	try {
+		// const server = yield UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
+		// let userId = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
+
+		// if (!server) {
+		// 	yield put(appStart({ root: ROOT_OUTSIDE }));
+		// } else if (!userId) {
+		// 	const serversDB = database.servers;
+		// 	const serversCollection = serversDB.get('servers');
+		// 	const servers = yield serversCollection.query().fetch();
+
+		// 	// Check if there're other logged in servers and picks first one
+		// 	if (servers.length > 0) {
+		// 		for (let i = 0; i < servers.length; i += 1) {
+		// 			const newServer = servers[i].id;
+		// 			userId = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${newServer}`);
+		// 			if (userId) {
+		// 				return yield put(selectServerRequest(newServer));
+		// 			}
+		// 		}
+		// 	}
 		const { server } = appConfig;
 		const userId = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
 

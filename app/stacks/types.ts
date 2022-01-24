@@ -2,60 +2,61 @@ import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
 import Model from '@nozbe/watermelondb/Model';
 
+import { IRoom } from '../definitions/IRoom';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
 import { IMessage } from '../definitions/IMessage';
-import { IRoom, RoomType } from '../definitions/IRoom';
+import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 
 export type ChatsStackParamList = {
 	RoomsListView: undefined;
 	RoomView: {
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 		tmid?: string;
 		message?: string;
 		name?: string;
 		fname?: string;
 		prid?: string;
-		room: IRoom;
+		room?: ISubscription;
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
 		roomUserId?: string;
 	};
 	RoomActionsView: {
-		room: IRoom;
+		room: ISubscription;
 		member: any;
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 		joined: boolean;
 	};
 	SelectListView: {
-		data: any;
+		data: IRoom[];
 		title: string;
 		infoText: string;
-		nextAction: Function;
-		showAlert: boolean;
+		nextAction: (selected: string[]) => void;
+		showAlert: () => void;
 		isSearch: boolean;
-		onSearch: Function;
+		onSearch: (text: string) => Partial<IRoom[]>;
 		isRadio?: boolean;
 	};
 	RoomInfoView: {
-		room: IRoom;
+		room: ISubscription;
 		member: any;
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 	};
 	RoomInfoEditView: {
 		rid: string;
 	};
 	RoomMembersView: {
 		rid: string;
-		room: IRoom;
+		room: ISubscription;
 	};
 	SearchMessagesView: {
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 		encrypted?: boolean;
 		showCloseModal?: boolean;
 	};
@@ -64,7 +65,7 @@ export type ChatsStackParamList = {
 		showButton?: boolean;
 		title?: string;
 		buttonText?: string;
-		nextAction?: Function;
+		nextAction?(): void;
 	};
 	InviteUsersView: {
 		rid: string;
@@ -74,12 +75,12 @@ export type ChatsStackParamList = {
 	};
 	MessagesView: {
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 		name: string;
 	};
 	AutoTranslateView: {
 		rid: string;
-		room: IRoom;
+		room: TSubscriptionModel;
 	};
 	DirectoryView: undefined;
 	NotificationPrefView: {
@@ -90,7 +91,7 @@ export type ChatsStackParamList = {
 		rid: string;
 	};
 	LivechatEditView: {
-		room: IRoom;
+		room: ISubscription;
 		roomUser: any; // TODO: Change
 	};
 	PickerView: {
@@ -103,7 +104,7 @@ export type ChatsStackParamList = {
 	};
 	ThreadMessagesView: {
 		rid: string;
-		t: RoomType;
+		t: SubscriptionType;
 	};
 	TeamChannelsView: {
 		teamId: string;
@@ -138,7 +139,7 @@ export type ChatsStackParamList = {
 			scopeName: string;
 			tags: string[];
 		};
-		room: IRoom;
+		room: ISubscription;
 	};
 };
 
@@ -198,7 +199,7 @@ export type NewMessageStackParamList = {
 		teamId?: string;
 	};
 	CreateDiscussionView: {
-		channel: IRoom;
+		channel: ISubscription;
 		message: IMessage;
 		showCloseModal: boolean;
 	};
@@ -230,7 +231,7 @@ export type InsideStackParamList = {
 		isShareExtension: boolean;
 		serverInfo: IServer;
 		text: string;
-		room: IRoom;
+		room: ISubscription;
 		thread: any; // TODO: Change
 	};
 	ModalBlockView: {

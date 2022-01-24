@@ -1,27 +1,27 @@
-import { IRocketChatRecord } from './IRocketChatRecord';
+import Model from '@nozbe/watermelondb/Model';
 
-export enum RoomType {
-	GROUP = 'p',
-	DIRECT = 'd',
-	CHANNEL = 'c',
-	OMNICHANNEL = 'l',
-	THREAD = 'thread'
-}
+import { IServedBy } from './IServedBy';
+import { SubscriptionType } from './ISubscription';
 
-export interface IRoom extends IRocketChatRecord {
+export interface IRoom {
+	id: string;
 	rid: string;
-	t: RoomType;
+	prid: string;
+	t: SubscriptionType;
 	name: string;
-	fname: string;
-	prid?: string;
-	tmid?: string;
-	topic?: string;
-	teamMain?: boolean;
-	teamId?: string;
-	encrypted?: boolean;
-	visitor?: boolean;
-	autoTranslateLanguage?: boolean;
-	autoTranslate?: boolean;
-	observe?: Function;
-	usedCannedResponse: string;
+	teamMain: boolean;
+	alert?: boolean;
+	customFields: string[];
+	broadcast: boolean;
+	encrypted: boolean;
+	ro: boolean;
+	v?: string[];
+	servedBy?: IServedBy;
+	departmentId?: string;
+	livechatData?: any;
+	tags?: string[];
+	e2eKeyId?: string;
+	avatarETag?: string;
 }
+
+export type TRoomModel = IRoom & Model;

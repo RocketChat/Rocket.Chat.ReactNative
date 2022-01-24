@@ -11,7 +11,7 @@ import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../utils/log';
-import { IRoom } from '../../definitions/IRoom';
+import { ISubscription } from '../../definitions/ISubscription';
 
 const styles = StyleSheet.create({
 	list: {
@@ -42,7 +42,7 @@ class AutoTranslateView extends React.Component<IAutoTranslateViewProps, any> {
 
 		if (room && room.observe) {
 			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable.subscribe((changes: IRoom) => {
+			this.subscription = this.roomObservable.subscribe((changes: ISubscription) => {
 				if (this.mounted) {
 					const { selectedLanguage, enableAutoTranslate } = this.state;
 					if (selectedLanguage !== changes.autoTranslateLanguage) {
@@ -113,7 +113,7 @@ class AutoTranslateView extends React.Component<IAutoTranslateViewProps, any> {
 
 	renderIcon = () => {
 		const { theme } = this.props;
-		return <List.Icon name='check' style={{ color: themes[theme].tintColor }} />;
+		return <List.Icon name='check' color={themes[theme!].tintColor} />;
 	};
 
 	renderSwitch = () => {
@@ -131,7 +131,7 @@ class AutoTranslateView extends React.Component<IAutoTranslateViewProps, any> {
 				title={name || language}
 				onPress={() => this.saveAutoTranslateLanguage(language)}
 				testID={`auto-translate-view-${language}`}
-				right={isSelected ? this.renderIcon : null}
+				right={() => (isSelected ? this.renderIcon() : null)}
 				translateTitle={false}
 			/>
 		);

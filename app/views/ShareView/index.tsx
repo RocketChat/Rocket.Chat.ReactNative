@@ -28,7 +28,7 @@ import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
 import { IAttachment } from './interfaces';
-import { IRoom } from '../../definitions/IRoom';
+import { ISubscription } from '../../definitions/ISubscription';
 
 interface IShareViewState {
 	selected: IAttachment;
@@ -36,10 +36,10 @@ interface IShareViewState {
 	readOnly: boolean;
 	attachments: IAttachment[];
 	text: string;
-	room: IRoom;
+	room: ISubscription;
 	thread: any; // change
 	maxFileSize: number;
-	mediaAllowList: number;
+	mediaAllowList: string;
 }
 
 interface IShareViewProps {
@@ -52,7 +52,7 @@ interface IShareViewProps {
 		token: string;
 	};
 	server: string;
-	FileUpload_MediaTypeWhiteList?: number;
+	FileUpload_MediaTypeWhiteList?: string;
 	FileUpload_MaxFileSize?: number;
 }
 
@@ -116,11 +116,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item
-						title={I18n.t('Send')}
-						onPress={this.send}
-						buttonStyle={[styles.send, { color: themes[theme].previewTintColor }]}
-					/>
+					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} />
 				</HeaderButton.Container>
 			);
 		}
@@ -364,7 +360,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{this.renderContent()}
-				<Loading visible={loading} />
+				<Loading visible={loading} theme={theme} />
 			</SafeAreaView>
 		);
 	}

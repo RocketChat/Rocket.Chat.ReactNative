@@ -20,11 +20,13 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IRoom, RoomType } from '../../definitions/IRoom';
+import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 
 interface IMessagesViewProps {
 	user: {
 		id: string;
+		username: string;
+		token: string;
 	};
 	baseUrl: string;
 	navigation: CompositeNavigationProp<
@@ -40,10 +42,10 @@ interface IMessagesViewProps {
 }
 
 interface IRoomInfoParam {
-	room: IRoom;
+	room: ISubscription;
 	member: any;
 	rid: string;
-	t: RoomType;
+	t: SubscriptionType;
 	joined: boolean;
 }
 
@@ -72,13 +74,13 @@ interface IMessageItem {
 
 interface IParams {
 	rid: string;
-	t: RoomType;
+	t: SubscriptionType;
 	tmid?: string;
 	message?: string;
 	name?: string;
 	fname?: string;
 	prid?: string;
-	room: IRoom;
+	room: ISubscription;
 	jumpToMessageId?: string;
 	jumpToThreadId?: string;
 	roomUserId?: string;
@@ -86,7 +88,7 @@ interface IParams {
 
 class MessagesView extends React.Component<IMessagesViewProps, any> {
 	private rid: string;
-	private t: RoomType;
+	private t: SubscriptionType;
 	private content: any;
 	private room: any;
 
@@ -158,7 +160,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(this.rid, item.tmid, item._id),
-				t: RoomType.THREAD
+				t: SubscriptionType.THREAD
 			};
 			navigation.push('RoomView', params);
 		} else {

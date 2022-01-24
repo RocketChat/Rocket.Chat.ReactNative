@@ -51,12 +51,13 @@ export interface IMessageCallButton {
 }
 
 export interface IUser {
-	_id: string;
+	id: string;
 	username: string;
+	token: string;
 	name: string;
 }
 
-export type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
+export type UserMention = Pick<IUser, 'id' | 'username' | 'name'>;
 
 export interface IMessageContent {
 	_id: string;
@@ -84,7 +85,7 @@ export interface IMessageContent {
 export interface IMessageDiscussion {
 	msg: string;
 	dcount: number;
-	dlm: string;
+	dlm: Date;
 	theme: string;
 }
 

@@ -107,7 +107,7 @@ class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefa
 	changeDefaultBrowser = async (newBrowser: TValue) => {
 		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
 		try {
-			const browser = newBrowser !== 'systemDefault:' ? newBrowser : null;
+			const browser = newBrowser || 'systemDefault:';
 			await UserPreferences.setStringAsync(DEFAULT_BROWSER_KEY, browser);
 			this.setState({ browser });
 		} catch {
@@ -127,7 +127,7 @@ class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefa
 				title={I18n.t(title, { defaultValue: title })}
 				onPress={() => this.changeDefaultBrowser(value)}
 				testID={`default-browser-view-${title}`}
-				right={this.isSelected(value) ? this.renderIcon : null}
+				right={() => (this.isSelected(value) ? this.renderIcon() : null)}
 				translateTitle={false}
 			/>
 		);

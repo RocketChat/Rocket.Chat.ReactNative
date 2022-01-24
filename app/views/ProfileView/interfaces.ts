@@ -26,9 +26,9 @@ export interface IParams {
 }
 
 export interface IAvatarButton {
-	key: React.Key;
+	key: string;
 	child: React.ReactNode;
-	onPress: Function;
+	onPress: () => void;
 	disabled: boolean;
 }
 
