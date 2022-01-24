@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/core';
 
-import { IApplicationState, SubscriptionType } from '../../definitions';
+import { IApplicationState } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -36,6 +36,7 @@ interface IDiscussionsViewProps {
 
 const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Element => {
 	const rid = route.params?.rid;
+	const t = route.params?.t;
 
 	const baseUrl = useSelector((state: IApplicationState) => state.server?.server);
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app?.isMasterDetail);
@@ -152,12 +153,14 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 
 	const onDiscussionPress = debounce(
 		(item: TThreadModel) => {
-			navigation.push('RoomView', {
-				rid: item.drid!,
-				prid: item.rid,
-				name: item.msg,
-				t: item.rid! === 'GENERAL' ? SubscriptionType.CHANNEL : SubscriptionType.GROUP
-			});
+			if (item.drid && item.t) {
+				navigation.push('RoomView', {
+					rid: item.drid,
+					prid: item.rid,
+					name: item.msg,
+					t
+				});
+			}
 		},
 		1000,
 		true

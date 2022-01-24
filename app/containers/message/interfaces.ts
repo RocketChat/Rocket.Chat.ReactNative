@@ -1,5 +1,7 @@
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
+export type TMessageType = 'discussion-created' | 'jitsi_call_started';
+
 export interface IMessageAttachments {
 	attachments: any;
 	timeFormat: string;
@@ -140,7 +142,7 @@ export interface IMessageInner
 		IMessageThread,
 		IMessageAttachments,
 		IMessageBroadcast {
-	type: 'discussion-created' | 'jitsi_call_started' | 'c' | 'd' | 'p' | 'l';
+	type: TMessageType;
 	blocks: [];
 }
 

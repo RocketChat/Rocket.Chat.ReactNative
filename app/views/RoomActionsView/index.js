@@ -1017,7 +1017,8 @@ class RoomActionsView extends React.Component {
 										this.onPressTouchable({
 											route: 'DiscussionsView',
 											params: {
-												rid
+												rid,
+												t
 											}
 										})
 									}
