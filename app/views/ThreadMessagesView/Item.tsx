@@ -89,16 +89,18 @@ const Item = ({ item, baseUrl, useRealName, user, badgeColor, onPress, toggleFol
 						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
-						<Markdown
-							// @ts-ignore
-							msg={makeThreadName(item)}
-							baseUrl={baseUrl}
-							username={username!}
-							theme={theme!}
-							numberOfLines={2}
-							style={[styles.markdown]}
-							preview
-						/>
+						{makeThreadName(item) && username ? (
+							/* @ts-ignore */
+							<Markdown
+								msg={makeThreadName(item)}
+								baseUrl={baseUrl}
+								username={username}
+								theme={theme}
+								numberOfLines={2}
+								style={[styles.markdown]}
+								preview
+							/>
+						) : null}
 						{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
 					</View>
 					<ThreadDetails item={item} user={user} toggleFollowThread={toggleFollowThread} style={styles.threadDetails} />

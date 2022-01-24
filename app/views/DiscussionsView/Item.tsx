@@ -71,21 +71,21 @@ const Item = ({ item, baseUrl, onPress }: IItem): JSX.Element => {
 		<Touchable
 			onPress={() => onPress(item)}
 			testID={`discussions-view-${item.msg}`}
-			style={{ backgroundColor: themes[theme!].backgroundColor }}>
+			style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} theme={theme} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: themes[theme!].titleText }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
 							{username}
 						</Text>
-						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{messageTime!}</Text>
+						{messageTime ? <Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{messageTime}</Text> : null}
 					</View>
 					<View style={styles.messageContainer}>
-						{makeThreadName(item) && item && username ? (
+						{username ? (
 							/* @ts-ignore */
 							<Markdown
-								msg={makeThreadName(item)!}
+								msg={makeThreadName(item)}
 								baseUrl={baseUrl}
 								username={username}
 								theme={theme}
