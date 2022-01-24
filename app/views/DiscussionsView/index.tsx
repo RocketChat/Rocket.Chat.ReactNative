@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
@@ -24,9 +24,14 @@ import RocketChat from '../../lib/rocketchat';
 import SearchHeader from '../../containers/SearchHeader';
 import { TThreadModel } from '../../definitions/IThread';
 import Item from './Item';
-import styles from './styles';
 
 const API_FETCH_COUNT = 50;
+
+const styles = StyleSheet.create({
+	contentContainer: {
+		marginBottom: 30
+	}
+});
 
 interface IDiscussionsViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'DiscussionsView'>;
@@ -121,7 +126,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 
 		options = {
 			headerLeft: () => (
-				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme!].headerTintColor} />
+				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
@@ -187,7 +192,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}
 				keyExtractor={(item: any) => item.msg}
-				style={{ backgroundColor: themes[theme!].backgroundColor }}
+				style={{ backgroundColor: themes[theme].backgroundColor }}
 				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
