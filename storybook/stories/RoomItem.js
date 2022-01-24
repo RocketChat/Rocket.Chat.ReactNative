@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { themes } from '../../app/constants/colors';
 import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
 import { longText } from '../utils';
-import { DISPLAY_MODE_CONDENSED, DISPLAY_MODE_EXPANDED } from '../../app/constants/constantDisplayMode';
+import { DisplayMode } from '../../app/constants/constantDisplayMode';
 import { store } from './index';
 
 const baseUrl = 'https://open.rocket.chat';
@@ -32,7 +32,7 @@ const RoomItem = props => (
 		width={width}
 		theme={_theme}
 		showAvatar
-		displayMode={DISPLAY_MODE_EXPANDED}
+		displayMode={DisplayMode.Expanded}
 		{...updatedAt}
 		{...props}
 	/>
@@ -132,10 +132,10 @@ stories.add('Last Message', () => (
 
 stories.add('Condensed Room Item', () => (
 	<>
-		<RoomItem showLastMessage alert tunread={[1]} lastMessage={lastMessage} displayMode={DISPLAY_MODE_CONDENSED} />
-		<RoomItem showLastMessage alert name='unread' unread={1000} displayMode={DISPLAY_MODE_CONDENSED} />
+		<RoomItem showLastMessage alert tunread={[1]} lastMessage={lastMessage} displayMode={DisplayMode.Condensed} />
+		<RoomItem showLastMessage alert name='unread' unread={1000} displayMode={DisplayMode.Condensed} />
 
-		<RoomItem type='c' displayMode={DISPLAY_MODE_CONDENSED} autoJoin />
+		<RoomItem type='c' displayMode={DisplayMode.Condensed} autoJoin />
 	</>
 ));
 
@@ -146,11 +146,11 @@ stories.add('Condensed Room Item without Avatar', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
-			displayMode={DISPLAY_MODE_CONDENSED}
+			displayMode={DisplayMode.Condensed}
 			showAvatar={false}
 		/>
-		<RoomItem type='p' displayMode={DISPLAY_MODE_CONDENSED} showAvatar={false} />
-		<RoomItem name={longText} autoJoin displayMode={DISPLAY_MODE_CONDENSED} showAvatar={false} />
+		<RoomItem type='p' displayMode={DisplayMode.Condensed} showAvatar={false} />
+		<RoomItem name={longText} autoJoin displayMode={DisplayMode.Condensed} showAvatar={false} />
 	</>
 ));
 
@@ -161,7 +161,7 @@ stories.add('Expanded Room Item without Avatar', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
-			displayMode={DISPLAY_MODE_EXPANDED}
+			displayMode={DisplayMode.Expanded}
 			showAvatar={false}
 		/>
 		<RoomItem
@@ -170,7 +170,7 @@ stories.add('Expanded Room Item without Avatar', () => (
 			alert
 			tunread={[1]}
 			lastMessage={lastMessage}
-			displayMode={DISPLAY_MODE_EXPANDED}
+			displayMode={DisplayMode.Expanded}
 			showAvatar={false}
 		/>
 		<RoomItem
@@ -178,7 +178,7 @@ stories.add('Expanded Room Item without Avatar', () => (
 			showLastMessage
 			alert
 			lastMessage={lastMessage}
-			displayMode={DISPLAY_MODE_EXPANDED}
+			displayMode={DisplayMode.Expanded}
 			showAvatar={false}
 		/>
 	</>

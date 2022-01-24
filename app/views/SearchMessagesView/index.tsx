@@ -6,7 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import { IRoom, RoomType } from '../../definitions/IRoom';
+import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 import { IAttachment } from '../../definitions/IAttachment';
 import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -42,10 +42,10 @@ interface ISearchMessagesViewState {
 }
 
 interface IRoomInfoParam {
-	room: IRoom;
+	room: ISubscription;
 	member: any;
 	rid: string;
-	t: RoomType;
+	t: SubscriptionType;
 	joined: boolean;
 }
 
@@ -58,7 +58,11 @@ interface INavigationOption {
 }
 
 interface ISearchMessagesViewProps extends INavigationOption {
-	user: { id: string };
+	user: {
+		id: string;
+		username: string;
+		token: string;
+	};
 	baseUrl: string;
 	serverVersion: string;
 	customEmojis: {

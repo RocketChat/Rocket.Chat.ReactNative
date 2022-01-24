@@ -3,7 +3,7 @@ import { Clipboard, Linking, Share } from 'react-native';
 import { connect } from 'react-redux';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import CookieManager from '@react-native-cookies/cookies';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 
 import { SettingsStackParamList } from '../../stacks/types';
 import { logout as logoutAction } from '../../actions/login';
@@ -48,7 +48,7 @@ interface ISettingsViewProps {
 }
 
 class SettingsView extends React.Component<ISettingsViewProps, any> {
-	static navigationOptions = ({ navigation, isMasterDetail }: ISettingsViewProps) => ({
+	static navigationOptions = ({ navigation, isMasterDetail }: ISettingsViewProps): StackNavigationOptions => ({
 		headerLeft: () =>
 			isMasterDetail ? (
 				<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
@@ -88,7 +88,6 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 
 	handleLogout = () => {
 		logEvent(events.SE_LOG_OUT);
-		// @ts-ignore
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_of_this_application'),
 			confirmationText: I18n.t('Logout'),
@@ -98,7 +97,6 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 
 	handleClearCache = () => {
 		logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
-		/* @ts-ignore */
 		showConfirmationAlert({
 			message: I18n.t('This_will_clear_all_your_offline_data'),
 			confirmationText: I18n.t('Clear'),
@@ -183,7 +181,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 		return (
 			<SafeAreaView testID='settings-view'>
 				<StatusBar />
-				<List.Container testID='settings-view-list'>
+				<List.Container>
 					{isMasterDetail ? (
 						<>
 							<List.Section>

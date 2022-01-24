@@ -25,12 +25,12 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
 import ShareListHeader from './Header';
 
-interface IFile {
+interface IDataFromShare {
 	value: string;
 	type: string;
 }
 
-interface IAttachment {
+interface IFileToShare {
 	filename: string;
 	description: string;
 	size: number;
@@ -53,6 +53,9 @@ interface IChat {
 }
 
 interface IServerInfo {
+	id: string;
+	iconURL: string;
+	name: string;
 	useRealName: boolean;
 }
 interface IState {
@@ -61,7 +64,7 @@ interface IState {
 	searchResults: IChat[];
 	chats: IChat[];
 	serversCount: number;
-	attachments: IAttachment[];
+	attachments: IFileToShare[];
 	text: string;
 	loading: boolean;
 	serverInfo: IServerInfo;
@@ -121,7 +124,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	async componentDidMount() {
 		const { server } = this.props;
 		try {
-			const data = (await ShareExtension.data()) as IFile[];
+			const data = (await ShareExtension.data()) as IDataFromShare[];
 			if (isAndroid) {
 				await this.askForPermission(data);
 			}
@@ -136,7 +139,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				size: file.size,
 				mime: mime.lookup(file.uri),
 				path: file.uri
-			})) as IAttachment[];
+			})) as IFileToShare[];
 			const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${item.value}\n${acc}`, '');
 			this.setState({
 				text,
@@ -294,7 +297,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		}
 	};
 
-	askForPermission = async (data: IFile[]) => {
+	askForPermission = async (data: IDataFromShare[]) => {
 		const mediaIndex = data.findIndex(item => item.type === 'media');
 		if (mediaIndex !== -1) {
 			const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, permission);

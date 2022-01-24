@@ -1,56 +1,43 @@
+import { Q } from '@nozbe/watermelondb';
+import orderBy from 'lodash/orderBy';
 import React from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 import { FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
-import orderBy from 'lodash/orderBy';
-import { Q } from '@nozbe/watermelondb';
 import { Subscription } from 'rxjs';
 
+import { addUser, removeUser, reset } from '../actions/selectedUsers';
+import { themes } from '../constants/colors';
+import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
+import Loading from '../containers/Loading';
+import SafeAreaView from '../containers/SafeAreaView';
+import SearchBox from '../containers/SearchBox';
+import StatusBar from '../containers/StatusBar';
+import { IApplicationState, IBaseScreen } from '../definitions';
+import I18n from '../i18n';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
-import Loading from '../containers/Loading';
-import I18n from '../i18n';
-import log, { events, logEvent } from '../utils/log';
-import SearchBox from '../containers/SearchBox';
-import * as HeaderButton from '../containers/HeaderButton';
-import StatusBar from '../containers/StatusBar';
-import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
+import { ISelectedUser } from '../reducers/selectedUsers';
 import { getUserSelector } from '../selectors/login';
-import { addUser as addUserAction, removeUser as removeUserAction, reset as resetAction } from '../actions/selectedUsers';
-import { showErrorAlert } from '../utils/info';
-import SafeAreaView from '../containers/SafeAreaView';
-import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
+import { withTheme } from '../theme';
+import { showErrorAlert } from '../utils/info';
+import log, { events, logEvent } from '../utils/log';
+import sharedStyles from './Styles';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
 
-interface IUser {
-	_id: string;
-	name: string;
-	fname: string;
-	search?: boolean;
-	// username is used when is from searching
-	username?: string;
-}
 interface ISelectedUsersViewState {
 	maxUsers?: number;
-	search: IUser[];
-	chats: IUser[];
+	search: ISelectedUser[];
+	chats: ISelectedUser[];
 }
 
-interface ISelectedUsersViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
-	route: RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
-	baseUrl: string;
-	addUser(user: IUser): void;
-	removeUser(user: IUser): void;
-	reset(): void;
-	users: IUser[];
+interface ISelectedUsersViewProps extends IBaseScreen<ChatsStackParamList, 'SelectedUsersView'> {
+	// REDUX STATE
+	users: ISelectedUser[];
 	loading: boolean;
 	user: {
 		id: string;
@@ -58,7 +45,7 @@ interface ISelectedUsersViewProps {
 		username: string;
 		name: string;
 	};
-	theme: string;
+	baseUrl: string;
 }
 
 class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelectedUsersViewState> {
@@ -75,9 +62,9 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 			search: [],
 			chats: []
 		};
-		const { user } = this.props;
+		const { user, dispatch } = this.props;
 		if (this.isGroupChat()) {
-			props.addUser({ _id: user.id, name: user.username, fname: user.name });
+			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name }));
 		}
 		this.setHeader(props.route.params?.showButton);
 	}
@@ -92,8 +79,8 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	}
 
 	componentWillUnmount() {
-		const { reset } = this.props;
-		reset();
+		const { dispatch } = this.props;
+		dispatch(reset());
 		if (this.querySubscription && this.querySubscription.unsubscribe) {
 			this.querySubscription.unsubscribe();
 		}
@@ -158,11 +145,10 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		return users.findIndex(el => el.name === username) !== -1;
 	};
 
-	toggleUser = (user: IUser) => {
+	toggleUser = (user: ISelectedUser) => {
 		const { maxUsers } = this.state;
 		const {
-			addUser,
-			removeUser,
+			dispatch,
 			users,
 			user: { username }
 		} = this.props;
@@ -177,14 +163,14 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 				return showErrorAlert(I18n.t('Max_number_of_users_allowed_is_number', { maxUsers }), I18n.t('Oops'));
 			}
 			logEvent(events.SELECTED_USERS_ADD_USER);
-			addUser(user);
+			dispatch(addUser(user));
 		} else {
 			logEvent(events.SELECTED_USERS_REMOVE_USER);
-			removeUser(user);
+			dispatch(removeUser(user));
 		}
 	};
 
-	_onPressItem = (id: string, item = {} as IUser) => {
+	_onPressItem = (id: string, item = {} as ISelectedUser) => {
 		if (item.search) {
 			this.toggleUser({ _id: item._id, name: item.username!, fname: item.name });
 		} else {
@@ -192,7 +178,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		}
 	};
 
-	_onPressSelectedItem = (item: IUser) => this.toggleUser(item);
+	_onPressSelectedItem = (item: ISelectedUser) => this.toggleUser(item);
 
 	renderHeader = () => {
 		const { theme } = this.props;
@@ -231,7 +217,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		);
 	};
 
-	renderSelectedItem = ({ item }: { item: IUser }) => {
+	renderSelectedItem = ({ item }: { item: ISelectedUser }) => {
 		const { theme } = this.props;
 		return (
 			<UserItem
@@ -245,7 +231,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		);
 	};
 
-	renderItem = ({ item, index }: { item: IUser; index: number }) => {
+	renderItem = ({ item, index }: { item: ISelectedUser; index: number }) => {
 		const { search, chats } = this.state;
 		const { theme } = this.props;
 
@@ -308,17 +294,11 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	};
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	users: state.selectedUsers.users,
 	loading: state.selectedUsers.loading,
 	user: getUserSelector(state)
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-	addUser: (user: any) => dispatch(addUserAction(user)),
-	removeUser: (user: any) => dispatch(removeUserAction(user)),
-	reset: () => dispatch(resetAction())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SelectedUsersView));
+export default connect(mapStateToProps)(withTheme(SelectedUsersView));

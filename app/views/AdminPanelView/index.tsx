@@ -2,6 +2,7 @@ import React from 'react';
 import { WebView } from 'react-native-webview';
 import { connect } from 'react-redux';
 import { DrawerScreenProps } from '@react-navigation/drawer';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
@@ -22,7 +23,7 @@ interface INavigationOptions {
 }
 
 class AdminPanelView extends React.Component<IAdminPanelViewProps, any> {
-	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOptions) => ({
+	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOptions): StackNavigationOptions => ({
 		headerLeft: isMasterDetail ? undefined : () => <HeaderButton.Drawer navigation={navigation} />,
 		title: I18n.t('Admin_Panel')
 	});

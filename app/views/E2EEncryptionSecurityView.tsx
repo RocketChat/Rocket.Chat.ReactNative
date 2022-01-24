@@ -75,8 +75,6 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 		if (!newPassword.trim()) {
 			return;
 		}
-		// TODO: Remove ts-ignore when migrate the showConfirmationAlert
-		// @ts-ignore
 		showConfirmationAlert({
 			title: I18n.t('Are_you_sure_question_mark'),
 			message: I18n.t('E2E_encryption_change_password_message'),
@@ -98,8 +96,6 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 	};
 
 	resetOwnKey = () => {
-		// TODO: Remove ts-ignore when migrate the showConfirmationAlert
-		// @ts-ignore
 		showConfirmationAlert({
 			title: I18n.t('Are_you_sure_question_mark'),
 			message: I18n.t('E2E_encryption_reset_message'),

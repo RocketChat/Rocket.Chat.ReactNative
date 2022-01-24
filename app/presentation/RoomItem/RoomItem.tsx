@@ -11,7 +11,7 @@ import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
-import { DISPLAY_MODE_EXPANDED } from '../../constants/constantDisplayMode';
+import { DisplayMode } from '../../constants/constantDisplayMode';
 
 interface IRoomItem {
 	rid: string;
@@ -132,7 +132,7 @@ const RoomItem = ({
 			displayMode={displayMode}
 			showAvatar={showAvatar}
 			showLastMessage={showLastMessage}>
-			{showLastMessage && displayMode === DISPLAY_MODE_EXPANDED ? (
+			{showLastMessage && displayMode === DisplayMode.Expanded ? (
 				<>
 					<View style={styles.titleContainer}>
 						{showAvatar ? (
