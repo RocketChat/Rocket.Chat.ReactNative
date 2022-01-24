@@ -2115,8 +2115,6 @@ exports[`Storyshots Discussions.Item content 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                },
-                Object {
                   "marginTop": 8,
                 },
               ]
@@ -2417,8 +2415,6 @@ exports[`Storyshots Discussions.Item content 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                },
-                Object {
                   "marginTop": 8,
                 },
               ]
@@ -2719,8 +2715,6 @@ exports[`Storyshots Discussions.Item content 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                },
-                Object {
                   "marginTop": 8,
                 },
               ]
@@ -3023,8 +3017,6 @@ exports[`Storyshots Discussions.Item content 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                },
-                Object {
                   "marginTop": 8,
                 },
               ]
@@ -3325,8 +3317,6 @@ exports[`Storyshots Discussions.Item content 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                },
-                Object {
                   "marginTop": 8,
                 },
               ]
@@ -3647,8 +3637,6 @@ exports[`Storyshots Discussions.Item themes 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                },
-                Object {
                   "marginTop": 8,
                 },
               ]
@@ -3936,8 +3924,6 @@ exports[`Storyshots Discussions.Item themes 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                },
-                Object {
                   "marginTop": 8,
                 },
               ]
@@ -4225,8 +4211,6 @@ exports[`Storyshots Discussions.Item themes 1`] = `
                   "alignItems": "center",
                   "flex": 1,
                   "flexDirection": "row",
-                },
-                Object {
                   "marginTop": 8,
                 },
               ]
