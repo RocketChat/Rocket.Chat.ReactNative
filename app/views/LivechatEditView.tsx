@@ -20,6 +20,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
 import { IVisitor } from '../definitions/IVisitor';
 import { ITagsOmnichannel } from '../definitions/ITagsOmnichannel';
+import { ISubscription } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 
@@ -64,6 +65,11 @@ interface IInputs {
 
 type TParams = IVisitor & IInputs;
 
+interface ILivechat extends ISubscription {
+	// Param dynamic depends on server
+	sms?: string;
+}
+
 interface IInputsRefs {
 	[index: string]: RNTextInput | null;
 	name: RNTextInput | null;
@@ -103,7 +109,7 @@ const LivechatEditView = ({
 	const params = {} as TParams;
 	const inputs = {} as IInputsRefs;
 
-	const livechat = route.params?.room ?? {};
+	const livechat = (route.params?.room ?? {}) as ILivechat;
 	const visitor = route.params?.roomUser ?? {};
 
 	const getCustomFields = async () => {
@@ -152,7 +158,9 @@ const LivechatEditView = ({
 	const submit = async () => {
 		const userData = { _id: visitor?._id } as TParams;
 
-		const { rid, sms } = livechat;
+		const { rid } = livechat;
+		const sms = livechat?.sms;
+
 		const roomData = { _id: rid } as TParams;
 
 		if (params.name) {

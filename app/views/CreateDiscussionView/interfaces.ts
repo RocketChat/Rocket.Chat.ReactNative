@@ -2,6 +2,7 @@ import { RouteProp } from '@react-navigation/core';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { NewMessageStackParamList } from '../../stacks/types';
+import { SubscriptionType } from '../../definitions/ISubscription';
 
 export interface ICreateChannelViewProps {
 	navigation: StackNavigationProp<NewMessageStackParamList, 'CreateDiscussionView'>;
@@ -15,7 +16,7 @@ export interface ICreateChannelViewProps {
 	loading: boolean;
 	result: {
 		rid: string;
-		t: string;
+		t: SubscriptionType;
 		prid: string;
 	};
 	failure: boolean;

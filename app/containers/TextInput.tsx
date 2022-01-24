@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IRCTextInputProps extends TextInputProps {
+export interface IRCTextInputProps extends TextInputProps {
 	label?: string;
 	error?: {
 		error: any;
