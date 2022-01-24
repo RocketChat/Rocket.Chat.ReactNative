@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../constants/colors';
@@ -23,20 +22,20 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DropdownItem = React.memo(({ theme, onPress, iconName, text }) => (
-	<Touch theme={theme} onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }}>
+interface IDropdownItem {
+	text: string;
+	iconName: string | null;
+	theme?: string;
+	onPress: () => void;
+}
+
+const DropdownItem = React.memo(({ theme, onPress, iconName, text }: IDropdownItem) => (
+	<Touch theme={theme!} onPress={onPress} style={{ backgroundColor: themes[theme!].backgroundColor }}>
 		<View style={styles.container}>
-			<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>{text}</Text>
-			{iconName ? <CustomIcon name={iconName} size={22} color={themes[theme].auxiliaryText} /> : null}
+			<Text style={[styles.text, { color: themes[theme!].auxiliaryText }]}>{text}</Text>
+			{iconName ? <CustomIcon name={iconName} size={22} color={themes[theme!].auxiliaryText} /> : null}
 		</View>
 	</Touch>
 ));
-
-DropdownItem.propTypes = {
-	text: PropTypes.string,
-	iconName: PropTypes.string,
-	theme: PropTypes.string,
-	onPress: PropTypes.func
-};
 
 export default withTheme(DropdownItem);

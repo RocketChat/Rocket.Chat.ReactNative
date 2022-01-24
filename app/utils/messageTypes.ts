@@ -4,8 +4,16 @@ export const MessageTypeValues = [
 		text: 'Message_HideType_uj'
 	},
 	{
+		value: 'ujt',
+		text: 'Message_HideType_ujt'
+	},
+	{
 		value: 'ul',
 		text: 'Message_HideType_ul'
+	},
+	{
+		value: 'ult',
+		text: 'Message_HideType_ult'
 	},
 	{
 		value: 'ru',

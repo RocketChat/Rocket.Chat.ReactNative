@@ -1,30 +1,31 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Animated, Easing, TouchableWithoutFeedback } from 'react-native';
-import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
 import { headerHeight } from '../../../containers/Header';
 import * as List from '../../../containers/List';
-import { FILTER } from '../filters';
+import { Filter } from '../filters';
 import DropdownItemFilter from './DropdownItemFilter';
 import DropdownItemHeader from './DropdownItemHeader';
 
 const ANIMATION_DURATION = 200;
 
-class Dropdown extends React.Component {
-	static propTypes = {
-		isMasterDetail: PropTypes.bool,
-		theme: PropTypes.string,
-		insets: PropTypes.object,
-		currentFilter: PropTypes.string,
-		onClose: PropTypes.func,
-		onFilterSelected: PropTypes.func
-	};
+interface IDropdownProps {
+	isMasterDetail?: boolean;
+	theme?: string;
+	insets?: EdgeInsets;
+	currentFilter: Filter;
+	onClose: () => void;
+	onFilterSelected: (value: Filter) => void;
+}
 
-	constructor(props) {
+class Dropdown extends React.Component<IDropdownProps> {
+	private animatedValue: Animated.Value;
+
+	constructor(props: IDropdownProps) {
 		super(props);
 		this.animatedValue = new Animated.Value(0);
 	}
@@ -58,7 +59,7 @@ class Dropdown extends React.Component {
 		});
 		const backdropOpacity = this.animatedValue.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, themes[theme].backdropOpacity]
+			outputRange: [0, themes[theme!].backdropOpacity]
 		});
 		return (
 			<>
@@ -67,7 +68,7 @@ class Dropdown extends React.Component {
 						style={[
 							styles.backdrop,
 							{
-								backgroundColor: themes[theme].backdropColor,
+								backgroundColor: themes[theme!].backdropColor,
 								opacity: backdropOpacity,
 								top: heightDestination
 							}
@@ -79,15 +80,15 @@ class Dropdown extends React.Component {
 						styles.dropdownContainer,
 						{
 							transform: [{ translateY }],
-							backgroundColor: themes[theme].backgroundColor,
-							borderColor: themes[theme].separatorColor
+							backgroundColor: themes[theme!].backgroundColor,
+							borderColor: themes[theme!].separatorColor
 						}
 					]}>
 					<DropdownItemHeader currentFilter={currentFilter} onPress={this.close} />
 					<List.Separator />
-					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.ALL} onPress={onFilterSelected} />
-					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.FOLLOWING} onPress={onFilterSelected} />
-					<DropdownItemFilter currentFilter={currentFilter} value={FILTER.UNREAD} onPress={onFilterSelected} />
+					<DropdownItemFilter currentFilter={currentFilter} value={Filter.All} onPress={onFilterSelected} />
+					<DropdownItemFilter currentFilter={currentFilter} value={Filter.Following} onPress={onFilterSelected} />
+					<DropdownItemFilter currentFilter={currentFilter} value={Filter.Unread} onPress={onFilterSelected} />
 				</Animated.View>
 			</>
 		);
