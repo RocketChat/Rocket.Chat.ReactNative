@@ -18,7 +18,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';
 import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IBaseScreen } from '../definitions';
-import { RoomType } from '../definitions/ERoomType';
+import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
 import database from '../lib/database';
@@ -51,7 +51,7 @@ const keyExtractor = (item: IItem) => item._id;
 
 // This interface comes from request RocketChat.getTeamListRoom
 interface IItem {
-	_id: RoomType;
+	_id: ERoomType;
 	fname: string;
 	customFields: object;
 	broadcast: boolean;

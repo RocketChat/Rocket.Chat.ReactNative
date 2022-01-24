@@ -1,5 +1,5 @@
 import { closeRoom, deleteRoom, forwardRoom, leaveRoom, removedRoom, subscribeRoom, unsubscribeRoom } from '../actions/room';
-import { RoomType } from '../definitions/ERoomType';
+import { ERoomType } from '../definitions/ERoomType';
 import { mockedStore } from './mockedStore';
 import { initialState } from './room';
 
@@ -22,16 +22,16 @@ describe('test room reducer', () => {
 	});
 
 	it('should return initial state after leaveRoom', () => {
-		mockedStore.dispatch(leaveRoom(RoomType.c, { rid: RoomType.c }));
+		mockedStore.dispatch(leaveRoom(ERoomType.c, { rid: ERoomType.c }));
 		const { rid, isDeleting } = mockedStore.getState().room;
-		expect(rid).toEqual(RoomType.c);
+		expect(rid).toEqual(ERoomType.c);
 		expect(isDeleting).toEqual(true);
 	});
 
 	it('should return initial state after deleteRoom', () => {
-		mockedStore.dispatch(deleteRoom(RoomType.l, { rid: RoomType.l }));
+		mockedStore.dispatch(deleteRoom(ERoomType.l, { rid: ERoomType.l }));
 		const { rid, isDeleting } = mockedStore.getState().room;
-		expect(rid).toEqual(RoomType.l);
+		expect(rid).toEqual(ERoomType.l);
 		expect(isDeleting).toEqual(true);
 	});
 

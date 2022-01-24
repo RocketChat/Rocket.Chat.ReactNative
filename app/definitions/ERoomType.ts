@@ -1,4 +1,4 @@
-export enum RoomType {
+export enum ERoomType {
 	p = 'group',
 	c = 'channel',
 	d = 'direct',
