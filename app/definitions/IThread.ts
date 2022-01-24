@@ -43,7 +43,7 @@ export interface IThread {
 	id: string;
 	msg?: string;
 	t?: SubscriptionType;
-	rid?: string;
+	rid: string;
 	_updatedAt?: Date;
 	ts?: Date;
 	u?: IUserMessage;

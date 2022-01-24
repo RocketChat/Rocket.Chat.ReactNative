@@ -58,6 +58,7 @@ export type ModalStackParamList = {
 	};
 	DiscussionsView: {
 		rid: string;
+		t: SubscriptionType;
 	};
 	SearchMessagesView: {
 		rid: string;
