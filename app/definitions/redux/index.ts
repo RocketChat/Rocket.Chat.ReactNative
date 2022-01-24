@@ -9,18 +9,19 @@ import { TActionSortPreferences } from '../../actions/sortPreferences';
 import { TActionUserTyping } from '../../actions/usersTyping';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
+import { IConnect } from '../../reducers/connect';
 import { IEncryption } from '../../reducers/encryption';
 import { IInviteLinks } from '../../reducers/inviteLinks';
+import { ILogin } from '../../reducers/login';
 import { IRoles } from '../../reducers/roles';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
-import { IConnect } from '../../reducers/connect';
 import { ISettings } from '../../reducers/settings';
 
 
 export interface IApplicationState {
 	settings: ISettings;
-	login: any;
 	meteor: IConnect;
+	login: ILogin;
 	server: any;
 	selectedUsers: ISelectedUsers;
 	createChannel: any;

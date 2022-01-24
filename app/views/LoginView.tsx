@@ -1,21 +1,20 @@
+import { dequal } from 'dequal';
 import React from 'react';
 import { Alert, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { dequal } from 'dequal';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/core';
 
-import Button from '../containers/Button';
-import I18n from '../i18n';
-import * as HeaderButton from '../containers/HeaderButton';
+import { loginRequest } from '../actions/login';
 import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
+import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import TextInput from '../containers/TextInput';
-import { loginRequest as loginRequestAction } from '../actions/login';
+import * as HeaderButton from '../containers/HeaderButton';
 import LoginServices from '../containers/LoginServices';
-import sharedStyles from './Styles';
+import TextInput from '../containers/TextInput';
+import { IApplicationState, IBaseScreen } from '../definitions';
+import I18n from '../i18n';
 import { OutsideParamList } from '../stacks/types';
+import { withTheme } from '../theme';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	registerDisabled: {
@@ -48,9 +47,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface ILoginViewProps {
-	navigation: StackNavigationProp<OutsideParamList, 'LoginView'>;
-	route: RouteProp<OutsideParamList, 'LoginView'>;
+interface ILoginViewProps extends IBaseScreen<OutsideParamList, 'LoginView'> {
 	Site_Name: string;
 	Accounts_RegistrationForm: string;
 	Accounts_RegistrationForm_LinkReplacementText: string;
@@ -63,7 +60,6 @@ interface ILoginViewProps {
 		error: string;
 	};
 	failure: boolean;
-	theme: string;
 	loginRequest: Function;
 	inviteLinkToken: string;
 }
@@ -132,9 +128,9 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 		}
 
 		const { user, password } = this.state;
-		const { loginRequest } = this.props;
+		const { dispatch } = this.props;
 		Keyboard.dismiss();
-		loginRequest({ user, password });
+		dispatch(loginRequest({ user, password }));
 	};
 
 	renderUserForm = () => {
@@ -243,7 +239,7 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
 	Site_Name: state.settings.Site_Name,
 	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
@@ -258,8 +254,4 @@ const mapStateToProps = (state: any) => ({
 	inviteLinkToken: state.inviteLinks.token
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-	loginRequest: (params: any) => dispatch(loginRequestAction(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(LoginView));
+export default connect(mapStateToProps)(withTheme(LoginView));

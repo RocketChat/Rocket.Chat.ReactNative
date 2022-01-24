@@ -1,15 +1,46 @@
 import * as types from '../actions/actionsTypes';
+import { TActionsLogin } from '../actions/login';
+import { TUserStatus } from './activeUsers';
 
-const initialState = {
+export interface IUserLogin {
+	id: string;
+	token: string;
+	username: string;
+	name: string;
+	language: null;
+	status: TUserStatus;
+	statusText: string;
+	roles: string[];
+	avatarETag: string;
+	isFromWebView: boolean;
+	showMessageInMainThread: boolean;
+	enableMessageParserEarlyAdoption: boolean;
+	emails: Record<string, any>[];
+	customFields: Record<string, string>;
+	settings: Record<string, string>;
+}
+
+export interface ILogin {
+	user: Partial<IUserLogin> | Record<string, any>;
+	isLocalAuthenticated: boolean;
+	isAuthenticated: boolean;
+	isFetching: boolean;
+	error: Record<string, any>;
+	services: Record<string, any>;
+	failure: boolean;
+}
+
+export const initialState: ILogin = {
 	isLocalAuthenticated: true,
 	isAuthenticated: false,
 	isFetching: false,
 	user: {},
 	error: {},
-	services: {}
+	services: {},
+	failure: false
 };
 
-export default function login(state = initialState, action) {
+export default function login(state = initialState, action: TActionsLogin): ILogin {
 	switch (action.type) {
 		case types.APP.INIT:
 			return initialState;

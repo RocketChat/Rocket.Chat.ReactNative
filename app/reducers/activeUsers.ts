@@ -1,7 +1,7 @@
 import { TApplicationActions } from '../definitions';
 import { SET_ACTIVE_USERS } from '../actions/actionsTypes';
 
-type TUserStatus = 'online' | 'offline';
+export type TUserStatus = 'online' | 'offline';
 export interface IActiveUser {
 	status: TUserStatus;
 	statusText: string;

@@ -211,7 +211,9 @@ const mapStateToProps = (state: any) => ({
 	Accounts_AllowInvisibleStatusOption: state.settings.Accounts_AllowInvisibleStatusOption ?? true
 });
 
+// TODO VERIFY SCREEN FUNCTION AND LOGICS
 const mapDispatchToProps = (dispatch: Dispatch) => ({
+	// @ts-ignore
 	setUser: (user: IUser) => dispatch(setUserAction(user))
 });
 
