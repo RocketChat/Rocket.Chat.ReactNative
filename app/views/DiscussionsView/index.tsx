@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -127,11 +127,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 					</HeaderButton.Container>
 				),
 				headerTitle: () => (
-					<SearchHeader
-						placeholder='Search Messages'
-						onSearchChangeText={onSearchChangeText}
-						testID='discussion-messages-view-search-header'
-					/>
+					<SearchHeader onSearchChangeText={onSearchChangeText} testID='discussion-messages-view-search-header' />
 				),
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
@@ -169,7 +165,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 		load();
 	}, []);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const options = setHeader();
 		navigation.setOptions(options);
 	}, [navigation, isSearching]);
@@ -192,7 +188,6 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 			{...{
 				item,
 				user,
-				navigation,
 				baseUrl
 			}}
 			onPress={onDiscussionPress}
@@ -213,9 +208,6 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				style={{ backgroundColor: themes[theme!].backgroundColor }}
 				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
-				maxToRenderPerBatch={5}
-				windowSize={10}
-				initialNumToRender={7}
 				removeClippedSubviews={isIOS}
 				onEndReached={() => (searchTotal || total) > API_FETCH_COUNT ?? load()}
 				ItemSeparatorComponent={List.Separator}

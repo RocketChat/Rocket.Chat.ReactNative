@@ -218,11 +218,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 					</HeaderButton.Container>
 				),
 				headerTitle: () => (
-					<SearchHeader
-						onSearchChangeText={this.onSearchChangeText}
-						placeholder='Search Channels'
-						testID='team-channels-view-search-header'
-					/>
+					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='team-channels-view-search-header' />
 				),
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,

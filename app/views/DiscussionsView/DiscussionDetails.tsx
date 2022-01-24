@@ -34,11 +34,11 @@ interface IDiscussionDetails {
 	user: {
 		id: string;
 	};
-	time: string;
+	date: string;
 	style: ViewStyle;
 }
 
-const DiscussionDetails = ({ item, time, style }: IDiscussionDetails) => {
+const DiscussionDetails = ({ item, date, style }: IDiscussionDetails) => {
 	const { theme } = useTheme();
 	let { dcount } = item;
 
@@ -59,7 +59,7 @@ const DiscussionDetails = ({ item, time, style }: IDiscussionDetails) => {
 				<View style={styles.detailContainer}>
 					<CustomIcon name={'clock'} size={24} color={themes[theme!].auxiliaryText} />
 					<Text style={[styles.detailText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
-						{time}
+						{date}
 					</Text>
 				</View>
 			</View>

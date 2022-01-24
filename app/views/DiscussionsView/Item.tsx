@@ -89,18 +89,20 @@ const Item = ({ item, baseUrl, user, onPress }: IItem): JSX.Element => {
 						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{messageTime!}</Text>
 					</View>
 					<View style={styles.messageContainer}>
-						{/* @ts-ignore */}
-						<Markdown
-							msg={makeThreadName(item)!}
-							baseUrl={baseUrl}
-							username={username!}
-							theme={theme!}
-							numberOfLines={2}
-							style={[styles.markdown]}
-							preview
-						/>
+						{makeThreadName(item) && item && username ? (
+							/* @ts-ignore */
+							<Markdown
+								msg={makeThreadName(item)!}
+								baseUrl={baseUrl}
+								username={username}
+								theme={theme}
+								numberOfLines={2}
+								style={[styles.markdown]}
+								preview
+							/>
+						) : null}
 					</View>
-					<DiscussionDetails item={item} user={user} time={messageDate!} style={styles.discussionDetails} />
+					<DiscussionDetails item={item} user={user} date={messageDate!} style={styles.discussionDetails} />
 				</View>
 			</View>
 		</Touchable>

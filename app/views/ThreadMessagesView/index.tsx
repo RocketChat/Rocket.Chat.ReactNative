@@ -145,11 +145,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 					</HeaderButton.Container>
 				),
 				headerTitle: () => (
-					<SearchHeader
-						onSearchChangeText={this.onSearchChangeText}
-						placeholder='Search'
-						testID='thread-messages-view-search-header'
-					/>
+					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='thread-messages-view-search-header' />
 				),
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
