@@ -22,11 +22,11 @@ import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import debounce from '../utils/debounce';
 import { ChatsStackParamList } from '../stacks/types';
+import { IRoom } from '../definitions/IRoom';
 
 interface IAddExistingChannelViewState {
-	// TODO: refactor with Room Model
-	search: any[];
-	channels: any[];
+	search: Array<IRoom>;
+	channels: Array<IRoom>;
 	selected: string[];
 	loading: boolean;
 }
@@ -43,6 +43,7 @@ const QUERY_SIZE = 50;
 
 class AddExistingChannelView extends React.Component<IAddExistingChannelViewProps, IAddExistingChannelViewState> {
 	private teamId?: string;
+
 	constructor(props: IAddExistingChannelViewProps) {
 		super(props);
 		this.query();
@@ -93,10 +94,9 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 				)
 				.fetch();
 
-			// TODO: Refactor with Room Model
-			const asyncFilter = async (channelsArray: any[]) => {
+			const asyncFilter = async (channelsArray: Array<IRoom>) => {
 				const results = await Promise.all(
-					channelsArray.map(async (channel: any) => {
+					channelsArray.map(async (channel: IRoom) => {
 						if (channel.prid) {
 							return false;
 						}
@@ -197,7 +197,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 			<FlatList
 				data={search.length > 0 ? search : channels}
 				extraData={this.state}
-				keyExtractor={item => item._id}
+				keyExtractor={item => item.id}
 				ListHeaderComponent={this.renderHeader}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={List.Separator}

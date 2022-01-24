@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch } from 'react-native';
 import { connect } from 'react-redux';
 import { StackNavigationOptions } from '@react-navigation/stack';
-import Model from '@nozbe/watermelondb/Model';
 import { Subscription } from 'rxjs';
 
 import I18n from '../i18n';
@@ -15,14 +14,9 @@ import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../uti
 import { DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';
+import { TServerModel } from '../definitions/IServer';
 
 const DEFAULT_BIOMETRY = false;
-
-interface IServerRecords extends Model {
-	autoLock?: boolean;
-	autoLockTime?: number;
-	biometry?: boolean;
-}
 
 interface IItem {
 	title: string;
@@ -38,14 +32,14 @@ interface IScreenLockConfigViewProps {
 }
 
 interface IScreenLockConfigViewState {
-	autoLock?: boolean;
+	autoLock: boolean;
 	autoLockTime?: number | null;
 	biometry?: boolean;
-	biometryLabel: null;
+	biometryLabel: string | null;
 }
 
 class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, IScreenLockConfigViewState> {
-	private serverRecord?: IServerRecords;
+	private serverRecord?: TServerModel;
 
 	private observable?: Subscription;
 
@@ -98,7 +92,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
 		try {
-			this.serverRecord = await serversCollection.find(server);
+			this.serverRecord = (await serversCollection.find(server)) as TServerModel;
 			this.setState({
 				autoLock: this.serverRecord?.autoLock,
 				autoLockTime: this.serverRecord?.autoLockTime === null ? DEFAULT_AUTO_LOCK : this.serverRecord?.autoLockTime,
@@ -151,7 +145,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 				const { autoLock } = this.state;
 				if (autoLock) {
 					try {
-						await checkHasPasscode({ force: false, serverRecord: this.serverRecord });
+						await checkHasPasscode({ force: false, serverRecord: this.serverRecord! });
 					} catch {
 						this.toggleAutoLock();
 					}
@@ -191,7 +185,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 				<List.Item
 					title={title}
 					onPress={() => this.changeAutoLockTime(value)}
-					right={this.isSelected(value) ? this.renderIcon : null}
+					right={() => (this.isSelected(value) ? this.renderIcon() : null)}
 					disabled={disabled}
 					translateTitle={false}
 				/>

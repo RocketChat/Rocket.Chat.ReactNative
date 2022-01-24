@@ -4,7 +4,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import * as types from '../actions/actionsTypes';
 import { ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE, ROOT_SET_USERNAME, appStart } from '../actions/app';
-import { serverRequest, serverFinishAdd } from '../actions/server';
+import { selectServerRequest, serverFinishAdd, serverRequest } from '../actions/server';
 import { loginFailure, loginSuccess, logout, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import RocketChat from '../lib/rocketchat';
@@ -20,9 +20,6 @@ import { encryptionInit, encryptionStop } from '../actions/encryption';
 import UserPreferences from '../lib/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
-
-import Navigation from '../lib/Navigation';
-import appConfig from '../../app.json';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -197,25 +194,25 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
 				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
-				// } else {
-				// 	const serversDB = database.servers;
-				// 	// all servers
-				// 	const serversCollection = serversDB.get('servers');
-				// 	const servers = yield serversCollection.query().fetch();
+			} else {
+				const serversDB = database.servers;
+				// all servers
+				const serversCollection = serversDB.get('servers');
+				const servers = yield serversCollection.query().fetch();
 
-				// 	// see if there're other logged in servers and selects first one
-				// 	if (servers.length > 0) {
-				// 		for (let i = 0; i < servers.length; i += 1) {
-				// 			const newServer = servers[i].id;
-				// 			const token = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${newServer}`);
-				// 			if (token) {
-				// 				yield put(selectServerRequest(newServer));
-				// 				return;
-				// 			}
-				// 		}
-				// 	}
-				// 	// if there's no servers, go outside
-				// 	yield put(appStart({ root: ROOT_OUTSIDE }));
+				// see if there're other logged in servers and selects first one
+				if (servers.length > 0) {
+					for (let i = 0; i < servers.length; i += 1) {
+						const newServer = servers[i].id;
+						const token = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${newServer}`);
+						if (token) {
+							yield put(selectServerRequest(newServer));
+							return;
+						}
+					}
+				}
+				// if there's no servers, go outside
+				yield put(appStart({ root: ROOT_OUTSIDE }));
 			}
 			// else {
 			// 	const serversDB = database.servers;
