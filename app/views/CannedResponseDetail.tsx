@@ -125,7 +125,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 			// if it's on master detail layout, we close the modal and replace RoomView
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
-				goRoom({ item: params, isMasterDetail, usedCannedResponse: item.text });
+				goRoom({ item: params, isMasterDetail });
 			} else {
 				let navigate = navigation.push;
 				// if this is a room focused

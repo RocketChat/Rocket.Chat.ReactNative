@@ -53,7 +53,7 @@ interface ICannedResponsesListViewProps {
 }
 
 const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListViewProps): JSX.Element => {
-	const [room, setRoom] = useState<ISubscription>(null!);
+	const [room, setRoom] = useState<ISubscription | null>(null);
 
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);
 	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState<ICannedResponse[]>([]);
@@ -102,7 +102,9 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	}, 300);
 
 	const goToDetail = (item: ICannedResponse) => {
-		navigation.navigate('CannedResponseDetail', { cannedResponse: item, room });
+		if (room) {
+			navigation.navigate('CannedResponseDetail', { cannedResponse: item, room });
+		}
 	};
 
 	const navigateToRoom = (item: ICannedResponse) => {
@@ -126,7 +128,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			// if it's on master detail layout, we close the modal and replace RoomView
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
-				goRoom({ item: params, isMasterDetail, usedCannedResponse: item.text });
+				goRoom({ item: params, isMasterDetail });
 			} else {
 				let navigate = navigation.push;
 				// if this is a room focused
@@ -338,7 +340,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 				renderItem={({ item }) => (
 					<CannedResponseItem
 						theme={theme}
-						scope={item.scopeName!}
+						scope={item.scopeName}
 						shortcut={item.shortcut}
 						tags={item?.tags}
 						text={item.text}

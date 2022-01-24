@@ -45,6 +45,7 @@ export const goRoom = async ({
 	isMasterDetail: boolean;
 	navigationMethod?: any;
 	jumpToMessageId?: string;
+	usedCannedResponse?: string;
 }): Promise<void> => {
 	if (item.t === 'd' && item.search) {
 		// if user is using the search we need first to join/create room
@@ -55,7 +56,7 @@ export const goRoom = async ({
 				return navigate({
 					item: {
 						rid: result.room._id,
-						name: username!,
+						name: username || '',
 						t: SubscriptionType.DIRECT
 					},
 					isMasterDetail,
