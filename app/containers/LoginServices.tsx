@@ -144,7 +144,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		const { services, server } = this.props;
 		const { clientId } = services.google;
 		const endpoint = 'https://accounts.google.com/o/oauth2/auth';
-		const redirect_uri = `${server}/_oauth/google?close`;
+		const redirect_uri = `${server}/_oauth/google`;
 		const scope = 'email';
 		const state = this.getOAuthState(LOGIN_STYPE_REDIRECT);
 		const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=code`;
