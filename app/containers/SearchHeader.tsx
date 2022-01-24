@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import I18n from '../i18n';
 import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
@@ -21,11 +22,10 @@ const styles = StyleSheet.create({
 
 interface ISearchHeaderProps {
 	onSearchChangeText?: (text: string) => void;
-	placeholder: string;
 	testID: string;
 }
 
-const SearchHeader = ({ onSearchChangeText, placeholder, testID }: ISearchHeaderProps) => {
+const SearchHeader = ({ onSearchChangeText, testID }: ISearchHeaderProps): JSX.Element => {
 	const { theme } = useTheme();
 	const isLight = theme === 'light';
 	const { isLandscape } = useOrientation();
@@ -37,7 +37,7 @@ const SearchHeader = ({ onSearchChangeText, placeholder, testID }: ISearchHeader
 			<TextInput
 				autoFocus
 				style={[styles.title, isLight && { color: themes[theme].headerTitleColor }, { fontSize: titleFontSize }]}
-				placeholder={placeholder}
+				placeholder={I18n.t('Search')}
 				onChangeText={onSearchChangeText}
 				theme={theme}
 				testID={testID}
