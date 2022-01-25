@@ -85,11 +85,11 @@ class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewPr
 		this.mounted = true;
 	}
 
-	init = async () => {
+	init = () => {
 		const { server } = this.props;
 		try {
 			// Set stored password on local state
-			const password = await UserPreferences.getStringAsync(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
+			const password = UserPreferences.getStringAsync(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
 			if (this.mounted) {
 				this.setState({ password: password! });
 			} else {
@@ -101,11 +101,11 @@ class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewPr
 		}
 	};
 
-	onSaved = async () => {
+	onSaved = () => {
 		logEvent(events.E2E_SAVE_PW_SAVED);
 		const { navigation, server, encryptionSetBanner } = this.props;
 		// Remove stored password
-		await UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
+		UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
 		// Hide encryption banner
 		encryptionSetBanner();
 		navigation.pop();
