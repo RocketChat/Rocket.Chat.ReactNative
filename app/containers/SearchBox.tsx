@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
 	cancelText: {
 		...sharedStyles.textRegular,
 		fontSize: 17
+	},
+	cancelIcon: {
+		right: 5
 	}
 });
 
@@ -49,6 +52,7 @@ interface ISearchBox {
 	onChangeText: TextInputProps['onChangeText'];
 	onSubmitEditing?: () => void;
 	hasCancel?: boolean;
+	hasCancelIcon?: boolean;
 	onCancelPress?: Function;
 	theme?: string;
 	inputRef?: React.Ref<unknown>;
@@ -62,11 +66,18 @@ const CancelButton = (onCancelPress: Function, theme: string) => (
 	</Touchable>
 );
 
+const CancelIconButton = (onCancelPress: Function, theme: string) => (
+	<Touchable onPress={onCancelPress} style={styles.cancelIcon}>
+		<CustomIcon name='input-clear' size={18} color={themes[theme].auxiliaryText} />
+	</Touchable>
+);
+
 const SearchBox = ({
 	onChangeText,
 	onSubmitEditing,
 	testID,
 	hasCancel,
+	hasCancelIcon = false,
 	onCancelPress,
 	inputRef,
 	theme,
@@ -95,6 +106,7 @@ const SearchBox = ({
 				theme={theme!}
 				{...props}
 			/>
+			{hasCancelIcon ? CancelIconButton(onCancelPress!, theme!) : null}
 		</View>
 		{hasCancel ? CancelButton(onCancelPress!, theme!) : null}
 	</View>
