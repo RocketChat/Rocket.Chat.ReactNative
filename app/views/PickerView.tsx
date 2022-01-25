@@ -41,7 +41,6 @@ interface IItem {
 interface IPickerViewState {
 	data: IOptionsField[];
 	value: string;
-	offset: number;
 	total: number;
 	searchText: string;
 }
@@ -64,8 +63,6 @@ const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState> {
 	private onSearch?: (text?: string) => Promise<{ data: IOptionsField[] } | undefined>;
 
-	private count: number;
-
 	static navigationOptions = ({ route }: IPickerViewProps) => ({
 		title: route.params?.title ?? I18n.t('Select_an_option')
 	});
@@ -75,11 +72,8 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 		const data = props.route.params?.data ?? [];
 		const value = props.route.params?.value;
 		const total = props.route.params?.total ?? 0;
-		const offset = props.route.params?.offset ?? 0;
-		this.state = { data, value, offset, total, searchText: '' };
-
+		this.state = { data, value, total, searchText: '' };
 		this.onSearch = props.route.params?.onChangeText;
-		this.count = props.route.params?.count ?? 0;
 	}
 
 	onChangeValue = (value: string) => {
@@ -107,11 +101,10 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 
 	onEndReached = async () => {
 		const { route } = this.props;
-		const { data, offset, total, searchText } = this.state;
+		const { data, total, searchText } = this.state;
 		const onEndReached = route.params?.onEndReached;
-		const newOffset = offset + this.count;
-		if (onEndReached && newOffset < total) {
-			const val = await onEndReached(searchText, newOffset);
+		if (onEndReached && data.length < total) {
+			const val = await onEndReached(searchText, data.length);
 			if (val?.data) {
 				this.setState({ ...val, data: [...data, ...val.data] });
 			}

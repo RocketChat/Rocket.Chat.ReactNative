@@ -98,14 +98,9 @@ export type ChatsStackParamList = {
 		title: string;
 		data: IOptionsField[];
 		value?: any; // TODO: Change
-		onChangeText?: (text?: string) => Promise<{ data: IOptionsField[] } | undefined>;
-		onEndReached?: (
-			text: string,
-			offset?: number
-		) => Promise<{ data: IOptionsField[]; total: number; offset: number } | undefined>;
-		offset?: number;
+		onChangeText?: (text?: string) => Promise<any>;
+		onEndReached?: (text: string, offset?: number) => Promise<any>;
 		total?: number;
-		count?: number;
 		goBack?: boolean;
 		onChangeValue: Function;
 	};

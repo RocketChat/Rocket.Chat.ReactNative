@@ -13,8 +13,10 @@ import RocketChat from '../lib/rocketchat';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
 import { forwardRoom as forwardRoomAction } from '../actions/room';
+import { ISubscription } from '../definitions';
 import { ILivechatDepartment } from './definition/ILivechatDepartment';
 import { ChatsStackParamList } from '../stacks/types';
+import { IOptionsField } from './NotificationPreferencesView/options';
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,14 +24,6 @@ const styles = StyleSheet.create({
 		padding: 16
 	}
 });
-
-// TODO: Refactor when migrate room
-interface IRoom {
-	departmentId?: any;
-	servedBy?: {
-		_id: string;
-	};
-}
 
 interface ITransferData {
 	roomId: string;
@@ -41,12 +35,6 @@ interface IUser {
 	username: string;
 	_id: string;
 }
-
-interface IParsedData {
-	label: string;
-	value: string;
-}
-
 interface IForwardLivechatViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'ForwardLivechatView'>;
 	route: RouteProp<ChatsStackParamList, 'ForwardLivechatView'>;
@@ -57,13 +45,12 @@ interface IForwardLivechatViewProps {
 const COUNT_DEPARTMENT = 50;
 
 const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForwardLivechatViewProps) => {
-	const [departments, setDepartments] = useState<IParsedData[]>([]);
+	const [departments, setDepartments] = useState<IOptionsField[]>([]);
 	const [departmentId, setDepartment] = useState('');
 	const [departmentTotal, setDepartmentTotal] = useState(0);
-	const [departmentOffset, setDepartmentOffset] = useState(0);
-	const [users, setUsers] = useState<IParsedData[]>([]);
+	const [users, setUsers] = useState<IOptionsField[]>([]);
 	const [userId, setUser] = useState();
-	const [room, setRoom] = useState<IRoom>({});
+	const [room, setRoom] = useState<ISubscription>({} as ISubscription);
 
 	const rid = route.params?.rid;
 
@@ -71,14 +58,13 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 		try {
 			const result = await RocketChat.getDepartments({ count: COUNT_DEPARTMENT, text, offset });
 			if (result.success) {
-				const parsedDepartments = result.departments.map((department: ILivechatDepartment) => ({
+				const parsedDepartments: IOptionsField[] = result.departments.map((department: ILivechatDepartment) => ({
 					label: department.name,
 					value: department._id
 				}));
 				if (!text && !offset) {
 					setDepartments(parsedDepartments);
 					setDepartmentTotal(result?.total);
-					setDepartmentOffset(result?.offset);
 				}
 				return { data: parsedDepartments, total: result?.total, offset: result?.offset };
 			}
@@ -162,9 +148,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			onChangeValue: setDepartment,
 			onChangeText: getDepartments,
 			onEndReached: getDepartments,
-			offset: departmentOffset,
 			total: departmentTotal,
-			count: COUNT_DEPARTMENT,
 			goBack: false
 		});
 	};
