@@ -102,7 +102,7 @@ const LivechatEditView = ({
 	editOmnichannelContact,
 	editLivechatRoomCustomfields
 }: ILivechatEditViewProps) => {
-	const [customFields, setCustomFields] = useState({} as ICustomFields);
+	const [customFields, setCustomFields] = useState<ICustomFields>({});
 	const [availableUserTags, setAvailableUserTags] = useState<string[]>([]);
 	const [permissions, setPermissions] = useState([]);
 
