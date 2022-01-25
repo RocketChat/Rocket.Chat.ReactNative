@@ -18,13 +18,13 @@ interface ICertificate {
 	password: string;
 }
 
-const persistCertificate = async (name: string, password: string) => {
+const persistCertificate = (name: string, password: string) => {
 	const certificatePath = getPath(name);
 	const certificate: ICertificate = {
 		path: extractFileScheme(certificatePath),
 		password
 	};
-	await UserPreferences.setMapAsync(name, certificate);
+	UserPreferences.setMapAsync(name, certificate);
 	return certificate;
 };
 
@@ -64,11 +64,11 @@ const RCSSLPinning = Platform.select({
 			}),
 		setCertificate: async (name: string, server: string) => {
 			if (name) {
-				let certificate = (await UserPreferences.getMapAsync(name)) as ICertificate;
+				let certificate = UserPreferences.getMapAsync(name) as ICertificate;
 				if (!certificate.path.match(extractFileScheme(documentDirectory!))) {
 					certificate = await persistCertificate(name, certificate.password);
 				}
-				await UserPreferences.setMapAsync(extractHostname(server), certificate);
+				UserPreferences.setMapAsync(extractHostname(server), certificate);
 			}
 		}
 	},
