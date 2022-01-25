@@ -12,7 +12,7 @@ import { localAuthenticate } from '../utils/localAuthentication';
 import { ROOT_OUTSIDE, appReady, appStart } from '../actions/app';
 
 export const initLocalSettings = function* initLocalSettings() {
-	const sortPreferences = yield RocketChat.getSortPreferences();
+	const sortPreferences = RocketChat.getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 };
 

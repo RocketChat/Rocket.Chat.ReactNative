@@ -115,7 +115,7 @@ class Root extends React.Component<{}, IState> {
 		const theme = UserPreferences.getMapAsync(THEME_PREFERENCES_KEY) as IThemePreference;
 		this.setTheme(theme);
 
-		const currentServer = await UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
+		const currentServer = UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
 
 		if (currentServer) {
 			await localAuthenticate(currentServer);

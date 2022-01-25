@@ -1440,9 +1440,8 @@ const RocketChat = {
 		}
 		return JSON.parse(allowAnalyticsEvents);
 	},
-	async getSortPreferences() {
-		const prefs = await UserPreferences.getMapAsync(SORT_PREFS_KEY);
-		return prefs;
+	getSortPreferences() {
+		return UserPreferences.getMapAsync(SORT_PREFS_KEY);
 	},
 	async saveSortPreference(param) {
 		let prefs = await RocketChat.getSortPreferences();
