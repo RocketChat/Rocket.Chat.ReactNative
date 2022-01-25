@@ -1,7 +1,7 @@
 import EJSON from 'ejson';
 import SimpleCrypto from 'react-native-simple-crypto';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q } from '@nozbe/watermelondb';
+import { Q, Model } from '@nozbe/watermelondb';
 
 import RocketChat from '../rocketchat';
 import UserPreferences from '../userPreferences';
@@ -25,11 +25,20 @@ import { IMessage, ISubscription } from '../../definitions';
 class Encryption {
 	ready: boolean;
 	privateKey: string | null;
-	roomInstances: {};
 	readyPromise: Deferred;
 	userId: string | null;
+	roomInstances: {
+		[rid: string]: {
+			ready: boolean;
+			provideKeyToUser: Function;
+			handshake: Function;
+			decrypt: Function;
+			encrypt: Function;
+		};
+	};
 
 	constructor() {
+		this.userId = '';
 		this.ready = false;
 		this.privateKey = null;
 		this.roomInstances = {};
@@ -181,10 +190,10 @@ class Encryption {
 
 	changePassword = async (server: string, password: string) => {
 		// Cast key to the format server is expecting
-		const privateKey = await SimpleCrypto.RSA.exportKey(this.privateKey!);
+		const privateKey = await SimpleCrypto.RSA.exportKey(this.privateKey as string);
 
 		// Encode the private key
-		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, this.userId);
+		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, this.userId as string);
 		const publicKey = await UserPreferences.getStringAsync(`${server}-${E2E_PUBLIC_KEY}`);
 
 		// Send the new keys to the server
@@ -200,7 +209,7 @@ class Encryption {
 
 		// If doesn't have a instance of this room
 		if (!this.roomInstances[rid]) {
-			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId!);
+			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string);
 		}
 
 		const roomE2E = this.roomInstances[rid];
@@ -285,7 +294,7 @@ class Encryption {
 					sub?.lastMessage?.e2e === E2E_STATUS.PENDING
 			);
 			await Promise.all(
-				subsToDecrypt.map(async sub => {
+				subsToDecrypt.map(async (sub: any) => {
 					const { rid, lastMessage } = sub;
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
 					if (sub._hasPendingUpdate) {
@@ -347,12 +356,12 @@ class Encryption {
 		}
 
 		try {
-			const batch = [];
+			const batch: (Model | null | void | false | Promise<void>)[] = [];
 			// If the subscription doesn't exists yet
 			if (!subRecord) {
 				// Let's create the subscription with the data received
 				batch.push(
-					subCollection.prepareCreate(s => {
+					subCollection.prepareCreate((s: any) => {
 						s._raw = sanitizedRaw({ id: rid }, subCollection.schema);
 						Object.assign(s, subscription);
 					})
@@ -362,7 +371,7 @@ class Encryption {
 				if (!subRecord._hasPendingUpdate) {
 					// Let's update the subscription with the received E2EKey
 					batch.push(
-						subRecord.prepareUpdate(s => {
+						subRecord.prepareUpdate((s: any) => {
 							s.E2EKey = subscription.E2EKey;
 						})
 					);
@@ -382,7 +391,7 @@ class Encryption {
 		}
 
 		// Get a instance using the subscription
-		const roomE2E = await this.getRoomInstance(rid!);
+		const roomE2E = await this.getRoomInstance(rid as string);
 		const decryptedMessage = await roomE2E.decrypt(lastMessage);
 		return {
 			...subscription,
@@ -445,7 +454,7 @@ class Encryption {
 		}
 
 		const { rid } = message;
-		const roomE2E = await this.getRoomInstance(rid!);
+		const roomE2E = await this.getRoomInstance(rid as string);
 		return roomE2E.decrypt(message);
 	};
 

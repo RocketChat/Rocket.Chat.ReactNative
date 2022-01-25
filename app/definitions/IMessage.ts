@@ -35,12 +35,16 @@ export interface ITranslations {
 	value: string;
 }
 
+export type E2EType = 'pending' | 'done';
+
 export interface ILastMessage {
 	_id: string;
 	rid: string;
 	tshow: boolean;
+	t: MessageType;
 	tmid: string;
 	msg: string;
+	e2e: E2EType;
 	ts: Date;
 	u: IUserMessage;
 	_updatedAt: Date;

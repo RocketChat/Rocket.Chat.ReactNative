@@ -155,7 +155,7 @@ export default class EncryptionRoom {
 		const result = await RocketChat.e2eGetUsersOfRoomWithoutKey(this.roomId);
 		if (result.success) {
 			const { users } = result;
-			await Promise.all(users.map(user => this.encryptRoomKeyForUser(user)));
+			await Promise.all(users.map((user: IUser) => this.encryptRoomKeyForUser(user)));
 		}
 	};
 
@@ -220,7 +220,7 @@ export default class EncryptionRoom {
 
 	// Decrypt text
 	decryptText = async (msg: string | ArrayBuffer): Promise<any> => {
-		msg = b64ToBuffer(msg.slice(12));
+		msg = b64ToBuffer(msg.slice(12) as string);
 		const [vector, cipherText] = splitVectorData(msg);
 
 		const decrypted = await SimpleCrypto.AES.decrypt(cipherText, this.roomKey, vector);
@@ -243,7 +243,7 @@ export default class EncryptionRoom {
 			if (t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE) {
 				let { msg, tmsg } = message;
 				// Decrypt msg
-				msg = await this.decryptText(msg);
+				msg = await this.decryptText(msg as string);
 
 				// Decrypt tmsg
 				if (tmsg) {
