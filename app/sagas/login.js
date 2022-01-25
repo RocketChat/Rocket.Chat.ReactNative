@@ -201,7 +201,7 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 				if (servers.length > 0) {
 					for (let i = 0; i < servers.length; i += 1) {
 						const newServer = servers[i].id;
-						const token = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${newServer}`);
+						const token = UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${newServer}`);
 						if (token) {
 							yield put(selectServerRequest(newServer));
 							return;
