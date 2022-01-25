@@ -12,46 +12,43 @@ class UserPreferences {
 		this.mmkv = MMKV;
 	}
 
-	async getStringAsync(key: string) {
+	getStringAsync(key: string): string | null | undefined {
 		try {
-			const value = await this.mmkv.getStringAsync(key);
-			return value;
+			return this.mmkv.getString(key);
 		} catch {
 			return null;
 		}
 	}
 
-	setStringAsync(key: string, value: string) {
-		return this.mmkv.setStringAsync(key, value);
+	setStringAsync(key: string, value: string): boolean | undefined {
+		return this.mmkv.setString(key, value);
 	}
 
-	async getBoolAsync(key: string) {
+	getBoolAsync(key: string): boolean | null | undefined {
 		try {
-			const value = await this.mmkv.getBoolAsync(key);
-			return value;
+			return this.mmkv.getBool(key);
 		} catch {
 			return null;
 		}
 	}
 
-	setBoolAsync(key: string, value: boolean) {
-		return this.mmkv.setBoolAsync(key, value);
+	setBoolAsync(key: string, value: boolean): boolean | undefined {
+		return this.mmkv.setBool(key, value);
 	}
 
-	async getMapAsync(key: string) {
+	getMapAsync(key: string): object | null | undefined {
 		try {
-			const value = await this.mmkv.getMapAsync(key);
-			return value;
+			return this.mmkv.getMap(key);
 		} catch {
 			return null;
 		}
 	}
 
-	setMapAsync(key: string, value: object) {
-		return this.mmkv.setMapAsync(key, value);
+	setMapAsync(key: string, value: object): boolean | undefined {
+		return this.mmkv.setMap(key, value);
 	}
 
-	removeItem(key: string) {
+	removeItem(key: string): boolean | undefined {
 		return this.mmkv.removeItem(key);
 	}
 }

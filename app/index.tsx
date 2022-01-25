@@ -126,7 +126,9 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	init = async () => {
-		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then((theme: any) => this.setTheme(theme));
+		const theme = UserPreferences.getMapAsync(THEME_PREFERENCES_KEY) as IThemePreference;
+		this.setTheme(theme);
+
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification
