@@ -7,12 +7,12 @@ import { fromByteArray, toByteArray } from '../../utils/base64-js';
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
 // @ts-ignore
-export const b64ToBuffer = (base64: string): any[] | Uint8Array => toByteArray(base64).buffer;
+export const b64ToBuffer = (base64: string): ArrayBuffer => toByteArray(base64).buffer;
 export const utf8ToBuffer = SimpleCrypto.utils.convertUtf8ToArrayBuffer;
-export const bufferToB64 = (arrayBuffer: Iterable<number>): string => fromByteArray(new Uint8Array(arrayBuffer));
+export const bufferToB64 = (arrayBuffer: ArrayBuffer): string => fromByteArray(new Uint8Array(arrayBuffer));
 // ArrayBuffer -> Base64 URI Safe
 // https://github.com/herrjemand/Base64URL-ArrayBuffer/blob/master/lib/base64url-arraybuffer.js
-export const bufferToB64URI = (buffer: Iterable<number>): string => {
+export const bufferToB64URI = (buffer: ArrayBuffer): string => {
 	const uintArray = new Uint8Array(buffer);
 	const len = uintArray.length;
 	let base64 = '';

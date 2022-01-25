@@ -21,6 +21,7 @@ import {
 	utf8ToBuffer
 } from './utils';
 import { Encryption } from './index';
+import { IUser } from '../../definitions/IUser';
 
 export default class EncryptionRoom {
 	ready: boolean;
@@ -30,7 +31,7 @@ export default class EncryptionRoom {
 	readyPromise: Deferred;
 	sessionKeyExportedString!: string | ByteBuffer;
 	keyID!: string;
-	roomKey!: any[] | Uint8Array;
+	roomKey!: ArrayBuffer;
 
 	constructor(roomId: string, userId: string) {
 		this.ready = false;
@@ -68,10 +69,10 @@ export default class EncryptionRoom {
 			const { E2EKey, e2eKeyId } = subscription;
 
 			// If this room has a E2EKey, we import it
-			if (E2EKey) {
+			if (E2EKey && Encryption.privateKey) {
 				// We're establishing a new room encryption client
 				this.establishing = true;
-				await this.importRoomKey(E2EKey, Encryption.privateKey!);
+				await this.importRoomKey(E2EKey, Encryption.privateKey);
 				this.readyPromise.resolve();
 				return;
 			}
@@ -159,7 +160,7 @@ export default class EncryptionRoom {
 	};
 
 	// Encrypt the room key to each user in
-	encryptRoomKeyForUser = async (user): Promise<void> => {
+	encryptRoomKeyForUser = async (user: IUser): Promise<void> => {
 		if (user?.e2e?.public_key) {
 			const { public_key: publicKey } = user.e2e;
 			const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));

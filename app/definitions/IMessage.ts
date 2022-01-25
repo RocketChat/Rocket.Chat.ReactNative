@@ -3,7 +3,8 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
-import { SubscriptionType } from './ISubscription';
+
+export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e';
 
 export interface IUserMessage {
 	_id: string;
@@ -57,7 +58,7 @@ export interface IMessage {
 	_id: string;
 	rid: string;
 	msg?: string;
-	t?: SubscriptionType;
+	t?: MessageType;
 	ts: Date;
 	u: IUserMessage;
 	alias: string;
