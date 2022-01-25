@@ -106,7 +106,7 @@ const SearchBox = ({
 				theme={theme!}
 				{...props}
 			/>
-			{hasCancelIcon ? CancelIconButton(onCancelPress!, theme!) : null}
+			{hasCancelIcon && onCancelPress ? CancelIconButton(onCancelPress!, theme!) : null}
 		</View>
 		{hasCancel ? CancelButton(onCancelPress!, theme!) : null}
 	</View>

@@ -150,7 +150,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		this.search(text);
 	}
 
-	handleCancel = () => {
+	cancelSearch = () => {
 		this.setState({ searchText: '' });
 		this.search('');
 	};
@@ -253,7 +253,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 					onChangeText={(text: string) => this.onSearchChangeText(text)}
 					testID='new-message-view-search'
 					hasCancelIcon={this.state.searchText.length > 0}
-					onCancelPress={this.handleCancel}
+					onCancelPress={this.cancelSearch}
 				/>
 				<View style={styles.buttonContainer}>
 					{permissions[0] || permissions[1]
