@@ -23,13 +23,13 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeE
 	const ref = useRef(null);
 	let attempts: any = 0;
 	let lockedUntil: any = false;
-	const [passcode, setPasscode] = useState(null);
+	const [passcode, setPasscode] = useState<string | null | undefined>(null);
 	const [status, setStatus] = useState(null);
 	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
-	const fetchPasscode = async () => {
-		const p: any = await UserPreferences.getStringAsync(PASSCODE_KEY);
+	const fetchPasscode = () => {
+		const p = UserPreferences.getStringAsync(PASSCODE_KEY);
 		setPasscode(p);
 	};
 

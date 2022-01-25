@@ -57,8 +57,9 @@ const openChangePasscodeModal = ({ force }: { force: boolean }) =>
 	});
 
 export const changePasscode = async ({ force = false }: { force: boolean }): Promise<void> => {
+	console.log('enter here **** changePasscode');
 	const passcode = await openChangePasscodeModal({ force });
-	await UserPreferences.setStringAsync(PASSCODE_KEY, sha256(passcode));
+	UserPreferences.setStringAsync(PASSCODE_KEY, sha256(passcode));
 };
 
 export const biometryAuth = (force?: boolean): Promise<LocalAuthentication.LocalAuthenticationResult> =>
@@ -94,7 +95,7 @@ export const checkHasPasscode = async ({
 	force?: boolean;
 	serverRecord: TServerModel;
 }): Promise<{ newPasscode?: boolean } | void> => {
-	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
+	const storedPasscode = UserPreferences.getStringAsync(PASSCODE_KEY);
 	if (!storedPasscode) {
 		await changePasscode({ force });
 		await checkBiometry(serverRecord);
