@@ -1,8 +1,11 @@
 import { USERS_TYPING } from '../actions/actionsTypes';
+import { TApplicationActions } from '../definitions';
 
-const initialState = [];
+export type IUsersTyping = string[];
 
-export default function usersTyping(state = initialState, action) {
+export const initialState: IUsersTyping = [];
+
+export default function usersTyping(state = initialState, action: TApplicationActions): IUsersTyping {
 	switch (action.type) {
 		case USERS_TYPING.ADD:
 			if (state.findIndex(item => item === action.username) === -1) {

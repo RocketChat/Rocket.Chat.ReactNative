@@ -1,7 +1,8 @@
 import { SORT_PREFERENCES } from '../actions/actionsTypes';
 import { DisplayMode, SortBy } from '../constants/constantDisplayMode';
+import { IPreferences, TApplicationActions } from '../definitions';
 
-const initialState = {
+export const initialState: IPreferences = {
 	sortBy: SortBy.Activity,
 	groupByType: false,
 	showFavorites: false,
@@ -10,7 +11,7 @@ const initialState = {
 	displayMode: DisplayMode.Expanded
 };
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: TApplicationActions): IPreferences => {
 	switch (action.type) {
 		case SORT_PREFERENCES.SET_ALL:
 			return {
