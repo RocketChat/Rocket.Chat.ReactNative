@@ -13,12 +13,14 @@ import { IEncryption } from '../../reducers/encryption';
 import { IInviteLinks } from '../../reducers/inviteLinks';
 import { IRoles } from '../../reducers/roles';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
+import { IConnect } from '../../reducers/connect';
 import { ISettings } from '../../reducers/settings';
+
 
 export interface IApplicationState {
 	settings: ISettings;
 	login: any;
-	meteor: any;
+	meteor: IConnect;
 	server: any;
 	selectedUsers: ISelectedUsers;
 	createChannel: any;

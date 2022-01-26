@@ -1,11 +1,18 @@
+import { Action } from 'redux';
+
 import { METEOR } from '../actions/actionsTypes';
 
-const initialState = {
+export interface IConnect {
+	connecting: boolean;
+	connected: boolean;
+}
+
+export const initialState: IConnect = {
 	connecting: false,
 	connected: false
 };
 
-export default function connect(state = initialState, action) {
+export default function connect(state = initialState, action: Action): IConnect {
 	switch (action.type) {
 		case METEOR.REQUEST:
 			return {
