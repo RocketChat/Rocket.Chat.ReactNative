@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
@@ -30,15 +30,15 @@ const styles = StyleSheet.create({
 });
 
 interface IUnreadBadge {
-	theme: string;
-	unread: number;
-	userMentions: number;
-	groupMentions: number;
-	style: object;
-	tunread: [];
-	tunreadUser: [];
-	tunreadGroup: [];
-	small: boolean;
+	theme?: string;
+	unread?: number;
+	userMentions?: number;
+	groupMentions?: number;
+	style?: ViewStyle;
+	tunread?: [];
+	tunreadUser?: [];
+	tunreadGroup?: [];
+	small?: boolean;
 }
 
 const UnreadBadge = React.memo(

@@ -116,11 +116,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item
-						title={I18n.t('Send')}
-						onPress={this.send}
-						buttonStyle={[styles.send, { color: themes[theme].previewTintColor }]}
-					/>
+					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} />
 				</HeaderButton.Container>
 			);
 		}
@@ -364,7 +360,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{this.renderContent()}
-				<Loading visible={loading} />
+				<Loading visible={loading} theme={theme} />
 			</SafeAreaView>
 		);
 	}

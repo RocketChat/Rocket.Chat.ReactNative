@@ -8,12 +8,12 @@ import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 
 interface IHeaderButtonItem {
-	title: string;
-	iconName: string;
-	onPress(): void;
-	testID: string;
-	theme: string;
-	badge(): void;
+	title?: string;
+	iconName?: string;
+	onPress: <T>(arg: T) => void;
+	testID?: string;
+	theme?: string;
+	badge?(): void;
 }
 
 export const BUTTON_HIT_SLOP = {
@@ -44,9 +44,9 @@ const Item = ({ title, iconName, onPress, testID, theme, badge }: IHeaderButtonI
 	<Touchable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
 		<>
 			{iconName ? (
-				<CustomIcon name={iconName} size={24} color={themes[theme].headerTintColor} />
+				<CustomIcon name={iconName} size={24} color={themes[theme!].headerTintColor} />
 			) : (
-				<Text style={[styles.title, { color: themes[theme].headerTintColor }]}>{title}</Text>
+				<Text style={[styles.title, { color: themes[theme!].headerTintColor }]}>{title}</Text>
 			)}
 			{badge ? badge() : null}
 		</>
