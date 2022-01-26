@@ -24,7 +24,7 @@ const persistCertificate = (name: string, password: string) => {
 		path: extractFileScheme(certificatePath),
 		password
 	};
-	UserPreferences.setMapAsync(name, certificate);
+	UserPreferences.setMap(name, certificate);
 	return certificate;
 };
 
@@ -64,11 +64,11 @@ const RCSSLPinning = Platform.select({
 			}),
 		setCertificate: async (name: string, server: string) => {
 			if (name) {
-				let certificate = UserPreferences.getMapAsync(name) as ICertificate;
+				let certificate = UserPreferences.getMap(name) as ICertificate;
 				if (!certificate.path.match(extractFileScheme(documentDirectory!))) {
 					certificate = await persistCertificate(name, certificate.password);
 				}
-				UserPreferences.setMapAsync(extractHostname(server), certificate);
+				UserPreferences.setMap(extractHostname(server), certificate);
 			}
 		}
 	},

@@ -12,7 +12,7 @@ class UserPreferences {
 		this.mmkv = MMKV;
 	}
 
-	getStringAsync(key: string): string | null | undefined {
+	getString(key: string): string | null | undefined {
 		try {
 			return this.mmkv.getString(key);
 		} catch {
@@ -20,11 +20,11 @@ class UserPreferences {
 		}
 	}
 
-	setStringAsync(key: string, value: string): boolean | undefined {
+	setString(key: string, value: string): boolean | undefined {
 		return this.mmkv.setString(key, value);
 	}
 
-	getBoolAsync(key: string): boolean | null | undefined {
+	getBool(key: string): boolean | null | undefined {
 		try {
 			return this.mmkv.getBool(key);
 		} catch {
@@ -32,11 +32,11 @@ class UserPreferences {
 		}
 	}
 
-	setBoolAsync(key: string, value: boolean): boolean | undefined {
+	setBool(key: string, value: boolean): boolean | undefined {
 		return this.mmkv.setBool(key, value);
 	}
 
-	getMapAsync(key: string): object | null | undefined {
+	getMap(key: string): object | null | undefined {
 		try {
 			return this.mmkv.getMap(key);
 		} catch {
@@ -44,7 +44,7 @@ class UserPreferences {
 		}
 	}
 
-	setMapAsync(key: string, value: object): boolean | undefined {
+	setMap(key: string, value: object): boolean | undefined {
 		return this.mmkv.setMap(key, value);
 	}
 

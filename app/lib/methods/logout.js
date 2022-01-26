@@ -22,7 +22,7 @@ function removeServerKeys({ server, userId }) {
 async function removeSharedCredentials({ server }) {
 	// clear certificate for server - SSL Pinning
 	try {
-		const certificate = UserPreferences.getMapAsync(extractHostname(server));
+		const certificate = UserPreferences.getMap(extractHostname(server));
 		if (certificate && certificate.path) {
 			console.log('lib/methods/removeSharedCredentials ****** certificate **** enter on if', certificate);
 
@@ -38,7 +38,7 @@ async function removeServerData({ server }) {
 	try {
 		const batch = [];
 		const serversDB = database.servers;
-		const userId = UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
 
 		const usersCollection = serversDB.get('users');
 		if (userId) {
@@ -72,9 +72,9 @@ async function removeServerDatabase({ server }) {
 
 export async function removeServer({ server }) {
 	try {
-		const userId = UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
 		if (userId) {
-			const resume = UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${userId}`);
+			const resume = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${userId}`);
 
 			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 			await sdk.login({ resume });

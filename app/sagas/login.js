@@ -162,8 +162,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		UserPreferences.setStringAsync(`${RocketChat.TOKEN_KEY}-${server}`, user.id);
-		UserPreferences.setStringAsync(`${RocketChat.TOKEN_KEY}-${user.id}`, user.token);
+		UserPreferences.setString(`${RocketChat.TOKEN_KEY}-${server}`, user.id);
+		UserPreferences.setString(`${RocketChat.TOKEN_KEY}-${user.id}`, user.token);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 
@@ -201,7 +201,7 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 				if (servers.length > 0) {
 					for (let i = 0; i < servers.length; i += 1) {
 						const newServer = servers[i].id;
-						const token = UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${newServer}`);
+						const token = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${newServer}`);
 						if (token) {
 							yield put(selectServerRequest(newServer));
 							return;

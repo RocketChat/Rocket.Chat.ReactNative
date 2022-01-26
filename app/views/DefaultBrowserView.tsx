@@ -75,7 +75,7 @@ class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefa
 
 	componentDidMount() {
 		this.mounted = true;
-		const browser = UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
+		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
 		this.setState({ browser });
 	}
 
@@ -108,7 +108,7 @@ class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefa
 		logEvent(events.DB_CHANGE_DEFAULT_BROWSER, { browser: newBrowser });
 		try {
 			const browser = newBrowser || 'systemDefault:';
-			UserPreferences.setStringAsync(DEFAULT_BROWSER_KEY, browser);
+			UserPreferences.setString(DEFAULT_BROWSER_KEY, browser);
 			this.setState({ browser });
 		} catch {
 			logEvent(events.DB_CHANGE_DEFAULT_BROWSER_F);

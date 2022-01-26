@@ -67,13 +67,13 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getStringAsync(`${RocketChat.CERTIFICATE_KEY}-${server}`);
+		const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
 		SSLPinning.setCertificate(certificate, server);
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		const serversDB = database.servers;
-		UserPreferences.setStringAsync(RocketChat.CURRENT_SERVER, server);
-		const userId = UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
+		UserPreferences.setString(RocketChat.CURRENT_SERVER, server);
+		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
 		const userCollections = serversDB.get('users');
 		let user = null;
 		if (userId) {
@@ -93,14 +93,14 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 				};
 			} catch {
 				// search credentials on shared credentials (Experimental/Official)
-				const token = UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${userId}`);
+				const token = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${userId}`);
 				if (token) {
 					user = { token };
 				}
 			}
 		}
 
-		const basicAuth = UserPreferences.getStringAsync(`${BASIC_AUTH_KEY}-${server}`);
+		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
 		setBasicAuth(basicAuth);
 
 		// Check for running requests and abort them before connecting to the server
@@ -144,7 +144,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getStringAsync(`${RocketChat.CERTIFICATE_KEY}-${server}`);
+		const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
 		yield SSLPinning.setCertificate(certificate, server);
 
 		const serverInfo = yield getServerInfo({ server });

@@ -102,8 +102,8 @@ class Encryption {
 	// Persist keys on UserPreferences
 	persistKeys = async (server, publicKey, privateKey) => {
 		this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
-		UserPreferences.setStringAsync(`${server}-${E2E_PUBLIC_KEY}`, EJSON.stringify(publicKey));
-		UserPreferences.setStringAsync(`${server}-${E2E_PRIVATE_KEY}`, privateKey);
+		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, EJSON.stringify(publicKey));
+		UserPreferences.setString(`${server}-${E2E_PRIVATE_KEY}`, privateKey);
 	};
 
 	// Could not obtain public-private keypair from server.
@@ -168,7 +168,7 @@ class Encryption {
 	// Create a random password to local created keys
 	createRandomPassword = server => {
 		const password = randomPassword();
-		UserPreferences.setStringAsync(`${server}-${E2E_RANDOM_PASSWORD_KEY}`, password);
+		UserPreferences.setString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`, password);
 		return password;
 	};
 
@@ -178,7 +178,7 @@ class Encryption {
 
 		// Encode the private key
 		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, this.userId);
-		const publicKey = UserPreferences.getStringAsync(`${server}-${E2E_PUBLIC_KEY}`);
+		const publicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
 		// Send the new keys to the server
 		await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);

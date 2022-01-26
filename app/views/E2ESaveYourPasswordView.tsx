@@ -85,7 +85,7 @@ class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewPr
 		const { server } = this.props;
 		try {
 			// Set stored password on local state
-			const password = UserPreferences.getStringAsync(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
+			const password = UserPreferences.getString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
 			if (this.mounted) {
 				this.setState({ password: password! });
 			} else {

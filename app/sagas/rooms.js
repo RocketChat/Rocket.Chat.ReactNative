@@ -50,10 +50,10 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 		// Force fetch all subscriptions to update columns related to Teams feature
 		// TODO: remove it a couple of releases
 		const teamsMigrationKey = `${server}_TEAMS_MIGRATION`;
-		const teamsMigration = UserPreferences.getBoolAsync(teamsMigrationKey);
+		const teamsMigration = UserPreferences.getBool(teamsMigrationKey);
 		if (!teamsMigration) {
 			roomsUpdatedAt = null;
-			UserPreferences.setBoolAsync(teamsMigrationKey, true);
+			UserPreferences.setBool(teamsMigrationKey, true);
 		}
 
 		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);

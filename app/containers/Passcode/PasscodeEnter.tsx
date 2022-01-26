@@ -29,7 +29,7 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeE
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	const fetchPasscode = () => {
-		const p = UserPreferences.getStringAsync(PASSCODE_KEY);
+		const p = UserPreferences.getString(PASSCODE_KEY);
 		setPasscode(p);
 	};
 

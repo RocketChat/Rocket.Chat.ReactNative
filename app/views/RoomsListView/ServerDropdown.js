@@ -125,7 +125,7 @@ class ServerDropdown extends Component {
 		this.close();
 		if (currentServer !== server) {
 			logEvent(events.RL_CHANGE_SERVER);
-			const userId = UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
+			const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
 			if (isMasterDetail) {
 				goRoom({ item: {}, isMasterDetail });
 			}

@@ -143,7 +143,7 @@ export default class Root extends React.Component<{}, IState> {
 			return;
 		}
 
-		const theme = UserPreferences.getMapAsync(THEME_PREFERENCES_KEY) as IThemePreference;
+		const theme = UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference;
 		this.setTheme(theme);
 
 		// Open app from app icon

@@ -194,7 +194,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 			// Save info - SSL Pinning
 			if (certificate) {
-				UserPreferences.setStringAsync(`${RocketChat.CERTIFICATE_KEY}-${server}`, certificate);
+				UserPreferences.setString(`${RocketChat.CERTIFICATE_KEY}-${server}`, certificate);
 			}
 
 			// Save info - HTTP Basic Authentication
@@ -220,7 +220,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
 				const credentials = Base64.encode(parsedUrl.auth);
-				UserPreferences.setStringAsync(`${BASIC_AUTH_KEY}-${server}`, credentials);
+				UserPreferences.setString(`${BASIC_AUTH_KEY}-${server}`, credentials);
 				setBasicAuth(credentials);
 			}
 		} catch {
