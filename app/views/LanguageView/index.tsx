@@ -132,7 +132,7 @@ class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewStat
 				title={label}
 				onPress={() => this.submit(value)}
 				testID={`language-view-${value}`}
-				right={isSelected ? this.renderIcon : null}
+				right={() => (isSelected ? this.renderIcon() : null)}
 				translateTitle={false}
 			/>
 		);
