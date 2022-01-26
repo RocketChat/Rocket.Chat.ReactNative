@@ -97,7 +97,7 @@ export type ChatsStackParamList = {
 	PickerView: {
 		title: string;
 		data: IOptionsField[];
-		value?: any; // TODO: Change
+		value?: string;
 		onChangeText?: (text?: string) => Promise<any>;
 		onEndReached?: (text: string, offset?: number) => Promise<any>;
 		total?: number;

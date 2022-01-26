@@ -70,7 +70,7 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 	constructor(props: IPickerViewProps) {
 		super(props);
 		const data = props.route.params?.data ?? [];
-		const value = props.route.params?.value;
+		const value = props.route.params?.value ?? '';
 		const total = props.route.params?.total ?? 0;
 		this.state = { data, value, total, searchText: '' };
 		this.onSearch = props.route.params?.onChangeText;
