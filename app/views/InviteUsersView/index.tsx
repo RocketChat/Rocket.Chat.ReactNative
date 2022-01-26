@@ -121,7 +121,7 @@ class InviteUsersView extends React.Component<IInviteUsersViewProps, any> {
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	timeDateFormat: state.settings.Message_TimeAndDateFormat,
+	timeDateFormat: state.settings.Message_TimeAndDateFormat as string,
 	invite: state.inviteLinks.invite
 });
 
