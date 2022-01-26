@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { withTheme } from '../theme';
 import sharedStyles from '../views/Styles';
@@ -20,9 +19,14 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface ISearchHeader {
+	theme?: string;
+	onSearchChangeText?: (text: string) => void;
+}
+
 // TODO: it might be useful to refactor this component for reusage
-const SearchHeader = ({ theme, onSearchChangeText }) => {
-	const titleColorStyle = { color: themes[theme].headerTitleColor };
+const SearchHeader = ({ theme, onSearchChangeText }: ISearchHeader) => {
+	const titleColorStyle = { color: themes[theme!].headerTitleColor };
 	const isLight = theme === 'light';
 	const { isLandscape } = useOrientation();
 	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
@@ -35,15 +39,11 @@ const SearchHeader = ({ theme, onSearchChangeText }) => {
 				style={[styles.title, isLight && titleColorStyle, { fontSize: titleFontSize }]}
 				placeholder='Search'
 				onChangeText={onSearchChangeText}
-				theme={theme}
+				theme={theme!}
 				testID='thread-messages-view-search-header'
 			/>
 		</View>
 	);
 };
 
-SearchHeader.propTypes = {
-	theme: PropTypes.string,
-	onSearchChangeText: PropTypes.func
-};
 export default withTheme(SearchHeader);
