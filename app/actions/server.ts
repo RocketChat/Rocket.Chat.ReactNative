@@ -54,7 +54,7 @@ export function selectServerFailure(): Action {
 	};
 }
 
-export function serverRequest(server: string, username = null, fromServerHistory = false): IServer {
+export function serverRequest(server: string, username: string | null = null, fromServerHistory = false): IServer {
 	return {
 		type: SERVER.REQUEST,
 		server,
