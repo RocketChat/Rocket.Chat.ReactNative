@@ -9,4 +9,5 @@ export interface INotification {
 	from: string;
 	image: string;
 	soundname: string;
+	getData: () => INotification;
 }
