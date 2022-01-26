@@ -34,7 +34,7 @@ export interface IApplicationState {
 	activeUsers: IActiveUsers;
 	usersTyping: any;
 	inviteLinks: IInviteLinks;
-	createDiscussion: any;
+	createDiscussion: ICreateDiscussion;
 	inquiry: any;
 	enterpriseModules: any;
 	encryption: IEncryption;
@@ -50,5 +50,5 @@ export type TApplicationActions = TActionActiveUsers &
 	IActionSettings &
 	TActionEncryption &
 	TActionSortPreferences &
-  TActionUserTyping & 
-  TActionCreateDiscussion;
+	TActionUserTyping &
+	TActionCreateDiscussion;
