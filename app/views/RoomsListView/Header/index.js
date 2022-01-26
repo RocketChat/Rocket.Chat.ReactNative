@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { toggleServerDropdown, closeServerDropdown, setSearch as setSearchAction } from '../../../actions/rooms';
+import { toggleServerDropdown, closeServerDropdown, setSearch } from '../../../actions/rooms';
 import { withTheme } from '../../../theme';
 import EventEmitter from '../../../utils/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown } from '../../../commands';
@@ -19,10 +19,7 @@ class RoomsListHeaderView extends PureComponent {
 		connected: PropTypes.bool,
 		isFetching: PropTypes.bool,
 		theme: PropTypes.string,
-		server: PropTypes.string,
-		open: PropTypes.func,
-		close: PropTypes.func,
-		setSearch: PropTypes.func
+		server: PropTypes.string
 	};
 
 	componentDidMount() {
@@ -45,17 +42,17 @@ class RoomsListHeaderView extends PureComponent {
 	};
 
 	onSearchChangeText = text => {
-		const { setSearch } = this.props;
-		setSearch(text.trim());
+		const { dispatch } = this.props;
+		dispatch(setSearch(text.trim()));
 	};
 
 	onPress = () => {
 		logEvent(events.RL_TOGGLE_SERVER_DROPDOWN);
-		const { showServerDropdown, close, open } = this.props;
+		const { showServerDropdown, dispatch } = this.props;
 		if (showServerDropdown) {
-			close();
+			dispatch(closeServerDropdown());
 		} else {
-			open();
+			dispatch(toggleServerDropdown());
 		}
 	};
 
@@ -89,10 +86,4 @@ const mapStateToProps = state => ({
 	server: state.server.server
 });
 
-const mapDispatchtoProps = dispatch => ({
-	close: () => dispatch(closeServerDropdown()),
-	open: () => dispatch(toggleServerDropdown()),
-	setSearch: searchText => dispatch(setSearchAction(searchText))
-});
-
-export default connect(mapStateToProps, mapDispatchtoProps)(withTheme(RoomsListHeaderView));
+export default connect(mapStateToProps)(withTheme(RoomsListHeaderView));
