@@ -16,7 +16,7 @@ class PushNotification {
 		});
 
 		NotificationsAndroid.setNotificationOpenedListener((notification: Notification) => {
-			this.onNotification(notification?.getData());
+			this.onNotification(notification);
 		});
 	}
 
