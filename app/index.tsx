@@ -126,9 +126,6 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	init = async () => {
-		const theme = UserPreferences.getMapAsync(THEME_PREFERENCES_KEY) as IThemePreference;
-		this.setTheme(theme);
-
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification
@@ -145,6 +142,9 @@ export default class Root extends React.Component<{}, IState> {
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 			return;
 		}
+
+		const theme = UserPreferences.getMapAsync(THEME_PREFERENCES_KEY) as IThemePreference;
+		this.setTheme(theme);
 
 		// Open app from app icon
 		store.dispatch(appInit());
