@@ -22,7 +22,7 @@ class PushNotification {
 			// TODO REDUX MIGRATION TO TS
 			const { background } = reduxStore.getState().app;
 			if (background) {
-				this.onNotification(notification?.getData());
+				this.onNotification(notification);
 			}
 			completion();
 		});

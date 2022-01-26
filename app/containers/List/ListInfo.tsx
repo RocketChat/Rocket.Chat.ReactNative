@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
 
 interface IListHeader {
 	info: string;
-	theme: string;
-	translateInfo: boolean;
+	theme?: string;
+	translateInfo?: boolean;
 }
 
 const ListInfo = React.memo(({ info, theme, translateInfo = true }: IListHeader) => (
 	<View style={styles.container}>
-		<Text style={[styles.text, { color: themes[theme].infoText }]}>{translateInfo ? I18n.t(info) : info}</Text>
+		<Text style={[styles.text, { color: themes[theme!].infoText }]}>{translateInfo ? I18n.t(info) : info}</Text>
 	</View>
 ));
 
