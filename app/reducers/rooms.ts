@@ -1,6 +1,18 @@
-import * as types from '../actions/actionsTypes';
+import { IRoomsAction } from '../actions/rooms';
+import { ROOMS } from '../actions/actionsTypes';
 
-const initialState = {
+export interface IRooms {
+	isFetching: boolean;
+	refreshing: boolean;
+	failure: boolean;
+	errorMessage: Record<string, any> | string;
+	searchText: string;
+	showServerDropdown: boolean;
+	closeServerDropdown: boolean;
+	showSearchHeader: boolean;
+}
+
+export const initialState: IRooms = {
 	isFetching: false,
 	refreshing: false,
 	failure: false,
@@ -11,22 +23,22 @@ const initialState = {
 	showSearchHeader: false
 };
 
-export default function login(state = initialState, action) {
+export default function rooms(state = initialState, action: IRoomsAction): IRooms {
 	switch (action.type) {
-		case types.ROOMS.REQUEST:
+		case ROOMS.REQUEST:
 			return {
 				...state,
 				isFetching: true,
 				failure: false,
 				errorMessage: {}
 			};
-		case types.ROOMS.SUCCESS:
+		case ROOMS.SUCCESS:
 			return {
 				...state,
 				isFetching: false,
 				refreshing: false
 			};
-		case types.ROOMS.FAILURE:
+		case ROOMS.FAILURE:
 			return {
 				...state,
 				isFetching: false,
@@ -34,33 +46,33 @@ export default function login(state = initialState, action) {
 				failure: true,
 				errorMessage: action.err
 			};
-		case types.ROOMS.REFRESH:
+		case ROOMS.REFRESH:
 			return {
 				...state,
 				isFetching: true,
 				refreshing: true
 			};
-		case types.ROOMS.SET_SEARCH:
+		case ROOMS.SET_SEARCH:
 			return {
 				...state,
 				searchText: action.searchText
 			};
-		case types.ROOMS.CLOSE_SERVER_DROPDOWN:
+		case ROOMS.CLOSE_SERVER_DROPDOWN:
 			return {
 				...state,
 				closeServerDropdown: !state.closeServerDropdown
 			};
-		case types.ROOMS.TOGGLE_SERVER_DROPDOWN:
+		case ROOMS.TOGGLE_SERVER_DROPDOWN:
 			return {
 				...state,
 				showServerDropdown: !state.showServerDropdown
 			};
-		case types.ROOMS.OPEN_SEARCH_HEADER:
+		case ROOMS.OPEN_SEARCH_HEADER:
 			return {
 				...state,
 				showSearchHeader: true
 			};
-		case types.ROOMS.CLOSE_SEARCH_HEADER:
+		case ROOMS.CLOSE_SEARCH_HEADER:
 			return {
 				...state,
 				showSearchHeader: false
