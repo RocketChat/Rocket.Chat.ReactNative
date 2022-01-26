@@ -8,7 +8,7 @@ import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
-import { isIOS } from '../utils/deviceInfo';
+import { isIOS, isAndroid } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({
 	container: {
@@ -106,7 +106,7 @@ const SearchBox = ({
 				theme={theme!}
 				{...props}
 			/>
-			{hasCancelIcon && onCancelPress ? CancelIconButton(onCancelPress!, theme!) : null}
+			{isAndroid && hasCancelIcon && onCancelPress ? CancelIconButton(onCancelPress!, theme!) : null}
 		</View>
 		{hasCancel ? CancelButton(onCancelPress!, theme!) : null}
 	</View>
