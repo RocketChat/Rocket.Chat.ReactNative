@@ -1,23 +1,23 @@
+import { StackNavigationOptions } from '@react-navigation/stack';
 import React from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 
-import I18n from '../i18n';
-import { withTheme } from '../theme';
-import Button from '../containers/Button';
+import { encryptionDecodeKey } from '../actions/encryption';
 import { themes } from '../constants/colors';
-import TextInput from '../containers/TextInput';
-import SafeAreaView from '../containers/SafeAreaView';
+import Button from '../containers/Button';
 import * as HeaderButton from '../containers/HeaderButton';
-import { encryptionDecodeKey as encryptionDecodeKeyAction } from '../actions/encryption';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
-import KeyboardView from '../presentation/KeyboardView';
+import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import { events, logEvent } from '../utils/log';
-import sharedStyles from './Styles';
+import TextInput from '../containers/TextInput';
+import { IBaseScreen } from '../definitions';
+import I18n from '../i18n';
+import KeyboardView from '../presentation/KeyboardView';
 import { E2EEnterYourPasswordStackParamList } from '../stacks/types';
+import { withTheme } from '../theme';
+import { events, logEvent } from '../utils/log';
+import scrollPersistTaps from '../utils/scrollPersistTaps';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,21 +34,17 @@ interface IE2EEnterYourPasswordViewState {
 	password: string;
 }
 
-interface IE2EEnterYourPasswordViewProps {
-	encryptionDecodeKey: (password: string) => void;
-	theme: string;
-	navigation: StackNavigationProp<E2EEnterYourPasswordStackParamList, 'E2EEnterYourPasswordView'>;
-}
+type TE2EEnterYourPasswordViewProps = IBaseScreen<E2EEnterYourPasswordStackParamList, 'E2EEnterYourPasswordView'>;
 
-class E2EEnterYourPasswordView extends React.Component<IE2EEnterYourPasswordViewProps, IE2EEnterYourPasswordViewState> {
+class E2EEnterYourPasswordView extends React.Component<TE2EEnterYourPasswordViewProps, IE2EEnterYourPasswordViewState> {
 	private passwordInput?: TextInput;
 
-	static navigationOptions = ({ navigation }: Pick<IE2EEnterYourPasswordViewProps, 'navigation'>): StackNavigationOptions => ({
+	static navigationOptions = ({ navigation }: Pick<TE2EEnterYourPasswordViewProps, 'navigation'>): StackNavigationOptions => ({
 		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='e2e-enter-your-password-view-close' />,
 		title: I18n.t('Enter_Your_E2E_Password')
 	});
 
-	constructor(props: IE2EEnterYourPasswordViewProps) {
+	constructor(props: TE2EEnterYourPasswordViewProps) {
 		super(props);
 		this.state = {
 			password: ''
@@ -58,8 +54,8 @@ class E2EEnterYourPasswordView extends React.Component<IE2EEnterYourPasswordView
 	submit = () => {
 		logEvent(events.E2E_ENTER_PW_SUBMIT);
 		const { password } = this.state;
-		const { encryptionDecodeKey } = this.props;
-		encryptionDecodeKey(password);
+		const { dispatch } = this.props;
+		dispatch(encryptionDecodeKey(password));
 	};
 
 	render() {
@@ -109,7 +105,4 @@ class E2EEnterYourPasswordView extends React.Component<IE2EEnterYourPasswordView
 	}
 }
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	encryptionDecodeKey: (password: string) => dispatch(encryptionDecodeKeyAction(password))
-});
-export default connect(null, mapDispatchToProps)(withTheme(E2EEnterYourPasswordView));
+export default connect(null)(withTheme(E2EEnterYourPasswordView));
