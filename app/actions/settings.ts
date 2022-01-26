@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { ISettings } from '../reducers/settings';
+import { ISettings, TSettings } from '../reducers/settings';
 import { SETTINGS } from './actionsTypes';
 
 interface IAddSettings extends Action {
@@ -8,7 +8,7 @@ interface IAddSettings extends Action {
 }
 
 interface IUpdateSettings extends Action {
-	payload: { id: string; value: string };
+	payload: { id: string; value: TSettings };
 }
 
 export type IActionSettings = IAddSettings & IUpdateSettings;
@@ -20,7 +20,7 @@ export function addSettings(settings: ISettings): IAddSettings {
 	};
 }
 
-export function updateSettings(id: string, value: string): IUpdateSettings {
+export function updateSettings(id: string, value: TSettings): IUpdateSettings {
 	return {
 		type: SETTINGS.UPDATE,
 		payload: { id, value }
