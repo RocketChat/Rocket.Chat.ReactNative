@@ -38,6 +38,11 @@ interface IItem {
 	theme: string;
 }
 
+interface IRenderSearch {
+	hasSearch: boolean;
+	onChangeText: (text: string) => void;
+}
+
 interface IPickerViewState {
 	data: IOptionsField[];
 	value: string;
@@ -59,6 +64,20 @@ const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 		translateTitle={false}
 	/>
 ));
+
+const RenderSearch = ({ hasSearch, onChangeText }: IRenderSearch) => {
+	if (!hasSearch) {
+		return <List.Separator style={styles.listNoHeader} />;
+	}
+	return (
+		<>
+			<View style={styles.search}>
+				<SearchBox onChangeText={onChangeText} />
+			</View>
+			<List.Separator />
+		</>
+	);
+};
 
 class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState> {
 	private onSearch?: (text?: string) => Promise<{ data: IOptionsField[] } | undefined>;
@@ -86,18 +105,14 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 		}
 	};
 
-	onChangeText = debounce(
-		async (searchText: string) => {
-			if (this.onSearch) {
-				const data = await this.onSearch(searchText);
-				if (data?.data) {
-					this.setState({ ...data, searchText });
-				}
+	onChangeText = debounce(async (searchText: string) => {
+		if (this.onSearch) {
+			const data = await this.onSearch(searchText);
+			if (data?.data) {
+				this.setState({ ...data, searchText });
 			}
-		},
-		300,
-		true
-	);
+		}
+	}, 500);
 
 	onEndReached = async () => {
 		const { route } = this.props;
@@ -131,18 +146,7 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 					onEndReached={() => this.onEndReached()}
 					onEndReachedThreshold={0.5}
 					ItemSeparatorComponent={List.Separator}
-					ListHeaderComponent={
-						!this.onSearch ? (
-							<List.Separator style={styles.listNoHeader} />
-						) : (
-							<>
-								<View style={styles.search}>
-									<SearchBox onChangeText={this.onChangeText} />
-								</View>
-								<List.Separator />
-							</>
-						)
-					}
+					ListHeaderComponent={<RenderSearch hasSearch={!!this.onSearch} onChangeText={this.onChangeText} />}
 					ListFooterComponent={List.Separator}
 					ListEmptyComponent={() => (
 						<Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
