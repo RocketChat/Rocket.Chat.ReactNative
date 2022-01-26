@@ -1,25 +1,24 @@
 import React from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
 import { Clipboard, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { connect } from 'react-redux';
 
-import { encryptionSetBanner as encryptionSetBannerAction } from '../actions/encryption';
-import { E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
+import { encryptionSetBanner } from '../actions/encryption';
+import { themes } from '../constants/colors';
+import Button from '../containers/Button';
 import * as HeaderButton from '../containers/HeaderButton';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
 import SafeAreaView from '../containers/SafeAreaView';
-import UserPreferences from '../lib/userPreferences';
-import { events, logEvent } from '../utils/log';
 import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
-import { themes } from '../constants/colors';
-import EventEmitter from '../utils/events';
-import Button from '../containers/Button';
-import { withTheme } from '../theme';
+import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
-import sharedStyles from './Styles';
+import { E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
+import UserPreferences from '../lib/userPreferences';
 import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
+import { withTheme } from '../theme';
+import EventEmitter from '../utils/events';
+import { events, logEvent } from '../utils/log';
+import scrollPersistTaps from '../utils/scrollPersistTaps';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	container: {
@@ -59,11 +58,8 @@ interface IE2ESaveYourPasswordViewState {
 	password: string;
 }
 
-interface IE2ESaveYourPasswordViewProps {
+interface IE2ESaveYourPasswordViewProps extends IBaseScreen<E2ESaveYourPasswordStackParamList, 'E2ESaveYourPasswordView'> {
 	server: string;
-	navigation: StackNavigationProp<E2ESaveYourPasswordStackParamList, 'E2ESaveYourPasswordView'>;
-	encryptionSetBanner(): void;
-	theme: string;
 }
 
 class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewProps, IE2ESaveYourPasswordViewState> {
@@ -103,11 +99,11 @@ class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewPr
 
 	onSaved = async () => {
 		logEvent(events.E2E_SAVE_PW_SAVED);
-		const { navigation, server, encryptionSetBanner } = this.props;
+		const { navigation, server, dispatch } = this.props;
 		// Remove stored password
 		await UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
 		// Hide encryption banner
-		encryptionSetBanner();
+		dispatch(encryptionSetBanner());
 		navigation.pop();
 	};
 
@@ -173,10 +169,8 @@ class E2ESaveYourPasswordView extends React.Component<IE2ESaveYourPasswordViewPr
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server
 });
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	encryptionSetBanner: () => dispatch(encryptionSetBannerAction())
-});
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(E2ESaveYourPasswordView));
+
+export default connect(mapStateToProps)(withTheme(E2ESaveYourPasswordView));
