@@ -5,6 +5,7 @@ import { TActionInviteLinks } from '../../actions/inviteLinks';
 import { IActionRoles } from '../../actions/roles';
 import { TActionSelectedUsers } from '../../actions/selectedUsers';
 import { IActionSettings } from '../../actions/settings';
+import { TActionSortPreferences } from '../../actions/sortPreferences';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { IEncryption } from '../../reducers/encryption';
@@ -43,4 +44,5 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionInviteLinks &
 	IActionRoles &
 	IActionSettings &
-	TActionEncryption;
+	TActionEncryption &
+	TActionSortPreferences;
