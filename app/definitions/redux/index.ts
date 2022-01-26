@@ -1,11 +1,17 @@
-import { TActionSelectedUsers } from '../../actions/selectedUsers';
 import { TActionActiveUsers } from '../../actions/activeUsers';
+import { TActionInviteLinks } from '../../actions/inviteLinks';
+import { IActionRoles } from '../../actions/roles';
+import { TActionSelectedUsers } from '../../actions/selectedUsers';
+import { IActionSettings } from '../../actions/settings';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
+import { IInviteLinks } from '../../reducers/inviteLinks';
+import { IRoles } from '../../reducers/roles';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
+import { ISettings } from '../../reducers/settings';
 
 export interface IApplicationState {
-	settings: any;
+	settings: ISettings;
 	login: any;
 	meteor: any;
 	server: any;
@@ -19,13 +25,13 @@ export interface IApplicationState {
 	customEmojis: any;
 	activeUsers: IActiveUsers;
 	usersTyping: any;
-	inviteLinks: any;
+	inviteLinks: IInviteLinks;
 	createDiscussion: any;
 	inquiry: any;
 	enterpriseModules: any;
 	encryption: any;
 	permissions: any;
-	roles: any;
+	roles: IRoles;
 }
 
-export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers;
+export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers & TActionInviteLinks & IActionRoles & IActionSettings;
