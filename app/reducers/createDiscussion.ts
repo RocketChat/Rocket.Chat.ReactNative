@@ -4,8 +4,8 @@ import { CREATE_DISCUSSION } from '../actions/actionsTypes';
 export interface ICreateDiscussion {
 	isFetching: boolean;
 	failure: boolean;
-	result: Record<string, string>;
-	error: Record<string, string>;
+	result: Record<string, any>;
+	error: Record<string, any>;
 }
 
 export const initialState: ICreateDiscussion = {

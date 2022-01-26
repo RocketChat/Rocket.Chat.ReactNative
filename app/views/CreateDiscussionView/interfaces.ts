@@ -2,6 +2,15 @@ import { NewMessageStackParamList } from '../../stacks/types';
 import { SubscriptionType } from '../../definitions/ISubscription';
 import { IBaseScreen } from '../../definitions';
 
+export interface IResult {
+	rid: string;
+	t: SubscriptionType;
+	prid: string;
+}
+
+export interface IError {
+	reason: string;
+}
 export interface ICreateChannelViewProps extends IBaseScreen<NewMessageStackParamList, 'CreateDiscussionView'> {
 	server: string;
 	user: {
@@ -10,15 +19,9 @@ export interface ICreateChannelViewProps extends IBaseScreen<NewMessageStackPara
 	};
 	create: Function;
 	loading: boolean;
-	result: {
-		rid: string;
-		t: SubscriptionType;
-		prid: string;
-	};
+	result: IResult;
 	failure: boolean;
-	error: {
-		reason: string;
-	};
+	error: IError;
 	isMasterDetail: boolean;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;

@@ -24,7 +24,7 @@ import { E2E_ROOM_TYPES } from '../../lib/encryption/constants';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
-import { ICreateChannelViewProps } from './interfaces';
+import { ICreateChannelViewProps, IResult, IError } from './interfaces';
 import { IApplicationState } from '../../definitions';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
@@ -207,11 +207,11 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	server: state.server.server,
-	error: state.createDiscussion.error,
+	error: state.createDiscussion.error as IError,
 	failure: state.createDiscussion.failure,
 	loading: state.createDiscussion.isFetching,
-	result: state.createDiscussion.result,
-	blockUnauthenticatedAccess: state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
+	result: state.createDiscussion.result as IResult,
+	blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
 	encryptionEnabled: state.encryption.enabled
