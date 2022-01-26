@@ -131,7 +131,8 @@ interface IMessageBoxState {
 }
 
 const forceJpgExtension = (attachment: ImageOrVideo) => {
-	if (isIOS && attachment.mime === 'image/jpeg' && attachment.filename) {
+	const regexJPG = new RegExp(/.jpg$/i); // Test if the attachment.filename is ending with '.jpg', ignoring case
+	if (isIOS && attachment.mime === 'image/jpeg' && attachment.filename && !attachment.filename.match(regexJPG)) {
 		const regex = new RegExp(/.heic$/i);
 		if (attachment.filename.match(regex)) {
 			attachment.filename = attachment.filename.replace(regex, '.jpg');
