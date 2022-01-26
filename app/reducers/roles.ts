@@ -1,8 +1,11 @@
 import { ROLES } from '../actions/actionsTypes';
+import { IActionRoles } from '../actions/roles';
 
-const initialState = {};
+export type IRoles = Record<string, string>;
 
-export default function permissions(state = initialState, action) {
+export const initialState: IRoles = {};
+
+export default function roles(state = initialState, action: IActionRoles): IRoles {
 	switch (action.type) {
 		case ROLES.SET:
 			return action.roles;
