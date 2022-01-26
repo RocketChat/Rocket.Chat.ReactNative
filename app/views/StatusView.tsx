@@ -55,9 +55,9 @@ const styles = StyleSheet.create({
 });
 
 interface IUser {
-	id: string;
-	status: string;
-	statusText: string;
+	id?: string;
+	status?: string;
+	statusText?: string;
 }
 
 interface IStatusViewState {
@@ -70,7 +70,7 @@ interface IStatusViewProps {
 	user: IUser;
 	theme: string;
 	isMasterDetail: boolean;
-	setUser: (user: Partial<IUser>) => void;
+	setUser: (user: IUser) => void;
 	Accounts_AllowInvisibleStatusOption: boolean;
 }
 
@@ -144,7 +144,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 					value={statusText}
 					containerStyle={styles.inputContainer}
 					onChangeText={text => this.setState({ statusText: text })}
-					left={<Status testID={`status-view-current-${user.status}`} style={styles.inputLeft} status={user.status} size={24} />}
+					left={<Status testID={`status-view-current-${user.status}`} style={styles.inputLeft} status={user.status!} size={24} />}
 					inputStyle={styles.inputStyle}
 					placeholder={I18n.t('What_are_you_doing_right_now')}
 					testID='status-view-input'
