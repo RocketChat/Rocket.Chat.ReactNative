@@ -9,6 +9,7 @@ import { IActiveUsers } from '../../reducers/activeUsers';
 import { IEncryption } from '../../reducers/encryption';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { ISettings } from '../../reducers/settings';
+import { TActionUserTyping } from '../../actions/usersTyping';
 
 export interface IApplicationState {
 	settings: ISettings;
@@ -39,4 +40,5 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionEncryption &
 	IActionSettings &
 	TActionCustomEmojis &
-	TActionSortPreferences;
+	TActionSortPreferences &
+	TActionUserTyping;
