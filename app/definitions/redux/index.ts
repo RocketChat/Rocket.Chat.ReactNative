@@ -1,5 +1,6 @@
 import { TActionActiveUsers } from '../../actions/activeUsers';
 import { TActionCustomEmojis } from '../../actions/customEmojis';
+import { TActionEncryption } from '../../actions/encryption';
 import { TActionInviteLinks } from '../../actions/inviteLinks';
 import { IActionRoles } from '../../actions/roles';
 import { TActionSelectedUsers } from '../../actions/selectedUsers';
@@ -36,4 +37,10 @@ export interface IApplicationState {
 	roles: IRoles;
 }
 
-export type TApplicationActions = TActionActiveUsers & TActionSelectedUsers & TActionCustomEmojis & TActionInviteLinks & IActionRoles & IActionSettings;
+export type TApplicationActions = TActionActiveUsers &
+	TActionSelectedUsers &
+	TActionCustomEmojis &
+	TActionInviteLinks &
+	IActionRoles &
+	IActionSettings &
+	TActionEncryption;
