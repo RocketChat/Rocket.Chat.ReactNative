@@ -24,11 +24,12 @@ export function selectServerFailure() {
 	};
 }
 
-export function serverRequest(server, username = null, fromServerHistory = false) {
+// TODO
+export function serverRequest(server, username, fromServerHistory = false) {
 	return {
 		type: SERVER.REQUEST,
 		server,
-		username,
+		username: username || null,
 		fromServerHistory
 	};
 }
