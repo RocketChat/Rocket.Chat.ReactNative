@@ -29,7 +29,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { isIOS } from '../../utils/deviceInfo';
-import { compareServerVersion } from '../../lib/utils';
+import { isServerVersion } from '../../lib/utils';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 
@@ -231,12 +231,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	onEndReached = async () => {
 		const { serverVersion } = this.props;
 		const { searchText, messages, loading } = this.state;
-		if (
-			messages.length < this.offset ||
-			this.encrypted ||
-			loading ||
-			compareServerVersion(serverVersion, '3.17.0', 'lowerThan')
-		) {
+		if (messages.length < this.offset || this.encrypted || loading || isServerVersion(serverVersion, 'lowerThan', '3.17.0')) {
 			return;
 		}
 		this.setState({ loading: true });

@@ -17,11 +17,7 @@ const methods = {
 	greaterThanOrEqualTo: gte
 };
 
-export const compareServerVersion = (
-	currentServerVersion: string,
-	versionToCompare: string,
-	method: keyof typeof methods
-): boolean =>
+export const isServerVersion = (currentServerVersion: string, method: keyof typeof methods, versionToCompare: string): boolean =>
 	(currentServerVersion && methods[method](coerce(currentServerVersion) as string | SemVer, versionToCompare)) as boolean;
 
 export const generateLoadMoreId = (id: string): string => `load-more-${id}`;
