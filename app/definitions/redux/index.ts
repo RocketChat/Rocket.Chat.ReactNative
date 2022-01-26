@@ -1,6 +1,7 @@
 import { TActionActiveUsers } from '../../actions/activeUsers';
 import { TActionCustomEmojis } from '../../actions/customEmojis';
 import { TActionEncryption } from '../../actions/encryption';
+import { TActionInviteLinks } from '../../actions/inviteLinks';
 import { IActionRoles } from '../../actions/roles';
 import { TActionSelectedUsers } from '../../actions/selectedUsers';
 import { IActionSettings } from '../../actions/settings';
@@ -9,6 +10,7 @@ import { TActionUserTyping } from '../../actions/usersTyping';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { IEncryption } from '../../reducers/encryption';
+import { IInviteLinks } from '../../reducers/inviteLinks';
 import { IRoles } from '../../reducers/roles';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { ISettings } from '../../reducers/settings';
@@ -28,7 +30,7 @@ export interface IApplicationState {
 	customEmojis: any;
 	activeUsers: IActiveUsers;
 	usersTyping: any;
-	inviteLinks: any;
+	inviteLinks: IInviteLinks;
 	createDiscussion: any;
 	inquiry: any;
 	enterpriseModules: any;
@@ -44,4 +46,5 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionCustomEmojis &
 	TActionSortPreferences &
 	TActionUserTyping &
-	IActionRoles;
+	IActionRoles &
+	TActionInviteLinks;
