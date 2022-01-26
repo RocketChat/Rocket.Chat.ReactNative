@@ -1,12 +1,15 @@
 // ACTIONS
 import { TActionServer } from '../../actions/server';
 import { TActionActiveUsers } from '../../actions/activeUsers';
+import { TActionCustomEmojis } from '../../actions/customEmojis';
+import { TActionEncryption } from '../../actions/encryption';
 import { TActionInviteLinks } from '../../actions/inviteLinks';
 import { IActionRoles } from '../../actions/roles';
 import { TActionSelectedUsers } from '../../actions/selectedUsers';
 import { IActionSettings } from '../../actions/settings';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
+import { IEncryption } from '../../reducers/encryption';
 import { IInviteLinks } from '../../reducers/inviteLinks';
 import { IRoles } from '../../reducers/roles';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
@@ -32,14 +35,16 @@ export interface IApplicationState {
 	createDiscussion: any;
 	inquiry: any;
 	enterpriseModules: any;
-	encryption: any;
+	encryption: IEncryption;
 	permissions: any;
 	roles: IRoles;
 }
 
 export type TApplicationActions = TActionActiveUsers &
 	TActionSelectedUsers &
+	TActionCustomEmojis &
 	TActionInviteLinks &
 	IActionRoles &
 	IActionSettings &
+	TActionEncryption &
 	TActionServer;
