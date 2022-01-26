@@ -28,7 +28,7 @@ export default class EncryptionRoom {
 	roomId: string;
 	userId: string;
 	establishing: boolean;
-	readyPromise: Deferred;
+	readyPromise: Deferred<unknown>;
 	sessionKeyExportedString!: string | ByteBuffer;
 	keyID!: string;
 	roomKey!: ArrayBuffer;
@@ -48,7 +48,7 @@ export default class EncryptionRoom {
 	}
 
 	// Initialize the E2E room
-	handshake = async (): Promise<Deferred | undefined> => {
+	handshake = async (): Promise<Deferred<unknown> | undefined> => {
 		// If it's already ready we don't need to handshake again
 		if (this.ready) {
 			return;

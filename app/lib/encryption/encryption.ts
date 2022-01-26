@@ -25,7 +25,7 @@ import { IMessage, ISubscription } from '../../definitions';
 class Encryption {
 	ready: boolean;
 	privateKey: string | null;
-	readyPromise: Deferred;
+	readyPromise: Deferred<unknown>;
 	userId: string | null;
 	roomInstances: {
 		[rid: string]: {
