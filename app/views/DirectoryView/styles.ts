@@ -12,6 +12,32 @@ export default StyleSheet.create({
 	separator: {
 		marginLeft: 60
 	},
+	headingContainer: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingVertical: 6
+	},
+	headingText: {
+		flexDirection: 'row',
+		alignItems: 'flex-end',
+		marginLeft: 60
+	},
+	headingStats: {
+		flexDirection: 'row',
+		alignItems: 'flex-end',
+		marginRight: 18
+	},
+	sortIcons: {
+		marginLeft: 2
+	},
+	chevronUp: {
+		position: 'absolute',
+		bottom: 7
+	},
+	chevronDown: {
+		bottom: 0
+	},
 	toggleDropdownContainer: {
 		height: 46,
 		flexDirection: 'row',

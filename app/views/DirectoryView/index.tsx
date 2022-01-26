@@ -51,6 +51,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 
 	constructor(props: IDirectoryViewProps) {
 		super(props);
+		console.log(props);
 		this.state = {
 			data: [],
 			loading: false,
@@ -58,6 +59,10 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 			total: -1,
 			showOptionsDropdown: false,
 			globalUsers: true,
+			sortBy: 'usersCount',
+			sortDirection: -1,
+			headerType: 'name',
+			statsType: 'Users',
 			type: props.directoryDefaultView
 		};
 	}
@@ -89,13 +94,13 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 		this.setState({ loading: true });
 
 		try {
-			const { data, type, globalUsers } = this.state;
+			const { data, type, globalUsers, sortBy, sortDirection } = this.state;
 			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
 			const directories = await RocketChat.getDirectory({
 				query,
 				offset: data.length,
 				count: 50,
-				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
+				sort: { [sortBy]: sortDirection }
 			});
 			if (directories.success) {
 				this.setState({
@@ -121,10 +126,13 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 
 		if (type === 'users') {
 			logEvent(events.DIRECTORY_SEARCH_USERS);
+			this.setState({ headerType: 'username', statsType: 'Joined at', sortBy: 'username', sortDirection: 1 });
 		} else if (type === 'channels') {
 			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
+			this.setState({ headerType: 'name', statsType: 'Users', sortBy: 'usersCount', sortDirection: -1 });
 		} else if (type === 'teams') {
 			logEvent(events.DIRECTORY_SEARCH_TEAMS);
+			this.setState({ headerType: 'name', statsType: 'Channels', sortBy: 'name', sortDirection: 1 });
 		}
 	};
 
@@ -177,8 +185,34 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 		}
 	};
 
+	handleSort = (type: string) => {
+		const { sortBy, sortDirection } = this.state;
+		if (type === 'Users') {
+			type = 'usersCount';
+		} else if (type === 'Channels') {
+			return;
+		}
+		if (type === sortBy) {
+			this.setState({ sortDirection: -sortDirection }, () => this.search());
+			return;
+		}
+		this.setState({ sortBy: type, sortDirection: 1 }, () => this.search());
+	};
+
+	getChevronColor = (type: string, chevronType: number, theme: string) => {
+		const { sortBy, sortDirection } = this.state;
+		if (
+			(type === 'Users' && sortBy === 'usersCount') ||
+			(type === 'name' && sortBy === 'name') ||
+			(type === 'username' && sortBy === 'username')
+		) {
+			return chevronType === sortDirection ? themes[theme].chevronActive : themes[theme].chevronInactive;
+		}
+		return themes[theme].chevronInactive;
+	};
+
 	renderHeader = () => {
-		const { type } = this.state;
+		const { type, headerType, statsType } = this.state;
 		const { theme } = this.props;
 		let text = 'Users';
 		let icon = 'user';
@@ -212,6 +246,47 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 						/>
 					</View>
 				</Touch>
+				<View
+					style={[
+						styles.headingContainer,
+						{ borderColor: themes[theme].separatorColor, borderBottomWidth: 1, borderTopWidth: 1 }
+					]}>
+					<Touch onPress={() => this.handleSort(headerType)} style={[styles.headingText]} theme={theme}>
+						<Text style={[{ color: themes[theme].headerTintColor, fontSize: 16 }]}>{I18n.t('Name')}</Text>
+						<View style={[styles.sortIcons]}>
+							<CustomIcon
+								name='chevron-up'
+								size={18}
+								style={[styles.chevronUp, { color: this.getChevronColor(headerType, -1, theme) }]}
+							/>
+							<CustomIcon
+								name='chevron-down'
+								size={18}
+								style={[styles.chevronDown, { color: this.getChevronColor(headerType, 1, theme) }]}
+							/>
+						</View>
+					</Touch>
+
+					{type !== 'users' && (
+						<Touch onPress={() => this.handleSort(statsType)} style={[styles.headingStats]} theme={theme}>
+							<Text style={[{ color: themes[theme].headerTintColor, fontSize: 16 }]}>{I18n.t(statsType)}</Text>
+							{type === 'channels' && (
+								<View style={[styles.sortIcons]}>
+									<CustomIcon
+										name='chevron-up'
+										size={18}
+										style={[styles.chevronUp, { color: this.getChevronColor(statsType, -1, theme) }]}
+									/>
+									<CustomIcon
+										name='chevron-down'
+										size={18}
+										style={[styles.chevronDown, { color: this.getChevronColor(statsType, 1, theme) }]}
+									/>
+								</View>
+							)}
+						</Touch>
+					)}
+				</View>
 			</>
 		);
 	};
@@ -219,7 +294,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 	renderItem = ({ item, index }: any) => {
 		const { data, type } = this.state;
 		const { baseUrl, user, theme } = this.props;
-
 		let style;
 		if (index === data.length - 1) {
 			style = {
@@ -259,6 +333,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 					rightLabel={I18n.t('N_channels', { n: item.roomsCount })}
 					type={item.t}
 					teamMain={item.teamMain}
+					featured={item.featured}
 					{...commonProps}
 				/>
 			);
@@ -269,6 +344,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 				description={item.topic}
 				rightLabel={I18n.t('N_users', { n: item.usersCount })}
 				type={item.t}
+				featured={item.featured}
 				{...commonProps}
 			/>
 		);

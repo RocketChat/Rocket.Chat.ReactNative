@@ -25,6 +25,7 @@ interface IDirectoryItem {
 	rightLabel?: string;
 	rid?: string;
 	theme: string;
+	featured?: boolean;
 	teamMain?: boolean;
 }
 
@@ -46,6 +47,7 @@ const DirectoryItem = ({
 	type,
 	rid,
 	theme,
+	featured = false,
 	teamMain
 }: IDirectoryItem): JSX.Element => (
 	<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID} theme={theme}>
@@ -57,6 +59,11 @@ const DirectoryItem = ({
 					<Text style={[styles.directoryItemName, { color: themes[theme].titleText }]} numberOfLines={1}>
 						{title}
 					</Text>
+					{featured && (
+						<View style={[styles.featured, { backgroundColor: themes[theme].actionTintColor }]}>
+							<Text style={[{ color: themes[theme].previewTintColor, fontSize: 12 }]}>Featured</Text>
+						</View>
+					)}
 				</View>
 				{description ? (
 					<Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>

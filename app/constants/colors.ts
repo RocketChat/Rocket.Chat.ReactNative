@@ -65,6 +65,8 @@ export const themes: any = {
 		previewBackground: '#1F2329',
 		previewTintColor: '#ffffff',
 		backdropOpacity: 0.3,
+		chevronActive: '#0C0D0F',
+		chevronInactive: '#CBCED1',
 		attachmentLoadingOpacity: 0.7,
 		...mentions
 	},
@@ -112,6 +114,8 @@ export const themes: any = {
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#030b1b',
 		previewTintColor: '#ffffff',
+		chevronActive: '#ffffff',
+		chevronInactive: '#414850',
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3,
 		...mentions
@@ -160,6 +164,8 @@ export const themes: any = {
 		passcodeDotFull: '#6C727A',
 		previewBackground: '#000000',
 		previewTintColor: '#ffffff',
+		chevronActive: '#ffffff',
+		chevronInactive: '#414850',
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3,
 		...mentions

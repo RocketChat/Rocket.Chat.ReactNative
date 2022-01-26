@@ -40,5 +40,10 @@ export default StyleSheet.create({
 		fontSize: 14,
 		paddingLeft: 10,
 		...sharedStyles.textRegular
+	},
+	featured: {
+		borderRadius: 2,
+		paddingVertical: 1,
+		paddingHorizontal: 2
 	}
 });
