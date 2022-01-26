@@ -1,15 +1,17 @@
 import { TActionActiveUsers } from '../../actions/activeUsers';
-import { IActionSettings } from '../../actions/settings';
-import { TActionEncryption } from '../../actions/encryption';
 import { TActionCustomEmojis } from '../../actions/customEmojis';
+import { TActionEncryption } from '../../actions/encryption';
+import { IActionRoles } from '../../actions/roles';
 import { TActionSelectedUsers } from '../../actions/selectedUsers';
+import { IActionSettings } from '../../actions/settings';
 import { TActionSortPreferences } from '../../actions/sortPreferences';
+import { TActionUserTyping } from '../../actions/usersTyping';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { IEncryption } from '../../reducers/encryption';
+import { IRoles } from '../../reducers/roles';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { ISettings } from '../../reducers/settings';
-import { TActionUserTyping } from '../../actions/usersTyping';
 
 export interface IApplicationState {
 	settings: ISettings;
@@ -32,7 +34,7 @@ export interface IApplicationState {
 	enterpriseModules: any;
 	encryption: IEncryption;
 	permissions: any;
-	roles: any;
+	roles: IRoles;
 }
 
 export type TApplicationActions = TActionActiveUsers &
@@ -41,4 +43,5 @@ export type TApplicationActions = TActionActiveUsers &
 	IActionSettings &
 	TActionCustomEmojis &
 	TActionSortPreferences &
-	TActionUserTyping;
+	TActionUserTyping &
+	IActionRoles;
