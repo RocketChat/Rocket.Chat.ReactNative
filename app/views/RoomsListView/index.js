@@ -12,19 +12,13 @@ import RocketChat from '../../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../presentation/RoomItem';
 import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
-import {
-	closeSearchHeader as closeSearchHeaderAction,
-	closeServerDropdown as closeServerDropdownAction,
-	openSearchHeader as openSearchHeaderAction,
-	roomsRequest as roomsRequestAction
-} from '../../actions/rooms';
-import { appStart as appStartAction, ROOT_OUTSIDE } from '../../actions/app';
+import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
+import { appStart, ROOT_OUTSIDE } from '../../actions/app';
 import debounce from '../../utils/debounce';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
@@ -124,11 +118,6 @@ class RoomsListView extends React.Component {
 		refreshing: PropTypes.bool,
 		StoreLastMessage: PropTypes.bool,
 		theme: PropTypes.string,
-		openSearchHeader: PropTypes.func,
-		closeSearchHeader: PropTypes.func,
-		appStart: PropTypes.func,
-		roomsRequest: PropTypes.func,
-		closeServerDropdown: PropTypes.func,
 		useRealName: PropTypes.bool,
 		isMasterDetail: PropTypes.bool,
 		rooms: PropTypes.array,
@@ -169,7 +158,7 @@ class RoomsListView extends React.Component {
 	}
 
 	componentDidMount() {
-		const { navigation, closeServerDropdown } = this.props;
+		const { navigation, dispatch } = this.props;
 		this.handleHasPermission();
 		this.mounted = true;
 
@@ -193,7 +182,7 @@ class RoomsListView extends React.Component {
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.animated = false;
-			closeServerDropdown();
+			dispatch(closeServerDropdown());
 			this.cancelSearch();
 			if (this.backHandler && this.backHandler.remove) {
 				this.backHandler.remove();
@@ -553,9 +542,9 @@ class RoomsListView extends React.Component {
 
 	initSearching = () => {
 		logEvent(events.RL_SEARCH);
-		const { openSearchHeader } = this.props;
+		const { dispatch } = this.props;
 		this.internalSetState({ searching: true }, () => {
-			openSearchHeader();
+			dispatch(openSearchHeader());
 			this.search('');
 			this.setHeader();
 		});
@@ -563,7 +552,7 @@ class RoomsListView extends React.Component {
 
 	cancelSearch = () => {
 		const { searching } = this.state;
-		const { closeSearchHeader } = this.props;
+		const { dispatch } = this.props;
 
 		if (!searching) {
 			return;
@@ -573,7 +562,7 @@ class RoomsListView extends React.Component {
 
 		this.setState({ searching: false, search: [] }, () => {
 			this.setHeader();
-			closeSearchHeader();
+			dispatch(closeSearchHeader());
 			setTimeout(() => {
 				this.scrollToTop();
 			}, 200);
@@ -842,7 +831,7 @@ class RoomsListView extends React.Component {
 	};
 
 	handleCommands = ({ event }) => {
-		const { navigation, server, isMasterDetail, appStart, initAdd } = this.props;
+		const { navigation, server, isMasterDetail, dispatch, initAdd } = this.props;
 		const { input } = event;
 		if (handleCommandShowPreferences(event)) {
 			navigation.navigate('SettingsView');
@@ -862,7 +851,7 @@ class RoomsListView extends React.Component {
 			}
 		} else if (handleCommandAddNewServer(event)) {
 			batch(() => {
-				appStart({ root: ROOT_OUTSIDE });
+				dispatch(appStart({ root: ROOT_OUTSIDE }));
 				initAdd(server);
 			});
 		}
@@ -870,11 +859,11 @@ class RoomsListView extends React.Component {
 
 	onRefresh = () => {
 		const { searching } = this.state;
-		const { roomsRequest } = this.props;
+		const { dispatch } = this.props;
 		if (searching) {
 			return;
 		}
-		roomsRequest({ allData: true });
+		dispatch(roomsRequest({ allData: true }));
 	};
 
 	onEndReached = () => {
@@ -1045,14 +1034,4 @@ const mapStateToProps = state => ({
 	createDiscussionPermission: state.permissions['start-discussion']
 });
 
-const mapDispatchToProps = dispatch => ({
-	openSearchHeader: () => dispatch(openSearchHeaderAction()),
-	closeSearchHeader: () => dispatch(closeSearchHeaderAction()),
-	roomsRequest: params => dispatch(roomsRequestAction(params)),
-	selectServerRequest: server => dispatch(selectServerRequestAction(server)),
-	closeServerDropdown: () => dispatch(closeServerDropdownAction()),
-	appStart: params => dispatch(appStartAction(params)),
-	initAdd: previousServer => dispatch(serverInitAddAction(previousServer))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));
+export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));
