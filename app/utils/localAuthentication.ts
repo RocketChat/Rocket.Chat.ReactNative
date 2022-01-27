@@ -119,7 +119,8 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 			const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 
 			// if last authenticated session is older than configured auto lock time, authentication is required
-			if (diffToLastSession >= serverRecord.autoLockTime!) {
+			// check if diffToLastSession is negative to prevent bypass local time, just changing the mobile date or time
+			if (diffToLastSession >= serverRecord.autoLockTime! || diffToLastSession < 0) {
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
 
