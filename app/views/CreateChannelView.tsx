@@ -23,7 +23,7 @@ import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';
 import { events, logEvent } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
 

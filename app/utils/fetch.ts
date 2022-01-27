@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 
 interface CustomHeaders {
 	'User-Agent': string;

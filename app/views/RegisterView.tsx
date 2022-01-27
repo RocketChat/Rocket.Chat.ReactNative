@@ -16,7 +16,7 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import TextInput from '../containers/TextInput';
 import isValidEmail from '../utils/isValidEmail';
 import { showErrorAlert } from '../utils/info';
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import { loginRequest as loginRequestAction } from '../actions/login';
 import openLink from '../utils/openLink';
 import LoginServices from '../containers/LoginServices';

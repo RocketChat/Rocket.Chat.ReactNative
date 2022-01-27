@@ -14,7 +14,7 @@ import EventEmitter from '../../utils/events';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import protectedFunction from '../../lib/rocketchat/methods/helpers/protectedFunction';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';

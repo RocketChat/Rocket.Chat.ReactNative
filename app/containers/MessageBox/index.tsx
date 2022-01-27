@@ -8,7 +8,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-import { generateTriggerId } from '../../lib/methods/actions';
+import { generateTriggerId } from '../../lib/rocketchat/methods/actions';
 import TextInput from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat/services/rocketchat';

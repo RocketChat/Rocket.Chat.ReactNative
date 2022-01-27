@@ -1,6 +1,6 @@
 import log from '../../../../utils/log';
 import store from '../../../../lib/createStore';
-import RocketChat from '../../../../lib/rocketchat';
+import RocketChat from '../../../../lib/rocketchat/services/rocketchat';
 import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
 
 const removeListener = listener => listener.stop();

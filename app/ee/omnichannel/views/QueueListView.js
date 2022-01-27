@@ -16,7 +16,7 @@ import { themes } from '../../../constants/colors';
 import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../utils/goRoom';
 import * as HeaderButton from '../../../containers/HeaderButton';
-import RocketChat from '../../../lib/rocketchat';
+import RocketChat from '../../../lib/rocketchat/services/rocketchat';
 import { events, logEvent } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 

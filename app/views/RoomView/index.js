@@ -40,9 +40,9 @@ import {
 	handleCommandSearchMessages
 } from '../../commands';
 import { Review } from '../../utils/review';
-import RoomClass from '../../lib/methods/subscriptions/room';
+import RoomClass from '../../lib/rocketchat/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
-import { CONTAINER_TYPES } from '../../lib/methods/actions';
+import { CONTAINER_TYPES } from '../../lib/rocketchat/methods/actions';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
@@ -51,8 +51,8 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import { takeInquiry } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
 import { goRoom } from '../../utils/goRoom';
-import getThreadName from '../../lib/methods/getThreadName';
-import getRoomInfo from '../../lib/methods/getRoomInfo';
+import getThreadName from '../../lib/rocketchat/methods/getThreadName';
+import getRoomInfo from '../../lib/rocketchat/methods/getRoomInfo';
 import RoomServices from './services';
 import LoadMore from './LoadMore';
 import Banner from './Banner';

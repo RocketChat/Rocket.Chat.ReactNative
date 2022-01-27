@@ -1,6 +1,6 @@
 import { ChatsStackParamList } from '../stacks/types';
 import Navigation from '../lib/Navigation';
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import { ISubscription, SubscriptionType } from '../definitions/ISubscription';
 
 const navigate = ({

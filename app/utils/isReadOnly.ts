@@ -1,4 +1,4 @@
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import reduxStore from '../lib/createStore';
 import { ISubscription } from '../definitions/ISubscription';
 

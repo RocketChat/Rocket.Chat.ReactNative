@@ -6,7 +6,7 @@ import JitsiMeet, { JitsiMeetView as RNJitsiMeetView } from 'react-native-jitsi-
 import BackgroundTimer from 'react-native-background-timer';
 import { connect } from 'react-redux';
 
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import { getUserSelector } from '../selectors/login';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { events, logEvent } from '../utils/log';

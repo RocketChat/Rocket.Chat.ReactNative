@@ -6,10 +6,10 @@ import * as types from '../actions/actionsTypes';
 import { roomsFailure, roomsRefresh, roomsSuccess } from '../actions/rooms';
 import database from '../lib/database';
 import log from '../utils/log';
-import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
-import RocketChat from '../lib/rocketchat';
-import buildMessage from '../lib/methods/helpers/buildMessage';
-import protectedFunction from '../lib/methods/helpers/protectedFunction';
+import mergeSubscriptionsRooms from '../lib/rocketchat/methods/helpers/mergeSubscriptionsRooms';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
+import buildMessage from '../lib/rocketchat/methods/helpers/buildMessage';
+import protectedFunction from '../lib/rocketchat/methods/helpers/protectedFunction';
 import UserPreferences from '../lib/userPreferences';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {

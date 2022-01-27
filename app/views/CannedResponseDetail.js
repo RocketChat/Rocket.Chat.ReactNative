@@ -8,7 +8,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import Button from '../containers/Button';
 import { useTheme } from '../theme';
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import Navigation from '../lib/Navigation';
 import { goRoom } from '../utils/goRoom';
 import { themes } from '../constants/colors';

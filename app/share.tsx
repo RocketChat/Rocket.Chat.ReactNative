@@ -11,7 +11,7 @@ import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { supportSystemTheme } from './utils/deviceInfo';
 import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
-import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
+import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat/services/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
 import { IThemePreference } from './definitions/ITheme';

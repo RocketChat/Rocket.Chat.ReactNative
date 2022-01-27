@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import Navigation from '../lib/Navigation';
 import { MESSAGES } from '../actions/actionsTypes';
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import database from '../lib/database';
 import log from '../utils/log';
 import { goRoom } from '../utils/goRoom';

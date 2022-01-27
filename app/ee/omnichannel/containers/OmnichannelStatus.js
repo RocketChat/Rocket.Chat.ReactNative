@@ -7,7 +7,7 @@ import styles from '../../../views/RoomsListView/styles';
 import { SWITCH_TRACK_COLOR, themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
 import UnreadBadge from '../../../presentation/UnreadBadge';
-import RocketChat from '../../../lib/rocketchat';
+import RocketChat from '../../../lib/rocketchat/services/rocketchat';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../lib';
 
 const OmnichannelStatus = memo(({ searching, goQueue, theme, queueSize, inquiryEnabled, user }) => {

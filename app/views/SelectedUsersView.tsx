@@ -16,7 +16,7 @@ import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import UserItem from '../presentation/UserItem';
 import { ISelectedUser } from '../reducers/selectedUsers';
 import { getUserSelector } from '../selectors/login';

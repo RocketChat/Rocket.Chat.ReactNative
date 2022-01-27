@@ -1,6 +1,6 @@
 import { select, takeLatest } from 'redux-saga/effects';
 
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import { setBadgeCount } from '../notifications/push';
 import log from '../utils/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';

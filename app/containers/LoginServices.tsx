@@ -13,7 +13,7 @@ import Touch from '../utils/touch';
 import I18n from '../i18n';
 import random from '../utils/random';
 import { events, logEvent } from '../utils/log';
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import { CustomIcon } from '../lib/Icons';
 
 const BUTTON_HEIGHT = 48;

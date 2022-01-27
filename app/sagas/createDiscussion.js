@@ -3,7 +3,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CREATE_DISCUSSION, LOGIN } from '../actions/actionsTypes';
 import { createDiscussionFailure, createDiscussionSuccess } from '../actions/createDiscussion';
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import database from '../lib/database';
 import { events, logEvent } from '../utils/log';
 

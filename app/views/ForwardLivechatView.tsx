@@ -9,7 +9,7 @@ import isEmpty from 'lodash/isEmpty';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
-import RocketChat from '../lib/rocketchat';
+import RocketChat from '../lib/rocketchat/services/rocketchat';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
 import { forwardRoom as forwardRoomAction } from '../actions/room';

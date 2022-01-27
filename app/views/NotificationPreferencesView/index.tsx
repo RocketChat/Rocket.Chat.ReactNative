@@ -12,7 +12,7 @@ import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import { withTheme } from '../../theme';
-import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import protectedFunction from '../../lib/rocketchat/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
 import log, { events, logEvent } from '../../utils/log';
 import sharedStyles from '../Styles';
