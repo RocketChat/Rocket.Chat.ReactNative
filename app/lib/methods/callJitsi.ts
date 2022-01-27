@@ -1,8 +1,10 @@
 import reduxStore from '../createStore';
 import Navigation from '../Navigation';
 import { events, logEvent } from '../../utils/log';
+import { ISubscription } from '../../definitions';
+import { IRocketChatThis } from '../../definitions/IRocketChat';
 
-async function jitsiURL({ room }) {
+async function jitsiURL(this: IRocketChatThis, { room }: { room: ISubscription }) {
 	const { settings } = reduxStore.getState();
 	const { Jitsi_Enabled } = settings;
 
@@ -30,13 +32,13 @@ async function jitsiURL({ room }) {
 	if (Jitsi_URL_Room_Hash) {
 		rname = uniqueID + room?.rid;
 	} else {
-		rname = encodeURIComponent(room.t === 'd' ? room?.usernames?.join?.(' x ') : room?.name);
+		rname = encodeURIComponent(room.t === 'd' ? room?.usernames?.join?.(' x ') || '' : room?.name);
 	}
 
 	return `${protocol}${domain}${prefix}${rname}${queryString}`;
 }
 
-export function callJitsiWithoutServer(path) {
+export function callJitsiWithoutServer(path: string): void {
 	logEvent(events.RA_JITSI_VIDEO);
 	const { Jitsi_SSL } = reduxStore.getState().settings;
 	const protocol = Jitsi_SSL ? 'https://' : 'http://';
@@ -44,7 +46,7 @@ export function callJitsiWithoutServer(path) {
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio: false });
 }
 
-async function callJitsi(room, onlyAudio = false) {
+async function callJitsi(this: IRocketChatThis, room: ISubscription, onlyAudio = false): Promise<void> {
 	logEvent(onlyAudio ? events.RA_JITSI_AUDIO : events.RA_JITSI_VIDEO);
 	const url = await jitsiURL.call(this, { room });
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio, rid: room?.rid });
