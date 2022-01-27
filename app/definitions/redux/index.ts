@@ -41,7 +41,7 @@ export interface IApplicationState {
 	permissions: any;
 	roles: IRoles;
 }
-console.log('test');
+
 export type TApplicationActions = TActionActiveUsers &
 	TActionSelectedUsers &
 	TActionCustomEmojis &
