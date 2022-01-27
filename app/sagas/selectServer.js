@@ -145,7 +145,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
-		yield SSLPinning.setCertificate(certificate, server);
+		SSLPinning.setCertificate(certificate, server);
 
 		const serverInfo = yield getServerInfo({ server });
 		const serversDB = database.servers;

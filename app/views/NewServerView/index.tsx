@@ -181,7 +181,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		this.setState({ text: serverHistory.url }, () => this.submit({ fromServerHistory: true, username: serverHistory?.username }));
 	};
 
-	submit = async ({ fromServerHistory = false, username }: ISubmitParams = {}) => {
+	submit = ({ fromServerHistory = false, username }: ISubmitParams = {}) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { dispatch } = this.props;
@@ -198,7 +198,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			}
 
 			// Save info - HTTP Basic Authentication
-			await this.basicAuth(server, text);
+			this.basicAuth(server, text);
 
 			if (fromServerHistory) {
 				dispatch(serverRequest(server, username, true));

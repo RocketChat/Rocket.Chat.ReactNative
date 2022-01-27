@@ -57,7 +57,6 @@ const openChangePasscodeModal = ({ force }: { force: boolean }) =>
 	});
 
 export const changePasscode = async ({ force = false }: { force: boolean }): Promise<void> => {
-	console.log('enter here **** changePasscode');
 	const passcode = await openChangePasscodeModal({ force });
 	UserPreferences.setString(PASSCODE_KEY, sha256(passcode));
 };

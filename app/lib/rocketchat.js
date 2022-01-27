@@ -395,7 +395,7 @@ const RocketChat = {
 
 		try {
 			const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
-			await SSLPinning.setCertificate(certificate, server);
+			SSLPinning.setCertificate(certificate, server);
 		} catch {
 			// Do nothing
 		}
@@ -1443,8 +1443,8 @@ const RocketChat = {
 	getSortPreferences() {
 		return UserPreferences.getMap(SORT_PREFS_KEY);
 	},
-	async saveSortPreference(param) {
-		let prefs = await RocketChat.getSortPreferences();
+	saveSortPreference(param) {
+		let prefs = RocketChat.getSortPreferences();
 		prefs = { ...prefs, ...param };
 		return UserPreferences.setMap(SORT_PREFS_KEY, prefs);
 	},

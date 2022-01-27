@@ -24,8 +24,6 @@ async function removeSharedCredentials({ server }) {
 	try {
 		const certificate = UserPreferences.getMap(extractHostname(server));
 		if (certificate && certificate.path) {
-			console.log('lib/methods/removeSharedCredentials ****** certificate **** enter on if', certificate);
-
 			UserPreferences.removeItem(extractHostname(server));
 			await FileSystem.deleteAsync(certificate.path);
 		}
@@ -51,7 +49,7 @@ async function removeServerData({ server }) {
 
 		await serversDB.action(() => serversDB.batch(...batch));
 		await removeSharedCredentials({ server });
-		await removeServerKeys({ server });
+		removeServerKeys({ server });
 	} catch (e) {
 		console.log('removeServerData', e);
 	}
