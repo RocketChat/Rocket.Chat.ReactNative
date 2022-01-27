@@ -334,7 +334,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 const mapStateToProps = (state: IApplicationState) => ({
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,
-	maxUsers: state.settings.DirectMesssage_maxUsers || 1,
+	maxUsers: (state.settings.DirectMesssage_maxUsers as number) || 1,
 	createTeamPermission: state.permissions['create-team'],
 	createDirectMessagePermission: state.permissions['create-d'],
 	createPublicChannelPermission: state.permissions['create-c'],
