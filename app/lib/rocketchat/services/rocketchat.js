@@ -29,33 +29,33 @@ import { updateSettings } from '../../../actions/settings';
 import { compareServerVersion, methods } from '../../utils';
 import reduxStore from '../../createStore';
 import database from '../../database';
-import subscribeRooms from '../../methods/subscriptions/rooms';
-import getUsersPresence, { getUserPresence, subscribeUsersPresence } from '../../methods/getUsersPresence';
-import protectedFunction from '../../methods/helpers/protectedFunction';
-import readMessages from '../../methods/readMessages';
-import getSettings, { getLoginSettings, setSettings, subscribeSettings } from '../../methods/getSettings';
-import getRooms from '../../methods/getRooms';
-import { getPermissions, setPermissions } from '../../methods/getPermissions';
-import { getCustomEmojis, setCustomEmojis } from '../../methods/getCustomEmojis';
+import subscribeRooms from '../methods/subscriptions/rooms';
+import getUsersPresence, { getUserPresence, subscribeUsersPresence } from '../methods/getUsersPresence';
+import protectedFunction from '../methods/helpers/protectedFunction';
+import readMessages from '../methods/readMessages';
+import getSettings, { getLoginSettings, setSettings, subscribeSettings } from '../methods/getSettings';
+import getRooms from '../methods/getRooms';
+import { getPermissions, setPermissions } from '../methods/getPermissions';
+import { getCustomEmojis, setCustomEmojis } from '../methods/getCustomEmojis';
 import {
 	getEnterpriseModules,
 	hasLicense,
 	isOmnichannelModuleAvailable,
 	setEnterpriseModules
-} from '../../methods/enterpriseModules';
-import getSlashCommands from '../../methods/getSlashCommands';
-import { getRoles, onRolesChanged, setRoles } from '../../methods/getRoles';
-import canOpenRoom from '../../methods/canOpenRoom';
-import triggerBlockAction, { triggerCancel, triggerSubmitView } from '../../methods/actions';
-import loadMessagesForRoom from '../../methods/loadMessagesForRoom';
-import loadSurroundingMessages from '../../methods/loadSurroundingMessages';
-import loadNextMessages from '../../methods/loadNextMessages';
-import loadMissedMessages from '../../methods/loadMissedMessages';
-import loadThreadMessages from '../../methods/loadThreadMessages';
-import sendMessage, { resendMessage } from '../../methods/sendMessage';
-import { cancelUpload, isUploadActive, sendFileMessage } from '../../methods/sendFileMessage';
-import callJitsi, { callJitsiWithoutServer } from '../../methods/callJitsi';
-import logout, { removeServer } from '../../methods/logout';
+} from '../methods/enterpriseModules';
+import getSlashCommands from '../methods/getSlashCommands';
+import { getRoles, onRolesChanged, setRoles } from '../methods/getRoles';
+import canOpenRoom from '../methods/canOpenRoom';
+import triggerBlockAction, { triggerCancel, triggerSubmitView } from '../methods/actions';
+import loadMessagesForRoom from '../methods/loadMessagesForRoom';
+import loadSurroundingMessages from '../methods/loadSurroundingMessages';
+import loadNextMessages from '../methods/loadNextMessages';
+import loadMissedMessages from '../methods/loadMissedMessages';
+import loadThreadMessages from '../methods/loadThreadMessages';
+import sendMessage, { resendMessage } from '../methods/sendMessage';
+import { cancelUpload, isUploadActive, sendFileMessage } from '../methods/sendFileMessage';
+import callJitsi, { callJitsiWithoutServer } from '../methods/callJitsi';
+import logout, { removeServer } from '../methods/logout';
 import UserPreferences from '../../userPreferences';
 import { Encryption } from '../../encryption';
 import { sanitizeLikeString } from '../../database/utils';
