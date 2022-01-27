@@ -4,7 +4,6 @@ import { TActionCustomEmojis } from '../../actions/customEmojis';
 import { TActionEncryption } from '../../actions/encryption';
 import { TActionInviteLinks } from '../../actions/inviteLinks';
 import { IActionRoles } from '../../actions/roles';
-import { TActionSelectedUsers } from '../../actions/selectedUsers';
 import { IActionSettings } from '../../actions/settings';
 import { TActionSortPreferences } from '../../actions/sortPreferences';
 import { TActionUserTyping } from '../../actions/usersTyping';
@@ -51,5 +50,5 @@ export type TApplicationActions = TActionActiveUsers &
 	IActionSettings &
 	TActionEncryption &
 	TActionSortPreferences &
-  TActionUserTyping &
-  TActionsShare;
+	TActionUserTyping &
+	TActionsShare;
