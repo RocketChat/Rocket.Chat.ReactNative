@@ -1,5 +1,5 @@
-import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import RocketChat from '../rocketchat';
+import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import RocketChat from '../services/rocketchat';
 
 const getRoomInfo = async rid => {
 	let result;

@@ -1,4 +1,4 @@
-import messagesStatus from '../../../constants/messagesStatus';
+import messagesStatus from '../../../../constants/messagesStatus';
 import normalizeMessage from './normalizeMessage';
 
 export default message => {

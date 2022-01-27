@@ -2,12 +2,12 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import orderBy from 'lodash/orderBy';
 
-import { compareServerVersion, methods } from '../utils';
-import database from '../database';
-import log from '../../utils/log';
-import reduxStore from '../createStore';
-import RocketChat from '../rocketchat';
-import { setPermissions as setPermissionsAction } from '../../actions/permissions';
+import { compareServerVersion, methods } from '../../utils';
+import database from '../../database';
+import log from '../../../utils/log';
+import reduxStore from '../../createStore';
+import RocketChat from '../services/rocketchat';
+import { setPermissions as setPermissionsAction } from '../../../actions/permissions';
 import protectedFunction from './helpers/protectedFunction';
 
 const PERMISSIONS = [

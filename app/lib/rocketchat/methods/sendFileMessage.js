@@ -1,9 +1,9 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import FileUpload from '../../utils/fileUpload';
-import database from '../database';
-import log from '../../utils/log';
+import FileUpload from '../../../utils/fileUpload';
+import database from '../../database';
+import log from '../../../utils/log';
 
 const uploadQueue = {};
 

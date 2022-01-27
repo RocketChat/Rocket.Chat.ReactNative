@@ -1,9 +1,9 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import database from '../database';
-import log from '../../utils/log';
-import reduxStore from '../createStore';
-import { removeRoles, setRoles as setRolesAction, updateRoles } from '../../actions/roles';
+import database from '../../database';
+import log from '../../../utils/log';
+import reduxStore from '../../createStore';
+import { removeRoles, setRoles as setRolesAction, updateRoles } from '../../../actions/roles';
 import protectedFunction from './helpers/protectedFunction';
 
 export async function setRoles() {

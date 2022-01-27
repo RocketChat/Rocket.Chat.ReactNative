@@ -1,7 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import database from '../database';
-import log from '../../utils/log';
+import database from '../../database';
+import log from '../../../utils/log';
 import protectedFunction from './helpers/protectedFunction';
 
 export default function () {

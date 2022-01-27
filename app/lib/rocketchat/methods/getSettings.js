@@ -1,14 +1,14 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
-import { addSettings, clearSettings } from '../../actions/settings';
-import RocketChat from '../rocketchat';
-import reduxStore from '../createStore';
-import settings from '../../constants/settings';
-import log from '../../utils/log';
-import database from '../database';
-import fetch from '../../utils/fetch';
-import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
+import { addSettings, clearSettings } from '../../../actions/settings';
+import RocketChat from '../services/rocketchat';
+import reduxStore from '../../createStore';
+import settings from '../../../constants/settings';
+import log from '../../../utils/log';
+import database from '../../database';
+import fetch from '../../../utils/fetch';
+import { DEFAULT_AUTO_LOCK } from '../../../constants/localAuthentication';
 import protectedFunction from './helpers/protectedFunction';
 
 const serverInfoKeys = [

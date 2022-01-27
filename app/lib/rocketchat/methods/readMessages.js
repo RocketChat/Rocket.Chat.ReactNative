@@ -1,5 +1,5 @@
-import database from '../database';
-import log from '../../utils/log';
+import database from '../../database';
+import log from '../../../utils/log';
 
 export default async function readMessages(rid, ls, updateLastOpen = false) {
 	try {

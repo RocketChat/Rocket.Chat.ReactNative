@@ -1,8 +1,8 @@
 import EJSON from 'ejson';
 
-import { Encryption } from '../../encryption';
-import reduxStore from '../../createStore';
-import { compareServerVersion, methods } from '../../utils';
+import { Encryption } from '../../../encryption';
+import reduxStore from '../../../createStore';
+import { compareServerVersion, methods } from '../../../utils';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
 // TODO: delete and update

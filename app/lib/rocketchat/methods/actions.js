@@ -1,7 +1,7 @@
-import random from '../../utils/random';
-import EventEmitter from '../../utils/events';
-import fetch from '../../utils/fetch';
-import Navigation from '../Navigation';
+import random from '../../../utils/random';
+import EventEmitter from '../../../utils/events';
+import fetch from '../../../utils/fetch';
+import Navigation from '../../Navigation';
 
 const ACTION_TYPES = {
 	ACTION: 'blockAction',

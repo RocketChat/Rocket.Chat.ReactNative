@@ -1,11 +1,11 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
-import log from '../../utils/log';
-import database from '../database';
-import { Encryption } from '../encryption';
-import { MESSAGE_TYPE_ANY_LOAD } from '../../constants/messageTypeLoad';
-import { generateLoadMoreId } from '../utils';
+import log from '../../../utils/log';
+import database from '../../database';
+import { Encryption } from '../../encryption';
+import { MESSAGE_TYPE_ANY_LOAD } from '../../../constants/messageTypeLoad';
+import { generateLoadMoreId } from '../../utils';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
 

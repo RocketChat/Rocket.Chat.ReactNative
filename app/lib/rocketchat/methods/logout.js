@@ -1,14 +1,14 @@
 import * as FileSystem from 'expo-file-system';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 
-import { getDeviceToken } from '../../notifications/push';
-import { extractHostname } from '../../utils/server';
-import { BASIC_AUTH_KEY } from '../../utils/fetch';
-import database, { getDatabase } from '../database';
-import RocketChat from '../rocketchat';
-import { useSsl } from '../../utils/url';
-import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../encryption/constants';
-import UserPreferences from '../userPreferences';
+import { getDeviceToken } from '../../../notifications/push';
+import { extractHostname } from '../../../utils/server';
+import { BASIC_AUTH_KEY } from '../../../utils/fetch';
+import database, { getDatabase } from '../../database';
+import RocketChat from '../services/rocketchat';
+import { useSsl } from '../../../utils/url';
+import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../../encryption/constants';
+import UserPreferences from '../../userPreferences';
 
 async function removeServerKeys({ server, userId }) {
 	await UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);

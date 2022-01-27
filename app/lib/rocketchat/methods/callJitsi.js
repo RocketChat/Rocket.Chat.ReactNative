@@ -1,6 +1,6 @@
-import reduxStore from '../createStore';
-import Navigation from '../Navigation';
-import { events, logEvent } from '../../utils/log';
+import reduxStore from '../../createStore';
+import Navigation from '../../Navigation';
+import { events, logEvent } from '../../../utils/log';
 
 async function jitsiURL({ room }) {
 	const { settings } = reduxStore.getState();

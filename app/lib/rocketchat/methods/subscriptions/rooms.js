@@ -1,22 +1,22 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 
-import database from '../../database';
+import database from '../../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
-import messagesStatus from '../../../constants/messagesStatus';
-import log from '../../../utils/log';
-import random from '../../../utils/random';
-import store from '../../createStore';
+import messagesStatus from '../../../../constants/messagesStatus';
+import log from '../../../../utils/log';
+import random from '../../../../utils/random';
+import store from '../../../createStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
-import RocketChat from '../../rocketchat';
-import EventEmitter from '../../../utils/events';
-import { removedRoom } from '../../../actions/room';
-import { setUser } from '../../../actions/login';
-import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
-import { Encryption } from '../../encryption';
-import { E2E_MESSAGE_TYPE } from '../../encryption/constants';
+import RocketChat from '../../services/rocketchat';
+import EventEmitter from '../../../../utils/events';
+import { removedRoom } from '../../../../actions/room';
+import { setUser } from '../../../../actions/login';
+import { INAPP_NOTIFICATION_EMITTER } from '../../../../containers/InAppNotification';
+import { Encryption } from '../../../encryption';
+import { E2E_MESSAGE_TYPE } from '../../../encryption/constants';
 
 const removeListener = listener => listener.stop();
 

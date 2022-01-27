@@ -1,11 +1,11 @@
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { compareServerVersion, methods } from '../utils';
-import reduxStore from '../createStore';
-import database from '../database';
-import log from '../../utils/log';
-import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
+import { compareServerVersion, methods } from '../../utils';
+import reduxStore from '../../createStore';
+import database from '../../database';
+import log from '../../../utils/log';
+import { setCustomEmojis as setCustomEmojisAction } from '../../../actions/customEmojis';
 
 const getUpdatedSince = allEmojis => {
 	if (!allEmojis.length) {

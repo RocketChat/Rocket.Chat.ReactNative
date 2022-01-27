@@ -1,8 +1,8 @@
-import { compareServerVersion, methods } from '../utils';
-import reduxStore from '../createStore';
-import database from '../database';
-import log from '../../utils/log';
-import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '../../actions/enterpriseModules';
+import { compareServerVersion, methods } from '../../utils';
+import reduxStore from '../../createStore';
+import database from '../../database';
+import log from '../../../utils/log';
+import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '../../../actions/enterpriseModules';
 
 export const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';
 export const LICENSE_LIVECHAT_ENTERPRISE = 'livechat-enterprise';

@@ -2,16 +2,16 @@ import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 
-import log from '../../../utils/log';
+import log from '../../../../utils/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
-import database from '../../database';
-import reduxStore from '../../createStore';
-import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actions/usersTyping';
-import debounce from '../../../utils/debounce';
-import RocketChat from '../../rocketchat';
-import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
-import { Encryption } from '../../encryption';
+import database from '../../../database';
+import reduxStore from '../../../createStore';
+import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../../actions/usersTyping';
+import debounce from '../../../../utils/debounce';
+import RocketChat from '../../services/rocketchat';
+import { subscribeRoom, unsubscribeRoom } from '../../../../actions/room';
+import { Encryption } from '../../../encryption';
 
 const WINDOW_TIME = 1000;
 

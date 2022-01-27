@@ -1,11 +1,11 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import messagesStatus from '../../constants/messagesStatus';
-import database from '../database';
-import log from '../../utils/log';
-import random from '../../utils/random';
-import { Encryption } from '../encryption';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
+import messagesStatus from '../../../constants/messagesStatus';
+import database from '../../database';
+import log from '../../../utils/log';
+import random from '../../../utils/random';
+import { Encryption } from '../../encryption';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../encryption/constants';
 
 const changeMessageStatus = async (id, tmid, status, message) => {
 	const db = database.active;

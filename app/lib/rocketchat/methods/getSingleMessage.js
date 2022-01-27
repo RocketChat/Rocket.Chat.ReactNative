@@ -1,4 +1,4 @@
-import RocketChat from '../rocketchat';
+import RocketChat from '../services/rocketchat';
 
 const getSingleMessage = messageId =>
 	new Promise(async (resolve, reject) => {

@@ -1,10 +1,10 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import database from '../database';
-import { getMessageById } from '../database/services/Message';
-import { getThreadById } from '../database/services/Thread';
-import log from '../../utils/log';
-import { Encryption } from '../encryption';
+import database from '../../database';
+import { getMessageById } from '../../database/services/Message';
+import { getThreadById } from '../../database/services/Thread';
+import log from '../../../utils/log';
+import { Encryption } from '../../encryption';
 import getSingleMessage from './getSingleMessage';
 
 const buildThreadName = thread => thread.msg || thread?.attachments?.[0]?.title;

@@ -1,5 +1,5 @@
-import database from '../database';
-import log from '../../utils/log';
+import database from '../../database';
+import log from '../../../utils/log';
 import updateMessages from './updateMessages';
 
 const getLastUpdate = async rid => {

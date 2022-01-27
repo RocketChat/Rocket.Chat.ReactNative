@@ -1,11 +1,11 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { compareServerVersion, methods } from '../utils';
-import reduxStore from '../createStore';
-import { setActiveUsers } from '../../actions/activeUsers';
-import { setUser } from '../../actions/login';
-import database from '../database';
+import { compareServerVersion, methods } from '../../utils';
+import reduxStore from '../../createStore';
+import { setActiveUsers } from '../../../actions/activeUsers';
+import { setUser } from '../../../actions/login';
+import database from '../../database';
 
 export function subscribeUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
