@@ -17,7 +17,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import Loading from '../../containers/Loading';
 import random from '../../utils/random';

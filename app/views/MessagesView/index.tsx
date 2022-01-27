@@ -9,7 +9,7 @@ import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import { themes } from '../../constants/colors';

@@ -10,7 +10,7 @@ import { CustomIcon } from '../../lib/Icons';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';

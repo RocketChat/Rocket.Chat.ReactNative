@@ -20,7 +20,7 @@ import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
 import ShareListHeader from './Header';

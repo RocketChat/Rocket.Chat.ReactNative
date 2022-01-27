@@ -12,7 +12,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import Touch from '../../utils/touch';
 import { replyBroadcast as replyBroadcastAction } from '../../actions/messages';
 import database from '../../lib/database';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import Message from '../../containers/message';
 import MessageActions from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';

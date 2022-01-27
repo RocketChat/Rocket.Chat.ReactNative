@@ -5,7 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import debounce from '../../utils/debounce';
 import { avatarURL } from '../../utils/avatar';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import database from '../../lib/database';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';

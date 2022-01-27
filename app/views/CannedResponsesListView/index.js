@@ -14,7 +14,7 @@ import SearchHeader from '../../containers/SearchHeader';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import debounce from '../../utils/debounce';
 import Navigation from '../../lib/Navigation';
 import { goRoom } from '../../utils/goRoom';

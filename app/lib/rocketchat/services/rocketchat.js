@@ -7,58 +7,58 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNFetchBlob from 'rn-fetch-blob';
 import isEmpty from 'lodash/isEmpty';
 
-import defaultSettings from '../constants/settings';
-import log from '../utils/log';
-import { getBundleId, isIOS } from '../utils/deviceInfo';
-import fetch from '../utils/fetch';
-import SSLPinning from '../utils/sslPinning';
-import { encryptionInit } from '../actions/encryption';
-import { loginRequest, setLoginServices, setUser } from '../actions/login';
-import { connectRequest, connectSuccess, disconnect } from '../actions/connect';
-import { shareSelectServer, shareSetSettings, shareSetUser } from '../actions/share';
-import { getDeviceToken } from '../notifications/push';
-import { setActiveUsers } from '../actions/activeUsers';
-import I18n from '../i18n';
-import { twoFactor } from '../utils/twoFactor';
-import { selectServerFailure } from '../actions/server';
-import { useSsl } from '../utils/url';
-import EventEmitter from '../utils/events';
-import { updatePermission } from '../actions/permissions';
-import { TEAM_TYPE } from '../definitions/ITeam';
-import { updateSettings } from '../actions/settings';
-import { compareServerVersion, methods } from './utils';
-import reduxStore from './createStore';
-import database from './database';
-import subscribeRooms from './methods/subscriptions/rooms';
-import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
-import protectedFunction from './methods/helpers/protectedFunction';
-import readMessages from './methods/readMessages';
-import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
-import getRooms from './methods/getRooms';
-import { getPermissions, setPermissions } from './methods/getPermissions';
-import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
+import defaultSettings from '../../../constants/settings';
+import log from '../../../utils/log';
+import { getBundleId, isIOS } from '../../../utils/deviceInfo';
+import fetch from '../../../utils/fetch';
+import SSLPinning from '../../../utils/sslPinning';
+import { encryptionInit } from '../../../actions/encryption';
+import { loginRequest, setLoginServices, setUser } from '../../../actions/login';
+import { connectRequest, connectSuccess, disconnect } from '../../../actions/connect';
+import { shareSelectServer, shareSetSettings, shareSetUser } from '../../../actions/share';
+import { getDeviceToken } from '../../../notifications/push';
+import { setActiveUsers } from '../../../actions/activeUsers';
+import I18n from '../../../i18n';
+import { twoFactor } from '../../../utils/twoFactor';
+import { selectServerFailure } from '../../../actions/server';
+import { useSsl } from '../../../utils/url';
+import EventEmitter from '../../../utils/events';
+import { updatePermission } from '../../../actions/permissions';
+import { TEAM_TYPE } from '../../../definitions/ITeam';
+import { updateSettings } from '../../../actions/settings';
+import { compareServerVersion, methods } from '../../utils';
+import reduxStore from '../../createStore';
+import database from '../../database';
+import subscribeRooms from '../../methods/subscriptions/rooms';
+import getUsersPresence, { getUserPresence, subscribeUsersPresence } from '../../methods/getUsersPresence';
+import protectedFunction from '../../methods/helpers/protectedFunction';
+import readMessages from '../../methods/readMessages';
+import getSettings, { getLoginSettings, setSettings, subscribeSettings } from '../../methods/getSettings';
+import getRooms from '../../methods/getRooms';
+import { getPermissions, setPermissions } from '../../methods/getPermissions';
+import { getCustomEmojis, setCustomEmojis } from '../../methods/getCustomEmojis';
 import {
 	getEnterpriseModules,
 	hasLicense,
 	isOmnichannelModuleAvailable,
 	setEnterpriseModules
-} from './methods/enterpriseModules';
-import getSlashCommands from './methods/getSlashCommands';
-import { getRoles, onRolesChanged, setRoles } from './methods/getRoles';
-import canOpenRoom from './methods/canOpenRoom';
-import triggerBlockAction, { triggerCancel, triggerSubmitView } from './methods/actions';
-import loadMessagesForRoom from './methods/loadMessagesForRoom';
-import loadSurroundingMessages from './methods/loadSurroundingMessages';
-import loadNextMessages from './methods/loadNextMessages';
-import loadMissedMessages from './methods/loadMissedMessages';
-import loadThreadMessages from './methods/loadThreadMessages';
-import sendMessage, { resendMessage } from './methods/sendMessage';
-import { cancelUpload, isUploadActive, sendFileMessage } from './methods/sendFileMessage';
-import callJitsi, { callJitsiWithoutServer } from './methods/callJitsi';
-import logout, { removeServer } from './methods/logout';
-import UserPreferences from './userPreferences';
-import { Encryption } from './encryption';
-import { sanitizeLikeString } from './database/utils';
+} from '../../methods/enterpriseModules';
+import getSlashCommands from '../../methods/getSlashCommands';
+import { getRoles, onRolesChanged, setRoles } from '../../methods/getRoles';
+import canOpenRoom from '../../methods/canOpenRoom';
+import triggerBlockAction, { triggerCancel, triggerSubmitView } from '../../methods/actions';
+import loadMessagesForRoom from '../../methods/loadMessagesForRoom';
+import loadSurroundingMessages from '../../methods/loadSurroundingMessages';
+import loadNextMessages from '../../methods/loadNextMessages';
+import loadMissedMessages from '../../methods/loadMissedMessages';
+import loadThreadMessages from '../../methods/loadThreadMessages';
+import sendMessage, { resendMessage } from '../../methods/sendMessage';
+import { cancelUpload, isUploadActive, sendFileMessage } from '../../methods/sendFileMessage';
+import callJitsi, { callJitsiWithoutServer } from '../../methods/callJitsi';
+import logout, { removeServer } from '../../methods/logout';
+import UserPreferences from '../../userPreferences';
+import { Encryption } from '../../encryption';
+import { sanitizeLikeString } from '../../database/utils';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -242,7 +242,6 @@ const RocketChat = {
 			// The app can't reconnect if reopen interval is 5s while in development
 			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 			this.getSettings();
-
 			this.sdk
 				.connect()
 				.then(() => {
@@ -1082,7 +1081,9 @@ const RocketChat = {
 		});
 		return this.methodCall(method, ...parsedParams);
 	},
-
+	get(method, ...params) {
+		return this.sdk.get(method, ...params);
+	},
 	getUserRoles() {
 		// RC 0.27.0
 		return this.methodCallWrapper('getUserRoles');

@@ -3,7 +3,7 @@ import { Alert, Clipboard, Share } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import database from '../../lib/database';
 import I18n from '../../i18n';
 import log, { logEvent } from '../../utils/log';

@@ -7,7 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import * as List from '../../containers/List';
 import UserItem from '../../presentation/UserItem';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import database from '../../lib/database';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';

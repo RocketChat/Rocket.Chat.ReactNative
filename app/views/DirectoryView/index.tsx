@@ -6,7 +6,7 @@ import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/s
 import { ChatsStackParamList } from '../../stacks/types';
 import * as List from '../../containers/List';
 import Touch from '../../utils/touch';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import DirectoryItem from '../../presentation/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';

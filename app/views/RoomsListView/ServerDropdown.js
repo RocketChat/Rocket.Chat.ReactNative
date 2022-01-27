@@ -9,7 +9,7 @@ import Button from '../../containers/Button';
 import { toggleServerDropdown } from '../../actions/rooms';
 import { selectServerRequest, serverInitAdd } from '../../actions/server';
 import { appStart, ROOT_OUTSIDE } from '../../actions/app';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import ServerItem from '../../presentation/ServerItem';

@@ -13,7 +13,7 @@ import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import styles from './styles';
 
 export const TWO_FACTOR = 'TWO_FACTOR';

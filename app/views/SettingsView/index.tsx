@@ -13,7 +13,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
+import RocketChat from '../../lib/rocketchat/services/rocketchat';
 import { getDeviceModel, getReadableVersion, isAndroid } from '../../utils/deviceInfo';
 import openLink from '../../utils/openLink';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
