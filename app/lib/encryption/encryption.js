@@ -3,10 +3,10 @@ import SimpleCrypto from 'react-native-simple-crypto';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
-import RocketChat from '../rocketchat';
+import RocketChat from '../rocketchat/services/rocketchat';
 import UserPreferences from '../userPreferences';
 import database from '../database';
-import protectedFunction from '../methods/helpers/protectedFunction';
+import protectedFunction from '../rocketchat/methods/helpers/protectedFunction';
 import Deferred from '../../utils/deferred';
 import log from '../../utils/log';
 import store from '../createStore';

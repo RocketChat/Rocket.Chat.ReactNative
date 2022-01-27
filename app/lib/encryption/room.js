@@ -2,7 +2,7 @@ import EJSON from 'ejson';
 import { Base64 } from 'js-base64';
 import SimpleCrypto from 'react-native-simple-crypto';
 
-import RocketChat from '../rocketchat';
+import RocketChat from '../rocketchat/services/rocketchat';
 import Deferred from '../../utils/deferred';
 import debounce from '../../utils/debounce';
 import database from '../database';
