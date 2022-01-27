@@ -1,25 +1,30 @@
-import RocketChat from './rocketchat';
+import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 
-export class SDK {
-	private static instance: SDK = new SDK();
+import reduxStore from '../../createStore';
+import { useSsl } from '../../../utils/url';
+
+class Sdk {
+	private sdk: any;
 
 	constructor() {
-		SDK.instance = this;
-	}
-
-	public static getInstance(): SDK {
-		return SDK.instance;
+		const { server } = reduxStore.getState();
+		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+		return this.sdk;
 	}
 
 	public get(...args: any[]): Promise<unknown> {
-		return RocketChat.get(...args);
+		return this.sdk.get(...args);
 	}
 
 	public post(...args: any[]): Promise<unknown> {
-		return RocketChat.post(...args);
+		return this.sdk.post(...args);
 	}
 
 	public methodCallWrapper(...args: any[]): Promise<unknown> {
-		return RocketChat.methodCall(...args);
+		return this.sdk.methodCall(...args);
 	}
 }
+
+const sdk = new Sdk();
+
+export default sdk;
