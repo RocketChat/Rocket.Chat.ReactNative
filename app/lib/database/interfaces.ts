@@ -1,37 +1,41 @@
 import { Database, Collection } from '@nozbe/watermelondb';
 
-import { CUSTOM_EMOJIS_TABLE } from './model/CustomEmoji';
-import { FREQUENTLY_USED_EMOJIS_TABLE } from './model/FrequentlyUsedEmoji';
-import { MESSAGES_TABLE } from './model/Message';
-import { PERMISSIONS_TABLE } from './model/Permission';
-import { ROLES_TABLE } from './model/Role';
-import { ROOMS_TABLE } from './model/Room';
-import { SETTINGS_TABLE } from './model/Setting';
-import { SLASH_COMMANDS_TABLE } from './model/SlashCommand';
-import { SUBSCRIPTIONS_TABLE } from './model/Subscription';
-import { THREADS_TABLE } from './model/Thread';
-import { THREAD_MESSAGES_TABLE } from './model/ThreadMessage';
-import { UPLOADS_TABLE } from './model/Upload';
-import { USERS_TABLE } from './model/User';
-import { SERVERS_HISTORY_TABLE } from './model/ServersHistory';
-import { SERVERS_TABLE } from './model/servers/Server';
-import { LOGGED_USERS_TABLE } from './model/servers/User';
-import { TSubscriptionModel } from '../../definitions/ISubscription';
-import { TRoomModel } from '../../definitions/IRoom';
-import { TMessageModel } from '../../definitions/IMessage';
-import { TThreadModel } from '../../definitions/IThread';
-import { TThreadMessageModel } from '../../definitions/IThreadMessage';
-import { TCustomEmojiModel } from '../../definitions/ICustomEmoji';
-import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
-import { TUploadModel } from '../../definitions/IUpload';
-import { TSettingsModel } from '../../definitions/ISettings';
-import { TRoleModel } from '../../definitions/IRole';
-import { TPermissionModel } from '../../definitions/IPermission';
-import { TSlashCommandModel } from '../../definitions/ISlashCommand';
-import { TUserModel } from '../../definitions/IUser';
-import { TServerModel } from '../../definitions/IServer';
-import { TLoggedUserModel } from '../../definitions/ILoggedUser';
-import { TServerHistoryModel } from '../../definitions/IServerHistory';
+import {
+	CUSTOM_EMOJIS_TABLE,
+	FREQUENTLY_USED_EMOJIS_TABLE,
+	MESSAGES_TABLE,
+	PERMISSIONS_TABLE,
+	ROLES_TABLE,
+	ROOMS_TABLE,
+	SETTINGS_TABLE,
+	SLASH_COMMANDS_TABLE,
+	SUBSCRIPTIONS_TABLE,
+	THREADS_TABLE,
+	THREAD_MESSAGES_TABLE,
+	UPLOADS_TABLE,
+	USERS_TABLE,
+	SERVERS_HISTORY_TABLE,
+	SERVERS_TABLE,
+	LOGGED_USERS_TABLE
+} from './model';
+import {
+	TSubscriptionModel,
+	TRoomModel,
+	TMessageModel,
+	TThreadModel,
+	TThreadMessageModel,
+	TCustomEmojiModel,
+	TFrequentlyUsedEmojiModel,
+	TUploadModel,
+	TSettingsModel,
+	TRoleModel,
+	TPermissionModel,
+	TSlashCommandModel,
+	TUserModel,
+	TServerModel,
+	TLoggedUserModel,
+	TServerHistoryModel
+} from '../../definitions';
 
 export type TAppDatabaseNames =
 	| typeof SUBSCRIPTIONS_TABLE

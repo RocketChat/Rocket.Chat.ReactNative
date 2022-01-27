@@ -64,14 +64,7 @@ const styles = StyleSheet.create({
 
 const keyExtractor = (item: any) => item?.id || item;
 
-const DEFAULT_EMOJIS = [
-	'clap',
-	'+1',
-	'heart_eyes',
-	'grinning',
-	'thinking_face',
-	'smiley'
-] as unknown as TFrequentlyUsedEmojiModel[];
+const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face', 'smiley'];
 
 const HeaderItem = React.memo(({ item, onReaction, server, theme }: THeaderItem) => (
 	<Button
@@ -98,14 +91,14 @@ const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
 ));
 
 const Header = React.memo(({ handleReaction, server, message, isMasterDetail, theme }: IHeader) => {
-	const [items, setItems] = useState<TFrequentlyUsedEmojiModel[]>([]);
+	const [items, setItems] = useState<(TFrequentlyUsedEmojiModel | string)[]>([]);
 	const { width, height }: any = useDimensions();
 
 	const setEmojis = async () => {
 		try {
 			const db = database.active;
 			const freqEmojiCollection = db.get('frequently_used_emojis');
-			let freqEmojis = await freqEmojiCollection.query().fetch();
+			let freqEmojis: (TFrequentlyUsedEmojiModel | string)[] = await freqEmojiCollection.query().fetch();
 
 			const isLandscape = width > height;
 			const size = (isLandscape || isMasterDetail ? width / 2 : width) - CONTAINER_MARGIN * 2;

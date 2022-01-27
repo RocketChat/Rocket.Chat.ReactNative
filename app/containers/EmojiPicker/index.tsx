@@ -14,7 +14,6 @@ import database from '../../lib/database';
 import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
-import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
@@ -37,7 +36,7 @@ interface IEmojiPickerProps {
 }
 
 interface IEmojiPickerState {
-	frequentlyUsed: TFrequentlyUsedEmojiModel[];
+	frequentlyUsed: (string | { content?: string; extension?: string; isCustom: boolean })[];
 	customEmojis: any;
 	show: boolean;
 	width: number | null;
@@ -133,8 +132,8 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 	updateFrequentlyUsed = async () => {
 		const db = database.active;
 		const frequentlyUsedRecords = await db.get('frequently_used_emojis').query().fetch();
-		let frequentlyUsed: any[] = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
-		frequentlyUsed = frequentlyUsed.map((item: TFrequentlyUsedEmojiModel) => {
+		const frequentlyUsedOrdered = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
+		const frequentlyUsed = frequentlyUsedOrdered.map(item => {
 			if (item.isCustom) {
 				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
 			}

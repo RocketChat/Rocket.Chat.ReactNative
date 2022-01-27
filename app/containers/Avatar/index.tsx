@@ -1,18 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import { TSubscriptionModel } from '../../definitions/ISubscription';
+import { TSubscriptionModel, TUserModel } from '../../definitions';
 import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 
 class AvatarContainer extends React.Component<IAvatar, any> {
 	private mounted: boolean;
 
-	private subscription: any;
+	private subscription?: Subscription;
 
 	static defaultProps = {
 		text: '',
@@ -70,8 +70,7 @@ class AvatarContainer extends React.Component<IAvatar, any> {
 		}
 
 		if (record) {
-			// TODO: Refactor this
-			const observable = record.observe() as Observable<TSubscriptionModel>;
+			const observable = record.observe() as Observable<TSubscriptionModel | TUserModel>;
 			this.subscription = observable.subscribe(r => {
 				const { avatarETag } = r;
 				if (this.mounted) {
