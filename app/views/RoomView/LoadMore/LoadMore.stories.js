@@ -17,7 +17,7 @@ import LoadMore from './index';
 const stories = storiesOf('LoadMore', module);
 
 // FIXME: for some reason, this promise never resolves on Storybook (it works on the app, so maybe the issue isn't on the component)
-const load = () => new Promise(res => setTimeout(res, 1000));
+const load = () => new Promise(res => setTimeout(res, 0));
 
 stories.add('basic', () => (
 	<>

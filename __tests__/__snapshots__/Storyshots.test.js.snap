@@ -47485,24 +47485,26 @@ exports[`Storyshots Message With audio 1`] = `
                     }
                   }
                 >
-                  <ActivityIndicator
-                    animating={true}
-                    color="#9ca2a8"
-                    hidesWhenStopped={true}
-                    size="small"
+                  <Text
+                    allowFontScaling={false}
                     style={
                       Array [
                         Object {
-                          "alignItems": "center",
-                          "backgroundColor": "transparent",
-                          "marginHorizontal": 10,
+                          "color": "#1d74f5",
+                          "fontSize": 36,
                         },
+                        undefined,
                         Object {
-                          "marginHorizontal": 8,
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
                         },
+                        Object {},
                       ]
                     }
-                  />
+                  >
+                    
+                  </Text>
                 </View>
                 <RNCSlider
                   animateTransitions={true}
@@ -47850,24 +47852,26 @@ exports[`Storyshots Message With audio 1`] = `
                     }
                   }
                 >
-                  <ActivityIndicator
-                    animating={true}
-                    color="#9ca2a8"
-                    hidesWhenStopped={true}
-                    size="small"
+                  <Text
+                    allowFontScaling={false}
                     style={
                       Array [
                         Object {
-                          "alignItems": "center",
-                          "backgroundColor": "transparent",
-                          "marginHorizontal": 10,
+                          "color": "#1d74f5",
+                          "fontSize": 36,
                         },
+                        undefined,
                         Object {
-                          "marginHorizontal": 8,
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
                         },
+                        Object {},
                       ]
                     }
-                  />
+                  >
+                    
+                  </Text>
                 </View>
                 <RNCSlider
                   animateTransitions={true}
@@ -48077,24 +48081,26 @@ exports[`Storyshots Message With audio 1`] = `
                     }
                   }
                 >
-                  <ActivityIndicator
-                    animating={true}
-                    color="#9ca2a8"
-                    hidesWhenStopped={true}
-                    size="small"
+                  <Text
+                    allowFontScaling={false}
                     style={
                       Array [
                         Object {
-                          "alignItems": "center",
-                          "backgroundColor": "transparent",
-                          "marginHorizontal": 10,
+                          "color": "#1d74f5",
+                          "fontSize": 36,
                         },
+                        undefined,
                         Object {
-                          "marginHorizontal": 8,
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
                         },
+                        Object {},
                       ]
                     }
-                  />
+                  >
+                    
+                  </Text>
                 </View>
                 <RNCSlider
                   animateTransitions={true}
@@ -48259,24 +48265,26 @@ exports[`Storyshots Message With audio 1`] = `
                     }
                   }
                 >
-                  <ActivityIndicator
-                    animating={true}
-                    color="#9ca2a8"
-                    hidesWhenStopped={true}
-                    size="small"
+                  <Text
+                    allowFontScaling={false}
                     style={
                       Array [
                         Object {
-                          "alignItems": "center",
-                          "backgroundColor": "transparent",
-                          "marginHorizontal": 10,
+                          "color": "#1d74f5",
+                          "fontSize": 36,
                         },
+                        undefined,
                         Object {
-                          "marginHorizontal": 8,
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
                         },
+                        Object {},
                       ]
                     }
-                  />
+                  >
+                    
+                  </Text>
                 </View>
                 <RNCSlider
                   animateTransitions={true}
