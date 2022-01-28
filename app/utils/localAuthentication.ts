@@ -1,5 +1,4 @@
 import * as LocalAuthentication from 'expo-local-authentication';
-import moment from 'moment';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-community/async-storage';
 import { sha256 } from 'js-sha256';
@@ -7,6 +6,7 @@ import { sha256 } from 'js-sha256';
 import UserPreferences from '../lib/userPreferences';
 import store from '../lib/createStore';
 import database from '../lib/database';
+import RocketChat from '../lib/rocketchat';
 import {
 	ATTEMPTS_KEY,
 	CHANGE_PASSCODE_EMITTER,
@@ -21,6 +21,8 @@ import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
 export const saveLastLocalAuthenticationSession = async (server: string, serverRecord?: TServerModel): Promise<void> => {
+	const timesync: number = (await RocketChat.getServerTimeSync(server)) ?? 0;
+
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 	await serversDB.write(async () => {
@@ -29,7 +31,7 @@ export const saveLastLocalAuthenticationSession = async (server: string, serverR
 				serverRecord = (await serversCollection.find(server)) as TServerModel;
 			}
 			await serverRecord.update(record => {
-				record.lastLocalAuthenticatedSession = new Date();
+				record.lastLocalAuthenticatedSession = new Date(timesync);
 			});
 		} catch (e) {
 			// Do nothing
@@ -128,12 +130,19 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set
 		if (!result?.newPasscode) {
+			// Get time from server
+			const timesync: number | null = await RocketChat.getServerTimeSync(server);
+
 			// diff to last authenticated session
-			const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
+			let diffToLastSession = -1;
+			if (timesync) {
+				diffToLastSession = Math.round((timesync - serverRecord?.lastLocalAuthenticatedSession.getTime()) / 1000);
+			}
 
 			// if last authenticated session is older than configured auto lock time, authentication is required
-			// check if diffToLastSession is negative to prevent bypass local time, just changing the mobile date or time
-			if (diffToLastSession >= serverRecord.autoLockTime! || diffToLastSession < 0) {
+			// check if diffToLastSession is negative
+			// check if timesync is truly, if isn't will show always the modal
+			if (!timesync || diffToLastSession < 0 || (serverRecord?.autoLockTime && diffToLastSession >= serverRecord.autoLockTime)) {
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
 
