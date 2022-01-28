@@ -1,9 +1,10 @@
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 
-import reduxStore from '../createStore';
-import { useSsl } from '../../utils/url';
+import reduxStore from '../../createStore';
+import { useSsl } from '../../../utils/url';
 
 class Sdk {
+	// sdk: RocketChatClient
 	private sdk: any;
 
 	constructor() {

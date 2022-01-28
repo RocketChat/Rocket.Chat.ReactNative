@@ -1081,9 +1081,6 @@ const RocketChat = {
 		});
 		return this.methodCall(method, ...parsedParams);
 	},
-	get(method, ...params) {
-		return this.sdk.get(method, ...params);
-	},
 	getUserRoles() {
 		// RC 0.27.0
 		return this.methodCallWrapper('getUserRoles');
