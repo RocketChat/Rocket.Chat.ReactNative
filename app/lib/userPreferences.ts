@@ -12,9 +12,9 @@ class UserPreferences {
 		this.mmkv = MMKV;
 	}
 
-	getString(key: string): string | null | undefined {
+	getString(key: string): string | null {
 		try {
-			return this.mmkv.getString(key);
+			return this.mmkv.getString(key) || null;
 		} catch {
 			return null;
 		}
@@ -24,9 +24,9 @@ class UserPreferences {
 		return this.mmkv.setString(key, value);
 	}
 
-	getBool(key: string): boolean | null | undefined {
+	getBool(key: string): boolean | null {
 		try {
-			return this.mmkv.getBool(key);
+			return this.mmkv.getBool(key) || null;
 		} catch {
 			return null;
 		}
@@ -36,9 +36,9 @@ class UserPreferences {
 		return this.mmkv.setBool(key, value);
 	}
 
-	getMap(key: string): object | null | undefined {
+	getMap(key: string): object | null {
 		try {
-			return this.mmkv.getMap(key);
+			return this.mmkv.getMap(key) || null;
 		} catch {
 			return null;
 		}
