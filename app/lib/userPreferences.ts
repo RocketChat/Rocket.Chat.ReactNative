@@ -1,10 +1,17 @@
-import MMKVStorage from 'react-native-mmkv-storage';
+import MMKVStorage, { useMMKVStorage } from 'react-native-mmkv-storage';
 
 const MMKV = new MMKVStorage.Loader()
 	// MODES.MULTI_PROCESS = ACCESSIBLE BY APP GROUP (iOS)
 	.setProcessingMode(MMKVStorage.MODES.MULTI_PROCESS)
 	.withEncryption()
 	.initialize();
+
+type TUseUserPreferencesReturn = [string | null, (value: string | ((prevValue: string) => string)) => void];
+
+export const useUserPreferences = (key: string, defaultValue?: string): TUseUserPreferencesReturn => {
+	const [value, setValue] = useMMKVStorage(key, MMKV, defaultValue);
+	return [value, setValue];
+};
 
 class UserPreferences {
 	private mmkv: MMKVStorage.API;
