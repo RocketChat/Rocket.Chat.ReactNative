@@ -1,7 +1,9 @@
 import database from '../database';
 import log from '../../utils/log';
+import { ISubscription } from '../../definitions';
+import { IRocketChatThis } from '../../definitions/IRocketChat';
 
-export default async function readMessages(rid, ls, updateLastOpen = false) {
+export default async function readMessages(this: IRocketChatThis, rid: string, ls: Date, updateLastOpen = false): Promise<void> {
 	try {
 		const db = database.active;
 		const subscription = await db.get('subscriptions').find(rid);
@@ -11,7 +13,7 @@ export default async function readMessages(rid, ls, updateLastOpen = false) {
 
 		await db.action(async () => {
 			try {
-				await subscription.update(s => {
+				await subscription.update((s: ISubscription) => {
 					s.open = true;
 					s.alert = false;
 					s.unread = 0;
