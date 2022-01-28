@@ -86,12 +86,11 @@ export default class Root extends React.Component<{}, IState> {
 			this.initCrashReport();
 		}
 		const { width, height, scale, fontScale } = Dimensions.get('window');
+		const theme = UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference;
+		this.setTheme(theme);
 		this.state = {
-			theme: defaultTheme(),
-			themePreferences: {
-				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
-				darkLevel: 'black'
-			},
+			theme: theme.currentTheme !== 'automatic' ? theme.currentTheme : defaultTheme(),
+			themePreferences: theme,
 			width,
 			height,
 			scale,
@@ -142,9 +141,6 @@ export default class Root extends React.Component<{}, IState> {
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 			return;
 		}
-
-		const theme = UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference;
-		this.setTheme(theme);
 
 		// Open app from app icon
 		store.dispatch(appInit());
