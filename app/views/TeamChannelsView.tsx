@@ -1,36 +1,36 @@
+import { Q } from '@nozbe/watermelondb';
+import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { Alert, FlatList, Keyboard } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
-import { Dispatch } from 'redux';
-import { Q } from '@nozbe/watermelondb';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
-import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 
-import StatusBar from '../containers/StatusBar';
-import RoomHeader from '../containers/RoomHeader';
-import { withTheme } from '../theme';
-import log, { events, logEvent } from '../utils/log';
-import database from '../lib/database';
-import { getUserSelector } from '../selectors/login';
+import { deleteRoom } from '../actions/room';
+import { themes } from '../constants/colors';
+import { withActionSheet } from '../containers/ActionSheet';
+import ActivityIndicator from '../containers/ActivityIndicator';
+import BackgroundContainer from '../containers/BackgroundContainer';
 import { getHeaderTitlePosition } from '../containers/Header';
 import * as HeaderButton from '../containers/HeaderButton';
-import BackgroundContainer from '../containers/BackgroundContainer';
+import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
-import ActivityIndicator from '../containers/ActivityIndicator';
 import SearchHeader from '../containers/SearchHeader';
-import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
-import RocketChat from '../lib/rocketchat';
+import StatusBar from '../containers/StatusBar';
+import { IApplicationState, IBaseScreen } from '../definitions';
 import { withDimensions } from '../dimensions';
-import { isIOS } from '../utils/deviceInfo';
-import debounce from '../utils/debounce';
-import { showErrorAlert } from '../utils/info';
-import { goRoom } from '../utils/goRoom';
 import I18n from '../i18n';
-import { withActionSheet } from '../containers/ActionSheet';
-import { deleteRoom as deleteRoomAction } from '../actions/room';
+import database from '../lib/database';
 import { CustomIcon } from '../lib/Icons';
-import { themes } from '../constants/colors';
+import RocketChat from '../lib/rocketchat';
+import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
+import { getUserSelector } from '../selectors/login';
+import { ChatsStackParamList } from '../stacks/types';
+import { withTheme } from '../theme';
+import debounce from '../utils/debounce';
+import { isIOS } from '../utils/deviceInfo';
+import { goRoom } from '../utils/goRoom';
+import { showErrorAlert } from '../utils/info';
+import log, { events, logEvent } from '../utils/log';
 
 const API_FETCH_COUNT = 25;
 const PERMISSION_DELETE_C = 'delete-c';
@@ -78,9 +78,11 @@ interface ITeamChannelsViewState {
 	showCreate: boolean;
 }
 
-interface ITeamChannelsViewProps {
-	route: RouteProp<{ TeamChannelsView: { teamId: string } }, 'TeamChannelsView'>;
+type IProps = Omit<IBaseScreen<ChatsStackParamList, 'TeamChannelsView'>, 'navigation'> & {
 	navigation: StackNavigationProp<any, 'TeamChannelsView'>;
+};
+
+interface ITeamChannelsViewProps extends IProps {
 	isMasterDetail: boolean;
 	insets: EdgeInsets;
 	theme: string;
@@ -93,7 +95,6 @@ interface ITeamChannelsViewProps {
 	deleteCPermission: string[];
 	deletePPermission: string[];
 	showActionSheet: (options: any) => void;
-	deleteRoom: (rid: string, t: string) => void;
 	showAvatar: boolean;
 	displayMode: string;
 }
@@ -424,7 +425,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 	delete = (item: IItem) => {
 		logEvent(events.TC_DELETE_ROOM);
-		const { deleteRoom } = this.props;
+		const { dispatch } = this.props;
 
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
@@ -437,7 +438,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => deleteRoom(item._id, item.t)
+					onPress: () => dispatch(deleteRoom(item._id, item.t))
 				}
 			],
 			{ cancelable: false }
@@ -576,7 +577,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
@@ -591,11 +592,4 @@ const mapStateToProps = (state: any) => ({
 	displayMode: state.sortPreferences.displayMode
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	deleteRoom: (rid: string, t: string) => dispatch(deleteRoomAction(rid, t))
-});
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(withDimensions(withSafeAreaInsets(withTheme(withActionSheet(TeamChannelsView)))));
+export default connect(mapStateToProps)(withDimensions(withSafeAreaInsets(withTheme(withActionSheet(TeamChannelsView)))));

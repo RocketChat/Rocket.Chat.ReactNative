@@ -1,18 +1,26 @@
+import { TActionInviteLinks } from '../actions/inviteLinks';
 import { INVITE_LINKS } from '../actions/actionsTypes';
 
-const initialState = {
+export type TInvite = { url: string; expires: string; maxUses: number; uses: number; [x: string]: any };
+
+export interface IInviteLinks {
+	token: string;
+	days: number;
+	maxUses: number;
+	invite: TInvite;
+}
+
+export const initialState: IInviteLinks = {
 	token: '',
 	days: 1,
 	maxUses: 0,
-	invite: {}
+	invite: { url: '', expires: '', maxUses: 0, uses: 0 }
 };
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: TActionInviteLinks): IInviteLinks => {
 	switch (action.type) {
 		case INVITE_LINKS.SET_TOKEN:
-			return {
-				token: action.token
-			};
+			return { ...state, token: action.token };
 		case INVITE_LINKS.SET_PARAMS:
 			return {
 				...state,
