@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-import RocketChat from '../../lib/rocketchat/services/rocketchat';
+import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';

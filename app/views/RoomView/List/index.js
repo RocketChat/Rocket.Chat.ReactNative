@@ -7,7 +7,7 @@ import { dequal } from 'dequal';
 import { Value, event } from 'react-native-reanimated';
 
 import database from '../../../lib/database';
-import RocketChat from '../../../lib/rocketchat/services/rocketchat';
+import RocketChat from '../../../lib/rocketchat';
 import log from '../../../utils/log';
 import EmptyRoom from '../EmptyRoom';
 import { animateNextTransition } from '../../../utils/layoutAnimation';

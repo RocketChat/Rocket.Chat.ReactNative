@@ -10,7 +10,7 @@ import { SERVER } from '../actions/actionsTypes';
 import { selectServerFailure, selectServerRequest, selectServerSuccess, serverFailure } from '../actions/server';
 import { clearSettings } from '../actions/settings';
 import { setUser } from '../actions/login';
-import RocketChat from '../lib/rocketchat/services/rocketchat';
+import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
 import I18n from '../i18n';

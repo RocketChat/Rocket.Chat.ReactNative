@@ -7,7 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import * as List from '../containers/List';
 import database from '../lib/database';
-import RocketChat from '../lib/rocketchat/services/rocketchat';
+import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import log, { events, logEvent } from '../utils/log';
 import SearchBox from '../containers/SearchBox';

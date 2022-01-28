@@ -8,7 +8,7 @@ import Button from '../containers/Button';
 import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
 import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat/services/rocketchat';
+import RocketChat from '../lib/rocketchat';
 import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';

@@ -9,7 +9,7 @@ import { dequal } from 'dequal';
 import * as List from '../containers/List';
 import Touch from '../utils/touch';
 import database from '../lib/database';
-import RocketChat from '../lib/rocketchat/services/rocketchat';
+import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import I18n from '../i18n';
 import log, { events, logEvent } from '../utils/log';

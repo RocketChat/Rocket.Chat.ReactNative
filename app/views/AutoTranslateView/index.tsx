@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Switch } from 'react-native';
 import { RouteProp } from '@react-navigation/core';
 
 import { ChatsStackParamList } from '../../stacks/types';
-import RocketChat from '../../lib/rocketchat/services/rocketchat';
+import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';

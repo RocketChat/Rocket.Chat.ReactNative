@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import TextInput from '../../containers/TextInput';
-import RocketChat from '../../lib/rocketchat/services/rocketchat';
+import RocketChat from '../../lib/rocketchat';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
 

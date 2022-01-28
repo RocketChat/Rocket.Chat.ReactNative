@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../../lib/database';
-import RocketChat from '../../lib/rocketchat/services/rocketchat';
+import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';

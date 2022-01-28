@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import RNRestart from 'react-native-restart';
 import { Dispatch } from 'redux';
 
-import RocketChat from '../../lib/rocketchat/services/rocketchat';
+import RocketChat from '../../lib/rocketchat';
 import I18n, { LANGUAGES, isRTL } from '../../i18n';
 import { showErrorAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';

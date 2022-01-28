@@ -16,7 +16,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
-import RocketChat from '../../lib/rocketchat/services/rocketchat';
+import RocketChat from '../../lib/rocketchat';
 import RCTextInput from '../../containers/TextInput';
 import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';

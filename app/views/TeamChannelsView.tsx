@@ -21,7 +21,7 @@ import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../lib/Icons';
-import RocketChat from '../lib/rocketchat/services/rocketchat';
+import RocketChat from '../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';

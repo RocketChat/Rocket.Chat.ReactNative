@@ -16,7 +16,7 @@ import { getUserSelector } from '../selectors/login';
 import { PADDING_HORIZONTAL } from '../containers/List/constants';
 import { themes } from '../constants/colors';
 import { Encryption } from '../lib/encryption';
-import RocketChat from '../lib/rocketchat/services/rocketchat';
+import RocketChat from '../lib/rocketchat';
 import { logout as logoutAction } from '../actions/login';
 import { showConfirmationAlert, showErrorAlert } from '../utils/info';
 import EventEmitter from '../utils/events';

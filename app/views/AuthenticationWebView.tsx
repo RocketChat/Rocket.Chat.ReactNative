@@ -7,7 +7,7 @@ import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import { RouteProp } from '@react-navigation/core';
 
 import { OutsideModalParamList } from '../stacks/types';
-import RocketChat from '../lib/rocketchat/services/rocketchat';
+import RocketChat from '../lib/rocketchat';
 import { isIOS } from '../utils/deviceInfo';
 import StatusBar from '../containers/StatusBar';
 import ActivityIndicator from '../containers/ActivityIndicator';

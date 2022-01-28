@@ -12,14 +12,14 @@ import Database from '@nozbe/watermelondb/Database';
 
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat/services/rocketchat';
+import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import StatusBar from '../../containers/StatusBar';
-import buildMessage from '../../lib/rocketchat/methods/helpers/buildMessage';
+import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
-import protectedFunction from '../../lib/rocketchat/methods/helpers/protectedFunction';
+import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';

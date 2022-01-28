@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import debounce from '../../utils/debounce';
 import { avatarURL } from '../../utils/avatar';
-import RocketChat from '../../lib/rocketchat/services/rocketchat';
+import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../constants/colors';

@@ -7,7 +7,7 @@ import { Encryption } from '../lib/encryption';
 import Navigation from '../lib/Navigation';
 import { E2E_BANNER_TYPE, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
 import database from '../lib/database';
-import RocketChat from '../lib/rocketchat/services/rocketchat';
+import RocketChat from '../lib/rocketchat';
 import UserPreferences from '../lib/userPreferences';
 import { getUserSelector } from '../selectors/login';
 import { showErrorAlert } from '../utils/info';

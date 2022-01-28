@@ -14,7 +14,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IPreferences } from '../definitions';
 import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat/services/rocketchat';
+import RocketChat from '../lib/rocketchat';
 import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import log, { events, logEvent } from '../utils/log';

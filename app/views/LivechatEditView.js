@@ -8,7 +8,7 @@ import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import TextInput from '../containers/TextInput';
 import KeyboardView from '../presentation/KeyboardView';
-import RocketChat from '../lib/rocketchat/services/rocketchat';
+import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 
 import { LISTENER } from '../containers/Toast';

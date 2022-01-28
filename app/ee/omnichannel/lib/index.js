@@ -1,4 +1,4 @@
-import RocketChat from '../../../lib/rocketchat/services/rocketchat';
+import RocketChat from '../../../lib/rocketchat';
 import EventEmitter from '../../../utils/events';
 import subscribeInquiry from './subscriptions/inquiry';
 

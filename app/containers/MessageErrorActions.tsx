@@ -1,8 +1,8 @@
 import { forwardRef, useImperativeHandle } from 'react';
 
-import RocketChat from '../lib/rocketchat/services/rocketchat';
+import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
-import protectedFunction from '../lib/rocketchat/methods/helpers/protectedFunction';
+import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import { useActionSheet } from './ActionSheet';
 import I18n from '../i18n';
 import log from '../utils/log';

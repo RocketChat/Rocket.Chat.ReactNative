@@ -1,4 +1,4 @@
-import RocketChat from '../../../lib/rocketchat/services/rocketchat';
+import RocketChat from '../../../lib/rocketchat';
 
 const getMessages = room => {
 	if (room.lastOpen) {
