@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
-		"test": "jest --forceExit",
+		"test": "jest",
 		"test-update": "jest --updateSnapshot",
 		"lint": "eslint . && tsc",
 		"prettier-lint": "prettier --write . && yarn lint",
