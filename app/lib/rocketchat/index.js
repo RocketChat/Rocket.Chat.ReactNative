@@ -635,27 +635,6 @@ const RocketChat = {
 		return this.sdk.post('users.removeOtherTokens', { userId });
 	},
 	removeServer,
-	// async clearCache({ server }) {
-	// 	try {
-	// 		const serversDB = database.servers;
-	// 		await serversDB.action(async () => {
-	// 			const serverCollection = serversDB.get('servers');
-	// 			const serverRecord = await serverCollection.find(server);
-	// 			await serverRecord.update(s => {
-	// 				s.roomsUpdatedAt = null;
-	// 			});
-	// 		});
-	// 	} catch (e) {
-	// 		// Do nothing
-	// 	}
-
-	// 	try {
-	// 		const db = database.active;
-	// 		await db.action(() => db.unsafeResetDatabase());
-	// 	} catch (e) {
-	// 		// Do nothing
-	// 	}
-	// },
 	registerPushToken() {
 		return new Promise(async resolve => {
 			const token = getDeviceToken();
@@ -965,31 +944,6 @@ const RocketChat = {
 	reportMessage(messageId) {
 		return this.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 	},
-	async getRoom(rid) {
-		try {
-			const db = database.active;
-			const room = await db.get('subscriptions').find(rid);
-			return Promise.resolve(room);
-		} catch (error) {
-			return Promise.reject(new Error('Room not found'));
-		}
-	},
-	// async getPermalinkMessage(message) {
-	// 	let room;
-	// 	try {
-	// 		room = await RocketChat.getRoom(message.subscription.id);
-	// 	} catch (e) {
-	// 		log(e);
-	// 		return null;
-	// 	}
-	// 	const { server } = reduxStore.getState().server;
-	// 	const roomType = {
-	// 		p: 'group',
-	// 		c: 'channel',
-	// 		d: 'direct'
-	// 	}[room.t];
-	// 	return `${server}/${roomType}/${this.isGroupChat(room) ? room.rid : room.name}?msg=${message.id}`;
-	// },
 	getPermalinkChannel(channel) {
 		const { server } = reduxStore.getState().server;
 		const roomType = {
@@ -1212,9 +1166,6 @@ const RocketChat = {
 		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
 		return !isUnread;
 	},
-	// isGroupChat(room) {
-	// 	return (room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2);
-	// },
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {
 			// RC 0.49.0
