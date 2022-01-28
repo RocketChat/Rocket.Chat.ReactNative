@@ -1,15 +1,14 @@
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import Rocketchat from '@rocket.chat/sdk';
 
 import reduxStore from '../../createStore';
 import { useSsl } from '../../../utils/url';
 
 class Sdk {
-	// sdk: RocketChatClient
-	private sdk: any;
+	private sdk: typeof Rocketchat;
 
 	constructor() {
 		const { server } = reduxStore.getState();
-		this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+		this.sdk = new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 		return this.sdk;
 	}
 
