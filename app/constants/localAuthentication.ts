@@ -1,6 +1,7 @@
 export const PASSCODE_KEY = 'kPasscode';
 export const LOCKED_OUT_TIMER_KEY = 'kLockedOutTimer';
 export const ATTEMPTS_KEY = 'kAttempts';
+export const BIOMETRY_ENABLED_KEY = 'kBiometryEnabled';
 
 export const LOCAL_AUTHENTICATE_EMITTER = 'LOCAL_AUTHENTICATE';
 export const CHANGE_PASSCODE_EMITTER = 'CHANGE_PASSCODE';
