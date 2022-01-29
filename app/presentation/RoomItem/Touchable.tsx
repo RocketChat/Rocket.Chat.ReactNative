@@ -2,9 +2,10 @@ import React from 'react';
 import { Animated } from 'react-native';
 import { LongPressGestureHandler, PanGestureHandler, State } from 'react-native-gesture-handler';
 
+import { showConfirmationAlert } from '../../utils/info';
 import Touch from '../../utils/touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
-import { isRTL } from '../../i18n';
+import I18n, { isRTL } from '../../i18n';
 import { themes } from '../../constants/colors';
 import { LeftActions, RightActions } from './Actions';
 
@@ -197,8 +198,20 @@ class Touchable extends React.Component<ITouchableProps, any> {
 		this.close();
 	};
 
+	getRoomType = (type: string) => {
+		if (type === 'c') return 'channel';
+		if (type === 'd') return 'discussion';
+		if (type === 'p') return 'group';
+	};
+
 	onHidePress = () => {
-		this.hideChannel();
+		const { type } = this.props;
+		const roomType = this.getRoomType(type);
+		showConfirmationAlert({
+			message: I18n.t(`Are_you_sure_you_want_to_hide_the_${roomType}`),
+			confirmationText: 'Yes, hide it!',
+			onPress: this.hideChannel
+		});
 		this.close();
 	};
 
