@@ -11,7 +11,7 @@ import Markdown from '../../containers/markdown';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import RCTextInput from '../../containers/TextInput';
-import { IApplicationState, IBaseScreen } from '../../definitions';
+import { IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { TInvite } from '../../reducers/inviteLinks';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -120,8 +120,8 @@ class InviteUsersView extends React.Component<IInviteUsersViewProps, any> {
 	}
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-	timeDateFormat: state.settings.Message_TimeAndDateFormat as string,
+const mapStateToProps = (state: any) => ({
+	timeDateFormat: state.settings.Message_TimeAndDateFormat,
 	invite: state.inviteLinks.invite
 });
 
