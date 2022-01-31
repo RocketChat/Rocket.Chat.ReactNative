@@ -1,7 +1,7 @@
 import log from '../../../utils/log';
 import { IMessage, ISubscription } from '../../../definitions';
 import reduxStore from '../../createStore';
-import RocketChat from '../../rocketchat';
+import getRoom from './getRoom';
 import isGroupChat from './isGroupChat';
 
 type TRoomType = 'p' | 'c' | 'd';
@@ -9,7 +9,7 @@ type TRoomType = 'p' | 'c' | 'd';
 export default async function getPermalinkMessage(message: IMessage): Promise<string | null> {
 	let room: ISubscription;
 	try {
-		room = await RocketChat.getRoom(message.subscription.id);
+		room = await getRoom(message.subscription.id);
 	} catch (e) {
 		log(e);
 		return null;
