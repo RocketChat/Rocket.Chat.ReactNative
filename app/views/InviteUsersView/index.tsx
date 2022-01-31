@@ -1,35 +1,48 @@
-import { StackNavigationOptions } from '@react-navigation/stack';
-import moment from 'moment';
 import React from 'react';
 import { ScrollView, Share, View } from 'react-native';
+import moment from 'moment';
 import { connect } from 'react-redux';
+import { StackNavigationProp, StackNavigationOptions } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
+import { Dispatch } from 'redux';
 
-import { inviteLinksClear, inviteLinksCreate } from '../../actions/inviteLinks';
-import { themes } from '../../constants/colors';
-import Button from '../../containers/Button';
-import Markdown from '../../containers/markdown';
-import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
-import RCTextInput from '../../containers/TextInput';
-import { IApplicationState, IBaseScreen } from '../../definitions';
-import I18n from '../../i18n';
-import { TInvite } from '../../reducers/inviteLinks';
 import { ChatsStackParamList } from '../../stacks/types';
-import { withTheme } from '../../theme';
-import { events, logEvent } from '../../utils/log';
+import {
+	inviteLinksClear as inviteLinksClearAction,
+	inviteLinksCreate as inviteLinksCreateAction
+} from '../../actions/inviteLinks';
+import RCTextInput from '../../containers/TextInput';
+import Markdown from '../../containers/markdown';
+import Button from '../../containers/Button';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import I18n from '../../i18n';
+import StatusBar from '../../containers/StatusBar';
+import { themes } from '../../constants/colors';
+import { withTheme } from '../../theme';
+import SafeAreaView from '../../containers/SafeAreaView';
+import { events, logEvent } from '../../utils/log';
 import styles from './styles';
 
-interface IInviteUsersViewProps extends IBaseScreen<ChatsStackParamList, 'InviteUsersView'> {
+interface IInviteUsersViewProps {
+	navigation: StackNavigationProp<ChatsStackParamList, 'InviteUsersView'>;
+	route: RouteProp<ChatsStackParamList, 'InviteUsersView'>;
+	theme: string;
 	timeDateFormat: string;
-	invite: TInvite;
+	invite: {
+		url: string;
+		expires: number;
+		maxUses: number;
+		uses: number;
+	};
+	createInviteLink(rid: string): void;
+	clearInviteLink(): void;
 }
 class InviteUsersView extends React.Component<IInviteUsersViewProps, any> {
+	private rid: string;
+
 	static navigationOptions = (): StackNavigationOptions => ({
 		title: I18n.t('Invite_users')
 	});
-
-	private rid: string;
 
 	constructor(props: IInviteUsersViewProps) {
 		super(props);
@@ -37,13 +50,13 @@ class InviteUsersView extends React.Component<IInviteUsersViewProps, any> {
 	}
 
 	componentDidMount() {
-		const { dispatch } = this.props;
-		dispatch(inviteLinksCreate(this.rid));
+		const { createInviteLink } = this.props;
+		createInviteLink(this.rid);
 	}
 
 	componentWillUnmount() {
-		const { dispatch } = this.props;
-		dispatch(inviteLinksClear());
+		const { clearInviteLink } = this.props;
+		clearInviteLink();
 	}
 
 	share = () => {
@@ -120,9 +133,16 @@ class InviteUsersView extends React.Component<IInviteUsersViewProps, any> {
 	}
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
-	timeDateFormat: state.settings.Message_TimeAndDateFormat as string,
+const mapStateToProps = (state: any) => ({
+	timeDateFormat: state.settings.Message_TimeAndDateFormat,
+	days: state.inviteLinks.days,
+	maxUses: state.inviteLinks.maxUses,
 	invite: state.inviteLinks.invite
 });
 
-export default connect(mapStateToProps)(withTheme(InviteUsersView));
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	createInviteLink: (rid: string) => dispatch(inviteLinksCreateAction(rid)),
+	clearInviteLink: () => dispatch(inviteLinksClearAction())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(InviteUsersView));

@@ -1,21 +1,25 @@
-import { StackNavigationOptions } from '@react-navigation/stack';
 import React from 'react';
 import { TextInputProps, View } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
+import RNPickerSelect from 'react-native-picker-select';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/core';
+import { Dispatch } from 'redux';
 
-import { inviteLinksCreate, inviteLinksSetParams } from '../../actions/inviteLinks';
-import { themes } from '../../constants/colors';
-import Button from '../../containers/Button';
+import {
+	inviteLinksCreate as inviteLinksCreateAction,
+	inviteLinksSetParams as inviteLinksSetParamsAction
+} from '../../actions/inviteLinks';
 import * as List from '../../containers/List';
-import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
-import { IApplicationState, IBaseScreen } from '../../definitions';
+import Button from '../../containers/Button';
 import I18n from '../../i18n';
-import { ChatsStackParamList } from '../../stacks/types';
+import StatusBar from '../../containers/StatusBar';
+import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
+import SafeAreaView from '../../containers/SafeAreaView';
 import { events, logEvent } from '../../utils/log';
 import styles from './styles';
+import { ChatsStackParamList } from '../../stacks/types';
 
 const OPTIONS = {
 	days: [
@@ -64,7 +68,12 @@ const OPTIONS = {
 	]
 };
 
-interface IInviteUsersEditViewProps extends IBaseScreen<ChatsStackParamList, 'InviteUsersEditView'> {
+interface IInviteUsersEditViewProps {
+	navigation: StackNavigationProp<ChatsStackParamList, 'InviteUsersEditView'>;
+	route: RouteProp<ChatsStackParamList, 'InviteUsersEditView'>;
+	theme: string;
+	createInviteLink(rid: string): void;
+	inviteLinksSetParams(params: { [key: string]: number }): void;
 	days: number;
 	maxUses: number;
 }
@@ -82,18 +91,18 @@ class InviteUsersEditView extends React.Component<IInviteUsersEditViewProps, any
 	}
 
 	onValueChangePicker = (key: string, value: number) => {
-		const { dispatch } = this.props;
 		logEvent(events.IU_EDIT_SET_LINK_PARAM);
+		const { inviteLinksSetParams } = this.props;
 		const params = {
 			[key]: value
 		};
-		dispatch(inviteLinksSetParams(params));
+		inviteLinksSetParams(params);
 	};
 
 	createInviteLink = () => {
-		const { dispatch, navigation } = this.props;
 		logEvent(events.IU_EDIT_CREATE_LINK);
-		dispatch(inviteLinksCreate(this.rid));
+		const { createInviteLink, navigation } = this.props;
+		createInviteLink(this.rid);
 		navigation.pop();
 	};
 
@@ -142,9 +151,14 @@ class InviteUsersEditView extends React.Component<IInviteUsersEditViewProps, any
 	}
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
+const mapStateToProps = (state: any) => ({
 	days: state.inviteLinks.days,
 	maxUses: state.inviteLinks.maxUses
 });
 
-export default connect(mapStateToProps)(withTheme(InviteUsersEditView));
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	inviteLinksSetParams: (params: object) => dispatch(inviteLinksSetParamsAction(params)),
+	createInviteLink: (rid: string) => dispatch(inviteLinksCreateAction(rid))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTheme(InviteUsersEditView));

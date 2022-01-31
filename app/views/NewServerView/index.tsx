@@ -1,37 +1,39 @@
-import { Q } from '@nozbe/watermelondb';
-import { Base64 } from 'js-base64';
 import React from 'react';
-import { BackHandler, Image, Keyboard, StyleSheet, Text, View } from 'react-native';
+import { Text, Keyboard, StyleSheet, View, BackHandler, Image } from 'react-native';
+import { connect } from 'react-redux';
+import { Base64 } from 'js-base64';
+import parse from 'url-parse';
+import { Q } from '@nozbe/watermelondb';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Orientation from 'react-native-orientation-locker';
-import { connect } from 'react-redux';
-import parse from 'url-parse';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Dispatch } from 'redux';
 
-import { inviteLinksClear } from '../../actions/inviteLinks';
-import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
-import { themes } from '../../constants/colors';
+import UserPreferences from '../../lib/userPreferences';
+import EventEmitter from '../../utils/events';
+import { selectServerRequest, serverRequest, serverFinishAdd as serverFinishAddAction } from '../../actions/server';
+import { inviteLinksClear as inviteLinksClearAction } from '../../actions/inviteLinks';
+import sharedStyles from '../Styles';
 import Button from '../../containers/Button';
-import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/HeaderButton';
 import OrSeparator from '../../containers/OrSeparator';
-import { IBaseScreen, TServerHistory } from '../../definitions';
-import { withDimensions } from '../../dimensions';
+import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import I18n from '../../i18n';
+import { themes } from '../../constants/colors';
+import { events, logEvent } from '../../utils/log';
+import { withTheme } from '../../theme';
+import { BASIC_AUTH_KEY, setBasicAuth } from '../../utils/fetch';
+import * as HeaderButton from '../../containers/HeaderButton';
+import { showConfirmationAlert } from '../../utils/info';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import RocketChat from '../../lib/rocketchat';
-import UserPreferences from '../../lib/userPreferences';
-import { OutsideParamList } from '../../stacks/types';
-import { withTheme } from '../../theme';
-import { isTablet } from '../../utils/deviceInfo';
-import EventEmitter from '../../utils/events';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../../utils/fetch';
-import { showConfirmationAlert } from '../../utils/info';
-import { events, logEvent } from '../../utils/log';
-import { moderateScale, verticalScale } from '../../utils/scaling';
 import SSLPinning from '../../utils/sslPinning';
-import sharedStyles from '../Styles';
+import RocketChat from '../../lib/rocketchat';
+import { isTablet } from '../../utils/deviceInfo';
+import { verticalScale, moderateScale } from '../../utils/scaling';
+import { withDimensions } from '../../dimensions';
 import ServerInput from './ServerInput';
+import { OutsideParamList } from '../../stacks/types';
+import { TServerHistory } from '../../definitions/IServerHistory';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
@@ -66,14 +68,20 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
+interface INewServerView {
+	navigation: StackNavigationProp<OutsideParamList, 'NewServerView'>;
+	theme: string;
 	connecting: boolean;
+	connectServer(server: string, username?: string, fromServerHistory?: boolean): void;
+	selectServer(server: string): void;
 	previousServer: string;
+	inviteLinksClear(): void;
+	serverFinishAdd(): void;
 	width: number;
 	height: number;
 }
 
-interface INewServerViewState {
+interface IState {
 	text: string;
 	connectingOpen: boolean;
 	certificate: any;
@@ -85,8 +93,8 @@ interface ISubmitParams {
 	username?: string;
 }
 
-class NewServerView extends React.Component<INewServerViewProps, INewServerViewState> {
-	constructor(props: INewServerViewProps) {
+class NewServerView extends React.Component<INewServerView, IState> {
+	constructor(props: INewServerView) {
 		super(props);
 		if (!isTablet) {
 			Orientation.lockToPortrait();
@@ -110,9 +118,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
-		const { previousServer, dispatch } = this.props;
+		const { previousServer, serverFinishAdd } = this.props;
 		if (previousServer) {
-			dispatch(serverFinishAdd());
+			serverFinishAdd();
 		}
 	}
 
@@ -161,9 +169,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	};
 
 	close = () => {
-		const { dispatch, previousServer } = this.props;
-		dispatch(inviteLinksClear());
-		dispatch(selectServerRequest(previousServer));
+		const { selectServer, previousServer, inviteLinksClear } = this.props;
+		inviteLinksClear();
+		selectServer(previousServer);
 	};
 
 	handleNewServerEvent = (event: { server: string }) => {
@@ -171,10 +179,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		if (!server) {
 			return;
 		}
-		const { dispatch } = this.props;
+		const { connectServer } = this.props;
 		this.setState({ text: server });
 		server = this.completeUrl(server);
-		dispatch(serverRequest(server));
+		connectServer(server);
 	};
 
 	onPressServerHistory = (serverHistory: TServerHistory) => {
@@ -184,7 +192,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	submit = async ({ fromServerHistory = false, username }: ISubmitParams = {}) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
-		const { dispatch } = this.props;
+		const { connectServer } = this.props;
 
 		this.setState({ connectingOpen: false });
 
@@ -199,9 +207,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			await this.basicAuth(server, text);
 
 			if (fromServerHistory) {
-				dispatch(serverRequest(server, username, true));
+				connectServer(server, username, true);
 			} else {
-				dispatch(serverRequest(server));
+				connectServer(server);
 			}
 		}
 	};
@@ -209,8 +217,8 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	connectOpen = () => {
 		logEvent(events.NS_JOIN_OPEN_WORKSPACE);
 		this.setState({ connectingOpen: true });
-		const { dispatch } = this.props;
-		dispatch(serverRequest('https://open.rocket.chat'));
+		const { connectServer } = this.props;
+		connectServer('https://open.rocket.chat');
 	};
 
 	basicAuth = async (server: string, text: string) => {
@@ -275,7 +283,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			await db.write(async () => {
 				await item.destroyPermanently();
 			});
-			this.setState((prevstate: INewServerViewState) => ({
+			this.setState((prevstate: IState) => ({
 				serversHistory: prevstate.serversHistory.filter((server: TServerHistory) => server.id !== item.id)
 			}));
 		} catch {
@@ -409,4 +417,12 @@ const mapStateToProps = (state: any) => ({
 	previousServer: state.server.previousServer
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(NewServerView)));
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	connectServer: (server: string, username: string & null, fromServerHistory?: boolean) =>
+		dispatch(serverRequest(server, username, fromServerHistory)),
+	selectServer: (server: string) => dispatch(selectServerRequest(server)),
+	inviteLinksClear: () => dispatch(inviteLinksClearAction()),
+	serverFinishAdd: () => dispatch(serverFinishAddAction())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(NewServerView)));
