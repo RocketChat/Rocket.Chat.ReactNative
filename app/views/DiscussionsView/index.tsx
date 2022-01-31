@@ -184,7 +184,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 	if (!discussions?.length) {
 		return <BackgroundContainer loading={loading} text={I18n.t('No_discussions')} />;
 	}
-
+	console.log('test');
 	return (
 		<SafeAreaView testID='discussions-view'>
 			<StatusBar />
