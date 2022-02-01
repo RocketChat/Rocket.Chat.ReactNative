@@ -54,7 +54,6 @@ export interface ILastMessage {
 }
 
 export interface IMessage {
-	id: string;
 	msg?: string;
 	t?: SubscriptionType;
 	ts: Date;

@@ -1,13 +1,13 @@
 import log from '../../../utils/log';
-import { IMessage, ISubscription } from '../../../definitions';
+import { TMessageModel, TSubscriptionModel } from '../../../definitions';
 import reduxStore from '../../createStore';
 import getRoom from './getRoom';
 import isGroupChat from './isGroupChat';
 
 type TRoomType = 'p' | 'c' | 'd';
 
-export default async function getPermalinkMessage(message: IMessage): Promise<string | null> {
-	let room: ISubscription;
+export default async function getPermalinkMessage(message: TMessageModel): Promise<string | null> {
+	let room: TSubscriptionModel;
 	try {
 		room = await getRoom(message.subscription.id);
 	} catch (e) {
