@@ -1,3 +1,5 @@
+// ACTIONS
+import { TActionServer } from '../../actions/server';
 import { TActionActiveUsers } from '../../actions/activeUsers';
 import { TActionCustomEmojis } from '../../actions/customEmojis';
 import { TActionEncryption } from '../../actions/encryption';
@@ -13,6 +15,7 @@ import { IEncryption } from '../../reducers/encryption';
 import { IInviteLinks } from '../../reducers/inviteLinks';
 import { IRoles } from '../../reducers/roles';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
+import { IServer } from '../../reducers/server';
 import { IConnect } from '../../reducers/connect';
 import { ISettings } from '../../reducers/settings';
 
@@ -20,7 +23,7 @@ export interface IApplicationState {
 	settings: ISettings;
 	login: any;
 	meteor: IConnect;
-	server: any;
+	server: IServer;
 	selectedUsers: ISelectedUsers;
 	createChannel: any;
 	app: any;
@@ -48,4 +51,5 @@ export type TApplicationActions = TActionActiveUsers &
 	IActionSettings &
 	TActionEncryption &
 	TActionSortPreferences &
-	TActionUserTyping;
+	TActionUserTyping &
+	TActionServer;
