@@ -241,16 +241,16 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 
 const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
-	Site_Name: state.settings.Site_Name,
-	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin,
-	Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm,
-	Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText,
+	Site_Name: state.settings.Site_Name as string,
+	Accounts_ShowFormLogin: state.settings.Accounts_ShowFormLogin as boolean,
+	Accounts_RegistrationForm: state.settings.Accounts_RegistrationForm as string,
+	Accounts_RegistrationForm_LinkReplacementText: state.settings.Accounts_RegistrationForm_LinkReplacementText as string,
 	isFetching: state.login.isFetching,
 	failure: state.login.failure,
 	error: state.login.error && state.login.error.data,
-	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder,
-	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder,
-	Accounts_PasswordReset: state.settings.Accounts_PasswordReset,
+	Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
+	Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
+	Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
 	inviteLinkToken: state.inviteLinks.token
 });
 

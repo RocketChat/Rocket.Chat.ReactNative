@@ -346,13 +346,13 @@ class RegisterView extends React.Component<IProps, any> {
 
 const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
-	Site_Name: state.settings.Site_Name,
-	Gitlab_URL: state.settings.API_Gitlab_URL,
-	CAS_enabled: state.settings.CAS_enabled,
-	CAS_login_url: state.settings.CAS_login_url,
-	Accounts_CustomFields: state.settings.Accounts_CustomFields,
-	Accounts_EmailVerification: state.settings.Accounts_EmailVerification,
-	Accounts_ManuallyApproveNewUsers: state.settings.Accounts_ManuallyApproveNewUsers,
+	Site_Name: state.settings.Site_Name as string,
+	Gitlab_URL: state.settings.API_Gitlab_URL as string,
+	CAS_enabled: state.settings.CAS_enabled as boolean,
+	CAS_login_url: state.settings.CAS_login_url as string,
+	Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
+	Accounts_EmailVerification: state.settings.Accounts_EmailVerification as boolean,
+	Accounts_ManuallyApproveNewUsers: state.settings.Accounts_ManuallyApproveNewUsers as boolean,
 	showLoginButton: getShowLoginButton(state)
 });
 
