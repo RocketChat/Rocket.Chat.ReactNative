@@ -47,7 +47,7 @@ class ServerDropdown extends Component {
 
 	async componentDidMount() {
 		const serversDB = database.servers;
-		const observable = await serversDB.collections.get('servers').query().observeWithColumns(['name']);
+		const observable = await serversDB.get('servers').query().observeWithColumns(['name']);
 
 		this.subscription = observable.subscribe(data => {
 			this.setState({ servers: data });
