@@ -22,11 +22,11 @@ import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import debounce from '../utils/debounce';
 import { ChatsStackParamList } from '../stacks/types';
-import { IRoom } from '../definitions/IRoom';
+import { TSubscriptionModel, SubscriptionType } from '../definitions';
 
 interface IAddExistingChannelViewState {
-	search: Array<IRoom>;
-	channels: Array<IRoom>;
+	search: TSubscriptionModel[];
+	channels: TSubscriptionModel[];
 	selected: string[];
 	loading: boolean;
 }
@@ -83,7 +83,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		try {
 			const { addTeamChannelPermission } = this.props;
 			const db = database.active;
-			const channels = await db.collections
+			const channels = await db
 				.get('subscriptions')
 				.query(
 					Q.where('team_id', ''),
@@ -94,9 +94,9 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 				)
 				.fetch();
 
-			const asyncFilter = async (channelsArray: Array<IRoom>) => {
+			const asyncFilter = async (channelsArray: TSubscriptionModel[]) => {
 				const results = await Promise.all(
-					channelsArray.map(async (channel: IRoom) => {
+					channelsArray.map(async channel => {
 						if (channel.prid) {
 							return false;
 						}
@@ -173,11 +173,10 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		}
 	};
 
-	// TODO: refactor with Room Model
-	renderItem = ({ item }: { item: any }) => {
+	renderItem = ({ item }: { item: TSubscriptionModel }) => {
 		const isChecked = this.isChecked(item.rid);
 		// TODO: reuse logic inside RoomTypeIcon
-		const icon = item.t === 'p' && !item.teamId ? 'channel-private' : 'channel-public';
+		const icon = item.t === SubscriptionType.DIRECT && !item?.teamId ? 'channel-private' : 'channel-public';
 		return (
 			<List.Item
 				title={RocketChat.getRoomTitle(item)}
