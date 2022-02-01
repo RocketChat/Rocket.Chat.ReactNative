@@ -52,8 +52,9 @@ interface IThreadDetails {
 }
 
 const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style, theme }: IThreadDetails) => {
-	let { tcount } = item;
-	if (tcount! >= 1000) {
+	let tcount: number | string = item?.tcount ?? 0;
+
+	if (tcount >= 1000) {
 		tcount = '+999';
 	}
 

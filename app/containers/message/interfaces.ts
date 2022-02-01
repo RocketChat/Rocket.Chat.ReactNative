@@ -101,7 +101,7 @@ export interface IMessageThread {
 	msg: string;
 	tcount: number;
 	theme: string;
-	tlm: string;
+	tlm: Date;
 	isThreadRoom: boolean;
 	id: string;
 }
