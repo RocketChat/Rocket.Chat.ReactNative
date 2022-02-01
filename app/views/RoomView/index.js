@@ -459,7 +459,7 @@ class RoomView extends React.Component {
 				}
 			});
 		} else {
-			navigation.navigate('RoomActionsView', {
+			navigation.push('RoomActionsView', {
 				rid: this.rid,
 				t: this.t,
 				room,
