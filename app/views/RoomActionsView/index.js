@@ -643,7 +643,7 @@ class RoomActionsView extends React.Component {
 			const { addTeamChannelPermission, createTeamPermission } = this.props;
 			const QUERY_SIZE = 50;
 			const db = database.active;
-			const teams = await db.collections
+			const teams = await db
 				.get('subscriptions')
 				.query(
 					Q.where('team_main', true),

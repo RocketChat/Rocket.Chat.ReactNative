@@ -1,16 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import { Observable, Subscription } from 'rxjs';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
+import { TSubscriptionModel, TUserModel } from '../../definitions';
 import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 
 class AvatarContainer extends React.Component<IAvatar, any> {
 	private mounted: boolean;
 
-	private subscription: any;
+	private subscription?: Subscription;
 
 	static defaultProps = {
 		text: '',
@@ -59,15 +61,17 @@ class AvatarContainer extends React.Component<IAvatar, any> {
 				record = user;
 			} else {
 				const { rid } = this.props;
-				record = await subsCollection.find(rid);
+				if (rid) {
+					record = await subsCollection.find(rid);
+				}
 			}
 		} catch {
 			// Record not found
 		}
 
 		if (record) {
-			const observable = record.observe();
-			this.subscription = observable.subscribe((r: any) => {
+			const observable = record.observe() as Observable<TSubscriptionModel | TUserModel>;
+			this.subscription = observable.subscribe(r => {
 				const { avatarETag } = r;
 				if (this.mounted) {
 					this.setState({ avatarETag });
