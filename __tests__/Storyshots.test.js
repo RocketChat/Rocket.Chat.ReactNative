@@ -22,18 +22,13 @@ global.Date.now = jest.fn(() => new Date('2019-10-10').getTime());
 
 const converter = new Stories2SnapsConverter();
 
-// Runner
 initStoryshots({
-	asyncJest: true,
-	test: ({ story, context, done }) => {
+	test: ({ story, context }) => {
 		const snapshotFilename = converter.getSnapshotFileName(context);
 		const storyElement = story.render();
 		const { update, toJSON } = render(storyElement);
 		update(storyElement);
-		setTimeout(() => {
-			const json = toJSON();
-			expect(JSON.stringify(json)).toMatchSpecificSnapshot(snapshotFilename);
-			done();
-		}, 10);
+		const json = toJSON();
+		expect(JSON.stringify(json)).toMatchSpecificSnapshot(snapshotFilename);
 	}
 });
