@@ -94,7 +94,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		const serversCollection = serversDB.get('servers');
 		const hasBiometry = (await userPreferences.getBoolAsync(BIOMETRY_ENABLED_KEY)) ?? DEFAULT_BIOMETRY;
 		try {
-			this.serverRecord = (await serversCollection.find(server)) as TServerModel;
+			this.serverRecord = await serversCollection.find(server);
 			this.setState({
 				autoLock: this.serverRecord?.autoLock,
 				autoLockTime: this.serverRecord?.autoLockTime === null ? DEFAULT_AUTO_LOCK : this.serverRecord?.autoLockTime,

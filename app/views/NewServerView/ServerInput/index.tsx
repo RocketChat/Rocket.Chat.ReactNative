@@ -5,7 +5,7 @@ import TextInput from '../../../containers/TextInput';
 import * as List from '../../../containers/List';
 import { themes } from '../../../constants/colors';
 import I18n from '../../../i18n';
-import { TServerHistory } from '../../../definitions/IServerHistory';
+import { TServerHistoryModel } from '../../../definitions/IServerHistory';
 import Item from './Item';
 
 const styles = StyleSheet.create({
@@ -33,8 +33,8 @@ interface IServerInput extends TextInputProps {
 	theme: string;
 	serversHistory: any[];
 	onSubmit(): void;
-	onDelete(item: TServerHistory): void;
-	onPressServerHistory(serverHistory: TServerHistory): void;
+	onDelete(item: TServerHistoryModel): void;
+	onPressServerHistory(serverHistory: TServerHistoryModel): void;
 }
 
 const ServerInput = ({
@@ -70,7 +70,8 @@ const ServerInput = ({
 					style={[
 						styles.serverHistory,
 						{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }
-					]}>
+					]}
+				>
 					<FlatList
 						data={serversHistory}
 						renderItem={({ item }) => (

@@ -147,6 +147,12 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 			if ((item.tlm || item.tmid) && !isThreadRoom) {
 				this.onThreadPress();
 			}
+
+			const { onDiscussionPress } = this.props;
+
+			if (onDiscussionPress) {
+				onDiscussionPress(item);
+			}
 		},
 		300,
 		true
@@ -390,7 +396,8 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					threadBadgeColor,
 					toggleFollowThread,
 					replies
-				}}>
+				}}
+			>
 				<Message
 					id={id}
 					msg={message}

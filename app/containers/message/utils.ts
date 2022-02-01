@@ -1,3 +1,4 @@
+import { TMessageModel } from '../../definitions/IMessage';
 import I18n from '../../i18n';
 import { DISCUSSION } from './constants';
 
@@ -149,7 +150,7 @@ export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage) => {
 	return '';
 };
 
-export const getMessageTranslation = (message: { translations: any }, autoTranslateLanguage: string) => {
+export const getMessageTranslation = (message: TMessageModel, autoTranslateLanguage: string) => {
 	if (!autoTranslateLanguage) {
 		return null;
 	}

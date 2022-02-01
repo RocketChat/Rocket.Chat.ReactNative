@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 import { CustomIcon } from '../lib/Icons';
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
-import { withTheme } from '../theme';
+import { useTheme } from '../theme';
 import { TThreadModel } from '../definitions/IThread';
 
 const styles = StyleSheet.create({
@@ -48,12 +48,12 @@ interface IThreadDetails {
 	badgeColor?: string;
 	toggleFollowThread: Function;
 	style: ViewStyle;
-	theme?: string;
 }
 
-const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style, theme }: IThreadDetails) => {
+const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails): JSX.Element => {
+	const { theme } = useTheme();
 	let { tcount } = item;
-	if (tcount! >= 1000) {
+	if (tcount && tcount >= 1000) {
 		tcount = '+999';
 	}
 
@@ -81,7 +81,6 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style, them
 					</Text>
 				</View>
 			</View>
-
 			<View style={styles.badgeContainer}>
 				{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
 				<Touchable onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
@@ -96,4 +95,4 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style, them
 	);
 };
 
-export default withTheme(ThreadDetails);
+export default ThreadDetails;
