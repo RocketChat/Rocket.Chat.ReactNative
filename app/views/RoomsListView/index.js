@@ -450,7 +450,7 @@ class RoomsListView extends React.Component {
 
 		// When we're grouping by something
 		if (this.isGrouping) {
-			observable = await db.collections
+			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause)
 				.observeWithColumns(['alert']);
@@ -458,7 +458,7 @@ class RoomsListView extends React.Component {
 			// When we're NOT grouping
 		} else {
 			this.count += QUERY_SIZE;
-			observable = await db.collections
+			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause, Q.experimentalSkip(0), Q.experimentalTake(this.count))
 				.observe();
