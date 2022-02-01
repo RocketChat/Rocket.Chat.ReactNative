@@ -10,6 +10,7 @@ import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
+import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
 import { IEmoji } from '../EmojiPicker/interfaces';
 
 interface IHeader {
@@ -70,7 +71,8 @@ const HeaderItem = React.memo(({ item, onReaction, server, theme }: THeaderItem)
 		testID={`message-actions-emoji-${item.content || item}`}
 		onPress={() => onReaction({ emoji: `:${item.content || item}:` })}
 		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-		theme={theme}>
+		theme={theme}
+	>
 		{item?.isCustom ? (
 			<CustomEmoji style={styles.customEmoji} emoji={item} baseUrl={server} />
 		) : (
@@ -84,20 +86,21 @@ const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
 		testID='add-reaction'
 		onPress={onReaction}
 		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-		theme={theme}>
+		theme={theme}
+	>
 		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
 	</Button>
 ));
 
 const Header = React.memo(({ handleReaction, server, message, isMasterDetail, theme }: IHeader) => {
-	const [items, setItems] = useState([]);
+	const [items, setItems] = useState<(TFrequentlyUsedEmojiModel | string)[]>([]);
 	const { width, height }: any = useDimensions();
 
 	const setEmojis = async () => {
 		try {
 			const db = database.active;
 			const freqEmojiCollection = db.get('frequently_used_emojis');
-			let freqEmojis = await freqEmojiCollection.query().fetch();
+			let freqEmojis: (TFrequentlyUsedEmojiModel | string)[] = await freqEmojiCollection.query().fetch();
 
 			const isLandscape = width > height;
 			const size = (isLandscape || isMasterDetail ? width / 2 : width) - CONTAINER_MARGIN * 2;

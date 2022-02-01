@@ -459,7 +459,7 @@ class RoomView extends React.Component {
 				}
 			});
 		} else {
-			navigation.navigate('RoomActionsView', {
+			navigation.push('RoomActionsView', {
 				rid: this.rid,
 				t: this.t,
 				room,
@@ -690,7 +690,7 @@ class RoomView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	updateUnreadCount = async () => {
 		const db = database.active;
-		const observable = await db.collections
+		const observable = await db
 			.get('subscriptions')
 			.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(this.rid)))
 			.observeWithColumns(['unread']);
@@ -1088,14 +1088,16 @@ class RoomView extends React.Component {
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text
 						accessibilityLabel={I18n.t('You_are_in_preview_mode')}
-						style={[styles.previewMode, { color: themes[theme].titleText }]}>
+						style={[styles.previewMode, { color: themes[theme].titleText }]}
+					>
 						{I18n.t('You_are_in_preview_mode')}
 					</Text>
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
-						theme={theme}>
+						theme={theme}
+					>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
 						</Text>
@@ -1108,7 +1110,8 @@ class RoomView extends React.Component {
 				<View style={styles.readOnly}>
 					<Text
 						style={[styles.previewMode, { color: themes[theme].titleText }]}
-						accessibilityLabel={I18n.t('This_room_is_read_only')}>
+						accessibilityLabel={I18n.t('This_room_is_read_only')}
+					>
 						{I18n.t('This_room_is_read_only')}
 					</Text>
 				</View>

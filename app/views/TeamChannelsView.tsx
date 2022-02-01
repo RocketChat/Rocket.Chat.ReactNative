@@ -218,7 +218,9 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader onSearchChangeText={this.onSearchChangeText} />,
+				headerTitle: () => (
+					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='team-channels-view-search-header' />
+				),
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right

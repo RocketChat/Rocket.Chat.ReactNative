@@ -47,7 +47,7 @@ class ServerDropdown extends Component {
 
 	async componentDidMount() {
 		const serversDB = database.servers;
-		const observable = await serversDB.collections.get('servers').query().observeWithColumns(['name']);
+		const observable = await serversDB.get('servers').query().observeWithColumns(['name']);
 
 		this.subscription = observable.subscribe(data => {
 			this.setState({ servers: data });
@@ -221,7 +221,8 @@ class ServerDropdown extends Component {
 							borderColor: themes[theme].separatorColor
 						}
 					]}
-					testID='rooms-list-header-server-dropdown'>
+					testID='rooms-list-header-server-dropdown'
+				>
 					<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: themes[theme].separatorColor }]}>
 						<Text style={[styles.serverHeaderText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Server')}</Text>
 						<TouchableOpacity onPress={this.addServer} testID='rooms-list-header-server-add'>

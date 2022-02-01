@@ -15,4 +15,4 @@ export interface ILoggedUser {
 	enableMessageParserEarlyAdoption?: boolean;
 }
 
-export type TLoggedUser = ILoggedUser & Model;
+export type TLoggedUserModel = ILoggedUser & Model;

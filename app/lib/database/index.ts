@@ -25,6 +25,7 @@ import serversSchema from './schema/servers';
 import appSchema from './schema/app';
 import migrations from './model/migrations';
 import serversMigrations from './model/servers/migrations';
+import { TAppDatabase, TServerDatabase } from './interfaces';
 
 const appGroupPath = isIOS ? appGroup.path : '';
 
@@ -32,9 +33,9 @@ if (__DEV__ && isIOS) {
 	console.log(appGroupPath);
 }
 
-const getDatabasePath = name => `${appGroupPath}${name}${isOfficial ? '' : '-experimental'}.db`;
+const getDatabasePath = (name: string) => `${appGroupPath}${name}${isOfficial ? '' : '-experimental'}.db`;
 
-export const getDatabase = (database = '') => {
+export const getDatabase = (database = ''): Database => {
 	const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
 	const dbName = getDatabasePath(path);
 
@@ -64,8 +65,14 @@ export const getDatabase = (database = '') => {
 	});
 };
 
+interface IDatabases {
+	shareDB?: TAppDatabase;
+	serversDB: TServerDatabase;
+	activeDB?: TAppDatabase;
+}
+
 class DB {
-	databases = {
+	databases: IDatabases = {
 		serversDB: new Database({
 			adapter: new SQLiteAdapter({
 				dbName: getDatabasePath('default'),
@@ -73,11 +80,12 @@ class DB {
 				migrations: serversMigrations
 			}),
 			modelClasses: [Server, LoggedUser, ServersHistory]
-		})
+		}) as TServerDatabase
 	};
 
-	get active() {
-		return this.databases.shareDB || this.databases.activeDB;
+	// Expected at least one database
+	get active(): TAppDatabase {
+		return this.databases.shareDB || this.databases.activeDB!;
 	}
 
 	get share() {
@@ -116,11 +124,11 @@ class DB {
 				Setting,
 				User
 			]
-		});
+		}) as TAppDatabase;
 	}
 
-	setActiveDB(database) {
-		this.databases.activeDB = getDatabase(database);
+	setActiveDB(database: string) {
+		this.databases.activeDB = getDatabase(database) as TAppDatabase;
 	}
 }
 

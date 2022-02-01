@@ -91,7 +91,7 @@ class UploadProgress extends Component {
 		}
 
 		const db = database.active;
-		this.uploadsObservable = db.collections.get('uploads').query(Q.where('rid', rid)).observeWithColumns(['progress', 'error']);
+		this.uploadsObservable = db.get('uploads').query(Q.where('rid', rid)).observeWithColumns(['progress', 'error']);
 
 		this.uploadsSubscription = this.uploadsObservable.subscribe(uploads => {
 			if (this.mounted) {
@@ -168,7 +168,8 @@ class UploadProgress extends Component {
 					<CustomIcon name='attach' size={20} color={themes[theme].auxiliaryText} />
 					<Text
 						style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme].auxiliaryText }]}
-						numberOfLines={1}>
+						numberOfLines={1}
+					>
 						{I18n.t('Uploading')} {item.name}
 					</Text>
 					<CustomIcon name='close' size={20} color={themes[theme].auxiliaryText} onPress={() => this.cancelUpload(item)} />
@@ -209,7 +210,8 @@ class UploadProgress extends Component {
 						backgroundColor: themes[theme].chatComponentBackground,
 						borderColor: themes[theme].borderColor
 					}
-				]}>
+				]}
+			>
 				{this.renderItemContent(item)}
 			</View>
 		);

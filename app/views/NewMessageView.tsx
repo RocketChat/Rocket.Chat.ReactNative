@@ -24,6 +24,7 @@ import { createChannelRequest } from '../actions/createChannel';
 import { goRoom } from '../utils/goRoom';
 import SafeAreaView from '../containers/SafeAreaView';
 import { compareServerVersion, methods } from '../lib/utils';
+import { TSubscriptionModel } from '../definitions';
 import sharedStyles from './Styles';
 
 const QUERY_SIZE = 50;
@@ -68,9 +69,8 @@ interface ISearch {
 }
 
 interface INewMessageViewState {
-	search: ISearch[];
-	// TODO: Refactor when migrate room
-	chats: any[];
+	search: (ISearch | TSubscriptionModel)[];
+	chats: TSubscriptionModel[];
 	permissions: boolean[];
 }
 
@@ -108,7 +108,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 	init = async () => {
 		try {
 			const db = database.active;
-			const chats = await db.collections
+			const chats = await db
 				.get('subscriptions')
 				.query(Q.where('t', 'd'), Q.experimentalTake(QUERY_SIZE), Q.experimentalSortBy('room_updated_at', Q.desc))
 				.fetch();
@@ -153,7 +153,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 	};
 
 	search = async (text: string) => {
-		const result = await RocketChat.search({ text, filterRooms: false });
+		const result: ISearch[] | TSubscriptionModel[] = await RocketChat.search({ text, filterRooms: false });
 		this.setState({
 			search: result
 		});
@@ -202,7 +202,8 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 						first ? sharedStyles.separatorVertical : sharedStyles.separatorBottom,
 						styles.button,
 						{ borderColor: themes[theme].separatorColor }
-					]}>
+					]}
+				>
 					<CustomIcon style={[styles.buttonIcon, { color: themes[theme].tintColor }]} size={24} name={icon} />
 					<Text style={[styles.buttonText, { color: themes[theme].tintColor }]}>{title}</Text>
 				</View>
@@ -280,8 +281,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		);
 	};
 
-	// TODO: Refactor when migrate room
-	renderItem = ({ item, index }: { item: ISearch | any; index: number }) => {
+	renderItem = ({ item, index }: { item: ISearch | TSubscriptionModel; index: number }) => {
 		const { search, chats } = this.state;
 		const { theme } = this.props;
 
@@ -295,10 +295,14 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		if (search.length === 0 && index === chats.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
+
+		const itemSearch = item as ISearch;
+		const itemModel = item as TSubscriptionModel;
+
 		return (
 			<UserItem
-				name={item.search ? item.name : item.fname}
-				username={item.search ? item.username : item.name}
+				name={itemSearch.search ? itemSearch.name : itemModel.fname || ''}
+				username={itemSearch.search ? itemSearch.username : itemModel.name}
 				onPress={() => this.goRoom(item)}
 				testID={`new-message-view-item-${item.name}`}
 				style={style}
