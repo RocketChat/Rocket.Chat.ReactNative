@@ -690,7 +690,7 @@ class RoomView extends React.Component {
 	// eslint-disable-next-line react/sort-comp
 	updateUnreadCount = async () => {
 		const db = database.active;
-		const observable = await db.collections
+		const observable = await db
 			.get('subscriptions')
 			.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(this.rid)))
 			.observeWithColumns(['unread']);
