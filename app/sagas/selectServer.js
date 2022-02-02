@@ -15,11 +15,12 @@ import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
-import { ROOT_INSIDE, ROOT_OUTSIDE, appStart } from '../actions/app';
+import { appStart } from '../actions/app';
 import UserPreferences from '../lib/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../utils/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
+import { RootEnum } from '../definitions';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -111,10 +112,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(clearSettings());
 			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
-			yield put(appStart({ root: ROOT_INSIDE }));
+			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 		} else {
 			yield RocketChat.connect({ server });
-			yield put(appStart({ root: ROOT_OUTSIDE }));
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower

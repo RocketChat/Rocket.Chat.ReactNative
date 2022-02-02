@@ -1,29 +1,29 @@
-import React from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import { StackNavigationOptions } from '@react-navigation/stack';
 import { dequal } from 'dequal';
+import React from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { connect } from 'react-redux';
 
-import * as List from '../containers/List';
-import Touch from '../utils/touch';
-import database from '../lib/database';
-import RocketChat from '../lib/rocketchat';
-import UserItem from '../presentation/UserItem';
-import I18n from '../i18n';
-import log, { events, logEvent } from '../utils/log';
-import SearchBox from '../containers/SearchBox';
-import { CustomIcon } from '../lib/Icons';
-import * as HeaderButton from '../containers/HeaderButton';
-import StatusBar from '../containers/StatusBar';
-import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
-import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
-import { goRoom } from '../utils/goRoom';
+import { themes } from '../constants/colors';
+import * as HeaderButton from '../containers/HeaderButton';
+import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
+import SearchBox from '../containers/SearchBox';
+import StatusBar from '../containers/StatusBar';
+import { IApplicationState, IBaseScreen, TSubscriptionModel } from '../definitions';
+import I18n from '../i18n';
+import database from '../lib/database';
+import { CustomIcon } from '../lib/Icons';
+import Navigation from '../lib/Navigation';
+import RocketChat from '../lib/rocketchat';
 import { compareServerVersion, methods } from '../lib/utils';
+import UserItem from '../presentation/UserItem';
+import { withTheme } from '../theme';
+import { goRoom } from '../utils/goRoom';
+import log, { events, logEvent } from '../utils/log';
+import Touch from '../utils/touch';
 import sharedStyles from './Styles';
 
 const QUERY_SIZE = 50;
@@ -68,17 +68,13 @@ interface ISearch {
 }
 
 interface INewMessageViewState {
-	search: ISearch[];
-	// TODO: Refactor when migrate room
-	chats: any[];
+	search: (ISearch | TSubscriptionModel)[];
+	chats: TSubscriptionModel[];
 	permissions: boolean[];
 }
 
-interface INewMessageViewProps {
-	navigation: StackNavigationProp<any, 'NewMessageView'>;
-	create: (params: { group: boolean }) => void;
+interface INewMessageViewProps extends IBaseScreen<any, 'NewMessageView'> {
 	maxUsers: number;
-	theme: string;
 	isMasterDetail: boolean;
 	serverVersion: string;
 	createTeamPermission: string[];
@@ -108,7 +104,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 	init = async () => {
 		try {
 			const db = database.active;
-			const chats = await db.collections
+			const chats = await db
 				.get('subscriptions')
 				.query(Q.where('t', 'd'), Q.experimentalTake(QUERY_SIZE), Q.experimentalSortBy('room_updated_at', Q.desc))
 				.fetch();
@@ -153,7 +149,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 	};
 
 	search = async (text: string) => {
-		const result = await RocketChat.search({ text, filterRooms: false });
+		const result: ISearch[] | TSubscriptionModel[] = await RocketChat.search({ text, filterRooms: false });
 		this.setState({
 			search: result
 		});
@@ -175,9 +171,9 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 
 	createGroupChat = () => {
 		logEvent(events.NEW_MSG_CREATE_GROUP_CHAT);
-		const { create, maxUsers, navigation } = this.props;
+		const { dispatch, maxUsers, navigation } = this.props;
 		navigation.navigate('SelectedUsersViewCreateChannel', {
-			nextAction: () => create({ group: true }),
+			nextAction: () => dispatch(createChannelRequest({ group: true })),
 			buttonText: I18n.t('Create'),
 			maxUsers
 		});
@@ -280,8 +276,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		);
 	};
 
-	// TODO: Refactor when migrate room
-	renderItem = ({ item, index }: { item: ISearch | any; index: number }) => {
+	renderItem = ({ item, index }: { item: ISearch | TSubscriptionModel; index: number }) => {
 		const { search, chats } = this.state;
 		const { theme } = this.props;
 
@@ -295,10 +290,14 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		if (search.length === 0 && index === chats.length - 1) {
 			style = { ...style, ...sharedStyles.separatorBottom };
 		}
+
+		const itemSearch = item as ISearch;
+		const itemModel = item as TSubscriptionModel;
+
 		return (
 			<UserItem
-				name={item.search ? item.name : item.fname}
-				username={item.search ? item.username : item.name}
+				name={itemSearch.search ? itemSearch.name : itemModel.fname || ''}
+				username={itemSearch.search ? itemSearch.username : itemModel.name}
 				onPress={() => this.goRoom(item)}
 				testID={`new-message-view-item-${item.name}`}
 				style={style}
@@ -334,10 +333,10 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 	}
 }
 
-const mapStateToProps = (state: any) => ({
-	serverVersion: state.server.version,
+const mapStateToProps = (state: IApplicationState) => ({
+	serverVersion: state.server.version as string,
 	isMasterDetail: state.app.isMasterDetail,
-	maxUsers: state.settings.DirectMesssage_maxUsers || 1,
+	maxUsers: (state.settings.DirectMesssage_maxUsers as number) || 1,
 	createTeamPermission: state.permissions['create-team'],
 	createDirectMessagePermission: state.permissions['create-d'],
 	createPublicChannelPermission: state.permissions['create-c'],
@@ -345,8 +344,4 @@ const mapStateToProps = (state: any) => ({
 	createDiscussionPermission: state.permissions['start-discussion']
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	create: (params: { group: boolean }) => dispatch(createChannelRequest(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(NewMessageView));
+export default connect(mapStateToProps)(withTheme(NewMessageView));
