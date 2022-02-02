@@ -32,9 +32,10 @@ export default class RoomSubscription {
 			await this.unsubscribe();
 		}
 		this.promises = RocketChat.subscribeRoom(this.rid);
+		this.isDisconnected = false;
 
 		this.connectedListener = RocketChat.onStreamData('connected', this.handleConnection);
-		this.disconnectedListener = RocketChat.onStreamData('close', this.handleConnection);
+		this.disconnectedListener = RocketChat.onStreamData('close', this.handleDisconnection);
 		this.notifyRoomListener = RocketChat.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = RocketChat.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
@@ -77,7 +78,22 @@ export default class RoomSubscription {
 		}
 	};
 
+	subscriptionRead = debounce(() => {
+		RocketChat.subscriptionRead(this.rid);
+	}, 300);
+
+	handleDisconnection = () => {
+		if (!this.isDisconnected) {
+			this.isDisconnected = true;
+		}
+		this.handleConnection();
+	};
+
 	handleConnection = () => {
+		if (this.isDisconnected) {
+			this.subscriptionRead();
+			this.isDisconnected = false;
+		}
 		reduxStore.dispatch(clearUserTyping());
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
