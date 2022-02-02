@@ -43,7 +43,7 @@ export interface IThread {
 	id: string;
 	msg?: string;
 	t?: SubscriptionType;
-	rid?: string;
+	rid: string;
 	_updatedAt?: Date;
 	ts?: Date;
 	u?: IUserMessage;
@@ -61,10 +61,10 @@ export interface IThread {
 	reactions?: IReaction[];
 	role?: string;
 	drid?: string;
-	dcount?: number;
+	dcount?: number | string;
 	dlm?: number;
 	tmid?: string;
-	tcount: number | string;
+	tcount?: number | string;
 	tlm?: string;
 	replies?: string[];
 	mentions?: IUserMention[];
