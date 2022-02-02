@@ -1,31 +1,30 @@
-import React from 'react';
+import { Q } from '@nozbe/watermelondb';
 import { StackNavigationOptions } from '@react-navigation/stack';
+import { dequal } from 'dequal';
+import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Q } from '@nozbe/watermelondb';
-import { dequal } from 'dequal';
 
-import * as List from '../containers/List';
-import Touch from '../utils/touch';
-import database from '../lib/database';
-import RocketChat from '../lib/rocketchat';
-import UserItem from '../presentation/UserItem';
-import I18n from '../i18n';
-import log, { events, logEvent } from '../utils/log';
-import SearchBox from '../containers/SearchBox';
-import { CustomIcon } from '../lib/Icons';
-import * as HeaderButton from '../containers/HeaderButton';
-import StatusBar from '../containers/StatusBar';
-import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
-import Navigation from '../lib/Navigation';
 import { createChannelRequest } from '../actions/createChannel';
-import { goRoom } from '../utils/goRoom';
+import { themes } from '../constants/colors';
+import * as HeaderButton from '../containers/HeaderButton';
+import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
+import SearchBox from '../containers/SearchBox';
+import StatusBar from '../containers/StatusBar';
+import { IApplicationState, IBaseScreen, TSubscriptionModel } from '../definitions';
+import I18n from '../i18n';
+import database from '../lib/database';
+import { CustomIcon } from '../lib/Icons';
+import Navigation from '../lib/Navigation';
+import RocketChat from '../lib/rocketchat';
 import { compareServerVersion, methods } from '../lib/utils';
-import { TSubscriptionModel } from '../definitions';
+import UserItem from '../presentation/UserItem';
+import { withTheme } from '../theme';
+import { goRoom } from '../utils/goRoom';
+import log, { events, logEvent } from '../utils/log';
+import Touch from '../utils/touch';
 import sharedStyles from './Styles';
-import { IApplicationState, IBaseScreen } from '../definitions';
 
 const QUERY_SIZE = 50;
 
@@ -335,7 +334,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	serverVersion: state.server.version,
+	serverVersion: state.server.version as string,
 	isMasterDetail: state.app.isMasterDetail,
 	maxUsers: (state.settings.DirectMesssage_maxUsers as number) || 1,
 	createTeamPermission: state.permissions['create-team'],
