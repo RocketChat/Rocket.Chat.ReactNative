@@ -20,6 +20,7 @@ import { IApplicationState, IBaseScreen, RootEnum } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
+import { IServer } from '../../reducers/server';
 import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
@@ -32,10 +33,7 @@ import { onReviewPress } from '../../utils/review';
 import SidebarView from '../SidebarView';
 
 interface ISettingsViewProps extends IBaseScreen<SettingsStackParamList, 'SettingsView'> {
-	server: {
-		version: string;
-		server: string;
-	};
+	server: IServer;
 	isMasterDetail: boolean;
 	user: {
 		roles: [];
@@ -151,8 +149,9 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 		const {
 			server: { version }
 		} = this.props;
-		logEvent(events.SE_COPY_SERVER_VERSION, { serverVersion: version });
-		this.saveToClipboard(version);
+		const vers = version as string;
+		logEvent(events.SE_COPY_SERVER_VERSION, { serverVersion: vers });
+		this.saveToClipboard(vers);
 	};
 
 	copyAppVersion = () => {
