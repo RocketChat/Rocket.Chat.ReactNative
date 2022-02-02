@@ -8,7 +8,7 @@ import * as List from '../../containers/List';
 import Button from '../../containers/Button';
 import { toggleServerDropdown } from '../../actions/rooms';
 import { selectServerRequest, serverInitAdd } from '../../actions/server';
-import { appStart, ROOT_OUTSIDE } from '../../actions/app';
+import { appStart } from '../../actions/app';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
@@ -24,6 +24,8 @@ import log, { events, logEvent } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
 import UserPreferences from '../../lib/userPreferences';
+import { RootEnum } from '../../definitions';
+
 import styles from './styles';
 
 const ROW_HEIGHT = 68;
@@ -106,7 +108,7 @@ class ServerDropdown extends Component {
 	navToNewServer = previousServer => {
 		const { dispatch } = this.props;
 		batch(() => {
-			dispatch(appStart({ root: ROOT_OUTSIDE }));
+			dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			dispatch(serverInitAdd(previousServer));
 		});
 	};

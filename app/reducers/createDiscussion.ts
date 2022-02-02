@@ -1,13 +1,21 @@
+import { TApplicationActions } from '../definitions';
 import { CREATE_DISCUSSION } from '../actions/actionsTypes';
 
-const initialState = {
+export interface ICreateDiscussion {
+	isFetching: boolean;
+	failure: boolean;
+	result: Record<string, any>;
+	error: Record<string, any>;
+}
+
+export const initialState: ICreateDiscussion = {
 	isFetching: false,
 	failure: false,
 	result: {},
 	error: {}
 };
 
-export default function (state = initialState, action) {
+export default function (state = initialState, action: TApplicationActions): ICreateDiscussion {
 	switch (action.type) {
 		case CREATE_DISCUSSION.REQUEST:
 			return {
