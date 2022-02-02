@@ -297,6 +297,7 @@ class Encryption {
 				subsToDecrypt.map(async (sub: TSubscriptionModel) => {
 					const { rid, lastMessage } = sub;
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
+					// @ts-ignore
 					if (sub._hasPendingUpdate) {
 						console.log(sub);
 						return;
@@ -348,7 +349,7 @@ class Encryption {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
 
-		let subRecord;
+		let subRecord: TSubscriptionModel;
 		try {
 			subRecord = await subCollection.find(rid);
 		} catch {
@@ -368,6 +369,7 @@ class Encryption {
 				);
 				// If the subscription already exists but doesn't have the E2EKey yet
 			} else if (!subRecord.E2EKey && subscription.E2EKey) {
+				// @ts-ignore
 				if (!subRecord._hasPendingUpdate) {
 					// Let's update the subscription with the received E2EKey
 					batch.push(
