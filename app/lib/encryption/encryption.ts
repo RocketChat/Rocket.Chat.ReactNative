@@ -349,7 +349,7 @@ class Encryption {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
 
-		let subRecord: TSubscriptionModel;
+		let subRecord;
 		try {
 			subRecord = await subCollection.find(rid);
 		} catch {
