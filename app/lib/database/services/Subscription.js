@@ -1,7 +1,7 @@
 import database from '..';
-import { TABLE_NAME } from '../model/Subscription';
+import { SUBSCRIPTIONS_TABLE } from '../model/Subscription';
 
-const getCollection = db => db.get(TABLE_NAME);
+const getCollection = db => db.get(SUBSCRIPTIONS_TABLE);
 
 export const getSubscriptionByRoomId = async rid => {
 	const db = database.active;

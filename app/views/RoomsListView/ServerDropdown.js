@@ -49,7 +49,7 @@ class ServerDropdown extends Component {
 
 	async componentDidMount() {
 		const serversDB = database.servers;
-		const observable = await serversDB.collections.get('servers').query().observeWithColumns(['name']);
+		const observable = await serversDB.get('servers').query().observeWithColumns(['name']);
 
 		this.subscription = observable.subscribe(data => {
 			this.setState({ servers: data });
@@ -123,7 +123,7 @@ class ServerDropdown extends Component {
 	};
 
 	select = async (server, version) => {
-		const { server: currentServer, isMasterDetail, dispatch } = this.props;
+		const { server: currentServer, dispatch, isMasterDetail } = this.props;
 		this.close();
 		if (currentServer !== server) {
 			logEvent(events.RL_CHANGE_SERVER);
@@ -140,7 +140,7 @@ class ServerDropdown extends Component {
 				}, ANIMATION_DURATION);
 			} else {
 				await localAuthenticate(server);
-				dispatch(selectServerRequest(server, version));
+				dispatch(selectServerRequest(server, version, true, true));
 			}
 		}
 	};

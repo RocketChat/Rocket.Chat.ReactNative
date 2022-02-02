@@ -1,10 +1,11 @@
+import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { dequal } from 'dequal';
 
-import RoomHeader from './RoomHeader';
+import { IApplicationState } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
+import RoomHeader from './RoomHeader';
 
 interface IRoomHeaderContainerProps {
 	title: string;
@@ -122,8 +123,8 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 	}
 }
 
-const mapStateToProps = (state: any, ownProps: any) => {
-	let statusText;
+const mapStateToProps = (state: IApplicationState, ownProps: any) => {
+	let statusText = '';
 	let status = 'offline';
 	const { roomUserId, type, visitor = {}, tmid } = ownProps;
 

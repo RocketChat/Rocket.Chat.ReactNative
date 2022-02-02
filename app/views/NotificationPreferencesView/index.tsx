@@ -80,7 +80,7 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 		const db = database.active;
 
 		try {
-			await db.action(async () => {
+			await db.write(async () => {
 				await room.update(
 					protectedFunction((r: any) => {
 						r[key] = value;
@@ -97,7 +97,7 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 				// do nothing
 			}
 
-			await db.action(async () => {
+			await db.write(async () => {
 				await room.update(
 					protectedFunction((r: any) => {
 						r[key] = room[key];
