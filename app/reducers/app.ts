@@ -1,15 +1,26 @@
+import { TActionApp } from '../actions/app';
+import { RootEnum } from '../definitions';
 import { APP, APP_STATE } from '../actions/actionsTypes';
 
-const initialState = {
-	root: null,
+export interface IApp {
+	root?: RootEnum;
+	isMasterDetail: boolean;
+	text?: string;
+	ready: boolean;
+	foreground: boolean;
+	background: boolean;
+}
+
+export const initialState: IApp = {
+	root: undefined,
 	isMasterDetail: false,
-	text: null,
+	text: undefined,
 	ready: false,
 	foreground: true,
 	background: false
 };
 
-export default function app(state = initialState, action) {
+export default function app(state = initialState, action: TActionApp): IApp {
 	switch (action.type) {
 		case APP_STATE.FOREGROUND:
 			return {
