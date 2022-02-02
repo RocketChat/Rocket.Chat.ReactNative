@@ -308,29 +308,17 @@ const RocketChat = {
 				protectedFunction(ddpMessage => onRolesChanged(ddpMessage))
 			);
 
-			// TODO: refactor to reuse it on `user-status` event
+			// RC 4.1
 			this.sdk.onStreamData('stream-user-presence', ddpMessage => {
-				console.log('🚀 ~ file: getUsersPresence.js ~ line 56 ~ getUsersPresence ~ ddpMessage', ddpMessage);
-
-				this.activeUsers = this.activeUsers || {};
-				if (!this._setUserTimer) {
-					this._setUserTimer = setTimeout(() => {
-						const activeUsersBatch = this.activeUsers;
-						InteractionManager.runAfterInteractions(() => {
-							reduxStore.dispatch(setActiveUsers(activeUsersBatch));
-						});
-						this._setUserTimer = null;
-						return (this.activeUsers = {});
-					}, 10000);
-				}
 				const userStatus = ddpMessage.fields.args[0];
 				const { uid } = ddpMessage.fields;
 				const [, status, statusText] = userStatus;
-				this.activeUsers[uid] = { status: STATUSES[status], statusText };
+				const newStatus = { status: STATUSES[status], statusText };
+				reduxStore.dispatch(setActiveUsers({ [uid]: newStatus }));
 
 				const { user: loggedUser } = reduxStore.getState().login;
 				if (loggedUser && loggedUser.id === uid) {
-					reduxStore.dispatch(setUser({ status: STATUSES[status], statusText }));
+					reduxStore.dispatch(setUser(newStatus));
 				}
 			});
 
@@ -338,6 +326,8 @@ const RocketChat = {
 				'stream-notify-logged',
 				protectedFunction(async ddpMessage => {
 					const { eventName } = ddpMessage.fields;
+
+					// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
 					if (/user-status/.test(eventName)) {
 						this.activeUsers = this.activeUsers || {};
 						if (!this._setUserTimer) {

@@ -222,11 +222,6 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 const handleSetUser = function* handleSetUser({ user }) {
 	setLanguage(user?.language);
 
-	if (user && user.status) {
-		const userId = yield select(state => state.login.user.id);
-		yield put(setActiveUsers({ [userId]: user }));
-	}
-
 	if (user?.statusLivechat && RocketChat.isOmnichannelModuleAvailable()) {
 		if (isOmnichannelStatusAvailable(user)) {
 			yield put(inquiryRequest());
