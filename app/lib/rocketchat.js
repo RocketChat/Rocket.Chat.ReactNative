@@ -1649,15 +1649,18 @@ const RocketChat = {
 			reduxStore.dispatch(setUser({ status: { status: 'offline' } }));
 		}
 
-		if (!this._setUserTimer) {
-			this._setUserTimer = setTimeout(() => {
-				const activeUsersBatch = this.activeUsers;
-				InteractionManager.runAfterInteractions(() => {
-					reduxStore.dispatch(setActiveUsers(activeUsersBatch));
-				});
-				this._setUserTimer = null;
-				return (this.activeUsers = {});
-			}, 10000);
+		const serverVersion = reduxStore.getState().server.version;
+		if (compareServerVersion(serverVersion, '4.1.0', methods.lowerThan)) {
+			if (!this._setUserTimer) {
+				this._setUserTimer = setTimeout(() => {
+					const activeUsersBatch = this.activeUsers;
+					InteractionManager.runAfterInteractions(() => {
+						reduxStore.dispatch(setActiveUsers(activeUsersBatch));
+					});
+					this._setUserTimer = null;
+					return (this.activeUsers = {});
+				}, 10000);
+			}
 		}
 
 		if (!ddpMessage.fields) {
