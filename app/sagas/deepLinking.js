@@ -8,11 +8,12 @@ import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks'
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import EventEmitter from '../utils/events';
-import { ROOT_INSIDE, ROOT_OUTSIDE, appInit, appStart } from '../actions/app';
+import { appInit, appStart } from '../actions/app';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { goRoom } from '../utils/goRoom';
 import { loginRequest } from '../actions/login';
 import log from '../utils/log';
+import { RootEnum } from '../definitions';
 
 const roomTypes = {
 	channel: 'c',
@@ -41,7 +42,7 @@ const popToRoot = function popToRoot({ isMasterDetail }) {
 };
 
 const navigate = function* navigate({ params }) {
-	yield put(appStart({ root: ROOT_INSIDE }));
+	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 	if (params.path || params.rid) {
 		let type;
 		let name;
@@ -192,7 +193,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield fallbackNavigation();
 			return;
 		}
-		yield put(appStart({ root: ROOT_OUTSIDE }));
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		yield put(serverInitAdd(server));
 		yield delay(1000);
 		EventEmitter.emit('NewServer', { server: host });

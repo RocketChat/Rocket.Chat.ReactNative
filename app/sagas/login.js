@@ -3,7 +3,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
 import * as types from '../actions/actionsTypes';
-import { ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE, ROOT_SET_USERNAME, appStart } from '../actions/app';
+import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
@@ -20,6 +20,7 @@ import { encryptionInit, encryptionStop } from '../actions/encryption';
 import UserPreferences from '../lib/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
+import { RootEnum } from '../definitions';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -38,7 +39,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		if (!result.username) {
 			yield put(serverFinishAdd());
 			yield put(setUser(result));
-			yield put(appStart({ root: ROOT_SET_USERNAME }));
+			yield put(appStart({ root: RootEnum.ROOT_SET_USERNAME }));
 		} else {
 			const server = yield select(getServer);
 			yield localAuthenticate(server);
@@ -167,7 +168,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 
-		yield put(appStart({ root: ROOT_INSIDE }));
+		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);
 		if (inviteLinkToken) {
 			yield put(inviteLinksRequest(inviteLinkToken));
@@ -179,7 +180,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 
 const handleLogout = function* handleLogout({ forcedByServer }) {
 	yield put(encryptionStop());
-	yield put(appStart({ root: ROOT_LOADING, text: I18n.t('Logging_out') }));
+	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
 	if (server) {
 		try {
@@ -187,7 +188,7 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 
 			// if the user was logged out by the server
 			if (forcedByServer) {
-				yield put(appStart({ root: ROOT_OUTSIDE }));
+				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
 				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
@@ -209,10 +210,10 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 					}
 				}
 				// if there's no servers, go outside
-				yield put(appStart({ root: ROOT_OUTSIDE }));
+				yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			}
 		} catch (e) {
-			yield put(appStart({ root: ROOT_OUTSIDE }));
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			log(e);
 		}
 	}

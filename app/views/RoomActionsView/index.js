@@ -941,7 +941,7 @@ class RoomActionsView extends React.Component {
 			canReturnQueue,
 			canViewCannedResponse
 		} = this.state;
-		const { rid, t } = room;
+		const { rid, t, prid } = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
 		return (
@@ -1003,6 +1003,27 @@ class RoomActionsView extends React.Component {
 									}
 									testID='room-actions-invite-user'
 									left={() => <List.Icon name='user-add' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
+
+						{['c', 'p', 'd'].includes(t) && !prid ? (
+							<>
+								<List.Item
+									title='Discussions'
+									onPress={() =>
+										this.onPressTouchable({
+											route: 'DiscussionsView',
+											params: {
+												rid,
+												t
+											}
+										})
+									}
+									testID='room-actions-discussions'
+									left={() => <List.Icon name='discussions' />}
 									showActionIndicator
 								/>
 								<List.Separator />
