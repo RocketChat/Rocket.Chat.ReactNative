@@ -7,7 +7,7 @@ export interface IUserLogin {
 	token: string;
 	username: string;
 	name: string;
-	language: null;
+	language: string;
 	status: TUserStatus;
 	statusText: string;
 	roles: string[];
