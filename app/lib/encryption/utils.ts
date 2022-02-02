@@ -34,10 +34,9 @@ export const bufferToB64URI = (buffer: ArrayBuffer): string => {
 };
 // SimpleCrypto.utils.convertArrayBufferToUtf8 is not working with unicode emoji
 export const bufferToUtf8 = (buffer: ArrayBuffer): string => {
-	const uintArray = new Uint8Array(buffer);
-	const encodedString = String.fromCharCode.apply(null, uintArray as unknown as number[]);
-	const decodedString = decodeURIComponent(escape(encodedString));
-	return decodedString;
+	const uintArray = new Uint8Array(buffer) as number[] & Uint8Array;
+	const encodedString = String.fromCharCode.apply(null, uintArray);
+	return decodeURIComponent(escape(encodedString));
 };
 export const splitVectorData = (text: ArrayBuffer): ArrayBuffer[] => {
 	const vector = text.slice(0, 16);

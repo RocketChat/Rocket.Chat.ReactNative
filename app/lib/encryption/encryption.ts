@@ -20,7 +20,7 @@ import {
 } from './constants';
 import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 import { EncryptionRoom } from './index';
-import { IMessage, ISubscription } from '../../definitions';
+import { IMessage, ISubscription, TSubscriptionModel } from '../../definitions';
 
 class Encryption {
 	ready: boolean;
@@ -294,7 +294,7 @@ class Encryption {
 					sub?.lastMessage?.e2e === E2E_STATUS.PENDING
 			);
 			await Promise.all(
-				subsToDecrypt.map(async (sub: any) => {
+				subsToDecrypt.map(async (sub: TSubscriptionModel) => {
 					const { rid, lastMessage } = sub;
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
 					if (sub._hasPendingUpdate) {
@@ -302,7 +302,7 @@ class Encryption {
 						return;
 					}
 					return sub.prepareUpdate(
-						protectedFunction((m: ISubscription) => {
+						protectedFunction((m: TSubscriptionModel) => {
 							Object.assign(m, newSub);
 						})
 					);
@@ -361,7 +361,7 @@ class Encryption {
 			if (!subRecord) {
 				// Let's create the subscription with the data received
 				batch.push(
-					subCollection.prepareCreate((s: any) => {
+					subCollection.prepareCreate((s: TSubscriptionModel) => {
 						s._raw = sanitizedRaw({ id: rid }, subCollection.schema);
 						Object.assign(s, subscription);
 					})
@@ -371,7 +371,7 @@ class Encryption {
 				if (!subRecord._hasPendingUpdate) {
 					// Let's update the subscription with the received E2EKey
 					batch.push(
-						subRecord.prepareUpdate((s: any) => {
+						subRecord.prepareUpdate((s: TSubscriptionModel) => {
 							s.E2EKey = subscription.E2EKey;
 						})
 					);
