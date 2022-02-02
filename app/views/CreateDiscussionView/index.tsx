@@ -212,7 +212,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	loading: state.createDiscussion.isFetching,
 	result: state.createDiscussion.result as IResult,
 	blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
-	serverVersion: state.server.version,
+	serverVersion: state.server.version as string,
 	isMasterDetail: state.app.isMasterDetail,
 	encryptionEnabled: state.encryption.enabled
 });
