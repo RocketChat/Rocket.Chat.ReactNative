@@ -13,12 +13,13 @@ import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../presentation/R
 import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
-import { appStart, ROOT_OUTSIDE } from '../../actions/app';
+import { appStart } from '../../actions/app';
 import debounce from '../../utils/debounce';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
+import { serverInitAdd } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
@@ -43,6 +44,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
+import { RootEnum } from '../../definitions';
 import { DisplayMode, SortBy } from '../../constants/constantDisplayMode';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
@@ -132,8 +134,7 @@ class RoomsListView extends React.Component {
 		createDirectMessagePermission: PropTypes.array,
 		createPublicChannelPermission: PropTypes.array,
 		createPrivateChannelPermission: PropTypes.array,
-		createDiscussionPermission: PropTypes.array,
-		initAdd: PropTypes.func
+		createDiscussionPermission: PropTypes.array
 	};
 
 	constructor(props) {
@@ -831,7 +832,7 @@ class RoomsListView extends React.Component {
 	};
 
 	handleCommands = ({ event }) => {
-		const { navigation, server, isMasterDetail, dispatch, initAdd } = this.props;
+		const { navigation, server, isMasterDetail, dispatch } = this.props;
 		const { input } = event;
 		if (handleCommandShowPreferences(event)) {
 			navigation.navigate('SettingsView');
@@ -851,8 +852,8 @@ class RoomsListView extends React.Component {
 			}
 		} else if (handleCommandAddNewServer(event)) {
 			batch(() => {
-				dispatch(appStart({ root: ROOT_OUTSIDE }));
-				initAdd(server);
+				dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+				dispatch(serverInitAdd(server));
 			});
 		}
 	};

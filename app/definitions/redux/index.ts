@@ -1,5 +1,6 @@
 // ACTIONS
 import { TActionActiveUsers } from '../../actions/activeUsers';
+import { TActionApp } from '../../actions/app';
 import { TActionCreateChannel } from '../../actions/createChannel';
 import { TActionCustomEmojis } from '../../actions/customEmojis';
 import { TActionEncryption } from '../../actions/encryption';
@@ -13,6 +14,7 @@ import { TActionSortPreferences } from '../../actions/sortPreferences';
 import { TActionUserTyping } from '../../actions/usersTyping';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
+import { IApp } from '../../reducers/app';
 import { IConnect } from '../../reducers/connect';
 import { ICreateChannel } from '../../reducers/createChannel';
 import { IEncryption } from '../../reducers/encryption';
@@ -29,8 +31,8 @@ export interface IApplicationState {
 	meteor: IConnect;
 	server: IServer;
 	selectedUsers: ISelectedUsers;
+	app: IApp;
 	createChannel: ICreateChannel;
-	app: any;
 	room: any;
 	rooms: any;
 	sortPreferences: any;
@@ -58,4 +60,5 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionUserTyping &
 	TActionCreateChannel &
 	TActionsShare &
-	TActionServer;
+	TActionServer &
+	TActionApp;
