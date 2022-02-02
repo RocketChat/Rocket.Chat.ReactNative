@@ -3,7 +3,7 @@ import { Action } from 'redux';
 import { IActiveUsers } from '../reducers/activeUsers';
 import { SET_ACTIVE_USERS } from './actionsTypes';
 
-export interface ISetActiveUsers extends Action {
+interface ISetActiveUsers extends Action {
 	activeUsers: IActiveUsers;
 }
 
