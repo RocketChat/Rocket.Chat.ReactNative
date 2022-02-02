@@ -3,8 +3,10 @@ import { field, json } from '@nozbe/watermelondb/decorators';
 
 import { sanitizer } from '../utils';
 
+export const ROOMS_TABLE = 'rooms';
+
 export default class Room extends Model {
-	static table = 'rooms';
+	static table = ROOMS_TABLE;
 
 	@json('custom_fields', sanitizer) customFields;
 
