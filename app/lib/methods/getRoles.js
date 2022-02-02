@@ -8,7 +8,7 @@ import protectedFunction from './helpers/protectedFunction';
 
 export async function setRoles() {
 	const db = database.active;
-	const rolesCollection = db.collections.get('roles');
+	const rolesCollection = db.get('roles');
 	const allRoles = await rolesCollection.query().fetch();
 	const parsed = allRoles.reduce((acc, item) => ({ ...acc, [item.id]: item.description || item.id }), {});
 	reduxStore.dispatch(setRolesAction(parsed));
