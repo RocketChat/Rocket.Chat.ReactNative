@@ -5,13 +5,13 @@ import FileUpload from '../../utils/fileUpload';
 import database from '../database';
 import log from '../../utils/log';
 
-const uploadQueue = {};
+const uploadQueue: { [index: string]: any } = {};
 
-export function isUploadActive(path) {
+export function isUploadActive(path: string): boolean {
 	return !!uploadQueue[path];
 }
 
-export async function cancelUpload(item) {
+export async function cancelUpload(item: { path: string }): Promise<any> {
 	if (uploadQueue[item.path]) {
 		try {
 			await uploadQueue[item.path].cancel();
@@ -20,7 +20,7 @@ export async function cancelUpload(item) {
 		}
 		try {
 			const db = database.active;
-			await db.action(async () => {
+			await db.write(async () => {
 				await item.destroyPermanently();
 			});
 		} catch (e) {
