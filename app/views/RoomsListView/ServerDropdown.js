@@ -221,8 +221,7 @@ class ServerDropdown extends Component {
 							borderColor: themes[theme].separatorColor
 						}
 					]}
-					testID='rooms-list-header-server-dropdown'
-				>
+					testID='rooms-list-header-server-dropdown'>
 					<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: themes[theme].separatorColor }]}>
 						<Text style={[styles.serverHeaderText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Server')}</Text>
 						<TouchableOpacity onPress={this.addServer} testID='rooms-list-header-server-add'>

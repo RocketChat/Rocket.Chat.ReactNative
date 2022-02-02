@@ -71,8 +71,7 @@ const HeaderItem = React.memo(({ item, onReaction, server, theme }: THeaderItem)
 		testID={`message-actions-emoji-${item.content || item}`}
 		onPress={() => onReaction({ emoji: `:${item.content || item}:` })}
 		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-		theme={theme}
-	>
+		theme={theme}>
 		{item?.isCustom ? (
 			<CustomEmoji style={styles.customEmoji} emoji={item} baseUrl={server} />
 		) : (
@@ -86,8 +85,7 @@ const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
 		testID='add-reaction'
 		onPress={onReaction}
 		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-		theme={theme}
-	>
+		theme={theme}>
 		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
 	</Button>
 ));

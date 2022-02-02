@@ -71,8 +71,7 @@ const Item = ({ item, baseUrl, onPress }: IItem): JSX.Element => {
 		<Touchable
 			onPress={() => onPress(item)}
 			testID={`discussions-view-${item.msg}`}
-			style={{ backgroundColor: themes[theme].backgroundColor }}
-		>
+			style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} theme={theme} />
 				<View style={styles.contentContainer}>

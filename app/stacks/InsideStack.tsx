@@ -86,8 +86,7 @@ const ChatsStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ChatsStack.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
-		>
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
 			<ChatsStack.Screen name='RoomsListView' component={RoomsListView} />
 			<ChatsStack.Screen name='RoomView' component={RoomView} />
 			<ChatsStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
@@ -151,8 +150,7 @@ const ProfileStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ProfileStack.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
-		>
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
 			<ProfileStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<ProfileStack.Screen
@@ -172,8 +170,7 @@ const SettingsStackNavigator = () => {
 
 	return (
 		<SettingsStack.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
-		>
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
 			<SettingsStack.Screen name='SettingsView' component={SettingsView} options={SettingsView.navigationOptions} />
 			<SettingsStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
 			<SettingsStack.Screen
@@ -204,8 +201,7 @@ const AdminPanelStackNavigator = () => {
 
 	return (
 		<AdminPanelStack.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
-		>
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
 			<AdminPanelStack.Screen name='AdminPanelView' component={AdminPanelView} options={AdminPanelView.navigationOptions} />
 		</AdminPanelStack.Navigator>
 	);
@@ -218,8 +214,7 @@ const DisplayPrefStackNavigator = () => {
 
 	return (
 		<DisplayPrefStack.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
-		>
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
 			<DisplayPrefStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
 		</DisplayPrefStack.Navigator>
 	);
@@ -236,8 +231,7 @@ const DrawerNavigator = () => {
 			drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
 			screenOptions={{ swipeEnabled: false }}
 			drawerType='back'
-			overlayColor={`rgba(0,0,0,${themes[theme].backdropOpacity})`}
-		>
+			overlayColor={`rgba(0,0,0,${themes[theme].backdropOpacity})`}>
 			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
@@ -254,8 +248,7 @@ const NewMessageStackNavigator = () => {
 
 	return (
 		<NewMessageStack.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
-		>
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
 			<NewMessageStack.Screen name='NewMessageView' component={NewMessageView} options={NewMessageView.navigationOptions} />
 			<NewMessageStack.Screen name='SelectedUsersViewCreateChannel' component={SelectedUsersView} />
 			<NewMessageStack.Screen
@@ -275,8 +268,7 @@ const E2ESaveYourPasswordStackNavigator = () => {
 
 	return (
 		<E2ESaveYourPasswordStack.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
-		>
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
 			<E2ESaveYourPasswordStack.Screen
 				name='E2ESaveYourPasswordView'
 				component={E2ESaveYourPasswordView}
@@ -298,8 +290,7 @@ const E2EEnterYourPasswordStackNavigator = () => {
 
 	return (
 		<E2EEnterYourPasswordStack.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
-		>
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
 			<E2EEnterYourPasswordStack.Screen
 				name='E2EEnterYourPasswordView'
 				component={E2EEnterYourPasswordView}

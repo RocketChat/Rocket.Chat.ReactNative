@@ -70,8 +70,7 @@ const ServerInput = ({
 					style={[
 						styles.serverHistory,
 						{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }
-					]}
-				>
+					]}>
 					<FlatList
 						data={serversHistory}
 						renderItem={({ item }) => (

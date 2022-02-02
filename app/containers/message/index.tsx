@@ -396,8 +396,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					threadBadgeColor,
 					toggleFollowThread,
 					replies
-				}}
-			>
+				}}>
 				<Message
 					id={id}
 					msg={message}

@@ -185,8 +185,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} theme={theme} />}
 					/* @ts-ignore*/
 					contentProps={scrollProps}
-					style={{ backgroundColor: themes[theme!].focusedBackground }}
-				>
+					style={{ backgroundColor: themes[theme!].focusedBackground }}>
 					{categories.tabs.map((tab, i) =>
 						i === 0 && frequentlyUsed.length === 0
 							? null // when no frequentlyUsed don't show the tab

@@ -1088,16 +1088,14 @@ class RoomView extends React.Component {
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
 					<Text
 						accessibilityLabel={I18n.t('You_are_in_preview_mode')}
-						style={[styles.previewMode, { color: themes[theme].titleText }]}
-					>
+						style={[styles.previewMode, { color: themes[theme].titleText }]}>
 						{I18n.t('You_are_in_preview_mode')}
 					</Text>
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
-						theme={theme}
-					>
+						theme={theme}>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
 						</Text>
@@ -1110,8 +1108,7 @@ class RoomView extends React.Component {
 				<View style={styles.readOnly}>
 					<Text
 						style={[styles.previewMode, { color: themes[theme].titleText }]}
-						accessibilityLabel={I18n.t('This_room_is_read_only')}
-					>
+						accessibilityLabel={I18n.t('This_room_is_read_only')}>
 						{I18n.t('This_room_is_read_only')}
 					</Text>
 				</View>
