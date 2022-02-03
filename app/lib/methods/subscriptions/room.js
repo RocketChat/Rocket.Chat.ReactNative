@@ -32,7 +32,6 @@ export default class RoomSubscription {
 			await this.unsubscribe();
 		}
 		this.promises = RocketChat.subscribeRoom(this.rid);
-		this.isDisconnected = false;
 
 		this.connectedListener = RocketChat.onStreamData('connected', this.handleConnection);
 		this.disconnectedListener = RocketChat.onStreamData('close', this.handleConnection);
