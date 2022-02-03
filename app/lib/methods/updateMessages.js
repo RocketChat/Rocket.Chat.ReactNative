@@ -24,7 +24,7 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 				sub = await subCollection.find(rid);
 			} catch (error) {
 				sub = { id: rid };
-				console.log('updateMessages: subscription not found');
+				log(new Error('updateMessages: subscription not found'));
 			}
 
 			const messagesIds = [...update.map(m => m._id), ...remove.map(m => m._id)];
@@ -92,41 +92,41 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 			// Update
 			msgsToUpdate = msgsToUpdate.map(message => {
 				const newMessage = update.find(m => m._id === message.id);
-				if (message._hasPendingUpdate) {
-					console.log(message);
-					return;
+				try {
+					return message.prepareUpdate(
+						protectedFunction(m => {
+							Object.assign(m, newMessage);
+						})
+					);
+				} catch {
+					return null;
 				}
-				return message.prepareUpdate(
-					protectedFunction(m => {
-						Object.assign(m, newMessage);
-					})
-				);
 			});
 			threadsToUpdate = threadsToUpdate.map(thread => {
-				if (thread._hasPendingUpdate) {
-					console.log(thread);
-					return;
-				}
 				const newThread = allThreads.find(t => t._id === thread.id);
-				return thread.prepareUpdate(
-					protectedFunction(t => {
-						Object.assign(t, newThread);
-					})
-				);
+				try {
+					return thread.prepareUpdate(
+						protectedFunction(t => {
+							Object.assign(t, newThread);
+						})
+					);
+				} catch {
+					return null;
+				}
 			});
 			threadMessagesToUpdate = threadMessagesToUpdate.map(threadMessage => {
-				if (threadMessage._hasPendingUpdate) {
-					console.log(threadMessage);
-					return;
-				}
 				const newThreadMessage = allThreadMessages.find(t => t._id === threadMessage.id);
-				return threadMessage.prepareUpdate(
-					protectedFunction(tm => {
-						Object.assign(tm, newThreadMessage);
-						tm.rid = threadMessage.tmid;
-						delete threadMessage.tmid;
-					})
-				);
+				try {
+					return threadMessage.prepareUpdate(
+						protectedFunction(tm => {
+							Object.assign(tm, newThreadMessage);
+							tm.rid = threadMessage.tmid;
+							delete threadMessage.tmid;
+						})
+					);
+				} catch {
+					return null;
+				}
 			});
 
 			// Delete
