@@ -78,24 +78,10 @@ export default class RoomSubscription {
 		}
 	};
 
-	subscriptionRead = debounce(() => {
-		RocketChat.subscriptionRead(this.rid);
-	}, 300);
-
-	handleDisconnection = () => {
-		if (!this.isDisconnected) {
-			this.isDisconnected = true;
-		}
-		this.handleConnection();
-	};
-
 	handleConnection = () => {
-		if (this.isDisconnected) {
-			this.subscriptionRead();
-			this.isDisconnected = false;
-		}
 		reduxStore.dispatch(clearUserTyping());
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
+		RocketChat.subscriptionRead(this.rid);
 	};
 
 	handleNotifyRoomReceived = protectedFunction(ddpMessage => {
