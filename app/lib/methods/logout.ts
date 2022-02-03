@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import Model from '@nozbe/watermelondb/Model';
 
 import { getDeviceToken } from '../../notifications/push';
 import { extractHostname } from '../../utils/server';
@@ -9,21 +10,24 @@ import RocketChat from '../rocketchat';
 import { useSsl } from '../../utils/url';
 import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../encryption/constants';
 import UserPreferences from '../userPreferences';
+import { ICertificate, IRocketChatThis } from '../../definitions';
 
-async function removeServerKeys({ server, userId }) {
+async function removeServerKeys({ server, userId }: { server: string; userId: string | null }) {
 	await UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);
-	await UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${userId}`);
+	if (userId) {
+		await UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${userId}`);
+	}
 	await UserPreferences.removeItem(`${BASIC_AUTH_KEY}-${server}`);
 	await UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	await UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	await UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
 }
 
-async function removeSharedCredentials({ server }) {
+async function removeSharedCredentials({ server }: { server: string }) {
 	// clear certificate for server - SSL Pinning
 	try {
-		const certificate = await UserPreferences.getMapAsync(extractHostname(server));
-		if (certificate && certificate.path) {
+		const certificate = (await UserPreferences.getMapAsync(extractHostname(server))) as ICertificate | null;
+		if (certificate?.path) {
 			await UserPreferences.removeItem(extractHostname(server));
 			await FileSystem.deleteAsync(certificate.path);
 		}
@@ -32,9 +36,9 @@ async function removeSharedCredentials({ server }) {
 	}
 }
 
-async function removeServerData({ server }) {
+async function removeServerData({ server }: { server: string }) {
 	try {
-		const batch = [];
+		const batch: Model[] = [];
 		const serversDB = database.servers;
 		const userId = await UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
 
@@ -47,9 +51,9 @@ async function removeServerData({ server }) {
 		const serverRecord = await serverCollection.find(server);
 		batch.push(serverRecord.prepareDestroyPermanently());
 
-		await serversDB.action(() => serversDB.batch(...batch));
+		await serversDB.write(() => serversDB.batch(...batch));
 		await removeSharedCredentials({ server });
-		await removeServerKeys({ server });
+		await removeServerKeys({ server, userId });
 	} catch (e) {
 		console.log('removeServerData', e);
 	}
@@ -59,16 +63,16 @@ async function removeCurrentServer() {
 	await UserPreferences.removeItem(RocketChat.CURRENT_SERVER);
 }
 
-async function removeServerDatabase({ server }) {
+async function removeServerDatabase({ server }: { server: string }) {
 	try {
 		const db = getDatabase(server);
-		await db.action(() => db.unsafeResetDatabase());
+		await db.write(() => db.unsafeResetDatabase());
 	} catch (e) {
 		console.log(e);
 	}
 }
 
-export async function removeServer({ server }) {
+export async function removeServer({ server }: { server: string }): Promise<void> {
 	try {
 		const userId = await UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
 		if (userId) {
@@ -92,7 +96,7 @@ export async function removeServer({ server }) {
 	}
 }
 
-export default async function logout({ server }) {
+export default async function logout(this: IRocketChatThis, { server }: { server: string }): Promise<void> {
 	if (this.roomsSub) {
 		this.roomsSub.stop();
 		this.roomsSub = null;
