@@ -31,6 +31,8 @@ export default function loadMissedMessages(args) {
 		try {
 			const data = await load.call(this, { rid: args.rid, lastOpen: args.lastOpen });
 
+			await this.sdk.post('subscriptions.read', { rid: args.rid });
+
 			if (data) {
 				const { updated, deleted } = data;
 				await updateMessages({ rid: args.rid, update: updated, remove: deleted });

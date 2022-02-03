@@ -1072,9 +1072,6 @@ const RocketChat = {
 		}
 		return this.post('subscriptions.read', { rid: roomId });
 	},
-	subscriptionRead(roomId) {
-		return this.post('subscriptions.read', { rid: roomId });
-	},
 	async getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
 		const serverVersion = reduxStore.getState().server.version;
 		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
