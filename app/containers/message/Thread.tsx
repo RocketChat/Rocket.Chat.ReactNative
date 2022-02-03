@@ -24,7 +24,6 @@ const Thread = React.memo(
 					item={{
 						tcount,
 						replies,
-						tlm,
 						id
 					}}
 					user={user}
