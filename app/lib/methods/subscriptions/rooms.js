@@ -313,7 +313,15 @@ export default function subscribeRooms() {
 		if (/message/.test(ev)) {
 			try {
 				const [args] = ddpMessage.fields.args;
-				const message = buildMessage(EJSON.fromJSONValue(args));
+				const _id = random(17);
+				const message = {
+					u: {
+						_id,
+						username: 'rocket.cat',
+						name: 'Rocket Cat'
+					},
+					...buildMessage(EJSON.fromJSONValue(args))
+				};
 				await updateMessages({ rid: args.rid, update: [message] });
 			} catch (e) {
 				log(e);
