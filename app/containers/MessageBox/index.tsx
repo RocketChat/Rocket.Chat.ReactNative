@@ -131,14 +131,9 @@ interface IMessageBoxState {
 }
 
 const forceJpgExtension = (attachment: ImageOrVideo) => {
-	const regexJPG = new RegExp(/.jpg$/i); // Test if the attachment.filename is ending with '.jpg', ignoring case
-	if (isIOS && attachment.mime === 'image/jpeg' && attachment.filename && !attachment.filename.match(regexJPG)) {
-		const regex = new RegExp(/.heic$/i);
-		if (attachment.filename.match(regex)) {
-			attachment.filename = attachment.filename.replace(regex, '.jpg');
-		} else {
-			attachment.filename += '.jpg';
-		}
+	if (isIOS && attachment.mime === 'image/jpeg' && attachment.filename) {
+		const regex = new RegExp(/\.[^/.]+$/); // Check from last '.' of the string
+		attachment.filename = attachment.filename.replace(regex, '.jpg'); // Replace files that ends with .jpg | .heic | .jpeg to .jpg
 	}
 	return attachment;
 };
