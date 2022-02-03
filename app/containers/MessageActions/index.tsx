@@ -15,6 +15,7 @@ import { showConfirmationAlert } from '../../utils/info';
 import { useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT } from './Header';
 import events from '../../utils/log/events';
+import { TMessageModel } from '../../definitions/IMessage';
 
 interface IMessageActions {
 	room: {
@@ -182,9 +183,9 @@ const MessageActions = React.memo(
 					if (result.success) {
 						const subCollection = db.get('subscriptions');
 						const subRecord = await subCollection.find(rid);
-						await db.action(async () => {
+						await db.write(async () => {
 							try {
-								await subRecord.update((sub: any) => (sub.lastOpen = ts));
+								await subRecord.update(sub => (sub.lastOpen = ts));
 							} catch {
 								// do nothing
 							}
@@ -269,11 +270,11 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleToggleTranslation = async (message: any) => {
+			const handleToggleTranslation = async (message: TMessageModel) => {
 				try {
 					const db = database.active;
-					await db.action(async () => {
-						await message.update((m: any) => {
+					await db.write(async () => {
+						await message.update(m => {
 							m.autoTranslate = !m.autoTranslate;
 							m._updatedAt = new Date();
 						});
@@ -320,7 +321,7 @@ const MessageActions = React.memo(
 				});
 			};
 
-			const getOptions = (message: any) => {
+			const getOptions = (message: TMessageModel) => {
 				let options: any = [];
 
 				// Reply
@@ -446,7 +447,7 @@ const MessageActions = React.memo(
 				return options;
 			};
 
-			const showMessageActions = async (message: any) => {
+			const showMessageActions = async (message: TMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
 				showActionSheet({

@@ -11,6 +11,7 @@ import './Markdown';
 import './HeaderButtons';
 import './UnreadBadge';
 import '../../app/views/ThreadMessagesView/Item.stories.js';
+import '../../app/views/DiscussionsView/Item.stories.js';
 import './Avatar';
 import './NewMarkdown';
 import '../../app/containers/BackgroundContainer/index.stories.js';

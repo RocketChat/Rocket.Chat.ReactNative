@@ -359,7 +359,7 @@ jobs:
       - run:
           name: Test
           command: |
-            yarn test
+            yarn test -w 8
 
       - run:
           name: Codecov

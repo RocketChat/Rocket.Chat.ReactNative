@@ -5,11 +5,11 @@ import { setBadgeCount } from '../notifications/push';
 import log from '../utils/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
-import { ROOT_OUTSIDE } from '../actions/app';
+import { RootEnum } from '../definitions';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
-	if (appRoot === ROOT_OUTSIDE) {
+	if (appRoot === RootEnum.ROOT_OUTSIDE) {
 		return;
 	}
 	const login = yield select(state => state.login);
@@ -29,7 +29,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 
 const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 	const appRoot = yield select(state => state.app.root);
-	if (appRoot === ROOT_OUTSIDE) {
+	if (appRoot === RootEnum.ROOT_OUTSIDE) {
 		return;
 	}
 	try {

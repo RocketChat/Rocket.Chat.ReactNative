@@ -7,7 +7,6 @@ import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { Observable, Subscription } from 'rxjs';
-import Model from '@nozbe/watermelondb/Model';
 import Database from '@nozbe/watermelondb/Database';
 
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -86,7 +85,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	private messagesSubscription?: Subscription;
 
-	private messagesObservable!: Observable<Model>;
+	private messagesObservable?: Observable<TThreadModel[]>;
 
 	constructor(props: IThreadMessagesViewProps) {
 		super(props);
@@ -144,7 +143,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader onSearchChangeText={this.onSearchChangeText} />,
+				headerTitle: () => (
+					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='thread-messages-view-search-header' />
+				),
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right
@@ -188,7 +189,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			const db = database.active;
 
 			// subscription query
-			const subscription = (await db.collections.get('subscriptions').find(this.rid)) as TSubscriptionModel;
+			const subscription = await db.get('subscriptions').find(this.rid);
 			const observable = subscription.observe();
 			this.subSubscription = observable.subscribe(data => {
 				this.setState({ subscription: data });
@@ -214,15 +215,15 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				whereClause.push(Q.where('msg', Q.like(`%${sanitizeLikeString(searchText.trim())}%`)));
 			}
 
-			this.messagesObservable = db.collections
+			this.messagesObservable = db
 				.get('threads')
 				.query(...whereClause)
 				.observeWithColumns(['updated_at']);
 
 			// TODO: Refactor when migrate messages
-			this.messagesSubscription = this.messagesObservable.subscribe((messages: any) => {
+			this.messagesSubscription = this.messagesObservable.subscribe(messages => {
 				const { currentFilter } = this.state;
-				const displayingThreads = this.getFilteredThreads(messages, subscription!, currentFilter);
+				const displayingThreads = this.getFilteredThreads(messages, subscription, currentFilter);
 				if (this.mounted) {
 					this.setState({ messages, displayingThreads });
 				} else {
@@ -419,14 +420,14 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	};
 
 	// helper to query threads
-	getFilteredThreads = (messages: any, subscription: TSubscriptionModel, currentFilter?: Filter): TThreadModel[] => {
+	getFilteredThreads = (messages: TThreadModel[], subscription?: TSubscriptionModel, currentFilter?: Filter): TThreadModel[] => {
 		// const { currentFilter } = this.state;
 		const { user } = this.props;
 		if (currentFilter === Filter.Following) {
-			return messages?.filter((item: { replies: any[] }) => item?.replies?.find(u => u === user.id));
+			return messages?.filter(item => item?.replies?.find(u => u === user.id));
 		}
 		if (currentFilter === Filter.Unread) {
-			return messages?.filter((item: { id: string }) => subscription?.tunread?.includes(item?.id));
+			return messages?.filter(item => subscription?.tunread?.includes(item?.id));
 		}
 		return messages;
 	};

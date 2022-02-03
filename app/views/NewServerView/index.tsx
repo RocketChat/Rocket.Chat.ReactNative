@@ -14,7 +14,7 @@ import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
 import OrSeparator from '../../containers/OrSeparator';
-import { IBaseScreen, TServerHistory } from '../../definitions';
+import { IBaseScreen, TServerHistoryModel } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -77,7 +77,7 @@ interface INewServerViewState {
 	text: string;
 	connectingOpen: boolean;
 	certificate: any;
-	serversHistory: TServerHistory[];
+	serversHistory: TServerHistoryModel[];
 }
 
 interface ISubmitParams {
@@ -153,7 +153,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 				const likeString = sanitizeLikeString(text);
 				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
 			}
-			const serversHistory = (await serversHistoryCollection.query(...whereClause).fetch()) as TServerHistory[];
+			const serversHistory = await serversHistoryCollection.query(...whereClause).fetch();
 			this.setState({ serversHistory });
 		} catch {
 			// Do nothing
@@ -177,7 +177,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		dispatch(serverRequest(server));
 	};
 
-	onPressServerHistory = (serverHistory: TServerHistory) => {
+	onPressServerHistory = (serverHistory: TServerHistoryModel) => {
 		this.setState({ text: serverHistory.url }, () => this.submit({ fromServerHistory: true, username: serverHistory?.username }));
 	};
 
@@ -269,14 +269,14 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		});
 	};
 
-	deleteServerHistory = async (item: TServerHistory) => {
+	deleteServerHistory = async (item: TServerHistoryModel) => {
 		const db = database.servers;
 		try {
 			await db.write(async () => {
 				await item.destroyPermanently();
 			});
 			this.setState((prevstate: INewServerViewState) => ({
-				serversHistory: prevstate.serversHistory.filter((server: TServerHistory) => server.id !== item.id)
+				serversHistory: prevstate.serversHistory.filter(server => server.id !== item.id)
 			}));
 		} catch {
 			// Nothing

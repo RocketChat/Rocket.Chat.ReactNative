@@ -1,6 +1,18 @@
+import { TActionServer } from '../actions/server';
 import { SERVER } from '../actions/actionsTypes';
 
-const initialState = {
+export interface IServer {
+	connecting: boolean;
+	connected: boolean;
+	failure: boolean;
+	server: string;
+	version: string | null;
+	loading: boolean;
+	previousServer: string | null;
+	changingServer: boolean;
+}
+
+export const initialState: IServer = {
 	connecting: false,
 	connected: false,
 	failure: false,
@@ -11,7 +23,7 @@ const initialState = {
 	changingServer: false
 };
 
-export default function server(state = initialState, action) {
+export default function server(state = initialState, action: TActionServer): IServer {
 	switch (action.type) {
 		case SERVER.REQUEST:
 			return {
