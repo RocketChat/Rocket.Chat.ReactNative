@@ -1,9 +1,10 @@
 import Model from '@nozbe/watermelondb/Model';
 
 export interface IUser {
-	_id: string;
+	id: string;
+	token: string;
 	name?: string;
-	username: string;
+	username?: string;
 	avatarETag?: string;
 }
 
