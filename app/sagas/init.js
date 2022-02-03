@@ -10,7 +10,8 @@ import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import database from '../lib/database';
 import { localAuthenticate } from '../utils/localAuthentication';
-import { ROOT_OUTSIDE, appReady, appStart } from '../actions/app';
+import { appReady, appStart } from '../actions/app';
+import { RootEnum } from '../definitions';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = yield RocketChat.getSortPreferences();
@@ -37,7 +38,7 @@ const restore = function* restore() {
 		}
 
 		if (!server) {
-			yield put(appStart({ root: ROOT_OUTSIDE }));
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else if (!userId) {
 			const serversDB = database.servers;
 			const serversCollection = serversDB.get('servers');
@@ -53,7 +54,7 @@ const restore = function* restore() {
 					}
 				}
 			}
-			yield put(appStart({ root: ROOT_OUTSIDE }));
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {
 			const serversDB = database.servers;
 			const serverCollections = serversDB.get('servers');
@@ -71,7 +72,7 @@ const restore = function* restore() {
 		yield put(appReady({}));
 	} catch (e) {
 		log(e);
-		yield put(appStart({ root: ROOT_OUTSIDE }));
+		yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 	}
 };
 
