@@ -80,7 +80,6 @@ export default class RoomSubscription {
 	handleConnection = () => {
 		reduxStore.dispatch(clearUserTyping());
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
-		RocketChat.subscriptionRead(this.rid);
 	};
 
 	handleNotifyRoomReceived = protectedFunction(ddpMessage => {
