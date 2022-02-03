@@ -1,5 +1,6 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
+import EJSON from 'ejson';
 
 import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
@@ -17,6 +18,7 @@ import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
 import { Encryption } from '../../encryption';
 import { E2E_MESSAGE_TYPE } from '../../encryption/constants';
+import updateMessages from '../updateMessages';
 
 const removeListener = listener => listener.stop();
 
@@ -309,32 +311,10 @@ export default function subscribeRooms() {
 			}
 		}
 		if (/message/.test(ev)) {
-			const [args] = ddpMessage.fields.args;
-			const _id = random(17);
-			const message = {
-				_id,
-				rid: args.rid,
-				msg: args.msg,
-				blocks: args.blocks,
-				ts: new Date(),
-				_updatedAt: new Date(),
-				status: messagesStatus.SENT,
-				u: {
-					_id,
-					username: 'rocket.cat'
-				}
-			};
 			try {
-				const msgCollection = db.get('messages');
-				await db.action(async () => {
-					await msgCollection.create(
-						protectedFunction(m => {
-							m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
-							m.subscription.id = args.rid;
-							Object.assign(m, message);
-						})
-					);
-				});
+				const [args] = ddpMessage.fields.args;
+				const message = buildMessage(EJSON.fromJSONValue(args));
+				await updateMessages({ rid: args.rid, update: [message] });
 			} catch (e) {
 				log(e);
 			}
