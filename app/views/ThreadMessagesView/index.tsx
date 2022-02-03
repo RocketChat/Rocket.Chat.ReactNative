@@ -307,7 +307,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 							protectedFunction((t: any) => {
 								Object.assign(t, newThread);
 							})
-						);	
+						);
 					} catch {
 						return null;
 					}
