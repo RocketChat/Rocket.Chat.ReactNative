@@ -108,10 +108,6 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 		const { title_link, image_url, image_type, video_url, video_type } = attachment;
 		const url = title_link || image_url || video_url;
 
-		if (!url) {
-			return;
-		}
-
 		const mediaAttachment = formatAttachmentUrl(url, user.id, user.token, baseUrl);
 
 		if (isAndroid) {

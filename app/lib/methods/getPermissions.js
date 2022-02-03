@@ -2,7 +2,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import orderBy from 'lodash/orderBy';
 
-import { isServerVersion } from '../utils';
+import { compareServerVersion } from '../utils';
 import database from '../database';
 import log from '../../utils/log';
 import reduxStore from '../createStore';
@@ -146,7 +146,7 @@ export function getPermissions() {
 			const allRecords = await permissionsCollection.query().fetch();
 			RocketChat.subscribe('stream-notify-logged', 'permissions-changed');
 			// if server version is lower than 0.73.0, fetches from old api
-			if (isServerVersion(serverVersion, 'lowerThan', '0.73.0')) {
+			if (compareServerVersion(serverVersion, 'lowerThan', '0.73.0')) {
 				// RC 0.66.0
 				const result = await this.sdk.get('permissions.list');
 				if (!result.success) {

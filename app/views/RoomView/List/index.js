@@ -14,7 +14,7 @@ import { animateNextTransition } from '../../../utils/layoutAnimation';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { themes } from '../../../constants/colors';
 import debounce from '../../../utils/debounce';
-import { isServerVersion } from '../../../lib/utils';
+import { compareServerVersion } from '../../../lib/utils';
 import List from './List';
 import NavBottomFAB from './NavBottomFAB';
 
@@ -179,7 +179,7 @@ class ListContainer extends React.Component {
 				 * Since 3.16.0 server version, the backend don't response with messages if
 				 * hide system message is enabled
 				 */
-				if (isServerVersion(serverVersion, 'lowerThan', '3.16.0') || hideSystemMessages.length) {
+				if (compareServerVersion(serverVersion, 'lowerThan', '3.16.0') || hideSystemMessages.length) {
 					messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
 				}
 
