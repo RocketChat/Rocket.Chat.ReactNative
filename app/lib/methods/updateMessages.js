@@ -58,6 +58,25 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 			// filter loaders to delete
 			let loadersToDelete = allMessagesRecords.filter(i1 => update.find(i2 => i1.id === generateLoadMoreId(i2._id)));
 
+			// Delete
+			let msgsToDelete = [];
+			let threadsToDelete = [];
+			let threadMessagesToDelete = [];
+			if (remove && remove.length) {
+				msgsToDelete = allMessagesRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
+				msgsToDelete = msgsToDelete.map(m => m.prepareDestroyPermanently());
+				threadsToDelete = allThreadsRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
+				threadsToDelete = threadsToDelete.map(t => t.prepareDestroyPermanently());
+				threadMessagesToDelete = allThreadMessagesRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
+				threadMessagesToDelete = threadMessagesToDelete.map(tm => tm.prepareDestroyPermanently());
+			}
+
+			// Delete loaders
+			loadersToDelete = loadersToDelete.map(m => m.prepareDestroyPermanently());
+			if (loaderItem) {
+				loadersToDelete.push(loaderItem.prepareDestroyPermanently());
+			}
+
 			// Create
 			msgsToCreate = msgsToCreate.map(message =>
 				msgCollection.prepareCreate(
@@ -128,25 +147,6 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 					return null;
 				}
 			});
-
-			// Delete
-			let msgsToDelete = [];
-			let threadsToDelete = [];
-			let threadMessagesToDelete = [];
-			if (remove && remove.length) {
-				msgsToDelete = allMessagesRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
-				msgsToDelete = msgsToDelete.map(m => m.prepareDestroyPermanently());
-				threadsToDelete = allThreadsRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
-				threadsToDelete = threadsToDelete.map(t => t.prepareDestroyPermanently());
-				threadMessagesToDelete = allThreadMessagesRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
-				threadMessagesToDelete = threadMessagesToDelete.map(tm => tm.prepareDestroyPermanently());
-			}
-
-			// Delete loaders
-			loadersToDelete = loadersToDelete.map(m => m.prepareDestroyPermanently());
-			if (loaderItem) {
-				loadersToDelete.push(loaderItem.prepareDestroyPermanently());
-			}
 
 			const allRecords = [
 				...msgsToCreate,
