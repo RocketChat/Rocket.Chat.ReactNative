@@ -47,6 +47,7 @@ import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
+import { replaceImageFilename } from './replaceImageFilename';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -132,8 +133,7 @@ interface IMessageBoxState {
 
 const forceJpgExtension = (attachment: ImageOrVideo) => {
 	if (isIOS && attachment.mime === 'image/jpeg' && attachment.filename) {
-		const regex = new RegExp(/\.[^/.]+$/); // Check from last '.' of the string
-		attachment.filename = attachment.filename.replace(regex, '.jpg'); // Replace files that ends with .jpg | .heic | .jpeg to .jpg
+		attachment.filename = replaceImageFilename(attachment.filename);
 	}
 	return attachment;
 };
