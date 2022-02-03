@@ -35,7 +35,7 @@ export default class RoomSubscription {
 		this.isDisconnected = false;
 
 		this.connectedListener = RocketChat.onStreamData('connected', this.handleConnection);
-		this.disconnectedListener = RocketChat.onStreamData('close', this.handleDisconnection);
+		this.disconnectedListener = RocketChat.onStreamData('close', this.handleConnection);
 		this.notifyRoomListener = RocketChat.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = RocketChat.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
