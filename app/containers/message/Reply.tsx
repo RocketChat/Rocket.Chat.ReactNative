@@ -182,7 +182,7 @@ const Fields = React.memo(
 						<Text style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>{field.title}</Text>
 						{/* @ts-ignore*/}
 						<Markdown
-							msg={field.value!}
+							msg={field?.value || ''}
 							baseUrl={baseUrl}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
