@@ -11,7 +11,7 @@ export default async function readMessages(this: IRocketChat, rid: string, ls: D
 		// RC 0.61.0
 		await this.sdk.post('subscriptions.read', { rid });
 
-		await db.action(async () => {
+		await db.write(async () => {
 			try {
 				await subscription.update((s: TSubscriptionModel) => {
 					s.open = true;
