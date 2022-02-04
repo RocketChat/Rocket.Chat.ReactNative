@@ -111,13 +111,12 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		if (!room) {
 			return;
 		}
-		const { name, username } = room;
+		const { name } = room;
 		const params = {
 			rid: room.rid,
 			name: RocketChat.getRoomTitle({
 				t: room.t,
-				fname: name,
-				name: username
+				fname: name
 			}),
 			t: room.t,
 			roomUserId: RocketChat.getUidDirectMessage(room),

@@ -3,10 +3,10 @@ import { children, date, field, json } from '@nozbe/watermelondb/decorators';
 
 import { sanitizer } from '../utils';
 
-export const TABLE_NAME = 'subscriptions';
+export const SUBSCRIPTIONS_TABLE = 'subscriptions';
 
 export default class Subscription extends Model {
-	static table = TABLE_NAME;
+	static table = SUBSCRIPTIONS_TABLE;
 
 	static associations = {
 		messages: { type: 'has_many', foreignKey: 'rid' },
