@@ -626,7 +626,8 @@ const RocketChat = {
 			avatarETag: result.me.avatarETag,
 			isFromWebView,
 			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true,
-			enableMessageParserEarlyAdoption: result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true
+			enableMessageParserEarlyAdoption: result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true,
+			messageTimeFormat: result.me.settings?.preferences?.clockMode ?? 0
 		};
 		return user;
 	},

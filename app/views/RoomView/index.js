@@ -993,10 +993,19 @@ class RoomView extends React.Component {
 			loaderItem
 		});
 
+	getMessageTimeFormat = () => {
+		const { user, Message_TimeFormat } = this.props;
+		const timeFormats = ['h:mm A', 'H:mm'];
+		if (user.messageTimeFormat) {
+			return timeFormats[user.messageTimeFormat - 1];
+		}
+		return Message_TimeFormat;
+	};
+
 	renderItem = (item, previousItem, highlightedMessage) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
-		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
-			this.props;
+		const { user, Message_GroupingPeriod, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } = this.props;
+		const Message_TimeFormat = this.getMessageTimeFormat();
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 

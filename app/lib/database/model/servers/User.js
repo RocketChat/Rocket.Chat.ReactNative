@@ -27,4 +27,6 @@ export default class User extends Model {
 	@field('is_from_webview') isFromWebView;
 
 	@field('enable_message_parser_early_adoption') enableMessageParserEarlyAdoption;
+
+	@field('message_time_format') messageTimeFormat;
 }

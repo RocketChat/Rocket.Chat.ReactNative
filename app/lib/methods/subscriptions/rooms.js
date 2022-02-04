@@ -272,6 +272,9 @@ export default function subscribeRooms() {
 			if (['settings.preferences.showMessageInMainThread'] in diff) {
 				store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
 			}
+			if (['settings.preferences.clockMode'] in diff) {
+				store.dispatch(setUser({ messageTimeFormat: diff['settings.preferences.clockMode'] }));
+			}
 		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
