@@ -1,5 +1,6 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 
 import FileUpload from '../../utils/fileUpload';
 import database from '../database';
@@ -7,14 +8,14 @@ import log from '../../utils/log';
 import { IUpload, IUser, TUploadModel } from '../../definitions';
 import { IFileUpload } from '../../utils/fileUpload/interfaces';
 
-const uploadQueue: { [index: string]: any } = {};
+const uploadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
 
 export function isUploadActive(path: string): boolean {
 	return !!uploadQueue[path];
 }
 
 export async function cancelUpload(item: TUploadModel): Promise<void> {
-	if (uploadQueue[item.path]) {
+	if (await uploadQueue[item.path]) {
 		try {
 			await uploadQueue[item.path].cancel();
 		} catch {
@@ -32,7 +33,13 @@ export async function cancelUpload(item: TUploadModel): Promise<void> {
 	}
 }
 
-export function sendFileMessage(rid: string, fileInfo: IUpload, tmid: string, server: string, user: IUser): Promise<void> {
+export function sendFileMessage(
+	rid: string,
+	fileInfo: IUpload,
+	tmid: string,
+	server: string,
+	user: IUser
+): Promise<FetchBlobResponse> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { id, token } = user;
@@ -105,7 +112,7 @@ export function sendFileMessage(rid: string, fileInfo: IUpload, tmid: string, se
 				}
 			});
 
-			uploadQueue[fileInfo.path].then(async (response: { respInfo: { status: number } } & Promise<void>) => {
+			uploadQueue[fileInfo.path].then(async response => {
 				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
 					// If response is all good...
 					try {
