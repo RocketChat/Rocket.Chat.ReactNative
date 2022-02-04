@@ -1,20 +1,6 @@
-import { forceJpgExtension } from './forceJpgExtension';
+import { Image } from 'react-native-image-crop-picker';
 
-interface Image {
-	path: string;
-	size: number;
-	width: number;
-	height: number;
-	mime: string;
-	exif?: null | object;
-	localIdentifier?: string;
-	sourceURL?: string;
-	filename?: string;
-	creationDate?: string;
-	modificationDate?: string;
-	data?: string | null;
-	cropRect?: null;
-}
+import { forceJpgExtension } from './forceJpgExtension';
 
 const attachment: Image = {
 	exif: null,
