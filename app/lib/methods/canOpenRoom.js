@@ -1,5 +1,5 @@
 import database from '../database';
-import store from '../createStore';
+import { store } from '../auxStore';
 
 const restTypes = {
 	channel: 'channels',

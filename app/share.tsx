@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { defaultTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
 import UserPreferences from './lib/userPreferences';
 import Navigation from './lib/ShareNavigation';
-import store from './lib/createStore';
+import { store } from './lib/auxStore';
 import { supportSystemTheme } from './utils/deviceInfo';
 import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';

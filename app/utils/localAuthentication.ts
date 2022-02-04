@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { sha256 } from 'js-sha256';
 
 import UserPreferences from '../lib/userPreferences';
-import store from '../lib/createStore';
+import { store } from '../lib/auxStore';
 import database from '../lib/database';
 import {
 	ATTEMPTS_KEY,
