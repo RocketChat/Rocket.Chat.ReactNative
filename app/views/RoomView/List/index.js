@@ -144,11 +144,11 @@ class ListContainer extends React.Component {
 
 		if (tmid) {
 			try {
-				this.thread = await db.collections.get('threads').find(tmid);
+				this.thread = await db.get('threads').find(tmid);
 			} catch (e) {
 				console.log(e);
 			}
-			this.messagesObservable = db.collections
+			this.messagesObservable = db
 				.get('thread_messages')
 				.query(Q.where('rid', tmid), Q.experimentalSortBy('ts', Q.desc), Q.experimentalSkip(0), Q.experimentalTake(this.count))
 				.observe();
@@ -162,7 +162,7 @@ class ListContainer extends React.Component {
 			if (!showMessageInMainThread) {
 				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
 			}
-			this.messagesObservable = db.collections
+			this.messagesObservable = db
 				.get('messages')
 				.query(...whereClause)
 				.observe();

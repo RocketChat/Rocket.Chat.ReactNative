@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
@@ -58,8 +58,6 @@ const styles = StyleSheet.create({
 
 interface IItem {
 	item: TThreadModel;
-	baseUrl?: string;
-	theme?: string;
 	useRealName: boolean;
 	user: any;
 	badgeColor?: string;
@@ -67,7 +65,8 @@ interface IItem {
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
 
-const Item = ({ item, theme, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem) => {
+const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem) => {
+	const { theme } = useTheme();
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
 	if (item?.ts) {
@@ -99,4 +98,4 @@ const Item = ({ item, theme, useRealName, user, badgeColor, onPress, toggleFollo
 	);
 };
 
-export default withTheme(Item);
+export default Item;

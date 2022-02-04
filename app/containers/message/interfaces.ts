@@ -3,6 +3,8 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 import { UserChannel, UserMention } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
+export type TMessageType = 'discussion-created' | 'jitsi_call_started';
+
 export interface IMessageAttachments {
 	attachments: any;
 	timeFormat: string;
@@ -99,7 +101,7 @@ export interface IMessageThread {
 	msg: string;
 	tcount: number;
 	theme: string;
-	tlm: string;
+	tlm: Date;
 	isThreadRoom: boolean;
 	id: string;
 }
@@ -138,7 +140,7 @@ export interface IMessageInner
 		IMessageThread,
 		IMessageAttachments,
 		IMessageBroadcast {
-	type: string;
+	type: TMessageType;
 	blocks: [];
 }
 

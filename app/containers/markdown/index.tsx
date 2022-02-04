@@ -28,7 +28,7 @@ import { formatHyperlink } from './formatHyperlink';
 export { default as MarkdownPreview } from './Preview';
 
 interface IMarkdownProps {
-	msg: string;
+	msg?: string;
 	theme: string;
 	md?: MarkdownAST;
 	mentions?: UserMention[];
