@@ -3,11 +3,24 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Dispatch } from 'redux';
 
 export * from './IAttachment';
-export * from './IMessage';
 export * from './INotification';
-export * from './IRoom';
-export * from './IServer';
+export * from './IPreferences';
 export * from './ISubscription';
+export * from './IRoom';
+export * from './IMessage';
+export * from './IThread';
+export * from './IThreadMessage';
+export * from './ICustomEmoji';
+export * from './IFrequentlyUsedEmoji';
+export * from './IUpload';
+export * from './ISettings';
+export * from './IRole';
+export * from './IPermission';
+export * from './ISlashCommand';
+export * from './IUser';
+export * from './IServer';
+export * from './ILoggedUser';
+export * from './IServerHistory';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: StackNavigationProp<T, S>;
@@ -17,3 +30,4 @@ export interface IBaseScreen<T extends Record<string, object | undefined>, S ext
 }
 
 export * from './redux';
+export * from './redux/TRootEnum';

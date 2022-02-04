@@ -1,31 +1,23 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
 import { Switch } from 'react-native';
 import { RadioButton } from 'react-native-ui-lib';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setPreference } from '../actions/sortPreferences';
-import RocketChat from '../lib/rocketchat';
-import StatusBar from '../containers/StatusBar';
-import I18n from '../i18n';
-import * as List from '../containers/List';
-import { useTheme } from '../theme';
 import { themes } from '../constants/colors';
-import * as HeaderButton from '../containers/HeaderButton';
-import SafeAreaView from '../containers/SafeAreaView';
-import { ICON_SIZE } from '../containers/List/constants';
-import log, { events, logEvent } from '../utils/log';
 import { DisplayMode, SortBy } from '../constants/constantDisplayMode';
+import * as HeaderButton from '../containers/HeaderButton';
+import * as List from '../containers/List';
+import { ICON_SIZE } from '../containers/List/constants';
+import SafeAreaView from '../containers/SafeAreaView';
+import StatusBar from '../containers/StatusBar';
+import { IApplicationState, IPreferences } from '../definitions';
+import I18n from '../i18n';
+import RocketChat from '../lib/rocketchat';
 import { SettingsStackParamList } from '../stacks/types';
-
-interface IParam {
-	sortBy: SortBy;
-	groupByType: boolean;
-	showFavorites: boolean;
-	showUnread: boolean;
-	showAvatar: boolean;
-	displayMode: DisplayMode;
-}
+import { useTheme } from '../theme';
+import log, { events, logEvent } from '../utils/log';
 
 interface IDisplayPrefsView {
 	navigation: StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>;
@@ -36,7 +28,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 	const { theme } = useTheme();
 
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useSelector(
-		(state: any) => state.sortPreferences
+		(state: IApplicationState) => state.sortPreferences
 	);
 	const { isMasterDetail } = useSelector((state: any) => state.app);
 	const dispatch = useDispatch();
@@ -53,7 +45,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 		}
 	}, []);
 
-	const setSortPreference = async (param: Partial<IParam>) => {
+	const setSortPreference = async (param: Partial<IPreferences>) => {
 		try {
 			dispatch(setPreference(param));
 			await RocketChat.saveSortPreference(param);
