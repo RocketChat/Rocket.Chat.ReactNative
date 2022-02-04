@@ -720,7 +720,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		logEvent(events.ROOM_BOX_ACTION_LIBRARY);
 		try {
 			let attachments = (await ImagePicker.openPicker(this.libraryPickerConfig)) as ImageOrVideo[];
-			console.log('🚀 ~ file: index.tsx ~ line 725 ~ MessageBox ~ chooseFromLibrary= ~ attachments', attachments);
 			attachments = attachments.map(att => forceJpgExtension(att));
 			this.openShareView(attachments);
 		} catch (e) {
