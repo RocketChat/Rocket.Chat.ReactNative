@@ -812,6 +812,16 @@ const RocketChat = {
 			encrypted
 		});
 	},
+	getDiscussions({ roomId, offset, count, text }) {
+		const params = {
+			roomId,
+			offset,
+			count,
+			...(text && { text })
+		};
+		// RC 2.4.0
+		return this.sdk.get('chat.getDiscussions', params);
+	},
 	createTeam({ name, users, type, readOnly, broadcast, encrypted }) {
 		const params = {
 			name,

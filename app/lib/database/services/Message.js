@@ -1,7 +1,7 @@
 import database from '..';
-import { TABLE_NAME } from '../model/Message';
+import { MESSAGES_TABLE } from '../model/Message';
 
-const getCollection = db => db.get(TABLE_NAME);
+const getCollection = db => db.get(MESSAGES_TABLE);
 
 export const getMessageById = async messageId => {
 	const db = database.active;

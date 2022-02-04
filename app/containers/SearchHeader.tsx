@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { withTheme } from '../theme';
+import I18n from '../i18n';
+import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
 import TextInput from '../presentation/TextInput';
@@ -19,14 +20,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface ISearchHeader {
-	theme?: string;
+interface ISearchHeaderProps {
 	onSearchChangeText?: (text: string) => void;
+	testID: string;
 }
 
-// TODO: it might be useful to refactor this component for reusage
-const SearchHeader = ({ theme, onSearchChangeText }: ISearchHeader) => {
-	const titleColorStyle = { color: themes[theme!].headerTitleColor };
+const SearchHeader = ({ onSearchChangeText, testID }: ISearchHeaderProps): JSX.Element => {
+	const { theme } = useTheme();
 	const isLight = theme === 'light';
 	const { isLandscape } = useOrientation();
 	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
@@ -36,14 +36,14 @@ const SearchHeader = ({ theme, onSearchChangeText }: ISearchHeader) => {
 		<View style={styles.container}>
 			<TextInput
 				autoFocus
-				style={[styles.title, isLight && titleColorStyle, { fontSize: titleFontSize }]}
-				placeholder='Search'
+				style={[styles.title, isLight && { color: themes[theme].headerTitleColor }, { fontSize: titleFontSize }]}
+				placeholder={I18n.t('Search')}
 				onChangeText={onSearchChangeText}
-				theme={theme!}
-				testID='thread-messages-view-search-header'
+				theme={theme}
+				testID={testID}
 			/>
 		</View>
 	);
 };
 
-export default withTheme(SearchHeader);
+export default SearchHeader;

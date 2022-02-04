@@ -1,8 +1,11 @@
 import { PERMISSIONS } from '../actions/actionsTypes';
+import { TActionPermissions } from '../actions/permissions';
 
-const initialState = {};
+export type IPermissions = Record<string, string>;
 
-export default function permissions(state = initialState, action) {
+export const initialState: IPermissions = {};
+
+export default function permissions(state = initialState, action: TActionPermissions): IPermissions {
 	switch (action.type) {
 		case PERMISSIONS.SET:
 			return action.permissions;

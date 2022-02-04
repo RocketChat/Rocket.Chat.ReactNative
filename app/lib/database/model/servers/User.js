@@ -3,8 +3,10 @@ import { field, json } from '@nozbe/watermelondb/decorators';
 
 import { sanitizer } from '../../utils';
 
+export const LOGGED_USERS_TABLE = 'users';
+
 export default class User extends Model {
-	static table = 'users';
+	static table = LOGGED_USERS_TABLE;
 
 	@field('token') token;
 

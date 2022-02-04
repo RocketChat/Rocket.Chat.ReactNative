@@ -91,7 +91,7 @@ class UploadProgress extends Component {
 		}
 
 		const db = database.active;
-		this.uploadsObservable = db.collections.get('uploads').query(Q.where('rid', rid)).observeWithColumns(['progress', 'error']);
+		this.uploadsObservable = db.get('uploads').query(Q.where('rid', rid)).observeWithColumns(['progress', 'error']);
 
 		this.uploadsSubscription = this.uploadsObservable.subscribe(uploads => {
 			if (this.mounted) {

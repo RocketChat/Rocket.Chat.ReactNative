@@ -2,12 +2,12 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { ScrollView } from 'react-native';
-import { combineReducers, createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 import * as List from '../../containers/List';
 import { themes } from '../../constants/colors';
 import { ThemeContext } from '../../theme';
+import { store } from '../../../storybook/stories';
 import Item from './Item';
 
 const author = {
@@ -48,28 +48,6 @@ const listDecorator = story => (
 		<List.Separator />
 	</ScrollView>
 );
-
-const reducers = combineReducers({
-	login: () => ({
-		user: {
-			id: 'abc',
-			username: 'rocket.cat',
-			name: 'Rocket Cat'
-		}
-	}),
-	server: () => ({
-		server: 'https://open.rocket.chat',
-		version: '3.7.0'
-	}),
-	share: () => ({
-		server: 'https://open.rocket.chat',
-		version: '3.7.0'
-	}),
-	settings: () => ({
-		blockUnauthenticatedAccess: false
-	})
-});
-const store = createStore(reducers);
 
 const stories = storiesOf('Thread Messages.Item', module)
 	.addDecorator(listDecorator)

@@ -25,7 +25,7 @@ import { isValidURL } from '../../utils/url';
 import NewMarkdown from './new';
 
 interface IMarkdownProps {
-	msg: string;
+	msg?: string;
 	md: MarkdownAST;
 	mentions: UserMention[];
 	getCustomEmoji: Function;
