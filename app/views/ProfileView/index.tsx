@@ -98,7 +98,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		currentPassword: '',
 		avatarUrl: '',
 		avatar: {
-			data: {},
+			data: '',
 			url: ''
 		},
 		avatarSuggestions: {},
@@ -151,7 +151,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			currentPassword: null,
 			avatarUrl: null,
 			avatar: {
-				data: {},
+				data: '',
 				url: ''
 			},
 			customFields: customFields || {}
@@ -181,6 +181,10 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			!avatar.data &&
 			!customFieldsChanged
 		);
+	};
+
+	resetForm = () => {
+		this.init();
 	};
 
 	handleError = (e: any, func: string, action: string) => {
@@ -597,6 +601,15 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							disabled={!this.formIsChanged()}
 							testID='profile-view-submit'
 							loading={saving}
+						/>
+						<Button
+							title={I18n.t('Reset_Changes')}
+							type='danger'
+							onPress={this.resetForm}
+							disabled={!this.formIsChanged() || saving}
+							backgroundColor={themes[theme].dangerColor}
+							color={themes[theme].previewTintColor}
+							theme={theme}
 						/>
 						<Button
 							title={I18n.t('Logout_from_other_logged_in_locations')}
