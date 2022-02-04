@@ -35,6 +35,7 @@ import { ICommand } from './definitions/ICommand';
 import { initStore } from './lib/auxStore';
 
 RNScreens.enableScreens();
+initStore(store);
 
 interface IDimensions {
 	width: number;
@@ -101,7 +102,6 @@ export default class Root extends React.Component<{}, IState> {
 		if (isTablet) {
 			this.initTablet();
 		}
-		initStore(store);
 	}
 
 	componentDidMount() {
