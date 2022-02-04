@@ -58,6 +58,7 @@ import QueueListView from '../../ee/omnichannel/views/QueueListView';
 import AddChannelTeamView from '../../views/AddChannelTeamView';
 import AddExistingChannelView from '../../views/AddExistingChannelView';
 import SelectListView from '../../views/SelectListView';
+import DiscussionsView from '../../views/DiscussionsView';
 import { ModalContainer } from './ModalContainer';
 import {
 	MasterDetailChatsStackParamList,
@@ -167,6 +168,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
 				<ModalStack.Screen name='PickerView' component={PickerView} options={PickerView.navigationOptions} />
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
+				<ModalStack.Screen name='DiscussionsView' component={DiscussionsView} />
 				<ModalStack.Screen name='TeamChannelsView' component={TeamChannelsView} options={TeamChannelsView.navigationOptions} />
 				<ModalStack.Screen name='MarkdownTableView' component={MarkdownTableView} options={MarkdownTableView.navigationOptions} />
 				<ModalStack.Screen
