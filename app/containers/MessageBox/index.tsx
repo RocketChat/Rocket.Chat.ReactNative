@@ -27,7 +27,7 @@ import LeftButtons from './LeftButtons';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import RightButtons from './RightButtons';
-import { isAndroid, isIOS, isTablet } from '../../utils/deviceInfo';
+import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import { canUploadFile } from '../../utils/media';
 import EventEmiter from '../../utils/events';
 import { KEY_COMMAND, handleCommandShowUpload, handleCommandSubmit, handleCommandTyping } from '../../commands';
@@ -47,7 +47,7 @@ import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
-import { replaceImageFilename } from './replaceImageFilename';
+import { forceJpgExtension } from './forceJpgExtension';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -130,13 +130,6 @@ interface IMessageBoxState {
 	mentionLoading: boolean;
 	permissionToUpload: boolean;
 }
-
-const forceJpgExtension = (attachment: ImageOrVideo) => {
-	if (isIOS && attachment.mime === 'image/jpeg' && attachment.filename) {
-		attachment.filename = replaceImageFilename(attachment.filename);
-	}
-	return attachment;
-};
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	private text: string;
@@ -727,6 +720,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		logEvent(events.ROOM_BOX_ACTION_LIBRARY);
 		try {
 			let attachments = (await ImagePicker.openPicker(this.libraryPickerConfig)) as ImageOrVideo[];
+			console.log('🚀 ~ file: index.tsx ~ line 725 ~ MessageBox ~ chooseFromLibrary= ~ attachments', attachments);
 			attachments = attachments.map(att => forceJpgExtension(att));
 			this.openShareView(attachments);
 		} catch (e) {
