@@ -61,7 +61,7 @@ const PERMISSIONS = [
 
 export async function setPermissions() {
 	const db = database.active;
-	const permissionsCollection = db.collections.get('permissions');
+	const permissionsCollection = db.get('permissions');
 	const allPermissions = await permissionsCollection.query(Q.where('id', Q.oneOf(PERMISSIONS))).fetch();
 	const parsed = allPermissions.reduce((acc, item) => ({ ...acc, [item.id]: item.roles }), {});
 

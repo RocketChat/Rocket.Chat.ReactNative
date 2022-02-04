@@ -1,7 +1,7 @@
 import database from '..';
-import { TABLE_NAME } from '../model/ThreadMessage';
+import { THREAD_MESSAGES_TABLE } from '../model/ThreadMessage';
 
-const getCollection = db => db.get(TABLE_NAME);
+const getCollection = db => db.get(THREAD_MESSAGES_TABLE);
 
 export const getThreadMessageById = async messageId => {
 	const db = database.active;
