@@ -39,7 +39,7 @@ export function sendFileMessage(
 	tmid: string,
 	server: string,
 	user: IUser
-): Promise<FetchBlobResponse> {
+): Promise<FetchBlobResponse | void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { id, token } = user;
