@@ -1,6 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
+import isEmpty from 'lodash/isEmpty';
 
 import FileUpload from '../../utils/fileUpload';
 import database from '../database';
@@ -15,7 +16,7 @@ export function isUploadActive(path: string): boolean {
 }
 
 export async function cancelUpload(item: TUploadModel): Promise<void> {
-	if (await uploadQueue[item.path]) {
+	if (!isEmpty(uploadQueue[item.path])) {
 		try {
 			await uploadQueue[item.path].cancel();
 		} catch {
