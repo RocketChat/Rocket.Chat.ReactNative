@@ -410,7 +410,7 @@ PODS:
   - react-native-jitsi-meet (3.6.0):
     - JitsiMeetSDK (= 3.6.0)
     - React
-  - react-native-mmkv-storage (0.6.11):
+  - react-native-mmkv-storage (0.6.12):
     - MMKV (= 1.2.10)
     - React-Core
   - react-native-netinfo (6.0.0):
@@ -997,7 +997,7 @@ SPEC CHECKSUMS:
   react-native-cookies: 2cb6ef472da68610dfcf0eaee68464c244943abd
   react-native-document-picker: f1b5398801b332c77bc62ae0eae2116f49bdff26
   react-native-jitsi-meet: 3e3ac5d0445091154119f94342efd55c8b1124ce
-  react-native-mmkv-storage: 2b57ca101fae52428f6cef6552793f83c0cdbc46
+  react-native-mmkv-storage: 88bcb10bbe85a8122061d17d03abcc64a02fe1c9
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
