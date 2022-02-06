@@ -6,7 +6,7 @@ import { KeyCommandsEmitter } from 'react-native-keycommands';
 import RNScreens from 'react-native-screens';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
-import { getTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
+import { defaultTheme, getTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
 import UserPreferences from './lib/userPreferences';
 import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
@@ -86,7 +86,13 @@ export default class Root extends React.Component<{}, IState> {
 			this.initCrashReport();
 		}
 		const { width, height, scale, fontScale } = Dimensions.get('window');
-		const theme = UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference;
+		const theme =
+			(UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference) ||
+			({
+				currentTheme: defaultTheme(),
+				darkLevel: 'dark'
+			} as IThemePreference);
+
 		this.state = {
 			theme: getTheme(theme),
 			themePreferences: theme,
