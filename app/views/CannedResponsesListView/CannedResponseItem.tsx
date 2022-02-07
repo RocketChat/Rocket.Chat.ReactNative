@@ -1,14 +1,31 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
-
 import Touchable from 'react-native-platform-touchable';
+
 import { themes } from '../../constants/colors';
 import Button from '../../containers/Button';
 import I18n from '../../i18n';
 import styles from './styles';
 
-const CannedResponseItem = ({ theme, onPressDetail, shortcut, scope, onPressUse, text, tags }) => (
+interface ICannedResponseItem {
+	theme: string;
+	onPressDetail: () => void;
+	shortcut: string;
+	scope: string;
+	onPressUse: () => void;
+	text: string;
+	tags: string[];
+}
+
+const CannedResponseItem = ({
+	theme,
+	onPressDetail = () => {},
+	shortcut,
+	scope,
+	onPressUse = () => {},
+	text,
+	tags
+}: ICannedResponseItem): JSX.Element => (
 	<Touchable onPress={onPressDetail} style={[styles.wrapCannedItem, { backgroundColor: themes[theme].messageboxBackground }]}>
 		<>
 			<View style={styles.cannedRow}>
@@ -42,20 +59,5 @@ const CannedResponseItem = ({ theme, onPressDetail, shortcut, scope, onPressUse,
 		</>
 	</Touchable>
 );
-
-CannedResponseItem.propTypes = {
-	theme: PropTypes.string,
-	onPressDetail: PropTypes.func,
-	shortcut: PropTypes.string,
-	scope: PropTypes.string,
-	onPressUse: PropTypes.func,
-	text: PropTypes.string,
-	tags: PropTypes.array
-};
-
-CannedResponseItem.defaultProps = {
-	onPressDetail: () => {},
-	onPressUse: () => {}
-};
 
 export default CannedResponseItem;
