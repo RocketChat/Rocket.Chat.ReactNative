@@ -1650,7 +1650,7 @@ const RocketChat = {
 		}
 
 		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, '4.1.0', methods.lowerThan)) {
+		if (compareServerVersion(serverVersion, 'lowerThan', '4.1.0')) {
 			if (!this._setUserTimer) {
 				this._setUserTimer = setTimeout(() => {
 					const activeUsersBatch = this.activeUsers;
