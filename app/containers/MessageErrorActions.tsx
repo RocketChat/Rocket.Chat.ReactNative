@@ -36,7 +36,7 @@ const MessageErrorActions = forwardRef(({ tmid }: any, ref): any => {
 				try {
 					// Find the thread header and update it
 					const msg = await msgCollection.find(tmid);
-					if (msg.tcount <= 1) {
+					if (msg?.tcount && msg.tcount <= 1) {
 						deleteBatch.push(
 							msg.prepareUpdate((m: any) => {
 								m.tcount = null;
@@ -62,7 +62,7 @@ const MessageErrorActions = forwardRef(({ tmid }: any, ref): any => {
 					// Do nothing: message not found
 				}
 			}
-			await db.action(async () => {
+			await db.write(async () => {
 				await db.batch(...deleteBatch);
 			});
 		} catch (e) {

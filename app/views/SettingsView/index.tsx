@@ -1,50 +1,44 @@
+import CookieManager from '@react-native-cookies/cookies';
+import { StackNavigationOptions } from '@react-navigation/stack';
+import FastImage from '@rocket.chat/react-native-fast-image';
 import React from 'react';
 import { Clipboard, Linking, Share } from 'react-native';
 import { connect } from 'react-redux';
-import FastImage from '@rocket.chat/react-native-fast-image';
-import CookieManager from '@react-native-cookies/cookies';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 
-import { SettingsStackParamList } from '../../stacks/types';
-import { logout as logoutAction } from '../../actions/login';
-import { selectServerRequest as selectServerRequestAction } from '../../actions/server';
+import { appStart } from '../../actions/app';
+import { logout } from '../../actions/login';
+import { selectServerRequest } from '../../actions/server';
 import { themes } from '../../constants/colors';
+import { isFDroidBuild } from '../../constants/environment';
+import { APP_STORE_LINK, FDROID_MARKET_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../constants/links';
 import * as HeaderButton from '../../containers/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
+import SafeAreaView from '../../containers/SafeAreaView';
+import StatusBar from '../../containers/StatusBar';
+import { LISTENER } from '../../containers/Toast';
+import { IApplicationState, IBaseScreen, RootEnum } from '../../definitions';
 import I18n from '../../i18n';
+import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
+import { IServer } from '../../reducers/server';
+import { getUserSelector } from '../../selectors/login';
+import { SettingsStackParamList } from '../../stacks/types';
+import { withTheme } from '../../theme';
 import { getDeviceModel, getReadableVersion, isAndroid } from '../../utils/deviceInfo';
-import openLink from '../../utils/openLink';
+import EventEmitter from '../../utils/events';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { events, logEvent } from '../../utils/log';
-import { APP_STORE_LINK, FDROID_MARKET_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../constants/links';
-import { withTheme } from '../../theme';
-import SidebarView from '../SidebarView';
-import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../utils/events';
-import { ROOT_LOADING, appStart as appStartAction } from '../../actions/app';
+import openLink from '../../utils/openLink';
 import { onReviewPress } from '../../utils/review';
-import SafeAreaView from '../../containers/SafeAreaView';
-import database from '../../lib/database';
-import { isFDroidBuild } from '../../constants/environment';
-import { getUserSelector } from '../../selectors/login';
+import SidebarView from '../SidebarView';
 
-interface ISettingsViewProps {
-	navigation: StackNavigationProp<SettingsStackParamList, 'SettingsView'>;
-	server: {
-		version: string;
-		server: string;
-	};
-	theme: string;
+interface ISettingsViewProps extends IBaseScreen<SettingsStackParamList, 'SettingsView'> {
+	server: IServer;
 	isMasterDetail: boolean;
-	logout: Function;
-	selectServerRequest: Function;
 	user: {
 		roles: [];
 		id: string;
 	};
-	appStart: Function;
 }
 
 class SettingsView extends React.Component<ISettingsViewProps, any> {
@@ -59,7 +53,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 	});
 
 	checkCookiesAndLogout = async () => {
-		const { logout, user } = this.props;
+		const { dispatch, user } = this.props;
 		const db = database.servers;
 		const usersCollection = db.get('users');
 		try {
@@ -72,14 +66,14 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 					dismissText: I18n.t('Clear_cookies_no'),
 					onPress: async () => {
 						await CookieManager.clearAll(true);
-						logout();
+						dispatch(logout());
 					},
 					onCancel: () => {
-						logout();
+						dispatch(logout());
 					}
 				});
 			} else {
-				logout();
+				dispatch(logout());
 			}
 		} catch {
 			// Do nothing: user not found
@@ -103,15 +97,14 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 			onPress: async () => {
 				const {
 					server: { server },
-					appStart,
-					selectServerRequest
+					dispatch
 				} = this.props;
-				appStart({ root: ROOT_LOADING, text: I18n.t('Clear_cache_loading') });
+				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
 				await RocketChat.clearCache({ server });
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();
 				RocketChat.disconnect();
-				selectServerRequest(server);
+				dispatch(selectServerRequest(server));
 			}
 		});
 	};
@@ -156,8 +149,9 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 		const {
 			server: { version }
 		} = this.props;
-		logEvent(events.SE_COPY_SERVER_VERSION, { serverVersion: version });
-		this.saveToClipboard(version);
+		const vers = version as string;
+		logEvent(events.SE_COPY_SERVER_VERSION, { serverVersion: vers });
+		this.saveToClipboard(vers);
 	};
 
 	copyAppVersion = () => {
@@ -298,16 +292,10 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server,
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-	logout: () => dispatch(logoutAction()),
-	selectServerRequest: (params: any) => dispatch(selectServerRequestAction(params)),
-	appStart: (params: any) => dispatch(appStartAction(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SettingsView));
+export default connect(mapStateToProps)(withTheme(SettingsView));

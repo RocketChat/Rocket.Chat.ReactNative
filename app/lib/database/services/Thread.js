@@ -1,7 +1,7 @@
 import database from '..';
-import { TABLE_NAME } from '../model/Thread';
+import { THREADS_TABLE } from '../model/Thread';
 
-const getCollection = db => db.get(TABLE_NAME);
+const getCollection = db => db.get(THREADS_TABLE);
 
 export const getThreadById = async tmid => {
 	const db = database.active;

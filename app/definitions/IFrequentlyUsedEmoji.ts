@@ -7,4 +7,4 @@ export interface IFrequentlyUsedEmoji {
 	count: number;
 }
 
-export type TFrequentlyUsedEmoji = IFrequentlyUsedEmoji & Model;
+export type TFrequentlyUsedEmojiModel = IFrequentlyUsedEmoji & Model;
