@@ -214,7 +214,7 @@ const Reply = React.memo(
 			if (!url) {
 				return;
 			}
-			if (attachment.type === 'file') {
+			if (attachment.type === 'file' && attachment.title_link) {
 				setLoading(true);
 				url = formatAttachmentUrl(attachment.title_link, user.id, user.token, baseUrl);
 				await fileDownloadAndPreview(url, attachment);
