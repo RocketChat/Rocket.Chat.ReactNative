@@ -220,7 +220,6 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				.query(...whereClause)
 				.observeWithColumns(['updated_at']);
 
-			// TODO: Refactor when migrate messages
 			this.messagesSubscription = this.messagesObservable.subscribe(messages => {
 				const { currentFilter } = this.state;
 				const displayingThreads = this.getFilteredThreads(messages, subscription, currentFilter);
