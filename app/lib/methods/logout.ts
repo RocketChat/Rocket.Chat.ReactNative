@@ -11,7 +11,7 @@ import { useSsl } from '../../utils/url';
 import log from '../../utils/log';
 import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../encryption/constants';
 import UserPreferences from '../userPreferences';
-import { ICertificate, IRocketChatThis } from '../../definitions';
+import { ICertificate, IRocketChat } from '../../definitions';
 
 async function removeServerKeys({ server, userId }: { server: string; userId: string | null }) {
 	await UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);
@@ -97,7 +97,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 	}
 }
 
-export default async function logout(this: IRocketChatThis, { server }: { server: string }): Promise<void> {
+export default async function logout(this: IRocketChat, { server }: { server: string }): Promise<void> {
 	if (this.roomsSub) {
 		this.roomsSub.stop();
 		this.roomsSub = null;
