@@ -20,7 +20,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
 import { IVisitor } from '../definitions/IVisitor';
 import { ITagsOmnichannel } from '../definitions/ITagsOmnichannel';
-import { ISubscription } from '../definitions';
+import { IApplicationState, ISubscription } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 
@@ -345,7 +345,7 @@ const LivechatEditView = ({
 	);
 };
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
 	user: getUserSelector(state),
 	editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
