@@ -19,7 +19,7 @@ export function subscribeUsersPresence() {
 		this.activeUsersSubTimeout = setTimeout(() => {
 			this.sdk.subscribe('activeUsers');
 		}, 5000);
-	} else if (compareServerVersion(serverVersion, '4.1.0', methods.lowerThan)) {
+	} else if (compareServerVersion(serverVersion, 'lowerThan', '4.1.0')) {
 		this.sdk.subscribe('stream-notify-logged', 'user-status');
 	}
 
@@ -53,7 +53,7 @@ export default async function getUsersPresence() {
 			// RC 1.1.0
 			const result = await this.sdk.get('users.presence', params);
 
-			if (compareServerVersion(serverVersion, '4.1.0', methods.greaterThanOrEqualTo)) {
+			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.1.0')) {
 				this.sdk.subscribeRaw('stream-user-presence', ['', { added: ids }]);
 			}
 
