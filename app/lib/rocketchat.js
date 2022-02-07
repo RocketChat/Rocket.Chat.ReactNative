@@ -26,7 +26,7 @@ import EventEmitter from '../utils/events';
 import { updatePermission } from '../actions/permissions';
 import { TEAM_TYPE } from '../definitions/ITeam';
 import { updateSettings } from '../actions/settings';
-import { compareServerVersion, methods } from './utils';
+import { compareServerVersion } from './utils';
 import reduxStore from './createStore';
 import database from './database';
 import subscribeRooms from './methods/subscriptions/rooms';
@@ -138,7 +138,7 @@ const RocketChat = {
 						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 					};
 				}
-				if (compareServerVersion(jsonRes.version, MIN_ROCKETCHAT_VERSION, methods.lowerThan)) {
+				if (compareServerVersion(jsonRes.version, 'lowerThan', MIN_ROCKETCHAT_VERSION)) {
 					return {
 						success: false,
 						message: I18n.t('Invalid_server_version', {
@@ -549,7 +549,7 @@ const RocketChat = {
 
 							// Force normalized params for 2FA starting RC 3.9.0.
 							const serverVersion = reduxStore.getState().server.version;
-							if (compareServerVersion(serverVersion, '3.9.0', methods.greaterThanOrEqualTo)) {
+							if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.9.0')) {
 								const user = params.user ?? params.username;
 								const password = params.password ?? params.ldapPass ?? params.crowdPassword;
 								params = { user, password };
@@ -1059,7 +1059,7 @@ const RocketChat = {
 	},
 	async getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)) {
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
 			const params = {
 				roomId: rid,
 				offset: skip,
@@ -1587,7 +1587,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, '3.4.0', methods.greaterThanOrEqualTo)) {
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
 			// RC 3.4.0
 			return this.methodCallWrapper('readThreads', tmid);
 		}
