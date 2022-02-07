@@ -2,7 +2,7 @@ import React from 'react';
 import {
 	NativeSyntheticEvent,
 	StyleSheet,
-	TextInput as TextInputComp,
+	TextInput as RNTextInput,
 	Text,
 	TextInputFocusEventData,
 	TextInputProps,
@@ -59,7 +59,7 @@ interface ISearchBox {
 	hasCancel?: boolean;
 	onCancelPress?: Function;
 	theme?: string;
-	inputRef?: React.Ref<TextInputComp>;
+	inputRef?: React.Ref<RNTextInput>;
 	testID?: string;
 	onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }
