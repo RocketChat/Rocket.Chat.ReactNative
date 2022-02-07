@@ -151,7 +151,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 
 			const { onDiscussionPress } = this.props;
 
-			if (onDiscussionPress) {
+			if (item.dlm && onDiscussionPress) {
 				onDiscussionPress(item);
 			}
 		},

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { Q } from '@nozbe/watermelondb';
 
-import { compareServerVersion, methods } from '../../lib/utils';
+import { compareServerVersion } from '../../lib/utils';
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
 import { closeRoom as closeRoomAction, leaveRoom as leaveRoomAction } from '../../actions/room';
@@ -320,7 +320,7 @@ class RoomActionsView extends React.Component {
 		const { encrypted } = room;
 		const { serverVersion } = this.props;
 		let hasPermission = false;
-		if (compareServerVersion(serverVersion, '3.11.0', methods.lowerThan)) {
+		if (compareServerVersion(serverVersion, 'lowerThan', '3.11.0')) {
 			hasPermission = canEdit;
 		} else {
 			hasPermission = canToggleEncryption;
