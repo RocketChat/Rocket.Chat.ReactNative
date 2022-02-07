@@ -19,5 +19,5 @@ export interface IAvatar {
 	isStatic?: boolean | string;
 	rid?: string;
 	blockUnauthenticatedAccess?: boolean;
-	serverVersion?: string;
+	serverVersion: string;
 }
