@@ -8,6 +8,7 @@ import { BASIC_AUTH_KEY } from '../../utils/fetch';
 import database, { getDatabase } from '../database';
 import RocketChat from '../rocketchat';
 import { useSsl } from '../../utils/url';
+import log from '../../utils/log';
 import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../encryption/constants';
 import UserPreferences from '../userPreferences';
 import { ICertificate, IRocketChatThis } from '../../definitions';
@@ -32,7 +33,7 @@ async function removeSharedCredentials({ server }: { server: string }) {
 			await FileSystem.deleteAsync(certificate.path);
 		}
 	} catch (e) {
-		console.log('removeSharedCredentials', e);
+		log(e);
 	}
 }
 
@@ -55,7 +56,7 @@ async function removeServerData({ server }: { server: string }) {
 		await removeSharedCredentials({ server });
 		await removeServerKeys({ server, userId });
 	} catch (e) {
-		console.log('removeServerData', e);
+		log(e);
 	}
 }
 
@@ -68,7 +69,7 @@ async function removeServerDatabase({ server }: { server: string }) {
 		const db = getDatabase(server);
 		await db.write(() => db.unsafeResetDatabase());
 	} catch (e) {
-		console.log(e);
+		log(e);
 	}
 }
 
@@ -92,7 +93,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 		await removeServerData({ server });
 		await removeServerDatabase({ server });
 	} catch (e) {
-		console.log('removeServer', e);
+		log(e);
 	}
 }
 
@@ -110,14 +111,14 @@ export default async function logout(this: IRocketChatThis, { server }: { server
 	try {
 		await this.removePushToken();
 	} catch (e) {
-		console.log('removePushToken', e);
+		log(e);
 	}
 
 	try {
 		// RC 0.60.0
 		await this.sdk.logout();
 	} catch (e) {
-		console.log('logout', e);
+		log(e);
 	}
 
 	if (this.sdk) {
