@@ -9,6 +9,7 @@ export interface IRoom {
 	prid: string;
 	t: SubscriptionType;
 	name: string;
+	fname?: string;
 	teamMain: boolean;
 	alert?: boolean;
 	customFields: string[];
