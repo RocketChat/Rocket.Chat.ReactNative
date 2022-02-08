@@ -493,7 +493,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const msg = this.text;
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
-		const regexp = /([a-z0-9._-]+)$/im;
+		let regexp = /([a-z0-9._-]+)$/im;
+		if (trackingType === MENTIONS_TRACKING_TYPE_USERS) {
+			// Selects query text after '@' for all languages while mentioning a user
+			regexp = /([^@p{L}]+)$/im;
+		}
 		let result = msg.substr(0, cursor).replace(regexp, '');
 		// Remove the ! after select the canned response
 		if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {

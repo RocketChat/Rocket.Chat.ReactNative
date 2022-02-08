@@ -39,3 +39,39 @@ describe('sanitizer', () => {
 		expect(utils.sanitizer(content)).toBe(content);
 	});
 });
+
+describe('query text removing regex', () => {
+
+	// regex to select the query string used for mention suggestions from the message
+	const regexp = /([^@p{L}]+)$/im;
+
+	test('removing query text on suggestion autocomplete (latin)', () => {
+		const message = 'Hey @test123';
+		expect(message.replace(regexp, '')).toBe('Hey @');
+	});
+
+	test('removing query text on suggestion autocomplete (arabic)', () => {
+		const message = 'Hey @اختبار123';
+		expect(message.replace(regexp, '')).toBe('Hey @');
+	});
+
+	test('removing query text on suggestion autocomplete (russian)', () => {
+		const message = 'Hey @тест123';
+		expect(message.replace(regexp, '')).toBe('Hey @');
+	});
+
+	test('removing query text on suggestion autocomplete (chinese trad)', () => {
+		const message = 'Hey @測試123';
+		expect(message.replace(regexp, '')).toBe('Hey @');
+	});
+
+	test('removing query text on suggestion autocomplete (japanese)', () => {
+		const message = 'Hey @テスト123';
+		expect(message.replace(regexp, '')).toBe('Hey @');
+	});
+
+	test('removing query text on suggestion autocomplete (special characters in query)', () => {
+		const message = "Hey @'=test123";
+		expect(message.replace(regexp, '')).toBe('Hey @');
+	});
+});
