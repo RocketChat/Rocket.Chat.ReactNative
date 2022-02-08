@@ -263,7 +263,6 @@ const RocketChat = {
 				}
 				reduxStore.dispatch(connectSuccess());
 				const { server: currentServer } = reduxStore.getState().server;
-				const { user } = reduxStore.getState().login;
 				if (user?.token && server === currentServer) {
 					reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 				}
