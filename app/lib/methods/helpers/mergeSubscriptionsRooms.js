@@ -2,7 +2,7 @@ import EJSON from 'ejson';
 
 import { Encryption } from '../../encryption';
 import reduxStore from '../../createStore';
-import { compareServerVersion, methods } from '../../utils';
+import { compareServerVersion } from '../../utils';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
 // TODO: delete and update
@@ -28,7 +28,7 @@ export const merge = (subscription, room) => {
 			subscription.usernames = room.usernames;
 			subscription.uids = room.uids;
 		}
-		if (compareServerVersion(serverVersion, '3.7.0', methods.lowerThan)) {
+		if (compareServerVersion(serverVersion, 'lowerThan', '3.7.0')) {
 			const updatedAt = room?._updatedAt ? new Date(room._updatedAt) : null;
 			const lastMessageTs = subscription?.lastMessage?.ts ? new Date(subscription.lastMessage.ts) : null;
 			subscription.roomUpdatedAt = Math.max(updatedAt, lastMessageTs);

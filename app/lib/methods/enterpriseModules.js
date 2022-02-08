@@ -1,4 +1,4 @@
-import { compareServerVersion, methods } from '../utils';
+import { compareServerVersion } from '../utils';
 import reduxStore from '../createStore';
 import database from '../database';
 import log from '../../utils/log';
@@ -32,7 +32,7 @@ export function getEnterpriseModules() {
 	return new Promise(async resolve => {
 		try {
 			const { version: serverVersion, server: serverId } = reduxStore.getState().server;
-			if (compareServerVersion(serverVersion, '3.1.0', methods.greaterThanOrEqualTo)) {
+			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0')) {
 				// RC 3.1.0
 				const enterpriseModules = await this.methodCallWrapper('license:getModules');
 				if (enterpriseModules) {
