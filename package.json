@@ -155,6 +155,7 @@
 		"@types/react-native-scrollable-tab-view": "^0.10.2",
 		"@types/react-redux": "^7.1.18",
 		"@types/react-test-renderer": "^17.0.1",
+		"@types/semver": "^7.3.9",
 		"@types/url-parse": "^1.4.6",
 		"@typescript-eslint/eslint-plugin": "^4.28.3",
 		"@typescript-eslint/parser": "^4.28.5",
