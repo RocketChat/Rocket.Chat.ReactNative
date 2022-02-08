@@ -28,16 +28,18 @@ export default class EncryptionRoom {
 	roomId: string;
 	userId: string;
 	establishing: boolean;
-	readyPromise: Deferred<unknown>;
-	sessionKeyExportedString!: string | ByteBuffer;
-	keyID!: string;
-	roomKey!: ArrayBuffer;
+	readyPromise: Deferred;
+	sessionKeyExportedString: string | ByteBuffer;
+	keyID: string;
+	roomKey: ArrayBuffer;
 
 	constructor(roomId: string, userId: string) {
 		this.ready = false;
 		this.roomId = roomId;
 		this.userId = userId;
 		this.establishing = false;
+		this.keyID = '';
+		this.roomKey = new ArrayBuffer(0);
 		this.readyPromise = new Deferred();
 		this.readyPromise.then(() => {
 			// Mark as ready
@@ -48,7 +50,7 @@ export default class EncryptionRoom {
 	}
 
 	// Initialize the E2E room
-	handshake = async (): Promise<Deferred<unknown> | undefined> => {
+	handshake = async (): Promise<Deferred | undefined> => {
 		// If it's already ready we don't need to handshake again
 		if (this.ready) {
 			return;
