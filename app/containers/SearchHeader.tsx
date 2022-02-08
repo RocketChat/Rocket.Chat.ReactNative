@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 
 interface ISearchHeaderProps {
 	onSearchChangeText?: (text: string) => void;
-	testID: string;
+	testID?: string;
 }
 
 const SearchHeader = ({ onSearchChangeText, testID }: ISearchHeaderProps): JSX.Element => {
