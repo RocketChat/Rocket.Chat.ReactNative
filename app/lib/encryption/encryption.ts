@@ -25,7 +25,7 @@ import { IMessage, ISubscription, TSubscriptionModel } from '../../definitions';
 class Encryption {
 	ready: boolean;
 	privateKey: string | null;
-	readyPromise: Deferred<unknown>;
+	readyPromise: Deferred;
 	userId: string | null;
 	roomInstances: {
 		[rid: string]: {
@@ -268,7 +268,7 @@ class Encryption {
 				})
 			);
 
-			await db.action(async () => {
+			await db.write(async () => {
 				await db.batch(...toDecrypt);
 			});
 		} catch (e) {
@@ -310,7 +310,7 @@ class Encryption {
 				})
 			);
 
-			await db.action(async () => {
+			await db.write(async () => {
 				await db.batch(...subsToDecrypt);
 			});
 		} catch (e) {
@@ -351,7 +351,7 @@ class Encryption {
 
 		let subRecord;
 		try {
-			subRecord = await subCollection.find(rid);
+			subRecord = await subCollection.find(rid as string);
 		} catch {
 			// Do nothing
 		}
@@ -382,7 +382,7 @@ class Encryption {
 
 			// If batch has some operation
 			if (batch.length) {
-				await db.action(async () => {
+				await db.write(async () => {
 					await db.batch(...batch);
 				});
 			}
