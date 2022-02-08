@@ -11,7 +11,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import com.facebook.react.bridge.JSIModulePackage;
-
+import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 
@@ -20,7 +20,6 @@ import java.util.List;
 
 import chat.rocket.reactnative.generated.BasePackageList;
 import chat.rocket.reactnative.networking.SSLPinningPackage;
-import chat.rocket.reactnative.mmkv.CustomMMKVJSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -54,7 +53,7 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected JSIModulePackage getJSIModulePackage() {
-      return new CustomMMKVJSIModulePackage();
+      return new ReanimatedJSIModulePackage();
     }
 
     @Override
