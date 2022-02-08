@@ -194,8 +194,7 @@ const RocketChat = {
 		return this?.sdk?.checkAndReopen();
 	},
 	disconnect() {
-		this.sdk?.disconnect?.();
-		this.sdk = null;
+		this.sdk = sdk.disconnect();
 	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise(resolve => {
@@ -408,12 +407,8 @@ const RocketChat = {
 			// Do nothing
 		}
 
-		if (this.shareSDK) {
-			this.shareSDK.disconnect();
-			this.shareSDK = null;
-		}
-
-		this.shareSDK = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+		this.shareSDK = sdk.disconnect();
+		this.shareSDK = sdk.initialize(server);
 
 		// set Server
 		const currentServer = { server };
@@ -466,10 +461,7 @@ const RocketChat = {
 		}
 	},
 	closeShareExtension() {
-		if (this.shareSDK) {
-			this.shareSDK.disconnect();
-			this.shareSDK = null;
-		}
+		this.shareSDK = sdk.disconnect();
 		database.share = null;
 
 		reduxStore.dispatch(shareSelectServer({}));

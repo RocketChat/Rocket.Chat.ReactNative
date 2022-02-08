@@ -12,6 +12,18 @@ class Sdk {
 		return this.sdk;
 	}
 
+	/**
+	 * TODO: evaluate the need for assigning "null" to this.sdk
+	 * I'm returning "null" because we need to remove both instances of this.sdk here and on rocketchat.js
+	 */
+	public disconnect() {
+		if (this.sdk) {
+			this.sdk.disconnect();
+			this.sdk = null;
+		}
+		return null;
+	}
+
 	public get(...args: any[]): Promise<unknown> {
 		return this.sdk.get(...args);
 	}
