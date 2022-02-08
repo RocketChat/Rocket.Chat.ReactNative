@@ -1,6 +1,8 @@
 import { Rocketchat } from '@rocket.chat/sdk';
+import isEmpty from 'lodash/isEmpty';
+import EJSON from 'ejson';
 
-// import store from '../../createStore';
+import reduxStore from '../../createStore';
 import { useSsl } from '../../../utils/url';
 import { twoFactor } from '../../../utils/twoFactor';
 
@@ -93,8 +95,22 @@ class Sdk {
 		});
 	}
 
-	methodCallWrapper(...args: any[]): Promise<unknown> {
-		return this.sdk.methodCall(...args);
+	methodCallWrapper(method: string, ...params: any[]) {
+		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
+		const { user } = reduxStore.getState().login;
+		if (API_Use_REST_For_DDP_Calls) {
+			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
+			return this.post(`${url}/${method}`, {
+				message: EJSON.stringify({ method, params })
+			});
+		}
+		const parsedParams = params.map(param => {
+			if (param instanceof Date) {
+				return { $date: new Date(param).getTime() };
+			}
+			return param;
+		});
+		return this.methodCall(method, ...parsedParams);
 	}
 }
 

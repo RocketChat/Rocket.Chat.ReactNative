@@ -1015,21 +1015,7 @@ const RocketChat = {
 		return result?.records;
 	},
 	methodCallWrapper(method, ...params) {
-		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
-		const { user } = reduxStore.getState().login;
-		if (API_Use_REST_For_DDP_Calls) {
-			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
-			return this.post(`${url}/${method}`, {
-				message: EJSON.stringify({ method, params })
-			});
-		}
-		const parsedParams = params.map(param => {
-			if (param instanceof Date) {
-				return { $date: new Date(param).getTime() };
-			}
-			return param;
-		});
-		return this.methodCall(method, ...parsedParams);
+		return sdk.methodCallWrapper(method, ...params);
 	},
 
 	getUserRoles() {
