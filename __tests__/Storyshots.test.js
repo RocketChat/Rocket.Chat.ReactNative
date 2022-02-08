@@ -20,7 +20,24 @@ jest.mock('react-native-file-viewer', () => ({
 jest.mock('../app/lib/database', () => jest.fn(() => null));
 global.Date.now = jest.fn(() => new Date('2019-10-10').getTime());
 
-jest.mock('react-native', () => ({ NativeModules: { MMKVNative: { install: () => true } } }));
+jest.mock('react-native-mmkv-storage', () => {
+	return {
+		Loader: jest.fn().mockImplementation(() => {
+			return {
+				setProcessingMode: jest.fn().mockImplementation(() => {
+					return {
+						withEncryption: jest.fn().mockImplementation(() => {
+							return {
+								initialize: jest.fn()
+							};
+						})
+					};
+				})
+			};
+		}),
+		MODES: { MULTI_PROCESS: '' }
+	};
+});
 
 const converter = new Stories2SnapsConverter();
 
