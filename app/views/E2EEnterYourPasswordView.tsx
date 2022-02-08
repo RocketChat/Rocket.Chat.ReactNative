@@ -1,6 +1,6 @@
 import { StackNavigationOptions } from '@react-navigation/stack';
 import React from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput as RNTextInput } from 'react-native';
 import { connect } from 'react-redux';
 
 import { encryptionDecodeKey } from '../actions/encryption';
@@ -37,7 +37,7 @@ interface IE2EEnterYourPasswordViewState {
 type TE2EEnterYourPasswordViewProps = IBaseScreen<E2EEnterYourPasswordStackParamList, 'E2EEnterYourPasswordView'>;
 
 class E2EEnterYourPasswordView extends React.Component<TE2EEnterYourPasswordViewProps, IE2EEnterYourPasswordViewState> {
-	private passwordInput?: TextInput;
+	private passwordInput?: RNTextInput;
 
 	static navigationOptions = ({ navigation }: Pick<TE2EEnterYourPasswordViewProps, 'navigation'>): StackNavigationOptions => ({
 		headerLeft: () => <HeaderButton.CloseModal navigation={navigation} testID='e2e-enter-your-password-view-close' />,
@@ -76,7 +76,7 @@ class E2EEnterYourPasswordView extends React.Component<TE2EEnterYourPasswordView
 						style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}
 						testID='e2e-enter-your-password-view'>
 						<TextInput
-							inputRef={(e: TextInput) => {
+							inputRef={(e: RNTextInput) => {
 								this.passwordInput = e;
 							}}
 							placeholder={I18n.t('Password')}
