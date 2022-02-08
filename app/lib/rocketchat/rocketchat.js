@@ -59,10 +59,14 @@ import logout, { removeServer } from '../methods/logout';
 import UserPreferences from '../userPreferences';
 import { Encryption } from '../encryption';
 import { sanitizeLikeString } from '../database/utils';
-import getUserInfo from './services/getUserInfo';
 import clearCache from './methods/clearCache';
 import getPermalinkMessage from './methods/getPermalinkMessage';
 import getRoom from './methods/getRoom';
+
+// Services
+import sdk from './services/sdk';
+import getUserInfo from './services/getUserInfo';
+import toggleFavorite from './services/toggleFavorite';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -244,7 +248,8 @@ const RocketChat = {
 			}
 
 			// The app can't reconnect if reopen interval is 5s while in development
-			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+			// this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+			this.sdk = sdk.initialize(server);
 			this.getSettings();
 
 			this.sdk
@@ -998,10 +1003,7 @@ const RocketChat = {
 		// RC 0.62.2
 		return this.post('chat.react', { emoji, messageId });
 	},
-	toggleFavorite(roomId, favorite) {
-		// RC 0.64.0
-		return this.post('rooms.favorite', { roomId, favorite });
-	},
+	toggleFavorite,
 	toggleRead(read, roomId) {
 		if (read) {
 			return this.post('subscriptions.unread', { roomId });
