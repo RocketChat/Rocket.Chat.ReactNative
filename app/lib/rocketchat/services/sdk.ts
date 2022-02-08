@@ -6,12 +6,6 @@ import { useSsl } from '../../../utils/url';
 class Sdk {
 	private sdk: typeof Rocketchat;
 
-	// constructor() {
-	// 	const { server } = store.getState();
-	// 	this.sdk = new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
-	// 	return this.sdk;
-	// }
-
 	// TODO: We need to stop returning the SDK after all methods are dehydrated
 	public initialize(server: string) {
 		this.sdk = new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
@@ -28,10 +22,6 @@ class Sdk {
 
 	public methodCallWrapper(...args: any[]): Promise<unknown> {
 		return this.sdk.methodCall(...args);
-	}
-
-	public onStreamData(...args: any[]): Promise<unknown> {
-		return this.sdk.onStreamData(...args);
 	}
 }
 

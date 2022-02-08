@@ -248,7 +248,6 @@ const RocketChat = {
 			}
 
 			// The app can't reconnect if reopen interval is 5s while in development
-			// this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 			this.sdk = sdk.initialize(server);
 			this.getSettings();
 
