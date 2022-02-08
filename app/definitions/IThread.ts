@@ -2,9 +2,8 @@ import Model from '@nozbe/watermelondb/Model';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
-import { IEditedBy, IUserChannel, IUserMention, IUserMessage } from './IMessage';
+import { IEditedBy, IUserChannel, IUserMention, IUserMessage, MessageType } from './IMessage';
 import { IReaction } from './IReaction';
-import { SubscriptionType } from './ISubscription';
 
 export interface IUrl {
 	title: string;
@@ -41,8 +40,9 @@ export interface IThreadResult {
 
 export interface IThread {
 	id: string;
+	tmsg?: string;
 	msg?: string;
-	t?: SubscriptionType;
+	t?: MessageType;
 	rid: string;
 	_updatedAt?: Date;
 	ts?: Date;
@@ -73,6 +73,7 @@ export interface IThread {
 	autoTranslate?: boolean;
 	translations?: any;
 	e2e?: string;
+	subscription: { id: string };
 }
 
 export type TThreadModel = IThread & Model;

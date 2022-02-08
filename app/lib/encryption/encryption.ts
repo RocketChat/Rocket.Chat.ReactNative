@@ -20,7 +20,7 @@ import {
 } from './constants';
 import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 import { EncryptionRoom } from './index';
-import { IMessage, ISubscription, TSubscriptionModel } from '../../definitions';
+import { IMessage, ISubscription, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 
 class Encryption {
 	ready: boolean;
@@ -244,8 +244,12 @@ class Encryption {
 			const threadMessagesToDecrypt = await threadMessagesCollection.query(...whereClause).fetch();
 
 			// Concat messages/threads/threadMessages
-			let toDecrypt = [...messagesToDecrypt, ...threadsToDecrypt, ...threadMessagesToDecrypt];
-			toDecrypt = await Promise.all(
+			let toDecrypt: (TThreadModel | TThreadMessageModel)[] | null = [
+				...messagesToDecrypt,
+				...threadsToDecrypt,
+				...threadMessagesToDecrypt
+			];
+			toDecrypt = (await Promise.all(
 				toDecrypt.map(async message => {
 					const { t, msg, tmsg } = message;
 					const { id: rid } = message.subscription;
@@ -256,20 +260,21 @@ class Encryption {
 						msg,
 						tmsg
 					});
-					if (message._hasPendingUpdate) {
-						console.log(message);
-						return;
+
+					try {
+						return message.prepareUpdate(
+							protectedFunction((m: TMessageModel) => {
+								Object.assign(m, newMessage);
+							})
+						);
+					} catch {
+						return null;
 					}
-					return message.prepareUpdate(
-						protectedFunction((m: IMessage) => {
-							Object.assign(m, newMessage);
-						})
-					);
 				})
-			);
+			)) as (TThreadModel | TThreadMessageModel)[] | null;
 
 			await db.write(async () => {
-				await db.batch(...toDecrypt);
+				await db.batch(...(toDecrypt as (TThreadModel | TThreadMessageModel)[]));
 			});
 		} catch (e) {
 			log(e);
