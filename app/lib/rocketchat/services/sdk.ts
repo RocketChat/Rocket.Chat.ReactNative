@@ -2,13 +2,18 @@ import { Rocketchat } from '@rocket.chat/sdk';
 
 // import store from '../../createStore';
 import { useSsl } from '../../../utils/url';
+import { twoFactor } from '../../../utils/twoFactor';
 
 class Sdk {
 	private sdk: typeof Rocketchat;
+	private code: any;
 
 	// TODO: We need to stop returning the SDK after all methods are dehydrated
 	initialize(server: string) {
-		this.sdk = new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+		this.code = null;
+
+		// The app can't reconnect if reopen interval is 5s while in development
+		this.sdk = new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 		return this.sdk;
 	}
 
@@ -29,7 +34,63 @@ class Sdk {
 	}
 
 	post(...args: any[]): Promise<unknown> {
-		return this.sdk.post(...args);
+		return new Promise(async (resolve, reject) => {
+			const isMethodCall = args[0]?.startsWith('method.call/');
+			try {
+				const result = await this.sdk.post(...args);
+
+				/**
+				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
+				 * responses have a different object structure
+				 */
+				if (isMethodCall) {
+					const response = JSON.parse(result.message);
+					if (response?.error) {
+						throw response.error;
+					}
+					return resolve(response.result);
+				}
+				return resolve(result);
+			} catch (e: any) {
+				const errorType = isMethodCall ? e?.error : e?.data?.errorType;
+				const totpInvalid = 'totp-invalid';
+				const totpRequired = 'totp-required';
+				if ([totpInvalid, totpRequired].includes(errorType)) {
+					const { details } = isMethodCall ? e : e?.data;
+					try {
+						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
+						return resolve(this.post(...args));
+					} catch {
+						// twoFactor was canceled
+						return resolve({});
+					}
+				} else {
+					reject(e);
+				}
+			}
+		});
+	}
+
+	methodCall(...args: any[]): Promise<unknown> {
+		return new Promise(async (resolve, reject) => {
+			try {
+				const result = await this.sdk?.methodCall(...args, this.code || '');
+				return resolve(result);
+			} catch (e: any) {
+				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
+					const { details } = e;
+					try {
+						this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
+						return resolve(this.methodCall(...args));
+					} catch {
+						// twoFactor was canceled
+						return resolve({});
+					}
+				} else {
+					reject(e);
+				}
+			}
+		});
 	}
 
 	methodCallWrapper(...args: any[]): Promise<unknown> {

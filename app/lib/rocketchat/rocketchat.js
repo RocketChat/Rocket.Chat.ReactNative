@@ -242,11 +242,6 @@ const RocketChat = {
 
 			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
-			if (this.code) {
-				this.code = null;
-			}
-
-			// The app can't reconnect if reopen interval is 5s while in development
 			this.sdk = sdk.initialize(server);
 			this.getSettings();
 
@@ -1238,62 +1233,10 @@ const RocketChat = {
 		return this.methodCallWrapper('saveRoomSettings', rid, params);
 	},
 	post(...args) {
-		return new Promise(async (resolve, reject) => {
-			const isMethodCall = args[0]?.startsWith('method.call/');
-			try {
-				const result = await this.sdk.post(...args);
-
-				/**
-				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
-				 * responses have a different object structure
-				 */
-				if (isMethodCall) {
-					const response = JSON.parse(result.message);
-					if (response?.error) {
-						throw response.error;
-					}
-					return resolve(response.result);
-				}
-				return resolve(result);
-			} catch (e) {
-				const errorType = isMethodCall ? e?.error : e?.data?.errorType;
-				const totpInvalid = 'totp-invalid';
-				const totpRequired = 'totp-required';
-				if ([totpInvalid, totpRequired].includes(errorType)) {
-					const { details } = isMethodCall ? e : e?.data;
-					try {
-						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
-						return resolve(this.post(...args));
-					} catch {
-						// twoFactor was canceled
-						return resolve({});
-					}
-				} else {
-					reject(e);
-				}
-			}
-		});
+		return sdk.post(...args);
 	},
 	methodCall(...args) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				const result = await this.sdk?.methodCall(...args, this.code || '');
-				return resolve(result);
-			} catch (e) {
-				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
-					const { details } = e;
-					try {
-						this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
-						return resolve(this.methodCall(...args));
-					} catch {
-						// twoFactor was canceled
-						return resolve({});
-					}
-				} else {
-					reject(e);
-				}
-			}
-		});
+		return sdk.methodCall(...args);
 	},
 	sendEmailCode() {
 		const { username } = reduxStore.getState().login.user;
