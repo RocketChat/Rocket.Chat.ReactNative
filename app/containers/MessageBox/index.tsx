@@ -31,6 +31,7 @@ import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import { canUploadFile } from '../../utils/media';
 import EventEmiter from '../../utils/events';
 import { KEY_COMMAND, handleCommandShowUpload, handleCommandSubmit, handleCommandTyping } from '../../commands';
+import getRegexp from './getRegexp';
 import Mentions from './Mentions';
 import MessageboxContext from './Context';
 import {
@@ -493,11 +494,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const msg = this.text;
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
-		let regexp = /([a-z0-9._-]+)$/im;
-		if (trackingType === MENTIONS_TRACKING_TYPE_USERS) {
-			// Selects query text after '@' for all languages while mentioning a user
-			regexp = /([^@p{L}]+)$/im;
-		}
+		const regexp = getRegexp(trackingType);
 		let result = msg.substr(0, cursor).replace(regexp, '');
 		// Remove the ! after select the canned response
 		if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
