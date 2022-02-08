@@ -1,7 +1,7 @@
 import reduxStore from '../createStore';
 import Navigation from '../Navigation';
 import { events, logEvent } from '../../utils/log';
-import { ISubscription, SubscriptionType } from '../../definitions';
+import { ISubscription } from '../../definitions';
 import { IRocketChatThis } from '../../definitions/IRocketChat';
 
 async function jitsiURL(this: IRocketChatThis, { room }: { room: ISubscription }) {
@@ -32,7 +32,9 @@ async function jitsiURL(this: IRocketChatThis, { room }: { room: ISubscription }
 	if (Jitsi_URL_Room_Hash) {
 		rname = uniqueID + room?.rid;
 	} else {
-		rname = encodeURIComponent(room.t === SubscriptionType.DIRECT ? room?.usernames?.join?.(' x ') || '' : room?.name);
+		// @ts-ignore
+		rname = encodeURIComponent(room.t === 'd' ? room?.usernames?.join?.(' x ') : room?.name);
+		// rname = encodeURIComponent(room.t === SubscriptionType.DIRECT ? room?.usernames?.join?.(' x ') || '' : room?.name);
 	}
 
 	return `${protocol}${domain}${prefix}${rname}${queryString}`;
