@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextInputProps, TextInput as RNTextInput, TextStyle, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import sharedStyles from '../views/Styles';
@@ -59,7 +59,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
 	inputStyle?: StyleProp<TextStyle>;
-	inputRef?: React.Ref<unknown>;
+	inputRef?: React.Ref<RNTextInput>;
 	testID?: string;
 	iconLeft?: string;
 	iconRight?: string;
