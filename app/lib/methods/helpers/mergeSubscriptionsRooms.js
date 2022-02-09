@@ -1,7 +1,7 @@
 import EJSON from 'ejson';
 
 import { Encryption } from '../../encryption';
-import reduxStore from '../../createStore';
+import { store as reduxStore } from '../../auxStore';
 import { compareServerVersion } from '../../utils';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
