@@ -143,7 +143,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader onSearchChangeText={this.onSearchChangeText} />,
+				headerTitle: () => (
+					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='thread-messages-view-search-header' />
+				),
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right
@@ -218,7 +220,6 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				.query(...whereClause)
 				.observeWithColumns(['updated_at']);
 
-			// TODO: Refactor when migrate messages
 			this.messagesSubscription = this.messagesObservable.subscribe(messages => {
 				const { currentFilter } = this.state;
 				const displayingThreads = this.getFilteredThreads(messages, subscription, currentFilter);

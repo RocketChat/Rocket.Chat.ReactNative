@@ -44,9 +44,9 @@ export interface IThread {
 	msg?: string;
 	t?: SubscriptionType;
 	rid: string;
-	_updatedAt: Date;
-	ts: Date;
-	u: IUserMessage;
+	_updatedAt?: Date;
+	ts?: Date;
+	u?: IUserMessage;
 	alias?: string;
 	parseUrls?: boolean;
 	groupable?: boolean;
@@ -61,11 +61,11 @@ export interface IThread {
 	reactions?: IReaction[];
 	role?: string;
 	drid?: string;
-	dcount?: number;
+	dcount?: number | string;
 	dlm?: number;
 	tmid?: string;
-	tcount?: number;
-	tlm?: Date;
+	tcount?: number | string;
+	tlm?: string;
 	replies?: string[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];

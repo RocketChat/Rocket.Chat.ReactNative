@@ -9,6 +9,7 @@ import store from '../lib/createStore';
 import database from '../lib/database';
 import {
 	ATTEMPTS_KEY,
+	BIOMETRY_ENABLED_KEY,
 	CHANGE_PASSCODE_EMITTER,
 	LOCAL_AUTHENTICATE_EMITTER,
 	LOCKED_OUT_TIMER_KEY,
@@ -72,32 +73,18 @@ export const biometryAuth = (force?: boolean): Promise<LocalAuthentication.Local
  * It'll help us to get the permission to use FaceID
  * and enable/disable the biometry when user put their first passcode
  */
-const checkBiometry = async (serverRecord: TServerModel) => {
-	const serversDB = database.servers;
-
+const checkBiometry = async () => {
 	const result = await biometryAuth(true);
-	await serversDB.write(async () => {
-		try {
-			await serverRecord.update(record => {
-				record.biometry = !!result?.success;
-			});
-		} catch {
-			// Do nothing
-		}
-	});
+	const isBiometryEnabled = !!result?.success;
+	await UserPreferences.setBoolAsync(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
+	return isBiometryEnabled;
 };
 
-export const checkHasPasscode = async ({
-	force = true,
-	serverRecord
-}: {
-	force?: boolean;
-	serverRecord: TServerModel;
-}): Promise<{ newPasscode?: boolean } | void> => {
+export const checkHasPasscode = async ({ force = true }: { force?: boolean }): Promise<{ newPasscode?: boolean } | void> => {
 	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
 	if (!storedPasscode) {
 		await changePasscode({ force });
-		await checkBiometry(serverRecord);
+		await checkBiometry();
 		return Promise.resolve({ newPasscode: true });
 	}
 	return Promise.resolve();
@@ -124,7 +111,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		}
 
 		// Check if the app has passcode
-		const result = await checkHasPasscode({ serverRecord });
+		const result = await checkHasPasscode({});
 
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set
 		if (!result?.newPasscode) {
@@ -136,10 +123,11 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
 
-				let hasBiometry = false;
+				// let hasBiometry = false;
+				let hasBiometry = (await UserPreferences.getBoolAsync(BIOMETRY_ENABLED_KEY)) ?? false;
 
 				// if biometry is enabled on the app
-				if (serverRecord.biometry) {
+				if (hasBiometry) {
 					const isEnrolled = await LocalAuthentication.isEnrolledAsync();
 					hasBiometry = isEnrolled;
 				}
