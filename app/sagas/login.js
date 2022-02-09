@@ -15,7 +15,6 @@ import EventEmitter from '../utils/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
-import { setActiveUsers } from '../actions/activeUsers';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
 import UserPreferences from '../lib/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
@@ -100,7 +99,6 @@ const registerPushToken = function* registerPushToken() {
 };
 
 const fetchUsersPresence = function* fetchUserPresence() {
-	yield RocketChat.getUsersPresence();
 	RocketChat.subscribeUsersPresence();
 };
 
@@ -221,11 +219,6 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 
 const handleSetUser = function* handleSetUser({ user }) {
 	setLanguage(user?.language);
-
-	if (user && user.status) {
-		const userId = yield select(state => state.login.user.id);
-		yield put(setActiveUsers({ [userId]: user }));
-	}
 
 	if (user?.statusLivechat && RocketChat.isOmnichannelModuleAvailable()) {
 		if (isOmnichannelStatusAvailable(user)) {
