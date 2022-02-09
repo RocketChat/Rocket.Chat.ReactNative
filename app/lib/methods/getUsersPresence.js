@@ -2,7 +2,7 @@ import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { compareServerVersion } from '../utils';
-import reduxStore from '../createStore';
+import { store as reduxStore } from '../auxStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import database from '../database';

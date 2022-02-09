@@ -1,4 +1,4 @@
-import reduxStore from '../createStore';
+import { store as reduxStore } from '../auxStore';
 import Navigation from '../Navigation';
 import { events, logEvent } from '../../utils/log';
 

@@ -27,7 +27,7 @@ import { updatePermission } from '../actions/permissions';
 import { TEAM_TYPE } from '../definitions/ITeam';
 import { updateSettings } from '../actions/settings';
 import { compareServerVersion } from './utils';
-import reduxStore from './createStore';
+import { store as reduxStore } from './auxStore';
 import database from './database';
 import subscribeRooms from './methods/subscriptions/rooms';
 import { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
