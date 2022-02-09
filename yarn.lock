@@ -3758,9 +3758,9 @@
   resolved "https://registry.yarnpkg.com/@rocket.chat/react-native-fast-image/-/react-native-fast-image-8.2.0.tgz#4f48858f95f40afcb10b39cee9b1239c150d6c51"
   integrity sha512-NF5KlFt642ZucP/KHnYGBNYLD6O7bcrZMKfRQlH5Y3/1xpnPX1g4wuygtiV7XArMU1FopQT+qmCUPPj8IMDTcw==
 
-"@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile":
-  version "1.1.0-mobile"
-  resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/c64e69ea22514ae3bbe24e36ca77868fdae76157"
+"@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#subscribe-raw":
+  version "1.2.0-mobile"
+  resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/6eb97d265d2e2054eced23fc78145ab179e3a1f3"
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"
