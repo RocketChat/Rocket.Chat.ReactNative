@@ -30,7 +30,7 @@ import { compareServerVersion } from './utils';
 import reduxStore from './createStore';
 import database from './database';
 import subscribeRooms from './methods/subscriptions/rooms';
-import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
+import { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
 import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
@@ -308,10 +308,26 @@ const RocketChat = {
 				protectedFunction(ddpMessage => onRolesChanged(ddpMessage))
 			);
 
+			// RC 4.1
+			this.sdk.onStreamData('stream-user-presence', ddpMessage => {
+				const userStatus = ddpMessage.fields.args[0];
+				const { uid } = ddpMessage.fields;
+				const [, status, statusText] = userStatus;
+				const newStatus = { status: STATUSES[status], statusText };
+				reduxStore.dispatch(setActiveUsers({ [uid]: newStatus }));
+
+				const { user: loggedUser } = reduxStore.getState().login;
+				if (loggedUser && loggedUser.id === uid) {
+					reduxStore.dispatch(setUser(newStatus));
+				}
+			});
+
 			this.notifyLoggedListener = this.sdk.onStreamData(
 				'stream-notify-logged',
 				protectedFunction(async ddpMessage => {
 					const { eventName } = ddpMessage.fields;
+
+					// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
 					if (/user-status/.test(eventName)) {
 						this.activeUsers = this.activeUsers || {};
 						if (!this._setUserTimer) {
@@ -1633,15 +1649,18 @@ const RocketChat = {
 			reduxStore.dispatch(setUser({ status: { status: 'offline' } }));
 		}
 
-		if (!this._setUserTimer) {
-			this._setUserTimer = setTimeout(() => {
-				const activeUsersBatch = this.activeUsers;
-				InteractionManager.runAfterInteractions(() => {
-					reduxStore.dispatch(setActiveUsers(activeUsersBatch));
-				});
-				this._setUserTimer = null;
-				return (this.activeUsers = {});
-			}, 10000);
+		const serverVersion = reduxStore.getState().server.version;
+		if (compareServerVersion(serverVersion, 'lowerThan', '4.1.0')) {
+			if (!this._setUserTimer) {
+				this._setUserTimer = setTimeout(() => {
+					const activeUsersBatch = this.activeUsers;
+					InteractionManager.runAfterInteractions(() => {
+						reduxStore.dispatch(setActiveUsers(activeUsersBatch));
+					});
+					this._setUserTimer = null;
+					return (this.activeUsers = {});
+				}, 10000);
+			}
 		}
 
 		if (!ddpMessage.fields) {
@@ -1650,7 +1669,6 @@ const RocketChat = {
 			this.activeUsers[ddpMessage.id] = { status: ddpMessage.fields.status };
 		}
 	},
-	getUsersPresence,
 	getUserPresence,
 	subscribeUsersPresence,
 	getDirectory({ query, count, offset, sort }) {
