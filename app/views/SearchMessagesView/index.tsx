@@ -84,7 +84,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	private encrypted: boolean | undefined;
 
-	private room: Partial<IRoom> | null | undefined;
+	private room: Pick<IRoom, 'rid' | 'name' | 'fname' | 't'> | null | undefined;
 
 	static navigationOptions = ({ navigation, route }: INavigationOption) => {
 		const options: StackNavigationOptions = {
