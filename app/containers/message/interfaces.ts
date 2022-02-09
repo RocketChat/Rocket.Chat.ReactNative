@@ -1,6 +1,6 @@
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
-import { UserChannel, UserMention } from '../markdown/interfaces';
+import { IUserChannel, IUserMention } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 export type TMessageType = 'discussion-created' | 'jitsi_call_started';
@@ -74,8 +74,8 @@ export interface IMessageContent {
 	isEdited: boolean;
 	isEncrypted: boolean;
 	getCustomEmoji: TGetCustomEmoji;
-	channels: UserChannel[];
-	mentions: UserMention[];
+	channels: IUserChannel[];
+	mentions: IUserMention[];
 	navToRoomInfo: Function;
 	useRealName: boolean;
 	isIgnored: boolean;

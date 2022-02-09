@@ -9,14 +9,14 @@ import Code from './Code';
 import BigEmoji from './BigEmoji';
 import OrderedList from './OrderedList';
 import UnorderedList from './UnorderedList';
-import { UserMention, UserChannel, TOnLinkPress } from '../interfaces';
+import { IUserMention, IUserChannel, TOnLinkPress } from '../interfaces';
 import TaskList from './TaskList';
 import MarkdownContext from './MarkdownContext';
 
 interface IBodyProps {
 	tokens?: MarkdownAST;
-	mentions?: UserMention[];
-	channels?: UserChannel[];
+	mentions?: IUserMention[];
+	channels?: IUserChannel[];
 	getCustomEmoji?: Function;
 	onLinkPress?: TOnLinkPress;
 	navToRoomInfo?: Function;

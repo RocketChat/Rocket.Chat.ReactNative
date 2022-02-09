@@ -3,14 +3,14 @@ import { Text, TextStyle, StyleProp } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';
-import { UserChannel } from './interfaces';
+import { IUserChannel } from './interfaces';
 import styles from './styles';
 
 interface IHashtag {
 	hashtag: string;
-	navToRoomInfo: Function;
+	navToRoomInfo?: Function;
 	style?: StyleProp<TextStyle>[];
-	channels?: UserChannel[];
+	channels?: IUserChannel[];
 }
 
 const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
@@ -18,11 +18,13 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 
 	const handlePress = () => {
 		const index = channels?.findIndex(channel => channel.name === hashtag);
-		const navParam = {
-			t: 'c',
-			rid: channels?.[index!]._id
-		};
-		navToRoomInfo(navParam);
+		if (index && navToRoomInfo) {
+			const navParam = {
+				t: 'c',
+				rid: channels?.[index]._id
+			};
+			navToRoomInfo(navParam);
+		}
 	};
 
 	if (channels && channels.length && channels.findIndex(channel => channel.name === hashtag) !== -1) {

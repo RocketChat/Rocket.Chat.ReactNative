@@ -21,7 +21,7 @@ import styles from './styles';
 import { isValidURL } from '../../utils/url';
 import NewMarkdown from './new';
 import { formatText } from './formatText';
-import { UserMention, UserChannel, TOnLinkPress } from './interfaces';
+import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { formatHyperlink } from './formatHyperlink';
 
@@ -31,7 +31,7 @@ interface IMarkdownProps {
 	msg?: string;
 	theme: string;
 	md?: MarkdownAST;
-	mentions?: UserMention[];
+	mentions?: IUserMention[];
 	getCustomEmoji?: TGetCustomEmoji;
 	baseUrl?: string;
 	username?: string;
@@ -40,7 +40,7 @@ interface IMarkdownProps {
 	numberOfLines?: number;
 	customEmojis?: boolean;
 	useRealName?: boolean;
-	channels?: UserChannel[];
+	channels?: IUserChannel[];
 	enableMessageParser?: boolean;
 	// TODO: Refactor when migrate Room
 	navToRoomInfo?: Function;

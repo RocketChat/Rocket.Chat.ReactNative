@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { UserMention, UserChannel } from '../interfaces';
+import { IUserMention, IUserChannel } from '../interfaces';
 
 interface IMarkdownContext {
-	mentions?: UserMention[];
-	channels?: UserChannel[];
+	mentions?: IUserMention[];
+	channels?: IUserChannel[];
 	useRealName?: boolean;
 	username?: string;
 	baseUrl?: string;

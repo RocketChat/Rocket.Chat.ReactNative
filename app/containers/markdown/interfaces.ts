@@ -1,11 +1,10 @@
-export interface UserMention {
+export interface IUserMention {
 	_id: string;
 	username: string;
 	name?: string;
 }
 
-export interface UserChannel {
-	[index: number]: string | number;
+export interface IUserChannel {
 	name: string;
 	_id: string;
 }

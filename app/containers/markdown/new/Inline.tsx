@@ -41,16 +41,16 @@ const Inline = ({ value }: IParagraphProps): JSX.Element => {
 						return (
 							<AtMention
 								mention={block.value.value}
-								useRealName={useRealName!}
-								username={username!}
-								navToRoomInfo={navToRoomInfo!}
+								useRealName={useRealName}
+								username={username}
+								navToRoomInfo={navToRoomInfo}
 								mentions={mentions}
 							/>
 						);
 					case 'EMOJI':
 						return <Emoji value={block.value} />;
 					case 'MENTION_CHANNEL':
-						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo!} channels={channels} />;
+						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
 					case 'INLINE_CODE':
 						return <InlineCode value={block.value} />;
 					default:

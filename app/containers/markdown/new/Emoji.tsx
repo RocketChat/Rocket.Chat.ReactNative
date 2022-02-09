@@ -21,7 +21,7 @@ const Emoji = ({ value, isBigEmoji }: IEmojiProps): JSX.Element => {
 	const emoji = getCustomEmoji?.(value.value);
 
 	if (emoji) {
-		return <CustomEmoji baseUrl={baseUrl!} style={[isBigEmoji ? styles.customEmojiBig : styles.customEmoji]} emoji={emoji} />;
+		return <CustomEmoji baseUrl={baseUrl} style={[isBigEmoji ? styles.customEmojiBig : styles.customEmoji]} emoji={emoji} />;
 	}
 	return <Text style={[{ color: themes[theme!].bodyText }, isBigEmoji ? styles.textBig : styles.text]}>{emojiUnicode}</Text>;
 };
