@@ -22,6 +22,7 @@ export interface IRoom {
 	tags?: string[];
 	e2eKeyId?: string;
 	avatarETag?: string;
+	latest?: string;
 }
 
 export type TRoomModel = IRoom & Model;

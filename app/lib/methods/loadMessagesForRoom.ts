@@ -5,11 +5,13 @@ import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
+import { IRocketChat } from '../../definitions/IRocketChat';
+import { IMessage, IRoom, SubscriptionType } from '../../definitions';
 
 const COUNT = 50;
 
-async function load({ rid: roomId, latest, t }) {
-	let params = { roomId, count: COUNT };
+async function load(this: IRocketChat, { rid: roomId, latest, t }: Pick<IRoom, 'rid' | 'latest' | 't'>) {
+	let params = { roomId, count: COUNT } as { roomId: string; count: number; latest: string };
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
 	}
@@ -27,7 +29,10 @@ async function load({ rid: roomId, latest, t }) {
 	return data.messages;
 }
 
-export default function loadMessagesForRoom(args) {
+export default function loadMessagesForRoom(
+	this: IRocketChat,
+	args: { rid: string; t: SubscriptionType; latest: string; loaderItem: IRoom }
+): Promise<IMessage | []> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await load.call(this, args);
@@ -46,9 +51,8 @@ export default function loadMessagesForRoom(args) {
 				}
 				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });
 				return resolve(data);
-			} else {
-				return resolve([]);
 			}
+			return resolve([]);
 		} catch (e) {
 			log(e);
 			reject(e);
