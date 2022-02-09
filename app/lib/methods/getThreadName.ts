@@ -6,11 +6,12 @@ import { getThreadById } from '../database/services/Thread';
 import log from '../../utils/log';
 import { Encryption } from '../encryption';
 import getSingleMessage from './getSingleMessage';
+import { IThread, TThreadModel } from '../../definitions';
 
-const buildThreadName = thread => thread.msg || thread?.attachments?.[0]?.title;
+const buildThreadName = (thread: IThread) => thread.msg || thread?.attachments?.[0]?.title;
 
-const getThreadName = async (rid, tmid, messageId) => {
-	let tmsg;
+const getThreadName = async (rid: string, tmid: string, messageId: string): Promise<string | undefined> => {
+	let tmsg: string | undefined;
 	try {
 		const db = database.active;
 		const threadCollection = db.get('threads');
@@ -18,8 +19,8 @@ const getThreadName = async (rid, tmid, messageId) => {
 		const threadRecord = await getThreadById(tmid);
 		if (threadRecord) {
 			tmsg = buildThreadName(threadRecord);
-			await db.action(async () => {
-				await messageRecord?.update(m => {
+			await db.write(async () => {
+				await messageRecord?.update((m: { tmsg: string | undefined }) => {
 					m.tmsg = tmsg;
 				});
 			});
@@ -27,14 +28,14 @@ const getThreadName = async (rid, tmid, messageId) => {
 			let thread = await getSingleMessage(tmid);
 			thread = await Encryption.decryptMessage(thread);
 			tmsg = buildThreadName(thread);
-			await db.action(async () => {
+			await db.write(async () => {
 				await db.batch(
-					threadCollection?.prepareCreate(t => {
+					threadCollection?.prepareCreate((t: TThreadModel) => {
 						t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
 						t.subscription.id = rid;
 						Object.assign(t, thread);
 					}),
-					messageRecord?.prepareUpdate(m => {
+					messageRecord?.prepareUpdate((m: { tmsg: string | undefined }) => {
 						m.tmsg = tmsg;
 					})
 				);
