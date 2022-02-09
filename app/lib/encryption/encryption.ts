@@ -244,7 +244,7 @@ class Encryption {
 			const threadMessagesToDecrypt = await threadMessagesCollection.query(...whereClause).fetch();
 
 			// Concat messages/threads/threadMessages
-			let toDecrypt: (TThreadModel | TThreadMessageModel)[] | null = [
+			let toDecrypt: (TThreadModel | TThreadMessageModel)[] = [
 				...messagesToDecrypt,
 				...threadsToDecrypt,
 				...threadMessagesToDecrypt
@@ -271,10 +271,10 @@ class Encryption {
 						return null;
 					}
 				})
-			)) as (TThreadModel | TThreadMessageModel)[] | null;
+			)) as (TThreadModel | TThreadMessageModel)[];
 
 			await db.write(async () => {
-				await db.batch(...(toDecrypt as (TThreadModel | TThreadMessageModel)[]));
+				await db.batch(...toDecrypt);
 			});
 		} catch (e) {
 			log(e);

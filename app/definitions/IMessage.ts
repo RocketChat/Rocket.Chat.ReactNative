@@ -4,7 +4,7 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
 
-export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e';
+export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj';
 
 export interface IUserMessage {
 	_id: string;
