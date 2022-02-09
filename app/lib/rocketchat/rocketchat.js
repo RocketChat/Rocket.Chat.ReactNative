@@ -1,11 +1,9 @@
 import { InteractionManager } from 'react-native';
-import EJSON from 'ejson';
 import { settings as RocketChatSettings, Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import RNFetchBlob from 'rn-fetch-blob';
-import isEmpty from 'lodash/isEmpty';
 
 import defaultSettings from '../../constants/settings';
 import log from '../../utils/log';
@@ -59,9 +57,12 @@ import logout, { removeServer } from '../methods/logout';
 import UserPreferences from '../userPreferences';
 import { Encryption } from '../encryption';
 import { sanitizeLikeString } from '../database/utils';
+
+// Methods
 import clearCache from './methods/clearCache';
 import getPermalinkMessage from './methods/getPermalinkMessage';
 import getRoom from './methods/getRoom';
+import isGroupChat from './methods/isGroupChat';
 
 // Services
 import sdk from './services/sdk';
@@ -1144,9 +1145,7 @@ const RocketChat = {
 		return !isUnread;
 	},
 
-	isGroupChat(room) {
-		return (room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2);
-	},
+	isGroupChat,
 
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {
