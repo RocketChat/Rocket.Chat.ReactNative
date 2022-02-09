@@ -1,6 +1,6 @@
 import RocketChat from '../rocketchat';
 
-const getSingleMessage = (messageId: string): Promise<unknown> =>
+const getSingleMessage = (messageId: string) =>
 	new Promise(async (resolve, reject) => {
 		try {
 			const result = await RocketChat.getSingleMessage(messageId);
