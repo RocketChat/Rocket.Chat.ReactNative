@@ -79,9 +79,9 @@ export default class RoomSubscription {
 
 	handleConnection = async () => {
 		try {
-			const _lastOpen = new Date();
 			reduxStore.dispatch(clearUserTyping());
 			await RocketChat.loadMissedMessages({ rid: this.rid });
+			const _lastOpen = new Date();
 			this.read(_lastOpen);
 			this.lastOpen = _lastOpen;
 		} catch (e) {
