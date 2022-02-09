@@ -5,6 +5,7 @@ import * as FileSystem from 'expo-file-system';
 import UserPreferences from '../lib/userPreferences';
 import I18n from '../i18n';
 import { extractHostname } from './server';
+import { ICertificate } from '../definitions';
 
 const { SSLPinning } = NativeModules;
 const { documentDirectory } = FileSystem;
@@ -12,11 +13,6 @@ const { documentDirectory } = FileSystem;
 const extractFileScheme = (path: string) => path.replace('file://', ''); // file:// isn't allowed by obj-C
 
 const getPath = (name: string) => `${documentDirectory}/${name}`;
-
-interface ICertificate {
-	path: string;
-	password: string;
-}
 
 const persistCertificate = async (name: string, password: string) => {
 	const certificatePath = getPath(name);
