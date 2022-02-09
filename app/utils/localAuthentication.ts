@@ -21,9 +21,11 @@ import { TServerModel } from '../definitions/IServer';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
-export const saveLastLocalAuthenticationSession = async (server: string, serverRecord?: TServerModel): Promise<void> => {
-	const timesync: number = (await RocketChat.getServerTimeSync(server)) ?? 0;
-
+export const saveLastLocalAuthenticationSession = async (
+	server: string,
+	serverRecord?: TServerModel,
+	timesync?: number | null
+): Promise<void> => {
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 	await serversDB.write(async () => {
@@ -31,8 +33,9 @@ export const saveLastLocalAuthenticationSession = async (server: string, serverR
 			if (!serverRecord) {
 				serverRecord = (await serversCollection.find(server)) as TServerModel;
 			}
+			const time = timesync || 0;
 			await serverRecord.update(record => {
-				record.lastLocalAuthenticatedSession = new Date(timesync);
+				record.lastLocalAuthenticatedSession = new Date(time);
 			});
 		} catch (e) {
 			// Do nothing
@@ -105,6 +108,9 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 
 	// if screen lock is enabled
 	if (serverRecord?.autoLock) {
+		// Get time from server
+		const timesync = await RocketChat.getServerTimeSync(server);
+
 		// Make sure splash screen has been hidden
 		try {
 			await RNBootSplash.hide();
@@ -117,13 +123,11 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set
 		if (!result?.newPasscode) {
-			// Get time from server
-			const timesync: number | null = await RocketChat.getServerTimeSync(server);
-
 			// diff to last authenticated session
 			let diffToLastSession = -1;
 			if (timesync) {
-				diffToLastSession = Math.round((timesync - serverRecord?.lastLocalAuthenticatedSession.getTime()) / 1000);
+				const lastLocalTime = serverRecord?.lastLocalAuthenticatedSession || new Date(0);
+				diffToLastSession = Math.round((timesync - lastLocalTime.getTime()) / 1000);
 			}
 
 			// if last authenticated session is older than configured auto lock time, authentication is required
@@ -151,7 +155,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		}
 
 		await resetAttempts();
-		await saveLastLocalAuthenticationSession(server, serverRecord);
+		await saveLastLocalAuthenticationSession(server, serverRecord, timesync);
 	}
 };
 
