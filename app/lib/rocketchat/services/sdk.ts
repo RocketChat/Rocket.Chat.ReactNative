@@ -31,11 +31,11 @@ class Sdk {
 		return null;
 	}
 
-	get(...args: any[]): Promise<unknown> {
+	get(...args: any[]): Promise<any> {
 		return this.sdk.get(...args);
 	}
 
-	post(...args: any[]): Promise<unknown> {
+	post(...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			const isMethodCall = args[0]?.startsWith('method.call/');
 			try {
@@ -73,7 +73,7 @@ class Sdk {
 		});
 	}
 
-	methodCall(...args: any[]): Promise<unknown> {
+	methodCall(...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
 				const result = await this.sdk?.methodCall(...args, this.code || '');
@@ -95,7 +95,7 @@ class Sdk {
 		});
 	}
 
-	methodCallWrapper(method: string, ...params: any[]) {
+	methodCallWrapper(method: string, ...params: any[]): Promise<any> {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		const { user } = reduxStore.getState().login;
 		if (API_Use_REST_For_DDP_Calls) {
