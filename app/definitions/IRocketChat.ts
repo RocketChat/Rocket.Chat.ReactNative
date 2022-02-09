@@ -1,5 +1,7 @@
-import { Rocketchat } from '@rocket.chat/sdk';
+import rocketchat from '../lib/rocketchat';
 
-export interface IRocketChat {
-	sdk: typeof Rocketchat;
+type TRocketChat = typeof rocketchat;
+
+export interface IRocketChat extends TRocketChat {
+	sdk: any;
 }
