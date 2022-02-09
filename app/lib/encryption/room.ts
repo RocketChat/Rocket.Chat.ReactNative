@@ -39,6 +39,7 @@ export default class EncryptionRoom {
 		this.userId = userId;
 		this.establishing = false;
 		this.keyID = '';
+		this.sessionKeyExportedString = '';
 		this.roomKey = new ArrayBuffer(0);
 		this.readyPromise = new Deferred();
 		this.readyPromise.then(() => {
