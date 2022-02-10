@@ -8,7 +8,8 @@ import { MESSAGE_TYPE_ANY_LOAD } from '../../constants/messageTypeLoad';
 import { generateLoadMoreId } from '../utils';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
-import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
+import { IMessage, TMessageModel, TThreadMessageModel, TThreadModel } from '../../definitions';
+import { getSubscriptionByRoomId } from '../database/services/Subscription';
 
 interface IUpdateMessages {
 	rid: string;
@@ -18,23 +19,26 @@ interface IUpdateMessages {
 	loaderItem?: TMessageModel;
 }
 
-export default function updateMessages({ rid, update = [], remove = [], loaderItem }: IUpdateMessages) {
+export default async function updateMessages({
+	rid,
+	update = [],
+	remove = [],
+	loaderItem
+}: IUpdateMessages): Promise<number | void> {
 	try {
 		if (!((update && update.length) || (remove && remove.length))) {
-			return;
+			return Promise.resolve(0);
 		}
+
+		const sub = await getSubscriptionByRoomId(rid);
+		if (!sub) {
+			throw new Error('updateMessages: subscription not found');
+		}
+
 		const db = database.active;
 		return db.write(async () => {
 			// Decrypt these messages
 			update = await Encryption.decryptMessages(update);
-			const subCollection = db.get('subscriptions');
-			let sub: TSubscriptionModel | { id: string };
-			try {
-				sub = await subCollection.find(rid);
-			} catch (error) {
-				sub = { id: rid };
-				log(new Error('updateMessages: subscription not found'));
-			}
 
 			const messagesIds: string[] = [...update.map(m => m._id), ...remove.map(m => m._id)];
 			const msgCollection = db.get('messages');
@@ -188,6 +192,6 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 			return allRecords.length;
 		});
 	} catch (e) {
-		log(e);
+		throw Promise.reject(e);
 	}
 }
