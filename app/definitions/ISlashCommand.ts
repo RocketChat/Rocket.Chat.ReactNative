@@ -9,4 +9,8 @@ export interface ISlashCommand {
 	appId?: string;
 }
 
+export interface ISlashCommandResponse extends ISlashCommand {
+	command: string;
+}
+
 export type TSlashCommandModel = ISlashCommand & Model;
