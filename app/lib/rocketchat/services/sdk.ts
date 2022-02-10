@@ -10,6 +10,10 @@ class Sdk {
 	private sdk: typeof Rocketchat;
 	private code: any;
 
+	get current() {
+		return this.sdk;
+	}
+
 	// TODO: We need to stop returning the SDK after all methods are dehydrated
 	initialize(server: string) {
 		this.code = null;

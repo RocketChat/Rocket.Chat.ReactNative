@@ -2,6 +2,7 @@ import random from '../../utils/random';
 import EventEmitter from '../../utils/events';
 import fetch from '../../utils/fetch';
 import Navigation from '../Navigation';
+import sdk from '../rocketchat/services/sdk';
 import {
 	ActionTypes,
 	ITriggerAction,
@@ -11,7 +12,7 @@ import {
 	IUserInteraction,
 	ModalActions
 } from '../../containers/UIKit/interfaces';
-import { TRocketChat, IRocketChat } from '../../definitions/IRocketChat';
+import { IRocketChat } from '../../definitions/IRocketChat';
 
 const triggersId = new Map();
 
@@ -99,8 +100,8 @@ export function triggerAction(
 		const payload = rest.payload || rest;
 
 		try {
-			const { userId, authToken } = this.sdk.currentLogin;
-			const { host } = this.sdk.client;
+			const { userId, authToken } = sdk.current.currentLogin;
+			const { host } = sdk.current.client;
 
 			// we need to use fetch because this.sdk.post add /v1 to url
 			const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
@@ -139,17 +140,17 @@ export function triggerAction(
 	});
 }
 
-export default function triggerBlockAction(this: TRocketChat | IRocketChat, options: ITriggerBlockAction) {
-	return triggerAction.call(this as IRocketChat, { type: ActionTypes.ACTION, ...options });
+export default function triggerBlockAction(this: IRocketChat, options: ITriggerBlockAction) {
+	return triggerAction.call(this, { type: ActionTypes.ACTION, ...options });
 }
 
-export async function triggerSubmitView(this: TRocketChat | IRocketChat, { viewId, ...options }: ITriggerSubmitView) {
-	const result = await triggerAction.call(this as IRocketChat, { type: ActionTypes.SUBMIT, viewId, ...options });
+export async function triggerSubmitView(this: IRocketChat, { viewId, ...options }: ITriggerSubmitView) {
+	const result = await triggerAction.call(this, { type: ActionTypes.SUBMIT, viewId, ...options });
 	if (!result || ModalActions.CLOSE === result) {
 		Navigation.back();
 	}
 }
 
-export function triggerCancel(this: TRocketChat | IRocketChat, { view, ...options }: ITriggerCancel) {
-	return triggerAction.call(this as IRocketChat, { type: ActionTypes.CLOSED, view, ...options });
+export function triggerCancel(this: IRocketChat, { view, ...options }: ITriggerCancel) {
+	return triggerAction.call(this, { type: ActionTypes.CLOSED, view, ...options });
 }
