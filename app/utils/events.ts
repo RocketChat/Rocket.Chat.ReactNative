@@ -1,3 +1,4 @@
+import { IEmitUserInteraction } from '../containers/UIKit/interfaces';
 import { ICommand } from '../definitions/ICommand';
 import log from './log';
 
@@ -10,7 +11,8 @@ type TEventEmitterEmmitArgs =
 	| { hasBiometry: boolean }
 	| { event: string | ICommand }
 	| { cancel: () => void }
-	| { submit: (param: string) => void };
+	| { submit: (param: string) => void }
+	| IEmitUserInteraction;
 
 class EventEmitter {
 	private events: { [key: string]: any };
