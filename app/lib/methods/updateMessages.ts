@@ -8,18 +8,27 @@ import { MESSAGE_TYPE_ANY_LOAD } from '../../constants/messageTypeLoad';
 import { generateLoadMoreId } from '../utils';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
+import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 
-export default function updateMessages({ rid, update = [], remove = [], loaderItem }) {
+interface IUpdateMessages {
+	rid: string;
+	// TODO: It should be the return from the REST API instead of IMessage
+	update: IMessage[];
+	remove: IMessage[];
+	loaderItem?: TMessageModel;
+}
+
+export default function updateMessages({ rid, update = [], remove = [], loaderItem }: IUpdateMessages) {
 	try {
 		if (!((update && update.length) || (remove && remove.length))) {
 			return;
 		}
 		const db = database.active;
-		return db.action(async () => {
+		return db.write(async () => {
 			// Decrypt these messages
 			update = await Encryption.decryptMessages(update);
 			const subCollection = db.get('subscriptions');
-			let sub;
+			let sub: TSubscriptionModel | { id: string };
 			try {
 				sub = await subCollection.find(rid);
 			} catch (error) {
@@ -27,7 +36,7 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 				log(new Error('updateMessages: subscription not found'));
 			}
 
-			const messagesIds = [...update.map(m => m._id), ...remove.map(m => m._id)];
+			const messagesIds: string[] = [...update.map(m => m._id), ...remove.map(m => m._id)];
 			const msgCollection = db.get('messages');
 			const threadCollection = db.get('threads');
 			const threadMessagesCollection = db.get('thread_messages');
@@ -41,27 +50,15 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 
 			update = update.map(m => buildMessage(m));
 
-			// filter messages
-			let msgsToCreate = update.filter(i1 => !allMessagesRecords.find(i2 => i1._id === i2.id));
-			let msgsToUpdate = allMessagesRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
-
-			// filter threads
-			const allThreads = update.filter(m => m.tlm);
-			let threadsToCreate = allThreads.filter(i1 => !allThreadsRecords.find(i2 => i1._id === i2.id));
-			let threadsToUpdate = allThreadsRecords.filter(i1 => allThreads.find(i2 => i1.id === i2._id));
-
-			// filter thread messages
-			const allThreadMessages = update.filter(m => m.tmid);
-			let threadMessagesToCreate = allThreadMessages.filter(i1 => !allThreadMessagesRecords.find(i2 => i1._id === i2.id));
-			let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 => allThreadMessages.find(i2 => i1.id === i2._id));
-
 			// filter loaders to delete
-			let loadersToDelete = allMessagesRecords.filter(i1 => update.find(i2 => i1.id === generateLoadMoreId(i2._id)));
+			let loadersToDelete: TMessageModel[] = allMessagesRecords.filter(i1 =>
+				update.find(i2 => i1.id === generateLoadMoreId(i2._id))
+			);
 
 			// Delete
-			let msgsToDelete = [];
-			let threadsToDelete = [];
-			let threadMessagesToDelete = [];
+			let msgsToDelete: TMessageModel[] = [];
+			let threadsToDelete: TThreadModel[] = [];
+			let threadMessagesToDelete: TThreadMessageModel[] = [];
 			if (remove && remove.length) {
 				msgsToDelete = allMessagesRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
 				msgsToDelete = msgsToDelete.map(m => m.prepareDestroyPermanently());
@@ -77,28 +74,46 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 				loadersToDelete.push(loaderItem.prepareDestroyPermanently());
 			}
 
+			// filter messages
+			const filteredMsgsToCreate = update.filter(i1 => !allMessagesRecords.find(i2 => i1._id === i2.id));
+			const filteredMsgsToUpdate = allMessagesRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
+
+			// filter threads
+			const allThreads = update.filter(m => m.tlm);
+			const filteredThreadsToCreate = allThreads.filter(i1 => !allThreadsRecords.find(i2 => i1._id === i2.id));
+			const filteredThreadsToUpdate = allThreadsRecords.filter(i1 => allThreads.find(i2 => i1.id === i2._id));
+
+			// filter thread messages
+			const allThreadMessages = update.filter(m => m.tmid);
+			const filteredThreadMessagesToCreate = allThreadMessages.filter(
+				i1 => !allThreadMessagesRecords.find(i2 => i1._id === i2.id)
+			);
+			const filteredThreadMessagesToUpdate = allThreadMessagesRecords.filter(i1 =>
+				allThreadMessages.find(i2 => i1.id === i2._id)
+			);
+
 			// Create
-			msgsToCreate = msgsToCreate.map(message =>
+			const msgsToCreate = filteredMsgsToCreate.map(message =>
 				msgCollection.prepareCreate(
-					protectedFunction(m => {
+					protectedFunction((m: TMessageModel) => {
 						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
 						m.subscription.id = sub.id;
 						Object.assign(m, message);
 					})
 				)
 			);
-			threadsToCreate = threadsToCreate.map(thread =>
+			const threadsToCreate = filteredThreadsToCreate.map(thread =>
 				threadCollection.prepareCreate(
-					protectedFunction(t => {
+					protectedFunction((t: TThreadModel) => {
 						t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
 						t.subscription.id = sub.id;
 						Object.assign(t, thread);
 					})
 				)
 			);
-			threadMessagesToCreate = threadMessagesToCreate.map(threadMessage =>
+			const threadMessagesToCreate = filteredThreadMessagesToCreate.map(threadMessage =>
 				threadMessagesCollection.prepareCreate(
-					protectedFunction(tm => {
+					protectedFunction((tm: TThreadMessageModel) => {
 						tm._raw = sanitizedRaw({ id: threadMessage._id }, threadMessagesCollection.schema);
 						Object.assign(tm, threadMessage);
 						tm.subscription.id = sub.id;
@@ -109,11 +124,11 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 			);
 
 			// Update
-			msgsToUpdate = msgsToUpdate.map(message => {
+			const msgsToUpdate = filteredMsgsToUpdate.map(message => {
 				const newMessage = update.find(m => m._id === message.id);
 				try {
 					return message.prepareUpdate(
-						protectedFunction(m => {
+						protectedFunction((m: TMessageModel) => {
 							Object.assign(m, newMessage);
 						})
 					);
@@ -121,11 +136,11 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 					return null;
 				}
 			});
-			threadsToUpdate = threadsToUpdate.map(thread => {
+			const threadsToUpdate = filteredThreadsToUpdate.map(thread => {
 				const newThread = allThreads.find(t => t._id === thread.id);
 				try {
 					return thread.prepareUpdate(
-						protectedFunction(t => {
+						protectedFunction((t: TThreadModel) => {
 							Object.assign(t, newThread);
 						})
 					);
@@ -133,11 +148,11 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 					return null;
 				}
 			});
-			threadMessagesToUpdate = threadMessagesToUpdate.map(threadMessage => {
+			const threadMessagesToUpdate = filteredThreadMessagesToUpdate.map(threadMessage => {
 				const newThreadMessage = allThreadMessages.find(t => t._id === threadMessage.id);
 				try {
 					return threadMessage.prepareUpdate(
-						protectedFunction(tm => {
+						protectedFunction((tm: TThreadMessageModel) => {
 							Object.assign(tm, newThreadMessage);
 							tm.rid = threadMessage.tmid;
 							delete threadMessage.tmid;
