@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -13,6 +14,8 @@ import Navigation from '../lib/Navigation';
 import { goRoom } from '../utils/goRoom';
 import { themes } from '../constants/colors';
 import Markdown from '../containers/markdown';
+import { ICannedResponse } from '../definitions/ICannedResponse';
+import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
@@ -68,27 +71,34 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ label, content, theme, testID }) =>
+interface IItem {
+	label: string;
+	content?: string;
+	theme: string;
+	testID?: string;
+}
+
+const Item = ({ label, content, theme, testID }: IItem) =>
 	content ? (
 		<View style={styles.item} testID={testID}>
 			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>
 				{label}
 			</Text>
+			{/* @ts-ignore */}
 			<Markdown style={[styles.itemContent, { color: themes[theme].auxiliaryText }]} msg={content} theme={theme} />
 		</View>
 	) : null;
-Item.propTypes = {
-	label: PropTypes.string,
-	content: PropTypes.string,
-	theme: PropTypes.string,
-	testID: PropTypes.string
-};
 
-const CannedResponseDetail = ({ navigation, route }) => {
+interface ICannedResponseDetailProps {
+	navigation: StackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>;
+	route: RouteProp<ChatsStackParamList, 'CannedResponseDetail'>;
+}
+
+const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps): JSX.Element => {
 	const { cannedResponse } = route?.params;
 	const { theme } = useTheme();
-	const { isMasterDetail } = useSelector(state => state.app);
-	const { rooms } = useSelector(state => state.room);
+	const { isMasterDetail } = useSelector((state: any) => state.app);
+	const { rooms } = useSelector((state: any) => state.room);
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -96,15 +106,14 @@ const CannedResponseDetail = ({ navigation, route }) => {
 		});
 	}, []);
 
-	const navigateToRoom = item => {
+	const navigateToRoom = (item: ICannedResponse) => {
 		const { room } = route.params;
-		const { name, username } = room;
+		const { name } = room;
 		const params = {
 			rid: room.rid,
 			name: RocketChat.getRoomTitle({
 				t: room.t,
-				fname: name,
-				name: username
+				fname: name
 			}),
 			t: room.t,
 			roomUserId: RocketChat.getUidDirectMessage(room),
@@ -115,7 +124,7 @@ const CannedResponseDetail = ({ navigation, route }) => {
 			// if it's on master detail layout, we close the modal and replace RoomView
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
-				goRoom({ item: params, isMasterDetail, usedCannedResponse: item.text });
+				goRoom({ item: params, isMasterDetail });
 			} else {
 				let navigate = navigation.push;
 				// if this is a room focused
@@ -161,11 +170,6 @@ const CannedResponseDetail = ({ navigation, route }) => {
 			</ScrollView>
 		</SafeAreaView>
 	);
-};
-
-CannedResponseDetail.propTypes = {
-	navigation: PropTypes.object,
-	route: PropTypes.object
 };
 
 export default CannedResponseDetail;

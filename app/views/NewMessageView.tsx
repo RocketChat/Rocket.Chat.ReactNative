@@ -18,7 +18,7 @@ import database from '../lib/database';
 import { CustomIcon } from '../lib/Icons';
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
-import { compareServerVersion, methods } from '../lib/utils';
+import { compareServerVersion } from '../lib/utils';
 import UserItem from '../presentation/UserItem';
 import { withTheme } from '../theme';
 import { goRoom } from '../utils/goRoom';
@@ -247,7 +247,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 								first: true
 						  })
 						: null}
-					{compareServerVersion(serverVersion, '3.13.0', methods.greaterThanOrEqualTo) && permissions[2]
+					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.13.0') && permissions[2]
 						? this.renderButton({
 								onPress: this.createTeam,
 								title: I18n.t('Create_Team'),

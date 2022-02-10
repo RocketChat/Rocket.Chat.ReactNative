@@ -1,4 +1,4 @@
-import { setActiveUsers } from '../actions/activeUsers';
+import { clearActiveUsers, setActiveUsers } from '../actions/activeUsers';
 import { IActiveUsers, initialState } from './activeUsers';
 import { mockedStore } from './mockedStore';
 
@@ -12,5 +12,12 @@ describe('test reducer', () => {
 		mockedStore.dispatch(setActiveUsers(activeUsers));
 		const state = mockedStore.getState().activeUsers;
 		expect(state).toEqual({ ...activeUsers });
+	});
+	it('should return initial state after dispatching clear', () => {
+		const previousState = mockedStore.getState().activeUsers;
+		expect(previousState).not.toBe(initialState);
+		mockedStore.dispatch(clearActiveUsers());
+		const state = mockedStore.getState().activeUsers;
+		expect(state).toEqual(initialState);
 	});
 });

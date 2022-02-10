@@ -7,7 +7,7 @@ import protectedFunction from '../helpers/protectedFunction';
 import messagesStatus from '../../../constants/messagesStatus';
 import log from '../../../utils/log';
 import random from '../../../utils/random';
-import store from '../../createStore';
+import { store } from '../../auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';

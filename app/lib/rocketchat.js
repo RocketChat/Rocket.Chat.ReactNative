@@ -26,11 +26,11 @@ import EventEmitter from '../utils/events';
 import { updatePermission } from '../actions/permissions';
 import { TEAM_TYPE } from '../definitions/ITeam';
 import { updateSettings } from '../actions/settings';
-import { compareServerVersion, methods } from './utils';
-import reduxStore from './createStore';
+import { compareServerVersion } from './utils';
+import { store as reduxStore } from './auxStore';
 import database from './database';
 import subscribeRooms from './methods/subscriptions/rooms';
-import getUsersPresence, { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
+import { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
 import protectedFunction from './methods/helpers/protectedFunction';
 import readMessages from './methods/readMessages';
 import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
@@ -138,7 +138,7 @@ const RocketChat = {
 						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 					};
 				}
-				if (compareServerVersion(jsonRes.version, MIN_ROCKETCHAT_VERSION, methods.lowerThan)) {
+				if (compareServerVersion(jsonRes.version, 'lowerThan', MIN_ROCKETCHAT_VERSION)) {
 					return {
 						success: false,
 						message: I18n.t('Invalid_server_version', {
@@ -263,7 +263,6 @@ const RocketChat = {
 				}
 				reduxStore.dispatch(connectSuccess());
 				const { server: currentServer } = reduxStore.getState().server;
-				const { user } = reduxStore.getState().login;
 				if (user?.token && server === currentServer) {
 					reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 				}
@@ -309,10 +308,26 @@ const RocketChat = {
 				protectedFunction(ddpMessage => onRolesChanged(ddpMessage))
 			);
 
+			// RC 4.1
+			this.sdk.onStreamData('stream-user-presence', ddpMessage => {
+				const userStatus = ddpMessage.fields.args[0];
+				const { uid } = ddpMessage.fields;
+				const [, status, statusText] = userStatus;
+				const newStatus = { status: STATUSES[status], statusText };
+				reduxStore.dispatch(setActiveUsers({ [uid]: newStatus }));
+
+				const { user: loggedUser } = reduxStore.getState().login;
+				if (loggedUser && loggedUser.id === uid) {
+					reduxStore.dispatch(setUser(newStatus));
+				}
+			});
+
 			this.notifyLoggedListener = this.sdk.onStreamData(
 				'stream-notify-logged',
 				protectedFunction(async ddpMessage => {
 					const { eventName } = ddpMessage.fields;
+
+					// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
 					if (/user-status/.test(eventName)) {
 						this.activeUsers = this.activeUsers || {};
 						if (!this._setUserTimer) {
@@ -549,7 +564,7 @@ const RocketChat = {
 
 							// Force normalized params for 2FA starting RC 3.9.0.
 							const serverVersion = reduxStore.getState().server.version;
-							if (compareServerVersion(serverVersion, '3.9.0', methods.greaterThanOrEqualTo)) {
+							if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.9.0')) {
 								const user = params.user ?? params.username;
 								const password = params.password ?? params.ldapPass ?? params.crowdPassword;
 								params = { user, password };
@@ -1059,7 +1074,7 @@ const RocketChat = {
 	},
 	async getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, '3.16.0', methods.greaterThanOrEqualTo)) {
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
 			const params = {
 				roomId: rid,
 				offset: skip,
@@ -1586,7 +1601,7 @@ const RocketChat = {
 	},
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, '3.4.0', methods.greaterThanOrEqualTo)) {
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
 			// RC 3.4.0
 			return this.methodCallWrapper('readThreads', tmid);
 		}
@@ -1633,15 +1648,18 @@ const RocketChat = {
 			reduxStore.dispatch(setUser({ status: { status: 'offline' } }));
 		}
 
-		if (!this._setUserTimer) {
-			this._setUserTimer = setTimeout(() => {
-				const activeUsersBatch = this.activeUsers;
-				InteractionManager.runAfterInteractions(() => {
-					reduxStore.dispatch(setActiveUsers(activeUsersBatch));
-				});
-				this._setUserTimer = null;
-				return (this.activeUsers = {});
-			}, 10000);
+		const serverVersion = reduxStore.getState().server.version;
+		if (compareServerVersion(serverVersion, 'lowerThan', '4.1.0')) {
+			if (!this._setUserTimer) {
+				this._setUserTimer = setTimeout(() => {
+					const activeUsersBatch = this.activeUsers;
+					InteractionManager.runAfterInteractions(() => {
+						reduxStore.dispatch(setActiveUsers(activeUsersBatch));
+					});
+					this._setUserTimer = null;
+					return (this.activeUsers = {});
+				}, 10000);
+			}
 		}
 
 		if (!ddpMessage.fields) {
@@ -1650,7 +1668,6 @@ const RocketChat = {
 			this.activeUsers[ddpMessage.id] = { status: ddpMessage.fields.status };
 		}
 	},
-	getUsersPresence,
 	getUserPresence,
 	subscribeUsersPresence,
 	getDirectory({ query, count, offset, sort }) {

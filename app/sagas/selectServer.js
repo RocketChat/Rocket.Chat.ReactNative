@@ -10,6 +10,7 @@ import { SERVER } from '../actions/actionsTypes';
 import { selectServerFailure, selectServerRequest, selectServerSuccess, serverFailure } from '../actions/server';
 import { clearSettings } from '../actions/settings';
 import { setUser } from '../actions/login';
+import { clearActiveUsers } from '../actions/activeUsers';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
@@ -72,6 +73,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		SSLPinning.setCertificate(certificate, server);
 		yield put(inquiryReset());
 		yield put(encryptionStop());
+		yield put(clearActiveUsers());
 		const serversDB = database.servers;
 		UserPreferences.setString(RocketChat.CURRENT_SERVER, server);
 		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
