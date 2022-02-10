@@ -1,64 +1,70 @@
-import { InteractionManager } from 'react-native';
-import EJSON from 'ejson';
-import { settings as RocketChatSettings, Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { Q } from '@nozbe/watermelondb';
-import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import AsyncStorage from '@react-native-community/async-storage';
+import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { InteractionManager } from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
-import isEmpty from 'lodash/isEmpty';
-
-import defaultSettings from '../constants/settings';
-import log from '../utils/log';
-import { getBundleId, isIOS } from '../utils/deviceInfo';
-import fetch from '../utils/fetch';
-import SSLPinning from '../utils/sslPinning';
-import { encryptionInit } from '../actions/encryption';
-import { loginRequest, setLoginServices, setUser } from '../actions/login';
-import { connectRequest, connectSuccess, disconnect } from '../actions/connect';
-import { shareSelectServer, shareSetSettings, shareSetUser } from '../actions/share';
-import { getDeviceToken } from '../notifications/push';
-import { setActiveUsers } from '../actions/activeUsers';
-import I18n from '../i18n';
-import { twoFactor } from '../utils/twoFactor';
-import { selectServerFailure } from '../actions/server';
-import { useSsl } from '../utils/url';
-import EventEmitter from '../utils/events';
-import { updatePermission } from '../actions/permissions';
-import { TEAM_TYPE } from '../definitions/ITeam';
-import { updateSettings } from '../actions/settings';
-import { compareServerVersion } from './utils';
-import { store as reduxStore } from './auxStore';
-import database from './database';
-import subscribeRooms from './methods/subscriptions/rooms';
-import { getUserPresence, subscribeUsersPresence } from './methods/getUsersPresence';
-import protectedFunction from './methods/helpers/protectedFunction';
-import readMessages from './methods/readMessages';
-import getSettings, { getLoginSettings, setSettings, subscribeSettings } from './methods/getSettings';
-import getRooms from './methods/getRooms';
-import { getPermissions, setPermissions } from './methods/getPermissions';
-import { getCustomEmojis, setCustomEmojis } from './methods/getCustomEmojis';
+import { setActiveUsers } from '../../actions/activeUsers';
+import { connectRequest, connectSuccess, disconnect } from '../../actions/connect';
+import { encryptionInit } from '../../actions/encryption';
+import { loginRequest, setLoginServices, setUser } from '../../actions/login';
+import { updatePermission } from '../../actions/permissions';
+import { selectServerFailure } from '../../actions/server';
+import { updateSettings } from '../../actions/settings';
+import { shareSelectServer, shareSetSettings, shareSetUser } from '../../actions/share';
+import defaultSettings from '../../constants/settings';
+import { TEAM_TYPE } from '../../definitions/ITeam';
+import I18n from '../../i18n';
+import { getDeviceToken } from '../../notifications/push';
+import { getBundleId, isIOS } from '../../utils/deviceInfo';
+import EventEmitter from '../../utils/events';
+import fetch from '../../utils/fetch';
+import log from '../../utils/log';
+import SSLPinning from '../../utils/sslPinning';
+import { twoFactor } from '../../utils/twoFactor';
+import { useSsl } from '../../utils/url';
+import database from '../database';
+import { sanitizeLikeString } from '../database/utils';
+import { Encryption } from '../encryption';
+import triggerBlockAction, { triggerCancel, triggerSubmitView } from '../methods/actions';
+import callJitsi, { callJitsiWithoutServer } from '../methods/callJitsi';
+import canOpenRoom from '../methods/canOpenRoom';
 import {
 	getEnterpriseModules,
 	hasLicense,
 	isOmnichannelModuleAvailable,
 	setEnterpriseModules
-} from './methods/enterpriseModules';
-import getSlashCommands from './methods/getSlashCommands';
-import { getRoles, onRolesChanged, setRoles } from './methods/getRoles';
-import canOpenRoom from './methods/canOpenRoom';
-import triggerBlockAction, { triggerCancel, triggerSubmitView } from './methods/actions';
-import loadMessagesForRoom from './methods/loadMessagesForRoom';
-import loadSurroundingMessages from './methods/loadSurroundingMessages';
-import loadNextMessages from './methods/loadNextMessages';
-import loadMissedMessages from './methods/loadMissedMessages';
-import loadThreadMessages from './methods/loadThreadMessages';
-import sendMessage, { resendMessage } from './methods/sendMessage';
-import { cancelUpload, isUploadActive, sendFileMessage } from './methods/sendFileMessage';
-import callJitsi, { callJitsiWithoutServer } from './methods/callJitsi';
-import logout, { removeServer } from './methods/logout';
-import UserPreferences from './userPreferences';
-import { Encryption } from './encryption';
-import { sanitizeLikeString } from './database/utils';
+} from '../methods/enterpriseModules';
+import { getCustomEmojis, setCustomEmojis } from '../methods/getCustomEmojis';
+import { getPermissions, setPermissions } from '../methods/getPermissions';
+import { getRoles, onRolesChanged, setRoles } from '../methods/getRoles';
+import getRooms from '../methods/getRooms';
+import getSettings, { getLoginSettings, setSettings, subscribeSettings } from '../methods/getSettings';
+import getSlashCommands from '../methods/getSlashCommands';
+import protectedFunction from '../methods/helpers/protectedFunction';
+import loadMessagesForRoom from '../methods/loadMessagesForRoom';
+import loadMissedMessages from '../methods/loadMissedMessages';
+import loadNextMessages from '../methods/loadNextMessages';
+import loadSurroundingMessages from '../methods/loadSurroundingMessages';
+import loadThreadMessages from '../methods/loadThreadMessages';
+import logout, { removeServer } from '../methods/logout';
+import readMessages from '../methods/readMessages';
+import { cancelUpload, isUploadActive, sendFileMessage } from '../methods/sendFileMessage';
+import sendMessage, { resendMessage } from '../methods/sendMessage';
+import subscribeRooms from '../methods/subscriptions/rooms';
+import UserPreferences from '../userPreferences';
+import { compareServerVersion } from '../utils';
+import { getUserPresence, subscribeUsersPresence } from '../methods/getUsersPresence';
+import { store as reduxStore } from '../auxStore';
+// Methods
+import clearCache from './methods/clearCache';
+import getPermalinkMessage from './methods/getPermalinkMessage';
+import getRoom from './methods/getRoom';
+import isGroupChat from './methods/isGroupChat';
+import getUserInfo from './services/getUserInfo';
+// Services
+import sdk from './services/sdk';
+import toggleFavorite from './services/toggleFavorite';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -186,8 +192,7 @@ const RocketChat = {
 		return this?.sdk?.checkAndReopen();
 	},
 	disconnect() {
-		this.sdk?.disconnect?.();
-		this.sdk = null;
+		this.sdk = sdk.disconnect();
 	},
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise(resolve => {
@@ -235,12 +240,7 @@ const RocketChat = {
 
 			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
-			if (this.code) {
-				this.code = null;
-			}
-
-			// The app can't reconnect if reopen interval is 5s while in development
-			this.sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+			this.sdk = sdk.initialize(server);
 			this.getSettings();
 
 			this.sdk
@@ -415,12 +415,8 @@ const RocketChat = {
 			// Do nothing
 		}
 
-		if (this.shareSDK) {
-			this.shareSDK.disconnect();
-			this.shareSDK = null;
-		}
-
-		this.shareSDK = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+		this.shareSDK = sdk.disconnect();
+		this.shareSDK = sdk.initialize(server);
 
 		// set Server
 		const currentServer = { server };
@@ -473,10 +469,7 @@ const RocketChat = {
 		}
 	},
 	closeShareExtension() {
-		if (this.shareSDK) {
-			this.shareSDK.disconnect();
-			this.shareSDK = null;
-		}
+		this.shareSDK = sdk.disconnect();
 		database.share = null;
 
 		reduxStore.dispatch(shareSelectServer({}));
@@ -651,27 +644,7 @@ const RocketChat = {
 		return this.sdk.post('users.removeOtherTokens', { userId });
 	},
 	removeServer,
-	async clearCache({ server }) {
-		try {
-			const serversDB = database.servers;
-			await serversDB.action(async () => {
-				const serverCollection = serversDB.get('servers');
-				const serverRecord = await serverCollection.find(server);
-				await serverRecord.update(s => {
-					s.roomsUpdatedAt = null;
-				});
-			});
-		} catch (e) {
-			// Do nothing
-		}
-
-		try {
-			const db = database.active;
-			await db.action(() => db.unsafeResetDatabase());
-		} catch (e) {
-			// Do nothing
-		}
-	},
+	clearCache,
 	registerPushToken() {
 		return new Promise(async resolve => {
 			const token = getDeviceToken();
@@ -991,31 +964,8 @@ const RocketChat = {
 	reportMessage(messageId) {
 		return this.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 	},
-	async getRoom(rid) {
-		try {
-			const db = database.active;
-			const room = await db.get('subscriptions').find(rid);
-			return Promise.resolve(room);
-		} catch (error) {
-			return Promise.reject(new Error('Room not found'));
-		}
-	},
-	async getPermalinkMessage(message) {
-		let room;
-		try {
-			room = await RocketChat.getRoom(message.subscription.id);
-		} catch (e) {
-			log(e);
-			return null;
-		}
-		const { server } = reduxStore.getState().server;
-		const roomType = {
-			p: 'group',
-			c: 'channel',
-			d: 'direct'
-		}[room.t];
-		return `${server}/${roomType}/${this.isGroupChat(room) ? room.rid : room.name}?msg=${message.id}`;
-	},
+	getRoom,
+	getPermalinkMessage,
 	getPermalinkChannel(channel) {
 		const { server } = reduxStore.getState().server;
 		const roomType = {
@@ -1062,10 +1012,7 @@ const RocketChat = {
 		// RC 0.62.2
 		return this.post('chat.react', { emoji, messageId });
 	},
-	toggleFavorite(roomId, favorite) {
-		// RC 0.64.0
-		return this.post('rooms.favorite', { roomId, favorite });
-	},
+	toggleFavorite,
 	toggleRead(read, roomId) {
 		if (read) {
 			return this.post('subscriptions.unread', { roomId });
@@ -1091,21 +1038,7 @@ const RocketChat = {
 		return result?.records;
 	},
 	methodCallWrapper(method, ...params) {
-		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
-		const { user } = reduxStore.getState().login;
-		if (API_Use_REST_For_DDP_Calls) {
-			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
-			return this.post(`${url}/${method}`, {
-				message: EJSON.stringify({ method, params })
-			});
-		}
-		const parsedParams = params.map(param => {
-			if (param instanceof Date) {
-				return { $date: new Date(param).getTime() };
-			}
-			return param;
-		});
-		return this.methodCall(method, ...parsedParams);
+		return sdk.methodCallWrapper(method, ...params);
 	},
 
 	getUserRoles() {
@@ -1120,10 +1053,7 @@ const RocketChat = {
 		// RC 0.48.0
 		return this.sdk.get('channels.info', { roomId });
 	},
-	getUserInfo(userId) {
-		// RC 0.48.0
-		return this.sdk.get('users.info', { userId });
-	},
+	getUserInfo,
 	getUserPreferences(userId) {
 		// RC 0.62.0
 		return this.sdk.get('users.getPreferences', { userId });
@@ -1237,9 +1167,7 @@ const RocketChat = {
 		return !isUnread;
 	},
 
-	isGroupChat(room) {
-		return (room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2);
-	},
+	isGroupChat,
 
 	toggleBlockUser(rid, blocked, block) {
 		if (block) {
@@ -1312,62 +1240,10 @@ const RocketChat = {
 		return this.methodCallWrapper('saveRoomSettings', rid, params);
 	},
 	post(...args) {
-		return new Promise(async (resolve, reject) => {
-			const isMethodCall = args[0]?.startsWith('method.call/');
-			try {
-				const result = await this.sdk.post(...args);
-
-				/**
-				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
-				 * responses have a different object structure
-				 */
-				if (isMethodCall) {
-					const response = JSON.parse(result.message);
-					if (response?.error) {
-						throw response.error;
-					}
-					return resolve(response.result);
-				}
-				return resolve(result);
-			} catch (e) {
-				const errorType = isMethodCall ? e?.error : e?.data?.errorType;
-				const totpInvalid = 'totp-invalid';
-				const totpRequired = 'totp-required';
-				if ([totpInvalid, totpRequired].includes(errorType)) {
-					const { details } = isMethodCall ? e : e?.data;
-					try {
-						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
-						return resolve(this.post(...args));
-					} catch {
-						// twoFactor was canceled
-						return resolve({});
-					}
-				} else {
-					reject(e);
-				}
-			}
-		});
+		return sdk.post(...args);
 	},
 	methodCall(...args) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				const result = await this.sdk?.methodCall(...args, this.code || '');
-				return resolve(result);
-			} catch (e) {
-				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
-					const { details } = e;
-					try {
-						this.code = await twoFactor({ method: details?.method, invalid: e.error === 'totp-invalid' });
-						return resolve(this.methodCall(...args));
-					} catch {
-						// twoFactor was canceled
-						return resolve({});
-					}
-				} else {
-					reject(e);
-				}
-			}
-		});
+		return sdk.methodCall(...args);
 	},
 	sendEmailCode() {
 		const { username } = reduxStore.getState().login.user;
