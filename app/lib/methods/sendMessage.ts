@@ -6,7 +6,15 @@ import log from '../../utils/log';
 import random from '../../utils/random';
 import { Encryption } from '../encryption';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
-import { IMessage, IRocketChat, TMessageModel, TThreadMessageModel } from '../../definitions';
+import {
+	IMessage,
+	IRocketChat,
+	IUser,
+	TMessageModel,
+	TSubscriptionModel,
+	TThreadMessageModel,
+	TThreadModel
+} from '../../definitions';
 
 type TMessages = TMessageModel | TThreadMessageModel;
 
@@ -63,7 +71,7 @@ export async function sendMessageCall(this: IRocketChat, message: TMessageModel)
 	return changeMessageStatus(_id, tmid as string, messagesStatus.ERROR);
 }
 
-export async function resendMessage(message: TMessageModel, tmid: string) {
+export async function resendMessage(this: IRocketChat, message: TMessageModel, tmid: string) {
 	const db = database.active;
 	try {
 		await db.write(async () => {
@@ -71,16 +79,16 @@ export async function resendMessage(message: TMessageModel, tmid: string) {
 				m.status = messagesStatus.TEMP;
 			});
 		});
-		let m: Partial<TMessageModel> = {
+		let m = {
 			_id: message.id,
 			rid: message.subscription.id,
 			msg: message.msg
-		};
+		} as TMessageModel;
 		if (tmid) {
 			m = {
 				...m,
 				tmid
-			};
+			} as TMessageModel;
 		}
 		m = await Encryption.encryptMessage(m);
 		await sendMessageCall.call(this, m);
@@ -89,7 +97,7 @@ export async function resendMessage(message: TMessageModel, tmid: string) {
 	}
 }
 
-export default async function (rid: string, msg: string, tmid: string, user, tshow: boolean) {
+export default async function (this: IRocketChat, rid: string, msg: string, tmid: string, user: IUser, tshow: boolean) {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
@@ -97,7 +105,7 @@ export default async function (rid: string, msg: string, tmid: string, user, tsh
 		const threadCollection = db.get('threads');
 		const threadMessagesCollection = db.get('thread_messages');
 		const messageId = random(17);
-		const batch = [];
+		const batch: (TMessageModel | TThreadMessageModel | TThreadModel | TSubscriptionModel)[] = [];
 
 		let message = {
 			_id: messageId,
@@ -105,11 +113,11 @@ export default async function (rid: string, msg: string, tmid: string, user, tsh
 			msg,
 			tmid,
 			tshow
-		};
+		} as TMessageModel;
 		message = await Encryption.encryptMessage(message);
 
 		const messageDate = new Date();
-		let tMessageRecord;
+		let tMessageRecord: TMessageModel;
 
 		// If it's replying to a thread
 		if (tmid) {
@@ -119,7 +127,9 @@ export default async function (rid: string, msg: string, tmid: string, user, tsh
 				batch.push(
 					tMessageRecord.prepareUpdate(m => {
 						m.tlm = messageDate;
-						m.tcount += 1;
+						if (m.tcount) {
+							m.tcount += 1;
+						}
 					})
 				);
 
@@ -131,7 +141,9 @@ export default async function (rid: string, msg: string, tmid: string, user, tsh
 					batch.push(
 						threadCollection.prepareCreate(tm => {
 							tm._raw = sanitizedRaw({ id: tmid }, threadCollection.schema);
-							tm.subscription.id = rid;
+							if (tm.subscription) {
+								tm.subscription.id = rid;
+							}
 							tm.tmid = tmid;
 							tm.msg = tMessageRecord.msg;
 							tm.ts = tMessageRecord.ts;
@@ -215,7 +227,7 @@ export default async function (rid: string, msg: string, tmid: string, user, tsh
 		}
 
 		try {
-			await db.action(async () => {
+			await db.write(async () => {
 				await db.batch(...batch);
 			});
 		} catch (e) {
