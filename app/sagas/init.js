@@ -27,14 +27,14 @@ const restore = function* restore() {
 
 		// Migration biometry setting from WatermelonDB to MMKV
 		// TODO: remove it after a few versions
-		const hasMigratedBiometry = yield UserPreferences.getBoolAsync(BIOMETRY_MIGRATION_KEY);
+		const hasMigratedBiometry = UserPreferences.getBool(BIOMETRY_MIGRATION_KEY);
 		if (!hasMigratedBiometry) {
 			const serversDB = database.servers;
 			const serversCollection = serversDB.get('servers');
 			const servers = yield serversCollection.query().fetch();
 			const isBiometryEnabled = servers.some(server => !!server.biometry);
-			yield UserPreferences.setBoolAsync(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
-			yield UserPreferences.setBoolAsync(BIOMETRY_MIGRATION_KEY, true);
+			UserPreferences.setBool(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
+			UserPreferences.setBool(BIOMETRY_MIGRATION_KEY, true);
 		}
 
 		if (!server) {
