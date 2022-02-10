@@ -1,6 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import database from '../database';
+import { getRoleById } from '../database/services/Role';
 import log from '../../utils/log';
 import { store as reduxStore } from '../auxStore';
 import { removeRoles, setRoles as setRolesAction, updateRoles } from '../../actions/roles';
@@ -20,41 +21,38 @@ export async function onRolesChanged(ddpMessage) {
 		const db = database.active;
 		const rolesCollection = db.get('roles');
 		try {
-			const rolesRecord = await rolesCollection.find(_id);
-			try {
-				await db.action(async () => {
-					await rolesRecord.update(u => {
+			const roleRecord = await getRoleById(_id);
+			if (roleRecord) {
+				await db.write(async () => {
+					await roleRecord.update(u => {
 						u.description = description;
 					});
 				});
-			} catch (e) {
-				log(e);
-			}
-			reduxStore.dispatch(updateRoles(_id, description));
-		} catch (err) {
-			try {
-				await db.action(async () => {
+			} else {
+				await db.write(async () => {
 					await rolesCollection.create(post => {
 						post._raw = sanitizedRaw({ id: _id, description }, rolesCollection.schema);
 					});
 				});
-			} catch (e) {
-				log(e);
 			}
 			reduxStore.dispatch(updateRoles(_id, description || _id));
+		} catch (e) {
+			log(e);
 		}
 	}
 	if (/removed/.test(type)) {
 		const db = database.active;
 		const rolesCollection = db.get('roles');
 		try {
-			const rolesRecord = await rolesCollection.find(_id);
-			await db.action(async () => {
-				await rolesRecord.destroyPermanently();
-			});
-			reduxStore.dispatch(removeRoles(_id));
-		} catch (err) {
-			console.log(err);
+			const roleRecord = await getRoleById(_id);
+			if (roleRecord) {
+				await db.write(async () => {
+					await roleRecord.destroyPermanently();
+				});
+				reduxStore.dispatch(removeRoles(_id));
+			}
+		} catch (e) {
+			log(e);
 		}
 	}
 }
