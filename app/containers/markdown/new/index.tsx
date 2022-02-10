@@ -20,7 +20,7 @@ interface IBodyProps {
 	getCustomEmoji?: Function;
 	onLinkPress?: TOnLinkPress;
 	navToRoomInfo?: Function;
-	useRealName: boolean;
+	useRealName?: boolean;
 	username: string;
 	baseUrl: string;
 }

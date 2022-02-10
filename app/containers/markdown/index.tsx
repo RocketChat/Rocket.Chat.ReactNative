@@ -237,7 +237,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderAtMention = ({ mentionName }: { mentionName: string }) => {
-		const { username = '', mentions, navToRoomInfo, useRealName = false, style } = this.props;
+		const { username = '', mentions, navToRoomInfo, useRealName, style } = this.props;
 		return (
 			<MarkdownAtMention
 				mentions={mentions}
@@ -339,7 +339,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			mentions,
 			channels,
 			navToRoomInfo,
-			useRealName = false,
+			useRealName,
 			username = '',
 			getCustomEmoji,
 			baseUrl = '',
