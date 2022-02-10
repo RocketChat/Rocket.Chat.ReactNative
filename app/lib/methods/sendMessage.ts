@@ -6,12 +6,15 @@ import log from '../../utils/log';
 import random from '../../utils/random';
 import { Encryption } from '../encryption';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
+import { IMessage, IRocketChat, TMessageModel, TThreadMessageModel } from '../../definitions';
 
-const changeMessageStatus = async (id, tmid, status, message) => {
+type TMessages = TMessageModel | TThreadMessageModel;
+
+const changeMessageStatus = async (id: string, tmid: string, status: number, message?: IMessage) => {
 	const db = database.active;
 	const msgCollection = db.get('messages');
 	const threadMessagesCollection = db.get('thread_messages');
-	const successBatch = [];
+	const successBatch = [] as TMessages[];
 	const messageRecord = await msgCollection.find(id);
 	successBatch.push(
 		messageRecord.prepareUpdate(m => {
@@ -37,7 +40,7 @@ const changeMessageStatus = async (id, tmid, status, message) => {
 	}
 
 	try {
-		await db.action(async () => {
+		await db.write(async () => {
 			await db.batch(...successBatch);
 		});
 	} catch (error) {
@@ -45,30 +48,30 @@ const changeMessageStatus = async (id, tmid, status, message) => {
 	}
 };
 
-export async function sendMessageCall(message) {
+export async function sendMessageCall(this: IRocketChat, message: TMessageModel) {
 	const { _id, tmid } = message;
 	try {
 		const sdk = this.shareSDK || this.sdk;
 		// RC 0.60.0
 		const result = await sdk.post('chat.sendMessage', { message });
 		if (result.success) {
-			return changeMessageStatus(_id, tmid, messagesStatus.SENT, result.message);
+			return changeMessageStatus(_id, tmid as string, messagesStatus.SENT, result.message);
 		}
 	} catch {
 		// do nothing
 	}
-	return changeMessageStatus(_id, tmid, messagesStatus.ERROR);
+	return changeMessageStatus(_id, tmid as string, messagesStatus.ERROR);
 }
 
-export async function resendMessage(message, tmid) {
+export async function resendMessage(message: TMessageModel, tmid: string) {
 	const db = database.active;
 	try {
-		await db.action(async () => {
+		await db.write(async () => {
 			await message.update(m => {
 				m.status = messagesStatus.TEMP;
 			});
 		});
-		let m = {
+		let m: Partial<TMessageModel> = {
 			_id: message.id,
 			rid: message.subscription.id,
 			msg: message.msg
@@ -86,7 +89,7 @@ export async function resendMessage(message, tmid) {
 	}
 }
 
-export default async function (rid, msg, tmid, user, tshow) {
+export default async function (rid: string, msg: string, tmid: string, user, tshow: boolean) {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
@@ -147,7 +150,9 @@ export default async function (rid, msg, tmid, user, tshow) {
 				batch.push(
 					threadMessagesCollection.prepareCreate(tm => {
 						tm._raw = sanitizedRaw({ id: messageId }, threadMessagesCollection.schema);
-						tm.subscription.id = rid;
+						if (tm.subscription) {
+							tm.subscription.id = rid;
+						}
 						tm.rid = tmid;
 						tm.msg = msg;
 						tm.ts = messageDate;
