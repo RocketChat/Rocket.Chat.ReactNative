@@ -1,72 +1,69 @@
-import { InteractionManager } from 'react-native';
-import { settings as RocketChatSettings, Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { Q } from '@nozbe/watermelondb';
-import AsyncStorage from '@react-native-community/async-storage';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import AsyncStorage from '@react-native-community/async-storage';
+import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { InteractionManager } from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
-
-import defaultSettings from '../../constants/settings';
-import log from '../../utils/log';
-import { getBundleId, isIOS } from '../../utils/deviceInfo';
-import fetch from '../../utils/fetch';
-import SSLPinning from '../../utils/sslPinning';
+import { setActiveUsers } from '../../actions/activeUsers';
+import { connectRequest, connectSuccess, disconnect } from '../../actions/connect';
 import { encryptionInit } from '../../actions/encryption';
 import { loginRequest, setLoginServices, setUser } from '../../actions/login';
-import { connectRequest, connectSuccess, disconnect } from '../../actions/connect';
-import { shareSelectServer, shareSetSettings, shareSetUser } from '../../actions/share';
-import { getDeviceToken } from '../../notifications/push';
-import { setActiveUsers } from '../../actions/activeUsers';
-import I18n from '../../i18n';
-import { twoFactor } from '../../utils/twoFactor';
-import { selectServerFailure } from '../../actions/server';
-import { useSsl } from '../../utils/url';
-import EventEmitter from '../../utils/events';
 import { updatePermission } from '../../actions/permissions';
-import { TEAM_TYPE } from '../../definitions/ITeam';
+import { selectServerFailure } from '../../actions/server';
 import { updateSettings } from '../../actions/settings';
-import { compareServerVersion } from '../utils';
-import reduxStore from '../createStore';
+import { shareSelectServer, shareSetSettings, shareSetUser } from '../../actions/share';
+import defaultSettings from '../../constants/settings';
+import { TEAM_TYPE } from '../../definitions/ITeam';
+import I18n from '../../i18n';
+import { getDeviceToken } from '../../notifications/push';
+import { getBundleId, isIOS } from '../../utils/deviceInfo';
+import EventEmitter from '../../utils/events';
+import fetch from '../../utils/fetch';
+import log from '../../utils/log';
+import SSLPinning from '../../utils/sslPinning';
+import { twoFactor } from '../../utils/twoFactor';
+import { useSsl } from '../../utils/url';
 import database from '../database';
-import subscribeRooms from '../methods/subscriptions/rooms';
-import getUsersPresence, { getUserPresence, subscribeUsersPresence } from '../methods/getUsersPresence';
-import protectedFunction from '../methods/helpers/protectedFunction';
-import readMessages from '../methods/readMessages';
-import getSettings, { getLoginSettings, setSettings, subscribeSettings } from '../methods/getSettings';
-import getRooms from '../methods/getRooms';
-import { getPermissions, setPermissions } from '../methods/getPermissions';
-import { getCustomEmojis, setCustomEmojis } from '../methods/getCustomEmojis';
+import { sanitizeLikeString } from '../database/utils';
+import { Encryption } from '../encryption';
+import triggerBlockAction, { triggerCancel, triggerSubmitView } from '../methods/actions';
+import callJitsi, { callJitsiWithoutServer } from '../methods/callJitsi';
+import canOpenRoom from '../methods/canOpenRoom';
 import {
 	getEnterpriseModules,
 	hasLicense,
 	isOmnichannelModuleAvailable,
 	setEnterpriseModules
 } from '../methods/enterpriseModules';
-import getSlashCommands from '../methods/getSlashCommands';
+import { getCustomEmojis, setCustomEmojis } from '../methods/getCustomEmojis';
+import { getPermissions, setPermissions } from '../methods/getPermissions';
 import { getRoles, onRolesChanged, setRoles } from '../methods/getRoles';
-import canOpenRoom from '../methods/canOpenRoom';
-import triggerBlockAction, { triggerCancel, triggerSubmitView } from '../methods/actions';
+import getRooms from '../methods/getRooms';
+import getSettings, { getLoginSettings, setSettings, subscribeSettings } from '../methods/getSettings';
+import getSlashCommands from '../methods/getSlashCommands';
+import protectedFunction from '../methods/helpers/protectedFunction';
 import loadMessagesForRoom from '../methods/loadMessagesForRoom';
-import loadSurroundingMessages from '../methods/loadSurroundingMessages';
-import loadNextMessages from '../methods/loadNextMessages';
 import loadMissedMessages from '../methods/loadMissedMessages';
+import loadNextMessages from '../methods/loadNextMessages';
+import loadSurroundingMessages from '../methods/loadSurroundingMessages';
 import loadThreadMessages from '../methods/loadThreadMessages';
-import sendMessage, { resendMessage } from '../methods/sendMessage';
-import { cancelUpload, isUploadActive, sendFileMessage } from '../methods/sendFileMessage';
-import callJitsi, { callJitsiWithoutServer } from '../methods/callJitsi';
 import logout, { removeServer } from '../methods/logout';
+import readMessages from '../methods/readMessages';
+import { cancelUpload, isUploadActive, sendFileMessage } from '../methods/sendFileMessage';
+import sendMessage, { resendMessage } from '../methods/sendMessage';
+import subscribeRooms from '../methods/subscriptions/rooms';
 import UserPreferences from '../userPreferences';
-import { Encryption } from '../encryption';
-import { sanitizeLikeString } from '../database/utils';
-
+import { compareServerVersion } from '../utils';
+import { getUserPresence, subscribeUsersPresence } from '../methods/getUsersPresence';
+import { store as reduxStore } from '../auxStore';
 // Methods
 import clearCache from './methods/clearCache';
 import getPermalinkMessage from './methods/getPermalinkMessage';
 import getRoom from './methods/getRoom';
 import isGroupChat from './methods/isGroupChat';
-
+import getUserInfo from './services/getUserInfo';
 // Services
 import sdk from './services/sdk';
-import getUserInfo from './services/getUserInfo';
 import toggleFavorite from './services/toggleFavorite';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -311,10 +308,26 @@ const RocketChat = {
 				protectedFunction(ddpMessage => onRolesChanged(ddpMessage))
 			);
 
+			// RC 4.1
+			this.sdk.onStreamData('stream-user-presence', ddpMessage => {
+				const userStatus = ddpMessage.fields.args[0];
+				const { uid } = ddpMessage.fields;
+				const [, status, statusText] = userStatus;
+				const newStatus = { status: STATUSES[status], statusText };
+				reduxStore.dispatch(setActiveUsers({ [uid]: newStatus }));
+
+				const { user: loggedUser } = reduxStore.getState().login;
+				if (loggedUser && loggedUser.id === uid) {
+					reduxStore.dispatch(setUser(newStatus));
+				}
+			});
+
 			this.notifyLoggedListener = this.sdk.onStreamData(
 				'stream-notify-logged',
 				protectedFunction(async ddpMessage => {
 					const { eventName } = ddpMessage.fields;
+
+					// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
 					if (/user-status/.test(eventName)) {
 						this.activeUsers = this.activeUsers || {};
 						if (!this._setUserTimer) {
@@ -1512,15 +1525,18 @@ const RocketChat = {
 			reduxStore.dispatch(setUser({ status: { status: 'offline' } }));
 		}
 
-		if (!this._setUserTimer) {
-			this._setUserTimer = setTimeout(() => {
-				const activeUsersBatch = this.activeUsers;
-				InteractionManager.runAfterInteractions(() => {
-					reduxStore.dispatch(setActiveUsers(activeUsersBatch));
-				});
-				this._setUserTimer = null;
-				return (this.activeUsers = {});
-			}, 10000);
+		const serverVersion = reduxStore.getState().server.version;
+		if (compareServerVersion(serverVersion, 'lowerThan', '4.1.0')) {
+			if (!this._setUserTimer) {
+				this._setUserTimer = setTimeout(() => {
+					const activeUsersBatch = this.activeUsers;
+					InteractionManager.runAfterInteractions(() => {
+						reduxStore.dispatch(setActiveUsers(activeUsersBatch));
+					});
+					this._setUserTimer = null;
+					return (this.activeUsers = {});
+				}, 10000);
+			}
 		}
 
 		if (!ddpMessage.fields) {
@@ -1529,7 +1545,6 @@ const RocketChat = {
 			this.activeUsers[ddpMessage.id] = { status: ddpMessage.fields.status };
 		}
 	},
-	getUsersPresence,
 	getUserPresence,
 	subscribeUsersPresence,
 	getDirectory({ query, count, offset, sort }) {
