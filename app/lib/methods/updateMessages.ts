@@ -117,7 +117,9 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 						tm._raw = sanitizedRaw({ id: threadMessage._id }, threadMessagesCollection.schema);
 						Object.assign(tm, threadMessage);
 						tm.subscription.id = sub.id;
-						tm.rid = threadMessage.tmid;
+						if (threadMessage.tmid) {
+							tm.rid = threadMessage.tmid;
+						}
 						delete threadMessage.tmid;
 					})
 				)
@@ -154,7 +156,9 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 					return threadMessage.prepareUpdate(
 						protectedFunction((tm: TThreadMessageModel) => {
 							Object.assign(tm, newThreadMessage);
-							tm.rid = threadMessage.tmid;
+							if (threadMessage.tmid) {
+								tm.rid = threadMessage.tmid;
+							}
 							delete threadMessage.tmid;
 						})
 					);
@@ -164,16 +168,16 @@ export default function updateMessages({ rid, update = [], remove = [], loaderIt
 			});
 
 			const allRecords = [
+				...msgsToDelete,
+				...threadsToDelete,
+				...threadMessagesToDelete,
+				...loadersToDelete,
 				...msgsToCreate,
 				...msgsToUpdate,
-				...msgsToDelete,
 				...threadsToCreate,
 				...threadsToUpdate,
-				...threadsToDelete,
 				...threadMessagesToCreate,
-				...threadMessagesToUpdate,
-				...threadMessagesToDelete,
-				...loadersToDelete
+				...threadMessagesToUpdate
 			];
 
 			try {

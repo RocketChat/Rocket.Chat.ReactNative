@@ -73,6 +73,7 @@ export interface IThread {
 	autoTranslate?: boolean;
 	translations?: any;
 	e2e?: string;
+	subscription: { id: string };
 }
 
 export type TThreadModel = IThread & Model;
