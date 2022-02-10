@@ -1,5 +1,5 @@
 import RocketChat from '../lib/rocketchat';
-import reduxStore from '../lib/createStore';
+import { store as reduxStore } from '../lib/auxStore';
 import { ISubscription } from '../definitions/ISubscription';
 
 const canPostReadOnly = async ({ rid }: { rid: string }) => {

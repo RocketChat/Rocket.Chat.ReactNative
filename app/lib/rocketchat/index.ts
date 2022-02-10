@@ -1,0 +1,4 @@
+import RocketChat, { THEME_PREFERENCES_KEY, CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from './rocketchat';
+
+export { THEME_PREFERENCES_KEY, CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY };
+export default RocketChat;

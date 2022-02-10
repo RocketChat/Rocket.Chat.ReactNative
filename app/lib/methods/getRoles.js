@@ -2,7 +2,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import database from '../database';
 import log from '../../utils/log';
-import reduxStore from '../createStore';
+import { store as reduxStore } from '../auxStore';
 import { removeRoles, setRoles as setRolesAction, updateRoles } from '../../actions/roles';
 import protectedFunction from './helpers/protectedFunction';
 

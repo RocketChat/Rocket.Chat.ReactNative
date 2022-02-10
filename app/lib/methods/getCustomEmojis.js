@@ -1,8 +1,8 @@
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { compareServerVersion, methods } from '../utils';
-import reduxStore from '../createStore';
+import { compareServerVersion } from '../utils';
+import { store as reduxStore } from '../auxStore';
 import database from '../database';
 import log from '../../utils/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
@@ -92,7 +92,7 @@ export function getCustomEmojis() {
 			const updatedSince = await getUpdatedSince(allRecords);
 
 			// if server version is lower than 0.75.0, fetches from old api
-			if (compareServerVersion(serverVersion, '0.75.0', methods.lowerThan)) {
+			if (compareServerVersion(serverVersion, 'lowerThan', '0.75.0')) {
 				// RC 0.61.0
 				const result = await this.sdk.get('emoji-custom');
 

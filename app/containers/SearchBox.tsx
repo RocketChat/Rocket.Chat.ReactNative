@@ -1,5 +1,13 @@
 import React from 'react';
-import { NativeSyntheticEvent, StyleSheet, Text, TextInputFocusEventData, TextInputProps, View } from 'react-native';
+import {
+	NativeSyntheticEvent,
+	StyleSheet,
+	TextInput as RNTextInput,
+	Text,
+	TextInputFocusEventData,
+	TextInputProps,
+	View
+} from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import TextInput from '../presentation/TextInput';
@@ -51,7 +59,7 @@ interface ISearchBox {
 	hasCancel?: boolean;
 	onCancelPress?: Function;
 	theme?: string;
-	inputRef?: React.Ref<unknown>;
+	inputRef?: React.Ref<RNTextInput>;
 	testID?: string;
 	onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }
