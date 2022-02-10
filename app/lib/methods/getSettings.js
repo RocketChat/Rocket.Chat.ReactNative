@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import { addSettings, clearSettings } from '../../actions/settings';
 import RocketChat from '../rocketchat';
-import reduxStore from '../createStore';
+import { store as reduxStore } from '../auxStore';
 import settings from '../../constants/settings';
 import log from '../../utils/log';
 import database from '../database';
