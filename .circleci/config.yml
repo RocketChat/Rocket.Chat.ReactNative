@@ -340,7 +340,7 @@ jobs:
     <<: *defaults
     docker:
       - image: circleci/node:15
-    resource_class: large
+    resource_class: xlarge
     environment:
       CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
 
@@ -376,7 +376,7 @@ jobs:
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: large
+    resource_class: xlarge
     steps:
       - android-build
   
@@ -387,7 +387,7 @@ jobs:
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: large
+    resource_class: xlarge
     steps:
       - android-build
 
