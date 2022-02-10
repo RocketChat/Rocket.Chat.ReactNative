@@ -11,7 +11,7 @@ import {
 	IUserInteraction,
 	ModalActions
 } from '../../containers/UIKit/interfaces';
-import { IRocketChat } from '../../definitions/IRocketChat';
+import { TRocketChat, IRocketChat } from '../../definitions/IRocketChat';
 
 const triggersId = new Map();
 
@@ -93,10 +93,6 @@ export function triggerAction(
 	this: IRocketChat,
 	{ type, actionId, appId, rid, mid, viewId, container, ...rest }: ITriggerAction
 ) {
-	console.log(
-		'🚀 ~ file: actions.ts ~ line 100 ~ triggerAction ~ { type, actionId, appId, rid, mid, viewId, container, ...rest }',
-		{ type, actionId, appId, rid, mid, viewId, container, ...rest }
-	);
 	return new Promise<ModalActions | undefined | void>(async (resolve, reject) => {
 		const triggerId = generateTriggerId(appId);
 
@@ -143,20 +139,17 @@ export function triggerAction(
 	});
 }
 
-export default function triggerBlockAction(this: IRocketChat, options: ITriggerBlockAction) {
-	console.log('🚀 ~ file: actions.ts ~ line 139 ~ triggerBlockAction ~ options', options);
-	return triggerAction.call(this, { type: ActionTypes.ACTION, ...options });
+export default function triggerBlockAction(this: TRocketChat | IRocketChat, options: ITriggerBlockAction) {
+	return triggerAction.call(this as IRocketChat, { type: ActionTypes.ACTION, ...options });
 }
 
-export async function triggerSubmitView(this: IRocketChat, { viewId, ...options }: ITriggerSubmitView) {
-	console.log('🚀 ~ file: actions.ts ~ line 153 ~ triggerSubmitView ~ { viewId, ...options }', { viewId, ...options });
-	const result = await triggerAction.call(this, { type: ActionTypes.SUBMIT, viewId, ...options });
+export async function triggerSubmitView(this: TRocketChat | IRocketChat, { viewId, ...options }: ITriggerSubmitView) {
+	const result = await triggerAction.call(this as IRocketChat, { type: ActionTypes.SUBMIT, viewId, ...options });
 	if (!result || ModalActions.CLOSE === result) {
 		Navigation.back();
 	}
 }
 
-export function triggerCancel(this: IRocketChat, { view, ...options }: ITriggerCancel) {
-	console.log('🚀 ~ file: actions.ts ~ line 161 ~ triggerCancel ~ { view, ...options }', { view, ...options });
-	return triggerAction.call(this, { type: ActionTypes.CLOSED, view, ...options });
+export function triggerCancel(this: TRocketChat | IRocketChat, { view, ...options }: ITriggerCancel) {
+	return triggerAction.call(this as IRocketChat, { type: ActionTypes.CLOSED, view, ...options });
 }
