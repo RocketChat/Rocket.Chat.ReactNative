@@ -233,7 +233,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	renderHashtag = ({ hashtag }: { hashtag: string }) => {
 		const { channels, navToRoomInfo, style } = this.props;
-		return <MarkdownHashtag hashtag={hashtag} channels={channels} navToRoomInfo={navToRoomInfo!} style={style} />;
+		return <MarkdownHashtag hashtag={hashtag} channels={channels} navToRoomInfo={navToRoomInfo} style={style} />;
 	};
 
 	renderAtMention = ({ mentionName }: { mentionName: string }) => {
@@ -244,7 +244,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				mention={mentionName}
 				useRealName={useRealName}
 				username={username}
-				navToRoomInfo={navToRoomInfo!}
+				navToRoomInfo={navToRoomInfo}
 				style={style}
 			/>
 		);
