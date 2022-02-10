@@ -384,8 +384,8 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		// Return: 'Test'
 		m = m.replace(/^\[([\s]*)\]\(([^)]*)\)\s/, '').trim();
 
+		m = shortnameToUnicode(m);
 		if (preview) {
-			m = shortnameToUnicode(m);
 			// Removes sequential empty spaces
 			m = m.replace(/\s+/g, ' ');
 			m = removeMarkdown(m);
