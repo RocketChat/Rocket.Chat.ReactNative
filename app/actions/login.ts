@@ -16,7 +16,7 @@ interface ILoginRequest extends Action {
 }
 
 interface ILoginSuccess extends Action {
-	user: Partial<IUserLogin>;
+	user: IUserLogin;
 }
 
 interface ILoginFailure extends Action {
@@ -65,7 +65,7 @@ export function loginRequest(
 	};
 }
 
-export function loginSuccess(user: Partial<IUserLogin>): ILoginSuccess {
+export function loginSuccess(user: IUserLogin): ILoginSuccess {
 	return {
 		type: types.LOGIN.SUCCESS,
 		user
