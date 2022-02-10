@@ -34,8 +34,8 @@ export default function loadMissedMessages(this: IRocketChat, args: { rid: strin
 			const data = await load.call(this, { rid: args.rid, lastOpen: args.lastOpen });
 			if (data) {
 				const { updated, deleted }: { updated: ILastMessage[]; deleted: ILastMessage[] } = data;
-				// loaderItem is null only to surpass the obligatoriness of the item in the function, as soon as it is migrated it will not be necessary.
-				await updateMessages({ rid: args.rid, update: updated, remove: deleted, loaderItem: null });
+				// @ts-ignore // TODO: remove loaderItem obligatoriness
+				await updateMessages({ rid: args.rid, update: updated, remove: deleted });
 			}
 			resolve();
 		} catch (e) {
