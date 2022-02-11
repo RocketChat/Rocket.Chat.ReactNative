@@ -10,16 +10,18 @@ import { SERVER } from '../actions/actionsTypes';
 import { selectServerFailure, selectServerRequest, selectServerSuccess, serverFailure } from '../actions/server';
 import { clearSettings } from '../actions/settings';
 import { setUser } from '../actions/login';
+import { clearActiveUsers } from '../actions/activeUsers';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import log, { logServerVersion } from '../utils/log';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
-import { ROOT_INSIDE, ROOT_OUTSIDE, appStart } from '../actions/app';
+import { appStart } from '../actions/app';
 import UserPreferences from '../lib/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../utils/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
+import { RootEnum } from '../definitions';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -72,6 +74,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		yield put(inquiryReset());
 		yield put(encryptionStop());
+		yield put(clearActiveUsers());
 		const serversDB = database.servers;
 		yield UserPreferences.setStringAsync(RocketChat.CURRENT_SERVER, server);
 		const userId = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
@@ -111,10 +114,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(clearSettings());
 			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
-			yield put(appStart({ root: ROOT_INSIDE }));
+			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 		} else {
 			yield RocketChat.connect({ server });
-			yield put(appStart({ root: ROOT_OUTSIDE }));
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
 
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower

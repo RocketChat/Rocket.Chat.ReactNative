@@ -6,7 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import { IRoom, RoomType } from '../../definitions/IRoom';
+import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 import { IAttachment } from '../../definitions/IAttachment';
 import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -29,7 +29,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { isIOS } from '../../utils/deviceInfo';
-import { compareServerVersion, methods } from '../../lib/utils';
+import { compareServerVersion } from '../../lib/utils';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 
@@ -42,10 +42,10 @@ interface ISearchMessagesViewState {
 }
 
 interface IRoomInfoParam {
-	room: IRoom;
+	room: ISubscription;
 	member: any;
 	rid: string;
-	t: RoomType;
+	t: SubscriptionType;
 	joined: boolean;
 }
 
@@ -58,7 +58,11 @@ interface INavigationOption {
 }
 
 interface ISearchMessagesViewProps extends INavigationOption {
-	user: { id: string };
+	user: {
+		id: string;
+		username: string;
+		token: string;
+	};
 	baseUrl: string;
 	serverVersion: string;
 	customEmojis: {
@@ -231,7 +235,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			messages.length < this.offset ||
 			this.encrypted ||
 			loading ||
-			compareServerVersion(serverVersion, '3.17.0', methods.lowerThan)
+			compareServerVersion(serverVersion, 'lowerThan', '3.17.0')
 		) {
 			return;
 		}

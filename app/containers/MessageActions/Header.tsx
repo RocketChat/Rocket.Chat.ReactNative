@@ -10,6 +10,7 @@ import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
+import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
 import { IEmoji } from '../EmojiPicker/interfaces';
 
 interface IHeader {
@@ -17,7 +18,7 @@ interface IHeader {
 	server: string;
 	message: object;
 	isMasterDetail: boolean;
-	theme: string;
+	theme?: string;
 }
 
 interface THeaderItem {
@@ -90,14 +91,14 @@ const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
 ));
 
 const Header = React.memo(({ handleReaction, server, message, isMasterDetail, theme }: IHeader) => {
-	const [items, setItems] = useState([]);
+	const [items, setItems] = useState<(TFrequentlyUsedEmojiModel | string)[]>([]);
 	const { width, height }: any = useDimensions();
 
 	const setEmojis = async () => {
 		try {
 			const db = database.active;
 			const freqEmojiCollection = db.get('frequently_used_emojis');
-			let freqEmojis = await freqEmojiCollection.query().fetch();
+			let freqEmojis: (TFrequentlyUsedEmojiModel | string)[] = await freqEmojiCollection.query().fetch();
 
 			const isLandscape = width > height;
 			const size = (isLandscape || isMasterDetail ? width / 2 : width) - CONTAINER_MARGIN * 2;
@@ -117,19 +118,19 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 	const onReaction = ({ emoji }: { emoji: IEmoji }) => handleReaction(emoji, message);
 
 	const renderItem = useCallback(
-		({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme} />,
+		({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme!} />,
 		[]
 	);
 
-	const renderFooter = useCallback(() => <HeaderFooter onReaction={onReaction} theme={theme} />, []);
+	const renderFooter = useCallback(() => <HeaderFooter onReaction={onReaction} theme={theme!} />, []);
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+		<View style={[styles.container, { backgroundColor: themes[theme!].focusedBackground }]}>
 			<FlatList
 				data={items}
 				renderItem={renderItem}
 				ListFooterComponent={renderFooter}
-				style={{ backgroundColor: themes[theme].focusedBackground }}
+				style={{ backgroundColor: themes[theme!].focusedBackground }}
 				keyExtractor={keyExtractor}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}

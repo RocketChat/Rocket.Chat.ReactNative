@@ -3,8 +3,10 @@ import { date, json } from '@nozbe/watermelondb/decorators';
 
 import { sanitizer } from '../utils';
 
+export const PERMISSIONS_TABLE = 'permissions';
+
 export default class Permission extends Model {
-	static table = 'permissions';
+	static table = PERMISSIONS_TABLE;
 
 	@json('roles', sanitizer) roles;
 

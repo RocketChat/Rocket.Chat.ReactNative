@@ -1,5 +1,7 @@
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
+export type TMessageType = 'discussion-created' | 'jitsi_call_started';
+
 export interface IMessageAttachments {
 	attachments: any;
 	timeFormat: string;
@@ -51,12 +53,13 @@ export interface IMessageCallButton {
 }
 
 export interface IUser {
-	_id: string;
+	id: string;
 	username: string;
+	token: string;
 	name: string;
 }
 
-export type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
+export type UserMention = Pick<IUser, 'id' | 'username' | 'name'>;
 
 export interface IMessageContent {
 	_id: string;
@@ -84,7 +87,7 @@ export interface IMessageContent {
 export interface IMessageDiscussion {
 	msg: string;
 	dcount: number;
-	dlm: string;
+	dlm: Date;
 	theme: string;
 }
 
@@ -100,7 +103,7 @@ export interface IMessageThread {
 	msg: string;
 	tcount: number;
 	theme: string;
-	tlm: string;
+	tlm: Date;
 	isThreadRoom: boolean;
 	id: string;
 }
@@ -139,7 +142,7 @@ export interface IMessageInner
 		IMessageThread,
 		IMessageAttachments,
 		IMessageBroadcast {
-	type: string;
+	type: TMessageType;
 	blocks: [];
 }
 

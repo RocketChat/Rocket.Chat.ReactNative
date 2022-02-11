@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Keyboard, NativeModules, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker, { Image, ImageOrVideo } from 'react-native-image-crop-picker';
 import { dequal } from 'dequal';
 import DocumentPicker from 'react-native-document-picker';
 import { Q } from '@nozbe/watermelondb';
@@ -47,6 +47,7 @@ import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
+import { forceJpgExtension } from './forceJpgExtension';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -54,15 +55,16 @@ if (isAndroid) {
 
 const imagePickerConfig = {
 	cropping: true,
-	compressImageQuality: 0.8,
 	avoidEmptySpaceAroundImage: false,
-	freeStyleCropEnabled: true
+	freeStyleCropEnabled: true,
+	forceJpg: true
 };
 
 const libraryPickerConfig = {
 	multiple: true,
 	compressVideoPreset: 'Passthrough',
-	mediaType: 'any'
+	mediaType: 'any',
+	forceJpg: true
 };
 
 const videoPickerConfig = {
@@ -692,7 +694,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	takePhoto = async () => {
 		logEvent(events.ROOM_BOX_ACTION_PHOTO);
 		try {
-			const image = await ImagePicker.openCamera(this.imagePickerConfig);
+			let image = (await ImagePicker.openCamera(this.imagePickerConfig)) as Image;
+			image = forceJpgExtension(image);
 			if (this.canUploadFile(image)) {
 				this.openShareView([image]);
 			}
@@ -716,7 +719,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	chooseFromLibrary = async () => {
 		logEvent(events.ROOM_BOX_ACTION_LIBRARY);
 		try {
-			const attachments = await ImagePicker.openPicker(this.libraryPickerConfig);
+			let attachments = (await ImagePicker.openPicker(this.libraryPickerConfig)) as ImageOrVideo[];
+			attachments = attachments.map(att => forceJpgExtension(att));
 			this.openShareView(attachments);
 		} catch (e) {
 			logEvent(events.ROOM_BOX_ACTION_LIBRARY_F);

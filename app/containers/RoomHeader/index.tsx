@@ -1,10 +1,11 @@
+import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { dequal } from 'dequal';
 
-import RoomHeader from './RoomHeader';
+import { IApplicationState } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
+import RoomHeader from './RoomHeader';
 
 interface IRoomHeaderContainerProps {
 	title: string;
@@ -13,7 +14,7 @@ interface IRoomHeaderContainerProps {
 	prid: string;
 	tmid: string;
 	teamMain: boolean;
-	usersTyping: string;
+	usersTyping: [];
 	status: string;
 	statusText: string;
 	connecting: boolean;
@@ -79,14 +80,12 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 			teamMain,
 			prid,
 			tmid,
-			widthOffset,
 			status = 'offline',
 			statusText,
 			connecting,
 			connected,
 			usersTyping,
 			onPress,
-			roomUserId,
 			width,
 			height,
 			parentTitle,
@@ -115,9 +114,6 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 				width={width}
 				height={height}
 				usersTyping={usersTyping}
-				widthOffset={widthOffset}
-				roomUserId={roomUserId}
-				connecting={connecting}
 				parentTitle={parentTitle}
 				isGroupChat={isGroupChat}
 				testID={testID}
@@ -127,8 +123,8 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 	}
 }
 
-const mapStateToProps = (state: any, ownProps: any) => {
-	let statusText;
+const mapStateToProps = (state: IApplicationState, ownProps: any) => {
+	let statusText = '';
 	let status = 'offline';
 	const { roomUserId, type, visitor = {}, tmid } = ownProps;
 

@@ -56,11 +56,11 @@ const styles = StyleSheet.create({
 interface IListItemContent {
 	title?: string;
 	subtitle?: string;
-	left?: Function;
-	right?: Function;
+	left?: () => JSX.Element | null;
+	right?: () => JSX.Element | null;
 	disabled?: boolean;
 	testID?: string;
-	theme: string;
+	theme?: string;
 	color?: string;
 	translateTitle?: boolean;
 	translateSubtitle?: boolean;
@@ -89,15 +89,15 @@ const Content = React.memo(
 			{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 			<View style={styles.textContainer}>
 				<View style={styles.textAlertContainer}>
-					<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>
+					<Text style={[styles.title, { color: color || themes[theme!].titleText }]} numberOfLines={1}>
 						{translateTitle ? I18n.t(title) : title}
 					</Text>
 					{alert ? (
-						<CustomIcon style={[styles.alertIcon, { color: themes[theme].dangerColor }]} size={ICON_SIZE} name='info' />
+						<CustomIcon style={[styles.alertIcon, { color: themes[theme!].dangerColor }]} size={ICON_SIZE} name='info' />
 					) : null}
 				</View>
 				{subtitle ? (
-					<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+					<Text style={[styles.subtitle, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
 						{translateSubtitle ? I18n.t(subtitle) : subtitle}
 					</Text>
 				) : null}
@@ -112,38 +112,39 @@ const Content = React.memo(
 	)
 );
 
-interface IListItemButton {
+interface IListButtonPress {
+	onPress?: Function;
+}
+
+interface IListItemButton extends IListButtonPress {
 	title?: string;
-	onPress: Function;
 	disabled?: boolean;
-	theme: string;
-	backgroundColor: string;
+	theme?: string;
+	backgroundColor?: string;
 	underlayColor?: string;
 }
 
-const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListItemButton) => (
+const Button = React.memo<IListItemButton>(({ onPress, backgroundColor, underlayColor, ...props }: IListItemButton) => (
 	<Touch
-		onPress={() => onPress(props.title)}
-		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
+		onPress={() => onPress!(props.title)}
+		style={{ backgroundColor: backgroundColor || themes[props.theme!].backgroundColor }}
 		underlayColor={underlayColor}
 		enabled={!props.disabled}
-		theme={props.theme}>
+		theme={props.theme!}>
 		<Content {...props} />
 	</Touch>
 ));
 
-interface IListItem {
-	onPress: Function;
-	theme: string;
-	backgroundColor: string;
+interface IListItem extends IListItemContent, IListButtonPress {
+	backgroundColor?: string;
 }
 
-const ListItem = React.memo(({ ...props }: IListItem) => {
+const ListItem = React.memo<IListItem>(({ ...props }: IListItem) => {
 	if (props.onPress) {
 		return <Button {...props} />;
 	}
 	return (
-		<View style={{ backgroundColor: props.backgroundColor || themes[props.theme].backgroundColor }}>
+		<View style={{ backgroundColor: props.backgroundColor || themes[props.theme!].backgroundColor }}>
 			<Content {...props} />
 		</View>
 	);

@@ -5,6 +5,7 @@ import Renderer from 'commonmark-react-renderer';
 import removeMarkdown from 'remove-markdown';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
+import { UserMention } from '../message/interfaces';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
@@ -23,16 +24,8 @@ import styles from './styles';
 import { isValidURL } from '../../utils/url';
 import NewMarkdown from './new';
 
-interface IUser {
-	_id: string;
-	username: string;
-	name: string;
-}
-
-type UserMention = Pick<IUser, '_id' | 'username' | 'name'>;
-
 interface IMarkdownProps {
-	msg: string;
+	msg?: string;
 	md: MarkdownAST;
 	mentions: UserMention[];
 	getCustomEmoji: Function;

@@ -13,6 +13,7 @@ import { fileDownload } from '../../utils/fileDownload';
 import EventEmitter from '../../utils/events';
 import { LISTENER } from '../Toast';
 import I18n from '../../i18n';
+import { IAttachment } from '../../definitions/IAttachment';
 import RCActivityIndicator from '../ActivityIndicator';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
@@ -30,14 +31,7 @@ const styles = StyleSheet.create({
 });
 
 interface IMessageVideo {
-	file: {
-		title: string;
-		title_link: string;
-		type: string;
-		video_type: string;
-		video_url: string;
-		description: string;
-	};
+	file: IAttachment;
 	showAttachment: Function;
 	getCustomEmoji: Function;
 	theme: string;
@@ -56,7 +50,7 @@ const Video = React.memo(
 				return showAttachment(file);
 			}
 
-			if (!isIOS) {
+			if (!isIOS && file.video_url) {
 				const uri = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 				await downloadVideo(uri);
 				return;

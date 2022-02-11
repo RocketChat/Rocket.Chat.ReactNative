@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 
 import { ChatsStackParamList } from '../../stacks/types';
 import * as List from '../../containers/List';
@@ -39,8 +39,8 @@ interface IDirectoryViewProps {
 }
 
 class DirectoryView extends React.Component<IDirectoryViewProps, any> {
-	static navigationOptions = ({ navigation, isMasterDetail }: any) => {
-		const options: any = {
+	static navigationOptions = ({ navigation, isMasterDetail }: IDirectoryViewProps) => {
+		const options: StackNavigationOptions = {
 			title: I18n.t('Directory')
 		};
 		if (isMasterDetail) {

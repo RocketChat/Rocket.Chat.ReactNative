@@ -9,11 +9,13 @@ import { defaultTheme, newThemeState, subscribeTheme, unsubscribeTheme } from '.
 import UserPreferences from './lib/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
+import { initStore } from './lib/auxStore';
 import { supportSystemTheme } from './utils/deviceInfo';
 import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
+import { IThemePreference } from './definitions/ITheme';
 import ScreenLockedView from './views/ScreenLockedView';
 // Outside Stack
 import WithoutServersView from './views/WithoutServersView';
@@ -25,7 +27,9 @@ import { setCurrentScreen } from './utils/log';
 import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
-import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './navigationTypes';
+import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
+
+initStore(store);
 
 interface IDimensions {
 	width: number;
@@ -36,10 +40,7 @@ interface IDimensions {
 
 interface IState {
 	theme: string;
-	themePreferences: {
-		currentTheme: 'automatic' | 'light';
-		darkLevel: string;
-	};
+	themePreferences: IThemePreference;
 	root: any;
 	width: number;
 	height: number;
@@ -135,7 +136,7 @@ class Root extends React.Component<{}, IState> {
 	setTheme = (newTheme = {}) => {
 		// change theme state
 		this.setState(
-			prevState => newThemeState(prevState, newTheme),
+			prevState => newThemeState(prevState, newTheme as IThemePreference),
 			() => {
 				const { themePreferences } = this.state;
 				// subscribe to Appearance changes

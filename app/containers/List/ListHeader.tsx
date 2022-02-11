@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
 
 interface IListHeader {
 	title: string;
-	theme: string;
-	translateTitle: boolean;
+	theme?: string;
+	translateTitle?: boolean;
 }
 
 const ListHeader = React.memo(({ title, theme, translateTitle = true }: IListHeader) => (
 	<View style={styles.container}>
-		<Text style={[styles.title, { color: themes[theme].infoText }]} numberOfLines={1}>
+		<Text style={[styles.title, { color: themes[theme!].infoText }]} numberOfLines={1}>
 			{translateTitle ? I18n.t(title) : title}
 		</Text>
 	</View>

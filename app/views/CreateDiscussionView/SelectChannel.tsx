@@ -7,6 +7,7 @@ import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../constants/colors';
+import { TSubscriptionModel } from '../../definitions/ISubscription';
 import styles from './styles';
 import { ICreateDiscussionViewSelectChannel } from './interfaces';
 
@@ -20,7 +21,7 @@ const SelectChannel = ({
 	serverVersion,
 	theme
 }: ICreateDiscussionViewSelectChannel): JSX.Element => {
-	const [channels, setChannels] = useState([]);
+	const [channels, setChannels] = useState<TSubscriptionModel[]>([]);
 
 	const getChannels = debounce(async (keyword = '') => {
 		try {
@@ -32,8 +33,6 @@ const SelectChannel = ({
 	}, 300);
 
 	const getAvatar = (item: any) =>
-		// TODO: remove this ts-ignore when migrate the file: app/utils/avatar.js
-		// @ts-ignore
 		avatarURL({
 			text: RocketChat.getRoomAvatar(item),
 			type: item.t,

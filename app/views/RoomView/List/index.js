@@ -14,7 +14,7 @@ import { animateNextTransition } from '../../../utils/layoutAnimation';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { themes } from '../../../constants/colors';
 import debounce from '../../../utils/debounce';
-import { compareServerVersion, methods } from '../../../lib/utils';
+import { compareServerVersion } from '../../../lib/utils';
 import List from './List';
 import NavBottomFAB from './NavBottomFAB';
 
@@ -144,11 +144,11 @@ class ListContainer extends React.Component {
 
 		if (tmid) {
 			try {
-				this.thread = await db.collections.get('threads').find(tmid);
+				this.thread = await db.get('threads').find(tmid);
 			} catch (e) {
 				console.log(e);
 			}
-			this.messagesObservable = db.collections
+			this.messagesObservable = db
 				.get('thread_messages')
 				.query(Q.where('rid', tmid), Q.experimentalSortBy('ts', Q.desc), Q.experimentalSkip(0), Q.experimentalTake(this.count))
 				.observe();
@@ -162,7 +162,7 @@ class ListContainer extends React.Component {
 			if (!showMessageInMainThread) {
 				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
 			}
-			this.messagesObservable = db.collections
+			this.messagesObservable = db
 				.get('messages')
 				.query(...whereClause)
 				.observe();
@@ -179,7 +179,7 @@ class ListContainer extends React.Component {
 				 * Since 3.16.0 server version, the backend don't response with messages if
 				 * hide system message is enabled
 				 */
-				if (compareServerVersion(serverVersion, '3.16.0', methods.lowerThan) || hideSystemMessages.length) {
+				if (compareServerVersion(serverVersion, 'lowerThan', '3.16.0') || hideSystemMessages.length) {
 					messages = messages.filter(m => !m.t || !hideSystemMessages?.includes(m.t));
 				}
 

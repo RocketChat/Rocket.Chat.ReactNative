@@ -246,7 +246,6 @@ class RoomMembersView extends React.Component {
 			const userId = selectedUser._id;
 			const result = await RocketChat.removeTeamMember({
 				teamId: room.teamId,
-				teamName: room.name,
 				userId,
 				...(selected && { rooms: selected })
 			});

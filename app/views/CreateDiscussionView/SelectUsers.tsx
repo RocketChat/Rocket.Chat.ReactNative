@@ -12,6 +12,7 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../constants/colors';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
+import { SubscriptionType } from '../../definitions/ISubscription';
 
 interface IUser {
 	name: string;
@@ -37,11 +38,11 @@ const SelectUsers = ({
 			const res = await RocketChat.search({ text: keyword, filterRooms: false });
 			let items = [
 				...users.filter((u: IUser) => selected.includes(u.name)),
-				...res.filter((r: IUser) => !users.find((u: IUser) => u.name === r.name))
+				...res.filter(r => !users.find((u: IUser) => u.name === r.name))
 			];
 			const records = await usersCollection.query(Q.where('username', Q.oneOf(items.map(u => u.name)))).fetch();
 			items = items.map(item => {
-				const index = records.findIndex((r: IUser) => r.username === item.name);
+				const index = records.findIndex(r => r.username === item.name);
 				if (index > -1) {
 					const record = records[index];
 					return {
@@ -62,11 +63,9 @@ const SelectUsers = ({
 	}, 300);
 
 	const getAvatar = (item: any) =>
-		// TODO: remove this ts-ignore when migrate the file: app/utils/avatar.js
-		// @ts-ignore
 		avatarURL({
 			text: RocketChat.getRoomAvatar(item),
-			type: 'd',
+			type: SubscriptionType.DIRECT,
 			user: { id: userId, token },
 			server,
 			avatarETag: item.avatarETag,
