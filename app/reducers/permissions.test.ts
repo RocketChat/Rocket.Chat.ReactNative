@@ -18,6 +18,6 @@ describe('test permissions reducer', () => {
 	it('should return empty store after remove user', () => {
 		mockedStore.dispatch(updatePermission('add-team-channel', ['owner']));
 		const state = mockedStore.getState().permissions;
-		expect(state['add-team-channel']).toEqual('owner');
+		expect(state['add-team-channel']).toEqual(['owner']);
 	});
 });
