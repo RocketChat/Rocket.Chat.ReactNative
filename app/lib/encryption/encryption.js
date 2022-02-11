@@ -240,15 +240,15 @@ class Encryption {
 						msg,
 						tmsg
 					});
-					if (message._hasPendingUpdate) {
-						console.log(message);
-						return;
+					try {
+						return message.prepareUpdate(
+							protectedFunction(m => {
+								Object.assign(m, newMessage);
+							})
+						);
+					} catch {
+						return null;
 					}
-					return message.prepareUpdate(
-						protectedFunction(m => {
-							Object.assign(m, newMessage);
-						})
-					);
 				})
 			);
 
@@ -281,15 +281,15 @@ class Encryption {
 				subsToDecrypt.map(async sub => {
 					const { rid, lastMessage } = sub;
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
-					if (sub._hasPendingUpdate) {
-						console.log(sub);
-						return;
+					try {
+						return sub.prepareUpdate(
+							protectedFunction(m => {
+								Object.assign(m, newSub);
+							})
+						);
+					} catch {
+						return null;
 					}
-					return sub.prepareUpdate(
-						protectedFunction(m => {
-							Object.assign(m, newSub);
-						})
-					);
 				})
 			);
 
@@ -352,13 +352,15 @@ class Encryption {
 				);
 				// If the subscription already exists but doesn't have the E2EKey yet
 			} else if (!subRecord.E2EKey && subscription.E2EKey) {
-				if (!subRecord._hasPendingUpdate) {
+				try {
 					// Let's update the subscription with the received E2EKey
 					batch.push(
 						subRecord.prepareUpdate(s => {
 							s.E2EKey = subscription.E2EKey;
 						})
 					);
+				} catch (e) {
+					log(e);
 				}
 			}
 
