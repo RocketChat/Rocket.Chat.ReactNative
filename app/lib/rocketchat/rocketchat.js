@@ -777,7 +777,7 @@ const RocketChat = {
 
 	createDirectMessage(username) {
 		// RC 0.59.0
-		return this.post('im.create', { username });
+		return sdk.post('im.create', { username });
 	},
 
 	createGroupChat() {
