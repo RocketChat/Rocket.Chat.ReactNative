@@ -1,6 +1,4 @@
 // ACTIONS
-import { IPermissions } from 'reducers/permissions';
-
 import { TActionActiveUsers } from '../../actions/activeUsers';
 import { TActionApp } from '../../actions/app';
 import { TActionCreateChannel } from '../../actions/createChannel';
@@ -28,6 +26,7 @@ import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { IServer } from '../../reducers/server';
 import { ISettings } from '../../reducers/settings';
 import { IShare } from '../../reducers/share';
+import { IPermissionsState } from '../../reducers/permissions';
 
 export interface IApplicationState {
 	settings: ISettings;
@@ -49,7 +48,7 @@ export interface IApplicationState {
 	inquiry: any;
 	enterpriseModules: any;
 	encryption: IEncryption;
-	permissions: IPermissions;
+	permissions: IPermissionsState;
 	roles: IRoles;
 }
 
