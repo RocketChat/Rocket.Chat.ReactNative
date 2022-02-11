@@ -7,8 +7,9 @@ import log from '../../utils/log';
 import { Encryption } from '../encryption';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
+import { IRocketChat, TThreadMessageModel } from '../../definitions';
 
-async function load({ tmid }) {
+async function load(this: IRocketChat, { tmid }: { tmid: string }) {
 	try {
 		// RC 1.0
 		const result = await this.methodCallWrapper('getThreadMessages', { tmid });
@@ -22,53 +23,62 @@ async function load({ tmid }) {
 	}
 }
 
-export default function loadThreadMessages({ tmid, rid }) {
+export default function loadThreadMessages(this: IRocketChat, { tmid, rid }: { tmid: string; rid: string }) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			let data = await load.call(this, { tmid });
 			if (data && data.length) {
 				try {
-					data = data.filter(m => m.tmid).map(m => buildMessage(m));
+					data = data.filter((m: TThreadMessageModel) => m.tmid).map((m: TThreadMessageModel) => buildMessage(m));
 					data = await Encryption.decryptMessages(data);
 					const db = database.active;
 					const threadMessagesCollection = db.get('thread_messages');
 					const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('rid', tmid)).fetch();
-					let threadMessagesToCreate = data.filter(i1 => !allThreadMessagesRecords.find(i2 => i1._id === i2.id));
-					let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 => data.find(i2 => i1.id === i2._id));
+					let threadMessagesToCreate = data.filter(
+						(i1: TThreadMessageModel) => !allThreadMessagesRecords.find(i2 => i1._id === i2.id)
+					);
+					let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 =>
+						data.find((i2: TThreadMessageModel) => i1.id === i2._id)
+					);
 
-					threadMessagesToCreate = threadMessagesToCreate.map(threadMessage =>
+					threadMessagesToCreate = threadMessagesToCreate.map((threadMessage: TThreadMessageModel) =>
 						threadMessagesCollection.prepareCreate(
-							protectedFunction(tm => {
+							protectedFunction((tm: TThreadMessageModel) => {
 								tm._raw = sanitizedRaw({ id: threadMessage._id }, threadMessagesCollection.schema);
 								Object.assign(tm, threadMessage);
-								tm.subscription.id = rid;
-								tm.rid = threadMessage.tmid;
+								if (tm.subscription) {
+									tm.subscription.id = rid;
+								}
+								if (threadMessage.tmid) {
+									tm.rid = threadMessage.tmid;
+								}
 								delete threadMessage.tmid;
 							})
 						)
 					);
 
 					threadMessagesToUpdate = threadMessagesToUpdate.map(threadMessage => {
-						const newThreadMessage = data.find(t => t._id === threadMessage.id);
+						const newThreadMessage = data.find((t: TThreadMessageModel) => t._id === threadMessage.id);
 						return threadMessage.prepareUpdate(
-							protectedFunction(tm => {
+							protectedFunction((tm: TThreadMessageModel) => {
 								Object.assign(tm, newThreadMessage);
-								tm.rid = threadMessage.tmid;
+								if (threadMessage.tmid) {
+									tm.rid = threadMessage.tmid;
+								}
 								delete threadMessage.tmid;
 							})
 						);
 					});
 
-					await db.action(async () => {
+					await db.write(async () => {
 						await db.batch(...threadMessagesToCreate, ...threadMessagesToUpdate);
 					});
 				} catch (e) {
 					log(e);
 				}
 				return resolve(data);
-			} else {
-				return resolve([]);
 			}
+			return resolve([]);
 		} catch (e) {
 			reject(e);
 		}
