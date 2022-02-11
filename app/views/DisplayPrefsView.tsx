@@ -17,7 +17,7 @@ import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
-import log, { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../utils/log';
 
 interface IDisplayPrefsView {
 	navigation: StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>;
@@ -46,12 +46,8 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 	}, []);
 
 	const setSortPreference = (param: Partial<IPreferences>) => {
-		try {
-			dispatch(setPreference(param));
-			RocketChat.saveSortPreference(param);
-		} catch (e) {
-			log(e);
-		}
+		dispatch(setPreference(param));
+		RocketChat.saveSortPreference(param);
 	};
 
 	const sortByName = () => {

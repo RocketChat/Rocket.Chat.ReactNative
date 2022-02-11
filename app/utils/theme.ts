@@ -14,7 +14,7 @@ export const initialTheme = (): IThemePreference => {
 	const theme = UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference;
 	const initialTheme: IThemePreference = {
 		currentTheme: defaultTheme(),
-		darkLevel: 'dark'
+		darkLevel: 'black'
 	};
 	return theme || initialTheme;
 };
