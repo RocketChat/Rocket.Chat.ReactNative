@@ -35,6 +35,7 @@ jest.mock('react-native-mmkv-storage', () => {
 				})
 			};
 		}),
+		create: jest.fn(),
 		MODES: { MULTI_PROCESS: '' }
 	};
 });
