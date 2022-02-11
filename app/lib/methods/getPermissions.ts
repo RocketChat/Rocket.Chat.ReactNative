@@ -1,7 +1,6 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import orderBy from 'lodash/orderBy';
-import { IPermissions } from 'reducers/permissions';
 
 import { compareServerVersion } from '../utils';
 import database from '../database';
@@ -10,7 +9,7 @@ import { store as reduxStore } from '../auxStore';
 import RocketChat from '../rocketchat';
 import { setPermissions as setPermissionsAction } from '../../actions/permissions';
 import protectedFunction from './helpers/protectedFunction';
-import { IRocketChat, TPermissionModel } from '../../definitions';
+import { IRocketChat, TPermissionModel, IPermission } from '../../definitions';
 
 const PERMISSIONS = [
 	'add-user-to-any-c-room',
@@ -92,8 +91,8 @@ const updatePermissions = async ({
 	remove = [],
 	allRecords
 }: {
-	update?: IPermissions[];
-	remove?: IPermissions[];
+	update?: IPermission[];
+	remove?: IPermission[];
 	allRecords: TPermissionModel[];
 }) => {
 	if (!((update && update.length) || (remove && remove.length))) {
