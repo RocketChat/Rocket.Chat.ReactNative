@@ -32,6 +32,7 @@ import { isFDroidBuild } from './constants/environment';
 import { IThemePreference } from './definitions/ITheme';
 import { ICommand } from './definitions/ICommand';
 import { initStore } from './lib/auxStore';
+import { themes } from './constants/colors';
 
 RNScreens.enableScreens();
 initStore(store);
@@ -205,7 +206,9 @@ export default class Root extends React.Component<{}, IState> {
 	render() {
 		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
 		return (
-			<SafeAreaProvider initialMetrics={initialWindowMetrics}>
+			<SafeAreaProvider
+				initialMetrics={initialWindowMetrics}
+				style={{ backgroundColor: themes[this.state.theme].backgroundColor }}>
 				<AppearanceProvider>
 					<Provider store={store}>
 						<ThemeContext.Provider
