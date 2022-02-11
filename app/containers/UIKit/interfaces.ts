@@ -1,12 +1,34 @@
 import { TThemeMode } from '../../definitions/ITheme';
 
-export type TTextBlock = 'plain_text' | 'plain_text_input';
+export enum ElementTypes {
+	IMAGE = 'image',
+	BUTTON = 'button',
+	STATIC_SELECT = 'static_select',
+	MULTI_STATIC_SELECT = 'multi_static_select',
+	CONVERSATION_SELECT = 'conversations_select',
+	CHANNEL_SELECT = 'channels_select',
+	USER_SELECT = 'users_select',
+	OVERFLOW = 'overflow',
+	DATEPICKER = 'datepicker',
+	PLAIN_TEXT_INPUT = 'plain_text_input',
+	SECTION = 'section',
+	DIVIDER = 'divider',
+	ACTIONS = 'actions',
+	CONTEXT = 'context',
+	FIELDS = 'fields',
+	INPUT = 'input',
+	PLAIN_TEXT = 'plain_text',
+	TEXT = 'text',
+	MARKDOWN = 'mrkdwn'
+}
 
-export type TButton = 'button';
-
-export type TInput = 'input';
-
-type TTypes = TTextBlock | TButton | TInput | 'divider' | 'static_select' | 'actions' | 'image' | 'overflow';
+export enum BlockContext {
+	BLOCK,
+	SECTION,
+	ACTION,
+	FORM,
+	CONTEXT
+}
 
 export enum ActionTypes {
 	ACTION = 'blockAction',
@@ -44,17 +66,17 @@ export interface IView {
 }
 
 export interface Block {
-	type: TTypes;
+	type: ElementTypes;
 	blockId: string;
 	element?: IElement;
-	label?: IText;
+	label?: string;
 	appId: string;
 	optional?: boolean;
 	elements?: IElement[];
 }
 
 export interface IElement {
-	type: TTypes;
+	type: ElementTypes;
 	placeholder?: IText;
 	actionId: string;
 	initialValue?: string;
@@ -63,11 +85,12 @@ export interface IElement {
 	value?: string;
 	initial_date?: any;
 	imageUrl?: string;
+	appId?: string;
 	blockId?: string;
 }
 
 export interface IText {
-	type: TTextBlock;
+	type: ElementTypes;
 	text: string;
 	emoji?: boolean;
 }
@@ -78,9 +101,11 @@ export interface Option {
 }
 
 export interface IButton {
-	type: TButton;
+	type: ElementTypes;
 	text: IText;
 	actionId: string;
+	value?: any;
+	style?: any;
 }
 
 export interface IContainer {
@@ -142,11 +167,11 @@ export interface ITriggerCancel {
 }
 
 // UiKit components
-interface IParser {
-	renderAccessories: (data: TElementAccessory, context: string, parser: IParser) => JSX.Element;
-	renderActions: (data: Block, context: string, parser: IParser) => JSX.Element;
-	renderContext: (data: IElement, context: string, parser: IParser) => JSX.Element;
-	renderInputs: (data: Partial<IElement>, context: string, parser: IParser) => JSX.Element;
+export interface IParser {
+	renderAccessories: (data: TElementAccessory, context: BlockContext, parser: IParser) => JSX.Element;
+	renderActions: (data: Block, context: BlockContext, parser: IParser) => JSX.Element;
+	renderContext: (data: IElement, context: BlockContext, parser: IParser) => JSX.Element;
+	renderInputs: (data: Partial<IElement>, context: BlockContext, parser: IParser) => JSX.Element;
 	text: (data: IText) => JSX.Element;
 }
 export interface IActions extends Block {
@@ -155,10 +180,10 @@ export interface IActions extends Block {
 }
 
 export interface IContext extends Block {
-	parser?: IParser;
+	parser: IParser;
 }
 
-export interface IDatePicker extends Block {
+export interface IDatePicker extends Partial<Block> {
 	language: string;
 	action: Function;
 	context: number;
@@ -168,12 +193,21 @@ export interface IDatePicker extends Block {
 	theme: TThemeMode;
 }
 
-export interface IInput extends Block {
+export interface IInput extends Partial<Block> {
 	parser: IParser;
 	description: string;
 	error: string;
 	hint: string;
 	theme: TThemeMode;
+}
+
+export interface IInputIndex {
+	element: IElement;
+	blockId: string;
+	appId: string;
+	label: IText;
+	description: IText;
+	hint: IText;
 }
 
 export interface IThumb {
@@ -187,7 +221,7 @@ export interface IImage {
 }
 
 // UiKit/Overflow
-export interface IOverflow extends Block {
+export interface IOverflow extends Partial<Block> {
 	action: Function;
 	loading: boolean;
 	parser: IParser;
@@ -210,7 +244,7 @@ export interface IOption extends PropsOption {
 
 // UiKit/Section
 interface IAccessory {
-	type: TTypes;
+	type: ElementTypes;
 	actionId: string;
 	value: number;
 	text: IText;
