@@ -60,7 +60,7 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionEncryption &
 	TActionSortPreferences &
 	TActionUserTyping &
-	TActionCreateDiscussion&
+	TActionCreateDiscussion &
 	TActionCreateChannel &
 	TActionsShare &
 	TActionServer &

@@ -8,7 +8,7 @@ import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
 import { Q } from '@nozbe/watermelondb';
 
-import { compareServerVersion, methods } from '../../lib/utils';
+import { compareServerVersion } from '../../lib/utils';
 import database from '../../lib/database';
 import { deleteRoom as deleteRoomAction } from '../../actions/room';
 import KeyboardView from '../../presentation/KeyboardView';
@@ -538,7 +538,7 @@ class RoomInfoEditView extends React.Component {
 						<TouchableOpacity
 							style={styles.avatarContainer}
 							onPress={this.changeAvatar}
-							disabled={compareServerVersion(serverVersion, '3.6.0', methods.lowerThan)}>
+							disabled={compareServerVersion(serverVersion, 'lowerThan', '3.6.0')}>
 							<Avatar
 								type={room.t}
 								text={room.name}
@@ -546,7 +546,7 @@ class RoomInfoEditView extends React.Component {
 								isStatic={avatar?.url}
 								rid={isEmpty(avatar) && room.rid}
 								size={100}>
-								{compareServerVersion(serverVersion, '3.6.0', methods.lowerThan) ? null : (
+								{compareServerVersion(serverVersion, 'lowerThan', '3.6.0') ? null : (
 									<TouchableOpacity
 										style={[styles.resetButton, { backgroundColor: themes[theme].dangerColor }]}
 										onPress={this.resetAvatar}>
@@ -670,7 +670,7 @@ class RoomInfoEditView extends React.Component {
 									<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
 							  ]
 							: null}
-						{!compareServerVersion(serverVersion, '3.0.0', methods.lowerThan) ? (
+						{!compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (
 							<SwitchContainer
 								value={enableSysMes}
 								leftLabelPrimary={I18n.t('Hide_System_Messages')}

@@ -16,14 +16,14 @@ export interface IShareUser {
 }
 
 export interface IShare {
-	user: IShareUser | {};
-	server: IShareServer | {};
+	user: IShareUser;
+	server: IShareServer;
 	settings: TShareSettings;
 }
 
 export const initialState: IShare = {
-	user: {},
-	server: {},
+	user: {} as IShareUser,
+	server: {} as IShareServer,
 	settings: {}
 };
 
