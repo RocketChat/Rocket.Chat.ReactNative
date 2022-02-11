@@ -5,13 +5,13 @@ import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 
-import { getTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
+import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
 import UserPreferences from './lib/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { initStore } from './lib/auxStore';
 import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
-import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
+import RocketChat from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
 import { IThemePreference } from './definitions/ITheme';
@@ -93,7 +93,7 @@ class Root extends React.Component<{}, IState> {
 	constructor(props: any) {
 		super(props);
 		const { width, height, scale, fontScale } = Dimensions.get('screen');
-		const theme = UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference;
+		const theme = initialTheme();
 		this.state = {
 			theme: getTheme(theme),
 			themePreferences: theme,

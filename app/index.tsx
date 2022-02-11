@@ -6,8 +6,7 @@ import { KeyCommandsEmitter } from 'react-native-keycommands';
 import RNScreens from 'react-native-screens';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
-import { defaultTheme, getTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
-import UserPreferences from './lib/userPreferences';
+import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
 import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -17,7 +16,7 @@ import store from './lib/createStore';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './utils/log';
 import { ThemeContext } from './theme';
 import { DimensionsContext } from './dimensions';
-import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
+import RocketChat from './lib/rocketchat';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
 import { isTablet } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
@@ -88,13 +87,7 @@ export default class Root extends React.Component<{}, IState> {
 			this.initCrashReport();
 		}
 		const { width, height, scale, fontScale } = Dimensions.get('window');
-		const theme =
-			(UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference) ||
-			({
-				currentTheme: defaultTheme(),
-				darkLevel: 'dark'
-			} as IThemePreference);
-
+		const theme = initialTheme();
 		this.state = {
 			theme: getTheme(theme),
 			themePreferences: theme,
