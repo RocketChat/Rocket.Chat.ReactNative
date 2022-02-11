@@ -146,7 +146,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			value: room?.departmentId,
 			data: departments,
 			onChangeValue: setDepartment,
-			onChangeText: getDepartments,
+			onSearch: getDepartments,
 			onEndReached: getDepartments,
 			total: departmentTotal,
 			goBack: false
@@ -158,7 +158,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			title: I18n.t('Forward_to_user'),
 			data: users,
 			onChangeValue: setUser,
-			onChangeText: getUsers,
+			onSearch: getUsers,
 			goBack: false
 		});
 	};

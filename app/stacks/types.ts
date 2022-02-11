@@ -98,7 +98,7 @@ export type ChatsStackParamList = {
 		title: string;
 		data: IOptionsField[];
 		value?: string;
-		onChangeText?: (text?: string) => Promise<any>;
+		onSearch?: (text?: string) => Promise<any>;
 		onEndReached?: (text: string, offset?: number) => Promise<any>;
 		total?: number;
 		goBack?: boolean;

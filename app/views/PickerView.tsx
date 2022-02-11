@@ -17,8 +17,7 @@ import { IOptionsField } from './NotificationPreferencesView/options';
 const styles = StyleSheet.create({
 	search: {
 		width: '100%',
-		height: 56,
-		marginBottom: 32
+		height: 56
 	},
 	noResult: {
 		fontSize: 16,
@@ -80,7 +79,7 @@ const RenderSearch = ({ hasSearch, onChangeText }: IRenderSearch) => {
 };
 
 class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState> {
-	private onSearch?: (text?: string) => Promise<{ data: IOptionsField[] } | undefined>;
+	private onSearch?: (text?: string) => Promise<any>;
 
 	static navigationOptions = ({ route }: IPickerViewProps) => ({
 		title: route.params?.title ?? I18n.t('Select_an_option')
@@ -92,7 +91,7 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 		const value = props.route.params?.value ?? '';
 		const total = props.route.params?.total ?? 0;
 		this.state = { data, value, total, searchText: '' };
-		this.onSearch = props.route.params?.onChangeText;
+		this.onSearch = props.route.params?.onSearch;
 	}
 
 	onChangeValue = (value: string) => {
