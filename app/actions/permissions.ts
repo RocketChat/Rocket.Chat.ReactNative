@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { IPermissions } from '../reducers/permissions';
+import { IPermissions, TSupportedPermissions } from '../reducers/permissions';
 import { PERMISSIONS } from './actionsTypes';
 
 interface ISetPermissions extends Action {
@@ -20,7 +20,7 @@ export function setPermissions(permissions: IPermissions): ISetPermissions {
 	};
 }
 
-export function updatePermission(id: string, roles: string): IUpdatePermissions {
+export function updatePermission(id: TSupportedPermissions, roles: string): IUpdatePermissions {
 	return {
 		type: PERMISSIONS.UPDATE,
 		payload: { id, roles }

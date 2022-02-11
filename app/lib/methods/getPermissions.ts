@@ -11,7 +11,7 @@ import { setPermissions as setPermissionsAction } from '../../actions/permission
 import protectedFunction from './helpers/protectedFunction';
 import { IRocketChat, TPermissionModel, IPermission } from '../../definitions';
 
-const PERMISSIONS = [
+export const SUPPORTED_PERMISSIONS = [
 	'add-user-to-any-c-room',
 	'add-user-to-any-p-room',
 	'add-user-to-joined-room',
@@ -58,12 +58,12 @@ const PERMISSIONS = [
 	'edit-livechat-room-customfields',
 	'view-canned-responses',
 	'mobile-upload-file'
-];
+] as const;
 
 export async function setPermissions(): Promise<void> {
 	const db = database.active;
 	const permissionsCollection = db.get('permissions');
-	const allPermissions = await permissionsCollection.query(Q.where('id', Q.oneOf(PERMISSIONS))).fetch();
+	const allPermissions = await permissionsCollection.query(Q.where('id', Q.oneOf(SUPPORTED_PERMISSIONS))).fetch();
 	const parsed = allPermissions.reduce((acc, item) => ({ ...acc, [item.id]: item.roles }), {});
 
 	reduxStore.dispatch(setPermissionsAction(parsed));

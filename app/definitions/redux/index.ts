@@ -1,4 +1,6 @@
 // ACTIONS
+import { IPermissions } from 'reducers/permissions';
+
 import { TActionActiveUsers } from '../../actions/activeUsers';
 import { TActionApp } from '../../actions/app';
 import { TActionCreateChannel } from '../../actions/createChannel';
@@ -47,7 +49,7 @@ export interface IApplicationState {
 	inquiry: any;
 	enterpriseModules: any;
 	encryption: IEncryption;
-	permissions: any;
+	permissions: IPermissions;
 	roles: IRoles;
 }
 
