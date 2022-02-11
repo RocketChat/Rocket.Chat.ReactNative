@@ -1,13 +1,21 @@
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
+import { ICustomEmojis } from '../../reducers/customEmojis';
 import { compareServerVersion } from '../utils';
 import { store as reduxStore } from '../auxStore';
 import database from '../database';
 import log from '../../utils/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
+import { ICustomEmoji, IRocketChat, TCustomEmojiModel } from '../../definitions';
 
-const getUpdatedSince = allEmojis => {
+interface IUpdateEmojis {
+	update: TCustomEmojiModel[];
+	remove?: TCustomEmojiModel[];
+	allRecords: TCustomEmojiModel[];
+}
+
+const getUpdatedSince = (allEmojis: ICustomEmoji[]) => {
 	if (!allEmojis.length) {
 		return null;
 	}
@@ -19,15 +27,15 @@ const getUpdatedSince = allEmojis => {
 	return ordered && ordered[0]._updatedAt.toISOString();
 };
 
-const updateEmojis = async ({ update = [], remove = [], allRecords }) => {
+const updateEmojis = async ({ update = [], remove = [], allRecords }: IUpdateEmojis) => {
 	if (!((update && update.length) || (remove && remove.length))) {
 		return;
 	}
 	const db = database.active;
 	const emojisCollection = db.get('custom_emojis');
-	let emojisToCreate = [];
-	let emojisToUpdate = [];
-	let emojisToDelete = [];
+	let emojisToCreate: TCustomEmojiModel[] = [];
+	let emojisToUpdate: TCustomEmojiModel[] = [];
+	let emojisToDelete: TCustomEmojiModel[] = [];
 
 	// Create or update
 	if (update && update.length) {
@@ -53,7 +61,7 @@ const updateEmojis = async ({ update = [], remove = [], allRecords }) => {
 	}
 
 	try {
-		await db.action(async () => {
+		await db.write(async () => {
 			await db.batch(...emojisToCreate, ...emojisToUpdate, ...emojisToDelete);
 		});
 		return true;
@@ -66,26 +74,34 @@ export async function setCustomEmojis() {
 	const db = database.active;
 	const emojisCollection = db.get('custom_emojis');
 	const allEmojis = await emojisCollection.query().fetch();
-	const parsed = allEmojis.reduce((ret, item) => {
-		ret[item.name] = {
-			name: item.name,
-			extension: item.extension
-		};
-		item.aliases.forEach(alias => {
-			ret[alias] = {
+	const parsed = allEmojis.reduce((ret: ICustomEmojis, item) => {
+		if (item.name) {
+			ret[item.name] = {
 				name: item.name,
 				extension: item.extension
 			};
-		});
+		}
+
+		if (item.aliases) {
+			item.aliases.forEach(alias => {
+				if (item.name) {
+					ret[alias] = {
+						name: item.name,
+						extension: item.extension
+					};
+				}
+			});
+		}
+
 		return ret;
 	}, {});
 	reduxStore.dispatch(setCustomEmojisAction(parsed));
 }
 
-export function getCustomEmojis() {
-	return new Promise(async resolve => {
+export function getCustomEmojis(this: IRocketChat) {
+	return new Promise<void>(async resolve => {
 		try {
-			const serverVersion = reduxStore.getState().server.version;
+			const serverVersion = reduxStore.getState().server.version as string;
 			const db = database.active;
 			const emojisCollection = db.get('custom_emojis');
 			const allRecords = await emojisCollection.query().fetch();
@@ -97,7 +113,7 @@ export function getCustomEmojis() {
 				const result = await this.sdk.get('emoji-custom');
 
 				let { emojis } = result;
-				emojis = emojis.filter(emoji => !updatedSince || emoji._updatedAt > updatedSince);
+				emojis = emojis.filter((emoji: TCustomEmojiModel) => !updatedSince || emoji._updatedAt.toISOString() > updatedSince);
 				const changedEmojis = await updateEmojis({ update: emojis, allRecords });
 
 				// `setCustomEmojis` is fired on selectServer
@@ -106,28 +122,27 @@ export function getCustomEmojis() {
 					setCustomEmojis();
 				}
 				return resolve();
-			} else {
-				const params = {};
-				if (updatedSince) {
-					params.updatedSince = updatedSince;
-				}
+			}
+			const params: { updatedSince?: string } = {};
+			if (updatedSince) {
+				params.updatedSince = updatedSince;
+			}
 
-				// RC 0.75.0
-				const result = await this.sdk.get('emoji-custom.list', params);
+			// RC 0.75.0
+			const result = await this.sdk.get('emoji-custom.list', params);
 
-				if (!result.success) {
-					return resolve();
-				}
+			if (!result.success) {
+				return resolve();
+			}
 
-				const { emojis } = result;
-				const { update, remove } = emojis;
-				const changedEmojis = await updateEmojis({ update, remove, allRecords });
+			const { emojis } = result;
+			const { update, remove } = emojis;
+			const changedEmojis = await updateEmojis({ update, remove, allRecords });
 
-				// `setCustomEmojis` is fired on selectServer
-				// We run it again only if emojis were changed
-				if (changedEmojis) {
-					setCustomEmojis();
-				}
+			// `setCustomEmojis` is fired on selectServer
+			// We run it again only if emojis were changed
+			if (changedEmojis) {
+				setCustomEmojis();
 			}
 		} catch (e) {
 			log(e);
