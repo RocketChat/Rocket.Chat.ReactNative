@@ -1,6 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import orderBy from 'lodash/orderBy';
+import { IPermissions } from 'reducers/permissions';
 
 import { compareServerVersion } from '../utils';
 import database from '../database';
@@ -9,6 +10,7 @@ import { store as reduxStore } from '../auxStore';
 import RocketChat from '../rocketchat';
 import { setPermissions as setPermissionsAction } from '../../actions/permissions';
 import protectedFunction from './helpers/protectedFunction';
+import { IRocketChat, TPermissionModel } from '../../definitions';
 
 const PERMISSIONS = [
 	'add-user-to-any-c-room',
@@ -59,7 +61,7 @@ const PERMISSIONS = [
 	'mobile-upload-file'
 ];
 
-export async function setPermissions() {
+export async function setPermissions(): Promise<void> {
 	const db = database.active;
 	const permissionsCollection = db.get('permissions');
 	const allPermissions = await permissionsCollection.query(Q.where('id', Q.oneOf(PERMISSIONS))).fetch();
@@ -68,7 +70,7 @@ export async function setPermissions() {
 	reduxStore.dispatch(setPermissionsAction(parsed));
 }
 
-const getUpdatedSince = allRecords => {
+const getUpdatedSince = (allRecords: TPermissionModel[]) => {
 	try {
 		if (!allRecords.length) {
 			return null;
@@ -85,50 +87,56 @@ const getUpdatedSince = allRecords => {
 	return null;
 };
 
-const updatePermissions = async ({ update = [], remove = [], allRecords }) => {
+const updatePermissions = async ({
+	update = [],
+	remove = [],
+	allRecords
+}: {
+	update?: IPermissions[];
+	remove?: IPermissions[];
+	allRecords: TPermissionModel[];
+}) => {
 	if (!((update && update.length) || (remove && remove.length))) {
 		return;
 	}
 	const db = database.active;
 	const permissionsCollection = db.get('permissions');
 
-	// filter permissions
-	let permissionsToCreate = [];
-	let permissionsToUpdate = [];
-	let permissionsToDelete = [];
+	const batch: TPermissionModel[] = [];
+
+	// Delete
+	if (remove?.length) {
+		const filteredPermissionsToDelete = allRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
+		const permissionsToDelete = filteredPermissionsToDelete.map(permission => permission.prepareDestroyPermanently());
+		batch.push(...permissionsToDelete);
+	}
 
 	// Create or update
-	if (update && update.length) {
-		permissionsToCreate = update.filter(i1 => !allRecords.find(i2 => i1._id === i2.id));
-		permissionsToUpdate = allRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
-		permissionsToCreate = permissionsToCreate.map(permission =>
+	if (update?.length) {
+		const filteredPermissionsToCreate = update.filter(i1 => !allRecords.find(i2 => i1._id === i2.id));
+		const filteredPermissionsToUpdate = allRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
+		const permissionsToCreate = filteredPermissionsToCreate.map(permission =>
 			permissionsCollection.prepareCreate(
-				protectedFunction(p => {
+				protectedFunction((p: TPermissionModel) => {
 					p._raw = sanitizedRaw({ id: permission._id }, permissionsCollection.schema);
 					Object.assign(p, permission);
 				})
 			)
 		);
-		permissionsToUpdate = permissionsToUpdate.map(permission => {
+		const permissionsToUpdate = filteredPermissionsToUpdate.map(permission => {
 			const newPermission = update.find(p => p._id === permission.id);
 			return permission.prepareUpdate(
-				protectedFunction(p => {
+				protectedFunction((p: TPermissionModel) => {
 					Object.assign(p, newPermission);
 				})
 			);
 		});
-	}
 
-	// Delete
-	if (remove && remove.length) {
-		permissionsToDelete = allRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
-		permissionsToDelete = permissionsToDelete.map(permission => permission.prepareDestroyPermanently());
+		batch.push(...permissionsToCreate, ...permissionsToUpdate);
 	}
-
-	const batch = [...permissionsToCreate, ...permissionsToUpdate, ...permissionsToDelete];
 
 	try {
-		await db.action(async () => {
+		await db.write(async () => {
 			await db.batch(...batch);
 		});
 		return true;
@@ -137,16 +145,16 @@ const updatePermissions = async ({ update = [], remove = [], allRecords }) => {
 	}
 };
 
-export function getPermissions() {
+export function getPermissions(this: IRocketChat): Promise<void> {
 	return new Promise(async resolve => {
 		try {
-			const serverVersion = reduxStore.getState().server.version;
+			const serverVersion: string | null = reduxStore.getState().server.version;
 			const db = database.active;
 			const permissionsCollection = db.get('permissions');
 			const allRecords = await permissionsCollection.query().fetch();
 			RocketChat.subscribe('stream-notify-logged', 'permissions-changed');
 			// if server version is lower than 0.73.0, fetches from old api
-			if (compareServerVersion(serverVersion, 'lowerThan', '0.73.0')) {
+			if (serverVersion && compareServerVersion(serverVersion, 'lowerThan', '0.73.0')) {
 				// RC 0.66.0
 				const result = await this.sdk.get('permissions.list');
 				if (!result.success) {
@@ -157,25 +165,25 @@ export function getPermissions() {
 					setPermissions();
 				}
 				return resolve();
-			} else {
-				const params = {};
-				const updatedSince = getUpdatedSince(allRecords);
-				if (updatedSince) {
-					params.updatedSince = updatedSince;
-				}
-				// RC 0.73.0
-				const result = await this.sdk.get('permissions.listAll', params);
+			}
 
-				if (!result.success) {
-					return resolve();
-				}
+			const params: { updatedSince?: string } = {};
+			const updatedSince = getUpdatedSince(allRecords);
+			if (updatedSince) {
+				params.updatedSince = updatedSince;
+			}
+			// RC 0.73.0
+			const result = await this.sdk.get('permissions.listAll', params);
 
-				const changePermissions = await updatePermissions({ update: result.update, remove: result.delete, allRecords });
-				if (changePermissions) {
-					setPermissions();
-				}
+			if (!result.success) {
 				return resolve();
 			}
+
+			const changePermissions = await updatePermissions({ update: result.update, remove: result.delete, allRecords });
+			if (changePermissions) {
+				setPermissions();
+			}
+			return resolve();
 		} catch (e) {
 			log(e);
 			return resolve();
