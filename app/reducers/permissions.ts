@@ -4,13 +4,13 @@ import { SUPPORTED_PERMISSIONS } from '../lib/methods/getPermissions';
 
 export type TSupportedPermissions = typeof SUPPORTED_PERMISSIONS[number];
 
-export type IPermissions = {
+export type IPermissionsState = {
 	[K in TSupportedPermissions]?: string[];
 };
 
-export const initialState: IPermissions = {};
+export const initialState: IPermissionsState = {};
 
-export default function permissions(state = initialState, action: TActionPermissions): IPermissions {
+export default function permissions(state = initialState, action: TActionPermissions): IPermissionsState {
 	switch (action.type) {
 		case PERMISSIONS.SET:
 			return action.permissions;

@@ -58,7 +58,7 @@ export const SUPPORTED_PERMISSIONS = [
 	'edit-livechat-room-customfields',
 	'view-canned-responses',
 	'mobile-upload-file'
-] as const;
+];
 
 export async function setPermissions(): Promise<void> {
 	const db = database.active;
