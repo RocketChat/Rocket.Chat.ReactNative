@@ -17,8 +17,9 @@ import { RolesEndpoints } from './roles';
 import { RoomsEndpoints } from './rooms';
 import { OauthCustomConfiguration } from './settings';
 import { StatisticsEndpoints } from './statistics';
-import { User } from './user';
+import { UserEndpoints } from './user';
 import { UsersEndpoints } from './users';
+import { TeamsEndpoints } from './teams';
 
 export type Endpoints = BannersEndpoints &
 	ChannelsEndpoints &
@@ -39,5 +40,6 @@ export type Endpoints = BannersEndpoints &
 	RoomsEndpoints &
 	OauthCustomConfiguration &
 	StatisticsEndpoints &
-	User &
-	UsersEndpoints;
+	UserEndpoints &
+	UsersEndpoints &
+	TeamsEndpoints;

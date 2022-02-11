@@ -1,6 +1,6 @@
 import { IUser } from '../../IUser';
 
-export type User = {
+export type UserEndpoints = {
 	'users.info': {
 		GET: (params: { userId: IUser['_id'] }) => {
 			user: IUser;
