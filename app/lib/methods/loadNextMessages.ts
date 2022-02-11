@@ -7,14 +7,18 @@ import { getMessageById } from '../database/services/Message';
 import { MESSAGE_TYPE_LOAD_NEXT_CHUNK } from '../../constants/messageTypeLoad';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
-import { IMessage, IRocketChat } from '../../definitions';
+import { IMessage, IRocketChat, TMessageModel } from '../../definitions';
 
 const COUNT = 50;
 
-export default function loadNextMessages(
-	this: IRocketChat,
-	args: { rid: string; ts: string; tmid: string; loaderItem: IMessage }
-): Promise<IMessage | []> {
+interface ILoadNextMessages {
+	rid: string;
+	ts: string;
+	tmid: string;
+	loaderItem: TMessageModel;
+}
+
+export default function loadNextMessages(this: IRocketChat, args: ILoadNextMessages): Promise<IMessage | []> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await this.methodCallWrapper('loadNextMessages', args.rid, args.ts, COUNT);
