@@ -281,6 +281,11 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			let threadsToUpdate: any[] = [];
 			let threadsToDelete: any[] = [];
 
+			if (remove && remove.length) {
+				threadsToDelete = allThreadsRecords.filter((i1: { id: string }) => remove.find(i2 => i1.id === i2._id));
+				threadsToDelete = threadsToDelete.map(t => t.prepareDestroyPermanently());
+			}
+
 			if (update && update.length) {
 				update = update.map(m => buildMessage(m));
 				// filter threads
@@ -297,17 +302,16 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				);
 				threadsToUpdate = threadsToUpdate.map(thread => {
 					const newThread = update.find(t => t._id === thread.id);
-					return thread.prepareUpdate(
-						protectedFunction((t: any) => {
-							Object.assign(t, newThread);
-						})
-					);
+					try {
+						return thread.prepareUpdate(
+							protectedFunction((t: any) => {
+								Object.assign(t, newThread);
+							})
+						);
+					} catch {
+						return null;
+					}
 				});
-			}
-
-			if (remove && remove.length) {
-				threadsToDelete = allThreadsRecords.filter((i1: { id: string }) => remove.find(i2 => i1.id === i2._id));
-				threadsToDelete = threadsToDelete.map(t => t.prepareDestroyPermanently());
 			}
 
 			await db.write(async () => {

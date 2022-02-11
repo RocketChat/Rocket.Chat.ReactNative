@@ -2,7 +2,7 @@ import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { compareServerVersion } from '../utils';
-import reduxStore from '../createStore';
+import { store as reduxStore } from '../auxStore';
 import database from '../database';
 import log from '../../utils/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
