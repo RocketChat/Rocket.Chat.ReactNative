@@ -6,6 +6,7 @@ export interface IUser {
 	name?: string;
 	username: string;
 	avatarETag?: string;
+	token: string;
 }
 
 export type TUserModel = IUser & Model;

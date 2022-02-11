@@ -98,7 +98,7 @@ export async function resendMessage(message: TMessageModel, tmid: string) {
 	}
 }
 
-export default async function (rid: string, msg: string, tmid: string, user: IUser, tshow: boolean) {
+export default async function (rid: string, msg: string, tmid: string, user: IUser, tshow?: boolean) {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
