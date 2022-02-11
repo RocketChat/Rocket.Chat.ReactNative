@@ -2,6 +2,7 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-community/async-storage';
 import { sha256 } from 'js-sha256';
+import moment from 'moment';
 
 import UserPreferences from '../lib/userPreferences';
 import { store } from '../lib/auxStore';
@@ -21,17 +22,16 @@ import { TServerModel } from '../definitions/IServer';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
-export const saveLastLocalAuthenticationSession = async (
-	server: string,
-	serverRecord?: TServerModel,
-	timesync?: number | null
-): Promise<void> => {
+export const saveLastLocalAuthenticationSession = async (server: string, serverRecord?: TServerModel): Promise<void> => {
+	// We need to get the timesync again because this function is been called when we turn the app to background too
+	const timesync = await RocketChat.getServerTimeSync(server);
+
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 	await serversDB.write(async () => {
 		try {
 			if (!serverRecord) {
-				serverRecord = (await serversCollection.find(server)) as TServerModel;
+				serverRecord = await serversCollection.find(server);
 			}
 			const time = timesync || 0;
 			await serverRecord.update(record => {
@@ -124,16 +124,10 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set
 		if (!result?.newPasscode) {
 			// diff to last authenticated session
-			let diffToLastSession = -1;
-			if (timesync) {
-				const lastLocalTime = serverRecord?.lastLocalAuthenticatedSession || new Date(0);
-				diffToLastSession = Math.round((timesync - lastLocalTime.getTime()) / 1000);
-			}
+			const diffToLastSession = moment(timesync).diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 
-			// if last authenticated session is older than configured auto lock time, authentication is required
-			// check if diffToLastSession is negative
-			// check if timesync is truly, if isn't will show always the modal
-			if (!timesync || diffToLastSession < 0 || (serverRecord?.autoLockTime && diffToLastSession >= serverRecord.autoLockTime)) {
+			// if can't receive the timesync value from the server or last authenticated session is older than configured auto lock time, authentication is required
+			if (!timesync || (serverRecord?.autoLockTime && diffToLastSession >= serverRecord.autoLockTime)) {
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
 
@@ -155,7 +149,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		}
 
 		await resetAttempts();
-		await saveLastLocalAuthenticationSession(server, serverRecord, timesync);
+		await saveLastLocalAuthenticationSession(server, serverRecord);
 	}
 };
 
