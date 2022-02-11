@@ -182,7 +182,7 @@ const Fields = React.memo(
 						<Text style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>{field.title}</Text>
 						{/* @ts-ignore*/}
 						<Markdown
-							msg={field.value!}
+							msg={field?.value || ''}
 							baseUrl={baseUrl}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
@@ -214,7 +214,7 @@ const Reply = React.memo(
 			if (!url) {
 				return;
 			}
-			if (attachment.type === 'file') {
+			if (attachment.type === 'file' && attachment.title_link) {
 				setLoading(true);
 				url = formatAttachmentUrl(attachment.title_link, user.id, user.token, baseUrl);
 				await fileDownloadAndPreview(url, attachment);

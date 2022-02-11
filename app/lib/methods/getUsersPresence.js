@@ -1,8 +1,8 @@
 import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { compareServerVersion, methods } from '../utils';
-import reduxStore from '../createStore';
+import { compareServerVersion } from '../utils';
+import { store as reduxStore } from '../auxStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import database from '../database';
@@ -11,7 +11,7 @@ export function subscribeUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version;
 
 	// if server is lower than 1.1.0
-	if (compareServerVersion(serverVersion, '1.1.0', methods.lowerThan)) {
+	if (compareServerVersion(serverVersion, 'lowerThan', '1.1.0')) {
 		if (this.activeUsersSubTimeout) {
 			clearTimeout(this.activeUsersSubTimeout);
 			this.activeUsersSubTimeout = false;
@@ -19,7 +19,7 @@ export function subscribeUsersPresence() {
 		this.activeUsersSubTimeout = setTimeout(() => {
 			this.sdk.subscribe('activeUsers');
 		}, 5000);
-	} else {
+	} else if (compareServerVersion(serverVersion, 'lowerThan', '4.1.0')) {
 		this.sdk.subscribe('stream-notify-logged', 'user-status');
 	}
 
@@ -36,11 +36,11 @@ export default async function getUsersPresence() {
 	const { user: loggedUser } = reduxStore.getState().login;
 
 	// if server is greather than or equal 1.1.0
-	if (compareServerVersion(serverVersion, '1.1.0', methods.greaterThanOrEqualTo)) {
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '1.1.0')) {
 		let params = {};
 
 		// if server is greather than or equal 3.0.0
-		if (compareServerVersion(serverVersion, '3.0.0', methods.greaterThanOrEqualTo)) {
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.0.0')) {
 			// if not have any id
 			if (!ids.length) {
 				return;
@@ -52,6 +52,11 @@ export default async function getUsersPresence() {
 		try {
 			// RC 1.1.0
 			const result = await this.sdk.get('users.presence', params);
+
+			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.1.0')) {
+				this.sdk.subscribeRaw('stream-user-presence', ['', { added: ids }]);
+			}
+
 			if (result.success) {
 				const { users } = result;
 
@@ -100,13 +105,9 @@ export default async function getUsersPresence() {
 
 let usersTimer = null;
 export function getUserPresence(uid) {
-	const auth = reduxStore.getState().login.isAuthenticated;
-
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {
-			if (auth && ids.length) {
-				getUsersPresence.call(this);
-			}
+			getUsersPresence.call(this);
 			usersTimer = null;
 		}, 2000);
 	}

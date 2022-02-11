@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { Q } from '@nozbe/watermelondb';
 
-import { compareServerVersion, methods } from '../../lib/utils';
+import { compareServerVersion } from '../../lib/utils';
 import Touch from '../../utils/touch';
 import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
 import { closeRoom as closeRoomAction, leaveRoom as leaveRoomAction } from '../../actions/room';
@@ -320,7 +320,7 @@ class RoomActionsView extends React.Component {
 		const { encrypted } = room;
 		const { serverVersion } = this.props;
 		let hasPermission = false;
-		if (compareServerVersion(serverVersion, '3.11.0', methods.lowerThan)) {
+		if (compareServerVersion(serverVersion, 'lowerThan', '3.11.0')) {
 			hasPermission = canEdit;
 		} else {
 			hasPermission = canToggleEncryption;
@@ -643,7 +643,7 @@ class RoomActionsView extends React.Component {
 			const { addTeamChannelPermission, createTeamPermission } = this.props;
 			const QUERY_SIZE = 50;
 			const db = database.active;
-			const teams = await db.collections
+			const teams = await db
 				.get('subscriptions')
 				.query(
 					Q.where('team_main', true),
@@ -941,7 +941,7 @@ class RoomActionsView extends React.Component {
 			canReturnQueue,
 			canViewCannedResponse
 		} = this.state;
-		const { rid, t } = room;
+		const { rid, t, prid } = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
 		return (
@@ -1003,6 +1003,27 @@ class RoomActionsView extends React.Component {
 									}
 									testID='room-actions-invite-user'
 									left={() => <List.Icon name='user-add' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
+
+						{['c', 'p', 'd'].includes(t) && !prid ? (
+							<>
+								<List.Item
+									title='Discussions'
+									onPress={() =>
+										this.onPressTouchable({
+											route: 'DiscussionsView',
+											params: {
+												rid,
+												t
+											}
+										})
+									}
+									testID='room-actions-discussions'
+									left={() => <List.Icon name='discussions' />}
 									showActionIndicator
 								/>
 								<List.Separator />

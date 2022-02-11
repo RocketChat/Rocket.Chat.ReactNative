@@ -1,16 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 import { FlatList, ScrollView, StyleSheet, Switch, Text, View, SwitchProps } from 'react-native';
 import { dequal } from 'dequal';
 
 import * as List from '../containers/List';
 import TextInput from '../presentation/TextInput';
 import Loading from '../containers/Loading';
-import { createChannelRequest as createChannelRequestAction } from '../actions/createChannel';
-import { removeUser as removeUserAction } from '../actions/selectedUsers';
+import { createChannelRequest } from '../actions/createChannel';
+import { removeUser } from '../actions/selectedUsers';
 import KeyboardView from '../presentation/KeyboardView';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import I18n from '../i18n';
@@ -26,6 +23,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
+import { IApplicationState, IBaseScreen } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -75,12 +73,6 @@ interface IOtherUser {
 	fname: string;
 }
 
-interface ICreateFunction extends Omit<ICreateChannelViewState, 'channelName' | 'permissions'> {
-	name: string;
-	users: string[];
-	teamId: string;
-}
-
 interface ICreateChannelViewState {
 	channelName: string;
 	type: boolean;
@@ -91,12 +83,8 @@ interface ICreateChannelViewState {
 	permissions: boolean[];
 }
 
-interface ICreateChannelViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'CreateChannelView'>;
-	route: RouteProp<ChatsStackParamList, 'CreateChannelView'>;
+interface ICreateChannelViewProps extends IBaseScreen<ChatsStackParamList, 'CreateChannelView'> {
 	baseUrl: string;
-	create: (data: ICreateFunction) => void;
-	removeUser: (user: IOtherUser) => void;
 	error: object;
 	failure: boolean;
 	isFetching: boolean;
@@ -107,7 +95,6 @@ interface ICreateChannelViewProps {
 		token: string;
 		roles: string[];
 	};
-	theme: string;
 	teamId: string;
 	createPublicChannelPermission: string[];
 	createPrivateChannelPermission: string[];
@@ -223,7 +210,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 
 	submit = () => {
 		const { channelName, type, readOnly, broadcast, encrypted, isTeam } = this.state;
-		const { users: usersProps, isFetching, create } = this.props;
+		const { users: usersProps, isFetching, dispatch } = this.props;
 
 		if (!channelName.trim() || isFetching) {
 			return;
@@ -233,7 +220,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		const users = usersProps.map(user => user.name);
 
 		// create channel or team
-		create({
+		const data = {
 			name: channelName,
 			users,
 			type,
@@ -242,15 +229,15 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			encrypted,
 			isTeam,
 			teamId: this.teamId!
-		});
-
+		};
+		dispatch(createChannelRequest(data));
 		Review.pushPositiveEvent();
 	};
 
 	removeUser = (user: IOtherUser) => {
 		logEvent(events.CR_REMOVE_USER);
-		const { removeUser } = this.props;
-		removeUser(user);
+		const { dispatch } = this.props;
+		dispatch(removeUser(user));
 	};
 
 	renderSwitch = ({ id, value, label, onValueChange, disabled = false }: ISwitch) => {
@@ -434,7 +421,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	isFetching: state.createChannel.isFetching,
 	encryptionEnabled: state.encryption.enabled,
@@ -444,9 +431,4 @@ const mapStateToProps = (state: any) => ({
 	createPrivateChannelPermission: state.permissions['create-p']
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	create: (data: ICreateFunction) => dispatch(createChannelRequestAction(data)),
-	removeUser: (user: IOtherUser) => dispatch(removeUserAction(user))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(CreateChannelView));
+export default connect(mapStateToProps)(withTheme(CreateChannelView));
