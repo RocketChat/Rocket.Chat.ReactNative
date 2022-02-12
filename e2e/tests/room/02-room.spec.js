@@ -313,6 +313,7 @@ describe('Room screen', () => {
 					.toExist()
 					.withTimeout(2000);
 				await element(by.id('reaction-picker-grimacing')).tap();
+				await dismissReviewNag();
 				await waitFor(element(by.id('message-reaction-:grimacing:')))
 					.toExist()
 					.withTimeout(60000);
@@ -350,9 +351,9 @@ describe('Room screen', () => {
 					.withTimeout(60000);
 			});
 
-			it('should ask for review', async () => {
-				await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
-			});
+			// it('should ask for review', async () => {
+			// 	await dismissReviewNag(); // TODO: Create a proper test for this elsewhere.
+			// });
 
 			it('should edit message', async () => {
 				await mockMessage('edit');
