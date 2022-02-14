@@ -72,7 +72,11 @@ import {
 	e2eGetUsersOfRoomWithoutKey,
 	e2eSetRoomKeyID,
 	e2eUpdateGroupKey,
-	e2eRequestRoomKey
+	e2eRequestRoomKey,
+	updateJitsiTimeout,
+	register,
+	forgotPassword,
+	sendConfirmationEmail
 } from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -500,25 +504,10 @@ const RocketChat = {
 		// RC 0.72.0
 		return this.methodCallWrapper('e2e.resetOwnE2EKey');
 	},
-
-	updateJitsiTimeout(roomId) {
-		// RC 0.74.0
-		return this.post('video-conference/jitsi.update-timeout', { roomId });
-	},
-
-	register(credentials) {
-		// RC 0.50.0
-		return this.post('users.register', credentials, false);
-	},
-
-	forgotPassword(email) {
-		// RC 0.64.0
-		return this.post('users.forgotPassword', { email }, false);
-	},
-
-	sendConfirmationEmail(email) {
-		return this.methodCallWrapper('sendConfirmationEmail', email);
-	},
+	updateJitsiTimeout,
+	register,
+	forgotPassword,
+	sendConfirmationEmail,
 
 	loginTOTP(params, loginEmailPassword, isFromWebView = false) {
 		return new Promise(async (resolve, reject) => {

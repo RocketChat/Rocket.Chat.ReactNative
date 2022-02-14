@@ -63,3 +63,23 @@ export const e2eUpdateGroupKey = (uid: string, rid: string, key: string) =>
 export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
 	// RC 0.70.0
 	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
+
+export const updateJitsiTimeout = (roomId: string) =>
+	// RC 0.74.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('video-conference/jitsi.update-timeout', { roomId });
+
+export const register = (credentials: any) =>
+	// RC 0.50.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('users.register', credentials);
+
+export const forgotPassword = (email: string) =>
+	// RC 0.64.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('users.forgotPassword', { email });
+
+export const sendConfirmationEmail = (email: string) => sdk.methodCallWrapper('sendConfirmationEmail', email);
