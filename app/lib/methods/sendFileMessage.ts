@@ -142,7 +142,7 @@ export function sendFileMessage(
 				}
 			});
 
-			uploadQueue[fileInfo.path].catch(async (error: unknown) => {
+			uploadQueue[fileInfo.path].catch(async error => {
 				try {
 					await db.write(async () => {
 						await uploadRecord.update(u => {
