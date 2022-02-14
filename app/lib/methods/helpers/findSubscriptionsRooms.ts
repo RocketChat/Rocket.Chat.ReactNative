@@ -1,15 +1,20 @@
 import { Q } from '@nozbe/watermelondb';
 
+import log from '../../../utils/log';
+import { IRoom, ISubscription, TSubscriptionModel } from '../../../definitions';
 import database from '../../database';
 
-export default async (subscriptions = [], rooms = []) => {
+export default async (
+	subscriptions: ISubscription[] = [],
+	rooms: IRoom[] = []
+): Promise<{ subscriptions: ISubscription[]; rooms: IRoom[] }> => {
 	try {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
 
-		const roomIds = rooms.filter(r => !subscriptions.find(s => s.rid === r._id)).map(r => r._id);
-		let existingSubs = await subCollection.query(Q.where('rid', Q.oneOf(roomIds))).fetch();
-		existingSubs = existingSubs.map(s => ({
+		const roomIds = rooms.filter(r => !subscriptions.find(s => s.rid === r._id)).map(r => r._id) as string[];
+		const existingSubsQuery = await subCollection.query(Q.where('rid', Q.oneOf(roomIds))).fetch();
+		const existingSubs = existingSubsQuery.map(s => ({
 			_id: s._id,
 			f: s.f,
 			t: s.t,
@@ -54,12 +59,16 @@ export default async (subscriptions = [], rooms = []) => {
 			e2eKeyId: s.e2eKeyId,
 			E2EKey: s.E2EKey,
 			avatarETag: s.avatarETag
-		}));
+		})) as TSubscriptionModel[];
 		subscriptions = subscriptions.concat(existingSubs);
 
 		const subsIds = subscriptions.filter(s => !rooms.find(r => s.rid === r._id)).map(s => s._id);
-		let existingRooms = await subCollection.query(Q.where('id', Q.oneOf(subsIds))).fetch();
-		existingRooms = existingRooms.map(r => ({
+		[];
+		const existingRoomsQuery = (await subCollection.query(Q.where('id', Q.oneOf(subsIds))).fetch()) as (TSubscriptionModel & {
+			_updatedAt: any;
+			v: any;
+		})[];
+		const existingRooms = existingRoomsQuery.map(r => ({
 			_updatedAt: r._updatedAt,
 			lastMessage: r.lastMessage,
 			description: r.description,
@@ -83,10 +92,11 @@ export default async (subscriptions = [], rooms = []) => {
 			encrypted: r.encrypted,
 			e2eKeyId: r.e2eKeyId,
 			avatarETag: r.avatarETag
-		}));
-		rooms = rooms.concat(existingRooms);
-	} catch {
-		// do nothing
+		})) as Partial<IRoom>[];
+
+		rooms = rooms.concat(existingRooms as IRoom[]);
+	} catch (e) {
+		log(e);
 	}
 
 	return {

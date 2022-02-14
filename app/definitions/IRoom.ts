@@ -39,6 +39,7 @@ export interface IRoom {
 	avatarETag?: string;
 	default?: true;
 	featured?: true;
+	_updatedAt: Date;
 }
 
 export enum OmnichannelSourceType {
