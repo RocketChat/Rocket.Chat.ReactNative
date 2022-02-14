@@ -65,6 +65,15 @@ import getUserInfo from './services/getUserInfo';
 // Services
 import sdk from './services/sdk';
 import toggleFavorite from './services/toggleFavorite';
+import {
+	createChannel,
+	e2eSetUserPublicAndPrivateKeys,
+	e2eRequestSubscriptionKeys,
+	e2eGetUsersOfRoomWithoutKey,
+	e2eSetRoomKeyID,
+	e2eUpdateGroupKey,
+	e2eRequestRoomKey
+} from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -99,19 +108,7 @@ const RocketChat = {
 		}
 	},
 	canOpenRoom,
-	createChannel({ name, users, type, readOnly, broadcast, encrypted, teamId }) {
-		const params = {
-			name,
-			members: users,
-			readOnly,
-			extraData: {
-				broadcast,
-				encrypted,
-				...(teamId && { teamId })
-			}
-		};
-		return this.post(type ? 'groups.create' : 'channels.create', params);
-	},
+	createChannel,
 	async getWebsocketInfo({ server }) {
 		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 
@@ -491,30 +488,12 @@ const RocketChat = {
 		}
 		return result;
 	},
-	e2eSetUserPublicAndPrivateKeys(public_key, private_key) {
-		// RC 2.2.0
-		return this.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
-	},
-	e2eRequestSubscriptionKeys() {
-		// RC 0.72.0
-		return this.methodCallWrapper('e2e.requestSubscriptionKeys');
-	},
-	e2eGetUsersOfRoomWithoutKey(rid) {
-		// RC 0.70.0
-		return this.sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
-	},
-	e2eSetRoomKeyID(rid, keyID) {
-		// RC 0.70.0
-		return this.post('e2e.setRoomKeyID', { rid, keyID });
-	},
-	e2eUpdateGroupKey(uid, rid, key) {
-		// RC 0.70.0
-		return this.post('e2e.updateGroupKey', { uid, rid, key });
-	},
-	e2eRequestRoomKey(rid, e2eKeyId) {
-		// RC 0.70.0
-		return this.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
-	},
+	e2eSetUserPublicAndPrivateKeys,
+	e2eRequestSubscriptionKeys,
+	e2eGetUsersOfRoomWithoutKey,
+	e2eSetRoomKeyID,
+	e2eUpdateGroupKey,
+	e2eRequestRoomKey,
 	e2eResetOwnKey() {
 		this.unsubscribeRooms();
 
