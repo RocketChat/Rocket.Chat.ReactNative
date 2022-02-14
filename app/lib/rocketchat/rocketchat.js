@@ -80,7 +80,15 @@ import {
 	spotlight,
 	createDirectMessage,
 	createDiscussion,
-	getDiscussions
+	getDiscussions,
+	createTeam,
+	addRoomsToTeam,
+	removeTeamRoom,
+	leaveTeam,
+	removeTeamMember,
+	updateTeamRoom,
+	deleteTeam,
+	teamListRoomsOfUser
 } from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -753,59 +761,14 @@ const RocketChat = {
 
 	createDiscussion,
 	getDiscussions,
-	createTeam({ name, users, type, readOnly, broadcast, encrypted }) {
-		const params = {
-			name,
-			users,
-			type: type ? TEAM_TYPE.PRIVATE : TEAM_TYPE.PUBLIC,
-			room: {
-				readOnly,
-				extraData: {
-					broadcast,
-					encrypted
-				}
-			}
-		};
-		// RC 3.13.0
-		return this.post('teams.create', params);
-	},
-	addRoomsToTeam({ teamId, rooms }) {
-		// RC 3.13.0
-		return this.post('teams.addRooms', { teamId, rooms });
-	},
-	removeTeamRoom({ roomId, teamId }) {
-		// RC 3.13.0
-		return sdk.post('teams.removeRoom', { roomId, teamId });
-	},
-	leaveTeam({ teamId, rooms }) {
-		// RC 3.13.0
-		return this.post('teams.leave', {
-			teamId,
-			// RC 4.2.0
-			...(rooms?.length && { rooms })
-		});
-	},
-	removeTeamMember({ teamId, userId, rooms }) {
-		// RC 3.13.0
-		return this.post('teams.removeMember', {
-			teamId,
-			userId,
-			// RC 4.2.0
-			...(rooms?.length && { rooms })
-		});
-	},
-	updateTeamRoom({ roomId, isDefault }) {
-		// RC 3.13.0
-		return this.post('teams.updateRoom', { roomId, isDefault });
-	},
-	deleteTeam({ teamId, roomsToRemove }) {
-		// RC 3.13.0
-		return this.post('teams.delete', { teamId, roomsToRemove });
-	},
-	teamListRoomsOfUser({ teamId, userId }) {
-		// RC 3.13.0
-		return this.sdk.get('teams.listRoomsOfUser', { teamId, userId });
-	},
+	createTeam,
+	addRoomsToTeam,
+	removeTeamRoom,
+	leaveTeam,
+	removeTeamMember,
+	updateTeamRoom,
+	deleteTeam,
+	teamListRoomsOfUser,
 	getTeamInfo({ teamId }) {
 		// RC 3.13.0
 		return this.sdk.get('teams.info', { teamId });

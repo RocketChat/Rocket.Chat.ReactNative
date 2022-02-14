@@ -1,4 +1,5 @@
 import sdk from './sdk';
+import { TEAM_TYPE } from '../../../definitions/ITeam';
 
 export const createChannel = ({
 	name,
@@ -137,3 +138,84 @@ export const getDiscussions = ({
 	// RC 2.4.0
 	return sdk.get('chat.getDiscussions', params);
 };
+
+export const createTeam = ({
+	name,
+	users,
+	type,
+	readOnly,
+	broadcast,
+	encrypted
+}: {
+	name: string;
+	users: string[];
+	type: boolean;
+	readOnly: boolean;
+	broadcast: boolean;
+	encrypted: boolean;
+}) => {
+	const params = {
+		name,
+		users,
+		type: type ? TEAM_TYPE.PRIVATE : TEAM_TYPE.PUBLIC,
+		room: {
+			readOnly,
+			extraData: {
+				broadcast,
+				encrypted
+			}
+		}
+	};
+	// RC 3.13.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	return sdk.post('teams.create', params);
+};
+export const addRoomsToTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }) =>
+	// RC 3.13.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('teams.addRooms', { teamId, rooms });
+
+export const removeTeamRoom = ({ roomId, teamId }: { roomId: string; teamId: string }) =>
+	// RC 3.13.0
+	sdk.post('teams.removeRoom', { roomId, teamId });
+
+export const leaveTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }) =>
+	// RC 3.13.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('teams.leave', {
+		teamId,
+		// RC 4.2.0
+		...(rooms?.length && { rooms })
+	});
+
+export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; userId: string; rooms: string[] }) =>
+	// RC 3.13.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('teams.removeMember', {
+		teamId,
+		userId,
+		// RC 4.2.0
+		...(rooms?.length && { rooms })
+	});
+
+export const updateTeamRoom = ({ roomId, isDefault }: { roomId: string; isDefault: boolean }) =>
+	// RC 3.13.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('teams.updateRoom', { roomId, isDefault });
+
+export const deleteTeam = ({ teamId, roomsToRemove }: { teamId: string; isDefault: boolean }) =>
+	// RC 3.13.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('teams.delete', { teamId, roomsToRemove });
+
+export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId: string }) =>
+	// RC 3.13.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get('teams.listRoomsOfUser', { teamId, userId });
