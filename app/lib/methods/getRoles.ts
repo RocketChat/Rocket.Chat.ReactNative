@@ -44,7 +44,6 @@ export async function onRolesChanged(ddpMessage: any) {
 	}
 	if (/removed/.test(type)) {
 		const db = database.active;
-		const rolesCollection = db.get('roles');
 		try {
 			const roleRecord = await getRoleById(_id);
 			if (roleRecord) {
