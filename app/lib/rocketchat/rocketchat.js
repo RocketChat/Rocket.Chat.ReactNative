@@ -976,16 +976,19 @@ const RocketChat = {
 		return `${server}/${roomType}/${channel.name}`;
 	},
 	subscribe(...args) {
-		return this.sdk.subscribe(...args);
+		return sdk.subscribe(...args);
+	},
+	subscribeRaw(...args) {
+		return sdk.subscribeRaw(...args);
 	},
 	subscribeRoom(...args) {
-		return this.sdk.subscribeRoom(...args);
+		return sdk.subscribeRoom(...args);
 	},
 	unsubscribe(subscription) {
-		return this.sdk.unsubscribe(subscription);
+		return sdk.unsubscribe(subscription);
 	},
 	onStreamData(...args) {
-		return this.sdk.onStreamData(...args);
+		return sdk.onStreamData(...args);
 	},
 	emitTyping(room, typing = true) {
 		const { login, settings } = reduxStore.getState();

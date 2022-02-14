@@ -145,6 +145,26 @@ class Sdk {
 		});
 		return this.methodCall(method, ...parsedParams);
 	}
+
+	subscribe(...args: any[]) {
+		return this.sdk.subscribe(...args);
+	}
+
+	subscribeRaw(...args: any[]) {
+		return this.sdk.subscribeRaw(...args);
+	}
+
+	subscribeRoom(...args: any[]) {
+		return this.sdk.subscribeRoom(...args);
+	}
+
+	unsubscribe(subscription: any[]) {
+		return this.sdk.unsubscribe(subscription);
+	}
+
+	onStreamData(...args: any[]) {
+		return this.sdk.onStreamData(...args);
+	}
 }
 
 const sdk = new Sdk();
