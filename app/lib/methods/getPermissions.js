@@ -5,7 +5,7 @@ import orderBy from 'lodash/orderBy';
 import { compareServerVersion } from '../utils';
 import database from '../database';
 import log from '../../utils/log';
-import reduxStore from '../createStore';
+import { store as reduxStore } from '../auxStore';
 import RocketChat from '../rocketchat';
 import { setPermissions as setPermissionsAction } from '../../actions/permissions';
 import protectedFunction from './helpers/protectedFunction';
