@@ -55,9 +55,12 @@ export interface ILastMessage {
 
 export interface IMessage {
 	msg?: string;
+	// TODO: remove after REST API
+	_id: string;
 	t?: SubscriptionType;
 	ts: Date;
 	u: IUserMessage;
+	rid: string;
 	alias: string;
 	parseUrls: boolean;
 	groupable?: boolean;

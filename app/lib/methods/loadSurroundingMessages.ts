@@ -5,20 +5,30 @@ import orderBy from 'lodash/orderBy';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
 import { MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../constants/messageTypeLoad';
+import { IRocketChat, IMessage } from '../../definitions';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
 
 const COUNT = 50;
 
-export default function loadSurroundingMessages({ messageId, rid }) {
+interface ILoadMoreMessage {
+	_id: string;
+	rid: string;
+	tmid?: string;
+	ts: moment.Moment;
+	t: string;
+	msg?: string;
+}
+
+export default function loadSurroundingMessages(this: IRocketChat, { messageId, rid }: { messageId: string; rid: string }) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await this.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);
-			let messages = EJSON.fromJSONValue(data?.messages);
+			let messages: (IMessage | ILoadMoreMessage)[] = EJSON.fromJSONValue(data?.messages);
 			messages = orderBy(messages, 'ts');
 
 			const message = messages.find(m => m._id === messageId);
-			const { tmid } = message;
+			const tmid = message?.tmid;
 
 			if (messages?.length) {
 				if (data?.moreBefore) {
@@ -52,11 +62,12 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 						messages.push(loadMoreItem);
 					}
 				}
+				// TODO: Refactor when migrate methods/updateMessages
+				// @ts-ignore
 				await updateMessages({ rid, update: messages });
 				return resolve(messages);
-			} else {
-				return resolve([]);
 			}
+			return resolve([]);
 		} catch (e) {
 			log(e);
 			reject(e);
