@@ -12,7 +12,7 @@ import {
 	IUserInteraction,
 	ModalActions
 } from '../../containers/UIKit/interfaces';
-import { IRocketChat } from '../../definitions/IRocketChat';
+import { TRocketChat } from '../../definitions/IRocketChat';
 
 const triggersId = new Map();
 
@@ -91,7 +91,7 @@ export const handlePayloadUserInteraction = (
 };
 
 export function triggerAction(
-	this: IRocketChat,
+	this: TRocketChat,
 	{ type, actionId, appId, rid, mid, viewId, container, ...rest }: ITriggerAction
 ) {
 	return new Promise<ModalActions | undefined | void>(async (resolve, reject) => {
@@ -140,17 +140,17 @@ export function triggerAction(
 	});
 }
 
-export default function triggerBlockAction(this: IRocketChat, options: ITriggerBlockAction) {
+export default function triggerBlockAction(this: TRocketChat, options: ITriggerBlockAction) {
 	return triggerAction.call(this, { type: ActionTypes.ACTION, ...options });
 }
 
-export async function triggerSubmitView(this: IRocketChat, { viewId, ...options }: ITriggerSubmitView) {
+export async function triggerSubmitView(this: TRocketChat, { viewId, ...options }: ITriggerSubmitView) {
 	const result = await triggerAction.call(this, { type: ActionTypes.SUBMIT, viewId, ...options });
 	if (!result || ModalActions.CLOSE === result) {
 		Navigation.back();
 	}
 }
 
-export function triggerCancel(this: IRocketChat, { view, ...options }: ITriggerCancel) {
+export function triggerCancel(this: TRocketChat, { view, ...options }: ITriggerCancel) {
 	return triggerAction.call(this, { type: ActionTypes.CLOSED, view, ...options });
 }
