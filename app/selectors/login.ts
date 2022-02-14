@@ -17,5 +17,6 @@ export const getUserSelector = createSelector([getUser], user => user);
 
 export const getShowLoginButton = createSelector(
 	[getLoginServices, getShowFormLoginSetting, getIframeEnabledSetting],
-	(loginServices, showFormLogin, iframeEnabled) => showFormLogin || Object.values(loginServices).length || iframeEnabled
+	(loginServices, showFormLogin, iframeEnabled) =>
+		(showFormLogin || Object.values(loginServices).length || iframeEnabled) as boolean
 );
