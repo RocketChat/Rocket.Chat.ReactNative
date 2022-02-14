@@ -6,7 +6,7 @@ import { getMessageById } from '../database/services/Message';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
 import { IRocketChat } from '../../definitions/IRocketChat';
-import { IMessage, IRoom, SubscriptionType } from '../../definitions';
+import { IMessage, IRoom, SubscriptionType, TMessageModel } from '../../definitions';
 
 const COUNT = 50;
 
@@ -31,7 +31,7 @@ async function load(this: IRocketChat, { rid: roomId, latest, t }: Pick<IRoom, '
 
 export default function loadMessagesForRoom(
 	this: IRocketChat,
-	args: { rid: string; t: SubscriptionType; latest: string; loaderItem: IRoom }
+	args: { rid: string; t: SubscriptionType; latest: string; loaderItem: TMessageModel }
 ): Promise<IMessage | []> {
 	return new Promise(async (resolve, reject) => {
 		try {
