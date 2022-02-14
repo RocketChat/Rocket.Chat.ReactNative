@@ -12,7 +12,6 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 
 interface IUpdateMessages {
 	rid: string;
-	// TODO: It should be the return from the REST API instead of IMessage
 	update: IMessage[];
 	remove: IMessage[];
 	loaderItem?: TMessageModel;

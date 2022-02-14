@@ -54,10 +54,8 @@ export interface ILastMessage {
 }
 
 export interface IMessage {
-	_id?: string;
-	msg?: string;
-	// TODO: remove after REST API
 	_id: string;
+	msg?: string;
 	t?: SubscriptionType;
 	ts: Date;
 	u: IUserMessage;
