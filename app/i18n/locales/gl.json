@@ -1,1 +1,11 @@
-{ }
+{
+  "1_person_reacted": "1 persoa reaccionou",
+  "1_user": "1 usuario",
+  "error-action-not-allowed": "{{action}} non está permitida",
+  "error-application-not-found": "Aplicación non atopada",
+  "error-archived-duplicate-name": "Hai unha canle archivada co nome {{room_name}}",
+  "error-avatar-invalid-url": "URL do avatar inválida: {{url}}",
+  "error-avatar-url-handling": "Produciuse un erro ao xestionar a configuración do avatar desde un URL ({{url}}) para {{username}}",
+  "error-cant-invite-for-direct-room": "Non se pode invitar ó usuario a dirixir salas",
+  "error-could-not-change-email": "Non se puido cambiar o correo electrónico"
+}
