@@ -36,7 +36,7 @@ export default function loadSurroundingMessages(this: IRocketChat, { messageId, 
 					const firstMessageRecord = await getMessageById(firstMessage._id);
 					if (!firstMessageRecord) {
 						const loadMoreItem = {
-							_id: generateLoadMoreId(firstMessage._id),
+							_id: generateLoadMoreId(firstMessage._id || ''),
 							rid: firstMessage.rid,
 							tmid,
 							ts: moment(firstMessage.ts).subtract(1, 'millisecond'),
@@ -52,7 +52,7 @@ export default function loadSurroundingMessages(this: IRocketChat, { messageId, 
 					const lastMessageRecord = await getMessageById(lastMessage._id);
 					if (!lastMessageRecord) {
 						const loadMoreItem = {
-							_id: generateLoadMoreId(lastMessage._id),
+							_id: generateLoadMoreId(lastMessage._id || ''),
 							rid: lastMessage.rid,
 							tmid,
 							ts: moment(lastMessage.ts).add(1, 'millisecond'),
