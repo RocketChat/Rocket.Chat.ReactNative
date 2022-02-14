@@ -261,3 +261,47 @@ export const joinRoom = (roomId: string, joinCode: string, type: 'c' | 'p') => {
 	// @ts-ignore
 	return sdk.post('channels.join', { roomId, joinCode });
 };
+
+export const deleteMessage = (messageId: string, rid: string) =>
+	// RC 0.48.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('chat.delete', { msgId: messageId, roomId: rid });
+
+export const markAsUnread = ({ messageId }: { messageId: string }) =>
+	// RC 0.65.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
+
+export const toggleStarMessage = (messageId: string, starred: boolean) => {
+	if (starred) {
+		// RC 0.59.0
+		// TODO: missing definitions from server
+		// @ts-ignore
+		return sdk.post('chat.unStarMessage', { messageId });
+	}
+	// RC 0.59.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	return sdk.post('chat.starMessage', { messageId });
+};
+
+export const togglePinMessage = (messageId: string, pinned: boolean) => {
+	if (pinned) {
+		// RC 0.59.0
+		// TODO: missing definitions from server
+		// @ts-ignore
+		return sdk.post('chat.unPinMessage', { messageId });
+	}
+	// RC 0.59.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	return sdk.post('chat.pinMessage', { messageId });
+};
+
+export const reportMessage = (messageId: string) =>
+	// RC 0.64.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });

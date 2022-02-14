@@ -92,7 +92,12 @@ import {
 	getTeamInfo,
 	convertChannelToTeam,
 	convertTeamToChannel,
-	joinRoom
+	joinRoom,
+	deleteMessage,
+	markAsUnread,
+	toggleStarMessage,
+	togglePinMessage,
+	reportMessage
 } from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -815,37 +820,16 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	deleteMessage(messageId, rid) {
-		// RC 0.48.0
-		return this.post('chat.delete', { msgId: messageId, roomId: rid });
-	},
+	deleteMessage,
 	async editMessage(message) {
 		const { rid, msg } = await Encryption.encryptMessage(message);
 		// RC 0.49.0
 		return this.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
 	},
-	markAsUnread({ messageId }) {
-		return this.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
-	},
-	toggleStarMessage(messageId, starred) {
-		if (starred) {
-			// RC 0.59.0
-			return this.post('chat.unStarMessage', { messageId });
-		}
-		// RC 0.59.0
-		return this.post('chat.starMessage', { messageId });
-	},
-	togglePinMessage(messageId, pinned) {
-		if (pinned) {
-			// RC 0.59.0
-			return this.post('chat.unPinMessage', { messageId });
-		}
-		// RC 0.59.0
-		return this.post('chat.pinMessage', { messageId });
-	},
-	reportMessage(messageId) {
-		return this.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
-	},
+	markAsUnread,
+	toggleStarMessage,
+	togglePinMessage,
+	reportMessage,
 	getRoom,
 	getPermalinkMessage,
 	getPermalinkChannel(channel) {
