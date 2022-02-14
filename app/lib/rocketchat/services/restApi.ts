@@ -219,3 +219,45 @@ export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.get('teams.listRoomsOfUser', { teamId, userId });
+
+export const getTeamInfo = ({ teamId }: { teamId: string }) =>
+	// RC 3.13.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get('teams.info', { teamId });
+
+export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
+	const params = {
+		...(type === 'c'
+			? {
+					channelId: rid,
+					channelName: name
+			  }
+			: {
+					roomId: rid,
+					roomName: name
+			  })
+	};
+	// TODO: missing definitions from server
+	// @ts-ignore
+	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
+};
+export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; selected: string[] }) => {
+	const params = {
+		teamId,
+		...(selected.length && { roomsToRemove: selected })
+	};
+	// TODO: missing definitions from server
+	// @ts-ignore
+	return sdk.post('teams.convertToChannel', params);
+};
+export const joinRoom = (roomId: string, joinCode: string, type: 'c' | 'p') => {
+	// TODO: join code
+	// RC 0.48.0
+	if (type === 'p') {
+		return sdk.methodCallWrapper('joinRoom', roomId);
+	}
+	// TODO: missing definitions from server
+	// @ts-ignore
+	return sdk.post('channels.join', { roomId, joinCode });
+};

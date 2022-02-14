@@ -88,7 +88,11 @@ import {
 	removeTeamMember,
 	updateTeamRoom,
 	deleteTeam,
-	teamListRoomsOfUser
+	teamListRoomsOfUser,
+	getTeamInfo,
+	convertChannelToTeam,
+	convertTeamToChannel,
+	joinRoom
 } from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -769,39 +773,10 @@ const RocketChat = {
 	updateTeamRoom,
 	deleteTeam,
 	teamListRoomsOfUser,
-	getTeamInfo({ teamId }) {
-		// RC 3.13.0
-		return this.sdk.get('teams.info', { teamId });
-	},
-	convertChannelToTeam({ rid, name, type }) {
-		const params = {
-			...(type === 'c'
-				? {
-						channelId: rid,
-						channelName: name
-				  }
-				: {
-						roomId: rid,
-						roomName: name
-				  })
-		};
-		return this.sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
-	},
-	convertTeamToChannel({ teamId, selected }) {
-		const params = {
-			teamId,
-			...(selected.length && { roomsToRemove: selected })
-		};
-		return this.sdk.post('teams.convertToChannel', params);
-	},
-	joinRoom(roomId, joinCode, type) {
-		// TODO: join code
-		// RC 0.48.0
-		if (type === 'p') {
-			return this.methodCallWrapper('joinRoom', roomId);
-		}
-		return this.post('channels.join', { roomId, joinCode });
-	},
+	getTeamInfo,
+	convertChannelToTeam,
+	convertTeamToChannel,
+	joinRoom,
 	triggerBlockAction,
 	triggerSubmitView,
 	triggerCancel,
