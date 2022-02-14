@@ -5,14 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import { twoFactor } from '../../../utils/twoFactor';
 import { useSsl } from '../../../utils/url';
 import reduxStore from '../../createStore';
-import {
-	Serialized,
-	OperationResult,
-	MatchPathPattern,
-	OperationParams,
-	PathFor,
-	ResultFor
-} from '../../../definitions/rest/helpers';
+import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../../definitions/rest/helpers';
 
 class Sdk {
 	private sdk: typeof Rocketchat;
@@ -53,7 +46,7 @@ class Sdk {
 		>
 			? void
 			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
-	): Promise<Serialized<OperationResult<'GET', MatchPathPattern<TPath>>>> {
+	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
 		return this.sdk.get(endpoint, params);
 	}
 
