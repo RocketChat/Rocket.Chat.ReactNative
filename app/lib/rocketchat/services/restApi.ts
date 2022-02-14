@@ -1,5 +1,6 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
+import roomTypeToApiType from '../methods/roomTypeToApiType';
 
 export const createChannel = ({
 	name,
@@ -305,3 +306,63 @@ export const reportMessage = (messageId: string) =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
+
+export const setUserPreferences = (userId: string, data: any) =>
+	// RC 0.62.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('users.setPreferences', { userId, data });
+
+export const setUserStatus = (status: string, message: string) =>
+	// RC 1.2.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('users.setStatus', { status, message });
+
+export const setReaction = (emoji: string, messageId: string) =>
+	// RC 0.62.2
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('chat.react', { emoji, messageId });
+
+export const toggleRead = (read: boolean, roomId: string) => {
+	if (read) {
+		// TODO: missing definitions from server
+		// @ts-ignore
+		return sdk.post('subscriptions.unread', { roomId });
+	}
+	// TODO: missing definitions from server
+	// @ts-ignore
+	return sdk.post('subscriptions.read', { rid: roomId });
+};
+
+export const getUserRoles = () =>
+	// RC 0.27.0
+	sdk.methodCallWrapper('getUserRoles');
+
+// TODO: we can type this t
+export const getRoomCounters = (roomId: string, t: string) =>
+	// RC 0.65.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
+
+export const getChannelInfo = (roomId: string) =>
+	// RC 0.48.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get('channels.info', { roomId });
+
+export const getUserPreferences = (userId: string) =>
+	// RC 0.62.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get('users.getPreferences', { userId });
+
+export const getRoomInfo = (roomId: string) =>
+	// RC 0.72.0
+	sdk.get('rooms.info', { roomId });
+
+export const getVisitorInfo = (visitorId: string) =>
+	// RC 2.3.0
+	sdk.get('livechat/visitors.info', { visitorId });

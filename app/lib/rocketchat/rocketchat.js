@@ -61,6 +61,7 @@ import clearCache from './methods/clearCache';
 import getPermalinkMessage from './methods/getPermalinkMessage';
 import getRoom from './methods/getRoom';
 import isGroupChat from './methods/isGroupChat';
+import roomTypeToApiType from './methods/roomTypeToApiType';
 import getUserInfo from './services/getUserInfo';
 // Services
 import sdk from './services/sdk';
@@ -97,7 +98,17 @@ import {
 	markAsUnread,
 	toggleStarMessage,
 	togglePinMessage,
-	reportMessage
+	reportMessage,
+	setUserPreferences,
+	setUserStatus,
+	setReaction,
+	toggleRead,
+	getUserRoles,
+	getRoomCounters,
+	getChannelInfo,
+	getUserPreferences,
+	getRoomInfo,
+	getVisitorInfo
 } from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -869,25 +880,11 @@ const RocketChat = {
 	setUserPresenceOnline() {
 		return this.methodCall('UserPresence:online');
 	},
-	setUserPreferences(userId, data) {
-		// RC 0.62.0
-		return this.sdk.post('users.setPreferences', { userId, data });
-	},
-	setUserStatus(status, message) {
-		// RC 1.2.0
-		return this.post('users.setStatus', { status, message });
-	},
-	setReaction(emoji, messageId) {
-		// RC 0.62.2
-		return this.post('chat.react', { emoji, messageId });
-	},
+	setUserPreferences,
+	setUserStatus,
+	setReaction,
 	toggleFavorite,
-	toggleRead(read, roomId) {
-		if (read) {
-			return this.post('subscriptions.unread', { roomId });
-		}
-		return this.post('subscriptions.read', { rid: roomId });
-	},
+	toggleRead,
 	async getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
 		const serverVersion = reduxStore.getState().server.version;
 		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
@@ -909,33 +906,13 @@ const RocketChat = {
 	methodCallWrapper(method, ...params) {
 		return sdk.methodCallWrapper(method, ...params);
 	},
-
-	getUserRoles() {
-		// RC 0.27.0
-		return this.methodCallWrapper('getUserRoles');
-	},
-	getRoomCounters(roomId, t) {
-		// RC 0.65.0
-		return this.sdk.get(`${this.roomTypeToApiType(t)}.counters`, { roomId });
-	},
-	getChannelInfo(roomId) {
-		// RC 0.48.0
-		return this.sdk.get('channels.info', { roomId });
-	},
+	getUserRoles,
+	getRoomCounters,
+	getChannelInfo,
 	getUserInfo,
-	getUserPreferences(userId) {
-		// RC 0.62.0
-		return this.sdk.get('users.getPreferences', { userId });
-	},
-	getRoomInfo(roomId) {
-		// RC 0.72.0
-		return this.sdk.get('rooms.info', { roomId });
-	},
-
-	getVisitorInfo(visitorId) {
-		// RC 2.3.0
-		return this.sdk.get('livechat/visitors.info', { visitorId });
-	},
+	getUserPreferences,
+	getRoomInfo,
+	getVisitorInfo,
 	getTeamListRoom({ teamId, count, offset, type, filter }) {
 		const params = {
 			teamId,
@@ -1276,15 +1253,7 @@ const RocketChat = {
 		// RC 0.65.0
 		return this.sdk.get('users.getUsernameSuggestion');
 	},
-	roomTypeToApiType(t) {
-		const types = {
-			c: 'channels',
-			d: 'im',
-			p: 'groups',
-			l: 'channels'
-		};
-		return types[t];
-	},
+	roomTypeToApiType,
 	getFiles(roomId, type, offset) {
 		// RC 0.59.0
 		return this.sdk.get(`${this.roomTypeToApiType(type)}.files`, {
