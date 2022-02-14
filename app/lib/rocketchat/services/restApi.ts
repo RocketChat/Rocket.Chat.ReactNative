@@ -83,3 +83,57 @@ export const forgotPassword = (email: string) =>
 	sdk.post('users.forgotPassword', { email });
 
 export const sendConfirmationEmail = (email: string) => sdk.methodCallWrapper('sendConfirmationEmail', email);
+
+export const spotlight = (search: string, usernames: string, type: { users: boolean; rooms: boolean }) =>
+	// RC 0.51.0
+	sdk.methodCallWrapper('spotlight', search, usernames, type);
+
+export const createDirectMessage = (username: string) =>
+	// RC 0.59.0
+	sdk.post('im.create', { username });
+
+export const createDiscussion = ({
+	prid,
+	pmid,
+	t_name,
+	reply,
+	users,
+	encrypted
+}: {
+	prid: string;
+	pmid?: string;
+	t_name: string;
+	reply?: string;
+	users?: string[];
+	encrypted?: boolean;
+}) =>
+	// RC 1.0.0
+	sdk.post('rooms.createDiscussion', {
+		prid,
+		pmid,
+		t_name,
+		reply,
+		users,
+		encrypted
+	});
+
+export const getDiscussions = ({
+	roomId,
+	offset,
+	count,
+	text
+}: {
+	roomId: string | undefined;
+	text?: string | undefined;
+	offset: number;
+	count: number;
+}) => {
+	const params = {
+		roomId,
+		offset,
+		count,
+		...(text && { text })
+	};
+	// RC 2.4.0
+	return sdk.get('chat.getDiscussions', params);
+};

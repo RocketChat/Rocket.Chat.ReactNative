@@ -76,7 +76,11 @@ import {
 	updateJitsiTimeout,
 	register,
 	forgotPassword,
-	sendConfirmationEmail
+	sendConfirmationEmail,
+	spotlight,
+	createDirectMessage,
+	createDiscussion,
+	getDiscussions
 } from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -737,17 +741,8 @@ const RocketChat = {
 			// return [];
 		}
 	},
-
-	spotlight(search, usernames, type) {
-		// RC 0.51.0
-		return this.methodCallWrapper('spotlight', search, usernames, type);
-	},
-
-	createDirectMessage(username) {
-		// RC 0.59.0
-		return sdk.post('im.create', { username });
-	},
-
+	spotlight,
+	createDirectMessage,
 	createGroupChat() {
 		const { users } = reduxStore.getState().selectedUsers;
 		const usernames = users.map(u => u.name).join(',');
@@ -756,27 +751,8 @@ const RocketChat = {
 		return this.post('im.create', { usernames });
 	},
 
-	createDiscussion({ prid, pmid, t_name, reply, users, encrypted }) {
-		// RC 1.0.0
-		return this.post('rooms.createDiscussion', {
-			prid,
-			pmid,
-			t_name,
-			reply,
-			users,
-			encrypted
-		});
-	},
-	getDiscussions({ roomId, offset, count, text }) {
-		const params = {
-			roomId,
-			offset,
-			count,
-			...(text && { text })
-		};
-		// RC 2.4.0
-		return this.sdk.get('chat.getDiscussions', params);
-	},
+	createDiscussion,
+	getDiscussions,
 	createTeam({ name, users, type, readOnly, broadcast, encrypted }) {
 		const params = {
 			name,
