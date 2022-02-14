@@ -7,9 +7,10 @@ import database from '../database';
 import log from '../../utils/log';
 import { store as reduxStore } from '../auxStore';
 import RocketChat from '../rocketchat';
+import sdk from '../rocketchat/services/sdk';
 import { setPermissions as setPermissionsAction } from '../../actions/permissions';
 import protectedFunction from './helpers/protectedFunction';
-import { IRocketChat, TPermissionModel, IPermission } from '../../definitions';
+import { TPermissionModel, IPermission } from '../../definitions';
 
 export const SUPPORTED_PERMISSIONS = [
 	'add-user-to-any-c-room',
@@ -79,7 +80,7 @@ const getUpdatedSince = (allRecords: TPermissionModel[]) => {
 			['_updatedAt'],
 			['desc']
 		);
-		return ordered && ordered[0]._updatedAt.toISOString();
+		return new Date(ordered[0]._updatedAt).toISOString();
 	} catch (e) {
 		log(e);
 	}
@@ -144,7 +145,7 @@ const updatePermissions = async ({
 	}
 };
 
-export function getPermissions(this: IRocketChat): Promise<void> {
+export function getPermissions(): Promise<void> {
 	return new Promise(async resolve => {
 		try {
 			const serverVersion: string | null = reduxStore.getState().server.version;
@@ -155,7 +156,8 @@ export function getPermissions(this: IRocketChat): Promise<void> {
 			// if server version is lower than 0.73.0, fetches from old api
 			if (serverVersion && compareServerVersion(serverVersion, 'lowerThan', '0.73.0')) {
 				// RC 0.66.0
-				const result = await this.sdk.get('permissions.list');
+				// @ts-ignore
+				const result: any = await sdk.get('permissions.list');
 				if (!result.success) {
 					return resolve();
 				}
@@ -172,13 +174,9 @@ export function getPermissions(this: IRocketChat): Promise<void> {
 				params.updatedSince = updatedSince;
 			}
 			// RC 0.73.0
-			const result = await this.sdk.get('permissions.listAll', params);
+			const result = await sdk.get('permissions.listAll', params);
 
-			if (!result.success) {
-				return resolve();
-			}
-
-			const changePermissions = await updatePermissions({ update: result.update, remove: result.delete, allRecords });
+			const changePermissions = await updatePermissions({ update: result.update, remove: result.remove, allRecords });
 			if (changePermissions) {
 				setPermissions();
 			}
