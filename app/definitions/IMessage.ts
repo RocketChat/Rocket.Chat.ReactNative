@@ -29,6 +29,7 @@ export interface IEditedBy {
 export type TOnLinkPress = (link: string) => void;
 
 export interface ITranslations {
+	[index: string]: string;
 	_id: string;
 	language: string;
 	value: string;
@@ -54,6 +55,7 @@ export interface ILastMessage {
 }
 
 export interface IMessage {
+	_id: string;
 	msg?: string;
 	t?: SubscriptionType;
 	ts: Date;
