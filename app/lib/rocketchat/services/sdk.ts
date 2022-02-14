@@ -27,6 +27,10 @@ class Sdk {
 		return this.sdk;
 	}
 
+	get current() {
+		return this.sdk;
+	}
+
 	/**
 	 * TODO: evaluate the need for assigning "null" to this.sdk
 	 * I'm returning "null" because we need to remove both instances of this.sdk here and on rocketchat.js
@@ -140,6 +144,26 @@ class Sdk {
 			return param;
 		});
 		return this.methodCall(method, ...parsedParams);
+	}
+
+	subscribe(...args: any[]) {
+		return this.sdk.subscribe(...args);
+	}
+
+	subscribeRaw(...args: any[]) {
+		return this.sdk.subscribeRaw(...args);
+	}
+
+	subscribeRoom(...args: any[]) {
+		return this.sdk.subscribeRoom(...args);
+	}
+
+	unsubscribe(subscription: any[]) {
+		return this.sdk.unsubscribe(subscription);
+	}
+
+	onStreamData(...args: any[]) {
+		return this.sdk.onStreamData(...args);
 	}
 }
 
