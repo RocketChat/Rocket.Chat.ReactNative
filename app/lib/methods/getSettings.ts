@@ -2,15 +2,15 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { addSettings, clearSettings } from '../../actions/settings';
-import { store as reduxStore } from '../auxStore';
 import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
 import settings from '../../constants/settings';
 import { IPreparedSettings, ISettingsIcon } from '../../definitions';
-import { IRocketChat } from '../../definitions/IRocketChat';
 import fetch from '../../utils/fetch';
 import log from '../../utils/log';
+import { store as reduxStore } from '../auxStore';
 import database from '../database';
 import RocketChat from '../rocketchat';
+import sdk from '../rocketchat/services/sdk';
 import protectedFunction from './helpers/protectedFunction';
 
 const serverInfoKeys = [
@@ -104,7 +104,7 @@ const serverInfoUpdate = async (serverInfo: IPreparedSettings[], iconSetting: IS
 	});
 };
 
-export async function getLoginSettings(this: IRocketChat, { server }: { server: string }): Promise<void> {
+export async function getLoginSettings({ server }: { server: string }): Promise<void> {
 	try {
 		const settingsParams = JSON.stringify(loginSettings);
 		const result = await fetch(`${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`).then(response =>
@@ -113,7 +113,7 @@ export async function getLoginSettings(this: IRocketChat, { server }: { server: 
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
-			reduxStore.dispatch(addSettings(this.parseSettings(this._prepareSettings(result.settings))));
+			reduxStore.dispatch(addSettings(RocketChat.parseSettings(RocketChat._prepareSettings(result.settings))));
 		}
 	} catch (e) {
 		log(e);
@@ -141,13 +141,13 @@ export function subscribeSettings(): void {
 
 type IData = ISettingsIcon | IPreparedSettings;
 
-export default async function (this: IRocketChat): Promise<void> {
+export default async function (): Promise<void> {
 	try {
 		const db = database.active;
 		const settingsParams = Object.keys(settings).filter(key => !loginSettings.includes(key));
 		// RC 0.60.0
 		const result = await fetch(
-			`${this.sdk.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}&count=${
+			`${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}&count=${
 				settingsParams.length
 			}`
 		).then(response => response.json());
@@ -156,10 +156,10 @@ export default async function (this: IRocketChat): Promise<void> {
 			return;
 		}
 		const data: IData[] = result.settings || [];
-		const filteredSettings: IPreparedSettings[] = this._prepareSettings(data);
+		const filteredSettings: IPreparedSettings[] = RocketChat._prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 
-		reduxStore.dispatch(addSettings(this.parseSettings(filteredSettings)));
+		reduxStore.dispatch(addSettings(RocketChat.parseSettings(filteredSettings)));
 
 		// filter server info
 		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
