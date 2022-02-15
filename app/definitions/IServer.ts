@@ -6,7 +6,7 @@ export interface IServer {
 	useRealName: boolean;
 	FileUpload_MediaTypeWhiteList: string;
 	FileUpload_MaxFileSize: number;
-	roomsUpdatedAt: Date;
+	roomsUpdatedAt: Date | null;
 	version: string;
 	lastLocalAuthenticatedSession: Date;
 	autoLock: boolean;
