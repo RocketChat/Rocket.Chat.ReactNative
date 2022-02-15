@@ -7,12 +7,13 @@ import log from '../../utils/log';
 import { Encryption } from '../encryption';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
-import { IRocketChat, TThreadMessageModel } from '../../definitions';
+import { TThreadMessageModel } from '../../definitions';
+import sdk from '../rocketchat/services/sdk';
 
-async function load(this: IRocketChat, { tmid }: { tmid: string }) {
+async function load({ tmid }: { tmid: string }) {
 	try {
 		// RC 1.0
-		const result = await this.methodCallWrapper('getThreadMessages', { tmid });
+		const result = await sdk.methodCallWrapper('getThreadMessages', { tmid });
 		if (!result) {
 			return [];
 		}
@@ -23,10 +24,10 @@ async function load(this: IRocketChat, { tmid }: { tmid: string }) {
 	}
 }
 
-export default function loadThreadMessages(this: IRocketChat, { tmid, rid }: { tmid: string; rid: string }) {
+export default function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			let data = await load.call(this, { tmid });
+			let data = await load({ tmid });
 			if (data && data.length) {
 				try {
 					data = data.filter((m: TThreadMessageModel) => m.tmid).map((m: TThreadMessageModel) => buildMessage(m));
