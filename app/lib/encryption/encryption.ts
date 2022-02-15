@@ -9,7 +9,7 @@ import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import Deferred from '../../utils/deferred';
 import log from '../../utils/log';
-import store from '../createStore';
+import { store } from '../auxStore';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,
@@ -302,16 +302,15 @@ class Encryption {
 				subsToDecrypt.map(async (sub: TSubscriptionModel) => {
 					const { rid, lastMessage } = sub;
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
-					// @ts-ignore
-					if (sub._hasPendingUpdate) {
-						console.log(sub);
-						return;
+					try {
+						return sub.prepareUpdate(
+							protectedFunction((m: TSubscriptionModel) => {
+								Object.assign(m, newSub);
+							})
+						);
+					} catch {
+						return null;
 					}
-					return sub.prepareUpdate(
-						protectedFunction((m: TSubscriptionModel) => {
-							Object.assign(m, newSub);
-						})
-					);
 				})
 			);
 
@@ -374,14 +373,15 @@ class Encryption {
 				);
 				// If the subscription already exists but doesn't have the E2EKey yet
 			} else if (!subRecord.E2EKey && subscription.E2EKey) {
-				// @ts-ignore
-				if (!subRecord._hasPendingUpdate) {
+				try {
 					// Let's update the subscription with the received E2EKey
 					batch.push(
 						subRecord.prepareUpdate((s: TSubscriptionModel) => {
 							s.E2EKey = subscription.E2EKey;
 						})
 					);
+				} catch (e) {
+					log(e);
 				}
 			}
 
