@@ -1,10 +1,18 @@
 import { Rocketchat } from '@rocket.chat/sdk';
-import isEmpty from 'lodash/isEmpty';
 import EJSON from 'ejson';
+import isEmpty from 'lodash/isEmpty';
 
-import reduxStore from '../../createStore';
-import { useSsl } from '../../../utils/url';
 import { twoFactor } from '../../../utils/twoFactor';
+import { useSsl } from '../../../utils/url';
+import reduxStore from '../../createStore';
+import {
+	Serialized,
+	OperationResult,
+	MatchPathPattern,
+	OperationParams,
+	PathFor,
+	ResultFor
+} from '../../../definitions/rest/helpers';
 
 class Sdk {
 	private sdk: typeof Rocketchat;
@@ -16,6 +24,10 @@ class Sdk {
 
 		// The app can't reconnect if reopen interval is 5s while in development
 		this.sdk = new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+		return this.sdk;
+	}
+
+	get current() {
 		return this.sdk;
 	}
 
@@ -31,15 +43,35 @@ class Sdk {
 		return null;
 	}
 
-	get(...args: any[]): Promise<any> {
-		return this.sdk.get(...args);
+	get<TPath extends PathFor<'GET'>>(
+		endpoint: TPath,
+		params: void extends OperationParams<'GET', MatchPathPattern<TPath>>
+			? void
+			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
+			'GET',
+			MatchPathPattern<TPath>
+		>
+			? void
+			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
+	): Promise<Serialized<OperationResult<'GET', MatchPathPattern<TPath>>>> {
+		return this.sdk.get(endpoint, params);
 	}
 
-	post(...args: any[]): Promise<any> {
+	post<TPath extends PathFor<'POST'>>(
+		endpoint: TPath,
+		params: void extends OperationParams<'POST', MatchPathPattern<TPath>>
+			? void
+			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
+			'POST',
+			MatchPathPattern<TPath>
+		>
+			? void
+			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>>
+	): Promise<ResultFor<'POST', MatchPathPattern<TPath>>> {
 		return new Promise(async (resolve, reject) => {
-			const isMethodCall = args[0]?.startsWith('method.call/');
+			const isMethodCall = endpoint?.startsWith('method.call/');
 			try {
-				const result = await this.sdk.post(...args);
+				const result = await this.sdk.post(endpoint, params);
 
 				/**
 				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
@@ -61,10 +93,10 @@ class Sdk {
 					const { details } = isMethodCall ? e : e?.data;
 					try {
 						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
-						return resolve(this.post(...args));
+						return resolve(this.post(endpoint, params));
 					} catch {
 						// twoFactor was canceled
-						return resolve({});
+						return resolve({} as any);
 					}
 				} else {
 					reject(e);
@@ -100,6 +132,7 @@ class Sdk {
 		const { user } = reduxStore.getState().login;
 		if (API_Use_REST_For_DDP_Calls) {
 			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
+			// @ts-ignore
 			return this.post(`${url}/${method}`, {
 				message: EJSON.stringify({ method, params })
 			});
@@ -111,6 +144,26 @@ class Sdk {
 			return param;
 		});
 		return this.methodCall(method, ...parsedParams);
+	}
+
+	subscribe(...args: any[]) {
+		return this.sdk.subscribe(...args);
+	}
+
+	subscribeRaw(...args: any[]) {
+		return this.sdk.subscribeRaw(...args);
+	}
+
+	subscribeRoom(...args: any[]) {
+		return this.sdk.subscribeRoom(...args);
+	}
+
+	unsubscribe(subscription: any[]) {
+		return this.sdk.unsubscribe(subscription);
+	}
+
+	onStreamData(...args: any[]) {
+		return this.sdk.onStreamData(...args);
 	}
 }
 
