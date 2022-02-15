@@ -9,7 +9,7 @@ export interface ISlashCommand {
 	appId?: string;
 }
 
-export interface ISlashCommandResponse extends ISlashCommand {
+export interface ISlashCommandResult extends ISlashCommand {
 	command: string;
 }
 

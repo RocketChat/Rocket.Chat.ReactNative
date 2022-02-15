@@ -3,14 +3,15 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import database from '../database';
 import log from '../../utils/log';
 import protectedFunction from './helpers/protectedFunction';
-import { IRocketChat, ISlashCommandResponse, TSlashCommandModel } from '../../definitions';
+import { ISlashCommandResult, TSlashCommandModel } from '../../definitions';
+import sdk from '../rocketchat/services/sdk';
 
-export default function (this: IRocketChat) {
+export default function () {
 	const db = database.active;
 	return new Promise<void>(async resolve => {
 		try {
 			// RC 0.60.2
-			const result = await this.sdk.get('commands.list');
+			const result = (await sdk.get('commands.list' as any)) as any;
 
 			if (!result.success) {
 				console.log(result);
@@ -25,19 +26,19 @@ export default function (this: IRocketChat) {
 
 					// filter slash commands
 					let slashCommandsToCreate = commands.filter(
-						(i1: ISlashCommandResponse) => !allSlashCommandsRecords.find(i2 => i1.command === i2.id)
+						(i1: ISlashCommandResult) => !allSlashCommandsRecords.find(i2 => i1.command === i2.id)
 					);
 					let slashCommandsToUpdate = allSlashCommandsRecords.filter(i1 =>
-						commands.find((i2: ISlashCommandResponse) => i1.id === i2.command)
+						commands.find((i2: ISlashCommandResult) => i1.id === i2.command)
 					);
 					let slashCommandsToDelete = allSlashCommandsRecords.filter(
 						i1 =>
-							!slashCommandsToCreate.find((i2: ISlashCommandResponse) => i2.command === i1.id) &&
+							!slashCommandsToCreate.find((i2: ISlashCommandResult) => i2.command === i1.id) &&
 							!slashCommandsToUpdate.find(i2 => i2.id === i1.id)
 					);
 
 					// Create
-					slashCommandsToCreate = slashCommandsToCreate.map((command: ISlashCommandResponse) =>
+					slashCommandsToCreate = slashCommandsToCreate.map((command: ISlashCommandResult) =>
 						slashCommandsCollection.prepareCreate(
 							protectedFunction((s: TSlashCommandModel) => {
 								s._raw = sanitizedRaw({ id: command.command }, slashCommandsCollection.schema);
@@ -48,7 +49,7 @@ export default function (this: IRocketChat) {
 
 					// Update
 					slashCommandsToUpdate = slashCommandsToUpdate.map(command => {
-						const newCommand = commands.find((s: ISlashCommandResponse) => s.command === command.id);
+						const newCommand = commands.find((s: ISlashCommandResult) => s.command === command.id);
 						return command.prepareUpdate(
 							protectedFunction((s: TSlashCommandModel) => {
 								Object.assign(s, newCommand);
