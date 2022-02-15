@@ -613,3 +613,192 @@ export const saveNotificationSettings = (roomId: string, notifications: any) =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('rooms.saveNotification', { roomId, notifications });
+
+export const getSingleMessage = (msgId: string) =>
+	// RC 0.47.0
+	sdk.get('chat.getMessage', { msgId });
+
+export const getRoomRoles = (roomId: string, type: RoomTypes) =>
+	// RC 0.65.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
+
+export const getAvatarSuggestion = () =>
+	// RC 0.51.0
+	sdk.methodCallWrapper('getAvatarSuggestion');
+
+export const resetAvatar = (userId: string) =>
+	// RC 0.55.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('users.resetAvatar', { userId });
+
+export const setAvatarFromService = ({
+	data,
+	contentType = '',
+	service = null
+}: {
+	data: any;
+	contentType: string;
+	service: string | null;
+}) =>
+	// RC 0.51.0
+	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
+
+export const getUsernameSuggestion = () =>
+	// RC 0.65.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get('users.getUsernameSuggestion');
+
+export const getFiles = (roomId: string, type: RoomTypes, offset: number) =>
+	// RC 0.59.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get(`${roomTypeToApiType(type)}.files`, {
+		roomId,
+		offset,
+		sort: { uploadedAt: -1 }
+	});
+
+export const getMessages = (roomId: string, type: RoomTypes, query: any, offset: number) =>
+	// RC 0.59.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get(`${roomTypeToApiType(type)}.messages`, {
+		roomId,
+		query,
+		offset,
+		sort: { ts: -1 }
+	});
+
+export const getReadReceipts = (messageId: string) =>
+	// RC 0.63.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get('chat.getMessageReadReceipts', {
+		messageId
+	});
+
+export const searchMessages = (roomId: string, searchText: string, count: number, offset: number) =>
+	// RC 0.60.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get('chat.search', {
+		roomId,
+		searchText,
+		count,
+		offset
+	});
+
+export const toggleFollowMessage = (mid: string, follow: boolean) => {
+	// RC 1.0
+	if (follow) {
+		return sdk.post('chat.followMessage', { mid });
+	}
+	return sdk.post('chat.unfollowMessage', { mid });
+};
+
+export const getThreadsList = ({ rid, count, offset, text }: { rid: string; count: number; offset: number; text?: string }) => {
+	const params: any = {
+		rid,
+		count,
+		offset,
+		sort: { ts: -1 }
+	};
+	if (text) {
+		params.text = text;
+	}
+
+	// RC 1.0
+	return sdk.get('chat.getThreadsList', params);
+};
+
+export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>
+	// RC 1.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get('chat.syncThreadsList', {
+		rid,
+		updatedSince
+	});
+
+export const runSlashCommand = (command: string, roomId: string, params: any, triggerId?: string, tmid?: string) =>
+	// RC 0.60.2
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('commands.run', {
+		command,
+		roomId,
+		params,
+		triggerId,
+		tmid
+	});
+
+export const getCommandPreview = (command: string, roomId: string, params: any) =>
+	// RC 0.65.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get('commands.preview', {
+		command,
+		roomId,
+		params
+	});
+
+export const executeCommandPreview = (
+	command: string,
+	params: any,
+	roomId: string,
+	previewItem: any,
+	triggerId: string,
+	tmid?: string
+) =>
+	// RC 0.65.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('commands.preview', {
+		command,
+		params,
+		roomId,
+		previewItem,
+		triggerId,
+		tmid
+	});
+
+export const getDirectory = ({ query, count, offset, sort }: { query: any; count: number; offset: number; sort: any }) =>
+	// RC 1.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get('directory', {
+		query,
+		count,
+		offset,
+		sort
+	});
+
+export const saveAutoTranslate = ({ rid, field, value, options }: { rid: string; field: string; value: any; options: any }) =>
+	sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options);
+
+export const getSupportedLanguagesAutoTranslate = () => sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+
+export const translateMessage = (message: string, targetLanguage: string) =>
+	sdk.methodCallWrapper('autoTranslate.translateMessage', message, targetLanguage);
+
+export const findOrCreateInvite = ({ rid, days, maxUses }: { rid: string; days: number; maxUses: number }) =>
+	// RC 2.4.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('findOrCreateInvite', { rid, days, maxUses });
+
+export const validateInviteToken = (token: string) =>
+	// RC 2.4.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('validateInviteToken', { token });
+
+export const useInviteToken = (token: string) =>
+	// RC 2.4.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.post('useInviteToken', { token });
