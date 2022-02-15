@@ -42,12 +42,12 @@ interface IAddExistingChannelViewProps {
 const QUERY_SIZE = 50;
 
 class AddExistingChannelView extends React.Component<IAddExistingChannelViewProps, IAddExistingChannelViewState> {
-	private teamId?: string;
+	private teamId: string;
 
 	constructor(props: IAddExistingChannelViewProps) {
 		super(props);
 		this.query();
-		this.teamId = props.route?.params?.teamId;
+		this.teamId = props.route?.params?.teamId ?? '';
 		this.state = {
 			search: [],
 			channels: [],
