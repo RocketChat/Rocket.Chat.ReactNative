@@ -5,7 +5,8 @@ import orderBy from 'lodash/orderBy';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
 import { MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../constants/messageTypeLoad';
-import { IRocketChat, IMessage } from '../../definitions';
+import sdk from '../rocketchat/services/sdk';
+import { IMessage } from '../../definitions';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
 
@@ -20,10 +21,10 @@ interface ILoadMoreMessage {
 	msg?: string;
 }
 
-export default function loadSurroundingMessages(this: IRocketChat, { messageId, rid }: { messageId: string; rid: string }) {
+export default function loadSurroundingMessages({ messageId, rid }: { messageId: string; rid: string }) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const data = await this.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);
+			const data = await sdk.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);
 			let messages: (IMessage | ILoadMoreMessage)[] = EJSON.fromJSONValue(data?.messages);
 			messages = orderBy(messages, 'ts');
 
