@@ -15,7 +15,17 @@ export async function setRoles(): Promise<void> {
 	reduxStore.dispatch(setRolesAction(parsed));
 }
 
-export async function onRolesChanged(ddpMessage: any) {
+interface IRolesChanged {
+	fields: {
+		args: {
+			type: string;
+			_id: string;
+			description: string;
+		}[];
+	};
+}
+
+export async function onRolesChanged(ddpMessage: IRolesChanged): Promise<void> {
 	const { type, _id, description } = ddpMessage.fields.args[0];
 	if (/changed/.test(type)) {
 		const db = database.active;
