@@ -8,6 +8,7 @@ import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import database from '../database';
 import { IRocketChat, IUser } from '../../definitions';
+import sdk from '../rocketchat/services/sdk';
 
 export function subscribeUsersPresence(this: IRocketChat) {
 	const serverVersion = reduxStore.getState().server.version as string;
@@ -19,21 +20,21 @@ export function subscribeUsersPresence(this: IRocketChat) {
 			this.activeUsersSubTimeout = false;
 		}
 		this.activeUsersSubTimeout = setTimeout(() => {
-			this.sdk.subscribe('activeUsers');
+			sdk.subscribe('activeUsers');
 		}, 5000);
 	} else if (compareServerVersion(serverVersion, 'lowerThan', '4.1.0')) {
-		this.sdk.subscribe('stream-notify-logged', 'user-status');
+		sdk.subscribe('stream-notify-logged', 'user-status');
 	}
 
 	// RC 0.49.1
-	this.sdk.subscribe('stream-notify-logged', 'updateAvatar');
+	sdk.subscribe('stream-notify-logged', 'updateAvatar');
 	// RC 0.58.0
-	this.sdk.subscribe('stream-notify-logged', 'Users:NameChanged');
+	sdk.subscribe('stream-notify-logged', 'Users:NameChanged');
 }
 
 let ids: string[] = [];
 
-export default async function getUsersPresence(this: IRocketChat) {
+export default async function getUsersPresence() {
 	const serverVersion = reduxStore.getState().server.version as string;
 	const { user: loggedUser } = reduxStore.getState().login;
 
@@ -53,10 +54,10 @@ export default async function getUsersPresence(this: IRocketChat) {
 
 		try {
 			// RC 1.1.0
-			const result = await this.sdk.get('users.presence', params);
+			const result = (await sdk.get('users.presence' as any, params as any)) as any;
 
 			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.1.0')) {
-				this.sdk.subscribeRaw('stream-user-presence', ['', { added: ids }]);
+				sdk.subscribeRaw('stream-user-presence', ['', { added: ids }]);
 			}
 
 			if (result.success) {
@@ -106,10 +107,10 @@ export default async function getUsersPresence(this: IRocketChat) {
 }
 
 let usersTimer: number | null = null;
-export function getUserPresence(this: IRocketChat, uid: string) {
+export function getUserPresence(uid: string) {
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {
-			getUsersPresence.call(this);
+			getUsersPresence();
 			usersTimer = null;
 		}, 2000);
 	}
