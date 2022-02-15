@@ -38,14 +38,14 @@ export default (msg: IMessage) => {
 		msg.reactions = Object.keys(msg.reactions).map((key: string) => ({
 			_id: `${msg._id}${key}`,
 			emoji: key,
-			usernames: msg.reactions ? msg.reactions[key].usernames : null
+			usernames: msg.reactions ? msg.reactions[key as unknown as number].usernames : null
 		}));
 	}
 	if (msg.translations && Object.keys(msg.translations).length) {
 		msg.translations = Object.keys(msg.translations).map(key => ({
 			_id: `${msg._id}${key}`,
 			language: key,
-			value: msg.translations && { ...msg.translations[key] }
+			value: msg.translations && { ...msg.translations[key as unknown as number] }
 		}));
 		msg.autoTranslate = true;
 	}
