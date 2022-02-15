@@ -315,7 +315,7 @@ export const setUserPreferences = (userId: string, data: any): any =>
 	// @ts-ignore
 	sdk.post('users.setPreferences', { userId, data });
 
-export const setUserStatus = (status: string, message: string): any =>
+export const setUserStatus = (status?: string, message?: string): any =>
 	// RC 1.2.0
 	// TODO: missing definitions from server
 	// @ts-ignore
@@ -596,7 +596,7 @@ export const saveRoomSettings = (rid: string, params: any) =>
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
-export const saveUserProfile = (data: any, customFields: any): any =>
+export const saveUserProfile = (data: any, customFields?: any): any =>
 	// RC 0.62.2
 	// TODO: missing definitions from server
 	// @ts-ignore
@@ -640,8 +640,8 @@ export const setAvatarFromService = ({
 	service = null
 }: {
 	data: any;
-	contentType: string;
-	service: string | null;
+	contentType?: string;
+	service?: string | null;
 }) =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
@@ -782,7 +782,7 @@ export const saveAutoTranslate = ({ rid, field, value, options }: { rid: string;
 
 export const getSupportedLanguagesAutoTranslate = () => sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 
-export const translateMessage = (message: string, targetLanguage: string) =>
+export const translateMessage = (message: any, targetLanguage: string) =>
 	sdk.methodCallWrapper('autoTranslate.translateMessage', message, targetLanguage);
 
 export const findOrCreateInvite = ({ rid, days, maxUses }: { rid: string; days: number; maxUses: number }): any =>
