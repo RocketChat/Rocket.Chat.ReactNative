@@ -15,6 +15,7 @@ import {
 	TThreadMessageModel,
 	TThreadModel
 } from '../../definitions';
+import sdk from '../rocketchat/services/sdk';
 
 type TMessages = TMessageModel | TThreadMessageModel;
 
@@ -56,10 +57,9 @@ const changeMessageStatus = async (id: string, tmid: string, status: number, mes
 	}
 };
 
-export async function sendMessageCall(this: IRocketChat, message: TMessageModel) {
+export async function sendMessageCall(message: TMessageModel) {
 	const { _id, tmid } = message;
 	try {
-		const sdk = this.shareSDK || this.sdk;
 		// RC 0.60.0
 		const result = await sdk.post('chat.sendMessage', { message });
 		if (result.success) {
@@ -71,7 +71,7 @@ export async function sendMessageCall(this: IRocketChat, message: TMessageModel)
 	return changeMessageStatus(_id, tmid as string, messagesStatus.ERROR);
 }
 
-export async function resendMessage(message: TMessageModel, tmid: string) {
+export async function resendMessage(this: IRocketChat, message: TMessageModel, tmid: string) {
 	const db = database.active;
 	try {
 		await db.write(async () => {
@@ -91,14 +91,14 @@ export async function resendMessage(message: TMessageModel, tmid: string) {
 			} as TMessageModel;
 		}
 		m = await Encryption.encryptMessage(m);
-		// @ts-ignore
+
 		await sendMessageCall.call(this, m);
 	} catch (e) {
 		log(e);
 	}
 }
 
-export default async function (rid: string, msg: string, tmid: string, user: IUser, tshow?: boolean) {
+export default async function (this: IRocketChat, rid: string, msg: string, tmid: string, user: IUser, tshow?: boolean) {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
@@ -235,7 +235,7 @@ export default async function (rid: string, msg: string, tmid: string, user: IUs
 			log(e);
 			return;
 		}
-		// @ts-ignore
+
 		await sendMessageCall.call(this, message);
 	} catch (e) {
 		log(e);
