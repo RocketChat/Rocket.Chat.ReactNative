@@ -2,7 +2,7 @@ import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { compareServerVersion } from '../utils';
-import reduxStore from '../createStore';
+import { store as reduxStore } from '../auxStore';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
 import database from '../database';
@@ -19,7 +19,7 @@ export function subscribeUsersPresence() {
 		this.activeUsersSubTimeout = setTimeout(() => {
 			this.sdk.subscribe('activeUsers');
 		}, 5000);
-	} else {
+	} else if (compareServerVersion(serverVersion, 'lowerThan', '4.1.0')) {
 		this.sdk.subscribe('stream-notify-logged', 'user-status');
 	}
 
@@ -52,6 +52,11 @@ export default async function getUsersPresence() {
 		try {
 			// RC 1.1.0
 			const result = await this.sdk.get('users.presence', params);
+
+			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.1.0')) {
+				this.sdk.subscribeRaw('stream-user-presence', ['', { added: ids }]);
+			}
+
 			if (result.success) {
 				const { users } = result;
 
@@ -100,13 +105,9 @@ export default async function getUsersPresence() {
 
 let usersTimer = null;
 export function getUserPresence(uid) {
-	const auth = reduxStore.getState().login.isAuthenticated;
-
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {
-			if (auth && ids.length) {
-				getUsersPresence.call(this);
-			}
+			getUsersPresence.call(this);
 			usersTimer = null;
 		}, 2000);
 	}
