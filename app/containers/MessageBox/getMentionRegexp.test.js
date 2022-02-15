@@ -1,8 +1,8 @@
-import getRegexp from './getRegexp';
+import getMentionRegexp from './getMentionRegexp';
 
-describe('getRegexpMentionUser', function () {
+describe('getMentionRegexpUser', function () {
 	const trackingType = '@'; // Tracking type for mentioning users
-	const regexp = getRegexp(trackingType);
+	const regexp = getMentionRegexp(trackingType);
 
 	test('removing query text on user suggestion autocomplete (latin)', () => {
 		const message = 'Hey @test123';
@@ -30,14 +30,14 @@ describe('getRegexpMentionUser', function () {
 	});
 
 	test('removing query text on user suggestion autocomplete (special characters in query)', () => {
-		const message = 'Hey @\'=test123';
+		const message = "Hey @'=test123";
 		expect(message.replace(regexp, '')).toBe('Hey @');
 	});
 });
 
-describe('getRegexpMentionEmoji', function () {
+describe('getMentionRegexpEmoji', function () {
 	const trackingType = ':'; // Tracking type for mentioning emojis
-	const regexp = getRegexp(trackingType);
+	const regexp = getMentionRegexp(trackingType);
 
 	test('removing query text on emoji suggestion autocomplete ', () => {
 		const message = 'Hey :smiley';
@@ -45,9 +45,9 @@ describe('getRegexpMentionEmoji', function () {
 	});
 });
 
-describe('getRegexpMentionCommand', function () {
+describe('getMentionRegexpCommand', function () {
 	const trackingType = '/'; // Tracking type for mentioning commands
-	const regexp = getRegexp(trackingType);
+	const regexp = getMentionRegexp(trackingType);
 
 	test('removing query text on emoji suggestion autocomplete ', () => {
 		const message = '/archive';
@@ -55,9 +55,9 @@ describe('getRegexpMentionCommand', function () {
 	});
 });
 
-describe('getRegexpMentionRoom', function () {
+describe('getMentionRegexpRoom', function () {
 	const trackingType = '#'; // Tracking type for mentioning rooms
-	const regexp = getRegexp(trackingType);
+	const regexp = getMentionRegexp(trackingType);
 
 	test('removing query text on emoji suggestion autocomplete ', () => {
 		const message = 'Check #general';

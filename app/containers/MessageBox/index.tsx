@@ -31,7 +31,7 @@ import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import { canUploadFile } from '../../utils/media';
 import EventEmiter from '../../utils/events';
 import { KEY_COMMAND, handleCommandShowUpload, handleCommandSubmit, handleCommandTyping } from '../../commands';
-import getRegexp from './getRegexp';
+import getMentionRegexp from './getMentionRegexp';
 import Mentions from './Mentions';
 import MessageboxContext from './Context';
 import {
@@ -494,7 +494,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const msg = this.text;
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
-		const regexp = getRegexp(trackingType);
+		const regexp = getMentionRegexp(trackingType);
 		let result = msg.substr(0, cursor).replace(regexp, '');
 		// Remove the ! after select the canned response
 		if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
