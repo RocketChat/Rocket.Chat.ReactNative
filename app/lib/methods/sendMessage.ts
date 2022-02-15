@@ -61,7 +61,7 @@ export async function sendMessageCall(message: TMessageModel) {
 	const { _id, tmid } = message;
 	try {
 		// RC 0.60.0
-		const result = await sdk.post('chat.sendMessage', { message });
+		const result = (await sdk.post('chat.sendMessage' as any, { message } as any)) as any;
 		if (result.success) {
 			return changeMessageStatus(_id, tmid as string, messagesStatus.SENT, result.message);
 		}
