@@ -777,7 +777,7 @@ const RocketChat = {
 
 	createDirectMessage(username) {
 		// RC 0.59.0
-		return this.post('im.create', { username });
+		return sdk.post('im.create', { username });
 	},
 
 	createGroupChat() {
@@ -831,7 +831,7 @@ const RocketChat = {
 	},
 	removeTeamRoom({ roomId, teamId }) {
 		// RC 3.13.0
-		return this.post('teams.removeRoom', { roomId, teamId });
+		return sdk.post('teams.removeRoom', { roomId, teamId });
 	},
 	leaveTeam({ teamId, rooms }) {
 		// RC 3.13.0
@@ -976,16 +976,19 @@ const RocketChat = {
 		return `${server}/${roomType}/${channel.name}`;
 	},
 	subscribe(...args) {
-		return this.sdk.subscribe(...args);
+		return sdk.subscribe(...args);
+	},
+	subscribeRaw(...args) {
+		return sdk.subscribeRaw(...args);
 	},
 	subscribeRoom(...args) {
-		return this.sdk.subscribeRoom(...args);
+		return sdk.subscribeRoom(...args);
 	},
 	unsubscribe(subscription) {
-		return this.sdk.unsubscribe(subscription);
+		return sdk.unsubscribe(subscription);
 	},
 	onStreamData(...args) {
-		return this.sdk.onStreamData(...args);
+		return sdk.onStreamData(...args);
 	},
 	emitTyping(room, typing = true) {
 		const { login, settings } = reduxStore.getState();
