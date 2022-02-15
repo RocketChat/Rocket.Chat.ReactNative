@@ -13,7 +13,7 @@ import Loading from '../containers/Loading';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IBaseScreen } from '../definitions';
+import { IApplicationState, IBaseScreen, ISubscription } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
@@ -265,7 +265,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 
 		const data = (search.length > 0 ? search : chats)
 			// filter DM between multiple users
-			.filter(sub => !RocketChat.isGroupChat(sub));
+			.filter(sub => !RocketChat.isGroupChat(sub as ISubscription));
 
 		return (
 			<FlatList
