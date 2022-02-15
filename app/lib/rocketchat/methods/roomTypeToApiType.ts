@@ -5,9 +5,10 @@ const types = {
 	l: 'channels'
 };
 
-type Keys = keyof typeof types;
-type Values = typeof types[Keys];
+// TODO: refactor this
+export type RoomTypes = keyof typeof types;
+type ApiTypes = typeof types[RoomTypes];
 
-const roomTypeToApiType = (t: Keys): Values => types[t];
+const roomTypeToApiType = (t: RoomTypes): ApiTypes => types[t];
 
 export default roomTypeToApiType;

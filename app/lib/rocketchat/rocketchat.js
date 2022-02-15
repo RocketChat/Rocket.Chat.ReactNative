@@ -123,7 +123,22 @@ import {
 	getTagsList,
 	getAgentDepartments,
 	getCustomFields,
-	getListCannedResponse
+	getListCannedResponse,
+	toggleBlockUser,
+	leaveRoom,
+	deleteRoom,
+	toggleMuteUserInRoom,
+	toggleRoomOwner,
+	toggleRoomLeader,
+	toggleRoomModerator,
+	removeUserFromRoom,
+	ignoreUser,
+	toggleArchiveRoom,
+	hideRoom,
+	saveRoomSettings,
+	saveUserProfile,
+	saveUserPreferences,
+	saveNotificationSettings
 } from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -243,7 +258,7 @@ const RocketChat = {
 		this.sdk = sdk.disconnect();
 	},
 	connect({ server, user, logoutOnError = false }) {
-		return new Promise(resolve => {
+		return new Promise((resolve) => {
 			if (this?.sdk?.client?.host === server) {
 				return resolve();
 			} else {
@@ -296,7 +311,7 @@ const RocketChat = {
 				.then(() => {
 					console.log('connected');
 				})
-				.catch(err => {
+				.catch((err) => {
 					console.log('connect error', err);
 				});
 
@@ -327,7 +342,7 @@ const RocketChat = {
 
 			this.notifyAllListener = this.sdk.onStreamData(
 				'stream-notify-all',
-				protectedFunction(async ddpMessage => {
+				protectedFunction(async (ddpMessage) => {
 					const { eventName } = ddpMessage.fields;
 					if (/public-settings-changed/.test(eventName)) {
 						const { _id, value } = ddpMessage.fields.args[1];
@@ -338,7 +353,7 @@ const RocketChat = {
 							const { type } = defaultSettings[_id];
 							if (type) {
 								await db.action(async () => {
-									await settingsRecord.update(u => {
+									await settingsRecord.update((u) => {
 										u[type] = value;
 									});
 								});
@@ -357,7 +372,7 @@ const RocketChat = {
 			);
 
 			// RC 4.1
-			this.sdk.onStreamData('stream-user-presence', ddpMessage => {
+			this.sdk.onStreamData('stream-user-presence', (ddpMessage) => {
 				const userStatus = ddpMessage.fields.args[0];
 				const { uid } = ddpMessage.fields;
 				const [, status, statusText] = userStatus;
@@ -372,7 +387,7 @@ const RocketChat = {
 
 			this.notifyLoggedListener = this.sdk.onStreamData(
 				'stream-notify-logged',
-				protectedFunction(async ddpMessage => {
+				protectedFunction(async (ddpMessage) => {
 					const { eventName } = ddpMessage.fields;
 
 					// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
@@ -403,7 +418,7 @@ const RocketChat = {
 						try {
 							const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
 							await db.action(async () => {
-								await userRecord.update(u => {
+								await userRecord.update((u) => {
 									u.avatarETag = etag;
 								});
 							});
@@ -417,7 +432,7 @@ const RocketChat = {
 						try {
 							const permissionsRecord = await permissionsCollection.find(_id);
 							await db.action(async () => {
-								await permissionsRecord.update(u => {
+								await permissionsRecord.update((u) => {
 									u.roles = roles;
 								});
 							});
@@ -432,14 +447,14 @@ const RocketChat = {
 						try {
 							const userRecord = await userCollection.find(userNameChanged._id);
 							await db.action(async () => {
-								await userRecord.update(u => {
+								await userRecord.update((u) => {
 									Object.assign(u, userNameChanged);
 								});
 							});
 						} catch {
 							// User not found
 							await db.action(async () => {
-								await userCollection.create(u => {
+								await userCollection.create((u) => {
 									u._raw = sanitizedRaw({ id: userNameChanged._id }, userCollection.schema);
 									Object.assign(u, userNameChanged);
 								});
@@ -661,7 +676,7 @@ const RocketChat = {
 	removeServer,
 	clearCache,
 	registerPushToken() {
-		return new Promise(async resolve => {
+		return new Promise(async (resolve) => {
 			const token = getDeviceToken();
 			if (token) {
 				const type = isIOS ? 'apn' : 'gcm';
@@ -752,7 +767,7 @@ const RocketChat = {
 					users
 						.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
 						.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
-						.forEach(user => {
+						.forEach((user) => {
 							data.push({
 								...user,
 								rid: user.username,
@@ -763,7 +778,7 @@ const RocketChat = {
 						});
 				}
 				if (filterRooms) {
-					rooms.forEach(room => {
+					rooms.forEach((room) => {
 						// Check if it exists on local database
 						const index = data.findIndex(item => item.rid === room._id);
 						if (index === -1) {
@@ -841,7 +856,7 @@ const RocketChat = {
 			return ret;
 		}, {}),
 	_prepareSettings(settings) {
-		return settings.map(setting => {
+		return settings.map((setting) => {
 			setting[defaultSettings[setting._id].type] = setting.value;
 			return setting;
 		});
@@ -965,79 +980,19 @@ const RocketChat = {
 		isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
 		return !isUnread;
 	},
-
 	isGroupChat,
-
-	toggleBlockUser(rid, blocked, block) {
-		if (block) {
-			// RC 0.49.0
-			return this.methodCallWrapper('blockUser', { rid, blocked });
-		}
-		// RC 0.49.0
-		return this.methodCallWrapper('unblockUser', { rid, blocked });
-	},
-	leaveRoom(roomId, t) {
-		// RC 0.48.0
-		return this.post(`${this.roomTypeToApiType(t)}.leave`, { roomId });
-	},
-	deleteRoom(roomId, t) {
-		// RC 0.49.0
-		return this.post(`${this.roomTypeToApiType(t)}.delete`, { roomId });
-	},
-	toggleMuteUserInRoom(rid, username, mute) {
-		if (mute) {
-			// RC 0.51.0
-			return this.methodCallWrapper('muteUserInRoom', { rid, username });
-		}
-		// RC 0.51.0
-		return this.methodCallWrapper('unmuteUserInRoom', { rid, username });
-	},
-	toggleRoomOwner({ roomId, t, userId, isOwner }) {
-		if (isOwner) {
-			// RC 0.49.4
-			return this.post(`${this.roomTypeToApiType(t)}.addOwner`, { roomId, userId });
-		}
-		// RC 0.49.4
-		return this.post(`${this.roomTypeToApiType(t)}.removeOwner`, { roomId, userId });
-	},
-	toggleRoomLeader({ roomId, t, userId, isLeader }) {
-		if (isLeader) {
-			// RC 0.58.0
-			return this.post(`${this.roomTypeToApiType(t)}.addLeader`, { roomId, userId });
-		}
-		// RC 0.58.0
-		return this.post(`${this.roomTypeToApiType(t)}.removeLeader`, { roomId, userId });
-	},
-	toggleRoomModerator({ roomId, t, userId, isModerator }) {
-		if (isModerator) {
-			// RC 0.49.4
-			return this.post(`${this.roomTypeToApiType(t)}.addModerator`, { roomId, userId });
-		}
-		// RC 0.49.4
-		return this.post(`${this.roomTypeToApiType(t)}.removeModerator`, { roomId, userId });
-	},
-	removeUserFromRoom({ roomId, t, userId }) {
-		// RC 0.48.0
-		return this.post(`${this.roomTypeToApiType(t)}.kick`, { roomId, userId });
-	},
-	ignoreUser({ rid, userId, ignore }) {
-		return this.sdk.get('chat.ignoreUser', { rid, userId, ignore });
-	},
-	toggleArchiveRoom(roomId, t, archive) {
-		if (archive) {
-			// RC 0.48.0
-			return this.post(`${this.roomTypeToApiType(t)}.archive`, { roomId });
-		}
-		// RC 0.48.0
-		return this.post(`${this.roomTypeToApiType(t)}.unarchive`, { roomId });
-	},
-	hideRoom(roomId, t) {
-		return this.post(`${this.roomTypeToApiType(t)}.close`, { roomId });
-	},
-	saveRoomSettings(rid, params) {
-		// RC 0.55.0
-		return this.methodCallWrapper('saveRoomSettings', rid, params);
-	},
+	toggleBlockUser,
+	leaveRoom,
+	deleteRoom,
+	toggleMuteUserInRoom,
+	toggleRoomOwner,
+	toggleRoomLeader,
+	toggleRoomModerator,
+	removeUserFromRoom,
+	ignoreUser,
+	toggleArchiveRoom,
+	hideRoom,
+	saveRoomSettings,
 	post(...args) {
 		return sdk.post(...args);
 	},
@@ -1049,18 +1004,9 @@ const RocketChat = {
 		// RC 3.1.0
 		return this.post('users.2fa.sendEmailCode', { emailOrUsername: username });
 	},
-	saveUserProfile(data, customFields) {
-		// RC 0.62.2
-		return this.post('users.updateOwnBasicInfo', { data, customFields });
-	},
-	saveUserPreferences(data) {
-		// RC 0.62.0
-		return this.post('users.setPreferences', { data });
-	},
-	saveNotificationSettings(roomId, notifications) {
-		// RC 0.63.0
-		return this.post('rooms.saveNotification', { roomId, notifications });
-	},
+	saveUserProfile,
+	saveUserPreferences,
+	saveNotificationSettings,
 	addUsersToRoom(rid) {
 		let { users } = reduxStore.getState().selectedUsers;
 		users = users.map(u => u.name);
