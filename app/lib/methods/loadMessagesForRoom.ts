@@ -7,6 +7,7 @@ import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
 import { IRocketChat } from '../../definitions/IRocketChat';
 import { IMessage, IRoom, SubscriptionType, TMessageModel } from '../../definitions';
+import sdk from '../rocketchat/services/sdk';
 
 const COUNT = 50;
 
@@ -22,7 +23,8 @@ async function load(this: IRocketChat, { rid: roomId, latest, t }: Pick<IRoom, '
 	}
 
 	// RC 0.48.0
-	const data = await this.sdk.get(`${apiType}.history`, params);
+	// @ts-ignore
+	const data: any = await sdk.get(`${apiType}.history`, params);
 	if (!data || data.status === 'error') {
 		return [];
 	}
