@@ -7,7 +7,8 @@ import { store as reduxStore } from '../auxStore';
 import database from '../database';
 import log from '../../utils/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
-import { ICustomEmoji, IRocketChat, TCustomEmojiModel } from '../../definitions';
+import { ICustomEmoji, TCustomEmojiModel } from '../../definitions';
+import sdk from '../rocketchat/services/sdk';
 
 interface IUpdateEmojis {
 	update: TCustomEmojiModel[];
@@ -98,7 +99,7 @@ export async function setCustomEmojis() {
 	reduxStore.dispatch(setCustomEmojisAction(parsed));
 }
 
-export function getCustomEmojis(this: IRocketChat) {
+export function getCustomEmojis() {
 	return new Promise<void>(async resolve => {
 		try {
 			const serverVersion = reduxStore.getState().server.version as string;
@@ -110,7 +111,7 @@ export function getCustomEmojis(this: IRocketChat) {
 			// if server version is lower than 0.75.0, fetches from old api
 			if (compareServerVersion(serverVersion, 'lowerThan', '0.75.0')) {
 				// RC 0.61.0
-				const result = await this.sdk.get('emoji-custom');
+				const result = await sdk.get('emoji-custom');
 
 				let { emojis } = result;
 				emojis = emojis.filter((emoji: TCustomEmojiModel) => !updatedSince || emoji._updatedAt.toISOString() > updatedSince);
@@ -129,7 +130,7 @@ export function getCustomEmojis(this: IRocketChat) {
 			}
 
 			// RC 0.75.0
-			const result = await this.sdk.get('emoji-custom.list', params);
+			const result = await sdk.get('emoji-custom.list', params);
 
 			if (!result.success) {
 				return resolve();
