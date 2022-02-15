@@ -5,7 +5,6 @@ import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
-import { IRocketChat } from '../../definitions/IRocketChat';
 import { IMessage, IRoom, SubscriptionType, TMessageModel } from '../../definitions';
 import sdk from '../rocketchat/services/sdk';
 import RocketChat from '../rocketchat';
@@ -32,13 +31,15 @@ async function load({ rid: roomId, latest, t }: Pick<IRoom, 'rid' | 'latest' | '
 	return data.messages;
 }
 
-export default function loadMessagesForRoom(
-	this: IRocketChat,
-	args: { rid: string; t: SubscriptionType; latest: string; loaderItem: TMessageModel }
-): Promise<IMessage | []> {
+export default function loadMessagesForRoom(args: {
+	rid: string;
+	t: SubscriptionType;
+	latest: string;
+	loaderItem: TMessageModel;
+}): Promise<IMessage | []> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const data = await load.call(this, args);
+			const data = await load(args);
 			if (data?.length) {
 				const lastMessage = data[data.length - 1];
 				const lastMessageRecord = await getMessageById(lastMessage._id);
