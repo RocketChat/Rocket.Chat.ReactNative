@@ -65,103 +65,7 @@ import getUserInfo from './services/getUserInfo';
 // Services
 import sdk from './services/sdk';
 import toggleFavorite from './services/toggleFavorite';
-import {
-	createChannel,
-	e2eSetUserPublicAndPrivateKeys,
-	e2eRequestSubscriptionKeys,
-	e2eGetUsersOfRoomWithoutKey,
-	e2eSetRoomKeyID,
-	e2eUpdateGroupKey,
-	e2eRequestRoomKey,
-	updateJitsiTimeout,
-	register,
-	forgotPassword,
-	sendConfirmationEmail,
-	spotlight,
-	createDirectMessage,
-	createDiscussion,
-	getDiscussions,
-	createTeam,
-	addRoomsToTeam,
-	removeTeamRoom,
-	leaveTeam,
-	removeTeamMember,
-	updateTeamRoom,
-	deleteTeam,
-	teamListRoomsOfUser,
-	getTeamInfo,
-	convertChannelToTeam,
-	convertTeamToChannel,
-	joinRoom,
-	deleteMessage,
-	markAsUnread,
-	toggleStarMessage,
-	togglePinMessage,
-	reportMessage,
-	setUserPreferences,
-	setUserStatus,
-	setReaction,
-	toggleRead,
-	getUserRoles,
-	getRoomCounters,
-	getChannelInfo,
-	getUserPreferences,
-	getRoomInfo,
-	getVisitorInfo,
-	setUserPresenceAway,
-	setUserPresenceOnline,
-	getTeamListRoom,
-	closeLivechat,
-	editLivechat,
-	returnLivechat,
-	forwardLivechat,
-	getDepartmentInfo,
-	getDepartments,
-	usersAutoComplete,
-	getRoutingConfig,
-	getTagsList,
-	getAgentDepartments,
-	getCustomFields,
-	getListCannedResponse,
-	toggleBlockUser,
-	leaveRoom,
-	deleteRoom,
-	toggleMuteUserInRoom,
-	toggleRoomOwner,
-	toggleRoomLeader,
-	toggleRoomModerator,
-	removeUserFromRoom,
-	ignoreUser,
-	toggleArchiveRoom,
-	hideRoom,
-	saveRoomSettings,
-	saveUserProfile,
-	saveUserPreferences,
-	saveNotificationSettings,
-	getSingleMessage,
-	getRoomRoles,
-	getAvatarSuggestion,
-	resetAvatar,
-	setAvatarFromService,
-	getUsernameSuggestion,
-	getFiles,
-	getMessages,
-	getReadReceipts,
-	searchMessages,
-	toggleFollowMessage,
-	getThreadsList,
-	getSyncThreadsList,
-	runSlashCommand,
-	getCommandPreview,
-	executeCommandPreview,
-	getDirectory,
-	saveAutoTranslate,
-	getSupportedLanguagesAutoTranslate,
-	translateMessage,
-	findOrCreateInvite,
-	validateInviteToken,
-	useInviteToken
-} from './services/restApi';
+import * as restAPis from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -178,6 +82,7 @@ const RocketChat = {
 	TOKEN_KEY,
 	CURRENT_SERVER,
 	CERTIFICATE_KEY,
+	...restAPis,
 	callJitsi,
 	callJitsiWithoutServer,
 	async subscribeRooms() {
@@ -196,7 +101,6 @@ const RocketChat = {
 		}
 	},
 	canOpenRoom,
-	createChannel,
 	async getWebsocketInfo({ server }) {
 		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
 
@@ -576,22 +480,12 @@ const RocketChat = {
 		}
 		return result;
 	},
-	e2eSetUserPublicAndPrivateKeys,
-	e2eRequestSubscriptionKeys,
-	e2eGetUsersOfRoomWithoutKey,
-	e2eSetRoomKeyID,
-	e2eUpdateGroupKey,
-	e2eRequestRoomKey,
 	e2eResetOwnKey() {
 		this.unsubscribeRooms();
 
 		// RC 0.72.0
 		return this.methodCallWrapper('e2e.resetOwnE2EKey');
 	},
-	updateJitsiTimeout,
-	register,
-	forgotPassword,
-	sendConfirmationEmail,
 
 	loginTOTP(params, loginEmailPassword, isFromWebView = false) {
 		return new Promise(async (resolve, reject) => {
@@ -821,8 +715,6 @@ const RocketChat = {
 			// return [];
 		}
 	},
-	spotlight,
-	createDirectMessage,
 	createGroupChat() {
 		const { users } = reduxStore.getState().selectedUsers;
 		const usernames = users.map(u => u.name).join(',');
@@ -830,21 +722,6 @@ const RocketChat = {
 		// RC 3.1.0
 		return this.post('im.create', { usernames });
 	},
-
-	createDiscussion,
-	getDiscussions,
-	createTeam,
-	addRoomsToTeam,
-	removeTeamRoom,
-	leaveTeam,
-	removeTeamMember,
-	updateTeamRoom,
-	deleteTeam,
-	teamListRoomsOfUser,
-	getTeamInfo,
-	convertChannelToTeam,
-	convertTeamToChannel,
-	joinRoom,
 	triggerBlockAction,
 	triggerSubmitView,
 	triggerCancel,
@@ -883,16 +760,11 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	deleteMessage,
 	async editMessage(message) {
 		const { rid, msg } = await Encryption.encryptMessage(message);
 		// RC 0.49.0
 		return this.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
 	},
-	markAsUnread,
-	toggleStarMessage,
-	togglePinMessage,
-	reportMessage,
 	getRoom,
 	getPermalinkMessage,
 	getPermalinkChannel(channel) {
@@ -926,13 +798,7 @@ const RocketChat = {
 		const name = UI_Use_Real_Name ? user.name : user.username;
 		return this.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 	},
-	setUserPresenceAway,
-	setUserPresenceOnline,
-	setUserPreferences,
-	setUserStatus,
-	setReaction,
 	toggleFavorite,
-	toggleRead,
 	async getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
 		const serverVersion = reduxStore.getState().server.version;
 		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
@@ -954,26 +820,7 @@ const RocketChat = {
 	methodCallWrapper(method, ...params) {
 		return sdk.methodCallWrapper(method, ...params);
 	},
-	getUserRoles,
-	getRoomCounters,
-	getChannelInfo,
 	getUserInfo,
-	getUserPreferences,
-	getRoomInfo,
-	getVisitorInfo,
-	getTeamListRoom,
-	closeLivechat,
-	editLivechat,
-	returnLivechat,
-	forwardLivechat,
-	getDepartmentInfo,
-	getDepartments,
-	usersAutoComplete,
-	getRoutingConfig,
-	getTagsList,
-	getAgentDepartments,
-	getCustomFields,
-	getListCannedResponse,
 
 	getUidDirectMessage(room) {
 		const { id: userId } = reduxStore.getState().login.user;
@@ -1003,18 +850,6 @@ const RocketChat = {
 		return !isUnread;
 	},
 	isGroupChat,
-	toggleBlockUser,
-	leaveRoom,
-	deleteRoom,
-	toggleMuteUserInRoom,
-	toggleRoomOwner,
-	toggleRoomLeader,
-	toggleRoomModerator,
-	removeUserFromRoom,
-	ignoreUser,
-	toggleArchiveRoom,
-	hideRoom,
-	saveRoomSettings,
 	post(...args) {
 		return sdk.post(...args);
 	},
@@ -1026,16 +861,12 @@ const RocketChat = {
 		// RC 3.1.0
 		return this.post('users.2fa.sendEmailCode', { emailOrUsername: username });
 	},
-	saveUserProfile,
-	saveUserPreferences,
-	saveNotificationSettings,
 	addUsersToRoom(rid) {
 		let { users } = reduxStore.getState().selectedUsers;
 		users = users.map(u => u.name);
 		// RC 0.51.0
 		return this.methodCallWrapper('addUsersToRoom', { rid, users });
 	},
-	getSingleMessage,
 	hasRole(role) {
 		const shareUser = reduxStore.getState().share.user;
 		const loginUser = reduxStore.getState().login.user;
@@ -1044,7 +875,6 @@ const RocketChat = {
 
 		return userRoles.indexOf(r => r === role) > -1;
 	},
-	getRoomRoles,
 	/**
 	 * Permissions: array of permissions' roles from redux. Example: [['owner', 'admin'], ['leader']]
 	 * Returns an array of boolean for each permission from permissions arg
@@ -1076,9 +906,6 @@ const RocketChat = {
 			log(e);
 		}
 	},
-	getAvatarSuggestion,
-	resetAvatar,
-	setAvatarFromService,
 	async getAllowCrashReport() {
 		const allowCrashReport = await AsyncStorage.getItem(CRASH_REPORT_KEY);
 		if (allowCrashReport === null) {
@@ -1155,15 +982,7 @@ const RocketChat = {
 		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter', 'wordpress'];
 		return availableOAuth.includes(authName) ? 'oauth' : 'not_supported';
 	},
-	getUsernameSuggestion,
 	roomTypeToApiType,
-	getFiles,
-	getMessages,
-	getReadReceipts,
-	searchMessages,
-	toggleFollowMessage,
-	getThreadsList,
-	getSyncThreadsList,
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;
 		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
@@ -1172,9 +991,6 @@ const RocketChat = {
 		}
 		return Promise.resolve();
 	},
-	runSlashCommand,
-	getCommandPreview,
-	executeCommandPreview,
 	_setUser(ddpMessage) {
 		this.activeUsers = this.activeUsers || {};
 		const { user } = reduxStore.getState().login;
@@ -1209,7 +1025,6 @@ const RocketChat = {
 	},
 	getUserPresence,
 	subscribeUsersPresence,
-	getDirectory,
 	canAutoTranslate() {
 		try {
 			const { AutoTranslate_Enabled } = reduxStore.getState().settings;
@@ -1224,9 +1039,6 @@ const RocketChat = {
 			return false;
 		}
 	},
-	saveAutoTranslate,
-	getSupportedLanguagesAutoTranslate,
-	translateMessage,
 	getSenderName(sender) {
 		const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
 		return useRealName ? sender.name : sender.username;
@@ -1251,10 +1063,7 @@ const RocketChat = {
 			return room.uids?.length + room.usernames?.join();
 		}
 		return room.prid ? room.fname : room.name;
-	},
-	findOrCreateInvite,
-	validateInviteToken,
-	useInviteToken
+	}
 };
 
 export default RocketChat;
