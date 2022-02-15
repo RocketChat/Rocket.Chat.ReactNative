@@ -108,7 +108,22 @@ import {
 	getChannelInfo,
 	getUserPreferences,
 	getRoomInfo,
-	getVisitorInfo
+	getVisitorInfo,
+	setUserPresenceAway,
+	setUserPresenceOnline,
+	getTeamListRoom,
+	closeLivechat,
+	editLivechat,
+	returnLivechat,
+	forwardLivechat,
+	getDepartmentInfo,
+	getDepartments,
+	usersAutoComplete,
+	getRoutingConfig,
+	getTagsList,
+	getAgentDepartments,
+	getCustomFields,
+	getListCannedResponse
 } from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -874,12 +889,8 @@ const RocketChat = {
 		const name = UI_Use_Real_Name ? user.name : user.username;
 		return this.methodCall('stream-notify-room', `${room}/typing`, name, typing);
 	},
-	setUserPresenceAway() {
-		return this.methodCall('UserPresence:away');
-	},
-	setUserPresenceOnline() {
-		return this.methodCall('UserPresence:online');
-	},
+	setUserPresenceAway,
+	setUserPresenceOnline,
 	setUserPreferences,
 	setUserStatus,
 	setReaction,
@@ -913,77 +924,19 @@ const RocketChat = {
 	getUserPreferences,
 	getRoomInfo,
 	getVisitorInfo,
-	getTeamListRoom({ teamId, count, offset, type, filter }) {
-		const params = {
-			teamId,
-			count,
-			offset,
-			type
-		};
-
-		if (filter) {
-			params.filter = filter;
-		}
-		// RC 3.13.0
-		return this.sdk.get('teams.listRooms', params);
-	},
-	closeLivechat(rid, comment) {
-		// RC 0.29.0
-		return this.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true });
-	},
-	editLivechat(userData, roomData) {
-		// RC 0.55.0
-		return this.methodCallWrapper('livechat:saveInfo', userData, roomData);
-	},
-	returnLivechat(rid) {
-		// RC 0.72.0
-		return this.methodCallWrapper('livechat:returnAsInquiry', rid);
-	},
-	forwardLivechat(transferData) {
-		// RC 0.36.0
-		return this.methodCallWrapper('livechat:transfer', transferData);
-	},
-	getDepartmentInfo(departmentId) {
-		// RC 2.2.0
-		return this.sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
-	},
-	getDepartments() {
-		// RC 2.2.0
-		return this.sdk.get('livechat/department');
-	},
-	usersAutoComplete(selector) {
-		// RC 2.4.0
-		return this.sdk.get('users.autocomplete', { selector });
-	},
-	getRoutingConfig() {
-		// RC 2.0.0
-		return this.methodCallWrapper('livechat:getRoutingConfig');
-	},
-	getTagsList() {
-		// RC 2.0.0
-		return this.methodCallWrapper('livechat:getTagsList');
-	},
-	getAgentDepartments(uid) {
-		// RC 2.4.0
-		return this.sdk.get(`livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
-	},
-	getCustomFields() {
-		// RC 2.2.0
-		return this.sdk.get('livechat/custom-fields');
-	},
-
-	getListCannedResponse({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }) {
-		const params = {
-			offset,
-			count,
-			...(departmentId && { departmentId }),
-			...(text && { text }),
-			...(scope && { scope })
-		};
-
-		// RC 3.17.0
-		return this.sdk.get('canned-responses', params);
-	},
+	getTeamListRoom,
+	closeLivechat,
+	editLivechat,
+	returnLivechat,
+	forwardLivechat,
+	getDepartmentInfo,
+	getDepartments,
+	usersAutoComplete,
+	getRoutingConfig,
+	getTagsList,
+	getAgentDepartments,
+	getCustomFields,
+	getListCannedResponse,
 
 	getUidDirectMessage(room) {
 		const { id: userId } = reduxStore.getState().login.user;

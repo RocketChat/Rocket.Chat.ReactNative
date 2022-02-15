@@ -366,3 +366,97 @@ export const getRoomInfo = (roomId: string) =>
 export const getVisitorInfo = (visitorId: string) =>
 	// RC 2.3.0
 	sdk.get('livechat/visitors.info', { visitorId });
+
+export const setUserPresenceAway = () => sdk.methodCall('UserPresence:away');
+
+export const setUserPresenceOnline = () => sdk.methodCall('UserPresence:online');
+
+export const getTeamListRoom = ({
+	teamId,
+	count,
+	offset,
+	type,
+	filter
+}: {
+	teamId: string;
+	count: number;
+	offset: number;
+	type: string;
+	filter: any;
+}) => {
+	const params: any = {
+		teamId,
+		count,
+		offset,
+		type
+	};
+
+	if (filter) {
+		params.filter = filter;
+	}
+	// RC 3.13.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	return sdk.get('teams.listRooms', params);
+};
+
+export const closeLivechat = (rid: string, comment: string) =>
+	// RC 0.29.0
+	sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true });
+
+export const editLivechat = (userData: any, roomData: any) =>
+	// RC 0.55.0
+	sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
+
+export const returnLivechat = (rid: string) =>
+	// RC 0.72.0
+	sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
+
+export const forwardLivechat = (transferData: any) =>
+	// RC 0.36.0
+	sdk.methodCallWrapper('livechat:transfer', transferData);
+
+export const getDepartmentInfo = (departmentId: string) =>
+	// RC 2.2.0
+	sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
+
+export const getDepartments = () =>
+	// RC 2.2.0
+	sdk.get('livechat/department');
+
+export const usersAutoComplete = (selector: any) =>
+	// RC 2.4.0
+	sdk.get('users.autocomplete', { selector });
+
+export const getRoutingConfig = () =>
+	// RC 2.0.0
+	sdk.methodCallWrapper('livechat:getRoutingConfig');
+
+export const getTagsList = () =>
+	// RC 2.0.0
+	sdk.methodCallWrapper('livechat:getTagsList');
+
+export const getAgentDepartments = (uid: string) =>
+	// RC 2.4.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	sdk.get(`livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
+
+export const getCustomFields = () =>
+	// RC 2.2.0
+	sdk.get('livechat/custom-fields');
+
+export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }) => {
+	const params = {
+		offset,
+		count,
+		...(departmentId && { departmentId }),
+		...(text && { text }),
+		...(scope && { scope })
+	};
+
+	// RC 3.17.0
+	// TODO: missing definitions from server
+	// @ts-ignore
+	return sdk.get('canned-responses', params);
+};
