@@ -8,16 +8,17 @@ import updateMessages from './updateMessages';
 import { IRocketChat } from '../../definitions/IRocketChat';
 import { IMessage, IRoom, SubscriptionType, TMessageModel } from '../../definitions';
 import sdk from '../rocketchat/services/sdk';
+import RocketChat from '../rocketchat';
 
 const COUNT = 50;
 
-async function load(this: IRocketChat, { rid: roomId, latest, t }: Pick<IRoom, 'rid' | 'latest' | 't'>) {
+async function load({ rid: roomId, latest, t }: Pick<IRoom, 'rid' | 'latest' | 't'>) {
 	let params = { roomId, count: COUNT } as { roomId: string; count: number; latest: string };
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
 	}
 
-	const apiType = this.roomTypeToApiType(t);
+	const apiType = RocketChat.roomTypeToApiType(t);
 	if (!apiType) {
 		return [];
 	}
