@@ -6,15 +6,7 @@ import log from '../../utils/log';
 import random from '../../utils/random';
 import { Encryption } from '../encryption';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
-import {
-	IMessage,
-	IRocketChat,
-	IUser,
-	TMessageModel,
-	TSubscriptionModel,
-	TThreadMessageModel,
-	TThreadModel
-} from '../../definitions';
+import { IMessage, IUser, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 import sdk from '../rocketchat/services/sdk';
 
 type TMessages = TMessageModel | TThreadMessageModel;
@@ -71,7 +63,7 @@ export async function sendMessageCall(message: TMessageModel) {
 	return changeMessageStatus(_id, tmid as string, messagesStatus.ERROR);
 }
 
-export async function resendMessage(this: IRocketChat, message: TMessageModel, tmid: string) {
+export async function resendMessage(message: TMessageModel, tmid: string) {
 	const db = database.active;
 	try {
 		await db.write(async () => {
@@ -92,13 +84,13 @@ export async function resendMessage(this: IRocketChat, message: TMessageModel, t
 		}
 		m = await Encryption.encryptMessage(m);
 
-		await sendMessageCall.call(this, m);
+		await sendMessageCall(m);
 	} catch (e) {
 		log(e);
 	}
 }
 
-export default async function (this: IRocketChat, rid: string, msg: string, tmid: string, user: IUser, tshow?: boolean) {
+export default async function (rid: string, msg: string, tmid: string, user: IUser, tshow?: boolean) {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
@@ -236,7 +228,7 @@ export default async function (this: IRocketChat, rid: string, msg: string, tmid
 			return;
 		}
 
-		await sendMessageCall.call(this, message);
+		await sendMessageCall(message);
 	} catch (e) {
 		log(e);
 	}
