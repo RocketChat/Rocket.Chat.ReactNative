@@ -1,6 +1,7 @@
 import { UserStatus } from '../definitions/UserStatus';
 import * as types from '../actions/actionsTypes';
 import { TActionsLogin } from '../actions/login';
+import { IUser } from '../definitions';
 
 export interface IUserLogin {
 	id: string;
@@ -21,7 +22,7 @@ export interface IUserLogin {
 }
 
 export interface ILogin {
-	user: Partial<IUserLogin> | Record<string, any>;
+	user: Partial<IUser>;
 	isLocalAuthenticated: boolean;
 	isAuthenticated: boolean;
 	isFetching: boolean;
@@ -91,13 +92,14 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 				...state,
 				user: {
 					...state.user,
-					settings: {
-						...state.user.settings,
-						preferences: {
-							...state.user.settings.preferences,
-							...action.preference
-						}
-					}
+					settings: state.user?.settings
+						? {
+								...state.user?.settings,
+								preferences: state.user?.settings?.preferences
+									? { ...state.user.settings.preferences, ...action.preference }
+									: { ...action.preference }
+						  }
+						: { profile: {}, preferences: {} }
 				}
 			};
 		case types.LOGIN.SET_LOCAL_AUTHENTICATED:

@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { IUserLogin } from '../reducers/login';
+import { IUser } from '../definitions';
 import * as types from './actionsTypes';
 
 interface ICredentials {
@@ -16,11 +16,11 @@ interface ILoginRequest extends Action {
 }
 
 interface ILoginSuccess extends Action {
-	user: IUserLogin;
+	user: Partial<IUser>;
 }
 
 interface ILoginFailure extends Action {
-	err: Partial<IUserLogin>;
+	err: Partial<IUser>;
 }
 
 interface ILogout extends Action {
@@ -28,7 +28,7 @@ interface ILogout extends Action {
 }
 
 interface ISetUser extends Action {
-	user: Partial<IUserLogin>;
+	user: Partial<IUser>;
 }
 
 interface ISetServices extends Action {
@@ -65,7 +65,7 @@ export function loginRequest(
 	};
 }
 
-export function loginSuccess(user: IUserLogin): ILoginSuccess {
+export function loginSuccess(user: Partial<IUser>): ILoginSuccess {
 	return {
 		type: types.LOGIN.SUCCESS,
 		user
@@ -86,7 +86,7 @@ export function logout(forcedByServer = false): ILogout {
 	};
 }
 
-export function setUser(user: Partial<IUserLogin>): ISetUser {
+export function setUser(user: Partial<IUser>): ISetUser {
 	return {
 		type: types.USER.SET,
 		user
