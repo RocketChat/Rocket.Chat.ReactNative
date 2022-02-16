@@ -13,13 +13,14 @@ import { SWITCH_TRACK_COLOR } from '../../constants/colors';
 import { getUserSelector } from '../../selectors/login';
 import RocketChat from '../../lib/rocketchat';
 import { ProfileStackParamList } from '../../stacks/types';
+import { IApplicationState } from '../../definitions';
 
 interface IUserPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
-	const { enableMessageParserEarlyAdoption, id } = useSelector(state => getUserSelector(state));
+	const { enableMessageParserEarlyAdoption, id } = useSelector((state: IApplicationState) => getUserSelector(state));
 	const dispatch = useDispatch();
 
 	useEffect(() => {
