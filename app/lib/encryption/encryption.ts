@@ -1,7 +1,7 @@
 import EJSON from 'ejson';
 import SimpleCrypto from 'react-native-simple-crypto';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q } from '@nozbe/watermelondb';
+import { Q, Model } from '@nozbe/watermelondb';
 
 import RocketChat from '../rocketchat';
 import UserPreferences from '../userPreferences';
@@ -20,9 +20,25 @@ import {
 } from './constants';
 import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 import { EncryptionRoom } from './index';
+import { IMessage, ISubscription, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 
 class Encryption {
+	ready: boolean;
+	privateKey: string | null;
+	readyPromise: Deferred;
+	userId: string | null;
+	roomInstances: {
+		[rid: string]: {
+			ready: boolean;
+			provideKeyToUser: Function;
+			handshake: Function;
+			decrypt: Function;
+			encrypt: Function;
+		};
+	};
+
 	constructor() {
+		this.userId = '';
 		this.ready = false;
 		this.privateKey = null;
 		this.roomInstances = {};
@@ -37,7 +53,7 @@ class Encryption {
 	}
 
 	// Initialize Encryption client
-	initialize = userId => {
+	initialize = (userId: string) => {
 		this.userId = userId;
 		this.roomInstances = {};
 
@@ -82,7 +98,7 @@ class Encryption {
 	};
 
 	// When a new participant join and request a new room encryption key
-	provideRoomKeyToUser = async (keyId, rid) => {
+	provideRoomKeyToUser = async (keyId: string, rid: string) => {
 		// If the client is not ready
 		if (!this.ready) {
 			try {
@@ -100,14 +116,14 @@ class Encryption {
 	};
 
 	// Persist keys on UserPreferences
-	persistKeys = async (server, publicKey, privateKey) => {
+	persistKeys = async (server: string, publicKey: string, privateKey: string) => {
 		this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
 		await UserPreferences.setStringAsync(`${server}-${E2E_PUBLIC_KEY}`, EJSON.stringify(publicKey));
 		await UserPreferences.setStringAsync(`${server}-${E2E_PRIVATE_KEY}`, privateKey);
 	};
 
 	// Could not obtain public-private keypair from server.
-	createKeys = async (userId, server) => {
+	createKeys = async (userId: string, server: string) => {
 		// Generate new keys
 		const key = await SimpleCrypto.RSA.generateKeys(2048);
 
@@ -132,7 +148,7 @@ class Encryption {
 	};
 
 	// Encode a private key before send it to the server
-	encodePrivateKey = async (privateKey, password, userId) => {
+	encodePrivateKey = async (privateKey: string, password: string, userId: string) => {
 		const masterKey = await this.generateMasterKey(password, userId);
 
 		const vector = await SimpleCrypto.utils.randomBytes(16);
@@ -142,7 +158,7 @@ class Encryption {
 	};
 
 	// Decode a private key fetched from server
-	decodePrivateKey = async (privateKey, password, userId) => {
+	decodePrivateKey = async (privateKey: string, password: string, userId: string) => {
 		const masterKey = await this.generateMasterKey(password, userId);
 		const [vector, cipherText] = splitVectorData(EJSON.parse(privateKey));
 
@@ -152,7 +168,7 @@ class Encryption {
 	};
 
 	// Generate a user master key, this is based on userId and a password
-	generateMasterKey = async (password, userId) => {
+	generateMasterKey = async (password: string, userId: string) => {
 		const iterations = 1000;
 		const hash = 'SHA256';
 		const keyLen = 32;
@@ -166,18 +182,18 @@ class Encryption {
 	};
 
 	// Create a random password to local created keys
-	createRandomPassword = async server => {
+	createRandomPassword = async (server: string) => {
 		const password = randomPassword();
 		await UserPreferences.setStringAsync(`${server}-${E2E_RANDOM_PASSWORD_KEY}`, password);
 		return password;
 	};
 
-	changePassword = async (server, password) => {
+	changePassword = async (server: string, password: string) => {
 		// Cast key to the format server is expecting
-		const privateKey = await SimpleCrypto.RSA.exportKey(this.privateKey);
+		const privateKey = await SimpleCrypto.RSA.exportKey(this.privateKey as string);
 
 		// Encode the private key
-		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, this.userId);
+		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, this.userId as string);
 		const publicKey = await UserPreferences.getStringAsync(`${server}-${E2E_PUBLIC_KEY}`);
 
 		// Send the new keys to the server
@@ -185,7 +201,7 @@ class Encryption {
 	};
 
 	// get a encryption room instance
-	getRoomInstance = async rid => {
+	getRoomInstance = async (rid: string) => {
 		// Prevent handshake again
 		if (this.roomInstances[rid]?.ready) {
 			return this.roomInstances[rid];
@@ -193,7 +209,7 @@ class Encryption {
 
 		// If doesn't have a instance of this room
 		if (!this.roomInstances[rid]) {
-			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId);
+			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string);
 		}
 
 		const roomE2E = this.roomInstances[rid];
@@ -206,7 +222,7 @@ class Encryption {
 
 	// Logic to decrypt all pending messages/threads/threadMessages
 	// after initialize the encryption client
-	decryptPendingMessages = async roomId => {
+	decryptPendingMessages = async (roomId?: string) => {
 		const db = database.active;
 
 		const messagesCollection = db.get('messages');
@@ -228,8 +244,12 @@ class Encryption {
 			const threadMessagesToDecrypt = await threadMessagesCollection.query(...whereClause).fetch();
 
 			// Concat messages/threads/threadMessages
-			let toDecrypt = [...messagesToDecrypt, ...threadsToDecrypt, ...threadMessagesToDecrypt];
-			toDecrypt = await Promise.all(
+			let toDecrypt: (TThreadModel | TThreadMessageModel)[] = [
+				...messagesToDecrypt,
+				...threadsToDecrypt,
+				...threadMessagesToDecrypt
+			];
+			toDecrypt = (await Promise.all(
 				toDecrypt.map(async message => {
 					const { t, msg, tmsg } = message;
 					const { id: rid } = message.subscription;
@@ -240,9 +260,10 @@ class Encryption {
 						msg,
 						tmsg
 					});
+
 					try {
 						return message.prepareUpdate(
-							protectedFunction(m => {
+							protectedFunction((m: TMessageModel) => {
 								Object.assign(m, newMessage);
 							})
 						);
@@ -250,9 +271,9 @@ class Encryption {
 						return null;
 					}
 				})
-			);
+			)) as (TThreadModel | TThreadMessageModel)[];
 
-			await db.action(async () => {
+			await db.write(async () => {
 				await db.batch(...toDecrypt);
 			});
 		} catch (e) {
@@ -271,19 +292,19 @@ class Encryption {
 			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null))).fetch();
 			// We can't do this on database level since lastMessage is not a database object
 			const subsToDecrypt = subsEncrypted.filter(
-				sub =>
+				(sub: ISubscription) =>
 					// Encrypted message
 					sub?.lastMessage?.t === E2E_MESSAGE_TYPE &&
 					// Message pending decrypt
 					sub?.lastMessage?.e2e === E2E_STATUS.PENDING
 			);
 			await Promise.all(
-				subsToDecrypt.map(async sub => {
+				subsToDecrypt.map(async (sub: TSubscriptionModel) => {
 					const { rid, lastMessage } = sub;
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
 					try {
 						return sub.prepareUpdate(
-							protectedFunction(m => {
+							protectedFunction((m: TSubscriptionModel) => {
 								Object.assign(m, newSub);
 							})
 						);
@@ -293,7 +314,7 @@ class Encryption {
 				})
 			);
 
-			await db.action(async () => {
+			await db.write(async () => {
 				await db.batch(...subsToDecrypt);
 			});
 		} catch (e) {
@@ -302,7 +323,7 @@ class Encryption {
 	};
 
 	// Decrypt a subscription lastMessage
-	decryptSubscription = async subscription => {
+	decryptSubscription = async (subscription: Partial<ISubscription>) => {
 		// If the subscription doesn't have a lastMessage just return
 		if (!subscription?.lastMessage) {
 			return subscription;
@@ -334,18 +355,18 @@ class Encryption {
 
 		let subRecord;
 		try {
-			subRecord = await subCollection.find(rid);
+			subRecord = await subCollection.find(rid as string);
 		} catch {
 			// Do nothing
 		}
 
 		try {
-			const batch = [];
+			const batch: (Model | null | void | false | Promise<void>)[] = [];
 			// If the subscription doesn't exists yet
 			if (!subRecord) {
 				// Let's create the subscription with the data received
 				batch.push(
-					subCollection.prepareCreate(s => {
+					subCollection.prepareCreate((s: TSubscriptionModel) => {
 						s._raw = sanitizedRaw({ id: rid }, subCollection.schema);
 						Object.assign(s, subscription);
 					})
@@ -355,7 +376,7 @@ class Encryption {
 				try {
 					// Let's update the subscription with the received E2EKey
 					batch.push(
-						subRecord.prepareUpdate(s => {
+						subRecord.prepareUpdate((s: TSubscriptionModel) => {
 							s.E2EKey = subscription.E2EKey;
 						})
 					);
@@ -366,7 +387,7 @@ class Encryption {
 
 			// If batch has some operation
 			if (batch.length) {
-				await db.action(async () => {
+				await db.write(async () => {
 					await db.batch(...batch);
 				});
 			}
@@ -377,7 +398,7 @@ class Encryption {
 		}
 
 		// Get a instance using the subscription
-		const roomE2E = await this.getRoomInstance(rid);
+		const roomE2E = await this.getRoomInstance(rid as string);
 		const decryptedMessage = await roomE2E.decrypt(lastMessage);
 		return {
 			...subscription,
@@ -386,7 +407,7 @@ class Encryption {
 	};
 
 	// Encrypt a message
-	encryptMessage = async message => {
+	encryptMessage = async (message: IMessage) => {
 		const { rid } = message;
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
@@ -419,7 +440,7 @@ class Encryption {
 	};
 
 	// Decrypt a message
-	decryptMessage = async message => {
+	decryptMessage = async (message: Partial<IMessage>) => {
 		const { t, e2e } = message;
 
 		// Prevent create a new instance if this room was encrypted sometime ago
@@ -440,15 +461,15 @@ class Encryption {
 		}
 
 		const { rid } = message;
-		const roomE2E = await this.getRoomInstance(rid);
+		const roomE2E = await this.getRoomInstance(rid as string);
 		return roomE2E.decrypt(message);
 	};
 
 	// Decrypt multiple messages
-	decryptMessages = messages => Promise.all(messages.map(m => this.decryptMessage(m)));
+	decryptMessages = (messages: IMessage[]) => Promise.all(messages.map((m: IMessage) => this.decryptMessage(m)));
 
 	// Decrypt multiple subscriptions
-	decryptSubscriptions = subscriptions => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
+	decryptSubscriptions = (subscriptions: ISubscription[]) => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
 }
 
 const encryption = new Encryption();
