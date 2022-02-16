@@ -12,34 +12,36 @@ import { ICannedResponse } from '../definitions/ICannedResponse';
 
 export type ChatsStackParamList = {
 	RoomsListView: undefined;
-	RoomView: {
-		rid: string;
-		t: SubscriptionType;
-		tmid?: string;
-		message?: string;
-		name?: string;
-		fname?: string;
-		prid?: string;
-		room?: ISubscription;
-		jumpToMessageId?: string;
-		jumpToThreadId?: string;
-		roomUserId?: string;
-	};
+	RoomView:
+		| {
+				rid: string;
+				t: SubscriptionType;
+				tmid?: string;
+				message?: string;
+				name?: string;
+				fname?: string;
+				prid?: string;
+				room?: ISubscription;
+				jumpToMessageId?: string;
+				jumpToThreadId?: string;
+				roomUserId?: string;
+		  }
+		| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
-		room: ISubscription;
+		room: TSubscriptionModel;
 		member: any;
 		rid: string;
 		t: SubscriptionType;
 		joined: boolean;
 	};
 	SelectListView: {
-		data: IRoom[];
+		data?: IRoom[];
 		title: string;
-		infoText: string;
+		infoText?: string;
 		nextAction: (selected: string[]) => void;
-		showAlert: () => void;
-		isSearch: boolean;
-		onSearch: (text: string) => Partial<IRoom[]>;
+		showAlert?: () => void;
+		isSearch?: boolean;
+		onSearch?: (text: string) => Promise<Partial<IRoom[]> | any>;
 		isRadio?: boolean;
 	};
 	RoomInfoView: {

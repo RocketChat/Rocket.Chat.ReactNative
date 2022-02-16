@@ -27,7 +27,7 @@ export interface ISubscription {
 	_id: string; // _id belongs watermelonDB
 	id: string; // id from server
 	f: boolean;
-	t: SubscriptionType;
+	t: string; // TODO: we need to review this type later
 	ts: Date;
 	ls: Date;
 	name: string;
@@ -70,6 +70,7 @@ export interface ISubscription {
 	usernames?: string[];
 	visitor?: IVisitor;
 	departmentId?: string;
+	status?: string;
 	servedBy?: IServedBy;
 	livechatData?: any;
 	tags?: string[];
