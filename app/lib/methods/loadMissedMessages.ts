@@ -1,8 +1,8 @@
-import database from '../database';
-import log from '../../utils/log';
-import updateMessages from './updateMessages';
-import { IRocketChat } from '../../definitions/IRocketChat';
 import { ILastMessage } from '../../definitions';
+import log from '../../utils/log';
+import database from '../database';
+import sdk from '../rocketchat/services/sdk';
+import updateMessages from './updateMessages';
 
 const getLastUpdate = async (rid: string) => {
 	try {
@@ -16,7 +16,7 @@ const getLastUpdate = async (rid: string) => {
 	return null;
 };
 
-async function load(this: IRocketChat, { rid: roomId, lastOpen }: { rid: string; lastOpen: string }) {
+async function load({ rid: roomId, lastOpen }: { rid: string; lastOpen: string }) {
 	let lastUpdate;
 	if (lastOpen) {
 		lastUpdate = new Date(lastOpen).toISOString();
@@ -24,14 +24,15 @@ async function load(this: IRocketChat, { rid: roomId, lastOpen }: { rid: string;
 		lastUpdate = await getLastUpdate(roomId);
 	}
 	// RC 0.60.0
-	const { result } = await this.sdk.get('chat.syncMessages', { roomId, lastUpdate });
+	// @ts-ignore // this method dont have type
+	const { result } = await sdk.get('chat.syncMessages', { roomId, lastUpdate });
 	return result;
 }
 
-export default function loadMissedMessages(this: IRocketChat, args: { rid: string; lastOpen: string }): Promise<void> {
+export default function loadMissedMessages(args: { rid: string; lastOpen: string }): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const data = await load.call(this, { rid: args.rid, lastOpen: args.lastOpen });
+			const data = await load({ rid: args.rid, lastOpen: args.lastOpen });
 			if (data) {
 				const { updated, deleted }: { updated: ILastMessage[]; deleted: ILastMessage[] } = data;
 				// @ts-ignore // TODO: remove loaderItem obligatoriness
