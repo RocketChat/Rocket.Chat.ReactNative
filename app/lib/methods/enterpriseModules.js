@@ -1,5 +1,5 @@
 import { compareServerVersion } from '../utils';
-import reduxStore from '../createStore';
+import { store as reduxStore } from '../auxStore';
 import database from '../database';
 import log from '../../utils/log';
 import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '../../actions/enterpriseModules';
