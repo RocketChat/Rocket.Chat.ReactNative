@@ -16,11 +16,11 @@ export enum SubscriptionType {
 }
 
 export interface IVisitor {
-	_id: string;
-	username: string;
-	token: string;
-	status: string;
-	lastMessageTs: Date;
+	_id?: string;
+	token?: string;
+	status: 'online' | 'busy' | 'away' | 'offline';
+	username?: string;
+	lastMessageTs?: Date;
 }
 
 export interface ISubscription {
