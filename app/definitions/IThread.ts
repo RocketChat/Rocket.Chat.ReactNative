@@ -4,13 +4,7 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 import { IAttachment } from './IAttachment';
 import { IEditedBy, IUserChannel, IUserMention, IUserMessage, MessageType } from './IMessage';
 import { IReaction } from './IReaction';
-
-export interface IUrl {
-	title: string;
-	description: string;
-	image: string;
-	url: string;
-}
+import { IUrl } from './IUrl';
 
 interface IFileThread {
 	_id: string;
