@@ -47,7 +47,7 @@ export interface IThread {
 	avatar?: string;
 	emoji?: string;
 	attachments?: IAttachment[];
-	urls?: IUrl[];
+	urls?: IUrl[] | IUrlFromServer[];
 	status?: number;
 	pinned?: boolean;
 	starred?: boolean;
