@@ -1,13 +1,13 @@
 import Model from '@nozbe/watermelondb/Model';
 
 import { IAttachment } from './IAttachment';
-import { IEditedBy, ITranslations, IUserChannel, IUserMention, IUserMessage } from './IMessage';
+import { IEditedBy, ITranslations, IUserChannel, IUserMention, IUserMessage, MessageType } from './IMessage';
 import { IReaction } from './IReaction';
-import { SubscriptionType } from './ISubscription';
 
 export interface IThreadMessage {
+	tmsg?: string;
 	msg?: string;
-	t?: SubscriptionType;
+	t?: MessageType;
 	rid: string;
 	ts: Date;
 	u: IUserMessage;
