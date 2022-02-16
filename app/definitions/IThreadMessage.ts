@@ -6,7 +6,7 @@ import { IReaction } from './IReaction';
 import { SubscriptionType } from './ISubscription';
 
 export interface IThreadMessage {
-	_id: string;
+	_id?: string;
 	msg?: string;
 	t?: SubscriptionType;
 	rid: string;
