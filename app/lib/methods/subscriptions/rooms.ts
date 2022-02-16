@@ -298,6 +298,7 @@ export default function subscribeRooms() {
 				try {
 					const subCollection = db.get('subscriptions');
 					const sub = await subCollection.find(data.rid);
+					// TODO - today the Relation type from watermelon just support one to one relations
 					// @ts-ignore
 					const messages = (await sub.messages.fetch()) as TMessageModel[];
 					// @ts-ignore
