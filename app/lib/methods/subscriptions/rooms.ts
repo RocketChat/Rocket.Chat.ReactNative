@@ -38,11 +38,9 @@ interface IDdpMessage {
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
-// TODO - verify if this | false can be used
 let streamListener: Promise<any> | false;
 let subServer: string;
 let queue: { [key: string]: ISubscription } = {};
-// TODO - verify if this | false can be used
 let subTimer: number | null | false = null;
 const WINDOW_TIME = 500;
 
