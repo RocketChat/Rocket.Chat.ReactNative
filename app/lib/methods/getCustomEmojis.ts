@@ -111,8 +111,9 @@ export function getCustomEmojis() {
 			// if server version is lower than 0.75.0, fetches from old api
 			if (compareServerVersion(serverVersion, 'lowerThan', '0.75.0')) {
 				// RC 0.61.0
+				// @ts-ignore
 				const result = await sdk.get('emoji-custom');
-
+				// @ts-ignore
 				let { emojis } = result;
 				emojis = emojis.filter((emoji: TCustomEmojiModel) => !updatedSince || emoji._updatedAt.toISOString() > updatedSince);
 				const changedEmojis = await updateEmojis({ update: emojis, allRecords });
@@ -124,7 +125,7 @@ export function getCustomEmojis() {
 				}
 				return resolve();
 			}
-			const params: { updatedSince?: string } = {};
+			const params: { updatedSince: string } = {} as { updatedSince: string };
 			if (updatedSince) {
 				params.updatedSince = updatedSince;
 			}
@@ -137,6 +138,7 @@ export function getCustomEmojis() {
 			}
 
 			const { emojis } = result;
+			// @ts-ignore
 			const { update, remove } = emojis;
 			const changedEmojis = await updateEmojis({ update, remove, allRecords });
 
