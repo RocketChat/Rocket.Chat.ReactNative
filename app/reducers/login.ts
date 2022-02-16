@@ -1,23 +1,23 @@
+import { UserStatus } from '../definitions/UserStatus';
 import * as types from '../actions/actionsTypes';
 import { TActionsLogin } from '../actions/login';
-import { TUserStatus } from './activeUsers';
 
 export interface IUserLogin {
 	id: string;
 	token: string;
 	username: string;
 	name: string;
-	language: string;
-	status: TUserStatus;
+	language?: string;
+	status: UserStatus;
 	statusText: string;
 	roles: string[];
-	avatarETag: string;
+	avatarETag?: string;
 	isFromWebView: boolean;
 	showMessageInMainThread: boolean;
 	enableMessageParserEarlyAdoption: boolean;
 	emails: Record<string, any>[];
 	customFields: Record<string, string>;
-	settings: Record<string, string>;
+	settings?: Record<string, string>;
 }
 
 export interface ILogin {

@@ -7,6 +7,7 @@ import {
 	setLoginServices,
 	setUser
 } from '../actions/login';
+import { UserStatus } from '../definitions/UserStatus';
 import { initialState } from './login';
 import { mockedStore } from './mockedStore';
 
@@ -46,7 +47,9 @@ describe('test selectedUsers reducer', () => {
 			roles: ['user'],
 			isFromWebView: false,
 			showMessageInMainThread: false,
-			enableMessageParserEarlyAdoption: false
+			enableMessageParserEarlyAdoption: false,
+			status: UserStatus.ONLINE,
+			statusText: 'online'
 		};
 		mockedStore.dispatch(loginSuccess(user));
 		const state = mockedStore.getState().login.user;

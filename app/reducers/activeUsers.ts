@@ -1,10 +1,9 @@
-import { TApplicationActions } from '../definitions';
 import { ACTIVE_USERS } from '../actions/actionsTypes';
-
-type TUserStatus = 'online' | 'offline' | 'away' | 'busy';
+import { TApplicationActions } from '../definitions';
+import { UserStatus } from '../definitions/UserStatus';
 
 export interface IActiveUser {
-	status: TUserStatus;
+	status: UserStatus;
 	statusText: string;
 }
 

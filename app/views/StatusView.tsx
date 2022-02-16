@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
+import { UserStatus } from '../definitions/UserStatus';
 import { setUser } from '../actions/login';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
@@ -10,10 +11,9 @@ import SafeAreaView from '../containers/SafeAreaView';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
 import { LISTENER } from '../containers/Toast';
-import { IBaseScreen, IApplicationState } from '../definitions';
+import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
-import { TUserStatus } from '../reducers/activeUsers';
 import { getUserSelector } from '../selectors/login';
 import { withTheme } from '../theme';
 import EventEmitter from '../utils/events';
@@ -165,7 +165,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 						try {
 							const result = await RocketChat.setUserStatus(item.id, statusText);
 							if (result.success) {
-								dispatch(setUser({ status: item.id as TUserStatus }));
+								dispatch(setUser({ status: item.id as UserStatus }));
 							}
 						} catch (e: any) {
 							showErrorAlert(I18n.t(e.data.errorType));
