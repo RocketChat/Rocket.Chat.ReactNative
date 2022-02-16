@@ -5,19 +5,19 @@ import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
-import { IMessage, IRoom, SubscriptionType, TMessageModel } from '../../definitions';
+import { IMessage, TMessageModel } from '../../definitions';
 import sdk from '../rocketchat/services/sdk';
-import RocketChat from '../rocketchat';
+import roomTypeToApiType, { RoomTypes } from '../rocketchat/methods/roomTypeToApiType';
 
 const COUNT = 50;
 
-async function load({ rid: roomId, latest, t }: Pick<IRoom, 'rid' | 'latest' | 't'>) {
-	let params = { roomId, count: COUNT } as { roomId: string; count: number; latest: string };
+async function load({ rid: roomId, latest, t }: { rid: string; latest?: string; t: RoomTypes }) {
+	let params = { roomId, count: COUNT } as { roomId: string; count: number; latest?: string };
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
 	}
 
-	const apiType = RocketChat.roomTypeToApiType(t);
+	const apiType = roomTypeToApiType(t);
 	if (!apiType) {
 		return [];
 	}
@@ -33,7 +33,7 @@ async function load({ rid: roomId, latest, t }: Pick<IRoom, 'rid' | 'latest' | '
 
 export default function loadMessagesForRoom(args: {
 	rid: string;
-	t: SubscriptionType;
+	t: RoomTypes;
 	latest: string;
 	loaderItem: TMessageModel;
 }): Promise<IMessage | []> {
