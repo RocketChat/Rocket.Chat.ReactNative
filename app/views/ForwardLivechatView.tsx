@@ -65,7 +65,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 
 	const getDepartments = async () => {
 		try {
-			const result = await RocketChat.getDepartments();
+			const result: any = await RocketChat.getDepartments();
 			if (result.success) {
 				setDepartments(
 					result.departments.map((department: ILivechatDepartment) => ({ label: department.name, value: department._id }))
@@ -80,7 +80,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 		try {
 			const { servedBy: { _id: agentId } = {} } = room;
 			const _id = agentId && { $ne: agentId };
-			const result = await RocketChat.usersAutoComplete({
+			const result: any = await RocketChat.usersAutoComplete({
 				conditions: { _id, status: { $ne: 'offline' }, statusLivechat: 'available' },
 				term
 			});
