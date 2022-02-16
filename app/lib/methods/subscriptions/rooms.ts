@@ -5,7 +5,6 @@ import EJSON from 'ejson';
 import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
-import messagesStatus from '../../../constants/messagesStatus';
 import log from '../../../utils/log';
 import random from '../../../utils/random';
 import { store } from '../../auxStore';
