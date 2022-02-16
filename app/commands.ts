@@ -1,5 +1,6 @@
 /* eslint-disable no-bitwise */
-import KeyCommands, { constants } from 'react-native-keycommands';
+import { NativeSyntheticEvent } from 'react-native';
+import KeyCommands, { constants, KeyCommand } from 'react-native-keycommands';
 
 import I18n from './i18n';
 
@@ -136,13 +137,18 @@ const keyCommands = [
 	}))
 ];
 
-export const setKeyCommands = () => KeyCommands.setKeyCommands(keyCommands);
+export const setKeyCommands = (): void => KeyCommands.setKeyCommands(keyCommands);
 
-export const deleteKeyCommands = () => KeyCommands.deleteKeyCommands(keyCommands);
+export const deleteKeyCommands = (): void => KeyCommands.deleteKeyCommands(keyCommands);
 
 export const KEY_COMMAND = 'KEY_COMMAND';
 
-export const commandHandle = (event, key, flags = []) => {
+interface IKeyCommandEvent extends NativeSyntheticEvent<typeof KeyCommand> {
+	input: string;
+	modifierFlags: string | number;
+}
+
+export const commandHandle = (event: IKeyCommandEvent, key: string | string[], flags: string[] = []): boolean => {
 	const { input, modifierFlags } = event;
 	let _flags = 0;
 	if (flags.includes('command') && flags.includes('alternate')) {
@@ -155,35 +161,41 @@ export const commandHandle = (event, key, flags = []) => {
 	return key.includes(input) && modifierFlags === _flags;
 };
 
-export const handleCommandTyping = event => commandHandle(event, KEY_TYPING);
+export const handleCommandTyping = (event: IKeyCommandEvent): boolean => commandHandle(event, KEY_TYPING);
 
-export const handleCommandSubmit = event => commandHandle(event, KEY_SEND_MESSAGE);
+export const handleCommandSubmit = (event: IKeyCommandEvent): boolean => commandHandle(event, KEY_SEND_MESSAGE);
 
-export const handleCommandShowUpload = event => commandHandle(event, KEY_UPLOAD, ['command']);
+export const handleCommandShowUpload = (event: IKeyCommandEvent): boolean => commandHandle(event, KEY_UPLOAD, ['command']);
 
-export const handleCommandScroll = event =>
+export const handleCommandScroll = (event: IKeyCommandEvent): boolean =>
 	commandHandle(event, [constants.keyInputUpArrow, constants.keyInputDownArrow], ['alternate']);
 
-export const handleCommandRoomActions = event => commandHandle(event, KEY_ROOM_ACTIONS, ['command']);
+export const handleCommandRoomActions = (event: IKeyCommandEvent): boolean => commandHandle(event, KEY_ROOM_ACTIONS, ['command']);
 
-export const handleCommandSearchMessages = event => commandHandle(event, KEY_SEARCH, ['command']);
+export const handleCommandSearchMessages = (event: IKeyCommandEvent): boolean => commandHandle(event, KEY_SEARCH, ['command']);
 
-export const handleCommandReplyLatest = event => commandHandle(event, KEY_REPLY, ['command']);
+export const handleCommandReplyLatest = (event: IKeyCommandEvent): boolean => commandHandle(event, KEY_REPLY, ['command']);
 
-export const handleCommandSelectServer = event => commandHandle(event, KEY_SELECT, ['command', 'alternate']);
+export const handleCommandSelectServer = (event: IKeyCommandEvent): boolean =>
+	commandHandle(event, KEY_SELECT, ['command', 'alternate']);
 
-export const handleCommandShowPreferences = event => commandHandle(event, KEY_PREFERENCES, ['command']);
+export const handleCommandShowPreferences = (event: IKeyCommandEvent): boolean =>
+	commandHandle(event, KEY_PREFERENCES, ['command']);
 
-export const handleCommandSearching = event => commandHandle(event, KEY_SEARCH, ['command', 'alternate']);
+export const handleCommandSearching = (event: IKeyCommandEvent): boolean =>
+	commandHandle(event, KEY_SEARCH, ['command', 'alternate']);
 
-export const handleCommandSelectRoom = event => commandHandle(event, KEY_SELECT, ['command']);
+export const handleCommandSelectRoom = (event: IKeyCommandEvent): boolean => commandHandle(event, KEY_SELECT, ['command']);
 
-export const handleCommandPreviousRoom = event => commandHandle(event, KEY_PREVIOUS_ROOM, ['command']);
+export const handleCommandPreviousRoom = (event: IKeyCommandEvent): boolean =>
+	commandHandle(event, KEY_PREVIOUS_ROOM, ['command']);
 
-export const handleCommandNextRoom = event => commandHandle(event, KEY_NEXT_ROOM, ['command']);
+export const handleCommandNextRoom = (event: IKeyCommandEvent): boolean => commandHandle(event, KEY_NEXT_ROOM, ['command']);
 
-export const handleCommandShowNewMessage = event => commandHandle(event, KEY_NEW_ROOM, ['command']);
+export const handleCommandShowNewMessage = (event: IKeyCommandEvent): boolean => commandHandle(event, KEY_NEW_ROOM, ['command']);
 
-export const handleCommandAddNewServer = event => commandHandle(event, KEY_ADD_SERVER, ['command', 'alternate']);
+export const handleCommandAddNewServer = (event: IKeyCommandEvent): boolean =>
+	commandHandle(event, KEY_ADD_SERVER, ['command', 'alternate']);
 
-export const handleCommandOpenServerDropdown = event => commandHandle(event, KEY_SERVER_SELECTION, ['command', 'alternate']);
+export const handleCommandOpenServerDropdown = (event: IKeyCommandEvent): boolean =>
+	commandHandle(event, KEY_SERVER_SELECTION, ['command', 'alternate']);
