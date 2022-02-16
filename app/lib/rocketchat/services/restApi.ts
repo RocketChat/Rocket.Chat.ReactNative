@@ -86,7 +86,7 @@ export const forgotPassword = (email: string): any =>
 
 export const sendConfirmationEmail = (email: string) => sdk.methodCallWrapper('sendConfirmationEmail', email);
 
-export const spotlight = (search: string, usernames: string, type: { users: boolean; rooms: boolean }) =>
+export const spotlight = (search: string, usernames: string[], type: { users: boolean; rooms: boolean }) =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('spotlight', search, usernames, type);
 

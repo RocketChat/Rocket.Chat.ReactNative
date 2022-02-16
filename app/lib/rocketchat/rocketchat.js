@@ -62,6 +62,7 @@ import getRoom from './methods/getRoom';
 import isGroupChat from './methods/isGroupChat';
 import roomTypeToApiType from './methods/roomTypeToApiType';
 import getUserInfo from './services/getUserInfo';
+import * as search from './methods/search';
 // Services
 import sdk from './services/sdk';
 import toggleFavorite from './services/toggleFavorite';
@@ -83,6 +84,7 @@ const RocketChat = {
 	CURRENT_SERVER,
 	CERTIFICATE_KEY,
 	...restAPis,
+	...search,
 	callJitsi,
 	callJitsiWithoutServer,
 	async subscribeRooms() {
@@ -628,93 +630,6 @@ const RocketChat = {
 	getRooms,
 	readMessages,
 	resendMessage,
-
-	async localSearch({ text, filterUsers = true, filterRooms = true }) {
-		const searchText = text.trim();
-		const db = database.active;
-		const likeString = sanitizeLikeString(searchText);
-		let data = await db
-			.get('subscriptions')
-			.query(
-				Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))),
-				Q.experimentalSortBy('room_updated_at', Q.desc)
-			)
-			.fetch();
-
-		if (filterUsers && !filterRooms) {
-			data = data.filter(item => item.t === 'd' && !RocketChat.isGroupChat(item));
-		} else if (!filterUsers && filterRooms) {
-			data = data.filter(item => item.t !== 'd' || RocketChat.isGroupChat(item));
-		}
-
-		data = data.slice(0, 7);
-
-		data = data.map(sub => ({
-			rid: sub.rid,
-			name: sub.name,
-			fname: sub.fname,
-			avatarETag: sub.avatarETag,
-			t: sub.t,
-			encrypted: sub.encrypted,
-			lastMessage: sub.lastMessage,
-			...(sub.teamId && { teamId: sub.teamId })
-		}));
-
-		return data;
-	},
-
-	async search({ text, filterUsers = true, filterRooms = true }) {
-		const searchText = text.trim();
-
-		if (this.oldPromise) {
-			this.oldPromise('cancel');
-		}
-
-		const data = await this.localSearch({ text, filterUsers, filterRooms });
-
-		const usernames = data.map(sub => sub.name);
-		try {
-			if (data.length < 7) {
-				const { users, rooms } = await Promise.race([
-					RocketChat.spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }),
-					new Promise((resolve, reject) => (this.oldPromise = reject))
-				]);
-				if (filterUsers) {
-					users
-						.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
-						.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
-						.forEach(user => {
-							data.push({
-								...user,
-								rid: user.username,
-								name: user.username,
-								t: 'd',
-								search: true
-							});
-						});
-				}
-				if (filterRooms) {
-					rooms.forEach(room => {
-						// Check if it exists on local database
-						const index = data.findIndex(item => item.rid === room._id);
-						if (index === -1) {
-							data.push({
-								rid: room._id,
-								...room,
-								search: true
-							});
-						}
-					});
-				}
-			}
-			delete this.oldPromise;
-			return data;
-		} catch (e) {
-			console.warn(e);
-			return data;
-			// return [];
-		}
-	},
 	createGroupChat() {
 		const { users } = reduxStore.getState().selectedUsers;
 		const usernames = users.map(u => u.name).join(',');
