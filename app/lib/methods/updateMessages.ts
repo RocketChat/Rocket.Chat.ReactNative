@@ -94,7 +94,9 @@ export default async function updateMessages({
 			msgCollection.prepareCreate(
 				protectedFunction((m: TMessageModel) => {
 					m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
-					m.subscription.id = sub.id;
+					if (m.subscription) {
+						m.subscription.id = sub.id;
+					}
 					Object.assign(m, message);
 				})
 			)
