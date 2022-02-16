@@ -38,7 +38,7 @@ export interface IThreadMessage {
 	autoTranslate?: boolean;
 	translations?: ITranslations[];
 	e2e?: string;
-	subscription?: { id: string };
+	subscription: { id: string };
 }
 
 export type TThreadMessageModel = IThreadMessage & Model;
