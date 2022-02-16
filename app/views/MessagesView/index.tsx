@@ -68,7 +68,7 @@ interface IMessageItem {
 	name?: string;
 	description?: string;
 	msg?: string;
-	starred: string;
+	starred: boolean;
 	pinned: boolean;
 }
 
@@ -193,6 +193,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				name: I18n.t('Files'),
 				fetchFunc: async () => {
 					const { messages } = this.state;
+					// @ts-ignore
 					const result = await RocketChat.getFiles(this.rid, this.t, messages.length);
 					return { ...result, messages: result.files };
 				},
@@ -222,6 +223,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				name: I18n.t('Mentions'),
 				fetchFunc: () => {
 					const { messages } = this.state;
+					// @ts-ignore
 					return RocketChat.getMessages(this.rid, this.t, { 'mentions._id': { $in: [user.id] } }, messages.length);
 				},
 				noDataMsg: I18n.t('No_mentioned_messages'),
@@ -233,6 +235,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				name: I18n.t('Starred'),
 				fetchFunc: () => {
 					const { messages } = this.state;
+					// @ts-ignore
 					return RocketChat.getMessages(this.rid, this.t, { 'starred._id': { $in: [user.id] } }, messages.length);
 				},
 				noDataMsg: I18n.t('No_starred_messages'),
@@ -252,6 +255,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				name: I18n.t('Pinned'),
 				fetchFunc: () => {
 					const { messages } = this.state;
+					// @ts-ignore
 					return RocketChat.getMessages(this.rid, this.t, { pinned: true }, messages.length);
 				},
 				noDataMsg: I18n.t('No_pinned_messages'),

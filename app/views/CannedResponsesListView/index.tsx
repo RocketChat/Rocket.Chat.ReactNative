@@ -91,7 +91,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const getDepartments = debounce(async () => {
 		try {
-			const res = await RocketChat.getDepartments();
+			const res: any = await RocketChat.getDepartments();
 			if (res.success) {
 				setDepartments([...fixedScopes, ...res.departments]);
 			}

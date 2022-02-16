@@ -50,6 +50,7 @@ export const goRoom = async ({
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
+			// @ts-ignore
 			const result = await RocketChat.createDirectMessage(username);
 			if (result.success) {
 				return navigate({
