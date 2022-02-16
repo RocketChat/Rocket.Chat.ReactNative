@@ -1,5 +1,6 @@
 import type { IMessage } from '../../IMessage';
 import type { IRoom } from '../../IRoom';
+import { PaginatedResult } from '../helpers/PaginatedResult';
 
 export type ChatEndpoints = {
 	'chat.getMessage': {
@@ -20,9 +21,15 @@ export type ChatEndpoints = {
 		};
 	};
 	'chat.getThreadsList': {
-		GET: (params: { rid: IRoom['_id']; type: 'unread' | 'following' | 'all'; text?: string; offset: number; count: number }) => {
+		GET: (params: {
+			rid: IRoom['_id'];
+			type: 'unread' | 'following' | 'all';
+			text?: string;
+			offset: number;
+			count: number;
+		}) => PaginatedResult<{
 			threads: IMessage[];
 			total: number;
-		};
+		}>;
 	};
 };

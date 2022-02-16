@@ -1,4 +1,3 @@
-/* eslint-disable no-bitwise */
 import ByteBuffer from 'bytebuffer';
 import SimpleCrypto from 'react-native-simple-crypto';
 
@@ -7,12 +6,13 @@ import { fromByteArray, toByteArray } from '../../utils/base64-js';
 
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
-export const b64ToBuffer = base64 => toByteArray(base64).buffer;
+// @ts-ignore
+export const b64ToBuffer = (base64: string): ArrayBuffer => toByteArray(base64).buffer;
 export const utf8ToBuffer = SimpleCrypto.utils.convertUtf8ToArrayBuffer;
-export const bufferToB64 = arrayBuffer => fromByteArray(new Uint8Array(arrayBuffer));
+export const bufferToB64 = (arrayBuffer: ArrayBuffer): string => fromByteArray(new Uint8Array(arrayBuffer));
 // ArrayBuffer -> Base64 URI Safe
 // https://github.com/herrjemand/Base64URL-ArrayBuffer/blob/master/lib/base64url-arraybuffer.js
-export const bufferToB64URI = buffer => {
+export const bufferToB64URI = (buffer: ArrayBuffer): string => {
 	const uintArray = new Uint8Array(buffer);
 	const len = uintArray.length;
 	let base64 = '';
@@ -33,28 +33,28 @@ export const bufferToB64URI = buffer => {
 	return base64;
 };
 // SimpleCrypto.utils.convertArrayBufferToUtf8 is not working with unicode emoji
-export const bufferToUtf8 = buffer => {
-	const uintArray = new Uint8Array(buffer);
+export const bufferToUtf8 = (buffer: ArrayBuffer): string => {
+	const uintArray = new Uint8Array(buffer) as number[] & Uint8Array;
 	const encodedString = String.fromCharCode.apply(null, uintArray);
-	const decodedString = decodeURIComponent(escape(encodedString));
-	return decodedString;
+	return decodeURIComponent(escape(encodedString));
 };
-export const splitVectorData = text => {
+export const splitVectorData = (text: ArrayBuffer): ArrayBuffer[] => {
 	const vector = text.slice(0, 16);
 	const data = text.slice(16);
 	return [vector, data];
 };
-export const joinVectorData = (vector, data) => {
+
+export const joinVectorData = (vector: ArrayBuffer, data: ArrayBuffer): ArrayBufferLike => {
 	const output = new Uint8Array(vector.byteLength + data.byteLength);
 	output.set(new Uint8Array(vector), 0);
 	output.set(new Uint8Array(data), vector.byteLength);
 	return output.buffer;
 };
-export const toString = thing => {
+export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uint8Array): string | ByteBuffer => {
 	if (typeof thing === 'string') {
 		return thing;
 	}
-	// eslint-disable-next-line new-cap
+	// @ts-ignore
 	return new ByteBuffer.wrap(thing).toString('binary');
 };
-export const randomPassword = () => `${random(3)}-${random(3)}-${random(3)}`.toLowerCase();
+export const randomPassword = (): string => `${random(3)}-${random(3)}-${random(3)}`.toLowerCase();
