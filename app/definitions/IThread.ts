@@ -16,7 +16,7 @@ export interface IThreadResult {
 	_id: string;
 	rid: string;
 	ts: string | Date;
-	msg: string;
+	msg?: string;
 	file?: IFileThread;
 	files?: IFileThread[];
 	groupable?: boolean;

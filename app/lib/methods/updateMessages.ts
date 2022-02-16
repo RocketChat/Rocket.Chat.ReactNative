@@ -115,7 +115,9 @@ export default async function updateMessages({
 				protectedFunction((tm: TThreadMessageModel) => {
 					tm._raw = sanitizedRaw({ id: threadMessage._id }, threadMessagesCollection.schema);
 					Object.assign(tm, threadMessage);
-					tm.subscription.id = sub.id;
+					if (tm.subscription) {
+						tm.subscription.id = sub.id;
+					}
 					if (threadMessage.tmid) {
 						tm.rid = threadMessage.tmid;
 					}
