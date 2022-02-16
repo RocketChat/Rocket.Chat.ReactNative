@@ -177,7 +177,10 @@ const RocketChat = {
 	},
 	async getServerTimeSync(server) {
 		try {
-			const response = await RNFetchBlob.fetch('GET', `${server}/_timesync`);
+			const response = await Promise.race([
+				RNFetchBlob.fetch('GET', `${server}/_timesync`),
+				new Promise(res => setTimeout(res, 2000))
+			]);
 			if (response?.data) {
 				return parseInt(response.data);
 			}
