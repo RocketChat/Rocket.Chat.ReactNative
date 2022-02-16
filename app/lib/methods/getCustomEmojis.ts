@@ -40,15 +40,15 @@ const updateEmojis = async ({ update = [], remove = [], allRecords }: IUpdateEmo
 
 	// Create or update
 	if (update && update.length) {
-		emojisToCreate = update.filter(i1 => !allRecords.find(i2 => i1._id === i2.id));
-		emojisToUpdate = allRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
-		emojisToCreate = emojisToCreate.map(emoji =>
+		const filterEmojisToCreate = update.filter(i1 => !allRecords.find(i2 => i1._id === i2.id));
+		const filterEmojisToUpdate = allRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
+		emojisToCreate = filterEmojisToCreate.map(emoji =>
 			emojisCollection.prepareCreate(e => {
 				e._raw = sanitizedRaw({ id: emoji._id }, emojisCollection.schema);
 				Object.assign(e, emoji);
 			})
 		);
-		emojisToUpdate = emojisToUpdate.map(emoji => {
+		emojisToUpdate = filterEmojisToUpdate.map(emoji => {
 			const newEmoji = update.find(e => e._id === emoji.id);
 			return emoji.prepareUpdate(e => {
 				Object.assign(e, newEmoji);
@@ -57,8 +57,8 @@ const updateEmojis = async ({ update = [], remove = [], allRecords }: IUpdateEmo
 	}
 
 	if (remove && remove.length) {
-		emojisToDelete = allRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
-		emojisToDelete = emojisToDelete.map(emoji => emoji.prepareDestroyPermanently());
+		const filterEmojisToDelete = allRecords.filter(i1 => remove.find(i2 => i1.id === i2._id));
+		emojisToDelete = filterEmojisToDelete.map(emoji => emoji.prepareDestroyPermanently());
 	}
 
 	try {
