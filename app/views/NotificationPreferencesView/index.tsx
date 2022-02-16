@@ -38,14 +38,14 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 	});
 
 	private mounted: boolean;
-	private rid: string | undefined;
+	private rid: string;
 	private roomObservable?: Observable<Model>;
 	private subscription?: Subscription;
 
 	constructor(props: INotificationPreferencesView) {
 		super(props);
 		this.mounted = false;
-		this.rid = props.route.params?.rid;
+		this.rid = props.route.params?.rid ?? '';
 		const room = props.route.params?.room;
 		this.state = {
 			room: room || {}
