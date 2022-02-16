@@ -5,13 +5,7 @@ import { IAttachment } from './IAttachment';
 import { IEditedBy, IUserChannel, IUserMention, IUserMessage } from './IMessage';
 import { IReaction } from './IReaction';
 import { SubscriptionType } from './ISubscription';
-
-export interface IUrl {
-	title: string;
-	description: string;
-	image: string;
-	url: string;
-}
+import { IUrl } from './IUrl';
 
 interface IFileThread {
 	_id: string;
