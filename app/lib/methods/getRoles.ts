@@ -1,4 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import Model from '@nozbe/watermelondb/Model';
 
 import database from '../database';
 import { getRoleById } from '../database/services/Role';
@@ -87,11 +88,11 @@ export function getRoles(): Promise<void> {
 					const allRolesRecords = await rolesCollections.query().fetch();
 
 					// filter roles
-					let rolesToCreate = roles.filter(i1 => !allRolesRecords.find(i2 => i1._id === i2.id));
-					let rolesToUpdate = allRolesRecords.filter(i1 => roles.find(i2 => i1.id === i2._id));
+					const filteredRolesToCreate = roles.filter(i1 => !allRolesRecords.find(i2 => i1._id === i2.id));
+					const filteredRolesToUpdate = allRolesRecords.filter(i1 => roles.find(i2 => i1.id === i2._id));
 
 					// Create
-					rolesToCreate = rolesToCreate.map(role =>
+					const rolesToCreate = filteredRolesToCreate.map(role =>
 						rolesCollections.prepareCreate(
 							protectedFunction((r: TRoleModel) => {
 								r._raw = sanitizedRaw({ id: role._id }, rolesCollections.schema);
@@ -101,7 +102,7 @@ export function getRoles(): Promise<void> {
 					);
 
 					// Update
-					rolesToUpdate = rolesToUpdate.map(role => {
+					const rolesToUpdate = filteredRolesToUpdate.map(role => {
 						const newRole = roles.find(r => r._id === role.id);
 						return role.prepareUpdate(
 							protectedFunction((r: TRoleModel) => {
@@ -110,7 +111,7 @@ export function getRoles(): Promise<void> {
 						);
 					});
 
-					const allRecords: any = [...rolesToCreate, ...rolesToUpdate];
+					const allRecords: Model[] = [...rolesToCreate, ...rolesToUpdate];
 
 					try {
 						await db.batch(...allRecords);
