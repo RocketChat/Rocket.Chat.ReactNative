@@ -1,12 +1,19 @@
+import { IRoom, TApplicationActions } from '../../../definitions';
 import { INQUIRY } from '../../../actions/actionsTypes';
 
-const initialState = {
+export interface IInquiry {
+	enabled: boolean;
+	queued: IRoom[];
+	error: any;
+}
+
+const initialState: IInquiry = {
 	enabled: false,
 	queued: [],
 	error: {}
 };
 
-export default function inquiry(state = initialState, action) {
+export default function inquiry(state = initialState, action: TApplicationActions): IInquiry {
 	switch (action.type) {
 		case INQUIRY.SUCCESS:
 			return {

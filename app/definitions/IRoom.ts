@@ -31,6 +31,7 @@ export interface IRoom {
 		token?: string;
 		status: 'online' | 'busy' | 'away' | 'offline';
 	};
+	status?: string;
 	servedBy?: IServedBy;
 	departmentId?: string;
 	livechatData?: any;

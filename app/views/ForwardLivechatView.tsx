@@ -13,7 +13,7 @@ import RocketChat from '../lib/rocketchat';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
 import { forwardRoom as forwardRoomAction } from '../actions/room';
-import { ILivechatDepartment } from './definition/ILivechatDepartment';
+import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
 import { ChatsStackParamList } from '../stacks/types';
 
 const styles = StyleSheet.create({
