@@ -6,6 +6,9 @@ import log from '../../../utils/log';
 import protectedFunction from '../helpers/protectedFunction';
 import buildMessage from '../helpers/buildMessage';
 import database from '../../database';
+import { getMessageById } from '../../database/services/Message';
+import { getThreadById } from '../../database/services/Thread';
+import { getThreadMessageById } from '../../database/services/ThreadMessage';
 import reduxStore from '../../createStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
@@ -170,75 +173,81 @@ export default class RoomSubscription {
 
 			// Create or update message
 			try {
-				const messageRecord = await msgCollection.find(message._id);
-				if (!messageRecord._hasPendingUpdate) {
-					const update = messageRecord.prepareUpdate(
+				let operation = null;
+				const messageRecord = await getMessageById(message._id);
+				if (messageRecord) {
+					operation = messageRecord.prepareUpdate(
 						protectedFunction(m => {
 							Object.assign(m, message);
 						})
 					);
-					this._messagesBatch[message._id] = update;
+				} else {
+					operation = msgCollection.prepareCreate(
+						protectedFunction(m => {
+							m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
+							m.subscription.id = this.rid;
+							Object.assign(m, message);
+						})
+					);
 				}
-			} catch {
-				const create = msgCollection.prepareCreate(
-					protectedFunction(m => {
-						m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
-						m.subscription.id = this.rid;
-						Object.assign(m, message);
-					})
-				);
-				this._messagesBatch[message._id] = create;
+				this._messagesBatch[message._id] = operation;
+			} catch (e) {
+				log(e);
 			}
 
 			// Create or update thread
 			if (message.tlm) {
 				try {
-					const threadRecord = await threadsCollection.find(message._id);
-					if (!threadRecord._hasPendingUpdate) {
-						const updateThread = threadRecord.prepareUpdate(
+					let operation = null;
+					const threadRecord = await getThreadById(message._id);
+					if (threadRecord) {
+						operation = threadRecord.prepareUpdate(
 							protectedFunction(t => {
 								Object.assign(t, message);
 							})
 						);
-						this._threadsBatch[message._id] = updateThread;
+					} else {
+						operation = threadsCollection.prepareCreate(
+							protectedFunction(t => {
+								t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
+								t.subscription.id = this.rid;
+								Object.assign(t, message);
+							})
+						);
 					}
-				} catch {
-					const createThread = threadsCollection.prepareCreate(
-						protectedFunction(t => {
-							t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
-							t.subscription.id = this.rid;
-							Object.assign(t, message);
-						})
-					);
-					this._threadsBatch[message._id] = createThread;
+					this._threadsBatch[message._id] = operation;
+				} catch (e) {
+					log(e);
 				}
 			}
 
 			// Create or update thread message
 			if (message.tmid) {
 				try {
-					const threadMessageRecord = await threadMessagesCollection.find(message._id);
-					if (!threadMessageRecord._hasPendingUpdate) {
-						const updateThreadMessage = threadMessageRecord.prepareUpdate(
+					let operation = null;
+					const threadMessageRecord = await getThreadMessageById(message._id);
+					if (threadMessageRecord) {
+						operation = threadMessageRecord.prepareUpdate(
 							protectedFunction(tm => {
 								Object.assign(tm, message);
 								tm.rid = message.tmid;
 								delete tm.tmid;
 							})
 						);
-						this._threadMessagesBatch[message._id] = updateThreadMessage;
+					} else {
+						operation = threadMessagesCollection.prepareCreate(
+							protectedFunction(tm => {
+								tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
+								Object.assign(tm, message);
+								tm.subscription.id = this.rid;
+								tm.rid = message.tmid;
+								delete tm.tmid;
+							})
+						);
 					}
-				} catch {
-					const createThreadMessage = threadMessagesCollection.prepareCreate(
-						protectedFunction(tm => {
-							tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
-							Object.assign(tm, message);
-							tm.subscription.id = this.rid;
-							tm.rid = message.tmid;
-							delete tm.tmid;
-						})
-					);
-					this._threadMessagesBatch[message._id] = createThreadMessage;
+					this._threadMessagesBatch[message._id] = operation;
+				} catch (e) {
+					log(e);
 				}
 			}
 

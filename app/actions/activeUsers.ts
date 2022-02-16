@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 
 import { IActiveUsers } from '../reducers/activeUsers';
-import { SET_ACTIVE_USERS } from './actionsTypes';
+import { ACTIVE_USERS } from './actionsTypes';
 
 interface ISetActiveUsers extends Action {
 	activeUsers: IActiveUsers;
@@ -10,6 +10,10 @@ interface ISetActiveUsers extends Action {
 export type TActionActiveUsers = ISetActiveUsers;
 
 export const setActiveUsers = (activeUsers: IActiveUsers): ISetActiveUsers => ({
-	type: SET_ACTIVE_USERS,
+	type: ACTIVE_USERS.SET,
 	activeUsers
+});
+
+export const clearActiveUsers = (): Action => ({
+	type: ACTIVE_USERS.CLEAR
 });
