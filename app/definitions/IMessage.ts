@@ -4,7 +4,7 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
 import { SubscriptionType } from './ISubscription';
-import { IUrl } from './IThread';
+import { IUrl } from './IUrl';
 
 export interface IUserMessage {
 	_id: string;
