@@ -4,6 +4,7 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
 import { SubscriptionType } from './ISubscription';
+import { IUrl, IUrlFromServer } from './IUrl';
 
 export interface IUserMessage {
 	_id: string;
@@ -56,6 +57,7 @@ export interface ILastMessage {
 
 export interface IMessage {
 	_id: string;
+	rid: string;
 	msg?: string;
 	t?: SubscriptionType;
 	ts: Date;
@@ -66,7 +68,7 @@ export interface IMessage {
 	avatar?: string;
 	emoji?: string;
 	attachments?: IAttachment[];
-	urls?: string[];
+	urls?: IUrl[] | IUrlFromServer[];
 	_updatedAt: Date;
 	status?: number;
 	pinned?: boolean;
@@ -79,7 +81,7 @@ export interface IMessage {
 	dlm?: Date;
 	tmid?: string;
 	tcount?: number;
-	tlm?: Date;
+	tlm?: string | Date;
 	replies?: string[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];

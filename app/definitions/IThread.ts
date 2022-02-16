@@ -5,7 +5,7 @@ import { IAttachment } from './IAttachment';
 import { IEditedBy, IUserChannel, IUserMention, IUserMessage } from './IMessage';
 import { IReaction } from './IReaction';
 import { SubscriptionType } from './ISubscription';
-import { IUrl } from './IUrl';
+import { IUrl, IUrlFromServer } from './IUrl';
 
 interface IFileThread {
 	_id: string;
@@ -16,21 +16,21 @@ interface IFileThread {
 export interface IThreadResult {
 	_id: string;
 	rid: string;
-	ts: string;
-	msg: string;
+	ts: string | Date;
+	msg?: string;
 	file?: IFileThread;
 	files?: IFileThread[];
 	groupable?: boolean;
 	attachments?: IAttachment[];
 	md?: MarkdownAST;
 	u: IUserMessage;
-	_updatedAt: string;
-	urls: IUrl[];
-	mentions: IUserMention[];
-	channels: IUserChannel[];
-	replies: string[];
-	tcount: number;
-	tlm: string;
+	_updatedAt: string | Date;
+	urls?: IUrl[] | IUrlFromServer[];
+	mentions?: IUserMention[];
+	channels?: IUserChannel[];
+	replies?: string[];
+	tcount?: number;
+	tlm?: string | Date;
 }
 
 export interface IThread {

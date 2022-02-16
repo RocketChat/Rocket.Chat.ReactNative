@@ -34,6 +34,7 @@ import { LISTENER } from '../../containers/Toast';
 import SearchHeader from '../../containers/SearchHeader';
 import { ChatsStackParamList } from '../../stacks/types';
 import { IThreadResult, TThreadModel } from '../../definitions/IThread';
+import { IMessage } from '../../definitions/IMessage';
 import { Filter } from './filters';
 import DropdownItemHeader from './Dropdown/DropdownItemHeader';
 import Dropdown from './Dropdown';
@@ -287,7 +288,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			}
 
 			if (update && update.length) {
-				update = update.map(m => buildMessage(m));
+				update = update.map(m => buildMessage(m) as IMessage);
 				// filter threads
 				threadsToCreate = update.filter(i1 => !allThreadsRecords.find((i2: { id: string }) => i1._id === i2.id));
 				threadsToUpdate = allThreadsRecords.filter((i1: { id: string }) => update.find(i2 => i1.id === i2._id));
