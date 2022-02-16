@@ -17,16 +17,36 @@ import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
 import { Encryption } from '../../encryption';
 import { E2E_MESSAGE_TYPE } from '../../encryption/constants';
+import {
+	IRoom,
+	ISubscription,
+	TMessageModel,
+	TRoomModel,
+	TSubscriptionModel,
+	TThreadMessageModel,
+	TThreadModel
+} from '../../../definitions';
+import sdk from '../../rocketchat/services/sdk';
 
-const removeListener = listener => listener.stop();
+interface IDdpMessage {
+	msg: string;
+	fields: {
+		eventName: string;
+		args: any;
+	};
+}
 
-let streamListener;
-let subServer;
-let queue = {};
-let subTimer = null;
+const removeListener = (listener: { stop: () => void }) => listener.stop();
+
+// TODO - verify if this | false can be used
+let streamListener: Promise<any> | false;
+let subServer: string;
+let queue: { [key: string]: ISubscription } = {};
+// TODO - verify if this | false can be used
+let subTimer: number | null | false = null;
 const WINDOW_TIME = 500;
 
-const createOrUpdateSubscription = async (subscription, room) => {
+const createOrUpdateSubscription = async (subscription: ISubscription, room: IRoom | ISubscription) => {
 	try {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
@@ -84,12 +104,12 @@ const createOrUpdateSubscription = async (subscription, room) => {
 					e2eKeyId: s.e2eKeyId,
 					E2EKey: s.E2EKey,
 					avatarETag: s.avatarETag
-				};
+				} as ISubscription;
 			} catch (error) {
 				try {
-					await db.action(async () => {
+					await db.write(async () => {
 						await roomsCollection.create(
-							protectedFunction(r => {
+							protectedFunction((r: TRoomModel) => {
 								r._raw = sanitizedRaw({ id: room._id }, roomsCollection.schema);
 								Object.assign(r, room);
 							})
@@ -119,7 +139,7 @@ const createOrUpdateSubscription = async (subscription, room) => {
 					departmentId: r.departmentId,
 					livechatData: r.livechatData,
 					avatarETag: r.avatarETag
-				};
+				} as IRoom;
 			} catch (error) {
 				// Do nothing
 			}
@@ -127,7 +147,7 @@ const createOrUpdateSubscription = async (subscription, room) => {
 
 		let tmp = merge(subscription, room);
 		tmp = await Encryption.decryptSubscription(tmp);
-		let sub;
+		let sub!: TSubscriptionModel;
 		try {
 			sub = await subCollection.find(tmp.rid);
 		} catch (error) {
@@ -151,7 +171,7 @@ const createOrUpdateSubscription = async (subscription, room) => {
 			Encryption.decryptPendingMessages(tmp.rid);
 		}
 
-		const batch = [];
+		const batch = [] as TSubscriptionModel[] & TMessageModel[];
 		if (sub) {
 			try {
 				const update = sub.prepareUpdate(s => {
@@ -185,7 +205,7 @@ const createOrUpdateSubscription = async (subscription, room) => {
 		if (tmp.lastMessage && !rooms.includes(tmp.rid)) {
 			const lastMessage = buildMessage(tmp.lastMessage);
 			const messagesCollection = db.get('messages');
-			let messageRecord;
+			let messageRecord!: TMessageModel;
 			try {
 				messageRecord = await messagesCollection.find(lastMessage._id);
 			} catch (error) {
@@ -209,7 +229,7 @@ const createOrUpdateSubscription = async (subscription, room) => {
 			}
 		}
 
-		await db.action(async () => {
+		await db.write(async () => {
 			await db.batch(...batch);
 		});
 	} catch (e) {
@@ -217,11 +237,11 @@ const createOrUpdateSubscription = async (subscription, room) => {
 	}
 };
 
-const getSubQueueId = rid => `SUB-${rid}`;
+const getSubQueueId = (rid: string) => `SUB-${rid}`;
 
-const getRoomQueueId = rid => `ROOM-${rid}`;
+const getRoomQueueId = (rid: string) => `ROOM-${rid}`;
 
-const debouncedUpdate = subscription => {
+const debouncedUpdate = (subscription: ISubscription) => {
 	if (!subTimer) {
 		subTimer = setTimeout(() => {
 			const batch = queue;
@@ -252,11 +272,11 @@ const debouncedUpdate = subscription => {
 };
 
 export default function subscribeRooms() {
-	const handleStreamMessageReceived = protectedFunction(async ddpMessage => {
+	const handleStreamMessageReceived = protectedFunction(async (ddpMessage: IDdpMessage) => {
 		const db = database.active;
 
 		// check if the server from variable is the same as the js sdk client
-		if (this.sdk && this.sdk.client && this.sdk.client.host !== subServer) {
+		if (sdk && sdk.current.client && sdk.current.client.host !== subServer) {
 			return;
 		}
 		if (ddpMessage.msg === 'added') {
@@ -269,7 +289,7 @@ export default function subscribeRooms() {
 			if (diff?.statusLivechat) {
 				store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
 			}
-			if (['settings.preferences.showMessageInMainThread'] in diff) {
+			if ((['settings.preferences.showMessageInMainThread'] as any) in diff) {
 				store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
 			}
 		}
@@ -278,13 +298,18 @@ export default function subscribeRooms() {
 				try {
 					const subCollection = db.get('subscriptions');
 					const sub = await subCollection.find(data.rid);
-					const messages = await sub.messages.fetch();
-					const threads = await sub.threads.fetch();
-					const threadMessages = await sub.threadMessages.fetch();
-					const messagesToDelete = messages.map(m => m.prepareDestroyPermanently());
-					const threadsToDelete = threads.map(m => m.prepareDestroyPermanently());
-					const threadMessagesToDelete = threadMessages.map(m => m.prepareDestroyPermanently());
-					await db.action(async () => {
+					// @ts-ignore
+					const messages = (await sub.messages.fetch()) as TMessageModel[];
+					// @ts-ignore
+					const threads = (await sub.threads.fetch()) as TThreadModel[];
+					// @ts-ignore
+					const threadMessages = (await sub.threadMessages.fetch()) as TThreadMessageModel[];
+
+					const messagesToDelete = messages?.map((m: TMessageModel) => m.prepareDestroyPermanently());
+					const threadsToDelete = threads?.map((m: TThreadModel) => m.prepareDestroyPermanently());
+					const threadMessagesToDelete = threadMessages?.map((m: TThreadMessageModel) => m.prepareDestroyPermanently());
+
+					await db.write(async () => {
 						await db.batch(sub.prepareDestroyPermanently(), ...messagesToDelete, ...threadsToDelete, ...threadMessagesToDelete);
 					});
 
@@ -326,9 +351,9 @@ export default function subscribeRooms() {
 			};
 			try {
 				const msgCollection = db.get('messages');
-				await db.action(async () => {
+				await db.write(async () => {
 					await msgCollection.create(
-						protectedFunction(m => {
+						protectedFunction((m: TMessageModel) => {
 							m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
 							m.subscription.id = args.rid;
 							Object.assign(m, message);
@@ -392,12 +417,12 @@ export default function subscribeRooms() {
 		}
 	};
 
-	streamListener = this.sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
+	streamListener = sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
 
 	try {
 		// set the server that started this task
-		subServer = this.sdk.client.host;
-		this.sdk.subscribeNotifyUser().catch(e => console.log(e));
+		subServer = sdk.current.client.host;
+		sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
 
 		return {
 			stop: () => stop()

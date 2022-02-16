@@ -13,7 +13,7 @@ interface IRequestTranscript {
 }
 
 export interface IRoom {
-	_id?: string;
+	_id: string;
 	fname?: string;
 	id: string;
 	rid: string;
