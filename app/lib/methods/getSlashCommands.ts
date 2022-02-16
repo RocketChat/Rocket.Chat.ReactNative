@@ -11,13 +11,14 @@ export default function () {
 	return new Promise<void>(async resolve => {
 		try {
 			// RC 0.60.2
-			const result = (await sdk.get('commands.list' as any)) as any;
+			// @ts-ignore
+			const result = await sdk.get('commands.list');
 
 			if (!result.success) {
 				console.log(result);
 				return resolve();
 			}
-
+			// @ts-ignore
 			const { commands } = result;
 			if (commands && commands.length) {
 				await db.write(async () => {
