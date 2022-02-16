@@ -42,12 +42,12 @@ interface IAddExistingChannelViewProps {
 const QUERY_SIZE = 50;
 
 class AddExistingChannelView extends React.Component<IAddExistingChannelViewProps, IAddExistingChannelViewState> {
-	private teamId?: string;
+	private teamId: string;
 
 	constructor(props: IAddExistingChannelViewProps) {
 		super(props);
 		this.query();
-		this.teamId = props.route?.params?.teamId;
+		this.teamId = props.route?.params?.teamId ?? '';
 		this.state = {
 			search: [],
 			channels: [],
@@ -136,6 +136,8 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 			const result = await RocketChat.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
 				this.setState({ loading: false });
+				// @ts-ignore
+				// TODO: Verify goRoom interface for return of call
 				goRoom({ item: result, isMasterDetail });
 			}
 		} catch (e: any) {
