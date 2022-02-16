@@ -35,14 +35,14 @@ export default function loadThreadMessages({ tmid, rid }: { tmid: string; rid: s
 					const db = database.active;
 					const threadMessagesCollection = db.get('thread_messages');
 					const allThreadMessagesRecords = await threadMessagesCollection.query(Q.where('rid', tmid)).fetch();
-					let threadMessagesToCreate = data.filter(
+					const filterThreadMessagesToCreate = data.filter(
 						(i1: TThreadMessageModel) => !allThreadMessagesRecords.find(i2 => i1._id === i2.id)
 					);
-					let threadMessagesToUpdate = allThreadMessagesRecords.filter(i1 =>
+					const filterThreadMessagesToUpdate = allThreadMessagesRecords.filter(i1 =>
 						data.find((i2: TThreadMessageModel) => i1.id === i2._id)
 					);
 
-					threadMessagesToCreate = threadMessagesToCreate.map((threadMessage: TThreadMessageModel) =>
+					const threadMessagesToCreate = filterThreadMessagesToCreate.map((threadMessage: TThreadMessageModel) =>
 						threadMessagesCollection.prepareCreate(
 							protectedFunction((tm: TThreadMessageModel) => {
 								tm._raw = sanitizedRaw({ id: threadMessage._id }, threadMessagesCollection.schema);
@@ -58,7 +58,7 @@ export default function loadThreadMessages({ tmid, rid }: { tmid: string; rid: s
 						)
 					);
 
-					threadMessagesToUpdate = threadMessagesToUpdate.map(threadMessage => {
+					const threadMessagesToUpdate = filterThreadMessagesToUpdate.map(threadMessage => {
 						const newThreadMessage = data.find((t: TThreadMessageModel) => t._id === threadMessage.id);
 						return threadMessage.prepareUpdate(
 							protectedFunction((tm: TThreadMessageModel) => {
