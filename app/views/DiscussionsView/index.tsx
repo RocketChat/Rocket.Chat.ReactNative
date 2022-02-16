@@ -63,7 +63,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 
 		setLoading(true);
 		try {
-			const result = await RocketChat.getDiscussions({
+			const result: any = await RocketChat.getDiscussions({
 				roomId: rid,
 				offset: isSearching ? search.length : discussions.length,
 				count: API_FETCH_COUNT,
