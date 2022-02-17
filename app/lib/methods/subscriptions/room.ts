@@ -214,7 +214,7 @@ export default class RoomSubscription {
 					operation = msgCollection.prepareCreate(
 						protectedFunction((m: TMessageModel) => {
 							m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
-							m.subscription.id = this.rid;
+							if (m.subscription) m.subscription.id = this.rid;
 							Object.assign(m, message);
 						})
 					);
@@ -268,7 +268,7 @@ export default class RoomSubscription {
 							protectedFunction((tm: TThreadMessageModel) => {
 								tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
 								Object.assign(tm, message);
-								tm.subscription.id = this.rid;
+								if (tm.subscription) tm.subscription.id = this.rid;
 								tm.rid = message.tmid;
 								delete tm.tmid;
 							})
