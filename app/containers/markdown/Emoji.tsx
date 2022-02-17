@@ -12,8 +12,8 @@ interface IEmoji {
 	getCustomEmoji?: Function;
 	baseUrl: string;
 	customEmojis?: any;
-	style: object;
-	theme?: string;
+	style?: object;
+	theme: string;
 	onEmojiSelected?: Function;
 	tabEmojiStyle?: object;
 }
@@ -32,7 +32,7 @@ const Emoji = React.memo(
 			);
 		}
 		return (
-			<Text style={[{ color: themes[theme!].bodyText }, isMessageContainsOnlyEmoji ? styles.textBig : styles.text, style]}>
+			<Text style={[{ color: themes[theme].bodyText }, isMessageContainsOnlyEmoji ? styles.textBig : styles.text, style]}>
 				{emojiUnicode}
 			</Text>
 		);
