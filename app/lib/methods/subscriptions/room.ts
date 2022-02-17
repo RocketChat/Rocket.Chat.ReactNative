@@ -15,7 +15,7 @@ import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
-import { IMessage, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
+import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 
 const WINDOW_TIME = 1000;
 
@@ -30,14 +30,14 @@ export default class RoomSubscription {
 	private rid: string;
 	private isAlive: boolean;
 	private timer: null | number;
-	private queue: { [key: string]: any };
+	private queue: { [key: string]: IMessage };
 	private messagesBatch: {};
 	private _messagesBatch: { [key: string]: TMessageModel };
 	private threadsBatch: {};
 	private _threadsBatch: { [key: string]: TThreadModel };
 	private threadMessagesBatch: {};
 	private _threadMessagesBatch: { [key: string]: TThreadMessageModel };
-	private promises: any;
+	private promises?: Promise<TSubscriptionModel[]>;
 	private connectedListener: any;
 	private disconnectedListener: any;
 	private notifyRoomListener: any;
@@ -83,9 +83,7 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach((sub: { unsubscribe: () => Promise<void> }) =>
-					sub.unsubscribe().catch(() => console.log('unsubscribeRoom'))
-				);
+				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 			} catch (e) {
 				// do nothing
 			}

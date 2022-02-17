@@ -80,6 +80,7 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
+	unsubscribe: () => Promise<any>;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
 	messages: Relation<TMessageModel>;
 	threads: Relation<TThreadModel>;
