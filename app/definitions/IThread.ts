@@ -15,21 +15,21 @@ interface IFileThread {
 export interface IThreadResult {
 	_id: string;
 	rid: string;
-	ts: string;
-	msg: string;
+	ts: string | Date;
+	msg?: string;
 	file?: IFileThread;
 	files?: IFileThread[];
 	groupable?: boolean;
 	attachments?: IAttachment[];
 	md?: MarkdownAST;
 	u: IUserMessage;
-	_updatedAt: string;
-	urls: IUrl[];
-	mentions: IUserMention[];
-	channels: IUserChannel[];
-	replies: string[];
-	tcount: number;
-	tlm: string;
+	_updatedAt: Date;
+	urls?: IUrl[];
+	mentions?: IUserMention[];
+	channels?: IUserChannel[];
+	replies?: string[];
+	tcount?: number;
+	tlm?: Date;
 }
 
 export interface IThread {
