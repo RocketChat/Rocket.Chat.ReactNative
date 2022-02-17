@@ -95,6 +95,8 @@ export interface IUserSettings {
 
 export interface IUser extends IRocketChatRecord {
 	_id: string;
+	id: string;
+	token: string;
 	createdAt: Date;
 	roles: string[];
 	type: string;
