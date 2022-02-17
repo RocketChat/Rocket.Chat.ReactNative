@@ -1,4 +1,3 @@
-import { IEnterpriseModules } from '../../reducers/enterpriseModules';
 import sdk from '../rocketchat/services/sdk';
 import { compareServerVersion } from '../utils';
 import { store as reduxStore } from '../auxStore';
