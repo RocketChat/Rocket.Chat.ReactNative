@@ -16,15 +16,9 @@ import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
 import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
+import { IDDPMessage } from '../../../definitions/IDDPMessage';
 
 const WINDOW_TIME = 1000;
-
-interface IDdpMessage {
-	fields: {
-		eventName: string;
-		args: Array<string & { _id: string }>;
-	};
-}
 
 export default class RoomSubscription {
 	private rid: string;
@@ -114,7 +108,7 @@ export default class RoomSubscription {
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
 
-	handleNotifyRoomReceived = protectedFunction((ddpMessage: IDdpMessage) => {
+	handleNotifyRoomReceived = protectedFunction((ddpMessage: IDDPMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		if (this.rid !== _rid) {
 			return;
@@ -283,7 +277,7 @@ export default class RoomSubscription {
 			return resolve();
 		});
 
-	handleMessageReceived = (ddpMessage: IDdpMessage) => {
+	handleMessageReceived = (ddpMessage: IDDPMessage) => {
 		if (!this.timer) {
 			this.timer = setTimeout(async () => {
 				// copy variables values to local and clean them
