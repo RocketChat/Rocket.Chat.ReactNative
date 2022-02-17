@@ -1,4 +1,4 @@
-import React, { LegacyRef } from 'react';
+import React from 'react';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { FlatList, ListRenderItem } from 'react-native';
@@ -59,7 +59,7 @@ const getItemLayout = (data: IRoom[] | null | undefined, index: number) => ({
 const keyExtractor = (item: IRoom) => item.rid;
 
 class QueueListView extends React.Component<IQueueListView, any> {
-	private getScrollRef?: LegacyRef<FlatList<IRoom>>;
+	private getScrollRef?: React.Ref<FlatList<IRoom>>;
 
 	private onEndReached: ((info: { distanceFromEnd: number }) => void) | null | undefined;
 

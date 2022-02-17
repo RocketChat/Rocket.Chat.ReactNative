@@ -19,7 +19,7 @@ interface IOmnichannelStatus {
 }
 
 const OmnichannelStatus = memo(({ searching, goQueue, queueSize, inquiryEnabled, user }: IOmnichannelStatus) => {
-	if (!!searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
+	if (searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
 		return null;
 	}
 	const { theme } = useTheme();
