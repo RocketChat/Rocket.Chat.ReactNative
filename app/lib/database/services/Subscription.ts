@@ -1,9 +1,10 @@
 import database from '..';
+import { TAppDatabase } from '../interfaces';
 import { SUBSCRIPTIONS_TABLE } from '../model/Subscription';
 
-const getCollection = db => db.get(SUBSCRIPTIONS_TABLE);
+const getCollection = (db: TAppDatabase) => db.get(SUBSCRIPTIONS_TABLE);
 
-export const getSubscriptionByRoomId = async rid => {
+export const getSubscriptionByRoomId = async (rid: string) => {
 	const db = database.active;
 	const subCollection = getCollection(db);
 	try {
