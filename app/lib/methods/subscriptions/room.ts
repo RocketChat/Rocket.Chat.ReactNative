@@ -15,11 +15,36 @@ import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
+import { IMessage, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 
 const WINDOW_TIME = 1000;
 
+interface IDdpMessage {
+	fields: {
+		eventName: string;
+		args: [name: string, typing: string];
+	};
+}
+
 export default class RoomSubscription {
-	constructor(rid) {
+	private rid: string;
+	private isAlive: boolean;
+	private timer: null | number;
+	private queue: { [key: string]: any };
+	private messagesBatch: {};
+	private _messagesBatch?: { [key: string]: TMessageModel };
+	private threadsBatch: {};
+	private _threadsBatch: any;
+	private threadMessagesBatch: {};
+	private _threadMessagesBatch: any;
+	private promises: any;
+	private connectedListener: any;
+	private disconnectedListener: any;
+	private notifyRoomListener: any;
+	private messageReceivedListener: any;
+	private lastOpen?: Date;
+
+	constructor(rid: string) {
 		this.rid = rid;
 		this.isAlive = true;
 		this.timer = null;
@@ -41,7 +66,7 @@ export default class RoomSubscription {
 		this.notifyRoomListener = RocketChat.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
 		this.messageReceivedListener = RocketChat.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
-			this.unsubscribe();
+			await this.unsubscribe();
 		}
 
 		reduxStore.dispatch(subscribeRoom(this.rid));
@@ -85,7 +110,7 @@ export default class RoomSubscription {
 		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
 	};
 
-	handleNotifyRoomReceived = protectedFunction(ddpMessage => {
+	handleNotifyRoomReceived = protectedFunction((ddpMessage: IDdpMessage) => {
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		if (this.rid !== _rid) {
 			return;
@@ -115,9 +140,9 @@ export default class RoomSubscription {
 						const msgCollection = db.get('messages');
 						const threadsCollection = db.get('threads');
 						const threadMessagesCollection = db.get('thread_messages');
-						let deleteMessage;
-						let deleteThread;
-						let deleteThreadMessage;
+						let deleteMessage: TMessageModel;
+						let deleteThread: TThreadModel;
+						let deleteThreadMessage: TThreadMessageModel;
 
 						// Delete message
 						try {
@@ -142,7 +167,7 @@ export default class RoomSubscription {
 						} catch (e) {
 							// Do nothing
 						}
-						await db.action(async () => {
+						await db.write(async () => {
 							await db.batch(deleteMessage, deleteThread, deleteThreadMessage);
 						});
 					} catch (e) {
@@ -153,11 +178,11 @@ export default class RoomSubscription {
 		}
 	});
 
-	read = debounce(lastOpen => {
+	read = debounce((lastOpen: Date) => {
 		RocketChat.readMessages(this.rid, lastOpen);
 	}, 300);
 
-	updateMessage = message =>
+	updateMessage = (message: IMessage): Promise<void> =>
 		new Promise(async resolve => {
 			if (this.rid !== message.rid) {
 				return resolve();
@@ -177,13 +202,13 @@ export default class RoomSubscription {
 				const messageRecord = await getMessageById(message._id);
 				if (messageRecord) {
 					operation = messageRecord.prepareUpdate(
-						protectedFunction(m => {
+						protectedFunction((m: TMessageModel) => {
 							Object.assign(m, message);
 						})
 					);
 				} else {
 					operation = msgCollection.prepareCreate(
-						protectedFunction(m => {
+						protectedFunction((m: TMessageModel) => {
 							m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
 							m.subscription.id = this.rid;
 							Object.assign(m, message);
@@ -202,13 +227,13 @@ export default class RoomSubscription {
 					const threadRecord = await getThreadById(message._id);
 					if (threadRecord) {
 						operation = threadRecord.prepareUpdate(
-							protectedFunction(t => {
+							protectedFunction((t: TThreadModel) => {
 								Object.assign(t, message);
 							})
 						);
 					} else {
 						operation = threadsCollection.prepareCreate(
-							protectedFunction(t => {
+							protectedFunction((t: TThreadModel) => {
 								t._raw = sanitizedRaw({ id: message._id }, threadsCollection.schema);
 								t.subscription.id = this.rid;
 								Object.assign(t, message);
@@ -228,7 +253,7 @@ export default class RoomSubscription {
 					const threadMessageRecord = await getThreadMessageById(message._id);
 					if (threadMessageRecord) {
 						operation = threadMessageRecord.prepareUpdate(
-							protectedFunction(tm => {
+							protectedFunction((tm: TThreadMessageModel) => {
 								Object.assign(tm, message);
 								tm.rid = message.tmid;
 								delete tm.tmid;
@@ -236,7 +261,7 @@ export default class RoomSubscription {
 						);
 					} else {
 						operation = threadMessagesCollection.prepareCreate(
-							protectedFunction(tm => {
+							protectedFunction((tm: TThreadMessageModel) => {
 								tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
 								Object.assign(tm, message);
 								tm.subscription.id = this.rid;
@@ -254,7 +279,7 @@ export default class RoomSubscription {
 			return resolve();
 		});
 
-	handleMessageReceived = ddpMessage => {
+	handleMessageReceived = (ddpMessage: IDdpMessage) => {
 		if (!this.timer) {
 			this.timer = setTimeout(async () => {
 				// copy variables values to local and clean them
@@ -280,7 +305,7 @@ export default class RoomSubscription {
 
 				try {
 					const db = database.active;
-					await db.action(async () => {
+					await db.write(async () => {
 						await db.batch(
 							...Object.values(this._messagesBatch),
 							...Object.values(this._threadsBatch),
