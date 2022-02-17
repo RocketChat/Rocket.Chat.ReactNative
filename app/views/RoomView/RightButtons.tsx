@@ -28,9 +28,9 @@ interface IRightButtonsProps {
 
 interface IRigthButtonsState {
 	isFollowingThread: boolean;
-	tunread: any[];
-	tunreadUser: any[];
-	tunreadGroup: any[];
+	tunread: string[];
+	tunreadUser: string[];
+	tunreadGroup: string[];
 }
 
 class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsState> {

@@ -61,7 +61,7 @@ interface IUploadProgressProps {
 }
 
 interface IUploadProgressState {
-	uploads: any[];
+	uploads: TUploadModel[];
 }
 
 class UploadProgress extends Component<IUploadProgressProps, IUploadProgressState> {
