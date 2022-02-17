@@ -52,6 +52,12 @@ export interface ITranslations {
 
 export type E2EType = 'pending' | 'done';
 
+interface IFileThread {
+	_id: string;
+	name: string;
+	type: string;
+}
+
 export interface ILastMessage {
 	_id: string;
 	rid: string;
@@ -112,6 +118,8 @@ export interface IMessage {
 	tshow?: boolean;
 	md?: MarkdownAST;
 	subscription?: { id: string };
+	file?: IFileThread;
+	files?: IFileThread[];
 }
 
 export type TMessageModel = IMessage & Model;
