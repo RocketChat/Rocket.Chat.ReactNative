@@ -43,13 +43,13 @@ import { SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscri
 
 const API_FETCH_COUNT = 50;
 
-interface IResultFetch {
-	threads: IThreadResult[];
-	count: number;
-	offset: number;
-	total: number;
-	success: boolean;
-}
+// interface IResultFetch {
+// 	threads: IThreadResult[];
+// 	count: number;
+// 	offset: number;
+// 	total: number;
+// 	success: boolean;
+// }
 
 interface IThreadMessagesViewState {
 	loading: boolean;
@@ -339,7 +339,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result: IResultFetch = await RocketChat.getThreadsList({
+			const result: any = await RocketChat.getThreadsList({
 				rid: this.rid,
 				count: API_FETCH_COUNT,
 				offset: messages.length,

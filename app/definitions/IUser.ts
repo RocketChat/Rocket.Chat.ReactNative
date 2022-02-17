@@ -99,8 +99,8 @@ export interface IUser extends IRocketChatRecord {
 	roles: string[];
 	type: string;
 	active: boolean;
-	username?: string;
 	name?: string;
+	username: string;
 	services?: IUserServices;
 	emails?: IUserEmail[];
 	status?: UserStatus;
