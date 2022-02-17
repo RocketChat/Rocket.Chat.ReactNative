@@ -125,7 +125,7 @@ export function getCustomEmojis() {
 				}
 				return resolve();
 			}
-			const params: { updatedSince: string } = {} as { updatedSince: string };
+			const params: { updatedSince: string } = { updatedSince: '' };
 			if (updatedSince) {
 				params.updatedSince = updatedSince;
 			}
