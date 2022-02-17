@@ -18,7 +18,7 @@ import StatusBar from '../../containers/StatusBar';
 import log, { events, logEvent } from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import Markdown from '../../containers/markdown';
+import { MarkdownPreview } from '../../containers/markdown';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -42,12 +42,7 @@ const getRoomTitle = (room, type, name, username, statusText, theme) =>
 			)}
 			{!!statusText && (
 				<View testID='room-info-view-custom-status'>
-					<Markdown
-						msg={statusText}
-						style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]}
-						preview
-						theme={theme}
-					/>
+					<MarkdownPreview msg={statusText} style={[styles.roomUsername, { color: themes[theme].auxiliaryText }]} />
 				</View>
 			)}
 		</>

@@ -13,8 +13,9 @@ import RocketChat from '../lib/rocketchat';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
 import { forwardRoom as forwardRoomAction } from '../actions/room';
-import { ILivechatDepartment } from './definition/ILivechatDepartment';
+import { IRoom } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
+import { IOptionsField } from './NotificationPreferencesView/options';
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,14 +23,6 @@ const styles = StyleSheet.create({
 		padding: 16
 	}
 });
-
-// TODO: Refactor when migrate room
-interface IRoom {
-	departmentId?: any;
-	servedBy?: {
-		_id: string;
-	};
-}
 
 interface ITransferData {
 	roomId: string;
@@ -41,12 +34,6 @@ interface IUser {
 	username: string;
 	_id: string;
 }
-
-interface IParsedData {
-	label: string;
-	value: string;
-}
-
 interface IForwardLivechatViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'ForwardLivechatView'>;
 	route: RouteProp<ChatsStackParamList, 'ForwardLivechatView'>;
@@ -54,22 +41,31 @@ interface IForwardLivechatViewProps {
 	forwardRoom: (rid: string, transferData: ITransferData) => void;
 }
 
+const COUNT_DEPARTMENT = 50;
+
 const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForwardLivechatViewProps) => {
-	const [departments, setDepartments] = useState<IParsedData[]>([]);
+	const [departments, setDepartments] = useState<IOptionsField[]>([]);
 	const [departmentId, setDepartment] = useState('');
-	const [users, setUsers] = useState<IParsedData[]>([]);
+	const [departmentTotal, setDepartmentTotal] = useState(0);
+	const [users, setUsers] = useState<IOptionsField[]>([]);
 	const [userId, setUser] = useState();
-	const [room, setRoom] = useState<IRoom>({});
+	const [room, setRoom] = useState<IRoom>({} as IRoom);
 
 	const rid = route.params?.rid;
 
-	const getDepartments = async () => {
+	const getDepartments = async (text = '', offset = 0) => {
 		try {
-			const result: any = await RocketChat.getDepartments();
+			const result = await RocketChat.getDepartments({ count: COUNT_DEPARTMENT, text, offset });
 			if (result.success) {
-				setDepartments(
-					result.departments.map((department: ILivechatDepartment) => ({ label: department.name, value: department._id }))
-				);
+				const parsedDepartments: IOptionsField[] = result.departments.map(department => ({
+					label: department.name,
+					value: department._id
+				}));
+				if (!text && !offset) {
+					setDepartments(parsedDepartments);
+					setDepartmentTotal(result?.total);
+				}
+				return { data: parsedDepartments, total: result?.total, offset: result?.offset };
 			}
 		} catch {
 			// do nothing
@@ -80,26 +76,27 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 		try {
 			const { servedBy: { _id: agentId } = {} } = room;
 			const _id = agentId && { $ne: agentId };
-			const result: any = await RocketChat.usersAutoComplete({
+			const result = await RocketChat.usersAutoComplete({
 				conditions: { _id, status: { $ne: 'offline' }, statusLivechat: 'available' },
 				term
 			});
 			if (result.success) {
 				const parsedUsers = result.items.map((user: IUser) => ({ label: user.username, value: user._id }));
-				setUsers(parsedUsers);
-				return parsedUsers;
+				if (!term) {
+					setUsers(parsedUsers);
+				}
+				return { data: parsedUsers };
 			}
 		} catch {
 			// do nothing
 		}
-		return [];
 	};
 
 	const getRoom = async () => {
 		try {
 			const result = await RocketChat.getRoomInfo(rid);
 			if (result.success) {
-				setRoom(result.room);
+				setRoom(result.room as IRoom);
 			}
 		} catch {
 			// do nothing
@@ -148,6 +145,9 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			value: room?.departmentId,
 			data: departments,
 			onChangeValue: setDepartment,
+			onSearch: getDepartments,
+			onEndReached: getDepartments,
+			total: departmentTotal,
 			goBack: false
 		});
 	};
@@ -157,7 +157,7 @@ const ForwardLivechatView = ({ forwardRoom, navigation, route, theme }: IForward
 			title: I18n.t('Forward_to_user'),
 			data: users,
 			onChangeValue: setUser,
-			onChangeText: getUsers,
+			onSearch: getUsers,
 			goBack: false
 		});
 	};

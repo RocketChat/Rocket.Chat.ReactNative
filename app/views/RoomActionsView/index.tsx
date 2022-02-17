@@ -12,7 +12,7 @@ import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
-import Markdown from '../../containers/markdown';
+import { MarkdownPreview } from '../../containers/markdown';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
@@ -767,22 +767,14 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									</Text>
 								</View>
 							)}
-							{/* @ts-ignore */}
-							<Markdown
-								preview
+							<MarkdownPreview
 								msg={t === 'd' ? `@${name}` : topic}
 								style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
-								numberOfLines={1}
-								theme={theme}
 							/>
 							{room.t === 'd' && (
-								// @ts-ignore
-								<Markdown
+								<MarkdownPreview
 									msg={member.statusText}
 									style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
-									preview
-									theme={theme}
-									numberOfLines={1}
 								/>
 							)}
 						</View>
