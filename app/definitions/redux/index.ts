@@ -13,6 +13,7 @@ import { IActionSettings } from '../../actions/settings';
 import { TActionsShare } from '../../actions/share';
 import { TActionSortPreferences } from '../../actions/sortPreferences';
 import { TActionUserTyping } from '../../actions/usersTyping';
+import { TActionPermissions } from '../../actions/permissions';
 import { TActionEnterpriseModules } from '../../actions/enterpriseModules';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
@@ -68,4 +69,5 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionsShare &
 	TActionServer &
 	TActionApp &
+	TActionPermissions &
 	TActionEnterpriseModules;

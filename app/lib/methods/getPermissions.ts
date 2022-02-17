@@ -59,12 +59,14 @@ export const SUPPORTED_PERMISSIONS = [
 	'edit-livechat-room-customfields',
 	'view-canned-responses',
 	'mobile-upload-file'
-];
+] as const;
 
 export async function setPermissions(): Promise<void> {
 	const db = database.active;
 	const permissionsCollection = db.get('permissions');
-	const allPermissions = await permissionsCollection.query(Q.where('id', Q.oneOf(SUPPORTED_PERMISSIONS))).fetch();
+	const allPermissions = await permissionsCollection
+		.query(Q.where('id', Q.oneOf(SUPPORTED_PERMISSIONS as unknown as string[])))
+		.fetch();
 	const parsed = allPermissions.reduce((acc, item) => ({ ...acc, [item.id]: item.roles }), {});
 
 	reduxStore.dispatch(setPermissionsAction(parsed));
@@ -175,6 +177,10 @@ export function getPermissions(): Promise<void> {
 			}
 			// RC 0.73.0
 			const result = await sdk.get('permissions.listAll', params);
+
+			if (!result.success) {
+				return resolve();
+			}
 
 			const changePermissions = await updatePermissions({ update: result.update, remove: result.remove, allRecords });
 			if (changePermissions) {
