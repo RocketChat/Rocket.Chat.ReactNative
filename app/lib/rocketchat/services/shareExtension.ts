@@ -10,6 +10,7 @@ import RocketChat from '..';
 import { encryptionInit } from '../../../actions/encryption';
 import { store } from '../../auxStore';
 import { IRocketChat } from '../../../definitions';
+import sdk from './sdk';
 
 export async function shareExtensionInit(this: IRocketChat, server: string) {
 	database.setShareDB(server);
@@ -22,6 +23,9 @@ export async function shareExtensionInit(this: IRocketChat, server: string) {
 	} catch {
 		// Do nothing
 	}
+
+	sdk.disconnect();
+	sdk.initialize(server);
 
 	// set Server
 	const currentServer: IShareServer = {
@@ -77,4 +81,13 @@ export async function shareExtensionInit(this: IRocketChat, server: string) {
 	} catch (e) {
 		log(e);
 	}
+}
+
+export function closeShareExtension() {
+	sdk.disconnect();
+	database.share = null;
+
+	store.dispatch(shareSelectServer({}));
+	store.dispatch(shareSetUser({}));
+	store.dispatch(shareSetSettings({}));
 }
