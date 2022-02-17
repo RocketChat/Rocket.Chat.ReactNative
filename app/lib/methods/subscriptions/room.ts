@@ -38,10 +38,10 @@ export default class RoomSubscription {
 	private threadMessagesBatch: {};
 	private _threadMessagesBatch: { [key: string]: TThreadMessageModel };
 	private promises?: Promise<TSubscriptionModel[]>;
-	private connectedListener: any;
-	private disconnectedListener: any;
-	private notifyRoomListener: any;
-	private messageReceivedListener: any;
+	private connectedListener?: Promise<any>;
+	private disconnectedListener?: Promise<any>;
+	private notifyRoomListener?: Promise<any>;
+	private messageReceivedListener?: Promise<any>;
 	private lastOpen?: Date;
 
 	constructor(rid: string) {
@@ -98,7 +98,7 @@ export default class RoomSubscription {
 		}
 	};
 
-	removeListener = async (promise: Promise<any>): Promise<void> => {
+	removeListener = async (promise?: Promise<any>): Promise<void> => {
 		if (promise) {
 			try {
 				const listener = await promise;
