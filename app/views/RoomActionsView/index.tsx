@@ -41,7 +41,7 @@ interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomAc
 	jitsiEnableChannels: boolean;
 	encryptionEnabled: boolean;
 	fontScale: number;
-	serverVersion: string;
+	serverVersion: string | null;
 	addUserToJoinedRoomPermission: string[] | undefined;
 	addUserToAnyCRoomPermission: string[] | undefined;
 	addUserToAnyPRoomPermission: string[] | undefined;
@@ -206,9 +206,15 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		return room.t === 'l' && room.status === 'queued' && !this.joined;
 	}
 
-	onPressTouchable = item => {
+	// TODO: assert params required for navigation
+	onPressTouchable = (item: { route?: keyof ChatsStackParamList; params?: object; event?: Function }) => {
 		const { route, event, params } = item;
 		if (route) {
+			/**
+			 * TODO: params can vary too much and ts is going to be happy
+			 * Instead of playing with this, we should think on a better `logEvent` function
+			 */
+			// @ts-ignore
 			logEvent(events[`RA_GO_${route.replace('View', '').toUpperCase()}${params.name ? params.name.toUpperCase() : ''}`]);
 			const { navigation } = this.props;
 			navigation.navigate(route, params);
@@ -1269,9 +1275,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 const mapStateToProps = (state: IApplicationState) => ({
 	userId: getUserSelector(state).id,
-	jitsiEnabled: state.settings.Jitsi_Enabled || false,
-	jitsiEnableTeams: state.settings.Jitsi_Enable_Teams || false,
-	jitsiEnableChannels: state.settings.Jitsi_Enable_Channels || false,
+	jitsiEnabled: (state.settings.Jitsi_Enabled || false) as boolean,
+	jitsiEnableTeams: (state.settings.Jitsi_Enable_Teams || false) as boolean,
+	jitsiEnableChannels: (state.settings.Jitsi_Enable_Channels || false) as boolean,
 	encryptionEnabled: state.encryption.enabled,
 	serverVersion: state.server.version,
 	isMasterDetail: state.app.isMasterDetail,

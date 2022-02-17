@@ -12,7 +12,7 @@ export enum SubscriptionType {
 	DIRECT = 'd',
 	CHANNEL = 'c',
 	OMNICHANNEL = 'l',
-	E2E = 'e2e',
+	E2E = 'e2e', // FIXME: this is not a type of subscription
 	THREAD = 'thread' // FIXME: this is not a type of subscription
 }
 

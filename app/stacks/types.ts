@@ -25,6 +25,7 @@ export type ChatsStackParamList = {
 				jumpToMessageId?: string;
 				jumpToThreadId?: string;
 				roomUserId?: string;
+				usedCannedResponse?: string;
 		  }
 		| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
