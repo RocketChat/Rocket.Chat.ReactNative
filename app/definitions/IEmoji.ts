@@ -6,7 +6,7 @@ export interface IEmoji {
 }
 
 export interface ICustomEmoji {
-	baseUrl: string;
+	baseUrl?: string;
 	emoji: IEmoji;
 	style: any;
 }
@@ -20,3 +20,5 @@ export interface IEmojiCategory {
 	style: any;
 	tabLabel: string;
 }
+
+export type TGetCustomEmoji = (name: string) => IEmoji | null;
