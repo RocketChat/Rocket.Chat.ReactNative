@@ -96,8 +96,8 @@ interface ICreateChannelViewProps extends IBaseScreen<ChatsStackParamList, 'Crea
 		roles: string[];
 	};
 	teamId: string;
-	createPublicChannelPermission: string[];
-	createPrivateChannelPermission: string[];
+	createPublicChannelPermission: string[] | undefined;
+	createPrivateChannelPermission: string[] | undefined;
 }
 
 interface ISwitch extends SwitchProps {
