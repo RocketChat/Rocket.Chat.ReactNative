@@ -21,7 +21,7 @@ export async function setEnterpriseModules() {
 			// Server not found
 		}
 		if (server?.enterpriseModules) {
-			reduxStore.dispatch(setEnterpriseModulesAction(server.enterpriseModules.split(',') as IEnterpriseModules[]));
+			reduxStore.dispatch(setEnterpriseModulesAction(server.enterpriseModules.split(',')));
 			return;
 		}
 		reduxStore.dispatch(clearEnterpriseModules());
@@ -34,7 +34,7 @@ export function getEnterpriseModules() {
 	return new Promise<void>(async resolve => {
 		try {
 			const { version: serverVersion, server: serverId } = reduxStore.getState().server;
-			if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.1.0')) {
+			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0')) {
 				// RC 3.1.0
 				const enterpriseModules = await sdk.methodCallWrapper('license:getModules');
 				if (enterpriseModules) {
