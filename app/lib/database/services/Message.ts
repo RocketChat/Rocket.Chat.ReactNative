@@ -1,9 +1,10 @@
 import database from '..';
 import { MESSAGES_TABLE } from '../model/Message';
+import { TAppDatabase } from '../interfaces';
 
-const getCollection = db => db.get(MESSAGES_TABLE);
+const getCollection = (db: TAppDatabase) => db.get(MESSAGES_TABLE);
 
-export const getMessageById = async messageId => {
+export const getMessageById = async (messageId: string) => {
 	const db = database.active;
 	const messageCollection = getCollection(db);
 	try {
