@@ -6,7 +6,7 @@ import protectedFunction from './helpers/protectedFunction';
 import { ISlashCommandResult, TSlashCommandModel } from '../../definitions';
 import sdk from '../rocketchat/services/sdk';
 
-export default function () {
+export default function getSlashCommands() {
 	const db = database.active;
 	return new Promise<void>(async resolve => {
 		try {
@@ -15,7 +15,6 @@ export default function () {
 			const result = await sdk.get('commands.list');
 
 			if (!result.success) {
-				console.log(result);
 				return resolve();
 			}
 			// @ts-ignore
@@ -26,20 +25,20 @@ export default function () {
 					const allSlashCommandsRecords = await slashCommandsCollection.query().fetch();
 
 					// filter slash commands
-					let slashCommandsToCreate = commands.filter(
+					const filteredSlashCommandsToCreate = commands.filter(
 						(i1: ISlashCommandResult) => !allSlashCommandsRecords.find(i2 => i1.command === i2.id)
 					);
-					let slashCommandsToUpdate = allSlashCommandsRecords.filter(i1 =>
+					const filteredSlashCommandsToUpdate = allSlashCommandsRecords.filter(i1 =>
 						commands.find((i2: ISlashCommandResult) => i1.id === i2.command)
 					);
-					let slashCommandsToDelete = allSlashCommandsRecords.filter(
+					const filteredSlashCommandsToDelete = allSlashCommandsRecords.filter(
 						i1 =>
-							!slashCommandsToCreate.find((i2: ISlashCommandResult) => i2.command === i1.id) &&
-							!slashCommandsToUpdate.find(i2 => i2.id === i1.id)
+							!filteredSlashCommandsToCreate.find((i2: ISlashCommandResult) => i2.command === i1.id) &&
+							!filteredSlashCommandsToUpdate.find(i2 => i2.id === i1.id)
 					);
 
 					// Create
-					slashCommandsToCreate = slashCommandsToCreate.map((command: ISlashCommandResult) =>
+					const slashCommandsToCreate = filteredSlashCommandsToCreate.map((command: ISlashCommandResult) =>
 						slashCommandsCollection.prepareCreate(
 							protectedFunction((s: TSlashCommandModel) => {
 								s._raw = sanitizedRaw({ id: command.command }, slashCommandsCollection.schema);
@@ -49,7 +48,7 @@ export default function () {
 					);
 
 					// Update
-					slashCommandsToUpdate = slashCommandsToUpdate.map(command => {
+					const slashCommandsToUpdate = filteredSlashCommandsToUpdate.map(command => {
 						const newCommand = commands.find((s: ISlashCommandResult) => s.command === command.id);
 						return command.prepareUpdate(
 							protectedFunction((s: TSlashCommandModel) => {
@@ -59,7 +58,7 @@ export default function () {
 					});
 
 					// Delete
-					slashCommandsToDelete = slashCommandsToDelete.map(command => command.prepareDestroyPermanently());
+					const slashCommandsToDelete = filteredSlashCommandsToDelete.map(command => command.prepareDestroyPermanently());
 
 					const allRecords = [...slashCommandsToCreate, ...slashCommandsToUpdate, ...slashCommandsToDelete];
 
