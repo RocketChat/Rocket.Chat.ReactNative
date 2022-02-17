@@ -1,9 +1,10 @@
 import database from '..';
+import { TAppDatabase } from '../interfaces';
 import { THREADS_TABLE } from '../model/Thread';
 
-const getCollection = db => db.get(THREADS_TABLE);
+const getCollection = (db: TAppDatabase) => db.get(THREADS_TABLE);
 
-export const getThreadById = async tmid => {
+export const getThreadById = async (tmid: string) => {
 	const db = database.active;
 	const threadCollection = getCollection(db);
 	try {
