@@ -1,6 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import EJSON from 'ejson';
+import Model from '@nozbe/watermelondb/Model';
 
 import database from '../../database';
 import { merge } from '../helpers/mergeSubscriptionsRooms';
@@ -18,24 +19,11 @@ import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotificatio
 import { Encryption } from '../../encryption';
 import { E2E_MESSAGE_TYPE } from '../../encryption/constants';
 import updateMessages from '../updateMessages';
-import {
-	IRoom,
-	ISubscription,
-	TMessageModel,
-	TRoomModel,
-	TSubscriptionModel,
-	TThreadMessageModel,
-	TThreadModel
-} from '../../../definitions';
+import { IRoom, ISubscription, TMessageModel, TRoomModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import sdk from '../../rocketchat/services/sdk';
-
-interface IDdpMessage {
-	msg: string;
-	fields: {
-		eventName: string;
-		args: any;
-	};
-}
+import { IDDPMessage } from '../../../definitions/IDDPMessage';
+import { getSubscriptionByRoomId } from '../../database/services/Subscription';
+import { getMessageById } from '../../database/services/Message';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
@@ -146,12 +134,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 
 		let tmp = merge(subscription, room);
 		tmp = await Encryption.decryptSubscription(tmp);
-		let sub!: TSubscriptionModel;
-		try {
-			sub = await subCollection.find(tmp.rid);
-		} catch (error) {
-			// Do nothing
-		}
+		const sub = await getSubscriptionByRoomId(tmp.rid);
 
 		// If we're receiving a E2EKey of a room
 		if (sub && !sub.E2EKey && subscription?.E2EKey) {
@@ -170,7 +153,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 			Encryption.decryptPendingMessages(tmp.rid);
 		}
 
-		const batch = [] as TSubscriptionModel[] & TMessageModel[];
+		const batch: Model[] = [];
 		if (sub) {
 			try {
 				const update = sub.prepareUpdate(s => {
@@ -204,12 +187,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 		if (tmp.lastMessage && !rooms.includes(tmp.rid)) {
 			const lastMessage = buildMessage(tmp.lastMessage);
 			const messagesCollection = db.get('messages');
-			let messageRecord!: TMessageModel;
-			try {
-				messageRecord = await messagesCollection.find(lastMessage._id);
-			} catch (error) {
-				// Do nothing
-			}
+			const messageRecord = await getMessageById(lastMessage._id);
 
 			if (messageRecord) {
 				batch.push(
@@ -271,7 +249,7 @@ const debouncedUpdate = (subscription: ISubscription) => {
 };
 
 export default function subscribeRooms() {
-	const handleStreamMessageReceived = protectedFunction(async (ddpMessage: IDdpMessage) => {
+	const handleStreamMessageReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const db = database.active;
 
 		// check if the server from variable is the same as the js sdk client
