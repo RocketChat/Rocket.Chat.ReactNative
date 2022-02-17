@@ -43,13 +43,13 @@ import { SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscri
 
 const API_FETCH_COUNT = 50;
 
-interface IResultFetch {
-	threads: IThreadResult[];
-	count: number;
-	offset: number;
-	total: number;
-	success: boolean;
-}
+// interface IResultFetch {
+// 	threads: IThreadResult[];
+// 	count: number;
+// 	offset: number;
+// 	total: number;
+// 	success: boolean;
+// }
 
 interface IThreadMessagesViewState {
 	loading: boolean;
@@ -281,6 +281,11 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			let threadsToUpdate: any[] = [];
 			let threadsToDelete: any[] = [];
 
+			if (remove && remove.length) {
+				threadsToDelete = allThreadsRecords.filter((i1: { id: string }) => remove.find(i2 => i1.id === i2._id));
+				threadsToDelete = threadsToDelete.map(t => t.prepareDestroyPermanently());
+			}
+
 			if (update && update.length) {
 				update = update.map(m => buildMessage(m));
 				// filter threads
@@ -297,17 +302,16 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				);
 				threadsToUpdate = threadsToUpdate.map(thread => {
 					const newThread = update.find(t => t._id === thread.id);
-					return thread.prepareUpdate(
-						protectedFunction((t: any) => {
-							Object.assign(t, newThread);
-						})
-					);
+					try {
+						return thread.prepareUpdate(
+							protectedFunction((t: any) => {
+								Object.assign(t, newThread);
+							})
+						);
+					} catch {
+						return null;
+					}
 				});
-			}
-
-			if (remove && remove.length) {
-				threadsToDelete = allThreadsRecords.filter((i1: { id: string }) => remove.find(i2 => i1.id === i2._id));
-				threadsToDelete = threadsToDelete.map(t => t.prepareDestroyPermanently());
 			}
 
 			await db.write(async () => {
@@ -335,7 +339,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result: IResultFetch = await RocketChat.getThreadsList({
+			const result: any = await RocketChat.getThreadsList({
 				rid: this.rid,
 				count: API_FETCH_COUNT,
 				offset: messages.length,

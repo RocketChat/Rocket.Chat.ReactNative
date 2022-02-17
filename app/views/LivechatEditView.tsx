@@ -87,8 +87,8 @@ interface ILivechatEditViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
 	route: RouteProp<ChatsStackParamList, 'LivechatEditView'>;
 	theme: string;
-	editOmnichannelContact: string[];
-	editLivechatRoomCustomfields: string[];
+	editOmnichannelContact: string[] | undefined;
+	editLivechatRoomCustomfields: string[] | undefined;
 }
 
 const Title = ({ title, theme }: ITitle) =>
@@ -113,7 +113,7 @@ const LivechatEditView = ({
 	const visitor = route.params?.roomUser ?? {};
 
 	const getCustomFields = async () => {
-		const result = await RocketChat.getCustomFields();
+		const result: any = await RocketChat.getCustomFields();
 		if (result.success && result.customFields?.length) {
 			const visitorCustomFields = result.customFields
 				.filter((field: IField) => field.visibility !== 'hidden' && field.scope === 'visitor')
