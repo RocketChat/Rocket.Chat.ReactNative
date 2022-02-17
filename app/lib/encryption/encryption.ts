@@ -252,14 +252,17 @@ class Encryption {
 			toDecrypt = (await Promise.all(
 				toDecrypt.map(async message => {
 					const { t, msg, tmsg } = message;
-					const { id: rid } = message.subscription;
-					// WM Object -> Plain Object
-					const newMessage = await this.decryptMessage({
-						t,
-						rid,
-						msg,
-						tmsg
-					});
+					let newMessage: TMessageModel = {} as TMessageModel;
+					if (message.subscription) {
+						const { id: rid } = message.subscription;
+						// WM Object -> Plain Object
+						newMessage = await this.decryptMessage({
+							t,
+							rid,
+							msg,
+							tmsg
+						});
+					}
 
 					try {
 						return message.prepareUpdate(
