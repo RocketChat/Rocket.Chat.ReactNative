@@ -126,7 +126,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 			// diff to last authenticated session
 			const diffToLastSession = moment(timesync).diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 
-			// if can't receive the timesync value from the server or last authenticated session is older than configured auto lock time, authentication is required
+			// if it was not possible to get `timesync` from server or the last authenticated session is older than the configured auto lock time, authentication is required
 			if (!timesync || (serverRecord?.autoLockTime && diffToLastSession >= serverRecord.autoLockTime)) {
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
