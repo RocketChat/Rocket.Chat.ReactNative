@@ -22,7 +22,7 @@ const WINDOW_TIME = 1000;
 interface IDdpMessage {
 	fields: {
 		eventName: string;
-		args: [name: string, typing: string];
+		args: Array<string & { _id: string }>;
 	};
 }
 
@@ -32,11 +32,11 @@ export default class RoomSubscription {
 	private timer: null | number;
 	private queue: { [key: string]: any };
 	private messagesBatch: {};
-	private _messagesBatch?: { [key: string]: TMessageModel };
+	private _messagesBatch: { [key: string]: TMessageModel };
 	private threadsBatch: {};
-	private _threadsBatch: any;
+	private _threadsBatch: { [key: string]: TThreadModel };
 	private threadMessagesBatch: {};
-	private _threadMessagesBatch: any;
+	private _threadMessagesBatch: { [key: string]: TThreadMessageModel };
 	private promises: any;
 	private connectedListener: any;
 	private disconnectedListener: any;
@@ -52,6 +52,10 @@ export default class RoomSubscription {
 		this.messagesBatch = {};
 		this.threadsBatch = {};
 		this.threadMessagesBatch = {};
+
+		this._messagesBatch = {};
+		this._threadsBatch = {};
+		this._threadMessagesBatch = {};
 	}
 
 	subscribe = async () => {
@@ -79,7 +83,9 @@ export default class RoomSubscription {
 		if (this.promises) {
 			try {
 				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
+				subscriptions.forEach((sub: { unsubscribe: () => Promise<void> }) =>
+					sub.unsubscribe().catch(() => console.log('unsubscribeRoom'))
+				);
 			} catch (e) {
 				// do nothing
 			}
@@ -94,7 +100,7 @@ export default class RoomSubscription {
 		}
 	};
 
-	removeListener = async promise => {
+	removeListener = async (promise: Promise<any>): Promise<void> => {
 		if (promise) {
 			try {
 				const listener = await promise;

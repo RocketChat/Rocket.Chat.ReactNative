@@ -8,7 +8,7 @@ export interface IThreadMessage {
 	tmsg?: string;
 	msg?: string;
 	t?: MessageType;
-	rid: string;
+	rid?: string;
 	ts: Date;
 	u: IUserMessage;
 	alias?: string;
