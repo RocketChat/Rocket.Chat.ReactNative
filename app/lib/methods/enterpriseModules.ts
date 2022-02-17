@@ -1,12 +1,13 @@
+import { IEnterpriseModules } from '../../reducers/enterpriseModules';
+import sdk from '../rocketchat/services/sdk';
 import { compareServerVersion } from '../utils';
 import { store as reduxStore } from '../auxStore';
 import database from '../database';
 import log from '../../utils/log';
 import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '../../actions/enterpriseModules';
-import RocketChat from '../rocketchat';
 
-export const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';
-export const LICENSE_LIVECHAT_ENTERPRISE = 'livechat-enterprise';
+const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';
+const LICENSE_LIVECHAT_ENTERPRISE = 'livechat-enterprise';
 
 export async function setEnterpriseModules() {
 	try {
@@ -20,7 +21,7 @@ export async function setEnterpriseModules() {
 			// Server not found
 		}
 		if (server?.enterpriseModules) {
-			reduxStore.dispatch(setEnterpriseModulesAction(server.enterpriseModules.split(',')));
+			reduxStore.dispatch(setEnterpriseModulesAction(server.enterpriseModules.split(',') as IEnterpriseModules[]));
 			return;
 		}
 		reduxStore.dispatch(clearEnterpriseModules());
@@ -29,13 +30,13 @@ export async function setEnterpriseModules() {
 	}
 }
 
-export function getEnterpriseModules(this: typeof RocketChat) {
+export function getEnterpriseModules() {
 	return new Promise<void>(async resolve => {
 		try {
 			const { version: serverVersion, server: serverId } = reduxStore.getState().server;
-			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0')) {
+			if (compareServerVersion(serverVersion as string, 'greaterThanOrEqualTo', '3.1.0')) {
 				// RC 3.1.0
-				const enterpriseModules = await this.methodCallWrapper('license:getModules');
+				const enterpriseModules = await sdk.methodCallWrapper('license:getModules');
 				if (enterpriseModules) {
 					const serversDB = database.servers;
 					const serversCollection = serversDB.get('servers');
