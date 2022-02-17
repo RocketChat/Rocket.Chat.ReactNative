@@ -32,6 +32,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import { compareServerVersion } from '../../lib/utils';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
+import { IEmoji } from '../../definitions/IEmoji';
 
 const QUERY_SIZE = 50;
 
@@ -66,10 +67,7 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	baseUrl: string;
 	serverVersion: string;
 	customEmojis: {
-		[key: string]: {
-			name: string;
-			extension: string;
-		};
+		[key: string]: IEmoji;
 	};
 	theme: string;
 	useRealName: boolean;
@@ -312,8 +310,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 						testID='search-message-view-input'
 						theme={theme}
 					/>
-					{/* @ts-ignore */}
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} username='' baseUrl='' theme={theme} />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme} />
 					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 				</View>
 				{this.renderList()}

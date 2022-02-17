@@ -6,7 +6,7 @@ import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
-import Markdown from '../../containers/markdown';
+import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import ThreadDetails from '../../containers/ThreadDetails';
 import { TThreadModel } from '../../definitions/IThread';
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
 
 interface IItem {
 	item: TThreadModel;
-	baseUrl: string;
 	useRealName: boolean;
 	user: any;
 	badgeColor?: string;
@@ -66,7 +65,7 @@ interface IItem {
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
 
-const Item = ({ item, baseUrl, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem) => {
+const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem) => {
 	const { theme } = useTheme();
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
@@ -89,18 +88,7 @@ const Item = ({ item, baseUrl, useRealName, user, badgeColor, onPress, toggleFol
 						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
-						{makeThreadName(item) && username ? (
-							/* @ts-ignore */
-							<Markdown
-								msg={makeThreadName(item)}
-								baseUrl={baseUrl}
-								username={username}
-								theme={theme}
-								numberOfLines={2}
-								style={[styles.markdown]}
-								preview
-							/>
-						) : null}
+						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} />
 						{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
 					</View>
 					<ThreadDetails item={item} user={user} toggleFollowThread={toggleFollowThread} style={styles.threadDetails} />
