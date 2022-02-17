@@ -74,20 +74,14 @@ export async function resendMessage(message: TMessageModel, tmid?: string) {
 				m.status = messagesStatus.TEMP;
 			});
 		});
-		let m: Partial<IMessage> = {
+		const m = await Encryption.encryptMessage({
 			_id: message.id,
-			rid: message.subscription.id,
-			msg: message.msg
-		};
-		if (tmid) {
-			m = {
-				...m,
-				tmid
-			};
-		}
-		m = await Encryption.encryptMessage(m);
+			rid: message.subscription ? message.subscription.id : '',
+			msg: message.msg,
+			...(tmid && { tmid })
+		} as IMessage);
 
-		await sendMessageCall(m as IMessage);
+		await sendMessageCall(m);
 	} catch (e) {
 		log(e);
 	}
@@ -109,7 +103,7 @@ export default async function (rid: string, msg: string, tmid: string, user: IUs
 			msg,
 			tmid,
 			tshow
-		});
+		} as IMessage);
 
 		const messageDate = new Date();
 		let tMessageRecord: TMessageModel;
@@ -185,7 +179,9 @@ export default async function (rid: string, msg: string, tmid: string, user: IUs
 		batch.push(
 			msgCollection.prepareCreate(m => {
 				m._raw = sanitizedRaw({ id: messageId }, msgCollection.schema);
-				m.subscription.id = rid;
+				if (m.subscription) {
+					m.subscription.id = rid;
+				}
 				m.msg = msg;
 				m.ts = messageDate;
 				m._updatedAt = messageDate;

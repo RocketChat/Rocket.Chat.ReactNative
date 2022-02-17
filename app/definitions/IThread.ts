@@ -39,7 +39,7 @@ export interface IThread {
 	t?: MessageType;
 	rid: string;
 	_updatedAt?: Date;
-	ts?: Date;
+	ts?: string | Date;
 	u?: IUserMessage;
 	alias?: string;
 	parseUrls?: boolean;
