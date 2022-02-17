@@ -1,4 +1,5 @@
 import database from '..';
+import { TAppDatabase } from '../interfaces';
 import { MESSAGES_TABLE } from '../model/Message';
 import { TAppDatabase } from '../interfaces';
 

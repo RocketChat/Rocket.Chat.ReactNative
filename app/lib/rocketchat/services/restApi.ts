@@ -421,9 +421,18 @@ export const getDepartmentInfo = (departmentId: string): any =>
 	// RC 2.2.0
 	sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
 
-export const getDepartments = () =>
+export const getDepartments = (args?: { count: number; offset: number; text: string }) => {
+	let params;
+	if (args) {
+		params = {
+			text: args.text,
+			count: args.count,
+			offset: args.offset
+		};
+	}
 	// RC 2.2.0
-	sdk.get('livechat/department');
+	return sdk.get('livechat/department', params);
+};
 
 export const usersAutoComplete = (selector: any) =>
 	// RC 2.4.0

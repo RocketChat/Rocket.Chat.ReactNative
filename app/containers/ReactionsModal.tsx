@@ -9,6 +9,7 @@ import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
+import { TGetCustomEmoji } from '../definitions/IEmoji';
 import SafeAreaView from './SafeAreaView';
 
 const styles = StyleSheet.create({
@@ -66,7 +67,7 @@ interface IItem {
 	};
 	user?: { username: any };
 	baseUrl?: string;
-	getCustomEmoji?: Function;
+	getCustomEmoji?: TGetCustomEmoji;
 	theme?: string;
 }
 

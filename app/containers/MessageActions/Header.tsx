@@ -10,8 +10,8 @@ import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
+import { IEmoji } from '../../definitions/IEmoji';
 import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
-import { IEmoji } from '../EmojiPicker/interfaces';
 
 interface IHeader {
 	handleReaction: Function;

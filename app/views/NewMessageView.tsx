@@ -77,11 +77,11 @@ interface INewMessageViewProps extends IBaseScreen<any, 'NewMessageView'> {
 	maxUsers: number;
 	isMasterDetail: boolean;
 	serverVersion: string;
-	createTeamPermission: string[];
-	createDirectMessagePermission: string[];
-	createPublicChannelPermission: string[];
-	createPrivateChannelPermission: string[];
-	createDiscussionPermission: string[];
+	createTeamPermission: string[] | undefined;
+	createDirectMessagePermission: string[] | undefined;
+	createPublicChannelPermission: string[] | undefined;
+	createPrivateChannelPermission: string[] | undefined;
+	createDiscussionPermission: string[] | undefined;
 }
 
 class NewMessageView extends React.Component<INewMessageViewProps, INewMessageViewState> {
