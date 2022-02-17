@@ -199,7 +199,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 				batch.push(
 					messagesCollection.prepareCreate(m => {
 						m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-						m.subscription.id = lastMessage.rid;
+						if (m.subscription) m.subscription.id = lastMessage.rid;
 						return Object.assign(m, lastMessage);
 					})
 				);
@@ -316,6 +316,7 @@ export default function subscribeRooms() {
 				const [args] = ddpMessage.fields.args;
 				const _id = random(17);
 				const message = {
+					// @ts-ignore
 					u: {
 						_id,
 						username: 'rocket.cat',
