@@ -264,7 +264,7 @@ const Reply = React.memo(
 					</View>
 				</Touchable>
 				<Markdown
-					msg={attachment.description!}
+					msg={attachment.description}
 					baseUrl={baseUrl}
 					username={user.username}
 					getCustomEmoji={getCustomEmoji}
