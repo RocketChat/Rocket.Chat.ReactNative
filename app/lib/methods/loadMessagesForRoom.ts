@@ -36,7 +36,7 @@ export default function loadMessagesForRoom(args: {
 	t: RoomTypes;
 	latest: string;
 	loaderItem: TMessageModel;
-}): Promise<IMessage | []> {
+}): Promise<IMessage[] | []> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await load(args);
