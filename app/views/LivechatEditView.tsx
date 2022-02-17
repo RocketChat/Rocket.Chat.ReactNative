@@ -87,8 +87,8 @@ interface ILivechatEditViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
 	route: RouteProp<ChatsStackParamList, 'LivechatEditView'>;
 	theme: string;
-	editOmnichannelContact: string[];
-	editLivechatRoomCustomfields: string[];
+	editOmnichannelContact: string[] | undefined;
+	editLivechatRoomCustomfields: string[] | undefined;
 }
 
 const Title = ({ title, theme }: ITitle) =>
