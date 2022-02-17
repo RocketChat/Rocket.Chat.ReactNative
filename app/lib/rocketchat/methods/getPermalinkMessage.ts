@@ -7,6 +7,7 @@ import isGroupChat from './isGroupChat';
 type TRoomType = 'p' | 'c' | 'd';
 
 export default async function getPermalinkMessage(message: TMessageModel): Promise<string | null> {
+	if (!message.subscription) return null;
 	let room: TSubscriptionModel;
 	try {
 		room = await getRoom(message.subscription.id);

@@ -3,7 +3,9 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
-import { SubscriptionType } from './ISubscription';
+import { IUrl } from './IUrl';
+
+export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj';
 
 export interface IUserMessage {
 	_id: string;
@@ -34,12 +36,16 @@ export interface ITranslations {
 	value: string;
 }
 
+export type E2EType = 'pending' | 'done';
+
 export interface ILastMessage {
 	_id: string;
 	rid: string;
 	tshow: boolean;
+	t: MessageType;
 	tmid: string;
 	msg: string;
+	e2e: E2EType;
 	ts: Date;
 	u: IUserMessage;
 	_updatedAt: Date;
@@ -54,17 +60,19 @@ export interface ILastMessage {
 }
 
 export interface IMessage {
+	_id: string;
+	rid: string;
 	msg?: string;
-	t?: SubscriptionType;
-	ts: Date;
+	t?: MessageType;
+	ts: string | Date;
 	u: IUserMessage;
-	alias: string;
-	parseUrls: boolean;
+	alias?: string;
+	parseUrls?: boolean;
 	groupable?: boolean;
 	avatar?: string;
 	emoji?: string;
 	attachments?: IAttachment[];
-	urls?: string[];
+	urls?: IUrl[];
 	_updatedAt: Date;
 	status?: number;
 	pinned?: boolean;
@@ -89,7 +97,7 @@ export interface IMessage {
 	e2e?: string;
 	tshow?: boolean;
 	md?: MarkdownAST;
-	subscription: { id: string };
+	subscription?: { id: string };
 }
 
 export type TMessageModel = IMessage & Model;
