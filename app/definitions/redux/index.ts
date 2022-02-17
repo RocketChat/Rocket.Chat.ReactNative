@@ -26,6 +26,8 @@ import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { IServer } from '../../reducers/server';
 import { ISettings } from '../../reducers/settings';
 import { IShare } from '../../reducers/share';
+import { IEnterpriseModules } from '../../reducers/enterpriseModules';
+import { TActionEnterpriseModules } from '../../actions/enterpriseModules';
 
 export interface IApplicationState {
 	settings: ISettings;
@@ -45,7 +47,7 @@ export interface IApplicationState {
 	inviteLinks: IInviteLinks;
 	createDiscussion: ICreateDiscussion;
 	inquiry: any;
-	enterpriseModules: any;
+	enterpriseModules: IEnterpriseModules;
 	encryption: IEncryption;
 	permissions: any;
 	roles: IRoles;
@@ -64,4 +66,5 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionCreateChannel &
 	TActionsShare &
 	TActionServer &
-	TActionApp;
+	TActionApp &
+	TActionEnterpriseModules;

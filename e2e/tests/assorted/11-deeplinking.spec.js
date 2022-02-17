@@ -41,7 +41,7 @@ describe('Deep linking', () => {
 			});
 			await waitFor(element(by[textMatcher]("You've been logged out by the server. Please log in again.")))
 				.toExist()
-				.withTimeout(10000); // TODO: we need to improve this message
+				.withTimeout(30000); // TODO: we need to improve this message
 		});
 
 		const authAndNavigate = async () => {
@@ -97,7 +97,7 @@ describe('Deep linking', () => {
 				});
 				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 					.toExist()
-					.withTimeout(10000);
+					.withTimeout(30000);
 			});
 
 			it('should navigate to the thread using path', async () => {
@@ -108,7 +108,7 @@ describe('Deep linking', () => {
 				});
 				await waitFor(element(by.id(`room-view-title-${threadMessage}`)))
 					.toExist()
-					.withTimeout(10000);
+					.withTimeout(30000);
 			});
 
 			it('should navigate to the room using rid', async () => {
@@ -120,7 +120,7 @@ describe('Deep linking', () => {
 				});
 				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 					.toExist()
-					.withTimeout(15000);
+					.withTimeout(30000);
 				await tapBack();
 			});
 		});
@@ -144,7 +144,7 @@ describe('Deep linking', () => {
 				});
 				await waitFor(element(by.id(`room-view-title-${data.groups.private.name}`)))
 					.toExist()
-					.withTimeout(10000);
+					.withTimeout(30000);
 			});
 
 			it('should add a not existing server and fallback to the previous one', async () => {
@@ -155,7 +155,7 @@ describe('Deep linking', () => {
 				});
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
-					.withTimeout(10000);
+					.withTimeout(30000);
 				await checkServer(data.server);
 			});
 		});

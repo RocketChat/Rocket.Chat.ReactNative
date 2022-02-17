@@ -3,12 +3,15 @@ import Model from '@nozbe/watermelondb/Model';
 import { IAttachment } from './IAttachment';
 import { IEditedBy, ITranslations, IUserChannel, IUserMention, IUserMessage, MessageType } from './IMessage';
 import { IReaction } from './IReaction';
+import { IUrl } from './IUrl';
 
 export interface IThreadMessage {
+	_id: string;
+	tmsg?: string;
 	msg?: string;
 	t?: MessageType;
 	rid: string;
-	ts: Date;
+	ts: string | Date;
 	u: IUserMessage;
 	alias?: string;
 	parseUrls?: boolean;
@@ -16,7 +19,7 @@ export interface IThreadMessage {
 	avatar?: string;
 	emoji?: string;
 	attachments?: IAttachment[];
-	urls?: string[];
+	urls?: IUrl[];
 	_updatedAt?: Date;
 	status?: number;
 	pinned?: boolean;
