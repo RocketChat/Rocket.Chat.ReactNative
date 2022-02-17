@@ -26,13 +26,13 @@ import { IInviteLinks } from '../../reducers/inviteLinks';
 import { IRoles } from '../../reducers/roles';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { IServer } from '../../reducers/server';
-import { ISettings } from '../../reducers/settings';
+import { TSettingsState } from '../../reducers/settings';
 import { IShare } from '../../reducers/share';
 import { IPermissionsState } from '../../reducers/permissions';
 import { IEnterpriseModules } from '../../reducers/enterpriseModules';
 
 export interface IApplicationState {
-	settings: ISettings;
+	settings: TSettingsState;
 	login: any;
 	meteor: IConnect;
 	server: IServer;
