@@ -16,7 +16,7 @@ import debounce from '../../../utils/debounce';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 import log from '../../../utils/log';
 import EmptyRoom from '../EmptyRoom';
-import List from './List';
+import List, { IListProps } from './List';
 import NavBottomFAB from './NavBottomFAB';
 
 const QUERY_SIZE = 50;
@@ -33,13 +33,15 @@ const onScroll = ({ y }: { y: Value<number> }) =>
 		{ useNativeDriver: true }
 	);
 
-interface IListContainerProps {
+export { IListProps };
+
+export interface IListContainerProps {
 	renderRow: Function;
 	rid: string;
 	tmid: string;
 	theme: string;
 	loading: boolean;
-	listRef: any;
+	listRef: React.RefObject<IListProps>;
 	hideSystemMessages: string[];
 	tunread: string[];
 	ignored: string[];

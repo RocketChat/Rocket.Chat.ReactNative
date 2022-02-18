@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IListProps extends FlatListProps<any> {
+export interface IListProps extends FlatListProps<any> {
 	listRef: any;
 }
 

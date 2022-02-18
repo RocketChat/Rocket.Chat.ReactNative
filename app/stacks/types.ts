@@ -16,11 +16,11 @@ export type ChatsStackParamList = {
 		rid: string;
 		t: SubscriptionType;
 		tmid?: string;
-		message?: string;
+		message?: object; // TODO: TMessageModel?
 		name?: string;
 		fname?: string;
 		prid?: string;
-		room?: ISubscription;
+		room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
 		roomUserId?: string;
