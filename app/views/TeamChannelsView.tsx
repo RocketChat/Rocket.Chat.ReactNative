@@ -34,7 +34,6 @@ import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 
-
 const API_FETCH_COUNT = 25;
 const PERMISSION_DELETE_C = 'delete-c';
 const PERMISSION_DELETE_P = 'delete-p';
@@ -349,7 +348,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			logEvent(events.TC_GO_ROOM);
 			const { navigation, isMasterDetail } = this.props;
 			try {
-				const { room } = await RocketChat.getRoomInfo(item._id);
+				const { room } = (await RocketChat.getRoomInfo(item._id)) as any;
 				const params = {
 					rid: item._id,
 					name: RocketChat.getRoomTitle(room),
