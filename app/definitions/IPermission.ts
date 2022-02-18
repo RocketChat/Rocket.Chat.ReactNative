@@ -1,9 +1,9 @@
 import Model from '@nozbe/watermelondb/Model';
 
 export interface IPermission {
-	id: string;
+	_id: string;
 	roles: string[];
-	_updatedAt: Date;
+	_updatedAt: Date | string;
 }
 
 export type TPermissionModel = IPermission & Model;
