@@ -86,7 +86,7 @@ export interface IMessage {
 	id?: string;
 	t?: MessageType;
 	ts: string | Date;
-	u: IUserMessage;
+	u?: IUserMessage;
 	alias?: string;
 	parseUrls?: boolean;
 	groupable?: boolean;

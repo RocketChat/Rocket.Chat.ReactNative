@@ -12,7 +12,7 @@ export interface IThreadMessage {
 	t?: MessageType;
 	rid: string;
 	ts: string | Date;
-	u: IUserMessage;
+	u?: IUserMessage;
 	alias?: string;
 	parseUrls?: boolean;
 	groupable?: boolean;
