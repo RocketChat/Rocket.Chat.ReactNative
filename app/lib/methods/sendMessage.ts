@@ -7,16 +7,14 @@ import log from '../../utils/log';
 import random from '../../utils/random';
 import { Encryption } from '../encryption';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
-import { IMessage, IUser, TMessageModel, TThreadMessageModel } from '../../definitions';
+import { IMessage, IUser, TMessageModel } from '../../definitions';
 import sdk from '../rocketchat/services/sdk';
-
-type TMessages = TMessageModel | TThreadMessageModel;
 
 const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
 	const db = database.active;
 	const msgCollection = db.get('messages');
 	const threadMessagesCollection = db.get('thread_messages');
-	const successBatch: TMessages[] = [];
+	const successBatch: Model[] = [];
 	const messageRecord = await msgCollection.find(id);
 	successBatch.push(
 		messageRecord.prepareUpdate(m => {
@@ -50,7 +48,7 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 	}
 };
 
-export async function sendMessageCall(message: IMessage) {
+export async function sendMessageCall(message: any) {
 	const { _id, tmid } = message;
 	try {
 		// RC 0.60.0
@@ -226,7 +224,7 @@ export default async function (rid: string, msg: string, tmid: string, user: IUs
 			return;
 		}
 
-		await sendMessageCall(message as IMessage);
+		await sendMessageCall(message);
 	} catch (e) {
 		log(e);
 	}
