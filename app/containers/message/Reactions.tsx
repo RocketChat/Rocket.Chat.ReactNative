@@ -9,6 +9,7 @@ import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import MessageContext from './Context';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 interface IMessageAddReaction {
 	theme: string;
@@ -19,13 +20,13 @@ interface IMessageReaction {
 		usernames: [];
 		emoji: object;
 	};
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
 
 interface IMessageReactions {
 	reactions?: object[];
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
 
