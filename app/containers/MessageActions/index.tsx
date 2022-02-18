@@ -283,7 +283,7 @@ const MessageActions = React.memo(
 					if (!translatedMessage) {
 						const m = {
 							_id: message.id,
-							rid: message.subscription.id,
+							rid: message.subscription ? message.subscription.id : '',
 							u: message.u,
 							msg: message.msg
 						};
