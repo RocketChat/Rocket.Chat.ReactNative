@@ -164,20 +164,6 @@ const RocketChat = {
 			message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
 		};
 	},
-	async getServerTimeSync(server) {
-		try {
-			const response = await Promise.race([
-				RNFetchBlob.fetch('GET', `${server}/_timesync`),
-				new Promise(res => setTimeout(res, 2000))
-			]);
-			if (response?.data) {
-				return parseInt(response.data);
-			}
-			return null;
-		} catch {
-			return null;
-		}
-	},
 	stopListener(listener) {
 		return listener && listener.stop();
 	},

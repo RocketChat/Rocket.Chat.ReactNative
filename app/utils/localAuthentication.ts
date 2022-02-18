@@ -7,7 +7,7 @@ import moment from 'moment';
 import UserPreferences from '../lib/userPreferences';
 import { store } from '../lib/auxStore';
 import database from '../lib/database';
-import RocketChat from '../lib/rocketchat';
+import { getServerTimeSync } from '../lib/rocketchat/services/getServerTimeSync';
 import {
 	ATTEMPTS_KEY,
 	BIOMETRY_ENABLED_KEY,
@@ -22,9 +22,14 @@ import { TServerModel } from '../definitions/IServer';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
-export const saveLastLocalAuthenticationSession = async (server: string, serverRecord?: TServerModel): Promise<void> => {
-	// We need to get the timesync again because this function is been called when we turn the app to background too
-	const timesync = await RocketChat.getServerTimeSync(server);
+export const saveLastLocalAuthenticationSession = async (
+	server: string,
+	serverRecord?: TServerModel,
+	timesync?: number | null
+): Promise<void> => {
+	if (!timesync) {
+		timesync = new Date().getTime();
+	}
 
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
@@ -109,7 +114,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 	// if screen lock is enabled
 	if (serverRecord?.autoLock) {
 		// Get time from server
-		const timesync = await RocketChat.getServerTimeSync(server);
+		const timesync = await getServerTimeSync(server);
 
 		// Make sure splash screen has been hidden
 		try {
@@ -149,7 +154,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		}
 
 		await resetAttempts();
-		await saveLastLocalAuthenticationSession(server, serverRecord);
+		await saveLastLocalAuthenticationSession(server, serverRecord, timesync);
 	}
 };
 
