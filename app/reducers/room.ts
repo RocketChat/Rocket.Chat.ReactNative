@@ -1,12 +1,21 @@
+import { TActionsRoom } from '../actions/room';
 import { ROOM } from '../actions/actionsTypes';
 
-const initialState = {
-	rid: null,
+export type IRoomRecord = string[];
+
+export interface IRoom {
+	rid: string;
+	isDeleting: boolean;
+	rooms: IRoomRecord;
+}
+
+export const initialState: IRoom = {
+	rid: '',
 	isDeleting: false,
 	rooms: []
 };
 
-export default function (state = initialState, action) {
+export default function (state = initialState, action: TActionsRoom): IRoom {
 	switch (action.type) {
 		case ROOM.SUBSCRIBE:
 			return {

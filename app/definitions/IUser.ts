@@ -2,6 +2,7 @@ import Model from '@nozbe/watermelondb/Model';
 
 import { UserStatus } from './UserStatus';
 import { IRocketChatRecord } from './IRocketChatRecord';
+import { ILoggedUser } from './ILoggedUser';
 
 export interface ILoginToken {
 	hashedToken: string;
@@ -93,9 +94,10 @@ export interface IUserSettings {
 	};
 }
 
-export interface IUser extends IRocketChatRecord {
+export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' | 'name' | 'status'> {
 	_id: string;
 	id: string;
+	token: string;
 	createdAt: Date;
 	roles: string[];
 	type: string;
@@ -109,7 +111,6 @@ export interface IUser extends IRocketChatRecord {
 	lastLogin?: Date;
 	avatarOrigin?: string;
 	avatarETag?: string;
-	token: string;
 	utcOffset?: number;
 	language?: string;
 	statusDefault?: UserStatus;
