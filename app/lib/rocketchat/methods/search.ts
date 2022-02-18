@@ -8,61 +8,6 @@ import { ISearch, ISearchLocal, SubscriptionType } from '../../../definitions';
 
 let debounce: null | ((reason: string) => void) = null;
 
-export const search = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<(ISearch | ISearchLocal)[]> => {
-	const searchText = text.trim();
-
-	if (debounce) {
-		debounce('cancel');
-	}
-
-	const localSearchData = await localSearch({ text, filterUsers, filterRooms });
-	const usernames = localSearchData.map(sub => sub.name);
-
-	const data: (ISearch | ISearchLocal)[] = localSearchData;
-
-	try {
-		if (localSearchData.length < 7) {
-			const { users, rooms } = (await Promise.race([
-				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }),
-				new Promise((resolve, reject) => (debounce = reject))
-			])) as { users: ISearch[]; rooms: ISearch[] };
-
-			if (filterUsers) {
-				users
-					.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
-					.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
-					.forEach(user => {
-						data.push({
-							...user,
-							rid: user.username,
-							name: user.username,
-							t: SubscriptionType.R_THREAD,
-							search: true
-						});
-					});
-			}
-			if (filterRooms) {
-				rooms.forEach(room => {
-					// Check if it exists on local database
-					const index = data.findIndex(item => item.rid === room._id);
-					if (index === -1) {
-						data.push({
-							...room,
-							rid: room._id,
-							search: true
-						});
-					}
-				});
-			}
-		}
-		debounce = null;
-		return data;
-	} catch (e) {
-		console.warn(e);
-		return data;
-	}
-};
-
 export const localSearch = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<ISearchLocal[]> => {
 	const searchText = text.trim();
 	const db = database.active;
@@ -95,4 +40,59 @@ export const localSearch = async ({ text = '', filterUsers = true, filterRooms =
 	}));
 
 	return search;
+};
+
+export const search = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<(ISearch | ISearchLocal)[]> => {
+	const searchText = text.trim();
+
+	if (debounce) {
+		debounce('cancel');
+	}
+
+	const localSearchData = await localSearch({ text, filterUsers, filterRooms });
+	const usernames = localSearchData.map(sub => sub.name);
+
+	const data: (ISearch | ISearchLocal)[] = localSearchData;
+
+	try {
+		if (localSearchData.length < 7) {
+			const { users, rooms } = (await Promise.race([
+				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }),
+				new Promise((resolve, reject) => (debounce = reject))
+			])) as { users: ISearch[]; rooms: ISearch[] };
+
+			if (filterUsers) {
+				users
+					.filter((item1, index) => users.findIndex(item2 => item2._id === item1._id) === index) // Remove duplicated data from response
+					.filter(user => !data.some(sub => user.username === sub.name)) // Make sure to remove users already on local database
+					.forEach(user => {
+						data.push({
+							...user,
+							rid: user.username,
+							name: user.username,
+							t: SubscriptionType.DIRECT,
+							search: true
+						});
+					});
+			}
+			if (filterRooms) {
+				rooms.forEach(room => {
+					// Check if it exists on local database
+					const index = data.findIndex(item => item.rid === room._id);
+					if (index === -1) {
+						data.push({
+							...room,
+							rid: room._id,
+							search: true
+						});
+					}
+				});
+			}
+		}
+		debounce = null;
+		return data;
+	} catch (e) {
+		console.warn(e);
+		return data;
+	}
 };
