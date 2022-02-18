@@ -7,7 +7,7 @@ export interface IInquiry {
 	error: any;
 }
 
-const initialState: IInquiry = {
+export const initialState: IInquiry = {
 	enabled: false,
 	queued: [],
 	error: {}
