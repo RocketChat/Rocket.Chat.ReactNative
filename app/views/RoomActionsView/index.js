@@ -7,8 +7,8 @@ import { Q } from '@nozbe/watermelondb';
 
 import { compareServerVersion } from '../../lib/utils';
 import Touch from '../../utils/touch';
-import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
-import { closeRoom as closeRoomAction, leaveRoom as leaveRoomAction } from '../../actions/room';
+import { setLoading } from '../../actions/selectedUsers';
+import { closeRoom, leaveRoom } from '../../actions/room';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
@@ -334,9 +334,9 @@ class RoomActionsView extends React.Component {
 		const {
 			room: { rid }
 		} = this.state;
-		const { closeRoom } = this.props;
+		const { dispatch } = this.props;
 
-		closeRoom(rid);
+		dispatch(closeRoom(rid));
 	};
 
 	returnLivechat = () => {
@@ -375,16 +375,16 @@ class RoomActionsView extends React.Component {
 
 	addUser = async () => {
 		const { room } = this.state;
-		const { setLoadingInvite, navigation } = this.props;
+		const { dispatch, navigation } = this.props;
 		const { rid } = room;
 		try {
-			setLoadingInvite(true);
+			dispatch(setLoading(true));
 			await RocketChat.addUsersToRoom(rid);
 			navigation.pop();
 		} catch (e) {
 			log(e);
 		} finally {
-			setLoadingInvite(false);
+			dispatch(setLoading(false));
 		}
 	};
 
@@ -458,12 +458,12 @@ class RoomActionsView extends React.Component {
 
 	leaveChannel = () => {
 		const { room } = this.state;
-		const { leaveRoom } = this.props;
+		const { dispatch } = this.props;
 
 		showConfirmationAlert({
 			message: I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
 			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-			onPress: () => leaveRoom('channel', room)
+			onPress: () => dispatch(leaveRoom('channel', room))
 		});
 	};
 
@@ -522,7 +522,7 @@ class RoomActionsView extends React.Component {
 
 	leaveTeam = async () => {
 		const { room } = this.state;
-		const { navigation, leaveRoom } = this.props;
+		const { navigation, dispatch } = this.props;
 
 		try {
 			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
@@ -538,21 +538,21 @@ class RoomActionsView extends React.Component {
 					title: 'Leave_Team',
 					data: teamChannels,
 					infoText: 'Select_Team_Channels',
-					nextAction: data => leaveRoom('team', room, data),
+					nextAction: data => dispatch(leaveRoom('team', room, data)),
 					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 				});
 			} else {
 				showConfirmationAlert({
 					message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					onPress: () => leaveRoom('team', room)
+					onPress: () => dispatch(leaveRoom('team', room))
 				});
 			}
 		} catch (e) {
 			showConfirmationAlert({
 				message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
 				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-				onPress: () => leaveRoom('team', room)
+				onPress: () => dispatch(leaveRoom('team', room))
 			});
 		}
 	};
@@ -1242,10 +1242,4 @@ const mapStateToProps = state => ({
 	viewCannedResponsesPermission: state.permissions['view-canned-responses']
 });
 
-const mapDispatchToProps = dispatch => ({
-	leaveRoom: (roomType, room, selected) => dispatch(leaveRoomAction(roomType, room, selected)),
-	closeRoom: rid => dispatch(closeRoomAction(rid)),
-	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withDimensions(RoomActionsView)));
+export default connect(mapStateToProps)(withTheme(withDimensions(RoomActionsView)));
