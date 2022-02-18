@@ -12,7 +12,7 @@ import { ICannedResponse } from '../definitions/ICannedResponse';
 
 export type ChatsStackParamList = {
 	RoomsListView: undefined;
-	RoomView: {
+	RoomView?: {
 		rid: string;
 		t: SubscriptionType;
 		tmid?: string;
