@@ -1,8 +1,9 @@
 import Model from '@nozbe/watermelondb/Model';
 
 export interface ICustomEmoji {
+	_id: string;
 	name?: string;
-	aliases?: string;
+	aliases?: string[];
 	extension: string;
 	_updatedAt: Date;
 }
