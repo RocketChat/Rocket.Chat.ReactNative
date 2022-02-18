@@ -44,7 +44,7 @@ const Avatar = React.memo(
 		if (emoji) {
 			image = (
 				<Emoji
-					theme={theme}
+					theme={theme!}
 					baseUrl={server}
 					getCustomEmoji={getCustomEmoji}
 					isMessageContainsOnlyEmoji

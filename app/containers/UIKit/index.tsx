@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { BLOCK_CONTEXT, UiKitParserMessage, UiKitParserModal, uiKitMessage, uiKitModal } from '@rocket.chat/ui-kit';
 
-import Markdown from '../markdown';
+import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';
 import TextInput from '../TextInput';
 import { textParser, useBlockContext } from './utils';
@@ -49,10 +49,10 @@ class MessageParser extends UiKitParserMessage {
 		}
 
 		const isContext = context === BLOCK_CONTEXT.CONTEXT;
-		return (
-			// @ts-ignore
-			<Markdown msg={text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} preview={isContext} />
-		);
+		if (isContext) {
+			return <MarkdownPreview msg={text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />;
+		}
+		return <Markdown msg={text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} />;
 	}
 
 	button(element: any, context: any) {

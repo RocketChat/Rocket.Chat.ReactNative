@@ -83,6 +83,7 @@ export interface IMessage {
 	_id: string;
 	rid: string;
 	msg?: string;
+	id?: string;
 	t?: MessageType;
 	ts: string | Date;
 	u: IUserMessage;
