@@ -1,27 +1,28 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { toggleServerDropdown, closeServerDropdown, setSearch } from '../../../actions/rooms';
 import { withTheme } from '../../../theme';
 import EventEmitter from '../../../utils/events';
-import { KEY_COMMAND, handleCommandOpenServerDropdown } from '../../../commands';
+import { KEY_COMMAND, handleCommandOpenServerDropdown, IKeyCommandEvent } from '../../../commands';
 import { isTablet } from '../../../utils/deviceInfo';
 import { events, logEvent } from '../../../utils/log';
 import Header from './Header';
+import { IApplicationState, IBaseScreen } from '../../../definitions';
+import { ChatsStackParamList } from '../../../stacks/types';
 
-class RoomsListHeaderView extends PureComponent {
-	static propTypes = {
-		showServerDropdown: PropTypes.bool,
-		showSearchHeader: PropTypes.bool,
-		serverName: PropTypes.string,
-		connecting: PropTypes.bool,
-		connected: PropTypes.bool,
-		isFetching: PropTypes.bool,
-		theme: PropTypes.string,
-		server: PropTypes.string
-	};
+interface IRoomsListHeaderViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListHeaderView'> {
+	showServerDropdown: boolean;
+	showSearchHeader: boolean;
+	serverName: string;
+	connecting: boolean;
+	connected: boolean;
+	isFetching: boolean;
+	theme: string;
+	server: string;
+}
 
+class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> {
 	componentDidMount() {
 		if (isTablet) {
 			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
@@ -35,13 +36,13 @@ class RoomsListHeaderView extends PureComponent {
 	}
 
 	// eslint-disable-next-line react/sort-comp
-	handleCommands = ({ event }) => {
+	handleCommands = ({ event }: { event: IKeyCommandEvent }) => {
 		if (handleCommandOpenServerDropdown(event)) {
 			this.onPress();
 		}
 	};
 
-	onSearchChangeText = text => {
+	onSearchChangeText = (text: string) => {
 		const { dispatch } = this.props;
 		dispatch(setSearch(text.trim()));
 	};
@@ -76,13 +77,13 @@ class RoomsListHeaderView extends PureComponent {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	showServerDropdown: state.rooms.showServerDropdown,
 	showSearchHeader: state.rooms.showSearchHeader,
 	connecting: state.meteor.connecting || state.server.loading,
 	connected: state.meteor.connected,
 	isFetching: state.rooms.isFetching,
-	serverName: state.settings.Site_Name,
+	serverName: state.settings.Site_Name as string,
 	server: state.server.server
 });
 
