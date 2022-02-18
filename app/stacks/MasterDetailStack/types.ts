@@ -44,9 +44,9 @@ export type ModalStackParamList = {
 		title: string;
 		infoText: string;
 		nextAction: Function;
-		showAlert: boolean;
-		isSearch: boolean;
-		onSearch: Function;
+		showAlert?: boolean;
+		isSearch?: boolean;
+		onSearch?: Function;
 		isRadio?: boolean;
 	};
 	RoomInfoEditView: {
