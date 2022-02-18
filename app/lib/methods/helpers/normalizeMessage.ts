@@ -20,7 +20,7 @@ function normalizeAttachments(msg: TMsg) {
 	return msg;
 }
 
-export default (msg: IMessage) => {
+export default (msg: any): IMessage | null => {
 	if (!msg) {
 		return null;
 	}
