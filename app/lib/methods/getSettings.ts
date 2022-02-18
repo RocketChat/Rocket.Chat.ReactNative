@@ -1,14 +1,16 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { addSettings, clearSettings } from '../../actions/settings';
-import RocketChat from '../rocketchat';
-import { store as reduxStore } from '../auxStore';
-import settings from '../../constants/settings';
-import log from '../../utils/log';
-import database from '../database';
-import fetch from '../../utils/fetch';
 import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
+import settings from '../../constants/settings';
+import { IPreparedSettings, ISettingsIcon } from '../../definitions';
+import fetch from '../../utils/fetch';
+import log from '../../utils/log';
+import { store as reduxStore } from '../auxStore';
+import database from '../database';
+import RocketChat from '../rocketchat';
+import sdk from '../rocketchat/services/sdk';
 import protectedFunction from './helpers/protectedFunction';
 
 const serverInfoKeys = [
@@ -41,7 +43,7 @@ const loginSettings = [
 	'Accounts_Iframe_api_method'
 ];
 
-const serverInfoUpdate = async (serverInfo, iconSetting) => {
+const serverInfoUpdate = async (serverInfo: IPreparedSettings[], iconSetting: ISettingsIcon) => {
 	const serversDB = database.servers;
 	const serverId = reduxStore.getState().server.server;
 	const serversCollection = serversDB.get('servers');
@@ -73,7 +75,7 @@ const serverInfoUpdate = async (serverInfo, iconSetting) => {
 				return { ...allSettings, autoLockTime: DEFAULT_AUTO_LOCK };
 			}
 			// if Force_Screen_Lock_After > 0 and forceScreenLock is enabled, use it
-			if (setting.valueAsNumber > 0 && forceScreenLock) {
+			if (setting.valueAsNumber && setting.valueAsNumber > 0 && forceScreenLock) {
 				return { ...allSettings, autoLockTime: setting.valueAsNumber };
 			}
 		}
@@ -91,7 +93,7 @@ const serverInfoUpdate = async (serverInfo, iconSetting) => {
 		info = { ...info, iconURL };
 	}
 
-	await serversDB.action(async () => {
+	await serversDB.write(async () => {
 		try {
 			await server.update(record => {
 				Object.assign(record, info);
@@ -102,7 +104,7 @@ const serverInfoUpdate = async (serverInfo, iconSetting) => {
 	});
 };
 
-export async function getLoginSettings({ server }) {
+export async function getLoginSettings({ server }: { server: string }): Promise<void> {
 	try {
 		const settingsParams = JSON.stringify(loginSettings);
 		const result = await fetch(`${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`).then(response =>
@@ -111,14 +113,14 @@ export async function getLoginSettings({ server }) {
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
-			reduxStore.dispatch(addSettings(this.parseSettings(this._prepareSettings(result.settings))));
+			reduxStore.dispatch(addSettings(RocketChat.parseSettings(RocketChat._prepareSettings(result.settings))));
 		}
 	} catch (e) {
 		log(e);
 	}
 }
 
-export async function setSettings() {
+export async function setSettings(): Promise<void> {
 	const db = database.active;
 	const settingsCollection = db.get('settings');
 	const settingsRecords = await settingsCollection.query().fetch();
@@ -133,17 +135,19 @@ export async function setSettings() {
 	reduxStore.dispatch(addSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
 }
 
-export function subscribeSettings() {
+export function subscribeSettings(): void {
 	return RocketChat.subscribe('stream-notify-all', 'public-settings-changed');
 }
 
-export default async function () {
+type IData = ISettingsIcon | IPreparedSettings;
+
+export default async function (): Promise<void> {
 	try {
 		const db = database.active;
 		const settingsParams = Object.keys(settings).filter(key => !loginSettings.includes(key));
 		// RC 0.60.0
 		const result = await fetch(
-			`${this.sdk.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}&count=${
+			`${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}&count=${
 				settingsParams.length
 			}`
 		).then(response => response.json());
@@ -151,33 +155,32 @@ export default async function () {
 		if (!result.success) {
 			return;
 		}
-		const data = result.settings || [];
-		const filteredSettings = this._prepareSettings(data);
+		const data: IData[] = result.settings || [];
+		const filteredSettings: IPreparedSettings[] = RocketChat._prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 
-		reduxStore.dispatch(addSettings(this.parseSettings(filteredSettings)));
+		reduxStore.dispatch(addSettings(RocketChat.parseSettings(filteredSettings)));
 
 		// filter server info
 		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));
-		const iconSetting = data.find(item => item._id === 'Assets_favicon_512');
+		const iconSetting = data.find(icon => icon._id === 'Assets_favicon_512');
 		try {
-			await serverInfoUpdate(serverInfo, iconSetting);
+			await serverInfoUpdate(serverInfo, iconSetting as ISettingsIcon);
 		} catch {
 			// Server not found
 		}
 
-		await db.action(async () => {
+		await db.write(async () => {
 			const settingsCollection = db.get('settings');
 			const allSettingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(filteredSettingsIds))).fetch();
 
 			// filter settings
-			let settingsToCreate = filteredSettings.filter(i1 => !allSettingsRecords.find(i2 => i1._id === i2.id));
-			let settingsToUpdate = allSettingsRecords.filter(i1 => filteredSettings.find(i2 => i1.id === i2._id));
-
+			const settingsToCreate = filteredSettings.filter(i1 => !allSettingsRecords.find(i2 => i1._id === i2.id));
+			const settingsToUpdate = allSettingsRecords.filter(i1 => filteredSettings.find(i2 => i1.id === i2._id));
 			// Create
-			settingsToCreate = settingsToCreate.map(setting =>
+			const settingsToCreateMapped = settingsToCreate.map(setting =>
 				settingsCollection.prepareCreate(
-					protectedFunction(s => {
+					protectedFunction((s: any) => {
 						s._raw = sanitizedRaw({ id: setting._id }, settingsCollection.schema);
 						Object.assign(s, setting);
 					})
@@ -185,16 +188,16 @@ export default async function () {
 			);
 
 			// Update
-			settingsToUpdate = settingsToUpdate.map(setting => {
+			const settingsToUpdateMapped = settingsToUpdate.map(setting => {
 				const newSetting = filteredSettings.find(s => s._id === setting.id);
 				return setting.prepareUpdate(
-					protectedFunction(s => {
+					protectedFunction((s: any) => {
 						Object.assign(s, newSetting);
 					})
 				);
 			});
 
-			const allRecords = [...settingsToCreate, ...settingsToUpdate];
+			const allRecords = [...settingsToCreateMapped, ...settingsToUpdateMapped];
 
 			try {
 				await db.batch(...allRecords);
