@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import { Q } from '@nozbe/watermelondb';
@@ -62,6 +62,11 @@ const SelectUsers = ({
 		}
 	}, 300);
 
+	useEffect(() => {
+		getUsers('');
+		console.log('Loaded!');
+	}, []);
+
 	const getAvatar = (item: any) =>
 		avatarURL({
 			text: RocketChat.getRoomAvatar(item),
@@ -86,7 +91,6 @@ const SelectUsers = ({
 					text: { text: RocketChat.getRoomTitle(user) },
 					imageUrl: getAvatar(user)
 				}))}
-				onClose={() => setUsers(users.filter((u: IUser) => selected.includes(u.name)))}
 				placeholder={{ text: `${I18n.t('Select_Users')}...` }}
 				context={BLOCK_CONTEXT.FORM}
 				multiselect

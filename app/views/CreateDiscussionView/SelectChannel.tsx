@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
 
 import debounce from '../../utils/debounce';
@@ -22,15 +22,20 @@ const SelectChannel = ({
 	theme
 }: ICreateDiscussionViewSelectChannel): JSX.Element => {
 	const [channels, setChannels] = useState<TSubscriptionModel[]>([]);
+	// console.log(initial);
 
 	const getChannels = debounce(async (keyword = '') => {
 		try {
-			const res = await RocketChat.localSearch({ text: keyword });
+			const res = await RocketChat.localSearch({ text: keyword, filterUsers: false });
 			setChannels(res);
 		} catch {
 			// do nothing
 		}
 	}, 300);
+
+	useEffect(() => {
+		getChannels('');
+	}, []);
 
 	const getAvatar = (item: any) =>
 		avatarURL({
@@ -59,7 +64,6 @@ const SelectChannel = ({
 					text: { text: RocketChat.getRoomTitle(channel) },
 					imageUrl: getAvatar(channel)
 				}))}
-				onClose={() => setChannels([])}
 				placeholder={{ text: `${I18n.t('Select_a_Channel')}...` }}
 			/>
 		</>
