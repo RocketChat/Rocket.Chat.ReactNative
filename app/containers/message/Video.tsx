@@ -15,6 +15,7 @@ import { LISTENER } from '../Toast';
 import I18n from '../../i18n';
 import { IAttachment } from '../../definitions/IAttachment';
 import RCActivityIndicator from '../ActivityIndicator';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: any) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
 interface IMessageVideo {
 	file: IAttachment;
 	showAttachment: Function;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
 
@@ -82,7 +83,6 @@ const Video = React.memo(
 						<CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />
 					)}
 				</Touchable>
-				{/* @ts-ignore*/}
 				<Markdown
 					msg={file.description}
 					baseUrl={baseUrl}

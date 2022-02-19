@@ -37,7 +37,7 @@ const getLens = (b64: string) => {
 };
 
 // base64 is 4/3 + up to two characters of the original data
-export const byteLength = (b64: string) => {
+export const byteLength = (b64: string): number => {
 	const lens = getLens(b64);
 	const validLen = lens[0];
 	const placeHoldersLen = lens[1];
@@ -47,7 +47,7 @@ export const byteLength = (b64: string) => {
 const _byteLength = (b64: string, validLen: number, placeHoldersLen: number) =>
 	((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
 
-export const toByteArray = (b64: string) => {
+export const toByteArray = (b64: string): any[] | Uint8Array => {
 	let tmp;
 	const lens = getLens(b64);
 	const validLen = lens[0];
@@ -106,7 +106,7 @@ const encodeChunk = (uint8: number[] | Uint8Array, start: number, end: number) =
 	return output.join('');
 };
 
-export const fromByteArray = (uint8: number[] | Uint8Array) => {
+export const fromByteArray = (uint8: number[] | Uint8Array): string => {
 	let tmp;
 	const len = uint8.length;
 	const extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes
