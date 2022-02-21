@@ -7,12 +7,13 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import openLink from '../../utils/openLink';
+import { TOnLinkPress } from './interfaces';
 
 interface ILink {
 	children: JSX.Element;
 	link: string;
 	theme: string;
-	onLinkPress: Function;
+	onLinkPress?: TOnLinkPress;
 }
 
 const Link = React.memo(({ children, link, theme, onLinkPress }: ILink) => {
