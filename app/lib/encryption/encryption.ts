@@ -244,7 +244,7 @@ class Encryption {
 			const threadMessagesToDecrypt = await threadMessagesCollection.query(...whereClause).fetch();
 
 			// Concat messages/threads/threadMessages
-			let toDecrypt: (TThreadModel | TThreadMessageModel)[] = [
+			let toDecrypt: (TThreadModel | TThreadMessageModel | TMessageModel)[] = [
 				...messagesToDecrypt,
 				...threadsToDecrypt,
 				...threadMessagesToDecrypt

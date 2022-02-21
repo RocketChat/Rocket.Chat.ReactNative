@@ -287,6 +287,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			}
 
 			if (update && update.length) {
+				// @ts-ignore
 				update = update.map(m => buildMessage(m));
 				// filter threads
 				threadsToCreate = update.filter(i1 => !allThreadsRecords.find((i2: { id: string }) => i1._id === i2.id));

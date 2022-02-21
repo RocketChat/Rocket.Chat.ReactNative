@@ -4,7 +4,13 @@ import type { IUser } from '../../IUser';
 
 export type ChannelsEndpoints = {
 	'channels.files': {
-		GET: (params: { roomId: IRoom['_id']; offset: number; count: number; sort: string; query: string }) => {
+		GET: (params: {
+			roomId: IRoom['_id'];
+			offset: number;
+			count: number;
+			sort: string | { uploadedAt: number };
+			query: string;
+		}) => {
 			files: IMessage[];
 			total: number;
 		};

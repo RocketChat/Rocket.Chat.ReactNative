@@ -20,7 +20,7 @@ export type ImEndpoints = {
 		};
 	};
 	'im.files': {
-		GET: (params: { roomId: IRoom['_id']; count: number; sort: string; query: string }) => {
+		GET: (params: { roomId: IRoom['_id']; count: number; sort: string | { uploadedAt: number }; query: string }) => {
 			files: IMessage[];
 			total: number;
 		};
