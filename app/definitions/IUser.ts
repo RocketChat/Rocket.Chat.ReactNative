@@ -102,7 +102,7 @@ export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' |
 	roles?: string[];
 	type?: string;
 	active?: boolean;
-	username?: string;
+	username: string;
 	name?: string;
 	services?: IUserServices;
 	emails?: IUserEmail[];
