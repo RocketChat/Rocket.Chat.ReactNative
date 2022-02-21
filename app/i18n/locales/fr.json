@@ -26,7 +26,7 @@
   "error-input-is-not-a-valid-field": "{{input}} n'est pas un {{field}} valide",
   "error-invalid-actionlink": "Lien d'action non valide",
   "error-invalid-arguments": "Arguments non valides",
-  "error-invalid-asset": "Elément non valide",
+  "error-invalid-asset": "Élément non valide",
   "error-invalid-channel": "Canal invalide.",
   "error-invalid-channel-start-with-chars": "Canal non valide. Commencez par @ ou #",
   "error-invalid-custom-field": "Champ personnalisé non valide",
