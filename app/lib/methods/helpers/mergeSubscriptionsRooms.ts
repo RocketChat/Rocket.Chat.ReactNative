@@ -11,10 +11,7 @@ import { ISubscription, IServerRoom, IServerSubscription, IServerSubscriptionIte
 export const merge = (
 	subscription: ISubscription | IServerSubscriptionItem,
 	room?: ISubscription | IServerRoomItem
-): ISubscription | void => {
-	if (!subscription) {
-		return;
-	}
+): ISubscription => {
 	const serverVersion = reduxStore.getState().server.version as string;
 	subscription = EJSON.fromJSONValue(subscription) as ISubscription;
 
