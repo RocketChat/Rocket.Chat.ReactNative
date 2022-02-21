@@ -1,9 +1,9 @@
-import { IRoom, TApplicationActions } from '../../../definitions';
+import { IOmnichannelRoom, TApplicationActions } from '../../../definitions';
 import { INQUIRY } from '../../../actions/actionsTypes';
 
 export interface IInquiry {
 	enabled: boolean;
-	queued: IRoom[];
+	queued: IOmnichannelRoom[];
 	error: any;
 }
 

@@ -1,14 +1,14 @@
 import { ChatsStackParamList } from '../stacks/types';
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
-import { ISubscription, SubscriptionType } from '../definitions/ISubscription';
+import { IOmnichannelRoom, ISubscription, SubscriptionType, IVisitor } from '../definitions';
 
 const navigate = ({
 	item,
 	isMasterDetail,
 	...props
 }: {
-	item: IItem;
+	item: IItem | IOmnichannelRoomVisitor;
 	isMasterDetail: boolean;
 	navigationMethod?: () => ChatsStackParamList;
 }) => {
@@ -30,6 +30,11 @@ const navigate = ({
 	});
 };
 
+interface IOmnichannelRoomVisitor extends IOmnichannelRoom {
+	// this visitor came from ee/omnichannel/views/QueueListView
+	visitor: IVisitor;
+}
+
 interface IItem extends Partial<ISubscription> {
 	search?: boolean; // comes from spotlight
 	username?: string;
@@ -40,7 +45,7 @@ export const goRoom = async ({
 	isMasterDetail = false,
 	...props
 }: {
-	item: IItem;
+	item: IItem | IOmnichannelRoomVisitor;
 	isMasterDetail: boolean;
 	navigationMethod?: any;
 	jumpToMessageId?: string;

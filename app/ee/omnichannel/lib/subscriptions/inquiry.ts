@@ -4,9 +4,9 @@ import RocketChat from '../../../../lib/rocketchat';
 import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
 import sdk from '../../../../lib/rocketchat/services/sdk';
 import { ILivechatDepartment } from '../../../../definitions/ILivechatDepartment';
-import { IRoom } from '../../../../definitions';
+import { IOmnichannelRoom } from '../../../../definitions';
 
-interface IArgsQueueOmnichannel extends IRoom {
+interface IArgsQueueOmnichannel extends IOmnichannelRoom {
 	type: string;
 }
 

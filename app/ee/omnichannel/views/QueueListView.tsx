@@ -20,7 +20,7 @@ import * as HeaderButton from '../../../containers/HeaderButton';
 import RocketChat from '../../../lib/rocketchat';
 import { events, logEvent } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
-import { IRoom, IApplicationState } from '../../../definitions';
+import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
 import { DisplayMode } from '../../../constants/constantDisplayMode';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
@@ -42,7 +42,7 @@ interface IQueueListView extends INavigationOptions {
 		token: string;
 	};
 	width: number;
-	queued: IRoom[];
+	queued: IOmnichannelRoom[];
 	server: string;
 	useRealName: TSettings;
 	theme: string;
@@ -51,15 +51,15 @@ interface IQueueListView extends INavigationOptions {
 }
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
-const getItemLayout = (data: IRoom[] | null | undefined, index: number) => ({
+const getItemLayout = (data: IOmnichannelRoom[] | null | undefined, index: number) => ({
 	length: ROW_HEIGHT,
 	offset: ROW_HEIGHT * index,
 	index
 });
-const keyExtractor = (item: IRoom) => item.rid;
+const keyExtractor = (item: IOmnichannelRoom) => item.rid;
 
 class QueueListView extends React.Component<IQueueListView, any> {
-	private getScrollRef?: React.Ref<FlatList<IRoom>>;
+	private getScrollRef?: React.Ref<FlatList<IOmnichannelRoom>>;
 
 	private onEndReached: ((info: { distanceFromEnd: number }) => void) | null | undefined;
 
@@ -82,7 +82,7 @@ class QueueListView extends React.Component<IQueueListView, any> {
 		return false;
 	}
 
-	onPressItem = (item = {} as IRoom) => {
+	onPressItem = (item = {} as IOmnichannelRoom) => {
 		logEvent(events.QL_GO_ROOM);
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
@@ -101,13 +101,13 @@ class QueueListView extends React.Component<IQueueListView, any> {
 		});
 	};
 
-	getRoomTitle = (item: IRoom) => RocketChat.getRoomTitle(item);
+	getRoomTitle = (item: IOmnichannelRoom) => RocketChat.getRoomTitle(item);
 
-	getRoomAvatar = (item: IRoom) => RocketChat.getRoomAvatar(item);
+	getRoomAvatar = (item: IOmnichannelRoom) => RocketChat.getRoomAvatar(item);
 
-	getUidDirectMessage = (room: IRoom) => RocketChat.getUidDirectMessage(room);
+	getUidDirectMessage = (room: IOmnichannelRoom) => RocketChat.getUidDirectMessage(room);
 
-	renderItem: ListRenderItem<IRoom> = ({ item }) => {
+	renderItem: ListRenderItem<IOmnichannelRoom> = ({ item }) => {
 		const {
 			user: { id: userId, username, token },
 			server,
@@ -179,4 +179,5 @@ const mapStateToProps = (state: IApplicationState) => ({
 	displayMode: state.sortPreferences.displayMode
 });
 
+// @ts-ignore
 export default connect(mapStateToProps)(withDimensions(withTheme(QueueListView)));

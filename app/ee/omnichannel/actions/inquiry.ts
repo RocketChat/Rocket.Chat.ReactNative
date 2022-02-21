@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { IRoom } from '../../../definitions';
+import { IOmnichannelRoom } from '../../../definitions';
 import { INQUIRY } from '../../../actions/actionsTypes';
 
 interface IInquirySetEnabled extends Action {
@@ -8,11 +8,11 @@ interface IInquirySetEnabled extends Action {
 }
 
 interface IInquiryQueueAddAndUpdate extends Action {
-	inquiry: IRoom;
+	inquiry: IOmnichannelRoom;
 }
 
 interface IInquirySuccess extends Action {
-	inquiries: IRoom[];
+	inquiries: IOmnichannelRoom[];
 }
 
 interface IInquiryQueueRemove extends Action {
@@ -42,14 +42,14 @@ export function inquiryReset(): Action {
 	};
 }
 
-export function inquiryQueueAdd(inquiry: IRoom): IInquiryQueueAddAndUpdate {
+export function inquiryQueueAdd(inquiry: IOmnichannelRoom): IInquiryQueueAddAndUpdate {
 	return {
 		type: INQUIRY.QUEUE_ADD,
 		inquiry
 	};
 }
 
-export function inquiryQueueUpdate(inquiry: IRoom): IInquiryQueueAddAndUpdate {
+export function inquiryQueueUpdate(inquiry: IOmnichannelRoom): IInquiryQueueAddAndUpdate {
 	return {
 		type: INQUIRY.QUEUE_UPDATE,
 		inquiry
@@ -69,7 +69,7 @@ export function inquiryRequest(): Action {
 	};
 }
 
-export function inquirySuccess(inquiries: IRoom[]): IInquirySuccess {
+export function inquirySuccess(inquiries: IOmnichannelRoom[]): IInquirySuccess {
 	return {
 		type: INQUIRY.SUCCESS,
 		inquiries
