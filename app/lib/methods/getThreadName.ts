@@ -8,7 +8,7 @@ import { Encryption } from '../encryption';
 import getSingleMessage from './getSingleMessage';
 import { IThread, TThreadModel } from '../../definitions';
 
-const buildThreadName = (thread: IThread) => thread.msg || thread?.attachments?.[0]?.title;
+const buildThreadName = (thread: IThread): string | undefined => thread.msg || thread?.attachments?.[0]?.title;
 
 const getThreadName = async (rid: string, tmid: string, messageId: string): Promise<string | undefined> => {
 	let tmsg: string | undefined;
@@ -20,7 +20,7 @@ const getThreadName = async (rid: string, tmid: string, messageId: string): Prom
 		if (threadRecord) {
 			tmsg = buildThreadName(threadRecord);
 			await db.write(async () => {
-				await messageRecord?.update((m: { tmsg: string | undefined }) => {
+				await messageRecord?.update(m => {
 					m.tmsg = tmsg;
 				});
 			});
@@ -32,10 +32,10 @@ const getThreadName = async (rid: string, tmid: string, messageId: string): Prom
 				await db.batch(
 					threadCollection?.prepareCreate((t: TThreadModel) => {
 						t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
-						t.subscription.id = rid;
+						if (t.subscription) t.subscription.id = rid;
 						Object.assign(t, thread);
 					}),
-					messageRecord?.prepareUpdate((m: { tmsg: string | undefined }) => {
+					messageRecord?.prepareUpdate(m => {
 						m.tmsg = tmsg;
 					})
 				);

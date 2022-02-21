@@ -29,7 +29,7 @@ export interface ISubscription {
 	id: string; // id from server
 	f: boolean;
 	t: SubscriptionType;
-	ts: Date;
+	ts: string | Date;
 	ls: Date;
 	name: string;
 	fname?: string;

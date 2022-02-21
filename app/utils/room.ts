@@ -30,7 +30,7 @@ export const formatDate = (date: Date): string =>
 		sameElse: 'L'
 	});
 
-export const formatDateThreads = (date: Date): string =>
+export const formatDateThreads = (date: string | Date): string =>
 	moment(date).calendar(null, {
 		sameDay: 'LT',
 		lastDay: `[${I18n.t('Yesterday')}] LT`,
