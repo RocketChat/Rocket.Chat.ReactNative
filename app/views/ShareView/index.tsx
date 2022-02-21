@@ -230,6 +230,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 								},
 								thread?.id,
 								server,
+								// @ts-ignore
 								{ id: user.id, token: user.token }
 							);
 						}
