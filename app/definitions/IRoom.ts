@@ -39,6 +39,7 @@ export interface IRoom {
 	tags?: string[];
 	e2eKeyId?: string;
 	avatarETag?: string;
+	latest?: string;
 	default?: true;
 	featured?: true;
 }
