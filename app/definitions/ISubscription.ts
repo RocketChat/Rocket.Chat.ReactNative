@@ -12,7 +12,8 @@ export enum SubscriptionType {
 	DIRECT = 'd',
 	CHANNEL = 'c',
 	OMNICHANNEL = 'l',
-	THREAD = 'thread'
+	E2E = 'e2e',
+	THREAD = 'thread' // FIXME: this is not a type of subscription
 }
 
 export interface IVisitor {

@@ -5,14 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import { twoFactor } from '../../../utils/twoFactor';
 import { useSsl } from '../../../utils/url';
 import reduxStore from '../../createStore';
-import {
-	Serialized,
-	OperationResult,
-	MatchPathPattern,
-	OperationParams,
-	PathFor,
-	ResultFor
-} from '../../../definitions/rest/helpers';
+import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../../definitions/rest/helpers';
 
 class Sdk {
 	private sdk: typeof Rocketchat;
@@ -24,6 +17,10 @@ class Sdk {
 
 		// The app can't reconnect if reopen interval is 5s while in development
 		this.sdk = new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+		return this.sdk;
+	}
+
+	get current() {
 		return this.sdk;
 	}
 
@@ -49,7 +46,7 @@ class Sdk {
 		>
 			? void
 			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
-	): Promise<Serialized<OperationResult<'GET', MatchPathPattern<TPath>>>> {
+	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
 		return this.sdk.get(endpoint, params);
 	}
 
@@ -140,6 +137,26 @@ class Sdk {
 			return param;
 		});
 		return this.methodCall(method, ...parsedParams);
+	}
+
+	subscribe(...args: any[]) {
+		return this.sdk.subscribe(...args);
+	}
+
+	subscribeRaw(...args: any[]) {
+		return this.sdk.subscribeRaw(...args);
+	}
+
+	subscribeRoom(...args: any[]) {
+		return this.sdk.subscribeRoom(...args);
+	}
+
+	unsubscribe(subscription: any[]) {
+		return this.sdk.unsubscribe(subscription);
+	}
+
+	onStreamData(...args: any[]) {
+		return this.sdk.onStreamData(...args);
 	}
 }
 
