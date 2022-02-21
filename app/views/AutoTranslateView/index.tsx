@@ -30,14 +30,14 @@ class AutoTranslateView extends React.Component<IAutoTranslateViewProps, any> {
 	});
 
 	private mounted: boolean;
-	private rid: string | undefined;
+	private rid: string;
 	private roomObservable: any;
 	private subscription: any;
 
 	constructor(props: IAutoTranslateViewProps) {
 		super(props);
 		this.mounted = false;
-		this.rid = props.route.params?.rid;
+		this.rid = props.route.params?.rid ?? '';
 		const room = props.route.params?.room;
 
 		if (room && room.observe) {
