@@ -5,7 +5,7 @@ interface IList {
 	ordered: boolean;
 	start: number;
 	tight: boolean;
-	numberOfLines: number;
+	numberOfLines?: number;
 }
 
 const List = React.memo(({ children, ordered, tight, start = 1, numberOfLines = 0 }: IList) => {

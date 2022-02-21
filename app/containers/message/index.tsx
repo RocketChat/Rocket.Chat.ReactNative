@@ -9,6 +9,7 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import messagesStatus from '../../constants/messagesStatus';
 import { withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 interface IMessageContainerProps {
 	item: any;
@@ -42,7 +43,7 @@ interface IMessageContainerProps {
 	status?: number;
 	isIgnored?: boolean;
 	highlighted?: boolean;
-	getCustomEmoji(name: string): void;
+	getCustomEmoji: TGetCustomEmoji;
 	onLongPress?: Function;
 	onReactionPress?: Function;
 	onEncryptedPress?: Function;
@@ -67,7 +68,7 @@ interface IMessageContainerProps {
 
 class MessageContainer extends React.Component<IMessageContainerProps> {
 	static defaultProps = {
-		getCustomEmoji: () => {},
+		getCustomEmoji: () => null,
 		onLongPress: () => {},
 		onReactionPress: () => {},
 		onEncryptedPress: () => {},
@@ -303,7 +304,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		}
 	};
 
-	onLinkPress = (link: any) => {
+	onLinkPress = (link: string): void => {
 		const { item, theme, jumpToMessage } = this.props;
 		const isMessageLink = item?.attachments?.findIndex((att: any) => att?.message_link === link) !== -1;
 		if (isMessageLink) {

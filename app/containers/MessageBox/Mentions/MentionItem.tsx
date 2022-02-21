@@ -8,7 +8,7 @@ import FixedMentionItem from './FixedMentionItem';
 import MentionEmoji from './MentionEmoji';
 import { MENTIONS_TRACKING_TYPE_EMOJIS, MENTIONS_TRACKING_TYPE_COMMANDS, MENTIONS_TRACKING_TYPE_CANNED } from '../constants';
 import { themes } from '../../../constants/colors';
-import { IEmoji } from '../../EmojiPicker/interfaces';
+import { IEmoji } from '../../../definitions/IEmoji';
 
 interface IMessageBoxMentionItem {
 	item: {
