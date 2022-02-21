@@ -21,6 +21,7 @@ import getThreadName from '../../lib/methods/getThreadName';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
+import { IEmoji } from '../../definitions/IEmoji';
 
 interface IMessagesViewProps {
 	user: {
@@ -34,7 +35,7 @@ interface IMessagesViewProps {
 		StackNavigationProp<MasterDetailInsideStackParamList>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
-	customEmojis: { [key: string]: string };
+	customEmojis: { [key: string]: IEmoji };
 	theme: string;
 	showActionSheet: Function;
 	useRealName: boolean;

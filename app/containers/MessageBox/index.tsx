@@ -47,6 +47,7 @@ import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
+import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
 
 if (isAndroid) {
@@ -74,12 +75,7 @@ const videoPickerConfig = {
 interface IMessageBoxProps {
 	rid: string;
 	baseUrl: string;
-	message: {
-		u: {
-			username: string;
-		};
-		id: any;
-	};
+	message: IMessage;
 	replying: boolean;
 	editing: boolean;
 	threadsEnabled: boolean;
@@ -1072,7 +1068,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		const replyPreview = !recording ? (
 			<ReplyPreview
-				// @ts-ignore
 				message={message}
 				close={replyCancel}
 				username={user.username}
