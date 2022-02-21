@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
-import Markdown from '../markdown';
+import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { withTheme } from '../../theme';
 
@@ -101,16 +101,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, theme, scale }
 
 	// subtitle
 	if (subtitle) {
-		return (
-			// @ts-ignore
-			<Markdown
-				preview
-				msg={subtitle}
-				style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]}
-				numberOfLines={1}
-				theme={theme}
-			/>
-		);
+		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: themes[theme].auxiliaryText }]} />;
 	}
 
 	return null;
@@ -126,10 +117,7 @@ const HeaderTitle = React.memo(({ title, tmid, prid, scale, theme, testID }: TRo
 		);
 	}
 
-	return (
-		// @ts-ignore
-		<Markdown preview msg={title} style={[styles.title, titleStyle]} numberOfLines={1} theme={theme} testID={testID} />
-	);
+	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
 });
 
 const Header = React.memo(

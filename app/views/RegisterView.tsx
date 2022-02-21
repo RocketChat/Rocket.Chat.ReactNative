@@ -1,26 +1,25 @@
 import React from 'react';
 import { Keyboard, StyleSheet, Text, View } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/core';
-import { connect } from 'react-redux';
 import RNPickerSelect from 'react-native-picker-select';
+import { connect } from 'react-redux';
 
-import { OutsideParamList } from '../stacks/types';
-import log, { events, logEvent } from '../utils/log';
-import Button from '../containers/Button';
-import I18n from '../i18n';
-import * as HeaderButton from '../containers/HeaderButton';
+import { loginRequest } from '../actions/login';
 import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
+import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import TextInput from '../containers/TextInput';
-import isValidEmail from '../utils/isValidEmail';
-import { showErrorAlert } from '../utils/info';
-import RocketChat from '../lib/rocketchat';
-import { loginRequest as loginRequestAction } from '../actions/login';
-import openLink from '../utils/openLink';
+import * as HeaderButton from '../containers/HeaderButton';
 import LoginServices from '../containers/LoginServices';
+import TextInput from '../containers/TextInput';
+import { IApplicationState, IBaseScreen } from '../definitions';
+import I18n from '../i18n';
+import RocketChat from '../lib/rocketchat';
 import { getShowLoginButton } from '../selectors/login';
+import { OutsideParamList } from '../stacks/types';
+import { withTheme } from '../theme';
+import { showErrorAlert } from '../utils/info';
+import isValidEmail from '../utils/isValidEmail';
+import log, { events, logEvent } from '../utils/log';
+import openLink from '../utils/openLink';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
@@ -51,9 +50,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IProps {
-	navigation: StackNavigationProp<OutsideParamList, 'RegisterView'>;
-	route: RouteProp<OutsideParamList, 'RegisterView'>;
+interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {
 	server: string;
 	Site_Name: string;
 	Gitlab_URL: string;
@@ -63,8 +60,6 @@ interface IProps {
 	Accounts_EmailVerification: boolean;
 	Accounts_ManuallyApproveNewUsers: boolean;
 	showLoginButton: boolean;
-	loginRequest: Function;
-	theme: string;
 }
 
 class RegisterView extends React.Component<IProps, any> {
@@ -130,7 +125,7 @@ class RegisterView extends React.Component<IProps, any> {
 		Keyboard.dismiss();
 
 		const { name, email, password, username, customFields } = this.state;
-		const { loginRequest, Accounts_EmailVerification, navigation, Accounts_ManuallyApproveNewUsers } = this.props;
+		const { dispatch, Accounts_EmailVerification, navigation, Accounts_ManuallyApproveNewUsers } = this.props;
 
 		try {
 			await RocketChat.register({
@@ -148,11 +143,11 @@ class RegisterView extends React.Component<IProps, any> {
 				await navigation.goBack();
 				showErrorAlert(I18n.t('Wait_activation_warning'), I18n.t('Registration_Succeeded'));
 			} else {
-				await loginRequest({ user: email, password });
+				dispatch(loginRequest({ user: email, password }));
 			}
 		} catch (e: any) {
 			if (e.data?.errorType === 'username-invalid') {
-				return loginRequest({ user: email, password });
+				return dispatch(loginRequest({ user: email, password }));
 			}
 			if (e.data?.error) {
 				logEvent(events.REGISTER_DEFAULT_SIGN_UP_F);
@@ -349,20 +344,16 @@ class RegisterView extends React.Component<IProps, any> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
-	Site_Name: state.settings.Site_Name,
-	Gitlab_URL: state.settings.API_Gitlab_URL,
-	CAS_enabled: state.settings.CAS_enabled,
-	CAS_login_url: state.settings.CAS_login_url,
-	Accounts_CustomFields: state.settings.Accounts_CustomFields,
-	Accounts_EmailVerification: state.settings.Accounts_EmailVerification,
-	Accounts_ManuallyApproveNewUsers: state.settings.Accounts_ManuallyApproveNewUsers,
+	Site_Name: state.settings.Site_Name as string,
+	Gitlab_URL: state.settings.API_Gitlab_URL as string,
+	CAS_enabled: state.settings.CAS_enabled as boolean,
+	CAS_login_url: state.settings.CAS_login_url as string,
+	Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
+	Accounts_EmailVerification: state.settings.Accounts_EmailVerification as boolean,
+	Accounts_ManuallyApproveNewUsers: state.settings.Accounts_ManuallyApproveNewUsers as boolean,
 	showLoginButton: getShowLoginButton(state)
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-	loginRequest: (params: any) => dispatch(loginRequestAction(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RegisterView));
+export default connect(mapStateToProps)(withTheme(RegisterView));
