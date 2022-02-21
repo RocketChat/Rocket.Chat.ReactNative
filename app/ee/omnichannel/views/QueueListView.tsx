@@ -179,5 +179,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	displayMode: state.sortPreferences.displayMode
 });
 
-// @ts-ignore
 export default connect(mapStateToProps)(withDimensions(withTheme(QueueListView)));
