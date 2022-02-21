@@ -139,3 +139,5 @@ export interface IMessage extends IMessageFromServer {
 }
 
 export type TMessageModel = IMessage & Model;
+
+export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;

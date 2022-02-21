@@ -30,6 +30,7 @@ export interface IThreadResult {
 	replies?: string[];
 	tcount?: number;
 	tlm?: Date;
+	status?: string;
 }
 
 export interface IThread {

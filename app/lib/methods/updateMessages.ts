@@ -49,7 +49,7 @@ export default async function updateMessages({
 			.query(Q.where('subscription_id', rid), Q.where('id', Q.oneOf(messagesIds)))
 			.fetch();
 
-		update = update.map(m => buildMessage(m));
+		update = update.map(m => buildMessage(m)) as TMessageModel[];
 
 		// filter loaders to delete
 		let loadersToDelete: TMessageModel[] = allMessagesRecords.filter(i1 =>

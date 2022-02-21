@@ -53,7 +53,7 @@ export default function loadMessagesForRoom(args: {
 					};
 					loadMoreMessages.push(loadMoreMessage);
 				}
-				// @ts-ignore
+				// @ts-ignore - How does the update work if the decrypt gives deconstruct on prop that doesn't exist?
 				await updateMessages({ rid: args.rid, update: [...data, ...loadMoreMessages], loaderItem: args.loaderItem });
 				return resolve([...data, ...loadMoreMessages]);
 			}
