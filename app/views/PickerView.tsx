@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
 		paddingVertical: 56,
 		...sharedStyles.textSemibold,
 		...sharedStyles.textAlignCenter
+	},
+	listNoHeader: {
+		marginTop: 32
 	}
 });
 
@@ -34,9 +37,16 @@ interface IItem {
 	theme: string;
 }
 
+interface IRenderSearch {
+	hasSearch: boolean;
+	onChangeText: (text: string) => void;
+}
+
 interface IPickerViewState {
 	data: IOptionsField[];
 	value: string;
+	total: number;
+	searchText: string;
 }
 
 interface IPickerViewProps {
@@ -54,8 +64,22 @@ const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
 	/>
 ));
 
+const RenderSearch = ({ hasSearch, onChangeText }: IRenderSearch) => {
+	if (!hasSearch) {
+		return <List.Separator style={styles.listNoHeader} />;
+	}
+	return (
+		<>
+			<View style={styles.search}>
+				<SearchBox onChangeText={onChangeText} />
+			</View>
+			<List.Separator />
+		</>
+	);
+};
+
 class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState> {
-	private onSearch?: ((text: string) => IOptionsField[]) | ((term?: string | undefined) => Promise<any>);
+	private onSearch?: (text?: string) => Promise<any>;
 
 	static navigationOptions = ({ route }: IPickerViewProps) => ({
 		title: route.params?.title ?? I18n.t('Select_an_option')
@@ -64,10 +88,10 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 	constructor(props: IPickerViewProps) {
 		super(props);
 		const data = props.route.params?.data ?? [];
-		const value = props.route.params?.value;
-		this.state = { data, value };
-
-		this.onSearch = props.route.params?.onChangeText;
+		const value = props.route.params?.value ?? '';
+		const total = props.route.params?.total ?? 0;
+		this.state = { data, value, total, searchText: '' };
+		this.onSearch = props.route.params?.onSearch;
 	}
 
 	onChangeValue = (value: string) => {
@@ -80,28 +104,26 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 		}
 	};
 
-	onChangeText = debounce(
-		async (text: string) => {
-			if (this.onSearch) {
-				const data = await this.onSearch(text);
-				this.setState({ data });
+	onChangeText = debounce(async (searchText: string) => {
+		if (this.onSearch) {
+			const data = await this.onSearch(searchText);
+			if (data?.data) {
+				this.setState({ ...data, searchText });
 			}
-		},
-		300,
-		true
-	);
-
-	renderSearch() {
-		if (!this.onSearch) {
-			return null;
 		}
+	}, 500);
 
-		return (
-			<View style={styles.search}>
-				<SearchBox onChangeText={this.onChangeText} />
-			</View>
-		);
-	}
+	onEndReached = async () => {
+		const { route } = this.props;
+		const { data, total, searchText } = this.state;
+		const onEndReached = route.params?.onEndReached;
+		if (onEndReached && data.length < total) {
+			const val = await onEndReached(searchText, data.length);
+			if (val?.data) {
+				this.setState({ ...val, data: [...data, ...val.data] });
+			}
+		}
+	};
 
 	render() {
 		const { data, value } = this.state;
@@ -109,7 +131,6 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 
 		return (
 			<SafeAreaView>
-				{this.renderSearch()}
 				<FlatList
 					data={data}
 					keyExtractor={item => item.value as string}
@@ -121,13 +142,14 @@ class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState>
 							onItemPress={() => this.onChangeValue(item.value as string)}
 						/>
 					)}
+					onEndReached={() => this.onEndReached()}
+					onEndReachedThreshold={0.5}
 					ItemSeparatorComponent={List.Separator}
-					ListHeaderComponent={List.Separator}
+					ListHeaderComponent={<RenderSearch hasSearch={!!this.onSearch} onChangeText={this.onChangeText} />}
 					ListFooterComponent={List.Separator}
 					ListEmptyComponent={() => (
 						<Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
 					)}
-					contentContainerStyle={[List.styles.contentContainerStyleFlatList]}
 				/>
 			</SafeAreaView>
 		);
