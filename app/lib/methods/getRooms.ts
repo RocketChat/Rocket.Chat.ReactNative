@@ -6,8 +6,12 @@ export default function (updatedSince: Date) {
 	if (updatedSince) {
 		const updatedDate = updatedSince.toISOString();
 		// TODO: missing definitions from server
-		// @ts-ignore
-		return Promise.all([sdk.get('subscriptions.get', { updatedDate }), sdk.get('rooms.get', { updatedDate })]);
+		return Promise.all([
+			// @ts-ignore
+			sdk.get('subscriptions.get', { updatedSince: updatedDate }),
+			// @ts-ignore
+			sdk.get('rooms.get', { updatedSince: updatedDate })
+		]);
 	}
 	// TODO: missing definitions from server
 	// @ts-ignore
