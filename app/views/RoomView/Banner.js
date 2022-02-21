@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { BorderlessButton, ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 
-import Markdown from '../../containers/markdown';
+import Markdown, { MarkdownPreview } from '../../containers/markdown';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import styles from './styles';
@@ -22,7 +22,7 @@ const Banner = React.memo(
 						style={[styles.bannerContainer, { backgroundColor: themes[theme].bannerBackground }]}
 						testID='room-view-banner'
 						onPress={toggleModal}>
-						<Markdown msg={text} theme={theme} numberOfLines={1} style={[styles.bannerText]} preview />
+						<MarkdownPreview msg={text} style={[styles.bannerText]} />
 						<BorderlessButton onPress={closeBanner}>
 							<CustomIcon color={themes[theme].auxiliaryText} name='close' size={20} />
 						</BorderlessButton>
