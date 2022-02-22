@@ -3,8 +3,8 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
-import { Alert, Keyboard, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
+import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 
 import { deleteRoom } from '../../actions/room';
@@ -16,7 +16,7 @@ import StatusBar from '../../containers/StatusBar';
 import RCTextInput from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-import { IApplicationState, IBaseScreen, IRoom, ISubscription } from '../../definitions';
+import { IApplicationState, IBaseScreen, ISubscription, TSubscriptionModel } from '../../definitions';
 import { ERoomType } from '../../definitions/ERoomType';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -44,19 +44,19 @@ interface IRoomInfoEditViewState {
 	avatar: IAvatar;
 	permissions: Record<TSupportedPermissions, string>;
 	name: string;
-	description: string;
-	topic: string;
-	announcement: string;
+	description?: string;
+	topic?: string;
+	announcement?: string;
 	joinCode: string;
-	nameError: {};
+	nameError: any;
 	saving: boolean;
 	t: boolean;
 	ro: boolean;
-	reactWhenReadOnly: boolean;
+	reactWhenReadOnly?: boolean;
 	archived: boolean;
-	systemMessages: string[];
-	enableSysMes: boolean;
-	encrypted: boolean;
+	systemMessages?: boolean | string[];
+	enableSysMes?: boolean | string[];
+	encrypted?: boolean;
 }
 
 interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | ModalStackParamList, 'RoomInfoEditView'> {
@@ -75,6 +75,13 @@ interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | Modal
 
 class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfoEditViewState> {
 	randomValue = random(15);
+	private querySubscription: any; // Observable dont have unsubscribe prop
+	private room!: TSubscriptionModel;
+	private name!: TextInput | null;
+	private description!: TextInput | null;
+	private topic!: TextInput | null;
+	private announcement!: TextInput | null;
+	private joinCode!: TextInput | null;
 
 	static navigationOptions = () => ({
 		title: I18n.t('Room_Info_Edit')
@@ -150,6 +157,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			);
 
 			this.setState({
+				// @ts-ignore - Solved by migrating the hasPermission function
 				permissions: {
 					'set-readonly': result[0],
 					'set-react-when-readonly': result[1],
@@ -165,8 +173,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		}
 	};
 
-	init = room => {
-		const { description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes, encrypted } = room;
+	init = (room: ISubscription) => {
+		const { description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, encrypted } = room;
+		const sysMes = room.sysMes as string[];
 		// fake password just to user knows about it
 		this.setState({
 			room,
@@ -175,7 +184,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			topic,
 			announcement,
 			t: t === 'p',
-			avatar: {},
+			avatar: {} as IAvatar,
 			ro,
 			reactWhenReadOnly,
 			joinCode: joinCodeRequired ? this.randomValue : '',
@@ -215,6 +224,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			avatar
 		} = this.state;
 		const { joinCodeRequired } = room;
+		const sysMes = room.sysMes as string[];
 		return !(
 			room.name === name &&
 			room.description === description &&
@@ -224,8 +234,8 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			(room.t === 'p') === t &&
 			room.ro === ro &&
 			room.reactWhenReadOnly === reactWhenReadOnly &&
-			dequal(room.sysMes, systemMessages) &&
-			enableSysMes === (room.sysMes && room.sysMes.length > 0) &&
+			dequal(sysMes, systemMessages) &&
+			enableSysMes === (sysMes && sysMes.length > 0) &&
 			room.encrypted === encrypted &&
 			isEmpty(avatar)
 		);
@@ -260,7 +270,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		// Clear error objects
 		await this.clearErrors();
 
-		const params = {} as IRoom;
+		const params = {} as any;
 
 		// Name
 		if (room.name !== name) {
@@ -283,7 +293,8 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			params.roomAnnouncement = announcement;
 		}
 		// Room Type
-		if (room.t !== t) {
+		// This logic is strange to me, since in the code t is boolean, but room.t is string
+		if (!!room.t !== t) {
 			params.roomType = t ? 'p' : 'c';
 		}
 		// Read Only
@@ -311,7 +322,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 
 		try {
 			await RocketChat.saveRoomSettings(room.rid, params);
-		} catch (e) {
+		} catch (e: any) {
 			if (e.error === 'error-invalid-room-name') {
 				this.setState({ nameError: e });
 			}
@@ -337,15 +348,21 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
-			const teamChannels = await subCollection.query(Q.where('team_id', room.teamId), Q.where('team_main', Q.notEq(true)));
+			const teamChannels = await subCollection.query(
+				Q.where('team_id', room.teamId as string),
+				Q.where('team_main', Q.notEq(true))
+			);
 
 			const teamChannelOwner = [];
+			// @ts-ignore - wm schema type error dont including array
 			for (let i = 0; i < teamChannels.length; i += 1) {
+				// @ts-ignore - wm schema type error dont including array
 				const permissionType = teamChannels[i].t === 'c' ? deleteCPermission : deletePPermission;
+				// @ts-ignore - wm schema type error dont including array
 				// eslint-disable-next-line no-await-in-loop
 				const permissions = await RocketChat.hasPermission([permissionType], teamChannels[i].rid);
-
 				if (permissions[0]) {
+					// @ts-ignore - wm schema type error dont including array
 					teamChannelOwner.push(teamChannels[i]);
 				}
 			}
@@ -355,7 +372,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 					title: 'Delete_Team',
 					data: teamChannelOwner,
 					infoText: 'Select_channels_to_delete',
-					nextAction: selected => {
+					nextAction: (selected: Record<string, string>) => {
 						showConfirmationAlert({
 							message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
 							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
@@ -370,7 +387,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 					onPress: () => dispatch(deleteRoom(ERoomType.t, room))
 				});
 			}
-		} catch (e) {
+		} catch (e: any) {
 			log(e);
 			showErrorAlert(
 				e.data.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_team') }),
@@ -460,9 +477,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 					value: m.value,
 					text: { text: I18n.t('Hide_type_messages', { type: I18n.t(m.text) }) }
 				}))}
-				onChange={({ value }) => this.setState({ systemMessages: value })}
+				onChange={({ value }: { value: boolean }) => this.setState({ systemMessages: value })}
 				placeholder={{ text: I18n.t('Hide_System_Messages') }}
-				value={systemMessages}
+				value={systemMessages as string[]}
 				context={BLOCK_CONTEXT.FORM}
 				multiselect
 				theme={theme}
@@ -481,7 +498,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		};
 
 		try {
-			const response = await ImagePicker.openPicker(options);
+			const response: Image = await ImagePicker.openPicker(options);
 			this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' } });
 		} catch (e) {
 			console.log(e);
@@ -578,7 +595,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							value={name}
 							onChangeText={value => this.setState({ name: value })}
 							onSubmitEditing={() => {
-								this.description.focus();
+								this.description?.focus();
 							}}
 							error={nameError}
 							theme={theme}
@@ -592,7 +609,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							value={description}
 							onChangeText={value => this.setState({ description: value })}
 							onSubmitEditing={() => {
-								this.topic.focus();
+								this.topic?.focus();
 							}}
 							theme={theme}
 							testID='room-info-edit-view-description'
@@ -605,7 +622,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							value={topic}
 							onChangeText={value => this.setState({ topic: value })}
 							onSubmitEditing={() => {
-								this.announcement.focus();
+								this.announcement?.focus();
 							}}
 							theme={theme}
 							testID='room-info-edit-view-topic'
@@ -618,7 +635,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							value={announcement}
 							onChangeText={value => this.setState({ announcement: value })}
 							onSubmitEditing={() => {
-								this.joinCode.focus();
+								this.joinCode?.focus();
 							}}
 							theme={theme}
 							testID='room-info-edit-view-announcement'
@@ -668,7 +685,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						/>
 						{ro && !room.broadcast ? (
 							<SwitchContainer
-								value={reactWhenReadOnly}
+								value={reactWhenReadOnly as boolean}
 								leftLabelPrimary={I18n.t('No_Reactions')}
 								leftLabelSecondary={I18n.t('Reactions_are_disabled')}
 								rightLabelPrimary={I18n.t('Allow_Reactions')}
@@ -687,7 +704,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							: null}
 						{serverVersion && !compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (
 							<SwitchContainer
-								value={enableSysMes}
+								value={enableSysMes as boolean}
 								leftLabelPrimary={I18n.t('Hide_System_Messages')}
 								leftLabelSecondary={
 									enableSysMes
@@ -704,7 +721,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						) : null}
 						{encryptionEnabled ? (
 							<SwitchContainer
-								value={encrypted}
+								value={encrypted as boolean}
 								disabled={!t}
 								leftLabelPrimary={I18n.t('Encrypted')}
 								leftLabelSecondary={I18n.t('End_to_end_encrypted_room')}
