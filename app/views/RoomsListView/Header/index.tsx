@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { toggleServerDropdown, closeServerDropdown, setSearch } from '../../../actions/rooms';
 import { withTheme } from '../../../theme';
@@ -8,10 +9,9 @@ import { KEY_COMMAND, handleCommandOpenServerDropdown, IKeyCommandEvent } from '
 import { isTablet } from '../../../utils/deviceInfo';
 import { events, logEvent } from '../../../utils/log';
 import Header from './Header';
-import { IApplicationState, IBaseScreen } from '../../../definitions';
-import { ChatsStackParamList } from '../../../stacks/types';
+import { IApplicationState } from '../../../definitions';
 
-interface IRoomsListHeaderViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListHeaderView'> {
+interface IRoomsListHeaderViewProps {
 	showServerDropdown: boolean;
 	showSearchHeader: boolean;
 	serverName: string;
@@ -20,6 +20,7 @@ interface IRoomsListHeaderViewProps extends IBaseScreen<ChatsStackParamList, 'Ro
 	isFetching: boolean;
 	theme: string;
 	server: string;
+	dispatch: Dispatch;
 }
 
 class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> {

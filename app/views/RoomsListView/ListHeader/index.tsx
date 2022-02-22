@@ -7,13 +7,15 @@ import { themes } from '../../../constants/colors';
 import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelStatus';
 import { IUser } from '../../../definitions';
 
+export type TEncryptionBanner = 'REQUEST_PASSWORD' | 'SAVE_PASSWORD';
+
 interface IRoomListHeader {
 	searching: boolean;
 	goEncryption: () => void;
 	goQueue: () => void;
 	queueSize: number;
 	inquiryEnabled: boolean;
-	encryptionBanner: 'REQUEST_PASSWORD' | 'SAVE_PASSWORD';
+	encryptionBanner: TEncryptionBanner;
 	user: IUser;
 	theme: string;
 }

@@ -144,7 +144,7 @@ export const deleteKeyCommands = (): void => KeyCommands.deleteKeyCommands(keyCo
 export const KEY_COMMAND = 'KEY_COMMAND';
 
 export interface IKeyCommandEvent extends NativeSyntheticEvent<typeof KeyCommand> {
-	input: string;
+	input: number & string;
 	modifierFlags: string | number;
 }
 
