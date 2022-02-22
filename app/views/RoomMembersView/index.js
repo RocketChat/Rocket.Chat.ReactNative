@@ -599,6 +599,7 @@ class RoomMembersView extends React.Component {
 			<UserItem
 				name={item.name}
 				username={item.username}
+				status={item.status}
 				onPress={() => this.onPressUser(item)}
 				baseUrl={baseUrl}
 				testID={`room-members-view-item-${item.username}`}
