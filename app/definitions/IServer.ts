@@ -1,5 +1,7 @@
 import Model from '@nozbe/watermelondb/Model';
 
+import { IEnterpriseModules } from '../reducers/enterpriseModules';
+
 export interface IServer {
 	name: string;
 	iconURL: string;
@@ -13,7 +15,7 @@ export interface IServer {
 	autoLockTime?: number;
 	biometry?: boolean;
 	uniqueID: string;
-	enterpriseModules: string;
+	enterpriseModules: IEnterpriseModules;
 	E2E_Enable: boolean;
 }
 

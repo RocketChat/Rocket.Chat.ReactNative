@@ -13,7 +13,7 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 interface IUpdateMessages {
 	rid: string;
 	update: IMessage[];
-	remove: IMessage[];
+	remove?: IMessage[];
 	loaderItem?: TMessageModel;
 }
 
@@ -105,7 +105,9 @@ export default async function updateMessages({
 			threadCollection.prepareCreate(
 				protectedFunction((t: TThreadModel) => {
 					t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
-					t.subscription.id = sub.id;
+					if (t.subscription) {
+						t.subscription.id = sub.id;
+					}
 					Object.assign(t, thread);
 				})
 			)

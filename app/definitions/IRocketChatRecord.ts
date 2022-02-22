@@ -1,6 +1,6 @@
 export interface IRocketChatRecord {
-	_id: string;
-	_updatedAt: Date;
+	_id?: string;
+	_updatedAt?: Date;
 }
 
 export type RocketChatRecordDeleted<T> = T &
