@@ -24,6 +24,12 @@ export interface IVisitor {
 	lastMessageTs: Date;
 }
 
+export enum ERoomTypes {
+	DIRECT = 'direct',
+	GROUP = 'group',
+	CHANNEL = 'channel'
+}
+
 export interface ISubscription {
 	_id: string; // _id belongs watermelonDB
 	id: string; // id from server
