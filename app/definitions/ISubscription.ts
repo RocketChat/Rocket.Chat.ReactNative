@@ -63,7 +63,7 @@ export interface ISubscription {
 	ignored?: string[];
 	broadcast?: boolean;
 	prid?: string;
-	draftMessage?: string;
+	draftMessage?: string | null;
 	lastThreadSync?: Date;
 	jitsiTimeout?: number;
 	autoTranslate?: boolean;
