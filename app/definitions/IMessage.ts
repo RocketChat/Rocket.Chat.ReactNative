@@ -123,10 +123,10 @@ export interface IMessage extends IMessageFromServer {
 	role?: string;
 	drid?: string;
 	dcount?: number;
-	dlm?: Date;
+	dlm?: string;
 	tmid?: string;
 	tcount?: number;
-	tlm?: Date;
+	tlm?: string;
 	replies?: string[];
 	unread?: boolean;
 	autoTranslate?: boolean;

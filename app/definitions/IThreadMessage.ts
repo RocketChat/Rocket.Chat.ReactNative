@@ -20,7 +20,7 @@ export interface IThreadMessage {
 	emoji?: string;
 	attachments?: IAttachment[];
 	urls?: IUrl[];
-	_updatedAt?: Date;
+	_updatedAt?: string;
 	status?: number;
 	pinned?: boolean;
 	starred?: boolean;
