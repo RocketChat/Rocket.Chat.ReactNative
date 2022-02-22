@@ -32,12 +32,11 @@ const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
 
 interface IServerDropdownProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
-	insets: {
+	insets?: {
 		top: number;
 	};
 	closeServerDropdown: boolean;
 	server: string;
-	theme: string;
 	isMasterDetail: boolean;
 }
 

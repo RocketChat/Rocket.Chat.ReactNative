@@ -399,7 +399,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = () => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, insets } = this.props;
+		const { navigation, isMasterDetail, insets, theme } = this.props;
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: searching ? 0 : 3 });
 
 		return {
@@ -421,8 +421,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						}
 					/>
 				),
-			// @ts-ignore
-			headerTitle: () => <RoomsListHeaderView />,
+			headerTitle: () => <RoomsListHeaderView theme={theme} />,
 			headerTitleContainerStyle: {
 				left: headerTitlePosition.left,
 				right: headerTitlePosition.right
@@ -999,8 +998,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { loading, chats, search, searching } = this.state;
 		const { theme, refreshing, displayMode } = this.props;
 
-		console.log('********', chats);
-
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		if (loading) {
@@ -1039,8 +1036,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
+				{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
 				{/* @ts-ignore*/}
-				{showServerDropdown ? <ServerDropdown navigation={navigation} /> : null}
+				{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}
 			</SafeAreaView>
 		);
 	};
