@@ -31,7 +31,7 @@ export interface ISubscription {
 	v?: IVisitor;
 	f: boolean;
 	t: SubscriptionType;
-	ts: Date;
+	ts: string | Date;
 	ls: Date;
 	name: string;
 	fname?: string;
