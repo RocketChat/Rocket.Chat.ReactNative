@@ -13,7 +13,7 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 interface IUpdateMessages {
 	rid: string;
 	update: IMessage[];
-	remove: IMessage[];
+	remove?: IMessage[];
 	loaderItem?: TMessageModel;
 }
 
