@@ -356,7 +356,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (obj) {
 				try {
 					await db.write(async () => {
-						await obj.update(r => {
+						// FIXME: why do I need to tell ts this is non null if we have that if condition above?
+						await obj!.update(r => {
 							r.draftMessage = text;
 						});
 					});

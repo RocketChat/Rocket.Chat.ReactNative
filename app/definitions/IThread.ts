@@ -36,6 +36,7 @@ export interface IThread extends IMessage {
 	// _id: string;
 	// id: string;
 	tmsg?: string;
+	draftMessage?: string;
 	// msg?: string;
 	// t?: MessageType;
 	// rid: string;
