@@ -1,4 +1,4 @@
-import type { IMessage } from '../../IMessage';
+import type { IMessage, IMessageFromServer } from '../../IMessage';
 import type { IRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
@@ -21,6 +21,11 @@ export type ChannelsEndpoints = {
 			offset: number;
 			members: IUser[];
 			total: number;
+		};
+	};
+	'channels.history': {
+		GET: (params: { roomId: string; count: number; latest?: string }) => {
+			messages: IMessageFromServer[];
 		};
 	};
 };

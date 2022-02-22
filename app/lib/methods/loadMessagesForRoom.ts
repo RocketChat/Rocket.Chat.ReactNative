@@ -1,7 +1,6 @@
 import moment from 'moment';
 
-import { MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
-import { ILoadMoreMessage, IMessageFromServer, TMessageModel } from '../../definitions';
+import { IMessage, MessageType, TMessageModel } from '../../definitions';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
 import roomTypeToApiType, { RoomTypes } from '../rocketchat/methods/roomTypeToApiType';
@@ -35,27 +34,25 @@ export default function loadMessagesForRoom(args: {
 	t: RoomTypes;
 	latest: string;
 	loaderItem: TMessageModel;
-}): Promise<(IMessageFromServer | ILoadMoreMessage)[]> {
+}): Promise<Partial<IMessage>[]> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const data: IMessageFromServer[] = await load(args);
+			const data: Partial<IMessage>[] = await load(args);
 			if (data?.length) {
-				const loadMoreMessages: ILoadMoreMessage[] = [];
 				const lastMessage = data[data.length - 1];
-				const lastMessageRecord = await getMessageById(lastMessage._id);
+				const lastMessageRecord = await getMessageById(lastMessage._id as string);
 				if (!lastMessageRecord && data.length === COUNT) {
-					const loadMoreMessage: ILoadMoreMessage = {
-						_id: generateLoadMoreId(lastMessage._id),
+					const loadMoreMessage = {
+						_id: generateLoadMoreId(lastMessage._id as string),
 						rid: lastMessage.rid,
 						ts: moment(lastMessage.ts).subtract(1, 'millisecond').toString(),
-						t: MESSAGE_TYPE_LOAD_MORE,
+						t: 'load_more' as MessageType,
 						msg: lastMessage.msg
 					};
-					loadMoreMessages.push(loadMoreMessage);
+					data.push(loadMoreMessage);
 				}
-				// @ts-ignore - How does the update work if the decrypt gives deconstruct on prop that doesn't exist?
-				await updateMessages({ rid: args.rid, update: [...data, ...loadMoreMessages], loaderItem: args.loaderItem });
-				return resolve([...data, ...loadMoreMessages]);
+				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });
+				return resolve(data);
 			}
 			return resolve([]);
 		} catch (e) {

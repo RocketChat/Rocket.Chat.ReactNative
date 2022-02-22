@@ -469,7 +469,8 @@ class Encryption {
 	};
 
 	// Decrypt multiple messages
-	decryptMessages = (messages: IMessage[]) => Promise.all(messages.map((m: IMessage) => this.decryptMessage(m)));
+	decryptMessages = (messages: Partial<IMessage>[]) =>
+		Promise.all(messages.map((m: Partial<IMessage>) => this.decryptMessage(m)));
 
 	// Decrypt multiple subscriptions
 	decryptSubscriptions = (subscriptions: ISubscription[]) => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
