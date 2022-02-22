@@ -39,7 +39,7 @@ export interface IThread {
 	t?: MessageType;
 	rid: string;
 	_updatedAt?: Date;
-	ts?: Date;
+	ts?: string | Date;
 	u?: IUserMessage;
 	alias?: string;
 	parseUrls?: boolean;
@@ -67,7 +67,7 @@ export interface IThread {
 	autoTranslate?: boolean;
 	translations?: any;
 	e2e?: string;
-	subscription: { id: string };
+	subscription?: { id: string };
 }
 
 export type TThreadModel = IThread & Model;

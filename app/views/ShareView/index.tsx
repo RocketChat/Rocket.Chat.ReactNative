@@ -29,6 +29,7 @@ import Header from './Header';
 import styles from './styles';
 import { IAttachment } from './interfaces';
 import { ISubscription } from '../../definitions/ISubscription';
+import { IUser } from '../../definitions';
 
 interface IShareViewState {
 	selected: IAttachment;
@@ -240,7 +241,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 				// Send text message
 			} else if (text.length) {
-				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token });
+				await RocketChat.sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token } as IUser);
 			}
 		} catch {
 			// Do nothing
