@@ -8,6 +8,7 @@ import * as Haptics from 'expo-haptics';
 import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { Subscription } from 'rxjs';
 
 import Touch from '../../utils/touch';
 import { replyBroadcast as replyBroadcastAction } from '../../actions/messages';
@@ -65,7 +66,7 @@ import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
 import List, { IListContainerProps, IListProps } from './List';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IBaseScreen, ILoggedUser, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { IBaseScreen, ILoggedUser, ISubscription, IVisitor, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 
 const stateAttrsUpdate = [
@@ -165,6 +166,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private sub?: any;
 	private offset?: number;
 	private didMountInteraction: any;
+	private subSubscription?: Subscription;
+	private queryUnreads?: Subscription;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -370,9 +373,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (this.didMountInteraction && this.didMountInteraction.cancel) {
 			this.didMountInteraction.cancel();
 		}
-		if (this.willBlurListener && this.willBlurListener.remove) {
-			this.willBlurListener.remove();
-		}
 		if (this.subSubscription && this.subSubscription.unsubscribe) {
 			this.subSubscription.unsubscribe();
 		}
@@ -396,32 +396,45 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room, unreadsCount, roomUserId, joined } = this.state;
 		const { navigation, isMasterDetail, theme, baseUrl, user, insets, route } = this.props;
 		const { rid, tmid } = this;
+		if (!room.rid) {
+			return;
+		}
+
 		const prid = room?.prid;
-		const isGroupChat = RocketChat.isGroupChat(room);
+		const isGroupChat = RocketChat.isGroupChat(room as ISubscription);
 		let title = route.params?.name;
-		let parentTitle;
-		if ((room.id || room.rid) && !tmid) {
+		let parentTitle = '';
+		// TODO: I think it's safe to remove this, but we need to test tablet without rooms
+		if (!tmid) {
 			title = RocketChat.getRoomTitle(room);
 		}
 		if (tmid) {
 			parentTitle = RocketChat.getRoomTitle(room);
 		}
-		const subtitle = room?.topic;
-		const t = room?.t;
-		const teamMain = room?.teamMain;
-		const teamId = room?.teamId;
-		const encrypted = room?.encrypted;
-		const { id: userId, token } = user;
-		const avatar = room?.name;
-		const visitor = room?.visitor;
-		if (!room?.rid) {
-			return;
+		let subtitle: string | undefined;
+		let t: string | undefined;
+		let teamMain: boolean | undefined;
+		let teamId: string | undefined;
+		let encrypted: boolean | undefined;
+		let userId: string | undefined;
+		let token: string | undefined;
+		let avatar: string | undefined;
+		let visitor: IVisitor | undefined;
+		if ('id' in room) {
+			subtitle = room?.topic;
+			t = room?.t;
+			teamMain = room?.teamMain;
+			teamId = room?.teamId;
+			encrypted = room?.encrypted;
+			({ id: userId, token } = user);
+			avatar = room?.name;
+			visitor = room?.visitor;
 		}
 
 		let numIconsRight = 2;
 		if (tmid) {
 			numIconsRight = 1;
-		} else if (isTeamRoom({ teamId, joined })) {
+		} else if (teamId && isTeamRoom({ teamId, joined })) {
 			numIconsRight = 3;
 		}
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
