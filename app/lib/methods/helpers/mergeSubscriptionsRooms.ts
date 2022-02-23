@@ -103,7 +103,7 @@ export default async (serverSubscriptions: IServerSubscription, serverRooms: ISe
 	const findData = await findSubscriptionsRooms(subscriptions, rooms);
 	// Merge each subscription into a room
 	const mergedSubscriptions = findData.subscriptions.map(subscription => {
-		const index = findData.rooms.findIndex(({ _id }) => _id === subscription.rid);
+		const index = rooms.findIndex(({ _id }) => _id === subscription.rid);
 		// Room not found
 		if (index < 0) {
 			return merge(subscription);
