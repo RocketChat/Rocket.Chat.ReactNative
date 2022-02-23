@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 import parseUrls from './parseUrls';
-import type { IAttachment, IMessage, IUrlFromServer } from '../../../definitions';
+import type { IAttachment, IMessage } from '../../../definitions';
 
 type TMsg = IMessage & IAttachment;
 
@@ -35,22 +35,21 @@ export default (msg: any): IMessage | null => {
 	// }
 
 	if (!Array.isArray(msg.reactions)) {
-		msg.reactions = Object.keys(msg.reactions).map((key: string) => ({
+		msg.reactions = Object.keys(msg.reactions).map(key => ({
 			_id: `${msg._id}${key}`,
 			emoji: key,
-			usernames: msg.reactions ? msg.reactions[key as unknown as number].usernames : []
+			usernames: msg.reactions ? msg.reactions[key].usernames : []
 		}));
 	}
 	if (msg.translations && Object.keys(msg.translations).length) {
 		msg.translations = Object.keys(msg.translations).map(key => ({
 			_id: `${msg._id}${key}`,
 			language: key,
-			// @ts-ignore
 			value: msg.translations ? msg.translations[key] : ''
 		}));
 		msg.autoTranslate = true;
 	}
-	msg.urls = msg.urls ? parseUrls(msg.urls as IUrlFromServer[]) : [];
+	msg.urls = msg.urls ? parseUrls(msg.urls) : [];
 	msg._updatedAt = new Date();
 	// loadHistory returns msg.starred as object
 	// stream-room-msgs returns msg.starred as an array

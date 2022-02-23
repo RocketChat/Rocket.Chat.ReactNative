@@ -74,7 +74,7 @@ export interface IMessage {
 	avatar?: string;
 	emoji?: string;
 	attachments?: IAttachment[];
-	urls?: IUrl[] | IUrlFromServer[];
+	urls?: IUrl[];
 	_updatedAt: string | Date;
 	status?: number;
 	pinned?: boolean;

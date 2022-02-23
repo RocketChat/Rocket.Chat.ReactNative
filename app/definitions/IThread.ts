@@ -4,7 +4,7 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 import { IAttachment } from './IAttachment';
 import { IEditedBy, IUserChannel, IUserMention, IUserMessage, MessageType } from './IMessage';
 import { IReaction } from './IReaction';
-import { IUrl, IUrlFromServer } from './IUrl';
+import { IUrl } from './IUrl';
 
 interface IFileThread {
 	_id: string;
@@ -25,7 +25,7 @@ export interface IThreadResult {
 	md?: MarkdownAST;
 	u: IUserMessage;
 	_updatedAt: string | Date;
-	urls?: IUrl[] | IUrlFromServer[];
+	urls?: IUrl[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
 	replies?: string[];
@@ -48,7 +48,7 @@ export interface IThread {
 	avatar?: string;
 	emoji?: string;
 	attachments?: IAttachment[];
-	urls?: IUrl[] | IUrlFromServer[];
+	urls?: IUrl[];
 	status?: number;
 	pinned?: boolean;
 	starred?: boolean;

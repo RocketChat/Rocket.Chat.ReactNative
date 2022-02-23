@@ -3,7 +3,7 @@ import Model from '@nozbe/watermelondb/Model';
 import { IAttachment } from './IAttachment';
 import { IEditedBy, ITranslations, IUserChannel, IUserMention, IUserMessage, MessageType } from './IMessage';
 import { IReaction } from './IReaction';
-import { IUrl, IUrlFromServer } from './IUrl';
+import { IUrl } from './IUrl';
 
 export interface IThreadMessage {
 	id: string;
@@ -20,7 +20,7 @@ export interface IThreadMessage {
 	avatar?: string;
 	emoji?: string;
 	attachments?: IAttachment[];
-	urls?: IUrl[] | IUrlFromServer[];
+	urls?: IUrl[];
 	_updatedAt?: string | Date;
 	status?: number;
 	pinned?: boolean;
