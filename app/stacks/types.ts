@@ -26,7 +26,7 @@ export type ChatsStackParamList = {
 		roomUserId?: string;
 	};
 	RoomActionsView: {
-		room: ISubscription;
+		room: ISubscription | undefined;
 		member: any;
 		rid: string;
 		t: SubscriptionType;

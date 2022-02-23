@@ -66,7 +66,15 @@ import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
 import List, { IListContainerProps, IListProps } from './List';
 import { ChatsStackParamList } from '../../stacks/types';
-import { IBaseScreen, ILoggedUser, ISubscription, IVisitor, TSubscriptionModel, TThreadModel } from '../../definitions';
+import {
+	IBaseScreen,
+	ILoggedUser,
+	ISubscription,
+	IVisitor,
+	SubscriptionType,
+	TSubscriptionModel,
+	TThreadModel
+} from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 
 const stateAttrsUpdate = [
@@ -168,6 +176,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private didMountInteraction: any;
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
+	private retryInit = 0;
+	private retryInitTimeout?: number | undefined;
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -379,6 +389,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (this.queryUnreads && this.queryUnreads.unsubscribe) {
 			this.queryUnreads.unsubscribe();
 		}
+		if (this.retryInitTimeout) {
+			clearTimeout(this.retryInitTimeout);
+		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		if (isTablet) {
 			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
@@ -412,7 +425,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			parentTitle = RocketChat.getRoomTitle(room);
 		}
 		let subtitle: string | undefined;
-		let t: string | undefined;
+		let t: string;
 		let teamMain: boolean | undefined;
 		let teamId: string | undefined;
 		let encrypted: boolean | undefined;
@@ -483,7 +496,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					rid={rid}
 					tmid={tmid}
 					teamId={teamId}
-					teamMain={teamMain}
 					joined={joined}
 					t={t}
 					encrypted={encrypted}
@@ -494,11 +506,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	goRoomActionsView = screen => {
+	goRoomActionsView = (screen: string | undefined) => {
 		logEvent(events.ROOM_GO_RA);
 		const { room, member, joined } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
+			// @ts-ignore TODO: find a way to make it work
 			navigation.navigate('ModalStackNavigator', {
 				screen: screen ?? 'RoomActionsView',
 				params: {
@@ -510,11 +523,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					joined
 				}
 			});
-		} else {
+		} else if (this.rid && this.t) {
 			navigation.push('RoomActionsView', {
 				rid: this.rid,
-				t: this.t,
-				room,
+				t: this.t as SubscriptionType,
+				room: room as ISubscription,
 				member,
 				joined
 			});
@@ -524,7 +537,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	setReadOnly = async () => {
 		const { room } = this.state;
 		const { user } = this.props;
-		const readOnly = await isReadOnly(room, user);
+		const readOnly = await isReadOnly(room as ISubscription, user.username as string);
 		this.setState({ readOnly });
 	};
 
@@ -532,6 +545,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		try {
 			this.setState({ loading: true });
 			const { room, joined } = this.state;
+			if (!this.rid) {
+				return;
+			}
 			if (this.tmid) {
 				await RoomServices.getThreadMessages(this.tmid, this.rid);
 			} else {
@@ -539,13 +555,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				await RoomServices.getMessages(room);
 
 				// if room is joined
-				if (joined) {
+				if (joined && 'id' in room) {
 					if (room.alert || room.unread || room.userMentions) {
 						this.setLastOpen(room.ls);
 					} else {
 						this.setLastOpen(null);
 					}
-					RoomServices.readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
+					RoomServices.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
 				}
 			}
 
@@ -555,7 +571,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.setState({ canAutoTranslate, member, loading: false });
 		} catch (e) {
 			this.setState({ loading: false });
-			this.retryInit = this.retryInit + 1 || 1;
+			this.retryInit += 1;
 			if (this.retryInit <= 1) {
 				this.retryInitTimeout = setTimeout(() => {
 					this.init();
