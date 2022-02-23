@@ -21,7 +21,7 @@ export interface IThreadMessage {
 	emoji?: string;
 	attachments?: IAttachment[];
 	urls?: IUrl[];
-	_updatedAt?: string | Date;
+	_updatedAt: string | Date;
 	status?: number;
 	pinned?: boolean;
 	starred?: boolean;
