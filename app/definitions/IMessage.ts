@@ -42,22 +42,22 @@ export type E2EType = 'pending' | 'done';
 export interface ILastMessage {
 	_id: string;
 	rid: string;
-	tshow: boolean;
-	t: MessageType;
-	tmid: string;
-	msg: string;
-	e2e: E2EType;
-	ts: Date;
+	tshow?: boolean;
+	t?: MessageType;
+	tmid?: string;
+	msg?: string;
+	e2e?: E2EType;
+	ts: string | Date;
 	u: IUserMessage;
-	_updatedAt: Date;
-	urls: string[];
-	mentions: IUserMention[];
-	channels: IUserChannel[];
-	md: MarkdownAST;
-	attachments: IAttachment[];
-	reactions: IReaction[];
-	unread: boolean;
-	status: boolean;
+	_updatedAt: string | Date;
+	urls?: IUrl[] | IUrlFromServer[];
+	mentions?: IUserMention[];
+	channels?: IUserChannel[];
+	md?: MarkdownAST;
+	attachments?: IAttachment[];
+	reactions?: IReaction[];
+	unread?: boolean;
+	status?: number;
 }
 
 export interface IMessage {
@@ -96,7 +96,7 @@ export interface IMessage {
 	translations?: ITranslations[];
 	tmsg?: string;
 	blocks?: any;
-	e2e?: string;
+	e2e?: E2EType;
 	tshow?: boolean;
 	md?: MarkdownAST;
 	subscription?: { id: string };
