@@ -1,18 +1,22 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
+import isEmpty from 'lodash/isEmpty';
 
 import FileUpload from '../../utils/fileUpload';
 import database from '../database';
 import log from '../../utils/log';
+import { IUpload, IUser, TUploadModel } from '../../definitions';
+import { IFileUpload } from '../../utils/fileUpload/interfaces';
 
-const uploadQueue = {};
+const uploadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
 
-export function isUploadActive(path) {
+export function isUploadActive(path: string): boolean {
 	return !!uploadQueue[path];
 }
 
-export async function cancelUpload(item) {
-	if (uploadQueue[item.path]) {
+export async function cancelUpload(item: TUploadModel): Promise<void> {
+	if (!isEmpty(uploadQueue[item.path])) {
 		try {
 			await uploadQueue[item.path].cancel();
 		} catch {
@@ -20,7 +24,7 @@ export async function cancelUpload(item) {
 		}
 		try {
 			const db = database.active;
-			await db.action(async () => {
+			await db.write(async () => {
 				await item.destroyPermanently();
 			});
 		} catch (e) {
@@ -30,7 +34,13 @@ export async function cancelUpload(item) {
 	}
 }
 
-export function sendFileMessage(rid, fileInfo, tmid, server, user) {
+export function sendFileMessage(
+	rid: string,
+	fileInfo: IUpload,
+	tmid: string,
+	server: string,
+	user: IUser
+): Promise<FetchBlobResponse | void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { id, token } = user;
@@ -41,16 +51,18 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			const db = database.active;
 			const uploadsCollection = db.get('uploads');
-			let uploadRecord;
+			let uploadRecord: TUploadModel;
 			try {
 				uploadRecord = await uploadsCollection.find(fileInfo.path);
 			} catch (error) {
 				try {
-					await db.action(async () => {
+					await db.write(async () => {
 						uploadRecord = await uploadsCollection.create(u => {
 							u._raw = sanitizedRaw({ id: fileInfo.path }, uploadsCollection.schema);
 							Object.assign(u, fileInfo);
-							u.subscription.id = rid;
+							if (u.subscription) {
+								u.subscription.id = rid;
+							}
 						});
 					});
 				} catch (e) {
@@ -58,7 +70,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				}
 			}
 
-			const formData = [];
+			const formData: IFileUpload[] = [];
 			formData.push({
 				name: 'file',
 				type: fileInfo.type,
@@ -89,9 +101,9 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			uploadQueue[fileInfo.path] = FileUpload.fetch('POST', uploadUrl, headers, formData);
 
-			uploadQueue[fileInfo.path].uploadProgress(async (loaded, total) => {
+			uploadQueue[fileInfo.path].uploadProgress(async (loaded: number, total: number) => {
 				try {
-					await db.action(async () => {
+					await db.write(async () => {
 						await uploadRecord.update(u => {
 							u.progress = Math.floor((loaded / total) * 100);
 						});
@@ -105,7 +117,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
 					// If response is all good...
 					try {
-						await db.action(async () => {
+						await db.write(async () => {
 							await uploadRecord.destroyPermanently();
 						});
 						resolve(response);
@@ -114,7 +126,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 					}
 				} else {
 					try {
-						await db.action(async () => {
+						await db.write(async () => {
 							await uploadRecord.update(u => {
 								u.error = true;
 							});
@@ -132,7 +144,7 @@ export function sendFileMessage(rid, fileInfo, tmid, server, user) {
 
 			uploadQueue[fileInfo.path].catch(async error => {
 				try {
-					await db.action(async () => {
+					await db.write(async () => {
 						await uploadRecord.update(u => {
 							u.error = true;
 						});
