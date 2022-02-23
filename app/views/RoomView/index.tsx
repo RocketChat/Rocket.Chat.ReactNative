@@ -72,6 +72,7 @@ import {
 	ISubscription,
 	IVisitor,
 	SubscriptionType,
+	TMessageModel,
 	TSubscriptionModel,
 	TThreadModel
 } from '../../definitions';
@@ -177,7 +178,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private subSubscription?: Subscription;
 	private queryUnreads?: Subscription;
 	private retryInit = 0;
-	private retryInitTimeout?: number | undefined;
+	private retryInitTimeout?: number;
+	private retryFindCount = 0;
+	private retryFindTimeout?: number;
+	private messageErrorActions: React.RefObject<any>; // TODO: type me
 
 	constructor(props: IRoomViewProps) {
 		super(props);
@@ -584,7 +588,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room } = this.state;
 		const { t } = room;
 
-		if (t === 'd' && !RocketChat.isGroupChat(room)) {
+		if ('id' in room && t === 'd' && !RocketChat.isGroupChat(room)) {
 			try {
 				const roomUserId = RocketChat.getUidDirectMessage(room);
 				this.setState({ roomUserId }, () => this.setHeader());
@@ -601,7 +605,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return {};
 	};
 
-	findAndObserveRoom = async rid => {
+	findAndObserveRoom = async (rid: string) => {
 		try {
 			const db = database.active;
 			const subCollection = await db.get('subscriptions');
@@ -637,23 +641,25 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		delete this.sub;
 	};
 
-	observeRoom = room => {
+	observeRoom = (room: TSubscriptionModel) => {
 		const observable = room.observe();
 		this.subSubscription = observable.subscribe(changes => {
-			const roomUpdate = roomAttrsUpdate.reduce((ret, attr) => {
+			const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr) => {
 				ret[attr] = changes[attr];
 				return ret;
 			}, {});
 			if (this.mounted) {
 				this.internalSetState({ room: changes, roomUpdate });
 			} else {
+				// @ts-ignore
 				this.state.room = changes;
+				// @ts-ignore
 				this.state.roomUpdate = roomUpdate;
 			}
 		});
 	};
 
-	errorActionsShow = message => {
+	errorActionsShow = (message: TMessageModel) => {
 		this.messageErrorActions?.showMessageErrorActions(message);
 	};
 
@@ -1228,6 +1234,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onReactionPress={this.onReactionPress}
 					isReadOnly={readOnly}
 				/>
+				{/* @ts-ignore TODO: missing interface on MessageErrorActions */}
 				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
 			</>
 		);
