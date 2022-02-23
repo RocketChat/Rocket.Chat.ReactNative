@@ -6,7 +6,7 @@ import { IReaction } from './IReaction';
 import { IUrl } from './IUrl';
 
 export interface IThreadMessage {
-	_id?: string;
+	_id: string;
 	tmsg?: string;
 	msg?: string;
 	t?: MessageType;
@@ -20,7 +20,7 @@ export interface IThreadMessage {
 	emoji?: string;
 	attachments?: IAttachment[];
 	urls?: IUrl[];
-	_updatedAt?: Date;
+	_updatedAt: Date;
 	status?: number;
 	pinned?: boolean;
 	starred?: boolean;
