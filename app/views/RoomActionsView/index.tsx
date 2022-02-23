@@ -42,18 +42,18 @@ interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomAc
 	encryptionEnabled: boolean;
 	fontScale: number;
 	serverVersion: string | null;
-	addUserToJoinedRoomPermission: string[] | undefined;
-	addUserToAnyCRoomPermission: string[] | undefined;
-	addUserToAnyPRoomPermission: string[] | undefined;
-	createInviteLinksPermission: string[] | undefined;
-	editRoomPermission: string[] | undefined;
-	toggleRoomE2EEncryptionPermission: string[] | undefined;
-	viewBroadcastMemberListPermission: string[] | undefined;
-	transferLivechatGuestPermission: string[] | undefined;
-	createTeamPermission: string[] | undefined;
-	addTeamChannelPermission: string[] | undefined;
-	convertTeamPermission: string[] | undefined;
-	viewCannedResponsesPermission: string[] | undefined;
+	addUserToJoinedRoomPermission?: string[];
+	addUserToAnyCRoomPermission?: string[];
+	addUserToAnyPRoomPermission?: string[];
+	createInviteLinksPermission?: string[];
+	editRoomPermission?: string[];
+	toggleRoomE2EEncryptionPermission?: string[];
+	viewBroadcastMemberListPermission?: string[];
+	transferLivechatGuestPermission?: string[];
+	createTeamPermission?: string[];
+	addTeamChannelPermission?: string[];
+	convertTeamPermission?: string[];
+	viewCannedResponsesPermission?: string[];
 }
 
 interface IRoomActionsViewState {
