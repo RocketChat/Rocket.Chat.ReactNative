@@ -32,6 +32,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import { compareServerVersion } from '../../lib/utils';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
+import { IRoom } from '../../definitions';
 import { IEmoji } from '../../definitions/IEmoji';
 
 const QUERY_SIZE = 50;
@@ -81,7 +82,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	private encrypted: boolean | undefined;
 
-	private room: { rid: any; name: any; fname: any; t: any } | null | undefined;
+	private room: Pick<IRoom, 'rid' | 'name' | 'fname' | 't'> | null | undefined;
 
 	static navigationOptions = ({ navigation, route }: INavigationOption) => {
 		const options: StackNavigationOptions = {

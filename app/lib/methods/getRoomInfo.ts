@@ -1,7 +1,8 @@
+import { IRoom, SubscriptionType } from '../../definitions';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import RocketChat from '../rocketchat';
 
-const getRoomInfo = async rid => {
+const getRoomInfo = async (rid: string): Promise<Pick<IRoom, 'rid' | 'name' | 'fname' | 't'> | null> => {
 	let result;
 	result = await getSubscriptionByRoomId(rid);
 	if (result) {
@@ -9,7 +10,7 @@ const getRoomInfo = async rid => {
 			rid,
 			name: result.name,
 			fname: result.fname,
-			t: result.t
+			t: result.t as SubscriptionType
 		};
 	}
 

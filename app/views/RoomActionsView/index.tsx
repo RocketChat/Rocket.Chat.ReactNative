@@ -33,6 +33,7 @@ import log, { events, logEvent } from '../../utils/log';
 import Touch from '../../utils/touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
+import { ERoomType } from '../../definitions/ERoomType';
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
@@ -498,7 +499,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		showConfirmationAlert({
 			message: I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
 			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-			onPress: () => dispatch(leaveRoom('channel', room))
+			onPress: () => dispatch(leaveRoom(ERoomType.c, room))
 		});
 	};
 
@@ -582,21 +583,21 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					title: 'Leave_Team',
 					data: teamChannels,
 					infoText: 'Select_Team_Channels',
-					nextAction: data => dispatch(leaveRoom('team', room, data)),
+					nextAction: data => dispatch(leaveRoom(ERoomType.t, room, data)),
 					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 				});
 			} else {
 				showConfirmationAlert({
 					message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					onPress: () => dispatch(leaveRoom('team', room))
+					onPress: () => dispatch(leaveRoom(ERoomType.t, room))
 				});
 			}
 		} catch (e) {
 			showConfirmationAlert({
 				message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
 				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-				onPress: () => dispatch(leaveRoom('team', room))
+				onPress: () => dispatch(leaveRoom(ERoomType.t, room))
 			});
 		}
 	};

@@ -443,7 +443,7 @@ class Encryption {
 	};
 
 	// Decrypt a message
-	decryptMessage = async (message: Partial<IMessage>) => {
+	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg'>) => {
 		const { t, e2e } = message;
 
 		// Prevent create a new instance if this room was encrypted sometime ago

@@ -1,5 +1,8 @@
-import database from '../database';
+import { ERoomTypes } from '../../definitions';
 import { store } from '../auxStore';
+import database from '../database';
+import RocketChat from '../rocketchat';
+import sdk from '../rocketchat/services/sdk';
 
 const restTypes = {
 	channel: 'channels',
@@ -7,27 +10,28 @@ const restTypes = {
 	group: 'groups'
 };
 
-async function open({ type, rid, name }) {
+async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: string }) {
 	try {
 		const params = rid ? { roomId: rid } : { roomName: name };
 
 		// if it's a direct link without rid we'll create a new dm
 		// if the dm already exists it'll return the existent
-		if (type === 'direct' && !rid) {
-			const result = await this.createDirectMessage(name);
+		if (type === ERoomTypes.DIRECT && !rid) {
+			const result = await RocketChat.createDirectMessage(name);
 			if (result.success) {
 				const { room } = result;
-				room.rid = room._id;
+				room.rid = room._id as string;
 				return room;
 			}
 		}
 
 		// if it's a group we need to check if you can open
-		if (type === 'group') {
+		if (type === ERoomTypes.GROUP) {
 			try {
 				// RC 0.61.0
-				await this.sdk.post(`${restTypes[type]}.open`, params);
-			} catch (e) {
+				// @ts-ignore
+				await sdk.post(`${restTypes[type]}.open`, params);
+			} catch (e: any) {
 				if (!(e.data && /is already open/.test(e.data.error))) {
 					return false;
 				}
@@ -36,9 +40,10 @@ async function open({ type, rid, name }) {
 
 		// if it's a channel or group and the link don't have rid
 		// we'll get info from the room
-		if ((type === 'channel' || type === 'group') && !rid) {
+		if ((type === ERoomTypes.CHANNEL || type === ERoomTypes.GROUP) && !rid) {
 			// RC 0.72.0
-			const result = await this.sdk.get(`${restTypes[type]}.info`, params);
+			// @ts-ignore
+			const result: any = await sdk.get(`channel.info`, params);
 			if (result.success) {
 				const room = result[type];
 				room.rid = room._id;
@@ -56,7 +61,7 @@ async function open({ type, rid, name }) {
 	}
 }
 
-export default async function canOpenRoom({ rid, path, isCall }) {
+export default async function canOpenRoom({ rid, path, isCall }: { rid: string; isCall: boolean; path: string }): Promise<any> {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
@@ -86,8 +91,9 @@ export default async function canOpenRoom({ rid, path, isCall }) {
 		}
 
 		const [type, name] = path.split('/');
+		const t = type as ERoomTypes;
 		try {
-			const result = await open.call(this, { type, rid, name });
+			const result = await open({ type: t, rid, name });
 			return result;
 		} catch (e) {
 			return false;
