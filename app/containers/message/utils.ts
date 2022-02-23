@@ -45,7 +45,14 @@ export const SYSTEM_MESSAGES = [
 	'message_snippeted',
 	'thread-created',
 	'room_e2e_enabled',
-	'room_e2e_disabled'
+	'room_e2e_disabled',
+	'removed-user-from-team',
+	'added-user-to-team',
+	'user-added-room-to-team',
+	'user-converted-to-team',
+	'user-converted-to-channel',
+	'user-deleted-room-from-team',
+	'user-removed-room-from-team'
 ];
 
 export const SYSTEM_MESSAGE_TYPES = {
@@ -56,7 +63,14 @@ export const SYSTEM_MESSAGE_TYPES = {
 	USER_JOINED_TEAM: 'ujt',
 	USER_JOINED_DISCUSSION: 'ut',
 	USER_LEFT_CHANNEL: 'ul',
-	USER_LEFT_TEAM: 'ult'
+	USER_LEFT_TEAM: 'ult',
+	REMOVED_USER_FROM_TEAM: 'removed-user-from-team',
+	ADDED_USER_TO_TEAM: 'added-user-to-team',
+	ADDED_ROOM_TO_TEAM: 'user-added-room-to-team',
+	CONVERTED_TO_TEAM: 'user-converted-to-team',
+	CONVERTED_TO_CHANNEL: 'user-converted-to-channel',
+	DELETED_ROOM_FROM_TEAM: 'user-deleted-room-from-team',
+	REMOVED_ROOM_FROM_TEAM: 'user-removed-room-from-team'
 };
 
 export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
@@ -67,7 +81,14 @@ export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
 	SYSTEM_MESSAGE_TYPES.USER_JOINED_TEAM,
 	SYSTEM_MESSAGE_TYPES.USER_JOINED_DISCUSSION,
 	SYSTEM_MESSAGE_TYPES.USER_LEFT_CHANNEL,
-	SYSTEM_MESSAGE_TYPES.USER_LEFT_TEAM
+	SYSTEM_MESSAGE_TYPES.USER_LEFT_TEAM,
+	SYSTEM_MESSAGE_TYPES.REMOVED_USER_FROM_TEAM,
+	SYSTEM_MESSAGE_TYPES.ADDED_USER_TO_TEAM,
+	SYSTEM_MESSAGE_TYPES.ADDED_ROOM_TO_TEAM,
+	SYSTEM_MESSAGE_TYPES.CONVERTED_TO_TEAM,
+	SYSTEM_MESSAGE_TYPES.CONVERTED_TO_CHANNEL,
+	SYSTEM_MESSAGE_TYPES.DELETED_ROOM_FROM_TEAM,
+	SYSTEM_MESSAGE_TYPES.REMOVED_ROOM_FROM_TEAM
 ];
 
 type TInfoMessage = {
@@ -76,6 +97,7 @@ type TInfoMessage = {
 	msg: string;
 	author: { username: string };
 };
+
 export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage): string => {
 	const { username } = author;
 	if (type === 'rm') {
@@ -146,6 +168,27 @@ export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage): strin
 	}
 	if (type === 'room_e2e_enabled') {
 		return I18n.t('This_room_encryption_has_been_enabled_by__username_', { username });
+	}
+	if (type === 'removed-user-from-team') {
+		return I18n.t('Removed__username__from_team', { user_removed: username });
+	}
+	if (type === 'added-user-to-team') {
+		return I18n.t('Added__username__to_team', { user_added: username });
+	}
+	if (type === 'user-added-room-to-team') {
+		return I18n.t('added__roomName__to_team', { roomName: msg });
+	}
+	if (type === 'user-converted-to-team') {
+		return I18n.t('Converted__roomName__to_team', { roomName: msg });
+	}
+	if (type === 'user-converted-to-channel') {
+		return I18n.t('Converted__roomName__to_channel', { roomName: msg });
+	}
+	if (type === 'user-deleted-room-from-team') {
+		return I18n.t('Deleted__roomName__', { roomName: msg });
+	}
+	if (type === 'user-removed-room-from-team') {
+		return I18n.t('Removed__roomName__from_this_team', { roomName: msg });
 	}
 	return '';
 };
