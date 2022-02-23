@@ -127,8 +127,11 @@ const createOrUpdateSubscription = async (subscription, room) => {
 			}
 		}
 
-		let tmp = merge(subscription, room);
-		tmp = await Encryption.decryptSubscription(tmp);
+		let tmp;
+		if (subscription) {
+			tmp = merge(subscription, room);
+			tmp = await Encryption.decryptSubscription(tmp);
+		}
 		let sub;
 		try {
 			sub = await subCollection.find(tmp.rid);

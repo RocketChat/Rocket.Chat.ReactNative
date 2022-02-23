@@ -13,6 +13,7 @@ interface IFileThread {
 }
 
 export interface IThreadResult {
+	id: string;
 	_id: string;
 	rid: string;
 	ts: string | Date;
@@ -38,8 +39,8 @@ export interface IThread {
 	msg?: string;
 	t?: MessageType;
 	rid: string;
-	_updatedAt?: Date;
-	ts?: Date;
+	_updatedAt?: string | Date;
+	ts?: string | Date;
 	u?: IUserMessage;
 	alias?: string;
 	parseUrls?: boolean;
@@ -56,10 +57,10 @@ export interface IThread {
 	role?: string;
 	drid?: string;
 	dcount?: number | string;
-	dlm?: number;
+	dlm?: string | Date;
 	tmid?: string;
 	tcount?: number | string;
-	tlm?: string;
+	tlm?: string | Date;
 	replies?: string[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
@@ -67,7 +68,7 @@ export interface IThread {
 	autoTranslate?: boolean;
 	translations?: any;
 	e2e?: string;
-	subscription: { id: string };
+	subscription?: { id: string };
 }
 
 export type TThreadModel = IThread & Model;

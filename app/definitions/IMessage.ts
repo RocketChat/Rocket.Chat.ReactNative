@@ -64,17 +64,18 @@ export interface IMessage {
 	_id: string;
 	rid: string;
 	msg?: string;
+	id: string;
 	t?: MessageType;
-	ts: Date;
+	ts: string | Date;
 	u: IUserMessage;
-	alias: string;
-	parseUrls: boolean;
+	alias?: string;
+	parseUrls?: boolean;
 	groupable?: boolean;
 	avatar?: string;
 	emoji?: string;
 	attachments?: IAttachment[];
 	urls?: IUrl[] | IUrlFromServer[];
-	_updatedAt: Date;
+	_updatedAt: string | Date;
 	status?: number;
 	pinned?: boolean;
 	starred?: boolean;
@@ -83,7 +84,7 @@ export interface IMessage {
 	role?: string;
 	drid?: string;
 	dcount?: number;
-	dlm?: Date;
+	dlm?: string | Date;
 	tmid?: string;
 	tcount?: number;
 	tlm?: string | Date;
@@ -98,7 +99,7 @@ export interface IMessage {
 	e2e?: string;
 	tshow?: boolean;
 	md?: MarkdownAST;
-	subscription: { id: string };
+	subscription?: { id: string };
 }
 
 export type TMessageModel = IMessage & Model;

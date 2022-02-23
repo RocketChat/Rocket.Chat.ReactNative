@@ -13,7 +13,7 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 interface IUpdateMessages {
 	rid: string;
 	update: IMessage[];
-	remove: IMessage[];
+	remove?: IMessage[];
 	loaderItem?: TMessageModel;
 }
 
@@ -94,7 +94,9 @@ export default async function updateMessages({
 			msgCollection.prepareCreate(
 				protectedFunction((m: TMessageModel) => {
 					m._raw = sanitizedRaw({ id: message._id }, msgCollection.schema);
-					m.subscription.id = sub.id;
+					if (m.subscription) {
+						m.subscription.id = sub.id;
+					}
 					Object.assign(m, message);
 				})
 			)
@@ -103,7 +105,7 @@ export default async function updateMessages({
 			threadCollection.prepareCreate(
 				protectedFunction((t: TThreadModel) => {
 					t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
-					t.subscription.id = sub.id;
+					if (t.subscription) t.subscription.id = sub.id;
 					Object.assign(t, thread);
 				})
 			)
@@ -113,7 +115,9 @@ export default async function updateMessages({
 				protectedFunction((tm: TThreadMessageModel) => {
 					tm._raw = sanitizedRaw({ id: threadMessage._id }, threadMessagesCollection.schema);
 					Object.assign(tm, threadMessage);
-					tm.subscription.id = sub.id;
+					if (tm.subscription) {
+						tm.subscription.id = sub.id;
+					}
 					if (threadMessage.tmid) {
 						tm.rid = threadMessage.tmid;
 					}

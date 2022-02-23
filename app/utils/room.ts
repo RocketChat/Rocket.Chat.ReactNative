@@ -22,7 +22,7 @@ export const capitalize = (s: string): string => {
 	return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
-export const formatDate = (date: Date): string =>
+export const formatDate = (date: string | Date): string =>
 	moment(date).calendar(null, {
 		lastDay: `[${I18n.t('Yesterday')}]`,
 		sameDay: 'LT',
@@ -30,7 +30,7 @@ export const formatDate = (date: Date): string =>
 		sameElse: 'L'
 	});
 
-export const formatDateThreads = (date: Date): string =>
+export const formatDateThreads = (date: string | Date): string =>
 	moment(date).calendar(null, {
 		sameDay: 'LT',
 		lastDay: `[${I18n.t('Yesterday')}] LT`,

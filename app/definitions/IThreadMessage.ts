@@ -6,11 +6,13 @@ import { IReaction } from './IReaction';
 import { IUrl, IUrlFromServer } from './IUrl';
 
 export interface IThreadMessage {
+	id: string;
+	_id: string;
 	tmsg?: string;
 	msg?: string;
 	t?: MessageType;
 	rid: string;
-	ts: Date;
+	ts: string | Date;
 	u: IUserMessage;
 	alias?: string;
 	parseUrls?: boolean;
@@ -19,7 +21,7 @@ export interface IThreadMessage {
 	emoji?: string;
 	attachments?: IAttachment[];
 	urls?: IUrl[] | IUrlFromServer[];
-	_updatedAt?: Date;
+	_updatedAt?: string | Date;
 	status?: number;
 	pinned?: boolean;
 	starred?: boolean;
@@ -28,7 +30,7 @@ export interface IThreadMessage {
 	role?: string;
 	drid?: string;
 	dcount?: number;
-	dlm?: Date;
+	dlm?: string | Date;
 	tmid?: string;
 	tcount?: number;
 	tlm?: string | Date;
@@ -39,7 +41,7 @@ export interface IThreadMessage {
 	autoTranslate?: boolean;
 	translations?: ITranslations[];
 	e2e?: string;
-	subscription: { id: string };
+	subscription?: { id: string };
 }
 
 export type TThreadMessageModel = IThreadMessage & Model;
