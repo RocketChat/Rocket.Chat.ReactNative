@@ -10,6 +10,7 @@ import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import { TGetCustomEmoji } from '../definitions/IEmoji';
+import { TMessageModel, ILoggedUser } from '../definitions';
 import SafeAreaView from './SafeAreaView';
 
 const styles = StyleSheet.create({
@@ -65,24 +66,25 @@ interface IItem {
 		usernames: any;
 		emoji: string;
 	};
-	user?: { username: any };
+	user?: Partial<Pick<ILoggedUser, 'username'>>;
 	baseUrl?: string;
 	getCustomEmoji?: TGetCustomEmoji;
 	theme?: string;
 }
 
 interface IModalContent {
-	message?: {
-		reactions: any;
-	};
+	message?: TMessageModel;
 	onClose: Function;
 	theme: string;
 }
 
 interface IReactionsModal {
+	message?: TMessageModel;
+	user?: Partial<Pick<ILoggedUser, 'username'>>;
 	isVisible: boolean;
 	onClose(): void;
-	theme: string;
+	baseUrl: string;
+	getCustomEmoji?: TGetCustomEmoji;
 }
 
 const Item = React.memo(({ item, user, baseUrl, getCustomEmoji, theme }: IItem) => {

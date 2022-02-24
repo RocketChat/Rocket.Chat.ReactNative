@@ -10,6 +10,7 @@ import messagesStatus from '../../constants/messagesStatus';
 import { withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { TMessageModel } from '../../definitions';
 
 interface IMessageContainerProps {
 	item: any;
@@ -24,14 +25,7 @@ interface IMessageContainerProps {
 	style?: ViewStyle;
 	archived?: boolean;
 	broadcast?: boolean;
-	previousItem?: {
-		ts: any;
-		u: any;
-		groupable: any;
-		id: string;
-		tmid: string;
-		status: any;
-	};
+	previousItem?: TMessageModel;
 	isHeader: boolean;
 	baseUrl: string;
 	Message_GroupingPeriod?: number;

@@ -15,7 +15,7 @@ const maxSize = 400;
 
 interface IReactionPickerProps {
 	baseUrl: string;
-	message: TMessageModel;
+	message?: TMessageModel;
 	show: boolean;
 	isMasterDetail: boolean;
 	reactionClose: () => void;
@@ -36,7 +36,9 @@ class ReactionPicker extends React.Component<IReactionPickerProps> {
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
 		const { onEmojiSelected, message } = this.props;
-		onEmojiSelected(shortname || emoji, message.id);
+		if (message) {
+			onEmojiSelected(shortname || emoji, message.id);
+		}
 	};
 
 	render() {

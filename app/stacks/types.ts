@@ -23,7 +23,8 @@ export type ChatsStackParamList = {
 		room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
-		roomUserId?: string;
+		roomUserId?: string | null;
+		usedCannedResponse?: boolean;
 	};
 	RoomActionsView: {
 		room: ISubscription | undefined;

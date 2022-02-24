@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
 interface IUploadProgressProps {
 	width: number;
 	rid: string;
-	theme: string;
 	user: Partial<Pick<TUserModel, 'id' | 'username' | 'token'>>;
 	baseUrl: string;
 }

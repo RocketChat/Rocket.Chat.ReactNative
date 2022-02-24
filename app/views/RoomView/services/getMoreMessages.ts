@@ -1,4 +1,4 @@
-import { MessageType, TMessageModel } from '../../../definitions';
+import { MessageType, SubscriptionType, TMessageModel } from '../../../definitions';
 import loadMessagesForRoom from '../../../lib/methods/loadMessagesForRoom';
 import loadNextMessages from '../../../lib/methods/loadNextMessages';
 import {
@@ -14,7 +14,7 @@ const getMoreMessages = ({
 	loaderItem
 }: {
 	rid: string;
-	t: MessageType;
+	t: SubscriptionType;
 	tmid?: string;
 	loaderItem: TMessageModel;
 }): Promise<void> => {

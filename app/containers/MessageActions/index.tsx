@@ -15,19 +15,12 @@ import { showConfirmationAlert } from '../../utils/info';
 import { useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT } from './Header';
 import events from '../../utils/log/events';
-import { TMessageModel } from '../../definitions/IMessage';
+import { ILoggedUser, TMessageModel, TSubscriptionModel } from '../../definitions';
 
-interface IMessageActions {
-	room: {
-		rid: string;
-		autoTranslateLanguage: any;
-		autoTranslate: any;
-		reactWhenReadOnly: any;
-	};
-	tmid: string;
-	user: {
-		id: string | number;
-	};
+export interface IMessageActions {
+	room: TSubscriptionModel;
+	tmid?: string;
+	user: Partial<Pick<ILoggedUser, 'id'>>;
 	editInit: Function;
 	reactionInit: Function;
 	onReactionPress: Function;
@@ -272,6 +265,9 @@ const MessageActions = React.memo(
 
 			const handleToggleTranslation = async (message: TMessageModel) => {
 				try {
+					if (!room.autoTranslateLanguage) {
+						return;
+					}
 					const db = database.active;
 					await db.write(async () => {
 						await message.update(m => {

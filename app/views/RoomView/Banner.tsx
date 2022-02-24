@@ -10,9 +10,9 @@ import styles from './styles';
 import { useTheme } from '../../theme';
 
 interface IBannerProps {
-	text: string;
-	title: string;
-	bannerClosed: boolean;
+	text?: string;
+	title?: string;
+	bannerClosed?: boolean;
 	closeBanner: () => void;
 }
 

@@ -38,13 +38,13 @@ export { IListProps };
 export interface IListContainerProps {
 	renderRow: Function;
 	rid: string;
-	tmid: string;
+	tmid?: string;
 	theme: string;
 	loading: boolean;
 	listRef: React.RefObject<IListProps>;
-	hideSystemMessages: string[];
-	tunread: string[];
-	ignored: string[];
+	hideSystemMessages?: string[];
+	tunread?: string[];
+	ignored?: string[];
 	navigation: any; // TODO: type me
 	showMessageInMainThread: boolean;
 	serverVersion: string;
