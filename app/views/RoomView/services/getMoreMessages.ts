@@ -1,4 +1,4 @@
-import { MessageType, SubscriptionType, TMessageModel } from '../../../definitions';
+import { MessageType, SubscriptionType, TAnyMessageModel } from '../../../definitions';
 import loadMessagesForRoom from '../../../lib/methods/loadMessagesForRoom';
 import loadNextMessages from '../../../lib/methods/loadNextMessages';
 import {
@@ -16,7 +16,7 @@ const getMoreMessages = ({
 	rid: string;
 	t: SubscriptionType;
 	tmid?: string;
-	loaderItem: TMessageModel;
+	loaderItem: TAnyMessageModel;
 }): Promise<void> => {
 	if ([MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK].includes(loaderItem.t as MessageType)) {
 		return loadMessagesForRoom({

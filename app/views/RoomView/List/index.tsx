@@ -261,7 +261,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		}
 	};
 
-	getLastMessage = () => {
+	getLastMessage = (): TMessageModel | TThreadMessageModel | null => {
 		const { messages } = this.state;
 		if (messages.length > 0) {
 			return messages[0];

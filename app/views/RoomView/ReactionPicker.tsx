@@ -8,14 +8,14 @@ import { isAndroid } from '../../utils/deviceInfo';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import styles from './styles';
-import { IApplicationState, TMessageModel } from '../../definitions';
+import { IApplicationState } from '../../definitions';
 
 const margin = isAndroid ? 40 : 20;
 const maxSize = 400;
 
 interface IReactionPickerProps {
 	baseUrl: string;
-	message?: TMessageModel;
+	message?: any;
 	show: boolean;
 	isMasterDetail: boolean;
 	reactionClose: () => void;

@@ -79,12 +79,13 @@ interface IModalContent {
 }
 
 interface IReactionsModal {
-	message?: TMessageModel;
+	message?: any;
 	user?: Partial<Pick<ILoggedUser, 'username'>>;
 	isVisible: boolean;
 	onClose(): void;
 	baseUrl: string;
 	getCustomEmoji?: TGetCustomEmoji;
+	theme: string;
 }
 
 const Item = React.memo(({ item, user, baseUrl, getCustomEmoji, theme }: IItem) => {

@@ -9,6 +9,8 @@ import {
 	MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK,
 	MESSAGE_TYPE_LOAD_NEXT_CHUNK
 } from '../constants/messageTypeLoad';
+import { TThreadMessageModel } from './IThreadMessage';
+import { TThreadModel } from './IThread';
 
 export type MessageType =
 	| 'jitsi_call_started'
@@ -116,3 +118,5 @@ export interface IMessage {
 }
 
 export type TMessageModel = IMessage & Model;
+
+export type TAnyMessageModel = TMessageModel | TThreadModel | TThreadMessageModel;

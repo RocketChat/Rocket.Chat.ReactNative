@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { InteractionManager, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
@@ -9,8 +8,8 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
-import { IReduxEmoji, TGetCustomEmoji } from 'definitions/IEmoji';
 
+import { IReduxEmoji } from '../../definitions/IEmoji';
 import Touch from '../../utils/touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
@@ -76,7 +75,7 @@ import {
 	ISubscription,
 	IVisitor,
 	SubscriptionType,
-	TMessageModel,
+	TAnyMessageModel,
 	TSubscriptionModel,
 	TThreadModel
 } from '../../definitions';
@@ -150,7 +149,7 @@ interface IRoomViewState {
 	member: any;
 	lastOpen: Date | null;
 	reactionsModalVisible: boolean;
-	selectedMessage?: TMessageModel;
+	selectedMessage?: Object;
 	canAutoTranslate: boolean;
 	loading: boolean;
 	showingBlockingLoader: boolean;
@@ -170,8 +169,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
 	// TODO: review these refs
-	// private messagebox: React.createRef<IMessageBoxProps>;
-	private messagebox: any;
+	private messagebox: React.RefObject<IMessageBoxProps>;
 	private list: React.RefObject<IListContainerProps>;
 	private joinCode: React.RefObject<IJoinCodeProps>;
 	private flatList: React.RefObject<IListProps>;
@@ -216,7 +214,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			member: {},
 			lastOpen: null,
 			reactionsModalVisible: false,
-			selectedMessage: selectedMessage || null,
+			selectedMessage,
 			canAutoTranslate: false,
 			loading: true,
 			showingBlockingLoader: false,
@@ -362,6 +360,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const db = database.active;
 		this.mounted = false;
 		if (!editing && this.messagebox && this.messagebox.current) {
+			// @ts-ignore
 			const { text } = this.messagebox.current;
 			let obj: TSubscriptionModel | TThreadModel | null = null;
 			if (this.tmid) {
@@ -663,12 +662,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	errorActionsShow = (message: TMessageModel) => {
+	errorActionsShow = (message: TAnyMessageModel) => {
 		// @ts-ignore
 		this.messageErrorActions?.showMessageErrorActions(message);
 	};
 
-	onEditInit = (message: TMessageModel) => {
+	onEditInit = (message: TAnyMessageModel) => {
 		const newMessage = {
 			id: message.id,
 			subscription: {
@@ -681,11 +680,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onEditCancel = () => {
-		this.setState({ selectedMessage: {}, editing: false });
+		this.setState({ selectedMessage: undefined, editing: false });
 	};
 
-	onEditRequest = async (message: TMessageModel) => {
-		this.setState({ selectedMessage: {}, editing: false });
+	onEditRequest = async (message: TAnyMessageModel) => {
+		this.setState({ selectedMessage: undefined, editing: false });
 		try {
 			await RocketChat.editMessage(message);
 		} catch (e) {
@@ -693,7 +692,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	onReplyInit = (message: TMessageModel, mention: boolean) => {
+	onReplyInit = (message: TAnyMessageModel, mention: boolean) => {
 		this.setState({
 			selectedMessage: message,
 			replying: true,
@@ -702,18 +701,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onReplyCancel = () => {
-		this.setState({ selectedMessage: {}, replying: false, replyWithMention: false });
+		this.setState({ selectedMessage: undefined, replying: false, replyWithMention: false });
 	};
 
-	onReactionInit = (message: TMessageModel) => {
+	onReactionInit = (message: TAnyMessageModel) => {
 		this.setState({ selectedMessage: message, reacting: true });
 	};
 
 	onReactionClose = () => {
-		this.setState({ selectedMessage: {}, reacting: false });
+		this.setState({ selectedMessage: undefined, reacting: false });
 	};
 
-	onMessageLongPress = (message: TMessageModel) => {
+	onMessageLongPress = (message: TAnyMessageModel) => {
 		// @ts-ignore
 		this.messageActions?.showMessageActions(message);
 	};
@@ -734,13 +733,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	onReactionLongPress = (message: TMessageModel) => {
+	onReactionLongPress = (message: TAnyMessageModel) => {
 		this.setState({ selectedMessage: message, reactionsModalVisible: true });
 		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 	};
 
 	onCloseReactionsModal = () => {
-		this.setState({ selectedMessage: {}, reactionsModalVisible: false });
+		this.setState({ selectedMessage: undefined, reactionsModalVisible: false });
 	};
 
 	onEncryptedPress = () => {
@@ -758,7 +757,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	onDiscussionPress = debounce(
-		(item: TMessageModel) => {
+		(item: TAnyMessageModel) => {
 			const { navigation } = this.props;
 			navigation.push('RoomView', {
 				rid: item.drid as string,
@@ -791,7 +790,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	onThreadPress = debounce((item: TMessageModel) => this.navToThread(item), 1000, true);
+	onThreadPress = debounce((item: TAnyMessageModel) => this.navToThread(item), 1000, true);
 
 	shouldNavigateToRoom = (message: IMessage) => {
 		if (message.tmid && message.tmid === this.tmid) {
@@ -975,7 +974,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	navToThread = async (item: TMessageModel | { tmid: string }) => {
+	navToThread = async (item: TAnyMessageModel | { tmid: string }) => {
 		const { roomUserId } = this.state;
 		const { navigation } = this.props;
 
@@ -1023,7 +1022,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	navToRoom = async (message: TMessageModel) => {
+	navToRoom = async (message: TAnyMessageModel) => {
 		const { navigation, isMasterDetail } = this.props;
 		const roomInfo = await getRoomInfo(message.rid);
 		return goRoom({
@@ -1112,7 +1111,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	isIgnored = (message: TMessageModel): boolean => {
+	isIgnored = (message: TAnyMessageModel): boolean => {
 		const { room } = this.state;
 		if ('id' in room) {
 			return room?.ignored?.includes?.(message?.u?._id) ?? false;
@@ -1120,7 +1119,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return false;
 	};
 
-	onLoadMoreMessages = (loaderItem: TMessageModel) => {
+	onLoadMoreMessages = (loaderItem: TAnyMessageModel) => {
 		const { room } = this.state;
 		return RoomServices.getMoreMessages({
 			rid: room.rid,
@@ -1130,7 +1129,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	renderItem = (item: TMessageModel, previousItem: TMessageModel, highlightedMessage?: string) => {
+	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled } = this.props;
 		let dateSeparator = null;
@@ -1361,6 +1360,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					baseUrl={baseUrl}
 					onClose={this.onCloseReactionsModal}
 					getCustomEmoji={this.getCustomEmoji}
+					theme={theme}
 				/>
 				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
 				<Loading visible={showingBlockingLoader} />
