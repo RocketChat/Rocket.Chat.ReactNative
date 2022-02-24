@@ -493,7 +493,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const msg = this.text;
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
-		const regexp = /([a-z0-9._-wа-я]+)$/im;
+		const regexp = /([^@]+)$/;
 		let result = msg.substr(0, cursor).replace(regexp, '');
 		// Remove the ! after select the canned response
 		if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
