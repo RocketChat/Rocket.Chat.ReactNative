@@ -16,7 +16,7 @@ const getLastUpdate = async (rid: string) => {
 	return null;
 };
 
-async function load({ rid: roomId, lastOpen }: { rid: string; lastOpen: string }) {
+async function load({ rid: roomId, lastOpen }: { rid: string; lastOpen?: string }) {
 	let lastUpdate;
 	if (lastOpen) {
 		lastUpdate = new Date(lastOpen).toISOString();
@@ -29,7 +29,7 @@ async function load({ rid: roomId, lastOpen }: { rid: string; lastOpen: string }
 	return result;
 }
 
-export default function loadMissedMessages(args: { rid: string; lastOpen: string }): Promise<void> {
+export default function loadMissedMessages(args: { rid: string; lastOpen?: string }): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await load({ rid: args.rid, lastOpen: args.lastOpen });
