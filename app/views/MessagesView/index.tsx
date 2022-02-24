@@ -71,6 +71,8 @@ interface IMessageItem {
 	msg?: string;
 	starred: boolean;
 	pinned: boolean;
+	type: string;
+	url: string;
 }
 
 interface IParams {

@@ -1,5 +1,5 @@
 export interface IAttachment {
-	ts: Date;
+	ts: string | Date;
 	title: string;
 	type: string;
 	description: string;

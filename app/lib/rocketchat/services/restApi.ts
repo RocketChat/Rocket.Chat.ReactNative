@@ -221,12 +221,6 @@ export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId
 	// @ts-ignore
 	sdk.get('teams.listRoomsOfUser', { teamId, userId });
 
-export const getTeamInfo = ({ teamId }: { teamId: string }): any =>
-	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get('teams.info', { teamId });
-
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }): any => {
 	const params = {
 		...(type === 'c'

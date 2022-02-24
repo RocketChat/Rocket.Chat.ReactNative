@@ -12,6 +12,7 @@ interface IFileThread {
 }
 
 export interface IThreadResult {
+	id: string;
 	_id: string;
 	rid: string;
 	ts: string | Date;
@@ -22,13 +23,13 @@ export interface IThreadResult {
 	attachments?: IAttachment[];
 	md?: MarkdownAST;
 	u: IUserMessage;
-	_updatedAt: Date;
+	_updatedAt: string | Date;
 	urls?: IUrl[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
 	replies?: string[];
 	tcount?: number;
-	tlm?: Date;
+	tlm?: string | Date;
 }
 
 export interface IThread extends IMessage {
