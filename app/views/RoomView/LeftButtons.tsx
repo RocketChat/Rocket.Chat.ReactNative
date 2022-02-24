@@ -42,10 +42,16 @@ const LeftButtons = ({
 }: ILeftButtonsProps): React.ReactElement | null => {
 	if (!isMasterDetail || tmid) {
 		const onPress = () => navigation.goBack();
-		const label = unreadsCount > 99 ? '+99' : unreadsCount.toString() || ' ';
-		const labelLength = label.length ? label.length : 1;
-		const marginLeft = -2 * labelLength;
-		const fontSize = labelLength > 1 ? 14 : 17;
+		let label = ' ';
+		let labelLength = 1;
+		let marginLeft = 0;
+		let fontSize = 0;
+		if (unreadsCount) {
+			label = unreadsCount > 99 ? '+99' : unreadsCount.toString() || ' ';
+			labelLength = label.length ? label.length : 1;
+			marginLeft = -2 * labelLength;
+			fontSize = labelLength > 1 ? 14 : 17;
+		}
 		return (
 			<HeaderBackButton
 				label={label}
