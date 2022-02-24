@@ -57,6 +57,7 @@ interface IUploadProgressProps {
 	rid: string;
 	user: Partial<Pick<TUserModel, 'id' | 'username' | 'token'>>;
 	baseUrl: string;
+	theme?: string;
 }
 
 interface IUploadProgressState {
@@ -169,32 +170,32 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		if (!item.error) {
 			return [
 				<View key='row' style={styles.row}>
-					<CustomIcon name='attach' size={20} color={themes[theme].auxiliaryText} />
+					<CustomIcon name='attach' size={20} color={themes[theme!].auxiliaryText} />
 					<Text
-						style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme].auxiliaryText }]}
+						style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme!].auxiliaryText }]}
 						numberOfLines={1}>
 						{I18n.t('Uploading')} {item.name}
 					</Text>
-					<CustomIcon name='close' size={20} color={themes[theme].auxiliaryText} onPress={() => this.cancelUpload(item)} />
+					<CustomIcon name='close' size={20} color={themes[theme!].auxiliaryText} onPress={() => this.cancelUpload(item)} />
 				</View>,
 				<View
 					key='progress'
-					style={[styles.progress, { width: (width * item.progress) / 100, backgroundColor: themes[theme].tintColor }]}
+					style={[styles.progress, { width: (width * item.progress) / 100, backgroundColor: themes[theme!].tintColor }]}
 				/>
 			];
 		}
 		return (
 			<View style={styles.row}>
-				<CustomIcon name='warning' size={20} color={themes[theme].dangerColor} />
+				<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />
 				<View style={styles.descriptionContainer}>
-					<Text style={[styles.descriptionText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+					<Text style={[styles.descriptionText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
 						{I18n.t('Error_uploading')} {item.name}
 					</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>
-						<Text style={[styles.tryAgainButtonText, { color: themes[theme].tintColor }]}>{I18n.t('Try_again')}</Text>
+						<Text style={[styles.tryAgainButtonText, { color: themes[theme!].tintColor }]}>{I18n.t('Try_again')}</Text>
 					</TouchableOpacity>
 				</View>
-				<CustomIcon name='close' size={20} color={themes[theme].auxiliaryText} onPress={() => this.deleteUpload(item)} />
+				<CustomIcon name='close' size={20} color={themes[theme!].auxiliaryText} onPress={() => this.deleteUpload(item)} />
 			</View>
 		);
 	};
@@ -210,8 +211,8 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					styles.item,
 					index !== 0 ? { marginTop: 10 } : {},
 					{
-						backgroundColor: themes[theme].chatComponentBackground,
-						borderColor: themes[theme].borderColor
+						backgroundColor: themes[theme!].chatComponentBackground,
+						borderColor: themes[theme!].borderColor
 					}
 				]}>
 				{this.renderItemContent(item)}

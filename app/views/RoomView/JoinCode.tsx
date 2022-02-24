@@ -61,7 +61,7 @@ const JoinCode = React.memo(
 
 		const joinRoom = async () => {
 			try {
-				await RocketChat.joinRoom(rid, code, t);
+				await RocketChat.joinRoom(rid, code, t as any);
 				onJoin();
 				hide();
 			} catch (e) {

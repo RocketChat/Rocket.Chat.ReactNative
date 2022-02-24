@@ -129,6 +129,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	goTeamChannels = () => {
 		logEvent(events.ROOM_GO_TEAM_CHANNELS);
 		const { navigation, isMasterDetail, teamId } = this.props;
+		if (!teamId) {
+			return;
+		}
 		if (isMasterDetail) {
 			// @ts-ignore TODO: find a way to make this work
 			navigation.navigate('ModalStackNavigator', {
@@ -143,6 +146,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	goThreadsView = () => {
 		logEvent(events.ROOM_GO_THREADS);
 		const { rid, t, navigation, isMasterDetail } = this.props;
+		if (!rid) {
+			return;
+		}
 		if (isMasterDetail) {
 			// @ts-ignore TODO: find a way to make this work
 			navigation.navigate('ModalStackNavigator', { screen: 'ThreadMessagesView', params: { rid, t } });
@@ -154,6 +160,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	goSearchView = () => {
 		logEvent(events.ROOM_GO_SEARCH);
 		const { rid, t, navigation, isMasterDetail, encrypted } = this.props;
+		if (!rid) {
+			return;
+		}
 		if (isMasterDetail) {
 			// @ts-ignore TODO: find a way to make this work
 			navigation.navigate('ModalStackNavigator', {

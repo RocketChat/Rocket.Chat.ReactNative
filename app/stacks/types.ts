@@ -24,7 +24,7 @@ export type ChatsStackParamList = {
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
 		roomUserId?: string | null;
-		usedCannedResponse?: boolean;
+		usedCannedResponse?: string;
 	};
 	RoomActionsView: {
 		room: ISubscription | undefined;
@@ -234,7 +234,7 @@ export type InsideStackParamList = {
 		isShareExtension: boolean;
 		serverInfo: IServer;
 		text: string;
-		room: ISubscription;
+		room: TSubscriptionModel;
 		thread: any; // TODO: Change
 	};
 	ModalBlockView: {

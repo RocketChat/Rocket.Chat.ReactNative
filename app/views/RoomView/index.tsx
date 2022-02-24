@@ -229,7 +229,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		};
 		this.setHeader();
 
-		if ('observe' in room) {
+		if ('id' in room) {
 			this.observeRoom(room);
 		} else if (this.rid) {
 			this.findAndObserveRoom(this.rid);
@@ -398,6 +398,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		if (this.retryInitTimeout) {
 			clearTimeout(this.retryInitTimeout);
+		}
+		if (this.retryFindTimeout) {
+			clearTimeout(this.retryFindTimeout);
 		}
 		EventEmitter.removeListener('connected', this.handleConnected);
 		if (isTablet) {

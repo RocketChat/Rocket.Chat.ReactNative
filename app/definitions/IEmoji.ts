@@ -27,4 +27,4 @@ export interface IReduxEmoji {
 	extension: any;
 }
 
-export type TGetCustomEmoji = (name: string) => IReduxEmoji | null;
+export type TGetCustomEmoji = (name: string) => any;

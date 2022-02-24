@@ -8,7 +8,7 @@ const getMessageInfo = async (messageId: string): Promise<TMessageModel | TThrea
 	if (message) {
 		return {
 			id: message.id,
-			rid: message.subscription.id,
+			rid: message?.subscription?.id,
 			tmid: message.tmid,
 			msg: message.msg
 		};
@@ -18,7 +18,7 @@ const getMessageInfo = async (messageId: string): Promise<TMessageModel | TThrea
 	if (threadMessage) {
 		return {
 			id: threadMessage.id,
-			rid: threadMessage.subscription.id,
+			rid: threadMessage?.subscription?.id,
 			tmid: threadMessage.rid,
 			msg: threadMessage.msg
 		};
