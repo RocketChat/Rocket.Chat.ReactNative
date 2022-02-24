@@ -193,6 +193,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		console.time(`${this.constructor.name} mount`);
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
+		/**
+		 * On threads, we don't have a subscription.
+		 * `this.state.room` is going to have only a few properties sent during navigation.
+		 * Use `this.tmid` as thread id.
+		 */
 		this.tmid = props.route.params?.tmid;
 		const selectedMessage = props.route.params?.message;
 		const name = props.route.params?.name;
@@ -888,8 +893,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	sendMessage = (message: string, tmid?: string, tshow?: boolean) => {
 		logEvent(events.ROOM_SEND_MESSAGE);
+		const { rid } = this.state.room;
 		const { user } = this.props;
-		RocketChat.sendMessage(this.rid, message, this.tmid || tmid, user, tshow).then(() => {
+		RocketChat.sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
 			if (this.list && this.list.current) {
 				// @ts-ignore
 				this.list.current.update();
@@ -942,7 +948,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	getThreadName = (tmid: string, messageId: string) => getThreadName(this.rid, tmid, messageId);
+	getThreadName = (tmid: string, messageId: string) => {
+		const { rid } = this.state.room;
+		return getThreadName(rid, tmid, messageId);
+	};
 
 	toggleFollowThread = async (isFollowingThread: boolean, tmid?: string) => {
 		try {

@@ -14,12 +14,12 @@ const COUNT = 50;
 
 interface ILoadNextMessages {
 	rid: string;
-	ts: string;
-	tmid: string;
+	ts: Date;
+	tmid?: string;
 	loaderItem: TMessageModel;
 }
 
-export default function loadNextMessages(args: ILoadNextMessages): Promise<IMessage | []> {
+export default function loadNextMessages(args: ILoadNextMessages): Promise<IMessage[] | []> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await RocketChat.methodCallWrapper('loadNextMessages', args.rid, args.ts, COUNT);

@@ -11,7 +11,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../Styles';
 import { withTheme } from '../../theme';
-import { TUploadModel, TUserModel } from '../../definitions';
+import { IUser, TUploadModel } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 interface IUploadProgressProps {
 	width: number;
 	rid: string;
-	user: Partial<Pick<TUserModel, 'id' | 'username' | 'token'>>;
+	user: Partial<Pick<IUser, 'id' | 'username' | 'token'>>;
 	baseUrl: string;
 	theme?: string;
 }
@@ -180,7 +180,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 				</View>,
 				<View
 					key='progress'
-					style={[styles.progress, { width: (width * item.progress) / 100, backgroundColor: themes[theme!].tintColor }]}
+					style={[styles.progress, { width: (width * (item.progress ?? 0)) / 100, backgroundColor: themes[theme!].tintColor }]}
 				/>
 			];
 		}

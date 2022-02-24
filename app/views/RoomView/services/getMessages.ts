@@ -1,3 +1,4 @@
+import { IMessage } from '../../../definitions';
 import loadMessagesForRoom from '../../../lib/methods/loadMessagesForRoom';
 import loadMissedMessages from '../../../lib/methods/loadMissedMessages';
 
@@ -14,10 +15,10 @@ const getMessages = ({
 	latest?: Date;
 	lastOpen?: Date;
 	loaderItem?: any; // TODO: type this
-}): Promise<void> => {
+}): Promise<IMessage[] | [] | void> => {
 	if (lastOpen) {
 		return loadMissedMessages({ rid, lastOpen });
 	}
-	return loadMessagesForRoom({ rid, t, latest, loaderItem });
+	return loadMessagesForRoom({ rid, t: t as any, latest, loaderItem });
 };
 export default getMessages;

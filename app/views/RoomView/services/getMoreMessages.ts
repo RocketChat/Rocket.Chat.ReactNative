@@ -1,4 +1,4 @@
-import { MessageType, SubscriptionType, TAnyMessageModel } from '../../../definitions';
+import { IMessage, MessageType, SubscriptionType, TAnyMessageModel } from '../../../definitions';
 import loadMessagesForRoom from '../../../lib/methods/loadMessagesForRoom';
 import loadNextMessages from '../../../lib/methods/loadNextMessages';
 import {
@@ -17,12 +17,12 @@ const getMoreMessages = ({
 	t: SubscriptionType;
 	tmid?: string;
 	loaderItem: TAnyMessageModel;
-}): Promise<void> => {
+}): Promise<IMessage[] | []> => {
 	if ([MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK].includes(loaderItem.t as MessageType)) {
 		return loadMessagesForRoom({
 			rid,
-			t,
-			latest: loaderItem.ts,
+			t: t as any,
+			latest: loaderItem.ts as Date,
 			loaderItem
 		});
 	}
@@ -31,10 +31,10 @@ const getMoreMessages = ({
 		return loadNextMessages({
 			rid,
 			tmid,
-			ts: loaderItem.ts,
+			ts: loaderItem.ts as Date,
 			loaderItem
 		});
 	}
-	return Promise.resolve();
+	return Promise.resolve([]);
 };
 export default getMoreMessages;

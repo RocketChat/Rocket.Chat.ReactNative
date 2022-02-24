@@ -11,7 +11,7 @@ import roomTypeToApiType, { RoomTypes } from '../rocketchat/methods/roomTypeToAp
 
 const COUNT = 50;
 
-async function load({ rid: roomId, latest, t }: { rid: string; latest?: string; t: RoomTypes }) {
+async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t: RoomTypes }) {
 	let params = { roomId, count: COUNT } as { roomId: string; count: number; latest?: string };
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
@@ -34,7 +34,7 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: string; 
 export default function loadMessagesForRoom(args: {
 	rid: string;
 	t: RoomTypes;
-	latest: string;
+	latest?: Date;
 	loaderItem: TMessageModel;
 }): Promise<IMessage[] | []> {
 	return new Promise(async (resolve, reject) => {

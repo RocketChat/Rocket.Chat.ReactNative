@@ -421,9 +421,11 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					role={role}
 					drid={drid}
 					dcount={dcount}
+					// @ts-ignore
 					dlm={dlm}
 					tmid={tmid}
 					tcount={tcount}
+					// @ts-ignore
 					tlm={tlm}
 					tmsg={tmsg}
 					fetchThreadName={fetchThreadName!}
