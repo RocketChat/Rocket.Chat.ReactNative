@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import React from 'react';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { themes } from '../../constants/colors';
 import { withActionSheet } from '../../containers/ActionSheet';
@@ -13,15 +13,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
-import {
-	IApplicationState,
-	IBaseScreen,
-	ISubscription,
-	IUser,
-	SubscriptionType,
-	TRoomModel,
-	TUserModel
-} from '../../definitions';
+import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TRoomModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
@@ -32,7 +24,7 @@ import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { withTheme } from '../../theme';
 import EventEmitter from '../../utils/events';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom, IGoRoomItem } from '../../utils/goRoom';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -77,9 +69,9 @@ interface IRoomMembersViewState {
 
 class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMembersViewState> {
 	private mounted: boolean;
-	private permissions: any;
+	private permissions: any; // TODO: fix when get props from api
 	private roomObservable!: Observable<TRoomModel>;
-	private subscription: any; // Observable dont have unsubscribe prop
+	private subscription!: Subscription;
 	private roomRoles: any;
 
 	constructor(props: IRoomMembersViewProps) {
@@ -209,7 +201,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			} else {
 				const result = await RocketChat.createDirectMessage(item.username);
 				if (result.success) {
-					this.goRoom({ rid: result.room?._id, name: item.username, t: SubscriptionType.DIRECT });
+					this.goRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT });
 				}
 			}
 		} catch (e) {
@@ -477,7 +469,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		}
 	};
 
-	goRoom = (item: Partial<ISubscription>) => {
+	goRoom = (item: IGoRoomItem) => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			// @ts-ignore
