@@ -748,7 +748,6 @@ const RocketChat = {
 		return sdk.methodCallWrapper(method, ...params);
 	},
 	getUserInfo,
-
 	getUidDirectMessage(room) {
 		const { id: userId } = reduxStore.getState().login.user;
 

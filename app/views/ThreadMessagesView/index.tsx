@@ -462,7 +462,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	};
 
 	renderItem = ({ item }: { item: TThreadModel }) => {
-		const { user, navigation, baseUrl, useRealName } = this.props;
+		const { user, navigation, useRealName } = this.props;
 		const badgeColor = this.getBadgeColor(item);
 		return (
 			<Item
@@ -470,7 +470,6 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 					item,
 					user,
 					navigation,
-					baseUrl,
 					useRealName,
 					badgeColor
 				}}

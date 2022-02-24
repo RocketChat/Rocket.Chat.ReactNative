@@ -1,10 +1,10 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 
-import Markdown from '../../app/containers/markdown';
+import Markdown, { MarkdownPreview } from '../../app/containers/markdown';
 import { themes } from '../../app/constants/colors';
+import { TGetCustomEmoji, IEmoji } from '../../app/definitions/IEmoji';
 
 const theme = 'light';
 
@@ -33,12 +33,12 @@ d
 e`;
 const sequentialEmptySpacesText = 'a       b                                                                             c';
 
-const getCustomEmoji = content => {
+const getCustomEmoji: TGetCustomEmoji = content => {
 	const customEmoji = {
 		marioparty: { name: content, extension: 'gif' },
 		react_rocket: { name: content, extension: 'png' },
 		nyan_rocket: { name: content, extension: 'png' }
-	}[content];
+	}[content] as IEmoji;
 	return customEmoji;
 };
 
@@ -62,42 +62,12 @@ stories.add('Edited', () => (
 
 stories.add('Preview', () => (
 	<View style={styles.container}>
-		<Markdown msg={longText} theme={theme} numberOfLines={1} preview />
-		<Markdown msg={lineBreakText} theme={theme} numberOfLines={1} preview />
-		<Markdown msg={sequentialEmptySpacesText} theme={theme} numberOfLines={1} preview />
-		<Markdown
-			msg='@rocket.cat @name1 @all @here @unknown #general #unknown'
-			theme={theme}
-			numberOfLines={1}
-			preview
-			mentions={[
-				{ _id: 'random', name: 'Rocket Cat', username: 'rocket.cat' },
-				{ _id: 'random2', name: 'Name', username: 'name1' },
-				{ _id: 'here', username: 'here' },
-				{ _id: 'all', username: 'all' }
-			]}
-			channels={[{ _id: '123', name: 'test-channel' }]}
-			username='rocket.cat'
-		/>
-		<Markdown msg='Testing: 😃 :+1: :marioparty:' getCustomEmoji={getCustomEmoji} theme={theme} numberOfLines={1} preview />
-		<Markdown
-			msg='Fallback from new md to old'
-			getCustomEmoji={getCustomEmoji}
-			theme={theme}
-			numberOfLines={1}
-			preview
-			md={[
-				{
-					type: 'PARAGRAPH',
-					value: [
-						{
-							type: 'PLAIN_TEXT',
-							value: 'This is Rocket.Chat'
-						}
-					]
-				}
-			]}
-		/>
+		<MarkdownPreview msg={longText} />
+		<MarkdownPreview msg={lineBreakText} />
+		<MarkdownPreview msg={sequentialEmptySpacesText} />
+		<MarkdownPreview msg='@rocket.cat @name1 @all @here @unknown #general #unknown' />
+		<MarkdownPreview msg='Testing: 😃 :+1: :marioparty:' />
+		<MarkdownPreview msg='Fallback from new md to old' />
 	</View>
 ));
 

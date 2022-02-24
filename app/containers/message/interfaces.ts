@@ -1,12 +1,15 @@
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
+import { IUserChannel, IUserMention } from '../markdown/interfaces';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
+
 export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
 export interface IMessageAttachments {
 	attachments: any;
 	timeFormat: string;
 	showAttachment: Function;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
 
@@ -28,7 +31,7 @@ export interface IMessageAvatar {
 	};
 	small?: boolean;
 	navToRoomInfo: Function;
-	getCustomEmoji(): void;
+	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
 
@@ -59,8 +62,6 @@ export interface IUser {
 	name: string;
 }
 
-export type UserMention = Pick<IUser, 'id' | 'username' | 'name'>;
-
 export interface IMessageContent {
 	_id: string;
 	isTemp: boolean;
@@ -72,12 +73,9 @@ export interface IMessageContent {
 	theme: string;
 	isEdited: boolean;
 	isEncrypted: boolean;
-	getCustomEmoji: Function;
-	channels: {
-		name: string;
-		_id: number;
-	}[];
-	mentions: UserMention[];
+	getCustomEmoji: TGetCustomEmoji;
+	channels: IUserChannel[];
+	mentions: IUserMention[];
 	navToRoomInfo: Function;
 	useRealName: boolean;
 	isIgnored: boolean;
@@ -96,7 +94,7 @@ export interface IMessageEmoji {
 	baseUrl: string;
 	standardEmojiStyle: object;
 	customEmojiStyle: object;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 }
 
 export interface IMessageThread {
