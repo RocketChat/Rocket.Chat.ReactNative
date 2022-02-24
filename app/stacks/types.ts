@@ -15,7 +15,7 @@ export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
-	SettingsView: undefined;
+	SettingsView: any;
 	NewMessageStackNavigator: any;
 	NewMessageStack: undefined;
 	RoomsListView: undefined;
