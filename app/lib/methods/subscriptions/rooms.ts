@@ -132,8 +132,11 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 			}
 		}
 
-		let tmp = merge(subscription, room);
-		tmp = await Encryption.decryptSubscription(tmp);
+		let tmp;
+		if (subscription) {
+			tmp = merge(subscription, room);
+			tmp = await Encryption.decryptSubscription(tmp);
+		}
 		const sub = await getSubscriptionByRoomId(tmp.rid);
 
 		// If we're receiving a E2EKey of a room
