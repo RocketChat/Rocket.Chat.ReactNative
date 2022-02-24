@@ -132,11 +132,8 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 			}
 		}
 
-		let tmp;
-		if (subscription) {
-			tmp = merge(subscription, room);
-			tmp = await Encryption.decryptSubscription(tmp);
-		}
+		let tmp = merge(subscription, room);
+		tmp = (await Encryption.decryptSubscription(tmp)) as ISubscription;
 		const sub = await getSubscriptionByRoomId(tmp.rid);
 
 		// If we're receiving a E2EKey of a room
@@ -151,7 +148,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 				e2eKeyId: sub.e2eKeyId
 			});
 			// Decrypt lastMessage using the received E2EKey
-			tmp = await Encryption.decryptSubscription(tmp);
+			tmp = (await Encryption.decryptSubscription(tmp)) as ISubscription;
 			// Decrypt all pending messages of this room in parallel
 			Encryption.decryptPendingMessages(tmp.rid);
 		}
