@@ -47,7 +47,7 @@ interface IServerDropdownState {
 class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownState> {
 	private animatedValue: Animated.Value;
 	private subscription?: Subscription;
-	private newServerTimeout?: number | null | false;
+	private newServerTimeout?: ReturnType<typeof setTimeout> | false;
 
 	constructor(props: IServerDropdownProps) {
 		super(props);
