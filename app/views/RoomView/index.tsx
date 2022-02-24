@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { IReduxEmoji, TGetCustomEmoji } from 'definitions/IEmoji';
 
 import Touch from '../../utils/touch';
-import { replyBroadcast as replyBroadcastAction } from '../../actions/messages';
+import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
@@ -856,9 +856,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	replyBroadcast = (message: string) => {
-		const { replyBroadcast } = this.props;
-		replyBroadcast(message);
+	replyBroadcast = (message: Record<string, string>) => {
+		const { dispatch } = this.props;
+		dispatch(replyBroadcast(message));
 	};
 
 	handleConnected = () => {
@@ -1132,8 +1132,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	renderItem = (item: TMessageModel, previousItem: TMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
-		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
-			this.props;
+		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled } = this.props;
 		let dateSeparator = null;
 		let showUnreadSeparator = false;
 
@@ -1385,8 +1384,4 @@ const mapStateToProps = state => ({
 	Hide_System_Messages: state.settings.Hide_System_Messages
 });
 
-const mapDispatchToProps = dispatch => ({
-	replyBroadcast: message => dispatch(replyBroadcastAction(message))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));
+export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));

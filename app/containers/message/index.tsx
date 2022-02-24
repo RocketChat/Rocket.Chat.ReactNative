@@ -26,7 +26,6 @@ interface IMessageContainerProps {
 	archived?: boolean;
 	broadcast?: boolean;
 	previousItem?: TMessageModel;
-	isHeader: boolean;
 	baseUrl: string;
 	Message_GroupingPeriod?: number;
 	isReadReceiptEnabled?: boolean;
@@ -53,11 +52,11 @@ interface IMessageContainerProps {
 	callJitsi?: Function;
 	blockAction?: Function;
 	onAnswerButtonPress?: Function;
-	theme: string;
+	theme?: string;
 	threadBadgeColor?: string;
 	toggleFollowThread?: Function;
 	jumpToMessage?: Function;
-	onPress: Function;
+	onPress?: Function;
 }
 
 class MessageContainer extends React.Component<IMessageContainerProps> {
@@ -224,9 +223,11 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		try {
 			if (
 				previousItem &&
+				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
 				previousItem.ts.toDateString() === item.ts.toDateString() &&
 				previousItem.u.username === item.u.username &&
 				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
+				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
 				item.ts - previousItem.ts < Message_GroupingPeriod! * 1000 &&
 				previousItem.tmid === item.tmid
 			) {
@@ -441,7 +442,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					navToRoomInfo={navToRoomInfo!}
 					callJitsi={callJitsi!}
 					blockAction={blockAction!}
-					theme={theme}
+					theme={theme as string}
 					highlighted={highlighted!}
 				/>
 			</MessageContext.Provider>
