@@ -7,7 +7,7 @@ export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
 export interface IMessageAttachments {
 	attachments: any;
-	timeFormat: string;
+	timeFormat?: string;
 	showAttachment: Function;
 	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
@@ -77,7 +77,7 @@ export interface IMessageContent {
 	channels?: IUserChannel[];
 	mentions?: IUserMention[];
 	navToRoomInfo?: Function;
-	useRealName: boolean;
+	useRealName?: boolean;
 	isIgnored: boolean;
 	type: string;
 }

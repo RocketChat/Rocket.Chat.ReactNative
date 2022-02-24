@@ -47,7 +47,7 @@ export interface IListContainerProps {
 	ignored?: string[];
 	navigation: any; // TODO: type me
 	showMessageInMainThread: boolean;
-	serverVersion: string;
+	serverVersion: string | null;
 }
 
 interface IListContainerState {
@@ -271,6 +271,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	handleScrollToIndexFailed: FlatListProps<any>['onScrollToIndexFailed'] = params => {
 		const { listRef } = this.props;
+		// @ts-ignore
 		listRef.current.getNode().scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 	};
 
@@ -281,6 +282,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			const { listRef } = this.props;
 			const index = messages.findIndex(item => item.id === messageId);
 			if (index > -1) {
+				// @ts-ignore
 				listRef.current.getNode().scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
 				await new Promise(res => setTimeout(res, 300));
 				if (!this.viewableItems?.map(vi => vi.key).includes(messageId)) {
@@ -297,6 +299,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				}, 10000);
 				await setTimeout(() => resolve(), 300);
 			} else {
+				// @ts-ignore
 				listRef.current.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
 				if (!this.jumping) {
 					return resolve();
@@ -312,6 +315,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	jumpToBottom = () => {
 		const { listRef } = this.props;
+		// @ts-ignore
 		listRef.current.getNode().scrollToOffset({ offset: -100 });
 	};
 

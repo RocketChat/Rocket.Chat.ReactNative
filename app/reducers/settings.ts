@@ -1,7 +1,7 @@
 import { IActionSettings } from '../actions/settings';
 import { SETTINGS } from '../actions/actionsTypes';
 
-export type TSettings = string | number | boolean;
+export type TSettings = string | number | boolean | string[];
 
 export type ISettings = Record<string, TSettings>;
 

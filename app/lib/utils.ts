@@ -18,7 +18,7 @@ const methods = {
 };
 
 export const compareServerVersion = (
-	currentServerVersion: string,
+	currentServerVersion: string | null,
 	method: keyof typeof methods,
 	versionToCompare: string
 ): boolean =>

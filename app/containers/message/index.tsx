@@ -21,7 +21,7 @@ interface IMessageContainerProps {
 	};
 	msg?: string;
 	rid?: string;
-	timeFormat: string;
+	timeFormat?: string;
 	style?: ViewStyle;
 	archived?: boolean;
 	broadcast?: boolean;
@@ -30,7 +30,7 @@ interface IMessageContainerProps {
 	Message_GroupingPeriod?: number;
 	isReadReceiptEnabled?: boolean;
 	isThreadRoom: boolean;
-	useRealName: boolean;
+	useRealName?: boolean;
 	autoTranslateRoom?: boolean;
 	autoTranslateLanguage?: string;
 	status?: number;

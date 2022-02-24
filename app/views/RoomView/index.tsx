@@ -68,6 +68,7 @@ import ReactionPicker from './ReactionPicker';
 import List, { IListContainerProps, IListProps } from './List';
 import { ChatsStackParamList } from '../../stacks/types';
 import {
+	IApplicationState,
 	IAttachment,
 	IBaseScreen,
 	ILoggedUser,
@@ -121,14 +122,14 @@ const roomAttrsUpdate = [
 interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	user: Partial<Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>>;
 	appState: string;
-	useRealName: boolean;
+	useRealName?: boolean;
 	isAuthenticated: boolean;
-	Message_GroupingPeriod: number;
-	Message_TimeFormat: string;
-	Message_Read_Receipt_Enabled: boolean;
-	Hide_System_Messages: string[];
+	Message_GroupingPeriod?: number;
+	Message_TimeFormat?: string;
+	Message_Read_Receipt_Enabled?: boolean;
+	Hide_System_Messages?: string[];
 	baseUrl: string;
-	serverVersion: string;
+	serverVersion: string | null;
 	customEmojis: ICustomEmojis;
 	isMasterDetail: boolean;
 	replyBroadcast: Function;
@@ -228,7 +229,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		};
 		this.setHeader();
 
-		// if (room && room?.observe) {
 		if ('observe' in room) {
 			this.observeRoom(room);
 		} else if (this.rid) {
@@ -1369,19 +1369,19 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background',
-	useRealName: state.settings.UI_Use_Real_Name,
+	useRealName: state.settings.UI_Use_Real_Name as boolean,
 	isAuthenticated: state.login.isAuthenticated,
-	Message_GroupingPeriod: state.settings.Message_GroupingPeriod,
-	Message_TimeFormat: state.settings.Message_TimeFormat,
+	Message_GroupingPeriod: state.settings.Message_GroupingPeriod as number,
+	Message_TimeFormat: state.settings.Message_TimeFormat as string,
 	customEmojis: state.customEmojis,
 	baseUrl: state.server.server,
 	serverVersion: state.server.version,
-	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled,
-	Hide_System_Messages: state.settings.Hide_System_Messages
+	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled as boolean,
+	Hide_System_Messages: state.settings.Hide_System_Messages as string[]
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));
