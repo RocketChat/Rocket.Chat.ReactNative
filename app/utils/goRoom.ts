@@ -7,7 +7,7 @@ export interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
 	username?: string;
 	t?: SubscriptionType;
-	rid: string;
+	rid?: string;
 	name?: string;
 	prid?: string;
 	visitor?: IVisitor;
