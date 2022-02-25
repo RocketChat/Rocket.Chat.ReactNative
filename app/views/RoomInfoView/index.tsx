@@ -276,7 +276,6 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		} else {
 			try {
 				const result = await RocketChat.getRoomInfo(this.rid);
-				console.log('🚀 ~ file: index.tsx ~ line 280 ~ RoomInfoView ~ loadRoom= ~ result', result);
 				if (result.success) {
 					({ room } = result);
 					this.setState({ room: { ...roomState, ...room } });
