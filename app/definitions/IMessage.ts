@@ -82,7 +82,7 @@ export interface IMessage {
 	reactions?: IReaction[];
 	role?: string;
 	drid?: string;
-	dcount?: number | string;
+	dcount?: number;
 	dlm?: string | Date;
 	tmid?: string;
 	tcount?: number;
