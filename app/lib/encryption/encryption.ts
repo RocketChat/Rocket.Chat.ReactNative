@@ -244,7 +244,7 @@ class Encryption {
 			const threadMessagesToDecrypt = await threadMessagesCollection.query(...whereClause).fetch();
 
 			// Concat messages/threads/threadMessages
-			let toDecrypt: (TThreadModel | TThreadMessageModel)[] = [
+			let toDecrypt: (TThreadModel | TThreadMessageModel | TMessageModel)[] = [
 				...messagesToDecrypt,
 				...threadsToDecrypt,
 				...threadMessagesToDecrypt
@@ -259,7 +259,7 @@ class Encryption {
 						newMessage = await this.decryptMessage({
 							t,
 							rid,
-							msg,
+							msg: msg as string,
 							tmsg
 						});
 					}
@@ -443,7 +443,7 @@ class Encryption {
 	};
 
 	// Decrypt a message
-	decryptMessage = async (message: Partial<IMessage>) => {
+	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg'>) => {
 		const { t, e2e } = message;
 
 		// Prevent create a new instance if this room was encrypted sometime ago
@@ -464,12 +464,13 @@ class Encryption {
 		}
 
 		const { rid } = message;
-		const roomE2E = await this.getRoomInstance(rid as string);
+		const roomE2E = await this.getRoomInstance(rid);
 		return roomE2E.decrypt(message);
 	};
 
 	// Decrypt multiple messages
-	decryptMessages = (messages: IMessage[]) => Promise.all(messages.map((m: IMessage) => this.decryptMessage(m)));
+	decryptMessages = (messages: Partial<IMessage>[]) =>
+		Promise.all(messages.map((m: Partial<IMessage>) => this.decryptMessage(m as IMessage)));
 
 	// Decrypt multiple subscriptions
 	decryptSubscriptions = (subscriptions: ISubscription[]) => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));

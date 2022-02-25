@@ -1,14 +1,24 @@
 import { ChatsStackParamList } from '../stacks/types';
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
-import { IOmnichannelRoom, ISubscription, SubscriptionType, IVisitor } from '../definitions';
+import { IOmnichannelRoom, SubscriptionType, IVisitor } from '../definitions';
+
+export interface IGoRoomItem {
+	search?: boolean; // comes from spotlight
+	username?: string;
+	t?: SubscriptionType;
+	rid?: string;
+	name?: string;
+	prid?: string;
+	visitor?: IVisitor;
+}
 
 const navigate = ({
 	item,
 	isMasterDetail,
 	...props
 }: {
-	item: IItem | IOmnichannelRoomVisitor;
+	item: IGoRoomItem | IOmnichannelRoomVisitor;
 	isMasterDetail: boolean;
 	navigationMethod?: () => ChatsStackParamList;
 }) => {
@@ -35,17 +45,12 @@ interface IOmnichannelRoomVisitor extends IOmnichannelRoom {
 	visitor: IVisitor;
 }
 
-interface IItem extends Partial<ISubscription> {
-	search?: boolean; // comes from spotlight
-	username?: string;
-}
-
 export const goRoom = async ({
 	item,
 	isMasterDetail = false,
 	...props
 }: {
-	item: IItem | IOmnichannelRoomVisitor;
+	item: IGoRoomItem | IOmnichannelRoomVisitor;
 	isMasterDetail: boolean;
 	navigationMethod?: any;
 	jumpToMessageId?: string;
@@ -55,9 +60,8 @@ export const goRoom = async ({
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
-			// @ts-ignore
-			const result = await RocketChat.createDirectMessage(username);
-			if (result.success) {
+			const result = await RocketChat.createDirectMessage(username as string);
+			if (result.success && result?.room?._id) {
 				return navigate({
 					item: {
 						rid: result.room._id,

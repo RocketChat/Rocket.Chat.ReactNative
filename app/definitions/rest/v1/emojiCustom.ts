@@ -9,7 +9,7 @@ export type EmojiCustomEndpoints = {
 		} & PaginatedResult;
 	};
 	'emoji-custom.list': {
-		GET: (params: { query: string }) => {
+		GET: (params: { updatedSince: string }) => {
 			emojis?: {
 				update: ICustomEmojiDescriptor[];
 			};

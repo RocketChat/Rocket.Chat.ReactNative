@@ -24,7 +24,9 @@ import { ICreateChannel } from '../../reducers/createChannel';
 import { ICreateDiscussion } from '../../reducers/createDiscussion';
 import { IEncryption } from '../../reducers/encryption';
 import { IInviteLinks } from '../../reducers/inviteLinks';
+import { ILogin } from '../../reducers/login';
 import { IRoles } from '../../reducers/roles';
+import { IRoom } from '../../reducers/room';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { IServer } from '../../reducers/server';
 import { ISettings } from '../../reducers/settings';
@@ -35,13 +37,13 @@ import { IEnterpriseModules } from '../../reducers/enterpriseModules';
 
 export interface IApplicationState {
 	settings: ISettings;
-	login: any;
 	meteor: IConnect;
+	login: ILogin;
 	server: IServer;
 	selectedUsers: ISelectedUsers;
 	app: IApp;
 	createChannel: ICreateChannel;
-	room: any;
+	room: IRoom;
 	rooms: any;
 	sortPreferences: any;
 	share: IShare;

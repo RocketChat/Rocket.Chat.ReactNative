@@ -1,5 +1,7 @@
 import Model from '@nozbe/watermelondb/Model';
+import { MarkdownAST } from '@rocket.chat/message-parser';
 
+import { IAttachment } from './IAttachment';
 import { IMessage } from './IMessage';
 import { IServedBy } from './IServedBy';
 import { IVisitor, SubscriptionType } from './ISubscription';
@@ -34,8 +36,12 @@ export interface IRoom {
 	tags?: string[];
 	e2eKeyId?: string;
 	avatarETag?: string;
+	latest?: string;
 	default?: true;
 	featured?: true;
+	muted?: string[];
+	teamId?: string;
+	ignored?: string;
 }
 
 export enum OmnichannelSourceType {
@@ -101,3 +107,52 @@ export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featu
 }
 
 export type TRoomModel = IRoom & Model;
+
+export interface IServerRoomItem {
+	_id: string;
+	name: string;
+	fname: string;
+	t: SubscriptionType;
+	u: {
+		_id: string;
+		username: string;
+	};
+	customFields: {};
+	ts: string;
+	ro: boolean;
+	_updatedAt: string;
+	lm: string;
+	lastMessage: {
+		alias: string;
+		msg: string;
+		attachments: IAttachment[];
+		parseUrls: boolean;
+		bot: {
+			i: string;
+		};
+		groupable: boolean;
+		avatar: string;
+		ts: string;
+		u: IUser;
+		rid: string;
+		_id: string;
+		_updatedAt: string;
+		mentions: [];
+		channels: [];
+		md: MarkdownAST;
+	};
+	topic: string;
+	joinCodeRequired: boolean;
+	description: string;
+	jitsiTimeout: string;
+	usersCount: number;
+	e2eKeyId: string;
+	avatarETag: string;
+	encrypted: boolean;
+}
+
+export interface IServerRoom {
+	update: IServerRoomItem[];
+	remove: IServerRoomItem[];
+	success: boolean;
+}

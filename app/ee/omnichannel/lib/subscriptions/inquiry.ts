@@ -77,6 +77,11 @@ export default function subscribeInquiry() {
 
 	try {
 		const { user } = store.getState().login;
+
+		if (!user.id) {
+			throw new Error('inquiry: @subscribeInquiry user.id not found');
+		}
+
 		RocketChat.getAgentDepartments(user.id).then((result: { success: boolean; departments: ILivechatDepartment[] }) => {
 			if (result.success) {
 				const { departments } = result;
