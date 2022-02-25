@@ -9,10 +9,17 @@ import { IAttachment } from '../definitions/IAttachment';
 import { IMessage } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
+import { ModalStackParamList } from './MasterDetailStack/types';
 
 export type ChatsStackParamList = {
+	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
+	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
+	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
+	SettingsView: any;
+	NewMessageStackNavigator: any;
+	NewMessageStack: undefined;
 	RoomsListView: undefined;
-	RoomView: {
+	RoomView?: {
 		rid: string;
 		t: SubscriptionType;
 		tmid?: string;

@@ -4,6 +4,7 @@ import { NavigatorScreenParams } from '@react-navigation/core';
 import { IAttachment } from '../../definitions/IAttachment';
 import { IMessage } from '../../definitions/IMessage';
 import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
+import { TRoomModel } from '../../definitions';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -44,9 +45,9 @@ export type ModalStackParamList = {
 		title: string;
 		infoText: string;
 		nextAction: Function;
-		showAlert: boolean;
-		isSearch: boolean;
-		onSearch: Function;
+		showAlert: () => void | boolean;
+		isSearch?: boolean;
+		onSearch?: Function;
 		isRadio?: boolean;
 	};
 	RoomInfoEditView: {
@@ -54,7 +55,7 @@ export type ModalStackParamList = {
 	};
 	RoomMembersView: {
 		rid: string;
-		room: ISubscription;
+		room: TRoomModel;
 	};
 	DiscussionsView: {
 		rid: string;
