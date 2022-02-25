@@ -2,10 +2,13 @@ import Model from '@nozbe/watermelondb/Model';
 import Relation from '@nozbe/watermelondb/Relation';
 
 import { ILastMessage, TMessageModel } from './IMessage';
+import { IRocketChatRecord } from './IRocketChatRecord';
+import { RoomID } from './IRoom';
 import { IServedBy } from './IServedBy';
 import { TThreadModel } from './IThread';
 import { TThreadMessageModel } from './IThreadMessage';
 import { TUploadModel } from './IUpload';
+import { IUser } from './IUser';
 
 export enum SubscriptionType {
 	GROUP = 'p',
@@ -100,29 +103,59 @@ export interface ISubscription {
 
 export type TSubscriptionModel = ISubscription & Model;
 
-export interface IServerSubscriptionItem {
-	_id: string;
-	rid: string;
-	u: {
-		_id: string;
-		username: string;
-	};
-	_updatedAt: string;
-	alert: boolean;
-	fname: string;
-	groupMentions: number;
-	name: string;
-	open: boolean;
-	t: string;
-	unread: number;
-	userMentions: number;
-	ls: string;
-	lr: string;
-	tunread: number[] | [];
-}
+type ServerRoomType = 'c' | 'd' | 'p' | 'l';
 
-export interface IServerSubscription {
-	update: IServerSubscriptionItem[];
-	remove: IServerSubscriptionItem[];
-	success: boolean;
+// https://github.com/RocketChat/Rocket.Chat/blob/a88a96fcadd925b678ff27ada37075e029f78b5e/definition/ISubscription.ts#L8
+export interface IServerSubscription extends IRocketChatRecord {
+	u: Pick<IUser, '_id' | 'username' | 'name'>;
+	v?: Pick<IUser, '_id' | 'username' | 'name'>;
+	rid: RoomID;
+	open: boolean;
+	ts: Date;
+
+	name: string;
+
+	alert?: boolean;
+	unread: number;
+	t: ServerRoomType;
+	ls: Date;
+	f?: true;
+	lr: Date;
+	hideUnreadStatus?: true;
+	teamMain?: boolean;
+	teamId?: string;
+
+	userMentions: number;
+	groupMentions: number;
+
+	tunread?: Array<string>;
+	tunreadGroup?: Array<string>;
+	tunreadUser?: Array<string>;
+
+	prid?: RoomID;
+
+	roles?: string[];
+
+	onHold?: boolean;
+	encrypted?: boolean;
+	E2EKey?: string;
+	unreadAlert?: 'default' | 'all' | 'mentions' | 'nothing';
+
+	fname?: unknown;
+
+	code?: unknown;
+	archived?: unknown;
+	audioNotificationValue?: unknown;
+	desktopNotifications?: unknown;
+	mobilePushNotifications?: unknown;
+	emailNotifications?: unknown;
+	blocked?: unknown;
+	blocker?: unknown;
+	autoTranslate?: unknown;
+	autoTranslateLanguage?: unknown;
+	disableNotifications?: unknown;
+	muteGroupMentions?: unknown;
+	ignored?: unknown;
+
+	department?: unknown;
 }

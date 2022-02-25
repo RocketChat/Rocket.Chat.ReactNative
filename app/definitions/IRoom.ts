@@ -107,51 +107,72 @@ export interface IOmnichannelRoom extends Omit<IRoom, 'default' | 'featured' | '
 
 export type TRoomModel = IRoom & Model;
 
-export interface IServerRoomItem {
-	_id: string;
-	name: string;
-	fname: string;
-	t: SubscriptionType;
-	u: {
-		_id: string;
-		username: string;
-	};
-	customFields: {};
-	ts: string;
-	ro: boolean;
-	_updatedAt: string;
-	lm: string;
-	lastMessage: {
-		alias: string;
-		msg: string;
-		attachments: IAttachment[];
-		parseUrls: boolean;
-		bot: {
-			i: string;
-		};
-		groupable: boolean;
-		avatar: string;
-		ts: string;
-		u: IUser;
-		rid: string;
-		_id: string;
-		_updatedAt: string;
-		mentions: [];
-		channels: [];
-		md: MarkdownAST;
-	};
-	topic: string;
-	joinCodeRequired: boolean;
-	description: string;
-	jitsiTimeout: string;
-	usersCount: number;
-	e2eKeyId: string;
-	avatarETag: string;
-	encrypted: boolean;
-}
+export type RoomType = 'c' | 'd' | 'p' | 'l' | 'v';
+export type RoomID = string;
+export type ChannelName = string;
 
+// https://github.com/RocketChat/Rocket.Chat/blob/43fa95aeaf5716d728bad943c6a07d1ee7172ee2/definition/IRoom.ts#L17
 export interface IServerRoom {
-	update: IServerRoomItem[];
-	remove: IServerRoomItem[];
-	success: boolean;
+	_id: RoomID;
+	t: RoomType;
+	name?: string;
+	fname: string;
+	msgs: number;
+	default?: true;
+	broadcast?: true;
+	featured?: true;
+	encrypted?: boolean;
+	topic?: any;
+
+	u: Pick<IUser, '_id' | 'username' | 'name'>;
+	uids: Array<string>;
+
+	lastMessage?: IMessage;
+	lm?: Date;
+	usersCount: number;
+	jitsiTimeout?: Date;
+	webRtcCallStartTime?: Date;
+	servedBy?: {
+		_id: string;
+	};
+
+	streamingOptions?: {
+		id?: string;
+		type: string;
+	};
+
+	prid?: string;
+	avatarETag?: string;
+	tokenpass?: {
+		require: string;
+		tokens: {
+			token: string;
+			balance: number;
+		}[];
+	};
+
+	teamMain?: boolean;
+	teamId?: string;
+	teamDefault?: boolean;
+	open?: boolean;
+
+	autoTranslateLanguage: string;
+	autoTranslate?: boolean;
+	unread?: number;
+	alert?: boolean;
+	hideUnreadStatus?: boolean;
+
+	sysMes?: string[];
+	muted?: string[];
+	unmuted?: string[];
+
+	usernames?: string[];
+	ts?: Date;
+
+	cl?: boolean;
+	ro?: boolean;
+	favorite?: boolean;
+	archived?: boolean;
+	announcement?: string;
+	description?: string;
 }

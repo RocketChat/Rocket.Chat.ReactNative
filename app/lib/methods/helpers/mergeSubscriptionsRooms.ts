@@ -5,13 +5,9 @@ import { store as reduxStore } from '../../auxStore';
 import { compareServerVersion } from '../../utils';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
-import { ISubscription, IServerRoom, IServerSubscription, IServerSubscriptionItem, IServerRoomItem } from '../../../definitions';
-// TODO: delete and update
+import { ISubscription, IServerSubscription, IServerRoom } from '../../../definitions';
 
-export const merge = (
-	subscription: ISubscription | IServerSubscriptionItem,
-	room?: ISubscription | IServerRoomItem
-): ISubscription => {
+export const merge = (subscription: ISubscription | IServerSubscription, room?: ISubscription | IServerRoom): ISubscription => {
 	const serverVersion = reduxStore.getState().server.version as string;
 	subscription = EJSON.fromJSONValue(subscription) as ISubscription;
 
@@ -95,7 +91,18 @@ export const merge = (
 	return subscription;
 };
 
-export default async (serverSubscriptions: IServerSubscription, serverRooms: IServerRoom): Promise<ISubscription[]> => {
+export default async (
+	serverSubscriptions: {
+		update: IServerSubscription[];
+		remove: IServerSubscription[];
+		success: boolean;
+	},
+	serverRooms: {
+		update: IServerRoom[];
+		remove: IServerRoom[];
+		success: boolean;
+	}
+): Promise<ISubscription[]> => {
 	const subscriptions = serverSubscriptions.update;
 	const rooms = serverRooms.update;
 
