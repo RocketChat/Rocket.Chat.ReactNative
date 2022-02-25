@@ -34,10 +34,8 @@ export const createChannel = ({
 	return sdk.post(type ? 'groups.create' : 'channels.create', params);
 };
 
-export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: string): any =>
+export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: string) =>
 	// RC 2.2.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
 
 export const e2eRequestSubscriptionKeys = (): any =>
