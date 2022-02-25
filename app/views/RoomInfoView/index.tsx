@@ -98,8 +98,6 @@ interface IUserParsed extends IUser {
 export interface ILivechatVisitorModified extends ILivechatVisitor {
 	os?: string;
 	browser?: string;
-	livechatData?: any;
-	utc?: number;
 }
 
 interface IRoomInfoViewState {
