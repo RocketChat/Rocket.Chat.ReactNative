@@ -252,14 +252,17 @@ class Encryption {
 			toDecrypt = (await Promise.all(
 				toDecrypt.map(async message => {
 					const { t, msg, tmsg } = message;
-					const { id: rid } = message.subscription;
-					// WM Object -> Plain Object
-					const newMessage = await this.decryptMessage({
-						t,
-						rid,
-						msg,
-						tmsg
-					});
+					let newMessage: TMessageModel = {} as TMessageModel;
+					if (message.subscription) {
+						const { id: rid } = message.subscription;
+						// WM Object -> Plain Object
+						newMessage = await this.decryptMessage({
+							t,
+							rid,
+							msg,
+							tmsg
+						});
+					}
 
 					try {
 						return message.prepareUpdate(
@@ -440,7 +443,7 @@ class Encryption {
 	};
 
 	// Decrypt a message
-	decryptMessage = async (message: Partial<IMessage>) => {
+	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg'>) => {
 		const { t, e2e } = message;
 
 		// Prevent create a new instance if this room was encrypted sometime ago

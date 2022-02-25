@@ -5,7 +5,7 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { IEmoji, IEmojiCategory } from './interfaces';
+import { IEmoji, IEmojiCategory } from '../../definitions/IEmoji';
 
 const EMOJI_SIZE = 50;
 

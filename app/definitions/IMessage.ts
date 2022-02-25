@@ -3,6 +3,7 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
+import { IUrl } from './IUrl';
 
 export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj';
 
@@ -62,17 +63,18 @@ export interface IMessage {
 	_id: string;
 	rid: string;
 	msg?: string;
+	id: string;
 	t?: MessageType;
-	ts: Date;
+	ts: string | Date;
 	u: IUserMessage;
-	alias: string;
-	parseUrls: boolean;
+	alias?: string;
+	parseUrls?: boolean;
 	groupable?: boolean;
 	avatar?: string;
 	emoji?: string;
 	attachments?: IAttachment[];
-	urls?: string[];
-	_updatedAt: Date;
+	urls?: IUrl[];
+	_updatedAt: string | Date;
 	status?: number;
 	pinned?: boolean;
 	starred?: boolean;
@@ -81,10 +83,10 @@ export interface IMessage {
 	role?: string;
 	drid?: string;
 	dcount?: number;
-	dlm?: Date;
+	dlm?: string | Date;
 	tmid?: string;
 	tcount?: number;
-	tlm?: Date;
+	tlm?: string | Date;
 	replies?: string[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
@@ -96,7 +98,7 @@ export interface IMessage {
 	e2e?: string;
 	tshow?: boolean;
 	md?: MarkdownAST;
-	subscription: { id: string };
+	subscription?: { id: string };
 }
 
 export type TMessageModel = IMessage & Model;
