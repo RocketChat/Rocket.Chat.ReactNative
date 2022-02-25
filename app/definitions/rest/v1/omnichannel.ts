@@ -20,11 +20,7 @@ export type OmnichannelEndpoints = {
 	};
 	'livechat/visitors.info': {
 		GET: (params: { visitorId: string }) => {
-			visitor: {
-				visitorEmails: Array<{
-					address: string;
-				}>;
-			};
+			visitor: ILivechatVisitor;
 		};
 	};
 	'livechat/room.onHold': {
