@@ -4,7 +4,7 @@ import { MENTIONS_TRACKING_TYPE_USERS } from './constants';
 const getMentionRegexp = (trackingType: String): any => {
 	if (trackingType === MENTIONS_TRACKING_TYPE_USERS) {
 		// Match any character in query text after '@' while mentioning a user
-		return /([^@p{L}]+)$/im;
+		return /[^@]*$/im;
 	}
 	return /([a-z0-9._-]+)$/im;
 };
