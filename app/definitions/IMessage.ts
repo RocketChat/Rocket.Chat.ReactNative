@@ -83,7 +83,7 @@ export interface IMessage {
 	_id: string;
 	rid: string;
 	msg?: string;
-	id?: string;
+	id: string;
 	t?: MessageType;
 	ts: string | Date;
 	u?: IUserMessage;
@@ -94,7 +94,7 @@ export interface IMessage {
 	emoji?: string;
 	attachments?: IAttachment[];
 	urls?: IUrl[];
-	_updatedAt?: Date;
+	_updatedAt: string | Date;
 	status?: number;
 	pinned?: boolean;
 	starred?: boolean;
@@ -103,10 +103,10 @@ export interface IMessage {
 	role?: string;
 	drid?: string;
 	dcount?: number;
-	dlm?: Date;
+	dlm?: string | Date;
 	tmid?: string;
 	tcount?: number;
-	tlm?: Date;
+	tlm?: string | Date;
 	replies?: string[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];

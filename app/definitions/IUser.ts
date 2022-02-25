@@ -98,12 +98,12 @@ export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' |
 	_id: string;
 	id: string;
 	token: string;
-	createdAt: Date;
-	roles: string[];
-	type: string;
-	active: boolean;
-	name?: string;
+	createdAt?: Date;
+	roles?: string[];
+	type?: string;
+	active?: boolean;
 	username: string;
+	name?: string;
 	services?: IUserServices;
 	emails?: IUserEmail[];
 	status?: UserStatus;
@@ -118,7 +118,6 @@ export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' |
 	oauth?: {
 		authorizedClients: string[];
 	};
-	_updatedAt: Date;
 	statusLivechat?: string;
 	e2e?: {
 		private_key: string;

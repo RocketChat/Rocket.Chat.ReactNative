@@ -82,6 +82,7 @@ interface IMessageBoxProps {
 	isFocused(): boolean;
 	user: {
 		id: string;
+		_id: string;
 		username: string;
 		token: string;
 	};
@@ -1184,5 +1185,5 @@ const mapStateToProps = (state: any) => ({
 const dispatchToProps = {
 	typing: (rid: any, status: any) => userTypingAction(rid, status)
 };
-// @ts-ignore
+
 export default connect(mapStateToProps, dispatchToProps, null, { forwardRef: true })(withActionSheet(MessageBox)) as any;

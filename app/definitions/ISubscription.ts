@@ -24,14 +24,22 @@ export interface IVisitor {
 	lastMessageTs: Date;
 }
 
+export enum ERoomTypes {
+	DIRECT = 'direct',
+	GROUP = 'group',
+	CHANNEL = 'channel'
+}
+
 type RelationModified<T extends Model> = { fetch(): Promise<T[]> } & Relation<T>;
 
 export interface ISubscription {
 	_id: string; // _id belongs watermelonDB
 	id: string; // id from server
+	_updatedAt?: string; // from server
+	v?: IVisitor;
 	f: boolean;
 	t: SubscriptionType;
-	ts: Date;
+	ts: string | Date;
 	ls: Date;
 	name: string;
 	fname?: string;
@@ -40,12 +48,14 @@ export interface ISubscription {
 	alert: boolean;
 	roles?: string[];
 	unread: number;
+	lm: string;
+	lr: string;
 	userMentions: number;
 	groupMentions: number;
 	tunread?: string[];
 	tunreadUser?: string[];
 	tunreadGroup?: string[];
-	roomUpdatedAt: Date;
+	roomUpdatedAt: Date | number;
 	ro: boolean;
 	lastOpen?: Date;
 	description?: string;
@@ -61,7 +71,7 @@ export interface ISubscription {
 	ignored?: string[];
 	broadcast?: boolean;
 	prid?: string;
-	draftMessage?: string;
+	draftMessage?: string | null;
 	lastThreadSync?: Date;
 	jitsiTimeout?: number;
 	autoTranslate?: boolean;
@@ -90,3 +100,30 @@ export interface ISubscription {
 }
 
 export type TSubscriptionModel = ISubscription & Model;
+
+export interface IServerSubscriptionItem {
+	_id: string;
+	rid: string;
+	u: {
+		_id: string;
+		username: string;
+	};
+	_updatedAt: string;
+	alert: boolean;
+	fname: string;
+	groupMentions: number;
+	name: string;
+	open: boolean;
+	t: string;
+	unread: number;
+	userMentions: number;
+	ls: string;
+	lr: string;
+	tunread: number[] | [];
+}
+
+export interface IServerSubscription {
+	update: IServerSubscriptionItem[];
+	remove: IServerSubscriptionItem[];
+	success: boolean;
+}

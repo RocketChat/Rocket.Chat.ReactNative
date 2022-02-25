@@ -34,10 +34,8 @@ export const createChannel = ({
 	return sdk.post(type ? 'groups.create' : 'channels.create', params);
 };
 
-export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: string): any =>
+export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: string) =>
 	// RC 2.2.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
 
 export const e2eRequestSubscriptionKeys = (): any =>
@@ -220,12 +218,6 @@ export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.get('teams.listRoomsOfUser', { teamId, userId });
-
-export const getTeamInfo = ({ teamId }: { teamId: string }): any =>
-	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get('teams.info', { teamId });
 
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }): any => {
 	const params = {
