@@ -3,7 +3,7 @@ import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { themes } from '../../../constants/colors';
-import { MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../../../constants/messageTypeLoad';
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
 import sharedStyles from '../../Styles';
@@ -44,10 +44,10 @@ const LoadMore = ({ load, type, runOnRender }) => {
 	}, []);
 
 	let text = 'Load_More';
-	if (type === MESSAGE_TYPE_LOAD_NEXT_CHUNK) {
+	if (type === MessageTypeLoad.NEXT_CHUNK) {
 		text = 'Load_Newer';
 	}
-	if (type === MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK) {
+	if (type === MessageTypeLoad.PREVIOUS_CHUNK) {
 		text = 'Load_Older';
 	}
 

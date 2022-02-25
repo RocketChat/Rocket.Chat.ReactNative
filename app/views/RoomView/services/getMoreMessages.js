@@ -1,12 +1,8 @@
-import {
-	MESSAGE_TYPE_LOAD_MORE,
-	MESSAGE_TYPE_LOAD_NEXT_CHUNK,
-	MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK
-} from '../../../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../../../constants/messageTypeLoad';
 import RocketChat from '../../../lib/rocketchat';
 
 const getMoreMessages = ({ rid, t, tmid, loaderItem }) => {
-	if ([MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK].includes(loaderItem.t)) {
+	if ([MessageTypeLoad.MORE, MessageTypeLoad.PREVIOUS_CHUNK].includes(loaderItem.t)) {
 		return RocketChat.loadMessagesForRoom({
 			rid,
 			t,
@@ -15,7 +11,7 @@ const getMoreMessages = ({ rid, t, tmid, loaderItem }) => {
 		});
 	}
 
-	if (loaderItem.t === MESSAGE_TYPE_LOAD_NEXT_CHUNK) {
+	if (loaderItem.t === MessageTypeLoad.NEXT_CHUNK) {
 		return RocketChat.loadNextMessages({
 			rid,
 			tmid,

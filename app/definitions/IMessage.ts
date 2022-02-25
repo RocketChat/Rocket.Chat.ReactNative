@@ -1,25 +1,12 @@
 import Model from '@nozbe/watermelondb/Model';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
-import {
-	MESSAGE_TYPE_LOAD_MORE,
-	MESSAGE_TYPE_LOAD_NEXT_CHUNK,
-	MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK
-} from '../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
 import { IUrl } from './IUrl';
 
-export type MessageType =
-	| 'jitsi_call_started'
-	| 'discussion-created'
-	| 'e2e'
-	| 'load_more'
-	| 'rm'
-	| 'uj'
-	| typeof MESSAGE_TYPE_LOAD_MORE
-	| typeof MESSAGE_TYPE_LOAD_NEXT_CHUNK
-	| typeof MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK;
+export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj' | MessageTypeLoad;
 
 export interface IUserMessage {
 	_id: string;

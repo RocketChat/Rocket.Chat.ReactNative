@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../../constants/messageTypeLoad';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
 import { generateLoadMoreId } from '../utils';
@@ -48,7 +48,7 @@ export default function loadMessagesForRoom(args: {
 						_id: generateLoadMoreId(lastMessage._id),
 						rid: lastMessage.rid,
 						ts: moment(lastMessage.ts).subtract(1, 'millisecond'),
-						t: MESSAGE_TYPE_LOAD_MORE,
+						t: MessageTypeLoad.MORE,
 						msg: lastMessage.msg
 					};
 					data.push(loadMoreItem);

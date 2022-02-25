@@ -23,7 +23,7 @@ import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
-import { MESSAGE_TYPE_ANY_LOAD, MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
+import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../constants/messageTypeLoad';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
@@ -1016,7 +1016,7 @@ class RoomView extends React.Component {
 				<LoadMore
 					load={() => this.onLoadMoreMessages(item)}
 					type={item.t}
-					runOnRender={item.t === MESSAGE_TYPE_LOAD_MORE && !previousItem}
+					runOnRender={item.t === MessageTypeLoad.MORE && !previousItem}
 				/>
 			);
 		} else {
