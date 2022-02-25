@@ -2,7 +2,6 @@ import { SubscriptionType } from '../../../definitions';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import sdk from './sdk';
-import { SubscriptionType } from '../../../definitions';
 
 export const createChannel = ({
 	name,
