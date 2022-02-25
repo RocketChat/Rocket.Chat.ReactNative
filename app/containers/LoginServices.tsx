@@ -234,7 +234,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 					AppleAuthentication.AppleAuthenticationScope.EMAIL
 				]
 			});
-
+			// @ts-ignore
 			await RocketChat.loginOAuthOrSso({ fullName, email, identityToken });
 		} catch {
 			logEvent(events.ENTER_WITH_APPLE_F);

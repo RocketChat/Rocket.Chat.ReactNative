@@ -102,6 +102,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 		this.setState({ logging: true });
 
 		try {
+			// @ts-ignore
 			RocketChat.loginOAuthOrSso(params);
 		} catch (e) {
 			console.warn(e);

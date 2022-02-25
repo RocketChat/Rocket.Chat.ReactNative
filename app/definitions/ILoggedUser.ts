@@ -1,28 +1,29 @@
 import Model from '@nozbe/watermelondb/Model';
 
+import { IUserEmail } from './IUser';
+import { UserStatus } from './UserStatus';
+
 export interface ILoggedUser {
 	id: string;
 	token: string;
 	username: string;
 	name: string;
 	language?: string;
-	status: string;
+	status: UserStatus;
 	statusText?: string;
-	customFields: object;
-	statusLivechat: string;
-	emails: string[];
-	roles: string[];
+	customFields?: {
+		[key: string]: any;
+	};
+	statusLivechat?: string;
+	emails?: IUserEmail[];
+	roles?: string[];
 	avatarETag?: string;
 	isFromWebView: boolean;
-	settings?: {
-		preferences: {
-			showMessageInMainThread: boolean;
-			enableMessageParserEarlyAdoption: boolean;
-		};
-	};
+	showMessageInMainThread: boolean;
+	enableMessageParserEarlyAdoption: boolean;
 }
 
-export interface ILoginResult {
+export interface ILoginResultFromServer {
 	status: string;
 	authToken: string;
 	userId: string;

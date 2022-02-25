@@ -65,6 +65,7 @@ import getUserInfo from './services/getUserInfo';
 // Services
 import sdk from './services/sdk';
 import toggleFavorite from './services/toggleFavorite';
+import { login, loginTOTP, loginWithPassword, loginOAuthOrSso, getLoginServices, _determineAuthType } from './services/connect';
 import * as restAPis from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -487,103 +488,10 @@ const RocketChat = {
 		return this.methodCallWrapper('e2e.resetOwnE2EKey');
 	},
 
-	loginTOTP(params, loginEmailPassword, isFromWebView = false) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				const result = await this.login(params, isFromWebView);
-				return resolve(result);
-			} catch (e) {
-				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
-					const { details } = e.data;
-					try {
-						const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
-
-						if (loginEmailPassword) {
-							reduxStore.dispatch(setUser({ username: params.user || params.username }));
-
-							// Force normalized params for 2FA starting RC 3.9.0.
-							const serverVersion = reduxStore.getState().server.version;
-							if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.9.0')) {
-								const user = params.user ?? params.username;
-								const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-								params = { user, password };
-							}
-
-							return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
-						}
-
-						return resolve(
-							this.loginTOTP({
-								totp: {
-									login: {
-										...params
-									},
-									code: code?.twoFactorCode
-								}
-							})
-						);
-					} catch {
-						// twoFactor was canceled
-						return reject();
-					}
-				} else {
-					reject(e);
-				}
-			}
-		});
-	},
-
-	loginWithPassword({ user, password }) {
-		let params = { user, password };
-		const state = reduxStore.getState();
-
-		if (state.settings.LDAP_Enable) {
-			params = {
-				username: user,
-				ldapPass: password,
-				ldap: true,
-				ldapOptions: {}
-			};
-		} else if (state.settings.CROWD_Enable) {
-			params = {
-				username: user,
-				crowdPassword: password,
-				crowd: true
-			};
-		}
-
-		return this.loginTOTP(params, true);
-	},
-
-	async loginOAuthOrSso(params, isFromWebView = true) {
-		const result = await this.loginTOTP(params, false, isFromWebView);
-		reduxStore.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
-	},
-
-	async login(credentials, isFromWebView = false) {
-		const sdk = this.shareSDK || this.sdk;
-		// RC 0.64.0
-		await sdk.login(credentials);
-		const { result } = sdk.currentLogin;
-		const user = {
-			id: result.userId,
-			token: result.authToken,
-			username: result.me.username,
-			name: result.me.name,
-			language: result.me.language,
-			status: result.me.status,
-			statusText: result.me.statusText,
-			customFields: result.me.customFields,
-			statusLivechat: result.me.statusLivechat,
-			emails: result.me.emails,
-			roles: result.me.roles,
-			avatarETag: result.me.avatarETag,
-			isFromWebView,
-			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true,
-			enableMessageParserEarlyAdoption: result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true
-		};
-		return user;
-	},
+	loginTOTP,
+	loginWithPassword,
+	loginOAuthOrSso,
+	login,
 	logout,
 	logoutOtherLocations() {
 		const { id: userId } = reduxStore.getState().login.user;
@@ -928,59 +836,8 @@ const RocketChat = {
 		prefs = { ...prefs, ...param };
 		return UserPreferences.setMapAsync(SORT_PREFS_KEY, prefs);
 	},
-	async getLoginServices(server) {
-		try {
-			let loginServices = [];
-			const loginServicesResult = await fetch(`${server}/api/v1/settings.oauth`).then(response => response.json());
-
-			if (loginServicesResult.success && loginServicesResult.services) {
-				const { services } = loginServicesResult;
-				loginServices = services;
-
-				const loginServicesReducer = loginServices.reduce((ret, item) => {
-					const name = item.name || item.buttonLabelText || item.service;
-					const authType = this._determineAuthType(item);
-
-					if (authType !== 'not_supported') {
-						ret[name] = { ...item, name, authType };
-					}
-
-					return ret;
-				}, {});
-				reduxStore.dispatch(setLoginServices(loginServicesReducer));
-			} else {
-				reduxStore.dispatch(setLoginServices({}));
-			}
-		} catch (error) {
-			console.log(error);
-			reduxStore.dispatch(setLoginServices({}));
-		}
-	},
-	_determineAuthType(services) {
-		const { name, custom, showButton = true, service } = services;
-
-		const authName = name || service;
-
-		if (custom && showButton) {
-			return 'oauth_custom';
-		}
-
-		if (service === 'saml') {
-			return 'saml';
-		}
-
-		if (service === 'cas') {
-			return 'cas';
-		}
-
-		if (authName === 'apple' && isIOS) {
-			return 'apple';
-		}
-
-		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise
-		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter', 'wordpress'];
-		return availableOAuth.includes(authName) ? 'oauth' : 'not_supported';
-	},
+	getLoginServices,
+	_determineAuthType,
 	roomTypeToApiType,
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;

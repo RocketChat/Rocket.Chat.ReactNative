@@ -6,18 +6,29 @@ import { selectServerFailure } from '../../../actions/server';
 import { twoFactor } from '../../../utils/twoFactor';
 import { compareServerVersion } from '../../utils';
 import { store } from '../../auxStore';
-import { loginRequest, setUser } from '../../../actions/login';
+import { loginRequest, setLoginServices, setUser } from '../../../actions/login';
 import sdk from './sdk';
 import I18n from '../../../i18n';
 import { MIN_ROCKETCHAT_VERSION } from '../rocketchat';
-import { ICredentials, ILoggedUser } from '../../../definitions';
+import { ICredentials, ILoggedUser, IRocketChat } from '../../../definitions';
+import { isIOS } from '../../../utils/deviceInfo';
 
-async function login(credentials: ICredentials, isFromWebView = false) {
+interface IServices {
+	[index: string]: string | boolean;
+	name: string;
+	custom: boolean;
+	showButton: boolean;
+	buttonLabelText: string;
+	service: string;
+}
+
+async function login(this: IRocketChat, credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
+	const sdk = this.shareSDK || this.sdk;
 	// RC 0.64.0
 	await sdk.login(credentials);
 	const result = sdk.currentLogin?.result;
 	if (result) {
-		const user = {
+		const user: ILoggedUser = {
 			id: result.userId,
 			token: result.authToken,
 			username: result.me.username,
@@ -38,10 +49,15 @@ async function login(credentials: ICredentials, isFromWebView = false) {
 	}
 }
 
-function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWebView = false): Promise<ILoggedUser> {
+function loginTOTP(
+	this: IRocketChat,
+	params: ICredentials,
+	loginEmailPassword?: boolean,
+	isFromWebView = false
+): Promise<ILoggedUser> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const result = await login(params, isFromWebView);
+			const result = await this.login(params, isFromWebView);
 			if (result) {
 				return resolve(result);
 			}
@@ -62,11 +78,11 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWeb
 							params = { user, password };
 						}
 
-						return resolve(loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 					}
 
 					return resolve(
-						loginTOTP({
+						this.loginTOTP({
 							totp: {
 								login: {
 									...params
@@ -86,7 +102,7 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWeb
 	});
 }
 
-function loginWithPassword({ user, password }: { user: string; password: string }) {
+function loginWithPassword(this: IRocketChat, { user, password }: { user: string; password: string }) {
 	let params: ICredentials = { user, password };
 	const state = store.getState();
 
@@ -105,11 +121,11 @@ function loginWithPassword({ user, password }: { user: string; password: string 
 		};
 	}
 
-	return loginTOTP(params, true);
+	return this.loginTOTP(params, true);
 }
 
-async function loginOAuthOrSso(params: ICredentials, isFromWebView = true) {
-	const result = await loginTOTP(params, false, isFromWebView);
+async function loginOAuthOrSso(this: IRocketChat, params: ICredentials, isFromWebView = true) {
+	const result = await this.loginTOTP(params, false, isFromWebView);
 	store.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
 }
 
@@ -193,6 +209,61 @@ async function getWebsocketInfo({ server }: { server: string }) {
 	};
 }
 
+async function getLoginServices(this: IRocketChat, server: string) {
+	try {
+		let loginServices = [];
+		const loginServicesResult = await fetch(`${server}/api/v1/settings.oauth`).then(response => response.json());
+
+		if (loginServicesResult.success && loginServicesResult.services) {
+			const { services } = loginServicesResult;
+			loginServices = services;
+
+			const loginServicesReducer = loginServices.reduce((ret: IServices[], item: IServices) => {
+				const name = item.name || item.buttonLabelText || item.service;
+				const authType = this._determineAuthType(item);
+
+				if (authType !== 'not_supported') {
+					ret[name as unknown as number] = { ...item, name, authType };
+				}
+
+				return ret;
+			}, {});
+			store.dispatch(setLoginServices(loginServicesReducer));
+		} else {
+			store.dispatch(setLoginServices({}));
+		}
+	} catch (error) {
+		console.log(error);
+		store.dispatch(setLoginServices({}));
+	}
+}
+
+function _determineAuthType(services: IServices) {
+	const { name, custom, showButton = true, service } = services;
+
+	const authName = name || service;
+
+	if (custom && showButton) {
+		return 'oauth_custom';
+	}
+
+	if (service === 'saml') {
+		return 'saml';
+	}
+
+	if (service === 'cas') {
+		return 'cas';
+	}
+
+	if (authName === 'apple' && isIOS) {
+		return 'apple';
+	}
+
+	// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise
+	const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter', 'wordpress'];
+	return availableOAuth.includes(authName) ? 'oauth' : 'not_supported';
+}
+
 export {
 	login,
 	loginTOTP,
@@ -202,5 +273,7 @@ export {
 	abort,
 	disconnect,
 	getServerInfo,
-	getWebsocketInfo
+	getWebsocketInfo,
+	getLoginServices,
+	_determineAuthType
 };

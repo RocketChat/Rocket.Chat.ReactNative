@@ -6,13 +6,13 @@ import { twoFactor } from '../../../utils/twoFactor';
 import { useSsl } from '../../../utils/url';
 import reduxStore from '../../createStore';
 import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../../definitions/rest/helpers';
-import { ILoginResult } from '../../../definitions';
+import { ICredentials, ILoginResultFromServer } from '../../../definitions';
 
 class Sdk {
 	private sdk: typeof Rocketchat;
 	private code: any;
 	currentLogin: {
-		result: ILoginResult;
+		result: ILoginResultFromServer;
 	} | null = null;
 
 	// TODO: We need to stop returning the SDK after all methods are dehydrated
@@ -163,8 +163,8 @@ class Sdk {
 		return this.sdk.onStreamData(...args);
 	}
 
-	login(...args: any[]) {
-		return this.sdk.login(...args);
+	login(credentials: ICredentials) {
+		return this.sdk.login(credentials);
 	}
 
 	checkAndReopen() {
