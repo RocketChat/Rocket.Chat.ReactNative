@@ -24,6 +24,12 @@ export interface IVisitor {
 	lastMessageTs: Date;
 }
 
+export enum ERoomTypes {
+	DIRECT = 'direct',
+	GROUP = 'group',
+	CHANNEL = 'channel'
+}
+
 export interface ISubscription {
 	_id: string; // _id belongs watermelonDB
 	id: string; // id from server
@@ -31,7 +37,7 @@ export interface ISubscription {
 	v?: IVisitor;
 	f: boolean;
 	t: SubscriptionType;
-	ts: Date;
+	ts: string | Date;
 	ls: Date;
 	name: string;
 	fname?: string;
@@ -63,7 +69,7 @@ export interface ISubscription {
 	ignored?: string[];
 	broadcast?: boolean;
 	prid?: string;
-	draftMessage?: string;
+	draftMessage?: string | null;
 	lastThreadSync?: Date;
 	jitsiTimeout?: number;
 	autoTranslate?: boolean;
