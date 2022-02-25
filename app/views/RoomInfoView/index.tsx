@@ -45,7 +45,7 @@ interface IGetRoomTitle {
 }
 
 const getRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoomTitle) =>
-	type === 'd' ? (
+	type === SubscriptionType.DIRECT ? (
 		<>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>
 				{name}
@@ -164,14 +164,14 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined,
-			title: t === 'd' ? I18n.t('User_Info') : I18n.t('Room_Info'),
+			title: t === SubscriptionType.DIRECT ? I18n.t('User_Info') : I18n.t('Room_Info'),
 			headerRight: showEdit
 				? () => (
 						<HeaderButton.Container>
 							<HeaderButton.Item
 								iconName='edit'
 								onPress={() => {
-									const isLivechat = t === 'l';
+									const isLivechat = t === SubscriptionType.OMNICHANNEL;
 									logEvent(events[`RI_GO_${isLivechat ? 'LIVECHAT' : 'RI'}_EDIT`]);
 									navigation.navigate(isLivechat ? 'LivechatEditView' : 'RoomInfoEditView', { rid, room, roomUser });
 								}}
@@ -185,12 +185,12 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	get isDirect() {
 		const { room } = this.state;
-		return room.t === 'd';
+		return room.t === SubscriptionType.DIRECT;
 	}
 
 	get isLivechat() {
 		const { room } = this.state;
-		return room.t === 'l';
+		return room.t === SubscriptionType.OMNICHANNEL;
 	}
 
 	getRoleDescription = (id: string) => {
@@ -363,7 +363,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 		return (
 			<Avatar text={room.name || roomUser.username} style={styles.avatar} type={this.t} size={100} rid={room?.rid}>
-				{this.t === 'd' && roomUser._id ? (
+				{this.t === SubscriptionType.DIRECT && roomUser._id ? (
 					<View style={[sharedStyles.status, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						<Status size={20} id={roomUser._id} />
 					</View>
@@ -413,7 +413,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			return <Direct roomUser={roomUser} />;
 		}
 
-		if (this.t === 'l') {
+		if (this.t === SubscriptionType.OMNICHANNEL) {
 			return <Livechat room={room} roomUser={roomUser} />;
 		}
 		return <Channel room={room} />;
