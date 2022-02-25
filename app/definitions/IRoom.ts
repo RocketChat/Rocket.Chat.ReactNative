@@ -14,7 +14,6 @@ interface IRequestTranscript {
 }
 
 export interface IRoom {
-	_id?: string;
 	fname?: string;
 	id: string;
 	rid: string;
@@ -68,7 +67,7 @@ export enum OmnichannelSourceType {
 	API = 'api',
 	OTHER = 'other' // catch-all source type
 }
-export interface IOmnichannelRoom extends Omit<IRoom, 'default' | 'featured' | 'broadcast' | ''> {
+export interface IOmnichannelRoom extends Omit<IServerRoom, 'default' | 'featured' | 'broadcast' | ''> {
 	t: SubscriptionType.OMNICHANNEL;
 	v: {
 		_id?: string;

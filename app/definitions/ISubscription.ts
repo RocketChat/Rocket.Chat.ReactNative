@@ -34,9 +34,9 @@ export enum ERoomTypes {
 }
 
 export interface ISubscription {
-	_id: string; // _id belongs watermelonDB
-	id: string; // id from server
-	_updatedAt?: string; // from server
+	_id: string;
+	id: string;
+	_updatedAt?: string;
 	v?: IVisitor;
 	f: boolean;
 	t: SubscriptionType;
