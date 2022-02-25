@@ -11,7 +11,7 @@ export interface IAvatar {
 	size?: number;
 	borderRadius?: number;
 	type?: string;
-	children?: React.ReactNode;
+	children?: React.ReactElement | null;
 	user?: {
 		id?: string;
 		token?: string;
