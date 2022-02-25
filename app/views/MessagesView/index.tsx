@@ -165,7 +165,6 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				name: await getThreadName(this.rid, item.tmid, item._id),
 				t: SubscriptionType.THREAD
 			};
-			//
 			navigation.push('RoomView', params);
 		} else {
 			navigation.navigate('RoomView', params);

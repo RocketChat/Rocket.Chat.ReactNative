@@ -27,7 +27,7 @@ export type ChatsStackParamList = {
 		usedCannedResponse?: string;
 	};
 	RoomActionsView: {
-		room: ISubscription | undefined;
+		room?: ISubscription;
 		member: any;
 		rid: string;
 		t: SubscriptionType;

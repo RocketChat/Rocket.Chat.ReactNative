@@ -120,7 +120,7 @@ const roomAttrsUpdate = [
 ] as const;
 
 interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
-	user: Partial<Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>>;
+	user: Pick<ILoggedUser, 'id' | 'username' | 'token' | 'showMessageInMainThread'>;
 	appState: string;
 	useRealName?: boolean;
 	isAuthenticated: boolean;

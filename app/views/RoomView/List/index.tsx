@@ -8,7 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 
 import { themes } from '../../../constants/colors';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
-import { TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
+import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import RocketChat from '../../../lib/rocketchat';
 import { compareServerVersion } from '../../../lib/utils';
@@ -51,7 +51,7 @@ export interface IListContainerProps {
 }
 
 interface IListContainerState {
-	messages: TMessageModel[] | TThreadMessageModel[];
+	messages: TAnyMessageModel[];
 	refreshing: boolean;
 	highlightedMessage: string | null;
 }
@@ -171,9 +171,8 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				Q.experimentalSortBy('ts', Q.desc),
 				Q.experimentalSkip(0),
 				Q.experimentalTake(this.count)
-			];
+			] as (Q.WhereDescription | Q.Or)[];
 			if (!showMessageInMainThread) {
-				// @ts-ignore FIXME: wmdb ts nonsense
 				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
 			}
 			this.messagesObservable = db

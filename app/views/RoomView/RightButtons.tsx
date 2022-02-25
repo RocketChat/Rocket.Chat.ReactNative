@@ -13,16 +13,16 @@ import { IApplicationState, SubscriptionType, TMessageModel, TSubscriptionModel 
 import { ChatsStackParamList } from '../../stacks/types';
 
 interface IRightButtonsProps {
-	userId: string | undefined;
+	userId?: string;
 	threadsEnabled: boolean;
-	rid: string | undefined;
+	rid?: string;
 	t: string;
-	tmid: string | undefined;
-	teamId: string | undefined;
+	tmid?: string;
+	teamId?: string;
 	isMasterDetail: boolean;
 	toggleFollowThread: Function;
 	joined: boolean;
-	encrypted: boolean | undefined;
+	encrypted?: boolean;
 	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
 }
 

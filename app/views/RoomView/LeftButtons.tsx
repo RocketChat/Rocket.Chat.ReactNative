@@ -14,13 +14,13 @@ const styles = StyleSheet.create({
 });
 
 interface ILeftButtonsProps {
-	tmid: string | undefined;
+	tmid?: string;
 	unreadsCount: number | null;
 	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
 	baseUrl: string;
-	userId: string | undefined;
-	token: string | undefined;
-	title: string | undefined;
+	userId?: string;
+	token?: string;
+	title?: string;
 	t: string;
 	theme: string;
 	goRoomActionsView: Function;

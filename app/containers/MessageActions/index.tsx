@@ -20,7 +20,7 @@ import { ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definit
 export interface IMessageActions {
 	room: TSubscriptionModel;
 	tmid?: string;
-	user: Partial<Pick<ILoggedUser, 'id'>>;
+	user: Pick<ILoggedUser, 'id'>;
 	editInit: Function;
 	reactionInit: Function;
 	onReactionPress: Function;

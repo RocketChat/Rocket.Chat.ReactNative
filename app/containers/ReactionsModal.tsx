@@ -66,7 +66,7 @@ interface IItem {
 		usernames: any;
 		emoji: string;
 	};
-	user?: Partial<Pick<ILoggedUser, 'username'>>;
+	user?: Pick<ILoggedUser, 'username'>;
 	baseUrl?: string;
 	getCustomEmoji?: TGetCustomEmoji;
 	theme?: string;
@@ -80,7 +80,7 @@ interface IModalContent {
 
 interface IReactionsModal {
 	message?: any;
-	user?: Partial<Pick<ILoggedUser, 'username'>>;
+	user?: Pick<ILoggedUser, 'username'>;
 	isVisible: boolean;
 	onClose(): void;
 	baseUrl: string;
