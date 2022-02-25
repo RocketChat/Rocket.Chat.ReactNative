@@ -105,9 +105,7 @@ export default async function updateMessages({
 			threadCollection.prepareCreate(
 				protectedFunction((t: TThreadModel) => {
 					t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
-					if (t.subscription) {
-						t.subscription.id = sub.id;
-					}
+					if (t.subscription) t.subscription.id = sub.id;
 					Object.assign(t, thread);
 				})
 			)

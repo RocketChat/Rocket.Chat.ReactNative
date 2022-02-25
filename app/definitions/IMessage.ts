@@ -87,7 +87,7 @@ export interface IMessageFromServer {
 	msg: string;
 	ts: string;
 	u: IUserMessage;
-	_updatedAt: string;
+	_updatedAt: string | Date;
 	urls: IUrlFromServer[];
 	mentions: IUserMention[];
 	channels: IUserChannel[];
@@ -107,8 +107,6 @@ export interface ILoadMoreMessage {
 }
 
 export interface IMessage extends IMessageFromServer {
-	file: IMessageFile;
-	files: IMessageFile[];
 	id?: string;
 	t?: MessageType;
 	alias?: string;
@@ -123,10 +121,10 @@ export interface IMessage extends IMessageFromServer {
 	role?: string;
 	drid?: string;
 	dcount?: number;
-	dlm?: string;
+	dlm?: string | Date;
 	tmid?: string;
 	tcount?: number;
-	tlm?: string;
+	tlm?: string | Date;
 	replies?: string[];
 	unread?: boolean;
 	autoTranslate?: boolean;

@@ -1,6 +1,7 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
+import { SubscriptionType } from '../../../definitions';
 
 export const createChannel = ({
 	name,
@@ -34,10 +35,8 @@ export const createChannel = ({
 	return sdk.post(type ? 'groups.create' : 'channels.create', params);
 };
 
-export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: string): any =>
+export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: string) =>
 	// RC 2.2.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
 
 export const e2eRequestSubscriptionKeys = (): any =>
@@ -220,12 +219,6 @@ export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.get('teams.listRoomsOfUser', { teamId, userId });
-
-export const getTeamInfo = ({ teamId }: { teamId: string }): any =>
-	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get('teams.info', { teamId });
 
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }): any => {
 	const params = {
@@ -508,7 +501,7 @@ export const toggleRoomOwner = ({
 	isOwner
 }: {
 	roomId: string;
-	t: RoomTypes;
+	t: SubscriptionType;
 	userId: string;
 	isOwner: boolean;
 }): any => {
@@ -531,7 +524,7 @@ export const toggleRoomLeader = ({
 	isLeader
 }: {
 	roomId: string;
-	t: RoomTypes;
+	t: SubscriptionType;
 	userId: string;
 	isLeader: boolean;
 }): any => {
@@ -554,7 +547,7 @@ export const toggleRoomModerator = ({
 	isModerator
 }: {
 	roomId: string;
-	t: RoomTypes;
+	t: SubscriptionType;
 	userId: string;
 	isModerator: boolean;
 }): any => {
@@ -570,7 +563,7 @@ export const toggleRoomModerator = ({
 	return sdk.post(`${roomTypeToApiType(t)}.removeModerator`, { roomId, userId });
 };
 
-export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomTypes; userId: string }): any =>
+export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: SubscriptionType; userId: string }): any =>
 	// RC 0.48.0
 	// TODO: missing definitions from server
 	// @ts-ignore
@@ -627,7 +620,7 @@ export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
 	sdk.get('chat.getMessage', { msgId });
 
-export const getRoomRoles = (roomId: string, type: RoomTypes): any =>
+export const getRoomRoles = (roomId: string, type: SubscriptionType): any =>
 	// RC 0.65.0
 	// TODO: missing definitions from server
 	// @ts-ignore

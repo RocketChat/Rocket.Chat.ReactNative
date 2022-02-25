@@ -130,6 +130,7 @@ export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' |
 	settings?: IUserSettings;
 	defaultRoom?: string;
 	ldap?: boolean;
+	muted?: boolean;
 }
 
 export interface IRegisterUser extends IUser {
