@@ -450,14 +450,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let avatar: string | undefined;
 		let visitor: IVisitor | undefined;
 		if ('id' in room) {
-			subtitle = room?.topic;
-			t = room?.t;
-			teamMain = room?.teamMain;
-			teamId = room?.teamId;
-			encrypted = room?.encrypted;
+			subtitle = room.topic;
+			t = room.t;
+			teamMain = room.teamMain;
+			teamId = room.teamId;
+			encrypted = room.encrypted;
 			({ id: userId, token } = user);
-			avatar = room?.name;
-			visitor = room?.visitor;
+			avatar = room.name;
+			visitor = room.visitor;
 		}
 
 		let numIconsRight = 2;
@@ -997,22 +997,21 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		if (item.tmid) {
 			let name = '';
-			let jumpToMessageId: string | undefined;
+			let jumpToMessageId = '';
 			if ('id' in item) {
 				name = item.tmsg ?? '';
-				if (!name) {
-					const result = await this.getThreadName(item.tmid, item.id);
-					// test if there isn't a thread
-					if (!result) {
-						return;
-					}
-					name = result;
-				}
-				if (item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
-					name = I18n.t('Encrypted_message');
-				}
-
 				jumpToMessageId = item.id;
+			}
+			if (!name) {
+				const result = await this.getThreadName(item.tmid, jumpToMessageId);
+				// test if there isn't a thread
+				if (!result) {
+					return;
+				}
+				name = result;
+			}
+			if ('id' in item && item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
+				name = I18n.t('Encrypted_message');
 			}
 			return navigation.push('RoomView', {
 				rid: this.rid,
