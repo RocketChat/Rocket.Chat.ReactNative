@@ -30,6 +30,7 @@ export interface IThreadResult {
 	channels?: IUserChannel[];
 	replies?: string[];
 	tcount?: number;
+	status?: string;
 	tlm?: string | Date;
 }
 
