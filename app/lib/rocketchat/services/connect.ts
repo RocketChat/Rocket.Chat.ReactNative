@@ -10,23 +10,7 @@ import { loginRequest, setUser } from '../../../actions/login';
 import sdk from './sdk';
 import I18n from '../../../i18n';
 import { MIN_ROCKETCHAT_VERSION } from '../rocketchat';
-import { ILoggedUser } from '../../../definitions';
-
-interface ICredentials {
-	user?: string;
-	password?: string;
-	username?: string;
-	ldapPass?: string;
-	ldap?: boolean;
-	ldapOptions?: object;
-	crowdPassword?: string;
-	crowd?: boolean;
-	code?: string;
-	totp?: {
-		login: ICredentials;
-		code: string;
-	};
-}
+import { ICredentials, ILoggedUser } from '../../../definitions';
 
 async function login(credentials: ICredentials, isFromWebView = false) {
 	// RC 0.64.0
