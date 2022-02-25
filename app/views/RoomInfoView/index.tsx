@@ -367,7 +367,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 					<View style={[sharedStyles.status, { backgroundColor: themes[theme].auxiliaryBackground }]}>
 						<Status size={20} id={roomUser._id} />
 					</View>
-				) : undefined}
+				) : null}
 			</Avatar>
 		);
 	};
