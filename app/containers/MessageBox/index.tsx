@@ -494,7 +494,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const msg = this.text;
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
-		const regexp = getMentionRegexp(trackingType);
+		const regexp = getMentionRegexp();
 		let result = msg.substr(0, cursor).replace(regexp, '');
 		// Remove the ! after select the canned response
 		if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
