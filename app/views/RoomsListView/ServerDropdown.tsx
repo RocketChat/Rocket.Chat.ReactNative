@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Linking } from 'react-native';
-import PropTypes from 'prop-types';
 import { batch, connect } from 'react-redux';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { Subscription } from 'rxjs';
 
 import * as List from '../../containers/List';
 import Button from '../../containers/Button';
@@ -16,7 +16,7 @@ import ServerItem from '../../presentation/ServerItem';
 import database from '../../lib/database';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { KEY_COMMAND, handleCommandSelectServer } from '../../commands';
+import { KEY_COMMAND, handleCommandSelectServer, IKeyCommandEvent } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
 import { localAuthenticate } from '../../utils/localAuthentication';
 import { showConfirmationAlert } from '../../utils/info';
@@ -24,24 +24,32 @@ import log, { events, logEvent } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
 import UserPreferences from '../../lib/userPreferences';
-import { RootEnum } from '../../definitions';
-
+import { IApplicationState, IBaseScreen, RootEnum, TServerModel } from '../../definitions';
 import styles from './styles';
+import { ChatsStackParamList } from '../../stacks/types';
 
 const ROW_HEIGHT = 68;
 const ANIMATION_DURATION = 200;
 
-class ServerDropdown extends Component {
-	static propTypes = {
-		navigation: PropTypes.object,
-		insets: PropTypes.object,
-		closeServerDropdown: PropTypes.bool,
-		server: PropTypes.string,
-		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool
+interface IServerDropdownProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
+	insets?: {
+		top: number;
 	};
+	closeServerDropdown: boolean;
+	server: string;
+	isMasterDetail: boolean;
+}
 
-	constructor(props) {
+interface IServerDropdownState {
+	servers: TServerModel[];
+}
+
+class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownState> {
+	private animatedValue: Animated.Value;
+	private subscription?: Subscription;
+	private newServerTimeout?: ReturnType<typeof setTimeout> | false;
+
+	constructor(props: IServerDropdownProps) {
 		super(props);
 		this.state = { servers: [] };
 		this.animatedValue = new Animated.Value(0);
@@ -66,7 +74,7 @@ class ServerDropdown extends Component {
 		}
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps: IServerDropdownProps) {
 		const { closeServerDropdown } = this.props;
 		if (prevProps.closeServerDropdown !== closeServerDropdown) {
 			this.close();
@@ -105,7 +113,7 @@ class ServerDropdown extends Component {
 		}
 	};
 
-	navToNewServer = previousServer => {
+	navToNewServer = (previousServer: string) => {
 		const { dispatch } = this.props;
 		batch(() => {
 			dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
@@ -122,7 +130,7 @@ class ServerDropdown extends Component {
 		}, ANIMATION_DURATION);
 	};
 
-	select = async (server, version) => {
+	select = async (server: string, version?: string) => {
 		const { server: currentServer, dispatch, isMasterDetail } = this.props;
 		this.close();
 		if (currentServer !== server) {
@@ -145,7 +153,7 @@ class ServerDropdown extends Component {
 		}
 	};
 
-	remove = server =>
+	remove = (server: string) =>
 		showConfirmationAlert({
 			message: I18n.t('This_will_remove_all_data_from_this_server'),
 			confirmationText: I18n.t('Delete'),
@@ -159,10 +167,10 @@ class ServerDropdown extends Component {
 			}
 		});
 
-	handleCommands = ({ event }) => {
+	handleCommands = ({ event }: { event: IKeyCommandEvent }) => {
 		const { servers } = this.state;
 		const { navigation } = this.props;
-		const { input } = event;
+		const { input } = event as unknown as { input: number };
 		if (handleCommandSelectServer(event)) {
 			if (servers[input - 1]) {
 				this.select(servers[input - 1].id);
@@ -171,7 +179,7 @@ class ServerDropdown extends Component {
 		}
 	};
 
-	renderServer = ({ item }) => {
+	renderServer = ({ item }: { item: { id: string; iconURL: string; name: string; version: string } }) => {
 		const { server, theme } = this.props;
 
 		return (
@@ -255,7 +263,7 @@ class ServerDropdown extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	closeServerDropdown: state.rooms.closeServerDropdown,
 	server: state.server.server,
 	isMasterDetail: state.app.isMasterDetail
