@@ -1,8 +1,7 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType } from '../../../definitions';
-import { INotificationPreferences } from '../../../definitions';
+import { SubscriptionType, INotificationPreferences } from '../../../definitions';
 
 export const createChannel = ({
 	name,
