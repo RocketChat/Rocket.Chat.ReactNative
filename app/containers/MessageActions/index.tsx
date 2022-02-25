@@ -276,7 +276,7 @@ const MessageActions = React.memo(
 					await db.write(async () => {
 						await message.update(m => {
 							m.autoTranslate = !m.autoTranslate;
-							m._updatedAt = new Date().toString();
+							m._updatedAt = new Date();
 						});
 					});
 					const translatedMessage = getMessageTranslation(message, room.autoTranslateLanguage);

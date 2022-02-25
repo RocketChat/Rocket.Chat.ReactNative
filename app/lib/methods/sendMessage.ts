@@ -103,7 +103,7 @@ export default async function (rid: string, msg: string, tmid: string, user: IUs
 			tshow
 		} as IMessage);
 
-		const messageDate = new Date().toString();
+		const messageDate = new Date();
 		let tMessageRecord: TMessageModel;
 
 		// If it's replying to a thread
