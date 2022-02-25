@@ -1,75 +1,98 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Alert, Keyboard, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { connect } from 'react-redux';
+import { Q } from '@nozbe/watermelondb';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
-import ImagePicker from 'react-native-image-crop-picker';
 import { dequal } from 'dequal';
 import isEmpty from 'lodash/isEmpty';
-import { Q } from '@nozbe/watermelondb';
+import React from 'react';
+import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import ImagePicker, { Image } from 'react-native-image-crop-picker';
+import { connect } from 'react-redux';
 
-import { compareServerVersion } from '../../lib/utils';
-import database from '../../lib/database';
-import { deleteRoom as deleteRoomAction } from '../../actions/room';
-import KeyboardView from '../../presentation/KeyboardView';
-import sharedStyles from '../Styles';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
-import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../utils/events';
-import RocketChat from '../../lib/rocketchat';
-import RCTextInput from '../../containers/TextInput';
-import Loading from '../../containers/Loading';
-import random from '../../utils/random';
-import log, { events, logEvent } from '../../utils/log';
-import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
+import { deleteRoom } from '../../actions/room';
 import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
-import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-import { MessageTypeValues } from '../../utils/messageTypes';
-import SafeAreaView from '../../containers/SafeAreaView';
 import Avatar from '../../containers/Avatar';
+import Loading from '../../containers/Loading';
+import SafeAreaView from '../../containers/SafeAreaView';
+import StatusBar from '../../containers/StatusBar';
+import RCTextInput from '../../containers/TextInput';
+import { LISTENER } from '../../containers/Toast';
+import { MultiSelect } from '../../containers/UIKit/MultiSelect';
+import { IApplicationState, IBaseScreen, ISubscription, TSubscriptionModel } from '../../definitions';
+import { ERoomType } from '../../definitions/ERoomType';
+import I18n from '../../i18n';
+import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
-import SwitchContainer from './SwitchContainer';
+import RocketChat from '../../lib/rocketchat';
+import { compareServerVersion } from '../../lib/utils';
+import KeyboardView from '../../presentation/KeyboardView';
+import { TSupportedPermissions } from '../../reducers/permissions';
+import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
+import { ChatsStackParamList } from '../../stacks/types';
+import { withTheme } from '../../theme';
+import EventEmitter from '../../utils/events';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import log, { events, logEvent } from '../../utils/log';
+import { MessageTypeValues } from '../../utils/messageTypes';
+import random from '../../utils/random';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { IAvatar } from '../ProfileView/interfaces';
+import sharedStyles from '../Styles';
 import styles from './styles';
+import SwitchContainer from './SwitchContainer';
 
-const PERMISSION_SET_READONLY = 'set-readonly';
-const PERMISSION_SET_REACT_WHEN_READONLY = 'set-react-when-readonly';
-const PERMISSION_ARCHIVE = 'archive-room';
-const PERMISSION_UNARCHIVE = 'unarchive-room';
-const PERMISSION_DELETE_C = 'delete-c';
-const PERMISSION_DELETE_P = 'delete-p';
-const PERMISSION_DELETE_TEAM = 'delete-team';
+interface IRoomInfoEditViewState {
+	room: ISubscription;
+	avatar: IAvatar;
+	permissions: Record<TSupportedPermissions, string>;
+	name: string;
+	description?: string;
+	topic?: string;
+	announcement?: string;
+	joinCode: string;
+	nameError: any;
+	saving: boolean;
+	t: boolean;
+	ro: boolean;
+	reactWhenReadOnly?: boolean;
+	archived: boolean;
+	systemMessages?: boolean | string[];
+	enableSysMes?: boolean | string[];
+	encrypted?: boolean;
+}
 
-class RoomInfoEditView extends React.Component {
+interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | ModalStackParamList, 'RoomInfoEditView'> {
+	serverVersion?: string;
+	encryptionEnabled: boolean;
+	theme: string;
+	setReadOnlyPermission: string[];
+	setReactWhenReadOnlyPermission: string[];
+	archiveRoomPermission: string[];
+	unarchiveRoomPermission: string[];
+	deleteCPermission: string[];
+	deletePPermission: string[];
+	deleteTeamPermission: string[];
+	isMasterDetail: boolean;
+}
+
+class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfoEditViewState> {
+	randomValue = random(15);
+	private querySubscription: any; // Observable dont have unsubscribe prop
+	private room!: TSubscriptionModel;
+	private name!: TextInput | null;
+	private description!: TextInput | null;
+	private topic!: TextInput | null;
+	private announcement!: TextInput | null;
+	private joinCode!: TextInput | null;
+
 	static navigationOptions = () => ({
 		title: I18n.t('Room_Info_Edit')
 	});
 
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		deleteRoom: PropTypes.func,
-		serverVersion: PropTypes.string,
-		encryptionEnabled: PropTypes.bool,
-		theme: PropTypes.string,
-		setReadOnlyPermission: PropTypes.array,
-		setReactWhenReadOnlyPermission: PropTypes.array,
-		archiveRoomPermission: PropTypes.array,
-		unarchiveRoomPermission: PropTypes.array,
-		deleteCPermission: PropTypes.array,
-		deletePPermission: PropTypes.array,
-		deleteTeamPermission: PropTypes.array,
-		isMasterDetail: PropTypes.bool
-	};
-
-	constructor(props) {
+	constructor(props: IRoomInfoEditViewProps) {
 		super(props);
 		this.state = {
-			room: {},
-			avatar: {},
-			permissions: {},
+			room: {} as ISubscription,
+			avatar: {} as IAvatar,
+			permissions: {} as Record<TSupportedPermissions, string>,
 			name: '',
 			description: '',
 			topic: '',
@@ -134,14 +157,15 @@ class RoomInfoEditView extends React.Component {
 			);
 
 			this.setState({
+				// @ts-ignore - Solved by migrating the hasPermission function
 				permissions: {
-					[PERMISSION_SET_READONLY]: result[0],
-					[PERMISSION_SET_REACT_WHEN_READONLY]: result[1],
-					[PERMISSION_ARCHIVE]: result[2],
-					[PERMISSION_UNARCHIVE]: result[3],
-					[PERMISSION_DELETE_C]: result[4],
-					[PERMISSION_DELETE_P]: result[5],
-					...(this.room.teamMain && { [PERMISSION_DELETE_TEAM]: result[6] })
+					'set-readonly': result[0],
+					'set-react-when-readonly': result[1],
+					'archive-room': result[2],
+					'unarchive-room': result[3],
+					'delete-c': result[4],
+					'delete-p': result[5],
+					...(this.room.teamMain && { 'delete-team': result[6] })
 				}
 			});
 		} catch (e) {
@@ -149,10 +173,10 @@ class RoomInfoEditView extends React.Component {
 		}
 	};
 
-	init = room => {
-		const { description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, sysMes, encrypted } = room;
+	init = (room: ISubscription) => {
+		const { description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, encrypted } = room;
+		const sysMes = room.sysMes as string[];
 		// fake password just to user knows about it
-		this.randomValue = random(15);
 		this.setState({
 			room,
 			name: RocketChat.getRoomTitle(room),
@@ -160,7 +184,7 @@ class RoomInfoEditView extends React.Component {
 			topic,
 			announcement,
 			t: t === 'p',
-			avatar: {},
+			avatar: {} as IAvatar,
 			ro,
 			reactWhenReadOnly,
 			joinCode: joinCodeRequired ? this.randomValue : '',
@@ -200,6 +224,7 @@ class RoomInfoEditView extends React.Component {
 			avatar
 		} = this.state;
 		const { joinCodeRequired } = room;
+		const sysMes = room.sysMes as string[];
 		return !(
 			room.name === name &&
 			room.description === description &&
@@ -209,8 +234,8 @@ class RoomInfoEditView extends React.Component {
 			(room.t === 'p') === t &&
 			room.ro === ro &&
 			room.reactWhenReadOnly === reactWhenReadOnly &&
-			dequal(room.sysMes, systemMessages) &&
-			enableSysMes === (room.sysMes && room.sysMes.length > 0) &&
+			dequal(sysMes, systemMessages) &&
+			enableSysMes === (sysMes && sysMes.length > 0) &&
 			room.encrypted === encrypted &&
 			isEmpty(avatar)
 		);
@@ -245,7 +270,7 @@ class RoomInfoEditView extends React.Component {
 		// Clear error objects
 		await this.clearErrors();
 
-		const params = {};
+		const params = {} as any;
 
 		// Name
 		if (room.name !== name) {
@@ -268,7 +293,8 @@ class RoomInfoEditView extends React.Component {
 			params.roomAnnouncement = announcement;
 		}
 		// Room Type
-		if (room.t !== t) {
+		// This logic is strange to me, since in the code t is boolean, but room.t is string
+		if (!!room.t !== t) {
 			params.roomType = t ? 'p' : 'c';
 		}
 		// Read Only
@@ -296,7 +322,7 @@ class RoomInfoEditView extends React.Component {
 
 		try {
 			await RocketChat.saveRoomSettings(room.rid, params);
-		} catch (e) {
+		} catch (e: any) {
 			if (e.error === 'error-invalid-room-name') {
 				this.setState({ nameError: e });
 			}
@@ -317,20 +343,26 @@ class RoomInfoEditView extends React.Component {
 
 	deleteTeam = async () => {
 		const { room } = this.state;
-		const { navigation, deleteCPermission, deletePPermission, deleteRoom } = this.props;
+		const { navigation, deleteCPermission, deletePPermission, dispatch } = this.props;
 
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
-			const teamChannels = await subCollection.query(Q.where('team_id', room.teamId), Q.where('team_main', Q.notEq(true)));
+			const teamChannels = await subCollection.query(
+				Q.where('team_id', room.teamId as string),
+				Q.where('team_main', Q.notEq(true))
+			);
 
 			const teamChannelOwner = [];
+			// @ts-ignore - wm schema type error dont including array
 			for (let i = 0; i < teamChannels.length; i += 1) {
+				// @ts-ignore - wm schema type error dont including array
 				const permissionType = teamChannels[i].t === 'c' ? deleteCPermission : deletePPermission;
+				// @ts-ignore - wm schema type error dont including array
 				// eslint-disable-next-line no-await-in-loop
 				const permissions = await RocketChat.hasPermission([permissionType], teamChannels[i].rid);
-
 				if (permissions[0]) {
+					// @ts-ignore - wm schema type error dont including array
 					teamChannelOwner.push(teamChannels[i]);
 				}
 			}
@@ -340,11 +372,11 @@ class RoomInfoEditView extends React.Component {
 					title: 'Delete_Team',
 					data: teamChannelOwner,
 					infoText: 'Select_channels_to_delete',
-					nextAction: selected => {
+					nextAction: (selected: Record<string, string>) => {
 						showConfirmationAlert({
 							message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
 							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-							onPress: () => deleteRoom('team', room, selected)
+							onPress: () => deleteRoom(ERoomType.t, room, selected)
 						});
 					}
 				});
@@ -352,10 +384,10 @@ class RoomInfoEditView extends React.Component {
 				showConfirmationAlert({
 					message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-					onPress: () => deleteRoom('team', room)
+					onPress: () => dispatch(deleteRoom(ERoomType.t, room))
 				});
 			}
-		} catch (e) {
+		} catch (e: any) {
 			log(e);
 			showErrorAlert(
 				e.data.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_team') }),
@@ -366,7 +398,7 @@ class RoomInfoEditView extends React.Component {
 
 	delete = () => {
 		const { room } = this.state;
-		const { deleteRoom } = this.props;
+		const { dispatch } = this.props;
 
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
@@ -379,7 +411,7 @@ class RoomInfoEditView extends React.Component {
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => deleteRoom('channel', room)
+					onPress: () => dispatch(deleteRoom(ERoomType.c, room))
 				}
 			],
 			{ cancelable: false }
@@ -421,14 +453,14 @@ class RoomInfoEditView extends React.Component {
 		const { room, permissions } = this.state;
 
 		if (room.teamMain) {
-			return permissions[PERMISSION_DELETE_TEAM];
+			return permissions['delete-team'];
 		}
 
 		if (room.t === 'p') {
-			return permissions[PERMISSION_DELETE_P];
+			return permissions['delete-p'];
 		}
 
-		return permissions[PERMISSION_DELETE_C];
+		return permissions['delete-c'];
 	};
 
 	renderSystemMessages = () => {
@@ -445,9 +477,9 @@ class RoomInfoEditView extends React.Component {
 					value: m.value,
 					text: { text: I18n.t('Hide_type_messages', { type: I18n.t(m.text) }) }
 				}))}
-				onChange={({ value }) => this.setState({ systemMessages: value })}
+				onChange={({ value }: { value: boolean }) => this.setState({ systemMessages: value })}
 				placeholder={{ text: I18n.t('Hide_System_Messages') }}
-				value={systemMessages}
+				value={systemMessages as string[]}
 				context={BLOCK_CONTEXT.FORM}
 				multiselect
 				theme={theme}
@@ -466,7 +498,7 @@ class RoomInfoEditView extends React.Component {
 		};
 
 		try {
-			const response = await ImagePicker.openPicker(options);
+			const response: Image = await ImagePicker.openPicker(options);
 			this.setState({ avatar: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' } });
 		} catch (e) {
 			console.log(e);
@@ -477,27 +509,27 @@ class RoomInfoEditView extends React.Component {
 		this.setState({ avatar: { data: null } });
 	};
 
-	toggleRoomType = value => {
+	toggleRoomType = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_ROOM_TYPE);
 		this.setState(({ encrypted }) => ({ t: value, encrypted: value && encrypted }));
 	};
 
-	toggleReadOnly = value => {
+	toggleReadOnly = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_READ_ONLY);
 		this.setState({ ro: value });
 	};
 
-	toggleReactions = value => {
+	toggleReactions = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_REACTIONS);
 		this.setState({ reactWhenReadOnly: value });
 	};
 
-	toggleHideSystemMessages = value => {
+	toggleHideSystemMessages = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_SYSTEM_MSG);
 		this.setState(({ systemMessages }) => ({ enableSysMes: value, systemMessages: value ? systemMessages : [] }));
 	};
 
-	toggleEncrypted = value => {
+	toggleEncrypted = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_ENCRYPTED);
 		this.setState({ encrypted: value });
 	};
@@ -538,15 +570,15 @@ class RoomInfoEditView extends React.Component {
 						<TouchableOpacity
 							style={styles.avatarContainer}
 							onPress={this.changeAvatar}
-							disabled={compareServerVersion(serverVersion, 'lowerThan', '3.6.0')}>
+							disabled={compareServerVersion(serverVersion || '', 'lowerThan', '3.6.0')}>
 							<Avatar
 								type={room.t}
 								text={room.name}
 								avatar={avatar?.url}
 								isStatic={avatar?.url}
-								rid={isEmpty(avatar) && room.rid}
+								rid={isEmpty(avatar) ? room.rid : undefined}
 								size={100}>
-								{compareServerVersion(serverVersion, 'lowerThan', '3.6.0') ? null : (
+								{serverVersion && compareServerVersion(serverVersion, 'lowerThan', '3.6.0') ? undefined : (
 									<TouchableOpacity
 										style={[styles.resetButton, { backgroundColor: themes[theme].dangerColor }]}
 										onPress={this.resetAvatar}>
@@ -563,7 +595,7 @@ class RoomInfoEditView extends React.Component {
 							value={name}
 							onChangeText={value => this.setState({ name: value })}
 							onSubmitEditing={() => {
-								this.description.focus();
+								this.description?.focus();
 							}}
 							error={nameError}
 							theme={theme}
@@ -577,7 +609,7 @@ class RoomInfoEditView extends React.Component {
 							value={description}
 							onChangeText={value => this.setState({ description: value })}
 							onSubmitEditing={() => {
-								this.topic.focus();
+								this.topic?.focus();
 							}}
 							theme={theme}
 							testID='room-info-edit-view-description'
@@ -590,7 +622,7 @@ class RoomInfoEditView extends React.Component {
 							value={topic}
 							onChangeText={value => this.setState({ topic: value })}
 							onSubmitEditing={() => {
-								this.announcement.focus();
+								this.announcement?.focus();
 							}}
 							theme={theme}
 							testID='room-info-edit-view-topic'
@@ -603,7 +635,7 @@ class RoomInfoEditView extends React.Component {
 							value={announcement}
 							onChangeText={value => this.setState({ announcement: value })}
 							onSubmitEditing={() => {
-								this.joinCode.focus();
+								this.joinCode?.focus();
 							}}
 							theme={theme}
 							testID='room-info-edit-view-announcement'
@@ -647,19 +679,19 @@ class RoomInfoEditView extends React.Component {
 							rightLabelPrimary={I18n.t('Read_Only')}
 							rightLabelSecondary={I18n.t('Only_authorized_users_can_write_new_messages')}
 							onValueChange={this.toggleReadOnly}
-							disabled={!permissions[PERMISSION_SET_READONLY] || room.broadcast}
+							disabled={!permissions['set-readonly'] || room.broadcast}
 							theme={theme}
 							testID='room-info-edit-view-ro'
 						/>
 						{ro && !room.broadcast ? (
 							<SwitchContainer
-								value={reactWhenReadOnly}
+								value={reactWhenReadOnly as boolean}
 								leftLabelPrimary={I18n.t('No_Reactions')}
 								leftLabelSecondary={I18n.t('Reactions_are_disabled')}
 								rightLabelPrimary={I18n.t('Allow_Reactions')}
 								rightLabelSecondary={I18n.t('Reactions_are_enabled')}
 								onValueChange={this.toggleReactions}
-								disabled={!permissions[PERMISSION_SET_REACT_WHEN_READONLY]}
+								disabled={!permissions['set-react-when-readonly']}
 								theme={theme}
 								testID='room-info-edit-view-react-when-ro'
 							/>
@@ -670,9 +702,9 @@ class RoomInfoEditView extends React.Component {
 									<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
 							  ]
 							: null}
-						{!compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (
+						{serverVersion && !compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (
 							<SwitchContainer
-								value={enableSysMes}
+								value={enableSysMes as boolean}
 								leftLabelPrimary={I18n.t('Hide_System_Messages')}
 								leftLabelSecondary={
 									enableSysMes
@@ -689,7 +721,7 @@ class RoomInfoEditView extends React.Component {
 						) : null}
 						{encryptionEnabled ? (
 							<SwitchContainer
-								value={encrypted}
+								value={encrypted as boolean}
 								disabled={!t}
 								leftLabelPrimary={I18n.t('Encrypted')}
 								leftLabelSecondary={I18n.t('End_to_end_encrypted_room')}
@@ -735,12 +767,12 @@ class RoomInfoEditView extends React.Component {
 									styles.buttonInverted,
 									styles.buttonContainer_inverted,
 									archived
-										? !permissions[PERMISSION_UNARCHIVE] && sharedStyles.opacity5
-										: !permissions[PERMISSION_ARCHIVE] && sharedStyles.opacity5,
+										? !permissions['unarchive-room'] && sharedStyles.opacity5
+										: !permissions['archive-room'] && sharedStyles.opacity5,
 									{ flex: 1, marginLeft: 10, borderColor: dangerColor }
 								]}
 								onPress={this.toggleArchive}
-								disabled={archived ? !permissions[PERMISSION_UNARCHIVE] : !permissions[PERMISSION_ARCHIVE]}
+								disabled={archived ? !permissions['unarchive-room'] : !permissions['archive-room']}
 								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}>
 								<Text style={[styles.button, styles.button_inverted, { color: dangerColor }]}>
 									{archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE')}
@@ -771,21 +803,17 @@ class RoomInfoEditView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	serverVersion: state.server.version,
+const mapStateToProps = (state: IApplicationState) => ({
+	serverVersion: state.server.version as string,
 	encryptionEnabled: state.encryption.enabled,
-	setReadOnlyPermission: state.permissions[PERMISSION_SET_READONLY],
-	setReactWhenReadOnlyPermission: state.permissions[PERMISSION_SET_REACT_WHEN_READONLY],
-	archiveRoomPermission: state.permissions[PERMISSION_ARCHIVE],
-	unarchiveRoomPermission: state.permissions[PERMISSION_UNARCHIVE],
-	deleteCPermission: state.permissions[PERMISSION_DELETE_C],
-	deletePPermission: state.permissions[PERMISSION_DELETE_P],
-	deleteTeamPermission: state.permissions[PERMISSION_DELETE_TEAM],
+	setReadOnlyPermission: state.permissions['set-readonly'] as string[],
+	setReactWhenReadOnlyPermission: state.permissions['set-react-when-readonly'] as string[],
+	archiveRoomPermission: state.permissions['archive-room'] as string[],
+	unarchiveRoomPermission: state.permissions['unarchive-room'] as string[],
+	deleteCPermission: state.permissions['delete-c'] as string[],
+	deletePPermission: state.permissions['delete-p'] as string[],
+	deleteTeamPermission: state.permissions['delete-team'] as string[],
 	isMasterDetail: state.app.isMasterDetail
 });
 
-const mapDispatchToProps = dispatch => ({
-	deleteRoom: (roomType, room, selected) => dispatch(deleteRoomAction(roomType, room, selected))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(RoomInfoEditView));
+export default connect(mapStateToProps)(withTheme(RoomInfoEditView));
