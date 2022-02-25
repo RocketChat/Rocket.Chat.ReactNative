@@ -20,11 +20,11 @@ export enum SubscriptionType {
 }
 
 export interface IVisitor {
-	_id: string;
-	username: string;
-	token: string;
-	status: string;
-	lastMessageTs: Date;
+	_id?: string;
+	username?: string;
+	token?: string;
+	status?: string;
+	lastMessageTs?: Date;
 }
 
 export enum ERoomTypes {
@@ -74,7 +74,7 @@ export interface ISubscription {
 	prid?: string;
 	draftMessage?: string | null;
 	lastThreadSync?: Date;
-	jitsiTimeout?: number;
+	jitsiTimeout?: Date;
 	autoTranslate?: boolean;
 	autoTranslateLanguage: string;
 	lastMessage?: ILastMessage;

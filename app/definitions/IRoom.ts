@@ -1,8 +1,7 @@
 import Model from '@nozbe/watermelondb/Model';
-import { MarkdownAST } from '@rocket.chat/message-parser';
 
-import { IAttachment } from './IAttachment';
 import { IMessage } from './IMessage';
+import { IRocketChatRecord } from './IRocketChatRecord';
 import { IServedBy } from './IServedBy';
 import { SubscriptionType } from './ISubscription';
 import { IUser } from './IUser';
@@ -45,6 +44,20 @@ export interface IRoom {
 	muted?: string[];
 	teamId?: string;
 	ignored?: string;
+
+	_updatedAt?: Date;
+	archived?: boolean;
+	announcement?: string;
+	description?: string;
+	lastMessage?: IMessage;
+	topic?: string;
+	reactWhenReadOnly?: boolean;
+	joinCodeRequired?: boolean;
+	jitsiTimeout?: Date;
+	usernames?: string[];
+	uids: Array<string>;
+	lm?: Date;
+	sysMes?: string[];
 }
 
 export enum OmnichannelSourceType {
@@ -112,7 +125,7 @@ export type RoomID = string;
 export type ChannelName = string;
 
 // https://github.com/RocketChat/Rocket.Chat/blob/43fa95aeaf5716d728bad943c6a07d1ee7172ee2/definition/IRoom.ts#L17
-export interface IServerRoom {
+export interface IServerRoom extends IRocketChatRecord {
 	_id: RoomID;
 	t: RoomType;
 	name?: string;
@@ -175,4 +188,16 @@ export interface IServerRoom {
 	archived?: boolean;
 	announcement?: string;
 	description?: string;
+
+	reactWhenReadOnly?: boolean;
+	joinCodeRequired?: boolean;
+	e2eKeyId?: string;
+	v?: {
+		_id?: string;
+		token?: string;
+		status: 'online' | 'busy' | 'away' | 'offline';
+	};
+	departmentId?: string;
+	livechatData?: any;
+	tags?: string[];
 }
