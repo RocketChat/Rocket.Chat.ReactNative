@@ -120,7 +120,7 @@ export interface IOmnichannelRoom extends Omit<IRoom, 'default' | 'featured' | '
 
 export type TRoomModel = IRoom & Model;
 
-export type RoomType = 'c' | 'd' | 'p' | 'l' | 'v';
+export type RoomType = 'c' | 'd' | 'p' | 'l';
 export type RoomID = string;
 export type ChannelName = string;
 

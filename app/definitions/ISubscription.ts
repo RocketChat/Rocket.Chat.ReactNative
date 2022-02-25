@@ -3,7 +3,7 @@ import Relation from '@nozbe/watermelondb/Relation';
 
 import { ILastMessage, TMessageModel } from './IMessage';
 import { IRocketChatRecord } from './IRocketChatRecord';
-import { RoomID } from './IRoom';
+import { RoomID, RoomType } from './IRoom';
 import { IServedBy } from './IServedBy';
 import { TThreadModel } from './IThread';
 import { TThreadMessageModel } from './IThreadMessage';
@@ -103,8 +103,6 @@ export interface ISubscription {
 
 export type TSubscriptionModel = ISubscription & Model;
 
-type ServerRoomType = 'c' | 'd' | 'p' | 'l';
-
 // https://github.com/RocketChat/Rocket.Chat/blob/a88a96fcadd925b678ff27ada37075e029f78b5e/definition/ISubscription.ts#L8
 export interface IServerSubscription extends IRocketChatRecord {
 	u: Pick<IUser, '_id' | 'username' | 'name'>;
@@ -117,7 +115,7 @@ export interface IServerSubscription extends IRocketChatRecord {
 
 	alert?: boolean;
 	unread: number;
-	t: ServerRoomType;
+	t: RoomType;
 	ls: Date;
 	f?: true;
 	lr: Date;

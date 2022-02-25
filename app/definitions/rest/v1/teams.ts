@@ -1,7 +1,7 @@
-import { IRoom } from '../../IRoom';
+import { IServerRoom } from '../../IRoom';
 
 export type TeamsEndpoints = {
 	'teams.removeRoom': {
-		POST: (params: { roomId: string; teamId: string }) => { room: IRoom };
+		POST: (params: { roomId: string; teamId: string }) => { room: IServerRoom };
 	};
 };
