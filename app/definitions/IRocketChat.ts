@@ -4,6 +4,7 @@ type TRocketChat = typeof rocketchat;
 
 export interface IRocketChat extends TRocketChat {
 	sdk: any;
+	shareSDK: any;
 	activeUsersSubTimeout: any;
 	roomsSub: any;
 }
