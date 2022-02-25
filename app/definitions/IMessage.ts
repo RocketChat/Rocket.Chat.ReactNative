@@ -79,13 +79,14 @@ interface IMessageAttachment {
 	image_type: string;
 	image_size: number;
 	type: string;
+	description: string;
 }
 
 export interface IMessageFromServer {
 	_id: string;
 	rid: string;
 	msg: string;
-	ts: string;
+	ts: string | Date; // wm date issue
 	u: IUserMessage;
 	_updatedAt: string | Date;
 	urls: IUrlFromServer[];
@@ -107,7 +108,7 @@ export interface ILoadMoreMessage {
 }
 
 export interface IMessage extends IMessageFromServer {
-	id?: string;
+	id: string;
 	t?: MessageType;
 	alias?: string;
 	parseUrls?: boolean;

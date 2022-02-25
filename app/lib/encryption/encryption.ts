@@ -259,7 +259,7 @@ class Encryption {
 						newMessage = await this.decryptMessage({
 							t,
 							rid,
-							msg,
+							msg: msg as string,
 							tmsg
 						});
 					}
@@ -464,7 +464,7 @@ class Encryption {
 		}
 
 		const { rid } = message;
-		const roomE2E = await this.getRoomInstance(rid as string);
+		const roomE2E = await this.getRoomInstance(rid);
 		return roomE2E.decrypt(message);
 	};
 
