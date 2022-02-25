@@ -260,7 +260,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 						/>
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader onSearchChangeText={onChangeText} />,
+				headerTitle: () => <SearchHeader onSearchChangeText={onChangeText} testID='team-channels-view-search-header' />,
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right

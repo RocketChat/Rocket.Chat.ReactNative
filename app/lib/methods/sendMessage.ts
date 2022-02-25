@@ -1,4 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Model } from '@nozbe/watermelondb';
 
 import messagesStatus from '../../constants/messagesStatus';
 import database from '../database';
@@ -6,12 +7,14 @@ import log from '../../utils/log';
 import random from '../../utils/random';
 import { Encryption } from '../encryption';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
+import { IMessage, IUser, TMessageModel } from '../../definitions';
+import sdk from '../rocketchat/services/sdk';
 
-const changeMessageStatus = async (id, tmid, status, message) => {
+const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
 	const db = database.active;
 	const msgCollection = db.get('messages');
 	const threadMessagesCollection = db.get('thread_messages');
-	const successBatch = [];
+	const successBatch: Model[] = [];
 	const messageRecord = await msgCollection.find(id);
 	successBatch.push(
 		messageRecord.prepareUpdate(m => {
@@ -37,7 +40,7 @@ const changeMessageStatus = async (id, tmid, status, message) => {
 	}
 
 	try {
-		await db.action(async () => {
+		await db.write(async () => {
 			await db.batch(...successBatch);
 		});
 	} catch (error) {
@@ -45,48 +48,44 @@ const changeMessageStatus = async (id, tmid, status, message) => {
 	}
 };
 
-export async function sendMessageCall(message) {
+export async function sendMessageCall(message: any) {
 	const { _id, tmid } = message;
 	try {
-		const sdk = this.shareSDK || this.sdk;
 		// RC 0.60.0
+		// @ts-ignore
 		const result = await sdk.post('chat.sendMessage', { message });
 		if (result.success) {
-			return changeMessageStatus(_id, tmid, messagesStatus.SENT, result.message);
+			// @ts-ignore
+			return changeMessageStatus(_id, messagesStatus.SENT, tmid, result.message);
 		}
 	} catch {
 		// do nothing
 	}
-	return changeMessageStatus(_id, tmid, messagesStatus.ERROR);
+	return changeMessageStatus(_id, messagesStatus.ERROR, tmid);
 }
 
-export async function resendMessage(message, tmid) {
+export async function resendMessage(message: TMessageModel, tmid?: string) {
 	const db = database.active;
 	try {
-		await db.action(async () => {
+		await db.write(async () => {
 			await message.update(m => {
 				m.status = messagesStatus.TEMP;
 			});
 		});
-		let m = {
+		const m = await Encryption.encryptMessage({
 			_id: message.id,
-			rid: message.subscription.id,
-			msg: message.msg
-		};
-		if (tmid) {
-			m = {
-				...m,
-				tmid
-			};
-		}
-		m = await Encryption.encryptMessage(m);
-		await sendMessageCall.call(this, m);
+			rid: message.subscription ? message.subscription.id : '',
+			msg: message.msg,
+			...(tmid && { tmid })
+		} as IMessage);
+
+		await sendMessageCall(m);
 	} catch (e) {
 		log(e);
 	}
 }
 
-export default async function (rid, msg, tmid, user, tshow) {
+export default async function (rid: string, msg: string, tmid: string, user: IUser, tshow?: boolean) {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
@@ -94,19 +93,18 @@ export default async function (rid, msg, tmid, user, tshow) {
 		const threadCollection = db.get('threads');
 		const threadMessagesCollection = db.get('thread_messages');
 		const messageId = random(17);
-		const batch = [];
+		const batch: Model[] = [];
 
-		let message = {
+		const message = await Encryption.encryptMessage({
 			_id: messageId,
 			rid,
 			msg,
 			tmid,
 			tshow
-		};
-		message = await Encryption.encryptMessage(message);
+		} as IMessage);
 
 		const messageDate = new Date();
-		let tMessageRecord;
+		let tMessageRecord: TMessageModel;
 
 		// If it's replying to a thread
 		if (tmid) {
@@ -116,7 +114,9 @@ export default async function (rid, msg, tmid, user, tshow) {
 				batch.push(
 					tMessageRecord.prepareUpdate(m => {
 						m.tlm = messageDate;
-						m.tcount += 1;
+						if (m.tcount) {
+							m.tcount += 1;
+						}
 					})
 				);
 
@@ -128,7 +128,9 @@ export default async function (rid, msg, tmid, user, tshow) {
 					batch.push(
 						threadCollection.prepareCreate(tm => {
 							tm._raw = sanitizedRaw({ id: tmid }, threadCollection.schema);
-							tm.subscription.id = rid;
+							if (tm.subscription) {
+								tm.subscription.id = rid;
+							}
 							tm.tmid = tmid;
 							tm.msg = tMessageRecord.msg;
 							tm.ts = tMessageRecord.ts;
@@ -147,7 +149,9 @@ export default async function (rid, msg, tmid, user, tshow) {
 				batch.push(
 					threadMessagesCollection.prepareCreate(tm => {
 						tm._raw = sanitizedRaw({ id: messageId }, threadMessagesCollection.schema);
-						tm.subscription.id = rid;
+						if (tm.subscription) {
+							tm.subscription.id = rid;
+						}
 						tm.rid = tmid;
 						tm.msg = msg;
 						tm.ts = messageDate;
@@ -173,7 +177,9 @@ export default async function (rid, msg, tmid, user, tshow) {
 		batch.push(
 			msgCollection.prepareCreate(m => {
 				m._raw = sanitizedRaw({ id: messageId }, msgCollection.schema);
-				m.subscription.id = rid;
+				if (m.subscription) {
+					m.subscription.id = rid;
+				}
 				m.msg = msg;
 				m.ts = messageDate;
 				m._updatedAt = messageDate;
@@ -210,7 +216,7 @@ export default async function (rid, msg, tmid, user, tshow) {
 		}
 
 		try {
-			await db.action(async () => {
+			await db.write(async () => {
 				await db.batch(...batch);
 			});
 		} catch (e) {
@@ -218,7 +224,7 @@ export default async function (rid, msg, tmid, user, tshow) {
 			return;
 		}
 
-		await sendMessageCall.call(this, message);
+		await sendMessageCall(message);
 	} catch (e) {
 		log(e);
 	}

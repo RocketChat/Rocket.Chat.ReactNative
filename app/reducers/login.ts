@@ -1,15 +1,47 @@
+import { UserStatus } from '../definitions/UserStatus';
 import * as types from '../actions/actionsTypes';
+import { TActionsLogin } from '../actions/login';
+import { IUser } from '../definitions';
 
-const initialState = {
+export interface IUserLogin {
+	id: string;
+	token: string;
+	username: string;
+	name: string;
+	language?: string;
+	status: UserStatus;
+	statusText: string;
+	roles: string[];
+	avatarETag?: string;
+	isFromWebView: boolean;
+	showMessageInMainThread: boolean;
+	enableMessageParserEarlyAdoption: boolean;
+	emails: Record<string, any>[];
+	customFields: Record<string, string>;
+	settings?: Record<string, string>;
+}
+
+export interface ILogin {
+	user: Partial<IUser>;
+	isLocalAuthenticated: boolean;
+	isAuthenticated: boolean;
+	isFetching: boolean;
+	error: Record<string, any>;
+	services: Record<string, any>;
+	failure: boolean;
+}
+
+export const initialState: ILogin = {
 	isLocalAuthenticated: true,
 	isAuthenticated: false,
 	isFetching: false,
 	user: {},
 	error: {},
-	services: {}
+	services: {},
+	failure: false
 };
 
-export default function login(state = initialState, action) {
+export default function login(state = initialState, action: TActionsLogin): ILogin {
 	switch (action.type) {
 		case types.APP.INIT:
 			return initialState;
@@ -60,13 +92,14 @@ export default function login(state = initialState, action) {
 				...state,
 				user: {
 					...state.user,
-					settings: {
-						...state.user.settings,
-						preferences: {
-							...state.user.settings.preferences,
-							...action.preference
-						}
-					}
+					settings: state.user?.settings
+						? {
+								...state.user?.settings,
+								preferences: state.user?.settings?.preferences
+									? { ...state.user.settings.preferences, ...action.preference }
+									: { ...action.preference }
+						  }
+						: { profile: {}, preferences: {} }
 				}
 			};
 		case types.LOGIN.SET_LOCAL_AUTHENTICATED:

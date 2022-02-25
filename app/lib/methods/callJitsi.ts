@@ -1,9 +1,11 @@
-import { store as reduxStore } from '../auxStore';
-import Navigation from '../Navigation';
+import { ISubscription } from '../../definitions';
 import { events, logEvent } from '../../utils/log';
+import { store } from '../auxStore';
+import Navigation from '../Navigation';
+import sdk from '../rocketchat';
 
-async function jitsiURL({ room }) {
-	const { settings } = reduxStore.getState();
+async function jitsiURL({ room }: { room: ISubscription }) {
+	const { settings } = store.getState();
 	const { Jitsi_Enabled } = settings;
 
 	if (!Jitsi_Enabled) {
@@ -19,7 +21,7 @@ async function jitsiURL({ room }) {
 	let queryString = '';
 	if (Jitsi_Enabled_TokenAuth) {
 		try {
-			const accessToken = await this.methodCallWrapper('jitsi:generateAccessToken', room?.rid);
+			const accessToken = await sdk.methodCallWrapper('jitsi:generateAccessToken', room?.rid);
 			queryString = `?jwt=${accessToken}`;
 		} catch {
 			logEvent(events.RA_JITSI_F);
@@ -30,23 +32,23 @@ async function jitsiURL({ room }) {
 	if (Jitsi_URL_Room_Hash) {
 		rname = uniqueID + room?.rid;
 	} else {
-		rname = encodeURIComponent(room.t === 'd' ? room?.usernames?.join?.(' x ') : room?.name);
+		rname = encodeURIComponent(room.t === 'd' ? (room?.usernames?.join?.(' x ') as string) : room?.name);
 	}
 
 	return `${protocol}${domain}${prefix}${rname}${queryString}`;
 }
 
-export function callJitsiWithoutServer(path) {
+export function callJitsiWithoutServer(path: string): void {
 	logEvent(events.RA_JITSI_VIDEO);
-	const { Jitsi_SSL } = reduxStore.getState().settings;
+	const { Jitsi_SSL } = store.getState().settings;
 	const protocol = Jitsi_SSL ? 'https://' : 'http://';
 	const url = `${protocol}${path}`;
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio: false });
 }
 
-async function callJitsi(room, onlyAudio = false) {
+async function callJitsi(room: ISubscription, onlyAudio = false): Promise<void> {
 	logEvent(onlyAudio ? events.RA_JITSI_AUDIO : events.RA_JITSI_VIDEO);
-	const url = await jitsiURL.call(this, { room });
+	const url = await jitsiURL({ room });
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio, rid: room?.rid });
 }
 

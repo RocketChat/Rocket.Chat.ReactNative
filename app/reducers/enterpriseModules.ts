@@ -1,7 +1,7 @@
 import { TActionEnterpriseModules } from '../actions/enterpriseModules';
 import { ENTERPRISE_MODULES } from '../actions/actionsTypes';
 
-export type IEnterpriseModules = 'omnichannel-mobile-enterprise' | 'livechat-enterprise';
+export type IEnterpriseModules = string;
 
 export const initialState: IEnterpriseModules[] = [];
 
