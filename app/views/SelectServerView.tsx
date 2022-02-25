@@ -50,7 +50,6 @@ class SelectServerView extends React.Component<ISelectServerViewProps, ISelectSe
 
 		navigation.navigate('ShareListView');
 		if (currentServer !== server) {
-			// @ts-ignore
 			await RocketChat.shareExtensionInit(server);
 		}
 	};

@@ -488,7 +488,6 @@ const RocketChat = {
 	},
 
 	async login(credentials, isFromWebView = false) {
-		const sdk = this.shareSDK || this.sdk;
 		// RC 0.64.0
 		await sdk.login(credentials);
 		const { result } = sdk.currentLogin;

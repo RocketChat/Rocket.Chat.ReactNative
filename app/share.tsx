@@ -110,7 +110,6 @@ class Root extends React.Component<{}, IState> {
 	}
 
 	componentWillUnmount(): void {
-		// @ts-ignore
 		RocketChat.closeShareExtension();
 		unsubscribeTheme();
 	}
@@ -123,7 +122,6 @@ class Root extends React.Component<{}, IState> {
 		if (currentServer) {
 			await localAuthenticate(currentServer);
 			this.setState({ root: 'inside' });
-			// @ts-ignore
 			await RocketChat.shareExtensionInit(currentServer);
 		} else {
 			this.setState({ root: 'outside' });
