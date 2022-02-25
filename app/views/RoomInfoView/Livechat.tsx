@@ -51,8 +51,6 @@ const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechat
 	return (
 		<>
 			<Title title={I18n.t('User')} theme={theme} />
-			{/* TODO: Check if this param is outdated */}
-			{/* @ts-ignore */}
 			<Timezone utcOffset={roomUser.utc} />
 			<Item label={I18n.t('Username')} content={roomUser.username} />
 			<Item
@@ -66,15 +64,13 @@ const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechat
 			<Item label={I18n.t('IP')} content={roomUser.ip} />
 			<Item label={I18n.t('OS')} content={roomUser.os} />
 			<Item label={I18n.t('Browser')} content={roomUser.browser} />
-			{/* TODO: Check if this param is outdated */}
-			{/* @ts-ignore */}
 			<CustomFields customFields={roomUser.livechatData} />
 			<Title title={I18n.t('Conversation')} theme={theme} />
 			<Item label={I18n.t('Agent')} content={room.servedBy?.username} />
-			{/* TODO: Check if this param is outdated */}
+			{/* TODO: Will be deprecated */}
 			{/* @ts-ignore */}
 			<Item label={I18n.t('Facebook')} content={room.facebook?.page.name} />
-			{/* TODO: Check if this param is outdated */}
+			{/* TODO: Will be deprecated */}
 			{/* @ts-ignore */}
 			<Item label={I18n.t('SMS')} content={room.sms && 'SMS Enabled'} />
 			<Item label={I18n.t('Topic')} content={room.topic} />
