@@ -1,75 +1,82 @@
+import { Q } from '@nozbe/watermelondb';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import { Q } from '@nozbe/watermelondb';
+import { Observable, Subscription } from 'rxjs';
 
-import * as List from '../../containers/List';
-import UserItem from '../../presentation/UserItem';
-import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import RocketChat from '../../lib/rocketchat';
-import database from '../../lib/database';
-import { LISTENER } from '../../containers/Toast';
-import EventEmitter from '../../utils/events';
-import log from '../../utils/log';
-import I18n from '../../i18n';
-import SearchBox from '../../containers/SearchBox';
-import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import * as HeaderButton from '../../containers/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
-import { getUserSelector } from '../../selectors/login';
 import { withActionSheet } from '../../containers/ActionSheet';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import ActivityIndicator from '../../containers/ActivityIndicator';
+import * as HeaderButton from '../../containers/HeaderButton';
+import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { goRoom } from '../../utils/goRoom';
+import SearchBox from '../../containers/SearchBox';
+import StatusBar from '../../containers/StatusBar';
+import { LISTENER } from '../../containers/Toast';
+import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TRoomModel, TUserModel } from '../../definitions';
+import I18n from '../../i18n';
+import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
+import protectedFunction from '../../lib/methods/helpers/protectedFunction';
+import RocketChat from '../../lib/rocketchat';
+import UserItem from '../../presentation/UserItem';
+import { getUserSelector } from '../../selectors/login';
+import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
+import { withTheme } from '../../theme';
+import EventEmitter from '../../utils/events';
+import { goRoom, IGoRoomItem } from '../../utils/goRoom';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import log from '../../utils/log';
+import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import styles from './styles';
 
 const PAGE_SIZE = 25;
 
-const PERMISSION_MUTE_USER = 'mute-user';
-const PERMISSION_SET_LEADER = 'set-leader';
-const PERMISSION_SET_OWNER = 'set-owner';
-const PERMISSION_SET_MODERATOR = 'set-moderator';
-const PERMISSION_REMOVE_USER = 'remove-user';
-const PERMISSION_EDIT_TEAM_MEMBER = 'edit-team-member';
-const PERMISION_VIEW_ALL_TEAMS = 'view-all-teams';
-const PERMISSION_VIEW_ALL_TEAM_CHANNELS = 'view-all-team-channels';
-
-class RoomMembersView extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object,
-		route: PropTypes.object,
-		rid: PropTypes.string,
-		members: PropTypes.array,
-		baseUrl: PropTypes.string,
-		room: PropTypes.object,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			token: PropTypes.string,
-			roles: PropTypes.array
-		}),
-		showActionSheet: PropTypes.func,
-		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool,
-		useRealName: PropTypes.bool,
-		muteUserPermission: PropTypes.array,
-		setLeaderPermission: PropTypes.array,
-		setOwnerPermission: PropTypes.array,
-		setModeratorPermission: PropTypes.array,
-		removeUserPermission: PropTypes.array,
-		editTeamMemberPermission: PropTypes.array,
-		viewAllTeamChannelsPermission: PropTypes.array,
-		viewAllTeamsPermission: PropTypes.array
+interface IRoomMembersViewProps extends IBaseScreen<ModalStackParamList, 'RoomMembersView'> {
+	rid: string;
+	members: string[];
+	baseUrl: string;
+	room: TRoomModel;
+	user: {
+		id: string;
+		token: string;
+		roles: string[];
 	};
+	showActionSheet: (params: any) => {}; // TODO: this work?
+	theme: string;
+	isMasterDetail: boolean;
+	useRealName: boolean;
+	muteUserPermission: string[];
+	setLeaderPermission: string[];
+	setOwnerPermission: string[];
+	setModeratorPermission: string[];
+	removeUserPermission: string[];
+	editTeamMemberPermission: string[];
+	viewAllTeamChannelsPermission: string[];
+	viewAllTeamsPermission: string[];
+}
 
-	constructor(props) {
+interface IRoomMembersViewState {
+	isLoading: boolean;
+	allUsers: boolean;
+	filtering: boolean;
+	rid: string;
+	members: TUserModel[];
+	membersFiltered: TUserModel[];
+	room: TRoomModel;
+	end: boolean;
+}
+
+class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMembersViewState> {
+	private mounted: boolean;
+	private permissions: any; // TODO: fix when get props from api
+	private roomObservable!: Observable<TRoomModel>;
+	private subscription!: Subscription;
+	private roomRoles: any;
+
+	constructor(props: IRoomMembersViewProps) {
 		super(props);
 		this.mounted = false;
-		this.MUTE_INDEX = 0;
 		this.permissions = {};
 		const rid = props.route.params?.rid;
 		const room = props.route.params?.room;
@@ -80,7 +87,7 @@ class RoomMembersView extends React.Component {
 			rid,
 			members: [],
 			membersFiltered: [],
-			room: room || {},
+			room: room || ({} as TRoomModel),
 			end: false
 		};
 		if (room && room.observe) {
@@ -89,7 +96,7 @@ class RoomMembersView extends React.Component {
 				if (this.mounted) {
 					this.setState({ room: changes });
 				} else {
-					this.state.room = changes;
+					this.setState({ room: changes });
 				}
 			});
 		}
@@ -101,6 +108,7 @@ class RoomMembersView extends React.Component {
 		this.mounted = true;
 		this.fetchMembers();
 
+		// @ts-ignore - TODO: room param is wrong
 		if (RocketChat.isGroupChat(room)) {
 			return;
 		}
@@ -129,16 +137,16 @@ class RoomMembersView extends React.Component {
 		);
 
 		this.permissions = {
-			[PERMISSION_MUTE_USER]: result[0],
-			[PERMISSION_SET_LEADER]: result[1],
-			[PERMISSION_SET_OWNER]: result[2],
-			[PERMISSION_SET_MODERATOR]: result[3],
-			[PERMISSION_REMOVE_USER]: result[4],
+			'mute-user': result[0],
+			'set-leader': result[1],
+			'set-owner': result[2],
+			'set-moderator': result[3],
+			'remove-user': result[4],
 			...(room.teamMain
 				? {
-						[PERMISSION_EDIT_TEAM_MEMBER]: result[5],
-						[PERMISSION_VIEW_ALL_TEAM_CHANNELS]: result[6],
-						[PERMISION_VIEW_ALL_TEAMS]: result[7]
+						'edit-team-member': result[5],
+						'view-all-team-channels': result[6],
+						'view-all-teams': result[7]
 				  }
 				: {})
 		};
@@ -169,20 +177,20 @@ class RoomMembersView extends React.Component {
 		});
 	};
 
-	onSearchChangeText = protectedFunction(text => {
+	onSearchChangeText = protectedFunction((text: string) => {
 		const { members } = this.state;
-		let membersFiltered = [];
+		let membersFiltered: TUserModel[] = [];
 		text = text.trim();
 
 		if (members && members.length > 0 && text) {
 			membersFiltered = members.filter(
-				m => m.username.toLowerCase().match(text.toLowerCase()) || m.name.toLowerCase().match(text.toLowerCase())
+				m => m.username.toLowerCase().match(text.toLowerCase()) || m.name?.toLowerCase().match(text.toLowerCase())
 			);
 		}
 		this.setState({ filtering: !!text, membersFiltered });
 	});
 
-	navToDirectMessage = async item => {
+	navToDirectMessage = async (item: IUser) => {
 		try {
 			const db = database.active;
 			const subsCollection = db.get('subscriptions');
@@ -193,7 +201,7 @@ class RoomMembersView extends React.Component {
 			} else {
 				const result = await RocketChat.createDirectMessage(item.username);
 				if (result.success) {
-					this.goRoom({ rid: result.room?._id, name: item.username, t: 'd' });
+					this.goRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT });
 				}
 			}
 		} catch (e) {
@@ -201,15 +209,15 @@ class RoomMembersView extends React.Component {
 		}
 	};
 
-	handleRemoveFromTeam = async selectedUser => {
+	handleRemoveFromTeam = async (selectedUser: TUserModel) => {
 		try {
 			const { navigation } = this.props;
 			const { room } = this.state;
 
-			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: selectedUser._id });
+			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId as string, userId: selectedUser._id });
 
 			if (result.rooms?.length) {
-				const teamChannels = result.rooms.map(r => ({
+				const teamChannels = result.rooms.map((r: any) => ({
 					rid: r._id,
 					name: r.name,
 					teamId: r.teamId,
@@ -219,7 +227,7 @@ class RoomMembersView extends React.Component {
 					title: 'Remove_Member',
 					infoText: 'Remove_User_Team_Channels',
 					data: teamChannels,
-					nextAction: selected => this.removeFromTeam(selectedUser, selected),
+					nextAction: (selected: any) => this.removeFromTeam(selectedUser, selected),
 					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_remove'))
 				});
 			} else {
@@ -238,7 +246,7 @@ class RoomMembersView extends React.Component {
 		}
 	};
 
-	removeFromTeam = async (selectedUser, selected) => {
+	removeFromTeam = async (selectedUser: IUser, selected?: any) => {
 		try {
 			const { members, membersFiltered, room } = this.state;
 			const { navigation } = this.props;
@@ -258,9 +266,10 @@ class RoomMembersView extends React.Component {
 					members: newMembers,
 					membersFiltered: newMembersFiltered
 				});
+				// @ts-ignore - This is just to force a reload
 				navigation.navigate('RoomMembersView');
 			}
-		} catch (e) {
+		} catch (e: any) {
 			log(e);
 			showErrorAlert(
 				e.data.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('removing_team') }),
@@ -269,11 +278,11 @@ class RoomMembersView extends React.Component {
 		}
 	};
 
-	onPressUser = selectedUser => {
+	onPressUser = (selectedUser: TUserModel) => {
 		const { room } = this.state;
 		const { showActionSheet, user, theme } = this.props;
 
-		const options = [
+		const options: {}[] = [
 			{
 				icon: 'message',
 				title: I18n.t('Direct_message'),
@@ -315,7 +324,7 @@ class RoomMembersView extends React.Component {
 
 		// Owner
 		if (this.permissions['set-owner']) {
-			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
+			const userRoleResult = this.roomRoles.find((r: any) => r.u._id === selectedUser._id);
 			const isOwner = userRoleResult?.roles.includes('owner');
 			options.push({
 				icon: 'shield-check',
@@ -335,7 +344,7 @@ class RoomMembersView extends React.Component {
 
 		// Leader
 		if (this.permissions['set-leader']) {
-			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
+			const userRoleResult = this.roomRoles.find((r: any) => r.u._id === selectedUser._id);
 			const isLeader = userRoleResult?.roles.includes('leader');
 			options.push({
 				icon: 'shield-alt',
@@ -355,7 +364,7 @@ class RoomMembersView extends React.Component {
 
 		// Moderator
 		if (this.permissions['set-moderator']) {
-			const userRoleResult = this.roomRoles.find(r => r.u._id === selectedUser._id);
+			const userRoleResult = this.roomRoles.find((r: any) => r.u._id === selectedUser._id);
 			const isModerator = userRoleResult?.roles.includes('moderator');
 			options.push({
 				icon: 'shield',
@@ -460,9 +469,10 @@ class RoomMembersView extends React.Component {
 		}
 	};
 
-	goRoom = item => {
+	goRoom = (item: IGoRoomItem) => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
+			// @ts-ignore
 			navigation.navigate('DrawerNavigator');
 		} else {
 			navigation.popToTop();
@@ -470,12 +480,12 @@ class RoomMembersView extends React.Component {
 		goRoom({ item, isMasterDetail });
 	};
 
-	getUserDisplayName = user => {
+	getUserDisplayName = (user: TUserModel) => {
 		const { useRealName } = this.props;
 		return (useRealName ? user.name : user.username) || user.username;
 	};
 
-	handleMute = async user => {
+	handleMute = async (user: TUserModel) => {
 		const { rid } = this.state;
 		try {
 			await RocketChat.toggleMuteUserInRoom(rid, user?.username, !user?.muted);
@@ -487,7 +497,7 @@ class RoomMembersView extends React.Component {
 		}
 	};
 
-	handleOwner = async (selectedUser, isOwner) => {
+	handleOwner = async (selectedUser: TUserModel, isOwner: boolean) => {
 		try {
 			const { room } = this.state;
 			await RocketChat.toggleRoomOwner({
@@ -511,7 +521,7 @@ class RoomMembersView extends React.Component {
 		this.fetchRoomMembersRoles();
 	};
 
-	handleLeader = async (selectedUser, isLeader) => {
+	handleLeader = async (selectedUser: TUserModel, isLeader: boolean) => {
 		try {
 			const { room } = this.state;
 			await RocketChat.toggleRoomLeader({
@@ -535,7 +545,7 @@ class RoomMembersView extends React.Component {
 		this.fetchRoomMembersRoles();
 	};
 
-	handleModerator = async (selectedUser, isModerator) => {
+	handleModerator = async (selectedUser: TUserModel, isModerator: boolean) => {
 		try {
 			const { room } = this.state;
 			await RocketChat.toggleRoomModerator({
@@ -559,7 +569,7 @@ class RoomMembersView extends React.Component {
 		this.fetchRoomMembersRoles();
 	};
 
-	handleIgnore = async (selectedUser, ignore) => {
+	handleIgnore = async (selectedUser: TUserModel, ignore: boolean) => {
 		try {
 			const { room } = this.state;
 			await RocketChat.ignoreUser({
@@ -574,7 +584,7 @@ class RoomMembersView extends React.Component {
 		}
 	};
 
-	handleRemoveUserFromRoom = async selectedUser => {
+	handleRemoveUserFromRoom = async (selectedUser: TUserModel) => {
 		try {
 			const { room, members, membersFiltered } = this.state;
 			const userId = selectedUser._id;
@@ -592,17 +602,15 @@ class RoomMembersView extends React.Component {
 
 	renderSearchBar = () => <SearchBox onChangeText={text => this.onSearchChangeText(text)} testID='room-members-view-search' />;
 
-	renderItem = ({ item }) => {
-		const { baseUrl, user, theme } = this.props;
+	renderItem = ({ item }: { item: TUserModel }) => {
+		const { theme } = this.props;
 
 		return (
 			<UserItem
-				name={item.name}
+				name={item.name as string}
 				username={item.username}
 				onPress={() => this.onPressUser(item)}
-				baseUrl={baseUrl}
 				testID={`room-members-view-item-${item.username}`}
-				user={user}
 				theme={theme}
 			/>
 		);
@@ -638,19 +646,19 @@ class RoomMembersView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	useRealName: state.settings.UI_Use_Real_Name,
-	muteUserPermission: state.permissions[PERMISSION_MUTE_USER],
-	setLeaderPermission: state.permissions[PERMISSION_SET_LEADER],
-	setOwnerPermission: state.permissions[PERMISSION_SET_OWNER],
-	setModeratorPermission: state.permissions[PERMISSION_SET_MODERATOR],
-	removeUserPermission: state.permissions[PERMISSION_REMOVE_USER],
-	editTeamMemberPermission: state.permissions[PERMISSION_EDIT_TEAM_MEMBER],
-	viewAllTeamChannelsPermission: state.permissions[PERMISSION_VIEW_ALL_TEAM_CHANNELS],
-	viewAllTeamsPermission: state.permissions[PERMISION_VIEW_ALL_TEAMS]
+	muteUserPermission: state.permissions['mute-user'],
+	setLeaderPermission: state.permissions['set-leader'],
+	setOwnerPermission: state.permissions['set-owner'],
+	setModeratorPermission: state.permissions['set-moderator'],
+	removeUserPermission: state.permissions['remove-user'],
+	editTeamMemberPermission: state.permissions['edit-team-member'],
+	viewAllTeamChannelsPermission: state.permissions['view-all-team-channels'],
+	viewAllTeamsPermission: state.permissions['view-all-teams']
 });
 
 export default connect(mapStateToProps)(withActionSheet(withTheme(RoomMembersView)));

@@ -1,6 +1,7 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
+import { SubscriptionType } from '../../../definitions';
 
 export const createChannel = ({
 	name,
@@ -500,7 +501,7 @@ export const toggleRoomOwner = ({
 	isOwner
 }: {
 	roomId: string;
-	t: RoomTypes;
+	t: SubscriptionType;
 	userId: string;
 	isOwner: boolean;
 }): any => {
@@ -523,7 +524,7 @@ export const toggleRoomLeader = ({
 	isLeader
 }: {
 	roomId: string;
-	t: RoomTypes;
+	t: SubscriptionType;
 	userId: string;
 	isLeader: boolean;
 }): any => {
@@ -546,7 +547,7 @@ export const toggleRoomModerator = ({
 	isModerator
 }: {
 	roomId: string;
-	t: RoomTypes;
+	t: SubscriptionType;
 	userId: string;
 	isModerator: boolean;
 }): any => {
@@ -562,7 +563,7 @@ export const toggleRoomModerator = ({
 	return sdk.post(`${roomTypeToApiType(t)}.removeModerator`, { roomId, userId });
 };
 
-export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomTypes; userId: string }): any =>
+export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: SubscriptionType; userId: string }): any =>
 	// RC 0.48.0
 	// TODO: missing definitions from server
 	// @ts-ignore
@@ -619,7 +620,7 @@ export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
 	sdk.get('chat.getMessage', { msgId });
 
-export const getRoomRoles = (roomId: string, type: RoomTypes): any =>
+export const getRoomRoles = (roomId: string, type: SubscriptionType): any =>
 	// RC 0.65.0
 	// TODO: missing definitions from server
 	// @ts-ignore
