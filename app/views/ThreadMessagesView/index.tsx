@@ -43,13 +43,13 @@ import { SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscri
 
 const API_FETCH_COUNT = 50;
 
-interface IResultFetch {
-	threads: IThreadResult[];
-	count: number;
-	offset: number;
-	total: number;
-	success: boolean;
-}
+// interface IResultFetch {
+// 	threads: IThreadResult[];
+// 	count: number;
+// 	offset: number;
+// 	total: number;
+// 	success: boolean;
+// }
 
 interface IThreadMessagesViewState {
 	loading: boolean;
@@ -287,7 +287,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			}
 
 			if (update && update.length) {
-				update = update.map(m => buildMessage(m));
+				update = update.map(m => buildMessage(m)) as IThreadResult[];
 				// filter threads
 				threadsToCreate = update.filter(i1 => !allThreadsRecords.find((i2: { id: string }) => i1._id === i2.id));
 				threadsToUpdate = allThreadsRecords.filter((i1: { id: string }) => update.find(i2 => i1.id === i2._id));
@@ -339,7 +339,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result: IResultFetch = await RocketChat.getThreadsList({
+			const result: any = await RocketChat.getThreadsList({
 				rid: this.rid,
 				count: API_FETCH_COUNT,
 				offset: messages.length,
@@ -462,7 +462,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	};
 
 	renderItem = ({ item }: { item: TThreadModel }) => {
-		const { user, navigation, baseUrl, useRealName } = this.props;
+		const { user, navigation, useRealName } = this.props;
 		const badgeColor = this.getBadgeColor(item);
 		return (
 			<Item
@@ -470,7 +470,6 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 					item,
 					user,
 					navigation,
-					baseUrl,
 					useRealName,
 					badgeColor
 				}}

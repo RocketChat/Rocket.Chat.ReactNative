@@ -2,16 +2,9 @@ import Model from '@nozbe/watermelondb/Model';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
-import { IEditedBy, IUserChannel, IUserMention, IUserMessage } from './IMessage';
+import { IEditedBy, IUserChannel, IUserMention, IUserMessage, MessageType } from './IMessage';
 import { IReaction } from './IReaction';
-import { SubscriptionType } from './ISubscription';
-
-export interface IUrl {
-	title: string;
-	description: string;
-	image: string;
-	url: string;
-}
+import { IUrl } from './IUrl';
 
 interface IFileThread {
 	_id: string;
@@ -20,32 +13,35 @@ interface IFileThread {
 }
 
 export interface IThreadResult {
+	id: string;
 	_id: string;
 	rid: string;
-	ts: string;
-	msg: string;
+	ts: string | Date;
+	msg?: string;
 	file?: IFileThread;
 	files?: IFileThread[];
 	groupable?: boolean;
 	attachments?: IAttachment[];
 	md?: MarkdownAST;
 	u: IUserMessage;
-	_updatedAt: string;
-	urls: IUrl[];
-	mentions: IUserMention[];
-	channels: IUserChannel[];
-	replies: string[];
-	tcount: number;
-	tlm: string;
+	_updatedAt: string | Date;
+	urls?: IUrl[];
+	mentions?: IUserMention[];
+	channels?: IUserChannel[];
+	replies?: string[];
+	tcount?: number;
+	status?: string;
+	tlm?: string | Date;
 }
 
 export interface IThread {
 	id: string;
+	tmsg?: string;
 	msg?: string;
-	t?: SubscriptionType;
+	t?: MessageType;
 	rid: string;
-	_updatedAt?: Date;
-	ts?: Date;
+	_updatedAt?: string | Date;
+	ts?: string | Date;
 	u?: IUserMessage;
 	alias?: string;
 	parseUrls?: boolean;
@@ -62,10 +58,10 @@ export interface IThread {
 	role?: string;
 	drid?: string;
 	dcount?: number | string;
-	dlm?: number;
+	dlm?: string | Date;
 	tmid?: string;
 	tcount?: number | string;
-	tlm?: string;
+	tlm?: string | Date;
 	replies?: string[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
@@ -73,6 +69,7 @@ export interface IThread {
 	autoTranslate?: boolean;
 	translations?: any;
 	e2e?: string;
+	subscription?: { id: string };
 }
 
 export type TThreadModel = IThread & Model;

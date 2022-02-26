@@ -12,7 +12,8 @@ export enum SubscriptionType {
 	DIRECT = 'd',
 	CHANNEL = 'c',
 	OMNICHANNEL = 'l',
-	THREAD = 'thread'
+	E2E = 'e2e',
+	THREAD = 'thread' // FIXME: this is not a type of subscription
 }
 
 export interface IVisitor {
@@ -23,12 +24,20 @@ export interface IVisitor {
 	lastMessageTs: Date;
 }
 
+export enum ERoomTypes {
+	DIRECT = 'direct',
+	GROUP = 'group',
+	CHANNEL = 'channel'
+}
+
 export interface ISubscription {
 	_id: string; // _id belongs watermelonDB
 	id: string; // id from server
+	_updatedAt?: string; // from server
+	v?: IVisitor;
 	f: boolean;
 	t: SubscriptionType;
-	ts: Date;
+	ts: string | Date;
 	ls: Date;
 	name: string;
 	fname?: string;
@@ -37,12 +46,14 @@ export interface ISubscription {
 	alert: boolean;
 	roles?: string[];
 	unread: number;
+	lm: string;
+	lr: string;
 	userMentions: number;
 	groupMentions: number;
-	tunread?: string[];
+	tunread: string[];
 	tunreadUser?: string[];
 	tunreadGroup?: string[];
-	roomUpdatedAt: Date;
+	roomUpdatedAt: Date | number;
 	ro: boolean;
 	lastOpen?: Date;
 	description?: string;
@@ -58,7 +69,7 @@ export interface ISubscription {
 	ignored?: string[];
 	broadcast?: boolean;
 	prid?: string;
-	draftMessage?: string;
+	draftMessage?: string | null;
 	lastThreadSync?: Date;
 	jitsiTimeout?: number;
 	autoTranslate?: boolean;
@@ -79,6 +90,7 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
+	separator?: boolean;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
 	messages: Relation<TMessageModel>;
 	threads: Relation<TThreadModel>;
@@ -87,3 +99,30 @@ export interface ISubscription {
 }
 
 export type TSubscriptionModel = ISubscription & Model;
+
+export interface IServerSubscriptionItem {
+	_id: string;
+	rid: string;
+	u: {
+		_id: string;
+		username: string;
+	};
+	_updatedAt: string;
+	alert: boolean;
+	fname: string;
+	groupMentions: number;
+	name: string;
+	open: boolean;
+	t: string;
+	unread: number;
+	userMentions: number;
+	ls: string;
+	lr: string;
+	tunread: number[] | [];
+}
+
+export interface IServerSubscription {
+	update: IServerSubscriptionItem[];
+	remove: IServerSubscriptionItem[];
+	success: boolean;
+}
