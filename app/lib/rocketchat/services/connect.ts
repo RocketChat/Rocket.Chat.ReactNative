@@ -10,7 +10,7 @@ import { loginRequest, setLoginServices, setUser } from '../../../actions/login'
 import sdk from './sdk';
 import I18n from '../../../i18n';
 import { MIN_ROCKETCHAT_VERSION } from '../rocketchat';
-import { ICredentials, ILoggedUser, IRocketChat } from '../../../definitions';
+import { ICredentials, ILoggedUser } from '../../../definitions';
 import { isIOS } from '../../../utils/deviceInfo';
 
 interface IServices {
@@ -22,10 +22,9 @@ interface IServices {
 	service: string;
 }
 
-async function login(this: IRocketChat, credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
-	const sdk = this.shareSDK || this.sdk;
+async function login(credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
 	// RC 0.64.0
-	await sdk.login(credentials);
+	await sdk.current.login(credentials);
 	const result = sdk.currentLogin?.result;
 	if (result) {
 		const user: ILoggedUser = {
@@ -49,15 +48,10 @@ async function login(this: IRocketChat, credentials: ICredentials, isFromWebView
 	}
 }
 
-function loginTOTP(
-	this: IRocketChat,
-	params: ICredentials,
-	loginEmailPassword?: boolean,
-	isFromWebView = false
-): Promise<ILoggedUser> {
+function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWebView = false): Promise<ILoggedUser> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const result = await this.login(params, isFromWebView);
+			const result = await login(params, isFromWebView);
 			if (result) {
 				return resolve(result);
 			}
@@ -78,11 +72,11 @@ function loginTOTP(
 							params = { user, password };
 						}
 
-						return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
+						return resolve(loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
 					}
 
 					return resolve(
-						this.loginTOTP({
+						loginTOTP({
 							totp: {
 								login: {
 									...params
@@ -102,7 +96,7 @@ function loginTOTP(
 	});
 }
 
-function loginWithPassword(this: IRocketChat, { user, password }: { user: string; password: string }) {
+function loginWithPassword({ user, password }: { user: string; password: string }) {
 	let params: ICredentials = { user, password };
 	const state = store.getState();
 
@@ -121,11 +115,11 @@ function loginWithPassword(this: IRocketChat, { user, password }: { user: string
 		};
 	}
 
-	return this.loginTOTP(params, true);
+	return loginTOTP(params, true);
 }
 
-async function loginOAuthOrSso(this: IRocketChat, params: ICredentials, isFromWebView = true) {
-	const result = await this.loginTOTP(params, false, isFromWebView);
+async function loginOAuthOrSso(params: ICredentials, isFromWebView = true) {
+	const result = await loginTOTP(params, false, isFromWebView);
 	store.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
 }
 
@@ -209,7 +203,7 @@ async function getWebsocketInfo({ server }: { server: string }) {
 	};
 }
 
-async function getLoginServices(this: IRocketChat, server: string) {
+async function getLoginServices(server: string) {
 	try {
 		let loginServices = [];
 		const loginServicesResult = await fetch(`${server}/api/v1/settings.oauth`).then(response => response.json());
@@ -220,7 +214,7 @@ async function getLoginServices(this: IRocketChat, server: string) {
 
 			const loginServicesReducer = loginServices.reduce((ret: IServices[], item: IServices) => {
 				const name = item.name || item.buttonLabelText || item.service;
-				const authType = this._determineAuthType(item);
+				const authType = determineAuthType(item);
 
 				if (authType !== 'not_supported') {
 					ret[name as unknown as number] = { ...item, name, authType };
@@ -238,7 +232,7 @@ async function getLoginServices(this: IRocketChat, server: string) {
 	}
 }
 
-function _determineAuthType(services: IServices) {
+function determineAuthType(services: IServices) {
 	const { name, custom, showButton = true, service } = services;
 
 	const authName = name || service;
@@ -275,5 +269,5 @@ export {
 	getServerInfo,
 	getWebsocketInfo,
 	getLoginServices,
-	_determineAuthType
+	determineAuthType
 };

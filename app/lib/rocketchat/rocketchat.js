@@ -5,7 +5,7 @@ import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '
 import { InteractionManager } from 'react-native';
 import RNFetchBlob from 'rn-fetch-blob';
 import { setActiveUsers } from '../../actions/activeUsers';
-import { connectRequest, connectSuccess, disconnect } from '../../actions/connect';
+import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../actions/connect';
 import { encryptionInit } from '../../actions/encryption';
 import { loginRequest, setUser } from '../../actions/login';
 import { updatePermission } from '../../actions/permissions';
@@ -63,7 +63,17 @@ import getUserInfo from './services/getUserInfo';
 // Services
 import sdk from './services/sdk';
 import toggleFavorite from './services/toggleFavorite';
-import { login, loginTOTP, loginWithPassword, loginOAuthOrSso, getLoginServices, _determineAuthType } from './services/connect';
+import {
+	login,
+	loginTOTP,
+	loginWithPassword,
+	loginOAuthOrSso,
+	getLoginServices,
+	determineAuthType,
+	disconnect,
+	checkAndReopen,
+	abort
+} from './services/connect';
 import * as restAPis from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -167,21 +177,9 @@ const RocketChat = {
 		return listener && listener.stop();
 	},
 	// Abort all requests and create a new AbortController
-	abort() {
-		if (this.controller) {
-			this.controller.abort();
-			if (this.sdk) {
-				this.sdk.abort();
-			}
-		}
-		this.controller = new AbortController();
-	},
-	checkAndReopen() {
-		return this?.sdk?.checkAndReopen();
-	},
-	disconnect() {
-		this.sdk = sdk.disconnect();
-	},
+	abort,
+	checkAndReopen,
+	disconnect,
 	connect({ server, user, logoutOnError = false }) {
 		return new Promise(resolve => {
 			if (this?.sdk?.client?.host === server) {
@@ -257,7 +255,7 @@ const RocketChat = {
 			});
 
 			this.closeListener = this.sdk.onStreamData('close', () => {
-				reduxStore.dispatch(disconnect());
+				reduxStore.dispatch(disconnectAction());
 			});
 
 			this.usersListener = this.sdk.onStreamData(
@@ -835,7 +833,7 @@ const RocketChat = {
 		return UserPreferences.setMapAsync(SORT_PREFS_KEY, prefs);
 	},
 	getLoginServices,
-	_determineAuthType,
+	determineAuthType,
 	roomTypeToApiType,
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;

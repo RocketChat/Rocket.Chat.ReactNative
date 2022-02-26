@@ -1,6 +1,6 @@
 import Model from '@nozbe/watermelondb/Model';
 
-import { IUserEmail } from './IUser';
+import { IUserEmail, IUserSettings } from './IUser';
 import { UserStatus } from './UserStatus';
 
 export interface ILoggedUser {
@@ -18,16 +18,33 @@ export interface ILoggedUser {
 	emails?: IUserEmail[];
 	roles?: string[];
 	avatarETag?: string;
-	isFromWebView: boolean;
-	showMessageInMainThread: boolean;
-	enableMessageParserEarlyAdoption: boolean;
+	showMessageInMainThread?: boolean;
+	isFromWebView?: boolean;
+	enableMessageParserEarlyAdoption?: boolean;
 }
 
 export interface ILoginResultFromServer {
 	status: string;
 	authToken: string;
 	userId: string;
-	me: ILoggedUser;
+	me: {
+		id: string;
+		token: string;
+		username: string;
+		name: string;
+		language?: string;
+		status: UserStatus;
+		statusText?: string;
+		customFields?: {
+			[key: string]: any;
+		};
+		statusLivechat?: string;
+		emails?: IUserEmail[];
+		roles?: string[];
+		avatarETag?: string;
+		isFromWebView?: boolean;
+		settings: IUserSettings;
+	};
 }
 
 export type TLoggedUserModel = ILoggedUser & Model;
