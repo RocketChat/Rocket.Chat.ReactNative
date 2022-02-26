@@ -1,10 +1,10 @@
-import type { IMessage } from '../../IMessage';
+import type { IMessage, IMessageFromServer } from '../../IMessage';
 import type { IRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
 export type GroupsEndpoints = {
 	'groups.files': {
-		GET: (params: { roomId: IRoom['_id']; count: number; sort: string; query: string }) => {
+		GET: (params: { roomId: IRoom['_id']; count: number; sort: string | { uploadedAt: number }; query: string }) => {
 			files: IMessage[];
 			total: number;
 		};
@@ -15,6 +15,11 @@ export type GroupsEndpoints = {
 			offset: number;
 			members: IUser[];
 			total: number;
+		};
+	};
+	'groups.history': {
+		GET: (params: { roomId: string; count: number; latest?: string }) => {
+			messages: IMessageFromServer[];
 		};
 	};
 };

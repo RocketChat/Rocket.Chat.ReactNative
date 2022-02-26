@@ -45,7 +45,7 @@ export type ModalStackParamList = {
 		title: string;
 		infoText: string;
 		nextAction: Function;
-		showAlert: () => void | boolean;
+		showAlert?: () => void | boolean;
 		isSearch?: boolean;
 		onSearch?: Function;
 		isRadio?: boolean;

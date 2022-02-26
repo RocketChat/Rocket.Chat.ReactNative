@@ -1,7 +1,7 @@
-import sdk from './sdk';
+import { SubscriptionType } from '../../../definitions';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType } from '../../../definitions';
+import sdk from './sdk';
 
 export const createChannel = ({
 	name,
@@ -575,7 +575,7 @@ export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: strin
 	// @ts-ignore
 	sdk.get('chat.ignoreUser', { rid, userId, ignore });
 
-export const toggleArchiveRoom = (roomId: string, t: RoomTypes, archive: boolean): any => {
+export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean): any => {
 	if (archive) {
 		// RC 0.48.0
 		// TODO: missing definitions from server
