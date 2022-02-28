@@ -14,7 +14,7 @@ function normalizeAttachments(msg: TMsg) {
 		if (att.ts) {
 			att.ts = moment(att.ts).toDate();
 		}
-		att = normalizeAttachments(att as IMessage & IAttachment);
+		att = normalizeAttachments(att as TMsg);
 		return att;
 	});
 	return msg;

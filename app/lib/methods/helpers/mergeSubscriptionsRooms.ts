@@ -5,14 +5,7 @@ import { store as reduxStore } from '../../auxStore';
 import { compareServerVersion } from '../../utils';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
-import {
-	ISubscription,
-	IServerRoom,
-	IServerSubscription,
-	IServerSubscriptionItem,
-	IServerRoomItem,
-	IMessage
-} from '../../../definitions';
+import { ISubscription, IServerRoom, IServerSubscription, IServerSubscriptionItem, IServerRoomItem } from '../../../definitions';
 // TODO: delete and update
 
 export const merge = (
@@ -25,7 +18,7 @@ export const merge = (
 	if (room) {
 		room = EJSON.fromJSONValue(room) as ISubscription;
 		if (room._updatedAt) {
-			subscription.lastMessage = normalizeMessage(room.lastMessage) as IMessage;
+			subscription.lastMessage = normalizeMessage(room.lastMessage);
 			subscription.description = room.description;
 			subscription.topic = room.topic;
 			subscription.announcement = room.announcement;
