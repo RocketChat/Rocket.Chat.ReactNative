@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 import parseUrls from './parseUrls';
-import type { IAttachment, IMessage } from '../../../definitions';
+import type { IAttachment, IMessage, IThreadResult } from '../../../definitions';
 
 type TMsg = IMessage & IAttachment;
 
@@ -20,7 +20,7 @@ function normalizeAttachments(msg: TMsg) {
 	return msg;
 }
 
-export default (msg: any): IMessage | null => {
+export default (msg: any): IMessage | IThreadResult | null => {
 	if (!msg) {
 		return null;
 	}
