@@ -3,7 +3,7 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
-import { IUrl, IUrlFromServer } from './IUrl';
+import { IUrlFromServer } from './IUrl';
 
 export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj';
 
@@ -49,7 +49,7 @@ export interface ILastMessage {
 	ts: string | Date;
 	u: IUserMessage;
 	_updatedAt: string | Date;
-	urls?: IUrl[];
+	urls?: IUrlFromServer[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
 	md?: MarkdownAST;
