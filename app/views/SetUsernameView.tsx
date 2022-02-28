@@ -1,25 +1,26 @@
-import React from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import { Dispatch } from 'redux';
-import { ScrollView, StyleSheet, Text } from 'react-native';
-import { connect } from 'react-redux';
-import Orientation from 'react-native-orientation-locker';
 import { RouteProp } from '@react-navigation/native';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import React from 'react';
+import { ScrollView, StyleSheet, Text } from 'react-native';
+import Orientation from 'react-native-orientation-locker';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
-import { loginRequest as loginRequestAction } from '../actions/login';
-import TextInput from '../containers/TextInput';
+import { loginRequest } from '../actions/login';
+import { themes } from '../constants/colors';
 import Button from '../containers/Button';
-import KeyboardView from '../presentation/KeyboardView';
-import scrollPersistTaps from '../utils/scrollPersistTaps';
+import SafeAreaView from '../containers/SafeAreaView';
+import StatusBar from '../containers/StatusBar';
+import TextInput from '../containers/TextInput';
+import { IApplicationState } from '../definitions';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
-import StatusBar from '../containers/StatusBar';
-import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
-import { isTablet } from '../utils/deviceInfo';
+import KeyboardView from '../presentation/KeyboardView';
 import { getUserSelector } from '../selectors/login';
+import { withTheme } from '../theme';
+import { isTablet } from '../utils/deviceInfo';
 import { showErrorAlert } from '../utils/info';
-import SafeAreaView from '../containers/SafeAreaView';
+import scrollPersistTaps from '../utils/scrollPersistTaps';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
@@ -39,9 +40,9 @@ interface ISetUsernameViewProps {
 	route: RouteProp<{ SetUsernameView: { title: string } }, 'SetUsernameView'>;
 	server: string;
 	userId: string;
-	loginRequest: ({ resume }: { resume: string }) => void;
 	token: string;
 	theme: string;
+	dispatch: Dispatch;
 }
 
 class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernameViewState> {
@@ -86,7 +87,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 
 	submit = async () => {
 		const { username } = this.state;
-		const { loginRequest, token } = this.props;
+		const { dispatch, token } = this.props;
 
 		if (!username.trim()) {
 			return;
@@ -95,7 +96,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 		this.setState({ saving: true });
 		try {
 			await RocketChat.saveUserProfile({ username });
-			await loginRequest({ resume: token });
+			dispatch(loginRequest({ resume: token }));
 		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));
 		}
@@ -144,13 +145,9 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
 	token: getUserSelector(state).token
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	loginRequest: (params: { resume: string }) => dispatch(loginRequestAction(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(SetUsernameView));
+export default connect(mapStateToProps)(withTheme(SetUsernameView));

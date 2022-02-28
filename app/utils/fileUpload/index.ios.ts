@@ -43,6 +43,7 @@ class FileUpload {
 				upload.formData.append(item.name, {
 					// @ts-ignore
 					uri: item.uri,
+					// @ts-ignore
 					type: item.type,
 					name: item.filename
 				});

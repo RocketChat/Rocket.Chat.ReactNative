@@ -58,5 +58,33 @@ export const MessageTypeValues = [
 	{
 		value: 'room_unarchived',
 		text: 'Message_HideType_room_unarchived'
+	},
+	{
+		value: 'removed-user-from-team',
+		text: 'Message_HideType_removed_user_from_team'
+	},
+	{
+		value: 'added-user-to-team',
+		text: 'Message_HideType_added_user_to_team'
+	},
+	{
+		value: 'user-added-room-to-team',
+		text: 'Message_HideType_user_added_room_to_team'
+	},
+	{
+		value: 'user-converted-to-channel',
+		text: 'Message_HideType_user_converted_to_channel'
+	},
+	{
+		value: 'user-converted-to-team',
+		text: 'Message_HideType_user_converted_to_team'
+	},
+	{
+		value: 'user-deleted-room-from-team',
+		text: 'Message_HideType_user_deleted_room_from_team'
+	},
+	{
+		value: 'user-removed-room-from-team',
+		text: 'Message_HideType_user_removed_room_from_team'
 	}
 ];

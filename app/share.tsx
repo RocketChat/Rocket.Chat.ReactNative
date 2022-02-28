@@ -9,6 +9,7 @@ import { defaultTheme, newThemeState, subscribeTheme, unsubscribeTheme } from '.
 import UserPreferences from './lib/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
+import { initStore } from './lib/auxStore';
 import { supportSystemTheme } from './utils/deviceInfo';
 import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
 import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
@@ -27,6 +28,8 @@ import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
+
+initStore(store);
 
 interface IDimensions {
 	width: number;

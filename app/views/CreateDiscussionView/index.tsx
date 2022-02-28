@@ -24,7 +24,8 @@ import { E2E_ROOM_TYPES } from '../../lib/encryption/constants';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
-import { ICreateChannelViewProps } from './interfaces';
+import { ICreateChannelViewProps, IResult, IError } from './interfaces';
+import { IApplicationState } from '../../definitions';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	private channel: any;
@@ -102,7 +103,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 			users,
 			encrypted
 		} = this.state;
-		const { create } = this.props;
+		const { dispatch } = this.props;
 
 		const params: any = {
 			prid: prid || rid,
@@ -115,7 +116,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 			params.encrypted = encrypted ?? false;
 		}
 
-		create(params);
+		dispatch(createDiscussionRequest(params));
 	};
 
 	valid = () => {
@@ -203,21 +204,17 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	server: state.server.server,
-	error: state.createDiscussion.error,
+	error: state.createDiscussion.error as IError,
 	failure: state.createDiscussion.failure,
 	loading: state.createDiscussion.isFetching,
-	result: state.createDiscussion.result,
-	blockUnauthenticatedAccess: state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
-	serverVersion: state.server.version,
+	result: state.createDiscussion.result as IResult,
+	blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
+	serverVersion: state.server.version as string,
 	isMasterDetail: state.app.isMasterDetail,
 	encryptionEnabled: state.encryption.enabled
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-	create: (data: any) => dispatch(createDiscussionRequest(data))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(CreateChannelView));
+export default connect(mapStateToProps)(withTheme(CreateChannelView));

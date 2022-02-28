@@ -6,7 +6,7 @@ import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import sharedStyles from '../../Styles';
 import Touch from '../../../utils/touch';
-import { TServerHistory } from '../../../definitions/IServerHistory';
+import { TServerHistoryModel } from '../../../definitions/IServerHistory';
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
 });
 
 interface IItem {
-	item: TServerHistory;
+	item: TServerHistoryModel;
 	theme: string;
 	onPress(url: string): void;
-	onDelete(item: TServerHistory): void;
+	onDelete(item: TServerHistoryModel): void;
 }
 
 const Item = ({ item, theme, onPress, onDelete }: IItem): JSX.Element => (

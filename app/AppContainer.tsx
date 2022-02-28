@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/Navigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './utils/navigation';
-import { ROOT_INSIDE, ROOT_LOADING, ROOT_OUTSIDE, ROOT_SET_USERNAME } from './actions/app';
+import { RootEnum } from './definitions';
 // Stacks
 import AuthLoadingView from './views/AuthLoadingView';
 // SetUsername Stack
@@ -56,13 +56,13 @@ const App = React.memo(({ root, isMasterDetail }: { root: string; isMasterDetail
 			}}>
 			<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
 				<>
-					{root === ROOT_LOADING ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
-					{root === ROOT_OUTSIDE ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
-					{root === ROOT_INSIDE && isMasterDetail ? (
+					{root === RootEnum.ROOT_LOADING ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
+					{root === RootEnum.ROOT_OUTSIDE ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
+					{root === RootEnum.ROOT_INSIDE && isMasterDetail ? (
 						<Stack.Screen name='MasterDetailStack' component={MasterDetailStack} />
 					) : null}
-					{root === ROOT_INSIDE && !isMasterDetail ? <Stack.Screen name='InsideStack' component={InsideStack} /> : null}
-					{root === ROOT_SET_USERNAME ? <Stack.Screen name='SetUsernameStack' component={SetUsernameStack} /> : null}
+					{root === RootEnum.ROOT_INSIDE && !isMasterDetail ? <Stack.Screen name='InsideStack' component={InsideStack} /> : null}
+					{root === RootEnum.ROOT_SET_USERNAME ? <Stack.Screen name='SetUsernameStack' component={SetUsernameStack} /> : null}
 				</>
 			</Stack.Navigator>
 		</NavigationContainer>

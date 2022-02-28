@@ -29,9 +29,11 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { isIOS } from '../../utils/deviceInfo';
-import { compareServerVersion, methods } from '../../lib/utils';
+import { compareServerVersion } from '../../lib/utils';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
+import { IRoom } from '../../definitions';
+import { IEmoji } from '../../definitions/IEmoji';
 
 const QUERY_SIZE = 50;
 
@@ -66,10 +68,7 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	baseUrl: string;
 	serverVersion: string;
 	customEmojis: {
-		[key: string]: {
-			name: string;
-			extension: string;
-		};
+		[key: string]: IEmoji;
 	};
 	theme: string;
 	useRealName: boolean;
@@ -83,7 +82,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	private encrypted: boolean | undefined;
 
-	private room: { rid: any; name: any; fname: any; t: any } | null | undefined;
+	private room: Pick<IRoom, 'rid' | 'name' | 'fname' | 't'> | null | undefined;
 
 	static navigationOptions = ({ navigation, route }: INavigationOption) => {
 		const options: StackNavigationOptions = {
@@ -235,7 +234,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			messages.length < this.offset ||
 			this.encrypted ||
 			loading ||
-			compareServerVersion(serverVersion, '3.17.0', methods.lowerThan)
+			compareServerVersion(serverVersion, 'lowerThan', '3.17.0')
 		) {
 			return;
 		}
@@ -312,8 +311,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 						testID='search-message-view-input'
 						theme={theme}
 					/>
-					{/* @ts-ignore */}
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} username='' baseUrl='' theme={theme} />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme} />
 					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
 				</View>
 				{this.renderList()}

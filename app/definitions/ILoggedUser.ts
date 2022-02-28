@@ -8,11 +8,11 @@ export interface ILoggedUser {
 	language?: string;
 	status: string;
 	statusText?: string;
-	roles: string[];
+	roles?: string[];
 	avatarETag?: string;
-	showMessageInMainThread: boolean;
-	isFromWebView: boolean;
+	showMessageInMainThread?: boolean;
+	isFromWebView?: boolean;
 	enableMessageParserEarlyAdoption?: boolean;
 }
 
-export type TLoggedUser = ILoggedUser & Model;
+export type TLoggedUserModel = ILoggedUser & Model;
