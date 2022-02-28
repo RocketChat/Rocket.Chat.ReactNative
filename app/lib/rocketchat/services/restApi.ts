@@ -220,7 +220,7 @@ export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId
 	// @ts-ignore
 	sdk.get('teams.listRoomsOfUser', { teamId, userId });
 
-export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }): any => {
+export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
 	const params = {
 		...(type === 'c'
 			? {
@@ -232,8 +232,6 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 					roomName: name
 			  })
 	};
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
 };
 
