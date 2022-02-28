@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { KeyboardRegistry } from 'react-native-ui-lib/keyboard';
 
-import store from '../../lib/createStore';
+import { store } from '../../lib/auxStore';
 import EmojiPicker from '../EmojiPicker';
 import styles from './styles';
 import { themes } from '../../constants/colors';

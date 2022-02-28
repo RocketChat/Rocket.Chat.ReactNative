@@ -8,10 +8,10 @@ import { events, logEvent } from '../../utils/log';
 
 interface IAtMention {
 	mention: string;
-	username: string;
-	navToRoomInfo: Function;
+	username?: string;
+	navToRoomInfo?: Function;
 	style?: any;
-	useRealName: boolean;
+	useRealName?: boolean;
 	mentions: any;
 }
 
@@ -51,7 +51,9 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 			t: 'd',
 			rid: user && user._id
 		};
-		navToRoomInfo(navParam);
+		if (navToRoomInfo) {
+			navToRoomInfo(navParam);
+		}
 	};
 
 	if (user) {

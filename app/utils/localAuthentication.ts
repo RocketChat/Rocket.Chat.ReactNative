@@ -1,14 +1,16 @@
 import * as LocalAuthentication from 'expo-local-authentication';
-import moment from 'moment';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-community/async-storage';
 import { sha256 } from 'js-sha256';
+import moment from 'moment';
 
 import UserPreferences from '../lib/userPreferences';
-import store from '../lib/createStore';
+import { store } from '../lib/auxStore';
 import database from '../lib/database';
+import { getServerTimeSync } from '../lib/rocketchat/services/getServerTimeSync';
 import {
 	ATTEMPTS_KEY,
+	BIOMETRY_ENABLED_KEY,
 	CHANGE_PASSCODE_EMITTER,
 	LOCAL_AUTHENTICATE_EMITTER,
 	LOCKED_OUT_TIMER_KEY,
@@ -20,16 +22,25 @@ import { TServerModel } from '../definitions/IServer';
 import EventEmitter from './events';
 import { isIOS } from './deviceInfo';
 
-export const saveLastLocalAuthenticationSession = async (server: string, serverRecord?: TServerModel): Promise<void> => {
+export const saveLastLocalAuthenticationSession = async (
+	server: string,
+	serverRecord?: TServerModel,
+	timesync?: number | null
+): Promise<void> => {
+	if (!timesync) {
+		timesync = new Date().getTime();
+	}
+
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 	await serversDB.write(async () => {
 		try {
 			if (!serverRecord) {
-				serverRecord = (await serversCollection.find(server)) as TServerModel;
+				serverRecord = await serversCollection.find(server);
 			}
+			const time = timesync || 0;
 			await serverRecord.update(record => {
-				record.lastLocalAuthenticatedSession = new Date();
+				record.lastLocalAuthenticatedSession = new Date(time);
 			});
 		} catch (e) {
 			// Do nothing
@@ -72,32 +83,18 @@ export const biometryAuth = (force?: boolean): Promise<LocalAuthentication.Local
  * It'll help us to get the permission to use FaceID
  * and enable/disable the biometry when user put their first passcode
  */
-const checkBiometry = async (serverRecord: TServerModel) => {
-	const serversDB = database.servers;
-
+const checkBiometry = async () => {
 	const result = await biometryAuth(true);
-	await serversDB.write(async () => {
-		try {
-			await serverRecord.update(record => {
-				record.biometry = !!result?.success;
-			});
-		} catch {
-			// Do nothing
-		}
-	});
+	const isBiometryEnabled = !!result?.success;
+	await UserPreferences.setBoolAsync(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
+	return isBiometryEnabled;
 };
 
-export const checkHasPasscode = async ({
-	force = true,
-	serverRecord
-}: {
-	force?: boolean;
-	serverRecord: TServerModel;
-}): Promise<{ newPasscode?: boolean } | void> => {
+export const checkHasPasscode = async ({ force = true }: { force?: boolean }): Promise<{ newPasscode?: boolean } | void> => {
 	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
 	if (!storedPasscode) {
 		await changePasscode({ force });
-		await checkBiometry(serverRecord);
+		await checkBiometry();
 		return Promise.resolve({ newPasscode: true });
 	}
 	return Promise.resolve();
@@ -116,6 +113,9 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 
 	// if screen lock is enabled
 	if (serverRecord?.autoLock) {
+		// Get time from server
+		const timesync = await getServerTimeSync(server);
+
 		// Make sure splash screen has been hidden
 		try {
 			await RNBootSplash.hide();
@@ -124,22 +124,23 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		}
 
 		// Check if the app has passcode
-		const result = await checkHasPasscode({ serverRecord });
+		const result = await checkHasPasscode({});
 
 		// `checkHasPasscode` results newPasscode = true if a passcode has been set
 		if (!result?.newPasscode) {
 			// diff to last authenticated session
-			const diffToLastSession = moment().diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
+			const diffToLastSession = moment(timesync).diff(serverRecord?.lastLocalAuthenticatedSession, 'seconds');
 
-			// if last authenticated session is older than configured auto lock time, authentication is required
-			if (diffToLastSession >= serverRecord.autoLockTime!) {
+			// if it was not possible to get `timesync` from server or the last authenticated session is older than the configured auto lock time, authentication is required
+			if (!timesync || (serverRecord?.autoLockTime && diffToLastSession >= serverRecord.autoLockTime)) {
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
 
-				let hasBiometry = false;
+				// let hasBiometry = false;
+				let hasBiometry = (await UserPreferences.getBoolAsync(BIOMETRY_ENABLED_KEY)) ?? false;
 
 				// if biometry is enabled on the app
-				if (serverRecord.biometry) {
+				if (hasBiometry) {
 					const isEnrolled = await LocalAuthentication.isEnrolledAsync();
 					hasBiometry = isEnrolled;
 				}
@@ -153,7 +154,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		}
 
 		await resetAttempts();
-		await saveLastLocalAuthenticationSession(server, serverRecord);
+		await saveLastLocalAuthenticationSession(server, serverRecord, timesync);
 	}
 };
 

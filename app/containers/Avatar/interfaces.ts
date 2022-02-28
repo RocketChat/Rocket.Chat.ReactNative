@@ -1,3 +1,5 @@
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
+
 export interface IAvatar {
 	server?: string;
 	style?: any;
@@ -14,10 +16,10 @@ export interface IAvatar {
 	};
 	theme?: string;
 	onPress?: () => void;
-	getCustomEmoji?: () => any;
+	getCustomEmoji?: TGetCustomEmoji;
 	avatarETag?: string;
 	isStatic?: boolean | string;
 	rid?: string;
 	blockUnauthenticatedAccess?: boolean;
-	serverVersion?: string;
+	serverVersion: string;
 }

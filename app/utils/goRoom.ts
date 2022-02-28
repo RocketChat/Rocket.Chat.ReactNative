@@ -31,9 +31,8 @@ const navigate = ({
 };
 
 interface IItem extends Partial<ISubscription> {
-	rid: string;
-	name: string;
-	t: SubscriptionType;
+	search?: boolean; // comes from spotlight
+	username?: string;
 }
 
 export const goRoom = async ({
@@ -45,17 +44,19 @@ export const goRoom = async ({
 	isMasterDetail: boolean;
 	navigationMethod?: any;
 	jumpToMessageId?: string;
+	usedCannedResponse?: string;
 }): Promise<void> => {
-	if (item.t === 'd' && item.search) {
+	if (item.t === SubscriptionType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
+			// @ts-ignore
 			const result = await RocketChat.createDirectMessage(username);
 			if (result.success) {
 				return navigate({
 					item: {
 						rid: result.room._id,
-						name: username!,
+						name: username || '',
 						t: SubscriptionType.DIRECT
 					},
 					isMasterDetail,
