@@ -22,4 +22,14 @@ export type GroupsEndpoints = {
 			messages: IMessageFromServer[];
 		};
 	};
+	'groups.archive': {
+		POST: (params: { roomId: string }) => {
+			success: boolean;
+		};
+	};
+	'groups.unarchive': {
+		POST: (params: { roomId: string }) => {
+			success: boolean;
+		};
+	};
 };

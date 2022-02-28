@@ -28,4 +28,14 @@ export type ChannelsEndpoints = {
 			messages: IMessageFromServer[];
 		};
 	};
+	'channels.archive': {
+		POST: (params: { roomId: string }) => {
+			success: boolean;
+		};
+	};
+	'channels.unarchive': {
+		POST: (params: { roomId: string }) => {
+			success: boolean;
+		};
+	};
 };
