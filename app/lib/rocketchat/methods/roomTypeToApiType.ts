@@ -22,6 +22,6 @@ type ApiTypes<T> = T extends 'c'
 	? ETypes.Channels
 	: never;
 
-const roomTypeToApiType = <T extends RoomTypes>(t: T): ApiTypes<T> => types[t];
+const roomTypeToApiType = <T extends RoomTypes>(t: T) => types[t];
 
 export default roomTypeToApiType;
