@@ -3,7 +3,7 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
-import { IUrl } from './IUrl';
+import { IUrl, IUrlFromServer } from './IUrl';
 
 export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj';
 
@@ -59,22 +59,44 @@ export interface ILastMessage {
 	status?: number;
 }
 
-export interface IMessage {
+interface IMessageFile {
+	_id: string;
+	name: string;
+	type: string;
+}
+
+export interface IMessageFromServer {
 	_id: string;
 	rid: string;
 	msg?: string;
+	ts: string | Date; // wm date issue
+	u: IUserMessage;
+	_updatedAt: string | Date;
+	urls?: IUrlFromServer[];
+	mentions?: IUserMention[];
+	channels?: IUserChannel[];
+	md?: MarkdownAST;
+	file?: IMessageFile;
+	files?: IMessageFile[];
+	groupable?: boolean;
+	attachments?: IAttachment[];
+}
+
+export interface ILoadMoreMessage {
+	_id: string;
+	rid: string;
+	ts: string;
+	t: string;
+	msg: string;
+}
+
+export interface IMessage extends IMessageFromServer {
 	id: string;
 	t?: MessageType;
-	ts: string | Date;
-	u: IUserMessage;
 	alias?: string;
 	parseUrls?: boolean;
-	groupable?: boolean;
 	avatar?: string;
 	emoji?: string;
-	attachments?: IAttachment[];
-	urls?: IUrl[];
-	_updatedAt: string | Date;
 	status?: number;
 	pinned?: boolean;
 	starred?: boolean;
@@ -88,8 +110,6 @@ export interface IMessage {
 	tcount?: number;
 	tlm?: string | Date;
 	replies?: string[];
-	mentions?: IUserMention[];
-	channels?: IUserChannel[];
 	unread?: boolean;
 	autoTranslate?: boolean;
 	translations?: ITranslations[];
@@ -97,8 +117,9 @@ export interface IMessage {
 	blocks?: any;
 	e2e?: E2EType;
 	tshow?: boolean;
-	md?: MarkdownAST;
 	subscription?: { id: string };
 }
 
 export type TMessageModel = IMessage & Model;
+
+export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;

@@ -179,7 +179,7 @@ export type OmnichannelEndpoints = {
 			departmentId?: ILivechatAgent['_id'];
 			offset: number;
 			count: number;
-			sort: string;
+			sort: string | { uploadedAt: number };
 		}) => {
 			queue: {
 				chats: number;

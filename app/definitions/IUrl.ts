@@ -1,11 +1,3 @@
-export interface IUrl {
-	_id: number;
-	title: string;
-	description: string;
-	image: string;
-	url: string;
-}
-
 export interface IUrlFromServer {
 	url: string;
 	meta: {
@@ -46,4 +38,12 @@ export interface IUrlFromServer {
 		hostname: string;
 	};
 	ignoreParse: boolean;
+}
+
+export interface IUrl extends IUrlFromServer {
+	_id: number;
+	title: string;
+	description: string;
+	image: string;
+	url: string;
 }
