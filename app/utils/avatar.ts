@@ -1,4 +1,4 @@
-import { compareServerVersion, methods } from '../lib/utils';
+import { compareServerVersion } from '../lib/utils';
 import { SubscriptionType } from '../definitions/ISubscription';
 import { IAvatar } from '../containers/Avatar/interfaces';
 
@@ -19,7 +19,7 @@ export const avatarURL = ({
 	let room;
 	if (type === SubscriptionType.DIRECT) {
 		room = text;
-	} else if (rid && !compareServerVersion(serverVersion, '3.6.0', methods.lowerThan)) {
+	} else if (rid && !compareServerVersion(serverVersion, 'lowerThan', '3.6.0')) {
 		room = `room/${rid}`;
 	} else {
 		room = `@${text}`;

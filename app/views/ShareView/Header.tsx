@@ -9,6 +9,7 @@ import { useTheme } from '../../theme';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../utils/room';
+import { ISubscription } from '../../definitions';
 
 const androidMarginLeft = isTablet ? 0 : 4;
 
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
 });
 
 interface IHeader {
-	room: { prid?: string; t?: string };
+	room: ISubscription;
 	thread: { id?: string };
 }
 

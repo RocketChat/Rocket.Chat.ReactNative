@@ -3,7 +3,7 @@ import { dequal } from 'dequal';
 
 import I18n from '../../i18n';
 import styles from './styles';
-import Markdown from '../../containers/markdown';
+import { MarkdownPreview } from '../../containers/markdown';
 import { themes } from '../../constants/colors';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 
@@ -65,8 +65,7 @@ const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProp
 
 const LastMessage = React.memo(
 	({ lastMessage, type, showLastMessage, username, alert, useRealName, theme }: ILastMessage) => (
-		// @ts-ignore
-		<Markdown
+		<MarkdownPreview
 			msg={formatMsg({
 				lastMessage,
 				type,
@@ -75,11 +74,7 @@ const LastMessage = React.memo(
 				useRealName
 			})}
 			style={[styles.markdownText, { color: alert ? themes[theme].bodyText : themes[theme].auxiliaryText }]}
-			customEmojis={false}
-			useRealName={useRealName}
 			numberOfLines={2}
-			preview
-			theme={theme}
 			testID='room-item-last-message'
 		/>
 	),

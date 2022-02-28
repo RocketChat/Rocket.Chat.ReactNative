@@ -17,7 +17,7 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
-import { IEmoji } from './interfaces';
+import { IEmoji } from '../../definitions/IEmoji';
 
 const scrollProps = {
 	keyboardShouldPersistTaps: 'always',
@@ -36,7 +36,7 @@ interface IEmojiPickerProps {
 }
 
 interface IEmojiPickerState {
-	frequentlyUsed: [];
+	frequentlyUsed: (string | { content?: string; extension?: string; isCustom: boolean })[];
 	customEmojis: any;
 	show: boolean;
 	width: number | null;
@@ -114,7 +114,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 			// Do nothing
 		}
 
-		await db.action(async () => {
+		await db.write(async () => {
 			if (freqEmojiRecord) {
 				await freqEmojiRecord.update((f: any) => {
 					f.count += 1;
@@ -132,8 +132,8 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 	updateFrequentlyUsed = async () => {
 		const db = database.active;
 		const frequentlyUsedRecords = await db.get('frequently_used_emojis').query().fetch();
-		let frequentlyUsed: any = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
-		frequentlyUsed = frequentlyUsed.map((item: IEmoji) => {
+		const frequentlyUsedOrdered = orderBy(frequentlyUsedRecords, ['count'], ['desc']);
+		const frequentlyUsed = frequentlyUsedOrdered.map(item => {
 			if (item.isCustom) {
 				return { content: item.content, extension: item.extension, isCustom: item.isCustom };
 			}

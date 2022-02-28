@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { Q } from '@nozbe/watermelondb';
 
-import { compareServerVersion, methods } from '../../lib/utils';
+import { compareServerVersion } from '../../lib/utils';
 import Touch from '../../utils/touch';
-import { setLoading as setLoadingAction } from '../../actions/selectedUsers';
-import { closeRoom as closeRoomAction, leaveRoom as leaveRoomAction } from '../../actions/room';
+import { setLoading } from '../../actions/selectedUsers';
+import { closeRoom, leaveRoom } from '../../actions/room';
 import sharedStyles from '../Styles';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status';
@@ -21,7 +21,7 @@ import StatusBar from '../../containers/StatusBar';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import * as HeaderButton from '../../containers/HeaderButton';
-import Markdown from '../../containers/markdown';
+import { MarkdownPreview } from '../../containers/markdown';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { E2E_ROOM_TYPES } from '../../lib/encryption/constants';
@@ -320,7 +320,7 @@ class RoomActionsView extends React.Component {
 		const { encrypted } = room;
 		const { serverVersion } = this.props;
 		let hasPermission = false;
-		if (compareServerVersion(serverVersion, '3.11.0', methods.lowerThan)) {
+		if (compareServerVersion(serverVersion, 'lowerThan', '3.11.0')) {
 			hasPermission = canEdit;
 		} else {
 			hasPermission = canToggleEncryption;
@@ -334,9 +334,9 @@ class RoomActionsView extends React.Component {
 		const {
 			room: { rid }
 		} = this.state;
-		const { closeRoom } = this.props;
+		const { dispatch } = this.props;
 
-		closeRoom(rid);
+		dispatch(closeRoom(rid));
 	};
 
 	returnLivechat = () => {
@@ -375,16 +375,16 @@ class RoomActionsView extends React.Component {
 
 	addUser = async () => {
 		const { room } = this.state;
-		const { setLoadingInvite, navigation } = this.props;
+		const { dispatch, navigation } = this.props;
 		const { rid } = room;
 		try {
-			setLoadingInvite(true);
+			dispatch(setLoading(true));
 			await RocketChat.addUsersToRoom(rid);
 			navigation.pop();
 		} catch (e) {
 			log(e);
 		} finally {
-			setLoadingInvite(false);
+			dispatch(setLoading(false));
 		}
 	};
 
@@ -458,12 +458,12 @@ class RoomActionsView extends React.Component {
 
 	leaveChannel = () => {
 		const { room } = this.state;
-		const { leaveRoom } = this.props;
+		const { dispatch } = this.props;
 
 		showConfirmationAlert({
 			message: I18n.t('Are_you_sure_you_want_to_leave_the_room', { room: RocketChat.getRoomTitle(room) }),
 			confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-			onPress: () => leaveRoom('channel', room)
+			onPress: () => dispatch(leaveRoom('channel', room))
 		});
 	};
 
@@ -522,7 +522,7 @@ class RoomActionsView extends React.Component {
 
 	leaveTeam = async () => {
 		const { room } = this.state;
-		const { navigation, leaveRoom } = this.props;
+		const { navigation, dispatch } = this.props;
 
 		try {
 			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId: room.u._id });
@@ -538,21 +538,21 @@ class RoomActionsView extends React.Component {
 					title: 'Leave_Team',
 					data: teamChannels,
 					infoText: 'Select_Team_Channels',
-					nextAction: data => leaveRoom('team', room, data),
+					nextAction: data => dispatch(leaveRoom('team', room, data)),
 					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
 				});
 			} else {
 				showConfirmationAlert({
 					message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					onPress: () => leaveRoom('team', room)
+					onPress: () => dispatch(leaveRoom('team', room))
 				});
 			}
 		} catch (e) {
 			showConfirmationAlert({
 				message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
 				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-				onPress: () => leaveRoom('team', room)
+				onPress: () => dispatch(leaveRoom('team', room))
 			});
 		}
 	};
@@ -643,7 +643,7 @@ class RoomActionsView extends React.Component {
 			const { addTeamChannelPermission, createTeamPermission } = this.props;
 			const QUERY_SIZE = 50;
 			const db = database.active;
-			const teams = await db.collections
+			const teams = await db
 				.get('subscriptions')
 				.query(
 					Q.where('team_main', true),
@@ -723,20 +723,14 @@ class RoomActionsView extends React.Component {
 									</Text>
 								</View>
 							)}
-							<Markdown
-								preview
+							<MarkdownPreview
 								msg={t === 'd' ? `@${name}` : topic}
 								style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
-								numberOfLines={1}
-								theme={theme}
 							/>
 							{room.t === 'd' && (
-								<Markdown
+								<MarkdownPreview
 									msg={member.statusText}
 									style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
-									preview
-									theme={theme}
-									numberOfLines={1}
 								/>
 							)}
 						</View>
@@ -941,7 +935,7 @@ class RoomActionsView extends React.Component {
 			canReturnQueue,
 			canViewCannedResponse
 		} = this.state;
-		const { rid, t } = room;
+		const { rid, t, prid } = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
 		return (
@@ -1003,6 +997,27 @@ class RoomActionsView extends React.Component {
 									}
 									testID='room-actions-invite-user'
 									left={() => <List.Icon name='user-add' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
+
+						{['c', 'p', 'd'].includes(t) && !prid ? (
+							<>
+								<List.Item
+									title='Discussions'
+									onPress={() =>
+										this.onPressTouchable({
+											route: 'DiscussionsView',
+											params: {
+												rid,
+												t
+											}
+										})
+									}
+									testID='room-actions-discussions'
+									left={() => <List.Icon name='discussions' />}
 									showActionIndicator
 								/>
 								<List.Separator />
@@ -1227,10 +1242,4 @@ const mapStateToProps = state => ({
 	viewCannedResponsesPermission: state.permissions['view-canned-responses']
 });
 
-const mapDispatchToProps = dispatch => ({
-	leaveRoom: (roomType, room, selected) => dispatch(leaveRoomAction(roomType, room, selected)),
-	closeRoom: rid => dispatch(closeRoomAction(rid)),
-	setLoadingInvite: loading => dispatch(setLoadingAction(loading))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(withDimensions(RoomActionsView)));
+export default connect(mapStateToProps)(withTheme(withDimensions(RoomActionsView)));

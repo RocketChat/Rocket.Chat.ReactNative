@@ -13,7 +13,7 @@ import Loading from '../containers/Loading';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IBaseScreen } from '../definitions';
+import { IApplicationState, IBaseScreen, ISubscription } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
@@ -109,10 +109,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	init = async () => {
 		try {
 			const db = database.active;
-			const observable = await db.collections
-				.get('subscriptions')
-				.query(Q.where('t', 'd'))
-				.observeWithColumns(['room_updated_at']);
+			const observable = await db.get('subscriptions').query(Q.where('t', 'd')).observeWithColumns(['room_updated_at']);
 
 			// TODO: Refactor when migrate room
 			this.querySubscription = observable.subscribe((data: any) => {
@@ -129,7 +126,9 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	}
 
 	search = async (text: string) => {
-		const result = await RocketChat.search({ text, filterRooms: false });
+		// TODO: When migrate rocketchat.js pass the param IUser to there and the return should be
+		// IUser | TSubscriptionModel, this because we do a local search too
+		const result = (await RocketChat.search({ text, filterRooms: false })) as ISelectedUser[];
 		this.setState({
 			search: result
 		});
@@ -266,7 +265,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 
 		const data = (search.length > 0 ? search : chats)
 			// filter DM between multiple users
-			.filter(sub => !RocketChat.isGroupChat(sub));
+			.filter(sub => !RocketChat.isGroupChat(sub as ISubscription));
 
 		return (
 			<FlatList

@@ -32,8 +32,10 @@ import debounce from './utils/debounce';
 import { isFDroidBuild } from './constants/environment';
 import { IThemePreference } from './definitions/ITheme';
 import { ICommand } from './definitions/ICommand';
+import { initStore } from './lib/auxStore';
 
 RNScreens.enableScreens();
+initStore(store);
 
 interface IDimensions {
 	width: number;

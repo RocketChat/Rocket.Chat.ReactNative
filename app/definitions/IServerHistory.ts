@@ -7,4 +7,4 @@ export interface IServerHistory {
 	updatedAt: Date;
 }
 
-export type TServerHistory = IServerHistory & Model;
+export type TServerHistoryModel = IServerHistory & Model;

@@ -6,9 +6,9 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import * as List from '../../containers/List';
 import Button from '../../containers/Button';
-import { toggleServerDropdown as toggleServerDropdownAction } from '../../actions/rooms';
-import { selectServerRequest as selectServerRequestAction, serverInitAdd as serverInitAddAction } from '../../actions/server';
-import { appStart as appStartAction, ROOT_OUTSIDE } from '../../actions/app';
+import { toggleServerDropdown } from '../../actions/rooms';
+import { selectServerRequest, serverInitAdd } from '../../actions/server';
+import { appStart } from '../../actions/app';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
@@ -24,6 +24,8 @@ import log, { events, logEvent } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
 import UserPreferences from '../../lib/userPreferences';
+import { RootEnum } from '../../definitions';
+
 import styles from './styles';
 
 const ROW_HEIGHT = 68;
@@ -36,11 +38,7 @@ class ServerDropdown extends Component {
 		closeServerDropdown: PropTypes.bool,
 		server: PropTypes.string,
 		theme: PropTypes.string,
-		isMasterDetail: PropTypes.bool,
-		appStart: PropTypes.func,
-		toggleServerDropdown: PropTypes.func,
-		selectServerRequest: PropTypes.func,
-		initAdd: PropTypes.func
+		isMasterDetail: PropTypes.bool
 	};
 
 	constructor(props) {
@@ -51,7 +49,7 @@ class ServerDropdown extends Component {
 
 	async componentDidMount() {
 		const serversDB = database.servers;
-		const observable = await serversDB.collections.get('servers').query().observeWithColumns(['name']);
+		const observable = await serversDB.get('servers').query().observeWithColumns(['name']);
 
 		this.subscription = observable.subscribe(data => {
 			this.setState({ servers: data });
@@ -89,13 +87,13 @@ class ServerDropdown extends Component {
 	}
 
 	close = () => {
-		const { toggleServerDropdown } = this.props;
+		const { dispatch } = this.props;
 		Animated.timing(this.animatedValue, {
 			toValue: 0,
 			duration: ANIMATION_DURATION,
 			easing: Easing.inOut(Easing.quad),
 			useNativeDriver: true
-		}).start(() => toggleServerDropdown());
+		}).start(() => dispatch(toggleServerDropdown()));
 	};
 
 	createWorkspace = async () => {
@@ -108,10 +106,10 @@ class ServerDropdown extends Component {
 	};
 
 	navToNewServer = previousServer => {
-		const { appStart, initAdd } = this.props;
+		const { dispatch } = this.props;
 		batch(() => {
-			appStart({ root: ROOT_OUTSIDE });
-			initAdd(previousServer);
+			dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			dispatch(serverInitAdd(previousServer));
 		});
 	};
 
@@ -125,7 +123,7 @@ class ServerDropdown extends Component {
 	};
 
 	select = async (server, version) => {
-		const { server: currentServer, selectServerRequest, isMasterDetail } = this.props;
+		const { server: currentServer, dispatch, isMasterDetail } = this.props;
 		this.close();
 		if (currentServer !== server) {
 			logEvent(events.RL_CHANGE_SERVER);
@@ -142,7 +140,7 @@ class ServerDropdown extends Component {
 				}, ANIMATION_DURATION);
 			} else {
 				await localAuthenticate(server);
-				selectServerRequest(server, version);
+				dispatch(selectServerRequest(server, version, true, true));
 			}
 		}
 	};
@@ -263,11 +261,4 @@ const mapStateToProps = state => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-const mapDispatchToProps = dispatch => ({
-	toggleServerDropdown: () => dispatch(toggleServerDropdownAction()),
-	selectServerRequest: (server, version) => dispatch(selectServerRequestAction(server, version, true, true)),
-	appStart: params => dispatch(appStartAction(params)),
-	initAdd: previousServer => dispatch(serverInitAddAction(previousServer))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withSafeAreaInsets(withTheme(ServerDropdown)));
+export default connect(mapStateToProps)(withSafeAreaInsets(withTheme(ServerDropdown)));
