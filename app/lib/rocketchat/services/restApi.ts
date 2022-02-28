@@ -19,7 +19,7 @@ export const createChannel = ({
 	broadcast: boolean;
 	encrypted: boolean;
 	teamId: string;
-}): any => {
+}) => {
 	const params = {
 		name,
 		members: users,
@@ -30,8 +30,6 @@ export const createChannel = ({
 			...(teamId && { teamId })
 		}
 	};
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post(type ? 'groups.create' : 'channels.create', params);
 };
 

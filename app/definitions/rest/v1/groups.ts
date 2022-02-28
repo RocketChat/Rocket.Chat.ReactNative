@@ -22,4 +22,19 @@ export type GroupsEndpoints = {
 			messages: IMessageFromServer[];
 		};
 	};
+	'groups.create': {
+		POST: (params: {
+			name: string;
+			members: string[];
+			readOnly: boolean;
+			extraData: {
+				broadcast: boolean;
+				encrypted: boolean;
+				teamId?: string;
+			};
+		}) => {
+			group: Partial<IRoom>;
+			success: boolean;
+		};
+	};
 };
