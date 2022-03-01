@@ -1,4 +1,4 @@
-import { IUser } from '../../IUser';
+import { IUser, IUserRegistered } from '../../IUser';
 
 export type UserEndpoints = {
 	'users.info': {
@@ -8,6 +8,12 @@ export type UserEndpoints = {
 		};
 		POST: (params: { userId: IUser['_id'] }) => {
 			user: IUser;
+			success: boolean;
+		};
+	};
+	'users.register': {
+		POST: (params: { name: string; email: string; username: string; pass: string }) => {
+			user: IUserRegistered;
 			success: boolean;
 		};
 	};
