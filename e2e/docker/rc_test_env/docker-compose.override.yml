@@ -14,7 +14,7 @@ services:
     restart: "no"
     command: "true"
     entrypoint: ["/true"]
-  
+
   hubot:  # No hubot when testing
     image: tianon/true
     restart: "no"
@@ -23,5 +23,5 @@ services:
 
   mailcatcher:
     image: tophfr/mailcatcher
-    ports: 
-      - 1080:80
+    ports:
+      - "1080:80"
