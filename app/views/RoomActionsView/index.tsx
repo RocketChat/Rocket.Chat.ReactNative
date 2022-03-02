@@ -513,20 +513,22 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			}
 			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId });
 
-			if (result.rooms?.length) {
-				const teamChannels = result.rooms.map((r: any) => ({
-					rid: r._id,
-					name: r.name,
-					teamId: r.teamId
-				}));
-				navigation.navigate('SelectListView', {
-					title: 'Converting_Team_To_Channel',
-					data: teamChannels as any,
-					infoText: 'Select_Team_Channels_To_Delete',
-					nextAction: (data: string[]) => this.convertTeamToChannelConfirmation(data)
-				});
-			} else {
-				this.convertTeamToChannelConfirmation();
+			if (result.success) {
+				if (result.rooms?.length) {
+					const teamChannels = result.rooms.map((r: any) => ({
+						rid: r._id,
+						name: r.name,
+						teamId: r.teamId
+					}));
+					navigation.navigate('SelectListView', {
+						title: 'Converting_Team_To_Channel',
+						data: teamChannels as any,
+						infoText: 'Select_Team_Channels_To_Delete',
+						nextAction: (data: string[]) => this.convertTeamToChannelConfirmation(data)
+					});
+				} else {
+					this.convertTeamToChannelConfirmation();
+				}
 			}
 		} catch (e) {
 			this.convertTeamToChannelConfirmation();
@@ -572,26 +574,28 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			}
 			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId, userId });
 
-			if (result.rooms?.length) {
-				const teamChannels = result.rooms.map((r: any) => ({
-					rid: r._id,
-					name: r.name,
-					teamId: r.teamId,
-					alert: r.isLastOwner
-				}));
-				navigation.navigate('SelectListView', {
-					title: 'Leave_Team',
-					data: teamChannels,
-					infoText: 'Select_Team_Channels',
-					nextAction: data => dispatch(leaveRoom(ERoomType.t, room, data)),
-					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
-				});
-			} else {
-				showConfirmationAlert({
-					message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
-					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
-					onPress: () => dispatch(leaveRoom(ERoomType.t, room))
-				});
+			if (result.success) {
+				if (result.rooms?.length) {
+					const teamChannels = result.rooms.map((r: any) => ({
+						rid: r._id,
+						name: r.name,
+						teamId: r.teamId,
+						alert: r.isLastOwner
+					}));
+					navigation.navigate('SelectListView', {
+						title: 'Leave_Team',
+						data: teamChannels as any,
+						infoText: 'Select_Team_Channels',
+						nextAction: data => dispatch(leaveRoom(ERoomType.t, room, data)),
+						showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_leave'))
+					});
+				} else {
+					showConfirmationAlert({
+						message: I18n.t('You_are_leaving_the_team', { team: RocketChat.getRoomTitle(room) }),
+						confirmationText: I18n.t('Yes_action_it', { action: I18n.t('leave') }),
+						onPress: () => dispatch(leaveRoom(ERoomType.t, room))
+					});
+				}
 			}
 		} catch (e) {
 			showConfirmationAlert({
