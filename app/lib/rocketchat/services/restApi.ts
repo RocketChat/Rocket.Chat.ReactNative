@@ -243,10 +243,8 @@ export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p
 	return sdk.post('channels.join', { roomId, joinCode });
 };
 
-export const deleteMessage = (messageId: string, rid: string): any =>
+export const deleteMessage = (messageId: string, rid: string) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.delete', { msgId: messageId, roomId: rid });
 
 export const markAsUnread = ({ messageId }: { messageId: string }) =>
