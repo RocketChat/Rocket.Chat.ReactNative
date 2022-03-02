@@ -182,10 +182,8 @@ export const leaveTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }
 		...(rooms?.length && { rooms })
 	});
 
-export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; userId: string; rooms: string[] }): any =>
+export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; userId: string; rooms: string[] }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('teams.removeMember', {
 		teamId,
 		userId,
