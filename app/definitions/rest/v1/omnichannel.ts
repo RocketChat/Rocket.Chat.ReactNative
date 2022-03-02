@@ -76,6 +76,9 @@ export type OmnichannelEndpoints = {
 		GET: (params: { sort: string }) => PaginatedResult<{ agents: ILivechatDepartmentAgents[] }>;
 		POST: (params: { upsert: string[]; remove: string[] }) => void;
 	};
+	'livechat/department/:departmentId/?includeAgents=false': {
+		GET: () => PaginatedResult<{ department: ILivechatDepartment[] }>;
+	};
 	'livechat/departments.available-by-unit/:id': {
 		GET: (params: PaginatedRequest<{ text: string }>) => PaginatedResult<{
 			departments: ILivechatDepartment[];
