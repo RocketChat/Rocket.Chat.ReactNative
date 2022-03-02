@@ -4,14 +4,8 @@ enum ETypes {
 	Groups = 'groups'
 }
 
-export const types: { [K in RoomTypes]: ApiTypes<K> } = {
-	c: ETypes.Channels,
-	d: ETypes.Im,
-	p: ETypes.Groups,
-	l: ETypes.Channels
-};
-
 export type RoomTypes = 'c' | 'd' | 'p' | 'l';
+
 type ApiTypes<T> = T extends 'c'
 	? ETypes.Channels
 	: T extends 'd'
@@ -21,6 +15,13 @@ type ApiTypes<T> = T extends 'c'
 	: T extends 'l'
 	? ETypes.Channels
 	: never;
+
+export const types: { [K in RoomTypes]: ApiTypes<K> } = {
+	c: ETypes.Channels,
+	d: ETypes.Im,
+	p: ETypes.Groups,
+	l: ETypes.Channels
+};
 
 const roomTypeToApiType = <T extends RoomTypes>(t: T) => types[t];
 
