@@ -3,9 +3,9 @@ import moment from 'moment';
 import { themes } from '../constants/colors';
 import I18n from '../i18n';
 import { IAttachment } from '../definitions/IAttachment';
-import { ISubscription, SubscriptionType } from '../definitions/ISubscription';
+import { SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 
-export const isBlocked = (room: ISubscription): boolean => {
+export const isBlocked = (room: TSubscriptionModel): boolean => {
 	if (room) {
 		const { t, blocked, blocker } = room;
 		if (t === SubscriptionType.DIRECT && (blocked || blocker)) {
@@ -62,4 +62,4 @@ export const getBadgeColor = ({
 export const makeThreadName = (messageRecord: { id?: string; msg?: string; attachments?: IAttachment[] }): string | undefined =>
 	messageRecord.msg || messageRecord?.attachments?.[0]?.title;
 
-export const isTeamRoom = ({ teamId, joined }: { teamId: string; joined: boolean }): boolean => !!teamId && joined;
+export const isTeamRoom = ({ teamId, joined }: { teamId?: string; joined?: boolean }): boolean => (!!teamId && joined) ?? false;
