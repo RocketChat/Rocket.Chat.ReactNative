@@ -148,7 +148,7 @@ export const createTeam = ({
 	readOnly: boolean;
 	broadcast: boolean;
 	encrypted: boolean;
-}): any => {
+}) => {
 	const params = {
 		name,
 		users,
@@ -162,8 +162,6 @@ export const createTeam = ({
 		}
 	};
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('teams.create', params);
 };
 export const addRoomsToTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }): any =>
