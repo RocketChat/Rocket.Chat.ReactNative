@@ -164,10 +164,8 @@ export const createTeam = ({
 	// RC 3.13.0
 	return sdk.post('teams.create', params);
 };
-export const addRoomsToTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }): any =>
+export const addRoomsToTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('teams.addRooms', { teamId, rooms });
 
 export const removeTeamRoom = ({ roomId, teamId }: { roomId: string; teamId: string }) =>
