@@ -10,7 +10,7 @@ export const E2E_BANNER_TYPE = {
 	REQUEST_PASSWORD: 'REQUEST_PASSWORD',
 	SAVE_PASSWORD: 'SAVE_PASSWORD'
 };
-export const E2E_ROOM_TYPES = {
+export const E2E_ROOM_TYPES: Record<string, string> = {
 	d: 'd',
 	p: 'p'
 };
