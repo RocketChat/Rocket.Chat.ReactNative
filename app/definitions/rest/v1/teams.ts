@@ -1,4 +1,4 @@
-import { IRoom } from '../../IRoom';
+import { IRoom, IServerRoomItem } from '../../IRoom';
 
 export type TeamsEndpoints = {
 	'teams.removeRoom': {
@@ -6,7 +6,7 @@ export type TeamsEndpoints = {
 	};
 	'teams.listRoomsOfUser': {
 		GET: (params: { teamId: string; userId: string }) => {
-			rooms: IRoom[];
+			rooms: IServerRoomItem[];
 			total: number;
 			count: number;
 			offset: number;
