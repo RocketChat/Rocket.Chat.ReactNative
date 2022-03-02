@@ -199,6 +199,15 @@ export default schemaMigrations({
 					columns: [{ name: 'md', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 15,
+			steps: [
+				addColumns({
+					table: 'threads',
+					columns: [{ name: 'draft_message', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });

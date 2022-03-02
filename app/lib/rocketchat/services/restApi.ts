@@ -247,7 +247,7 @@ export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; sel
 	return sdk.post('teams.convertToChannel', params);
 };
 
-export const joinRoom = (roomId: string, joinCode: string, type: 'c' | 'p'): any => {
+export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p'): any => {
 	// TODO: join code
 	// RC 0.48.0
 	if (type === 'p') {

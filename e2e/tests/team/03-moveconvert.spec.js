@@ -5,6 +5,9 @@ const toBeConverted = `to-be-converted-${data.random}`;
 const toBeMoved = `to-be-moved-${data.random}`;
 
 const createChannel = async room => {
+	await waitFor(element(by.id('rooms-list-view-create-channel')))
+		.toBeVisible()
+		.withTimeout(5000);
 	await element(by.id('rooms-list-view-create-channel')).tap();
 	await waitFor(element(by.id('new-message-view')))
 		.toExist()

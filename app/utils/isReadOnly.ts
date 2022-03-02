@@ -9,21 +9,18 @@ const canPostReadOnly = async ({ rid }: { rid: string }) => {
 	return permission[0];
 };
 
-const isMuted = (room: ISubscription, user: { username: string }) =>
-	room && room.muted && room.muted.find && !!room.muted.find(m => m === user.username);
+const isMuted = (room: Partial<ISubscription>, username: string) =>
+	room && room.muted && room.muted.find && !!room.muted.find(m => m === username);
 
-export const isReadOnly = async (
-	room: ISubscription,
-	user: { id?: string; username: string; token?: string }
-): Promise<boolean> => {
+export const isReadOnly = async (room: Partial<ISubscription>, username: string): Promise<boolean> => {
 	if (room.archived) {
 		return true;
 	}
-	if (isMuted(room, user)) {
+	if (isMuted(room, username)) {
 		return true;
 	}
 	if (room?.ro) {
-		const allowPost = await canPostReadOnly(room);
+		const allowPost = await canPostReadOnly({ rid: room.rid as string });
 		if (allowPost) {
 			return false;
 		}
