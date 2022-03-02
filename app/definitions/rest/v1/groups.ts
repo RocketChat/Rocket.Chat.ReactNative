@@ -1,3 +1,4 @@
+import { ITeam } from '../../ITeam';
 import type { IMessage, IMessageFromServer } from '../../IMessage';
 import type { IRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
@@ -21,5 +22,8 @@ export type GroupsEndpoints = {
 		GET: (params: { roomId: string; count: number; latest?: string }) => {
 			messages: IMessageFromServer[];
 		};
+	};
+	'groups.convertToTeam': {
+		POST: (params: { roomId: string; roomName: string }) => { team: ITeam };
 	};
 };
