@@ -568,17 +568,14 @@ export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: strin
 	// @ts-ignore
 	sdk.get('chat.ignoreUser', { rid, userId, ignore });
 
-export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean): any => {
+export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean) => {
+	const type = t as SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	if (archive) {
 		// RC 0.48.0
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.archive`, { roomId });
+		return sdk.post(`${roomTypeToApiType(type)}.archive`, { roomId });
 	}
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.unarchive`, { roomId });
+	return sdk.post(`${roomTypeToApiType(type)}.unarchive`, { roomId });
 };
 
 export const hideRoom = (roomId: string, t: RoomTypes): any =>
