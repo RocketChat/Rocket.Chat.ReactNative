@@ -12,7 +12,7 @@ export enum SubscriptionType {
 	DIRECT = 'd',
 	CHANNEL = 'c',
 	OMNICHANNEL = 'l',
-	E2E = 'e2e',
+	E2E = 'e2e', // FIXME: this is not a type of subscription
 	THREAD = 'thread' // FIXME: this is not a type of subscription
 }
 
@@ -36,7 +36,7 @@ export interface ISubscription {
 	_updatedAt?: string; // from server
 	v?: IVisitor;
 	f: boolean;
-	t: SubscriptionType;
+	t: string; // TODO: we need to review this type later
 	ts: string | Date;
 	ls: Date;
 	name: string;
@@ -81,6 +81,7 @@ export interface ISubscription {
 	usernames?: string[];
 	visitor?: IVisitor;
 	departmentId?: string;
+	status?: string;
 	servedBy?: IServedBy;
 	livechatData?: any;
 	tags?: string[];
