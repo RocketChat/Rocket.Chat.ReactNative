@@ -16,7 +16,7 @@ import StatusBar from '../../containers/StatusBar';
 import RCTextInput from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-import { IApplicationState, IBaseScreen, ISubscription, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, IBaseScreen, ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { ERoomType } from '../../definitions/ERoomType';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -372,7 +372,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 					title: 'Delete_Team',
 					data: teamChannelOwner,
 					infoText: 'Select_channels_to_delete',
-					nextAction: (selected: Record<string, string>) => {
+					nextAction: (selected: string[]) => {
 						showConfirmationAlert({
 							message: I18n.t('You_are_deleting_the_team', { team: RocketChat.getRoomTitle(room) }),
 							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
@@ -437,7 +437,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 					onPress: async () => {
 						try {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE);
-							await RocketChat.toggleArchiveRoom(rid, t, !archived);
+							await RocketChat.toggleArchiveRoom(rid, t as SubscriptionType, !archived);
 						} catch (e) {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);

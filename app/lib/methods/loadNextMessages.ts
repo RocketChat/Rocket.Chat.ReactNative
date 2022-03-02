@@ -7,19 +7,19 @@ import { getMessageById } from '../database/services/Message';
 import { MESSAGE_TYPE_LOAD_NEXT_CHUNK } from '../../constants/messageTypeLoad';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
-import { IMessage, TMessageModel } from '../../definitions';
+import { TMessageModel } from '../../definitions';
 import RocketChat from '../rocketchat';
 
 const COUNT = 50;
 
 interface ILoadNextMessages {
 	rid: string;
-	ts: string;
-	tmid: string;
+	ts: Date;
+	tmid?: string;
 	loaderItem: TMessageModel;
 }
 
-export default function loadNextMessages(args: ILoadNextMessages): Promise<IMessage | []> {
+export default function loadNextMessages(args: ILoadNextMessages): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await RocketChat.methodCallWrapper('loadNextMessages', args.rid, args.ts, COUNT);
@@ -39,9 +39,9 @@ export default function loadNextMessages(args: ILoadNextMessages): Promise<IMess
 					messages.push(loadMoreItem);
 				}
 				await updateMessages({ rid: args.rid, update: messages, loaderItem: args.loaderItem });
-				return resolve(messages);
+				return resolve();
 			}
-			return resolve([]);
+			return resolve();
 		} catch (e) {
 			log(e);
 			reject(e);

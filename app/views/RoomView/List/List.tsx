@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, FlatListProps, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import PropTypes from 'prop-types';
 
@@ -17,11 +17,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-const List = ({ listRef, ...props }) => (
+export interface IListProps extends FlatListProps<any> {
+	listRef: any;
+}
+
+const List = ({ listRef, ...props }: IListProps) => (
 	<AnimatedFlatList
 		testID='room-view-messages'
 		ref={listRef}
-		keyExtractor={item => item.id}
+		keyExtractor={(item: any) => item.id}
 		contentContainerStyle={styles.contentContainer}
 		style={styles.list}
 		inverted
