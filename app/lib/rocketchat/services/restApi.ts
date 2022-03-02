@@ -245,7 +245,7 @@ export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; sel
 	return sdk.post('teams.convertToChannel', params);
 };
 
-export const joinRoom = (roomId: string, joinCode: string, type: 'c' | 'p'): any => {
+export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p'): any => {
 	// TODO: join code
 	// RC 0.48.0
 	if (type === 'p') {
@@ -262,10 +262,8 @@ export const deleteMessage = (messageId: string, rid: string): any =>
 	// @ts-ignore
 	sdk.post('chat.delete', { msgId: messageId, roomId: rid });
 
-export const markAsUnread = ({ messageId }: { messageId: string }): any =>
+export const markAsUnread = ({ messageId }: { messageId: string }) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 
 export const toggleStarMessage = (messageId: string, starred: boolean): any => {

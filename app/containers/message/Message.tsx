@@ -87,7 +87,7 @@ const Message = React.memo((props: IMessage) => {
 				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 					<MessageInner {...props} />
 				</View>
-				<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread} theme={props.theme} />
+				<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} theme={props.theme} />
 			</View>
 		</View>
 	);
