@@ -19,7 +19,7 @@ export const createChannel = ({
 	broadcast: boolean;
 	encrypted: boolean;
 	teamId: string;
-}): any => {
+}) => {
 	const params = {
 		name,
 		members: users,
@@ -30,8 +30,6 @@ export const createChannel = ({
 			...(teamId && { teamId })
 		}
 	};
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post(type ? 'groups.create' : 'channels.create', params);
 };
 
@@ -43,10 +41,8 @@ export const e2eRequestSubscriptionKeys = (): any =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
 
-export const e2eGetUsersOfRoomWithoutKey = (rid: string): any =>
+export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
 
 export const e2eSetRoomKeyID = (rid: string, keyID: string): any =>
@@ -83,7 +79,8 @@ export const forgotPassword = (email: string): any =>
 	// @ts-ignore
 	sdk.post('users.forgotPassword', { email });
 
-export const sendConfirmationEmail = (email: string) => sdk.methodCallWrapper('sendConfirmationEmail', email);
+export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
+	sdk.methodCallWrapper('sendConfirmationEmail', email);
 
 export const spotlight = (search: string, usernames: string, type: { users: boolean; rooms: boolean }) =>
 	// RC 0.51.0
@@ -406,7 +403,7 @@ export const forwardLivechat = (transferData: any) =>
 	// RC 0.36.0
 	sdk.methodCallWrapper('livechat:transfer', transferData);
 
-export const getDepartmentInfo = (departmentId: string): any =>
+export const getDepartmentInfo = (departmentId: string) =>
 	// RC 2.2.0
 	sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
 
@@ -427,7 +424,15 @@ export const usersAutoComplete = (selector: any) =>
 	// RC 2.4.0
 	sdk.get('users.autocomplete', { selector });
 
-export const getRoutingConfig = () =>
+export const getRoutingConfig = (): Promise<{
+	previewRoom: boolean;
+	showConnecting: boolean;
+	showQueue: boolean;
+	showQueueLink: boolean;
+	returnQueue: boolean;
+	enableTriggerAction: boolean;
+	autoAssignAgent: boolean;
+}> =>
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getRoutingConfig');
 

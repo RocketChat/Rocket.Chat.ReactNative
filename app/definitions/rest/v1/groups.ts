@@ -1,6 +1,6 @@
 import { ITeam } from '../../ITeam';
 import type { IMessage, IMessageFromServer } from '../../IMessage';
-import type { IRoom } from '../../IRoom';
+import type { IRoom, IServerRoomItem } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
 export type GroupsEndpoints = {
@@ -28,6 +28,20 @@ export type GroupsEndpoints = {
 	};
 	'groups.unarchive': {
 		POST: (params: { roomId: string }) => void;
+	};
+	'groups.create': {
+		POST: (params: {
+			name: string;
+			members: string[];
+			readOnly: boolean;
+			extraData: {
+				broadcast: boolean;
+				encrypted: boolean;
+				teamId?: string;
+			};
+		}) => {
+			group: Partial<IServerRoomItem>;
+		};
 	};
 	'groups.convertToTeam': {
 		POST: (params: { roomId: string; roomName: string }) => { team: ITeam };
