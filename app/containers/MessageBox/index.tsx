@@ -72,7 +72,7 @@ const videoPickerConfig = {
 	mediaType: 'video'
 };
 
-interface IMessageBoxProps {
+export interface IMessageBoxProps {
 	rid: string;
 	baseUrl: string;
 	message: IMessage;
