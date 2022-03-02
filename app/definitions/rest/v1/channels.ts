@@ -30,10 +30,6 @@ export type ChannelsEndpoints = {
 		};
 	};
 	'channels.convertToTeam': {
-		POST: (params: { channelId: string; channelName: string }) => {
-			team: ITeam;
-			success: boolean;
-			error?: boolean;
-		};
+		POST: (params: { channelId: string; channelName: string }) => { team: ITeam };
 	};
 };

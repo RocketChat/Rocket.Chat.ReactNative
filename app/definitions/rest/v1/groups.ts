@@ -24,10 +24,6 @@ export type GroupsEndpoints = {
 		};
 	};
 	'groups.convertToTeam': {
-		POST: (params: { roomId: string; roomName: string }) => {
-			team: ITeam;
-			success: boolean;
-			error?: string;
-		};
+		POST: (params: { roomId: string; roomName: string }) => { team: ITeam };
 	};
 };
