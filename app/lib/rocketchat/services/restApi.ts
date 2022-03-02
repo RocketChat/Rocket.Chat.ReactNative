@@ -41,10 +41,8 @@ export const e2eRequestSubscriptionKeys = (): any =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
 
-export const e2eGetUsersOfRoomWithoutKey = (rid: string): any =>
+export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
 
 export const e2eSetRoomKeyID = (rid: string, keyID: string): any =>
@@ -69,10 +67,8 @@ export const updateJitsiTimeout = (roomId: string): any =>
 	// @ts-ignore
 	sdk.post('video-conference/jitsi.update-timeout', { roomId });
 
-export const register = (credentials: any): any =>
+export const register = (credentials: { name: string; email: string; pass: string; username: string }) =>
 	// RC 0.50.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.register', credentials);
 
 export const forgotPassword = (email: string): any =>
@@ -152,7 +148,7 @@ export const createTeam = ({
 	readOnly: boolean;
 	broadcast: boolean;
 	encrypted: boolean;
-}): any => {
+}) => {
 	const params = {
 		name,
 		users,
@@ -166,8 +162,6 @@ export const createTeam = ({
 		}
 	};
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('teams.create', params);
 };
 export const addRoomsToTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }): any =>
