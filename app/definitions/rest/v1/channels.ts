@@ -40,7 +40,6 @@ export type ChannelsEndpoints = {
 			};
 		}) => {
 			group: Partial<IRoom>;
-			success: boolean;
 		};
 	};
 };

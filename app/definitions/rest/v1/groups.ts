@@ -34,7 +34,6 @@ export type GroupsEndpoints = {
 			};
 		}) => {
 			group: Partial<IRoom>;
-			success: boolean;
 		};
 	};
 };
