@@ -23,28 +23,16 @@ export interface ILoggedUser {
 	enableMessageParserEarlyAdoption?: boolean;
 }
 
+export interface ILoggedUserResultFromServer
+	extends Omit<ILoggedUser, 'enableMessageParserEarlyAdoption' | 'showMessageInMainThread'> {
+	settings: IUserSettings;
+}
+
 export interface ILoginResultFromServer {
 	status: string;
 	authToken: string;
 	userId: string;
-	me: {
-		id: string;
-		token: string;
-		username: string;
-		name: string;
-		language?: string;
-		status: UserStatus;
-		statusText?: string;
-		customFields?: {
-			[key: string]: any;
-		};
-		statusLivechat?: string;
-		emails?: IUserEmail[];
-		roles?: string[];
-		avatarETag?: string;
-		isFromWebView?: boolean;
-		settings: IUserSettings;
-	};
+	me: ILoggedUserResultFromServer;
 }
 
 export type TLoggedUserModel = ILoggedUser & Model;

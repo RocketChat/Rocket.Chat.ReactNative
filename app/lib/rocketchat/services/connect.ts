@@ -1,7 +1,6 @@
 import RNFetchBlob from 'rn-fetch-blob';
-import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { useSsl } from '../../../utils/url';
 import { selectServerFailure } from '../../../actions/server';
 import { twoFactor } from '../../../utils/twoFactor';
 import { compareServerVersion } from '../../utils';
@@ -183,7 +182,7 @@ async function getServerInfo(server: string) {
 }
 
 async function getWebsocketInfo({ server }: { server: string }) {
-	const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+	sdk.initialize(server);
 
 	try {
 		await sdk.connect();

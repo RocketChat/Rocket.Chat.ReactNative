@@ -174,6 +174,10 @@ class Sdk {
 	abort() {
 		return this.sdk.abort();
 	}
+
+	connect() {
+		return this.sdk.connect();
+	}
 }
 
 const sdk = new Sdk();
