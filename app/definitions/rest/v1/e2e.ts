@@ -7,7 +7,6 @@ export type E2eEndpoints = {
 	'e2e.getUsersOfRoomWithoutKey': {
 		GET: (params: { rid: string }) => {
 			users: Pick<IUser, '_id' | 'e2e'>[];
-			success: boolean;
 		};
 	};
 };
