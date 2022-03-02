@@ -428,7 +428,15 @@ export const usersAutoComplete = (selector: any) =>
 	// RC 2.4.0
 	sdk.get('users.autocomplete', { selector });
 
-export const getRoutingConfig = () =>
+export const getRoutingConfig = (): Promise<{
+	previewRoom: boolean;
+	showConnecting: boolean;
+	showQueue: boolean;
+	showQueueLink: boolean;
+	returnQueue: boolean;
+	enableTriggerAction: boolean;
+	autoAssignAgent: boolean;
+}> =>
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getRoutingConfig');
 
