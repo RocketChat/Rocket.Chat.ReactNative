@@ -37,7 +37,6 @@ export type ChatEndpoints = {
 			_id: string;
 			ts: Date;
 			message: Pick<IMessage, '_id' | 'rid' | 'u'>;
-			success: boolean;
 		};
 	};
 };
