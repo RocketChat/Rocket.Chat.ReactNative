@@ -220,7 +220,7 @@ export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId
 	// @ts-ignore
 	sdk.get('teams.listRoomsOfUser', { teamId, userId });
 
-export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }): any => {
+export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
 	const params = {
 		...(type === 'c'
 			? {
@@ -232,8 +232,6 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 					roomName: name
 			  })
 	};
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
 };
 
@@ -264,10 +262,8 @@ export const deleteMessage = (messageId: string, rid: string): any =>
 	// @ts-ignore
 	sdk.post('chat.delete', { msgId: messageId, roomId: rid });
 
-export const markAsUnread = ({ messageId }: { messageId: string }): any =>
+export const markAsUnread = ({ messageId }: { messageId: string }) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 
 export const toggleStarMessage = (messageId: string, starred: boolean): any => {
