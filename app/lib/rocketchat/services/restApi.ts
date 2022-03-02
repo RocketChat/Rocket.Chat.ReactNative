@@ -67,10 +67,8 @@ export const updateJitsiTimeout = (roomId: string): any =>
 	// @ts-ignore
 	sdk.post('video-conference/jitsi.update-timeout', { roomId });
 
-export const register = (credentials: any): any =>
+export const register = (credentials: { name: string; email: string; pass: string; username: string }) =>
 	// RC 0.50.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.register', credentials);
 
 export const forgotPassword = (email: string): any =>
