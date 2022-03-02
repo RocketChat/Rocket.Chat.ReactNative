@@ -1,4 +1,4 @@
-import { IRoom } from '../../definitions';
+import { IRoom, SubscriptionType } from '../../definitions';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import RocketChat from '../rocketchat';
 
@@ -10,7 +10,7 @@ const getRoomInfo = async (rid: string): Promise<Pick<IRoom, 'rid' | 'name' | 'f
 			rid,
 			name: result.name,
 			fname: result.fname,
-			t: result.t
+			t: result.t as SubscriptionType
 		};
 	}
 
