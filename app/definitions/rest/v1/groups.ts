@@ -23,6 +23,12 @@ export type GroupsEndpoints = {
 			messages: IMessageFromServer[];
 		};
 	};
+	'groups.archive': {
+		POST: (params: { roomId: string }) => void;
+	};
+	'groups.unarchive': {
+		POST: (params: { roomId: string }) => void;
+	};
 	'groups.create': {
 		POST: (params: {
 			name: string;
