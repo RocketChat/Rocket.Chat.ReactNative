@@ -41,10 +41,8 @@ export const e2eRequestSubscriptionKeys = (): any =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
 
-export const e2eGetUsersOfRoomWithoutKey = (rid: string): any =>
+export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
 
 export const e2eSetRoomKeyID = (rid: string, keyID: string): any =>
