@@ -1,5 +1,5 @@
 export type SubscriptionsEndpoints = {
 	'subscriptions.unread': {
-		POST: (params: { firstUnreadMessage: { _id: string } }) => { success: boolean };
+		POST: (params: { firstUnreadMessage: { _id: string } }) => {};
 	};
 };
