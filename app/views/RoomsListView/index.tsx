@@ -1,11 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { BackHandler, FlatList, Keyboard, RefreshControl, Text, View } from 'react-native';
+import { BackHandler, FlatList, Keyboard, NativeEventSubscription, RefreshControl, Text, View } from 'react-native';
 import { batch, connect } from 'react-redux';
 import { dequal } from 'dequal';
 import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
+import { Subscription } from 'rxjs';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -32,7 +33,8 @@ import {
 	handleCommandSearching,
 	handleCommandSelectRoom,
 	handleCommandShowNewMessage,
-	handleCommandShowPreferences
+	handleCommandShowPreferences,
+	IKeyCommandEvent
 } from '../../commands';
 import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 import { getUserSelector } from '../../selectors/login';
@@ -44,12 +46,63 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
-import { RootEnum } from '../../definitions';
+import { IApplicationState, IBaseScreen, ISubscription, IUser, RootEnum, TSubscriptionModel } from '../../definitions';
 import { DisplayMode, SortBy } from '../../constants/constantDisplayMode';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
-import ListHeader from './ListHeader';
+import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
+import { ChatsStackParamList } from '../../stacks/types';
+import { RoomTypes } from '../../lib/rocketchat/methods/roomTypeToApiType';
+
+interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
+	[key: string]: any;
+	user: IUser;
+	server: string;
+	searchText: string;
+	changingServer: boolean;
+	loadingServer: boolean;
+	showServerDropdown: boolean;
+	sortBy: string;
+	groupByType: boolean;
+	showFavorites: boolean;
+	showUnread: boolean;
+	refreshing: boolean;
+	StoreLastMessage: boolean;
+	useRealName: boolean;
+	isMasterDetail: boolean;
+	rooms: ISubscription[];
+	width: number;
+	insets: {
+		left: number;
+		right: number;
+	};
+	queueSize: number;
+	inquiryEnabled: boolean;
+	encryptionBanner: TEncryptionBanner;
+	showAvatar: boolean;
+	displayMode: string;
+	createTeamPermission: [];
+	createDirectMessagePermission: [];
+	createPublicChannelPermission: [];
+	createPrivateChannelPermission: [];
+	createDiscussionPermission: [];
+}
+
+interface IRoomsListViewState {
+	searching: boolean;
+	search: ISubscription[];
+	loading: boolean;
+	chatsUpdate: [];
+	chats: ISubscription[];
+	item: ISubscription;
+	canCreateRoom: boolean;
+}
+
+interface IRoomItem extends ISubscription {
+	search?: boolean;
+	outside?: boolean;
+}
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
@@ -62,11 +115,11 @@ const DM_HEADER = 'Direct_Messages';
 const OMNICHANNEL_HEADER = 'Open_Livechats';
 const QUERY_SIZE = 20;
 
-const filterIsUnread = s => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
-const filterIsFavorite = s => s.f;
-const filterIsOmnichannel = s => s.t === 'l';
-const filterIsTeam = s => s.teamMain;
-const filterIsDiscussion = s => s.prid;
+const filterIsUnread = (s: TSubscriptionModel) => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
+const filterIsFavorite = (s: TSubscriptionModel) => s.f;
+const filterIsOmnichannel = (s: TSubscriptionModel) => s.t === 'l';
+const filterIsTeam = (s: TSubscriptionModel) => s.teamMain;
+const filterIsDiscussion = (s: TSubscriptionModel) => s.prid;
 
 const shouldUpdateProps = [
 	'searchText',
@@ -91,53 +144,27 @@ const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', '
 
 const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
 
-const getItemLayout = (data, index, height) => ({
+const getItemLayout = (data: ISubscription[] | null | undefined, index: number, height: number) => ({
 	length: height,
 	offset: height * index,
 	index
 });
-const keyExtractor = item => item.rid;
+const keyExtractor = (item: ISubscription) => item.rid;
 
-class RoomsListView extends React.Component {
-	static propTypes = {
-		navigation: PropTypes.object,
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			username: PropTypes.string,
-			token: PropTypes.string,
-			statusLivechat: PropTypes.string,
-			roles: PropTypes.array
-		}),
-		server: PropTypes.string,
-		searchText: PropTypes.string,
-		changingServer: PropTypes.bool,
-		loadingServer: PropTypes.bool,
-		showServerDropdown: PropTypes.bool,
-		sortBy: PropTypes.string,
-		groupByType: PropTypes.bool,
-		showFavorites: PropTypes.bool,
-		showUnread: PropTypes.bool,
-		refreshing: PropTypes.bool,
-		StoreLastMessage: PropTypes.bool,
-		theme: PropTypes.string,
-		useRealName: PropTypes.bool,
-		isMasterDetail: PropTypes.bool,
-		rooms: PropTypes.array,
-		width: PropTypes.number,
-		insets: PropTypes.object,
-		queueSize: PropTypes.number,
-		inquiryEnabled: PropTypes.bool,
-		encryptionBanner: PropTypes.string,
-		showAvatar: PropTypes.bool,
-		displayMode: PropTypes.string,
-		createTeamPermission: PropTypes.array,
-		createDirectMessagePermission: PropTypes.array,
-		createPublicChannelPermission: PropTypes.array,
-		createPrivateChannelPermission: PropTypes.array,
-		createDiscussionPermission: PropTypes.array
-	};
+class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewState> {
+	private animated: boolean;
+	private mounted: boolean;
+	private count: number;
+	private unsubscribeFocus?: () => void;
+	private unsubscribeBlur?: () => void;
+	private sortPreferencesChanged?: boolean;
+	private shouldUpdate?: boolean;
+	private backHandler?: NativeEventSubscription;
+	private querySubscription?: Subscription;
+	private scroll?: FlatList;
+	private useRealName?: boolean;
 
-	constructor(props) {
+	constructor(props: IRoomsListViewProps) {
 		super(props);
 		console.time(`${this.constructor.name} init`);
 		console.time(`${this.constructor.name} mount`);
@@ -151,7 +178,7 @@ class RoomsListView extends React.Component {
 			loading: true,
 			chatsUpdate: [],
 			chats: [],
-			item: {},
+			item: {} as ISubscription,
 			canCreateRoom: false
 		};
 		this.setHeader();
@@ -192,7 +219,7 @@ class RoomsListView extends React.Component {
 		console.timeEnd(`${this.constructor.name} mount`);
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps: IRoomsListViewProps) {
 		const { loadingServer, searchText, server, changingServer } = this.props;
 
 		// when the server is changed
@@ -208,7 +235,7 @@ class RoomsListView extends React.Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: IRoomsListViewProps, nextState: IRoomsListViewState) {
 		const { chatsUpdate, searching, item, canCreateRoom } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
@@ -280,7 +307,7 @@ class RoomsListView extends React.Component {
 		return false;
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps: IRoomsListViewProps) {
 		const {
 			sortBy,
 			groupByType,
@@ -312,8 +339,9 @@ class RoomsListView extends React.Component {
 			this.getSubscriptions();
 		}
 		// Update current item in case of another action triggers an update on rooms reducer
-		if (isMasterDetail && item?.rid !== rooms[0] && !dequal(rooms, prevProps.rooms)) {
+		if (isMasterDetail && item?.rid !== rooms[0].rid && !dequal(rooms, prevProps.rooms)) {
 			// eslint-disable-next-line react/no-did-update-set-state
+			// @ts-ignore
 			this.setState({ item: { rid: rooms[0] } });
 		}
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
@@ -365,13 +393,13 @@ class RoomsListView extends React.Component {
 			createDiscussionPermission
 		];
 		const permissionsToCreate = await RocketChat.hasPermission(permissions);
-		const canCreateRoom = permissionsToCreate.filter(r => r === true).length > 0;
+		const canCreateRoom = permissionsToCreate.filter((r: boolean) => r === true).length > 0;
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
 
 	getHeader = () => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, insets } = this.props;
+		const { navigation, isMasterDetail, insets, theme } = this.props;
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight: searching ? 0 : 3 });
 
 		return {
@@ -388,11 +416,12 @@ class RoomsListView extends React.Component {
 						onPress={
 							isMasterDetail
 								? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-								: () => navigation.toggleDrawer()
+								: // @ts-ignore
+								  () => navigation.toggleDrawer()
 						}
 					/>
 				),
-			headerTitle: () => <RoomsListHeaderView />,
+			headerTitle: () => <RoomsListHeaderView theme={theme} />,
 			headerTitleContainerStyle: {
 				left: headerTitlePosition.left,
 				right: headerTitlePosition.right
@@ -412,21 +441,23 @@ class RoomsListView extends React.Component {
 
 	setHeader = () => {
 		const { navigation } = this.props;
-		const options = this.getHeader();
+		const options = this.getHeader() as Partial<StackNavigationOptions>;
 		navigation.setOptions(options);
 	};
 
-	internalSetState = (...args) => {
+	// internalSetState = (...args: { chats: TSubscriptionModel; chatsUpdate: TSubscriptionModel; loading: boolean }[]) => {
+	internalSetState = (...args: any) => {
 		if (this.animated) {
 			animateNextTransition();
 		}
+		// @ts-ignore
 		this.setState(...args);
 	};
 
-	addRoomsGroup = (data, header, allData) => {
+	addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSubscriptionModel[]) => {
 		if (data.length > 0) {
 			if (header) {
-				allData.push({ rid: header, separator: true });
+				allData.push({ rid: header, separator: true } as TSubscriptionModel);
 			}
 			allData = allData.concat(data);
 		}
@@ -441,7 +472,7 @@ class RoomsListView extends React.Component {
 		const db = database.active;
 		let observable;
 
-		const defaultWhereClause = [Q.where('archived', false), Q.where('open', true)];
+		const defaultWhereClause = [Q.where('archived', false), Q.where('open', true)] as (Q.WhereDescription | Q.SortBy)[];
 
 		if (sortBy === SortBy.Alphabetical) {
 			defaultWhereClause.push(Q.experimentalSortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
@@ -466,7 +497,7 @@ class RoomsListView extends React.Component {
 		}
 
 		this.querySubscription = observable.subscribe(data => {
-			let tempChats = [];
+			let tempChats = [] as TSubscriptionModel[];
 			let chats = data;
 
 			let chatsUpdate = [];
@@ -528,8 +559,11 @@ class RoomsListView extends React.Component {
 					loading: false
 				});
 			} else {
+				// @ts-ignore
 				this.state.chats = tempChats;
+				// @ts-ignore
 				this.state.chatsUpdate = chatsUpdate;
+				// @ts-ignore
 				this.state.loading = false;
 			}
 		});
@@ -580,7 +614,7 @@ class RoomsListView extends React.Component {
 	};
 
 	// eslint-disable-next-line react/sort-comp
-	search = debounce(async text => {
+	search = debounce(async (text: string) => {
 		const result = await RocketChat.search({ text });
 
 		// if the search was cancelled before the promise is resolved
@@ -595,26 +629,26 @@ class RoomsListView extends React.Component {
 		this.scrollToTop();
 	}, 300);
 
-	getRoomTitle = item => RocketChat.getRoomTitle(item);
+	getRoomTitle = (item: ISubscription) => RocketChat.getRoomTitle(item);
 
-	getRoomAvatar = item => RocketChat.getRoomAvatar(item);
+	getRoomAvatar = (item: ISubscription) => RocketChat.getRoomAvatar(item);
 
-	isGroupChat = item => RocketChat.isGroupChat(item);
+	isGroupChat = (item: ISubscription) => RocketChat.isGroupChat(item);
 
-	isRead = item => RocketChat.isRead(item);
+	isRead = (item: ISubscription) => RocketChat.isRead(item);
 
-	isSwipeEnabled = item => !(item?.search || item?.joinCodeRequired || item?.outside);
+	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 
-	getUserPresence = uid => RocketChat.getUserPresence(uid);
+	getUserPresence = (uid: string) => RocketChat.getUserPresence(uid);
 
-	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
+	getUidDirectMessage = (room: ISubscription) => RocketChat.getUidDirectMessage(room);
 
 	get isGrouping() {
 		const { showUnread, showFavorites, groupByType } = this.props;
 		return showUnread || showFavorites || groupByType;
 	}
 
-	onPressItem = (item = {}) => {
+	onPressItem = (item = {} as ISubscription) => {
 		const { navigation, isMasterDetail } = this.props;
 		if (!navigation.isFocused()) {
 			return;
@@ -630,14 +664,14 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	toggleFav = async (rid, favorite) => {
+	toggleFav = async (rid: string, favorite: boolean) => {
 		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.toggleFavorite(rid, !favorite);
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
-				await db.action(async () => {
+				await db.write(async () => {
 					try {
 						const subRecord = await subCollection.find(rid);
 						await subRecord.update(sub => {
@@ -649,12 +683,12 @@ class RoomsListView extends React.Component {
 				});
 			}
 		} catch (e) {
-			logEvent(events.RL_TOGGLE_FAVORITE_FAIL);
+			logEvent(events.RL_TOGGLE_FAVORITE_F);
 			log(e);
 		}
 	};
 
-	toggleRead = async (rid, isRead) => {
+	toggleRead = async (rid: string, isRead: boolean) => {
 		logEvent(isRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
 		try {
 			const db = database.active;
@@ -662,7 +696,7 @@ class RoomsListView extends React.Component {
 
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
-				await db.action(async () => {
+				await db.write(async () => {
 					try {
 						const subRecord = await subCollection.find(rid);
 						await subRecord.update(sub => {
@@ -680,14 +714,14 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	hideChannel = async (rid, type) => {
+	hideChannel = async (rid: string, type: RoomTypes) => {
 		logEvent(events.RL_HIDE_CHANNEL);
 		try {
 			const db = database.active;
 			const result = await RocketChat.hideRoom(rid, type);
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
-				await db.action(async () => {
+				await db.write(async () => {
 					try {
 						const subRecord = await subCollection.find(rid);
 						await subRecord.destroyPermanently();
@@ -745,10 +779,11 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	goRoom = ({ item, isMasterDetail }) => {
+	goRoom = ({ item, isMasterDetail }: { item: ISubscription; isMasterDetail: boolean }) => {
 		logEvent(events.RL_GO_ROOM);
 		const { item: currentItem } = this.state;
 		const { rooms } = this.props;
+		// @ts-ignore
 		if (currentItem?.rid === item.rid || rooms?.includes(item.rid)) {
 			return;
 		}
@@ -759,7 +794,7 @@ class RoomsListView extends React.Component {
 		goRoom({ item, isMasterDetail });
 	};
 
-	goRoomByIndex = index => {
+	goRoomByIndex = (index: number) => {
 		const { chats } = this.state;
 		const { isMasterDetail } = this.props;
 		const filteredChats = chats.filter(c => !c.separator);
@@ -769,7 +804,7 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	findOtherRoom = (index, sign) => {
+	findOtherRoom = (index: number, sign: number): ISubscription | void => {
 		const { chats } = this.state;
 		const otherIndex = index + sign;
 		const otherRoom = chats[otherIndex];
@@ -778,14 +813,13 @@ class RoomsListView extends React.Component {
 		}
 		if (otherRoom.separator) {
 			return this.findOtherRoom(otherIndex, sign);
-		} else {
-			return otherRoom;
 		}
+		return otherRoom;
 	};
 
 	// Go to previous or next room based on sign (-1 or 1)
 	// It's used by iPad key commands
-	goOtherRoom = sign => {
+	goOtherRoom = (sign: number) => {
 		const { item } = this.state;
 		if (!item) {
 			return;
@@ -831,7 +865,7 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	handleCommands = ({ event }) => {
+	handleCommands = ({ event }: { event: IKeyCommandEvent }) => {
 		const { navigation, server, isMasterDetail, dispatch } = this.props;
 		const { input } = event;
 		if (handleCommandShowPreferences(event)) {
@@ -874,11 +908,11 @@ class RoomsListView extends React.Component {
 		}
 	};
 
-	getScrollRef = ref => (this.scroll = ref);
+	getScrollRef = (ref: FlatList) => (this.scroll = ref);
 
 	renderListHeader = () => {
 		const { searching } = this.state;
-		const { queueSize, inquiryEnabled, encryptionBanner, user } = this.props;
+		const { queueSize, inquiryEnabled, encryptionBanner, user, theme } = this.props;
 		return (
 			<ListHeader
 				searching={searching}
@@ -888,6 +922,7 @@ class RoomsListView extends React.Component {
 				inquiryEnabled={inquiryEnabled}
 				encryptionBanner={encryptionBanner}
 				user={user}
+				theme={theme}
 			/>
 		);
 	};
@@ -899,11 +934,11 @@ class RoomsListView extends React.Component {
 			return null;
 		}
 
-		const options = this.getHeader();
+		const options = this.getHeader() as any;
 		return <Header {...options} />;
 	};
 
-	renderItem = ({ item }) => {
+	renderItem = ({ item }: { item: ISubscription }) => {
 		if (item.separator) {
 			return this.renderSectionHeader(item.rid);
 		}
@@ -950,7 +985,7 @@ class RoomsListView extends React.Component {
 		);
 	};
 
-	renderSectionHeader = header => {
+	renderSectionHeader = (header: string) => {
 		const { theme } = this.props;
 		return (
 			<View style={[styles.groupTitleContainer, { backgroundColor: themes[theme].backgroundColor }]}>
@@ -1001,13 +1036,15 @@ class RoomsListView extends React.Component {
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				{showServerDropdown ? <ServerDropdown navigation={navigation} /> : null}
+				{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
+				{/* @ts-ignore*/}
+				{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}
 			</SafeAreaView>
 		);
 	};
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,

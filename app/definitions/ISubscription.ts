@@ -50,7 +50,7 @@ export interface ISubscription {
 	lr: string;
 	userMentions: number;
 	groupMentions: number;
-	tunread?: string[];
+	tunread: string[];
 	tunreadUser?: string[];
 	tunreadGroup?: string[];
 	roomUpdatedAt: Date | number;
@@ -73,8 +73,8 @@ export interface ISubscription {
 	lastThreadSync?: Date;
 	jitsiTimeout?: number;
 	autoTranslate?: boolean;
-	autoTranslateLanguage: string;
-	lastMessage?: ILastMessage;
+	autoTranslateLanguage?: string;
+	lastMessage?: ILastMessage; // TODO: we need to use IMessage here
 	hideUnreadStatus?: boolean;
 	sysMes?: string[] | boolean;
 	uids?: string[];
@@ -91,6 +91,7 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
+	separator?: boolean;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
 	messages: Relation<TMessageModel>;
 	threads: Relation<TThreadModel>;

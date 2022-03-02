@@ -7,7 +7,7 @@ export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
 export interface IMessageAttachments {
 	attachments: any;
-	timeFormat: string;
+	timeFormat?: string;
 	showAttachment: Function;
 	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
@@ -66,26 +66,26 @@ export interface IMessageContent {
 	_id: string;
 	isTemp: boolean;
 	isInfo: boolean;
-	tmid: string;
+	tmid?: string;
 	isThreadRoom: boolean;
-	msg: string;
-	md: MarkdownAST;
+	msg?: string;
+	md?: MarkdownAST;
 	theme: string;
 	isEdited: boolean;
 	isEncrypted: boolean;
 	getCustomEmoji: TGetCustomEmoji;
-	channels: IUserChannel[];
-	mentions: IUserMention[];
-	navToRoomInfo: Function;
-	useRealName: boolean;
+	channels?: IUserChannel[];
+	mentions?: IUserMention[];
+	navToRoomInfo?: Function;
+	useRealName?: boolean;
 	isIgnored: boolean;
 	type: string;
 }
 
 export interface IMessageDiscussion {
-	msg: string;
-	dcount: number;
-	dlm: Date;
+	msg?: string;
+	dcount?: number;
+	dlm?: Date;
 	theme: string;
 }
 
@@ -98,10 +98,10 @@ export interface IMessageEmoji {
 }
 
 export interface IMessageThread {
-	msg: string;
-	tcount: number;
+	msg?: string;
+	tcount?: number;
 	theme: string;
-	tlm: Date;
+	tlm?: Date;
 	isThreadRoom: boolean;
 	id: string;
 }
@@ -123,8 +123,8 @@ export interface IMessageTouchable {
 }
 
 export interface IMessageRepliedThread {
-	tmid: string;
-	tmsg: string;
+	tmid?: string;
+	tmsg?: string;
 	id: string;
 	isHeader: boolean;
 	theme: string;
@@ -154,7 +154,7 @@ export interface IMessage extends IMessageRepliedThread, IMessageInner {
 	style: any;
 	onLongPress: Function;
 	isReadReceiptEnabled: boolean;
-	unread: boolean;
+	unread?: boolean;
 	theme: string;
 	isIgnored: boolean;
 }

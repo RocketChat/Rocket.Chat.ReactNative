@@ -3,7 +3,7 @@ import { SETTINGS } from '../actions/actionsTypes';
 import settings from '../constants/settings';
 
 export type TSupportedSettings = keyof typeof settings;
-export type TSettingsValues = string | number | boolean;
+export type TSettingsValues = string | number | boolean | string[];
 
 export type TSettingsState = {
 	[K in TSupportedSettings]?: TSettingsValues;
