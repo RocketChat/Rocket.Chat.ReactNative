@@ -81,7 +81,8 @@ export const forgotPassword = (email: string): any =>
 	// @ts-ignore
 	sdk.post('users.forgotPassword', { email });
 
-export const sendConfirmationEmail = (email: string) => sdk.methodCallWrapper('sendConfirmationEmail', email);
+export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
+	sdk.methodCallWrapper('sendConfirmationEmail', email);
 
 export const spotlight = (search: string, usernames: string, type: { users: boolean; rooms: boolean }) =>
 	// RC 0.51.0
@@ -404,7 +405,7 @@ export const forwardLivechat = (transferData: any) =>
 	// RC 0.36.0
 	sdk.methodCallWrapper('livechat:transfer', transferData);
 
-export const getDepartmentInfo = (departmentId: string): any =>
+export const getDepartmentInfo = (departmentId: string) =>
 	// RC 2.2.0
 	sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
 
@@ -425,7 +426,15 @@ export const usersAutoComplete = (selector: any) =>
 	// RC 2.4.0
 	sdk.get('users.autocomplete', { selector });
 
-export const getRoutingConfig = () =>
+export const getRoutingConfig = (): Promise<{
+	previewRoom: boolean;
+	showConnecting: boolean;
+	showQueue: boolean;
+	showQueueLink: boolean;
+	returnQueue: boolean;
+	enableTriggerAction: boolean;
+	autoAssignAgent: boolean;
+}> =>
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getRoutingConfig');
 
