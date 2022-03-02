@@ -5,9 +5,6 @@ export type TeamsEndpoints = {
 		POST: (params: { roomId: string; teamId: string }) => { room: IRoom };
 	};
 	'teams.addRooms': {
-		POST: (params: { teamId: string; rooms: string[] }) => {
-			rooms: IRoom[];
-			success: boolean;
-		};
+		POST: (params: { teamId: string; rooms: string[] }) => { rooms: IRoom[] };
 	};
 };
