@@ -25,7 +25,7 @@ async function load({ tmid }: { tmid: string }) {
 }
 
 export default function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }) {
-	return new Promise(async (resolve, reject) => {
+	return new Promise<void>(async (resolve, reject) => {
 		try {
 			let data = await load({ tmid });
 			if (data && data.length) {
@@ -79,7 +79,7 @@ export default function loadThreadMessages({ tmid, rid }: { tmid: string; rid: s
 				}
 				return resolve(data);
 			}
-			return resolve([]);
+			return resolve();
 		} catch (e) {
 			reject(e);
 		}
