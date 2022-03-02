@@ -1,6 +1,6 @@
 import { addSettings, clearSettings, updateSettings } from '../actions/settings';
 import { mockedStore } from './mockedStore';
-import { initialState } from './settings';
+import { initialState, TSettingsState } from './settings';
 
 describe('test settings reducer', () => {
 	it('should return initial state', () => {
@@ -8,7 +8,11 @@ describe('test settings reducer', () => {
 		expect(state).toEqual(initialState);
 	});
 
-	const settings = { API_Use_REST_For_DDP_Calls: true, FileUpload_MaxFileSize: 600857600, Jitsi_URL_Room_Prefix: 'RocketChat' };
+	const settings: TSettingsState = {
+		API_Use_REST_For_DDP_Calls: true,
+		FileUpload_MaxFileSize: 600857600,
+		Jitsi_URL_Room_Prefix: 'RocketChat'
+	};
 
 	it('should return modified store after call addSettings action', () => {
 		mockedStore.dispatch(addSettings(settings));

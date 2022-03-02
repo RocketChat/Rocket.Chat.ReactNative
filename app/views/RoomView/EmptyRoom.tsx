@@ -1,6 +1,7 @@
 import React from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
+
+import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	image: {
@@ -10,17 +11,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-const EmptyRoom = React.memo(({ length, mounted, theme, rid }) => {
+const EmptyRoom = React.memo(({ length, mounted, rid }: { length: number; mounted: boolean; rid: string }) => {
+	const { theme } = useTheme();
 	if ((length === 0 && mounted) || !rid) {
 		return <ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />;
 	}
 	return null;
 });
 
-EmptyRoom.propTypes = {
-	length: PropTypes.number.isRequired,
-	mounted: PropTypes.bool,
-	theme: PropTypes.string,
-	rid: PropTypes.string
-};
 export default EmptyRoom;

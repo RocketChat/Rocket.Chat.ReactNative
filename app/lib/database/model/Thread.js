@@ -75,4 +75,6 @@ export default class Thread extends Model {
 	@json('translations', sanitizer) translations;
 
 	@field('e2e') e2e;
+
+	@field('draft_message') draftMessage;
 }
