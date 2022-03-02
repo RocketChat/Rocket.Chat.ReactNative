@@ -1,13 +1,17 @@
 import { IActionSettings } from '../actions/settings';
 import { SETTINGS } from '../actions/actionsTypes';
+import settings from '../constants/settings';
 
-export type TSettings = string | number | boolean | string[];
+export type TSupportedSettings = keyof typeof settings;
+export type TSettingsValues = string | number | boolean | string[];
 
-export type ISettings = Record<string, TSettings>;
+export type TSettingsState = {
+	[K in TSupportedSettings]?: TSettingsValues;
+};
 
-export const initialState: ISettings = {};
+export const initialState: TSettingsState = {};
 
-export default (state = initialState, action: IActionSettings): ISettings => {
+export default (state = initialState, action: IActionSettings): TSettingsState => {
 	switch (action.type) {
 		case SETTINGS.ADD:
 			return {

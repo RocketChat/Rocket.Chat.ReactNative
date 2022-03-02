@@ -52,7 +52,7 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import { takeInquiry } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
-import { goRoom } from '../../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import RoomServices from './services';
@@ -545,7 +545,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			navigation.push('RoomActionsView', {
 				rid: this.rid,
 				t: this.t as SubscriptionType,
-				room: room as ISubscription,
+				room: room as TSubscriptionModel,
 				member,
 				joined
 			});
@@ -1040,7 +1040,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { navigation, isMasterDetail } = this.props;
 		const roomInfo = await getRoomInfo(message.rid);
 		return goRoom({
-			item: roomInfo as Partial<ISubscription>,
+			item: roomInfo as TGoRoomItem,
 			isMasterDetail,
 			navigationMethod: navigation.push,
 			jumpToMessageId: message.id
