@@ -10,7 +10,7 @@ import updateMessages from './updateMessages';
 
 const COUNT = 50;
 
-async function load({ rid: roomId, latest, t }: { rid: string; latest?: string; t: RoomTypes }) {
+async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t: RoomTypes }) {
 	let params = { roomId, count: COUNT } as { roomId: string; count: number; latest?: string };
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
@@ -32,9 +32,9 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: string; 
 export default function loadMessagesForRoom(args: {
 	rid: string;
 	t: RoomTypes;
-	latest: string;
-	loaderItem: TMessageModel;
-}): Promise<Partial<IMessage>[]> {
+	latest?: Date;
+	loaderItem?: TMessageModel;
+}): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data: Partial<IMessage>[] = await load(args);
@@ -52,9 +52,9 @@ export default function loadMessagesForRoom(args: {
 					data.push(loadMoreMessage);
 				}
 				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });
-				return resolve(data);
+				return resolve();
 			}
-			return resolve([]);
+			return resolve();
 		} catch (e) {
 			log(e);
 			reject(e);

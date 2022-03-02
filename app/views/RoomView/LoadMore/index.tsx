@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { themes } from '../../../constants/colors';
 import { MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../../constants/messageTypeLoad';
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const LoadMore = ({ load, type, runOnRender }) => {
+const LoadMore = ({ load, type, runOnRender }: { load: Function; type: string; runOnRender: boolean }): React.ReactElement => {
 	const { theme } = useTheme();
 	const [loading, setLoading] = useState(false);
 
@@ -60,12 +59,6 @@ const LoadMore = ({ load, type, runOnRender }) => {
 			)}
 		</Touch>
 	);
-};
-
-LoadMore.propTypes = {
-	load: PropTypes.func,
-	type: PropTypes.string,
-	runOnRender: PropTypes.bool
 };
 
 export default LoadMore;

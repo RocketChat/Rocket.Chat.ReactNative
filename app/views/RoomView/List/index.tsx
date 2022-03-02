@@ -1,26 +1,27 @@
-import React from 'react';
-import { RefreshControl } from 'react-native';
-import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
-import moment from 'moment';
 import { dequal } from 'dequal';
-import { Value, event } from 'react-native-reanimated';
+import moment from 'moment';
+import React from 'react';
+import { FlatListProps, RefreshControl, ViewToken } from 'react-native';
+import { event, Value } from 'react-native-reanimated';
+import { Observable, Subscription } from 'rxjs';
 
+import { themes } from '../../../constants/colors';
+import ActivityIndicator from '../../../containers/ActivityIndicator';
+import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import RocketChat from '../../../lib/rocketchat';
+import { compareServerVersion } from '../../../lib/utils';
+import debounce from '../../../utils/debounce';
+import { animateNextTransition } from '../../../utils/layoutAnimation';
 import log from '../../../utils/log';
 import EmptyRoom from '../EmptyRoom';
-import { animateNextTransition } from '../../../utils/layoutAnimation';
-import ActivityIndicator from '../../../containers/ActivityIndicator';
-import { themes } from '../../../constants/colors';
-import debounce from '../../../utils/debounce';
-import { compareServerVersion } from '../../../lib/utils';
-import List from './List';
+import List, { IListProps } from './List';
 import NavBottomFAB from './NavBottomFAB';
 
 const QUERY_SIZE = 50;
 
-const onScroll = ({ y }) =>
+const onScroll = ({ y }: { y: Value<number> }) =>
 	event(
 		[
 			{
@@ -32,44 +33,59 @@ const onScroll = ({ y }) =>
 		{ useNativeDriver: true }
 	);
 
-class ListContainer extends React.Component {
-	static propTypes = {
-		renderRow: PropTypes.func,
-		rid: PropTypes.string,
-		tmid: PropTypes.string,
-		theme: PropTypes.string,
-		loading: PropTypes.bool,
-		listRef: PropTypes.func,
-		hideSystemMessages: PropTypes.array,
-		tunread: PropTypes.array,
-		ignored: PropTypes.array,
-		navigation: PropTypes.object,
-		showMessageInMainThread: PropTypes.bool,
-		serverVersion: PropTypes.string
-	};
+export { IListProps };
 
-	constructor(props) {
+export interface IListContainerProps {
+	renderRow: Function;
+	rid: string;
+	tmid?: string;
+	theme: string;
+	loading: boolean;
+	listRef: React.RefObject<IListProps>;
+	hideSystemMessages?: string[];
+	tunread?: string[];
+	ignored?: string[];
+	navigation: any; // TODO: type me
+	showMessageInMainThread: boolean;
+	serverVersion: string | null;
+}
+
+interface IListContainerState {
+	messages: TAnyMessageModel[];
+	refreshing: boolean;
+	highlightedMessage: string | null;
+}
+
+class ListContainer extends React.Component<IListContainerProps, IListContainerState> {
+	private count = 0;
+	private mounted = false;
+	private animated = false;
+	private jumping = false;
+	private y = new Value(0);
+	private onScroll = onScroll({ y: this.y });
+	private unsubscribeFocus: () => void;
+	private viewabilityConfig = {
+		itemVisiblePercentThreshold: 10
+	};
+	private highlightedMessageTimeout: number | undefined | false;
+	private thread?: TThreadModel;
+	private messagesObservable?: Observable<TMessageModel[] | TThreadMessageModel[]>;
+	private messagesSubscription?: Subscription;
+	private viewableItems?: ViewToken[];
+
+	constructor(props: IListContainerProps) {
 		super(props);
 		console.time(`${this.constructor.name} init`);
 		console.time(`${this.constructor.name} mount`);
-		this.count = 0;
-		this.mounted = false;
-		this.animated = false;
-		this.jumping = false;
 		this.state = {
 			messages: [],
 			refreshing: false,
 			highlightedMessage: null
 		};
-		this.y = new Value(0);
-		this.onScroll = onScroll({ y: this.y });
 		this.query();
 		this.unsubscribeFocus = props.navigation.addListener('focus', () => {
 			this.animated = true;
 		});
-		this.viewabilityConfig = {
-			itemVisiblePercentThreshold: 10
-		};
 		console.timeEnd(`${this.constructor.name} init`);
 	}
 
@@ -78,7 +94,7 @@ class ListContainer extends React.Component {
 		console.timeEnd(`${this.constructor.name} mount`);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: IListContainerProps, nextState: IListContainerState) {
 		const { refreshing, highlightedMessage } = this.state;
 		const { hideSystemMessages, theme, tunread, ignored, loading } = this.props;
 		if (theme !== nextProps.theme) {
@@ -105,7 +121,7 @@ class ListContainer extends React.Component {
 		return false;
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps: IListContainerProps) {
 		const { hideSystemMessages } = this.props;
 		if (!dequal(hideSystemMessages, prevProps.hideSystemMessages)) {
 			this.reload();
@@ -114,9 +130,6 @@ class ListContainer extends React.Component {
 
 	componentWillUnmount() {
 		this.unsubscribeMessages();
-		if (this.onEndReached && this.onEndReached.stop) {
-			this.onEndReached.stop();
-		}
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
 		}
@@ -158,7 +171,7 @@ class ListContainer extends React.Component {
 				Q.experimentalSortBy('ts', Q.desc),
 				Q.experimentalSkip(0),
 				Q.experimentalTake(this.count)
-			];
+			] as (Q.WhereDescription | Q.Or)[];
 			if (!showMessageInMainThread) {
 				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
 			}
@@ -170,7 +183,7 @@ class ListContainer extends React.Component {
 
 		if (rid) {
 			this.unsubscribeMessages();
-			this.messagesSubscription = this.messagesObservable.subscribe(messages => {
+			this.messagesSubscription = this.messagesObservable?.subscribe(messages => {
 				if (tmid && this.thread) {
 					messages = [...messages, this.thread];
 				}
@@ -186,6 +199,7 @@ class ListContainer extends React.Component {
 				if (this.mounted) {
 					this.setState({ messages }, () => this.update());
 				} else {
+					// @ts-ignore
 					this.state.messages = messages;
 				}
 				// TODO: move it away from here
@@ -246,7 +260,7 @@ class ListContainer extends React.Component {
 		}
 	};
 
-	getLastMessage = () => {
+	getLastMessage = (): TMessageModel | TThreadMessageModel | null => {
 		const { messages } = this.state;
 		if (messages.length > 0) {
 			return messages[0];
@@ -254,21 +268,23 @@ class ListContainer extends React.Component {
 		return null;
 	};
 
-	handleScrollToIndexFailed = params => {
+	handleScrollToIndexFailed: FlatListProps<any>['onScrollToIndexFailed'] = params => {
 		const { listRef } = this.props;
+		// @ts-ignore
 		listRef.current.getNode().scrollToIndex({ index: params.highestMeasuredFrameIndex, animated: false });
 	};
 
-	jumpToMessage = messageId =>
-		new Promise(async resolve => {
+	jumpToMessage = (messageId: string) =>
+		new Promise<void>(async resolve => {
 			this.jumping = true;
 			const { messages } = this.state;
 			const { listRef } = this.props;
 			const index = messages.findIndex(item => item.id === messageId);
 			if (index > -1) {
+				// @ts-ignore
 				listRef.current.getNode().scrollToIndex({ index, viewPosition: 0.5, viewOffset: 100 });
 				await new Promise(res => setTimeout(res, 300));
-				if (!this.viewableItems.map(vi => vi.key).includes(messageId)) {
+				if (!this.viewableItems?.map(vi => vi.key).includes(messageId)) {
 					if (!this.jumping) {
 						return resolve();
 					}
@@ -282,6 +298,7 @@ class ListContainer extends React.Component {
 				}, 10000);
 				await setTimeout(() => resolve(), 300);
 			} else {
+				// @ts-ignore
 				listRef.current.getNode().scrollToIndex({ index: messages.length - 1, animated: false });
 				if (!this.jumping) {
 					return resolve();
@@ -297,6 +314,7 @@ class ListContainer extends React.Component {
 
 	jumpToBottom = () => {
 		const { listRef } = this.props;
+		// @ts-ignore
 		listRef.current.getNode().scrollToOffset({ offset: -100 });
 	};
 
@@ -308,13 +326,13 @@ class ListContainer extends React.Component {
 		return null;
 	};
 
-	renderItem = ({ item, index }) => {
+	renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => {
 		const { messages, highlightedMessage } = this.state;
 		const { renderRow } = this.props;
 		return renderRow(item, messages[index + 1], highlightedMessage);
 	};
 
-	onViewableItemsChanged = ({ viewableItems }) => {
+	onViewableItemsChanged: FlatListProps<any>['onViewableItemsChanged'] = ({ viewableItems }) => {
 		this.viewableItems = viewableItems;
 	};
 
@@ -325,7 +343,7 @@ class ListContainer extends React.Component {
 		const { theme } = this.props;
 		return (
 			<>
-				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} theme={theme} />
+				<EmptyRoom rid={rid} length={messages.length} mounted={this.mounted} />
 				<List
 					onScroll={this.onScroll}
 					scrollEventThrottle={16}
