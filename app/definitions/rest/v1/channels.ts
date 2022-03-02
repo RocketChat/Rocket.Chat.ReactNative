@@ -1,3 +1,4 @@
+import { ITeam } from '../../ITeam';
 import type { IMessage, IMessageFromServer } from '../../IMessage';
 import type { IRoom, IServerRoomItem } from '../../IRoom';
 import type { IUser } from '../../IUser';
@@ -41,5 +42,8 @@ export type ChannelsEndpoints = {
 		}) => {
 			group: Partial<IServerRoomItem>;
 		};
+	};
+	'channels.convertToTeam': {
+		POST: (params: { channelId: string; channelName: string }) => { team: ITeam };
 	};
 };
