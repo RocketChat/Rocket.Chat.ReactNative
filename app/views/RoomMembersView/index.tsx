@@ -24,7 +24,7 @@ import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { withTheme } from '../../theme';
 import EventEmitter from '../../utils/events';
-import { goRoom, IGoRoomItem } from '../../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
@@ -469,7 +469,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		}
 	};
 
-	goRoom = (item: IGoRoomItem) => {
+	goRoom = (item: TGoRoomItem) => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			// @ts-ignore

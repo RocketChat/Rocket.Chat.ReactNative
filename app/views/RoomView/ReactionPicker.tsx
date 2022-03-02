@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
@@ -9,34 +8,37 @@ import { isAndroid } from '../../utils/deviceInfo';
 import { themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import styles from './styles';
+import { IApplicationState } from '../../definitions';
 
 const margin = isAndroid ? 40 : 20;
 const maxSize = 400;
 
-class ReactionPicker extends React.Component {
-	static propTypes = {
-		baseUrl: PropTypes.string.isRequired,
-		message: PropTypes.object,
-		show: PropTypes.bool,
-		isMasterDetail: PropTypes.bool,
-		reactionClose: PropTypes.func,
-		onEmojiSelected: PropTypes.func,
-		width: PropTypes.number,
-		height: PropTypes.number,
-		theme: PropTypes.string
-	};
+interface IReactionPickerProps {
+	baseUrl: string;
+	message?: any;
+	show: boolean;
+	isMasterDetail: boolean;
+	reactionClose: () => void;
+	onEmojiSelected: Function; // TODO: properly type this
+	width: number;
+	height: number;
+	theme: string;
+}
 
-	shouldComponentUpdate(nextProps) {
+class ReactionPicker extends React.Component<IReactionPickerProps> {
+	shouldComponentUpdate(nextProps: IReactionPickerProps) {
 		const { show, width, height } = this.props;
 		return nextProps.show !== show || width !== nextProps.width || height !== nextProps.height;
 	}
 
-	onEmojiSelected = (emoji, shortname) => {
+	onEmojiSelected = (emoji: string, shortname: string) => {
 		// standard emojis: `emoji` is unicode and `shortname` is :joy:
 		// custom emojis: only `emoji` is returned with shortname type (:joy:)
 		// to set reactions, we need shortname type
 		const { onEmojiSelected, message } = this.props;
-		onEmojiSelected(shortname || emoji, message.id);
+		if (message) {
+			onEmojiSelected(shortname || emoji, message.id);
+		}
 	};
 
 	render() {
@@ -79,7 +81,7 @@ class ReactionPicker extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	isMasterDetail: state.app.isMasterDetail
 });
