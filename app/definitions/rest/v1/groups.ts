@@ -1,5 +1,5 @@
 import type { IMessage, IMessageFromServer } from '../../IMessage';
-import type { IRoom } from '../../IRoom';
+import type { IRoom, IServerRoomItem } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
 export type GroupsEndpoints = {
@@ -33,7 +33,7 @@ export type GroupsEndpoints = {
 				teamId?: string;
 			};
 		}) => {
-			group: Partial<IRoom>;
+			group: Partial<IServerRoomItem>;
 		};
 	};
 };
