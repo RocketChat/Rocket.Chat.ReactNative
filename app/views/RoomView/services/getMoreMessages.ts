@@ -17,7 +17,7 @@ const getMoreMessages = ({
 	t: SubscriptionType;
 	tmid?: string;
 	loaderItem: TAnyMessageModel;
-}): Promise<IMessage[] | []> => {
+}): Promise<void> => {
 	if ([MESSAGE_TYPE_LOAD_MORE, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK].includes(loaderItem.t as MessageType)) {
 		return loadMessagesForRoom({
 			rid,
@@ -35,6 +35,6 @@ const getMoreMessages = ({
 			loaderItem
 		});
 	}
-	return Promise.resolve([]);
+	return Promise.resolve();
 };
 export default getMoreMessages;

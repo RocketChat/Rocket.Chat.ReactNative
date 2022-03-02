@@ -33,8 +33,8 @@ export default function loadMessagesForRoom(args: {
 	rid: string;
 	t: RoomTypes;
 	latest?: Date;
-	loaderItem: TMessageModel;
-}): Promise<Partial<IMessage>[]> {
+	loaderItem?: TMessageModel;
+}): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data: Partial<IMessage>[] = await load(args);
@@ -52,9 +52,9 @@ export default function loadMessagesForRoom(args: {
 					data.push(loadMoreMessage);
 				}
 				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });
-				return resolve(data);
+				return resolve();
 			}
-			return resolve([]);
+			return resolve();
 		} catch (e) {
 			log(e);
 			reject(e);
