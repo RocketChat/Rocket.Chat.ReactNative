@@ -35,7 +35,7 @@ export type ChatEndpoints = {
 	'chat.delete': {
 		POST: (params: { msgId: string; roomId: string }) => {
 			_id: string;
-			ts: Date;
+			ts: string;
 			message: Pick<IMessage, '_id' | 'rid' | 'u'>;
 		};
 	};
