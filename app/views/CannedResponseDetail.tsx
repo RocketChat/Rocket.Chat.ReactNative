@@ -115,7 +115,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 				t: room.t,
 				fname: name
 			}),
-			t: room.t,
+			t: room.t as any,
 			roomUserId: RocketChat.getUidDirectMessage(room),
 			usedCannedResponse: item.text
 		};

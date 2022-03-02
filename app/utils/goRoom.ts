@@ -1,9 +1,9 @@
 import { ChatsStackParamList } from '../stacks/types';
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
-import { IVisitor, SubscriptionType } from '../definitions/ISubscription';
+import { ISubscription, IVisitor, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 
-export interface IGoRoomItem {
+interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
 	username?: string;
 	t?: SubscriptionType;
@@ -13,12 +13,14 @@ export interface IGoRoomItem {
 	visitor?: IVisitor;
 }
 
+export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription;
+
 const navigate = ({
 	item,
 	isMasterDetail,
 	...props
 }: {
-	item: IGoRoomItem;
+	item: TGoRoomItem;
 	isMasterDetail: boolean;
 	navigationMethod?: () => ChatsStackParamList;
 }) => {
@@ -45,13 +47,13 @@ export const goRoom = async ({
 	isMasterDetail = false,
 	...props
 }: {
-	item: IGoRoomItem;
+	item: TGoRoomItem;
 	isMasterDetail: boolean;
 	navigationMethod?: any;
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
 }): Promise<void> => {
-	if (item.t === SubscriptionType.DIRECT && item?.search) {
+	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;

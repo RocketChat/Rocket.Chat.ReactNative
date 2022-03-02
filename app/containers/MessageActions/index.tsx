@@ -15,19 +15,12 @@ import { showConfirmationAlert } from '../../utils/info';
 import { useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT } from './Header';
 import events from '../../utils/log/events';
-import { TMessageModel } from '../../definitions/IMessage';
+import { ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 
-interface IMessageActions {
-	room: {
-		rid: string;
-		autoTranslateLanguage: any;
-		autoTranslate: any;
-		reactWhenReadOnly: any;
-	};
-	tmid: string;
-	user: {
-		id: string | number;
-	};
+export interface IMessageActions {
+	room: TSubscriptionModel;
+	tmid?: string;
+	user: Pick<ILoggedUser, 'id'>;
 	editInit: Function;
 	reactionInit: Function;
 	onReactionPress: Function;
@@ -270,8 +263,11 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleToggleTranslation = async (message: TMessageModel) => {
+			const handleToggleTranslation = async (message: TAnyMessageModel) => {
 				try {
+					if (!room.autoTranslateLanguage) {
+						return;
+					}
 					const db = database.active;
 					await db.write(async () => {
 						await message.update(m => {
@@ -321,7 +317,7 @@ const MessageActions = React.memo(
 				});
 			};
 
-			const getOptions = (message: TMessageModel) => {
+			const getOptions = (message: TAnyMessageModel) => {
 				let options: any = [];
 
 				// Reply
@@ -447,7 +443,7 @@ const MessageActions = React.memo(
 				return options;
 			};
 
-			const showMessageActions = async (message: TMessageModel) => {
+			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
 				showActionSheet({

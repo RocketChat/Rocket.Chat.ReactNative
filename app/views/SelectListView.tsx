@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 });
 
 interface ISelectListViewState {
-	data: IRoom[];
+	data?: IRoom[];
 	dataFiltered?: IRoom[];
 	isSearching: boolean;
 	selected: string[];
@@ -53,7 +53,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 
 	private isSearch: boolean;
 
-	private onSearch: (text: string) => Partial<IRoom[]>;
+	private onSearch?: (text: string) => Promise<Partial<IRoom[]> | any>;
 
 	private isRadio?: boolean;
 
@@ -61,10 +61,10 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		super(props);
 		const data = props.route?.params?.data;
 		this.title = props.route?.params?.title;
-		this.infoText = props.route?.params?.infoText;
+		this.infoText = props.route?.params?.infoText ?? '';
 		this.nextAction = props.route?.params?.nextAction;
-		this.showAlert = props.route?.params?.showAlert;
-		this.isSearch = props.route?.params?.isSearch;
+		this.showAlert = props.route?.params?.showAlert ?? (() => {});
+		this.isSearch = props.route?.params?.isSearch ?? false;
 		this.onSearch = props.route?.params?.onSearch;
 		this.isRadio = props.route?.params?.isRadio;
 		this.state = {
@@ -122,7 +122,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	search = async (text: string) => {
 		try {
 			this.setState({ isSearching: true });
-			const result = (await this.onSearch(text)) as IRoom[];
+			const result = (await this.onSearch?.(text)) as IRoom[];
 			this.setState({ dataFiltered: result });
 		} catch (e) {
 			log(e);

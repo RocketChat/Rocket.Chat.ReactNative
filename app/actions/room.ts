@@ -4,7 +4,7 @@ import { ERoomType } from '../definitions/ERoomType';
 import { ROOM } from './actionsTypes';
 
 // TYPE RETURN RELATED
-type ISelected = Record<string, string>;
+type ISelected = string[];
 
 export interface ITransferData {
 	roomId: string;
