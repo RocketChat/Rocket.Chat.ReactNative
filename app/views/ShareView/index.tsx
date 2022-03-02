@@ -28,8 +28,7 @@ import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
 import { IAttachment } from './interfaces';
-import { ISubscription } from '../../definitions/ISubscription';
-import { IUser } from '../../definitions';
+import { IUser, TSubscriptionModel } from '../../definitions';
 
 interface IShareViewState {
 	selected: IAttachment;
@@ -37,7 +36,7 @@ interface IShareViewState {
 	readOnly: boolean;
 	attachments: IAttachment[];
 	text: string;
-	room: ISubscription;
+	room: TSubscriptionModel;
 	thread: any; // change
 	maxFileSize: number;
 	mediaAllowList: string;
@@ -153,7 +152,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	getReadOnly = async () => {
 		const { room } = this.state;
 		const { user } = this.props;
-		const readOnly = await isReadOnly(room, user);
+		const readOnly = await isReadOnly(room, user.username);
 		return readOnly;
 	};
 
