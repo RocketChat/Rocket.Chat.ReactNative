@@ -83,7 +83,8 @@ export const forgotPassword = (email: string): any =>
 	// @ts-ignore
 	sdk.post('users.forgotPassword', { email });
 
-export const sendConfirmationEmail = (email: string) => sdk.methodCallWrapper('sendConfirmationEmail', email);
+export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
+	sdk.methodCallWrapper('sendConfirmationEmail', email);
 
 export const spotlight = (search: string, usernames: string, type: { users: boolean; rooms: boolean }) =>
 	// RC 0.51.0
