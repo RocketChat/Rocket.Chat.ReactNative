@@ -12,9 +12,6 @@ export type UserEndpoints = {
 		};
 	};
 	'users.register': {
-		POST: (params: { name: string; email: string; username: string; pass: string }) => {
-			user: IUserRegistered;
-			success: boolean;
-		};
+		POST: (params: { name: string; email: string; username: string; pass: string }) => { user: IUserRegistered };
 	};
 };
