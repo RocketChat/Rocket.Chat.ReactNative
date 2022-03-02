@@ -23,17 +23,18 @@ export type ChatsStackParamList = {
 		rid: string;
 		t: SubscriptionType;
 		tmid?: string;
-		message?: string;
+		message?: object; // TODO: TMessageModel?
 		name?: string;
 		fname?: string;
 		prid?: string;
-		room?: ISubscription;
+		room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
 		jumpToMessageId?: string;
 		jumpToThreadId?: string;
-		roomUserId?: string;
+		roomUserId?: string | null;
+		usedCannedResponse?: string;
 	};
 	RoomActionsView: {
-		room: ISubscription;
+		room?: ISubscription;
 		member: any;
 		rid: string;
 		t: SubscriptionType;
@@ -240,7 +241,7 @@ export type InsideStackParamList = {
 		isShareExtension: boolean;
 		serverInfo: IServer;
 		text: string;
-		room: ISubscription;
+		room: TSubscriptionModel;
 		thread: any; // TODO: Change
 	};
 	ModalBlockView: {

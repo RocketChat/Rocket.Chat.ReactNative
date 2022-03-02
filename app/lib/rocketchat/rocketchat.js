@@ -1032,7 +1032,7 @@ const RocketChat = {
 			}
 			const autoTranslatePermission = reduxStore.getState().permissions['auto-translate'];
 			const userRoles = reduxStore.getState().login?.user?.roles ?? [];
-			return autoTranslatePermission?.some(role => userRoles.includes(role));
+			return autoTranslatePermission?.some(role => userRoles.includes(role)) ?? false;
 		} catch (e) {
 			log(e);
 			return false;

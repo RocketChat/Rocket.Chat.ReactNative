@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { Q } from '@nozbe/watermelondb';
+import { Observable, Subscription } from 'rxjs';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -11,6 +11,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../Styles';
 import { withTheme } from '../../theme';
+import { IUser, TUploadModel } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -51,23 +52,26 @@ const styles = StyleSheet.create({
 	}
 });
 
-class UploadProgress extends Component {
-	static propTypes = {
-		width: PropTypes.number,
-		rid: PropTypes.string,
-		theme: PropTypes.string,
-		user: PropTypes.shape({
-			id: PropTypes.string.isRequired,
-			username: PropTypes.string.isRequired,
-			token: PropTypes.string.isRequired
-		}),
-		baseUrl: PropTypes.string.isRequired
-	};
+interface IUploadProgressProps {
+	width: number;
+	rid: string;
+	user: Pick<IUser, 'id' | 'username' | 'token'>;
+	baseUrl: string;
+	theme?: string;
+}
 
-	constructor(props) {
+interface IUploadProgressState {
+	uploads: TUploadModel[];
+}
+
+class UploadProgress extends Component<IUploadProgressProps, IUploadProgressState> {
+	private mounted = false;
+	private ranInitialUploadCheck = false;
+	private uploadsObservable?: Observable<TUploadModel[]>;
+	private uploadsSubscription?: Subscription;
+
+	constructor(props: IUploadProgressProps) {
 		super(props);
-		this.mounted = false;
-		this.ranInitialUploadCheck = false;
 		this.state = {
 			uploads: []
 		};
@@ -97,6 +101,7 @@ class UploadProgress extends Component {
 			if (this.mounted) {
 				this.setState({ uploads });
 			} else {
+				// @ts-ignore
 				this.state.uploads = uploads;
 			}
 			if (!this.ranInitialUploadCheck) {
@@ -112,7 +117,7 @@ class UploadProgress extends Component {
 			if (!RocketChat.isUploadActive(u.path)) {
 				try {
 					const db = database.active;
-					await db.action(async () => {
+					await db.write(async () => {
 						await u.update(() => {
 							u.error = true;
 						});
@@ -124,10 +129,10 @@ class UploadProgress extends Component {
 		});
 	};
 
-	deleteUpload = async item => {
+	deleteUpload = async (item: TUploadModel) => {
 		try {
 			const db = database.active;
-			await db.action(async () => {
+			await db.write(async () => {
 				await item.destroyPermanently();
 			});
 		} catch (e) {
@@ -135,7 +140,7 @@ class UploadProgress extends Component {
 		}
 	};
 
-	cancelUpload = async item => {
+	cancelUpload = async (item: TUploadModel) => {
 		try {
 			await RocketChat.cancelUpload(item);
 		} catch (e) {
@@ -143,12 +148,12 @@ class UploadProgress extends Component {
 		}
 	};
 
-	tryAgain = async item => {
+	tryAgain = async (item: TUploadModel) => {
 		const { rid, baseUrl: server, user } = this.props;
 
 		try {
 			const db = database.active;
-			await db.action(async () => {
+			await db.write(async () => {
 				await item.update(() => {
 					item.error = false;
 				});
@@ -159,44 +164,44 @@ class UploadProgress extends Component {
 		}
 	};
 
-	renderItemContent = item => {
+	renderItemContent = (item: TUploadModel) => {
 		const { width, theme } = this.props;
 
 		if (!item.error) {
 			return [
 				<View key='row' style={styles.row}>
-					<CustomIcon name='attach' size={20} color={themes[theme].auxiliaryText} />
+					<CustomIcon name='attach' size={20} color={themes[theme!].auxiliaryText} />
 					<Text
-						style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme].auxiliaryText }]}
+						style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme!].auxiliaryText }]}
 						numberOfLines={1}>
 						{I18n.t('Uploading')} {item.name}
 					</Text>
-					<CustomIcon name='close' size={20} color={themes[theme].auxiliaryText} onPress={() => this.cancelUpload(item)} />
+					<CustomIcon name='close' size={20} color={themes[theme!].auxiliaryText} onPress={() => this.cancelUpload(item)} />
 				</View>,
 				<View
 					key='progress'
-					style={[styles.progress, { width: (width * item.progress) / 100, backgroundColor: themes[theme].tintColor }]}
+					style={[styles.progress, { width: (width * (item.progress ?? 0)) / 100, backgroundColor: themes[theme!].tintColor }]}
 				/>
 			];
 		}
 		return (
 			<View style={styles.row}>
-				<CustomIcon name='warning' size={20} color={themes[theme].dangerColor} />
+				<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />
 				<View style={styles.descriptionContainer}>
-					<Text style={[styles.descriptionText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+					<Text style={[styles.descriptionText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
 						{I18n.t('Error_uploading')} {item.name}
 					</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>
-						<Text style={[styles.tryAgainButtonText, { color: themes[theme].tintColor }]}>{I18n.t('Try_again')}</Text>
+						<Text style={[styles.tryAgainButtonText, { color: themes[theme!].tintColor }]}>{I18n.t('Try_again')}</Text>
 					</TouchableOpacity>
 				</View>
-				<CustomIcon name='close' size={20} color={themes[theme].auxiliaryText} onPress={() => this.deleteUpload(item)} />
+				<CustomIcon name='close' size={20} color={themes[theme!].auxiliaryText} onPress={() => this.deleteUpload(item)} />
 			</View>
 		);
 	};
 
 	// TODO: transform into stateless and update based on its own observable changes
-	renderItem = (item, index) => {
+	renderItem = (item: TUploadModel, index: number) => {
 		const { theme } = this.props;
 
 		return (
@@ -206,8 +211,8 @@ class UploadProgress extends Component {
 					styles.item,
 					index !== 0 ? { marginTop: 10 } : {},
 					{
-						backgroundColor: themes[theme].chatComponentBackground,
-						borderColor: themes[theme].borderColor
+						backgroundColor: themes[theme!].chatComponentBackground,
+						borderColor: themes[theme!].borderColor
 					}
 				]}>
 				{this.renderItemContent(item)}
