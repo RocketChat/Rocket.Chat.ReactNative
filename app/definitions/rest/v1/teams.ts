@@ -10,7 +10,6 @@ export type TeamsEndpoints = {
 			total: number;
 			count: number;
 			offset: number;
-			success: boolean;
 		};
 	};
 };
