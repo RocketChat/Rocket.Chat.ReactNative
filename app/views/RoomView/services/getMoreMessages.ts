@@ -1,4 +1,4 @@
-import { IMessage, MessageType, SubscriptionType, TAnyMessageModel } from '../../../definitions';
+import { MessageType, SubscriptionType, TAnyMessageModel } from '../../../definitions';
 import loadMessagesForRoom from '../../../lib/methods/loadMessagesForRoom';
 import loadNextMessages from '../../../lib/methods/loadNextMessages';
 import {

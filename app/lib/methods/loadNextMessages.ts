@@ -7,7 +7,7 @@ import { getMessageById } from '../database/services/Message';
 import { MESSAGE_TYPE_LOAD_NEXT_CHUNK } from '../../constants/messageTypeLoad';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
-import { IMessage, TMessageModel } from '../../definitions';
+import { TMessageModel } from '../../definitions';
 import RocketChat from '../rocketchat';
 
 const COUNT = 50;

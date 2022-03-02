@@ -204,8 +204,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const fname = props.route.params?.fname;
 		const prid = props.route.params?.prid;
 		const room = props.route.params?.room ?? {
-			rid: this.rid,
-			t: this.t,
+			rid: this.rid as string,
+			t: this.t as string,
 			name,
 			fname,
 			prid
@@ -529,10 +529,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (isMasterDetail) {
 			// @ts-ignore TODO: find a way to make it work
 			navigation.navigate('ModalStackNavigator', {
+				// @ts-ignore
 				screen: screen ?? 'RoomActionsView',
 				params: {
-					rid: this.rid,
-					t: this.t,
+					rid: this.rid as string,
+					t: this.t as SubscriptionType,
+					// @ts-ignore
 					room,
 					member,
 					showCloseModal: !!screen,
