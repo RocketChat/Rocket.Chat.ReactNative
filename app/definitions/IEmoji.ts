@@ -21,4 +21,10 @@ export interface IEmojiCategory {
 	tabLabel: string;
 }
 
-export type TGetCustomEmoji = (name: string) => IEmoji | null;
+// TODO: copied from reducers/customEmojis. We can unify later.
+export interface IReduxEmoji {
+	name: string;
+	extension: any;
+}
+
+export type TGetCustomEmoji = (name: string) => any;

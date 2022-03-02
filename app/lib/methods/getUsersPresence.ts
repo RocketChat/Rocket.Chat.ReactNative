@@ -106,7 +106,7 @@ export default async function getUsersPresence() {
 	}
 }
 
-let usersTimer: number | null = null;
+let usersTimer: ReturnType<typeof setTimeout> | null = null;
 export function getUserPresence(uid: string) {
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {

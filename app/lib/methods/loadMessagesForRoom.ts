@@ -1,17 +1,16 @@
 import moment from 'moment';
 
-import { MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
+import { IMessage, MessageType, TMessageModel } from '../../definitions';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
+import roomTypeToApiType, { RoomTypes } from '../rocketchat/methods/roomTypeToApiType';
+import sdk from '../rocketchat/services/sdk';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
-import { IMessage, TMessageModel } from '../../definitions';
-import sdk from '../rocketchat/services/sdk';
-import roomTypeToApiType, { RoomTypes } from '../rocketchat/methods/roomTypeToApiType';
 
 const COUNT = 50;
 
-async function load({ rid: roomId, latest, t }: { rid: string; latest?: string; t: RoomTypes }) {
+async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t: RoomTypes }) {
 	let params = { roomId, count: COUNT } as { roomId: string; count: number; latest?: string };
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
@@ -23,9 +22,8 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: string; 
 	}
 
 	// RC 0.48.0
-	// @ts-ignore
-	const data: any = await sdk.get(`${apiType}.history`, params);
-	if (!data || data.status === 'error') {
+	const data = await sdk.get(`${apiType}.history`, params);
+	if (!data.success) {
 		return [];
 	}
 	return data.messages;
@@ -34,29 +32,29 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: string; 
 export default function loadMessagesForRoom(args: {
 	rid: string;
 	t: RoomTypes;
-	latest: string;
-	loaderItem: TMessageModel;
-}): Promise<IMessage[] | []> {
+	latest?: Date;
+	loaderItem?: TMessageModel;
+}): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const data = await load(args);
+			const data: Partial<IMessage>[] = await load(args);
 			if (data?.length) {
 				const lastMessage = data[data.length - 1];
-				const lastMessageRecord = await getMessageById(lastMessage._id);
+				const lastMessageRecord = await getMessageById(lastMessage._id as string);
 				if (!lastMessageRecord && data.length === COUNT) {
-					const loadMoreItem = {
-						_id: generateLoadMoreId(lastMessage._id),
+					const loadMoreMessage = {
+						_id: generateLoadMoreId(lastMessage._id as string),
 						rid: lastMessage.rid,
-						ts: moment(lastMessage.ts).subtract(1, 'millisecond'),
-						t: MESSAGE_TYPE_LOAD_MORE,
+						ts: moment(lastMessage.ts).subtract(1, 'millisecond').toString(),
+						t: 'load_more' as MessageType,
 						msg: lastMessage.msg
 					};
-					data.push(loadMoreItem);
+					data.push(loadMoreMessage);
 				}
 				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });
-				return resolve(data);
+				return resolve();
 			}
-			return resolve([]);
+			return resolve();
 		} catch (e) {
 			log(e);
 			reject(e);

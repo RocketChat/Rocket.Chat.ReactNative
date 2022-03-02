@@ -1,8 +1,14 @@
-const types = {
-	c: 'channels',
-	d: 'im',
-	p: 'groups',
-	l: 'channels'
+enum ETypes {
+	Channels = 'channels',
+	Im = 'im',
+	Groups = 'groups'
+}
+
+export const types = {
+	c: ETypes.Channels,
+	d: ETypes.Im,
+	p: ETypes.Groups,
+	l: ETypes.Channels
 };
 
 // TODO: refactor this
