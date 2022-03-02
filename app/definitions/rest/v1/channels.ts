@@ -29,13 +29,9 @@ export type ChannelsEndpoints = {
 		};
 	};
 	'channels.archive': {
-		POST: (params: { roomId: string }) => {
-			success: boolean;
-		};
+		POST: (params: { roomId: string }) => void;
 	};
 	'channels.unarchive': {
-		POST: (params: { roomId: string }) => {
-			success: boolean;
-		};
+		POST: (params: { roomId: string }) => void;
 	};
 };

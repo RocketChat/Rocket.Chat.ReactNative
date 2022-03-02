@@ -23,13 +23,9 @@ export type GroupsEndpoints = {
 		};
 	};
 	'groups.archive': {
-		POST: (params: { roomId: string }) => {
-			success: boolean;
-		};
+		POST: (params: { roomId: string }) => void;
 	};
 	'groups.unarchive': {
-		POST: (params: { roomId: string }) => {
-			success: boolean;
-		};
+		POST: (params: { roomId: string }) => void;
 	};
 };
