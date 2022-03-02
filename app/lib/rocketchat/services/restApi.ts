@@ -224,13 +224,11 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
 };
 
-export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; selected: string[] }): any => {
+export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; selected: string[] }) => {
 	const params = {
 		teamId,
 		...(selected.length && { roomsToRemove: selected })
 	};
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('teams.convertToChannel', params);
 };
 
