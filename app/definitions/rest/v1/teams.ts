@@ -11,9 +11,6 @@ export type TeamsEndpoints = {
 			users: string[];
 			type: TEAM_TYPE;
 			room: { readOnly: boolean; extraData: { broadcast: boolean; encrypted: boolean } };
-		}) => {
-			team: ITeam;
-			success: boolean;
-		};
+		}) => { team: ITeam };
 	};
 };
