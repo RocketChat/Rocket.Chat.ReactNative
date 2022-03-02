@@ -3,9 +3,25 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
+import {
+	MESSAGE_TYPE_LOAD_MORE,
+	MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK,
+	MESSAGE_TYPE_LOAD_NEXT_CHUNK
+} from '../constants/messageTypeLoad';
+import { TThreadMessageModel } from './IThreadMessage';
+import { TThreadModel } from './IThread';
 import { IUrlFromServer } from './IUrl';
 
-export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj';
+export type MessageType =
+	| 'jitsi_call_started'
+	| 'discussion-created'
+	| 'e2e'
+	| 'load_more'
+	| 'rm'
+	| 'uj'
+	| typeof MESSAGE_TYPE_LOAD_MORE
+	| typeof MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK
+	| typeof MESSAGE_TYPE_LOAD_NEXT_CHUNK;
 
 export interface IUserMessage {
 	_id: string;
@@ -139,4 +155,5 @@ export interface IMessage extends IMessageFromServer {
 
 export type TMessageModel = IMessage & Model;
 
+export type TAnyMessageModel = TMessageModel | TThreadModel | TThreadMessageModel;
 export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;
