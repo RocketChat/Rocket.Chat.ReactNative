@@ -1,4 +1,5 @@
 import { IRoom } from '../../IRoom';
+import { ITeam, TEAM_TYPE } from '../../ITeam';
 
 export type TeamsEndpoints = {
 	'teams.removeRoom': {
@@ -6,5 +7,13 @@ export type TeamsEndpoints = {
 	};
 	'teams.addRooms': {
 		POST: (params: { teamId: string; rooms: string[] }) => { rooms: IRoom[] };
+	};
+	'teams.create': {
+		POST: (params: {
+			name: string;
+			users: string[];
+			type: TEAM_TYPE;
+			room: { readOnly: boolean; extraData: { broadcast: boolean; encrypted: boolean } };
+		}) => { team: ITeam };
 	};
 };
