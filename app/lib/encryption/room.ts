@@ -158,12 +158,12 @@ export default class EncryptionRoom {
 		const result = await RocketChat.e2eGetUsersOfRoomWithoutKey(this.roomId);
 		if (result.success) {
 			const { users } = result;
-			await Promise.all(users.map((user: IUser) => this.encryptRoomKeyForUser(user)));
+			await Promise.all(users.map(user => this.encryptRoomKeyForUser(user)));
 		}
 	};
 
 	// Encrypt the room key to each user in
-	encryptRoomKeyForUser = async (user: IUser) => {
+	encryptRoomKeyForUser = async (user: Pick<IUser, '_id' | 'e2e'>) => {
 		if (user?.e2e?.public_key) {
 			const { public_key: publicKey } = user.e2e;
 			const userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
