@@ -3,7 +3,7 @@ import { Keyboard, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { State, TapGestureHandler } from 'react-native-gesture-handler';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
-import Animated, { Easing, Extrapolate, Value, interpolateNode } from 'react-native-reanimated';
+import Animated, { EasingNode, Extrapolate, Value, interpolateNode } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { useBackHandler } from '@react-native-community/hooks';
 
@@ -35,7 +35,7 @@ const ANIMATION_DURATION = 250;
 const ANIMATION_CONFIG = {
 	duration: ANIMATION_DURATION,
 	// https://easings.net/#easeInOutCubic
-	easing: Easing.bezier(0.645, 0.045, 0.355, 1.0)
+	easing: EasingNode.bezier(0.645, 0.045, 0.355, 1.0)
 };
 
 const ActionSheet = React.memo(
