@@ -3,6 +3,7 @@ import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 
 import { themes } from '../../../constants/colors';
 import { MessageTypeLoad } from '../../../constants/messageTypeLoad';
+import { MessageType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
 import sharedStyles from '../../Styles';
@@ -20,7 +21,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-const LoadMore = ({ load, type, runOnRender }: { load: Function; type: string; runOnRender: boolean }): React.ReactElement => {
+const LoadMore = ({
+	load,
+	type,
+	runOnRender
+}: {
+	load: Function;
+	type: MessageType;
+	runOnRender: boolean;
+}): React.ReactElement => {
 	const { theme } = useTheme();
 	const [loading, setLoading] = useState(false);
 
