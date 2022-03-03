@@ -4,7 +4,7 @@ import orderBy from 'lodash/orderBy';
 
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
-import { MESSAGE_TYPE_LOAD_NEXT_CHUNK } from '../../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../../constants/messageTypeLoad';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
 import { TMessageModel } from '../../definitions';
@@ -34,7 +34,7 @@ export default function loadNextMessages(args: ILoadNextMessages): Promise<void>
 						rid: lastMessage.rid,
 						tmid: args.tmid,
 						ts: moment(lastMessage.ts).add(1, 'millisecond'),
-						t: MESSAGE_TYPE_LOAD_NEXT_CHUNK
+						t: MessageTypeLoad.NEXT_CHUNK
 					};
 					messages.push(loadMoreItem);
 				}
