@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 
 import { themes } from '../../../constants/colors';
-import { MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../../../constants/messageTypeLoad';
+import { MessageType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
 import sharedStyles from '../../Styles';
@@ -20,7 +21,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-const LoadMore = ({ load, type, runOnRender }: { load: Function; type: string; runOnRender: boolean }): React.ReactElement => {
+const LoadMore = ({
+	load,
+	type,
+	runOnRender
+}: {
+	load: Function;
+	type: MessageType;
+	runOnRender: boolean;
+}): React.ReactElement => {
 	const { theme } = useTheme();
 	const [loading, setLoading] = useState(false);
 
@@ -43,10 +52,10 @@ const LoadMore = ({ load, type, runOnRender }: { load: Function; type: string; r
 	}, []);
 
 	let text = 'Load_More';
-	if (type === MESSAGE_TYPE_LOAD_NEXT_CHUNK) {
+	if (type === MessageTypeLoad.NEXT_CHUNK) {
 		text = 'Load_Newer';
 	}
-	if (type === MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK) {
+	if (type === MessageTypeLoad.PREVIOUS_CHUNK) {
 		text = 'Load_Older';
 	}
 
