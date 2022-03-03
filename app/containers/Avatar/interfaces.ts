@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 export interface IAvatar {
@@ -9,7 +11,7 @@ export interface IAvatar {
 	size?: number;
 	borderRadius?: number;
 	type?: string;
-	children?: JSX.Element;
+	children?: React.ReactElement | null;
 	user?: {
 		id?: string;
 		token?: string;

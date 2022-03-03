@@ -1,15 +1,17 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
+import { useTheme } from '../../theme';
 import Timezone from './Timezone';
 import CustomFields from './CustomFields';
 import styles from './styles';
 
-const Roles = ({ roles, theme }) =>
-	roles && roles.length ? (
+const Roles = ({ roles }: { roles: string[] }) => {
+	const { theme } = useTheme();
+
+	if (roles && roles.length) {
 		<View style={styles.item}>
 			<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Roles')}</Text>
 			<View style={styles.rolesContainer}>
@@ -21,23 +23,18 @@ const Roles = ({ roles, theme }) =>
 					) : null
 				)}
 			</View>
-		</View>
-	) : null;
-Roles.propTypes = {
-	roles: PropTypes.array,
-	theme: PropTypes.string
+		</View>;
+	}
+
+	return null;
 };
 
-const Direct = ({ roomUser, theme }) => (
+const Direct = ({ roomUser }: { roomUser: any }) => (
 	<>
-		<Roles roles={roomUser.parsedRoles} theme={theme} />
-		<Timezone utcOffset={roomUser.utcOffset} theme={theme} />
-		<CustomFields customFields={roomUser.customFields} theme={theme} />
+		<Roles roles={roomUser.parsedRoles} />
+		<Timezone utcOffset={roomUser.utcOffset} />
+		<CustomFields customFields={roomUser.customFields} />
 	</>
 );
-Direct.propTypes = {
-	roomUser: PropTypes.object,
-	theme: PropTypes.string
-};
 
 export default Direct;
