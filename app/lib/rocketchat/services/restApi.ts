@@ -447,7 +447,7 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	return sdk.get('canned-responses', params);
 };
 
-export const toggleBlockUser = (rid: string, blocked: string, block: boolean) => {
+export const toggleBlockUser = (rid: string, blocked: string, block: boolean): Promise<boolean> => {
 	if (block) {
 		// RC 0.49.0
 		return sdk.methodCallWrapper('blockUser', { rid, blocked });
