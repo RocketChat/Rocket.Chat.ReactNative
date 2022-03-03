@@ -1,7 +1,7 @@
-import { SubscriptionType } from '../../../definitions';
+import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import sdk from './sdk';
+import { SubscriptionType, INotificationPreferences } from '../../../definitions';
 
 export const createChannel = ({
 	name,
@@ -283,10 +283,8 @@ export const reportMessage = (messageId: string): any =>
 	// @ts-ignore
 	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 
-export const setUserPreferences = (userId: string, data: any): any =>
+export const setUserPreferences = (userId: string, data: Partial<INotificationPreferences>) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.setPreferences', { userId, data });
 
 export const setUserStatus = (status?: string, message?: string): any =>
