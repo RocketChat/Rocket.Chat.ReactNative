@@ -1,9 +1,12 @@
 import { IRoom } from '../../IRoom';
-import { ITeam, TEAM_TYPE } from '../../ITeam';
+import { IServerTeamUpdateRoom, ITeam, TEAM_TYPE } from '../../ITeam';
 
 export type TeamsEndpoints = {
 	'teams.removeRoom': {
 		POST: (params: { roomId: string; teamId: string }) => { room: IRoom };
+	};
+	'teams.updateRoom': {
+		POST: (params: { roomId: string; isDefault: boolean }) => { room: IServerTeamUpdateRoom };
 	};
 	'teams.convertToChannel': {
 		POST: (params: { teamId: string; roomsToRemove?: string[] }) => {};

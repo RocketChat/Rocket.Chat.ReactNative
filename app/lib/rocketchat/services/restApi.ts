@@ -191,10 +191,8 @@ export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; us
 		...(rooms?.length && { rooms })
 	});
 
-export const updateTeamRoom = ({ roomId, isDefault }: { roomId: string; isDefault: boolean }): any =>
+export const updateTeamRoom = ({ roomId, isDefault }: { roomId: string; isDefault: boolean }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('teams.updateRoom', { roomId, isDefault });
 
 export const deleteTeam = ({ teamId, roomsToRemove }: { teamId: string; roomsToRemove: string[] }): any =>
