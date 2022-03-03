@@ -22,6 +22,16 @@ export interface IPersonalAccessToken extends ILoginToken {
 	bypassTwoFactor?: boolean;
 }
 
+export interface IUserRegistered {
+	_id: string;
+	type: string;
+	status: UserStatus;
+	active: boolean;
+	name: string;
+	username: string;
+	__rooms: string[];
+}
+
 export interface IUserEmailVerificationToken {
 	token: string;
 	address: string;
@@ -130,6 +140,7 @@ export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' |
 	settings?: IUserSettings;
 	defaultRoom?: string;
 	ldap?: boolean;
+	muted?: boolean;
 }
 
 export interface IRegisterUser extends IUser {

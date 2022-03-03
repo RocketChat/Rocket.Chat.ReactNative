@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import PropTypes from 'prop-types';
+import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
 
 import TextInput from '../../../presentation/TextInput';
 import I18n from '../../../i18n';
@@ -31,19 +30,32 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IRoomHeader {
+	connecting: boolean;
+	connected: boolean;
+	isFetching: boolean;
+	serverName: string;
+	server: string;
+	showServerDropdown: boolean;
+	showSearchHeader: boolean;
+	theme: string;
+	onSearchChangeText: TextInputProps['onChangeText'];
+	onPress: TouchableOpacityProps['onPress'];
+}
+
 const Header = React.memo(
 	({
 		connecting,
 		connected,
 		isFetching,
-		serverName,
+		serverName = 'Rocket.Chat',
 		server,
 		showServerDropdown,
 		showSearchHeader,
 		theme,
 		onSearchChangeText,
 		onPress
-	}) => {
+	}: IRoomHeader) => {
 		const titleColorStyle = { color: themes[theme].headerTitleColor };
 		const isLight = theme === 'light';
 		const { isLandscape } = useOrientation();
@@ -79,9 +91,7 @@ const Header = React.memo(
 			<View style={styles.container}>
 				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
 					<View style={styles.button}>
-						<Text
-							style={[styles.title, isFetching && styles.serverSmall, titleColorStyle, { fontSize: titleFontSize }]}
-							numberOfLines={1}>
+						<Text style={[styles.title, titleColorStyle, { fontSize: titleFontSize }]} numberOfLines={1}>
 							{serverName}
 						</Text>
 						<CustomIcon
@@ -104,22 +114,5 @@ const Header = React.memo(
 		);
 	}
 );
-
-Header.propTypes = {
-	showServerDropdown: PropTypes.bool.isRequired,
-	showSearchHeader: PropTypes.bool.isRequired,
-	onPress: PropTypes.func.isRequired,
-	onSearchChangeText: PropTypes.func.isRequired,
-	connecting: PropTypes.bool,
-	connected: PropTypes.bool,
-	isFetching: PropTypes.bool,
-	serverName: PropTypes.string,
-	server: PropTypes.string,
-	theme: PropTypes.string
-};
-
-Header.defaultProps = {
-	serverName: 'Rocket.Chat'
-};
 
 export default Header;

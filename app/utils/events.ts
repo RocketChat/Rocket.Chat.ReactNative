@@ -3,6 +3,7 @@ import log from './log';
 
 type TEventEmitterEmmitArgs =
 	| { rid: string }
+	| { server: string }
 	| { message: string }
 	| { method: string }
 	| { invalid: boolean }

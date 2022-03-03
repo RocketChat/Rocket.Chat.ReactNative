@@ -257,6 +257,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		const { user, baseUrl, theme, useRealName } = this.props;
 		return (
 			<Message
+				// @ts-ignore IMessage | TMessageModel?
 				item={item}
 				baseUrl={baseUrl}
 				user={user}
