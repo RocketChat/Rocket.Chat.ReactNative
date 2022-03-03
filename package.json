@@ -246,13 +246,13 @@
 					}
 				}
 			},
-			"and.emu.debug": {
+			"android.emu.debug": {
 				"device": "Pixel_API_28_AOSP",
 				"type": "android.emulator",
 				"binaryPath": "android/app/build/outputs/apk/e2ePlay/debug/app-e2e-play-debug.apk",
 				"build": "cd android && ./gradlew app:assembleE2ePlayDebug app:assembleE2ePlayDebugAndroidTest -DtestBuildType=debug && cd .."
 			},
-			"and.emu.release": {
+			"android.emu.release": {
 				"device": "Pixel_API_28_AOSP",
 				"type": "android.emulator",
 				"binaryPath": "android/app/build/outputs/apk/e2ePlay/release/app-e2e-play-release.apk",
