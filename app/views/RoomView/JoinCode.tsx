@@ -1,5 +1,4 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
-import PropTypes from 'prop-types';
 import { InteractionManager, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { connect } from 'react-redux';
@@ -10,6 +9,7 @@ import TextInput from '../../containers/TextInput';
 import RocketChat from '../../lib/rocketchat';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
+import { IApplicationState } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,8 +41,16 @@ const styles = StyleSheet.create({
 	}
 });
 
+export interface IJoinCodeProps {
+	rid: string;
+	t: string;
+	onJoin: Function;
+	isMasterDetail: boolean;
+	theme: string;
+}
+
 const JoinCode = React.memo(
-	forwardRef(({ rid, t, onJoin, isMasterDetail, theme }, ref) => {
+	forwardRef(({ rid, t, onJoin, isMasterDetail, theme }: IJoinCodeProps, ref) => {
 		const [visible, setVisible] = useState(false);
 		const [error, setError] = useState(false);
 		const [code, setCode] = useState('');
@@ -53,7 +61,7 @@ const JoinCode = React.memo(
 
 		const joinRoom = async () => {
 			try {
-				await RocketChat.joinRoom(rid, code, t);
+				await RocketChat.joinRoom(rid, code, t as any);
 				onJoin();
 				hide();
 			} catch (e) {
@@ -64,7 +72,8 @@ const JoinCode = React.memo(
 		useImperativeHandle(ref, () => ({ show }));
 
 		return (
-			<Modal transparent avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
+			// @ts-ignore TODO: `transparent` seems to exist, but types are incorrect on the lib
+			<Modal transparent={true} avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
 				<View style={styles.container} testID='join-code'>
 					<View
 						style={[
@@ -76,14 +85,15 @@ const JoinCode = React.memo(
 						<TextInput
 							value={code}
 							theme={theme}
-							inputRef={e => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
+							// TODO: find a way to type this ref
+							inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
 							returnKeyType='send'
 							autoCapitalize='none'
 							onChangeText={setCode}
 							onSubmitEditing={joinRoom}
 							placeholder={I18n.t('Join_Code')}
 							secureTextEntry
-							error={error && { error: 'error-code-invalid', reason: I18n.t('Code_or_password_invalid') }}
+							error={error ? { error: 'error-code-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
 							testID='join-code-input'
 						/>
 						<View style={styles.buttonContainer}>
@@ -111,15 +121,8 @@ const JoinCode = React.memo(
 		);
 	})
 );
-JoinCode.propTypes = {
-	rid: PropTypes.string,
-	t: PropTypes.string,
-	onJoin: PropTypes.func,
-	isMasterDetail: PropTypes.bool,
-	theme: PropTypes.string
-};
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 export default connect(mapStateToProps, null, null, { forwardRef: true })(JoinCode);

@@ -1,5 +1,6 @@
+import { ITeam } from '../../ITeam';
 import type { IMessage, IMessageFromServer } from '../../IMessage';
-import type { IRoom } from '../../IRoom';
+import type { IRoom, IServerRoomItem } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
 export type ChannelsEndpoints = {
@@ -27,5 +28,28 @@ export type ChannelsEndpoints = {
 		GET: (params: { roomId: string; count: number; latest?: string }) => {
 			messages: IMessageFromServer[];
 		};
+	};
+	'channels.archive': {
+		POST: (params: { roomId: string }) => void;
+	};
+	'channels.unarchive': {
+		POST: (params: { roomId: string }) => void;
+	};
+	'channels.create': {
+		POST: (params: {
+			name: string;
+			members: string[];
+			readOnly: boolean;
+			extraData: {
+				broadcast: boolean;
+				encrypted: boolean;
+				teamId?: string;
+			};
+		}) => {
+			group: Partial<IServerRoomItem>;
+		};
+	};
+	'channels.convertToTeam': {
+		POST: (params: { channelId: string; channelName: string }) => { team: ITeam };
 	};
 };
