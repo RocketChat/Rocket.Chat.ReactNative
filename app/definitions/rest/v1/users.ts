@@ -11,4 +11,7 @@ export type UsersEndpoints = {
 	'users.listTeams': {
 		GET: (params: { userId: IUser['_id'] }) => { teams: Array<ITeam> };
 	};
+	'users.forgotPassword': {
+		POST: (params: { email: string }) => {};
+	};
 };
