@@ -37,9 +37,9 @@ export async function cancelUpload(item: TUploadModel): Promise<void> {
 export function sendFileMessage(
 	rid: string,
 	fileInfo: IUpload,
-	tmid: string,
+	tmid: string | undefined,
 	server: string,
-	user: IUser
+	user: Partial<Pick<IUser, 'id' | 'token'>>
 ): Promise<FetchBlobResponse | void> {
 	return new Promise(async (resolve, reject) => {
 		try {
