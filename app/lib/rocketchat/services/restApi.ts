@@ -201,10 +201,8 @@ export const deleteTeam = ({ teamId, roomsToRemove }: { teamId: string; roomsToR
 	// @ts-ignore
 	sdk.post('teams.delete', { teamId, roomsToRemove });
 
-export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId: string }): any =>
+export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId: string }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('teams.listRoomsOfUser', { teamId, userId });
 
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
