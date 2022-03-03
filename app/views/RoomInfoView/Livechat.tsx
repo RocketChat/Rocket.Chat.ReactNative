@@ -33,7 +33,7 @@ const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechat
 		if (id) {
 			const result = await RocketChat.getDepartmentInfo(id);
 			if (result.success) {
-				setDepartment(result.department);
+				setDepartment(result.department as ILivechatDepartment);
 			}
 		}
 	};

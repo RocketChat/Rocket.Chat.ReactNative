@@ -5,11 +5,11 @@ import moment from 'moment';
 import { IApplicationState } from '../../definitions';
 import I18n from '../../i18n';
 import Item from './Item';
-import { TSettings } from '../../reducers/settings';
+import { TSettingsValues } from '../../reducers/settings';
 
 interface ITimezone {
 	utcOffset?: number;
-	Message_TimeFormat: TSettings;
+	Message_TimeFormat?: TSettingsValues;
 }
 
 const Timezone = ({ utcOffset, Message_TimeFormat }: ITimezone) => {
