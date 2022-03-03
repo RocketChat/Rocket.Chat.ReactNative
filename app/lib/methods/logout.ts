@@ -13,7 +13,7 @@ import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../enc
 import UserPreferences from '../userPreferences';
 import { ICertificate, IRocketChat } from '../../definitions';
 
-function removeServerKeys({ server, userId }: { server: string; userId: string | null }) {
+function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);
 	if (userId) {
 		UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${userId}`);
