@@ -347,7 +347,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			const { returnQueue } = await RocketChat.getRoutingConfig();
 			return returnQueue;
 		} catch {
-			// do nothing
+			return false;
 		}
 	};
 
