@@ -41,11 +41,11 @@ Or
 
 #### 3.2. Android
 
-* Build app with detox: `detox build -c and.emu.debug`
+* Build app with detox: `detox build -c android.emu.debug`
 * Run: `react-native start`
 * Run Android emulator with name `ANDROID_API_28` via Android studio or `cd /Users/USERNAME/Library/Android/sdk/emulator/ && ./emulator -avd ANDROID_API_28`
 Note: if you need to run tests on different Android emulator then simply change emulator name in ./package.json detox configurations
-* Run tests: `detox test -c and.emu.debug`
+* Run tests: `detox test -c android.emu.debug`
 
 #### 3.3 Running a subset of tests
 
