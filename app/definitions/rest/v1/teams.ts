@@ -1,6 +1,5 @@
 import { IRoom } from '../../IRoom';
-import { IServerTeamUpdateRoom } from '../../ITeam';
-import { ITeam, TEAM_TYPE } from '../../ITeam';
+import { IServerTeamUpdateRoom, ITeam, TEAM_TYPE } from '../../ITeam';
 
 export type TeamsEndpoints = {
 	'teams.removeRoom': {
