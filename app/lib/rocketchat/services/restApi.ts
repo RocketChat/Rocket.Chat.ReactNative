@@ -574,7 +574,22 @@ export const hideRoom = (roomId: string, t: RoomTypes): any =>
 	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
-export const saveRoomSettings = (rid: string, params: any) =>
+export const saveRoomSettings = (
+	rid: string,
+	params: {
+		roomName?: string;
+		roomAvatar?: string;
+		roomDescription?: string;
+		roomTopic?: string;
+		roomAnnouncement?: string;
+		roomType?: SubscriptionType;
+		readOnly?: boolean;
+		reactWhenReadOnly?: boolean;
+		systemMessages?: string[];
+		joinCode?: string;
+		encrypted?: boolean;
+	}
+): Promise<{ result: boolean; rid: string }> =>
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
