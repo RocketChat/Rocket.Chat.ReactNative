@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import I18n from '../../i18n';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
+import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DateSeparator = React.memo(({ ts, unread, theme }) => {
+const DateSeparator = ({ ts, unread }: { ts: Date | string | null; unread: boolean }): React.ReactElement => {
+	const { theme } = useTheme();
 	const date = ts ? moment(ts).format('LL') : null;
 	const unreadLine = { backgroundColor: themes[theme].dangerColor };
 	const unreadText = { color: themes[theme].dangerColor };
@@ -61,12 +62,6 @@ const DateSeparator = React.memo(({ ts, unread, theme }) => {
 			<View style={[styles.line, unreadLine]} />
 		</View>
 	);
-});
-
-DateSeparator.propTypes = {
-	ts: PropTypes.instanceOf(Date),
-	unread: PropTypes.bool,
-	theme: PropTypes.string
 };
 
 export default DateSeparator;

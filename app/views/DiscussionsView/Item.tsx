@@ -63,6 +63,7 @@ const Item = ({ item, onPress }: IItem): JSX.Element => {
 
 	if (item?.ts) {
 		messageTime = moment(item.ts).format('LT');
+		// @ts-ignore TODO: Unify IMessage
 		messageDate = formatDateThreads(item.ts);
 	}
 

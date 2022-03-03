@@ -43,7 +43,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 		if ((type === ERoomTypes.CHANNEL || type === ERoomTypes.GROUP) && !rid) {
 			// RC 0.72.0
 			// @ts-ignore
-			const result: any = await sdk.get(`channel.info`, params);
+			const result: any = await sdk.get(`${restTypes[type]}.info`, params);
 			if (result.success) {
 				const room = result[type];
 				room.rid = room._id;

@@ -32,4 +32,11 @@ export type ChatEndpoints = {
 			total: number;
 		}>;
 	};
+	'chat.delete': {
+		POST: (params: { msgId: string; roomId: string }) => {
+			_id: string;
+			ts: string;
+			message: Pick<IMessage, '_id' | 'rid' | 'u'>;
+		};
+	};
 };

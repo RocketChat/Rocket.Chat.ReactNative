@@ -22,6 +22,16 @@ export interface IPersonalAccessToken extends ILoginToken {
 	bypassTwoFactor?: boolean;
 }
 
+export interface IUserRegistered {
+	_id: string;
+	type: string;
+	status: UserStatus;
+	active: boolean;
+	name: string;
+	username: string;
+	__rooms: string[];
+}
+
 export interface IUserEmailVerificationToken {
 	token: string;
 	address: string;
@@ -91,6 +101,22 @@ export interface IUserSettings {
 	profile: any;
 	preferences: {
 		[key: string]: any;
+	};
+}
+type TNotifications = 'default' | 'all' | 'mentions' | 'nothing';
+
+export interface INotificationPreferences {
+	id: string;
+	enableMessageParserEarlyAdoption: boolean;
+	desktopNotifications: TNotifications;
+	pushNotifications: TNotifications;
+	emailNotificationMode?: 'mentions' | 'nothing';
+}
+
+export interface IUserPreferences {
+	user: { _id: string };
+	settings: {
+		preferences: INotificationPreferences;
 	};
 }
 

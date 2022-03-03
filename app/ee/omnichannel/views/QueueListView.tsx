@@ -24,7 +24,7 @@ import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
 import { DisplayMode } from '../../../constants/constantDisplayMode';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
-import { TSettings } from '../../../reducers/settings';
+import { TSettingsValues } from '../../../reducers/settings';
 
 interface INavigationOptions {
 	isMasterDetail: boolean;
@@ -44,7 +44,7 @@ interface IQueueListView extends INavigationOptions {
 	width: number;
 	queued: IOmnichannelRoom[];
 	server: string;
-	useRealName: TSettings;
+	useRealName?: TSettingsValues;
 	theme: string;
 	showAvatar: any;
 	displayMode: DisplayMode;

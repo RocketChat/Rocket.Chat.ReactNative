@@ -1,30 +1,43 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
+import { Observable, Subscription } from 'rxjs';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import { events, logEvent } from '../../utils/log';
 import { isTeamRoom } from '../../utils/room';
+import { IApplicationState, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
+import { ChatsStackParamList } from '../../stacks/types';
 
-class RightButtonsContainer extends Component {
-	static propTypes = {
-		userId: PropTypes.string,
-		threadsEnabled: PropTypes.bool,
-		rid: PropTypes.string,
-		t: PropTypes.string,
-		tmid: PropTypes.string,
-		teamId: PropTypes.string,
-		navigation: PropTypes.object,
-		isMasterDetail: PropTypes.bool,
-		toggleFollowThread: PropTypes.func,
-		joined: PropTypes.bool,
-		encrypted: PropTypes.bool
-	};
+interface IRightButtonsProps {
+	userId?: string;
+	threadsEnabled: boolean;
+	rid?: string;
+	t: string;
+	tmid?: string;
+	teamId?: string;
+	isMasterDetail: boolean;
+	toggleFollowThread: Function;
+	joined: boolean;
+	encrypted?: boolean;
+	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
+}
 
-	constructor(props) {
+interface IRigthButtonsState {
+	isFollowingThread: boolean;
+	tunread: string[];
+	tunreadUser: string[];
+	tunreadGroup: string[];
+}
+
+class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsState> {
+	private threadSubscription?: Subscription;
+	private subSubscription?: Subscription;
+
+	constructor(props: IRightButtonsProps) {
 		super(props);
 		this.state = {
 			isFollowingThread: true,
@@ -56,7 +69,7 @@ class RightButtonsContainer extends Component {
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
 		const { teamId } = this.props;
 		if (nextProps.teamId !== teamId) {
@@ -86,37 +99,41 @@ class RightButtonsContainer extends Component {
 		}
 	}
 
-	observeThread = threadRecord => {
-		const threadObservable = threadRecord.observe();
+	observeThread = (threadRecord: TMessageModel) => {
+		const threadObservable: Observable<TMessageModel> = threadRecord.observe();
 		this.threadSubscription = threadObservable.subscribe(thread => this.updateThread(thread));
 	};
 
-	updateThread = thread => {
+	updateThread = (thread: TMessageModel) => {
 		const { userId } = this.props;
 		this.setState({
-			isFollowingThread: thread.replies && !!thread.replies.find(t => t === userId)
+			isFollowingThread: (thread.replies && !!thread.replies.find(t => t === userId)) ?? false
 		});
 	};
 
-	observeSubscription = subRecord => {
+	observeSubscription = (subRecord: TSubscriptionModel) => {
 		const subObservable = subRecord.observe();
 		this.subSubscription = subObservable.subscribe(sub => {
 			this.updateSubscription(sub);
 		});
 	};
 
-	updateSubscription = sub => {
+	updateSubscription = (sub: TSubscriptionModel) => {
 		this.setState({
-			tunread: sub?.tunread,
-			tunreadUser: sub?.tunreadUser,
-			tunreadGroup: sub?.tunreadGroup
+			tunread: sub?.tunread ?? [],
+			tunreadUser: sub?.tunreadUser ?? [],
+			tunreadGroup: sub?.tunreadGroup ?? []
 		});
 	};
 
 	goTeamChannels = () => {
 		logEvent(events.ROOM_GO_TEAM_CHANNELS);
 		const { navigation, isMasterDetail, teamId } = this.props;
+		if (!teamId) {
+			return;
+		}
 		if (isMasterDetail) {
+			// @ts-ignore TODO: find a way to make this work
 			navigation.navigate('ModalStackNavigator', {
 				screen: 'TeamChannelsView',
 				params: { teamId }
@@ -129,23 +146,31 @@ class RightButtonsContainer extends Component {
 	goThreadsView = () => {
 		logEvent(events.ROOM_GO_THREADS);
 		const { rid, t, navigation, isMasterDetail } = this.props;
+		if (!rid) {
+			return;
+		}
 		if (isMasterDetail) {
+			// @ts-ignore TODO: find a way to make this work
 			navigation.navigate('ModalStackNavigator', { screen: 'ThreadMessagesView', params: { rid, t } });
 		} else {
-			navigation.navigate('ThreadMessagesView', { rid, t });
+			navigation.navigate('ThreadMessagesView', { rid, t: t as SubscriptionType });
 		}
 	};
 
 	goSearchView = () => {
 		logEvent(events.ROOM_GO_SEARCH);
 		const { rid, t, navigation, isMasterDetail, encrypted } = this.props;
+		if (!rid) {
+			return;
+		}
 		if (isMasterDetail) {
+			// @ts-ignore TODO: find a way to make this work
 			navigation.navigate('ModalStackNavigator', {
 				screen: 'SearchMessagesView',
 				params: { rid, showCloseModal: true, encrypted }
 			});
 		} else {
-			navigation.navigate('SearchMessagesView', { rid, t, encrypted });
+			navigation.navigate('SearchMessagesView', { rid, t: t as SubscriptionType, encrypted });
 		}
 	};
 
@@ -194,9 +219,9 @@ class RightButtonsContainer extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	userId: getUserSelector(state).id,
-	threadsEnabled: state.settings.Threads_enabled,
+	threadsEnabled: state.settings.Threads_enabled as boolean,
 	isMasterDetail: state.app.isMasterDetail
 });
 

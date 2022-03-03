@@ -37,10 +37,9 @@ interface IDiscussionDetails {
 
 const DiscussionDetails = ({ item, date }: IDiscussionDetails): JSX.Element => {
 	const { theme } = useTheme();
-	let { dcount } = item;
-
-	if (dcount && dcount >= 1000) {
-		dcount = '+999';
+	let count: string | number | undefined = item.dcount;
+	if (count && count >= 1000) {
+		count = '+999';
 	}
 
 	return (
@@ -49,7 +48,7 @@ const DiscussionDetails = ({ item, date }: IDiscussionDetails): JSX.Element => {
 				<View style={styles.detailContainer}>
 					<CustomIcon name={'discussions'} size={24} color={themes[theme!].auxiliaryText} />
 					<Text style={[styles.detailText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
-						{dcount}
+						{count}
 					</Text>
 				</View>
 

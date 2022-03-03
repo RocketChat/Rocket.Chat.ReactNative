@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
 
 interface IMessageTitle {
 	attachment: IAttachment;
-	timeFormat: string;
+	timeFormat?: string;
 	theme: string;
 }
 
@@ -112,7 +112,7 @@ interface IMessageFields {
 
 interface IMessageReply {
 	attachment: IAttachment;
-	timeFormat: string;
+	timeFormat?: string;
 	index: number;
 	theme: string;
 	getCustomEmoji: TGetCustomEmoji;

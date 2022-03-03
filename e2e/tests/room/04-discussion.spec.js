@@ -215,9 +215,6 @@ describe('Discussion', () => {
 			await waitFor(element(by.id(`room-view-title-${discussionName}`)))
 				.toExist()
 				.withTimeout(5000);
-			await waitFor(element(by.id('messagebox')))
-				.toBeVisible()
-				.withTimeout(60000);
 		});
 	});
 });
