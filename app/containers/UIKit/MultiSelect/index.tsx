@@ -24,7 +24,7 @@ interface IMultiSelect {
 	multiselect?: boolean;
 	onSearch?: () => void;
 	onClose?: () => void;
-	inputStyle: object;
+	inputStyle?: object;
 	value?: any[];
 	disabled?: boolean | object;
 	theme: string;

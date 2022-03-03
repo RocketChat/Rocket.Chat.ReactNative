@@ -4,9 +4,26 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
-import { IUrl } from './IUrl';
+// import {
+// 	MESSAGE_TYPE_LOAD_MORE,
+// 	MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK,
+// 	MESSAGE_TYPE_LOAD_NEXT_CHUNK
+// } from '../constants/messageTypeLoad';
+import { TThreadMessageModel } from './IThreadMessage';
+import { TThreadModel } from './IThread';
+import { IUrlFromServer } from './IUrl';
 
 export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj' | MessageTypeLoad;
+// export type MessageType =
+// 	| 'jitsi_call_started'
+// 	| 'discussion-created'
+// 	| 'e2e'
+// 	| 'load_more'
+// 	| 'rm'
+// 	| 'uj'
+// 	| typeof MESSAGE_TYPE_LOAD_MORE
+// 	| typeof MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK
+// 	| typeof MESSAGE_TYPE_LOAD_NEXT_CHUNK;
 
 export interface IUserMessage {
 	_id: string;
@@ -39,12 +56,6 @@ export interface ITranslations {
 
 export type E2EType = 'pending' | 'done';
 
-interface IFileThread {
-	_id: string;
-	name: string;
-	type: string;
-}
-
 export interface ILastMessage {
 	_id: string;
 	rid: string;
@@ -66,22 +77,61 @@ export interface ILastMessage {
 	status: boolean;
 }
 
-export interface IMessage {
+interface IMessageFile {
+	_id: string;
+	name: string;
+	type: string;
+}
+
+interface IMessageAttachment {
+	ts: string;
+	title: string;
+	title_link: string;
+	title_link_download: true;
+	image_dimensions: {
+		width: number;
+		height: number;
+	};
+	image_preview: string;
+	image_url: string;
+	image_type: string;
+	image_size: number;
+	type: string;
+	description: string;
+}
+
+export interface IMessageFromServer {
 	_id: string;
 	rid: string;
-	msg?: string;
+	msg: string;
+	ts: string | Date; // wm date issue
+	u: IUserMessage;
+	_updatedAt: string | Date;
+	urls: IUrlFromServer[];
+	mentions: IUserMention[];
+	channels: IUserChannel[];
+	md: MarkdownAST;
+	file: IMessageFile;
+	files: IMessageFile[];
+	groupable: false;
+	attachments: IMessageAttachment[];
+}
+
+export interface ILoadMoreMessage {
+	_id: string;
+	rid: string;
+	ts: string;
+	t: string;
+	msg: string;
+}
+
+export interface IMessage extends IMessageFromServer {
 	id: string;
 	t?: MessageType;
-	ts: string | Date;
-	u?: IUserMessage;
 	alias?: string;
 	parseUrls?: boolean;
-	groupable?: boolean;
 	avatar?: string;
 	emoji?: string;
-	attachments?: IAttachment[];
-	urls?: IUrl[];
-	_updatedAt: string | Date;
 	status?: number;
 	pinned?: boolean;
 	starred?: boolean;
@@ -95,8 +145,6 @@ export interface IMessage {
 	tcount?: number;
 	tlm?: string | Date;
 	replies?: string[];
-	mentions?: IUserMention[];
-	channels?: IUserChannel[];
 	unread?: boolean;
 	autoTranslate?: boolean;
 	translations?: ITranslations[];
@@ -104,10 +152,10 @@ export interface IMessage {
 	blocks?: any;
 	e2e?: string;
 	tshow?: boolean;
-	md?: MarkdownAST;
 	subscription?: { id: string };
-	file?: IFileThread;
-	files?: IFileThread[];
 }
 
 export type TMessageModel = IMessage & Model;
+
+export type TAnyMessageModel = TMessageModel | TThreadModel | TThreadMessageModel;
+export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;

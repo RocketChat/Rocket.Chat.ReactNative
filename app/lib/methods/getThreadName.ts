@@ -6,9 +6,9 @@ import { getThreadById } from '../database/services/Thread';
 import log from '../../utils/log';
 import { Encryption } from '../encryption';
 import getSingleMessage from './getSingleMessage';
-import { IThread, TThreadModel } from '../../definitions';
+import { IMessage, IThread, TThreadModel } from '../../definitions';
 
-const buildThreadName = (thread: IThread): string | undefined => thread.msg || thread?.attachments?.[0]?.title;
+const buildThreadName = (thread: IThread | IMessage): string | undefined => thread.msg || thread?.attachments?.[0]?.title;
 
 const getThreadName = async (rid: string, tmid: string, messageId: string): Promise<string | undefined> => {
 	let tmsg: string | undefined;

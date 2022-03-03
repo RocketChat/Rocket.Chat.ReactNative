@@ -12,7 +12,7 @@ export enum SubscriptionType {
 	DIRECT = 'd',
 	CHANNEL = 'c',
 	OMNICHANNEL = 'l',
-	E2E = 'e2e',
+	E2E = 'e2e', // FIXME: this is not a type of subscription
 	THREAD = 'thread' // FIXME: this is not a type of subscription
 }
 
@@ -38,7 +38,7 @@ export interface ISubscription {
 	_updatedAt?: string; // from server
 	v?: IVisitor;
 	f: boolean;
-	t: SubscriptionType;
+	t: string; // TODO: we need to review this type later
 	ts: string | Date;
 	ls: Date;
 	name: string;
@@ -52,7 +52,7 @@ export interface ISubscription {
 	lr: string;
 	userMentions: number;
 	groupMentions: number;
-	tunread?: string[];
+	tunread: string[];
 	tunreadUser?: string[];
 	tunreadGroup?: string[];
 	roomUpdatedAt: Date | number;
@@ -75,14 +75,15 @@ export interface ISubscription {
 	lastThreadSync?: Date;
 	jitsiTimeout?: number;
 	autoTranslate?: boolean;
-	autoTranslateLanguage: string;
-	lastMessage?: ILastMessage;
+	autoTranslateLanguage?: string;
+	lastMessage?: ILastMessage; // TODO: we need to use IMessage here
 	hideUnreadStatus?: boolean;
 	sysMes?: string[] | boolean;
 	uids?: string[];
 	usernames?: string[];
 	visitor?: IVisitor;
 	departmentId?: string;
+	status?: string;
 	servedBy?: IServedBy;
 	livechatData?: any;
 	tags?: string[];
@@ -92,6 +93,7 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
+	separator?: boolean;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
 	messages: RelationModified<TMessageModel>;
 	threads: RelationModified<TThreadModel>;

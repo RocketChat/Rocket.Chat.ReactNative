@@ -1,5 +1,6 @@
 import { IRocketChatRecord } from './IRocketChatRecord';
 import { IUser } from './IUser';
+import { IServerRoomItem } from './IRoom';
 
 export enum TEAM_TYPE {
 	PUBLIC = 0,
@@ -45,4 +46,17 @@ export interface ITeamStatData {
 export interface ITeamStats {
 	totalTeams: number;
 	teamStats: Array<ITeamStatData>;
+}
+
+export interface IServerTeamUpdateRoom
+	extends Omit<
+		IServerRoomItem,
+		'topic' | 'joinCodeRequired' | 'description' | 'jitsiTimeout' | 'usersCount' | 'e2eKeyId' | 'avatarETag'
+	> {
+	broadcast: boolean;
+	msgs: number;
+	default: boolean;
+	sysMes: boolean;
+	teamId: string;
+	teamDefault: boolean;
 }

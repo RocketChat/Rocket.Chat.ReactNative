@@ -42,6 +42,9 @@ export interface IRoom {
 	latest?: string;
 	default?: true;
 	featured?: true;
+	muted?: string[];
+	teamId?: string;
+	ignored?: string;
 }
 
 export enum OmnichannelSourceType {
