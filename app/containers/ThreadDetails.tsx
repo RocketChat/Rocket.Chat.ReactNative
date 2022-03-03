@@ -52,9 +52,9 @@ interface IThreadDetails {
 
 const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails): JSX.Element => {
 	const { theme } = useTheme();
-	let { tcount } = item;
-	if (tcount && tcount >= 1000) {
-		tcount = '+999';
+	let count: string | number | undefined = item.tcount;
+	if (count && count >= 1000) {
+		count = '+999';
 	}
 
 	let replies: number | string = item?.replies?.length ?? 0;
@@ -70,7 +70,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 				<View style={styles.detailContainer}>
 					<CustomIcon name='threads' size={24} color={themes[theme!].auxiliaryText} />
 					<Text style={[styles.detailText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
-						{tcount}
+						{count}
 					</Text>
 				</View>
 

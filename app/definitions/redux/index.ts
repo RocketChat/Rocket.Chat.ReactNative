@@ -28,15 +28,15 @@ import { IRoles } from '../../reducers/roles';
 import { IRoom } from '../../reducers/room';
 import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { IServer } from '../../reducers/server';
-import { ISettings } from '../../reducers/settings';
+import { TSettingsState } from '../../reducers/settings';
 import { IShare } from '../../reducers/share';
 import { IPermissionsState } from '../../reducers/permissions';
 import { IEnterpriseModules } from '../../reducers/enterpriseModules';
 
 export interface IApplicationState {
-	settings: ISettings;
-	meteor: IConnect;
+	settings: TSettingsState;
 	login: ILogin;
+	meteor: IConnect;
 	server: IServer;
 	selectedUsers: ISelectedUsers;
 	app: IApp;

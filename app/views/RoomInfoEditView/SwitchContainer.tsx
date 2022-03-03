@@ -1,11 +1,24 @@
 import React from 'react';
-import { Switch, Text, View } from 'react-native';
-import PropTypes from 'prop-types';
+import { Switch, Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import styles from './styles';
 
-const SwitchContainer = React.memo(
+interface ISwitchContainer {
+	value: boolean;
+	disabled?: boolean;
+	leftLabelPrimary: string;
+	leftLabelSecondary: string;
+	rightLabelPrimary?: string;
+	rightLabelSecondary?: string;
+	onValueChange: (value: any) => void;
+	theme: string;
+	testID: string;
+	labelContainerStyle?: ViewStyle;
+	leftLabelStyle?: TextStyle;
+}
+
+const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 	({
 		children,
 		value,
@@ -21,7 +34,7 @@ const SwitchContainer = React.memo(
 		leftLabelStyle
 	}) => (
 		<>
-			<View key='switch-container' style={[styles.switchContainer, children && styles.switchMargin]}>
+			<View key='switch-container' style={[styles.switchContainer, !!children && styles.switchMargin]}>
 				{leftLabelPrimary && (
 					<View style={[styles.switchLabelContainer, labelContainerStyle]}>
 						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }, leftLabelStyle]}>
@@ -56,20 +69,5 @@ const SwitchContainer = React.memo(
 		</>
 	)
 );
-
-SwitchContainer.propTypes = {
-	value: PropTypes.bool,
-	disabled: PropTypes.bool,
-	leftLabelPrimary: PropTypes.string,
-	leftLabelSecondary: PropTypes.string,
-	rightLabelPrimary: PropTypes.string,
-	rightLabelSecondary: PropTypes.string,
-	onValueChange: PropTypes.func,
-	theme: PropTypes.string,
-	testID: PropTypes.string,
-	labelContainerStyle: PropTypes.object,
-	leftLabelStyle: PropTypes.object,
-	children: PropTypes.any
-};
 
 export default SwitchContainer;

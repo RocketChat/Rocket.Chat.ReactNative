@@ -1,4 +1,4 @@
-import { INotificationPreferences, IUser, IUserPreferences } from '../../IUser';
+import { INotificationPreferences, IUser, IUserPreferences, IUserRegistered } from '../../IUser';
 
 export type UserEndpoints = {
 	'users.info': {
@@ -16,5 +16,8 @@ export type UserEndpoints = {
 			user: IUserPreferences;
 			success: boolean;
 		};
+	};
+	'users.register': {
+		POST: (params: { name: string; email: string; username: string; pass: string }) => { user: IUserRegistered };
 	};
 };
