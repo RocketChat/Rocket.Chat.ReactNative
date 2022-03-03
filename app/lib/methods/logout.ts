@@ -13,7 +13,7 @@ import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../enc
 import UserPreferences from '../userPreferences';
 import { ICertificate, IRocketChat } from '../../definitions';
 
-async function removeServerKeys({ server, userId }: { server: string; userId: string | null }) {
+async function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	await UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);
 	if (userId) {
 		await UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${userId}`);

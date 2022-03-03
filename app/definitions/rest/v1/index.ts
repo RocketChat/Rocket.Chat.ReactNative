@@ -14,6 +14,8 @@ import { OauthCustomConfiguration } from './settings';
 import { UserEndpoints } from './user';
 import { UsersEndpoints } from './users';
 import { TeamsEndpoints } from './teams';
+import { E2eEndpoints } from './e2e';
+import { SubscriptionsEndpoints } from './subscriptions';
 
 export type Endpoints = ChannelsEndpoints &
 	ChatEndpoints &
@@ -30,4 +32,6 @@ export type Endpoints = ChannelsEndpoints &
 	OauthCustomConfiguration &
 	UserEndpoints &
 	UsersEndpoints &
-	TeamsEndpoints;
+	TeamsEndpoints &
+	E2eEndpoints &
+	SubscriptionsEndpoints;
