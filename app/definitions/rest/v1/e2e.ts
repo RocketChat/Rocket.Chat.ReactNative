@@ -9,4 +9,7 @@ export type E2eEndpoints = {
 			users: Pick<IUser, '_id' | 'e2e'>[];
 		};
 	};
+	'e2e.updateGroupKey': {
+		POST: (params: { uid: string; rid: string; key: string }) => {};
+	};
 };
