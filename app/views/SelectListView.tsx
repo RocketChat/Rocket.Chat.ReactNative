@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { RadioButton } from 'react-native-ui-lib';
 import { RouteProp } from '@react-navigation/native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import { ChatsStackParamList } from '../stacks/types';
 import log from '../utils/log';
@@ -14,7 +15,6 @@ import StatusBar from '../containers/StatusBar';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
-import { animateNextTransition } from '../utils/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
@@ -137,7 +137,6 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	toggleItem = (rid: string) => {
 		const { selected } = this.state;
 
-		animateNextTransition();
 		if (this.isRadio) {
 			if (!this.isChecked(rid)) {
 				this.setState({ selected: [rid] }, () => this.setHeader());
@@ -176,7 +175,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		);
 
 		return (
-			<>
+			<Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)}>
 				<List.Separator />
 				<List.Item
 					title={item.name}
@@ -187,7 +186,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
 				/>
-			</>
+			</Animated.View>
 		);
 	};
 

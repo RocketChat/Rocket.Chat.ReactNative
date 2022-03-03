@@ -7,6 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { StackNavigationOptions } from '@react-navigation/stack';
+import Animated, { Easing, FadeIn, FadeOut, Layout } from 'react-native-reanimated';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -21,7 +22,6 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { serverInitAdd } from '../../actions/server';
-import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import EventEmitter from '../../utils/events';
@@ -447,9 +447,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	// internalSetState = (...args: { chats: TSubscriptionModel; chatsUpdate: TSubscriptionModel; loading: boolean }[]) => {
 	internalSetState = (...args: any) => {
-		if (this.animated) {
-			animateNextTransition();
-		}
 		// @ts-ignore
 		this.setState(...args);
 	};
@@ -958,30 +955,35 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const swipeEnabled = this.isSwipeEnabled(item);
 
 		return (
-			<RoomItem
-				item={item}
-				theme={theme}
-				id={id}
-				type={item.t}
-				username={username}
-				showLastMessage={StoreLastMessage}
-				onPress={this.onPressItem}
-				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
-				toggleFav={this.toggleFav}
-				toggleRead={this.toggleRead}
-				hideChannel={this.hideChannel}
-				useRealName={useRealName}
-				getUserPresence={this.getUserPresence}
-				getRoomTitle={this.getRoomTitle}
-				getRoomAvatar={this.getRoomAvatar}
-				getIsGroupChat={this.isGroupChat}
-				getIsRead={this.isRead}
-				visitor={item.visitor}
-				isFocused={currentItem?.rid === item.rid}
-				swipeEnabled={swipeEnabled}
-				showAvatar={showAvatar}
-				displayMode={displayMode}
-			/>
+			<Animated.View
+				entering={FadeIn.duration(200).easing(Easing.inOut(Easing.quad))}
+				exiting={FadeOut.duration(200).easing(Easing.inOut(Easing.quad))}
+				layout={Layout.duration(200).easing(Easing.inOut(Easing.quad))}>
+				<RoomItem
+					item={item}
+					theme={theme}
+					id={id}
+					type={item.t}
+					username={username}
+					showLastMessage={StoreLastMessage}
+					onPress={this.onPressItem}
+					width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
+					toggleFav={this.toggleFav}
+					toggleRead={this.toggleRead}
+					hideChannel={this.hideChannel}
+					useRealName={useRealName}
+					getUserPresence={this.getUserPresence}
+					getRoomTitle={this.getRoomTitle}
+					getRoomAvatar={this.getRoomAvatar}
+					getIsGroupChat={this.isGroupChat}
+					getIsRead={this.isRead}
+					visitor={item.visitor}
+					isFocused={currentItem?.rid === item.rid}
+					swipeEnabled={swipeEnabled}
+					showAvatar={showAvatar}
+					displayMode={displayMode}
+				/>
+			</Animated.View>
 		);
 	};
 

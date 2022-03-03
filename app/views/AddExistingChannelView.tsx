@@ -4,6 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import * as List from '../containers/List';
 import database from '../lib/database';
@@ -17,7 +18,6 @@ import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import Loading from '../containers/Loading';
-import { animateNextTransition } from '../utils/layoutAnimation';
 import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import debounce from '../utils/debounce';
@@ -164,7 +164,6 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 	toggleChannel = (rid: string) => {
 		const { selected } = this.state;
 
-		animateNextTransition();
 		if (!this.isChecked(rid)) {
 			logEvent(events.AEC_ADD_CHANNEL);
 			this.setState({ selected: [...selected, rid] }, () => this.setHeader());
@@ -180,14 +179,16 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		// TODO: reuse logic inside RoomTypeIcon
 		const icon = item.t === SubscriptionType.DIRECT && !item?.teamId ? 'channel-private' : 'channel-public';
 		return (
-			<List.Item
-				title={RocketChat.getRoomTitle(item)}
-				translateTitle={false}
-				onPress={() => this.toggleChannel(item.rid)}
-				testID={`add-existing-channel-view-item-${item.name}`}
-				left={() => <List.Icon name={icon} />}
-				right={() => (isChecked ? <List.Icon name='check' /> : null)}
-			/>
+			<Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)}>
+				<List.Item
+					title={RocketChat.getRoomTitle(item)}
+					translateTitle={false}
+					onPress={() => this.toggleChannel(item.rid)}
+					testID={`add-existing-channel-view-item-${item.name}`}
+					left={() => <List.Icon name={icon} />}
+					right={() => (isChecked ? <List.Icon name='check' /> : null)}
+				/>
+			</Animated.View>
 		);
 	};
 

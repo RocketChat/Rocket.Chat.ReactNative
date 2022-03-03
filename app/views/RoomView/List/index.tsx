@@ -3,7 +3,7 @@ import { dequal } from 'dequal';
 import moment from 'moment';
 import React from 'react';
 import { FlatListProps, RefreshControl, ViewToken } from 'react-native';
-import { event, Value } from 'react-native-reanimated';
+import Animated, { event, Value, FadeInUp, FadeOutDown } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
 import { themes } from '../../../constants/colors';
@@ -13,7 +13,6 @@ import database from '../../../lib/database';
 import RocketChat from '../../../lib/rocketchat';
 import { compareServerVersion } from '../../../lib/utils';
 import debounce from '../../../utils/debounce';
-import { animateNextTransition } from '../../../utils/layoutAnimation';
 import log from '../../../utils/log';
 import EmptyRoom from '../EmptyRoom';
 import List, { IListProps } from './List';
@@ -248,9 +247,6 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		});
 
 	update = () => {
-		if (this.animated) {
-			animateNextTransition();
-		}
 		this.forceUpdate();
 	};
 
@@ -329,7 +325,11 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => {
 		const { messages, highlightedMessage } = this.state;
 		const { renderRow } = this.props;
-		return renderRow(item, messages[index + 1], highlightedMessage);
+		return (
+			<Animated.View entering={FadeInUp.duration(200)} exiting={FadeOutDown.duration(200)}>
+				{renderRow(item, messages[index + 1], highlightedMessage)}
+			</Animated.View>
+		);
 	};
 
 	onViewableItemsChanged: FlatListProps<any>['onViewableItemsChanged'] = ({ viewableItems }) => {

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import database from '../../lib/database';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
@@ -17,7 +18,6 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
 import { themes } from '../../constants/colors';
-import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import RocketChat from '../../lib/rocketchat';
@@ -233,10 +233,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	internalSetState = (...args: object[]) => {
-		const { navigation } = this.props;
-		if (navigation.isFocused()) {
-			animateNextTransition();
-		}
 		// @ts-ignore
 		this.setState(...args);
 	};
@@ -393,15 +389,17 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				break;
 		}
 		return (
-			<DirectoryItem
-				title={this.getRoomTitle(item)}
-				avatar={RocketChat.getRoomAvatar(item)}
-				description={description}
-				type={item.prid ? 'discussion' : item.t}
-				onPress={() => this.shareMessage(item)}
-				testID={`share-extension-item-${item.name}`}
-				theme={theme}
-			/>
+			<Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(200)}>
+				<DirectoryItem
+					title={this.getRoomTitle(item)}
+					avatar={RocketChat.getRoomAvatar(item)}
+					description={description}
+					type={item.prid ? 'discussion' : item.t}
+					onPress={() => this.shareMessage(item)}
+					testID={`share-extension-item-${item.name}`}
+					theme={theme}
+				/>
+			</Animated.View>
 		);
 	};
 

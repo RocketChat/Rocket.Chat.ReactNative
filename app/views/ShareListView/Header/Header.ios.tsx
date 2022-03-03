@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import { Keyboard, StyleSheet } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import SearchBox from '../../../containers/SearchBox';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import { themes } from '../../../constants/colors';
 import sharedStyles from '../../Styles';
-import { animateNextTransition } from '../../../utils/layoutAnimation';
 import { IShareListHeaderIos } from './interface';
 
 const styles = StyleSheet.create({
@@ -28,16 +28,16 @@ const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSe
 		Keyboard.dismiss();
 		onChangeText('');
 		cancelSearch();
-		animateNextTransition();
 	};
 
 	const onFocus = () => {
 		initSearch();
-		animateNextTransition();
 	};
 
 	return (
-		<View
+		<Animated.View
+			entering={FadeIn.duration(200)}
+			exiting={FadeOut.duration(200)}
 			style={[
 				styles.container,
 				{
@@ -55,7 +55,7 @@ const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSe
 				testID='rooms-list-view-search'
 				key='rooms-list-view-search'
 			/>
-		</View>
+		</Animated.View>
 	);
 });
 
