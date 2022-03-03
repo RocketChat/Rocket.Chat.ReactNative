@@ -52,7 +52,7 @@ export enum OmnichannelSourceType {
 	API = 'api',
 	OTHER = 'other' // catch-all source type
 }
-export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featured' | 'broadcast' | ''>> {
+export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featured' | 'broadcast'>> {
 	_id: string;
 	rid: string;
 	t: SubscriptionType.OMNICHANNEL;
@@ -88,8 +88,8 @@ export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featu
 
 	lastMessage?: IMessage & { token?: string };
 
-	tags?: any;
-	closedAt?: any;
+	tags?: string[];
+	closedAt?: Date;
 	metrics?: any;
 	waitingResponse?: any;
 	responseBy?: any;

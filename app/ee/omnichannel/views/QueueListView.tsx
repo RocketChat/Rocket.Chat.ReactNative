@@ -35,7 +35,6 @@ interface INavigationOptions {
 }
 
 interface IQueueListView extends INavigationOptions {
-	// TODO: Refactor when migrate getUserSelector
 	user: {
 		id: string;
 		username: string;
