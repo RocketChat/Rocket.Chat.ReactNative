@@ -7,7 +7,7 @@ import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { StackNavigationOptions } from '@react-navigation/stack';
-import Animated, { Easing, FadeIn, FadeOut, Layout } from 'react-native-reanimated';
+import Animated, { Layout } from 'react-native-reanimated';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -93,7 +93,7 @@ interface IRoomsListViewState {
 	searching: boolean;
 	search: ISubscription[];
 	loading: boolean;
-	chatsUpdate: [];
+	chatsUpdate: string[] | { rid: string; alert: boolean }[];
 	chats: ISubscription[];
 	item: ISubscription;
 	canCreateRoom: boolean;
@@ -445,12 +445,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		navigation.setOptions(options);
 	};
 
-	// internalSetState = (...args: { chats: TSubscriptionModel; chatsUpdate: TSubscriptionModel; loading: boolean }[]) => {
-	internalSetState = (...args: any) => {
-		// @ts-ignore
-		this.setState(...args);
-	};
-
 	addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSubscriptionModel[]) => {
 		if (data.length > 0) {
 			if (header) {
@@ -550,7 +544,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			}
 
 			if (this.mounted) {
-				this.internalSetState({
+				this.setState({
 					chats: tempChats,
 					chatsUpdate,
 					loading: false
@@ -575,7 +569,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	initSearching = () => {
 		logEvent(events.RL_SEARCH);
 		const { dispatch } = this.props;
-		this.internalSetState({ searching: true }, () => {
+		this.setState({ searching: true }, () => {
 			dispatch(openSearchHeader());
 			this.search('');
 			this.setHeader();
@@ -619,7 +613,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (!searching) {
 			return;
 		}
-		this.internalSetState({
+		this.setState({
 			search: result,
 			searching: true
 		});
@@ -955,35 +949,30 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const swipeEnabled = this.isSwipeEnabled(item);
 
 		return (
-			<Animated.View
-				entering={FadeIn.duration(200).easing(Easing.inOut(Easing.quad))}
-				exiting={FadeOut.duration(200).easing(Easing.inOut(Easing.quad))}
-				layout={Layout.duration(200).easing(Easing.inOut(Easing.quad))}>
-				<RoomItem
-					item={item}
-					theme={theme}
-					id={id}
-					type={item.t}
-					username={username}
-					showLastMessage={StoreLastMessage}
-					onPress={this.onPressItem}
-					width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
-					toggleFav={this.toggleFav}
-					toggleRead={this.toggleRead}
-					hideChannel={this.hideChannel}
-					useRealName={useRealName}
-					getUserPresence={this.getUserPresence}
-					getRoomTitle={this.getRoomTitle}
-					getRoomAvatar={this.getRoomAvatar}
-					getIsGroupChat={this.isGroupChat}
-					getIsRead={this.isRead}
-					visitor={item.visitor}
-					isFocused={currentItem?.rid === item.rid}
-					swipeEnabled={swipeEnabled}
-					showAvatar={showAvatar}
-					displayMode={displayMode}
-				/>
-			</Animated.View>
+			<RoomItem
+				item={item}
+				theme={theme}
+				id={id}
+				type={item.t}
+				username={username}
+				showLastMessage={StoreLastMessage}
+				onPress={this.onPressItem}
+				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
+				toggleFav={this.toggleFav}
+				toggleRead={this.toggleRead}
+				hideChannel={this.hideChannel}
+				useRealName={useRealName}
+				getUserPresence={this.getUserPresence}
+				getRoomTitle={this.getRoomTitle}
+				getRoomAvatar={this.getRoomAvatar}
+				getIsGroupChat={this.isGroupChat}
+				getIsRead={this.isRead}
+				visitor={item.visitor}
+				isFocused={currentItem?.rid === item.rid}
+				swipeEnabled={swipeEnabled}
+				showAvatar={showAvatar}
+				displayMode={displayMode}
+			/>
 		);
 	};
 
@@ -1007,7 +996,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		return (
-			<FlatList
+			// @ts-ignore
+			<Animated.FlatList
 				ref={this.getScrollRef}
 				data={searching ? search : chats}
 				extraData={searching ? search : chats}
@@ -1015,6 +1005,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
+				// @ts-ignore
 				getItemLayout={(data, index) => getItemLayout(data, index, height)}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
@@ -1025,6 +1016,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				windowSize={9}
 				onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
+				itemLayoutAnimation={Layout}
 			/>
 		);
 	};

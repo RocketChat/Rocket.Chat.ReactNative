@@ -2,8 +2,8 @@ import { Q } from '@nozbe/watermelondb';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import React from 'react';
-import { FlatListProps, RefreshControl, ViewToken } from 'react-native';
-import Animated, { event, Value, FadeInUp, FadeOutDown } from 'react-native-reanimated';
+import { FlatListProps, RefreshControl, ViewToken, View } from 'react-native';
+import { event, Value, Layout } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
 import { themes } from '../../../constants/colors';
@@ -325,11 +325,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	renderItem: FlatListProps<any>['renderItem'] = ({ item, index }) => {
 		const { messages, highlightedMessage } = this.state;
 		const { renderRow } = this.props;
-		return (
-			<Animated.View entering={FadeInUp.duration(200)} exiting={FadeOutDown.duration(200)}>
-				{renderRow(item, messages[index + 1], highlightedMessage)}
-			</Animated.View>
-		);
+		return <View style={{ transform: [{ scaleY: -1 }] }}>{renderRow(item, messages[index + 1], highlightedMessage)}</View>;
 	};
 
 	onViewableItemsChanged: FlatListProps<any>['onViewableItemsChanged'] = ({ viewableItems }) => {
@@ -358,6 +354,8 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					refreshControl={
 						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
 					}
+					// @ts-ignore
+					itemLayoutAnimation={Layout}
 				/>
 				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
 			</>

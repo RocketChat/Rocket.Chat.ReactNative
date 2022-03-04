@@ -1,12 +1,12 @@
 import React from 'react';
-import { FlatList, FlatListProps, StyleSheet } from 'react-native';
+import { FlatListProps, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import PropTypes from 'prop-types';
 
 import { isIOS } from '../../../utils/deviceInfo';
 import scrollPersistTaps from '../../../utils/scrollPersistTaps';
 
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+// const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const styles = StyleSheet.create({
 	list: {
@@ -22,7 +22,8 @@ export interface IListProps extends FlatListProps<any> {
 }
 
 const List = ({ listRef, ...props }: IListProps) => (
-	<AnimatedFlatList
+	// @ts-ignore
+	<Animated.FlatList
 		testID='room-view-messages'
 		ref={listRef}
 		keyExtractor={(item: any) => item.id}
