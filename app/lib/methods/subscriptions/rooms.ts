@@ -19,7 +19,15 @@ import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotificatio
 import { Encryption } from '../../encryption';
 import { E2E_MESSAGE_TYPE } from '../../encryption/constants';
 import updateMessages from '../updateMessages';
-import { IRoom, ISubscription, TMessageModel, TRoomModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
+import {
+	IMessage,
+	IRoom,
+	ISubscription,
+	TMessageModel,
+	TRoomModel,
+	TThreadMessageModel,
+	TThreadModel
+} from '../../../definitions';
 import sdk from '../../rocketchat/services/sdk';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
@@ -199,7 +207,9 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 				batch.push(
 					messagesCollection.prepareCreate(m => {
 						m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-						if (m.subscription) m.subscription.id = lastMessage.rid;
+						if (m.subscription) {
+							m.subscription.id = lastMessage.rid;
+						}
 						return Object.assign(m, lastMessage);
 					})
 				);
@@ -323,7 +333,7 @@ export default function subscribeRooms() {
 						name: 'Rocket Cat'
 					},
 					...buildMessage(EJSON.fromJSONValue(args))
-				};
+				} as IMessage;
 				await updateMessages({ rid: args.rid, update: [message] });
 			} catch (e) {
 				log(e);
