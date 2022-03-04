@@ -45,6 +45,7 @@ export interface IRoom {
 	muted?: string[];
 	teamId?: string;
 	ignored?: string;
+	joinCodeRequired?: boolean;
 }
 
 export enum OmnichannelSourceType {
