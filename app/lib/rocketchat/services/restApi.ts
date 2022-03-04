@@ -446,7 +446,7 @@ export const toggleBlockUser = (rid: string, blocked: string, block: boolean): P
 	return sdk.methodCallWrapper('unblockUser', { rid, blocked });
 };
 
-export const leaveRoom = (roomId: string, t: RoomTypes): any =>
+export const leaveRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.leave`, { roomId });
 
