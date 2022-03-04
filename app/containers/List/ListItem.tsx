@@ -135,7 +135,7 @@ const Button = React.memo<IListItemButton>(({ onPress, backgroundColor, underlay
 	</Touch>
 ));
 
-interface IListItem extends IListItemContent, IListButtonPress {
+interface IListItem extends IListItemContent, IListItemButton {
 	backgroundColor?: string;
 }
 
