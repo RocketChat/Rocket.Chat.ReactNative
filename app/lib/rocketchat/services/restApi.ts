@@ -452,10 +452,8 @@ export const leaveRoom = (roomId: string, t: RoomTypes): any =>
 	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.leave`, { roomId });
 
-export const deleteRoom = (roomId: string, t: RoomTypes): any =>
+export const deleteRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.49.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
 export const toggleMuteUserInRoom = (rid: string, username: string, mute: boolean) => {
