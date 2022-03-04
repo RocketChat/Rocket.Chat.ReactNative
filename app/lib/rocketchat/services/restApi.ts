@@ -119,7 +119,7 @@ export const getDiscussions = ({
 	count,
 	text
 }: {
-	roomId: string | undefined;
+	roomId: string;
 	text?: string | undefined;
 	offset: number;
 	count: number;
