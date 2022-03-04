@@ -6,14 +6,10 @@ import { twoFactor } from '../../../utils/twoFactor';
 import { useSsl } from '../../../utils/url';
 import reduxStore from '../../createStore';
 import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../../definitions/rest/helpers';
-import { ILoginResultFromServer } from '../../../definitions';
 
 class Sdk {
 	private sdk: typeof Rocketchat;
 	private code: any;
-	currentLogin: {
-		result: ILoginResultFromServer;
-	} | null = null;
 
 	// TODO: We need to stop returning the SDK after all methods are dehydrated
 	initialize(server: string) {
