@@ -1,25 +1,32 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Markdown from '../../containers/markdown';
 import { themes } from '../../constants/colors';
+import { useTheme } from '../../theme';
 import styles from './styles';
 
-const Item = ({ label, content, theme, testID }) =>
-	content ? (
+interface IItem {
+	label?: string;
+	content?: string;
+	testID?: string;
+}
+
+const Item = ({ label, content, testID }: IItem) => {
+	const { theme } = useTheme();
+
+	if (!content) {
+		return null;
+	}
+
+	return (
 		<View style={styles.item} testID={testID}>
 			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>
 				{label}
 			</Text>
 			<Markdown style={[styles.itemContent, { color: themes[theme].auxiliaryText }]} msg={content} theme={theme} />
 		</View>
-	) : null;
-Item.propTypes = {
-	label: PropTypes.string,
-	content: PropTypes.string,
-	theme: PropTypes.string,
-	testID: PropTypes.string
+	);
 };
 
 export default Item;

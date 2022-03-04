@@ -37,7 +37,7 @@ export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: 
 	// RC 2.2.0
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
 
-export const e2eRequestSubscriptionKeys = (): any =>
+export const e2eRequestSubscriptionKeys = (): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
 
@@ -45,16 +45,12 @@ export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
 	sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
 
-export const e2eSetRoomKeyID = (rid: string, keyID: string): any =>
+export const e2eSetRoomKeyID = (rid: string, keyID: string) =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.setRoomKeyID', { rid, keyID });
 
 export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.updateGroupKey', { uid, rid, key });
 
 export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
@@ -117,7 +113,7 @@ export const getDiscussions = ({
 	count,
 	text
 }: {
-	roomId: string | undefined;
+	roomId: string;
 	text?: string | undefined;
 	offset: number;
 	count: number;
@@ -293,14 +289,10 @@ export const setReaction = (emoji: string, messageId: string): any =>
 	// @ts-ignore
 	sdk.post('chat.react', { emoji, messageId });
 
-export const toggleRead = (read: boolean, roomId: string): any => {
+export const toggleRead = (read: boolean, roomId: string) => {
 	if (read) {
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('subscriptions.unread', { roomId });
 	}
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('subscriptions.read', { rid: roomId });
 };
 
