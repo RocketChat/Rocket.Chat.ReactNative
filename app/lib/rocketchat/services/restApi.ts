@@ -228,14 +228,12 @@ export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; sel
 	return sdk.post('teams.convertToChannel', params);
 };
 
-export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p'): any => {
+export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p') => {
 	// TODO: join code
 	// RC 0.48.0
 	if (type === 'p') {
 		return sdk.methodCallWrapper('joinRoom', roomId);
 	}
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('channels.join', { roomId, joinCode });
 };
 
