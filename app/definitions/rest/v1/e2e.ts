@@ -9,4 +9,7 @@ export type E2eEndpoints = {
 			users: Pick<IUser, '_id' | 'e2e'>[];
 		};
 	};
+	'e2e.setRoomKeyID': {
+		POST: (params: { rid: string; keyID: string }) => {};
+	};
 };
