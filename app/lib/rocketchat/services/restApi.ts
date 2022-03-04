@@ -273,10 +273,8 @@ export const togglePinMessage = (messageId: string, pinned: boolean): any => {
 	return sdk.post('chat.pinMessage', { messageId });
 };
 
-export const reportMessage = (messageId: string): any =>
+export const reportMessage = (messageId: string) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 
 export const setUserPreferences = (userId: string, data: Partial<INotificationPreferences>) =>
