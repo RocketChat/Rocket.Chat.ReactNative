@@ -16,6 +16,7 @@ import { UsersEndpoints } from './users';
 import { TeamsEndpoints } from './teams';
 import { E2eEndpoints } from './e2e';
 import { SubscriptionsEndpoints } from './subscriptions';
+import { VideoConferenceEndpoints } from './videoConference';
 
 export type Endpoints = ChannelsEndpoints &
 	ChatEndpoints &
@@ -34,4 +35,5 @@ export type Endpoints = ChannelsEndpoints &
 	UsersEndpoints &
 	TeamsEndpoints &
 	E2eEndpoints &
-	SubscriptionsEndpoints;
+	SubscriptionsEndpoints &
+	VideoConferenceEndpoints;
