@@ -2,6 +2,7 @@ import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import { SubscriptionType, INotificationPreferences } from '../../../definitions';
+import { ISpotlight } from '../../../definitions/ISpotlight';
 
 export const createChannel = ({
 	name,
@@ -80,7 +81,7 @@ export const forgotPassword = (email: string): any =>
 export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
 	sdk.methodCallWrapper('sendConfirmationEmail', email);
 
-export const spotlight = (search: string, usernames: string, type: { users: boolean; rooms: boolean }) =>
+export const spotlight = (search: string, usernames: string, type: { users: boolean; rooms: boolean }): Promise<ISpotlight> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('spotlight', search, usernames, type);
 
