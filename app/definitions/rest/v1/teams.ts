@@ -33,4 +33,12 @@ export type TeamsEndpoints = {
 			room: { readOnly: boolean; extraData: { broadcast: boolean; encrypted: boolean } };
 		}) => { team: ITeam };
 	};
+	'teams.listRooms': {
+		GET: (params: { teamId: string; count: number; offset: number; type: string; filter?: any }) => {
+			rooms: IServerRoomItem[];
+			total: number;
+			count: number;
+			offset: number;
+		};
+	};
 };
