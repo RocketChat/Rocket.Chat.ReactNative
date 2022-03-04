@@ -4,21 +4,23 @@ import orderBy from 'lodash/orderBy';
 
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
-import { MESSAGE_TYPE_LOAD_NEXT_CHUNK, MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK } from '../../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../../constants/messageTypeLoad';
+import sdk from '../rocketchat/services/sdk';
+import { IMessage } from '../../definitions';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
 
 const COUNT = 50;
 
-export default function loadSurroundingMessages({ messageId, rid }) {
+export default function loadSurroundingMessages({ messageId, rid }: { messageId: string; rid: string }) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const data = await this.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);
-			let messages = EJSON.fromJSONValue(data?.messages);
+			const data = await sdk.methodCallWrapper('loadSurroundingMessages', { _id: messageId, rid }, COUNT);
+			let messages: IMessage[] = EJSON.fromJSONValue(data?.messages);
 			messages = orderBy(messages, 'ts');
 
 			const message = messages.find(m => m._id === messageId);
-			const { tmid } = message;
+			const tmid = message?.tmid;
 
 			if (messages?.length) {
 				if (data?.moreBefore) {
@@ -29,10 +31,10 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 							_id: generateLoadMoreId(firstMessage._id),
 							rid: firstMessage.rid,
 							tmid,
-							ts: moment(firstMessage.ts).subtract(1, 'millisecond'),
-							t: MESSAGE_TYPE_LOAD_PREVIOUS_CHUNK,
+							ts: moment(firstMessage.ts).subtract(1, 'millisecond').toDate(),
+							t: MessageTypeLoad.PREVIOUS_CHUNK,
 							msg: firstMessage.msg
-						};
+						} as IMessage;
 						messages.unshift(loadMoreItem);
 					}
 				}
@@ -45,18 +47,18 @@ export default function loadSurroundingMessages({ messageId, rid }) {
 							_id: generateLoadMoreId(lastMessage._id),
 							rid: lastMessage.rid,
 							tmid,
-							ts: moment(lastMessage.ts).add(1, 'millisecond'),
-							t: MESSAGE_TYPE_LOAD_NEXT_CHUNK,
+							ts: moment(lastMessage.ts).add(1, 'millisecond').toDate(),
+							t: MessageTypeLoad.NEXT_CHUNK,
 							msg: lastMessage.msg
-						};
+						} as IMessage;
 						messages.push(loadMoreItem);
 					}
 				}
+
 				await updateMessages({ rid, update: messages });
 				return resolve(messages);
-			} else {
-				return resolve([]);
 			}
+			return resolve([]);
 		} catch (e) {
 			log(e);
 			reject(e);

@@ -119,7 +119,7 @@ export const getDiscussions = ({
 	count,
 	text
 }: {
-	roomId: string | undefined;
+	roomId: string;
 	text?: string | undefined;
 	offset: number;
 	count: number;
@@ -447,7 +447,7 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	return sdk.get('canned-responses', params);
 };
 
-export const toggleBlockUser = (rid: string, blocked: string, block: boolean) => {
+export const toggleBlockUser = (rid: string, blocked: string, block: boolean): Promise<boolean> => {
 	if (block) {
 		// RC 0.49.0
 		return sdk.methodCallWrapper('blockUser', { rid, blocked });
@@ -574,7 +574,22 @@ export const hideRoom = (roomId: string, t: RoomTypes): any =>
 	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
-export const saveRoomSettings = (rid: string, params: any) =>
+export const saveRoomSettings = (
+	rid: string,
+	params: {
+		roomName?: string;
+		roomAvatar?: string;
+		roomDescription?: string;
+		roomTopic?: string;
+		roomAnnouncement?: string;
+		roomType?: SubscriptionType;
+		readOnly?: boolean;
+		reactWhenReadOnly?: boolean;
+		systemMessages?: string[];
+		joinCode?: string;
+		encrypted?: boolean;
+	}
+): Promise<{ result: boolean; rid: string }> =>
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
