@@ -253,8 +253,10 @@ export default class RoomSubscription {
 						operation = threadMessageRecord.prepareUpdate(
 							protectedFunction((tm: TThreadMessageModel) => {
 								Object.assign(tm, message);
-								tm.rid = message.tmid;
-								delete tm.tmid;
+								if (message.tmid) {
+									tm.rid = message.tmid;
+									delete tm.tmid;
+								}
 							})
 						);
 					} else {
@@ -262,9 +264,13 @@ export default class RoomSubscription {
 							protectedFunction((tm: TThreadMessageModel) => {
 								tm._raw = sanitizedRaw({ id: message._id }, threadMessagesCollection.schema);
 								Object.assign(tm, message);
-								if (tm.subscription) tm.subscription.id = this.rid;
-								tm.rid = message.tmid;
-								delete tm.tmid;
+								if (tm.subscription) {
+									tm.subscription.id = this.rid;
+								}
+								if (message.tmid) {
+									tm.rid = message.tmid;
+									delete tm.tmid;
+								}
 							})
 						);
 					}
@@ -323,7 +329,7 @@ export default class RoomSubscription {
 			}, WINDOW_TIME);
 		}
 		this.lastOpen = new Date();
-		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0]));
+		const message = buildMessage(EJSON.fromJSONValue(ddpMessage.fields.args[0])) as IMessage;
 		this.queue[message._id] = message;
 	};
 }
