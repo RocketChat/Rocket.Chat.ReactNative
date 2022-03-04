@@ -51,8 +51,6 @@ export const e2eSetRoomKeyID = (rid: string, keyID: string) =>
 
 export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.updateGroupKey', { uid, rid, key });
 
 export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
