@@ -52,4 +52,7 @@ export type ChannelsEndpoints = {
 	'channels.convertToTeam': {
 		POST: (params: { channelId: string; channelName: string }) => { team: ITeam };
 	};
+	'channels.leave': {
+		POST: (params: { roomId: string }) => {};
+	};
 };
