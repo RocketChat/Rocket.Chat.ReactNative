@@ -39,6 +39,7 @@ export type ModalStackParamList = {
 		member: any;
 		rid: string;
 		t: SubscriptionType;
+		showCloseModal?: boolean;
 	};
 	SelectListView: {
 		data: any;

@@ -24,7 +24,7 @@ import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
-import { MESSAGE_TYPE_ANY_LOAD, MESSAGE_TYPE_LOAD_MORE } from '../../constants/messageTypeLoad';
+import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../constants/messageTypeLoad';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
@@ -851,7 +851,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				 * if it's from server, we don't have it saved locally and so we fetch surroundings
 				 * we test if it's not from threads because we're fetching from threads currently with `getThreadMessages`
 				 */
-				if (message.fromServer && !message.tmid) {
+				if (message.fromServer && !message.tmid && this.rid) {
 					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid });
 				}
 				// @ts-ignore
@@ -1161,12 +1161,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		let content = null;
-		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t)) {
+		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
 			content = (
 				<LoadMore
 					load={() => this.onLoadMoreMessages(item)}
 					type={item.t}
-					runOnRender={item.t === MESSAGE_TYPE_LOAD_MORE && !previousItem}
+					runOnRender={item.t === MessageTypeLoad.MORE && !previousItem}
 				/>
 			);
 		} else {

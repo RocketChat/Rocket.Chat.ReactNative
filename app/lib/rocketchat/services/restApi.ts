@@ -1,7 +1,7 @@
-import { SubscriptionType } from '../../../definitions';
+import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import sdk from './sdk';
+import { SubscriptionType, INotificationPreferences } from '../../../definitions';
 
 export const createChannel = ({
 	name,
@@ -37,7 +37,7 @@ export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: 
 	// RC 2.2.0
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
 
-export const e2eRequestSubscriptionKeys = (): any =>
+export const e2eRequestSubscriptionKeys = (): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
 
@@ -45,16 +45,12 @@ export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
 	sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
 
-export const e2eSetRoomKeyID = (rid: string, keyID: string): any =>
+export const e2eSetRoomKeyID = (rid: string, keyID: string) =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.setRoomKeyID', { rid, keyID });
 
 export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.updateGroupKey', { uid, rid, key });
 
 export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
@@ -71,10 +67,8 @@ export const register = (credentials: { name: string; email: string; pass: strin
 	// RC 0.50.0
 	sdk.post('users.register', credentials);
 
-export const forgotPassword = (email: string): any =>
+export const forgotPassword = (email: string) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.forgotPassword', { email });
 
 export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
@@ -119,7 +113,7 @@ export const getDiscussions = ({
 	count,
 	text
 }: {
-	roomId: string | undefined;
+	roomId: string;
 	text?: string | undefined;
 	offset: number;
 	count: number;
@@ -164,10 +158,8 @@ export const createTeam = ({
 	// RC 3.13.0
 	return sdk.post('teams.create', params);
 };
-export const addRoomsToTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }): any =>
+export const addRoomsToTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('teams.addRooms', { teamId, rooms });
 
 export const removeTeamRoom = ({ roomId, teamId }: { roomId: string; teamId: string }) =>
@@ -184,10 +176,8 @@ export const leaveTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }
 		...(rooms?.length && { rooms })
 	});
 
-export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; userId: string; rooms: string[] }): any =>
+export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; userId: string; rooms: string[] }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('teams.removeMember', {
 		teamId,
 		userId,
@@ -195,10 +185,8 @@ export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; us
 		...(rooms?.length && { rooms })
 	});
 
-export const updateTeamRoom = ({ roomId, isDefault }: { roomId: string; isDefault: boolean }): any =>
+export const updateTeamRoom = ({ roomId, isDefault }: { roomId: string; isDefault: boolean }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('teams.updateRoom', { roomId, isDefault });
 
 export const deleteTeam = ({ teamId, roomsToRemove }: { teamId: string; roomsToRemove: string[] }): any =>
@@ -207,10 +195,8 @@ export const deleteTeam = ({ teamId, roomsToRemove }: { teamId: string; roomsToR
 	// @ts-ignore
 	sdk.post('teams.delete', { teamId, roomsToRemove });
 
-export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId: string }): any =>
+export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId: string }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('teams.listRoomsOfUser', { teamId, userId });
 
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
@@ -228,13 +214,11 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
 };
 
-export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; selected: string[] }): any => {
+export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; selected: string[] }) => {
 	const params = {
 		teamId,
 		...(selected.length && { roomsToRemove: selected })
 	};
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('teams.convertToChannel', params);
 };
 
@@ -249,10 +233,8 @@ export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p
 	return sdk.post('channels.join', { roomId, joinCode });
 };
 
-export const deleteMessage = (messageId: string, rid: string): any =>
+export const deleteMessage = (messageId: string, rid: string) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.delete', { msgId: messageId, roomId: rid });
 
 export const markAsUnread = ({ messageId }: { messageId: string }) =>
@@ -291,10 +273,8 @@ export const reportMessage = (messageId: string): any =>
 	// @ts-ignore
 	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 
-export const setUserPreferences = (userId: string, data: any): any =>
+export const setUserPreferences = (userId: string, data: Partial<INotificationPreferences>) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.setPreferences', { userId, data });
 
 export const setUserStatus = (status?: string, message?: string): any =>
@@ -309,14 +289,10 @@ export const setReaction = (emoji: string, messageId: string): any =>
 	// @ts-ignore
 	sdk.post('chat.react', { emoji, messageId });
 
-export const toggleRead = (read: boolean, roomId: string): any => {
+export const toggleRead = (read: boolean, roomId: string) => {
 	if (read) {
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('subscriptions.unread', { roomId });
 	}
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('subscriptions.read', { rid: roomId });
 };
 
@@ -461,7 +437,7 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	return sdk.get('canned-responses', params);
 };
 
-export const toggleBlockUser = (rid: string, blocked: string, block: boolean) => {
+export const toggleBlockUser = (rid: string, blocked: string, block: boolean): Promise<boolean> => {
 	if (block) {
 		// RC 0.49.0
 		return sdk.methodCallWrapper('blockUser', { rid, blocked });
@@ -572,17 +548,14 @@ export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: strin
 	// @ts-ignore
 	sdk.get('chat.ignoreUser', { rid, userId, ignore });
 
-export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean): any => {
+export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean) => {
+	const type = t as SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	if (archive) {
 		// RC 0.48.0
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.archive`, { roomId });
+		return sdk.post(`${roomTypeToApiType(type)}.archive`, { roomId });
 	}
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.unarchive`, { roomId });
+	return sdk.post(`${roomTypeToApiType(type)}.unarchive`, { roomId });
 };
 
 export const hideRoom = (roomId: string, t: RoomTypes): any =>
@@ -591,7 +564,22 @@ export const hideRoom = (roomId: string, t: RoomTypes): any =>
 	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
-export const saveRoomSettings = (rid: string, params: any) =>
+export const saveRoomSettings = (
+	rid: string,
+	params: {
+		roomName?: string;
+		roomAvatar?: string;
+		roomDescription?: string;
+		roomTopic?: string;
+		roomAnnouncement?: string;
+		roomType?: SubscriptionType;
+		readOnly?: boolean;
+		reactWhenReadOnly?: boolean;
+		systemMessages?: string[];
+		joinCode?: string;
+		encrypted?: boolean;
+	}
+): Promise<{ result: boolean; rid: string }> =>
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 

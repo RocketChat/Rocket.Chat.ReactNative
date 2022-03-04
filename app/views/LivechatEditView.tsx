@@ -18,7 +18,7 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { IVisitor } from '../definitions/IVisitor';
+import { ILivechatVisitor } from '../definitions/ILivechatVisitor';
 import { ITagsOmnichannel } from '../definitions/ITagsOmnichannel';
 import { IApplicationState, ISubscription } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
@@ -55,15 +55,18 @@ interface IField {
 }
 
 interface IInputs {
-	[key: string]: string | string[] | undefined;
+	livechatData: {
+		[key: string]: any;
+	};
 	name: string;
 	email: string;
 	phone?: string;
 	topic: string;
 	tag: string[];
+	[key: string]: any;
 }
 
-type TParams = IVisitor & IInputs;
+type TParams = ILivechatVisitor & IInputs;
 
 interface ILivechat extends ISubscription {
 	// Param dynamic depends on server
