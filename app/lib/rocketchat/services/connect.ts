@@ -1,6 +1,15 @@
 import RNFetchBlob from 'rn-fetch-blob';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { InteractionManager } from 'react-native';
+import { Q } from '@nozbe/watermelondb';
 
+import log from '../../../utils/log';
+import { onRolesChanged } from '../../methods/getRoles';
+import { UserStatus } from '../../../definitions/UserStatus';
+import { setActiveUsers } from '../../../actions/activeUsers';
+import protectedFunction from '../../methods/helpers/protectedFunction';
+import database from '../../database';
 import { selectServerFailure } from '../../../actions/server';
 import { twoFactor } from '../../../utils/twoFactor';
 import { compareServerVersion } from '../../utils';
@@ -8,9 +17,15 @@ import { store } from '../../auxStore';
 import { loginRequest, setLoginServices, setUser } from '../../../actions/login';
 import sdk from './sdk';
 import I18n from '../../../i18n';
-import { MIN_ROCKETCHAT_VERSION } from '../rocketchat';
-import { ICredentials, ILoggedUser } from '../../../definitions';
+import RocketChat, { MIN_ROCKETCHAT_VERSION, STATUSES } from '../rocketchat';
+import { ICredentials, ILoggedUser, IRocketChat, IUser } from '../../../definitions';
 import { isIOS } from '../../../utils/deviceInfo';
+import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../../actions/connect';
+import { updatePermission } from '../../../actions/permissions';
+import EventEmitter from '../../../utils/events';
+import { updateSettings } from '../../../actions/settings';
+import defaultSettings from '../../../constants/settings';
+import getSettings from '../../methods/getSettings';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -21,10 +36,233 @@ interface IServices {
 	service: string;
 }
 
+// FIXME: Remove `this` context
+function connect(
+	this: IRocketChat,
+	{ server, user, logoutOnError = false }: { server: string; user: IUser; logoutOnError: boolean }
+) {
+	return new Promise<void>(resolve => {
+		if (sdk.current?.client?.host === server) {
+			return resolve();
+		}
+		disconnect();
+		database.setActiveDB(server);
+
+		store.dispatch(connectRequest());
+
+		if (this.connectTimeout) {
+			clearTimeout(this.connectTimeout);
+		}
+
+		if (this.connectingListener) {
+			this.connectingListener.then(stopListener);
+		}
+
+		if (this.connectedListener) {
+			this.connectedListener.then(stopListener);
+		}
+
+		if (this.closeListener) {
+			this.closeListener.then(stopListener);
+		}
+
+		if (this.usersListener) {
+			this.usersListener.then(stopListener);
+		}
+
+		if (this.notifyAllListener) {
+			this.notifyAllListener.then(stopListener);
+		}
+
+		if (this.rolesListener) {
+			this.rolesListener.then(stopListener);
+		}
+
+		if (this.notifyLoggedListener) {
+			this.notifyLoggedListener.then(stopListener);
+		}
+
+		this.unsubscribeRooms();
+
+		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
+
+		sdk.initialize(server);
+		getSettings();
+
+		sdk.current
+			.connect()
+			.then(() => {
+				console.log('connected');
+			})
+			.catch((err: unknown) => {
+				console.log('connect error', err);
+			});
+
+		this.connectingListener = sdk.current.onStreamData('connecting', () => {
+			store.dispatch(connectRequest());
+		});
+
+		this.connectedListener = sdk.current.onStreamData('connected', () => {
+			const { connected } = store.getState().meteor;
+			if (connected) {
+				return;
+			}
+			store.dispatch(connectSuccess());
+			const { server: currentServer } = store.getState().server;
+			if (user?.token && server === currentServer) {
+				store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
+			}
+		});
+
+		this.closeListener = sdk.current.onStreamData('close', () => {
+			store.dispatch(disconnectAction());
+		});
+
+		this.usersListener = sdk.current.onStreamData(
+			'users',
+			protectedFunction((ddpMessage: any) => RocketChat._setUser(ddpMessage))
+		);
+
+		this.notifyAllListener = sdk.current.onStreamData(
+			'stream-notify-all',
+			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
+				const { eventName } = ddpMessage.fields;
+				if (/public-settings-changed/.test(eventName)) {
+					const { _id, value } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const settingsCollection = db.get('settings');
+					try {
+						const settingsRecord = await settingsCollection.find(_id);
+						// @ts-ignore
+						const { type } = defaultSettings[_id];
+						if (type) {
+							await db.write(async () => {
+								await settingsRecord.update(u => {
+									// @ts-ignore
+									u[type] = value;
+								});
+							});
+						}
+						store.dispatch(updateSettings(_id, value));
+					} catch (e) {
+						log(e);
+					}
+				}
+			})
+		);
+
+		this.rolesListener = sdk.current.onStreamData(
+			'stream-roles',
+			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
+		);
+
+		// RC 4.1
+		sdk.current.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
+			const userStatus = ddpMessage.fields.args[0];
+			const { uid } = ddpMessage.fields;
+			const [, status, statusText] = userStatus;
+			const newStatus = { status: STATUSES[status], statusText };
+			// @ts-ignore
+			store.dispatch(setActiveUsers({ [uid]: newStatus }));
+
+			const { user: loggedUser } = store.getState().login;
+			if (loggedUser && loggedUser.id === uid) {
+				// @ts-ignore
+				store.dispatch(setUser(newStatus));
+			}
+		});
+
+		this.notifyLoggedListener = sdk.current.onStreamData(
+			'stream-notify-logged',
+			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
+				const { eventName } = ddpMessage.fields;
+
+				// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
+				if (/user-status/.test(eventName)) {
+					this.activeUsers = this.activeUsers || {};
+					if (!this._setUserTimer) {
+						this._setUserTimer = setTimeout(() => {
+							const activeUsersBatch = this.activeUsers;
+							InteractionManager.runAfterInteractions(() => {
+								store.dispatch(setActiveUsers(activeUsersBatch));
+							});
+							this._setUserTimer = null;
+							return (this.activeUsers = {});
+						}, 10000);
+					}
+					const userStatus = ddpMessage.fields.args[0];
+					const [id, , status, statusText] = userStatus;
+					this.activeUsers[id] = { status: STATUSES[status], statusText };
+
+					const { user: loggedUser } = store.getState().login;
+					if (loggedUser && loggedUser.id === id) {
+						store.dispatch(setUser({ status: STATUSES[status] as UserStatus, statusText }));
+					}
+				} else if (/updateAvatar/.test(eventName)) {
+					const { username, etag } = ddpMessage.fields.args[0];
+					const db = database.active;
+					const userCollection = db.get('users');
+					try {
+						const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
+						await db.write(async () => {
+							await userRecord.update(u => {
+								u.avatarETag = etag;
+							});
+						});
+					} catch {
+						// We can't create a new record since we don't receive the user._id
+					}
+				} else if (/permissions-changed/.test(eventName)) {
+					const { _id, roles } = ddpMessage.fields.args[1];
+					const db = database.active;
+					const permissionsCollection = db.get('permissions');
+					try {
+						const permissionsRecord = await permissionsCollection.find(_id);
+						await db.write(async () => {
+							await permissionsRecord.update(u => {
+								u.roles = roles;
+							});
+						});
+						store.dispatch(updatePermission(_id, roles));
+					} catch (err) {
+						//
+					}
+				} else if (/Users:NameChanged/.test(eventName)) {
+					const userNameChanged = ddpMessage.fields.args[0];
+					const db = database.active;
+					const userCollection = db.get('users');
+					try {
+						const userRecord = await userCollection.find(userNameChanged._id);
+						await db.write(async () => {
+							await userRecord.update(u => {
+								Object.assign(u, userNameChanged);
+							});
+						});
+					} catch {
+						// User not found
+						await db.write(async () => {
+							await userCollection.create(u => {
+								u._raw = sanitizedRaw({ id: userNameChanged._id }, userCollection.schema);
+								Object.assign(u, userNameChanged);
+							});
+						});
+					}
+				}
+			})
+		);
+
+		resolve();
+	});
+}
+
+function stopListener(listener: any): boolean {
+	return listener && listener.stop();
+}
+
 async function login(credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
 	// RC 0.64.0
 	await sdk.current.login(credentials);
-	const result = sdk.currentLogin?.result;
+	const result = sdk.current.currentLogin?.result;
 	if (result) {
 		const user: ILoggedUser = {
 			id: result.userId,
@@ -123,14 +361,14 @@ async function loginOAuthOrSso(params: ICredentials, isFromWebView = true) {
 }
 
 function abort() {
-	if (sdk) {
-		return sdk.abort();
+	if (sdk.current) {
+		return sdk.current.abort();
 	}
 	return new AbortController();
 }
 
 function checkAndReopen() {
-	return sdk.checkAndReopen();
+	return sdk.current.checkAndReopen();
 }
 
 function disconnect() {
@@ -185,7 +423,7 @@ async function getWebsocketInfo({ server }: { server: string }) {
 	sdk.initialize(server);
 
 	try {
-		await sdk.connect();
+		await sdk.current.connect();
 	} catch (err: any) {
 		if (err.message && err.message.includes('400')) {
 			return {
@@ -195,7 +433,7 @@ async function getWebsocketInfo({ server }: { server: string }) {
 		}
 	}
 
-	sdk.disconnect();
+	sdk.current.disconnect();
 
 	return {
 		success: true
@@ -264,9 +502,11 @@ export {
 	loginOAuthOrSso,
 	checkAndReopen,
 	abort,
+	connect,
 	disconnect,
 	getServerInfo,
 	getWebsocketInfo,
+	stopListener,
 	getLoginServices,
 	determineAuthType
 };

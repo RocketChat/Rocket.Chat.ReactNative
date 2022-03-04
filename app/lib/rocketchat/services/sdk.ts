@@ -6,7 +6,7 @@ import { twoFactor } from '../../../utils/twoFactor';
 import { useSsl } from '../../../utils/url';
 import reduxStore from '../../createStore';
 import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../../definitions/rest/helpers';
-import { ICredentials, ILoginResultFromServer } from '../../../definitions';
+import { ILoginResultFromServer } from '../../../definitions';
 
 class Sdk {
 	private sdk: typeof Rocketchat;
@@ -161,22 +161,6 @@ class Sdk {
 
 	onStreamData(...args: any[]) {
 		return this.sdk.onStreamData(...args);
-	}
-
-	login(credentials: ICredentials) {
-		return this.sdk.login(credentials);
-	}
-
-	checkAndReopen() {
-		return this.sdk.checkAndReopen();
-	}
-
-	abort() {
-		return this.sdk.abort();
-	}
-
-	connect() {
-		return this.sdk.connect();
 	}
 }
 
