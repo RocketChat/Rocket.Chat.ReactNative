@@ -20,11 +20,7 @@ export type OmnichannelEndpoints = {
 	};
 	'livechat/visitors.info': {
 		GET: (params: { visitorId: string }) => {
-			visitor: {
-				visitorEmails: Array<{
-					address: string;
-				}>;
-			};
+			visitor: ILivechatVisitor;
 		};
 	};
 	'livechat/room.onHold': {
@@ -77,7 +73,7 @@ export type OmnichannelEndpoints = {
 		POST: (params: { upsert: string[]; remove: string[] }) => void;
 	};
 	'livechat/department/:departmentId/?includeAgents=false': {
-		GET: () => PaginatedResult<{ department: ILivechatDepartment[] }>;
+		GET: () => PaginatedResult<{ department: ILivechatDepartment }>;
 	};
 	'livechat/departments.available-by-unit/:id': {
 		GET: (params: PaginatedRequest<{ text: string }>) => PaginatedResult<{

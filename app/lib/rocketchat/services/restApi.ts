@@ -37,7 +37,7 @@ export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: 
 	// RC 2.2.0
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
 
-export const e2eRequestSubscriptionKeys = (): any =>
+export const e2eRequestSubscriptionKeys = (): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
 
@@ -117,7 +117,7 @@ export const getDiscussions = ({
 	count,
 	text
 }: {
-	roomId: string | undefined;
+	roomId: string;
 	text?: string | undefined;
 	offset: number;
 	count: number;
@@ -293,14 +293,10 @@ export const setReaction = (emoji: string, messageId: string): any =>
 	// @ts-ignore
 	sdk.post('chat.react', { emoji, messageId });
 
-export const toggleRead = (read: boolean, roomId: string): any => {
+export const toggleRead = (read: boolean, roomId: string) => {
 	if (read) {
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('subscriptions.unread', { roomId });
 	}
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('subscriptions.read', { rid: roomId });
 };
 
