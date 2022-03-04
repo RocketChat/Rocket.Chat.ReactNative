@@ -38,4 +38,7 @@ export type ImEndpoints = {
 			messages: IMessageFromServer[];
 		};
 	};
+	'im.close': {
+		POST: (params: { roomId: string }) => {};
+	};
 };
