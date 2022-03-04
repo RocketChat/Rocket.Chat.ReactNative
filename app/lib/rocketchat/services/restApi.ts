@@ -67,10 +67,8 @@ export const register = (credentials: { name: string; email: string; pass: strin
 	// RC 0.50.0
 	sdk.post('users.register', credentials);
 
-export const forgotPassword = (email: string): any =>
+export const forgotPassword = (email: string) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.forgotPassword', { email });
 
 export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
