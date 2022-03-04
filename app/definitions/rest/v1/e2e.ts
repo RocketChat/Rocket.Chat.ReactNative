@@ -12,4 +12,7 @@ export type E2eEndpoints = {
 	'e2e.updateGroupKey': {
 		POST: (params: { uid: string; rid: string; key: string }) => {};
 	};
+	'e2e.setRoomKeyID': {
+		POST: (params: { rid: string; keyID: string }) => {};
+	};
 };

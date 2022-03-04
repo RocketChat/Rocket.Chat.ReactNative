@@ -3,7 +3,7 @@ import { IServerTeamUpdateRoom, ITeam, TEAM_TYPE } from '../../ITeam';
 
 export type TeamsEndpoints = {
 	'teams.removeRoom': {
-		POST: (params: { roomId: string; teamId: string }) => { room: IRoom };
+		POST: (params: { roomId: string; teamId: string }) => { room: IServerRoomItem };
 	};
 	'teams.listRoomsOfUser': {
 		GET: (params: { teamId: string; userId: string }) => {

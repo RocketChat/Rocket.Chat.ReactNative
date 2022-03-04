@@ -38,7 +38,7 @@ export interface ISubscription {
 	_updatedAt?: string; // from server
 	v?: IVisitor;
 	f: boolean;
-	t: string; // TODO: we need to review this type later
+	t: SubscriptionType; // TODO: we need to review this type later
 	ts: string | Date;
 	ls: Date;
 	name: string;
@@ -93,6 +93,7 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
+	unsubscribe: () => Promise<any>;
 	separator?: boolean;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
 	messages: RelationModified<TMessageModel>;
