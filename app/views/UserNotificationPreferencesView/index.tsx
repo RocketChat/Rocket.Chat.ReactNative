@@ -106,10 +106,12 @@ class UserNotificationPreferencesView extends React.Component<
 		const { user } = this.props;
 		const { id } = user;
 		const result = await RocketChat.setUserPreferences(id, params);
-		const {
-			user: { settings }
-		} = result;
-		this.setState({ preferences: settings.preferences });
+		if (result.success) {
+			const {
+				user: { settings }
+			} = result;
+			this.setState({ preferences: settings.preferences });
+		}
 	};
 
 	render() {

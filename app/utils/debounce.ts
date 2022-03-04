@@ -1,5 +1,5 @@
 export default function debounce(func: Function, wait?: number, immediate?: boolean) {
-	let timeout: number | null;
+	let timeout: ReturnType<typeof setTimeout> | null;
 	function _debounce(...args: any[]) {
 		// @ts-ignore
 		// eslint-disable-next-line @typescript-eslint/no-this-alias

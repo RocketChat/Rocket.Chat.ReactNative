@@ -15,7 +15,7 @@ interface IRequestTranscript {
 }
 
 export interface IRoom {
-	_id?: string;
+	_id: string;
 	fname?: string;
 	id: string;
 	rid: string;
@@ -42,6 +42,9 @@ export interface IRoom {
 	latest?: string;
 	default?: true;
 	featured?: true;
+	muted?: string[];
+	teamId?: string;
+	ignored?: string;
 }
 
 export enum OmnichannelSourceType {
