@@ -144,7 +144,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				try {
 					const result = await RocketChat.getChannelInfo(room.rid);
 					if (result.success) {
-						this.setState({ room: { ...result.channel, rid: result.channel._id } });
+						this.setState({ room: { ...result.channel, rid: result.channel._id } as any });
 					}
 				} catch (e) {
 					log(e);
