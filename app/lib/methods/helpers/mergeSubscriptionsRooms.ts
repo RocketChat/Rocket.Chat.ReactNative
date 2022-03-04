@@ -5,12 +5,19 @@ import { store as reduxStore } from '../../auxStore';
 import { compareServerVersion } from '../../utils';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
-import { ISubscription, IServerRoom, IServerSubscription, IServerSubscriptionItem, IServerRoomItem } from '../../../definitions';
+import {
+	ISubscription,
+	IServerRoom,
+	IServerSubscription,
+	IServerSubscriptionItem,
+	IServerRoomItem,
+	IRoom
+} from '../../../definitions';
 // TODO: delete and update
 
 export const merge = (
 	subscription: ISubscription | IServerSubscriptionItem,
-	room?: ISubscription | IServerRoomItem
+	room?: ISubscription | IServerRoomItem | IRoom
 ): ISubscription => {
 	const serverVersion = reduxStore.getState().server.version as string;
 	subscription = EJSON.fromJSONValue(subscription) as ISubscription;

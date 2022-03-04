@@ -30,13 +30,15 @@ export enum ERoomTypes {
 	CHANNEL = 'channel'
 }
 
+type RelationModified<T extends Model> = { fetch(): Promise<T[]> } & Relation<T>;
+
 export interface ISubscription {
 	_id: string; // _id belongs watermelonDB
 	id: string; // id from server
 	_updatedAt?: string; // from server
 	v?: IVisitor;
 	f: boolean;
-	t: string; // TODO: we need to review this type later
+	t: SubscriptionType; // TODO: we need to review this type later
 	ts: string | Date;
 	ls: Date;
 	name: string;
@@ -91,12 +93,13 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
+	unsubscribe: () => Promise<any>;
 	separator?: boolean;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
-	messages: Relation<TMessageModel>;
-	threads: Relation<TThreadModel>;
-	threadMessages: Relation<TThreadMessageModel>;
-	uploads: Relation<TUploadModel>;
+	messages: RelationModified<TMessageModel>;
+	threads: RelationModified<TThreadModel>;
+	threadMessages: RelationModified<TThreadMessageModel>;
+	uploads: RelationModified<TUploadModel>;
 }
 
 export type TSubscriptionModel = ISubscription & Model;
