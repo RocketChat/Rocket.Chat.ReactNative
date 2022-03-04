@@ -16,7 +16,7 @@ import debounce from '../../../utils/debounce';
 import log from '../../../utils/log';
 import EmptyRoom from '../EmptyRoom';
 import List, { IListProps } from './List';
-import NavBottomFAB from './NavBottomFAB';
+// import NavBottomFAB from './NavBottomFAB';
 
 const QUERY_SIZE = 50;
 
@@ -334,7 +334,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { rid, tmid, listRef } = this.props;
+		const { rid, listRef } = this.props;
 		const { messages, refreshing } = this.state;
 		const { theme } = this.props;
 		return (
@@ -355,9 +355,9 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
 					}
 					// @ts-ignore
-					itemLayoutAnimation={Layout}
+					itemLayoutAnimation={Layout.springify()}
 				/>
-				<NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} />
+				{/* <NavBottomFAB y={this.y} onPress={this.jumpToBottom} isThread={!!tmid} /> */}
 			</>
 		);
 	}
