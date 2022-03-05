@@ -9,4 +9,10 @@ export type E2eEndpoints = {
 			users: Pick<IUser, '_id' | 'e2e'>[];
 		};
 	};
+	'e2e.updateGroupKey': {
+		POST: (params: { uid: string; rid: string; key: string }) => {};
+	};
+	'e2e.setRoomKeyID': {
+		POST: (params: { rid: string; keyID: string }) => {};
+	};
 };
