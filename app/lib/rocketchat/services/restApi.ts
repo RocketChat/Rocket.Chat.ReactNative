@@ -57,10 +57,8 @@ export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
 	// RC 0.70.0
 	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
-export const updateJitsiTimeout = (roomId: string): any =>
+export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('video-conference/jitsi.update-timeout', { roomId });
 
 export const register = (credentials: { name: string; email: string; pass: string; username: string }) =>
