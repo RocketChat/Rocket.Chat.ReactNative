@@ -11,6 +11,12 @@ export type ChatEndpoints = {
 	'chat.followMessage': {
 		POST: (params: { mid: IMessage['_id'] }) => void;
 	};
+	'chat.unStarMessage': {
+		POST: (params: { messageId: IMessage['_id'] }) => void;
+	};
+	'chat.starMessage': {
+		POST: (params: { messageId: IMessage['_id'] }) => void;
+	};
 	'chat.unfollowMessage': {
 		POST: (params: { mid: IMessage['_id'] }) => void;
 	};

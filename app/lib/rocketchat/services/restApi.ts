@@ -239,16 +239,12 @@ export const markAsUnread = ({ messageId }: { messageId: string }) =>
 	// RC 0.65.0
 	sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 
-export const toggleStarMessage = (messageId: string, starred: boolean): any => {
+export const toggleStarMessage = (messageId: string, starred: boolean) => {
 	if (starred) {
 		// RC 0.59.0
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('chat.unStarMessage', { messageId });
 	}
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('chat.starMessage', { messageId });
 };
 
