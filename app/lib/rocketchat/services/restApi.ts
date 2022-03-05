@@ -37,7 +37,7 @@ export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: 
 	// RC 2.2.0
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
 
-export const e2eRequestSubscriptionKeys = (): any =>
+export const e2eRequestSubscriptionKeys = (): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
 
@@ -45,36 +45,28 @@ export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
 	sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
 
-export const e2eSetRoomKeyID = (rid: string, keyID: string): any =>
+export const e2eSetRoomKeyID = (rid: string, keyID: string) =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.setRoomKeyID', { rid, keyID });
 
 export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.updateGroupKey', { uid, rid, key });
 
 export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
 	// RC 0.70.0
 	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
-export const updateJitsiTimeout = (roomId: string): any =>
+export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('video-conference/jitsi.update-timeout', { roomId });
 
 export const register = (credentials: { name: string; email: string; pass: string; username: string }) =>
 	// RC 0.50.0
 	sdk.post('users.register', credentials);
 
-export const forgotPassword = (email: string): any =>
+export const forgotPassword = (email: string) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.forgotPassword', { email });
 
 export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
@@ -247,36 +239,26 @@ export const markAsUnread = ({ messageId }: { messageId: string }) =>
 	// RC 0.65.0
 	sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 
-export const toggleStarMessage = (messageId: string, starred: boolean): any => {
+export const toggleStarMessage = (messageId: string, starred: boolean) => {
 	if (starred) {
 		// RC 0.59.0
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('chat.unStarMessage', { messageId });
 	}
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('chat.starMessage', { messageId });
 };
 
-export const togglePinMessage = (messageId: string, pinned: boolean): any => {
+export const togglePinMessage = (messageId: string, pinned: boolean) => {
 	if (pinned) {
 		// RC 0.59.0
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('chat.unPinMessage', { messageId });
 	}
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('chat.pinMessage', { messageId });
 };
 
-export const reportMessage = (messageId: string): any =>
+export const reportMessage = (messageId: string) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 
 export const setUserPreferences = (userId: string, data: Partial<INotificationPreferences>) =>
@@ -289,20 +271,14 @@ export const setUserStatus = (status?: string, message?: string): any =>
 	// @ts-ignore
 	sdk.post('users.setStatus', { status, message });
 
-export const setReaction = (emoji: string, messageId: string): any =>
+export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.react', { emoji, messageId });
 
-export const toggleRead = (read: boolean, roomId: string): any => {
+export const toggleRead = (read: boolean, roomId: string) => {
 	if (read) {
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('subscriptions.unread', { roomId });
 	}
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('subscriptions.read', { rid: roomId });
 };
 
