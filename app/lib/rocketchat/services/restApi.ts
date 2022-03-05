@@ -248,16 +248,12 @@ export const toggleStarMessage = (messageId: string, starred: boolean) => {
 	return sdk.post('chat.starMessage', { messageId });
 };
 
-export const togglePinMessage = (messageId: string, pinned: boolean): any => {
+export const togglePinMessage = (messageId: string, pinned: boolean) => {
 	if (pinned) {
 		// RC 0.59.0
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('chat.unPinMessage', { messageId });
 	}
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('chat.pinMessage', { messageId });
 };
 

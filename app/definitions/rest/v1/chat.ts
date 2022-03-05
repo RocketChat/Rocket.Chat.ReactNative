@@ -20,6 +20,12 @@ export type ChatEndpoints = {
 	'chat.unfollowMessage': {
 		POST: (params: { mid: IMessage['_id'] }) => void;
 	};
+	'chat.unPinMessage': {
+		POST: (params: { messageId: IMessage['_id'] }) => void;
+	};
+	'chat.pinMessage': {
+		POST: (params: { messageId: IMessage['_id'] }) => void;
+	};
 	'chat.getDiscussions': {
 		GET: (params: { roomId: IRoom['_id']; text?: string; offset: number; count: number }) => {
 			messages: IMessage[];
