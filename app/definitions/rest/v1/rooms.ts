@@ -1,5 +1,5 @@
 import type { IMessage } from '../../IMessage';
-import type { IRoom } from '../../IRoom';
+import type { IRoom, IServerRoomItem } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
 export type RoomsEndpoints = {
@@ -23,7 +23,7 @@ export type RoomsEndpoints = {
 	};
 	'rooms.info': {
 		GET: (params: { roomId: string } | { roomName: string }) => {
-			room: IRoom;
+			room: IServerRoomItem;
 		};
 	};
 	'rooms.createDiscussion': {

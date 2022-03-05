@@ -7,7 +7,7 @@ import { forwardRoom, ITransferData } from '../actions/room';
 import { themes } from '../constants/colors';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
-import { IBaseScreen, IRoom } from '../definitions';
+import { IBaseScreen, IRoom, IServerRoomItem } from '../definitions';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { ChatsStackParamList } from '../stacks/types';
@@ -86,7 +86,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 		try {
 			const result = await RocketChat.getRoomInfo(rid);
 			if (result.success) {
-				setRoom(result.room as IRoom);
+				setRoom(result.room as IRoom & IServerRoomItem);
 			}
 		} catch {
 			// do nothing

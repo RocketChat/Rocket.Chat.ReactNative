@@ -17,7 +17,7 @@ import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IBaseScreen, IRoom } from '../definitions';
+import { IApplicationState, IBaseScreen } from '../definitions';
 import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
@@ -348,7 +348,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			logEvent(events.TC_GO_ROOM);
 			const { navigation, isMasterDetail } = this.props;
 			try {
-				let params = {} as Partial<IRoom>;
+				let params = {};
 				const result = await RocketChat.getRoomInfo(item._id);
 				if (result.success) {
 					params = {

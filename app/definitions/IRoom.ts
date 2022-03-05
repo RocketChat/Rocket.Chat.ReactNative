@@ -45,7 +45,6 @@ export interface IRoom {
 	muted?: string[];
 	teamId?: string;
 	ignored?: string;
-	joinCodeRequired?: boolean;
 }
 
 export enum OmnichannelSourceType {
@@ -149,6 +148,7 @@ export interface IServerRoomItem {
 	e2eKeyId: string;
 	avatarETag: string;
 	encrypted: boolean;
+	teamId: string;
 }
 
 export interface IServerRoom {
