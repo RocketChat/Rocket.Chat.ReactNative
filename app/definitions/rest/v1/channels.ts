@@ -52,4 +52,10 @@ export type ChannelsEndpoints = {
 	'channels.convertToTeam': {
 		POST: (params: { channelId: string; channelName: string }) => { team: ITeam };
 	};
+	'channels.addOwner': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeOwner': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
 };
