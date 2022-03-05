@@ -305,7 +305,6 @@ export const getRoomCounters = (
 	t: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
 ) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
 	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
 
 export const getChannelInfo = (roomId: string): any =>
