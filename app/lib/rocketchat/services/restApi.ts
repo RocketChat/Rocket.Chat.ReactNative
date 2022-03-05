@@ -273,10 +273,8 @@ export const setUserStatus = (status?: string, message?: string): any =>
 	// @ts-ignore
 	sdk.post('users.setStatus', { status, message });
 
-export const setReaction = (emoji: string, messageId: string): any =>
+export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.react', { emoji, messageId });
 
 export const toggleRead = (read: boolean, roomId: string) => {
