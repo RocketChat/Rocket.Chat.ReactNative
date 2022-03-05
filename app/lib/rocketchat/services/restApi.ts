@@ -458,7 +458,11 @@ export const deleteRoom = (roomId: string, t: RoomTypes): any =>
 	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
-export const toggleMuteUserInRoom = (rid: string, username: string, mute: boolean) => {
+export const toggleMuteUserInRoom = (
+	rid: string,
+	username: string,
+	mute: boolean
+): Promise<{ message: { msg: string; result: boolean }; success: boolean }> => {
 	if (mute) {
 		// RC 0.51.0
 		return sdk.methodCallWrapper('muteUserInRoom', { rid, username });
