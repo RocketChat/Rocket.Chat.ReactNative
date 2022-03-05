@@ -52,4 +52,10 @@ export type ChannelsEndpoints = {
 	'channels.convertToTeam': {
 		POST: (params: { channelId: string; channelName: string }) => { team: ITeam };
 	};
+	'channels.addLeader': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeLeader': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
 };
