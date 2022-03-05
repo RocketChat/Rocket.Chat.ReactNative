@@ -52,4 +52,15 @@ export type ChannelsEndpoints = {
 	'channels.convertToTeam': {
 		POST: (params: { channelId: string; channelName: string }) => { team: ITeam };
 	};
+	'channels.counters': {
+		GET: (params: { roomId: string }) => {
+			joined: boolean;
+			members: number;
+			unreads: number;
+			unreadsFrom: Date;
+			msgs: number;
+			latest: Date;
+			userMentions: number;
+		};
+	};
 };
