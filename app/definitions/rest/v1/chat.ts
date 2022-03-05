@@ -11,8 +11,20 @@ export type ChatEndpoints = {
 	'chat.followMessage': {
 		POST: (params: { mid: IMessage['_id'] }) => void;
 	};
+	'chat.unStarMessage': {
+		POST: (params: { messageId: IMessage['_id'] }) => void;
+	};
+	'chat.starMessage': {
+		POST: (params: { messageId: IMessage['_id'] }) => void;
+	};
 	'chat.unfollowMessage': {
 		POST: (params: { mid: IMessage['_id'] }) => void;
+	};
+	'chat.unPinMessage': {
+		POST: (params: { messageId: IMessage['_id'] }) => void;
+	};
+	'chat.pinMessage': {
+		POST: (params: { messageId: IMessage['_id'] }) => void;
 	};
 	'chat.getDiscussions': {
 		GET: (params: { roomId: IRoom['_id']; text?: string; offset: number; count: number }) => {
@@ -38,5 +50,8 @@ export type ChatEndpoints = {
 			ts: string;
 			message: Pick<IMessage, '_id' | 'rid' | 'u'>;
 		};
+	};
+	'chat.react': {
+		POST: (params: { emoji: string; messageId: string }) => void;
 	};
 };
