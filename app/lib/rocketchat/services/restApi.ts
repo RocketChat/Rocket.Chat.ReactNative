@@ -45,36 +45,28 @@ export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
 	sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
 
-export const e2eSetRoomKeyID = (rid: string, keyID: string): any =>
+export const e2eSetRoomKeyID = (rid: string, keyID: string) =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.setRoomKeyID', { rid, keyID });
 
 export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.updateGroupKey', { uid, rid, key });
 
 export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
 	// RC 0.70.0
 	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
-export const updateJitsiTimeout = (roomId: string): any =>
+export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('video-conference/jitsi.update-timeout', { roomId });
 
 export const register = (credentials: { name: string; email: string; pass: string; username: string }) =>
 	// RC 0.50.0
 	sdk.post('users.register', credentials);
 
-export const forgotPassword = (email: string): any =>
+export const forgotPassword = (email: string) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.forgotPassword', { email });
 
 export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
@@ -247,16 +239,12 @@ export const markAsUnread = ({ messageId }: { messageId: string }) =>
 	// RC 0.65.0
 	sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 
-export const toggleStarMessage = (messageId: string, starred: boolean): any => {
+export const toggleStarMessage = (messageId: string, starred: boolean) => {
 	if (starred) {
 		// RC 0.59.0
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('chat.unStarMessage', { messageId });
 	}
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('chat.starMessage', { messageId });
 };
 
@@ -291,14 +279,10 @@ export const setReaction = (emoji: string, messageId: string): any =>
 	// @ts-ignore
 	sdk.post('chat.react', { emoji, messageId });
 
-export const toggleRead = (read: boolean, roomId: string): any => {
+export const toggleRead = (read: boolean, roomId: string) => {
 	if (read) {
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('subscriptions.unread', { roomId });
 	}
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('subscriptions.read', { rid: roomId });
 };
 
