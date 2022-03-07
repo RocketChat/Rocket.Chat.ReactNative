@@ -146,6 +146,7 @@ export interface ITriggerBlockAction {
 	value: number;
 	blockId?: string;
 	mid?: string;
+	rid?: string;
 }
 
 export interface ITriggerSubmitView {
