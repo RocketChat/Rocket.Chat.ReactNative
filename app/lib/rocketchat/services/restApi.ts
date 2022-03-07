@@ -282,10 +282,6 @@ export const toggleRead = (read: boolean, roomId: string) => {
 	return sdk.post('subscriptions.read', { rid: roomId });
 };
 
-export const getUserRoles = () =>
-	// RC 0.27.0
-	sdk.methodCallWrapper('getUserRoles');
-
 export const getRoomCounters = (roomId: string, t: RoomTypes): any =>
 	// RC 0.65.0
 	// TODO: missing definitions from server
