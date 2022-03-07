@@ -33,8 +33,7 @@ const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }:
 				styles.centerContainer,
 				{
 					borderColor: themes[theme].separatorColor
-				},
-				displayMode === DisplayMode.Condensed && styles.condensedPaddingVertical
+				}
 			]}>
 			{children}
 		</View>

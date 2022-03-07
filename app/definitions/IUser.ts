@@ -103,6 +103,22 @@ export interface IUserSettings {
 		[key: string]: any;
 	};
 }
+type TNotifications = 'default' | 'all' | 'mentions' | 'nothing';
+
+export interface INotificationPreferences {
+	id: string;
+	enableMessageParserEarlyAdoption: boolean;
+	desktopNotifications: TNotifications;
+	pushNotifications: TNotifications;
+	emailNotificationMode?: 'mentions' | 'nothing';
+}
+
+export interface IUserPreferences {
+	user: { _id: string };
+	settings: {
+		preferences: INotificationPreferences;
+	};
+}
 
 export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' | 'name' | 'status'> {
 	_id: string;
@@ -116,7 +132,7 @@ export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' |
 	name?: string;
 	services?: IUserServices;
 	emails?: IUserEmail[];
-	status?: UserStatus;
+	status: UserStatus;
 	statusConnection?: string;
 	lastLogin?: Date;
 	avatarOrigin?: string;

@@ -1,4 +1,5 @@
 // ACTIONS
+import { TActionInquiry } from '../../ee/omnichannel/actions/inquiry';
 import { TActionActiveUsers } from '../../actions/activeUsers';
 import { TActionApp } from '../../actions/app';
 import { TActionCreateChannel } from '../../actions/createChannel';
@@ -30,6 +31,7 @@ import { ISelectedUsers } from '../../reducers/selectedUsers';
 import { IServer } from '../../reducers/server';
 import { TSettingsState } from '../../reducers/settings';
 import { IShare } from '../../reducers/share';
+import { IInquiry } from '../../ee/omnichannel/reducers/inquiry';
 import { IPermissionsState } from '../../reducers/permissions';
 import { IEnterpriseModules } from '../../reducers/enterpriseModules';
 
@@ -50,7 +52,7 @@ export interface IApplicationState {
 	usersTyping: any;
 	inviteLinks: IInviteLinks;
 	createDiscussion: ICreateDiscussion;
-	inquiry: any;
+	inquiry: IInquiry;
 	enterpriseModules: IEnterpriseModules;
 	encryption: IEncryption;
 	permissions: IPermissionsState;
@@ -71,5 +73,6 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionsShare &
 	TActionServer &
 	TActionApp &
+	TActionInquiry &
 	TActionPermissions &
 	TActionEnterpriseModules;
