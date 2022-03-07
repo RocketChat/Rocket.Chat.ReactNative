@@ -458,17 +458,14 @@ export const toggleRoomOwner = ({
 	t: SubscriptionType;
 	userId: string;
 	isOwner: boolean;
-}): any => {
+}) => {
+	const type = t as SubscriptionType.CHANNEL;
 	if (isOwner) {
 		// RC 0.49.4
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.addOwner`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(type)}.addOwner`, { roomId, userId });
 	}
 	// RC 0.49.4
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.removeOwner`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(type)}.removeOwner`, { roomId, userId });
 };
 
 export const toggleRoomLeader = ({
