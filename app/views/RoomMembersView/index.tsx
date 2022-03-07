@@ -28,6 +28,7 @@ import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { RoomTypes } from '../../lib/rocketchat/methods/roomTypeToApiType';
 import styles from './styles';
 
 const PAGE_SIZE = 25;
@@ -590,7 +591,8 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		try {
 			const { room, members, membersFiltered } = this.state;
 			const userId = selectedUser._id;
-			await RocketChat.removeUserFromRoom({ roomId: room.rid, t: room.t, userId });
+			// TODO: interface SubscriptionType on IRoom is wrong
+			await RocketChat.removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
 			const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });
 			EventEmitter.emit(LISTENER, { message });
 			this.setState({
