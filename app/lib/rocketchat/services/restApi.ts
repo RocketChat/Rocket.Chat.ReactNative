@@ -2,6 +2,7 @@ import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import { SubscriptionType, INotificationPreferences } from '../../../definitions';
+import { ISpotlight } from '../../../definitions/ISpotlight';
 
 export const createChannel = ({
 	name,
@@ -72,7 +73,7 @@ export const forgotPassword = (email: string) =>
 export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
 	sdk.methodCallWrapper('sendConfirmationEmail', email);
 
-export const spotlight = (search: string, usernames: string, type: { users: boolean; rooms: boolean }) =>
+export const spotlight = (search: string, usernames: string[], type: { users: boolean; rooms: boolean }): Promise<ISpotlight> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('spotlight', search, usernames, type);
 
@@ -434,7 +435,11 @@ export const deleteRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.49.0
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
-export const toggleMuteUserInRoom = (rid: string, username: string, mute: boolean) => {
+export const toggleMuteUserInRoom = (
+	rid: string,
+	username: string,
+	mute: boolean
+): Promise<{ message: { msg: string; result: boolean }; success: boolean }> => {
 	if (mute) {
 		// RC 0.51.0
 		return sdk.methodCallWrapper('muteUserInRoom', { rid, username });
@@ -453,17 +458,14 @@ export const toggleRoomOwner = ({
 	t: SubscriptionType;
 	userId: string;
 	isOwner: boolean;
-}): any => {
+}) => {
+	const type = t as SubscriptionType.CHANNEL;
 	if (isOwner) {
 		// RC 0.49.4
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.addOwner`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(type)}.addOwner`, { roomId, userId });
 	}
 	// RC 0.49.4
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.removeOwner`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(type)}.removeOwner`, { roomId, userId });
 };
 
 export const toggleRoomLeader = ({
