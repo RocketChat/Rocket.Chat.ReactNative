@@ -46,6 +46,9 @@ export type GroupsEndpoints = {
 	'groups.convertToTeam': {
 		POST: (params: { roomId: string; roomName: string }) => { team: ITeam };
 	};
+	'groups.close': {
+		POST: (params: { roomId: string }) => {};
+	};
 	'groups.kick': {
 		POST: (params: { roomId: string; userId: string }) => {};
 	};
