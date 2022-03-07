@@ -282,10 +282,6 @@ export const toggleRead = (read: boolean, roomId: string) => {
 	return sdk.post('subscriptions.read', { rid: roomId });
 };
 
-export const getUserRoles = () =>
-	// RC 0.27.0
-	sdk.methodCallWrapper('getUserRoles');
-
 export const getRoomCounters = (roomId: string, t: RoomTypes): any =>
 	// RC 0.65.0
 	// TODO: missing definitions from server
@@ -432,16 +428,12 @@ export const toggleBlockUser = (rid: string, blocked: string, block: boolean): P
 	return sdk.methodCallWrapper('unblockUser', { rid, blocked });
 };
 
-export const leaveRoom = (roomId: string, t: RoomTypes): any =>
+export const leaveRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.leave`, { roomId });
 
-export const deleteRoom = (roomId: string, t: RoomTypes): any =>
+export const deleteRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.49.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
 export const toggleMuteUserInRoom = (rid: string, username: string, mute: boolean) => {
@@ -522,10 +514,8 @@ export const toggleRoomModerator = ({
 	return sdk.post(`${roomTypeToApiType(t)}.removeModerator`, { roomId, userId });
 };
 
-export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: SubscriptionType; userId: string }): any =>
+export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomTypes; userId: string }) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.kick`, { roomId, userId });
 
 export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }) =>
@@ -542,10 +532,8 @@ export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: 
 	return sdk.post(`${roomTypeToApiType(type)}.unarchive`, { roomId });
 };
 
-export const hideRoom = (roomId: string, t: RoomTypes): any =>
+export const hideRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
 export const saveRoomSettings = (
