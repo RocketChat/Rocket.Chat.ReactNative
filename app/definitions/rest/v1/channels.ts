@@ -55,4 +55,28 @@ export type ChannelsEndpoints = {
 	'channels.join': {
 		POST: (params: { roomId: string; joinCode: string | null }) => { channel: IServerRoomItem };
 	};
+	'channels.close': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'channels.kick': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.delete': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'channels.leave': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'channels.addModerator': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeModerator': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.addOwner': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeOwner': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
 };
