@@ -514,10 +514,8 @@ export const toggleRoomModerator = ({
 	return sdk.post(`${roomTypeToApiType(t)}.removeModerator`, { roomId, userId });
 };
 
-export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: SubscriptionType; userId: string }): any =>
+export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomTypes; userId: string }) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.kick`, { roomId, userId });
 
 export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }): any =>
