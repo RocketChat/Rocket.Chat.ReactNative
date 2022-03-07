@@ -11,7 +11,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
 import { LISTENER } from '../containers/Toast';
-import { IApplicationState, IBaseScreen } from '../definitions';
+import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { getUserSelector } from '../selectors/login';
@@ -54,19 +54,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IUser {
-	id?: string;
-	status?: string;
-	statusText?: string;
-}
-
 interface IStatusViewState {
 	statusText: string;
 	loading: boolean;
 }
 
 interface IStatusViewProps extends IBaseScreen<any, 'StatusView'> {
-	user: IUser;
+	user: Pick<IUser, 'id' | 'status' | 'statusText'>;
 	isMasterDetail: boolean;
 	Accounts_AllowInvisibleStatusOption: boolean;
 }
