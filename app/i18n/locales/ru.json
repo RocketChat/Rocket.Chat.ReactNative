@@ -788,5 +788,22 @@
   "Enable_Message_Parser": "Включить парсер сообщений",
   "Unsupported_format": "Неподдерживаемый формат",
   "Downloaded_file": "Скачанный файл",
-  "Error_Download_file": "Ошибка при скачивании файла"
+  "Error_Download_file": "Ошибка при скачивании файла",
+  "added__roomName__to_team": "добавил(-а) #{{roomName}} в эту рабочую группу",
+  "Added__username__to_team": "добавил(-а) @{{user_added}} в эту рабочую группу",
+  "Converted__roomName__to_team": "преобразовал(-а) #{{roomName}} в рабочую группу",
+  "Converted__roomName__to_channel": "преобразовал(-а) #{{roomName}} в канал",
+  "Converting_team_to_channel": "Преобразование группы в канал",
+  "Deleted__roomName__": "удалил(-а) #{{roomName}}",
+  "Message_HideType_added_user_to_team": "Скрыть сообщения \"Пользователь добавлен в группу\"",
+  "Message_HideType_removed_user_from_team": "Скрыть сообщения \"Пользователь удален из группы\"",
+  "Message_HideType_ujt": "Скрыть сообщения \"Пользователь присоединился к группе\"",
+  "Message_HideType_ult": "Скрыть сообщения \"Пользователь вышел из группы\"",
+  "Message_HideType_user_added_room_to_team": "Скрыть сообщения \"Пользователь добавил зал в группу\"",
+  "Message_HideType_user_converted_to_channel": "Скрыть сообщения \"Пользователь преобразовал группу в канал\"",
+  "Message_HideType_user_converted_to_team": "Скрыть сообщения \"Пользователь преобразовал канал в группу\"",
+  "Message_HideType_user_deleted_room_from_team": "Скрыть сообщения \"Пользователь удалил зал из группы\"",
+  "Message_HideType_user_removed_room_from_team": "Скрыть сообщения \"Пользователь удалил зал из группы\"",
+  "Removed__roomName__from_this_team": "удалил(-а) #{{roomName}} из этой рабочей группы",
+  "Removed__username__from_team": "удалил(-а) @{{user_removed}} из этой рабочей группы"
 }
