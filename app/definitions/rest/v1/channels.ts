@@ -52,4 +52,22 @@ export type ChannelsEndpoints = {
 	'channels.convertToTeam': {
 		POST: (params: { channelId: string; channelName: string }) => { team: ITeam };
 	};
+	'channels.close': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'channels.kick': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.delete': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'channels.leave': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'channels.addModerator': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeModerator': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
 };

@@ -257,10 +257,8 @@ export const togglePinMessage = (messageId: string, pinned: boolean) => {
 	return sdk.post('chat.pinMessage', { messageId });
 };
 
-export const reportMessage = (messageId: string): any =>
+export const reportMessage = (messageId: string) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 
 export const setUserPreferences = (userId: string, data: Partial<INotificationPreferences>) =>
@@ -281,10 +279,6 @@ export const toggleRead = (read: boolean, roomId: string) => {
 	}
 	return sdk.post('subscriptions.read', { rid: roomId });
 };
-
-export const getUserRoles = () =>
-	// RC 0.27.0
-	sdk.methodCallWrapper('getUserRoles');
 
 export const getRoomCounters = (roomId: string, t: RoomTypes): any =>
 	// RC 0.65.0
@@ -432,16 +426,12 @@ export const toggleBlockUser = (rid: string, blocked: string, block: boolean): P
 	return sdk.methodCallWrapper('unblockUser', { rid, blocked });
 };
 
-export const leaveRoom = (roomId: string, t: RoomTypes): any =>
+export const leaveRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.leave`, { roomId });
 
-export const deleteRoom = (roomId: string, t: RoomTypes): any =>
+export const deleteRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.49.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
 export const toggleMuteUserInRoom = (rid: string, username: string, mute: boolean) => {
@@ -509,29 +499,22 @@ export const toggleRoomModerator = ({
 	t: SubscriptionType;
 	userId: string;
 	isModerator: boolean;
-}): any => {
+}) => {
+	const type = t as SubscriptionType.CHANNEL;
 	if (isModerator) {
 		// RC 0.49.4
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.addModerator`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(type)}.addModerator`, { roomId, userId });
 	}
 	// RC 0.49.4
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.removeModerator`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(type)}.removeModerator`, { roomId, userId });
 };
 
-export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: SubscriptionType; userId: string }): any =>
+export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomTypes; userId: string }) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.kick`, { roomId, userId });
 
-export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }): any =>
+export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.ignoreUser', { rid, userId, ignore });
 
 export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean) => {
@@ -544,10 +527,8 @@ export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: 
 	return sdk.post(`${roomTypeToApiType(type)}.unarchive`, { roomId });
 };
 
-export const hideRoom = (roomId: string, t: RoomTypes): any =>
+export const hideRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
 export const saveRoomSettings = (

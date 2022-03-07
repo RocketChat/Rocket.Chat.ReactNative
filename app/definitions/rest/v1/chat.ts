@@ -26,6 +26,9 @@ export type ChatEndpoints = {
 	'chat.pinMessage': {
 		POST: (params: { messageId: IMessage['_id'] }) => void;
 	};
+	'chat.reportMessage': {
+		POST: (params: { messageId: IMessage['_id']; description: string }) => void;
+	};
 	'chat.getDiscussions': {
 		GET: (params: { roomId: IRoom['_id']; text?: string; offset: number; count: number }) => {
 			messages: IMessage[];
@@ -53,5 +56,8 @@ export type ChatEndpoints = {
 	};
 	'chat.react': {
 		POST: (params: { emoji: string; messageId: string }) => void;
+	};
+	'chat.ignoreUser': {
+		GET: (params: { rid: string; userId: string; ignore: boolean }) => {};
 	};
 };
