@@ -55,4 +55,13 @@ export type ChannelsEndpoints = {
 	'channels.close': {
 		POST: (params: { roomId: string }) => {};
 	};
+	'channels.kick': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.delete': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'channels.leave': {
+		POST: (params: { roomId: string }) => {};
+	};
 };
