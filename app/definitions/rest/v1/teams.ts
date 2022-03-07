@@ -1,17 +1,13 @@
 import { IRoom, IServerRoomItem } from '../../IRoom';
 import { IServerTeamUpdateRoom, ITeam, TEAM_TYPE } from '../../ITeam';
+import { PaginatedResult } from '../helpers/PaginatedResult';
 
 export type TeamsEndpoints = {
 	'teams.removeRoom': {
 		POST: (params: { roomId: string; teamId: string }) => { room: IServerRoomItem };
 	};
 	'teams.listRoomsOfUser': {
-		GET: (params: { teamId: string; userId: string }) => {
-			rooms: IServerRoomItem[];
-			total: number;
-			count: number;
-			offset: number;
-		};
+		GET: (params: { teamId: string; userId: string }) => PaginatedResult<{ rooms: IServerRoomItem[] }>;
 	};
 	'teams.updateRoom': {
 		POST: (params: { roomId: string; isDefault: boolean }) => { room: IServerTeamUpdateRoom };
@@ -34,11 +30,12 @@ export type TeamsEndpoints = {
 		}) => { team: ITeam };
 	};
 	'teams.listRooms': {
-		GET: (params: { teamId: string; count: number; offset: number; type: string; filter?: any }) => {
-			rooms: IServerTeamUpdateRoom[];
-			total: number;
+		GET: (params: {
+			teamId: string;
 			count: number;
 			offset: number;
-		};
+			type: string;
+			filter?: any;
+		}) => PaginatedResult<{ rooms: IServerTeamUpdateRoom[] }>;
 	};
 };
