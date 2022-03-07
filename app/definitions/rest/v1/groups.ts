@@ -57,4 +57,16 @@ export type GroupsEndpoints = {
 			userMentions: number;
 		};
 	};
+	'groups.close': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'groups.kick': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'groups.delete': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'groups.leave': {
+		POST: (params: { roomId: string }) => {};
+	};
 };
