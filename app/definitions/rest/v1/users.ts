@@ -34,4 +34,7 @@ export type UsersEndpoints = {
 	'users.register': {
 		POST: (params: { name: string; email: string; username: string; pass: string }) => { user: IUserRegistered };
 	};
+	'users.setStatus': {
+		POST: (params: { status: string; message: string }) => {};
+	};
 };
