@@ -345,7 +345,7 @@ export const editLivechat = (userData: any, roomData: any) =>
 	// RC 0.55.0
 	sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
 
-export const returnLivechat = (rid: string) =>
+export const returnLivechat = (rid: string): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
 
