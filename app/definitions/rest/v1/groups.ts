@@ -49,4 +49,7 @@ export type GroupsEndpoints = {
 	'groups.delete': {
 		POST: (params: { roomId: string }) => {};
 	};
+	'groups.leave': {
+		POST: (params: { roomId: string }) => {};
+	};
 };

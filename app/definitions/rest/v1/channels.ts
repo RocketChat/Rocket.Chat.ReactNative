@@ -55,4 +55,7 @@ export type ChannelsEndpoints = {
 	'channels.delete': {
 		POST: (params: { roomId: string }) => {};
 	};
+	'channels.leave': {
+		POST: (params: { roomId: string }) => {};
+	};
 };
