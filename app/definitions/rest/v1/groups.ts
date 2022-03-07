@@ -46,6 +46,9 @@ export type GroupsEndpoints = {
 	'groups.convertToTeam': {
 		POST: (params: { roomId: string; roomName: string }) => { team: ITeam };
 	};
+	'groups.delete': {
+		POST: (params: { roomId: string }) => {};
+	};
 	'groups.leave': {
 		POST: (params: { roomId: string }) => {};
 	};
