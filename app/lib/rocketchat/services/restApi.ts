@@ -501,17 +501,14 @@ export const toggleRoomModerator = ({
 	t: SubscriptionType;
 	userId: string;
 	isModerator: boolean;
-}): any => {
+}) => {
+	const type = t as SubscriptionType.CHANNEL;
 	if (isModerator) {
 		// RC 0.49.4
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.addModerator`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(type)}.addModerator`, { roomId, userId });
 	}
 	// RC 0.49.4
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.removeModerator`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(type)}.removeModerator`, { roomId, userId });
 };
 
 export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomTypes; userId: string }) =>
