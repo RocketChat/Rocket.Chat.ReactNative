@@ -57,10 +57,8 @@ export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
 	// RC 0.70.0
 	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
-export const updateJitsiTimeout = (roomId: string): any =>
+export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('video-conference/jitsi.update-timeout', { roomId });
 
 export const register = (credentials: { name: string; email: string; pass: string; username: string }) =>
@@ -241,36 +239,26 @@ export const markAsUnread = ({ messageId }: { messageId: string }) =>
 	// RC 0.65.0
 	sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 
-export const toggleStarMessage = (messageId: string, starred: boolean): any => {
+export const toggleStarMessage = (messageId: string, starred: boolean) => {
 	if (starred) {
 		// RC 0.59.0
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('chat.unStarMessage', { messageId });
 	}
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('chat.starMessage', { messageId });
 };
 
-export const togglePinMessage = (messageId: string, pinned: boolean): any => {
+export const togglePinMessage = (messageId: string, pinned: boolean) => {
 	if (pinned) {
 		// RC 0.59.0
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('chat.unPinMessage', { messageId });
 	}
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('chat.pinMessage', { messageId });
 };
 
-export const reportMessage = (messageId: string): any =>
+export const reportMessage = (messageId: string) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 
 export const setUserPreferences = (userId: string, data: Partial<INotificationPreferences>) =>
@@ -283,10 +271,8 @@ export const setUserStatus = (status?: string, message?: string): any =>
 	// @ts-ignore
 	sdk.post('users.setStatus', { status, message });
 
-export const setReaction = (emoji: string, messageId: string): any =>
+export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.react', { emoji, messageId });
 
 export const toggleRead = (read: boolean, roomId: string) => {
