@@ -190,4 +190,7 @@ export type OmnichannelEndpoints = {
 			total: number;
 		};
 	};
+	'livechat/agents/:uid/departments?enabledDepartmentsOnly=true': {
+		GET: () => { departments: ILivechatDepartment[] };
+	};
 };

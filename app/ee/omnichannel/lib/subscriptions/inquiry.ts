@@ -3,7 +3,6 @@ import { store } from '../../../../lib/auxStore';
 import RocketChat from '../../../../lib/rocketchat';
 import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
 import sdk from '../../../../lib/rocketchat/services/sdk';
-import { ILivechatDepartment } from '../../../../definitions/ILivechatDepartment';
 import { IOmnichannelRoom } from '../../../../definitions';
 
 interface IArgsQueueOmnichannel extends IOmnichannelRoom {
@@ -82,7 +81,7 @@ export default function subscribeInquiry() {
 			throw new Error('inquiry: @subscribeInquiry user.id not found');
 		}
 
-		RocketChat.getAgentDepartments(user.id).then((result: { success: boolean; departments: ILivechatDepartment[] }) => {
+		RocketChat.getAgentDepartments(user.id).then(result => {
 			if (result.success) {
 				const { departments } = result;
 
