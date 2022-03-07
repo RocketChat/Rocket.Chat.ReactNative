@@ -265,10 +265,8 @@ export const setUserPreferences = (userId: string, data: Partial<INotificationPr
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { userId, data });
 
-export const setUserStatus = (status?: string, message?: string): any =>
+export const setUserStatus = (status: string, message: string) =>
 	// RC 1.2.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.setStatus', { status, message });
 
 export const setReaction = (emoji: string, messageId: string) =>
