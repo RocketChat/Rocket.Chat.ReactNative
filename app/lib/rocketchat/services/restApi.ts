@@ -518,10 +518,8 @@ export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: R
 	// RC 0.48.0
 	sdk.post(`${roomTypeToApiType(t)}.kick`, { roomId, userId });
 
-export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }): any =>
+export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.ignoreUser', { rid, userId, ignore });
 
 export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean) => {
