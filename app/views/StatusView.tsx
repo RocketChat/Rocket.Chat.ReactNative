@@ -1,24 +1,24 @@
 import React from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { FlatList, StyleSheet } from 'react-native';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import I18n from '../i18n';
+import { UserStatus } from '../definitions/UserStatus';
+import { setUser } from '../actions/login';
+import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
+import Loading from '../containers/Loading';
+import SafeAreaView from '../containers/SafeAreaView';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
+import { LISTENER } from '../containers/Toast';
+import { IApplicationState, IBaseScreen, IUser } from '../definitions';
+import I18n from '../i18n';
+import RocketChat from '../lib/rocketchat';
+import { getUserSelector } from '../selectors/login';
+import { withTheme } from '../theme';
 import EventEmitter from '../utils/events';
 import { showErrorAlert } from '../utils/info';
-import Loading from '../containers/Loading';
-import RocketChat from '../lib/rocketchat';
 import log, { events, logEvent } from '../utils/log';
-import { LISTENER } from '../containers/Toast';
-import { withTheme } from '../theme';
-import { getUserSelector } from '../selectors/login';
-import * as HeaderButton from '../containers/HeaderButton';
-import { setUser as setUserAction } from '../actions/login';
-import SafeAreaView from '../containers/SafeAreaView';
 
 const STATUS = [
 	{
@@ -54,23 +54,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IUser {
-	id?: string;
-	status?: string;
-	statusText?: string;
-}
-
 interface IStatusViewState {
 	statusText: string;
 	loading: boolean;
 }
 
-interface IStatusViewProps {
-	navigation: StackNavigationProp<any, 'StatusView'>;
-	user: IUser;
-	theme: string;
+interface IStatusViewProps extends IBaseScreen<any, 'StatusView'> {
+	user: Pick<IUser, 'id' | 'status' | 'statusText'>;
 	isMasterDetail: boolean;
-	setUser: (user: IUser) => void;
 	Accounts_AllowInvisibleStatusOption: boolean;
 }
 
@@ -111,7 +102,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 	};
 
 	setCustomStatus = async (statusText: string) => {
-		const { user, setUser } = this.props;
+		const { user, dispatch } = this.props;
 
 		this.setState({ loading: true });
 
@@ -119,7 +110,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 			const result = await RocketChat.setUserStatus(user.status, statusText);
 			if (result.success) {
 				logEvent(events.STATUS_CUSTOM);
-				setUser({ statusText });
+				dispatch(setUser({ statusText }));
 				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
 			} else {
 				logEvent(events.STATUS_CUSTOM_F);
@@ -156,7 +147,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 
 	renderItem = ({ item }: { item: { id: string; name: string } }) => {
 		const { statusText } = this.state;
-		const { user, setUser } = this.props;
+		const { user, dispatch } = this.props;
 		const { id, name } = item;
 		return (
 			<List.Item
@@ -168,7 +159,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 						try {
 							const result = await RocketChat.setUserStatus(item.id, statusText);
 							if (result.success) {
-								setUser({ status: item.id });
+								dispatch(setUser({ status: item.id as UserStatus }));
 							}
 						} catch (e: any) {
 							showErrorAlert(I18n.t(e.data.errorType));
@@ -205,14 +196,10 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
-	Accounts_AllowInvisibleStatusOption: state.settings.Accounts_AllowInvisibleStatusOption ?? true
+	Accounts_AllowInvisibleStatusOption: (state.settings.Accounts_AllowInvisibleStatusOption as boolean) ?? true
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	setUser: (user: IUser) => dispatch(setUserAction(user))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(StatusView));
+export default connect(mapStateToProps)(withTheme(StatusView));

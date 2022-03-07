@@ -2,6 +2,7 @@ import Model from '@nozbe/watermelondb/Model';
 
 import { UserStatus } from './UserStatus';
 import { IRocketChatRecord } from './IRocketChatRecord';
+import { ILoggedUser } from './ILoggedUser';
 
 export interface ILoginToken {
 	hashedToken: string;
@@ -19,6 +20,16 @@ export interface IPersonalAccessToken extends ILoginToken {
 	lastTokenPart: string;
 	name?: string;
 	bypassTwoFactor?: boolean;
+}
+
+export interface IUserRegistered {
+	_id: string;
+	type: string;
+	status: UserStatus;
+	active: boolean;
+	name: string;
+	username: string;
+	__rooms: string[];
 }
 
 export interface IUserEmailVerificationToken {
@@ -92,18 +103,36 @@ export interface IUserSettings {
 		[key: string]: any;
 	};
 }
+type TNotifications = 'default' | 'all' | 'mentions' | 'nothing';
 
-export interface IUser extends IRocketChatRecord {
+export interface INotificationPreferences {
+	id: string;
+	enableMessageParserEarlyAdoption: boolean;
+	desktopNotifications: TNotifications;
+	pushNotifications: TNotifications;
+	emailNotificationMode?: 'mentions' | 'nothing';
+}
+
+export interface IUserPreferences {
+	user: { _id: string };
+	settings: {
+		preferences: INotificationPreferences;
+	};
+}
+
+export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' | 'name' | 'status'> {
 	_id: string;
-	createdAt: Date;
-	roles: string[];
-	type: string;
-	active: boolean;
-	username?: string;
+	id: string;
+	token: string;
+	createdAt?: Date;
+	roles?: string[];
+	type?: string;
+	active?: boolean;
+	username: string;
 	name?: string;
 	services?: IUserServices;
 	emails?: IUserEmail[];
-	status?: UserStatus;
+	status: UserStatus;
 	statusConnection?: string;
 	lastLogin?: Date;
 	avatarOrigin?: string;
@@ -115,7 +144,6 @@ export interface IUser extends IRocketChatRecord {
 	oauth?: {
 		authorizedClients: string[];
 	};
-	_updatedAt: Date;
 	statusLivechat?: string;
 	e2e?: {
 		private_key: string;
@@ -128,6 +156,7 @@ export interface IUser extends IRocketChatRecord {
 	settings?: IUserSettings;
 	defaultRoom?: string;
 	ldap?: boolean;
+	muted?: boolean;
 }
 
 export interface IRegisterUser extends IUser {

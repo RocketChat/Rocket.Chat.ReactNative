@@ -11,6 +11,7 @@ import styles from './styles';
 import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 type TMessageButton = {
 	children: JSX.Element;
@@ -28,7 +29,7 @@ interface IMessageImage {
 	imageUrl?: string;
 	showAttachment: Function;
 	theme: string;
-	getCustomEmoji: Function;
+	getCustomEmoji: TGetCustomEmoji;
 }
 
 const ImageProgress = createImageProgress(FastImage);
@@ -66,7 +67,6 @@ const ImageContainer = React.memo(
 				<Button theme={theme} onPress={onPress}>
 					<View>
 						<MessageImage img={img} theme={theme} />
-						{/* @ts-ignore */}
 						<Markdown
 							msg={file.description}
 							baseUrl={baseUrl}

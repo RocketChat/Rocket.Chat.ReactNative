@@ -18,7 +18,7 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { IVisitor } from '../definitions/IVisitor';
+import { ILivechatVisitor } from '../definitions/ILivechatVisitor';
 import { ITagsOmnichannel } from '../definitions/ITagsOmnichannel';
 import { IApplicationState, ISubscription } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
@@ -55,15 +55,18 @@ interface IField {
 }
 
 interface IInputs {
-	[key: string]: string | string[] | undefined;
+	livechatData: {
+		[key: string]: any;
+	};
 	name: string;
 	email: string;
 	phone?: string;
 	topic: string;
 	tag: string[];
+	[key: string]: any;
 }
 
-type TParams = IVisitor & IInputs;
+type TParams = ILivechatVisitor & IInputs;
 
 interface ILivechat extends ISubscription {
 	// Param dynamic depends on server
@@ -87,8 +90,8 @@ interface ILivechatEditViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
 	route: RouteProp<ChatsStackParamList, 'LivechatEditView'>;
 	theme: string;
-	editOmnichannelContact: string[];
-	editLivechatRoomCustomfields: string[];
+	editOmnichannelContact: string[] | undefined;
+	editLivechatRoomCustomfields: string[] | undefined;
 }
 
 const Title = ({ title, theme }: ITitle) =>
@@ -113,7 +116,7 @@ const LivechatEditView = ({
 	const visitor = route.params?.roomUser ?? {};
 
 	const getCustomFields = async () => {
-		const result = await RocketChat.getCustomFields();
+		const result: any = await RocketChat.getCustomFields();
 		if (result.success && result.customFields?.length) {
 			const visitorCustomFields = result.customFields
 				.filter((field: IField) => field.visibility !== 'hidden' && field.scope === 'visitor')

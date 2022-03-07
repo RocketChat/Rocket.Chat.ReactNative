@@ -9,9 +9,11 @@ import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import messagesStatus from '../../constants/messagesStatus';
 import { withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
+import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { TAnyMessageModel } from '../../definitions';
 
 interface IMessageContainerProps {
-	item: any;
+	item: TAnyMessageModel;
 	user: {
 		id: string;
 		username: string;
@@ -19,30 +21,22 @@ interface IMessageContainerProps {
 	};
 	msg?: string;
 	rid?: string;
-	timeFormat: string;
+	timeFormat?: string;
 	style?: ViewStyle;
 	archived?: boolean;
 	broadcast?: boolean;
-	previousItem?: {
-		ts: any;
-		u: any;
-		groupable: any;
-		id: string;
-		tmid: string;
-		status: any;
-	};
-	isHeader: boolean;
+	previousItem?: TAnyMessageModel;
 	baseUrl: string;
 	Message_GroupingPeriod?: number;
 	isReadReceiptEnabled?: boolean;
 	isThreadRoom: boolean;
-	useRealName: boolean;
+	useRealName?: boolean;
 	autoTranslateRoom?: boolean;
 	autoTranslateLanguage?: string;
 	status?: number;
 	isIgnored?: boolean;
 	highlighted?: boolean;
-	getCustomEmoji(name: string): void;
+	getCustomEmoji: TGetCustomEmoji;
 	onLongPress?: Function;
 	onReactionPress?: Function;
 	onEncryptedPress?: Function;
@@ -58,16 +52,16 @@ interface IMessageContainerProps {
 	callJitsi?: Function;
 	blockAction?: Function;
 	onAnswerButtonPress?: Function;
-	theme: string;
+	theme?: string;
 	threadBadgeColor?: string;
 	toggleFollowThread?: Function;
 	jumpToMessage?: Function;
-	onPress: Function;
+	onPress?: Function;
 }
 
 class MessageContainer extends React.Component<IMessageContainerProps> {
 	static defaultProps = {
-		getCustomEmoji: () => {},
+		getCustomEmoji: () => null,
 		onLongPress: () => {},
 		onReactionPress: () => {},
 		onEncryptedPress: () => {},
@@ -221,7 +215,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		this.setState({ isManualUnignored: true });
 	};
 
-	get isHeader() {
+	get isHeader(): boolean {
 		const { item, previousItem, broadcast, Message_GroupingPeriod } = this.props;
 		if (this.hasError || (previousItem && previousItem.status === messagesStatus.ERROR)) {
 			return true;
@@ -229,9 +223,11 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		try {
 			if (
 				previousItem &&
+				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
 				previousItem.ts.toDateString() === item.ts.toDateString() &&
 				previousItem.u.username === item.u.username &&
 				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
+				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
 				item.ts - previousItem.ts < Message_GroupingPeriod! * 1000 &&
 				previousItem.tmid === item.tmid
 			) {
@@ -243,7 +239,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		}
 	}
 
-	get isThreadReply() {
+	get isThreadReply(): boolean {
 		const { item, previousItem, isThreadRoom } = this.props;
 		if (isThreadRoom) {
 			return false;
@@ -254,37 +250,40 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		return false;
 	}
 
-	get isThreadSequential() {
+	get isThreadSequential(): boolean {
 		const { item, isThreadRoom } = this.props;
 		if (isThreadRoom) {
 			return false;
 		}
-		return item.tmid;
+		return !!item.tmid;
 	}
 
-	get isEncrypted() {
+	get isEncrypted(): boolean {
 		const { item } = this.props;
 		const { t, e2e } = item;
 		return t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE;
 	}
 
-	get isInfo() {
+	get isInfo(): boolean {
 		const { item } = this.props;
-		return SYSTEM_MESSAGES.includes(item.t);
+		return (item.t && SYSTEM_MESSAGES.includes(item.t)) ?? false;
 	}
 
-	get isTemp() {
+	get isTemp(): boolean {
 		const { item } = this.props;
 		return item.status === messagesStatus.TEMP || item.status === messagesStatus.ERROR;
 	}
 
-	get isIgnored() {
+	get isIgnored(): boolean {
 		const { isManualUnignored } = this.state;
 		const { isIgnored } = this.props;
-		return isManualUnignored ? false : isIgnored;
+		if (isManualUnignored) {
+			return false;
+		}
+		return isIgnored ?? false;
 	}
 
-	get hasError() {
+	get hasError(): boolean {
 		const { item } = this.props;
 		return item.status === messagesStatus.ERROR;
 	}
@@ -303,7 +302,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		}
 	};
 
-	onLinkPress = (link: any) => {
+	onLinkPress = (link: string): void => {
 		const { item, theme, jumpToMessage } = this.props;
 		const isMessageLink = item?.attachments?.findIndex((att: any) => att?.message_link === link) !== -1;
 		if (isMessageLink) {
@@ -404,13 +403,12 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					rid={rid!}
 					author={u}
 					ts={ts}
-					type={t}
+					type={t as any}
 					attachments={attachments}
 					blocks={blocks}
 					urls={urls}
 					reactions={reactions}
 					alias={alias}
-					/* @ts-ignore*/
 					avatar={avatar}
 					emoji={emoji}
 					timeFormat={timeFormat}
@@ -423,16 +421,19 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					role={role}
 					drid={drid}
 					dcount={dcount}
+					// @ts-ignore
 					dlm={dlm}
 					tmid={tmid}
 					tcount={tcount}
+					// @ts-ignore
 					tlm={tlm}
 					tmsg={tmsg}
 					fetchThreadName={fetchThreadName!}
+					// @ts-ignore
 					mentions={mentions}
 					channels={channels}
-					isIgnored={this.isIgnored!}
-					isEdited={editedBy && !!editedBy.username}
+					isIgnored={this.isIgnored}
+					isEdited={(editedBy && !!editedBy.username) ?? false}
 					isHeader={this.isHeader}
 					isThreadReply={this.isThreadReply}
 					isThreadSequential={this.isThreadSequential}
@@ -446,7 +447,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					navToRoomInfo={navToRoomInfo!}
 					callJitsi={callJitsi!}
 					blockAction={blockAction!}
-					theme={theme}
+					theme={theme as string}
 					highlighted={highlighted!}
 				/>
 			</MessageContext.Provider>

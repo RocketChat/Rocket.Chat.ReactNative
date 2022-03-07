@@ -23,12 +23,14 @@ export * from './ILoggedUser';
 export * from './IServerHistory';
 export * from './IRocketChat';
 export * from './ICertificate';
+export * from './IUrl';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: StackNavigationProp<T, S>;
 	route: RouteProp<T, S>;
 	dispatch: Dispatch;
 	theme: string;
+	isMasterDetail: boolean;
 }
 
 export * from './redux';
