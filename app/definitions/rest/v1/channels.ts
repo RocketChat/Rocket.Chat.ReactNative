@@ -70,4 +70,10 @@ export type ChannelsEndpoints = {
 	'channels.removeModerator': {
 		POST: (params: { roomId: string; userId: string }) => {};
 	};
+	'channels.addOwner': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeOwner': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
 };
