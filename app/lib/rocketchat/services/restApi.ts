@@ -478,17 +478,14 @@ export const toggleRoomLeader = ({
 	t: SubscriptionType;
 	userId: string;
 	isLeader: boolean;
-}): any => {
+}) => {
+	const type = t as SubscriptionType.CHANNEL;
 	if (isLeader) {
 		// RC 0.58.0
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.addLeader`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(type)}.addLeader`, { roomId, userId });
 	}
 	// RC 0.58.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.removeLeader`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(type)}.removeLeader`, { roomId, userId });
 };
 
 export const toggleRoomModerator = ({
