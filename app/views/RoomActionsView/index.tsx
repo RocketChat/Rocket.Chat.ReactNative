@@ -106,7 +106,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		this.t = props.route.params?.t;
 		this.joined = props.route.params?.joined;
 		this.state = {
-			room: room || ({ rid: this.rid, t: this.t } as any),
+			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,
 			member: member || {},
 			joined: !!room,
@@ -144,7 +144,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				try {
 					const result = await RocketChat.getChannelInfo(room.rid);
 					if (result.success) {
-						this.setState({ room: { ...result.channel, rid: result.channel._id } as any });
+						// @ts-ignore
+						this.setState({ room: { ...result.channel, rid: result.channel._id } });
 					}
 				} catch (e) {
 					log(e);
