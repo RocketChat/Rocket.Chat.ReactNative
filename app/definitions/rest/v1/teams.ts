@@ -35,7 +35,7 @@ export type TeamsEndpoints = {
 	};
 	'teams.listRooms': {
 		GET: (params: { teamId: string; count: number; offset: number; type: string; filter?: any }) => {
-			rooms: IServerRoomItem[];
+			rooms: IServerTeamUpdateRoom[];
 			total: number;
 			count: number;
 			offset: number;

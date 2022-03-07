@@ -6,6 +6,7 @@ import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
+import { IServerTeamUpdateRoom } from '../definitions/ITeam';
 import { deleteRoom } from '../actions/room';
 import { themes } from '../constants/colors';
 import { withActionSheet } from '../containers/ActionSheet';
@@ -18,7 +19,6 @@ import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';
 import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IBaseScreen } from '../definitions';
-import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
 import database from '../lib/database';
@@ -41,41 +41,20 @@ const PERMISSION_EDIT_TEAM_CHANNEL = 'edit-team-channel';
 const PERMISSION_REMOVE_TEAM_CHANNEL = 'remove-team-channel';
 const PERMISSION_ADD_TEAM_CHANNEL = 'add-team-channel';
 
-const getItemLayout = (data: IItem[] | null | undefined, index: number) => ({
+const getItemLayout = (data: IServerTeamUpdateRoom[] | null | undefined, index: number) => ({
 	length: data?.length || 0,
 	offset: ROW_HEIGHT * index,
 	index
 });
-const keyExtractor = (item: IItem) => item._id;
-
-// This interface comes from request RocketChat.getTeamListRoom
-interface IItem {
-	_id: ERoomType;
-	fname: string;
-	customFields: object;
-	broadcast: boolean;
-	encrypted: boolean;
-	name: string;
-	t: string;
-	msgs: number;
-	usersCount: number;
-	u: { _id: string; name: string };
-	ts: string;
-	ro: boolean;
-	teamId: string;
-	default: boolean;
-	sysMes: boolean;
-	_updatedAt: string;
-	teamDefault: boolean;
-}
+const keyExtractor = (item: IServerTeamUpdateRoom) => item._id;
 
 interface ITeamChannelsViewState {
 	loading: boolean;
 	loadingMore: boolean;
-	data: IItem[];
+	data: IServerTeamUpdateRoom[];
 	isSearching: boolean;
 	searchText: string | null;
-	search: IItem[];
+	search: IServerTeamUpdateRoom[];
 	end: boolean;
 	showCreate: boolean;
 }
@@ -187,8 +166,10 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				} as ITeamChannelsViewState;
 
 				if (isSearching) {
+					// @ts-ignore
 					newState.search = [...search, ...result.rooms];
 				} else {
+					// @ts-ignore
 					newState.data = [...data, ...result.rooms];
 				}
 
@@ -339,12 +320,12 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		}
 	};
 
-	getRoomTitle = (item: IItem) => RocketChat.getRoomTitle(item);
+	getRoomTitle = (item: IServerTeamUpdateRoom) => RocketChat.getRoomTitle(item);
 
-	getRoomAvatar = (item: IItem) => RocketChat.getRoomAvatar(item);
+	getRoomAvatar = (item: IServerTeamUpdateRoom) => RocketChat.getRoomAvatar(item);
 
 	onPressItem = debounce(
-		async (item: IItem) => {
+		async (item: IServerTeamUpdateRoom) => {
 			logEvent(events.TC_GO_ROOM);
 			const { navigation, isMasterDetail } = this.props;
 			try {
@@ -372,7 +353,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		true
 	);
 
-	toggleAutoJoin = async (item: IItem) => {
+	toggleAutoJoin = async (item: IServerTeamUpdateRoom) => {
 		logEvent(events.TC_TOGGLE_AUTOJOIN);
 		try {
 			const { data } = this.state;
@@ -392,7 +373,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		}
 	};
 
-	remove = (item: IItem) => {
+	remove = (item: IServerTeamUpdateRoom) => {
 		Alert.alert(
 			I18n.t('Confirmation'),
 			I18n.t('Remove_Team_Room_Warning'),
@@ -411,7 +392,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		);
 	};
 
-	removeRoom = async (item: IItem) => {
+	removeRoom = async (item: IServerTeamUpdateRoom) => {
 		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const { data } = this.state;
@@ -426,7 +407,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		}
 	};
 
-	delete = (item: IItem) => {
+	delete = (item: IServerTeamUpdateRoom) => {
 		logEvent(events.TC_DELETE_ROOM);
 		const { dispatch } = this.props;
 
@@ -441,7 +422,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					// VERIFY ON PR
+					// @ts-ignore
 					onPress: () => dispatch(deleteRoom(item._id, item))
 				}
 			],
@@ -449,7 +430,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		);
 	};
 
-	showChannelActions = async (item: IItem) => {
+	showChannelActions = async (item: IServerTeamUpdateRoom) => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		const {
 			showActionSheet,
@@ -511,7 +492,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		showActionSheet({ options });
 	};
 
-	renderItem = ({ item }: { item: IItem }) => {
+	renderItem = ({ item }: { item: IServerTeamUpdateRoom }) => {
 		const { StoreLastMessage, useRealName, theme, width, showAvatar, displayMode } = this.props;
 		return (
 			<RoomItem
