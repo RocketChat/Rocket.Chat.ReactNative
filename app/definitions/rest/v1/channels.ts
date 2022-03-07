@@ -64,4 +64,10 @@ export type ChannelsEndpoints = {
 	'channels.leave': {
 		POST: (params: { roomId: string }) => {};
 	};
+	'channels.addModerator': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeModerator': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
 };
