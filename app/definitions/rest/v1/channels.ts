@@ -63,6 +63,9 @@ export type ChannelsEndpoints = {
 			userMentions: number;
 		};
 	};
+	'channels.join': {
+		POST: (params: { roomId: string; joinCode: string | null }) => { channel: IServerRoomItem };
+	};
 	'channels.close': {
 		POST: (params: { roomId: string }) => {};
 	};
@@ -79,6 +82,18 @@ export type ChannelsEndpoints = {
 		POST: (params: { roomId: string; userId: string }) => {};
 	};
 	'channels.removeModerator': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.addOwner': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeOwner': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.addLeader': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeLeader': {
 		POST: (params: { roomId: string; userId: string }) => {};
 	};
 };

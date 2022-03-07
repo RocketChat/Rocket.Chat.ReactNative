@@ -221,14 +221,11 @@ export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; sel
 	return sdk.post('teams.convertToChannel', params);
 };
 
-export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p'): any => {
-	// TODO: join code
+export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p') => {
 	// RC 0.48.0
 	if (type === 'p') {
-		return sdk.methodCallWrapper('joinRoom', roomId);
+		return sdk.methodCallWrapper('joinRoom', roomId) as Promise<boolean>;
 	}
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('channels.join', { roomId, joinCode });
 };
 
@@ -459,17 +456,14 @@ export const toggleRoomOwner = ({
 	t: SubscriptionType;
 	userId: string;
 	isOwner: boolean;
-}): any => {
+}) => {
+	const type = t as SubscriptionType.CHANNEL;
 	if (isOwner) {
 		// RC 0.49.4
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.addOwner`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(type)}.addOwner`, { roomId, userId });
 	}
 	// RC 0.49.4
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.removeOwner`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(type)}.removeOwner`, { roomId, userId });
 };
 
 export const toggleRoomLeader = ({
@@ -482,17 +476,14 @@ export const toggleRoomLeader = ({
 	t: SubscriptionType;
 	userId: string;
 	isLeader: boolean;
-}): any => {
+}) => {
+	const type = t as SubscriptionType.CHANNEL;
 	if (isLeader) {
 		// RC 0.58.0
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.addLeader`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(type)}.addLeader`, { roomId, userId });
 	}
 	// RC 0.58.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.removeLeader`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(type)}.removeLeader`, { roomId, userId });
 };
 
 export const toggleRoomModerator = ({
