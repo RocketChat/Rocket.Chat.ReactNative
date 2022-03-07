@@ -534,10 +534,8 @@ export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: 
 	return sdk.post(`${roomTypeToApiType(type)}.unarchive`, { roomId });
 };
 
-export const hideRoom = (roomId: string, t: RoomTypes): any =>
+export const hideRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
 export const saveRoomSettings = (
