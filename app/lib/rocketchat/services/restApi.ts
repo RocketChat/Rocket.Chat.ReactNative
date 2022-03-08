@@ -319,7 +319,7 @@ export const getTeamListRoom = ({
 	offset: number;
 	type: string;
 	filter: any;
-}): any => {
+}) => {
 	const params: any = {
 		teamId,
 		count,
@@ -331,8 +331,6 @@ export const getTeamListRoom = ({
 		params.filter = filter;
 	}
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.get('teams.listRooms', params);
 };
 
