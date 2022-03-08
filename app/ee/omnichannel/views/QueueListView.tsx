@@ -1,6 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { FlatList } from 'react-native';
+import { CompositeNavigationProp } from '@react-navigation/native';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { FlatList, ListRenderItem } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
@@ -19,18 +20,50 @@ import * as HeaderButton from '../../../containers/HeaderButton';
 import RocketChat from '../../../lib/rocketchat';
 import { events, logEvent } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
+import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
+import { DisplayMode } from '../../../constants/constantDisplayMode';
+import { ChatsStackParamList } from '../../../stacks/types';
+import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
+import { TSettingsValues } from '../../../reducers/settings';
+
+interface INavigationOptions {
+	isMasterDetail: boolean;
+	navigation: CompositeNavigationProp<
+		StackNavigationProp<ChatsStackParamList, 'QueueListView'>,
+		StackNavigationProp<MasterDetailInsideStackParamList>
+	>;
+}
+
+interface IQueueListView extends INavigationOptions {
+	user: {
+		id: string;
+		username: string;
+		token: string;
+	};
+	width: number;
+	queued: IOmnichannelRoom[];
+	server: string;
+	useRealName?: TSettingsValues;
+	theme: string;
+	showAvatar: any;
+	displayMode: DisplayMode;
+}
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
-const getItemLayout = (data, index) => ({
+const getItemLayout = (data: IOmnichannelRoom[] | null | undefined, index: number) => ({
 	length: ROW_HEIGHT,
 	offset: ROW_HEIGHT * index,
 	index
 });
-const keyExtractor = item => item.rid;
+const keyExtractor = (item: IOmnichannelRoom) => item.rid;
 
-class QueueListView extends React.Component {
-	static navigationOptions = ({ navigation, isMasterDetail }) => {
-		const options = {
+class QueueListView extends React.Component<IQueueListView, any> {
+	private getScrollRef?: React.Ref<FlatList<IOmnichannelRoom>>;
+
+	private onEndReached: ((info: { distanceFromEnd: number }) => void) | null | undefined;
+
+	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOptions) => {
+		const options: StackNavigationOptions = {
 			title: I18n.t('Queued_chats')
 		};
 		if (isMasterDetail) {
@@ -39,24 +72,7 @@ class QueueListView extends React.Component {
 		return options;
 	};
 
-	static propTypes = {
-		user: PropTypes.shape({
-			id: PropTypes.string,
-			username: PropTypes.string,
-			token: PropTypes.string
-		}),
-		isMasterDetail: PropTypes.bool,
-		width: PropTypes.number,
-		queued: PropTypes.array,
-		server: PropTypes.string,
-		useRealName: PropTypes.bool,
-		navigation: PropTypes.object,
-		theme: PropTypes.string,
-		showAvatar: PropTypes.bool,
-		displayMode: PropTypes.string
-	};
-
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps: IQueueListView) {
 		const { queued } = this.props;
 		if (!dequal(nextProps.queued, queued)) {
 			return true;
@@ -65,7 +81,7 @@ class QueueListView extends React.Component {
 		return false;
 	}
 
-	onPressItem = (item = {}) => {
+	onPressItem = (item = {} as IOmnichannelRoom) => {
 		logEvent(events.QL_GO_ROOM);
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
@@ -84,13 +100,13 @@ class QueueListView extends React.Component {
 		});
 	};
 
-	getRoomTitle = item => RocketChat.getRoomTitle(item);
+	getRoomTitle = (item: IOmnichannelRoom) => RocketChat.getRoomTitle(item);
 
-	getRoomAvatar = item => RocketChat.getRoomAvatar(item);
+	getRoomAvatar = (item: IOmnichannelRoom) => RocketChat.getRoomAvatar(item);
 
-	getUidDirectMessage = room => RocketChat.getUidDirectMessage(room);
+	getUidDirectMessage = (room: IOmnichannelRoom) => RocketChat.getUidDirectMessage(room);
 
-	renderItem = ({ item }) => {
+	renderItem: ListRenderItem<IOmnichannelRoom> = ({ item }) => {
 		const {
 			user: { id: userId, username, token },
 			server,
@@ -152,7 +168,7 @@ class QueueListView extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
 	server: state.server.server,

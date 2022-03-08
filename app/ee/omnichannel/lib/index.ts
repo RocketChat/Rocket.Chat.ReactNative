@@ -1,21 +1,24 @@
-import RocketChat from '../../../lib/rocketchat';
+import sdk from '../../../lib/rocketchat/services/sdk';
+import { IUser } from '../../../definitions';
 import EventEmitter from '../../../utils/events';
 import subscribeInquiry from './subscriptions/inquiry';
 
-export const isOmnichannelStatusAvailable = user => user?.statusLivechat === 'available';
+export const isOmnichannelStatusAvailable = (user: IUser): boolean => user?.statusLivechat === 'available';
 
 // RC 0.26.0
-export const changeLivechatStatus = () => RocketChat.methodCallWrapper('livechat:changeLivechatStatus');
+export const changeLivechatStatus = () => sdk.methodCallWrapper('livechat:changeLivechatStatus');
 
 // RC 2.4.0
-export const getInquiriesQueued = () => RocketChat.sdk.get('livechat/inquiries.queued');
+// @ts-ignore
+export const getInquiriesQueued = () => sdk.get('livechat/inquiries.queued');
 
 // this inquiry is added to the db by the subscriptions stream
 // and will be removed by the queue stream
 // RC 2.4.0
-export const takeInquiry = inquiryId => RocketChat.methodCallWrapper('livechat:takeInquiry', inquiryId);
+export const takeInquiry = (inquiryId: string) => sdk.methodCallWrapper('livechat:takeInquiry', inquiryId);
 
 class Omnichannel {
+	private inquirySub: { stop: () => void } | null;
 	constructor() {
 		this.inquirySub = null;
 		EventEmitter.addEventListener('INQUIRY_SUBSCRIBE', this.subscribeInquiry);
@@ -36,5 +39,5 @@ class Omnichannel {
 	};
 }
 
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const omnichannel = new Omnichannel();

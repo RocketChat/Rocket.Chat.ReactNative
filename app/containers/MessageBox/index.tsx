@@ -926,8 +926,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				let msg = `[ ](${permalink}) `;
 
 				// if original message wasn't sent by current user and neither from a direct room
-				if (user.username !== replyingMessage.u.username && roomType !== 'd' && replyWithMention) {
-					msg += `@${replyingMessage.u.username} `;
+				if (user.username !== replyingMessage?.u?.username && roomType !== 'd' && replyWithMention) {
+					msg += `@${replyingMessage?.u?.username} `;
 				}
 
 				msg = `${msg} ${message}`;

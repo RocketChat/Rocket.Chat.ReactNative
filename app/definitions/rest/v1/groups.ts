@@ -46,4 +46,27 @@ export type GroupsEndpoints = {
 	'groups.convertToTeam': {
 		POST: (params: { roomId: string; roomName: string }) => { team: ITeam };
 	};
+	'groups.counters': {
+		GET: (params: { roomId: string }) => {
+			joined: boolean;
+			members: number;
+			unreads: number;
+			unreadsFrom: Date;
+			msgs: number;
+			latest: Date;
+			userMentions: number;
+		};
+	};
+	'groups.close': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'groups.kick': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'groups.delete': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'groups.leave': {
+		POST: (params: { roomId: string }) => {};
+	};
 };

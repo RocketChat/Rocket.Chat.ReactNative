@@ -2,11 +2,28 @@ import log from '../../../../utils/log';
 import { store } from '../../../../lib/auxStore';
 import RocketChat from '../../../../lib/rocketchat';
 import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
+import sdk from '../../../../lib/rocketchat/services/sdk';
+import { ILivechatDepartment } from '../../../../definitions/ILivechatDepartment';
+import { IOmnichannelRoom } from '../../../../definitions';
 
-const removeListener = listener => listener.stop();
+interface IArgsQueueOmnichannel extends IOmnichannelRoom {
+	type: string;
+}
 
-let connectedListener;
-let queueListener;
+interface IDdpMessage {
+	msg: string;
+	collection: string;
+	id: string;
+	fields: {
+		eventName: string;
+		args: IArgsQueueOmnichannel[];
+	};
+}
+
+const removeListener = (listener: any) => listener.stop();
+
+let connectedListener: any;
+let queueListener: any;
 
 const streamTopic = 'stream-livechat-inquiry-queue-observer';
 
@@ -15,7 +32,7 @@ export default function subscribeInquiry() {
 		store.dispatch(inquiryRequest());
 	};
 
-	const handleQueueMessageReceived = ddpMessage => {
+	const handleQueueMessageReceived = (ddpMessage: IDdpMessage) => {
 		const [{ type, ...sub }] = ddpMessage.fields.args;
 
 		// added can be ignored, since it is handled by 'changed' event
@@ -26,7 +43,9 @@ export default function subscribeInquiry() {
 		// if the sub isn't on the queue anymore
 		if (sub.status !== 'queued') {
 			// remove it from the queue
-			store.dispatch(inquiryQueueRemove(sub._id));
+			if (sub._id) {
+				store.dispatch(inquiryQueueRemove(sub._id));
+			}
 			return;
 		}
 
@@ -53,23 +72,28 @@ export default function subscribeInquiry() {
 		}
 	};
 
-	connectedListener = RocketChat.onStreamData('connected', handleConnection);
-	queueListener = RocketChat.onStreamData(streamTopic, handleQueueMessageReceived);
+	connectedListener = sdk.onStreamData('connected', handleConnection);
+	queueListener = sdk.onStreamData(streamTopic, handleQueueMessageReceived);
 
 	try {
 		const { user } = store.getState().login;
-		RocketChat.getAgentDepartments(user.id).then(result => {
+
+		if (!user.id) {
+			throw new Error('inquiry: @subscribeInquiry user.id not found');
+		}
+
+		RocketChat.getAgentDepartments(user.id).then((result: { success: boolean; departments: ILivechatDepartment[] }) => {
 			if (result.success) {
 				const { departments } = result;
 
 				if (!departments.length || RocketChat.hasRole('livechat-manager')) {
-					RocketChat.subscribe(streamTopic, 'public').catch(e => console.log(e));
+					sdk.subscribe(streamTopic, 'public').catch((e: unknown) => console.log(e));
 				}
 
 				const departmentIds = departments.map(({ departmentId }) => departmentId);
 				departmentIds.forEach(departmentId => {
 					// subscribe to all departments of the agent
-					RocketChat.subscribe(streamTopic, `department/${departmentId}`).catch(e => console.log(e));
+					sdk.subscribe(streamTopic, `department/${departmentId}`).catch((e: unknown) => console.log(e));
 				});
 			}
 		});
