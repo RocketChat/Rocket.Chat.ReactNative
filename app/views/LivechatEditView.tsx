@@ -47,12 +47,6 @@ interface ITitle {
 	theme: string;
 }
 
-interface IField {
-	_id: string;
-	visibility: string;
-	scope: string;
-}
-
 interface IInputs {
 	livechatData: {
 		[key: string]: any;
@@ -115,17 +109,17 @@ const LivechatEditView = ({
 	const visitor = route.params?.roomUser ?? {};
 
 	const getCustomFields = async () => {
-		const result: any = await RocketChat.getCustomFields();
+		const result = await RocketChat.getCustomFields();
 		if (result.success && result.customFields?.length) {
 			const visitorCustomFields = result.customFields
-				.filter((field: IField) => field.visibility !== 'hidden' && field.scope === 'visitor')
-				.map((field: IField) => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
-				.reduce((ret: IField, field: IField) => ({ ...field, ...ret }));
+				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
+				.map(field => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
+				.reduce((ret, field) => ({ ...field, ...ret }), {});
 
 			const livechatCustomFields = result.customFields
-				.filter((field: IField) => field.visibility !== 'hidden' && field.scope === 'room')
-				.map((field: IField) => ({ [field._id]: (livechat.livechatData && livechat.livechatData[field._id]) || '' }))
-				.reduce((ret: IField, field: IField) => ({ ...field, ...ret }));
+				.filter(field => field.visibility !== 'hidden' && field.scope === 'room')
+				.map(field => ({ [field._id]: (livechat.livechatData && livechat.livechatData[field._id]) || '' }))
+				.reduce((ret, field) => ({ ...field, ...ret }), {});
 
 			return setCustomFields({ visitor: visitorCustomFields, livechat: livechatCustomFields });
 		}
