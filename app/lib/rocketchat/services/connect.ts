@@ -25,7 +25,6 @@ import { updatePermission } from '../../../actions/permissions';
 import EventEmitter from '../../../utils/events';
 import { updateSettings } from '../../../actions/settings';
 import defaultSettings from '../../../constants/settings';
-import getSettings from '../../methods/getSettings';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -87,7 +86,7 @@ function connect(
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 		sdk.initialize(server);
-		getSettings();
+		this.getSettings();
 
 		sdk.current
 			.connect()
@@ -333,7 +332,7 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWeb
 	});
 }
 
-function loginWithPassword({ user, password }: { user: string; password: string }) {
+function loginWithPassword({ user, password }: { user: string; password: string }): Promise<ILoggedUser> {
 	let params: ICredentials = { user, password };
 	const state = store.getState();
 
@@ -433,7 +432,7 @@ async function getWebsocketInfo({ server }: { server: string }) {
 		}
 	}
 
-	sdk.current.disconnect();
+	sdk.disconnect();
 
 	return {
 		success: true
