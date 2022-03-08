@@ -194,6 +194,10 @@ export type OmnichannelEndpoints = {
 		};
 	};
 
+	'livechat/agents/:uid/departments?enabledDepartmentsOnly=true': {
+		GET: () => { departments: ILivechatDepartment[] };
+	};
+
 	'canned-responses': {
 		GET: (params: PaginatedRequest<{ scope?: string; departmentId?: string; text?: string }>) => PaginatedResult<{
 			cannedResponses: ICannedResponse[];
