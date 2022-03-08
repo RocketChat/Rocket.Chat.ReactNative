@@ -145,7 +145,7 @@ export default async function (
 							tm.u = tMessageRecord.u;
 							tm.t = message.t;
 							if (message.t === E2E_MESSAGE_TYPE) {
-								tm.e2e = E2E_STATUS.DONE;
+								tm.e2e = E2E_STATUS.DONE as E2EType;
 							}
 						})
 					);
@@ -170,7 +170,7 @@ export default async function (
 						};
 						tm.t = message.t;
 						if (message.t === E2E_MESSAGE_TYPE) {
-							tm.e2e = E2E_STATUS.DONE;
+							tm.e2e = E2E_STATUS.DONE as E2EType;
 						}
 					})
 				);
