@@ -1,8 +1,11 @@
 import moment from 'moment';
 
 import parseUrls from './parseUrls';
+import type { IAttachment, IMessage, IThreadResult } from '../../../definitions';
 
-function normalizeAttachments(msg) {
+type TMsg = IMessage & IAttachment;
+
+function normalizeAttachments(msg: TMsg) {
 	if (typeof msg.attachments !== typeof [] || !msg.attachments || !msg.attachments.length) {
 		msg.attachments = [];
 	}
@@ -11,17 +14,17 @@ function normalizeAttachments(msg) {
 		if (att.ts) {
 			att.ts = moment(att.ts).toDate();
 		}
-		att = normalizeAttachments(att);
+		att = normalizeAttachments(att as TMsg);
 		return att;
 	});
 	return msg;
 }
 
-export default msg => {
+export default (msg: any): IMessage | IThreadResult | null => {
 	if (!msg) {
 		return null;
 	}
-	msg = normalizeAttachments(msg);
+	msg = normalizeAttachments(msg as TMsg);
 	msg.reactions = msg.reactions || [];
 	msg.unread = msg.unread || false;
 	// TODO: api problems
@@ -30,18 +33,19 @@ export default msg => {
 	// } else {
 	// 	msg.reactions = Object.keys(msg.reactions).map(key => ({ emoji: key, usernames: msg.reactions[key].usernames.map(username => ({ value: username })) }));
 	// }
+
 	if (!Array.isArray(msg.reactions)) {
 		msg.reactions = Object.keys(msg.reactions).map(key => ({
 			_id: `${msg._id}${key}`,
 			emoji: key,
-			usernames: msg.reactions[key].usernames
+			usernames: msg.reactions ? msg.reactions[key].usernames : []
 		}));
 	}
 	if (msg.translations && Object.keys(msg.translations).length) {
 		msg.translations = Object.keys(msg.translations).map(key => ({
 			_id: `${msg._id}${key}`,
 			language: key,
-			value: msg.translations[key]
+			value: msg.translations ? msg.translations[key] : ''
 		}));
 		msg.autoTranslate = true;
 	}
