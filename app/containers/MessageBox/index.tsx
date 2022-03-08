@@ -609,7 +609,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	getCannedResponses = debounce(async (text?: string) => {
 		const res = await RocketChat.getListCannedResponse({ text });
-		this.setState({ mentions: res?.cannedResponses || [], mentionLoading: false });
+		this.setState({ mentions: res.success ? res.cannedResponses : [], mentionLoading: false });
 	}, 500);
 
 	focus = () => {
