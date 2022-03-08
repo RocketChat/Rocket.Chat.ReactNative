@@ -278,10 +278,11 @@ export const toggleRead = (read: boolean, roomId: string) => {
 	return sdk.post('subscriptions.read', { rid: roomId });
 };
 
-export const getRoomCounters = (roomId: string, t: RoomTypes): any =>
+export const getRoomCounters = (
+	roomId: string,
+	t: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
+) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
 
 export const getChannelInfo = (roomId: string): any =>

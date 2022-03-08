@@ -1,19 +1,28 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Switch, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import * as List from '../../../containers/List';
 import styles from '../../../views/RoomsListView/styles';
 import { SWITCH_TRACK_COLOR, themes } from '../../../constants/colors';
-import { withTheme } from '../../../theme';
+import { useTheme } from '../../../theme';
 import UnreadBadge from '../../../presentation/UnreadBadge';
 import RocketChat from '../../../lib/rocketchat';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../lib';
+import { IUser } from '../../../definitions/IUser';
 
-const OmnichannelStatus = memo(({ searching, goQueue, theme, queueSize, inquiryEnabled, user }) => {
-	if (searching > 0 || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
+interface IOmnichannelStatus {
+	searching: boolean;
+	goQueue: () => void;
+	queueSize: number;
+	inquiryEnabled: boolean;
+	user: IUser;
+}
+
+const OmnichannelStatus = memo(({ searching, goQueue, queueSize, inquiryEnabled, user }: IOmnichannelStatus) => {
+	if (searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
 		return null;
 	}
+	const { theme } = useTheme();
 	const [status, setStatus] = useState(isOmnichannelStatusAvailable(user));
 
 	useEffect(() => {
@@ -48,16 +57,4 @@ const OmnichannelStatus = memo(({ searching, goQueue, theme, queueSize, inquiryE
 	);
 });
 
-OmnichannelStatus.propTypes = {
-	searching: PropTypes.bool,
-	goQueue: PropTypes.func,
-	queueSize: PropTypes.number,
-	inquiryEnabled: PropTypes.bool,
-	theme: PropTypes.string,
-	user: PropTypes.shape({
-		roles: PropTypes.array,
-		statusLivechat: PropTypes.string
-	})
-};
-
-export default withTheme(OmnichannelStatus);
+export default OmnichannelStatus;
