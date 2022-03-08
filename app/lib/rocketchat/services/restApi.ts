@@ -407,7 +407,7 @@ export const getCustomFields = () =>
 	// RC 2.2.0
 	sdk.get('livechat/custom-fields');
 
-export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }): any => {
+export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }) => {
 	const params = {
 		offset,
 		count,
@@ -417,8 +417,6 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	};
 
 	// RC 3.17.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.get('canned-responses', params);
 };
 
