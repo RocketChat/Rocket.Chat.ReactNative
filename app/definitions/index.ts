@@ -31,6 +31,7 @@ export interface IBaseScreen<T extends Record<string, object | undefined>, S ext
 	route: RouteProp<T, S>;
 	dispatch: Dispatch;
 	theme: string;
+	isMasterDetail: boolean;
 }
 
 export * from './redux';
