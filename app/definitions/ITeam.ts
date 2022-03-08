@@ -1,6 +1,6 @@
 import { IRocketChatRecord } from './IRocketChatRecord';
 import { IUser } from './IUser';
-import { IServerRoomItem } from './IRoom';
+import { IServerRoom } from './IRoom';
 
 export enum TEAM_TYPE {
 	PUBLIC = 0,
@@ -50,13 +50,9 @@ export interface ITeamStats {
 
 export interface IServerTeamUpdateRoom
 	extends Omit<
-		IServerRoomItem,
+		IServerRoom,
 		'topic' | 'joinCodeRequired' | 'description' | 'jitsiTimeout' | 'usersCount' | 'e2eKeyId' | 'avatarETag'
 	> {
-	broadcast: boolean;
-	msgs: number;
-	default: boolean;
-	sysMes: boolean;
 	teamId: string;
 	teamDefault: boolean;
 }

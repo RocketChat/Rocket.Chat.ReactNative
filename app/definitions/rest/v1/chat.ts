@@ -1,5 +1,5 @@
 import type { IMessage } from '../../IMessage';
-import type { IRoom } from '../../IRoom';
+import type { IServerRoom } from '../../IRoom';
 import { PaginatedResult } from '../helpers/PaginatedResult';
 
 export type ChatEndpoints = {
@@ -30,14 +30,14 @@ export type ChatEndpoints = {
 		POST: (params: { messageId: IMessage['_id']; description: string }) => void;
 	};
 	'chat.getDiscussions': {
-		GET: (params: { roomId: IRoom['_id']; text?: string; offset: number; count: number }) => {
+		GET: (params: { roomId: IServerRoom['_id']; text?: string; offset: number; count: number }) => {
 			messages: IMessage[];
 			total: number;
 		};
 	};
 	'chat.getThreadsList': {
 		GET: (params: {
-			rid: IRoom['_id'];
+			rid: IServerRoom['_id'];
 			type: 'unread' | 'following' | 'all';
 			text?: string;
 			offset: number;

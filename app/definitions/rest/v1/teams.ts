@@ -1,13 +1,13 @@
-import { IRoom, IServerRoomItem } from '../../IRoom';
+import { IServerRoom } from '../../IRoom';
 import { IServerTeamUpdateRoom, ITeam, TEAM_TYPE } from '../../ITeam';
 
 export type TeamsEndpoints = {
 	'teams.removeRoom': {
-		POST: (params: { roomId: string; teamId: string }) => { room: IServerRoomItem };
+		POST: (params: { roomId: string; teamId: string }) => { room: IServerRoom };
 	};
 	'teams.listRoomsOfUser': {
 		GET: (params: { teamId: string; userId: string }) => {
-			rooms: IServerRoomItem[];
+			rooms: IServerRoom[];
 			total: number;
 			count: number;
 			offset: number;
@@ -23,7 +23,7 @@ export type TeamsEndpoints = {
 		POST: (params: { teamId: string; userId: string; rooms?: string[] }) => {};
 	};
 	'teams.addRooms': {
-		POST: (params: { teamId: string; rooms: string[] }) => { rooms: IRoom[] };
+		POST: (params: { teamId: string; rooms: string[] }) => { rooms: IServerRoom[] };
 	};
 	'teams.create': {
 		POST: (params: {
