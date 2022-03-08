@@ -39,13 +39,14 @@ export type ModalStackParamList = {
 		member: any;
 		rid: string;
 		t: SubscriptionType;
+		showCloseModal?: boolean;
 	};
 	SelectListView: {
 		data: any;
 		title: string;
 		infoText: string;
 		nextAction: Function;
-		showAlert: () => void | boolean;
+		showAlert?: () => void | boolean;
 		isSearch?: boolean;
 		onSearch?: Function;
 		isRadio?: boolean;

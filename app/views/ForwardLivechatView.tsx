@@ -20,10 +20,6 @@ const styles = StyleSheet.create({
 		padding: 16
 	}
 });
-interface IUser {
-	username: string;
-	_id: string;
-}
 
 interface IParsedData {
 	label: string;
@@ -47,7 +43,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 		try {
 			const result = await RocketChat.getDepartments({ count: COUNT_DEPARTMENT, text, offset });
 			if (result.success) {
-				const parsedDepartments: IParsedData[] = result.departments.map(department => ({
+				const parsedDepartments = result.departments.map(department => ({
 					label: department.name,
 					value: department._id
 				}));
@@ -71,7 +67,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 				term
 			});
 			if (result.success) {
-				const parsedUsers = result.items.map((user: IUser) => ({ label: user.username, value: user._id }));
+				const parsedUsers = result.items.map(user => ({ label: user.username, value: user._id }));
 				if (!term) {
 					setUsers(parsedUsers);
 				}

@@ -15,15 +15,15 @@ export enum SubscriptionType {
 	DIRECT = 'd',
 	CHANNEL = 'c',
 	OMNICHANNEL = 'l',
-	E2E = 'e2e',
+	E2E = 'e2e', // FIXME: this is not a type of subscription
 	THREAD = 'thread' // FIXME: this is not a type of subscription
 }
 
 export interface IVisitor {
 	_id?: string;
-	username?: string;
 	token?: string;
-	status?: string;
+	status: 'online' | 'busy' | 'away' | 'offline';
+	username?: string;
 	lastMessageTs?: Date;
 }
 
@@ -33,13 +33,15 @@ export enum ERoomTypes {
 	CHANNEL = 'channel'
 }
 
+type RelationModified<T extends Model> = { fetch(): Promise<T[]> } & Relation<T>;
+
 export interface ISubscription {
 	_id: string;
 	id: string;
 	_updatedAt?: string;
 	v?: IVisitor;
 	f: boolean;
-	t: SubscriptionType;
+	t: SubscriptionType; // TODO: we need to review this type later
 	ts: string | Date;
 	ls: Date;
 	name: string;
@@ -76,14 +78,15 @@ export interface ISubscription {
 	lastThreadSync?: Date;
 	jitsiTimeout?: Date;
 	autoTranslate?: boolean;
-	autoTranslateLanguage: string;
-	lastMessage?: ILastMessage;
+	autoTranslateLanguage?: string;
+	lastMessage?: ILastMessage | null; // TODO: we need to use IMessage here
 	hideUnreadStatus?: boolean;
 	sysMes?: string[] | boolean;
 	uids?: string[];
 	usernames?: string[];
 	visitor?: IVisitor;
 	departmentId?: string;
+	status?: string;
 	servedBy?: IServedBy;
 	livechatData?: any;
 	tags?: string[];
@@ -93,12 +96,13 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
+	unsubscribe: () => Promise<any>;
 	separator?: boolean;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
-	messages: Relation<TMessageModel>;
-	threads: Relation<TThreadModel>;
-	threadMessages: Relation<TThreadMessageModel>;
-	uploads: Relation<TUploadModel>;
+	messages: RelationModified<TMessageModel>;
+	threads: RelationModified<TThreadModel>;
+	threadMessages: RelationModified<TThreadMessageModel>;
+	uploads: RelationModified<TUploadModel>;
 }
 
 export type TSubscriptionModel = ISubscription & Model;

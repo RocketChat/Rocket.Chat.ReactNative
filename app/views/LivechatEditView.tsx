@@ -18,8 +18,7 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { IVisitor } from '../definitions/IVisitor';
-import { ITagsOmnichannel } from '../definitions/ITagsOmnichannel';
+import { ILivechatVisitor } from '../definitions/ILivechatVisitor';
 import { IApplicationState, ISubscription } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
@@ -55,15 +54,18 @@ interface IField {
 }
 
 interface IInputs {
-	[key: string]: string | string[] | undefined;
+	livechatData: {
+		[key: string]: any;
+	};
 	name: string;
 	email: string;
 	phone?: string;
 	topic: string;
 	tag: string[];
+	[key: string]: any;
 }
 
-type TParams = IVisitor & IInputs;
+type TParams = ILivechatVisitor & IInputs;
 
 interface ILivechat extends ISubscription {
 	// Param dynamic depends on server
@@ -139,7 +141,7 @@ const LivechatEditView = ({
 	}, [availableUserTags]);
 
 	const getTagsList = async (agentDepartments: string[]) => {
-		const tags: ITagsOmnichannel[] = await RocketChat.getTagsList();
+		const tags = await RocketChat.getTagsList();
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role));
 		const availableTags = tags
 			.filter(({ departments }) => isAdmin || departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1))

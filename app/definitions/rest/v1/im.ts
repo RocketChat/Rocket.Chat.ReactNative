@@ -1,4 +1,4 @@
-import type { IMessage } from '../../IMessage';
+import type { IMessage, IMessageFromServer } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
@@ -20,7 +20,7 @@ export type ImEndpoints = {
 		};
 	};
 	'im.files': {
-		GET: (params: { roomId: IServerRoom['_id']; count: number; sort: string; query: string }) => {
+		GET: (params: { roomId: IServerRoom['_id']; count: number; sort: string | { uploadedAt: number }; query: string }) => {
 			files: IMessage[];
 			total: number;
 		};
@@ -32,5 +32,22 @@ export type ImEndpoints = {
 			members: IUser[];
 			total: number;
 		};
+	};
+	'im.history': {
+		GET: (params: { roomId: string; count: number; latest?: string }) => {
+			messages: IMessageFromServer[];
+		};
+	};
+	'im.close': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'im.kick': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'im.delete': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'im.leave': {
+		POST: (params: { roomId: string }) => {};
 	};
 };

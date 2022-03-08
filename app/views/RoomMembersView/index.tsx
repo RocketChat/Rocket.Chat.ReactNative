@@ -24,10 +24,11 @@ import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { withTheme } from '../../theme';
 import EventEmitter from '../../utils/events';
-import { goRoom, IGoRoomItem } from '../../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
+import { RoomTypes } from '../../lib/rocketchat/methods/roomTypeToApiType';
 import styles from './styles';
 
 const PAGE_SIZE = 25;
@@ -216,26 +217,28 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 
 			const result = await RocketChat.teamListRoomsOfUser({ teamId: room.teamId as string, userId: selectedUser._id });
 
-			if (result.rooms?.length) {
-				const teamChannels = result.rooms.map((r: any) => ({
-					rid: r._id,
-					name: r.name,
-					teamId: r.teamId,
-					alert: r.isLastOwner
-				}));
-				navigation.navigate('SelectListView', {
-					title: 'Remove_Member',
-					infoText: 'Remove_User_Team_Channels',
-					data: teamChannels,
-					nextAction: (selected: any) => this.removeFromTeam(selectedUser, selected),
-					showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_remove'))
-				});
-			} else {
-				showConfirmationAlert({
-					message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
-					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-					onPress: () => this.removeFromTeam(selectedUser)
-				});
+			if (result.success) {
+				if (result.rooms?.length) {
+					const teamChannels = result.rooms.map((r: any) => ({
+						rid: r._id,
+						name: r.name,
+						teamId: r.teamId,
+						alert: r.isLastOwner
+					}));
+					navigation.navigate('SelectListView', {
+						title: 'Remove_Member',
+						infoText: 'Remove_User_Team_Channels',
+						data: teamChannels,
+						nextAction: (selected: any) => this.removeFromTeam(selectedUser, selected),
+						showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_remove'))
+					});
+				} else {
+					showConfirmationAlert({
+						message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
+						confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
+						onPress: () => this.removeFromTeam(selectedUser)
+					});
+				}
 			}
 		} catch (e) {
 			showConfirmationAlert({
@@ -469,7 +472,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		}
 	};
 
-	goRoom = (item: IGoRoomItem) => {
+	goRoom = (item: TGoRoomItem) => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			// @ts-ignore
@@ -588,7 +591,8 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		try {
 			const { room, members, membersFiltered } = this.state;
 			const userId = selectedUser._id;
-			await RocketChat.removeUserFromRoom({ roomId: room.rid, t: room.t, userId });
+			// TODO: interface SubscriptionType on IRoom is wrong
+			await RocketChat.removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
 			const message = I18n.t('User_has_been_removed_from_s', { s: RocketChat.getRoomTitle(room) });
 			EventEmitter.emit(LISTENER, { message });
 			this.setState({
