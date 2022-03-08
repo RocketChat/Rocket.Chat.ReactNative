@@ -53,7 +53,7 @@ export type ChannelsEndpoints = {
 		POST: (params: { channelId: string; channelName: string }) => { team: ITeam };
 	};
 	'channels.info': {
-		GET: (params: { roomId: string }) => { channel: IServerRoomItem };
+		GET: (params: { roomId: string }) => { channel: IServerRoom };
 	};
 	'channels.counters': {
 		GET: (params: { roomId: string }) => {
