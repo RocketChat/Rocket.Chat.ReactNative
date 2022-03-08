@@ -38,7 +38,6 @@ interface IDiscussionDetails {
 const DiscussionDetails = ({ item, date }: IDiscussionDetails): JSX.Element => {
 	const { theme } = useTheme();
 	let count: string | number | undefined = item.dcount;
-
 	if (count && count >= 1000) {
 		count = '+999';
 	}

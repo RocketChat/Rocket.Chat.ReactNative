@@ -72,7 +72,7 @@ const videoPickerConfig = {
 	mediaType: 'video'
 };
 
-interface IMessageBoxProps {
+export interface IMessageBoxProps {
 	rid: string;
 	baseUrl: string;
 	message: IMessage;
@@ -609,7 +609,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	getCannedResponses = debounce(async (text?: string) => {
 		const res = await RocketChat.getListCannedResponse({ text });
-		this.setState({ mentions: res?.cannedResponses || [], mentionLoading: false });
+		this.setState({ mentions: res.success ? res.cannedResponses : [], mentionLoading: false });
 	}, 500);
 
 	focus = () => {
@@ -926,8 +926,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				let msg = `[ ](${permalink}) `;
 
 				// if original message wasn't sent by current user and neither from a direct room
-				if (user.username !== replyingMessage.u.username && roomType !== 'd' && replyWithMention) {
-					msg += `@${replyingMessage.u.username} `;
+				if (user.username !== replyingMessage?.u?.username && roomType !== 'd' && replyWithMention) {
+					msg += `@${replyingMessage?.u?.username} `;
 				}
 
 				msg = `${msg} ${message}`;

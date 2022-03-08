@@ -206,4 +206,4 @@ export default {
 	Canned_Responses_Enable: {
 		type: 'valueAsBoolean'
 	}
-};
+} as const;

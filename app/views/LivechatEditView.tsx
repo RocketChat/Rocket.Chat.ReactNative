@@ -18,8 +18,7 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { IVisitor } from '../definitions/IVisitor';
-import { ITagsOmnichannel } from '../definitions/ITagsOmnichannel';
+import { ILivechatVisitor } from '../definitions/ILivechatVisitor';
 import { IApplicationState, ISubscription } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
@@ -48,22 +47,19 @@ interface ITitle {
 	theme: string;
 }
 
-interface IField {
-	_id: string;
-	visibility: string;
-	scope: string;
-}
-
 interface IInputs {
-	[key: string]: string | string[] | undefined;
+	livechatData: {
+		[key: string]: any;
+	};
 	name: string;
 	email: string;
 	phone?: string;
 	topic: string;
 	tag: string[];
+	[key: string]: any;
 }
 
-type TParams = IVisitor & IInputs;
+type TParams = ILivechatVisitor & IInputs;
 
 interface ILivechat extends ISubscription {
 	// Param dynamic depends on server
@@ -113,17 +109,17 @@ const LivechatEditView = ({
 	const visitor = route.params?.roomUser ?? {};
 
 	const getCustomFields = async () => {
-		const result: any = await RocketChat.getCustomFields();
+		const result = await RocketChat.getCustomFields();
 		if (result.success && result.customFields?.length) {
 			const visitorCustomFields = result.customFields
-				.filter((field: IField) => field.visibility !== 'hidden' && field.scope === 'visitor')
-				.map((field: IField) => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
-				.reduce((ret: IField, field: IField) => ({ ...field, ...ret }));
+				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
+				.map(field => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
+				.reduce((ret, field) => ({ ...field, ...ret }), {});
 
 			const livechatCustomFields = result.customFields
-				.filter((field: IField) => field.visibility !== 'hidden' && field.scope === 'room')
-				.map((field: IField) => ({ [field._id]: (livechat.livechatData && livechat.livechatData[field._id]) || '' }))
-				.reduce((ret: IField, field: IField) => ({ ...field, ...ret }));
+				.filter(field => field.visibility !== 'hidden' && field.scope === 'room')
+				.map(field => ({ [field._id]: (livechat.livechatData && livechat.livechatData[field._id]) || '' }))
+				.reduce((ret, field) => ({ ...field, ...ret }), {});
 
 			return setCustomFields({ visitor: visitorCustomFields, livechat: livechatCustomFields });
 		}
@@ -139,7 +135,7 @@ const LivechatEditView = ({
 	}, [availableUserTags]);
 
 	const getTagsList = async (agentDepartments: string[]) => {
-		const tags: ITagsOmnichannel[] = await RocketChat.getTagsList();
+		const tags = await RocketChat.getTagsList();
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role));
 		const availableTags = tags
 			.filter(({ departments }) => isAdmin || departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1))
