@@ -1,3 +1,4 @@
+import { ICannedResponse } from '../../ICannedResponse';
 import { ILivechatAgent } from '../../ILivechatAgent';
 import { ILivechatDepartment } from '../../ILivechatDepartment';
 import { ILivechatDepartmentAgents } from '../../ILivechatDepartmentAgents';
@@ -102,6 +103,8 @@ export type OmnichannelEndpoints = {
 				{
 					_id: string;
 					label: string;
+					visibility?: string;
+					scope?: string;
 				}
 			];
 		}>;
@@ -190,7 +193,14 @@ export type OmnichannelEndpoints = {
 			total: number;
 		};
 	};
+
 	'livechat/agents/:uid/departments?enabledDepartmentsOnly=true': {
 		GET: () => { departments: ILivechatDepartment[] };
+	};
+
+	'canned-responses': {
+		GET: (params: PaginatedRequest<{ scope?: string; departmentId?: string; text?: string }>) => PaginatedResult<{
+			cannedResponses: ICannedResponse[];
+		}>;
 	};
 };

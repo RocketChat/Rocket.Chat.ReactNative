@@ -195,7 +195,10 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 		if (tmp.lastMessage && !rooms.includes(tmp.rid)) {
 			const lastMessage = buildMessage(tmp.lastMessage);
 			const messagesCollection = db.get('messages');
-			const messageRecord = await getMessageById(lastMessage._id);
+			let messageRecord = {} as TMessageModel | null;
+			if (lastMessage) {
+				messageRecord = await getMessageById(lastMessage._id);
+			}
 
 			if (messageRecord) {
 				batch.push(
@@ -206,9 +209,11 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 			} else {
 				batch.push(
 					messagesCollection.prepareCreate(m => {
-						m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-						if (m.subscription) {
-							m.subscription.id = lastMessage.rid;
+						if (lastMessage) {
+							m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+							if (m.subscription) {
+								m.subscription.id = lastMessage.rid;
+							}
 						}
 						return Object.assign(m, lastMessage);
 					})

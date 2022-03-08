@@ -44,22 +44,22 @@ export type E2EType = 'pending' | 'done';
 export interface ILastMessage {
 	_id: string;
 	rid: string;
-	tshow: boolean;
-	t: MessageType;
-	tmid: string;
-	msg: string;
-	e2e: E2EType;
-	ts: Date;
+	tshow?: boolean;
+	t?: MessageType;
+	tmid?: string;
+	msg?: string;
+	e2e?: E2EType;
+	ts: string | Date;
 	u: IUserMessage;
-	_updatedAt: Date;
-	urls: string[];
-	mentions: IUserMention[];
-	channels: IUserChannel[];
-	md: MarkdownAST;
-	attachments: IAttachment[];
-	reactions: IReaction[];
-	unread: boolean;
-	status: boolean;
+	_updatedAt: string | Date;
+	urls?: IUrlFromServer[];
+	mentions?: IUserMention[];
+	channels?: IUserChannel[];
+	md?: MarkdownAST;
+	attachments?: IAttachment[];
+	reactions?: IReaction[];
+	unread?: boolean;
+	status?: number;
 }
 
 interface IMessageFile {
@@ -68,38 +68,21 @@ interface IMessageFile {
 	type: string;
 }
 
-interface IMessageAttachment {
-	ts: string;
-	title: string;
-	title_link: string;
-	title_link_download: true;
-	image_dimensions: {
-		width: number;
-		height: number;
-	};
-	image_preview: string;
-	image_url: string;
-	image_type: string;
-	image_size: number;
-	type: string;
-	description: string;
-}
-
 export interface IMessageFromServer {
 	_id: string;
 	rid: string;
-	msg: string;
+	msg?: string;
 	ts: string | Date; // wm date issue
 	u: IUserMessage;
 	_updatedAt: string | Date;
-	urls: IUrlFromServer[];
-	mentions: IUserMention[];
-	channels: IUserChannel[];
-	md: MarkdownAST;
-	file: IMessageFile;
-	files: IMessageFile[];
-	groupable: false;
-	attachments: IMessageAttachment[];
+	urls?: IUrlFromServer[];
+	mentions?: IUserMention[];
+	channels?: IUserChannel[];
+	md?: MarkdownAST;
+	file?: IMessageFile;
+	files?: IMessageFile[];
+	groupable?: boolean;
+	attachments?: IAttachment[];
 }
 
 export interface ILoadMoreMessage {
@@ -135,7 +118,7 @@ export interface IMessage extends IMessageFromServer {
 	translations?: ITranslations[];
 	tmsg?: string;
 	blocks?: any;
-	e2e?: string;
+	e2e?: E2EType;
 	tshow?: boolean;
 	subscription?: { id: string };
 }

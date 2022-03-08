@@ -54,7 +54,7 @@ export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
 	sdk.post('e2e.updateGroupKey', { uid, rid, key });
 
-export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
+export const e2eRequestRoomKey = (rid: string, e2eKeyId: string): Promise<{ message: { msg?: string }; success: boolean }> =>
 	// RC 0.70.0
 	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
@@ -285,10 +285,8 @@ export const getRoomCounters = (
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
 
-export const getChannelInfo = (roomId: string): any =>
+export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('channels.info', { roomId });
 
 export const getUserPreferences = (userId: string): any =>
@@ -387,7 +385,13 @@ export const getRoutingConfig = (): Promise<{
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getRoutingConfig');
 
-export const getTagsList = () =>
+export const getTagsList = (): Promise<
+	{
+		_id: string;
+		name: string;
+		departments: string[];
+	}[]
+> =>
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getTagsList');
 
@@ -399,7 +403,7 @@ export const getCustomFields = () =>
 	// RC 2.2.0
 	sdk.get('livechat/custom-fields');
 
-export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }): any => {
+export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }) => {
 	const params = {
 		offset,
 		count,
@@ -409,8 +413,6 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	};
 
 	// RC 3.17.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.get('canned-responses', params);
 };
 
