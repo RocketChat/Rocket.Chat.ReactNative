@@ -29,18 +29,18 @@ export const merge = (subscription: ISubscription | IServerSubscription, room?: 
 		if (compareServerVersion(serverVersion, 'lowerThan', '3.7.0')) {
 			const updatedAt = room?._updatedAt ? new Date(room._updatedAt) : null;
 			// @ts-ignore
-			const lastMessageTs = subscription?.lastMessage?.ts ? new Date(subscription.lastMessage.ts) : null;
+			const lastMessageTs = mergedSubscription?.lastMessage?.ts ? new Date(mergedSubscription.lastMessage.ts) : null;
 			// @ts-ignore
 			// If all parameters are null it will return zero, if only one is null it will return its timestamp only.
 			// "It works", but it's not the best solution. It does not accept "Date" as a parameter, but it works.
 			mergedSubscription.roomUpdatedAt = Math.max(updatedAt, lastMessageTs);
 		} else {
 			// https://github.com/RocketChat/Rocket.Chat/blob/develop/app/ui-sidenav/client/roomList.js#L180
-			const lastRoomUpdate = room?.lm || subscription.ts || subscription._updatedAt;
+			const lastRoomUpdate = room?.lm || mergedSubscription.ts || mergedSubscription._updatedAt;
 			// @ts-ignore Same as above scenario
-			mergedSubscription.roomUpdatedAt = subscription.lr
+			mergedSubscription.roomUpdatedAt = mergedSubscription.lr
 				? // @ts-ignore Same as above scenario
-				  Math.max(new Date(subscription.lr), new Date(lastRoomUpdate))
+				  Math.max(new Date(mergedSubscription.lr), new Date(lastRoomUpdate))
 				: lastRoomUpdate;
 		}
 		mergedSubscription.ro = room?.ro ?? false;
