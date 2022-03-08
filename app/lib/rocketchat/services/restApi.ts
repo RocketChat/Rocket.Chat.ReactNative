@@ -395,10 +395,8 @@ export const getTagsList = (): Promise<
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getTagsList');
 
-export const getAgentDepartments = (uid: string): any =>
+export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get(`livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
 
 export const getCustomFields = () =>

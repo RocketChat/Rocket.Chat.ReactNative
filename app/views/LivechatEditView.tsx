@@ -146,7 +146,7 @@ const LivechatEditView = ({
 	const getAgentDepartments = async () => {
 		const result = await RocketChat.getAgentDepartments(visitor?._id);
 		if (result.success) {
-			const agentDepartments = result.departments.map((dept: { departmentId: string }) => dept.departmentId);
+			const agentDepartments = result.departments.map(dept => dept.departmentId);
 			getTagsList(agentDepartments);
 		}
 	};
