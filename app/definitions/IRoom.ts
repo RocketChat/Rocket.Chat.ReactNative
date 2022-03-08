@@ -15,6 +15,7 @@ interface IRequestTranscript {
 
 export interface IRoom {
 	fname?: string;
+	_id: string;
 	id: string;
 	rid: string;
 	prid: string;
@@ -35,8 +36,8 @@ export interface IRoom {
 	e2eKeyId?: string;
 	avatarETag?: string;
 	latest?: string;
-	default?: true;
-	featured?: true;
+	default?: boolean;
+	featured?: boolean;
 	muted?: string[];
 	teamId?: string;
 	ignored?: string;
@@ -131,9 +132,9 @@ export interface IServerRoom extends IRocketChatRecord {
 	name?: string;
 	fname: string;
 	msgs: number;
-	default?: true;
-	broadcast?: true;
-	featured?: true;
+	default?: boolean;
+	broadcast?: boolean;
+	featured?: boolean;
 	encrypted?: boolean;
 	topic?: any;
 

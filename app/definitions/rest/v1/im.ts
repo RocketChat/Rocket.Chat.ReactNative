@@ -1,5 +1,5 @@
 import type { IMessage, IMessageFromServer } from '../../IMessage';
-import type { IServerRoom } from '../../IRoom';
+import type { IServerRoom, RoomID, RoomType } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
 export type ImEndpoints = {
@@ -16,7 +16,12 @@ export type ImEndpoints = {
 				excludeSelf?: boolean;
 			}
 		) => {
-			room: IServerRoom;
+			room: {
+				t: RoomType;
+				rid: RoomID;
+				_id: RoomID;
+				usernames: IServerRoom['usernames'];
+			};
 		};
 	};
 	'im.files': {
