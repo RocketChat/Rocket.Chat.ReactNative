@@ -5,7 +5,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
-import { IMessage } from '../../definitions';
+import { IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 });
 
 interface IDiscussionDetails {
-	item: IMessage;
+	item: IMessageFromServer;
 	date: string;
 }
 

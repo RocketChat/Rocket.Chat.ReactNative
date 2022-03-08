@@ -1,4 +1,4 @@
-import type { IMessage } from '../../IMessage';
+import type { IMessage, IMessageFromServer } from '../../IMessage';
 import type { IRoom } from '../../IRoom';
 import { PaginatedResult } from '../helpers/PaginatedResult';
 
@@ -31,7 +31,7 @@ export type ChatEndpoints = {
 	};
 	'chat.getDiscussions': {
 		GET: (params: { roomId: IRoom['_id']; text?: string; offset: number; count: number }) => {
-			messages: IMessage[];
+			messages: IMessageFromServer[];
 			total: number;
 		};
 	};

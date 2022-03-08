@@ -10,7 +10,7 @@ import { themes } from '../../constants/colors';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import DiscussionDetails from './DiscussionDetails';
-import { IMessage } from '../../definitions';
+import { IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 });
 
 interface IItem {
-	item: IMessage;
+	item: IMessageFromServer;
 	onPress: {
 		(...args: any[]): void;
 		stop(): void;
