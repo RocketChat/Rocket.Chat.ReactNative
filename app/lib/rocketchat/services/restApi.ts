@@ -285,10 +285,8 @@ export const getRoomCounters = (
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
 
-export const getChannelInfo = (roomId: string): any =>
+export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('channels.info', { roomId });
 
 export const getUserPreferences = (userId: string): any =>
