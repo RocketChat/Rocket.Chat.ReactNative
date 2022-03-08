@@ -2,9 +2,8 @@ import Model from '@nozbe/watermelondb/Model';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
-import { IEditedBy, IUserChannel, IUserMention, IUserMessage, MessageType } from './IMessage';
-import { IReaction } from './IReaction';
-import { IUrl, IUrlFromServer } from './IUrl';
+import { IMessage, IUserChannel, IUserMention, IUserMessage } from './IMessage';
+import { IUrl } from './IUrl';
 
 interface IFileThread {
 	_id: string;
@@ -25,7 +24,7 @@ export interface IThreadResult {
 	md?: MarkdownAST;
 	u: IUserMessage;
 	_updatedAt: string | Date;
-	urls?: IUrlFromServer[];
+	urls?: IUrl[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
 	replies?: string[];
@@ -34,42 +33,9 @@ export interface IThreadResult {
 	tlm?: string | Date;
 }
 
-export interface IThread {
-	id: string;
+export interface IThread extends IMessage {
 	tmsg?: string;
-	msg?: string;
-	t?: MessageType;
-	rid: string;
-	_updatedAt?: string | Date;
-	ts?: string | Date;
-	u?: IUserMessage;
-	alias?: string;
-	parseUrls?: boolean;
-	groupable?: boolean;
-	avatar?: string;
-	emoji?: string;
-	attachments?: IAttachment[];
-	urls?: IUrl[];
-	status?: number;
-	pinned?: boolean;
-	starred?: boolean;
-	editedBy?: IEditedBy;
-	reactions?: IReaction[];
-	role?: string;
-	drid?: string;
-	dcount?: number | string;
-	dlm?: string | Date;
-	tmid?: string;
-	tcount?: number | string;
-	tlm?: string | Date;
-	replies?: string[];
-	mentions?: IUserMention[];
-	channels?: IUserChannel[];
-	unread?: boolean;
-	autoTranslate?: boolean;
-	translations?: any;
-	e2e?: string;
-	subscription?: { id: string };
+	draftMessage?: string;
 }
 
 export type TThreadModel = IThread & Model;

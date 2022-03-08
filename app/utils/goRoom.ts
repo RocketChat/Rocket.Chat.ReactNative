@@ -1,9 +1,9 @@
 import { ChatsStackParamList } from '../stacks/types';
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
-import { IVisitor, SubscriptionType } from '../definitions/ISubscription';
+import { IOmnichannelRoom, SubscriptionType, IVisitor, TSubscriptionModel, ISubscription } from '../definitions';
 
-export interface IGoRoomItem {
+interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
 	username?: string;
 	t?: SubscriptionType;
@@ -13,12 +13,14 @@ export interface IGoRoomItem {
 	visitor?: IVisitor;
 }
 
+export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
+
 const navigate = ({
 	item,
 	isMasterDetail,
 	...props
 }: {
-	item: IGoRoomItem;
+	item: TGoRoomItem;
 	isMasterDetail: boolean;
 	navigationMethod?: () => ChatsStackParamList;
 }) => {
@@ -40,18 +42,23 @@ const navigate = ({
 	});
 };
 
+interface IOmnichannelRoomVisitor extends IOmnichannelRoom {
+	// this visitor came from ee/omnichannel/views/QueueListView
+	visitor: IVisitor;
+}
+
 export const goRoom = async ({
 	item,
 	isMasterDetail = false,
 	...props
 }: {
-	item: IGoRoomItem;
+	item: TGoRoomItem;
 	isMasterDetail: boolean;
 	navigationMethod?: any;
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
 }): Promise<void> => {
-	if (item.t === SubscriptionType.DIRECT && item?.search) {
+	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;

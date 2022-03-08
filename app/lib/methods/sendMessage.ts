@@ -85,7 +85,13 @@ export async function resendMessage(message: TMessageModel, tmid?: string) {
 	}
 }
 
-export default async function (rid: string, msg: string, tmid: string, user: IUser, tshow?: boolean) {
+export default async function (
+	rid: string,
+	msg: string,
+	tmid: string | undefined,
+	user: Partial<Pick<IUser, 'id' | 'username' | 'name'>>,
+	tshow?: boolean
+): Promise<void> {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');

@@ -1,5 +1,6 @@
+import { ITeam } from '../../ITeam';
 import type { IMessage, IMessageFromServer } from '../../IMessage';
-import type { IRoom } from '../../IRoom';
+import type { IRoom, IServerRoomItem } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
 export type ChannelsEndpoints = {
@@ -27,5 +28,72 @@ export type ChannelsEndpoints = {
 		GET: (params: { roomId: string; count: number; latest?: string }) => {
 			messages: IMessageFromServer[];
 		};
+	};
+	'channels.archive': {
+		POST: (params: { roomId: string }) => void;
+	};
+	'channels.unarchive': {
+		POST: (params: { roomId: string }) => void;
+	};
+	'channels.create': {
+		POST: (params: {
+			name: string;
+			members: string[];
+			readOnly: boolean;
+			extraData: {
+				broadcast: boolean;
+				encrypted: boolean;
+				teamId?: string;
+			};
+		}) => {
+			group: Partial<IServerRoomItem>;
+		};
+	};
+	'channels.convertToTeam': {
+		POST: (params: { channelId: string; channelName: string }) => { team: ITeam };
+	};
+	'channels.counters': {
+		GET: (params: { roomId: string }) => {
+			joined: boolean;
+			members: number;
+			unreads: number;
+			unreadsFrom: Date;
+			msgs: number;
+			latest: Date;
+			userMentions: number;
+		};
+	};
+	'channels.join': {
+		POST: (params: { roomId: string; joinCode: string | null }) => { channel: IServerRoomItem };
+	};
+	'channels.close': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'channels.kick': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.delete': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'channels.leave': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'channels.addModerator': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeModerator': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.addOwner': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeOwner': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.addLeader': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.removeLeader': {
+		POST: (params: { roomId: string; userId: string }) => {};
 	};
 };

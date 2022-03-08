@@ -1,6 +1,7 @@
 import moment from 'moment';
 
-import { IMessage, MessageType, TMessageModel } from '../../definitions';
+import { MessageTypeLoad } from '../../constants/messageTypeLoad';
+import { IMessage, TMessageModel } from '../../definitions';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
 import roomTypeToApiType, { RoomTypes } from '../rocketchat/methods/roomTypeToApiType';
@@ -10,7 +11,7 @@ import updateMessages from './updateMessages';
 
 const COUNT = 50;
 
-async function load({ rid: roomId, latest, t }: { rid: string; latest?: string; t: RoomTypes }) {
+async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t: RoomTypes }) {
 	let params = { roomId, count: COUNT } as { roomId: string; count: number; latest?: string };
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
@@ -32,9 +33,9 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: string; 
 export default function loadMessagesForRoom(args: {
 	rid: string;
 	t: RoomTypes;
-	latest: string;
-	loaderItem: TMessageModel;
-}): Promise<Partial<IMessage>[]> {
+	latest?: Date;
+	loaderItem?: TMessageModel;
+}): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data: Partial<IMessage>[] = await load(args);
@@ -46,15 +47,15 @@ export default function loadMessagesForRoom(args: {
 						_id: generateLoadMoreId(lastMessage._id as string),
 						rid: lastMessage.rid,
 						ts: moment(lastMessage.ts).subtract(1, 'millisecond').toString(),
-						t: 'load_more' as MessageType,
+						t: MessageTypeLoad.MORE,
 						msg: lastMessage.msg
 					};
 					data.push(loadMoreMessage);
 				}
 				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });
-				return resolve(data);
+				return resolve();
 			}
-			return resolve([]);
+			return resolve();
 		} catch (e) {
 			log(e);
 			reject(e);
