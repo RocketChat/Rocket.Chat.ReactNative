@@ -187,8 +187,10 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				} as ITeamChannelsViewState;
 
 				if (isSearching) {
+					// @ts-ignore
 					newState.search = [...search, ...result.rooms];
 				} else {
+					// @ts-ignore
 					newState.data = [...data, ...result.rooms];
 				}
 
