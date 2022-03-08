@@ -7,7 +7,7 @@ import log from '../../utils/log';
 import random from '../../utils/random';
 import { Encryption } from '../encryption';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
-import { IMessage, IUser, TMessageModel } from '../../definitions';
+import { E2EType, IMessage, IUser, TMessageModel } from '../../definitions';
 import sdk from '../rocketchat/services/sdk';
 
 const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
@@ -145,7 +145,7 @@ export default async function (
 							tm.u = tMessageRecord.u;
 							tm.t = message.t;
 							if (message.t === E2E_MESSAGE_TYPE) {
-								tm.e2e = E2E_STATUS.DONE;
+								tm.e2e = E2E_STATUS.DONE as E2EType;
 							}
 						})
 					);
@@ -170,7 +170,7 @@ export default async function (
 						};
 						tm.t = message.t;
 						if (message.t === E2E_MESSAGE_TYPE) {
-							tm.e2e = E2E_STATUS.DONE;
+							tm.e2e = E2E_STATUS.DONE as E2EType;
 						}
 					})
 				);
@@ -203,7 +203,7 @@ export default async function (
 				}
 				m.t = message.t;
 				if (message.t === E2E_MESSAGE_TYPE) {
-					m.e2e = E2E_STATUS.DONE;
+					m.e2e = E2E_STATUS.DONE as E2EType;
 				}
 			})
 		);

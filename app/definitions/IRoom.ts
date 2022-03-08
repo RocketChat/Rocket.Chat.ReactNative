@@ -4,7 +4,7 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 import { IAttachment } from './IAttachment';
 import { IMessage } from './IMessage';
 import { IServedBy } from './IServedBy';
-import { SubscriptionType } from './ISubscription';
+import { IVisitor, SubscriptionType } from './ISubscription';
 import { IUser } from './IUser';
 
 interface IRequestTranscript {
@@ -28,11 +28,8 @@ export interface IRoom {
 	broadcast: boolean;
 	encrypted: boolean;
 	ro: boolean;
-	v?: {
-		_id?: string;
-		token?: string;
-		status: 'online' | 'busy' | 'away' | 'offline';
-	};
+	v?: IVisitor;
+	status?: string;
 	servedBy?: IServedBy;
 	departmentId?: string;
 	livechatData?: any;
@@ -55,13 +52,11 @@ export enum OmnichannelSourceType {
 	API = 'api',
 	OTHER = 'other' // catch-all source type
 }
-export interface IOmnichannelRoom extends Omit<IRoom, 'default' | 'featured' | 'broadcast' | ''> {
+export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featured' | 'broadcast'>> {
+	_id: string;
+	rid: string;
 	t: SubscriptionType.OMNICHANNEL;
-	v: {
-		_id?: string;
-		token?: string;
-		status: 'online' | 'busy' | 'away' | 'offline';
-	};
+	v: IVisitor;
 	email?: {
 		// Data used when the room is created from an email, via email Integration.
 		inbox: string;
@@ -83,6 +78,8 @@ export interface IOmnichannelRoom extends Omit<IRoom, 'default' | 'featured' | '
 		sidebarIcon?: string;
 		// The default sidebar icon
 		defaultIcon?: string;
+		_updatedAt?: Date;
+		queuedAt?: Date;
 	};
 	transcriptRequest?: IRequestTranscript;
 	servedBy?: IServedBy;
@@ -91,18 +88,22 @@ export interface IOmnichannelRoom extends Omit<IRoom, 'default' | 'featured' | '
 
 	lastMessage?: IMessage & { token?: string };
 
-	tags: any;
-	closedAt: any;
-	metrics: any;
-	waitingResponse: any;
-	responseBy: any;
-	priorityId: any;
-	livechatData: any;
+	tags?: string[];
+	closedAt?: Date;
+	metrics?: any;
+	waitingResponse?: any;
+	responseBy?: any;
+	priorityId?: any;
+	livechatData?: any;
 	queuedAt?: Date;
 
 	ts: Date;
 	label?: string;
 	crmData?: unknown;
+	message?: string;
+	queueOrder?: string;
+	estimatedWaitingTimeQueue?: string;
+	estimatedServiceTimeAt?: Date;
 }
 
 export type TRoomModel = IRoom & Model;

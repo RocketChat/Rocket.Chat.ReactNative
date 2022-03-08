@@ -25,6 +25,7 @@ export * from './IRocketChat';
 export * from './ICertificate';
 export * from './IUrl';
 export * from './ICredentials';
+export * from './ISearch';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: StackNavigationProp<T, S>;
