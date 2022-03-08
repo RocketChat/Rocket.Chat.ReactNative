@@ -1,9 +1,9 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { IServerSubscriptionItem, IServerRoomItem } from '../../../definitions';
+import { IServerSubscription, IServerRoom } from '../../../definitions';
 import database from '../../database';
 
-export default async (subscriptions: IServerSubscriptionItem[], rooms: IServerRoomItem[]) => {
+export default async (subscriptions: IServerSubscription[], rooms: IServerRoom[]) => {
 	let sub = subscriptions;
 	let room = rooms;
 	try {
@@ -59,7 +59,7 @@ export default async (subscriptions: IServerSubscriptionItem[], rooms: IServerRo
 			avatarETag: s.avatarETag
 		}));
 		// Assign
-		sub = subscriptions.concat(mappedExistingSubs as unknown as IServerSubscriptionItem);
+		sub = subscriptions.concat(mappedExistingSubs as unknown as IServerSubscription);
 
 		const subsIds = subscriptions.filter(s => !rooms.find(r => s.rid === r._id)).map(s => s._id);
 		const existingRooms = await subCollection.query(Q.where('id', Q.oneOf(subsIds))).fetch();
@@ -89,7 +89,7 @@ export default async (subscriptions: IServerSubscriptionItem[], rooms: IServerRo
 			avatarETag: r.avatarETag
 		}));
 		// Assign
-		room = rooms.concat(mappedExistingRooms as unknown as IServerRoomItem);
+		room = rooms.concat(mappedExistingRooms as unknown as IServerRoom);
 	} catch {
 		// do nothing
 	}

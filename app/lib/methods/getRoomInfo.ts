@@ -1,8 +1,15 @@
-import { IRoom, SubscriptionType } from '../../definitions';
+import { IServerSubscription, RoomType } from '../../definitions';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import RocketChat from '../rocketchat';
 
-const getRoomInfo = async (rid: string): Promise<Pick<IRoom, 'rid' | 'name' | 'fname' | 't'> | null> => {
+export interface IRoomInfoResult {
+	rid: IServerSubscription['rid'];
+	name: IServerSubscription['name'];
+	fname: IServerSubscription['fname'];
+	t: IServerSubscription['t'];
+}
+
+const getRoomInfo = async (rid: string): Promise<IRoomInfoResult | null> => {
 	let result;
 	result = await getSubscriptionByRoomId(rid);
 	if (result) {
@@ -10,7 +17,7 @@ const getRoomInfo = async (rid: string): Promise<Pick<IRoom, 'rid' | 'name' | 'f
 			rid,
 			name: result.name,
 			fname: result.fname,
-			t: result.t as SubscriptionType
+			t: result.t as RoomType
 		};
 	}
 
@@ -18,7 +25,7 @@ const getRoomInfo = async (rid: string): Promise<Pick<IRoom, 'rid' | 'name' | 'f
 	if (result?.success) {
 		return {
 			rid,
-			name: result.room.name,
+			name: result.room.name as string,
 			fname: result.room.fname,
 			t: result.room.t
 		};

@@ -1,8 +1,7 @@
 import Model from '@nozbe/watermelondb/Model';
-import { MarkdownAST } from '@rocket.chat/message-parser';
 
-import { IAttachment } from './IAttachment';
 import { IMessage } from './IMessage';
+import { IRocketChatRecord } from './IRocketChatRecord';
 import { IServedBy } from './IServedBy';
 import { IVisitor, SubscriptionType } from './ISubscription';
 import { IUser } from './IUser';
@@ -15,8 +14,8 @@ interface IRequestTranscript {
 }
 
 export interface IRoom {
-	_id: string;
 	fname?: string;
+	_id: string;
 	id: string;
 	rid: string;
 	prid: string;
@@ -37,11 +36,25 @@ export interface IRoom {
 	e2eKeyId?: string;
 	avatarETag?: string;
 	latest?: string;
-	default?: true;
-	featured?: true;
+	default?: boolean;
+	featured?: boolean;
 	muted?: string[];
 	teamId?: string;
 	ignored?: string;
+
+	_updatedAt?: Date;
+	archived?: boolean;
+	announcement?: string;
+	description?: string;
+	lastMessage?: IMessage;
+	topic?: string;
+	reactWhenReadOnly?: boolean;
+	joinCodeRequired?: boolean;
+	jitsiTimeout?: Date;
+	usernames?: string[];
+	uids: Array<string>;
+	lm?: Date;
+	sysMes?: string[];
 }
 
 export enum OmnichannelSourceType {
@@ -108,51 +121,84 @@ export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featu
 
 export type TRoomModel = IRoom & Model;
 
-export interface IServerRoomItem {
-	_id: string;
-	name: string;
-	fname: string;
-	t: SubscriptionType;
-	u: {
-		_id: string;
-		username: string;
-	};
-	customFields: {};
-	ts: string;
-	ro: boolean;
-	_updatedAt: string;
-	lm: string;
-	lastMessage: {
-		alias: string;
-		msg: string;
-		attachments: IAttachment[];
-		parseUrls: boolean;
-		bot: {
-			i: string;
-		};
-		groupable: boolean;
-		avatar: string;
-		ts: string;
-		u: IUser;
-		rid: string;
-		_id: string;
-		_updatedAt: string;
-		mentions: [];
-		channels: [];
-		md: MarkdownAST;
-	};
-	topic: string;
-	joinCodeRequired: boolean;
-	description: string;
-	jitsiTimeout: string;
-	usersCount: number;
-	e2eKeyId: string;
-	avatarETag: string;
-	encrypted: boolean;
-}
+export type RoomType = 'c' | 'd' | 'p' | 'l';
+export type RoomID = string;
+export type ChannelName = string;
 
-export interface IServerRoom {
-	update: IServerRoomItem[];
-	remove: IServerRoomItem[];
-	success: boolean;
+// https://github.com/RocketChat/Rocket.Chat/blob/43fa95aeaf5716d728bad943c6a07d1ee7172ee2/definition/IRoom.ts#L17
+export interface IServerRoom extends IRocketChatRecord {
+	_id: RoomID;
+	t: RoomType;
+	name?: string;
+	fname: string;
+	msgs: number;
+	default?: boolean;
+	broadcast?: boolean;
+	featured?: boolean;
+	encrypted?: boolean;
+	topic?: any;
+
+	u: Pick<IUser, '_id' | 'username' | 'name'>;
+	uids: Array<string>;
+
+	lastMessage?: IMessage;
+	lm?: Date;
+	usersCount: number;
+	jitsiTimeout?: Date;
+	webRtcCallStartTime?: Date;
+	servedBy?: {
+		_id: string;
+	};
+
+	streamingOptions?: {
+		id?: string;
+		type: string;
+	};
+
+	prid?: string;
+	avatarETag?: string;
+	tokenpass?: {
+		require: string;
+		tokens: {
+			token: string;
+			balance: number;
+		}[];
+	};
+
+	teamMain?: boolean;
+	teamId?: string;
+	teamDefault?: boolean;
+	open?: boolean;
+
+	autoTranslateLanguage: string;
+	autoTranslate?: boolean;
+	unread?: number;
+	alert?: boolean;
+	hideUnreadStatus?: boolean;
+
+	sysMes?: string[];
+	muted?: string[];
+	unmuted?: string[];
+
+	usernames?: string[];
+	ts?: Date;
+
+	cl?: boolean;
+	ro?: boolean;
+	favorite?: boolean;
+	archived?: boolean;
+	announcement?: string;
+	description?: string;
+
+	reactWhenReadOnly?: boolean;
+	joinCodeRequired?: boolean;
+	e2eKeyId?: string;
+	v?: {
+		_id?: string;
+		token?: string;
+		status: 'online' | 'busy' | 'away' | 'offline';
+	};
+	departmentId?: string;
+	livechatData?: any;
+	tags?: string[];
 }
