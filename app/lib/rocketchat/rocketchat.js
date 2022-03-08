@@ -1,27 +1,15 @@
 import { Q } from '@nozbe/watermelondb';
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Rocketchat as RocketchatClient, settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { InteractionManager } from 'react-native';
-import RNFetchBlob from 'rn-fetch-blob';
 import { setActiveUsers } from '../../actions/activeUsers';
-import { connectRequest, connectSuccess, disconnect } from '../../actions/connect';
 import { encryptionInit } from '../../actions/encryption';
-import { loginRequest, setLoginServices, setUser } from '../../actions/login';
-import { updatePermission } from '../../actions/permissions';
-import { selectServerFailure } from '../../actions/server';
-import { updateSettings } from '../../actions/settings';
+import { setUser } from '../../actions/login';
 import { shareSelectServer, shareSetSettings, shareSetUser } from '../../actions/share';
 import defaultSettings from '../../constants/settings';
-import I18n from '../../i18n';
 import { getDeviceToken } from '../../notifications/push';
 import { getBundleId, isIOS } from '../../utils/deviceInfo';
-import EventEmitter from '../../utils/events';
-import fetch from '../../utils/fetch';
 import log from '../../utils/log';
 import SSLPinning from '../../utils/sslPinning';
-import { twoFactor } from '../../utils/twoFactor';
-import { useSsl } from '../../utils/url';
 import database from '../database';
 import { sanitizeLikeString } from '../database/utils';
 import { Encryption } from '../encryption';
@@ -36,11 +24,10 @@ import {
 } from '../methods/enterpriseModules';
 import { getCustomEmojis, setCustomEmojis } from '../methods/getCustomEmojis';
 import { getPermissions, setPermissions } from '../methods/getPermissions';
-import { getRoles, onRolesChanged, setRoles } from '../methods/getRoles';
+import { getRoles, setRoles } from '../methods/getRoles';
 import getRooms from '../methods/getRooms';
 import getSettings, { getLoginSettings, setSettings, subscribeSettings } from '../methods/getSettings';
 import getSlashCommands from '../methods/getSlashCommands';
-import protectedFunction from '../methods/helpers/protectedFunction';
 import loadMessagesForRoom from '../methods/loadMessagesForRoom';
 import loadMissedMessages from '../methods/loadMissedMessages';
 import loadNextMessages from '../methods/loadNextMessages';
@@ -66,6 +53,21 @@ import * as search from './methods/search';
 // Services
 import sdk from './services/sdk';
 import toggleFavorite from './services/toggleFavorite';
+import {
+	login,
+	loginTOTP,
+	loginWithPassword,
+	loginOAuthOrSso,
+	getLoginServices,
+	determineAuthType,
+	disconnect,
+	checkAndReopen,
+	abort,
+	getServerInfo,
+	getWebsocketInfo,
+	stopListener,
+	connect
+} from './services/connect';
 import * as restAPis from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
@@ -75,9 +77,8 @@ const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
-const MIN_ROCKETCHAT_VERSION = '0.70.0';
-
-const STATUSES = ['offline', 'online', 'away', 'busy'];
+export const MIN_ROCKETCHAT_VERSION = '0.70.0';
+export const STATUSES = ['offline', 'online', 'away', 'busy'];
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -103,299 +104,14 @@ const RocketChat = {
 		}
 	},
 	canOpenRoom,
-	async getWebsocketInfo({ server }) {
-		const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
-
-		try {
-			await sdk.connect();
-		} catch (err) {
-			if (err.message && err.message.includes('400')) {
-				return {
-					success: false,
-					message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
-				};
-			}
-		}
-
-		sdk.disconnect();
-
-		return {
-			success: true
-		};
-	},
-	async getServerInfo(server) {
-		try {
-			const response = await RNFetchBlob.fetch('GET', `${server}/api/info`, { ...RocketChatSettings.customHeaders });
-			try {
-				// Try to resolve as json
-				const jsonRes = response.json();
-				if (!jsonRes?.success) {
-					return {
-						success: false,
-						message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
-					};
-				}
-				if (compareServerVersion(jsonRes.version, 'lowerThan', MIN_ROCKETCHAT_VERSION)) {
-					return {
-						success: false,
-						message: I18n.t('Invalid_server_version', {
-							currentVersion: jsonRes.version,
-							minVersion: MIN_ROCKETCHAT_VERSION
-						})
-					};
-				}
-				return jsonRes;
-			} catch (error) {
-				// Request is successful, but response isn't a json
-			}
-		} catch (e) {
-			if (e?.message) {
-				if (e.message === 'Aborted') {
-					reduxStore.dispatch(selectServerFailure());
-					throw e;
-				}
-				return {
-					success: false,
-					message: e.message
-				};
-			}
-		}
-
-		return {
-			success: false,
-			message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
-		};
-	},
-	stopListener(listener) {
-		return listener && listener.stop();
-	},
+	getWebsocketInfo,
+	getServerInfo,
+	stopListener,
 	// Abort all requests and create a new AbortController
-	abort() {
-		if (this.controller) {
-			this.controller.abort();
-			if (this.sdk) {
-				this.sdk.abort();
-			}
-		}
-		this.controller = new AbortController();
-	},
-	checkAndReopen() {
-		return this?.sdk?.checkAndReopen();
-	},
-	disconnect() {
-		this.sdk = sdk.disconnect();
-	},
-	connect({ server, user, logoutOnError = false }) {
-		return new Promise(resolve => {
-			if (this?.sdk?.client?.host === server) {
-				return resolve();
-			} else {
-				this.disconnect();
-				database.setActiveDB(server);
-			}
-			reduxStore.dispatch(connectRequest());
-
-			if (this.connectTimeout) {
-				clearTimeout(this.connectTimeout);
-			}
-
-			if (this.connectingListener) {
-				this.connectingListener.then(this.stopListener);
-			}
-
-			if (this.connectedListener) {
-				this.connectedListener.then(this.stopListener);
-			}
-
-			if (this.closeListener) {
-				this.closeListener.then(this.stopListener);
-			}
-
-			if (this.usersListener) {
-				this.usersListener.then(this.stopListener);
-			}
-
-			if (this.notifyAllListener) {
-				this.notifyAllListener.then(this.stopListener);
-			}
-
-			if (this.rolesListener) {
-				this.rolesListener.then(this.stopListener);
-			}
-
-			if (this.notifyLoggedListener) {
-				this.notifyLoggedListener.then(this.stopListener);
-			}
-
-			this.unsubscribeRooms();
-
-			EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
-
-			this.sdk = sdk.initialize(server);
-			this.getSettings();
-
-			this.sdk
-				.connect()
-				.then(() => {
-					console.log('connected');
-				})
-				.catch(err => {
-					console.log('connect error', err);
-				});
-
-			this.connectingListener = this.sdk.onStreamData('connecting', () => {
-				reduxStore.dispatch(connectRequest());
-			});
-
-			this.connectedListener = this.sdk.onStreamData('connected', () => {
-				const { connected } = reduxStore.getState().meteor;
-				if (connected) {
-					return;
-				}
-				reduxStore.dispatch(connectSuccess());
-				const { server: currentServer } = reduxStore.getState().server;
-				if (user?.token && server === currentServer) {
-					reduxStore.dispatch(loginRequest({ resume: user.token }, logoutOnError));
-				}
-			});
-
-			this.closeListener = this.sdk.onStreamData('close', () => {
-				reduxStore.dispatch(disconnect());
-			});
-
-			this.usersListener = this.sdk.onStreamData(
-				'users',
-				protectedFunction(ddpMessage => RocketChat._setUser(ddpMessage))
-			);
-
-			this.notifyAllListener = this.sdk.onStreamData(
-				'stream-notify-all',
-				protectedFunction(async ddpMessage => {
-					const { eventName } = ddpMessage.fields;
-					if (/public-settings-changed/.test(eventName)) {
-						const { _id, value } = ddpMessage.fields.args[1];
-						const db = database.active;
-						const settingsCollection = db.get('settings');
-						try {
-							const settingsRecord = await settingsCollection.find(_id);
-							const { type } = defaultSettings[_id];
-							if (type) {
-								await db.action(async () => {
-									await settingsRecord.update(u => {
-										u[type] = value;
-									});
-								});
-							}
-							reduxStore.dispatch(updateSettings(_id, value));
-						} catch (e) {
-							log(e);
-						}
-					}
-				})
-			);
-
-			this.rolesListener = this.sdk.onStreamData(
-				'stream-roles',
-				protectedFunction(ddpMessage => onRolesChanged(ddpMessage))
-			);
-
-			// RC 4.1
-			this.sdk.onStreamData('stream-user-presence', ddpMessage => {
-				const userStatus = ddpMessage.fields.args[0];
-				const { uid } = ddpMessage.fields;
-				const [, status, statusText] = userStatus;
-				const newStatus = { status: STATUSES[status], statusText };
-				reduxStore.dispatch(setActiveUsers({ [uid]: newStatus }));
-
-				const { user: loggedUser } = reduxStore.getState().login;
-				if (loggedUser && loggedUser.id === uid) {
-					reduxStore.dispatch(setUser(newStatus));
-				}
-			});
-
-			this.notifyLoggedListener = this.sdk.onStreamData(
-				'stream-notify-logged',
-				protectedFunction(async ddpMessage => {
-					const { eventName } = ddpMessage.fields;
-
-					// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
-					if (/user-status/.test(eventName)) {
-						this.activeUsers = this.activeUsers || {};
-						if (!this._setUserTimer) {
-							this._setUserTimer = setTimeout(() => {
-								const activeUsersBatch = this.activeUsers;
-								InteractionManager.runAfterInteractions(() => {
-									reduxStore.dispatch(setActiveUsers(activeUsersBatch));
-								});
-								this._setUserTimer = null;
-								return (this.activeUsers = {});
-							}, 10000);
-						}
-						const userStatus = ddpMessage.fields.args[0];
-						const [id, , status, statusText] = userStatus;
-						this.activeUsers[id] = { status: STATUSES[status], statusText };
-
-						const { user: loggedUser } = reduxStore.getState().login;
-						if (loggedUser && loggedUser.id === id) {
-							reduxStore.dispatch(setUser({ status: STATUSES[status], statusText }));
-						}
-					} else if (/updateAvatar/.test(eventName)) {
-						const { username, etag } = ddpMessage.fields.args[0];
-						const db = database.active;
-						const userCollection = db.get('users');
-						try {
-							const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
-							await db.action(async () => {
-								await userRecord.update(u => {
-									u.avatarETag = etag;
-								});
-							});
-						} catch {
-							// We can't create a new record since we don't receive the user._id
-						}
-					} else if (/permissions-changed/.test(eventName)) {
-						const { _id, roles } = ddpMessage.fields.args[1];
-						const db = database.active;
-						const permissionsCollection = db.get('permissions');
-						try {
-							const permissionsRecord = await permissionsCollection.find(_id);
-							await db.action(async () => {
-								await permissionsRecord.update(u => {
-									u.roles = roles;
-								});
-							});
-							reduxStore.dispatch(updatePermission(_id, roles));
-						} catch (err) {
-							//
-						}
-					} else if (/Users:NameChanged/.test(eventName)) {
-						const userNameChanged = ddpMessage.fields.args[0];
-						const db = database.active;
-						const userCollection = db.get('users');
-						try {
-							const userRecord = await userCollection.find(userNameChanged._id);
-							await db.action(async () => {
-								await userRecord.update(u => {
-									Object.assign(u, userNameChanged);
-								});
-							});
-						} catch {
-							// User not found
-							await db.action(async () => {
-								await userCollection.create(u => {
-									u._raw = sanitizedRaw({ id: userNameChanged._id }, userCollection.schema);
-									Object.assign(u, userNameChanged);
-								});
-							});
-						}
-					}
-				})
-			);
-
-			resolve();
-		});
-	},
-
+	abort,
+	checkAndReopen,
+	disconnect,
+	connect,
 	async shareExtensionInit(server) {
 		database.setShareDB(server);
 
@@ -489,103 +205,10 @@ const RocketChat = {
 		return this.methodCallWrapper('e2e.resetOwnE2EKey');
 	},
 
-	loginTOTP(params, loginEmailPassword, isFromWebView = false) {
-		return new Promise(async (resolve, reject) => {
-			try {
-				const result = await this.login(params, isFromWebView);
-				return resolve(result);
-			} catch (e) {
-				if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
-					const { details } = e.data;
-					try {
-						const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
-
-						if (loginEmailPassword) {
-							reduxStore.dispatch(setUser({ username: params.user || params.username }));
-
-							// Force normalized params for 2FA starting RC 3.9.0.
-							const serverVersion = reduxStore.getState().server.version;
-							if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.9.0')) {
-								const user = params.user ?? params.username;
-								const password = params.password ?? params.ldapPass ?? params.crowdPassword;
-								params = { user, password };
-							}
-
-							return resolve(this.loginTOTP({ ...params, code: code?.twoFactorCode }, loginEmailPassword));
-						}
-
-						return resolve(
-							this.loginTOTP({
-								totp: {
-									login: {
-										...params
-									},
-									code: code?.twoFactorCode
-								}
-							})
-						);
-					} catch {
-						// twoFactor was canceled
-						return reject();
-					}
-				} else {
-					reject(e);
-				}
-			}
-		});
-	},
-
-	loginWithPassword({ user, password }) {
-		let params = { user, password };
-		const state = reduxStore.getState();
-
-		if (state.settings.LDAP_Enable) {
-			params = {
-				username: user,
-				ldapPass: password,
-				ldap: true,
-				ldapOptions: {}
-			};
-		} else if (state.settings.CROWD_Enable) {
-			params = {
-				username: user,
-				crowdPassword: password,
-				crowd: true
-			};
-		}
-
-		return this.loginTOTP(params, true);
-	},
-
-	async loginOAuthOrSso(params, isFromWebView = true) {
-		const result = await this.loginTOTP(params, false, isFromWebView);
-		reduxStore.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
-	},
-
-	async login(credentials, isFromWebView = false) {
-		const sdk = this.shareSDK || this.sdk;
-		// RC 0.64.0
-		await sdk.login(credentials);
-		const { result } = sdk.currentLogin;
-		const user = {
-			id: result.userId,
-			token: result.authToken,
-			username: result.me.username,
-			name: result.me.name,
-			language: result.me.language,
-			status: result.me.status,
-			statusText: result.me.statusText,
-			customFields: result.me.customFields,
-			statusLivechat: result.me.statusLivechat,
-			emails: result.me.emails,
-			roles: result.me.roles,
-			avatarETag: result.me.avatarETag,
-			isFromWebView,
-			showMessageInMainThread: result.me.settings?.preferences?.showMessageInMainThread ?? true,
-			enableMessageParserEarlyAdoption: result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true
-		};
-		return user;
-	},
+	loginTOTP,
+	loginWithPassword,
+	loginOAuthOrSso,
+	login,
 	logout,
 	logoutOtherLocations() {
 		const { id: userId } = reduxStore.getState().login.user;
@@ -843,59 +466,8 @@ const RocketChat = {
 		prefs = { ...prefs, ...param };
 		return UserPreferences.setMapAsync(SORT_PREFS_KEY, prefs);
 	},
-	async getLoginServices(server) {
-		try {
-			let loginServices = [];
-			const loginServicesResult = await fetch(`${server}/api/v1/settings.oauth`).then(response => response.json());
-
-			if (loginServicesResult.success && loginServicesResult.services) {
-				const { services } = loginServicesResult;
-				loginServices = services;
-
-				const loginServicesReducer = loginServices.reduce((ret, item) => {
-					const name = item.name || item.buttonLabelText || item.service;
-					const authType = this._determineAuthType(item);
-
-					if (authType !== 'not_supported') {
-						ret[name] = { ...item, name, authType };
-					}
-
-					return ret;
-				}, {});
-				reduxStore.dispatch(setLoginServices(loginServicesReducer));
-			} else {
-				reduxStore.dispatch(setLoginServices({}));
-			}
-		} catch (error) {
-			console.log(error);
-			reduxStore.dispatch(setLoginServices({}));
-		}
-	},
-	_determineAuthType(services) {
-		const { name, custom, showButton = true, service } = services;
-
-		const authName = name || service;
-
-		if (custom && showButton) {
-			return 'oauth_custom';
-		}
-
-		if (service === 'saml') {
-			return 'saml';
-		}
-
-		if (service === 'cas') {
-			return 'cas';
-		}
-
-		if (authName === 'apple' && isIOS) {
-			return 'apple';
-		}
-
-		// TODO: remove this after other oauth providers are implemented. e.g. Drupal, github_enterprise
-		const availableOAuth = ['facebook', 'github', 'gitlab', 'google', 'linkedin', 'meteor-developer', 'twitter', 'wordpress'];
-		return availableOAuth.includes(authName) ? 'oauth' : 'not_supported';
-	},
+	getLoginServices,
+	determineAuthType,
 	roomTypeToApiType,
 	readThreads(tmid) {
 		const serverVersion = reduxStore.getState().server.version;

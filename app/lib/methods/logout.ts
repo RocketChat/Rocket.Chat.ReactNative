@@ -12,6 +12,7 @@ import log from '../../utils/log';
 import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../encryption/constants';
 import UserPreferences from '../userPreferences';
 import { ICertificate, IRocketChat } from '../../definitions';
+import sdk from '../rocketchat/services/sdk';
 
 async function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	await UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);
@@ -116,13 +117,13 @@ export default async function logout(this: IRocketChat, { server }: { server: st
 
 	try {
 		// RC 0.60.0
-		await this.sdk.logout();
+		await sdk.current.logout();
 	} catch (e) {
 		log(e);
 	}
 
-	if (this.sdk) {
-		this.sdk = null;
+	if (sdk.current) {
+		sdk.disconnect();
 	}
 
 	await removeServerData({ server });
