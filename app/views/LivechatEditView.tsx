@@ -19,7 +19,6 @@ import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
 import { ILivechatVisitor } from '../definitions/ILivechatVisitor';
-import { ITagsOmnichannel } from '../definitions/ITagsOmnichannel';
 import { IApplicationState, ISubscription } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
@@ -142,7 +141,7 @@ const LivechatEditView = ({
 	}, [availableUserTags]);
 
 	const getTagsList = async (agentDepartments: string[]) => {
-		const tags: ITagsOmnichannel[] = await RocketChat.getTagsList();
+		const tags = await RocketChat.getTagsList();
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role));
 		const availableTags = tags
 			.filter(({ departments }) => isAdmin || departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1))
