@@ -1,4 +1,4 @@
-import type { IRoom } from '../../IRoom';
+import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
 export type DmEndpoints = {
@@ -15,7 +15,7 @@ export type DmEndpoints = {
 				excludeSelf?: boolean;
 			}
 		) => {
-			room: IRoom & { rid: IRoom['_id'] };
+			room: IServerRoom & { rid: IServerRoom['_id'] };
 		};
 	};
 };

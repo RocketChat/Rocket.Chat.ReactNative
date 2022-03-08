@@ -83,6 +83,10 @@ export interface IMessageFromServer {
 	files?: IMessageFile[];
 	groupable?: boolean;
 	attachments?: IAttachment[];
+	t?: MessageType;
+	drid?: string;
+	dcount?: number;
+	dml: string | Date;
 }
 
 export interface ILoadMoreMessage {

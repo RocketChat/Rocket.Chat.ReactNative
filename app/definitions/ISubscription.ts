@@ -2,10 +2,13 @@ import Model from '@nozbe/watermelondb/Model';
 import Relation from '@nozbe/watermelondb/Relation';
 
 import { ILastMessage, TMessageModel } from './IMessage';
+import { IRocketChatRecord } from './IRocketChatRecord';
+import { RoomID, RoomType } from './IRoom';
 import { IServedBy } from './IServedBy';
 import { TThreadModel } from './IThread';
 import { TThreadMessageModel } from './IThreadMessage';
 import { TUploadModel } from './IUpload';
+import { IUser } from './IUser';
 
 export enum SubscriptionType {
 	GROUP = 'p',
@@ -33,9 +36,9 @@ export enum ERoomTypes {
 type RelationModified<T extends Model> = { fetch(): Promise<T[]> } & Relation<T>;
 
 export interface ISubscription {
-	_id: string; // _id belongs watermelonDB
-	id: string; // id from server
-	_updatedAt?: string; // from server
+	_id: string;
+	id: string;
+	_updatedAt?: string;
 	v?: IVisitor;
 	f: boolean;
 	t: SubscriptionType; // TODO: we need to review this type later
@@ -73,7 +76,7 @@ export interface ISubscription {
 	prid?: string;
 	draftMessage?: string | null;
 	lastThreadSync?: Date;
-	jitsiTimeout?: number;
+	jitsiTimeout?: Date;
 	autoTranslate?: boolean;
 	autoTranslateLanguage?: string;
 	lastMessage?: ILastMessage | null; // TODO: we need to use IMessage here
@@ -104,29 +107,57 @@ export interface ISubscription {
 
 export type TSubscriptionModel = ISubscription & Model;
 
-export interface IServerSubscriptionItem {
-	_id: string;
-	rid: string;
-	u: {
-		_id: string;
-		username: string;
-	};
-	_updatedAt: string;
-	alert: boolean;
-	fname: string;
-	groupMentions: number;
-	name: string;
+// https://github.com/RocketChat/Rocket.Chat/blob/a88a96fcadd925b678ff27ada37075e029f78b5e/definition/ISubscription.ts#L8
+export interface IServerSubscription extends IRocketChatRecord {
+	u: Pick<IUser, '_id' | 'username' | 'name'>;
+	v?: Pick<IUser, '_id' | 'username' | 'name'>;
+	rid: RoomID;
 	open: boolean;
-	t: string;
-	unread: number;
-	userMentions: number;
-	ls: string;
-	lr: string;
-	tunread: number[] | [];
-}
+	ts: Date;
 
-export interface IServerSubscription {
-	update: IServerSubscriptionItem[];
-	remove: IServerSubscriptionItem[];
-	success: boolean;
+	name: string;
+
+	alert?: boolean;
+	unread: number;
+	t: RoomType;
+	ls: Date;
+	f?: true;
+	lr: Date;
+	hideUnreadStatus?: true;
+	teamMain?: boolean;
+	teamId?: string;
+
+	userMentions: number;
+	groupMentions: number;
+
+	tunread?: Array<string>;
+	tunreadGroup?: Array<string>;
+	tunreadUser?: Array<string>;
+
+	prid?: RoomID;
+
+	roles?: string[];
+
+	onHold?: boolean;
+	encrypted?: boolean;
+	E2EKey?: string;
+	unreadAlert?: 'default' | 'all' | 'mentions' | 'nothing';
+
+	fname?: unknown;
+
+	code?: unknown;
+	archived?: unknown;
+	audioNotificationValue?: unknown;
+	desktopNotifications?: unknown;
+	mobilePushNotifications?: unknown;
+	emailNotifications?: unknown;
+	blocked?: unknown;
+	blocker?: unknown;
+	autoTranslate?: unknown;
+	autoTranslateLanguage?: unknown;
+	disableNotifications?: unknown;
+	muteGroupMentions?: unknown;
+	ignored?: unknown;
+
+	department?: unknown;
 }

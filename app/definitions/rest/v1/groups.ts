@@ -1,17 +1,17 @@
 import { ITeam } from '../../ITeam';
 import type { IMessage, IMessageFromServer } from '../../IMessage';
-import type { IRoom, IServerRoomItem } from '../../IRoom';
+import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
 export type GroupsEndpoints = {
 	'groups.files': {
-		GET: (params: { roomId: IRoom['_id']; count: number; sort: string | { uploadedAt: number }; query: string }) => {
+		GET: (params: { roomId: IServerRoom['_id']; count: number; sort: string | { uploadedAt: number }; query: string }) => {
 			files: IMessage[];
 			total: number;
 		};
 	};
 	'groups.members': {
-		GET: (params: { roomId: IRoom['_id']; offset?: number; count?: number; filter?: string; status?: string[] }) => {
+		GET: (params: { roomId: IServerRoom['_id']; offset?: number; count?: number; filter?: string; status?: string[] }) => {
 			count: number;
 			offset: number;
 			members: IUser[];
@@ -40,7 +40,7 @@ export type GroupsEndpoints = {
 				teamId?: string;
 			};
 		}) => {
-			group: Partial<IServerRoomItem>;
+			group: Partial<IServerRoom>;
 		};
 	};
 	'groups.convertToTeam': {
