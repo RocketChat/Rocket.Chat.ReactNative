@@ -8,7 +8,7 @@ import { ISearch, ISearchLocal, SubscriptionType } from '../../../definitions';
 
 let debounce: null | ((reason: string) => void) = null;
 
-export const localSearch = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<ISearchLocal[]> => {
+export const localSearch = async ({ text = '', filterUsers = true, filterRooms = true }): Promise<(ISearch | ISearchLocal)[]> => {
 	const searchText = text.trim();
 	const db = database.active;
 	const likeString = sanitizeLikeString(searchText);
@@ -37,7 +37,7 @@ export const localSearch = async ({ text = '', filterUsers = true, filterRooms =
 		encrypted: sub?.encrypted || null,
 		lastMessage: sub.lastMessage,
 		...(sub.teamId && { teamId: sub.teamId })
-	}));
+	})) as (ISearch | ISearchLocal)[];
 
 	return search;
 };
@@ -52,7 +52,7 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 	const localSearchData = await localSearch({ text, filterUsers, filterRooms });
 	const usernames = localSearchData.map(sub => sub.name);
 
-	const data: (ISearch | ISearchLocal)[] = localSearchData;
+	const data = localSearchData as (ISearch | ISearchLocal)[];
 
 	try {
 		if (localSearchData.length < 7) {
