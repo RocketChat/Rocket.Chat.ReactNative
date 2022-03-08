@@ -102,6 +102,8 @@ export type OmnichannelEndpoints = {
 				{
 					_id: string;
 					label: string;
+					visibility?: string;
+					scope?: string;
 				}
 			];
 		}>;
