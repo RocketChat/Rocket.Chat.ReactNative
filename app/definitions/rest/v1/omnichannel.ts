@@ -6,7 +6,7 @@ import { ILivechatMonitor } from '../../ILivechatMonitor';
 import { ILivechatTag } from '../../ILivechatTag';
 import { ILivechatVisitor, ILivechatVisitorDTO } from '../../ILivechatVisitor';
 import { IMessage } from '../../IMessage';
-import { IOmnichannelRoom, IRoom } from '../../IRoom';
+import { IOmnichannelRoom, IServerRoom } from '../../IRoom';
 import { ISetting } from '../../ISetting';
 import { PaginatedRequest } from '../helpers/PaginatedRequest';
 import { PaginatedResult } from '../helpers/PaginatedResult';
@@ -25,7 +25,7 @@ export type OmnichannelEndpoints = {
 		};
 	};
 	'livechat/room.onHold': {
-		POST: (params: { roomId: IRoom['_id'] }) => void;
+		POST: (params: { roomId: IServerRoom['_id'] }) => void;
 	};
 	'livechat/monitors.list': {
 		GET: (params: PaginatedRequest<{ text: string }>) => PaginatedResult<{
@@ -192,6 +192,10 @@ export type OmnichannelEndpoints = {
 			offset: number;
 			total: number;
 		};
+	};
+
+	'livechat/agents/:uid/departments?enabledDepartmentsOnly=true': {
+		GET: () => { departments: ILivechatDepartment[] };
 	};
 
 	'canned-responses': {

@@ -5,104 +5,105 @@ import { store as reduxStore } from '../../auxStore';
 import { compareServerVersion } from '../../utils';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
-import {
-	ISubscription,
-	IServerRoom,
-	IServerSubscription,
-	IServerSubscriptionItem,
-	IServerRoomItem,
-	IRoom
-} from '../../../definitions';
-// TODO: delete and update
+import { ISubscription, IServerSubscription, IServerRoom, IRoom } from '../../../definitions';
 
-export const merge = (
-	subscription: ISubscription | IServerSubscriptionItem,
-	room?: ISubscription | IServerRoomItem | IRoom
-): ISubscription => {
+export const merge = (subscription: ISubscription | IServerSubscription, room?: IRoom | IServerRoom): ISubscription => {
 	const serverVersion = reduxStore.getState().server.version as string;
-	subscription = EJSON.fromJSONValue(subscription) as ISubscription;
+	const mergedSubscription: ISubscription = EJSON.fromJSONValue(subscription);
 
 	if (room) {
-		room = EJSON.fromJSONValue(room) as ISubscription;
-		if (room._updatedAt) {
-			subscription.lastMessage = normalizeMessage(room.lastMessage);
-			subscription.description = room.description;
-			subscription.topic = room.topic;
-			subscription.announcement = room.announcement;
-			subscription.reactWhenReadOnly = room.reactWhenReadOnly;
-			subscription.archived = room.archived || false;
-			subscription.joinCodeRequired = room.joinCodeRequired;
-			subscription.jitsiTimeout = room.jitsiTimeout;
-			subscription.usernames = room.usernames;
-			subscription.uids = room.uids;
+		room = EJSON.fromJSONValue(room);
+		if (room?._updatedAt) {
+			mergedSubscription.lastMessage = normalizeMessage(room.lastMessage);
+			mergedSubscription.description = room.description;
+			mergedSubscription.topic = room.topic;
+			mergedSubscription.announcement = room.announcement;
+			mergedSubscription.reactWhenReadOnly = room.reactWhenReadOnly;
+			mergedSubscription.archived = room.archived || false;
+			mergedSubscription.joinCodeRequired = room.joinCodeRequired;
+			mergedSubscription.jitsiTimeout = room.jitsiTimeout;
+			mergedSubscription.usernames = room.usernames;
+			mergedSubscription.uids = room.uids;
 		}
 
 		if (compareServerVersion(serverVersion, 'lowerThan', '3.7.0')) {
 			const updatedAt = room?._updatedAt ? new Date(room._updatedAt) : null;
+			// @ts-ignore
 			const lastMessageTs = subscription?.lastMessage?.ts ? new Date(subscription.lastMessage.ts) : null;
 			// @ts-ignore
 			// If all parameters are null it will return zero, if only one is null it will return its timestamp only.
 			// "It works", but it's not the best solution. It does not accept "Date" as a parameter, but it works.
-			subscription.roomUpdatedAt = Math.max(updatedAt, lastMessageTs);
+			mergedSubscription.roomUpdatedAt = Math.max(updatedAt, lastMessageTs);
 		} else {
 			// https://github.com/RocketChat/Rocket.Chat/blob/develop/app/ui-sidenav/client/roomList.js#L180
-			const lastRoomUpdate = room.lm || subscription.ts || subscription._updatedAt;
+			const lastRoomUpdate = room?.lm || subscription.ts || subscription._updatedAt;
 			// @ts-ignore Same as above scenario
-			subscription.roomUpdatedAt = subscription.lr
+			mergedSubscription.roomUpdatedAt = subscription.lr
 				? // @ts-ignore Same as above scenario
 				  Math.max(new Date(subscription.lr), new Date(lastRoomUpdate))
 				: lastRoomUpdate;
 		}
-		subscription.ro = room.ro;
-		subscription.broadcast = room.broadcast;
-		subscription.encrypted = room.encrypted;
-		subscription.e2eKeyId = room.e2eKeyId;
-		subscription.avatarETag = room.avatarETag;
-		subscription.teamId = room.teamId;
-		subscription.teamMain = room.teamMain;
-		if (!subscription.roles || !subscription.roles.length) {
-			subscription.roles = [];
+		mergedSubscription.ro = room?.ro ?? false;
+		mergedSubscription.broadcast = room?.broadcast;
+		mergedSubscription.encrypted = room?.encrypted;
+		mergedSubscription.e2eKeyId = room?.e2eKeyId;
+		mergedSubscription.avatarETag = room?.avatarETag;
+		mergedSubscription.teamId = room?.teamId;
+		mergedSubscription.teamMain = room?.teamMain;
+		if (!mergedSubscription.roles || !mergedSubscription.roles.length) {
+			mergedSubscription.roles = [];
 		}
-		if (!subscription.ignored?.length) {
-			subscription.ignored = [];
+		if (!mergedSubscription.ignored?.length) {
+			mergedSubscription.ignored = [];
 		}
-		if (room.muted && room.muted.length) {
-			subscription.muted = room.muted.filter(muted => !!muted);
+		if (room?.muted?.length) {
+			mergedSubscription.muted = room.muted.filter(muted => !!muted);
 		} else {
-			subscription.muted = [];
+			mergedSubscription.muted = [];
 		}
-		if (room.v) {
-			subscription.visitor = room.v;
+		if (room?.v) {
+			mergedSubscription.visitor = room.v;
 		}
-		if (room.departmentId) {
-			subscription.departmentId = room.departmentId;
+		if (room?.departmentId) {
+			mergedSubscription.departmentId = room.departmentId;
 		}
-		if (room.servedBy) {
-			subscription.servedBy = room.servedBy;
+		if (room?.servedBy) {
+			mergedSubscription.servedBy = room.servedBy;
 		}
-		if (room.livechatData) {
-			subscription.livechatData = room.livechatData;
+		if (room?.livechatData) {
+			mergedSubscription.livechatData = room.livechatData;
 		}
-		if (room.tags) {
-			subscription.tags = room.tags;
+		if (room?.tags) {
+			mergedSubscription.tags = room.tags;
 		}
-		subscription.sysMes = room.sysMes;
+		mergedSubscription.sysMes = room?.sysMes;
 	}
 
-	if (!subscription.name) {
-		subscription.name = subscription.fname as string;
+	if (!mergedSubscription.name) {
+		mergedSubscription.name = mergedSubscription.fname as string;
 	}
 
-	if (!subscription.autoTranslate) {
-		subscription.autoTranslate = false;
+	if (!mergedSubscription.autoTranslate) {
+		mergedSubscription.autoTranslate = false;
 	}
 
-	subscription.blocker = !!subscription.blocker;
-	subscription.blocked = !!subscription.blocked;
-	return subscription;
+	mergedSubscription.blocker = !!mergedSubscription.blocker;
+	mergedSubscription.blocked = !!mergedSubscription.blocked;
+	return mergedSubscription;
 };
 
-export default async (serverSubscriptions: IServerSubscription, serverRooms: IServerRoom): Promise<ISubscription[]> => {
+export default async (
+	serverSubscriptions: {
+		update: IServerSubscription[];
+		remove: IServerSubscription[];
+		success: boolean;
+	},
+	serverRooms: {
+		update: IServerRoom[];
+		remove: IServerRoom[];
+		success: boolean;
+	}
+): Promise<ISubscription[]> => {
 	const subscriptions = serverSubscriptions.update;
 	const rooms = serverRooms.update;
 

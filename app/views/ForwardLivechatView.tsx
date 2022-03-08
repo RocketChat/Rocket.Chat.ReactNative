@@ -7,7 +7,7 @@ import { forwardRoom, ITransferData } from '../actions/room';
 import { themes } from '../constants/colors';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
-import { IBaseScreen, IRoom } from '../definitions';
+import { IBaseScreen, IServerRoom } from '../definitions';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { ChatsStackParamList } from '../stacks/types';
@@ -34,7 +34,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 	const [departmentTotal, setDepartmentTotal] = useState(0);
 	const [users, setUsers] = useState<IOptionsField[]>([]);
 	const [userId, setUser] = useState();
-	const [room, setRoom] = useState<IRoom>({} as IRoom);
+	const [room, setRoom] = useState<IServerRoom>({} as IServerRoom);
 	const dispatch = useDispatch();
 
 	const rid = route.params?.rid;
@@ -82,7 +82,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 		try {
 			const result = await RocketChat.getRoomInfo(rid);
 			if (result.success) {
-				setRoom(result.room as IRoom);
+				setRoom(result.room as IServerRoom);
 			}
 		} catch {
 			// do nothing

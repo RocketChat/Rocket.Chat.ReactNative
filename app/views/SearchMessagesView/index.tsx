@@ -27,12 +27,11 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
-import getRoomInfo from '../../lib/methods/getRoomInfo';
+import getRoomInfo, { IRoomInfoResult } from '../../lib/methods/getRoomInfo';
 import { isIOS } from '../../utils/deviceInfo';
 import { compareServerVersion } from '../../lib/utils';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
-import { IRoom } from '../../definitions';
 import { IEmoji } from '../../definitions/IEmoji';
 
 const QUERY_SIZE = 50;
@@ -82,7 +81,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	private encrypted: boolean | undefined;
 
-	private room: Pick<IRoom, 'rid' | 'name' | 'fname' | 't'> | null | undefined;
+	private room?: IRoomInfoResult;
 
 	static navigationOptions = ({ navigation, route }: INavigationOption) => {
 		const options: StackNavigationOptions = {
@@ -109,7 +108,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	}
 
 	async componentDidMount() {
-		this.room = await getRoomInfo(this.rid);
+		this.room = (await getRoomInfo(this.rid)) ?? undefined;
 	}
 
 	shouldComponentUpdate(nextProps: ISearchMessagesViewProps, nextState: ISearchMessagesViewState) {
