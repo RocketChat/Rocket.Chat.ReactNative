@@ -17,11 +17,11 @@ export enum SubscriptionType {
 }
 
 export interface IVisitor {
-	_id: string;
-	username: string;
-	token: string;
-	status: string;
-	lastMessageTs: Date;
+	_id?: string;
+	token?: string;
+	status: 'online' | 'busy' | 'away' | 'offline';
+	username?: string;
+	lastMessageTs?: Date;
 }
 
 export enum ERoomTypes {
@@ -38,7 +38,7 @@ export interface ISubscription {
 	_updatedAt?: string; // from server
 	v?: IVisitor;
 	f: boolean;
-	t: string; // TODO: we need to review this type later
+	t: SubscriptionType; // TODO: we need to review this type later
 	ts: string | Date;
 	ls: Date;
 	name: string;
@@ -76,7 +76,7 @@ export interface ISubscription {
 	jitsiTimeout?: number;
 	autoTranslate?: boolean;
 	autoTranslateLanguage?: string;
-	lastMessage?: ILastMessage; // TODO: we need to use IMessage here
+	lastMessage?: ILastMessage | null; // TODO: we need to use IMessage here
 	hideUnreadStatus?: boolean;
 	sysMes?: string[] | boolean;
 	uids?: string[];
@@ -93,6 +93,7 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
+	unsubscribe: () => Promise<any>;
 	separator?: boolean;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
 	messages: RelationModified<TMessageModel>;
