@@ -1,7 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 
-import { ProfileStackParamList } from '../../stacks/types';
+import { ProfileStackParamList } from '../stacks/types';
 
 export interface IUser {
 	id: string;
