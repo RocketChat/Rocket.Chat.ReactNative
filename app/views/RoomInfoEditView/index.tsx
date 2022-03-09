@@ -34,7 +34,7 @@ import log, { events, logEvent } from '../../utils/log';
 import { MessageTypeValues } from '../../utils/messageTypes';
 import random from '../../utils/random';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { IAvatar } from '../ProfileView/interfaces';
+import { IAvatar } from '../../definitions/IProfileViewInterfaces';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';

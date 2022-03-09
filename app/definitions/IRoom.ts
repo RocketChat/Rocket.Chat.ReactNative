@@ -4,7 +4,7 @@ import { IMessage } from './IMessage';
 import { IRocketChatRecord } from './IRocketChatRecord';
 import { IServedBy } from './IServedBy';
 import { IVisitor, SubscriptionType } from './ISubscription';
-import { IUser } from './IUser';
+import { IUser, TNotifications } from './IUser';
 
 interface IRequestTranscript {
 	email: string;
@@ -201,4 +201,14 @@ export interface IServerRoom extends IRocketChatRecord {
 	departmentId?: string;
 	livechatData?: any;
 	tags?: string[];
+}
+
+export interface IRoomNotifications {
+	disableNotifications?: boolean;
+	muteGroupMentions?: boolean;
+	hideUnreadStatus?: boolean;
+	audioNotificationsValue?: string;
+	desktopNotifications?: TNotifications;
+	mobilePushNotifications?: TNotifications;
+	emailNotifications?: TNotifications;
 }

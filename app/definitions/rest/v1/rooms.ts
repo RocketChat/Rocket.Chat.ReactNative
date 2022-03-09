@@ -1,5 +1,5 @@
 import type { IMessage } from '../../IMessage';
-import type { IServerRoom } from '../../IRoom';
+import type { IRoomNotifications, IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
 export type RoomsEndpoints = {
@@ -40,5 +40,8 @@ export type RoomsEndpoints = {
 	};
 	'rooms.favorite': {
 		POST: (params: { roomId: string; favorite: boolean }) => {};
+	};
+	'rooms.saveNotification': {
+		POST: (params: { roomId: string; notifications: IRoomNotifications }) => {};
 	};
 };
