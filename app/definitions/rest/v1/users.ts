@@ -26,7 +26,7 @@ export type UsersEndpoints = {
 		};
 	};
 	'users.setPreferences': {
-		POST: (params: { userId: IUser['_id']; data: Partial<INotificationPreferences> }) => {
+		POST: (params: { userId?: IUser['_id']; data: Partial<INotificationPreferences> }) => {
 			user: IUserPreferences;
 			success: boolean;
 		};
