@@ -2,6 +2,7 @@ import { ITeam } from '../../ITeam';
 import type { IMessage, IMessageFromServer } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
+import { IGetRoomRoles } from '../../IGetRoomRoles';
 
 export type GroupsEndpoints = {
 	'groups.files': {
@@ -68,5 +69,8 @@ export type GroupsEndpoints = {
 	};
 	'groups.leave': {
 		POST: (params: { roomId: string }) => {};
+	};
+	'groups.roles': {
+		GET: (params: { roomId: string }) => { roles: IGetRoomRoles[] };
 	};
 };
