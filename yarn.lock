@@ -14424,10 +14424,10 @@ react-native-mime-types@2.3.0:
   dependencies:
     mime-db "~1.37.0"
 
-react-native-mmkv-storage@0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.3.5.tgz#9c2f064c0efdaf960e9646c68dc6ae7f11640fa5"
-  integrity sha512-xp0E55Qdi81k8CTeq3PUrXGwT2tMmfNfmYvZ7Emq9qWpvg3ko1/M6B1kXEXOgEou/hgqB503TGcsR/mpN5HSMA==
+react-native-mmkv-storage@0.6.12:
+  version "0.6.12"
+  resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.6.12.tgz#e9e052e26c3dea6818211919d2586cb260ee8e24"
+  integrity sha512-9gJlnGSAJkeWanNE24GPqEn4NMiNFVBpPsTZAQ5YDEKEX/gG7bGdHCTNkXc6L826QxLEPKjpPmf9ZqgPM2G8TQ==
 
 react-native-modal@11.10.0:
   version "11.10.0"
@@ -14632,7 +14632,7 @@ react-native-webview@10.3.2:
 
 react-native@RocketChat/react-native#0.64.2:
   version "0.64.2"
-  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/6c015e1ec93d2f9a79a7033a7e160d76cb4df4aa"
+  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/eefc7ead3d343d5514118d79ff5e0ac7fc1761ec"
   dependencies:
     "@jest/create-cache-key-function" "^27.0.2"
     "@react-native-community/cli" "^5.0.1-alpha.1"
