@@ -1,7 +1,7 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences } from '../../../definitions';
+import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IParams } from '../../../definitions/IProfileViewInterfaces';
 
@@ -550,16 +550,12 @@ export const saveUserProfile = (data: IParams | Pick<IParams, 'username'>, custo
 	// RC 0.62.2
 	sdk.post('users.updateOwnBasicInfo', { data, customFields });
 
-export const saveUserPreferences = (data: any): any =>
+export const saveUserPreferences = (data: Partial<INotificationPreferences>) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.setPreferences', { data });
 
-export const saveNotificationSettings = (roomId: string, notifications: any): any =>
+export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('rooms.saveNotification', { roomId, notifications });
 
 export const getSingleMessage = (msgId: string) =>
