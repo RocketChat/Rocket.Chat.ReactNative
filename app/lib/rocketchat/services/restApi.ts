@@ -1,8 +1,10 @@
-import sdk from './sdk';
-import { TEAM_TYPE } from '../../../definitions/ITeam';
-import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
+import { INotificationPreferences, IRoomNotifications, SubscriptionType } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
+import { TEAM_TYPE } from '../../../definitions/ITeam';
+import { store } from '../../auxStore';
+import { compareServerVersion } from '../../utils';
+import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
+import sdk from './sdk';
 
 export const createChannel = ({
 	name,
@@ -747,3 +749,12 @@ export const useInviteToken = (token: string): any =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
+
+export const readThreads = (tmid: string): Promise<void> => {
+	const serverVersion = store.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
+		// RC 3.4.0
+		return sdk.methodCallWrapper('readThreads', tmid);
+	}
+	return Promise.resolve();
+};
