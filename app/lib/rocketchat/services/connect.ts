@@ -260,7 +260,13 @@ function stopListener(listener: any): boolean {
 
 async function login(credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
 	// RC 0.64.0
-	await sdk.current.login(credentials);
+	if (sdk.current) {
+		await sdk.current.login(credentials);
+	} else {
+		const { server } = store.getState().server;
+		sdk.initialize(server);
+		await sdk.current.login(credentials);
+	}
 	const result = sdk.current.currentLogin?.result;
 	if (result) {
 		const user: ILoggedUser = {
