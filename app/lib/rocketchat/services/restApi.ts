@@ -572,10 +572,8 @@ export const getAvatarSuggestion = () =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('getAvatarSuggestion');
 
-export const resetAvatar = (userId: string): any =>
+export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.resetAvatar', { userId });
 
 export const setAvatarFromService = ({
