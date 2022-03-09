@@ -9,8 +9,6 @@ import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
 import buildMessage from '../lib/methods/helpers/buildMessage';
-import protectedFunction from '../lib/methods/helpers/protectedFunction';
-import UserPreferences from '../lib/userPreferences';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
@@ -82,33 +80,46 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 					})
 				),
 				...subsToUpdate.map(subscription => {
-					const newSub = subscriptions.find(s => s._id === subscription._id);
-					return subscription.prepareUpdate(() => {
-						if (newSub.announcement) {
-							if (newSub.announcement !== subscription.announcement) {
-								subscription.bannerClosed = false;
+					try {
+						const newSub = subscriptions.find(s => s._id === subscription._id);
+						return subscription.prepareUpdate(() => {
+							if (newSub.announcement) {
+								if (newSub.announcement !== subscription.announcement) {
+									subscription.bannerClosed = false;
+								}
 							}
-						}
-						Object.assign(subscription, newSub);
-					});
+							Object.assign(subscription, newSub);
+						});
+					} catch (e) {
+						log(e);
+						return null;
+					}
 				}),
-				...subsToDelete.map(subscription => subscription.prepareDestroyPermanently()),
+				...subsToDelete.map(subscription => {
+					try {
+						return subscription.prepareDestroyPermanently();
+					} catch (e) {
+						log(e);
+						return null;
+					}
+				}),
 				...messagesToCreate.map(message =>
-					messagesCollection.prepareCreate(
-						protectedFunction(m => {
-							m._raw = sanitizedRaw({ id: message._id }, messagesCollection.schema);
-							m.subscription.id = message.rid;
-							return Object.assign(m, message);
-						})
-					)
+					messagesCollection.prepareCreate(m => {
+						m._raw = sanitizedRaw({ id: message._id }, messagesCollection.schema);
+						m.subscription.id = message.rid;
+						return Object.assign(m, message);
+					})
 				),
 				...messagesToUpdate.map(message => {
 					const newMessage = lastMessages.find(m => m._id === message.id);
-					return message.prepareUpdate(
-						protectedFunction(() => {
-							Object.assign(message, newMessage);
-						})
-					);
+					return message.prepareUpdate(() => {
+						try {
+							return Object.assign(message, newMessage);
+						} catch (e) {
+							log(e);
+							return null;
+						}
+					});
 				})
 			];
 
