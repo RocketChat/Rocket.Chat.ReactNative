@@ -14630,9 +14630,9 @@ react-native-webview@10.3.2:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@RocketChat/react-native#feature/update-mmkv:
+react-native@RocketChat/react-native#0.64.2:
   version "0.64.2"
-  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/91718c764e1d2ecc3322d5c333e21ffe06af652e"
+  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/eefc7ead3d343d5514118d79ff5e0ac7fc1761ec"
   dependencies:
     "@jest/create-cache-key-function" "^27.0.2"
     "@react-native-community/cli" "^5.0.1-alpha.1"
