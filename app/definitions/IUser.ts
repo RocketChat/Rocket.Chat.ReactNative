@@ -111,6 +111,7 @@ export interface INotificationPreferences {
 	desktopNotifications: TNotifications;
 	pushNotifications: TNotifications;
 	emailNotificationMode?: 'mentions' | 'nothing';
+	language?: string;
 }
 
 export interface IUserPreferences {
