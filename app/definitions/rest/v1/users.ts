@@ -43,4 +43,7 @@ export type UsersEndpoints = {
 			user: IUser;
 		};
 	};
+	'users.getUsernameSuggestion': {
+		GET: () => { result: string };
+	};
 };
