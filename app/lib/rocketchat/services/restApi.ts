@@ -1,7 +1,7 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences } from '../../../definitions';
+import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 
 export const createChannel = ({
@@ -557,10 +557,8 @@ export const saveUserPreferences = (data: any): any =>
 	// @ts-ignore
 	sdk.post('users.setPreferences', { data });
 
-export const saveNotificationSettings = (roomId: string, notifications: any): any =>
+export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('rooms.saveNotification', { roomId, notifications });
 
 export const getSingleMessage = (msgId: string) =>

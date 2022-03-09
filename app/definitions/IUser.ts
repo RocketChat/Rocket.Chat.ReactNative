@@ -103,7 +103,7 @@ export interface IUserSettings {
 		[key: string]: any;
 	};
 }
-type TNotifications = 'default' | 'all' | 'mentions' | 'nothing';
+export type TNotifications = 'default' | 'all' | 'mentions' | 'nothing';
 
 export interface INotificationPreferences {
 	id: string;
