@@ -1,5 +1,5 @@
 import type { IMessage, IMessageFromServer } from '../../IMessage';
-import type { IRoom } from '../../IRoom';
+import type { IServerRoom, RoomID, RoomType } from '../../IRoom';
 import type { IUser } from '../../IUser';
 
 export type ImEndpoints = {
@@ -16,17 +16,22 @@ export type ImEndpoints = {
 				excludeSelf?: boolean;
 			}
 		) => {
-			room: IRoom;
+			room: {
+				t: RoomType;
+				rid: RoomID;
+				_id: RoomID;
+				usernames: IServerRoom['usernames'];
+			};
 		};
 	};
 	'im.files': {
-		GET: (params: { roomId: IRoom['_id']; count: number; sort: string | { uploadedAt: number }; query: string }) => {
+		GET: (params: { roomId: IServerRoom['_id']; count: number; sort: string | { uploadedAt: number }; query: string }) => {
 			files: IMessage[];
 			total: number;
 		};
 	};
 	'im.members': {
-		GET: (params: { roomId: IRoom['_id']; offset?: number; count?: number; filter?: string; status?: string[] }) => {
+		GET: (params: { roomId: IServerRoom['_id']; offset?: number; count?: number; filter?: string; status?: string[] }) => {
 			count: number;
 			offset: number;
 			members: IUser[];

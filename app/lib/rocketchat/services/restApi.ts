@@ -1,8 +1,9 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences } from '../../../definitions';
+import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
+import { IParams } from '../../../definitions/IProfileViewInterfaces';
 
 export const createChannel = ({
 	name,
@@ -54,7 +55,7 @@ export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
 	sdk.post('e2e.updateGroupKey', { uid, rid, key });
 
-export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
+export const e2eRequestRoomKey = (rid: string, e2eKeyId: string): Promise<{ message: { msg?: string }; success: boolean }> =>
 	// RC 0.70.0
 	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
@@ -285,10 +286,8 @@ export const getRoomCounters = (
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
 
-export const getChannelInfo = (roomId: string): any =>
+export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('channels.info', { roomId });
 
 export const getUserPreferences = (userId: string): any =>
@@ -321,7 +320,7 @@ export const getTeamListRoom = ({
 	offset: number;
 	type: string;
 	filter: any;
-}): any => {
+}) => {
 	const params: any = {
 		teamId,
 		count,
@@ -333,8 +332,6 @@ export const getTeamListRoom = ({
 		params.filter = filter;
 	}
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.get('teams.listRooms', params);
 };
 
@@ -387,21 +384,25 @@ export const getRoutingConfig = (): Promise<{
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getRoutingConfig');
 
-export const getTagsList = () =>
+export const getTagsList = (): Promise<
+	{
+		_id: string;
+		name: string;
+		departments: string[];
+	}[]
+> =>
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getTagsList');
 
-export const getAgentDepartments = (uid: string): any =>
+export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get(`livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
 
 export const getCustomFields = () =>
 	// RC 2.2.0
 	sdk.get('livechat/custom-fields');
 
-export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }): any => {
+export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }) => {
 	const params = {
 		offset,
 		count,
@@ -411,8 +412,6 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	};
 
 	// RC 3.17.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.get('canned-responses', params);
 };
 
@@ -547,22 +546,16 @@ export const saveRoomSettings = (
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
-export const saveUserProfile = (data: any, customFields?: any): any =>
+export const saveUserProfile = (data: IParams | Pick<IParams, 'username'>, customFields?: { [key: string | number]: string }) =>
 	// RC 0.62.2
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.updateOwnBasicInfo', { data, customFields });
 
-export const saveUserPreferences = (data: any): any =>
+export const saveUserPreferences = (data: Partial<INotificationPreferences>) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.setPreferences', { data });
 
-export const saveNotificationSettings = (roomId: string, notifications: any): any =>
+export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('rooms.saveNotification', { roomId, notifications });
 
 export const getSingleMessage = (msgId: string) =>

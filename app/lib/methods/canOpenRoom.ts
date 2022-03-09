@@ -20,8 +20,10 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 			const result = await RocketChat.createDirectMessage(name);
 			if (result.success) {
 				const { room } = result;
-				room.rid = room._id as string;
-				return room;
+				return {
+					...room,
+					rid: room._id
+				};
 			}
 		}
 
