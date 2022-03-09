@@ -551,10 +551,8 @@ export const saveUserProfile = (data: any, customFields?: any): any =>
 	// @ts-ignore
 	sdk.post('users.updateOwnBasicInfo', { data, customFields });
 
-export const saveUserPreferences = (data: any): any =>
+export const saveUserPreferences = (data: Partial<INotificationPreferences>) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.setPreferences', { data });
 
 export const saveNotificationSettings = (roomId: string, notifications: any): any =>
