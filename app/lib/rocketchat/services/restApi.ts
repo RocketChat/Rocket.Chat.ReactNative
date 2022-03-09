@@ -546,10 +546,7 @@ export const saveRoomSettings = (
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
-export const saveUserProfile = (
-	data: IParams | Pick<IParams, 'username'>,
-	customFields?: { [key: string | number]: string }
-): any =>
+export const saveUserProfile = (data: IParams | Pick<IParams, 'username'>, customFields?: { [key: string | number]: string }) =>
 	// RC 0.62.2
 	sdk.post('users.updateOwnBasicInfo', { data, customFields });
 
