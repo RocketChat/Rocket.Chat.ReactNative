@@ -1,3 +1,4 @@
+import { IParams } from '../../IProfileViewInterfaces';
 import type { ITeam } from '../../ITeam';
 import type { IUser } from '../../IUser';
 import { INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';
@@ -36,5 +37,10 @@ export type UsersEndpoints = {
 	};
 	'users.setStatus': {
 		POST: (params: { status: string; message: string }) => {};
+	};
+	'users.updateOwnBasicInfo': {
+		POST: (params: { data: IParams | Pick<IParams, 'username'>; customFields?: { [key: string | number]: string } }) => {
+			user: IUser;
+		};
 	};
 };
