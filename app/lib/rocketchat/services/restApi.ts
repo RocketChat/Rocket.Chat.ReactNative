@@ -290,10 +290,8 @@ export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
 	sdk.get('channels.info', { roomId });
 
-export const getUserPreferences = (userId: string): any =>
+export const getUserPreferences = (userId: string) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('users.getPreferences', { userId });
 
 export const getRoomInfo = (roomId: string) =>

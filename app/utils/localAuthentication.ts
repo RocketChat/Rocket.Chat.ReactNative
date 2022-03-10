@@ -69,7 +69,7 @@ const openChangePasscodeModal = ({ force }: { force: boolean }) =>
 
 export const changePasscode = async ({ force = false }: { force: boolean }): Promise<void> => {
 	const passcode = await openChangePasscodeModal({ force });
-	await UserPreferences.setStringAsync(PASSCODE_KEY, sha256(passcode));
+	UserPreferences.setString(PASSCODE_KEY, sha256(passcode));
 };
 
 export const biometryAuth = (force?: boolean): Promise<LocalAuthentication.LocalAuthenticationResult> =>
@@ -86,12 +86,12 @@ export const biometryAuth = (force?: boolean): Promise<LocalAuthentication.Local
 const checkBiometry = async () => {
 	const result = await biometryAuth(true);
 	const isBiometryEnabled = !!result?.success;
-	await UserPreferences.setBoolAsync(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
+	UserPreferences.setBool(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
 	return isBiometryEnabled;
 };
 
 export const checkHasPasscode = async ({ force = true }: { force?: boolean }): Promise<{ newPasscode?: boolean } | void> => {
-	const storedPasscode = await UserPreferences.getStringAsync(PASSCODE_KEY);
+	const storedPasscode = UserPreferences.getString(PASSCODE_KEY);
 	if (!storedPasscode) {
 		await changePasscode({ force });
 		await checkBiometry();
@@ -137,7 +137,7 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 				store.dispatch(setLocalAuthenticated(false));
 
 				// let hasBiometry = false;
-				let hasBiometry = (await UserPreferences.getBoolAsync(BIOMETRY_ENABLED_KEY)) ?? false;
+				let hasBiometry = UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
 
 				// if biometry is enabled on the app
 				if (hasBiometry) {
