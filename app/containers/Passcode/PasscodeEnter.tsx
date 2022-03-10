@@ -10,7 +10,7 @@ import { TYPE } from './constants';
 import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '../../constants/localAuthentication';
 import { biometryAuth, resetAttempts } from '../../utils/localAuthentication';
 import { getDiff, getLockedUntil } from './utils';
-import UserPreferences from '../../lib/userPreferences';
+import { useUserPreferences } from '../../lib/userPreferences';
 import I18n from '../../i18n';
 
 interface IPasscodePasscodeEnter {
@@ -23,15 +23,10 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeE
 	const ref = useRef(null);
 	let attempts: any = 0;
 	let lockedUntil: any = false;
-	const [passcode, setPasscode] = useState(null);
+	const [passcode] = useUserPreferences(PASSCODE_KEY);
 	const [status, setStatus] = useState(null);
 	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
-
-	const fetchPasscode = async () => {
-		const p: any = await UserPreferences.getStringAsync(PASSCODE_KEY);
-		setPasscode(p);
-	};
 
 	const biometry = async () => {
 		if (hasBiometry && status === TYPE.ENTER) {
@@ -56,7 +51,6 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeE
 		} else {
 			setStatus(TYPE.ENTER);
 		}
-		await fetchPasscode();
 		biometry();
 	};
 

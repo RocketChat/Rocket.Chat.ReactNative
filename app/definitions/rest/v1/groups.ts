@@ -1,17 +1,20 @@
 import { ITeam } from '../../ITeam';
-import type { IMessage, IMessageFromServer } from '../../IMessage';
-import type { IRoom, IServerRoomItem } from '../../IRoom';
+import type { IMessageFromServer } from '../../IMessage';
+import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
+import { IServerAttachment } from '../../IAttachment';
 
 export type GroupsEndpoints = {
 	'groups.files': {
-		GET: (params: { roomId: IRoom['_id']; count: number; sort: string | { uploadedAt: number }; query: string }) => {
-			files: IMessage[];
+		GET: (params: { roomId: IServerRoom['_id']; offset: number; sort: string | { uploadedAt: number } }) => {
+			files: IServerAttachment[];
+			count: number;
+			offset: number;
 			total: number;
 		};
 	};
 	'groups.members': {
-		GET: (params: { roomId: IRoom['_id']; offset?: number; count?: number; filter?: string; status?: string[] }) => {
+		GET: (params: { roomId: IServerRoom['_id']; offset?: number; count?: number; filter?: string; status?: string[] }) => {
 			count: number;
 			offset: number;
 			members: IUser[];
@@ -40,10 +43,43 @@ export type GroupsEndpoints = {
 				teamId?: string;
 			};
 		}) => {
-			group: Partial<IServerRoomItem>;
+			group: Partial<IServerRoom>;
 		};
 	};
 	'groups.convertToTeam': {
 		POST: (params: { roomId: string; roomName: string }) => { team: ITeam };
+	};
+	'groups.counters': {
+		GET: (params: { roomId: string }) => {
+			joined: boolean;
+			members: number;
+			unreads: number;
+			unreadsFrom: Date;
+			msgs: number;
+			latest: Date;
+			userMentions: number;
+		};
+	};
+	'groups.close': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'groups.kick': {
+		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'groups.delete': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'groups.leave': {
+		POST: (params: { roomId: string }) => {};
+	};
+	'groups.messages': {
+		GET: (params: {
+			roomId: IServerRoom['_id'];
+			query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean };
+			offset: number;
+			sort: { ts: number };
+		}) => {
+			messages: IMessageFromServer[];
+		};
 	};
 };

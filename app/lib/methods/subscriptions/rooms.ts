@@ -21,6 +21,7 @@ import { E2E_MESSAGE_TYPE } from '../../encryption/constants';
 import updateMessages from '../updateMessages';
 import {
 	IMessage,
+	IServerRoom,
 	IRoom,
 	ISubscription,
 	TMessageModel,
@@ -37,11 +38,11 @@ const removeListener = (listener: { stop: () => void }) => listener.stop();
 
 let streamListener: Promise<any> | false;
 let subServer: string;
-let queue: { [key: string]: ISubscription } = {};
+let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: number | null | false = null;
 const WINDOW_TIME = 500;
 
-const createOrUpdateSubscription = async (subscription: ISubscription, room: IRoom | ISubscription) => {
+const createOrUpdateSubscription = async (subscription: ISubscription, room: IServerRoom | IRoom) => {
 	try {
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
@@ -195,7 +196,10 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 		if (tmp.lastMessage && !rooms.includes(tmp.rid)) {
 			const lastMessage = buildMessage(tmp.lastMessage);
 			const messagesCollection = db.get('messages');
-			const messageRecord = await getMessageById(lastMessage._id);
+			let messageRecord = {} as TMessageModel | null;
+			if (lastMessage) {
+				messageRecord = await getMessageById(lastMessage._id);
+			}
 
 			if (messageRecord) {
 				batch.push(
@@ -206,9 +210,11 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: IRo
 			} else {
 				batch.push(
 					messagesCollection.prepareCreate(m => {
-						m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
-						if (m.subscription) {
-							m.subscription.id = lastMessage.rid;
+						if (lastMessage) {
+							m._raw = sanitizedRaw({ id: lastMessage._id }, messagesCollection.schema);
+							if (m.subscription) {
+								m.subscription.id = lastMessage.rid;
+							}
 						}
 						return Object.assign(m, lastMessage);
 					})
@@ -238,15 +244,15 @@ const debouncedUpdate = (subscription: ISubscription) => {
 				InteractionManager.runAfterInteractions(() => {
 					if (batch[key]) {
 						if (/SUB/.test(key)) {
-							const sub = batch[key];
+							const sub = batch[key] as ISubscription;
 							const roomQueueId = getRoomQueueId(sub.rid);
-							const room = batch[roomQueueId];
+							const room = batch[roomQueueId] as IRoom;
 							delete batch[roomQueueId];
 							createOrUpdateSubscription(sub, room);
 						} else {
-							const room = batch[key];
+							const room = batch[key] as IRoom;
 							const subQueueId = getSubQueueId(room._id);
-							const sub = batch[subQueueId];
+							const sub = batch[subQueueId] as ISubscription;
 							delete batch[subQueueId];
 							createOrUpdateSubscription(sub, room);
 						}
