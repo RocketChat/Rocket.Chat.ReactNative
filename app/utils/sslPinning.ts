@@ -14,13 +14,13 @@ const extractFileScheme = (path: string) => path.replace('file://', ''); // file
 
 const getPath = (name: string) => `${documentDirectory}/${name}`;
 
-const persistCertificate = async (name: string, password: string) => {
+const persistCertificate = (name: string, password: string) => {
 	const certificatePath = getPath(name);
 	const certificate: ICertificate = {
 		path: extractFileScheme(certificatePath),
 		password
 	};
-	await UserPreferences.setMapAsync(name, certificate);
+	UserPreferences.setMap(name, certificate);
 	return certificate;
 };
 
@@ -44,7 +44,7 @@ const RCSSLPinning = Platform.select({
 									try {
 										const certificatePath = getPath(name);
 										await FileSystem.copyAsync({ from: uri, to: certificatePath });
-										await persistCertificate(name, password!);
+										persistCertificate(name, password!);
 										resolve(name);
 									} catch (e) {
 										reject(e);
@@ -58,13 +58,13 @@ const RCSSLPinning = Platform.select({
 					reject(e);
 				}
 			}),
-		setCertificate: async (name: string, server: string) => {
+		setCertificate: (name: string, server: string) => {
 			if (name) {
-				let certificate = (await UserPreferences.getMapAsync(name)) as ICertificate;
+				let certificate = UserPreferences.getMap(name) as ICertificate;
 				if (!certificate.path.match(extractFileScheme(documentDirectory!))) {
-					certificate = await persistCertificate(name, certificate.password);
+					certificate = persistCertificate(name, certificate.password);
 				}
-				await UserPreferences.setMapAsync(extractHostname(server), certificate);
+				UserPreferences.setMap(extractHostname(server), certificate);
 			}
 		}
 	},

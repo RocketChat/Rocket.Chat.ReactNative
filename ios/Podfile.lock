@@ -177,9 +177,9 @@ PODS:
   - libwebp/mux (1.1.0):
     - libwebp/demux
   - libwebp/webp (1.1.0)
-  - MMKV (1.2.1):
-    - MMKVCore (~> 1.2.1)
-  - MMKVCore (1.2.1)
+  - MMKV (1.2.10):
+    - MMKVCore (~> 1.2.10)
+  - MMKVCore (1.2.12)
   - nanopb (1.30905.0):
     - nanopb/decode (= 1.30905.0)
     - nanopb/encode (= 1.30905.0)
@@ -410,9 +410,9 @@ PODS:
   - react-native-jitsi-meet (3.6.0):
     - JitsiMeetSDK (= 3.6.0)
     - React
-  - react-native-mmkv-storage (0.3.5):
-    - MMKV (= 1.2.1)
-    - React
+  - react-native-mmkv-storage (0.6.12):
+    - MMKV (= 1.2.10)
+    - React-Core
   - react-native-netinfo (6.0.0):
     - React-Core
   - react-native-notifications (2.1.7):
@@ -950,7 +950,7 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: 442c3abadb51a81551a3b53705b7560de390e6f7
   EXWebBrowser: 76783ba5dcb8699237746ecf41a9643d428a4cc5
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 8a1012a62d7a3d667376b413656d780b8e4680ce
+  FBReactNativeSpec: 110d69378fce79af38271c39894b59fec7890221
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
@@ -974,8 +974,8 @@ SPEC CHECKSUMS:
   KeyCommands: f66c535f698ed14b3d3a4e58859d79a827ea907e
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
-  MMKV: 67253edee25a34edf332f91d73fa94a9e038b971
-  MMKVCore: fe398984acac1fa33f92795d1b5fd0a334c944af
+  MMKV: 76033b9ace2006623308910a3afcc0e25eba3140
+  MMKVCore: df0565f6b58463604731a68ba6cd89bc0b2d1d55
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
@@ -997,7 +997,7 @@ SPEC CHECKSUMS:
   react-native-cookies: 2cb6ef472da68610dfcf0eaee68464c244943abd
   react-native-document-picker: f1b5398801b332c77bc62ae0eae2116f49bdff26
   react-native-jitsi-meet: 3e3ac5d0445091154119f94342efd55c8b1124ce
-  react-native-mmkv-storage: 48729fe90e850ef2fdc9d3714b7030c7c51d82b0
+  react-native-mmkv-storage: 88bcb10bbe85a8122061d17d03abcc64a02fe1c9
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d

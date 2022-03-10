@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 
-import debounce from '../../utils/debounce';
-import { avatarURL } from '../../utils/avatar';
-import RocketChat from '../../lib/rocketchat';
-import I18n from '../../i18n';
-import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../constants/colors';
-import { TSubscriptionModel } from '../../definitions/ISubscription';
-import styles from './styles';
+import { MultiSelect } from '../../containers/UIKit/MultiSelect';
+import { ISearchLocal } from '../../definitions';
+import I18n from '../../i18n';
+import RocketChat from '../../lib/rocketchat';
+import { avatarURL } from '../../utils/avatar';
+import debounce from '../../utils/debounce';
 import { ICreateDiscussionViewSelectChannel } from './interfaces';
+import styles from './styles';
 
 const SelectChannel = ({
 	server,
@@ -21,7 +21,7 @@ const SelectChannel = ({
 	serverVersion,
 	theme
 }: ICreateDiscussionViewSelectChannel): JSX.Element => {
-	const [channels, setChannels] = useState<TSubscriptionModel[]>([]);
+	const [channels, setChannels] = useState<ISearchLocal[]>([]);
 
 	const getChannels = debounce(async (keyword = '') => {
 		try {

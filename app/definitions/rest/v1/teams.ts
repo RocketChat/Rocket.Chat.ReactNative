@@ -1,17 +1,13 @@
-import { IRoom, IServerRoomItem } from '../../IRoom';
+import { IServerRoom } from '../../IRoom';
 import { IServerTeamUpdateRoom, ITeam, TEAM_TYPE } from '../../ITeam';
+import { PaginatedResult } from '../helpers/PaginatedResult';
 
 export type TeamsEndpoints = {
 	'teams.removeRoom': {
-		POST: (params: { roomId: string; teamId: string }) => { room: IRoom };
+		POST: (params: { roomId: string; teamId: string }) => { room: IServerRoom };
 	};
 	'teams.listRoomsOfUser': {
-		GET: (params: { teamId: string; userId: string }) => {
-			rooms: IServerRoomItem[];
-			total: number;
-			count: number;
-			offset: number;
-		};
+		GET: (params: { teamId: string; userId: string }) => PaginatedResult<{ rooms: IServerRoom[] }>;
 	};
 	'teams.updateRoom': {
 		POST: (params: { roomId: string; isDefault: boolean }) => { room: IServerTeamUpdateRoom };
@@ -23,7 +19,7 @@ export type TeamsEndpoints = {
 		POST: (params: { teamId: string; userId: string; rooms?: string[] }) => {};
 	};
 	'teams.addRooms': {
-		POST: (params: { teamId: string; rooms: string[] }) => { rooms: IRoom[] };
+		POST: (params: { teamId: string; rooms: string[] }) => { rooms: IServerRoom[] };
 	};
 	'teams.create': {
 		POST: (params: {
@@ -32,5 +28,14 @@ export type TeamsEndpoints = {
 			type: TEAM_TYPE;
 			room: { readOnly: boolean; extraData: { broadcast: boolean; encrypted: boolean } };
 		}) => { team: ITeam };
+	};
+	'teams.listRooms': {
+		GET: (params: {
+			teamId: string;
+			count: number;
+			offset: number;
+			type: string;
+			filter?: any;
+		}) => PaginatedResult<{ rooms: IServerTeamUpdateRoom[] }>;
 	};
 };
