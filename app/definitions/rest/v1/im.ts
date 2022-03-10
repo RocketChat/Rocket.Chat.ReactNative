@@ -1,6 +1,7 @@
-import type { IMessage, IMessageFromServer } from '../../IMessage';
+import type { IMessageFromServer } from '../../IMessage';
 import type { IServerRoom, RoomID, RoomType } from '../../IRoom';
 import type { IUser } from '../../IUser';
+import { IServerAttachment } from '../../IAttachment';
 
 export type ImEndpoints = {
 	'im.create': {
@@ -25,8 +26,10 @@ export type ImEndpoints = {
 		};
 	};
 	'im.files': {
-		GET: (params: { roomId: IServerRoom['_id']; count: number; sort: string | { uploadedAt: number }; query: string }) => {
-			files: IMessage[];
+		GET: (params: { roomId: IServerRoom['_id']; offset: number; sort: string | { uploadedAt: number } }) => {
+			files: IServerAttachment[];
+			count: number;
+			offset: number;
 			total: number;
 		};
 	};
