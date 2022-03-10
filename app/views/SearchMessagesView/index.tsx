@@ -157,11 +157,13 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		if (result.success) {
 			return result.messages;
 		}
-	};
 
+		return [];
+	};
 	getMessages = async (searchText: string, debounced?: boolean) => {
 		try {
 			const messages = await this.searchMessages(searchText);
+			// @ts-ignore TODO: find a way to deal with the difference between IMessageFromServer and TMessageModel expected by state
 			this.setState(prevState => ({
 				messages: debounced ? messages : [...prevState.messages, ...messages],
 				loading: false
