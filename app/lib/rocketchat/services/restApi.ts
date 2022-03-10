@@ -596,15 +596,15 @@ export const getUsernameSuggestion = (): any =>
 	// @ts-ignore
 	sdk.get('users.getUsernameSuggestion');
 
-export const getFiles = (roomId: string, type: RoomTypes, offset: number): any =>
+export const getFiles = (roomId: string, type: SubscriptionType, offset: number) => {
+	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get(`${roomTypeToApiType(type)}.files`, {
+	return sdk.get(`${roomTypeToApiType(t)}.files`, {
 		roomId,
 		offset,
 		sort: { uploadedAt: -1 }
 	});
+};
 
 export const getMessages = (roomId: string, type: RoomTypes, query: any, offset: number): any =>
 	// RC 0.59.0
