@@ -18,7 +18,7 @@ import { loginRequest, setLoginServices, setUser } from '../../../actions/login'
 import sdk from './sdk';
 import I18n from '../../../i18n';
 import RocketChat, { MIN_ROCKETCHAT_VERSION, STATUSES } from '../rocketchat';
-import { ICredentials, ILoggedUser, IRocketChat, IUser } from '../../../definitions';
+import { ICredentials, ILoggedUser, IRocketChat } from '../../../definitions';
 import { isIOS } from '../../../utils/deviceInfo';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../../actions/connect';
 import { updatePermission } from '../../../actions/permissions';
