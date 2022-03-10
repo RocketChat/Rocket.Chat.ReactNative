@@ -97,11 +97,11 @@ class ThemeView extends React.Component<IThemeViewProps> {
 		this.setTheme(changes);
 	};
 
-	setTheme = async (theme: Partial<IThemePreference>) => {
+	setTheme = (theme: Partial<IThemePreference>) => {
 		const { setTheme, themePreferences } = this.props;
 		const newTheme = { ...themePreferences, ...theme };
 		setTheme(newTheme);
-		await UserPreferences.setMapAsync(THEME_PREFERENCES_KEY, newTheme);
+		UserPreferences.setMap(THEME_PREFERENCES_KEY, newTheme);
 	};
 
 	renderIcon = () => {

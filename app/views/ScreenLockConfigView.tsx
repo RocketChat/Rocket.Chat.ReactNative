@@ -92,7 +92,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		const { server } = this.props;
 		const serversDB = database.servers;
 		const serversCollection = serversDB.get('servers');
-		const hasBiometry = (await userPreferences.getBoolAsync(BIOMETRY_ENABLED_KEY)) ?? DEFAULT_BIOMETRY;
+		const hasBiometry = userPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? DEFAULT_BIOMETRY;
 		try {
 			this.serverRecord = await serversCollection.find(server);
 			this.setState({
@@ -147,9 +147,9 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		logEvent(events.SLC_TOGGLE_BIOMETRY);
 		this.setState(
 			({ biometry }) => ({ biometry: !biometry }),
-			async () => {
+			() => {
 				const { biometry } = this.state;
-				await userPreferences.setBoolAsync(BIOMETRY_ENABLED_KEY, biometry);
+				userPreferences.setBool(BIOMETRY_ENABLED_KEY, biometry);
 			}
 		);
 	};
