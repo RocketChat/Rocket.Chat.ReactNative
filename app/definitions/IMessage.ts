@@ -87,6 +87,17 @@ export interface IMessageFromServer {
 	drid?: string;
 	dcount?: number;
 	dml: string | Date;
+	starred?:
+		| {
+				_id: string;
+		  }
+		| boolean;
+	pinned?: boolean;
+	pinnedAt?: string | Date;
+	pinnedBy?: {
+		_id: string;
+		username: string;
+	};
 }
 
 export interface ILoadMoreMessage {
@@ -106,7 +117,11 @@ export interface IMessage extends IMessageFromServer {
 	emoji?: string;
 	status?: number;
 	pinned?: boolean;
-	starred?: boolean;
+	starred?:
+		| {
+				_id: string;
+		  }
+		| boolean;
 	editedBy?: IEditedBy;
 	reactions?: IReaction[];
 	role?: string;

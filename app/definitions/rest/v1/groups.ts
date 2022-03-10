@@ -69,4 +69,14 @@ export type GroupsEndpoints = {
 	'groups.leave': {
 		POST: (params: { roomId: string }) => {};
 	};
+	'groups.messages': {
+		GET: (params: {
+			roomId: IServerRoom['_id'];
+			query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean };
+			offset: number;
+			sort: { ts: number };
+		}) => {
+			messages: IMessageFromServer[];
+		};
+	};
 };

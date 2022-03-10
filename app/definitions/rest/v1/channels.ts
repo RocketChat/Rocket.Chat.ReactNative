@@ -99,4 +99,14 @@ export type ChannelsEndpoints = {
 	'channels.removeLeader': {
 		POST: (params: { roomId: string; userId: string }) => {};
 	};
+	'channels.messages': {
+		GET: (params: {
+			roomId: IServerRoom['_id'];
+			query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean };
+			offset: number;
+			sort: { ts: number };
+		}) => {
+			messages: IMessageFromServer[];
+		};
+	};
 };
