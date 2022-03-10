@@ -55,4 +55,14 @@ export type ImEndpoints = {
 	'im.leave': {
 		POST: (params: { roomId: string }) => {};
 	};
+	'im.messages': {
+		GET: (params: {
+			roomId: IServerRoom['_id'];
+			query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean };
+			offset: number;
+			sort: { ts: number };
+		}) => {
+			messages: IMessageFromServer[];
+		};
+	};
 };
