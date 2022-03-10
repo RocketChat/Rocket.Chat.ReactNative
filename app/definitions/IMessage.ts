@@ -87,6 +87,7 @@ export interface IMessageFromServer {
 	drid?: string;
 	dcount?: number;
 	dml: string | Date;
+	score?: number;
 }
 
 export interface ILoadMoreMessage {

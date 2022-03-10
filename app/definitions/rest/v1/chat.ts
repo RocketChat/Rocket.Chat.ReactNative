@@ -60,4 +60,9 @@ export type ChatEndpoints = {
 	'chat.ignoreUser': {
 		GET: (params: { rid: string; userId: string; ignore: boolean }) => {};
 	};
+	'chat.search': {
+		GET: (params: { roomId: IServerRoom['_id']; searchText: string; count: number; offset: number }) => {
+			messages: IMessageFromServer[];
+		};
+	};
 };
