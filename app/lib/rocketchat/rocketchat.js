@@ -115,8 +115,8 @@ const RocketChat = {
 		database.setShareDB(server);
 
 		try {
-			const certificate = await UserPreferences.getStringAsync(`${RocketChat.CERTIFICATE_KEY}-${server}`);
-			await SSLPinning.setCertificate(certificate, server);
+			const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
+			SSLPinning.setCertificate(certificate, server);
 		} catch {
 			// Do nothing
 		}
@@ -155,7 +155,7 @@ const RocketChat = {
 			reduxStore.dispatch(shareSetSettings(this.parseSettings(parsed)));
 
 			// set User info
-			const userId = await UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
+			const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
 			const userCollections = serversDB.get('users');
 			let user = null;
 			if (userId) {
@@ -461,14 +461,13 @@ const RocketChat = {
 		}
 		return JSON.parse(allowAnalyticsEvents);
 	},
-	async getSortPreferences() {
-		const prefs = await UserPreferences.getMapAsync(SORT_PREFS_KEY);
-		return prefs;
+	getSortPreferences() {
+		return UserPreferences.getMap(SORT_PREFS_KEY);
 	},
-	async saveSortPreference(param) {
-		let prefs = await RocketChat.getSortPreferences();
+	saveSortPreference(param) {
+		let prefs = RocketChat.getSortPreferences();
 		prefs = { ...prefs, ...param };
-		return UserPreferences.setMapAsync(SORT_PREFS_KEY, prefs);
+		return UserPreferences.setMap(SORT_PREFS_KEY, prefs);
 	},
 	getLoginServices,
 	determineAuthType,
