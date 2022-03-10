@@ -3,7 +3,7 @@ import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
-import { IParams } from '../../../definitions/IProfileViewInterfaces';
+import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
 
 export const createChannel = ({
 	name,
@@ -290,10 +290,8 @@ export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
 	sdk.get('channels.info', { roomId });
 
-export const getUserPreferences = (userId: string): any =>
+export const getUserPreferences = (userId: string) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('users.getPreferences', { userId });
 
 export const getRoomInfo = (roomId: string) =>
@@ -569,14 +567,12 @@ export const getRoomRoles = (
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
-export const getAvatarSuggestion = () =>
+export const getAvatarSuggestion = (): Promise<IAvatarSuggestion> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('getAvatarSuggestion');
 
-export const resetAvatar = (userId: string): any =>
+export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.resetAvatar', { userId });
 
 export const setAvatarFromService = ({
