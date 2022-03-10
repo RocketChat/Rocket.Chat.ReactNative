@@ -43,4 +43,10 @@ export type UsersEndpoints = {
 			user: IUser;
 		};
 	};
+	'users.getPreferences': {
+		GET: (params: { userId: IUser['_id'] }) => {
+			preferences: INotificationPreferences;
+			success: boolean;
+		};
+	};
 };
