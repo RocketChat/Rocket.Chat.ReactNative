@@ -38,8 +38,8 @@ interface IServices {
 // FIXME: Remove `this` context
 function connect(
 	this: IRocketChat,
-	{ server, user, logoutOnError = false }: { server: string; user: IUser; logoutOnError: boolean }
-) {
+	{ server, logoutOnError = false }: { server: string; logoutOnError: boolean }
+): Promise<void> {
 	return new Promise<void>(resolve => {
 		if (sdk.current?.client?.host === server) {
 			return resolve();
@@ -107,8 +107,8 @@ function connect(
 				return;
 			}
 			store.dispatch(connectSuccess());
-			const { server: currentServer } = store.getState().server;
-			if (user?.token && server === currentServer) {
+			const { user } = store.getState().login;
+			if (user?.token) {
 				store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 			}
 		});

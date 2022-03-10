@@ -112,7 +112,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		if (user) {
 			yield put(clearSettings());
 			yield put(setUser(user));
-			yield RocketChat.connect({ server, user, logoutOnError: true });
+			yield RocketChat.connect({ server, logoutOnError: true });
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 		} else {
 			yield put(clearUser());
