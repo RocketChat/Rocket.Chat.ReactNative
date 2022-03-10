@@ -15,7 +15,7 @@ export async function shareExtensionInit(server: string) {
 	database.setShareDB(server);
 
 	try {
-		const certificate = await UserPreferences.getStringAsync(`${RocketChat.CERTIFICATE_KEY}-${server}`);
+		const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
 		if (SSLPinning && certificate) {
 			await SSLPinning.setCertificate(certificate, server);
 		}
@@ -60,7 +60,7 @@ export async function shareExtensionInit(server: string) {
 		store.dispatch(shareSetSettings(RocketChat.parseSettings(parsed)));
 
 		// set User info
-		const userId = await UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
 		const userCollections = serversDB.get('users');
 		let user = null;
 		if (userId) {
