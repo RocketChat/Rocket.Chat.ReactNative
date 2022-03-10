@@ -5,14 +5,13 @@ import { AppearanceProvider } from 'react-native-appearance';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 
-import { defaultTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
+import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
 import UserPreferences from './lib/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { initStore } from './lib/auxStore';
-import { supportSystemTheme } from './utils/deviceInfo';
 import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
-import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
+import RocketChat from './lib/rocketchat';
 import { ThemeContext } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
 import { IThemePreference } from './definitions/ITheme';
@@ -94,12 +93,10 @@ class Root extends React.Component<{}, IState> {
 	constructor(props: any) {
 		super(props);
 		const { width, height, scale, fontScale } = Dimensions.get('screen');
+		const theme = initialTheme();
 		this.state = {
-			theme: defaultTheme(),
-			themePreferences: {
-				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
-				darkLevel: 'black'
-			},
+			theme: getTheme(theme),
+			themePreferences: theme,
 			root: '',
 			width,
 			height,
@@ -115,9 +112,7 @@ class Root extends React.Component<{}, IState> {
 	}
 
 	init = async () => {
-		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then((theme: any) => this.setTheme(theme));
-
-		const currentServer = await UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER);
+		const currentServer = UserPreferences.getString(RocketChat.CURRENT_SERVER);
 
 		if (currentServer) {
 			await localAuthenticate(currentServer);
