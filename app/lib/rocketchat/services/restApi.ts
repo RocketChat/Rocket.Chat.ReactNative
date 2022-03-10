@@ -586,10 +586,8 @@ export const setAvatarFromService = ({
 	// RC 0.51.0
 	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
 
-export const getUsernameSuggestion = (): any =>
+export const getUsernameSuggestion = () =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('users.getUsernameSuggestion');
 
 export const getFiles = (roomId: string, type: RoomTypes, offset: number): any =>
