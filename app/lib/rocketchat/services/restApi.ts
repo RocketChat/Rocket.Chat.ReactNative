@@ -582,7 +582,7 @@ export const setAvatarFromService = ({
 	data: any;
 	contentType?: string;
 	service?: string | null;
-}) =>
+}): Promise<void> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
 
