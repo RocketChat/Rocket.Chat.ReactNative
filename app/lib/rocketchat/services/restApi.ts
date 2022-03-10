@@ -624,10 +624,8 @@ export const getReadReceipts = (messageId: string): any =>
 		messageId
 	});
 
-export const searchMessages = (roomId: string, searchText: string, count: number, offset: number): any =>
+export const searchMessages = (roomId: string, searchText: string, count: number, offset: number) =>
 	// RC 0.60.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.search', {
 		roomId,
 		searchText,

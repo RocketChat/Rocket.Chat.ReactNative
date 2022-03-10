@@ -98,6 +98,7 @@ export interface IMessageFromServer {
 		_id: string;
 		username: string;
 	};
+	score?: number;
 }
 
 export interface ILoadMoreMessage {
