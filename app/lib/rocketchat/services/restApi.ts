@@ -583,36 +583,39 @@ export const setAvatarFromService = ({
 	data: any;
 	contentType?: string;
 	service?: string | null;
-}) =>
+}): Promise<void> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
 
-export const getUsernameSuggestion = (): any =>
+export const getUsernameSuggestion = () =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('users.getUsernameSuggestion');
 
-export const getFiles = (roomId: string, type: RoomTypes, offset: number): any =>
+export const getFiles = (roomId: string, type: SubscriptionType, offset: number) => {
+	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get(`${roomTypeToApiType(type)}.files`, {
+	return sdk.get(`${roomTypeToApiType(t)}.files`, {
 		roomId,
 		offset,
 		sort: { uploadedAt: -1 }
 	});
+};
 
-export const getMessages = (roomId: string, type: RoomTypes, query: any, offset: number): any =>
+export const getMessages = (
+	roomId: string,
+	type: SubscriptionType,
+	query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean },
+	offset: number
+) => {
+	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get(`${roomTypeToApiType(type)}.messages`, {
+	return sdk.get(`${roomTypeToApiType(t)}.messages`, {
 		roomId,
 		query,
 		offset,
 		sort: { ts: -1 }
 	});
+};
 
 export const getReadReceipts = (messageId: string): any =>
 	// RC 0.63.0
@@ -622,10 +625,8 @@ export const getReadReceipts = (messageId: string): any =>
 		messageId
 	});
 
-export const searchMessages = (roomId: string, searchText: string, count: number, offset: number): any =>
+export const searchMessages = (roomId: string, searchText: string, count: number, offset: number) =>
 	// RC 0.60.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.search', {
 		roomId,
 		searchText,
