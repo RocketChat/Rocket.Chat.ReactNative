@@ -43,6 +43,9 @@ export type UsersEndpoints = {
 			user: IUser;
 		};
 	};
+	'users.resetAvatar': {
+		POST: (params: { userId: string }) => {};
+	};
 	'users.getPreferences': {
 		GET: (params: { userId: IUser['_id'] }) => {
 			preferences: INotificationPreferences;
