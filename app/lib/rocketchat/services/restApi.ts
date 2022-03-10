@@ -744,3 +744,7 @@ export const useInviteToken = (token: string): any =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
+
+export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
+	// RC 0.67.0
+	sdk.post('users.deleteOwnAccount', { password, confirmRelinquish });

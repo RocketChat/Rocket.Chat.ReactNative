@@ -137,6 +137,9 @@ export default {
 	// PROFILE LOGOUT
 	PL_OTHER_LOCATIONS: 'pl_other_locations',
 	PL_OTHER_LOCATIONS_F: 'pl_other_locations_f',
+	// DELETE OWN ACCOUNT ACCOUNT
+	DELETE_OWN_ACCOUNT: 'delete_own_account',
+	DELETE_OWN_ACCOUNT_F: 'delete_own_account_f',
 
 	// SETTINGS VIEW
 	SE_CONTACT_US: 'se_contact_us',

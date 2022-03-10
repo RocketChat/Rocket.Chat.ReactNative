@@ -46,7 +46,10 @@ export interface IProfileViewProps {
 	Accounts_AllowUserAvatarChange: boolean;
 	Accounts_AllowUsernameChange: boolean;
 	Accounts_CustomFields: string;
+	Accounts_AllowDeleteOwnAccount: string;
+	Message_ErasureType: string;
 	setUser: Function;
+	logoutUser: Function;
 	theme: string;
 }
 
@@ -76,4 +79,18 @@ export interface IProfileViewState {
 	customFields: {
 		[key: string | number]: string;
 	};
+	confirmOwnerChangeModalVisible: boolean;
+	shouldChangeOwner: string[];
+	shouldBeRemoved: string[];
+}
+
+export interface IConfirmOwnerChangeWarningModalProps {
+	theme: string;
+	confirmOwnerChangeModalVisible: boolean;
+	onConfirm: () => void;
+	onCancel: () => void;
+	shouldChangeOwner: Array<string>;
+	shouldBeRemoved: Array<string>;
+	modalTitle: string;
+	contentTitle: string;
 }

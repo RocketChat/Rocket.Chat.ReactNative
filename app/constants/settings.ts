@@ -137,6 +137,9 @@ export default {
 	Message_TimeAndDateFormat: {
 		type: 'valueAsString'
 	},
+	Message_ErasureType: {
+		type: 'valueAsString'
+	},
 	Site_Name: {
 		type: 'valueAsString'
 	},
@@ -196,6 +199,9 @@ export default {
 	},
 	Accounts_AllowInvisibleStatusOption: {
 		type: 'valueAsString'
+	},
+	Accounts_AllowDeleteOwnAccount: {
+		type: 'valueAsBoolean'
 	},
 	Jitsi_Enable_Teams: {
 		type: 'valueAsBoolean'

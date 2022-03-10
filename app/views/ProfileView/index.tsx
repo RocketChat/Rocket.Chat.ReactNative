@@ -22,7 +22,7 @@ import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
-import { setUser as setUserAction } from '../../actions/login';
+import { setUser as setUserAction, logout } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -40,6 +40,7 @@ import {
 	IProfileViewState,
 	IUser
 } from '../../definitions/IProfileViewInterfaces';
+import ConfirmOwnerChangeWarningModal from './ConfirmOwnerChangeWarningModal';
 
 class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> {
 	private name: any;
@@ -74,7 +75,10 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			url: ''
 		},
 		avatarSuggestions: {},
-		customFields: {}
+		customFields: {},
+		confirmOwnerChangeModalVisible: false,
+		shouldChangeOwner: [],
+		shouldBeRemoved: []
 	};
 
 	async componentDidMount() {
@@ -126,7 +130,10 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				data: {},
 				url: ''
 			},
-			customFields: customFields || {}
+			customFields: customFields || {},
+			confirmOwnerChangeModalVisible: false,
+			shouldChangeOwner: [],
+			shouldBeRemoved: []
 		});
 	};
 
@@ -447,8 +454,75 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		});
 	};
 
+	deleteOwnAccount = () => {
+		logEvent(events.DELETE_OWN_ACCOUNT);
+		prompt(
+			I18n.t('Are_you_sure_you_want_to_delete_your_account?'),
+			I18n.t('For_your_security_you_must_enter_your_current_password_to_continue'),
+			[
+				{ text: I18n.t('Cancel'), onPress: () => {}, style: 'cancel' },
+				{
+					text: I18n.t('Confirm'),
+					onPress: async (password: string) => {
+						this.setState({ currentPassword: password });
+						const { logoutUser } = this.props;
+						try {
+							await RocketChat.deleteOwnAccount(sha256(password));
+							logoutUser();
+							EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_deleted') });
+						} catch (error) {
+							// @ts-ignore
+							if (error.data.errorType === 'user-last-owner') {
+								// @ts-ignore
+								const { shouldChangeOwner, shouldBeRemoved } = error.data.details;
+								this.setState({ shouldChangeOwner, shouldBeRemoved, confirmOwnerChangeModalVisible: true });
+							} // @ts-ignore
+							else if (error.data.errorType === 'error-invalid-password') {
+								logEvent(events.DELETE_OWN_ACCOUNT_F);
+								EventEmitter.emit(LISTENER, { message: `Invalid password` });
+							} else {
+								// @ts-ignore
+								EventEmitter.emit(LISTENER, { message: error.data.details });
+								logEvent(events.DELETE_OWN_ACCOUNT_F);
+							}
+						}
+					}
+				}
+			],
+			{
+				type: 'secure-text',
+				cancelable: false
+			}
+		);
+	};
+
+	handleConfirmOwnerChange = async () => {
+		const { currentPassword } = this.state;
+		const { logoutUser } = this.props;
+		try {
+			await RocketChat.deleteOwnAccount(sha256(currentPassword!), true);
+			logoutUser();
+			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_deleted') });
+		} catch (error) {
+			// @ts-ignore
+			EventEmitter.emit(LISTENER, { message: error.data.details });
+		}
+	};
+
 	render() {
-		const { name, username, email, newPassword, avatarUrl, customFields, avatar, saving } = this.state;
+		const {
+			name,
+			username,
+			email,
+			newPassword,
+			avatarUrl,
+			customFields,
+			avatar,
+			saving,
+			confirmOwnerChangeModalVisible,
+			shouldChangeOwner,
+			shouldBeRemoved
+		} = this.state;
 		const {
 			user,
 			theme,
@@ -457,7 +531,9 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			Accounts_AllowRealNameChange,
 			Accounts_AllowUserAvatarChange,
 			Accounts_AllowUsernameChange,
-			Accounts_CustomFields
+			Accounts_CustomFields,
+			Accounts_AllowDeleteOwnAccount,
+			Message_ErasureType
 		} = this.props;
 
 		return (
@@ -573,6 +649,26 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							testID='profile-view-logout-other-locations'
 							theme={theme}
 						/>
+						{Accounts_AllowDeleteOwnAccount && (
+							<Button
+								title={I18n.t('Delete_my_account')}
+								type='primary'
+								backgroundColor={themes[theme].dangerColor}
+								onPress={this.deleteOwnAccount}
+								testID='profile-view-delete-my-account'
+								theme={theme}
+							/>
+						)}
+						<ConfirmOwnerChangeWarningModal
+							theme={theme}
+							confirmOwnerChangeModalVisible={confirmOwnerChangeModalVisible}
+							onConfirm={this.handleConfirmOwnerChange}
+							onCancel={() => this.setState({ confirmOwnerChangeModalVisible: false })}
+							modalTitle={I18n.t('Are_you_sure_question_mark')}
+							contentTitle={I18n.t(`Delete_User_Warning_${Message_ErasureType}`)}
+							shouldChangeOwner={shouldChangeOwner}
+							shouldBeRemoved={shouldBeRemoved}
+						/>
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>
@@ -588,11 +684,14 @@ const mapStateToProps = (state: any) => ({
 	Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange,
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields,
+	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount,
+	Message_ErasureType: state.settings.Message_ErasureType,
 	baseUrl: state.server.server
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-	setUser: (params: any) => dispatch(setUserAction(params))
+	setUser: (params: any) => dispatch(setUserAction(params)),
+	logoutUser: () => dispatch(logout())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ProfileView));
