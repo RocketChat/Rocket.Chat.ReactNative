@@ -2,7 +2,7 @@ import { ITeam } from '../../ITeam';
 import type { IMessage, IMessageFromServer } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
-import { IGetRoomRoles } from '../../IGetRoomRoles';
+import { IGetRoomRoles } from '../../IRole';
 
 export type GroupsEndpoints = {
 	'groups.files': {
