@@ -3,7 +3,7 @@ import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
-import { IParams } from '../../../definitions/IProfileViewInterfaces';
+import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
 
 export const createChannel = ({
 	name,
@@ -566,14 +566,12 @@ export const getRoomRoles = (roomId: string, type: SubscriptionType): any =>
 	// @ts-ignore
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
-export const getAvatarSuggestion = () =>
+export const getAvatarSuggestion = (): Promise<IAvatarSuggestion> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('getAvatarSuggestion');
 
-export const resetAvatar = (userId: string): any =>
+export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.resetAvatar', { userId });
 
 export const setAvatarFromService = ({
@@ -584,14 +582,12 @@ export const setAvatarFromService = ({
 	data: any;
 	contentType?: string;
 	service?: string | null;
-}) =>
+}): Promise<void> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
 
-export const getUsernameSuggestion = (): any =>
+export const getUsernameSuggestion = () =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('users.getUsernameSuggestion');
 
 export const getFiles = (roomId: string, type: RoomTypes, offset: number): any =>
@@ -604,16 +600,21 @@ export const getFiles = (roomId: string, type: RoomTypes, offset: number): any =
 		sort: { uploadedAt: -1 }
 	});
 
-export const getMessages = (roomId: string, type: RoomTypes, query: any, offset: number): any =>
+export const getMessages = (
+	roomId: string,
+	type: SubscriptionType,
+	query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean },
+	offset: number
+) => {
+	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get(`${roomTypeToApiType(type)}.messages`, {
+	return sdk.get(`${roomTypeToApiType(t)}.messages`, {
 		roomId,
 		query,
 		offset,
 		sort: { ts: -1 }
 	});
+};
 
 export const getReadReceipts = (messageId: string): any =>
 	// RC 0.63.0
