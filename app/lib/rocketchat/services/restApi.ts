@@ -1,9 +1,10 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
+import { SubscriptionType, INotificationPreferences, IRoomNotifications, IUser } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
+import reduxStore from '../../createStore';
 
 export const createChannel = ({
 	name,
@@ -743,3 +744,10 @@ export const useInviteToken = (token: string): any =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
+
+export const addUsersToRoom = (rid: string): Promise<boolean> => {
+	let { users } = reduxStore.getState().selectedUsers;
+	users = users.map((u: IUser) => u.name);
+	// RC 0.51.0
+	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
+};
