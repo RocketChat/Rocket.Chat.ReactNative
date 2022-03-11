@@ -10,7 +10,6 @@ export interface IMessageAttachments {
 	timeFormat?: string;
 	showAttachment: Function;
 	getCustomEmoji: TGetCustomEmoji;
-	theme: string;
 }
 
 export interface IMessageAttachedActions {

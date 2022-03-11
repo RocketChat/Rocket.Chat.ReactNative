@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
-import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
@@ -16,6 +15,7 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { IAttachment } from '../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import RCActivityIndicator from '../ActivityIndicator';
+import Attachments from './Attachments';
 
 const styles = StyleSheet.create({
 	button: {
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 6,
 		alignSelf: 'flex-start',
-		borderWidth: 1,
+		borderLeftWidth: 2,
 		borderRadius: 4
 	},
 	attachmentContainer: {
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	marginTop: {
-		marginTop: 4
+		marginTop: 8
 	},
 	marginBottom: {
 		marginBottom: 4
@@ -221,14 +221,9 @@ const Reply = React.memo(
 			openLink(url, theme);
 		};
 
-		let { borderColor, chatComponentBackground: backgroundColor } = themes[theme];
-		try {
-			if (attachment.color) {
-				backgroundColor = transparentize(attachment.color, 0.8);
-				borderColor = attachment.color;
-			}
-		} catch (e) {
-			// fallback to default
+		let { borderColor } = themes[theme];
+		if (attachment.color) {
+			borderColor = attachment.color;
 		}
 
 		return (
@@ -240,7 +235,6 @@ const Reply = React.memo(
 						index > 0 && styles.marginTop,
 						attachment.description && styles.marginBottom,
 						{
-							backgroundColor,
 							borderColor
 						}
 					]}
@@ -261,6 +255,7 @@ const Reply = React.memo(
 								<RCActivityIndicator theme={theme} />
 							</View>
 						) : null}
+						<Attachments attachments={attachment.attachments} showAttachment={onPress} getCustomEmoji={getCustomEmoji} />
 					</View>
 				</Touchable>
 				<Markdown

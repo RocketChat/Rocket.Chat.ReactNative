@@ -11,6 +11,7 @@ export interface IAttachment {
 	video_url?: string;
 	video_type?: string;
 	title_link_download?: boolean;
+	attachments: IAttachment[];
 	fields?: IAttachment[];
 	image_dimensions?: { width?: number; height?: number };
 	image_preview?: string;

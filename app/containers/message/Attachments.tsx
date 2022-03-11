@@ -10,6 +10,7 @@ import Reply from './Reply';
 import Button from '../Button';
 import styles from './styles';
 import MessageContext from './Context';
+import { useTheme } from '../../theme';
 
 const AttachedActions = ({ attachment, theme }: IMessageAttachedActions) => {
 	const { onAnswerButtonPress } = useContext(MessageContext);
@@ -29,7 +30,8 @@ const AttachedActions = ({ attachment, theme }: IMessageAttachedActions) => {
 };
 
 const Attachments = React.memo(
-	({ attachments, timeFormat, showAttachment, getCustomEmoji, theme }: IMessageAttachments) => {
+	({ attachments, timeFormat, showAttachment, getCustomEmoji }: IMessageAttachments) => {
+		const { theme } = useTheme();
 		if (!attachments || attachments.length === 0) {
 			return null;
 		}
@@ -64,7 +66,7 @@ const Attachments = React.memo(
 			);
 		});
 	},
-	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments) && prevProps.theme === nextProps.theme
+	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)
 );
 
 Attachments.displayName = 'MessageAttachments';
