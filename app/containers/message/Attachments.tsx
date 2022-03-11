@@ -6,10 +6,11 @@ import { IMessageAttachments, IMessageAttachedActions } from './interfaces';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
-import Reply from './Reply';
+// import Reply from './Reply';
 import Button from '../Button';
 import styles from './styles';
 import MessageContext from './Context';
+import CollapsibleQuote from './Components/CollapsibleQuote';
 
 const AttachedActions = ({ attachment, theme }: IMessageAttachedActions) => {
 	const { onAnswerButtonPress } = useContext(MessageContext);
@@ -53,7 +54,7 @@ const Attachments = React.memo(
 			}
 
 			return (
-				<Reply
+				<CollapsibleQuote
 					key={index}
 					index={index}
 					attachment={file}
