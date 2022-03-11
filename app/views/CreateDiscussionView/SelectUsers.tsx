@@ -64,7 +64,6 @@ const SelectUsers = ({
 
 	useEffect(() => {
 		getUsers('');
-		console.log('Loaded!');
 	}, []);
 
 	const getAvatar = (item: any) =>
