@@ -6,7 +6,7 @@ import { IMessageAttachments, IMessageAttachedActions } from './interfaces';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
-// import Reply from './Reply';
+import Reply from './Reply';
 import Button from '../Button';
 import styles from './styles';
 import MessageContext from './Context';
@@ -52,9 +52,20 @@ const Attachments = React.memo(
 			if (file.actions && file.actions.length > 0) {
 				return <AttachedActions attachment={file} theme={theme} />;
 			}
+			if (file.collapsed)
+				return (
+					<CollapsibleQuote
+						key={index}
+						index={index}
+						attachment={file}
+						timeFormat={timeFormat}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+					/>
+				);
 
 			return (
-				<CollapsibleQuote
+				<Reply
 					key={index}
 					index={index}
 					attachment={file}
