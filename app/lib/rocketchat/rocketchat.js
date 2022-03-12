@@ -298,11 +298,6 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	async editMessage(message) {
-		const { rid, msg } = await Encryption.encryptMessage(message);
-		// RC 0.49.0
-		return this.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
-	},
 	getRoom,
 	getPermalinkMessage,
 	getPermalinkChannel(channel) {
