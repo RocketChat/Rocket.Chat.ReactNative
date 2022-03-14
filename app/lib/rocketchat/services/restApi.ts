@@ -4,7 +4,7 @@ import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import { SubscriptionType, INotificationPreferences, IRoomNotifications, IUser } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
-import reduxStore from '../../createStore';
+import { store as reduxStore } from '../../auxStore';
 
 export const createChannel = ({
 	name,
