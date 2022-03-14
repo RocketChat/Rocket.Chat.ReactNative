@@ -50,6 +50,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
 import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
+import { IUser } from '../../definitions';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -81,12 +82,7 @@ export interface IMessageBoxProps {
 	editing: boolean;
 	threadsEnabled: boolean;
 	isFocused(): boolean;
-	user: {
-		id: string;
-		_id: string;
-		username: string;
-		token: string;
-	};
+	user: IUser;
 	roomType: string;
 	tmid: string;
 	replyWithMention: boolean;
@@ -610,7 +606,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	getCannedResponses = debounce(async (text?: string) => {
 		const res = await RocketChat.getListCannedResponse({ text });
-		this.setState({ mentions: res?.cannedResponses || [], mentionLoading: false });
+		this.setState({ mentions: res.success ? res.cannedResponses : [], mentionLoading: false });
 	}, 500);
 
 	focus = () => {

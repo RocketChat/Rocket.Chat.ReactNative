@@ -80,6 +80,13 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 					...action.user
 				}
 			};
+		case types.USER.CLEAR:
+			return {
+				...state,
+				user: {},
+				isAuthenticated: false,
+				isLocalAuthenticated: false
+			};
 		case types.LOGIN.SET_SERVICES:
 			return {
 				...state,

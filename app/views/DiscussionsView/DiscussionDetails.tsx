@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { TThreadModel } from '../../definitions/IThread';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
+import { IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 });
 
 interface IDiscussionDetails {
-	item: TThreadModel;
+	item: IMessageFromServer;
 	date: string;
 }
 

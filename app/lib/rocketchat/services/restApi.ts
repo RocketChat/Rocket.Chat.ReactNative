@@ -1,8 +1,9 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences } from '../../../definitions';
+import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
+import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
 
 export const createChannel = ({
 	name,
@@ -54,7 +55,7 @@ export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
 	sdk.post('e2e.updateGroupKey', { uid, rid, key });
 
-export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
+export const e2eRequestRoomKey = (rid: string, e2eKeyId: string): Promise<{ message: { msg?: string }; success: boolean }> =>
 	// RC 0.70.0
 	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
@@ -285,16 +286,12 @@ export const getRoomCounters = (
 	// RC 0.65.0
 	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
 
-export const getChannelInfo = (roomId: string): any =>
+export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('channels.info', { roomId });
 
-export const getUserPreferences = (userId: string): any =>
+export const getUserPreferences = (userId: string) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('users.getPreferences', { userId });
 
 export const getRoomInfo = (roomId: string) =>
@@ -321,7 +318,7 @@ export const getTeamListRoom = ({
 	offset: number;
 	type: string;
 	filter: any;
-}): any => {
+}) => {
 	const params: any = {
 		teamId,
 		count,
@@ -333,8 +330,6 @@ export const getTeamListRoom = ({
 		params.filter = filter;
 	}
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.get('teams.listRooms', params);
 };
 
@@ -387,21 +382,25 @@ export const getRoutingConfig = (): Promise<{
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getRoutingConfig');
 
-export const getTagsList = () =>
+export const getTagsList = (): Promise<
+	{
+		_id: string;
+		name: string;
+		departments: string[];
+	}[]
+> =>
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getTagsList');
 
-export const getAgentDepartments = (uid: string): any =>
+export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get(`livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
 
 export const getCustomFields = () =>
 	// RC 2.2.0
 	sdk.get('livechat/custom-fields');
 
-export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }): any => {
+export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }) => {
 	const params = {
 		offset,
 		count,
@@ -411,8 +410,6 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	};
 
 	// RC 3.17.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.get('canned-responses', params);
 };
 
@@ -547,22 +544,16 @@ export const saveRoomSettings = (
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
-export const saveUserProfile = (data: any, customFields?: any): any =>
+export const saveUserProfile = (data: IParams | Pick<IParams, 'username'>, customFields?: { [key: string | number]: string }) =>
 	// RC 0.62.2
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.updateOwnBasicInfo', { data, customFields });
 
-export const saveUserPreferences = (data: any): any =>
+export const saveUserPreferences = (data: Partial<INotificationPreferences>) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.setPreferences', { data });
 
-export const saveNotificationSettings = (roomId: string, notifications: any): any =>
+export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('rooms.saveNotification', { roomId, notifications });
 
 export const getSingleMessage = (msgId: string) =>
@@ -575,14 +566,12 @@ export const getRoomRoles = (roomId: string, type: SubscriptionType): any =>
 	// @ts-ignore
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
-export const getAvatarSuggestion = () =>
+export const getAvatarSuggestion = (): Promise<IAvatarSuggestion> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('getAvatarSuggestion');
 
-export const resetAvatar = (userId: string): any =>
+export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.resetAvatar', { userId });
 
 export const setAvatarFromService = ({
@@ -593,36 +582,39 @@ export const setAvatarFromService = ({
 	data: any;
 	contentType?: string;
 	service?: string | null;
-}) =>
+}): Promise<void> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
 
-export const getUsernameSuggestion = (): any =>
+export const getUsernameSuggestion = () =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('users.getUsernameSuggestion');
 
-export const getFiles = (roomId: string, type: RoomTypes, offset: number): any =>
+export const getFiles = (roomId: string, type: SubscriptionType, offset: number) => {
+	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get(`${roomTypeToApiType(type)}.files`, {
+	return sdk.get(`${roomTypeToApiType(t)}.files`, {
 		roomId,
 		offset,
 		sort: { uploadedAt: -1 }
 	});
+};
 
-export const getMessages = (roomId: string, type: RoomTypes, query: any, offset: number): any =>
+export const getMessages = (
+	roomId: string,
+	type: SubscriptionType,
+	query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean },
+	offset: number
+) => {
+	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get(`${roomTypeToApiType(type)}.messages`, {
+	return sdk.get(`${roomTypeToApiType(t)}.messages`, {
 		roomId,
 		query,
 		offset,
 		sort: { ts: -1 }
 	});
+};
 
 export const getReadReceipts = (messageId: string): any =>
 	// RC 0.63.0
@@ -632,10 +624,8 @@ export const getReadReceipts = (messageId: string): any =>
 		messageId
 	});
 
-export const searchMessages = (roomId: string, searchText: string, count: number, offset: number): any =>
+export const searchMessages = (roomId: string, searchText: string, count: number, offset: number) =>
 	// RC 0.60.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.search', {
 		roomId,
 		searchText,

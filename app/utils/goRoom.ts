@@ -1,7 +1,7 @@
 import { ChatsStackParamList } from '../stacks/types';
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
-import { ISubscription, IVisitor, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
+import { IOmnichannelRoom, SubscriptionType, IVisitor, TSubscriptionModel, ISubscription } from '../definitions';
 
 interface IGoRoomItem {
 	search?: boolean; // comes from spotlight
@@ -13,7 +13,7 @@ interface IGoRoomItem {
 	visitor?: IVisitor;
 }
 
-export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription;
+export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
 const navigate = ({
 	item,
@@ -41,6 +41,11 @@ const navigate = ({
 		...props
 	});
 };
+
+interface IOmnichannelRoomVisitor extends IOmnichannelRoom {
+	// this visitor came from ee/omnichannel/views/QueueListView
+	visitor: IVisitor;
+}
 
 export const goRoom = async ({
 	item,

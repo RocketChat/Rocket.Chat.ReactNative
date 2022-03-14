@@ -1,5 +1,5 @@
 export interface IServedBy {
 	_id: string;
-	username: string;
-	ts: Date;
+	username?: string;
+	ts?: Date;
 }
