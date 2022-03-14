@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { ScrollView, StyleSheet, Text, TextInput as RNTextInput } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
@@ -18,8 +18,8 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { ILivechatVisitor } from '../definitions/ILivechatVisitor';
-import { IApplicationState, ISubscription } from '../definitions';
+import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../definitions/ILivechatEditView';
+import { IApplicationState } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 
@@ -42,41 +42,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface ITitle {
-	title: string;
-	theme: string;
-}
-
-interface IInputs {
-	livechatData: {
-		[key: string]: any;
-	};
-	name: string;
-	email: string;
-	phone?: string;
-	topic: string;
-	tag: string[];
-	[key: string]: any;
-}
-
-type TParams = ILivechatVisitor & IInputs;
-
-interface ILivechat extends ISubscription {
-	// Param dynamic depends on server
-	sms?: string;
-}
-
-interface IInputsRefs {
-	[index: string]: RNTextInput | null;
-	name: RNTextInput | null;
-	phone: RNTextInput | null;
-	topic: RNTextInput | null;
-}
-
-interface ICustomFields {
-	visitor?: { [key: string]: string };
-	livechat?: { [key: string]: string };
-}
 interface ILivechatEditViewProps {
 	// TODO: Refactor when migrate models
 	user: any;
