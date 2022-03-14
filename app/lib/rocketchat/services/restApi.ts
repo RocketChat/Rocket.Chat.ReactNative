@@ -746,6 +746,7 @@ export const useInviteToken = (token: string): any =>
 
 export function e2eResetOwnKey(this: TRocketChat): Promise<boolean | {}> {
 	// {} when TOTP is enabled
+	// TODO: remove this
 	this.unsubscribeRooms();
 
 	// RC 0.72.0
