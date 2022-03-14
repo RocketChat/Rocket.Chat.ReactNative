@@ -1,11 +1,19 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences, IRoomNotifications, TRocketChat, IMessage } from '../../../definitions';
+import {
+	SubscriptionType,
+	INotificationPreferences,
+	IRoomNotifications,
+	TRocketChat,
+	IMessage,
+	IRoom
+} from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
 import { Encryption } from '../../encryption';
 import { TParams } from '../../../definitions/ILivechatEditView';
+import { store as reduxStore } from '../../auxStore';
 
 export const createChannel = ({
 	name,
@@ -743,6 +751,14 @@ export const useInviteToken = (token: string): any =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
+
+export const emitTyping = (room: IRoom, typing = true) => {
+	const { login, settings } = reduxStore.getState();
+	const { UI_Use_Real_Name } = settings;
+	const { user } = login;
+	const name = UI_Use_Real_Name ? user.name : user.username;
+	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
+};
 
 export function e2eResetOwnKey(this: TRocketChat): Promise<boolean | {}> {
 	// {} when TOTP is enabled
