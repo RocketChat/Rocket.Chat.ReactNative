@@ -11,8 +11,6 @@ import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import log from '../../utils/log';
 import SSLPinning from '../../utils/sslPinning';
 import database from '../database';
-import { sanitizeLikeString } from '../database/utils';
-import { Encryption } from '../encryption';
 import triggerBlockAction, { triggerCancel, triggerSubmitView } from '../methods/actions';
 import callJitsi, { callJitsiWithoutServer } from '../methods/callJitsi';
 import canOpenRoom from '../methods/canOpenRoom';
@@ -198,13 +196,6 @@ const RocketChat = {
 		}
 		return result;
 	},
-	e2eResetOwnKey() {
-		this.unsubscribeRooms();
-
-		// RC 0.72.0
-		return this.methodCallWrapper('e2e.resetOwnE2EKey');
-	},
-
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,
@@ -297,11 +288,6 @@ const RocketChat = {
 			setting[defaultSettings[setting._id].type] = setting.value;
 			return setting;
 		});
-	},
-	async editMessage(message) {
-		const { rid, msg } = await Encryption.encryptMessage(message);
-		// RC 0.49.0
-		return this.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
 	},
 	getRoom,
 	getPermalinkMessage,

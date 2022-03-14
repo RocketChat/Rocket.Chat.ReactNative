@@ -1,6 +1,6 @@
 import rocketchat from '../lib/rocketchat';
 
-type TRocketChat = typeof rocketchat;
+export type TRocketChat = typeof rocketchat;
 
 export interface IRocketChat extends TRocketChat {
 	closeListener: any;
