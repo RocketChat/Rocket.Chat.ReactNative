@@ -1,9 +1,10 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
+import { SubscriptionType, INotificationPreferences, IRoomNotifications, IMessage } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
+import { Encryption } from '../../encryption';
 import { TParams } from '../../../definitions/ILivechatEditView';
 
 export const createChannel = ({
@@ -742,3 +743,9 @@ export const useInviteToken = (token: string): any =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
+
+export const editMessage = async (message: IMessage) => {
+	const { rid, msg } = await Encryption.encryptMessage(message);
+	// RC 0.49.0
+	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
+};
