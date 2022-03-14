@@ -23,8 +23,8 @@ export async function shareExtensionInit(server: string) {
 		// Do nothing
 	}
 
-	sdk.current.disconnect();
-	sdk.initialize(server);
+	// sdk.current.disconnect();
+	sdk.initializeShareExtension(server);
 
 	// set Server
 	const currentServer: IShareServer = {
@@ -83,7 +83,7 @@ export async function shareExtensionInit(server: string) {
 }
 
 export function closeShareExtension() {
-	sdk.current.disconnect();
+	sdk.disconnect();
 	database.share = null;
 
 	store.dispatch(shareSelectServer({}));
