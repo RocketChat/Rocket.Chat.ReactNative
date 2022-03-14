@@ -617,10 +617,8 @@ export const getMessages = (
 	});
 };
 
-export const getReadReceipts = (messageId: string): any =>
+export const getReadReceipts = (messageId: string) =>
 	// RC 0.63.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.getMessageReadReceipts', {
 		messageId
 	});
