@@ -1,7 +1,7 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences, IRoomNotifications, IUser } from '../../../definitions';
+import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
 import { store as reduxStore } from '../../auxStore';
@@ -747,7 +747,7 @@ export const useInviteToken = (token: string): any =>
 
 export const createGroupChat = () => {
 	const { users } = reduxStore.getState().selectedUsers;
-	const usernames = users.map((u: IUser) => u.name).join(',');
+	const usernames = users.map(u => u.name).join(',');
 
 	// RC 3.1.0
 	return sdk.post('im.create', { usernames });
