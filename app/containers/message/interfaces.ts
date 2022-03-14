@@ -1,4 +1,5 @@
 import { MarkdownAST } from '@rocket.chat/message-parser';
+import { StyleProp, TextStyle } from 'react-native';
 
 import { IUserChannel, IUserMention } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
@@ -8,6 +9,7 @@ export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 export interface IMessageAttachments {
 	attachments: any;
 	timeFormat?: string;
+	style?: StyleProp<TextStyle>[];
 	showAttachment: Function;
 	getCustomEmoji: TGetCustomEmoji;
 }

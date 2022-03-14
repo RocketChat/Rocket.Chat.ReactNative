@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle } from 'react-native';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
@@ -35,11 +35,12 @@ interface IMessageVideo {
 	file: IAttachment;
 	showAttachment: Function;
 	getCustomEmoji: TGetCustomEmoji;
+	style?: StyleProp<TextStyle>[];
 	theme: string;
 }
 
 const Video = React.memo(
-	({ file, showAttachment, getCustomEmoji, theme }: IMessageVideo) => {
+	({ file, showAttachment, getCustomEmoji, style, theme }: IMessageVideo) => {
 		const { baseUrl, user } = useContext(MessageContext);
 		const [loading, setLoading] = useState(false);
 
@@ -74,6 +75,7 @@ const Video = React.memo(
 		return (
 			<>
 				<Touchable
+					disabled={!showAttachment}
 					onPress={onPress}
 					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}>
@@ -88,6 +90,7 @@ const Video = React.memo(
 					baseUrl={baseUrl}
 					username={user.username}
 					getCustomEmoji={getCustomEmoji}
+					style={style}
 					theme={theme}
 				/>
 			</>

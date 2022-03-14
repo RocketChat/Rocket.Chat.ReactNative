@@ -251,7 +251,12 @@ const Reply = React.memo(
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 						{/* @ts-ignore */}
-						<Attachments attachments={attachment.attachments} getCustomEmoji={getCustomEmoji} timeFormat={timeFormat} />
+						<Attachments
+							attachments={attachment.attachments}
+							getCustomEmoji={getCustomEmoji}
+							timeFormat={timeFormat}
+							style={[{ color: themes[theme].auxiliaryTintColor }]}
+						/>
 						<UrlImage image={attachment.thumb_url} />
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import { dequal } from 'dequal';
 import { createImageProgress } from 'react-native-image-progress';
@@ -29,6 +29,7 @@ interface IMessageImage {
 	file: { image_url: string; description?: string };
 	imageUrl?: string;
 	showAttachment: Function;
+	style?: StyleProp<TextStyle>[];
 	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 }
@@ -58,7 +59,7 @@ export const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
 ));
 
 const ImageContainer = React.memo(
-	({ file, imageUrl, showAttachment, getCustomEmoji, theme }: IMessageImage) => {
+	({ file, imageUrl, showAttachment, getCustomEmoji, style, theme }: IMessageImage) => {
 		const { baseUrl, user } = useContext(MessageContext);
 		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 		if (!img) {
@@ -74,6 +75,7 @@ const ImageContainer = React.memo(
 						<MessageImage img={img} theme={theme} />
 						<Markdown
 							msg={file.description}
+							style={style}
 							baseUrl={baseUrl}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
