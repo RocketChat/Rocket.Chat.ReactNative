@@ -12,18 +12,20 @@ class Sdk {
 	private shareSdk?: typeof Rocketchat;
 	private code: any;
 
+	private initializeSdk(server: string): typeof Rocketchat {
+		// The app can't reconnect if reopen interval is 5s while in development
+		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+	}
+
 	// TODO: We need to stop returning the SDK after all methods are dehydrated
 	initialize(server: string) {
 		this.code = null;
-
-		// The app can't reconnect if reopen interval is 5s while in development
-		this.sdk = new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+		this.sdk = this.initializeSdk(server);
 		return this.sdk;
 	}
 
 	initializeShareExtension(server: string) {
-		// The app can't reconnect if reopen interval is 5s while in development
-		this.shareSdk = new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+		this.shareSdk = this.initializeSdk(server);
 	}
 
 	get current() {
