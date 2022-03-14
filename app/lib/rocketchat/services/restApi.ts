@@ -1,11 +1,19 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences, IRoomNotifications, TRocketChat, IMessage } from '../../../definitions';
+import {
+	SubscriptionType,
+	INotificationPreferences,
+	IRoomNotifications,
+	TRocketChat,
+	IMessage,
+	IUser
+} from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
 import { Encryption } from '../../encryption';
 import { TParams } from '../../../definitions/ILivechatEditView';
+import { store as reduxStore } from '../../auxStore';
 
 export const createChannel = ({
 	name,
@@ -757,4 +765,10 @@ export const editMessage = async (message: IMessage) => {
 	const { rid, msg } = await Encryption.encryptMessage(message);
 	// RC 0.49.0
 	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
+};
+
+export const sendEmailCode = () => {
+	const { username } = reduxStore.getState().login.user as IUser;
+	// RC 3.1.0
+	return sdk.post('users.2fa.sendEmailCode', { emailOrUsername: username });
 };
