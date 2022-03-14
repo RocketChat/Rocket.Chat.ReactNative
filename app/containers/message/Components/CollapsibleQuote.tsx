@@ -1,3 +1,4 @@
+import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -117,13 +118,25 @@ const CollapsibleQuote = React.memo(
 			setOpen(!open);
 		};
 
-		const {
+		let {
 			borderColor,
 			chatComponentBackground: backgroundColor,
 			collapsibleQuoteBorder,
 			collapsibleChevron,
 			headerTintColor
 		} = themes[theme];
+
+		try {
+			if (attachment.color) {
+				backgroundColor = transparentize(attachment.color, 0.8);
+				borderColor = attachment.color;
+				collapsibleQuoteBorder = attachment.color;
+				collapsibleChevron = attachment.color;
+				headerTintColor = headerTintColor;
+			}
+		} catch (e) {
+			// fallback to default
+		}
 
 		return (
 			<>
