@@ -11,8 +11,6 @@ import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import log from '../../utils/log';
 import SSLPinning from '../../utils/sslPinning';
 import database from '../database';
-import { sanitizeLikeString } from '../database/utils';
-import { Encryption } from '../encryption';
 import triggerBlockAction, { triggerCancel, triggerSubmitView } from '../methods/actions';
 import callJitsi, { callJitsiWithoutServer } from '../methods/callJitsi';
 import canOpenRoom from '../methods/canOpenRoom';
