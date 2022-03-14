@@ -5,6 +5,7 @@ import { SubscriptionType, INotificationPreferences, IRoomNotifications, IMessag
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
 import { Encryption } from '../../encryption';
+import { TParams } from '../../../definitions/ILivechatEditView';
 
 export const createChannel = ({
 	name,
@@ -338,7 +339,7 @@ export const closeLivechat = (rid: string, comment: string) =>
 	// RC 0.29.0
 	sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true });
 
-export const editLivechat = (userData: any, roomData: any) =>
+export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> =>
 	// RC 0.55.0
 	sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
 
@@ -617,10 +618,8 @@ export const getMessages = (
 	});
 };
 
-export const getReadReceipts = (messageId: string): any =>
+export const getReadReceipts = (messageId: string) =>
 	// RC 0.63.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.getMessageReadReceipts', {
 		messageId
 	});

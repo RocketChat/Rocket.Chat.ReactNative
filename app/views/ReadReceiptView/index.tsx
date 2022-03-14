@@ -17,23 +17,11 @@ import { themes } from '../../constants/colors';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
-
-interface IReceipts {
-	_id: string;
-	roomId: string;
-	userId: string;
-	messageId: string;
-	ts: string;
-	user?: {
-		_id: string;
-		name: string;
-		username: string;
-	};
-}
+import { IReadReceipts } from '../../definitions';
 
 interface IReadReceiptViewState {
 	loading: boolean;
-	receipts: IReceipts[];
+	receipts: IReadReceipts[];
 }
 
 interface INavigationOption {
@@ -125,7 +113,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 		);
 	};
 
-	renderItem = ({ item }: { item: IReceipts }) => {
+	renderItem = ({ item }: { item: IReadReceipts }) => {
 		const { theme, Message_TimeAndDateFormat } = this.props;
 		const time = moment(item.ts).format(Message_TimeAndDateFormat);
 		if (!item?.user?.username) {
