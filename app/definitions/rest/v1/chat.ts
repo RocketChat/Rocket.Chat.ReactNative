@@ -65,6 +65,11 @@ export type ChatEndpoints = {
 			messages: IMessageFromServer[];
 		};
 	};
+	'chat.update': {
+		POST: (params: { roomId: IServerRoom['_id']; msgId: string; text: string }) => {
+			messages: IMessageFromServer;
+		};
+	};
 	'chat.getMessageReadReceipts': {
 		GET: (params: { messageId: string }) => { receipts: IReadReceipts[] };
 	};
