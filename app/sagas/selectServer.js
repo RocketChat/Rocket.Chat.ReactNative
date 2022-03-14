@@ -9,7 +9,7 @@ import Navigation from '../lib/Navigation';
 import { SERVER } from '../actions/actionsTypes';
 import { selectServerFailure, selectServerRequest, selectServerSuccess, serverFailure } from '../actions/server';
 import { clearSettings } from '../actions/settings';
-import { setUser } from '../actions/login';
+import { clearUser, setUser } from '../actions/login';
 import { clearActiveUsers } from '../actions/activeUsers';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
@@ -111,10 +111,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		if (user) {
 			yield put(clearSettings());
-			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
+			yield RocketChat.connect({ server, logoutOnError: true });
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 		} else {
+			yield put(clearUser());
 			yield RocketChat.connect({ server });
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}
