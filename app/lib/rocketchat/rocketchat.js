@@ -196,13 +196,6 @@ const RocketChat = {
 		}
 		return result;
 	},
-	e2eResetOwnKey() {
-		this.unsubscribeRooms();
-
-		// RC 0.72.0
-		return this.methodCallWrapper('e2e.resetOwnE2EKey');
-	},
-
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,

@@ -1,7 +1,7 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences, IRoomNotifications, IMessage } from '../../../definitions';
+import { SubscriptionType, INotificationPreferences, IRoomNotifications, TRocketChat, IMessage } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
 import { Encryption } from '../../encryption';
@@ -743,6 +743,15 @@ export const useInviteToken = (token: string): any =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
+
+export function e2eResetOwnKey(this: TRocketChat): Promise<boolean | {}> {
+	// {} when TOTP is enabled
+	// TODO: remove this
+	this.unsubscribeRooms();
+
+	// RC 0.72.0
+	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
+}
 
 export const editMessage = async (message: IMessage) => {
 	const { rid, msg } = await Encryption.encryptMessage(message);
