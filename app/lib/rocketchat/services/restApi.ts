@@ -7,6 +7,7 @@ import {
 	IRoomNotifications,
 	TRocketChat,
 	IMessage,
+	IRoom,
 	IUser
 } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
@@ -751,6 +752,14 @@ export const useInviteToken = (token: string): any =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
+
+export const emitTyping = (room: IRoom, typing = true) => {
+	const { login, settings } = reduxStore.getState();
+	const { UI_Use_Real_Name } = settings;
+	const { user } = login;
+	const name = UI_Use_Real_Name ? user.name : user.username;
+	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
+};
 
 export function e2eResetOwnKey(this: TRocketChat): Promise<boolean | {}> {
 	// {} when TOTP is enabled

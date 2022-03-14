@@ -315,13 +315,6 @@ const RocketChat = {
 	onStreamData(...args) {
 		return sdk.onStreamData(...args);
 	},
-	emitTyping(room, typing = true) {
-		const { login, settings } = reduxStore.getState();
-		const { UI_Use_Real_Name } = settings;
-		const { user } = login;
-		const name = UI_Use_Real_Name ? user.name : user.username;
-		return this.methodCall('stream-notify-room', `${room}/typing`, name, typing);
-	},
 	toggleFavorite,
 	async getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
 		const serverVersion = reduxStore.getState().server.version;
