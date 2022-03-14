@@ -18,6 +18,7 @@ import log, { events, logEvent } from '../../utils/log';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { ChatsStackParamList } from '../../stacks/types';
+import { IRoomNotifications } from '../../definitions';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -73,7 +74,7 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 		}
 	}
 
-	saveNotificationSettings = async (key: string, value: string | boolean, params: any) => {
+	saveNotificationSettings = async (key: string, value: string | boolean, params: IRoomNotifications) => {
 		// @ts-ignore
 		logEvent(events[`NP_${key.toUpperCase()}`]);
 		const { room } = this.state;

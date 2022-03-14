@@ -1,3 +1,4 @@
+import { IParams } from '../../IProfileViewInterfaces';
 import type { ITeam } from '../../ITeam';
 import type { IUser } from '../../IUser';
 import { INotificationPreferences, IUserPreferences, IUserRegistered } from '../../IUser';
@@ -26,7 +27,7 @@ export type UsersEndpoints = {
 		};
 	};
 	'users.setPreferences': {
-		POST: (params: { userId: IUser['_id']; data: Partial<INotificationPreferences> }) => {
+		POST: (params: { userId?: IUser['_id']; data: Partial<INotificationPreferences> }) => {
 			user: IUserPreferences;
 			success: boolean;
 		};
@@ -36,5 +37,22 @@ export type UsersEndpoints = {
 	};
 	'users.setStatus': {
 		POST: (params: { status: string; message: string }) => {};
+	};
+	'users.updateOwnBasicInfo': {
+		POST: (params: { data: IParams | Pick<IParams, 'username'>; customFields?: { [key: string | number]: string } }) => {
+			user: IUser;
+		};
+	};
+	'users.getUsernameSuggestion': {
+		GET: () => { result: string };
+	};
+	'users.resetAvatar': {
+		POST: (params: { userId: string }) => {};
+	};
+	'users.getPreferences': {
+		GET: (params: { userId: IUser['_id'] }) => {
+			preferences: INotificationPreferences;
+			success: boolean;
+		};
 	};
 };

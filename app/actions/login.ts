@@ -93,6 +93,12 @@ export function setUser(user: Partial<IUser>): ISetUser {
 	};
 }
 
+export function clearUser(): Action {
+	return {
+		type: types.USER.CLEAR
+	};
+}
+
 export function setLoginServices(data: Record<string, any>): ISetServices {
 	return {
 		type: types.LOGIN.SET_SERVICES,

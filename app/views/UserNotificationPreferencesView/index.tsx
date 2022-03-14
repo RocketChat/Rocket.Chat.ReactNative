@@ -15,6 +15,7 @@ import { getUserSelector } from '../../selectors/login';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { ProfileStackParamList } from '../../stacks/types';
+import { INotificationPreferences } from '../../definitions';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -26,11 +27,7 @@ const styles = StyleSheet.create({
 type TKey = 'desktopNotifications' | 'pushNotifications' | 'emailNotificationMode';
 
 interface IUserNotificationPreferencesViewState {
-	preferences: {
-		desktopNotifications?: string;
-		pushNotifications?: string;
-		emailNotificationMode?: string;
-	};
+	preferences: INotificationPreferences;
 	loading: boolean;
 }
 
@@ -53,7 +50,7 @@ class UserNotificationPreferencesView extends React.Component<
 	constructor(props: IUserNotificationPreferencesViewProps) {
 		super(props);
 		this.state = {
-			preferences: {},
+			preferences: {} as INotificationPreferences,
 			loading: false
 		};
 	}
@@ -62,8 +59,10 @@ class UserNotificationPreferencesView extends React.Component<
 		const { user } = this.props;
 		const { id } = user;
 		const result = await RocketChat.getUserPreferences(id);
-		const { preferences } = result;
-		this.setState({ preferences, loading: true });
+		if (result.success) {
+			const { preferences } = result;
+			this.setState({ preferences, loading: true });
+		}
 	}
 
 	findDefaultOption = (key: TKey) => {

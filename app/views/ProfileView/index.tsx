@@ -31,7 +31,15 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
-import { IAvatar, IAvatarButton, INavigationOptions, IParams, IProfileViewProps, IProfileViewState, IUser } from './interfaces';
+import {
+	IAvatar,
+	IAvatarButton,
+	INavigationOptions,
+	IParams,
+	IProfileViewProps,
+	IProfileViewState,
+	IUser
+} from '../../definitions/IProfileViewInterfaces';
 
 class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> {
 	private name: any;

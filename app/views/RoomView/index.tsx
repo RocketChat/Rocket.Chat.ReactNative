@@ -1051,7 +1051,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room } = this.state;
 		if ('id' in room) {
 			const { jitsiTimeout } = room;
-			if (jitsiTimeout && jitsiTimeout < Date.now()) {
+			if (jitsiTimeout && jitsiTimeout < new Date()) {
 				showErrorAlert(I18n.t('Call_already_ended'));
 			} else {
 				RocketChat.callJitsi(room);
