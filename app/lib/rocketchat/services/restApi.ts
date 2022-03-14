@@ -1,7 +1,7 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences, IRoomNotifications, IUser } from '../../../definitions';
+import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
 import { store as reduxStore } from '../../auxStore';
@@ -746,8 +746,8 @@ export const useInviteToken = (token: string): any =>
 	sdk.post('useInviteToken', { token });
 
 export const addUsersToRoom = (rid: string): Promise<boolean> => {
-	let { users } = reduxStore.getState().selectedUsers;
-	users = users.map((u: IUser) => u.name);
+	const { users: selectedUsers } = reduxStore.getState().selectedUsers;
+	const users = selectedUsers.map(u => u.name);
 	// RC 0.51.0
 	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
 };
