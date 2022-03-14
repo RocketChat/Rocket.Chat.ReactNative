@@ -15,6 +15,7 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 type TMessageButton = {
 	children: JSX.Element;
+	disabled: boolean;
 	onPress: Function;
 	theme: string;
 };
@@ -34,8 +35,12 @@ interface IMessageImage {
 
 const ImageProgress = createImageProgress(FastImage);
 
-const Button = React.memo(({ children, onPress, theme }: TMessageButton) => (
-	<Touchable onPress={onPress} style={styles.imageContainer} background={Touchable.Ripple(themes[theme].bannerBackground)}>
+const Button = React.memo(({ children, onPress, disabled, theme }: TMessageButton) => (
+	<Touchable
+		disabled={disabled}
+		onPress={onPress}
+		style={styles.imageContainer}
+		background={Touchable.Ripple(themes[theme].bannerBackground)}>
 		{children}
 	</Touchable>
 ));
@@ -64,7 +69,7 @@ const ImageContainer = React.memo(
 
 		if (file.description) {
 			return (
-				<Button theme={theme} onPress={onPress}>
+				<Button disabled={!showAttachment} theme={theme} onPress={onPress}>
 					<View>
 						<MessageImage img={img} theme={theme} />
 						<Markdown
@@ -80,7 +85,7 @@ const ImageContainer = React.memo(
 		}
 
 		return (
-			<Button theme={theme} onPress={onPress}>
+			<Button disabled={!showAttachment} theme={theme} onPress={onPress}>
 				<MessageImage img={img} theme={theme} />
 			</Button>
 		);

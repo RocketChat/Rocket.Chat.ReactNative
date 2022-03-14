@@ -24,14 +24,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 6,
 		alignSelf: 'flex-start',
-		borderLeftWidth: 2,
-		borderRadius: 4
+		borderLeftWidth: 2
 	},
 	attachmentContainer: {
 		flex: 1,
 		borderRadius: 4,
 		flexDirection: 'column',
-		padding: 15
+		padding: 8
 	},
 	backdrop: {
 		...StyleSheet.absoluteFillObject
@@ -70,7 +69,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	marginTop: {
-		marginTop: 8
+		marginTop: 4
 	},
 	marginBottom: {
 		marginBottom: 4
@@ -123,10 +122,10 @@ const Title = React.memo(({ attachment, timeFormat, theme }: IMessageTitle) => {
 	return (
 		<View style={styles.authorContainer}>
 			{attachment.author_name ? (
-				<Text style={[styles.author, { color: themes[theme].bodyText }]}>{attachment.author_name}</Text>
+				<Text style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>{attachment.author_name}</Text>
 			) : null}
 			{attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
-			{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text> : null}
+			{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryTintColor }]}>{time}</Text> : null}
 		</View>
 	);
 });
@@ -138,7 +137,16 @@ const Description = React.memo(
 			return null;
 		}
 		const { baseUrl, user } = useContext(MessageContext);
-		return <Markdown msg={text} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />;
+		return (
+			<Markdown
+				msg={text}
+				style={[{ color: themes[theme].auxiliaryTintColor }]}
+				baseUrl={baseUrl}
+				username={user.username}
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+			/>
+		);
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.attachment.text !== nextProps.attachment.text) {
@@ -242,6 +250,8 @@ const Reply = React.memo(
 					disabled={loading}>
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+						{/* @ts-ignore */}
+						<Attachments attachments={attachment.attachments} getCustomEmoji={getCustomEmoji} timeFormat={timeFormat} />
 						<UrlImage image={attachment.thumb_url} />
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
@@ -255,7 +265,6 @@ const Reply = React.memo(
 								<RCActivityIndicator theme={theme} />
 							</View>
 						) : null}
-						<Attachments attachments={attachment.attachments} showAttachment={onPress} getCustomEmoji={getCustomEmoji} />
 					</View>
 				</Touchable>
 				<Markdown
