@@ -4,14 +4,13 @@ import Modal from 'react-native-modal';
 
 import { IConfirmOwnerChangeWarningModalProps } from '../../definitions/IProfileViewInterfaces';
 import I18n from '../../i18n';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import Button from '../../containers/Button';
 import styles from './styles';
 
 const ConfirmOwnerChangeWarningModal = React.memo(
 	({
-		theme,
 		confirmOwnerChangeModalVisible,
 		onConfirm,
 		onCancel,
@@ -56,6 +55,7 @@ const ConfirmOwnerChangeWarningModal = React.memo(
 			}
 		}
 
+		const { theme } = useTheme();
 		const color = themes[theme!].titleText;
 		return (
 			<Modal
@@ -99,4 +99,4 @@ const ConfirmOwnerChangeWarningModal = React.memo(
 	}
 );
 
-export default withTheme(ConfirmOwnerChangeWarningModal);
+export default ConfirmOwnerChangeWarningModal;

@@ -89,8 +89,8 @@ export interface IConfirmOwnerChangeWarningModalProps {
 	confirmOwnerChangeModalVisible: boolean;
 	onConfirm: () => void;
 	onCancel: () => void;
-	shouldChangeOwner: Array<string>;
-	shouldBeRemoved: Array<string>;
+	shouldChangeOwner: string[];
+	shouldBeRemoved: string[];
 	modalTitle: string;
 	contentTitle: string;
 }
