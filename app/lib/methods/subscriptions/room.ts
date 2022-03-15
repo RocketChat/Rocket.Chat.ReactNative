@@ -103,9 +103,16 @@ export default class RoomSubscription {
 		}
 	};
 
-	handleConnection = () => {
-		reduxStore.dispatch(clearUserTyping());
-		RocketChat.loadMissedMessages({ rid: this.rid }).catch(e => console.log(e));
+	handleConnection = async () => {
+		try {
+			reduxStore.dispatch(clearUserTyping());
+			await RocketChat.loadMissedMessages({ rid: this.rid });
+			const _lastOpen = new Date();
+			this.read(_lastOpen);
+			this.lastOpen = _lastOpen;
+		} catch (e) {
+			log(e);
+		}
 	};
 
 	handleNotifyRoomReceived = protectedFunction((ddpMessage: IDDPMessage) => {

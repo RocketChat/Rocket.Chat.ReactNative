@@ -60,6 +60,14 @@ export interface IAvatar {
 	service?: any;
 }
 
+export interface IAvatarSuggestion {
+	[service: string]: {
+		url: string;
+		blob: string;
+		contentType: string;
+	};
+}
+
 export interface IProfileViewState {
 	saving: boolean;
 	name: string;
@@ -69,13 +77,7 @@ export interface IProfileViewState {
 	currentPassword: string | null;
 	avatarUrl: string | null;
 	avatar: IAvatar;
-	avatarSuggestions: {
-		[service: string]: {
-			url: string;
-			blob: string;
-			contentType: string;
-		};
-	};
+	avatarSuggestions: IAvatarSuggestion;
 	customFields: {
 		[key: string | number]: string;
 	};
