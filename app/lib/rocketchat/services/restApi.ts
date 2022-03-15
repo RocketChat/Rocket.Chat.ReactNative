@@ -651,12 +651,12 @@ export const toggleFollowMessage = (mid: string, follow: boolean) => {
 };
 
 export const getThreadsList = ({ rid, count, offset, text }: { rid: string; count: number; offset: number; text?: string }) => {
-	const params: any = {
+	const params = {
 		rid,
 		count,
 		offset,
 		sort: { ts: -1 }
-	};
+	} as { rid: string; count: number; offset: number; text?: string };
 	if (text) {
 		params.text = text;
 	}

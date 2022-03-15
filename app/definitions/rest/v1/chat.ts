@@ -38,7 +38,7 @@ export type ChatEndpoints = {
 	'chat.getThreadsList': {
 		GET: (params: {
 			rid: IServerRoom['_id'];
-			type: 'unread' | 'following' | 'all';
+			type?: 'unread' | 'following' | 'all';
 			text?: string;
 			offset: number;
 			count: number;
