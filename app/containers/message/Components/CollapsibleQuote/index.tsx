@@ -33,7 +33,9 @@ const styles = StyleSheet.create({
 	},
 	fieldContainer: {
 		flexDirection: 'column',
-		padding: 10
+		paddingLeft: 10,
+		paddingTop: 10,
+		paddingBottom: 10
 	},
 	fieldTitle: {
 		fontSize: 15,
