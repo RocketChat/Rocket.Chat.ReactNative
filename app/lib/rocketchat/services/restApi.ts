@@ -713,10 +713,18 @@ export const executeCommandPreview = (
 		tmid
 	});
 
-export const getDirectory = ({ query, count, offset, sort }: { query: any; count: number; offset: number; sort: any }): any =>
+export const getDirectory = ({
+	query,
+	count,
+	offset,
+	sort
+}: {
+	query: { [key: string]: string };
+	count: number;
+	offset: number;
+	sort: { [key: string]: number };
+}) =>
 	// RC 1.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('directory', {
 		query,
 		count,
