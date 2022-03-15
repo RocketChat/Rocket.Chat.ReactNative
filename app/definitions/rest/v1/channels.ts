@@ -2,6 +2,7 @@ import { ITeam } from '../../ITeam';
 import type { IMessageFromServer } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
+import { IGetRoomRoles } from '../../IRole';
 import { IServerAttachment } from '../../IAttachment';
 
 export type ChannelsEndpoints = {
@@ -95,6 +96,9 @@ export type ChannelsEndpoints = {
 	};
 	'channels.removeLeader': {
 		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.roles': {
+		GET: (params: { roomId: string }) => { roles: IGetRoomRoles[] };
 	};
 	'channels.messages': {
 		GET: (params: {

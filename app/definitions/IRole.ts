@@ -12,3 +12,14 @@ export interface IRole {
 }
 
 export type TRoleModel = IRole & Model;
+
+// For rest/v1/ 'groups.roles' and 'channels.roles'
+export interface IGetRoomRoles {
+	_id: string;
+	rid: string;
+	u: {
+		_id: string;
+		username: string;
+	};
+	roles: string[];
+}
