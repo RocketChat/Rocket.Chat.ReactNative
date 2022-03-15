@@ -7,7 +7,8 @@ import {
 	IRoomNotifications,
 	TRocketChat,
 	IMessage,
-	IRoom
+	IRoom,
+	IPreviewItem
 } from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
@@ -696,15 +697,13 @@ export const getCommandPreview = (command: string, roomId: string, params: strin
 
 export const executeCommandPreview = (
 	command: string,
-	params: any,
+	params: string,
 	roomId: string,
-	previewItem: any,
+	previewItem: IPreviewItem,
 	triggerId: string,
 	tmid?: string
-): any =>
+) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('commands.preview', {
 		command,
 		params,
@@ -714,10 +713,18 @@ export const executeCommandPreview = (
 		tmid
 	});
 
-export const getDirectory = ({ query, count, offset, sort }: { query: any; count: number; offset: number; sort: any }): any =>
+export const getDirectory = ({
+	query,
+	count,
+	offset,
+	sort
+}: {
+	query: { [key: string]: string };
+	count: number;
+	offset: number;
+	sort: { [key: string]: number };
+}) =>
 	// RC 1.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('directory', {
 		query,
 		count,
