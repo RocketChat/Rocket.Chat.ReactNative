@@ -27,7 +27,8 @@ const attachment = {
 				'Ricardo Mellu, 1 day, until Fri Mar 11\nLoma, 1 day, until Fri Mar 11\nAnitta, 3 hours\nDiego Carlitos, 19 days, until Fri Mar 11\nGabriel Vasconcelos, 5 days, until Fri Mar 11\nJorge Leite, 1 day, until Fri Mar 11\nKevin Aleman, 1 day, until Fri Mar 11\nPierre, 1 day, until Fri Mar 11\nTiago Evangelista Pinto, 1 day, until Fri Mar 11'
 		}
 	],
-	attachments: []
+	attachments: [],
+	collapsed: true
 };
 
 const mockFn = jest.fn();
@@ -38,7 +39,7 @@ const Render = () => (
 			onLongPress: () => {},
 			user: { username: 'Marcos' }
 		}}>
-		<CollapsibleQuote key={0} index={0} attachment={attachment} getCustomEmoji={mockFn} timeFormat='LT' theme='light' />
+		<CollapsibleQuote key={0} index={0} attachment={attachment} getCustomEmoji={mockFn} timeFormat='LT' />
 	</MessageContext.Provider>
 );
 
@@ -62,7 +63,7 @@ describe('CollapsibleQuote', () => {
 		// open
 		fireEvent.press(collapsibleQuoteTouchable);
 		const open = within(collapsibleQuoteTouchable);
-		const fieldTitleOpen = await open.findByTestId('collapsibleQuoteTouchableFieldTitle');
+		const fieldTitleOpen = open.getByTestId('collapsibleQuoteTouchableFieldTitle');
 		expect(fieldTitleOpen).toBeTruthy();
 		expect(fieldTitleOpen.props.children).toEqual(attachment.fields[0].title);
 		// close
