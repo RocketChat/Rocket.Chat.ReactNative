@@ -7,10 +7,12 @@ import { themes } from '../../../constants/colors';
 import { IAttachment } from '../../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../../definitions/IEmoji';
 import { CustomIcon } from '../../../lib/Icons';
+import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
 import Markdown from '../../markdown';
 import MessageContext from '../Context';
 import Touchable from '../Touchable';
+import { BUTTON_HIT_SLOP } from '../utils';
 
 const styles = StyleSheet.create({
 	button: {
@@ -20,7 +22,8 @@ const styles = StyleSheet.create({
 		marginTop: 6,
 		alignSelf: 'flex-start',
 		borderWidth: 1,
-		borderRadius: 4
+		borderRadius: 4,
+		minHeight: 40
 	},
 	attachmentContainer: {
 		flex: 1,
@@ -59,12 +62,18 @@ const styles = StyleSheet.create({
 	},
 	touchableContainer: { flex: 1, flexDirection: 'row' },
 	markdownFontSize: { fontSize: 15 },
-	iconContainer: { width: 20, height: 20, right: 8, top: 6, justifyContent: 'center', alignItems: 'center' }
+	iconContainer: {
+		width: 20,
+		height: 20,
+		right: 8,
+		top: 8,
+		justifyContent: 'center',
+		alignItems: 'center'
+	}
 });
 
 interface IMessageFields {
 	attachment: IAttachment;
-	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 }
 
@@ -72,17 +81,16 @@ interface IMessageReply {
 	attachment: IAttachment;
 	timeFormat?: string;
 	index: number;
-	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 }
 
 const Fields = React.memo(
-	({ attachment, theme, getCustomEmoji }: IMessageFields) => {
+	({ attachment, getCustomEmoji }: IMessageFields) => {
 		if (!attachment.fields) {
 			return null;
 		}
-
 		const { baseUrl, user } = useContext(MessageContext);
+		const { theme } = useTheme();
 		return (
 			<View style={styles.fieldsContainer}>
 				{attachment.fields.map(field => (
@@ -108,14 +116,15 @@ const Fields = React.memo(
 );
 
 const CollapsibleQuote = React.memo(
-	({ attachment, index, getCustomEmoji, theme }: IMessageReply) => {
-		const [open, setOpen] = useState(false);
+	({ attachment, index, getCustomEmoji }: IMessageReply) => {
 		if (!attachment) {
 			return null;
 		}
+		const [collapsed, setCollapsed] = useState(attachment.collapsed);
+		const { theme } = useTheme();
 
 		const onPress = () => {
-			setOpen(!open);
+			setCollapsed(!collapsed);
 		};
 
 		let {
@@ -156,7 +165,8 @@ const CollapsibleQuote = React.memo(
 							borderLeftWidth: 2
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}>
+					background={Touchable.Ripple(themes[theme].bannerBackground)}
+					hitSlop={BUTTON_HIT_SLOP}>
 					<View style={styles.touchableContainer}>
 						<View style={styles.attachmentContainer}>
 							<View style={styles.authorContainer}>
@@ -164,17 +174,17 @@ const CollapsibleQuote = React.memo(
 									{attachment.title}
 								</Text>
 							</View>
-							{open && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />}
+							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
 						</View>
 						<View style={styles.iconContainer}>
-							<CustomIcon name={open ? 'chevron-up' : 'chevron-down'} size={22} color={collapsibleChevron} />
+							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={collapsibleChevron} />
 						</View>
 					</View>
 				</Touchable>
 			</>
 		);
 	},
-	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme
+	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment)
 );
 
 CollapsibleQuote.displayName = 'CollapsibleQuote';
