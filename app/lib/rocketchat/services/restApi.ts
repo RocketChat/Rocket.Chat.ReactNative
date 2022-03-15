@@ -1,24 +1,21 @@
-import { INotificationPreferences, IRoomNotifications, SubscriptionType } from '../../../definitions';
+import {
+	IMessage,
+	INotificationPreferences,
+	IPreviewItem,
+	IRoom,
+	IRoomNotifications,
+	SubscriptionType,
+	TRocketChat
+} from '../../../definitions';
+import { TParams } from '../../../definitions/ILivechatEditView';
+import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
-import { store } from '../../auxStore';
+import { store as reduxStore, store } from '../../auxStore';
+import { Encryption } from '../../encryption';
 import { compareServerVersion } from '../../utils';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import sdk from './sdk';
-import {
-	SubscriptionType,
-	INotificationPreferences,
-	IRoomNotifications,
-	TRocketChat,
-	IMessage,
-	IRoom,
-	IPreviewItem
-} from '../../../definitions';
-import { ISpotlight } from '../../../definitions/ISpotlight';
-import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
-import { Encryption } from '../../encryption';
-import { TParams } from '../../../definitions/ILivechatEditView';
-import { store as reduxStore } from '../../auxStore';
 
 export const createChannel = ({
 	name,
