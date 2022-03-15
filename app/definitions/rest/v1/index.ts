@@ -1,6 +1,5 @@
 import { ChannelsEndpoints } from './channels';
 import { ChatEndpoints } from './chat';
-import { CommandsEndpoint } from './commands';
 import { CustomUserStatusEndpoints } from './customUserStatus';
 import { DmEndpoints } from './dm';
 import { EmojiCustomEndpoints } from './emojiCustom';
@@ -17,10 +16,10 @@ import { TeamsEndpoints } from './teams';
 import { E2eEndpoints } from './e2e';
 import { SubscriptionsEndpoints } from './subscriptions';
 import { VideoConferenceEndpoints } from './videoConference';
+import { CommandsEndpoints } from './commands';
 
 export type Endpoints = ChannelsEndpoints &
 	ChatEndpoints &
-	CommandsEndpoint &
 	CustomUserStatusEndpoints &
 	DmEndpoints &
 	EmojiCustomEndpoints &
@@ -36,4 +35,5 @@ export type Endpoints = ChannelsEndpoints &
 	TeamsEndpoints &
 	E2eEndpoints &
 	SubscriptionsEndpoints &
-	VideoConferenceEndpoints;
+	VideoConferenceEndpoints &
+	CommandsEndpoints;

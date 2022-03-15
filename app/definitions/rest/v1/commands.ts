@@ -1,6 +1,6 @@
 import { IPreviewItem } from '../../ISlashCommand';
 
-export type CommandsEndpoint = {
+export type CommandsEndpoints = {
 	'commands.preview': {
 		GET: (params: { command: string; params: string; roomId: string }) => {
 			preview?: {
