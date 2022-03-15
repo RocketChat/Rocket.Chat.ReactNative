@@ -2,6 +2,7 @@ import { ITeam } from '../../ITeam';
 import type { IMessageFromServer } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
+import { IGetRoomRoles } from '../../IRole';
 import { IServerAttachment } from '../../IAttachment';
 
 export type GroupsEndpoints = {
@@ -72,6 +73,9 @@ export type GroupsEndpoints = {
 	'groups.leave': {
 		POST: (params: { roomId: string }) => {};
 	};
+	'groups.roles': {
+		GET: (params: { roomId: string }) => { roles: IGetRoomRoles[] };
+  };
 	'groups.messages': {
 		GET: (params: {
 			roomId: IServerRoom['_id'];

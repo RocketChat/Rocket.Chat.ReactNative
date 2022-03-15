@@ -570,10 +570,11 @@ export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
 	sdk.get('chat.getMessage', { msgId });
 
-export const getRoomRoles = (roomId: string, type: SubscriptionType): any =>
+export const getRoomRoles = (
+	roomId: string,
+	type: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
+) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
 export const getAvatarSuggestion = (): Promise<IAvatarSuggestion> =>

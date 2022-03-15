@@ -327,7 +327,7 @@ const RocketChat = {
 				...(filter && { filter })
 			};
 			// RC 3.16.0
-			const result = await this.sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
+			const result = await sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
 			return result?.members;
 		}
 		// RC 0.42.0
