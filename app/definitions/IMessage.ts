@@ -147,3 +147,13 @@ export type TMessageModel = IMessage & Model;
 
 export type TAnyMessageModel = TMessageModel | TThreadModel | TThreadMessageModel;
 export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;
+
+// Read receipts to ReadReceiptView and chat.getMessageReadReceipts
+export interface IReadReceipts {
+	_id: string;
+	roomId: string;
+	userId: string;
+	messageId: string;
+	ts: string;
+	user?: IUserMessage;
+}

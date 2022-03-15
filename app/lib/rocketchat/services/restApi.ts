@@ -1,9 +1,18 @@
 import sdk from './sdk';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
-import { SubscriptionType, INotificationPreferences, IRoomNotifications } from '../../../definitions';
+import {
+	SubscriptionType,
+	INotificationPreferences,
+	IRoomNotifications,
+	TRocketChat,
+	IMessage,
+	IRoom
+} from '../../../definitions';
 import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
+import { Encryption } from '../../encryption';
+import { TParams } from '../../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../../auxStore';
 
 export const createChannel = ({
@@ -338,7 +347,7 @@ export const closeLivechat = (rid: string, comment: string) =>
 	// RC 0.29.0
 	sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true });
 
-export const editLivechat = (userData: any, roomData: any) =>
+export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> =>
 	// RC 0.55.0
 	sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
 
@@ -561,10 +570,11 @@ export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
 	sdk.get('chat.getMessage', { msgId });
 
-export const getRoomRoles = (roomId: string, type: SubscriptionType): any =>
+export const getRoomRoles = (
+	roomId: string,
+	type: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
+) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
 export const getAvatarSuggestion = (): Promise<IAvatarSuggestion> =>
@@ -617,10 +627,8 @@ export const getMessages = (
 	});
 };
 
-export const getReadReceipts = (messageId: string): any =>
+export const getReadReceipts = (messageId: string) =>
 	// RC 0.63.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.getMessageReadReceipts', {
 		messageId
 	});
@@ -751,4 +759,34 @@ export const createGroupChat = () => {
 
 	// RC 3.1.0
 	return sdk.post('im.create', { usernames });
+};
+
+export const addUsersToRoom = (rid: string): Promise<boolean> => {
+	const { users: selectedUsers } = reduxStore.getState().selectedUsers;
+	const users = selectedUsers.map(u => u.name);
+	// RC 0.51.0
+	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
+};
+
+export const emitTyping = (room: IRoom, typing = true) => {
+	const { login, settings } = reduxStore.getState();
+	const { UI_Use_Real_Name } = settings;
+	const { user } = login;
+	const name = UI_Use_Real_Name ? user.name : user.username;
+	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
+};
+
+export function e2eResetOwnKey(this: TRocketChat): Promise<boolean | {}> {
+	// {} when TOTP is enabled
+	// TODO: remove this
+	this.unsubscribeRooms();
+
+	// RC 0.72.0
+	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
+}
+
+export const editMessage = async (message: IMessage) => {
+	const { rid, msg } = await Encryption.encryptMessage(message);
+	// RC 0.49.0
+	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
 };
