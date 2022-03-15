@@ -686,10 +686,8 @@ export const runSlashCommand = (command: string, roomId: string, params: any, tr
 		tmid
 	});
 
-export const getCommandPreview = (command: string, roomId: string, params: any): any =>
+export const getCommandPreview = (command: string, roomId: string, params: string) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('commands.preview', {
 		command,
 		roomId,
