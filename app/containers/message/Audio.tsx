@@ -104,7 +104,7 @@ const Button = React.memo(({ loading, paused, onPress, disabled, theme }: IButto
 			<CustomIcon
 				name={paused ? 'play-filled' : 'pause-filled'}
 				size={36}
-				color={disabled ? '#88B4F5' : themes[theme].tintColor}
+				color={disabled ? themes[theme].tintDisabled : themes[theme].tintColor}
 			/>
 		)}
 	</Touchable>
