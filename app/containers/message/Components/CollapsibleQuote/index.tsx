@@ -144,7 +144,7 @@ const CollapsibleQuote = React.memo(
 		return (
 			<>
 				<Touchable
-					testID='collapsibleQuoteTouchable'
+					testID={`collapsibleQuoteTouchable-${attachment.title}`}
 					onPress={onPress}
 					style={[
 						styles.button,

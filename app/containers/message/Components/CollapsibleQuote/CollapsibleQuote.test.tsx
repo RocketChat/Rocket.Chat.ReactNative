@@ -43,10 +43,12 @@ const Render = () => (
 	</MessageContext.Provider>
 );
 
+const touchableTestID = `collapsibleQuoteTouchable-${testAttachment.title}`;
+
 describe('CollapsibleQuote', () => {
 	test('rendered', async () => {
 		const { findByTestId } = render(<Render />);
-		const collapsibleQuoteTouchable = await findByTestId('collapsibleQuoteTouchable');
+		const collapsibleQuoteTouchable = await findByTestId(touchableTestID);
 		expect(collapsibleQuoteTouchable).toBeTruthy();
 	});
 
@@ -59,7 +61,7 @@ describe('CollapsibleQuote', () => {
 
 	test('fields render title correctly', async () => {
 		const collapsibleQuote = render(<Render />);
-		const collapsibleQuoteTouchable = await collapsibleQuote.findByTestId('collapsibleQuoteTouchable');
+		const collapsibleQuoteTouchable = await collapsibleQuote.findByTestId(touchableTestID);
 		// open
 		fireEvent.press(collapsibleQuoteTouchable);
 		const open = within(collapsibleQuoteTouchable);
@@ -76,7 +78,7 @@ describe('CollapsibleQuote', () => {
 
 	test('fields render fields correctly', async () => {
 		const collapsibleQuote = render(<Render />);
-		const collapsibleQuoteTouchable = await collapsibleQuote.findByTestId('collapsibleQuoteTouchable');
+		const collapsibleQuoteTouchable = await collapsibleQuote.findByTestId(touchableTestID);
 		// open
 		fireEvent.press(collapsibleQuoteTouchable);
 		const open = within(collapsibleQuoteTouchable);
