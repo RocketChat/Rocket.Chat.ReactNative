@@ -1,20 +1,21 @@
-import sdk from './sdk';
-import { TEAM_TYPE } from '../../../definitions/ITeam';
-import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import {
-	SubscriptionType,
-	INotificationPreferences,
-	IRoomNotifications,
-	TRocketChat,
 	IMessage,
+	INotificationPreferences,
+	IPreviewItem,
 	IRoom,
-	IPreviewItem
+	IRoomNotifications,
+	SubscriptionType,
+	TRocketChat
 } from '../../../definitions';
-import { ISpotlight } from '../../../definitions/ISpotlight';
-import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
-import { Encryption } from '../../encryption';
 import { TParams } from '../../../definitions/ILivechatEditView';
-import { store as reduxStore } from '../../auxStore';
+import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
+import { ISpotlight } from '../../../definitions/ISpotlight';
+import { TEAM_TYPE } from '../../../definitions/ITeam';
+import { store as reduxStore, store } from '../../auxStore';
+import { Encryption } from '../../encryption';
+import { compareServerVersion } from '../../utils';
+import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
+import sdk from './sdk';
 
 export const createChannel = ({
 	name,
@@ -713,10 +714,18 @@ export const executeCommandPreview = (
 		tmid
 	});
 
-export const getDirectory = ({ query, count, offset, sort }: { query: any; count: number; offset: number; sort: any }): any =>
+export const getDirectory = ({
+	query,
+	count,
+	offset,
+	sort
+}: {
+	query: { [key: string]: string };
+	count: number;
+	offset: number;
+	sort: { [key: string]: number };
+}) =>
 	// RC 1.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('directory', {
 		query,
 		count,
@@ -749,6 +758,15 @@ export const useInviteToken = (token: string): any =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
+
+export const readThreads = (tmid: string): Promise<void> => {
+	const serverVersion = store.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
+		// RC 3.4.0
+		return sdk.methodCallWrapper('readThreads', tmid);
+	}
+	return Promise.resolve();
+};
 
 export const createGroupChat = () => {
 	const { users } = reduxStore.getState().selectedUsers;
