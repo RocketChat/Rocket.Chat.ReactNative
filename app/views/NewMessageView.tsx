@@ -12,7 +12,7 @@ import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IBaseScreen, TSubscriptionModel } from '../definitions';
+import { IApplicationState, IBaseScreen, ISearch, TSubscriptionModel } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../lib/Icons';
@@ -53,18 +53,6 @@ interface IButton {
 	title: string;
 	icon: string;
 	first?: boolean;
-}
-
-interface ISearch {
-	_id: string;
-	status: string;
-	username: string;
-	avatarETag: string;
-	outside: boolean;
-	rid: string;
-	name: string;
-	t: string;
-	search: boolean;
 }
 
 interface INewMessageViewState {
@@ -149,7 +137,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 	};
 
 	search = async (text: string) => {
-		const result: ISearch[] | TSubscriptionModel[] = await RocketChat.search({ text, filterRooms: false });
+		const result = (await RocketChat.search({ text, filterRooms: false })) as ISearch[];
 		this.setState({
 			search: result
 		});
@@ -313,7 +301,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 			<FlatList
 				data={search.length > 0 ? search : chats}
 				extraData={this.state}
-				keyExtractor={item => item._id}
+				keyExtractor={item => item._id || item.rid}
 				ListHeaderComponent={this.renderHeader}
 				renderItem={this.renderItem}
 				ItemSeparatorComponent={List.Separator}

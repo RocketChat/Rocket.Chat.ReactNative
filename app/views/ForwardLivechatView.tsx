@@ -7,7 +7,7 @@ import { forwardRoom, ITransferData } from '../actions/room';
 import { themes } from '../constants/colors';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
-import { IBaseScreen, IRoom, IServerRoomItem } from '../definitions';
+import { IBaseScreen, IServerRoom } from '../definitions';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { ChatsStackParamList } from '../stacks/types';
@@ -20,10 +20,6 @@ const styles = StyleSheet.create({
 		padding: 16
 	}
 });
-interface IUser {
-	username: string;
-	_id: string;
-}
 
 interface IParsedData {
 	label: string;
@@ -38,7 +34,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 	const [departmentTotal, setDepartmentTotal] = useState(0);
 	const [users, setUsers] = useState<IOptionsField[]>([]);
 	const [userId, setUser] = useState();
-	const [room, setRoom] = useState<IRoom>({} as IRoom);
+	const [room, setRoom] = useState<IServerRoom>({} as IServerRoom);
 	const dispatch = useDispatch();
 
 	const rid = route.params?.rid;
@@ -47,7 +43,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 		try {
 			const result = await RocketChat.getDepartments({ count: COUNT_DEPARTMENT, text, offset });
 			if (result.success) {
-				const parsedDepartments: IParsedData[] = result.departments.map(department => ({
+				const parsedDepartments = result.departments.map(department => ({
 					label: department.name,
 					value: department._id
 				}));
@@ -71,7 +67,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 				term
 			});
 			if (result.success) {
-				const parsedUsers = result.items.map((user: IUser) => ({ label: user.username, value: user._id }));
+				const parsedUsers = result.items.map(user => ({ label: user.username, value: user._id }));
 				if (!term) {
 					setUsers(parsedUsers);
 				}
@@ -86,7 +82,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 		try {
 			const result = await RocketChat.getRoomInfo(rid);
 			if (result.success) {
-				setRoom(result.room as IRoom & IServerRoomItem);
+				setRoom(result.room as IServerRoom);
 			}
 		} catch {
 			// do nothing

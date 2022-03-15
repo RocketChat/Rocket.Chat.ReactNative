@@ -1,5 +1,5 @@
-import type { IMessage } from '../../IMessage';
-import type { IRoom } from '../../IRoom';
+import type { IMessage, IMessageFromServer, IReadReceipts } from '../../IMessage';
+import type { IServerRoom } from '../../IRoom';
 import { PaginatedResult } from '../helpers/PaginatedResult';
 
 export type ChatEndpoints = {
@@ -30,14 +30,14 @@ export type ChatEndpoints = {
 		POST: (params: { messageId: IMessage['_id']; description: string }) => void;
 	};
 	'chat.getDiscussions': {
-		GET: (params: { roomId: IRoom['_id']; text?: string; offset: number; count: number }) => {
-			messages: IMessage[];
+		GET: (params: { roomId: IServerRoom['_id']; text?: string; offset: number; count: number }) => {
+			messages: IMessageFromServer[];
 			total: number;
 		};
 	};
 	'chat.getThreadsList': {
 		GET: (params: {
-			rid: IRoom['_id'];
+			rid: IServerRoom['_id'];
 			type: 'unread' | 'following' | 'all';
 			text?: string;
 			offset: number;
@@ -56,5 +56,21 @@ export type ChatEndpoints = {
 	};
 	'chat.react': {
 		POST: (params: { emoji: string; messageId: string }) => void;
+	};
+	'chat.ignoreUser': {
+		GET: (params: { rid: string; userId: string; ignore: boolean }) => {};
+	};
+	'chat.search': {
+		GET: (params: { roomId: IServerRoom['_id']; searchText: string; count: number; offset: number }) => {
+			messages: IMessageFromServer[];
+		};
+	};
+	'chat.update': {
+		POST: (params: { roomId: IServerRoom['_id']; msgId: string; text: string }) => {
+			messages: IMessageFromServer;
+		};
+	};
+	'chat.getMessageReadReceipts': {
+		GET: (params: { messageId: string }) => { receipts: IReadReceipts[] };
 	};
 };

@@ -181,7 +181,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		this.setState({ text: serverHistory.url }, () => this.submit({ fromServerHistory: true, username: serverHistory?.username }));
 	};
 
-	submit = async ({ fromServerHistory = false, username }: ISubmitParams = {}) => {
+	submit = ({ fromServerHistory = false, username }: ISubmitParams = {}) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 		const { text, certificate } = this.state;
 		const { dispatch } = this.props;
@@ -193,10 +193,12 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			const server = this.completeUrl(text);
 
 			// Save info - SSL Pinning
-			await UserPreferences.setStringAsync(`${RocketChat.CERTIFICATE_KEY}-${server}`, certificate);
+			if (certificate) {
+				UserPreferences.setString(`${RocketChat.CERTIFICATE_KEY}-${server}`, certificate);
+			}
 
 			// Save info - HTTP Basic Authentication
-			await this.basicAuth(server, text);
+			this.basicAuth(server, text);
 
 			if (fromServerHistory) {
 				dispatch(serverRequest(server, username, true));
@@ -213,12 +215,12 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		dispatch(serverRequest('https://open.rocket.chat'));
 	};
 
-	basicAuth = async (server: string, text: string) => {
+	basicAuth = (server: string, text: string) => {
 		try {
 			const parsedUrl = parse(text, true);
 			if (parsedUrl.auth.length) {
 				const credentials = Base64.encode(parsedUrl.auth);
-				await UserPreferences.setStringAsync(`${BASIC_AUTH_KEY}-${server}`, credentials);
+				UserPreferences.setString(`${BASIC_AUTH_KEY}-${server}`, credentials);
 				setBasicAuth(credentials);
 			}
 		} catch {
