@@ -16,11 +16,9 @@ import { BUTTON_HIT_SLOP } from '../../utils';
 
 const styles = StyleSheet.create({
 	button: {
-		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: 6,
-		alignSelf: 'flex-start',
 		borderWidth: 1,
 		borderRadius: 4,
 		minHeight: 40
@@ -28,17 +26,9 @@ const styles = StyleSheet.create({
 	attachmentContainer: {
 		flex: 1,
 		borderRadius: 4,
-		flexDirection: 'column',
 		padding: 8
 	},
 	authorContainer: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	fieldsContainer: {
-		flex: 1,
-		flexWrap: 'wrap',
 		flexDirection: 'row'
 	},
 	fieldContainer: {
@@ -56,12 +46,15 @@ const styles = StyleSheet.create({
 		marginBottom: 4
 	},
 	title: {
-		flex: 1,
 		fontSize: 16,
 		...sharedStyles.textMedium
 	},
-	touchableContainer: { flex: 1, flexDirection: 'row' },
-	markdownFontSize: { fontSize: 15 },
+	touchableContainer: {
+		flexDirection: 'row'
+	},
+	markdownFontSize: {
+		fontSize: 15
+	},
 	iconContainer: {
 		width: 20,
 		height: 20,
@@ -92,7 +85,7 @@ const Fields = React.memo(
 		const { baseUrl, user } = useContext(MessageContext);
 		const { theme } = useTheme();
 		return (
-			<View style={styles.fieldsContainer}>
+			<>
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>
@@ -108,11 +101,10 @@ const Fields = React.memo(
 						/>
 					</View>
 				))}
-			</View>
+			</>
 		);
 	},
-	(prevProps, nextProps) =>
-		dequal(prevProps.attachment.fields, nextProps.attachment.fields) && prevProps.theme === nextProps.theme
+	(prevProps, nextProps) => dequal(prevProps.attachment.fields, nextProps.attachment.fields)
 );
 
 const CollapsibleQuote = React.memo(
