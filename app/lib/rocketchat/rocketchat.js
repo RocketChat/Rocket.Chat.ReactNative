@@ -172,13 +172,6 @@ const RocketChat = {
 	getRooms,
 	readMessages,
 	resendMessage,
-	createGroupChat() {
-		const { users } = reduxStore.getState().selectedUsers;
-		const usernames = users.map(u => u.name).join(',');
-
-		// RC 3.1.0
-		return this.post('im.create', { usernames });
-	},
 	triggerBlockAction,
 	triggerSubmitView,
 	triggerCancel,
@@ -255,7 +248,7 @@ const RocketChat = {
 				...(filter && { filter })
 			};
 			// RC 3.16.0
-			const result = await this.sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
+			const result = await sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
 			return result?.members;
 		}
 		// RC 0.42.0
@@ -304,12 +297,6 @@ const RocketChat = {
 		const { username } = reduxStore.getState().login.user;
 		// RC 3.1.0
 		return this.post('users.2fa.sendEmailCode', { emailOrUsername: username });
-	},
-	addUsersToRoom(rid) {
-		let { users } = reduxStore.getState().selectedUsers;
-		users = users.map(u => u.name);
-		// RC 0.51.0
-		return this.methodCallWrapper('addUsersToRoom', { rid, users });
 	},
 	hasRole(role) {
 		const shareUser = reduxStore.getState().share.user;
