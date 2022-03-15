@@ -3,16 +3,16 @@ import { dequal } from 'dequal';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../../../constants/colors';
-import { IAttachment } from '../../../definitions/IAttachment';
-import { TGetCustomEmoji } from '../../../definitions/IEmoji';
-import { CustomIcon } from '../../../lib/Icons';
-import { useTheme } from '../../../theme';
-import sharedStyles from '../../../views/Styles';
-import Markdown from '../../markdown';
-import MessageContext from '../Context';
-import Touchable from '../Touchable';
-import { BUTTON_HIT_SLOP } from '../utils';
+import { themes } from '../../../../constants/colors';
+import { IAttachment } from '../../../../definitions/IAttachment';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { CustomIcon } from '../../../../lib/Icons';
+import { useTheme } from '../../../../theme';
+import sharedStyles from '../../../../views/Styles';
+import Markdown from '../../../markdown';
+import MessageContext from '../../Context';
+import Touchable from '../../Touchable';
+import { BUTTON_HIT_SLOP } from '../../utils';
 
 const styles = StyleSheet.create({
 	button: {

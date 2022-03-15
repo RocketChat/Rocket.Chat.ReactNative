@@ -1,8 +1,8 @@
 import { fireEvent, render, within } from '@testing-library/react-native';
 import React from 'react';
 
-import MessageContext from '../Context';
-import CollapsibleQuote from './CollapsibleQuote';
+import MessageContext from '../../Context';
+import CollapsibleQuote from '.';
 
 // For some reason a general mock didn't work, I have to do a search
 jest.mock('react-native-mmkv-storage', () => ({
@@ -17,7 +17,7 @@ jest.mock('react-native-mmkv-storage', () => ({
 	MODES: { MULTI_PROCESS: '' }
 }));
 
-const attachment = {
+const testAttachment = {
 	ts: '1970-01-01T00:00:00.000Z',
 	title: 'Engineering (9 today)',
 	fields: [
@@ -39,7 +39,7 @@ const Render = () => (
 			onLongPress: () => {},
 			user: { username: 'Marcos' }
 		}}>
-		<CollapsibleQuote key={0} index={0} attachment={attachment} getCustomEmoji={mockFn} timeFormat='LT' />
+		<CollapsibleQuote key={0} index={0} attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
 	</MessageContext.Provider>
 );
 
@@ -54,7 +54,7 @@ describe('CollapsibleQuote', () => {
 		const { findByTestId } = render(<Render />);
 		const collapsibleQuoteTitle = await findByTestId('collapsibleQuoteTitle');
 		expect(collapsibleQuoteTitle).toBeTruthy();
-		expect(collapsibleQuoteTitle.props.children).toEqual(attachment.title);
+		expect(collapsibleQuoteTitle.props.children).toEqual(testAttachment.title);
 	});
 
 	test('fields render title correctly', async () => {
@@ -65,7 +65,7 @@ describe('CollapsibleQuote', () => {
 		const open = within(collapsibleQuoteTouchable);
 		const fieldTitleOpen = open.getByTestId('collapsibleQuoteTouchableFieldTitle');
 		expect(fieldTitleOpen).toBeTruthy();
-		expect(fieldTitleOpen.props.children).toEqual(attachment.fields[0].title);
+		expect(fieldTitleOpen.props.children).toEqual(testAttachment.fields[0].title);
 		// close
 		fireEvent.press(collapsibleQuoteTouchable);
 		collapsibleQuote.rerender(<Render />);
@@ -80,13 +80,13 @@ describe('CollapsibleQuote', () => {
 		// open
 		fireEvent.press(collapsibleQuoteTouchable);
 		const open = within(collapsibleQuoteTouchable);
-		const fieldValueOpen = open.getByLabelText(attachment.fields[0].value.split('\n')[0]);
+		const fieldValueOpen = open.getByLabelText(testAttachment.fields[0].value.split('\n')[0]);
 		expect(fieldValueOpen).toBeTruthy();
 		// close
 		fireEvent.press(collapsibleQuoteTouchable);
 		collapsibleQuote.rerender(<Render />);
 		const close = within(collapsibleQuoteTouchable);
-		const fieldValueClosed = close.queryByTestId(attachment.fields[0].value.split('\n')[0]);
+		const fieldValueClosed = close.queryByTestId(testAttachment.fields[0].value.split('\n')[0]);
 		expect(fieldValueClosed).toBeNull();
 	});
 });
