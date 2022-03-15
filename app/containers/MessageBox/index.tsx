@@ -638,12 +638,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}, 1000);
 	};
 
-	setCommandPreview = async (command: any, name: string, params: any) => {
+	setCommandPreview = async (command: any, name: string, params: string) => {
 		const { rid } = this.props;
 		try {
-			const { success, preview } = await RocketChat.getCommandPreview(name, rid, params);
-			if (success) {
-				return this.setState({ commandPreview: preview?.items, showCommandPreview: true, command });
+			const response = await RocketChat.getCommandPreview(name, rid, params);
+			if (response.success) {
+				return this.setState({ commandPreview: response.preview?.items, showCommandPreview: true, command });
 			}
 		} catch (e) {
 			log(e);
