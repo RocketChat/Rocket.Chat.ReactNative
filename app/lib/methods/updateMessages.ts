@@ -31,7 +31,7 @@ export default async function updateMessages({
 	let sub = (await getSubscriptionByRoomId(rid)) as TSubscriptionModel;
 	if (!sub) {
 		sub = { id: rid } as any;
-		// TODO: If I didn't join the room I obviously don't have a subscription, this error catch is imperfect.
+		// TODO: If I didn't join the room I obviously don't have a subscription, this error catch is imperfect. Think of a way to handle the error when I actually try to open a room without subscription.
 		log(new Error('updateMessages: subscription not found'));
 	}
 
