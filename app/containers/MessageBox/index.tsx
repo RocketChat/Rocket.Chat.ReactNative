@@ -49,7 +49,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
 import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
-import { IUser } from '../../definitions';
+import { IPreviewItem, IUser } from '../../definitions';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -114,7 +114,7 @@ interface IMessageBoxState {
 	showSend: any;
 	recording: boolean;
 	trackingType: string;
-	commandPreview: [];
+	commandPreview: IPreviewItem[];
 	showCommandPreview: boolean;
 	command: {
 		appId?: any;
@@ -643,7 +643,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		try {
 			const response = await RocketChat.getCommandPreview(name, rid, params);
 			if (response.success) {
-				return this.setState({ commandPreview: response.preview?.items, showCommandPreview: true, command });
+				return this.setState({ commandPreview: response.preview?.items || [], showCommandPreview: true, command });
 			}
 		} catch (e) {
 			log(e);
