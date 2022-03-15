@@ -1,5 +1,6 @@
 import { ChannelsEndpoints } from './channels';
 import { ChatEndpoints } from './chat';
+import { CommandsEndpoint } from './commands';
 import { CustomUserStatusEndpoints } from './customUserStatus';
 import { DmEndpoints } from './dm';
 import { EmojiCustomEndpoints } from './emojiCustom';
@@ -19,6 +20,7 @@ import { VideoConferenceEndpoints } from './videoConference';
 
 export type Endpoints = ChannelsEndpoints &
 	ChatEndpoints &
+	CommandsEndpoint &
 	CustomUserStatusEndpoints &
 	DmEndpoints &
 	EmojiCustomEndpoints &
