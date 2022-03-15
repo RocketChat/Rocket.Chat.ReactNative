@@ -434,14 +434,6 @@ const RocketChat = {
 	getLoginServices,
 	determineAuthType,
 	roomTypeToApiType,
-	readThreads(tmid) {
-		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
-			// RC 3.4.0
-			return this.methodCallWrapper('readThreads', tmid);
-		}
-		return Promise.resolve();
-	},
 	_setUser(ddpMessage) {
 		this.activeUsers = this.activeUsers || {};
 		const { user } = reduxStore.getState().login;
