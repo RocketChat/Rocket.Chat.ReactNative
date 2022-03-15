@@ -53,8 +53,8 @@ describe('CollapsibleQuote', () => {
 	});
 
 	test('title exists and is correct', async () => {
-		const { findByTestId } = render(<Render />);
-		const collapsibleQuoteTitle = await findByTestId('collapsibleQuoteTitle');
+		const { findByText } = render(<Render />);
+		const collapsibleQuoteTitle = await findByText(testAttachment.title);
 		expect(collapsibleQuoteTitle).toBeTruthy();
 		expect(collapsibleQuoteTitle.props.children).toEqual(testAttachment.title);
 	});

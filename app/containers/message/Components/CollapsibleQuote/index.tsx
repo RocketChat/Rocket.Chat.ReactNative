@@ -164,9 +164,7 @@ const CollapsibleQuote = React.memo(
 					<View style={styles.touchableContainer}>
 						<View style={styles.attachmentContainer}>
 							<View style={styles.authorContainer}>
-								<Text testID='collapsibleQuoteTitle' style={[styles.title, { color: headerTintColor }]}>
-									{attachment.title}
-								</Text>
+								<Text style={[styles.title, { color: headerTintColor }]}>{attachment.title}</Text>
 							</View>
 							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
 						</View>
