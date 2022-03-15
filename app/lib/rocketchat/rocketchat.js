@@ -244,13 +244,6 @@ const RocketChat = {
 	getRooms,
 	readMessages,
 	resendMessage,
-	createGroupChat() {
-		const { users } = reduxStore.getState().selectedUsers;
-		const usernames = users.map(u => u.name).join(',');
-
-		// RC 3.1.0
-		return this.post('im.create', { usernames });
-	},
 	triggerBlockAction,
 	triggerSubmitView,
 	triggerCancel,

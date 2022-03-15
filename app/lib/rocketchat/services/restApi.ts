@@ -753,6 +753,14 @@ export const useInviteToken = (token: string): any =>
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
 
+export const createGroupChat = () => {
+	const { users } = reduxStore.getState().selectedUsers;
+	const usernames = users.map(u => u.name).join(',');
+
+	// RC 3.1.0
+	return sdk.post('im.create', { usernames });
+};
+
 export const addUsersToRoom = (rid: string): Promise<boolean> => {
 	const { users: selectedUsers } = reduxStore.getState().selectedUsers;
 	const users = selectedUsers.map(u => u.name);
