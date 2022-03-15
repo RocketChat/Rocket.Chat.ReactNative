@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/core';
 
-import { IApplicationState } from '../../definitions';
+import { IApplicationState, IMessageFromServer } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
@@ -47,8 +47,8 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app?.isMasterDetail);
 
 	const [loading, setLoading] = useState(false);
-	const [discussions, setDiscussions] = useState([]);
-	const [search, setSearch] = useState([]);
+	const [discussions, setDiscussions] = useState<IMessageFromServer[]>([]);
+	const [search, setSearch] = useState<IMessageFromServer[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
 	const [total, setTotal] = useState(0);
 	const [searchTotal, setSearchTotal] = useState(0);
@@ -63,7 +63,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 
 		setLoading(true);
 		try {
-			const result: any = await RocketChat.getDiscussions({
+			const result = await RocketChat.getDiscussions({
 				roomId: rid,
 				offset: isSearching ? search.length : discussions.length,
 				count: API_FETCH_COUNT,
@@ -171,7 +171,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 		true
 	);
 
-	const renderItem = ({ item }: { item: TThreadModel }) => (
+	const renderItem = ({ item }: { item: IMessageFromServer }) => (
 		<Item
 			{...{
 				item,

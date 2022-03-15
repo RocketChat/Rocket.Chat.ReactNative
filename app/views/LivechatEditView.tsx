@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { ScrollView, StyleSheet, Text, TextInput as RNTextInput } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
@@ -18,9 +18,8 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { ILivechatVisitor } from '../definitions/ILivechatVisitor';
-import { ITagsOmnichannel } from '../definitions/ITagsOmnichannel';
-import { IApplicationState, ISubscription } from '../definitions';
+import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../definitions/ILivechatEditView';
+import { IApplicationState } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 
@@ -43,47 +42,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface ITitle {
-	title: string;
-	theme: string;
-}
-
-interface IField {
-	_id: string;
-	visibility: string;
-	scope: string;
-}
-
-interface IInputs {
-	livechatData: {
-		[key: string]: any;
-	};
-	name: string;
-	email: string;
-	phone?: string;
-	topic: string;
-	tag: string[];
-	[key: string]: any;
-}
-
-type TParams = ILivechatVisitor & IInputs;
-
-interface ILivechat extends ISubscription {
-	// Param dynamic depends on server
-	sms?: string;
-}
-
-interface IInputsRefs {
-	[index: string]: RNTextInput | null;
-	name: RNTextInput | null;
-	phone: RNTextInput | null;
-	topic: RNTextInput | null;
-}
-
-interface ICustomFields {
-	visitor?: { [key: string]: string };
-	livechat?: { [key: string]: string };
-}
 interface ILivechatEditViewProps {
 	// TODO: Refactor when migrate models
 	user: any;
@@ -116,17 +74,17 @@ const LivechatEditView = ({
 	const visitor = route.params?.roomUser ?? {};
 
 	const getCustomFields = async () => {
-		const result: any = await RocketChat.getCustomFields();
+		const result = await RocketChat.getCustomFields();
 		if (result.success && result.customFields?.length) {
 			const visitorCustomFields = result.customFields
-				.filter((field: IField) => field.visibility !== 'hidden' && field.scope === 'visitor')
-				.map((field: IField) => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
-				.reduce((ret: IField, field: IField) => ({ ...field, ...ret }));
+				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
+				.map(field => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
+				.reduce((ret, field) => ({ ...field, ...ret }), {});
 
 			const livechatCustomFields = result.customFields
-				.filter((field: IField) => field.visibility !== 'hidden' && field.scope === 'room')
-				.map((field: IField) => ({ [field._id]: (livechat.livechatData && livechat.livechatData[field._id]) || '' }))
-				.reduce((ret: IField, field: IField) => ({ ...field, ...ret }));
+				.filter(field => field.visibility !== 'hidden' && field.scope === 'room')
+				.map(field => ({ [field._id]: (livechat.livechatData && livechat.livechatData[field._id]) || '' }))
+				.reduce((ret, field) => ({ ...field, ...ret }), {});
 
 			return setCustomFields({ visitor: visitorCustomFields, livechat: livechatCustomFields });
 		}
@@ -142,7 +100,7 @@ const LivechatEditView = ({
 	}, [availableUserTags]);
 
 	const getTagsList = async (agentDepartments: string[]) => {
-		const tags: ITagsOmnichannel[] = await RocketChat.getTagsList();
+		const tags = await RocketChat.getTagsList();
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role));
 		const availableTags = tags
 			.filter(({ departments }) => isAdmin || departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1))
@@ -153,7 +111,7 @@ const LivechatEditView = ({
 	const getAgentDepartments = async () => {
 		const result = await RocketChat.getAgentDepartments(visitor?._id);
 		if (result.success) {
-			const agentDepartments = result.departments.map((dept: { departmentId: string }) => dept.departmentId);
+			const agentDepartments = result.departments.map(dept => dept.departmentId);
 			getTagsList(agentDepartments);
 		}
 	};

@@ -6,8 +6,7 @@ import { KeyCommandsEmitter } from 'react-native-keycommands';
 import RNScreens from 'react-native-screens';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 
-import { defaultTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
-import UserPreferences from './lib/userPreferences';
+import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
 import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -17,9 +16,9 @@ import store from './lib/createStore';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './utils/log';
 import { ThemeContext } from './theme';
 import { DimensionsContext } from './dimensions';
-import RocketChat, { THEME_PREFERENCES_KEY } from './lib/rocketchat';
+import RocketChat from './lib/rocketchat';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
-import { isTablet, supportSystemTheme } from './utils/deviceInfo';
+import { isTablet } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import AppContainer from './AppContainer';
 import TwoFactor from './containers/TwoFactor';
@@ -33,6 +32,7 @@ import { isFDroidBuild } from './constants/environment';
 import { IThemePreference } from './definitions/ITheme';
 import { ICommand } from './definitions/ICommand';
 import { initStore } from './lib/auxStore';
+import { themes } from './constants/colors';
 
 RNScreens.enableScreens();
 initStore(store);
@@ -88,12 +88,10 @@ export default class Root extends React.Component<{}, IState> {
 			this.initCrashReport();
 		}
 		const { width, height, scale, fontScale } = Dimensions.get('window');
+		const theme = initialTheme();
 		this.state = {
-			theme: defaultTheme(),
-			themePreferences: {
-				currentTheme: supportSystemTheme() ? 'automatic' : 'light',
-				darkLevel: 'black'
-			},
+			theme: getTheme(theme),
+			themePreferences: theme,
 			width,
 			height,
 			scale,
@@ -128,7 +126,6 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	init = async () => {
-		UserPreferences.getMapAsync(THEME_PREFERENCES_KEY).then((theme: any) => this.setTheme(theme));
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification
@@ -209,7 +206,9 @@ export default class Root extends React.Component<{}, IState> {
 	render() {
 		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
 		return (
-			<SafeAreaProvider initialMetrics={initialWindowMetrics}>
+			<SafeAreaProvider
+				initialMetrics={initialWindowMetrics}
+				style={{ backgroundColor: themes[this.state.theme].backgroundColor }}>
 				<AppearanceProvider>
 					<Provider store={store}>
 						<ThemeContext.Provider

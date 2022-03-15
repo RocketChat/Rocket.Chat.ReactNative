@@ -1,5 +1,5 @@
 import type { IInvite } from '../../IInvite';
-import type { IRoom } from '../../IRoom';
+import type { IServerRoom } from '../../IRoom';
 
 export type InvitesEndpoints = {
 	listInvites: {
@@ -11,11 +11,11 @@ export type InvitesEndpoints = {
 	'/v1/useInviteToken': {
 		POST: (params: { token: string }) => {
 			room: {
-				rid: IRoom['_id'];
-				prid: IRoom['prid'];
-				fname: IRoom['fname'];
-				name: IRoom['name'];
-				t: IRoom['t'];
+				rid: IServerRoom['_id'];
+				prid: IServerRoom['prid'];
+				fname: IServerRoom['fname'];
+				name: IServerRoom['name'];
+				t: IServerRoom['t'];
 			};
 		};
 	};

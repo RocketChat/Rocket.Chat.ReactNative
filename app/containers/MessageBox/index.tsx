@@ -50,6 +50,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
 import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
+import { IPreviewItem, IUser } from '../../definitions';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -81,12 +82,7 @@ export interface IMessageBoxProps {
 	editing: boolean;
 	threadsEnabled: boolean;
 	isFocused(): boolean;
-	user: {
-		id: string;
-		_id: string;
-		username: string;
-		token: string;
-	};
+	user: IUser;
 	roomType: string;
 	tmid: string;
 	replyWithMention: boolean;
@@ -119,7 +115,7 @@ interface IMessageBoxState {
 	showSend: any;
 	recording: boolean;
 	trackingType: string;
-	commandPreview: [];
+	commandPreview: IPreviewItem[];
 	showCommandPreview: boolean;
 	command: {
 		appId?: any;
@@ -610,7 +606,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	getCannedResponses = debounce(async (text?: string) => {
 		const res = await RocketChat.getListCannedResponse({ text });
-		this.setState({ mentions: res?.cannedResponses || [], mentionLoading: false });
+		this.setState({ mentions: res.success ? res.cannedResponses : [], mentionLoading: false });
 	}, 500);
 
 	focus = () => {
@@ -643,12 +639,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}, 1000);
 	};
 
-	setCommandPreview = async (command: any, name: string, params: any) => {
+	setCommandPreview = async (command: any, name: string, params: string) => {
 		const { rid } = this.props;
 		try {
-			const { success, preview } = await RocketChat.getCommandPreview(name, rid, params);
-			if (success) {
-				return this.setState({ commandPreview: preview?.items, showCommandPreview: true, command });
+			const response = await RocketChat.getCommandPreview(name, rid, params);
+			if (response.success) {
+				return this.setState({ commandPreview: response.preview?.items || [], showCommandPreview: true, command });
 			}
 		} catch (e) {
 			log(e);

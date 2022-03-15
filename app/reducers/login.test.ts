@@ -1,4 +1,5 @@
 import {
+	clearUser,
 	loginFailure,
 	loginRequest,
 	loginSuccess,
@@ -79,6 +80,12 @@ describe('test selectedUsers reducer', () => {
 		mockedStore.dispatch(setUser(user));
 		const state = mockedStore.getState().login.user.username;
 		expect(state).toEqual(user.username);
+	});
+
+	it('should clear user after clearUser', () => {
+		mockedStore.dispatch(clearUser());
+		const state = mockedStore.getState().login.user;
+		expect(state).toEqual({});
 	});
 
 	// TODO PREFERENCE REDUCER WITH EMPTY PREFERENCE - NON USED?
