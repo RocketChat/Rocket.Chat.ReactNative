@@ -11,7 +11,7 @@ function createRequestTypes(base = {}, types = defaultTypes): Record<string, str
 // Login events
 export const LOGIN = createRequestTypes('LOGIN', [...defaultTypes, 'SET_SERVICES', 'SET_PREFERENCE', 'SET_LOCAL_AUTHENTICATED']);
 export const SHARE = createRequestTypes('SHARE', ['SELECT_SERVER', 'SET_USER', 'SET_SETTINGS', 'SET_SERVER_INFO']);
-export const USER = createRequestTypes('USER', ['SET']);
+export const USER = createRequestTypes('USER', ['SET', 'CLEAR']);
 export const ROOMS = createRequestTypes('ROOMS', [
 	...defaultTypes,
 	'REFRESH',

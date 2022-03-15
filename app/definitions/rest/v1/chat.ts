@@ -1,4 +1,4 @@
-import type { IMessage, IMessageFromServer } from '../../IMessage';
+import type { IMessage, IMessageFromServer, IReadReceipts } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import { PaginatedResult } from '../helpers/PaginatedResult';
 
@@ -64,5 +64,13 @@ export type ChatEndpoints = {
 		GET: (params: { roomId: IServerRoom['_id']; searchText: string; count: number; offset: number }) => {
 			messages: IMessageFromServer[];
 		};
+	};
+	'chat.update': {
+		POST: (params: { roomId: IServerRoom['_id']; msgId: string; text: string }) => {
+			messages: IMessageFromServer;
+		};
+	};
+	'chat.getMessageReadReceipts': {
+		GET: (params: { messageId: string }) => { receipts: IReadReceipts[] };
 	};
 };
