@@ -25,6 +25,7 @@ export interface IAttachment {
 	color?: string;
 	thumb_url?: string;
 	attachments?: any[];
+	collapsed?: boolean;
 }
 
 export interface IServerAttachment {
