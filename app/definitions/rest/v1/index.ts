@@ -18,6 +18,7 @@ import { SubscriptionsEndpoints } from './subscriptions';
 import { VideoConferenceEndpoints } from './videoConference';
 import { CommandsEndpoints } from './commands';
 import { PushTokenEndpoints } from './pushToken';
+import { DirectoryEndpoint } from './directory';
 
 export type Endpoints = ChannelsEndpoints &
 	ChatEndpoints &
@@ -38,4 +39,5 @@ export type Endpoints = ChannelsEndpoints &
 	SubscriptionsEndpoints &
 	VideoConferenceEndpoints &
 	CommandsEndpoints &
-	PushTokenEndpoints;
+	PushTokenEndpoints &
+	DirectoryEndpoint;
