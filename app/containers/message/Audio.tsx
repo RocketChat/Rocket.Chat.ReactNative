@@ -21,6 +21,7 @@ interface IButton {
 	loading: boolean;
 	paused: boolean;
 	theme: string;
+	disabled?: boolean;
 	onPress: Function;
 }
 
@@ -29,6 +30,7 @@ interface IMessageAudioProps {
 		audio_url: string;
 		description: string;
 	};
+	isReply?: boolean;
 	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
@@ -89,16 +91,21 @@ const sliderAnimationConfig = {
 	delay: 0
 };
 
-const Button = React.memo(({ loading, paused, onPress, theme }: IButton) => (
+const Button = React.memo(({ loading, paused, onPress, disabled, theme }: IButton) => (
 	<Touchable
 		style={styles.playPauseButton}
+		disabled={disabled}
 		onPress={onPress}
 		hitSlop={BUTTON_HIT_SLOP}
 		background={Touchable.SelectableBackgroundBorderless()}>
 		{loading ? (
 			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} theme={theme} />
 		) : (
-			<CustomIcon name={paused ? 'play-filled' : 'pause-filled'} size={36} color={themes[theme].tintColor} />
+			<CustomIcon
+				name={paused ? 'play-filled' : 'pause-filled'}
+				size={36}
+				color={disabled ? '#88B4F5' : themes[theme].tintColor}
+			/>
 		)}
 	</Touchable>
 ));
@@ -249,7 +256,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	render() {
 		const { loading, paused, currentTime, duration } = this.state;
-		const { file, getCustomEmoji, theme, scale } = this.props;
+		const { file, getCustomEmoji, theme, scale, isReply } = this.props;
 		const { description } = file;
 		const { baseUrl, user } = this.context;
 
@@ -264,8 +271,9 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 						styles.audioContainer,
 						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
 					]}>
-					<Button loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
+					<Button disabled={isReply} loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
+						disabled={isReply}
 						style={styles.slider}
 						value={currentTime}
 						maximumValue={duration}

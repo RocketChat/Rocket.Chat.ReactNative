@@ -15,7 +15,7 @@ import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
 type TMessageButton = {
 	children: JSX.Element;
-	disabled: boolean;
+	disabled?: boolean;
 	onPress: Function;
 	theme: string;
 };
@@ -28,8 +28,9 @@ type TMessageImage = {
 interface IMessageImage {
 	file: { image_url: string; description?: string };
 	imageUrl?: string;
-	showAttachment: Function;
+	showAttachment?: Function;
 	style?: StyleProp<TextStyle>[];
+	isReply?: boolean;
 	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 }
@@ -59,18 +60,24 @@ export const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
 ));
 
 const ImageContainer = React.memo(
-	({ file, imageUrl, showAttachment, getCustomEmoji, style, theme }: IMessageImage) => {
+	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply, theme }: IMessageImage) => {
 		const { baseUrl, user } = useContext(MessageContext);
 		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 		if (!img) {
 			return null;
 		}
 
-		const onPress = () => showAttachment(file);
+		const onPress = () => {
+			if (!showAttachment) {
+				return;
+			}
+
+			return showAttachment(file);
+		};
 
 		if (file.description) {
 			return (
-				<Button disabled={!showAttachment} theme={theme} onPress={onPress}>
+				<Button disabled={isReply} theme={theme} onPress={onPress}>
 					<View>
 						<MessageImage img={img} theme={theme} />
 						<Markdown
@@ -87,7 +94,7 @@ const ImageContainer = React.memo(
 		}
 
 		return (
-			<Button disabled={!showAttachment} theme={theme} onPress={onPress}>
+			<Button disabled={isReply} theme={theme} onPress={onPress}>
 				<MessageImage img={img} theme={theme} />
 			</Button>
 		);

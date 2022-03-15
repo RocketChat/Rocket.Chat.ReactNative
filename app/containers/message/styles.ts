@@ -28,7 +28,6 @@ export default StyleSheet.create({
 	},
 	flex: {
 		flexDirection: 'row'
-		// flex: 1
 	},
 	temp: { opacity: 0.3 },
 	marginTop: {
@@ -100,7 +99,6 @@ export default StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	imageContainer: {
-		// flex: 1,
 		flexDirection: 'column',
 		borderRadius: 4
 	},
@@ -141,7 +139,6 @@ export default StyleSheet.create({
 	},
 	repliedThread: {
 		flexDirection: 'row',
-		// flex: 1,
 		alignItems: 'center',
 		marginTop: 6,
 		marginBottom: 12

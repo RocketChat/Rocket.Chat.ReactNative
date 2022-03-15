@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 6,
+		marginVertical: 4,
 		alignSelf: 'flex-start',
 		borderLeftWidth: 2
 	},
@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		borderRadius: 4,
 		flexDirection: 'column',
-		padding: 8
+		paddingVertical: 4,
+		paddingLeft: 8
 	},
 	backdrop: {
 		...StyleSheet.absoluteFillObject
@@ -38,7 +39,8 @@ const styles = StyleSheet.create({
 	authorContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginBottom: 8
 	},
 	author: {
 		flex: 1,
@@ -47,9 +49,8 @@ const styles = StyleSheet.create({
 	},
 	time: {
 		fontSize: 12,
-		marginLeft: 10,
-		...sharedStyles.textRegular,
-		fontWeight: '300'
+		marginLeft: 8,
+		...sharedStyles.textRegular
 	},
 	fieldsContainer: {
 		flex: 1,
@@ -250,12 +251,12 @@ const Reply = React.memo(
 					disabled={loading}>
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-						{/* @ts-ignore */}
 						<Attachments
 							attachments={attachment.attachments}
 							getCustomEmoji={getCustomEmoji}
 							timeFormat={timeFormat}
 							style={[{ color: themes[theme].auxiliaryTintColor }]}
+							isReply
 						/>
 						<UrlImage image={attachment.thumb_url} />
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />

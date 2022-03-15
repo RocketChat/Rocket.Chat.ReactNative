@@ -33,14 +33,15 @@ const styles = StyleSheet.create({
 
 interface IMessageVideo {
 	file: IAttachment;
-	showAttachment: Function;
+	showAttachment?: Function;
 	getCustomEmoji: TGetCustomEmoji;
 	style?: StyleProp<TextStyle>[];
+	isReply?: boolean;
 	theme: string;
 }
 
 const Video = React.memo(
-	({ file, showAttachment, getCustomEmoji, style, theme }: IMessageVideo) => {
+	({ file, showAttachment, getCustomEmoji, style, isReply, theme }: IMessageVideo) => {
 		const { baseUrl, user } = useContext(MessageContext);
 		const [loading, setLoading] = useState(false);
 
@@ -48,7 +49,7 @@ const Video = React.memo(
 			return null;
 		}
 		const onPress = async () => {
-			if (isTypeSupported(file.video_type)) {
+			if (isTypeSupported(file.video_type) && showAttachment) {
 				return showAttachment(file);
 			}
 
@@ -75,7 +76,7 @@ const Video = React.memo(
 		return (
 			<>
 				<Touchable
-					disabled={!showAttachment}
+					disabled={isReply}
 					onPress={onPress}
 					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}>

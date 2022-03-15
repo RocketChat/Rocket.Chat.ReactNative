@@ -10,7 +10,8 @@ export interface IMessageAttachments {
 	attachments: any;
 	timeFormat?: string;
 	style?: StyleProp<TextStyle>[];
-	showAttachment: Function;
+	isReply?: boolean;
+	showAttachment?: Function;
 	getCustomEmoji: TGetCustomEmoji;
 }
 
