@@ -15,6 +15,7 @@ import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInt
 import { Encryption } from '../../encryption';
 import { TParams } from '../../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../../auxStore';
+import { getDeviceToken } from '../../../notifications/push';
 
 export const createChannel = ({
 	name,
@@ -794,4 +795,13 @@ export const editMessage = async (message: IMessage) => {
 	const { rid, msg } = await Encryption.encryptMessage(message);
 	// RC 0.49.0
 	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
+};
+
+export const removePushToken = (): Promise<boolean | void> => {
+	const token = getDeviceToken();
+	if (token) {
+		// RC 0.60.0
+		return sdk.current.del('push.token', { token });
+	}
+	return Promise.resolve();
 };
