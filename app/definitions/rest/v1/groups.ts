@@ -75,7 +75,7 @@ export type GroupsEndpoints = {
 	};
 	'groups.roles': {
 		GET: (params: { roomId: string }) => { roles: IGetRoomRoles[] };
-  };
+	};
 	'groups.messages': {
 		GET: (params: {
 			roomId: IServerRoom['_id'];

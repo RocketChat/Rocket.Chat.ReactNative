@@ -753,6 +753,13 @@ export const useInviteToken = (token: string): any =>
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
 
+export const addUsersToRoom = (rid: string): Promise<boolean> => {
+	const { users: selectedUsers } = reduxStore.getState().selectedUsers;
+	const users = selectedUsers.map(u => u.name);
+	// RC 0.51.0
+	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
+};
+
 export const emitTyping = (room: IRoom, typing = true) => {
 	const { login, settings } = reduxStore.getState();
 	const { UI_Use_Real_Name } = settings;

@@ -99,7 +99,7 @@ export type ChannelsEndpoints = {
 	};
 	'channels.roles': {
 		GET: (params: { roomId: string }) => { roles: IGetRoomRoles[] };
-  };
+	};
 	'channels.messages': {
 		GET: (params: {
 			roomId: IServerRoom['_id'];

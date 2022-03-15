@@ -377,12 +377,6 @@ const RocketChat = {
 		// RC 3.1.0
 		return this.post('users.2fa.sendEmailCode', { emailOrUsername: username });
 	},
-	addUsersToRoom(rid) {
-		let { users } = reduxStore.getState().selectedUsers;
-		users = users.map(u => u.name);
-		// RC 0.51.0
-		return this.methodCallWrapper('addUsersToRoom', { rid, users });
-	},
 	hasRole(role) {
 		const shareUser = reduxStore.getState().share.user;
 		const loginUser = reduxStore.getState().login.user;
