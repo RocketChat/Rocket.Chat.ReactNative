@@ -1,18 +1,16 @@
 import { ITeam } from '../../ITeam';
-import type { IMessage, IMessageFromServer } from '../../IMessage';
+import type { IMessageFromServer } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
+import { IGetRoomRoles } from '../../IRole';
+import { IServerAttachment } from '../../IAttachment';
 
 export type ChannelsEndpoints = {
 	'channels.files': {
-		GET: (params: {
-			roomId: IServerRoom['_id'];
-			offset: number;
+		GET: (params: { roomId: IServerRoom['_id']; offset: number; sort: string | { uploadedAt: number } }) => {
+			files: IServerAttachment[];
 			count: number;
-			sort: string | { uploadedAt: number };
-			query: string;
-		}) => {
-			files: IMessage[];
+			offset: number;
 			total: number;
 		};
 	};
@@ -98,5 +96,18 @@ export type ChannelsEndpoints = {
 	};
 	'channels.removeLeader': {
 		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.roles': {
+		GET: (params: { roomId: string }) => { roles: IGetRoomRoles[] };
+	};
+	'channels.messages': {
+		GET: (params: {
+			roomId: IServerRoom['_id'];
+			query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean };
+			offset: number;
+			sort: { ts: number };
+		}) => {
+			messages: IMessageFromServer[];
+		};
 	};
 };

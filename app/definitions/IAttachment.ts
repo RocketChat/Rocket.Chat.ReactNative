@@ -1,3 +1,5 @@
+import { IUser } from './IUser';
+
 export interface IAttachment {
 	ts: string | Date;
 	title: string;
@@ -22,4 +24,31 @@ export interface IAttachment {
 	author_link?: string;
 	color?: string;
 	thumb_url?: string;
+}
+
+export interface IServerAttachment {
+	_id: string;
+	name: string;
+	size: number;
+	type: string;
+	rid: string;
+	userId: string;
+	AmazonS3: { path: string };
+	store: string;
+	identify: {
+		format: string;
+		size: {
+			width: number;
+			height: number;
+		};
+	};
+	complete: boolean;
+	etag: string;
+	path: string;
+	progress: boolean;
+	token: string;
+	uploadedAt: string | Date;
+	uploading: boolean;
+	url: string;
+	user: Pick<IUser, '_id' | 'username' | 'name'>;
 }

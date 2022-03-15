@@ -11,8 +11,6 @@ import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import log from '../../utils/log';
 import SSLPinning from '../../utils/sslPinning';
 import database from '../database';
-import { sanitizeLikeString } from '../database/utils';
-import { Encryption } from '../encryption';
 import triggerBlockAction, { triggerCancel, triggerSubmitView } from '../methods/actions';
 import callJitsi, { callJitsiWithoutServer } from '../methods/callJitsi';
 import canOpenRoom from '../methods/canOpenRoom';
@@ -116,8 +114,8 @@ const RocketChat = {
 		database.setShareDB(server);
 
 		try {
-			const certificate = await UserPreferences.getStringAsync(`${RocketChat.CERTIFICATE_KEY}-${server}`);
-			await SSLPinning.setCertificate(certificate, server);
+			const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
+			SSLPinning.setCertificate(certificate, server);
 		} catch {
 			// Do nothing
 		}
@@ -156,7 +154,7 @@ const RocketChat = {
 			reduxStore.dispatch(shareSetSettings(this.parseSettings(parsed)));
 
 			// set User info
-			const userId = await UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${server}`);
+			const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
 			const userCollections = serversDB.get('users');
 			let user = null;
 			if (userId) {
@@ -198,13 +196,6 @@ const RocketChat = {
 		}
 		return result;
 	},
-	e2eResetOwnKey() {
-		this.unsubscribeRooms();
-
-		// RC 0.72.0
-		return this.methodCallWrapper('e2e.resetOwnE2EKey');
-	},
-
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,
@@ -253,13 +244,6 @@ const RocketChat = {
 	getRooms,
 	readMessages,
 	resendMessage,
-	createGroupChat() {
-		const { users } = reduxStore.getState().selectedUsers;
-		const usernames = users.map(u => u.name).join(',');
-
-		// RC 3.1.0
-		return this.post('im.create', { usernames });
-	},
 	triggerBlockAction,
 	triggerSubmitView,
 	triggerCancel,
@@ -298,11 +282,6 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	async editMessage(message) {
-		const { rid, msg } = await Encryption.encryptMessage(message);
-		// RC 0.49.0
-		return this.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
-	},
 	getRoom,
 	getPermalinkMessage,
 	getPermalinkChannel(channel) {
@@ -329,13 +308,6 @@ const RocketChat = {
 	onStreamData(...args) {
 		return sdk.onStreamData(...args);
 	},
-	emitTyping(room, typing = true) {
-		const { login, settings } = reduxStore.getState();
-		const { UI_Use_Real_Name } = settings;
-		const { user } = login;
-		const name = UI_Use_Real_Name ? user.name : user.username;
-		return this.methodCall('stream-notify-room', `${room}/typing`, name, typing);
-	},
 	toggleFavorite,
 	async getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
 		const serverVersion = reduxStore.getState().server.version;
@@ -348,7 +320,7 @@ const RocketChat = {
 				...(filter && { filter })
 			};
 			// RC 3.16.0
-			const result = await this.sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
+			const result = await sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
 			return result?.members;
 		}
 		// RC 0.42.0
@@ -397,12 +369,6 @@ const RocketChat = {
 		const { username } = reduxStore.getState().login.user;
 		// RC 3.1.0
 		return this.post('users.2fa.sendEmailCode', { emailOrUsername: username });
-	},
-	addUsersToRoom(rid) {
-		let { users } = reduxStore.getState().selectedUsers;
-		users = users.map(u => u.name);
-		// RC 0.51.0
-		return this.methodCallWrapper('addUsersToRoom', { rid, users });
 	},
 	hasRole(role) {
 		const shareUser = reduxStore.getState().share.user;
@@ -457,14 +423,13 @@ const RocketChat = {
 		}
 		return JSON.parse(allowAnalyticsEvents);
 	},
-	async getSortPreferences() {
-		const prefs = await UserPreferences.getMapAsync(SORT_PREFS_KEY);
-		return prefs;
+	getSortPreferences() {
+		return UserPreferences.getMap(SORT_PREFS_KEY);
 	},
-	async saveSortPreference(param) {
-		let prefs = await RocketChat.getSortPreferences();
+	saveSortPreference(param) {
+		let prefs = RocketChat.getSortPreferences();
 		prefs = { ...prefs, ...param };
-		return UserPreferences.setMapAsync(SORT_PREFS_KEY, prefs);
+		return UserPreferences.setMap(SORT_PREFS_KEY, prefs);
 	},
 	getLoginServices,
 	determineAuthType,
