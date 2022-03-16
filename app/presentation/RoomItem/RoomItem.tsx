@@ -12,6 +12,7 @@ import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
 import { DisplayMode } from '../../constants/constantDisplayMode';
+import { TUserStatus } from '../../definitions/UserStatus';
 
 interface IRoomItem {
 	rid: string;
@@ -24,7 +25,7 @@ interface IRoomItem {
 	avatarSize: number;
 	testID: string;
 	width: number;
-	status: string;
+	status: TUserStatus;
 	useRealName: boolean;
 	theme: string;
 	isFocused: boolean;

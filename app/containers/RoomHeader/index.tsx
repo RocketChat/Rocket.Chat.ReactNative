@@ -2,6 +2,7 @@ import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { TUserStatus } from '../../definitions/UserStatus';
 import { IApplicationState } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
@@ -15,7 +16,7 @@ interface IRoomHeaderContainerProps {
 	tmid: string;
 	teamMain: boolean;
 	usersTyping: [];
-	status: string;
+	status: TUserStatus;
 	statusText: string;
 	connecting: boolean;
 	connected: boolean;
@@ -140,7 +141,7 @@ const mapStateToProps = (state: IApplicationState, ownProps: any) => {
 		connecting: state.meteor.connecting || state.server.loading,
 		connected: state.meteor.connected,
 		usersTyping: state.usersTyping,
-		status,
+		status: status as TUserStatus,
 		statusText
 	};
 };

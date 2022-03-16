@@ -5,6 +5,7 @@ import { CustomIcon } from '../lib/Icons';
 import { STATUS_COLORS, themes } from '../constants/colors';
 import Status from './Status/Status';
 import { withTheme } from '../theme';
+import { TUserStatus } from '../definitions/UserStatus';
 
 const styles = StyleSheet.create({
 	icon: {
@@ -17,7 +18,7 @@ interface IRoomTypeIcon {
 	type: string;
 	isGroupChat?: boolean;
 	teamMain?: boolean;
-	status?: string;
+	status?: TUserStatus;
 	size?: number;
 	style?: ViewStyle;
 }
@@ -31,9 +32,10 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, team
 	const iconStyle = [styles.icon, { color }, style];
 
 	if (type === 'd' && !isGroupChat) {
-		return (
-			<Status style={[iconStyle, { color: STATUS_COLORS[status!] ?? STATUS_COLORS.offline }]} size={size} status={status!} />
-		);
+		if (!status) {
+			status = 'offline';
+		}
+		return <Status style={[iconStyle, { color: STATUS_COLORS[status] }]} size={size} status={status} />;
 	}
 
 	// TODO: move this to a separate function

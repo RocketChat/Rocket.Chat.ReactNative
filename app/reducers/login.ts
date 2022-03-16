@@ -1,4 +1,4 @@
-import { UserStatus } from '../definitions/UserStatus';
+import { TUserStatus, UserStatus } from '../definitions/UserStatus';
 import * as types from '../actions/actionsTypes';
 import { TActionsLogin } from '../actions/login';
 import { IUser } from '../definitions';
@@ -9,7 +9,7 @@ export interface IUserLogin {
 	username: string;
 	name: string;
 	language?: string;
-	status: UserStatus;
+	status: TUserStatus;
 	statusText: string;
 	roles: string[];
 	avatarETag?: string;

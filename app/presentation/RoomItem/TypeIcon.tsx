@@ -1,10 +1,11 @@
 import React from 'react';
 
+import { TUserStatus } from '../../definitions/UserStatus';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 interface ITypeIcon {
 	type: string;
-	status: string;
+	status: TUserStatus;
 	prid: string;
 	isGroupChat: boolean;
 	teamMain: boolean;

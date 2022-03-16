@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { UserStatus } from '../definitions/UserStatus';
+import { TUserStatus } from '../definitions/UserStatus';
 import { setUser } from '../actions/login';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
@@ -20,7 +20,12 @@ import EventEmitter from '../utils/events';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 
-const STATUS = [
+interface IStatus {
+	id: TUserStatus;
+	name: string;
+}
+
+const STATUS: IStatus[] = [
 	{
 		id: 'online',
 		name: 'Online'
@@ -145,7 +150,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 		);
 	};
 
-	renderItem = ({ item }: { item: { id: string; name: string } }) => {
+	renderItem = ({ item }: { item: IStatus }) => {
 		const { statusText } = this.state;
 		const { user, dispatch } = this.props;
 		const { id, name } = item;
@@ -159,7 +164,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 						try {
 							const result = await RocketChat.setUserStatus(item.id, statusText);
 							if (result.success) {
-								dispatch(setUser({ status: item.id as UserStatus }));
+								dispatch(setUser({ status: item.id }));
 							}
 						} catch (e: any) {
 							showErrorAlert(I18n.t(e.data.errorType));

@@ -19,6 +19,7 @@ import Navigation from '../../lib/Navigation';
 import SidebarItem from './SidebarItem';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
+import { TUserStatus } from '../../definitions/UserStatus';
 
 interface ISeparatorProps {
 	theme: string;
@@ -40,7 +41,7 @@ interface ISidebarProps {
 	Site_Name: string;
 	user: {
 		statusText: string;
-		status: string;
+		status: TUserStatus;
 		username: string;
 		name: string;
 		roles: string[];

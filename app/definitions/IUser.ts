@@ -1,6 +1,6 @@
 import Model from '@nozbe/watermelondb/Model';
 
-import { UserStatus } from './UserStatus';
+import { TUserStatus, UserStatus } from './UserStatus';
 import { IRocketChatRecord } from './IRocketChatRecord';
 import { ILoggedUser } from './ILoggedUser';
 
@@ -133,14 +133,14 @@ export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' |
 	name?: string;
 	services?: IUserServices;
 	emails?: IUserEmail[];
-	status: UserStatus;
+	status: TUserStatus;
 	statusConnection?: string;
 	lastLogin?: Date;
 	avatarOrigin?: string;
 	avatarETag?: string;
 	utcOffset?: number;
 	language?: string;
-	statusDefault?: UserStatus;
+	statusDefault?: TUserStatus;
 	statusText?: string;
 	oauth?: {
 		authorizedClients: string[];
