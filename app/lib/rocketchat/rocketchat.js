@@ -206,14 +206,6 @@ const RocketChat = {
 	},
 	removeServer,
 	clearCache,
-	removePushToken() {
-		const token = getDeviceToken();
-		if (token) {
-			// RC 0.60.0
-			return this.sdk.del('push.token', { token });
-		}
-		return Promise.resolve();
-	},
 	loadMissedMessages,
 	loadMessagesForRoom,
 	loadSurroundingMessages,
@@ -288,24 +280,6 @@ const RocketChat = {
 		return sdk.onStreamData(...args);
 	},
 	toggleFavorite,
-	async getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
-		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
-			const params = {
-				roomId: rid,
-				offset: skip,
-				count: limit,
-				...(type !== 'all' && { 'status[]': type }),
-				...(filter && { filter })
-			};
-			// RC 3.16.0
-			const result = await sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
-			return result?.members;
-		}
-		// RC 0.42.0
-		const result = await this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
-		return result?.records;
-	},
 	methodCallWrapper(method, ...params) {
 		return sdk.methodCallWrapper(method, ...params);
 	},
@@ -343,11 +317,6 @@ const RocketChat = {
 	},
 	methodCall(...args) {
 		return sdk.methodCall(...args);
-	},
-	sendEmailCode() {
-		const { username } = reduxStore.getState().login.user;
-		// RC 3.1.0
-		return this.post('users.2fa.sendEmailCode', { emailOrUsername: username });
 	},
 	hasRole(role) {
 		const shareUser = reduxStore.getState().share.user;
@@ -413,14 +382,6 @@ const RocketChat = {
 	getLoginServices,
 	determineAuthType,
 	roomTypeToApiType,
-	readThreads(tmid) {
-		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
-			// RC 3.4.0
-			return this.methodCallWrapper('readThreads', tmid);
-		}
-		return Promise.resolve();
-	},
 	_setUser(ddpMessage) {
 		this.activeUsers = this.activeUsers || {};
 		const { user } = reduxStore.getState().login;

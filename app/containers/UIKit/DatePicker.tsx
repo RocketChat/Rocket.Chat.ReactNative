@@ -12,6 +12,7 @@ import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../../lib/Icons';
 import { isAndroid } from '../../utils/deviceInfo';
 import ActivityIndicator from '../ActivityIndicator';
+import { IDatePicker } from './interfaces';
 
 const styles = StyleSheet.create({
 	input: {
@@ -35,23 +36,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IDatePicker {
-	element: {
-		initial_date: any;
-		placeholder: string;
-	};
-	language: string;
-	action: Function;
-	context: number;
-	loading: boolean;
-	theme: string;
-	value: string;
-	error: string;
-}
-
 export const DatePicker = ({ element, language, action, context, theme, loading, value, error }: IDatePicker) => {
 	const [show, onShow] = useState(false);
-	const { initial_date, placeholder } = element;
+	const initial_date = element?.initial_date;
+	const placeholder = element?.placeholder;
+
 	const [currentDate, onChangeDate] = useState(new Date(initial_date || value));
 
 	const onChange = ({ nativeEvent: { timestamp } }: any, date: any) => {
