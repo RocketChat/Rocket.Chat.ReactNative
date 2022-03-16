@@ -23,7 +23,7 @@ export default StyleSheet.create({
 	},
 	toggleDropdownText: {
 		flex: 1,
-		fontSize: 17,
+		fontSize: 15,
 		...sharedStyles.textRegular
 	},
 	toggleDropdownArrow: {
@@ -54,18 +54,18 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	dropdownItemText: {
-		fontSize: 18,
+		fontSize: 16,
 		flex: 1,
 		...sharedStyles.textRegular
 	},
 	dropdownItemDescription: {
-		fontSize: 14,
+		fontSize: 13,
 		flex: 1,
 		marginTop: 2,
 		...sharedStyles.textRegular
 	},
 	dropdownToggleText: {
-		fontSize: 15,
+		fontSize: 14,
 		flex: 1,
 		marginLeft: 15,
 		...sharedStyles.textRegular

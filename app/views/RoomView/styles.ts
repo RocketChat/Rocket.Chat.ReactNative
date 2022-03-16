@@ -29,7 +29,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	bannerModalTitle: {
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textMedium
 	},
 	modalView: {
@@ -62,7 +62,7 @@ export default StyleSheet.create({
 		...sharedStyles.textMedium
 	},
 	previewMode: {
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textMedium
 	}
 });

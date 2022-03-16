@@ -9,7 +9,7 @@ export default StyleSheet.create({
 		justifyContent: 'center'
 	},
 	emptyText: {
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textRegular
 	},
 	item: {
@@ -23,11 +23,11 @@ export default StyleSheet.create({
 	},
 	name: {
 		...sharedStyles.textRegular,
-		fontSize: 17
+		fontSize: 15
 	},
 	username: {
 		...sharedStyles.textMedium,
-		fontSize: 14
+		fontSize: 13
 	},
 	time: {
 		...sharedStyles.textRegular,

@@ -14,7 +14,7 @@ const HIT_SLOP = {
 	bottom: 5,
 	left: 5
 };
-const TITLE_SIZE = 16;
+const TITLE_SIZE = 15;
 const SUBTITLE_SIZE = 12;
 
 const getSubTitleSize = (scale: number) => SUBTITLE_SIZE * scale;

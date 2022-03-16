@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flexShrink: 1,
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textRegular
 	},
 	subtitle: {

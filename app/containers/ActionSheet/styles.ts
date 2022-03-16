@@ -26,7 +26,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	title: {
-		fontSize: 16,
+		fontSize: 15,
 		marginLeft: 16,
 		...sharedStyles.textRegular
 	},
@@ -58,7 +58,7 @@ export default StyleSheet.create({
 		marginBottom: 12
 	},
 	text: {
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},

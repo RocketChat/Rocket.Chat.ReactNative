@@ -29,15 +29,15 @@ export default StyleSheet.create({
 	},
 	directoryItemName: {
 		flex: 1,
-		fontSize: 17,
+		fontSize: 15,
 		...sharedStyles.textMedium
 	},
 	directoryItemUsername: {
-		fontSize: 14,
+		fontSize: 13,
 		...sharedStyles.textRegular
 	},
 	directoryItemLabel: {
-		fontSize: 14,
+		fontSize: 13,
 		paddingLeft: 10,
 		...sharedStyles.textRegular
 	}

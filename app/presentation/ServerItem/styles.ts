@@ -23,11 +23,11 @@ export default StyleSheet.create({
 		paddingRight: 18
 	},
 	serverName: {
-		fontSize: 18,
+		fontSize: 16,
 		...sharedStyles.textSemibold
 	},
 	serverUrl: {
-		fontSize: 16,
+		fontSize: 13,
 		...sharedStyles.textRegular
 	}
 });

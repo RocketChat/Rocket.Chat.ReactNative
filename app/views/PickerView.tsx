@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 		height: 56
 	},
 	noResult: {
-		fontSize: 16,
+		fontSize: 15,
 		paddingVertical: 56,
 		...sharedStyles.textSemibold,
 		...sharedStyles.textAlignCenter

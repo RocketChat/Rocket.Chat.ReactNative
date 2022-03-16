@@ -54,13 +54,13 @@ export default StyleSheet.create<any>({
 		minWidth: 46.3
 	},
 	reactionCount: {
-		fontSize: 14,
+		fontSize: 13,
 		marginLeft: 3,
 		marginRight: 8.5,
 		...sharedStyles.textSemibold
 	},
 	reactionEmoji: {
-		fontSize: 13,
+		fontSize: 12,
 		marginLeft: 7,
 		color: '#ffffff'
 	},
@@ -96,7 +96,7 @@ export default StyleSheet.create<any>({
 		marginRight: 8
 	},
 	buttonText: {
-		fontSize: 12,
+		fontSize: 11,
 		...sharedStyles.textSemibold
 	},
 	imageContainer: {
@@ -120,17 +120,17 @@ export default StyleSheet.create<any>({
 		resizeMode: 'contain'
 	},
 	text: {
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textRegular
 	},
 	textInfo: {
 		fontStyle: 'italic',
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textRegular
 	},
 	startedDiscussion: {
 		fontStyle: 'italic',
-		fontSize: 16,
+		fontSize: 15,
 		marginBottom: 6,
 		...sharedStyles.textRegular
 	},
@@ -151,7 +151,7 @@ export default StyleSheet.create<any>({
 		marginLeft: 16
 	},
 	repliedThreadName: {
-		fontSize: 16,
+		fontSize: 15,
 		flex: 1,
 		...sharedStyles.textRegular
 	},

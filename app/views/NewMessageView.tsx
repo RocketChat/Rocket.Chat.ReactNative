@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 		marginRight: 16
 	},
 	buttonText: {
-		fontSize: 17,
+		fontSize: 15,
 		...sharedStyles.textRegular
 	},
 	buttonContainer: {

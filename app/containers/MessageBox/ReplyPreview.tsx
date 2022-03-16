@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textMedium
 	},
 	time: {

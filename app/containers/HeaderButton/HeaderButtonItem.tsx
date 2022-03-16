@@ -28,14 +28,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 6
 	},
 	title: {
-		...Platform.select({
-			android: {
-				fontSize: 14
-			},
-			default: {
-				fontSize: 17
-			}
-		}),
+		fontSize: 15,
 		...sharedStyles.textRegular
 	}
 });

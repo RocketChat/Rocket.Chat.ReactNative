@@ -38,7 +38,7 @@ export default StyleSheet.create({
 	},
 	headerText: {
 		...sharedStyles.textRegular,
-		fontSize: 17,
+		fontSize: 15,
 		letterSpacing: 0.27
 	},
 	separator: {
@@ -56,7 +56,7 @@ export default StyleSheet.create({
 		...sharedStyles.textBold
 	},
 	permissionTitle: {
-		fontSize: 16,
+		fontSize: 15,
 		marginHorizontal: 30,
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter

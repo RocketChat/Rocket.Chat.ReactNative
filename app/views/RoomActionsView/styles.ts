@@ -16,7 +16,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	roomTitle: {
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textMedium
 	},
 	roomDescription: {

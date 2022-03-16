@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderRadius: 10,
 		flexDirection: 'row',
-		fontSize: 17,
+		fontSize: 15,
 		height: 36,
 		margin: 16,
 		marginVertical: 10,
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		flex: 1,
-		fontSize: 17,
+		fontSize: 15,
 		marginLeft: 8,
 		paddingTop: 0,
 		paddingBottom: 0,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 	},
 	cancelText: {
 		...sharedStyles.textRegular,
-		fontSize: 17
+		fontSize: 15
 	}
 });
 

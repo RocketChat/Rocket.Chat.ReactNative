@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	fileName: {
-		fontSize: 16,
+		fontSize: 15,
 		marginHorizontal: 10,
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter

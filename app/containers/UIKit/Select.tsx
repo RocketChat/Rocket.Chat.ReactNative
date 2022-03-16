@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 	},
 	pickerText: {
 		...sharedStyles.textRegular,
-		fontSize: 16
+		fontSize: 15
 	},
 	icon: {
 		right: 16

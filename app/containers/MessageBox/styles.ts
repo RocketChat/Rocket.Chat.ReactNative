@@ -26,7 +26,7 @@ export default StyleSheet.create({
 		paddingBottom: 12,
 		paddingLeft: 0,
 		paddingRight: 0,
-		fontSize: 16,
+		fontSize: 15,
 		letterSpacing: 0,
 		...sharedStyles.textRegular
 	},
@@ -50,11 +50,11 @@ export default StyleSheet.create({
 		paddingRight: 12
 	},
 	mentionHeaderList: {
-		fontSize: 14,
+		fontSize: 13,
 		...sharedStyles.textMedium
 	},
 	mentionHeaderListNoMatchFound: {
-		fontSize: 14,
+		fontSize: 13,
 		...sharedStyles.textRegular
 	},
 	mentionNoMatchHeader: {
@@ -83,22 +83,22 @@ export default StyleSheet.create({
 	},
 	fixedMentionAvatar: {
 		width: 46,
-		fontSize: 14,
+		fontSize: 13,
 		...sharedStyles.textBold,
 		...sharedStyles.textAlignCenter
 	},
 	mentionText: {
-		fontSize: 14,
+		fontSize: 13,
 		...sharedStyles.textRegular
 	},
 	cannedMentionText: {
 		flex: 1,
-		fontSize: 14,
+		fontSize: 13,
 		paddingRight: 12,
 		...sharedStyles.textRegular
 	},
 	cannedItem: {
-		fontSize: 14,
+		fontSize: 13,
 		...sharedStyles.textBold,
 		paddingLeft: 12,
 		paddingRight: 8
@@ -141,7 +141,7 @@ export default StyleSheet.create({
 	},
 	recordingDurationText: {
 		width: 60,
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textRegular
 	},
 	buttonsWhitespace: {

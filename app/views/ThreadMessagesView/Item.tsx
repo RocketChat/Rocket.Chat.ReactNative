@@ -27,11 +27,11 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flexShrink: 1,
-		fontSize: 18,
+		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	time: {
-		fontSize: 14,
+		fontSize: 12,
 		marginLeft: 4,
 		...sharedStyles.textRegular
 	},

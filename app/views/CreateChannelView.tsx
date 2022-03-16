@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 	input: {
 		height: 54,
 		paddingHorizontal: 18,
-		fontSize: 17,
+		fontSize: 15,
 		...sharedStyles.textRegular
 	},
 	switchContainer: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 18
 	},
 	label: {
-		fontSize: 17,
+		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	invitedHeader: {
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	invitedTitle: {
-		fontSize: 18,
+		fontSize: 16,
 		...sharedStyles.textSemibold,
 		lineHeight: 41
 	},

@@ -29,7 +29,7 @@ export default StyleSheet.create<any>({
 	},
 	title: {
 		flex: 1,
-		fontSize: 17,
+		fontSize: 15,
 		...sharedStyles.textMedium
 	},
 	alert: {
@@ -50,7 +50,7 @@ export default StyleSheet.create<any>({
 		justifyContent: 'center'
 	},
 	date: {
-		fontSize: 13,
+		fontSize: 12,
 		marginLeft: 4,
 		...sharedStyles.textRegular
 	},
@@ -62,7 +62,7 @@ export default StyleSheet.create<any>({
 	},
 	markdownText: {
 		flex: 1,
-		fontSize: 14,
+		fontSize: 13,
 		...sharedStyles.textRegular
 	},
 	avatar: {
@@ -110,7 +110,7 @@ export default StyleSheet.create<any>({
 		marginHorizontal: 4
 	},
 	tagText: {
-		fontSize: 13,
+		fontSize: 12,
 		paddingHorizontal: 4,
 		...sharedStyles.textSemibold
 	},

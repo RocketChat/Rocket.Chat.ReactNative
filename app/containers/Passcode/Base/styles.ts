@@ -45,7 +45,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	textSubtitle: {
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textMedium
 	},
 	dotsContainer: {

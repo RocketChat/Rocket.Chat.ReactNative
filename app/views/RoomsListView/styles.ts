@@ -37,7 +37,7 @@ export default StyleSheet.create({
 		paddingBottom: 10
 	},
 	groupTitle: {
-		fontSize: 16,
+		fontSize: 15,
 		letterSpacing: 0.27,
 		flex: 1,
 		lineHeight: 24,
@@ -47,12 +47,12 @@ export default StyleSheet.create({
 		justifyContent: 'space-between'
 	},
 	serverHeaderText: {
-		fontSize: 16,
+		fontSize: 15,
 		marginLeft: 12,
 		...sharedStyles.textRegular
 	},
 	serverHeaderAdd: {
-		fontSize: 16,
+		fontSize: 15,
 		marginRight: 12,
 		paddingVertical: 10,
 		...sharedStyles.textRegular

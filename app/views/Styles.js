@@ -37,12 +37,12 @@ export default StyleSheet.create({
 		opacity: 0.5
 	},
 	loginTitle: {
-		fontSize: 20,
+		fontSize: 18,
 		marginVertical: 15,
 		lineHeight: 28
 	},
 	loginSubtitle: {
-		fontSize: 16,
+		fontSize: 14,
 		lineHeight: 20,
 		marginBottom: 15
 	},

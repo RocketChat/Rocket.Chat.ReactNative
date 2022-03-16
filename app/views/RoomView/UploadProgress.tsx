@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 		marginLeft: 10
 	},
 	descriptionText: {
-		fontSize: 16,
+		fontSize: 15,
 		lineHeight: 20,
 		...sharedStyles.textRegular
 	},
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 		height: 3
 	},
 	tryAgainButtonText: {
-		fontSize: 16,
+		fontSize: 15,
 		lineHeight: 20,
 		...sharedStyles.textMedium
 	}

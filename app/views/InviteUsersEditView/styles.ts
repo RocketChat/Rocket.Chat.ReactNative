@@ -13,6 +13,6 @@ export default StyleSheet.create({
 	},
 	pickerText: {
 		...sharedStyles.textRegular,
-		fontSize: 16
+		fontSize: 15
 	}
 });

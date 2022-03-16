@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 	},
 	author: {
 		flex: 1,
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textMedium
 	},
 	time: {
@@ -62,11 +62,11 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	fieldTitle: {
-		fontSize: 14,
+		fontSize: 13,
 		...sharedStyles.textSemibold
 	},
 	fieldValue: {
-		fontSize: 14,
+		fontSize: 13,
 		...sharedStyles.textRegular
 	},
 	marginTop: {
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flex: 1,
-		fontSize: 16,
+		fontSize: 15,
 		marginBottom: 3,
 		...sharedStyles.textMedium
 	}

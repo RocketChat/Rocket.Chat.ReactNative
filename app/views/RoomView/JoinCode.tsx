@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 		borderRadius: 4
 	},
 	title: {
-		fontSize: 16,
+		fontSize: 15,
 		paddingBottom: 8,
 		...sharedStyles.textBold,
 		...sharedStyles.textAlignCenter

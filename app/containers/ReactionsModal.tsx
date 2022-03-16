@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 10
 	},
 	title: {
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textSemibold,
 		...sharedStyles.textAlignCenter
 	},

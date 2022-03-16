@@ -32,12 +32,12 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	roomTitle: {
-		fontSize: 20,
+		fontSize: 16,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textMedium
 	},
 	roomUsername: {
-		fontSize: 18,
+		fontSize: 16,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textRegular
 	},

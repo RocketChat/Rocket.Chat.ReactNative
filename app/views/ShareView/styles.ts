@@ -7,7 +7,7 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	input: {
-		fontSize: 16,
+		fontSize: 15,
 		...sharedStyles.textRegular
 	},
 	inputContainer: {
@@ -21,12 +21,12 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	title: {
-		fontSize: 18,
+		fontSize: 16,
 		...sharedStyles.textBold,
 		...sharedStyles.textAlignCenter
 	},
 	send: {
 		...sharedStyles.textSemibold,
-		fontSize: 16
+		fontSize: 15
 	}
 });

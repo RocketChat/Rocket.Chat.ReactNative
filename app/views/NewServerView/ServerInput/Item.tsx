@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 	},
 	server: {
 		...sharedStyles.textMedium,
-		fontSize: 16
+		fontSize: 15
 	}
 });
 

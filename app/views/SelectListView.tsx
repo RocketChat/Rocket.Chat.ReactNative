@@ -22,7 +22,7 @@ import { IRoom } from '../definitions/IRoom';
 
 const styles = StyleSheet.create({
 	buttonText: {
-		fontSize: 16,
+		fontSize: 15,
 		margin: 16,
 		...sharedStyles.textRegular
 	}

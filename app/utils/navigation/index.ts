@@ -27,7 +27,7 @@ export const themedHeader = (theme: any) => ({
 		backgroundColor: themes[theme].headerBackground
 	},
 	headerTintColor: themes[theme].headerTintColor,
-	headerTitleStyle: { color: themes[theme].headerTitleColor }
+	headerTitleStyle: { color: themes[theme].headerTitleColor, fontFamily: 'Inter-Regular' }
 });
 
 export const navigationTheme = (theme: any) => {
