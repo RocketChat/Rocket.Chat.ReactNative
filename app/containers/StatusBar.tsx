@@ -8,6 +8,7 @@ const supportedStyles = {
 	'light-content': 'light-content',
 	'dark-content': 'dark-content'
 };
+
 interface IStatusBar {
 	theme?: string;
 	barStyle?: keyof typeof supportedStyles;
