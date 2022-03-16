@@ -244,13 +244,6 @@ const RocketChat = {
 	getRooms,
 	readMessages,
 	resendMessage,
-	createGroupChat() {
-		const { users } = reduxStore.getState().selectedUsers;
-		const usernames = users.map(u => u.name).join(',');
-
-		// RC 3.1.0
-		return this.post('im.create', { usernames });
-	},
 	triggerBlockAction,
 	triggerSubmitView,
 	triggerCancel,
@@ -327,7 +320,7 @@ const RocketChat = {
 				...(filter && { filter })
 			};
 			// RC 3.16.0
-			const result = await this.sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
+			const result = await sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
 			return result?.members;
 		}
 		// RC 0.42.0
@@ -371,17 +364,6 @@ const RocketChat = {
 	},
 	methodCall(...args) {
 		return sdk.methodCall(...args);
-	},
-	sendEmailCode() {
-		const { username } = reduxStore.getState().login.user;
-		// RC 3.1.0
-		return this.post('users.2fa.sendEmailCode', { emailOrUsername: username });
-	},
-	addUsersToRoom(rid) {
-		let { users } = reduxStore.getState().selectedUsers;
-		users = users.map(u => u.name);
-		// RC 0.51.0
-		return this.methodCallWrapper('addUsersToRoom', { rid, users });
 	},
 	hasRole(role) {
 		const shareUser = reduxStore.getState().share.user;
@@ -447,14 +429,6 @@ const RocketChat = {
 	getLoginServices,
 	determineAuthType,
 	roomTypeToApiType,
-	readThreads(tmid) {
-		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
-			// RC 3.4.0
-			return this.methodCallWrapper('readThreads', tmid);
-		}
-		return Promise.resolve();
-	},
 	_setUser(ddpMessage) {
 		this.activeUsers = this.activeUsers || {};
 		const { user } = reduxStore.getState().login;

@@ -1,19 +1,22 @@
-import sdk from './sdk';
-import { TEAM_TYPE } from '../../../definitions/ITeam';
-import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import {
-	SubscriptionType,
-	INotificationPreferences,
-	IRoomNotifications,
-	TRocketChat,
 	IMessage,
-	IRoom
+	INotificationPreferences,
+	IPreviewItem,
+	IRoom,
+	IRoomNotifications,
+	SubscriptionType,
+	IUser,
+	TRocketChat
 } from '../../../definitions';
-import { ISpotlight } from '../../../definitions/ISpotlight';
-import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
-import { Encryption } from '../../encryption';
 import { TParams } from '../../../definitions/ILivechatEditView';
-import { store as reduxStore } from '../../auxStore';
+import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
+import { ISpotlight } from '../../../definitions/ISpotlight';
+import { TEAM_TYPE } from '../../../definitions/ITeam';
+import { store as reduxStore, store } from '../../auxStore';
+import { Encryption } from '../../encryption';
+import { compareServerVersion } from '../../utils';
+import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
+import sdk from './sdk';
 
 export const createChannel = ({
 	name,
@@ -570,10 +573,11 @@ export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
 	sdk.get('chat.getMessage', { msgId });
 
-export const getRoomRoles = (roomId: string, type: SubscriptionType): any =>
+export const getRoomRoles = (
+	roomId: string,
+	type: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
+) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
 export const getAvatarSuggestion = (): Promise<IAvatarSuggestion> =>
@@ -683,10 +687,8 @@ export const runSlashCommand = (command: string, roomId: string, params: string,
 		tmid
 	});
 
-export const getCommandPreview = (command: string, roomId: string, params: any): any =>
+export const getCommandPreview = (command: string, roomId: string, params: string) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('commands.preview', {
 		command,
 		roomId,
@@ -695,15 +697,13 @@ export const getCommandPreview = (command: string, roomId: string, params: any):
 
 export const executeCommandPreview = (
 	command: string,
-	params: any,
+	params: string,
 	roomId: string,
-	previewItem: any,
+	previewItem: IPreviewItem,
 	triggerId: string,
 	tmid?: string
-): any =>
+) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('commands.preview', {
 		command,
 		params,
@@ -713,10 +713,18 @@ export const executeCommandPreview = (
 		tmid
 	});
 
-export const getDirectory = ({ query, count, offset, sort }: { query: any; count: number; offset: number; sort: any }): any =>
+export const getDirectory = ({
+	query,
+	count,
+	offset,
+	sort
+}: {
+	query: { [key: string]: string };
+	count: number;
+	offset: number;
+	sort: { [key: string]: number };
+}) =>
 	// RC 1.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('directory', {
 		query,
 		count,
@@ -724,8 +732,17 @@ export const getDirectory = ({ query, count, offset, sort }: { query: any; count
 		sort
 	});
 
-export const saveAutoTranslate = ({ rid, field, value, options }: { rid: string; field: string; value: any; options: any }) =>
-	sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options);
+export const saveAutoTranslate = ({
+	rid,
+	field,
+	value,
+	options
+}: {
+	rid: string;
+	field: string;
+	value: string;
+	options?: { defaultLanguage: string };
+}) => sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options ?? null);
 
 export const getSupportedLanguagesAutoTranslate = () => sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 
@@ -750,6 +767,30 @@ export const useInviteToken = (token: string): any =>
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
 
+export const readThreads = (tmid: string): Promise<void> => {
+	const serverVersion = store.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
+		// RC 3.4.0
+		return sdk.methodCallWrapper('readThreads', tmid);
+	}
+	return Promise.resolve();
+};
+
+export const createGroupChat = () => {
+	const { users } = reduxStore.getState().selectedUsers;
+	const usernames = users.map(u => u.name).join(',');
+
+	// RC 3.1.0
+	return sdk.post('im.create', { usernames });
+};
+
+export const addUsersToRoom = (rid: string): Promise<boolean> => {
+	const { users: selectedUsers } = reduxStore.getState().selectedUsers;
+	const users = selectedUsers.map(u => u.name);
+	// RC 0.51.0
+	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
+};
+
 export const emitTyping = (room: IRoom, typing = true) => {
 	const { login, settings } = reduxStore.getState();
 	const { UI_Use_Real_Name } = settings;
@@ -771,4 +812,10 @@ export const editMessage = async (message: IMessage) => {
 	const { rid, msg } = await Encryption.encryptMessage(message);
 	// RC 0.49.0
 	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
+};
+
+export const sendEmailCode = () => {
+	const { username } = reduxStore.getState().login.user as IUser;
+	// RC 3.1.0
+	return sdk.post('users.2fa.sendEmailCode', { emailOrUsername: username });
 };
