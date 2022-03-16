@@ -347,11 +347,6 @@ const RocketChat = {
 	methodCall(...args) {
 		return sdk.methodCall(...args);
 	},
-	sendEmailCode() {
-		const { username } = reduxStore.getState().login.user;
-		// RC 3.1.0
-		return this.post('users.2fa.sendEmailCode', { emailOrUsername: username });
-	},
 	hasRole(role) {
 		const shareUser = reduxStore.getState().share.user;
 		const loginUser = reduxStore.getState().login.user;
@@ -416,14 +411,6 @@ const RocketChat = {
 	getLoginServices,
 	determineAuthType,
 	roomTypeToApiType,
-	readThreads(tmid) {
-		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
-			// RC 3.4.0
-			return this.methodCallWrapper('readThreads', tmid);
-		}
-		return Promise.resolve();
-	},
 	_setUser(ddpMessage) {
 		this.activeUsers = this.activeUsers || {};
 		const { user } = reduxStore.getState().login;

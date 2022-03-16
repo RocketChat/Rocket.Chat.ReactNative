@@ -157,23 +157,25 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 				this.goRoom({ rid: result.room._id, name: item.username, t: 'd' });
 			}
 		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
-			const { room }: any = await RocketChat.getRoomInfo(item._id);
-			this.goRoom({
-				rid: item._id,
-				name: item.name,
-				joinCodeRequired: room.joinCodeRequired,
-				t: item.t,
-				search: true
-			});
-		} else {
-			this.goRoom({
-				rid: item._id,
-				name: item.name,
-				t: item.t,
-				search: true,
-				teamMain: item.teamMain,
-				teamId: item.teamId
-			});
+			const result = await RocketChat.getRoomInfo(item._id);
+			if (result.success) {
+				this.goRoom({
+					rid: item._id,
+					name: item.name,
+					joinCodeRequired: result.room.joinCodeRequired,
+					t: item.t,
+					search: true
+				});
+			} else {
+				this.goRoom({
+					rid: item._id,
+					name: item.name,
+					t: item.t,
+					search: true,
+					teamMain: item.teamMain,
+					teamId: item.teamId
+				});
+			}
 		}
 	};
 
