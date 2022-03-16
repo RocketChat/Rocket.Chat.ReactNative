@@ -365,12 +365,6 @@ const RocketChat = {
 	methodCall(...args) {
 		return sdk.methodCall(...args);
 	},
-	addUsersToRoom(rid) {
-		let { users } = reduxStore.getState().selectedUsers;
-		users = users.map(u => u.name);
-		// RC 0.51.0
-		return this.methodCallWrapper('addUsersToRoom', { rid, users });
-	},
 	hasRole(role) {
 		const shareUser = reduxStore.getState().share.user;
 		const loginUser = reduxStore.getState().login.user;
