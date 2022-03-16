@@ -22,15 +22,14 @@ export const TWO_FACTOR = 'TWO_FACTOR';
 interface IMethodsProp {
 	text: string;
 	keyboardType: string;
+	title?: string;
+	secureTextEntry?: boolean;
 }
 interface IMethods {
 	[key: string]: any;
 	totp: IMethodsProp;
 	email: IMethodsProp;
-	password: {
-		title: string;
-		secureTextEntry: boolean;
-	} & IMethodsProp;
+	password: IMethodsProp;
 }
 
 const methods: IMethods = {
