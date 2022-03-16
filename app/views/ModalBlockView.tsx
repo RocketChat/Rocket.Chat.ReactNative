@@ -277,7 +277,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 						}
 					)}
 				</View>
-				{loading ? <ActivityIndicator absolute size='large' theme={theme} /> : null}
+				{loading ? <ActivityIndicator absolute size='large' /> : null}
 			</KeyboardAwareScrollView>
 		);
 	}
