@@ -1,4 +1,4 @@
-import { TUserStatus } from '../definitions/TUserStatus';
+import { TUserStatus } from '../definitions';
 import {
 	clearUser,
 	loginFailure,

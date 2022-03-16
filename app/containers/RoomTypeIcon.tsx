@@ -5,7 +5,7 @@ import { CustomIcon } from '../lib/Icons';
 import { STATUS_COLORS, themes } from '../constants/colors';
 import Status from './Status/Status';
 import { withTheme } from '../theme';
-import { TUserStatus } from '../definitions/TUserStatus';
+import { TUserStatus } from '../definitions';
 
 const styles = StyleSheet.create({
 	icon: {

@@ -6,7 +6,6 @@ import { Q } from '@nozbe/watermelondb';
 
 import log from '../../../utils/log';
 import { onRolesChanged } from '../../methods/getRoles';
-import { STATUSES } from '../../../definitions/TUserStatus';
 import { setActiveUsers } from '../../../actions/activeUsers';
 import protectedFunction from '../../methods/helpers/protectedFunction';
 import database from '../../database';
@@ -18,7 +17,7 @@ import { loginRequest, setLoginServices, setUser } from '../../../actions/login'
 import sdk from './sdk';
 import I18n from '../../../i18n';
 import RocketChat, { MIN_ROCKETCHAT_VERSION } from '../rocketchat';
-import { ICredentials, ILoggedUser, IRocketChat } from '../../../definitions';
+import { ICredentials, ILoggedUser, IRocketChat, STATUSES } from '../../../definitions';
 import { isIOS } from '../../../utils/deviceInfo';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../../actions/connect';
 import { updatePermission } from '../../../actions/permissions';

@@ -2,7 +2,6 @@ import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { TUserStatus } from '../definitions/TUserStatus';
 import { setUser } from '../actions/login';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
@@ -11,7 +10,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
 import { LISTENER } from '../containers/Toast';
-import { IApplicationState, IBaseScreen, IUser } from '../definitions';
+import { IApplicationState, IBaseScreen, IUser, TUserStatus } from '../definitions';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { getUserSelector } from '../selectors/login';

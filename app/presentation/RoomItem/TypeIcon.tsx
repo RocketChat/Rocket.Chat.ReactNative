@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TUserStatus } from '../../definitions/TUserStatus';
+import { TUserStatus } from '../../definitions';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 interface ITypeIcon {

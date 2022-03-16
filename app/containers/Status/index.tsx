@@ -1,8 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { TUserStatus } from '../../definitions/TUserStatus';
-import { IApplicationState } from '../../definitions';
+import { IApplicationState, TUserStatus } from '../../definitions';
 import Status from './Status';
 import { IStatus } from './definition';
 

@@ -1,7 +1,6 @@
-import { TUserStatus } from '../definitions/TUserStatus';
 import * as types from '../actions/actionsTypes';
 import { TActionsLogin } from '../actions/login';
-import { IUser } from '../definitions';
+import { IUser, TUserStatus } from '../definitions';
 
 export interface IUserLogin {
 	id: string;

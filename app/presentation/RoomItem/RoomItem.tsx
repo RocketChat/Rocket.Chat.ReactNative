@@ -12,7 +12,7 @@ import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
 import { DisplayMode } from '../../constants/constantDisplayMode';
-import { TUserStatus } from '../../definitions/TUserStatus';
+import { TUserStatus } from '../../definitions';
 
 interface IRoomItem {
 	rid: string;

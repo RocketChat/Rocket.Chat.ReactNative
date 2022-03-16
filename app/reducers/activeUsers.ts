@@ -1,6 +1,5 @@
 import { ACTIVE_USERS } from '../actions/actionsTypes';
-import { TApplicationActions } from '../definitions';
-import { TUserStatus } from '../definitions/TUserStatus';
+import { TApplicationActions, TUserStatus } from '../definitions';
 
 export interface IActiveUser {
 	status: TUserStatus;

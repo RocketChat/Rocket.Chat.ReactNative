@@ -2,8 +2,7 @@ import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { TUserStatus } from '../../definitions/TUserStatus';
-import { IApplicationState } from '../../definitions';
+import { IApplicationState, TUserStatus } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import RoomHeader from './RoomHeader';

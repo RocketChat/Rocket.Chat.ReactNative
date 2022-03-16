@@ -1,10 +1,3 @@
-export enum UserStatus {
-	ONLINE = 'online',
-	AWAY = 'away',
-	OFFLINE = 'offline',
-	BUSY = 'busy'
-}
+export const STATUSES = ['offline', 'online', 'away', 'busy'] as const;
 
-export const STATUSES: TUserStatus[] = ['offline', 'online', 'away', 'busy'];
-
-export type TUserStatus = 'online' | 'away' | 'busy' | 'offline';
+export type TUserStatus = typeof STATUSES[number];
