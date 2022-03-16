@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
-import { ISearchLocal } from '../../definitions';
+import { TSubscriptionModel } from '../../definitions';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import { avatarURL } from '../../utils/avatar';
@@ -21,7 +21,7 @@ const SelectChannel = ({
 	serverVersion,
 	theme
 }: ICreateDiscussionViewSelectChannel): JSX.Element => {
-	const [channels, setChannels] = useState<ISearchLocal[]>([]);
+	const [channels, setChannels] = useState<TSubscriptionModel[]>([]);
 
 	const getChannels = debounce(async (keyword = '') => {
 		try {
