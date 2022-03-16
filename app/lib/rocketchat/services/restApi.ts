@@ -15,6 +15,7 @@ import { Encryption } from '../../encryption';
 import { TParams } from '../../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../../auxStore';
 import { getDeviceToken } from '../../../notifications/push';
+import { getBundleId, isIOS } from '../../../utils/deviceInfo';
 import { compareServerVersion } from '../../utils';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import sdk from './sdk';
@@ -812,6 +813,26 @@ export const editMessage = async (message: IMessage) => {
 	// RC 0.49.0
 	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
 };
+
+export const registerPushToken = () =>
+	new Promise<void>(async resolve => {
+		const token = getDeviceToken();
+		if (token) {
+			const type = isIOS ? 'apn' : 'gcm';
+			const data = {
+				value: token,
+				type,
+				appName: getBundleId
+			};
+			try {
+				// RC 0.60.0
+				await sdk.post('push.token', data);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		return resolve();
+	});
 
 export const removePushToken = (): Promise<boolean | void> => {
 	const token = getDeviceToken();
