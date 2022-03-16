@@ -227,14 +227,6 @@ const RocketChat = {
 			return resolve();
 		});
 	},
-	removePushToken() {
-		const token = getDeviceToken();
-		if (token) {
-			// RC 0.60.0
-			return this.sdk.del('push.token', { token });
-		}
-		return Promise.resolve();
-	},
 	loadMissedMessages,
 	loadMessagesForRoom,
 	loadSurroundingMessages,
