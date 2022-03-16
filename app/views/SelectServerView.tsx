@@ -7,7 +7,7 @@ import { Q, Model } from '@nozbe/watermelondb';
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
-import RocketChat from '../lib/rocketchat';
+import { shareExtensionInit } from '../lib/rocketchat/services/shareExtension';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
@@ -50,7 +50,7 @@ class SelectServerView extends React.Component<ISelectServerViewProps, ISelectSe
 
 		navigation.navigate('ShareListView');
 		if (currentServer !== server) {
-			await RocketChat.shareExtensionInit(server);
+			await shareExtensionInit(server);
 		}
 	};
 
