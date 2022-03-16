@@ -9,19 +9,27 @@ import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } fro
 
 class Sdk {
 	private sdk: typeof Rocketchat;
+	private shareSdk?: typeof Rocketchat;
 	private code: any;
+
+	private initializeSdk(server: string): typeof Rocketchat {
+		// The app can't reconnect if reopen interval is 5s while in development
+		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+	}
 
 	// TODO: We need to stop returning the SDK after all methods are dehydrated
 	initialize(server: string) {
 		this.code = null;
-
-		// The app can't reconnect if reopen interval is 5s while in development
-		this.sdk = new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+		this.sdk = this.initializeSdk(server);
 		return this.sdk;
 	}
 
+	initializeShareExtension(server: string) {
+		this.shareSdk = this.initializeSdk(server);
+	}
+
 	get current() {
-		return this.sdk;
+		return this.shareSdk || this.sdk;
 	}
 
 	/**
@@ -29,6 +37,11 @@ class Sdk {
 	 * I'm returning "null" because we need to remove both instances of this.sdk here and on rocketchat.js
 	 */
 	disconnect() {
+		if (this.shareSdk) {
+			this.shareSdk.disconnect();
+			this.shareSdk = null;
+			return null;
+		}
 		if (this.sdk) {
 			this.sdk.disconnect();
 			this.sdk = null;
@@ -47,7 +60,7 @@ class Sdk {
 			? void
 			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
 	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
-		return this.sdk.get(endpoint, params);
+		return this.current.get(endpoint, params);
 	}
 
 	post<TPath extends PathFor<'POST'>>(
@@ -64,7 +77,7 @@ class Sdk {
 		return new Promise(async (resolve, reject) => {
 			const isMethodCall = endpoint?.startsWith('method.call/');
 			try {
-				const result = await this.sdk.post(endpoint, params);
+				const result = await this.current.post(endpoint, params);
 
 				/**
 				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
@@ -101,7 +114,7 @@ class Sdk {
 	methodCall(...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const result = await this.sdk?.methodCall(...args, this.code || '');
+				const result = await this.current.methodCall(...args, this.code || '');
 				return resolve(result);
 			} catch (e: any) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
@@ -140,23 +153,23 @@ class Sdk {
 	}
 
 	subscribe(...args: any[]) {
-		return this.sdk.subscribe(...args);
+		return this.current.subscribe(...args);
 	}
 
 	subscribeRaw(...args: any[]) {
-		return this.sdk.subscribeRaw(...args);
+		return this.current.subscribeRaw(...args);
 	}
 
 	subscribeRoom(...args: any[]) {
-		return this.sdk.subscribeRoom(...args);
+		return this.current.subscribeRoom(...args);
 	}
 
 	unsubscribe(subscription: any[]) {
-		return this.sdk.unsubscribe(subscription);
+		return this.current.unsubscribe(subscription);
 	}
 
 	onStreamData(...args: any[]) {
-		return this.sdk.onStreamData(...args);
+		return this.current.onStreamData(...args);
 	}
 }
 
