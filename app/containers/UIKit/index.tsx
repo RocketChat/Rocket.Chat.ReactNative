@@ -183,11 +183,10 @@ class ModalParser extends UiKitParserModal {
 				onInput={action}
 				multiline={multiline}
 				loading={loading}
-				onChangeText={(text: any) => action({ value: text })}
+				onChangeText={text => action({ value: text })}
 				inputStyle={multiline && styles.multiline}
 				containerStyle={styles.input}
 				value={value}
-				// @ts-ignore
 				error={{ error }}
 				theme={theme}
 			/>

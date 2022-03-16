@@ -1090,7 +1090,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				<TextInput
 					ref={component => (this.component = component)}
 					style={[styles.textBoxInput, { color: themes[theme].bodyText }]}
-					// @ts-ignore
 					returnKeyType='default'
 					keyboardType='twitter'
 					blurOnSubmit={false}
