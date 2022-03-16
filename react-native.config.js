@@ -20,6 +20,5 @@ module.exports = {
 				android: null
 			}
 		}
-	},
-	assets: ['./assets/fonts/']
+	}
 };
