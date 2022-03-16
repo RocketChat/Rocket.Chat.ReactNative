@@ -7,7 +7,6 @@ import { themes } from '../../constants/colors';
 
 interface IBackgroundContainer {
 	text?: string;
-	theme?: string;
 	loading?: boolean;
 }
 
