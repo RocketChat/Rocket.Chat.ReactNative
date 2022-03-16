@@ -734,8 +734,17 @@ export const getDirectory = ({
 		sort
 	});
 
-export const saveAutoTranslate = ({ rid, field, value, options }: { rid: string; field: string; value: any; options: any }) =>
-	sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options);
+export const saveAutoTranslate = ({
+	rid,
+	field,
+	value,
+	options
+}: {
+	rid: string;
+	field: string;
+	value: string;
+	options?: { defaultLanguage: string };
+}) => sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options ?? null);
 
 export const getSupportedLanguagesAutoTranslate = () => sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 
