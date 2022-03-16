@@ -1,20 +1,24 @@
-import sdk from './sdk';
-import { TEAM_TYPE } from '../../../definitions/ITeam';
-import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import {
-	SubscriptionType,
-	INotificationPreferences,
-	IRoomNotifications,
-	TRocketChat,
 	IMessage,
+	INotificationPreferences,
+	IPreviewItem,
 	IRoom,
-	IPreviewItem
+	IRoomNotifications,
+	SubscriptionType,
+	IUser,
+	TRocketChat
 } from '../../../definitions';
-import { ISpotlight } from '../../../definitions/ISpotlight';
 import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
+import { ISpotlight } from '../../../definitions/ISpotlight';
+import { TEAM_TYPE } from '../../../definitions/ITeam';
 import { Encryption } from '../../encryption';
 import { TParams } from '../../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../../auxStore';
+import { getDeviceToken } from '../../../notifications/push';
+import { getBundleId, isIOS } from '../../../utils/deviceInfo';
+import { compareServerVersion } from '../../utils';
+import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
+import sdk from './sdk';
 
 export const createChannel = ({
 	name,
@@ -666,19 +670,15 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	return sdk.get('chat.getThreadsList', params);
 };
 
-export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }): any =>
+export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>
 	// RC 1.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.syncThreadsList', {
 		rid,
 		updatedSince
 	});
 
-export const runSlashCommand = (command: string, roomId: string, params: any, triggerId?: string, tmid?: string): any =>
+export const runSlashCommand = (command: string, roomId: string, params: string, triggerId?: string, tmid?: string) =>
 	// RC 0.60.2
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('commands.run', {
 		command,
 		roomId,
@@ -732,8 +732,17 @@ export const getDirectory = ({
 		sort
 	});
 
-export const saveAutoTranslate = ({ rid, field, value, options }: { rid: string; field: string; value: any; options: any }) =>
-	sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options);
+export const saveAutoTranslate = ({
+	rid,
+	field,
+	value,
+	options
+}: {
+	rid: string;
+	field: string;
+	value: string;
+	options?: { defaultLanguage: string };
+}) => sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options ?? null);
 
 export const getSupportedLanguagesAutoTranslate = () => sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 
@@ -757,6 +766,15 @@ export const useInviteToken = (token: string): any =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
+
+export const readThreads = (tmid: string): Promise<void> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
+		// RC 3.4.0
+		return sdk.methodCallWrapper('readThreads', tmid);
+	}
+	return Promise.resolve();
+};
 
 export const createGroupChat = () => {
 	const { users } = reduxStore.getState().selectedUsers;
@@ -794,4 +812,79 @@ export const editMessage = async (message: IMessage) => {
 	const { rid, msg } = await Encryption.encryptMessage(message);
 	// RC 0.49.0
 	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
+};
+
+export const registerPushToken = () =>
+	new Promise<void>(async resolve => {
+		const token = getDeviceToken();
+		if (token) {
+			const type = isIOS ? 'apn' : 'gcm';
+			const data = {
+				value: token,
+				type,
+				appName: getBundleId
+			};
+			try {
+				// RC 0.60.0
+				await sdk.post('push.token', data);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		return resolve();
+	});
+
+export const removePushToken = (): Promise<boolean | void> => {
+	const token = getDeviceToken();
+	if (token) {
+		// RC 0.60.0
+		return sdk.current.del('push.token', { token });
+	}
+	return Promise.resolve();
+};
+
+export const sendEmailCode = () => {
+	const { username } = reduxStore.getState().login.user as IUser;
+	// RC 3.1.0
+	return sdk.post('users.2fa.sendEmailCode', { emailOrUsername: username });
+};
+
+export const getRoomMembers = async ({
+	rid,
+	allUsers,
+	roomType,
+	type,
+	filter,
+	skip = 0,
+	limit = 10
+}: {
+	rid: string;
+	allUsers: boolean;
+	type: 'all' | 'online';
+	roomType: SubscriptionType;
+	filter: boolean;
+	skip: number;
+	limit: number;
+}) => {
+	const t = roomType as SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.DIRECT;
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
+		const params = {
+			roomId: rid,
+			offset: skip,
+			count: limit,
+			...(type !== 'all' && { 'status[]': type }),
+			...(filter && { filter })
+		};
+		// RC 3.16.0
+		const result = await sdk.get(`${roomTypeToApiType(t)}.members`, params);
+		if (result.success) {
+			return result?.members;
+		}
+	}
+	// RC 0.42.0
+	const result = await sdk.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
+	if (result.success) {
+		return result?.records;
+	}
 };
