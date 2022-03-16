@@ -47,6 +47,14 @@ export type ChatEndpoints = {
 			total: number;
 		}>;
 	};
+	'chat.syncThreadsList': {
+		GET: (params: { rid: IServerRoom['_id']; updatedSince: string }) => {
+			threads: {
+				update: IMessage[];
+				remove: IMessage[];
+			};
+		};
+	};
 	'chat.delete': {
 		POST: (params: { msgId: string; roomId: string }) => {
 			_id: string;
