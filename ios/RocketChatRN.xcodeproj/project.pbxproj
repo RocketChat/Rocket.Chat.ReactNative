@@ -139,6 +139,8 @@
 		D62A2CEE91B92F16EAD2FA3F /* libPods-defaults-ShareRocketChatRN.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9747EA64783AAAD1486EC3CC /* libPods-defaults-ShareRocketChatRN.a */; };
 		D85BF476A3215BD80F1C79E7 /* libPods-defaults-NotificationService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5D50B36CB5F0E0126E19BE /* libPods-defaults-NotificationService.a */; };
 		DD2BA30A89E64F189C2C24AC /* libWatermelonDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7E862283664608B3894E34 /* libWatermelonDB.a */; };
+		3F8C3D95D9244EF1AD52DD0F /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A6639407D7684444A817B90A /* Inter-Medium.ttf */; };
+		3B49607A6C974B75AEF312D6 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EF20D29D19404C8DA13BBAE8 /* Inter-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -277,6 +279,8 @@
 		B9D2BCED708759575760AFDE /* Pods-defaults-ShareRocketChatRN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-ShareRocketChatRN.debug.xcconfig"; path = "Target Support Files/Pods-defaults-ShareRocketChatRN/Pods-defaults-ShareRocketChatRN.debug.xcconfig"; sourceTree = "<group>"; };
 		BA7E862283664608B3894E34 /* libWatermelonDB.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libWatermelonDB.a; sourceTree = "<group>"; };
 		EC5D50B36CB5F0E0126E19BE /* libPods-defaults-NotificationService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-defaults-NotificationService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6639407D7684444A817B90A /* Inter-Medium.ttf */ = {isa = PBXFileReference; name = "Inter-Medium.ttf"; path = "../assets/fonts/Inter-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EF20D29D19404C8DA13BBAE8 /* Inter-Regular.ttf */ = {isa = PBXFileReference; name = "Inter-Regular.ttf"; path = "../assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -521,6 +525,8 @@
 			isa = PBXGroup;
 			children = (
 				7A3268F524F04FFE0050E241 /* custom.ttf */,
+				A6639407D7684444A817B90A /* Inter-Medium.ttf */,
+				EF20D29D19404C8DA13BBAE8 /* Inter-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -735,6 +741,8 @@
 				7A14FCED257FEB3A005BDCD4 /* Experimental.xcassets in Resources */,
 				7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */,
 				7A0D62D2242AB187006D5C06 /* LaunchScreen.storyboard in Resources */,
+				3F8C3D95D9244EF1AD52DD0F /* Inter-Medium.ttf in Resources */,
+				3B49607A6C974B75AEF312D6 /* Inter-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
