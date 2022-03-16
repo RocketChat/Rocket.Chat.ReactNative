@@ -2,6 +2,7 @@ import type { IMessageFromServer } from '../../IMessage';
 import type { IServerRoom, RoomID, RoomType } from '../../IRoom';
 import type { IUser } from '../../IUser';
 import { IServerAttachment } from '../../IAttachment';
+import { PaginatedRequest } from '../helpers/PaginatedRequest';
 
 export type ImEndpoints = {
 	'im.create': {
@@ -34,12 +35,15 @@ export type ImEndpoints = {
 		};
 	};
 	'im.members': {
-		GET: (params: { roomId: IServerRoom['_id']; offset?: number; count?: number; filter?: string; status?: string[] }) => {
-			count: number;
-			offset: number;
+		GET: (params: {
+			roomId: IServerRoom['_id'];
+			offset?: number;
+			count?: number;
+			filter?: string;
+			status?: string[];
+		}) => PaginatedRequest<{
 			members: IUser[];
-			total: number;
-		};
+		}>;
 	};
 	'im.history': {
 		GET: (params: { roomId: string; count: number; latest?: string }) => {

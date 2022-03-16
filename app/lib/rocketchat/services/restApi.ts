@@ -817,3 +817,43 @@ export const sendEmailCode = () => {
 	// RC 3.1.0
 	return sdk.post('users.2fa.sendEmailCode', { emailOrUsername: username });
 };
+
+export const getRoomMembers = async ({
+	rid,
+	allUsers,
+	roomType,
+	type,
+	filter,
+	skip = 0,
+	limit = 10
+}: {
+	rid: string;
+	allUsers: boolean;
+	type: 'all' | 'online';
+	roomType: SubscriptionType;
+	filter: boolean;
+	skip: number;
+	limit: number;
+}) => {
+	const t = roomType as SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.DIRECT;
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
+		const params = {
+			roomId: rid,
+			offset: skip,
+			count: limit,
+			...(type !== 'all' && { 'status[]': type }),
+			...(filter && { filter })
+		};
+		// RC 3.16.0
+		const result = await sdk.get(`${roomTypeToApiType(t)}.members`, params);
+		if (result.success) {
+			return result?.members;
+		}
+	}
+	// RC 0.42.0
+	const result = await sdk.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
+	if (result.success) {
+		return result?.records;
+	}
+};
