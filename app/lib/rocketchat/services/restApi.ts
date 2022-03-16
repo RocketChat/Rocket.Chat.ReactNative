@@ -677,10 +677,8 @@ export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updated
 		updatedSince
 	});
 
-export const runSlashCommand = (command: string, roomId: string, params: any, triggerId?: string, tmid?: string): any =>
+export const runSlashCommand = (command: string, roomId: string, params: string, triggerId?: string, tmid?: string) =>
 	// RC 0.60.2
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('commands.run', {
 		command,
 		roomId,
