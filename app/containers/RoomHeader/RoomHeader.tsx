@@ -7,7 +7,7 @@ import { themes } from '../../constants/colors';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { withTheme } from '../../theme';
-import { TUserStatus } from '../../definitions/UserStatus';
+import { TUserStatus } from '../../definitions/TUserStatus';
 
 const HIT_SLOP = {
 	top: 5,

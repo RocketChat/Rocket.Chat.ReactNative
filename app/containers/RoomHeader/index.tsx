@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { TUserStatus } from '../../definitions/UserStatus';
+import { TUserStatus } from '../../definitions/TUserStatus';
 import { IApplicationState } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';

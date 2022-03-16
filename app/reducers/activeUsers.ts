@@ -1,9 +1,9 @@
 import { ACTIVE_USERS } from '../actions/actionsTypes';
 import { TApplicationActions } from '../definitions';
-import { UserStatus } from '../definitions/UserStatus';
+import { TUserStatus } from '../definitions/TUserStatus';
 
 export interface IActiveUser {
-	status: UserStatus;
+	status: TUserStatus;
 	statusText: string;
 }
 

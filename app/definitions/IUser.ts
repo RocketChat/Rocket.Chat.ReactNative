@@ -1,6 +1,6 @@
 import Model from '@nozbe/watermelondb/Model';
 
-import { TUserStatus, UserStatus } from './UserStatus';
+import { TUserStatus } from './TUserStatus';
 import { IRocketChatRecord } from './IRocketChatRecord';
 import { ILoggedUser } from './ILoggedUser';
 
@@ -25,7 +25,7 @@ export interface IPersonalAccessToken extends ILoginToken {
 export interface IUserRegistered {
 	_id: string;
 	type: string;
-	status: UserStatus;
+	status: TUserStatus;
 	active: boolean;
 	name: string;
 	username: string;

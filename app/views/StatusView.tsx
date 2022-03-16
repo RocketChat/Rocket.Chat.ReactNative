@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { TUserStatus } from '../definitions/UserStatus';
+import { TUserStatus } from '../definitions/TUserStatus';
 import { setUser } from '../actions/login';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';

@@ -5,7 +5,7 @@ import I18n from '../../i18n';
 import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
 import { formatDate } from '../../utils/room';
 import RoomItem from './RoomItem';
-import { TUserStatus } from '../../definitions/UserStatus';
+import { TUserStatus } from '../../definitions/TUserStatus';
 
 export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
 interface IRoomItemContainerProps {

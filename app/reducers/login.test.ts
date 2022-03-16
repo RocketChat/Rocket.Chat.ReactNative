@@ -1,3 +1,4 @@
+import { TUserStatus } from '../definitions/TUserStatus';
 import {
 	clearUser,
 	loginFailure,
@@ -8,7 +9,6 @@ import {
 	setLoginServices,
 	setUser
 } from '../actions/login';
-import { UserStatus } from '../definitions/UserStatus';
 import { initialState } from './login';
 import { mockedStore } from './mockedStore';
 
@@ -49,7 +49,7 @@ describe('test selectedUsers reducer', () => {
 			isFromWebView: false,
 			showMessageInMainThread: false,
 			enableMessageParserEarlyAdoption: false,
-			status: UserStatus.ONLINE,
+			status: 'online' as TUserStatus,
 			statusText: 'online'
 		};
 		mockedStore.dispatch(loginSuccess(user));

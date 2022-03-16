@@ -5,4 +5,6 @@ export enum UserStatus {
 	BUSY = 'busy'
 }
 
+export const STATUSES: TUserStatus[] = ['offline', 'online', 'away', 'busy'];
+
 export type TUserStatus = 'online' | 'away' | 'busy' | 'offline';

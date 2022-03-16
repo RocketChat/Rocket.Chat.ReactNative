@@ -1,4 +1,4 @@
-import { TUserStatus, UserStatus } from '../definitions/UserStatus';
+import { TUserStatus } from '../definitions/TUserStatus';
 import * as types from '../actions/actionsTypes';
 import { TActionsLogin } from '../actions/login';
 import { IUser } from '../definitions';

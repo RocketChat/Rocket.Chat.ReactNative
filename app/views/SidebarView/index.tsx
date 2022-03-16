@@ -19,7 +19,7 @@ import Navigation from '../../lib/Navigation';
 import SidebarItem from './SidebarItem';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
-import { TUserStatus } from '../../definitions/UserStatus';
+import { TUserStatus } from '../../definitions/TUserStatus';
 
 interface ISeparatorProps {
 	theme: string;
