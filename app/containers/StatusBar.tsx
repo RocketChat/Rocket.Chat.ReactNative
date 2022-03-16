@@ -4,13 +4,13 @@ import { StatusBar as StatusBarRN } from 'react-native';
 import { themes } from '../constants/colors';
 import { useTheme, withTheme } from '../theme';
 
-const supportedStatus = {
+const supportedStyles = {
 	'light-content': 'light-content',
 	'dark-content': 'dark-content'
 };
 interface IStatusBar {
 	theme?: string;
-	barStyle?: keyof typeof supportedStatus;
+	barStyle?: keyof typeof supportedStyles;
 	backgroundColor?: string;
 }
 
