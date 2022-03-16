@@ -4,3 +4,5 @@ export enum UserStatus {
 	OFFLINE = 'offline',
 	BUSY = 'busy'
 }
+
+export type TUserStatus = 'online' | 'away' | 'busy' | 'offline';
