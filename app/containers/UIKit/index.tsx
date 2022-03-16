@@ -178,9 +178,8 @@ class ModalParser extends UiKitParserModal {
 		return (
 			// @ts-ignore
 			<TextInput
-				id={actionId}
+				key={actionId}
 				placeholder={plainText(placeholder)}
-				onInput={action}
 				multiline={multiline}
 				loading={loading}
 				onChangeText={text => action({ value: text })}
