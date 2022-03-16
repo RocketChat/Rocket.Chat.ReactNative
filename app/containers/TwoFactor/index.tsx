@@ -21,15 +21,21 @@ export const TWO_FACTOR = 'TWO_FACTOR';
 
 interface IMethodsProp {
 	text: string;
-	keyboardType: string;
+	keyboardType: 'numeric' | 'default';
 	title?: string;
 	secureTextEntry?: boolean;
 }
 interface IMethods {
-	[key: string]: any;
 	totp: IMethodsProp;
 	email: IMethodsProp;
 	password: IMethodsProp;
+}
+
+interface EventListenerMethod {
+	method?: keyof IMethods;
+	submit?: (param: string) => void;
+	cancel?: () => void;
+	invalid?: boolean;
 }
 
 const methods: IMethods = {
@@ -52,11 +58,15 @@ const methods: IMethods = {
 const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) => {
 	const { theme } = useTheme();
 	const [visible, setVisible] = useState(false);
-	const [data, setData] = useState<Partial<IMethods>>({});
+	const [data, setData] = useState<EventListenerMethod>({});
 	const [code, setCode] = useState<string>('');
 
-	const method = methods[data.method];
+	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
+
+	console.log('data.method', data.method);
+	console.log('method', method);
+	console.log('isEmail', isEmail);
 
 	const sendEmail = () => RocketChat.sendEmailCode();
 
@@ -69,7 +79,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 		}
 	}, [data]);
 
-	const showTwoFactor = (args: IMethods) => setData(args);
+	const showTwoFactor = (args: EventListenerMethod) => setData(args);
 
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(TWO_FACTOR, showTwoFactor);
@@ -119,14 +129,14 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 						onSubmitEditing={onSubmit}
 						keyboardType={method?.keyboardType}
 						secureTextEntry={method?.secureTextEntry}
-						error={data.invalid && { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') }}
+						error={data.invalid ? { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
 						testID='two-factor-input'
 					/>
-					{isEmail && (
+					{isEmail ? (
 						<Text style={[styles.sendEmail, { color }]} onPress={sendEmail}>
 							{I18n.t('Send_me_the_code_again')}
 						</Text>
-					)}
+					) : null}
 					<View style={styles.buttonContainer}>
 						<Button
 							title={I18n.t('Cancel')}
