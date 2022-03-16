@@ -668,10 +668,8 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	return sdk.get('chat.getThreadsList', params);
 };
 
-export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }): any =>
+export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>
 	// RC 1.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.syncThreadsList', {
 		rid,
 		updatedSince
