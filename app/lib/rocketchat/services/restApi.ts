@@ -657,8 +657,7 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	const params = {
 		rid,
 		count,
-		offset,
-		sort: { ts: -1 }
+		offset
 	} as { rid: string; count: number; offset: number; text?: string };
 	if (text) {
 		params.text = text;
