@@ -5,6 +5,7 @@ import {
 	IRoom,
 	IRoomNotifications,
 	SubscriptionType,
+	IUser,
 	TRocketChat
 } from '../../../definitions';
 import { TParams } from '../../../definitions/ILivechatEditView';
@@ -804,4 +805,10 @@ export const editMessage = async (message: IMessage) => {
 	const { rid, msg } = await Encryption.encryptMessage(message);
 	// RC 0.49.0
 	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
+};
+
+export const sendEmailCode = () => {
+	const { username } = reduxStore.getState().login.user as IUser;
+	// RC 3.1.0
+	return sdk.post('users.2fa.sendEmailCode', { emailOrUsername: username });
 };
