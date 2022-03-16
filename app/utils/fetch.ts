@@ -4,9 +4,21 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import RocketChat from '../lib/rocketchat';
 
+export type TMethods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
+
 interface CustomHeaders {
-	'User-Agent': string;
+	'User-Agent'?: string;
 	Authorization?: string;
+	'Content-Type'?: string;
+	'X-Auth-Token'?: string;
+	'X-User-Id'?: string;
+}
+
+interface IOptions {
+	headers?: CustomHeaders;
+	signal?: AbortSignal;
+	method?: TMethods;
+	body?: any;
 }
 
 // this form is required by Rocket.Chat's parser in "app/statistics/server/lib/UAParserCustom.js"
@@ -29,7 +41,7 @@ export const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';
 
 RocketChatSettings.customHeaders = headers;
 
-export default (url: string, options: { headers?: Headers; signal?: AbortSignal } = {}): Promise<Response> => {
+export default (url: string, options: IOptions = {}): Promise<Response> => {
 	let customOptions = { ...options, headers: RocketChatSettings.customHeaders };
 	if (options && options.headers) {
 		customOptions = { ...customOptions, headers: { ...options.headers, ...customOptions.headers } };
