@@ -7,7 +7,6 @@ import { setUser } from '../../actions/login';
 import { shareSelectServer, shareSetSettings, shareSetUser } from '../../actions/share';
 import defaultSettings from '../../constants/settings';
 import { getDeviceToken } from '../../notifications/push';
-import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import log from '../../utils/log';
 import SSLPinning from '../../utils/sslPinning';
 import database from '../database';
@@ -207,26 +206,6 @@ const RocketChat = {
 	},
 	removeServer,
 	clearCache,
-	registerPushToken() {
-		return new Promise(async resolve => {
-			const token = getDeviceToken();
-			if (token) {
-				const type = isIOS ? 'apn' : 'gcm';
-				const data = {
-					value: token,
-					type,
-					appName: getBundleId
-				};
-				try {
-					// RC 0.60.0
-					await this.post('push.token', data);
-				} catch (error) {
-					console.log(error);
-				}
-			}
-			return resolve();
-		});
-	},
 	loadMissedMessages,
 	loadMessagesForRoom,
 	loadSurroundingMessages,
