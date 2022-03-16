@@ -797,6 +797,13 @@ stories.add('System messages', () => (
 		<Message msg='public' type='room_changed_privacy' isInfo />
 		<Message type='room_e2e_disabled' isInfo />
 		<Message type='room_e2e_enabled' isInfo />
+		<Message type='removed-user-from-team' isInfo />
+		<Message type='added-user-to-team' isInfo />
+		<Message type='user-added-room-to-team' isInfo msg='channel-name' />
+		<Message type='user-converted-to-team' isInfo msg='channel-name' />
+		<Message type='user-converted-to-channel' isInfo msg='channel-name' />
+		<Message type='user-deleted-room-from-team' isInfo msg='channel-name' />
+		<Message type='user-removed-room-from-team' isInfo msg='channel-name' />
 	</>
 ));
 

@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { BLOCK_CONTEXT, UiKitParserMessage, UiKitParserModal, uiKitMessage, uiKitModal } from '@rocket.chat/ui-kit';
 
-import Markdown from '../markdown';
+import Markdown, { MarkdownPreview } from '../markdown';
 import Button from '../Button';
 import TextInput from '../TextInput';
 import { textParser, useBlockContext } from './utils';
@@ -20,6 +20,7 @@ import { Input } from './Input';
 import { DatePicker } from './DatePicker';
 import { Overflow } from './Overflow';
 import { ThemeContext } from '../../theme';
+import { BlockContext, IButton, IInputIndex, IParser, IText } from './interfaces';
 
 const styles = StyleSheet.create({
 	input: {
@@ -42,22 +43,26 @@ const styles = StyleSheet.create({
 const plainText = ({ text } = { text: '' }) => text;
 
 class MessageParser extends UiKitParserMessage {
-	text({ text, type }: any = { text: '' }, context: any) {
-		const { theme }: any = useContext(ThemeContext);
+	get current() {
+		return this as unknown as IParser;
+	}
+
+	text({ text, type }: Partial<IText> = { text: '' }, context: BlockContext) {
+		const { theme } = useContext(ThemeContext);
 		if (type !== 'mrkdwn') {
 			return <Text style={[styles.text, { color: themes[theme].bodyText }]}>{text}</Text>;
 		}
 
 		const isContext = context === BLOCK_CONTEXT.CONTEXT;
-		return (
-			// @ts-ignore
-			<Markdown msg={text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} preview={isContext} />
-		);
+		if (isContext) {
+			return <MarkdownPreview msg={text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />;
+		}
+		return <Markdown msg={text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} />;
 	}
 
-	button(element: any, context: any) {
+	button(element: IButton, context: BlockContext) {
 		const { text, value, actionId, style } = element;
-		const [{ loading }, action]: any = useBlockContext(element, context);
+		const [{ loading }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
 		return (
 			<Button
@@ -73,7 +78,7 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	divider() {
-		const { theme }: any = useContext(ThemeContext);
+		const { theme } = useContext(ThemeContext);
 		// @ts-ignore
 		return <Divider theme={theme} />;
 	}
@@ -91,7 +96,7 @@ class MessageParser extends UiKitParserMessage {
 	overflow(element: any, context: any) {
 		const [{ loading }, action]: any = useBlockContext(element, context);
 		const { theme }: any = useContext(ThemeContext);
-		return <Overflow element={element} context={context} loading={loading} action={action} theme={theme} parser={this} />;
+		return <Overflow element={element} context={context} loading={loading} action={action} theme={theme} parser={this.current} />;
 	}
 
 	datePicker(element: any, context: any) {
@@ -150,12 +155,16 @@ class ModalParser extends UiKitParserModal {
 		});
 	}
 
-	input({ element, blockId, appId, label, description, hint }: any, context: any) {
+	get current() {
+		return this as unknown as IParser;
+	}
+
+	input({ element, blockId, appId, label, description, hint }: IInputIndex, context: number) {
 		const [{ error }]: any = useBlockContext({ ...element, appId, blockId }, context);
 		const { theme }: any = useContext(ThemeContext);
 		return (
 			<Input
-				parser={this}
+				parser={this.current}
 				element={{ ...element, appId, blockId }}
 				label={plainText(label)}
 				description={plainText(description)}

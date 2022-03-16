@@ -91,7 +91,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const getDepartments = debounce(async () => {
 		try {
-			const res = await RocketChat.getDepartments();
+			const res: any = await RocketChat.getDepartments();
 			if (res.success) {
 				setDepartments([...fixedScopes, ...res.departments]);
 			}
@@ -118,7 +118,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 				t: room.t,
 				fname: name
 			}),
-			t: room.t,
+			t: room.t as any,
 			roomUserId: RocketChat.getUidDirectMessage(room),
 			usedCannedResponse: item.text
 		};
@@ -260,7 +260,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 						/>
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <SearchHeader onSearchChangeText={onChangeText} />,
+				headerTitle: () => <SearchHeader onSearchChangeText={onChangeText} testID='team-channels-view-search-header' />,
 				headerTitleContainerStyle: {
 					left: headerTitlePosition.left,
 					right: headerTitlePosition.right

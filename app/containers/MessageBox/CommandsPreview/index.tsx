@@ -6,9 +6,10 @@ import Item from './Item';
 import styles from '../styles';
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
+import { IPreviewItem } from '../../../definitions';
 
 interface IMessageBoxCommandsPreview {
-	commandPreview: [];
+	commandPreview: IPreviewItem[];
 	showCommandPreview: boolean;
 	theme?: string;
 }

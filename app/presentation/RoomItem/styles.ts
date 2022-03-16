@@ -21,9 +21,6 @@ export default StyleSheet.create<any>({
 	containerCondensed: {
 		height: ROW_HEIGHT_CONDENSED
 	},
-	condensedPaddingVertical: {
-		paddingVertical: 20
-	},
 	centerContainer: {
 		flex: 1,
 		paddingVertical: 10,
@@ -33,7 +30,6 @@ export default StyleSheet.create<any>({
 	title: {
 		flex: 1,
 		fontSize: 17,
-		lineHeight: 20,
 		...sharedStyles.textMedium
 	},
 	alert: {
@@ -67,7 +63,6 @@ export default StyleSheet.create<any>({
 	markdownText: {
 		flex: 1,
 		fontSize: 14,
-		lineHeight: 17,
 		...sharedStyles.textRegular
 	},
 	avatar: {

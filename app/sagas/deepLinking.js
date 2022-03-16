@@ -158,8 +158,8 @@ const handleOpen = function* handleOpen({ params }) {
 	}
 
 	const [server, user] = yield all([
-		UserPreferences.getStringAsync(RocketChat.CURRENT_SERVER),
-		UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${host}`)
+		UserPreferences.getString(RocketChat.CURRENT_SERVER),
+		UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${host}`)
 	]);
 
 	// TODO: needs better test

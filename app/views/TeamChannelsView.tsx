@@ -4,6 +4,7 @@ import React from 'react';
 import { Alert, FlatList, Keyboard } from 'react-native';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { deleteRoom } from '../actions/room';
 import { themes } from '../constants/colors';
@@ -17,6 +18,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';
 import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IBaseScreen } from '../definitions';
+import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
 import database from '../lib/database';
@@ -48,7 +50,7 @@ const keyExtractor = (item: IItem) => item._id;
 
 // This interface comes from request RocketChat.getTeamListRoom
 interface IItem {
-	_id: string;
+	_id: ERoomType;
 	fname: string;
 	customFields: object;
 	broadcast: boolean;
@@ -97,6 +99,7 @@ interface ITeamChannelsViewProps extends IProps {
 	showActionSheet: (options: any) => void;
 	showAvatar: boolean;
 	displayMode: string;
+	dispatch: Dispatch;
 }
 class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChannelsViewState> {
 	private teamId: string;
@@ -184,8 +187,10 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				} as ITeamChannelsViewState;
 
 				if (isSearching) {
+					// @ts-ignore
 					newState.search = [...search, ...result.rooms];
 				} else {
+					// @ts-ignore
 					newState.data = [...data, ...result.rooms];
 				}
 
@@ -345,14 +350,17 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			logEvent(events.TC_GO_ROOM);
 			const { navigation, isMasterDetail } = this.props;
 			try {
-				const { room } = await RocketChat.getRoomInfo(item._id);
-				const params = {
-					rid: item._id,
-					name: RocketChat.getRoomTitle(room),
-					joinCodeRequired: room.joinCodeRequired,
-					t: room.t,
-					teamId: room.teamId
-				};
+				let params = {};
+				const result = await RocketChat.getRoomInfo(item._id);
+				if (result.success) {
+					params = {
+						rid: item._id,
+						name: RocketChat.getRoomTitle(result.room),
+						joinCodeRequired: result.room.joinCodeRequired,
+						t: result.room.t,
+						teamId: result.room.teamId
+					};
+				}
 				if (isMasterDetail) {
 					navigation.pop();
 				}
@@ -438,7 +446,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => dispatch(deleteRoom(item._id, item.t))
+					// VERIFY ON PR
+					onPress: () => dispatch(deleteRoom(item._id, item))
 				}
 			],
 			{ cancelable: false }

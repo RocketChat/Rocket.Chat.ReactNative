@@ -17,7 +17,7 @@ import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
-import log, { events, logEvent } from '../utils/log';
+import { events, logEvent } from '../utils/log';
 
 interface IDisplayPrefsView {
 	navigation: StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>;
@@ -45,53 +45,49 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 		}
 	}, []);
 
-	const setSortPreference = async (param: Partial<IPreferences>) => {
-		try {
-			dispatch(setPreference(param));
-			await RocketChat.saveSortPreference(param);
-		} catch (e) {
-			log(e);
-		}
+	const setSortPreference = (param: Partial<IPreferences>) => {
+		dispatch(setPreference(param));
+		RocketChat.saveSortPreference(param);
 	};
 
-	const sortByName = async () => {
+	const sortByName = () => {
 		logEvent(events.DP_SORT_CHANNELS_BY_NAME);
-		await setSortPreference({ sortBy: SortBy.Alphabetical });
+		setSortPreference({ sortBy: SortBy.Alphabetical });
 	};
 
-	const sortByActivity = async () => {
+	const sortByActivity = () => {
 		logEvent(events.DP_SORT_CHANNELS_BY_ACTIVITY);
-		await setSortPreference({ sortBy: SortBy.Activity });
+		setSortPreference({ sortBy: SortBy.Activity });
 	};
 
-	const toggleGroupByType = async () => {
+	const toggleGroupByType = () => {
 		logEvent(events.DP_GROUP_CHANNELS_BY_TYPE);
-		await setSortPreference({ groupByType: !groupByType });
+		setSortPreference({ groupByType: !groupByType });
 	};
 
-	const toggleGroupByFavorites = async () => {
+	const toggleGroupByFavorites = () => {
 		logEvent(events.DP_GROUP_CHANNELS_BY_FAVORITE);
-		await setSortPreference({ showFavorites: !showFavorites });
+		setSortPreference({ showFavorites: !showFavorites });
 	};
 
-	const toggleUnread = async () => {
+	const toggleUnread = () => {
 		logEvent(events.DP_GROUP_CHANNELS_BY_UNREAD);
-		await setSortPreference({ showUnread: !showUnread });
+		setSortPreference({ showUnread: !showUnread });
 	};
 
-	const toggleAvatar = async () => {
+	const toggleAvatar = () => {
 		logEvent(events.DP_TOGGLE_AVATAR);
-		await setSortPreference({ showAvatar: !showAvatar });
+		setSortPreference({ showAvatar: !showAvatar });
 	};
 
-	const displayExpanded = async () => {
+	const displayExpanded = () => {
 		logEvent(events.DP_DISPLAY_EXPANDED);
-		await setSortPreference({ displayMode: DisplayMode.Expanded });
+		setSortPreference({ displayMode: DisplayMode.Expanded });
 	};
 
-	const displayCondensed = async () => {
+	const displayCondensed = () => {
 		logEvent(events.DP_DISPLAY_CONDENSED);
-		await setSortPreference({ displayMode: DisplayMode.Condensed });
+		setSortPreference({ displayMode: DisplayMode.Condensed });
 	};
 
 	const renderCheckBox = (value: boolean) => (

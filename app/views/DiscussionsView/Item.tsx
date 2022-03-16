@@ -7,10 +7,10 @@ import { useTheme } from '../../theme';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';
 import { themes } from '../../constants/colors';
-import Markdown from '../../containers/markdown';
+import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import DiscussionDetails from './DiscussionDetails';
-import { TThreadModel } from '../../definitions/IThread';
+import { IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -48,15 +48,14 @@ const styles = StyleSheet.create({
 });
 
 interface IItem {
-	item: TThreadModel;
-	baseUrl: string;
+	item: IMessageFromServer;
 	onPress: {
 		(...args: any[]): void;
 		stop(): void;
 	};
 }
 
-const Item = ({ item, baseUrl, onPress }: IItem): JSX.Element => {
+const Item = ({ item, onPress }: IItem): JSX.Element => {
 	const { theme } = useTheme();
 	const username = item?.u?.username;
 	let messageTime = '';
@@ -64,6 +63,7 @@ const Item = ({ item, baseUrl, onPress }: IItem): JSX.Element => {
 
 	if (item?.ts) {
 		messageTime = moment(item.ts).format('LT');
+		// @ts-ignore TODO: Unify IMessage
 		messageDate = formatDateThreads(item.ts);
 	}
 
@@ -82,18 +82,7 @@ const Item = ({ item, baseUrl, onPress }: IItem): JSX.Element => {
 						{messageTime ? <Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{messageTime}</Text> : null}
 					</View>
 					<View style={styles.messageContainer}>
-						{username ? (
-							/* @ts-ignore */
-							<Markdown
-								msg={makeThreadName(item)}
-								baseUrl={baseUrl}
-								username={username}
-								theme={theme}
-								numberOfLines={2}
-								style={[styles.markdown]}
-								preview
-							/>
-						) : null}
+						{username ? <MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} /> : null}
 					</View>
 					{messageDate ? <DiscussionDetails item={item} date={messageDate} /> : null}
 				</View>
