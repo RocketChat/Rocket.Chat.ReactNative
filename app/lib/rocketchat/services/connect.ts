@@ -379,7 +379,7 @@ async function getServerInfo(server: string) {
 		const response = await RNFetchBlob.fetch('GET', `${server}/api/info`, { ...RocketChatSettings.customHeaders });
 		try {
 			// Try to resolve as json
-			const jsonRes = response.json();
+			const jsonRes: { version?: string; success: boolean } = response.json();
 			if (!jsonRes?.success) {
 				return {
 					success: false,
