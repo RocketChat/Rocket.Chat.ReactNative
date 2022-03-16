@@ -8,7 +8,6 @@ type TTheme = 'light' | 'dark' | 'black' | string;
 interface IActivityIndicator extends ActivityIndicatorProps {
 	theme?: TTheme;
 	absolute?: boolean;
-	props?: object;
 }
 
 const styles = StyleSheet.create({
