@@ -10,6 +10,7 @@ import UserPreferences from './lib/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { initStore } from './lib/auxStore';
+import { closeShareExtension, shareExtensionInit } from './lib/rocketchat/services/shareExtension';
 import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
 import RocketChat from './lib/rocketchat';
 import { ThemeContext } from './theme';
@@ -107,7 +108,7 @@ class Root extends React.Component<{}, IState> {
 	}
 
 	componentWillUnmount(): void {
-		RocketChat.closeShareExtension();
+		closeShareExtension();
 		unsubscribeTheme();
 	}
 
@@ -117,7 +118,7 @@ class Root extends React.Component<{}, IState> {
 		if (currentServer) {
 			await localAuthenticate(currentServer);
 			this.setState({ root: 'inside' });
-			await RocketChat.shareExtensionInit(currentServer);
+			await shareExtensionInit(currentServer);
 		} else {
 			this.setState({ root: 'outside' });
 		}

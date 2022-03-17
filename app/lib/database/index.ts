@@ -66,7 +66,7 @@ export const getDatabase = (database = ''): Database => {
 };
 
 interface IDatabases {
-	shareDB?: TAppDatabase;
+	shareDB?: TAppDatabase | null;
 	serversDB: TServerDatabase;
 	activeDB?: TAppDatabase;
 }
