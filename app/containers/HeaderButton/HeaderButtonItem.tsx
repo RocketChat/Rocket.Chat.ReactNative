@@ -12,7 +12,6 @@ interface IHeaderButtonItem {
 	iconName?: string;
 	onPress?: <T>(arg: T) => void;
 	testID?: string;
-	theme?: string;
 	badge?(): void;
 }
 
@@ -40,7 +39,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ title, iconName, onPress, testID, badge }: IHeaderButtonItem): React.ReactElement => {
+const Item = ({ title, iconName, onPress, testID, badge }: IHeaderButtonItem) => {
 	const { theme } = useTheme();
 	return (
 		<Touchable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>

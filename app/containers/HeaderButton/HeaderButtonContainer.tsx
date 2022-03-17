@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 interface IHeaderButtonContainer {
-	children: React.ReactElement;
+	children: React.ReactElement | React.ReactElement[] | null;
 	left?: boolean;
 }
 

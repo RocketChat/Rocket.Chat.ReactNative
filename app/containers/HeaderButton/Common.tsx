@@ -26,7 +26,7 @@ export const CloseModal = React.memo(
 	)
 );
 
-export const CancelModal = React.memo(({ onPress, testID }: IHeaderButtonCommon) => (
+export const CancelModal = React.memo(({ onPress, testID }: Partial<IHeaderButtonCommon>) => (
 	<Container left>
 		{isIOS ? (
 			<Item title={I18n.t('Cancel')} onPress={onPress} testID={testID} />
