@@ -235,7 +235,7 @@ class RegisterView extends React.Component<IProps, any> {
 		const { saving } = this.state;
 		const { theme, showLoginButton, navigation } = this.props;
 		return (
-			<FormContainer theme={theme} testID='register-view'>
+			<FormContainer testID='register-view'>
 				<FormContainerInner>
 					<LoginServices navigation={navigation} />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
