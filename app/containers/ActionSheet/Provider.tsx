@@ -1,7 +1,6 @@
 import React, { ForwardedRef, forwardRef, useContext, useRef } from 'react';
 
 import ActionSheet from './ActionSheet';
-import { useTheme } from '../../theme';
 
 interface IActionSheetProvider {
 	Provider: any;
@@ -24,7 +23,6 @@ export const withActionSheet = (Component: any): any =>
 
 export const ActionSheetProvider = React.memo(({ children }: { children: JSX.Element | JSX.Element[] }) => {
 	const ref: ForwardedRef<any> = useRef();
-	const { theme }: any = useTheme();
 
 	const getContext = () => ({
 		showActionSheet: (options: any) => {
@@ -37,7 +35,7 @@ export const ActionSheetProvider = React.memo(({ children }: { children: JSX.Ele
 
 	return (
 		<Provider value={getContext()}>
-			<ActionSheet ref={ref} theme={theme}>
+			<ActionSheet ref={ref}>
 				<>{children}</>
 			</ActionSheet>
 		</Provider>
