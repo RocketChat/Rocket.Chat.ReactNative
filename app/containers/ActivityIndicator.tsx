@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RCActivityIndicator = ({ absolute, ...props }: IActivityIndicator): JSX.Element => {
+const RCActivityIndicator = ({ absolute, ...props }: IActivityIndicator): React.ReactElement => {
 	const { theme } = useTheme();
 	return (
 		<ActivityIndicator style={[styles.indicator, absolute && styles.absolute]} color={themes[theme].auxiliaryText} {...props} />
