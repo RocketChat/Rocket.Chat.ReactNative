@@ -63,11 +63,6 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
-
-	console.log('data.method', data.method);
-	console.log('method', method);
-	console.log('isEmail', isEmail);
-
 	const sendEmail = () => RocketChat.sendEmailCode();
 
 	useDeepCompareEffect(() => {
