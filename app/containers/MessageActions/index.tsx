@@ -13,9 +13,9 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import { showConfirmationAlert } from '../../utils/info';
 import { useActionSheet } from '../ActionSheet';
-import Header, { HEADER_HEIGHT } from './Header';
+import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../utils/log/events';
-import { IApplicationState, ILoggedUser, TAnyMessageModel, TMessageModel, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 
 export interface IMessageActions {
 	room: TSubscriptionModel;
@@ -108,7 +108,7 @@ const MessageActions = forwardRef(
 				if (message.ts != null) {
 					msgTs = moment(message.ts);
 				}
-				let currentTsDiff: any;
+				let currentTsDiff = 0;
 				if (msgTs != null) {
 					currentTsDiff = moment().diff(msgTs, 'minutes');
 				}
@@ -139,7 +139,7 @@ const MessageActions = forwardRef(
 				if (message.ts != null) {
 					msgTs = moment(message.ts);
 				}
-				let currentTsDiff: any;
+				let currentTsDiff = 0;
 				if (msgTs != null) {
 					currentTsDiff = moment().diff(msgTs, 'minutes');
 				}
@@ -182,7 +182,7 @@ const MessageActions = forwardRef(
 					const subRecord = await subCollection.find(rid);
 					await db.write(async () => {
 						try {
-							await subRecord.update(sub => (sub.lastOpen = ts));
+							await subRecord.update(sub => (sub.lastOpen = ts as Date)); // TODO: reevaluate later
 						} catch {
 							// do nothing
 						}
@@ -208,7 +208,7 @@ const MessageActions = forwardRef(
 
 		const handleCopy = async (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_COPY);
-			await Clipboard.setString(message?.attachments?.[0]?.description || message.msg);
+			await Clipboard.setString((message?.attachments?.[0]?.description || message.msg) ?? '');
 			EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 		};
 
@@ -230,7 +230,7 @@ const MessageActions = forwardRef(
 		const handleStar = async (message: TAnyMessageModel) => {
 			logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 			try {
-				await RocketChat.toggleStarMessage(message.id, message.starred);
+				await RocketChat.toggleStarMessage(message.id, message.starred as boolean); // TODO: reevaluate `message.starred` type
 				EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
 			} catch (e) {
 				logEvent(events.ROOM_MSG_ACTION_STAR_F);
@@ -241,17 +241,18 @@ const MessageActions = forwardRef(
 		const handlePin = async (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_PIN);
 			try {
-				await RocketChat.togglePinMessage(message.id, message.pinned);
+				await RocketChat.togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type
 			} catch (e) {
 				logEvent(events.ROOM_MSG_ACTION_PIN_F);
 				log(e);
 			}
 		};
 
-		const handleReaction = (shortname: any, message: TAnyMessageModel) => {
+		const handleReaction: IHeader['handleReaction'] = (shortname, message) => {
 			logEvent(events.ROOM_MSG_ACTION_REACTION);
 			if (shortname) {
-				onReactionPress(shortname, message.id);
+				// TODO: Need to evaluate this. Room view ends up using string only if I got it right.
+				onReactionPress(shortname as any, message.id);
 			} else {
 				reactionInit(message);
 			}
@@ -312,7 +313,7 @@ const MessageActions = forwardRef(
 				onPress: async () => {
 					try {
 						logEvent(events.ROOM_MSG_ACTION_DELETE);
-						await RocketChat.deleteMessage(message.id, message.subscription.id);
+						await RocketChat.deleteMessage(message.id, message.subscription ? message.subscription.id : '');
 					} catch (e) {
 						logEvent(events.ROOM_MSG_ACTION_DELETE_F);
 						log(e);

@@ -16,7 +16,7 @@ import { IEmoji } from '../../definitions/IEmoji';
 
 type TItem = TFrequentlyUsedEmojiModel | string;
 
-interface IHeader {
+export interface IHeader {
 	handleReaction: (emoji: TItem, message: TAnyMessageModel) => void;
 	server: string;
 	message: TAnyMessageModel;
