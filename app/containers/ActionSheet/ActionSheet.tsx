@@ -17,6 +17,7 @@ import * as List from '../List';
 import I18n from '../../i18n';
 import { IDimensionsContextProps, useDimensions, useOrientation } from '../../dimensions';
 
+export type TActionSheetItem = { title: string; icon: string; onPress: () => void; danger?: boolean };
 interface IActionSheetData {
 	options: any;
 	headerHeight?: number;

@@ -13,6 +13,7 @@ import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import { showConfirmationAlert } from '../../utils/info';
 import { useActionSheet } from '../ActionSheet';
+import { TActionSheetItem } from '../ActionSheet/ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../utils/log/events';
 import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
@@ -198,8 +199,8 @@ const MessageActions = forwardRef(
 		const handlePermalink = async (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_PERMALINK);
 			try {
-				const permalink: any = await getPermalink(message);
-				Clipboard.setString(permalink);
+				const permalink = await getPermalink(message);
+				Clipboard.setString(permalink ?? '');
 				EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
 			} catch {
 				logEvent(events.ROOM_MSG_ACTION_PERMALINK_F);
@@ -215,8 +216,10 @@ const MessageActions = forwardRef(
 		const handleShare = async (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_SHARE);
 			try {
-				const permalink: any = await getPermalink(message);
-				Share.share({ message: permalink });
+				const permalink = await getPermalink(message);
+				if (permalink) {
+					Share.share({ message: permalink });
+				}
 			} catch {
 				logEvent(events.ROOM_MSG_ACTION_SHARE_F);
 			}
@@ -323,7 +326,8 @@ const MessageActions = forwardRef(
 		};
 
 		const getOptions = (message: TAnyMessageModel) => {
-			let options: any = [];
+			// TODO: waiting for Action Sheet PR
+			let options: TActionSheetItem[] = [];
 
 			// Reply
 			if (!isReadOnly) {

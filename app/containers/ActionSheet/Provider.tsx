@@ -1,10 +1,18 @@
 import React, { ForwardedRef, forwardRef, useContext, useRef } from 'react';
 
-import ActionSheet from './ActionSheet';
+import ActionSheet, { TActionSheetItem } from './ActionSheet';
 import { useTheme } from '../../theme';
 
 interface IActionSheetProvider {
-	showActionSheet: () => void;
+	showActionSheet: ({
+		options,
+		headerHeight,
+		customHeader
+	}: {
+		options: TActionSheetItem[];
+		headerHeight: number;
+		customHeader: React.ReactElement | null;
+	}) => void;
 	hideActionSheet: () => void;
 }
 
