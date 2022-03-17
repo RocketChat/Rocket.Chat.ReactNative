@@ -7,7 +7,6 @@ import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { Encryption } from '../encryption';
 import { generateLoadMoreId } from '../utils';
-import log from '../../utils/log';
 import buildMessage from './helpers/buildMessage';
 import protectedFunction from './helpers/protectedFunction';
 
@@ -32,7 +31,7 @@ export default async function updateMessages({
 	if (!sub) {
 		sub = { id: rid } as any;
 		// TODO: If I didn't join the room I obviously don't have a subscription, this error catch is imperfect. Think of a way to handle the error when I actually try to open a room without subscription.
-		log(new Error('updateMessages: subscription not found'));
+		console.log('updateMessages: subscription not found');
 	}
 
 	const db = database.active;
