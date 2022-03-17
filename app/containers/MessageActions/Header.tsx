@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
@@ -20,7 +20,6 @@ interface IHeader {
 	server: string;
 	message: TMessageModel;
 	isMasterDetail: boolean;
-	theme?: string;
 }
 
 interface THeaderItem {
@@ -96,10 +95,10 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	</Button>
 );
 
-const Header = React.memo(({ handleReaction, server, message, isMasterDetail, theme }: IHeader) => {
-	const tempEmptyArray: TItem[] = [];
-	const [items, setItems] = useState(tempEmptyArray);
+const Header = React.memo(({ handleReaction, server, message, isMasterDetail }: IHeader) => {
+	const [items, setItems] = useState<TItem[]>([]);
 	const { width, height } = useDimensions();
+	const { theme } = useTheme();
 
 	const setEmojis = async () => {
 		try {
@@ -125,19 +124,19 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 	const onReaction = ({ emoji }: { emoji: TItem }) => handleReaction(emoji, message);
 
 	const renderItem = useCallback(
-		({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme!} />,
+		({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme} />,
 		[]
 	);
 
-	const renderFooter = useCallback(() => <HeaderFooter onReaction={onReaction} theme={theme!} />, []);
+	const renderFooter = useCallback(() => <HeaderFooter onReaction={onReaction} theme={theme} />, []);
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme!].focusedBackground }]}>
+		<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
 			<FlatList
 				data={items}
 				renderItem={renderItem}
 				ListFooterComponent={renderFooter}
-				style={{ backgroundColor: themes[theme!].focusedBackground }}
+				style={{ backgroundColor: themes[theme].focusedBackground }}
 				keyExtractor={keyExtractor}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}
@@ -147,4 +146,4 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 	);
 });
 
-export default withTheme(Header);
+export default Header;
