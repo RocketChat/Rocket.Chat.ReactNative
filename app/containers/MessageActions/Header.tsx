@@ -8,15 +8,16 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
 import { Button } from '../ActionSheet';
-import { useDimensions } from '../../dimensions';
+import { IDimensionsContextProps, useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
 import { IEmoji } from '../../definitions/IEmoji';
 import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
+import { TMessageModel } from '../../definitions';
 
 interface IHeader {
-	handleReaction: Function;
+	handleReaction: (emoji: IEmoji, message: TMessageModel) => void;
 	server: string;
-	message: object;
+	message: TMessageModel;
 	isMasterDetail: boolean;
 	theme?: string;
 }
@@ -91,8 +92,9 @@ const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
 ));
 
 const Header = React.memo(({ handleReaction, server, message, isMasterDetail, theme }: IHeader) => {
-	const [items, setItems] = useState<(TFrequentlyUsedEmojiModel | string)[]>([]);
-	const { width, height }: any = useDimensions();
+	const tempEmptyArray: (TFrequentlyUsedEmojiModel | string)[] = [];
+	const [items, setItems] = useState(tempEmptyArray);
+	const { width, height } = useDimensions();
 
 	const setEmojis = async () => {
 		try {
