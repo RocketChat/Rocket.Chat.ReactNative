@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withTheme } from '../../../theme';
+import { useTheme } from '../../../theme';
 import * as List from '../../../containers/List';
 import { E2E_BANNER_TYPE } from '../../../lib/encryption/constants';
 import { themes } from '../../../constants/colors';
@@ -17,14 +17,15 @@ interface IRoomListHeader {
 	inquiryEnabled: boolean;
 	encryptionBanner: TEncryptionBanner;
 	user: IUser;
-	theme: string;
 }
 
 const ListHeader = React.memo(
-	({ searching, goEncryption, goQueue, queueSize, inquiryEnabled, encryptionBanner, user, theme }: IRoomListHeader) => {
+	({ searching, goEncryption, goQueue, queueSize, inquiryEnabled, encryptionBanner, user }: IRoomListHeader) => {
 		if (searching) {
 			return null;
 		}
+
+		const { theme } = useTheme();
 
 		return (
 			<>
@@ -48,7 +49,6 @@ const ListHeader = React.memo(
 				) : null}
 				<List.Separator />
 				<OmnichannelStatus
-					// @ts-ignore // TODO - remove this @ts-ignore after merge omnichannel task
 					searching={searching}
 					goQueue={goQueue}
 					inquiryEnabled={inquiryEnabled}
@@ -60,4 +60,4 @@ const ListHeader = React.memo(
 	}
 );
 
-export default withTheme(ListHeader);
+export default ListHeader;
