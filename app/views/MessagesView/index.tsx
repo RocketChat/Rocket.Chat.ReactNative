@@ -22,6 +22,7 @@ import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 import { IEmoji } from '../../definitions/IEmoji';
+import { TMessageModel } from '../../definitions';
 
 interface IMessagesViewProps {
 	user: {
@@ -79,7 +80,7 @@ interface IParams {
 	rid: string;
 	t: SubscriptionType;
 	tmid?: string;
-	message?: object;
+	message?: TMessageModel;
 	name?: string;
 	fname?: string;
 	prid?: string;
