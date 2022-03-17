@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 });
 
 interface IListSection {
-	children: React.ReactElement | React.ReactElement[] | null;
+	children: React.ReactNode;
 	title?: string;
 	translateTitle?: boolean;
 }

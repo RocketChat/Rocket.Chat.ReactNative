@@ -114,11 +114,11 @@ const Content = React.memo(
 	}
 );
 
-interface IListButtonPress {
+interface IListButtonPress extends IListItemButton {
 	onPress: Function;
 }
 
-interface IListItemButton extends IListButtonPress {
+interface IListItemButton {
 	title?: string;
 	disabled?: boolean;
 	theme: string;
@@ -126,7 +126,7 @@ interface IListItemButton extends IListButtonPress {
 	underlayColor?: string;
 }
 
-const Button = React.memo<IListItemButton>(({ onPress, backgroundColor, underlayColor, ...props }: IListItemButton) => (
+const Button = React.memo<IListButtonPress>(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => (
 	<Touch
 		onPress={() => onPress(props.title)}
 		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
@@ -139,13 +139,15 @@ const Button = React.memo<IListItemButton>(({ onPress, backgroundColor, underlay
 
 interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListItemButton, 'theme'> {
 	backgroundColor?: string;
+	onPress?: Function;
 }
 
 const ListItem = React.memo<IListItem>(({ ...props }: IListItem) => {
 	const { theme } = useTheme();
 
 	if (props.onPress) {
-		return <Button {...props} theme={theme} />;
+		const { onPress } = props;
+		return <Button {...props} theme={theme} onPress={onPress} />;
 	}
 	return (
 		<View style={{ backgroundColor: props.backgroundColor || themes[theme].backgroundColor }}>
