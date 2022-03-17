@@ -21,10 +21,10 @@ export interface IMessageActions {
 	room: TSubscriptionModel;
 	tmid?: string;
 	user: Pick<ILoggedUser, 'id'>;
-	editInit: Function;
-	reactionInit: Function;
-	onReactionPress: Function;
-	replyInit: Function;
+	editInit: (message: TAnyMessageModel) => void;
+	reactionInit: (message: TAnyMessageModel) => void;
+	onReactionPress: (shortname: string, messageId: string) => void;
+	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
 	Message_AllowDeleting: boolean;
