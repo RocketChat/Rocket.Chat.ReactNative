@@ -8,14 +8,15 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import database from '../../lib/database';
 import { Button } from '../ActionSheet';
-import { IDimensionsContextProps, useDimensions } from '../../dimensions';
+import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
-import { IEmoji } from '../../definitions/IEmoji';
 import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
 import { TMessageModel } from '../../definitions';
 
+type TItem = TFrequentlyUsedEmojiModel | string;
+
 interface IHeader {
-	handleReaction: (emoji: IEmoji, message: TMessageModel) => void;
+	handleReaction: (emoji: TItem, message: TMessageModel) => void;
 	server: string;
 	message: TMessageModel;
 	isMasterDetail: boolean;
@@ -23,7 +24,7 @@ interface IHeader {
 }
 
 interface THeaderItem {
-	item: IEmoji;
+	item: TItem;
 	onReaction: Function;
 	server: string;
 	theme: string;
@@ -67,21 +68,25 @@ const keyExtractor = (item: any) => item?.id || item;
 
 const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face', 'smiley'];
 
-const HeaderItem = React.memo(({ item, onReaction, server, theme }: THeaderItem) => (
-	<Button
-		testID={`message-actions-emoji-${item.content || item}`}
-		onPress={() => onReaction({ emoji: `:${item.content || item}:` })}
-		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-		theme={theme}>
-		{item?.isCustom ? (
-			<CustomEmoji style={styles.customEmoji} emoji={item} baseUrl={server} />
-		) : (
-			<Text style={styles.headerIcon}>{shortnameToUnicode(`:${item.content || item}:`)}</Text>
-		)}
-	</Button>
-));
+const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
+	const emojiModel = item as TFrequentlyUsedEmojiModel;
+	const emoji = emojiModel.id ? emojiModel.content : (item as string);
+	return (
+		<Button
+			testID={`message-actions-emoji-${emoji}`}
+			onPress={() => onReaction({ emoji: `:${emoji}:` })}
+			style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
+			theme={theme}>
+			{emojiModel?.isCustom ? (
+				<CustomEmoji style={styles.customEmoji} emoji={emojiModel} baseUrl={server} />
+			) : (
+				<Text style={styles.headerIcon}>{shortnameToUnicode(`:${emoji}:`)}</Text>
+			)}
+		</Button>
+	);
+};
 
-const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
+const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	<Button
 		testID='add-reaction'
 		onPress={onReaction}
@@ -89,10 +94,10 @@ const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
 		theme={theme}>
 		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
 	</Button>
-));
+);
 
 const Header = React.memo(({ handleReaction, server, message, isMasterDetail, theme }: IHeader) => {
-	const tempEmptyArray: (TFrequentlyUsedEmojiModel | string)[] = [];
+	const tempEmptyArray: TItem[] = [];
 	const [items, setItems] = useState(tempEmptyArray);
 	const { width, height } = useDimensions();
 
@@ -100,7 +105,7 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 		try {
 			const db = database.active;
 			const freqEmojiCollection = db.get('frequently_used_emojis');
-			let freqEmojis: (TFrequentlyUsedEmojiModel | string)[] = await freqEmojiCollection.query().fetch();
+			let freqEmojis: TItem[] = await freqEmojiCollection.query().fetch();
 
 			const isLandscape = width > height;
 			const size = (isLandscape || isMasterDetail ? width / 2 : width) - CONTAINER_MARGIN * 2;
@@ -117,7 +122,7 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 		setEmojis();
 	}, []);
 
-	const onReaction = ({ emoji }: { emoji: IEmoji }) => handleReaction(emoji, message);
+	const onReaction = ({ emoji }: { emoji: TItem }) => handleReaction(emoji, message);
 
 	const renderItem = useCallback(
 		({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme!} />,

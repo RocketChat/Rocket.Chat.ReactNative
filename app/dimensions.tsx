@@ -4,7 +4,7 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { TNavigationOptions } from './definitions/navigationTypes';
 
-export interface IDimensionsContextProps {
+interface IDimensionsContextProps {
 	width: number;
 	height: number;
 	scale: number;
