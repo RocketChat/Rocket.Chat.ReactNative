@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const BackgroundContainer = ({ text, loading }: IBackgroundContainer): JSX.Element => {
+const BackgroundContainer = ({ text, loading }: IBackgroundContainer): React.ReactElement => {
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>
