@@ -15,7 +15,7 @@ import { showConfirmationAlert } from '../../utils/info';
 import { useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT } from './Header';
 import events from '../../utils/log/events';
-import { ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 
 export interface IMessageActions {
 	room: TSubscriptionModel;
@@ -27,18 +27,18 @@ export interface IMessageActions {
 	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
-	Message_AllowDeleting: boolean;
-	Message_AllowDeleting_BlockDeleteInMinutes: number;
-	Message_AllowEditing: boolean;
-	Message_AllowEditing_BlockEditInMinutes: number;
-	Message_AllowPinning: boolean;
-	Message_AllowStarring: boolean;
-	Message_Read_Receipt_Store_Users: boolean;
+	Message_AllowDeleting?: boolean;
+	Message_AllowDeleting_BlockDeleteInMinutes?: number;
+	Message_AllowEditing?: boolean;
+	Message_AllowEditing_BlockEditInMinutes?: number;
+	Message_AllowPinning?: boolean;
+	Message_AllowStarring?: boolean;
+	Message_Read_Receipt_Store_Users?: boolean;
 	server: string;
-	editMessagePermission: [];
-	deleteMessagePermission: [];
-	forceDeleteMessagePermission: [];
-	pinMessagePermission: [];
+	editMessagePermission?: string[];
+	deleteMessagePermission?: string[];
+	forceDeleteMessagePermission?: string[];
+	pinMessagePermission?: string[];
 }
 
 const MessageActions = forwardRef(
@@ -460,15 +460,15 @@ const MessageActions = forwardRef(
 		return null;
 	}
 );
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
-	Message_AllowDeleting: state.settings.Message_AllowDeleting,
-	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes,
-	Message_AllowEditing: state.settings.Message_AllowEditing,
-	Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes,
-	Message_AllowPinning: state.settings.Message_AllowPinning,
-	Message_AllowStarring: state.settings.Message_AllowStarring,
-	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users,
+	Message_AllowDeleting: state.settings.Message_AllowDeleting as boolean,
+	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes as number,
+	Message_AllowEditing: state.settings.Message_AllowEditing as boolean,
+	Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes as number,
+	Message_AllowPinning: state.settings.Message_AllowPinning as boolean,
+	Message_AllowStarring: state.settings.Message_AllowStarring as boolean,
+	Message_Read_Receipt_Store_Users: state.settings.Message_Read_Receipt_Store_Users as boolean,
 	isMasterDetail: state.app.isMasterDetail,
 	editMessagePermission: state.permissions['edit-message'],
 	deleteMessagePermission: state.permissions['delete-message'],
