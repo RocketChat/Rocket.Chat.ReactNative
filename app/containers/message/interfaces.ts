@@ -32,7 +32,6 @@ export interface IMessageAvatar {
 	small?: boolean;
 	navToRoomInfo: Function;
 	getCustomEmoji: TGetCustomEmoji;
-	theme: string;
 }
 
 export interface IMessageBlocks {
