@@ -13,7 +13,7 @@ import SafeAreaView from './SafeAreaView';
 interface IFormContainer extends ScrollViewProps {
 	theme: string;
 	testID: string;
-	children: React.ReactNode;
+	children: React.ReactElement | React.ReactElement[] | null;
 }
 
 const styles = StyleSheet.create({
@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const FormContainerInner = ({ children }: { children: React.ReactNode }): JSX.Element => (
+export const FormContainerInner = ({ children }: { children: React.ReactNode }) => (
 	<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>{children}</View>
 );
 
-const FormContainer = ({ children, theme, testID, ...props }: IFormContainer): JSX.Element => (
+const FormContainer = ({ children, theme, testID, ...props }: IFormContainer) => (
 	<KeyboardView
 		style={{ backgroundColor: themes[theme].backgroundColor }}
 		contentContainerStyle={sharedStyles.container}
