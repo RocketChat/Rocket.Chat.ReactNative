@@ -335,7 +335,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result: any = await RocketChat.getThreadsList({
+			const result = await RocketChat.getThreadsList({
 				rid: this.rid,
 				count: API_FETCH_COUNT,
 				offset: messages.length,

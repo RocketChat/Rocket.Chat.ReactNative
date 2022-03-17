@@ -1,8 +1,7 @@
 import RNFetchBlob from 'rn-fetch-blob';
 
+import { TMethods } from '../fetch';
 import { IFileUpload } from './interfaces';
-
-type TMethods = 'POST' | 'GET' | 'DELETE' | 'PUT' | 'post' | 'get' | 'delete' | 'put';
 
 class FileUpload {
 	fetch = (method: TMethods, url: string, headers: { [key: string]: string }, data: IFileUpload[]) => {
