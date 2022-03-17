@@ -8,32 +8,7 @@ import ActivityIndicator from '../ActivityIndicator';
 import { themes } from '../../constants/colors';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';
-
-interface IOption {
-	option: {
-		text: string;
-		value: string;
-	};
-	onOptionPress: Function;
-	parser: any;
-	theme: string;
-}
-
-interface IOptions {
-	options: [];
-	onOptionPress: Function;
-	parser: object;
-	theme: string;
-}
-
-interface IOverflow {
-	element: any;
-	action: Function;
-	loading: boolean;
-	parser: object;
-	theme: string;
-	context: any;
-}
+import { IOption, IOptions, IOverflow } from './interfaces';
 
 const keyExtractor = (item: any) => item.value;
 
@@ -68,10 +43,11 @@ const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
 	/>
 );
 
-const touchable = {};
+const touchable: { [key: string]: any } = {};
 
 export const Overflow = ({ element, loading, action, parser, theme }: IOverflow) => {
-	const { options, blockId } = element;
+	const options = element?.options || [];
+	const blockId = element?.blockId || '';
 	const [show, onShow] = useState(false);
 
 	const onOptionPress = ({ value }: any) => {
@@ -82,8 +58,7 @@ export const Overflow = ({ element, loading, action, parser, theme }: IOverflow)
 	return (
 		<>
 			<Touchable
-				/* @ts-ignore*/
-				ref={ref => (touchable[blockId] = ref)}
+				ref={(ref: any) => (touchable[blockId] = ref)}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 				onPress={() => onShow(!show)}
 				hitSlop={BUTTON_HIT_SLOP}
