@@ -15,7 +15,7 @@ import { showConfirmationAlert } from '../../utils/info';
 import { useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT } from './Header';
 import events from '../../utils/log/events';
-import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, ILoggedUser, TAnyMessageModel, TMessageModel, TSubscriptionModel } from '../../definitions';
 
 export interface IMessageActions {
 	room: TSubscriptionModel;
@@ -68,8 +68,13 @@ const MessageActions = forwardRef(
 		}: IMessageActions,
 		ref
 	) => {
-		let permissions: any = {};
-		const { showActionSheet, hideActionSheet }: any = useActionSheet();
+		let permissions = {
+			hasEditPermission: false,
+			hasDeletePermission: false,
+			hasForceDeletePermission: false,
+			hasPinPermission: false
+		};
+		const { showActionSheet, hideActionSheet } = useActionSheet();
 
 		const getPermissions = async () => {
 			try {
@@ -86,9 +91,9 @@ const MessageActions = forwardRef(
 			}
 		};
 
-		const isOwn = (message: any) => message.u && message.u._id === user.id;
+		const isOwn = (message: TAnyMessageModel) => message.u && message.u._id === user.id;
 
-		const allowEdit = (message: any) => {
+		const allowEdit = (message: TAnyMessageModel) => {
 			if (isReadOnly) {
 				return false;
 			}
@@ -112,7 +117,7 @@ const MessageActions = forwardRef(
 			return true;
 		};
 
-		const allowDelete = (message: any) => {
+		const allowDelete = (message: TAnyMessageModel) => {
 			if (isReadOnly) {
 				return false;
 			}
@@ -143,19 +148,19 @@ const MessageActions = forwardRef(
 			return true;
 		};
 
-		const getPermalink = (message: any) => RocketChat.getPermalinkMessage(message);
+		const getPermalink = (message: TAnyMessageModel) => RocketChat.getPermalinkMessage(message);
 
-		const handleReply = (message: any) => {
+		const handleReply = (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_REPLY);
 			replyInit(message, true);
 		};
 
-		const handleEdit = (message: any) => {
+		const handleEdit = (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_EDIT);
 			editInit(message);
 		};
 
-		const handleCreateDiscussion = (message: any) => {
+		const handleCreateDiscussion = (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_DISCUSSION);
 			const params = { message, channel: room, showCloseModal: true };
 			if (isMasterDetail) {
@@ -165,7 +170,7 @@ const MessageActions = forwardRef(
 			}
 		};
 
-		const handleUnread = async (message: any) => {
+		const handleUnread = async (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_UNREAD);
 			const { id: messageId, ts } = message;
 			const { rid } = room;
@@ -190,7 +195,7 @@ const MessageActions = forwardRef(
 			}
 		};
 
-		const handlePermalink = async (message: any) => {
+		const handlePermalink = async (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_PERMALINK);
 			try {
 				const permalink: any = await getPermalink(message);
@@ -201,13 +206,13 @@ const MessageActions = forwardRef(
 			}
 		};
 
-		const handleCopy = async (message: any) => {
+		const handleCopy = async (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_COPY);
 			await Clipboard.setString(message?.attachments?.[0]?.description || message.msg);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 		};
 
-		const handleShare = async (message: any) => {
+		const handleShare = async (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_SHARE);
 			try {
 				const permalink: any = await getPermalink(message);
@@ -217,12 +222,12 @@ const MessageActions = forwardRef(
 			}
 		};
 
-		const handleQuote = (message: any) => {
+		const handleQuote = (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_QUOTE);
 			replyInit(message, false);
 		};
 
-		const handleStar = async (message: any) => {
+		const handleStar = async (message: TAnyMessageModel) => {
 			logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 			try {
 				await RocketChat.toggleStarMessage(message.id, message.starred);
@@ -233,7 +238,7 @@ const MessageActions = forwardRef(
 			}
 		};
 
-		const handlePin = async (message: any) => {
+		const handlePin = async (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_PIN);
 			try {
 				await RocketChat.togglePinMessage(message.id, message.pinned);
@@ -243,7 +248,7 @@ const MessageActions = forwardRef(
 			}
 		};
 
-		const handleReaction = (shortname: any, message: any) => {
+		const handleReaction = (shortname: any, message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_REACTION);
 			if (shortname) {
 				onReactionPress(shortname, message.id);
@@ -254,7 +259,7 @@ const MessageActions = forwardRef(
 			hideActionSheet();
 		};
 
-		const handleReadReceipt = (message: any) => {
+		const handleReadReceipt = (message: TAnyMessageModel) => {
 			if (isMasterDetail) {
 				Navigation.navigate('ModalStackNavigator', { screen: 'ReadReceiptsView', params: { messageId: message.id } });
 			} else {
@@ -289,7 +294,7 @@ const MessageActions = forwardRef(
 			}
 		};
 
-		const handleReport = async (message: any) => {
+		const handleReport = async (message: TAnyMessageModel) => {
 			logEvent(events.ROOM_MSG_ACTION_REPORT);
 			try {
 				await RocketChat.reportMessage(message.id);
@@ -300,7 +305,7 @@ const MessageActions = forwardRef(
 			}
 		};
 
-		const handleDelete = (message: any) => {
+		const handleDelete = (message: TAnyMessageModel) => {
 			showConfirmationAlert({
 				message: I18n.t('You_will_not_be_able_to_recover_this_message'),
 				confirmationText: I18n.t('Delete'),

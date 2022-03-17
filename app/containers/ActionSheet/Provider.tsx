@@ -4,11 +4,11 @@ import ActionSheet from './ActionSheet';
 import { useTheme } from '../../theme';
 
 interface IActionSheetProvider {
-	Provider: any;
-	Consumer: any;
+	showActionSheet: () => void;
+	hideActionSheet: () => void;
 }
 
-const context: IActionSheetProvider = React.createContext({
+const context = React.createContext<IActionSheetProvider>({
 	showActionSheet: () => {},
 	hideActionSheet: () => {}
 });

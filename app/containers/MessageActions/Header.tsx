@@ -11,15 +11,15 @@ import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
 import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
-import { TMessageModel } from '../../definitions';
+import { TAnyMessageModel } from '../../definitions';
 import { IEmoji } from '../../definitions/IEmoji';
 
 type TItem = TFrequentlyUsedEmojiModel | string;
 
 interface IHeader {
-	handleReaction: (emoji: TItem, message: TMessageModel) => void;
+	handleReaction: (emoji: TItem, message: TAnyMessageModel) => void;
 	server: string;
-	message: TMessageModel;
+	message: TAnyMessageModel;
 	isMasterDetail: boolean;
 }
 
