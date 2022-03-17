@@ -746,6 +746,7 @@
   "Last_owner_team_room": "You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.",
   "last-owner-can-not-be-removed": "Last owner cannot be removed",
   "Remove_User_Teams": "Select channels you want the user to be removed from.",
+  "Deleting_account": "Deleting account",
   "Delete_my_account": "Delete my account",
   "Delete_Team": "Delete Team",
   "Select_channels_to_delete": "This can't be undone. Once you delete a team, all chat content and configuration will be deleted. \n\nSelect the channels you would like to delete. The ones you decide to keep will be available on your workspace. Notice that public channels will still be public and visible to everyone.",

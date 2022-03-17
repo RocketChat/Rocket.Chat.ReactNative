@@ -22,7 +22,7 @@ import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
-import { setUser as setUserAction, logout } from '../../actions/login';
+import { setUser as setUserAction, deleteAccount } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -465,11 +465,10 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 					text: I18n.t('Confirm'),
 					onPress: async (password: string) => {
 						this.setState({ currentPassword: password });
-						const { logoutUser } = this.props;
+						const { deleteAccountLocally } = this.props;
 						try {
 							await RocketChat.deleteOwnAccount(sha256(password));
-							logoutUser();
-							EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_deleted') });
+							deleteAccountLocally();
 						} catch (error) {
 							// @ts-ignore
 							if (error.data.errorType === 'user-last-owner') {
@@ -498,11 +497,10 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 	handleConfirmOwnerChange = async () => {
 		const { currentPassword } = this.state;
-		const { logoutUser } = this.props;
+		const { deleteAccountLocally } = this.props;
 		try {
 			await RocketChat.deleteOwnAccount(sha256(currentPassword!), true);
-			logoutUser();
-			EventEmitter.emit(LISTENER, { message: I18n.t('User_has_been_deleted') });
+			deleteAccountLocally();
 		} catch (error) {
 			// @ts-ignore
 			EventEmitter.emit(LISTENER, { message: error.data.details });
@@ -691,7 +689,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
 	setUser: (params: any) => dispatch(setUserAction(params)),
-	logoutUser: () => dispatch(logout())
+	deleteAccountLocally: () => dispatch(deleteAccount())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ProfileView));

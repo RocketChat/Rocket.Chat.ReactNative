@@ -72,6 +72,11 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 			};
 		case types.LOGOUT:
 			return initialState;
+		case types.DELETE_ACCOUNT:
+			return {
+				...state,
+				isLocalAuthenticated: false
+			};
 		case types.USER.SET:
 			return {
 				...state,

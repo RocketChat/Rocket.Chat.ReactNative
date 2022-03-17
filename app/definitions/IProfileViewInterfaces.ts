@@ -49,7 +49,7 @@ export interface IProfileViewProps {
 	Accounts_AllowDeleteOwnAccount: string;
 	Message_ErasureType: string;
 	setUser: Function;
-	logoutUser: Function;
+	deleteAccountLocally: Function;
 	theme: string;
 }
 

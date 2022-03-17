@@ -25,6 +25,8 @@ const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
 const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, isFromWebView);
 const logoutCall = args => RocketChat.logout(args);
+const removeServerData = args => RocketChat.removeServerData(args);
+const removeServerDatabase = args => RocketChat.removeServerDatabase(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
@@ -217,6 +219,39 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 	}
 };
 
+const handleDeleteAccount = function* handleDeleteAccount() {
+	yield put(encryptionStop());
+	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Deleting_account') }));
+	const server = yield select(getServer);
+	if (server) {
+		try {
+			yield call(removeServerData, { server });
+			yield call(removeServerDatabase, { server });
+			const serversDB = database.servers;
+			// all servers
+			const serversCollection = serversDB.get('servers');
+			const servers = yield serversCollection.query().fetch();
+
+			// see if there're other logged in servers and selects first one
+			if (servers.length > 0) {
+				for (let i = 0; i < servers.length; i += 1) {
+					const newServer = servers[i].id;
+					const token = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${newServer}`);
+					if (token) {
+						yield put(selectServerRequest(newServer));
+						return;
+					}
+				}
+			}
+			// if there's no servers, go outside
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+		} catch (e) {
+			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
+			log(e);
+		}
+	}
+};
+
 const handleSetUser = function* handleSetUser({ user }) {
 	setLanguage(user?.language);
 
@@ -233,6 +268,7 @@ const root = function* root() {
 	yield takeLatest(types.LOGIN.REQUEST, handleLoginRequest);
 	yield takeLatest(types.LOGOUT, handleLogout);
 	yield takeLatest(types.USER.SET, handleSetUser);
+	yield takeLatest(types.DELETE_ACCOUNT, handleDeleteAccount);
 
 	while (true) {
 		const params = yield take(types.LOGIN.SUCCESS);

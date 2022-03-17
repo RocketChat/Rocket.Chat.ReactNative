@@ -86,6 +86,12 @@ export function logout(forcedByServer = false): ILogout {
 	};
 }
 
+export function deleteAccount(): Action {
+	return {
+		type: types.DELETE_ACCOUNT
+	};
+}
+
 export function setUser(user: Partial<IUser>): ISetUser {
 	return {
 		type: types.USER.SET,

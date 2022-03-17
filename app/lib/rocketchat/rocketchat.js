@@ -31,7 +31,7 @@ import loadMissedMessages from '../methods/loadMissedMessages';
 import loadNextMessages from '../methods/loadNextMessages';
 import loadSurroundingMessages from '../methods/loadSurroundingMessages';
 import loadThreadMessages from '../methods/loadThreadMessages';
-import logout, { removeServer } from '../methods/logout';
+import logout, { removeServerData, removeServer, removeServerDatabase } from '../methods/logout';
 import readMessages from '../methods/readMessages';
 import { cancelUpload, isUploadActive, sendFileMessage } from '../methods/sendFileMessage';
 import sendMessage, { resendMessage } from '../methods/sendMessage';
@@ -205,7 +205,9 @@ const RocketChat = {
 		const { id: userId } = reduxStore.getState().login.user;
 		return this.sdk.post('users.removeOtherTokens', { userId });
 	},
+	removeServerData,
 	removeServer,
+	removeServerDatabase,
 	clearCache,
 	registerPushToken() {
 		return new Promise(async resolve => {
