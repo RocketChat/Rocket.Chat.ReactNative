@@ -56,7 +56,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 
 	static defaultProps: Partial<IRoomItemContainerProps> = {
 		avatarSize: 48,
-		status: 'online',
+		status: 'offline',
 		getUserPresence: () => {},
 		getRoomTitle: () => 'title',
 		getRoomAvatar: () => '',
