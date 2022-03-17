@@ -48,12 +48,12 @@ const styles = StyleSheet.create({
 });
 
 interface IHeader {
-	headerLeft: () => JSX.Element | null;
-	headerTitle: () => JSX.Element;
-	headerRight: () => JSX.Element | null;
+	headerLeft: () => React.ReactElement | null;
+	headerTitle: () => React.ReactElement;
+	headerRight: () => React.ReactElement | null;
 }
 
-const Header = ({ headerLeft, headerTitle, headerRight }: IHeader): JSX.Element => {
+const Header = ({ headerLeft, headerTitle, headerRight }: IHeader): React.ReactElement => {
 	const { theme } = useTheme();
 	return (
 		<SafeAreaView style={{ backgroundColor: themes[theme].headerBackground }} edges={['top', 'left', 'right']}>
