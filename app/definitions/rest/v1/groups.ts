@@ -4,6 +4,7 @@ import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
 import { IGetRoomRoles } from '../../IRole';
 import { IServerAttachment } from '../../IAttachment';
+import { PaginatedRequest } from '../helpers/PaginatedRequest';
 
 export type GroupsEndpoints = {
 	'groups.files': {
@@ -15,12 +16,15 @@ export type GroupsEndpoints = {
 		};
 	};
 	'groups.members': {
-		GET: (params: { roomId: IServerRoom['_id']; offset?: number; count?: number; filter?: string; status?: string[] }) => {
-			count: number;
-			offset: number;
+		GET: (params: {
+			roomId: IServerRoom['_id'];
+			offset?: number;
+			count?: number;
+			filter?: string;
+			status?: string[];
+		}) => PaginatedRequest<{
 			members: IUser[];
-			total: number;
-		};
+		}>;
 	};
 	'groups.history': {
 		GET: (params: { roomId: string; count: number; latest?: string }) => {
