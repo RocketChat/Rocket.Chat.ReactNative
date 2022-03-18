@@ -1,10 +1,10 @@
 import { IUser } from './IUser';
 
 export interface IAttachment {
-	ts: string | Date;
+	ts?: string | Date;
 	title: string;
-	type: string;
-	description: string;
+	type?: string;
+	description?: string;
 	title_link?: string;
 	image_url?: string;
 	image_type?: string;
@@ -24,6 +24,8 @@ export interface IAttachment {
 	author_link?: string;
 	color?: string;
 	thumb_url?: string;
+	attachments?: any[];
+	collapsed?: boolean;
 }
 
 export interface IServerAttachment {

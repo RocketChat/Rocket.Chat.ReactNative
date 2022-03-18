@@ -117,7 +117,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 
 	render() {
 		const { userInfo, loading } = this.state;
-		const { route, theme } = this.props;
+		const { route } = this.props;
 		const onlyAudio = route.params?.onlyAudio ?? false;
 		const options = isAndroid ? { url: this.url, userInfo, audioOnly: onlyAudio } : null;
 		return (
@@ -129,7 +129,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 					style={StyleSheet.absoluteFill}
 					options={options}
 				/>
-				{loading ? <ActivityIndicator theme={theme} /> : null}
+				{loading ? <ActivityIndicator /> : null}
 			</>
 		);
 	}

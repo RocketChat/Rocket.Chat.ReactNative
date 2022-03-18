@@ -59,11 +59,10 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 	};
 
 	render() {
-		const { serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, theme, server } = this.props;
+		const { serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, server } = this.props;
 
 		return (
 			<Header
-				theme={theme}
 				serverName={serverName}
 				server={server}
 				showServerDropdown={showServerDropdown}
