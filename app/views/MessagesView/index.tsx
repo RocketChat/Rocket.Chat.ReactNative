@@ -369,7 +369,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
-					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+					ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				/>
 			</SafeAreaView>
 		);

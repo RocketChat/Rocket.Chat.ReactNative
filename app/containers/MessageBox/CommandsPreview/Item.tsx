@@ -34,7 +34,7 @@ const Item = ({ item, theme }: IMessageBoxCommandsPreviewItem) => {
 					resizeMode={FastImage.resizeMode.cover}
 					onLoadStart={() => setLoading(true)}
 					onLoad={() => setLoading(false)}>
-					{loading ? <ActivityIndicator theme={theme} /> : null}
+					{loading ? <ActivityIndicator /> : null}
 				</FastImage>
 			) : (
 				<CustomIcon name='attach' size={36} color={themes[theme!].actionTintColor} />
