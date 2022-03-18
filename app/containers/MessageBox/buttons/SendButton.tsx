@@ -5,7 +5,6 @@ import { useTheme } from '../../../theme';
 import BaseButton from './BaseButton';
 
 interface ISendButton {
-	theme: string;
 	onPress(): void;
 }
 
