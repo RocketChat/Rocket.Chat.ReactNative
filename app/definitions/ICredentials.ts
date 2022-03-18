@@ -1,4 +1,5 @@
 export interface ICredentials {
+	resume?: string;
 	user?: string;
 	password?: string;
 	username?: string;
