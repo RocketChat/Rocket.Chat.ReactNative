@@ -5,7 +5,6 @@ import { useColors } from '@app/lib/hooks/useColors';
 import BaseButton from './BaseButton';
 
 interface ISendButton {
-	theme: string;
 	onPress(): void;
 }
 
