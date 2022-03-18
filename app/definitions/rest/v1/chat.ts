@@ -38,7 +38,7 @@ export type ChatEndpoints = {
 	'chat.getThreadsList': {
 		GET: (params: {
 			rid: IServerRoom['_id'];
-			type: 'unread' | 'following' | 'all';
+			type?: 'unread' | 'following' | 'all';
 			text?: string;
 			offset: number;
 			count: number;
@@ -46,6 +46,14 @@ export type ChatEndpoints = {
 			threads: IMessage[];
 			total: number;
 		}>;
+	};
+	'chat.syncThreadsList': {
+		GET: (params: { rid: IServerRoom['_id']; updatedSince: string }) => {
+			threads: {
+				update: IMessage[];
+				remove: IMessage[];
+			};
+		};
 	};
 	'chat.delete': {
 		POST: (params: { msgId: string; roomId: string }) => {
