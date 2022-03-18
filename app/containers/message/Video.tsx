@@ -75,6 +75,14 @@ const Video = React.memo(
 
 		return (
 			<>
+				<Markdown
+					msg={file.description}
+					baseUrl={baseUrl}
+					username={user.username}
+					getCustomEmoji={getCustomEmoji}
+					style={[style, isReply && { fontSize: 14 }]}
+					theme={theme}
+				/>
 				<Touchable
 					disabled={isReply}
 					onPress={onPress}
@@ -82,14 +90,6 @@ const Video = React.memo(
 					background={Touchable.Ripple(themes[theme].bannerBackground)}>
 					{loading ? <RCActivityIndicator /> : <CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />}
 				</Touchable>
-				<Markdown
-					msg={file.description}
-					baseUrl={baseUrl}
-					username={user.username}
-					getCustomEmoji={getCustomEmoji}
-					style={style}
-					theme={theme}
-				/>
 			</>
 		);
 	},
