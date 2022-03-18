@@ -16,17 +16,10 @@ import * as List from '../List';
 import { Button } from './Button';
 import { Handle } from './Handle';
 import { IActionSheetItem, Item } from './Item';
+import { TActionSheetOptions, TActionSheetOptionsItem } from './Provider';
 import styles, { ITEM_HEIGHT } from './styles';
 
-type TOptions = { title: string; icon: string; onPress: () => void };
-interface IActionSheetData {
-	options: TOptions[];
-	headerHeight?: number;
-	hasCancel?: boolean;
-	customHeader?: React.ReactElement;
-}
-
-const getItemLayout = (data: TOptions[] | null | undefined, index: number) => ({
+const getItemLayout = (data: TActionSheetOptionsItem[] | null | undefined, index: number) => ({
 	length: ITEM_HEIGHT,
 	offset: ITEM_HEIGHT * index,
 	index
@@ -47,8 +40,8 @@ const ANIMATION_CONFIG = {
 const ActionSheet = React.memo(
 	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
 		const { theme } = useTheme();
-		const bottomSheetRef = useRef<ScrollBottomSheet<TOptions>>(null);
-		const [data, setData] = useState<IActionSheetData>({} as IActionSheetData);
+		const bottomSheetRef = useRef<ScrollBottomSheet<TActionSheetOptionsItem>>(null);
+		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setVisible] = useState(false);
 		const { height } = useDimensions();
 		const { isLandscape } = useOrientation();
@@ -86,7 +79,7 @@ const ActionSheet = React.memo(
 			bottomSheetRef.current?.snapTo(closedSnapIndex);
 		};
 
-		const show = (options: IActionSheetData) => {
+		const show = (options: TActionSheetOptions) => {
 			setData(options);
 			toggleVisible();
 		};
@@ -169,7 +162,7 @@ const ActionSheet = React.memo(
 								]}
 							/>
 						</TapGestureHandler>
-						<ScrollBottomSheet<TOptions>
+						<ScrollBottomSheet<TActionSheetOptionsItem>
 							testID='action-sheet'
 							ref={bottomSheetRef}
 							componentType='FlatList'
