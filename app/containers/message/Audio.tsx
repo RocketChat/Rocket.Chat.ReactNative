@@ -1,5 +1,5 @@
 import React from 'react';
-import { Easing, StyleSheet, Text, View } from 'react-native';
+import { Easing, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
@@ -29,6 +29,7 @@ interface IButton {
 interface IMessageAudioProps {
 	file: IAttachment;
 	isReply?: boolean;
+	style?: StyleProp<TextStyle>[];
 	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
@@ -254,7 +255,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	render() {
 		const { loading, paused, currentTime, duration } = this.state;
-		const { file, getCustomEmoji, theme, scale, isReply } = this.props;
+		const { file, getCustomEmoji, theme, scale, isReply, style } = this.props;
 		const { description } = file;
 		const { baseUrl, user } = this.context;
 
@@ -264,6 +265,14 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 		return (
 			<>
+				<Markdown
+					msg={description}
+					style={[isReply && style]}
+					baseUrl={baseUrl}
+					username={user.username}
+					getCustomEmoji={getCustomEmoji}
+					theme={theme}
+				/>
 				<View
 					style={[
 						styles.audioContainer,
@@ -287,7 +296,6 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
-				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 			</>
 		);
 	}

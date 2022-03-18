@@ -257,7 +257,7 @@ const Reply = React.memo(
 							attachments={attachment.attachments}
 							getCustomEmoji={getCustomEmoji}
 							timeFormat={timeFormat}
-							style={[{ color: themes[theme].auxiliaryTintColor }]}
+							style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14, marginBottom: 8 }]}
 							isReply
 						/>
 						<UrlImage image={attachment.thumb_url} />

@@ -40,10 +40,6 @@ const Attachments = React.memo(
 			return null;
 		}
 
-		if (attachments.length === 2 && attachments[0].image_url && attachments[1].message_link) {
-			attachments = [attachments[1], attachments[0]];
-		}
-
 		const { theme } = useTheme();
 
 		return attachments.map((file: IAttachment, index: number) => {
@@ -60,9 +56,13 @@ const Attachments = React.memo(
 					/>
 				);
 			}
+
 			if (file && file.audio_url) {
-				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} isReply={isReply} theme={theme} />;
+				return (
+					<Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} isReply={isReply} style={style} theme={theme} />
+				);
 			}
+
 			if (file.video_url) {
 				return (
 					<Video
@@ -76,6 +76,7 @@ const Attachments = React.memo(
 					/>
 				);
 			}
+
 			if (file && file.actions && file.actions.length > 0) {
 				return <AttachedActions attachment={file} />;
 			}

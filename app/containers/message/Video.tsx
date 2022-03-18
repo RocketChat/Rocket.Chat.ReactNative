@@ -80,7 +80,7 @@ const Video = React.memo(
 					baseUrl={baseUrl}
 					username={user.username}
 					getCustomEmoji={getCustomEmoji}
-					style={[style, isReply && { fontSize: 14 }]}
+					style={[isReply && style]}
 					theme={theme}
 				/>
 				<Touchable
