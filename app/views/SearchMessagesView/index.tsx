@@ -291,7 +291,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				keyExtractor={item => item._id}
 				onEndReached={this.onEndReached}
-				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
 				{...scrollPersistTaps}
