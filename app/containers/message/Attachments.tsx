@@ -11,9 +11,14 @@ import Button from '../Button';
 import styles from './styles';
 import MessageContext from './Context';
 import { useTheme } from '../../theme';
+import { IAttachment } from '../../definitions';
 
-const AttachedActions = ({ attachment, theme }: IMessageAttachedActions) => {
+const AttachedActions = ({ attachment }: IMessageAttachedActions) => {
+	if (!attachment.actions) {
+		return null;
+	}
 	const { onAnswerButtonPress } = useContext(MessageContext);
+	const { theme } = useTheme();
 
 	const attachedButtons = attachment.actions.map((element: { type: string; msg: string; text: string }) => {
 		if (element.type === 'button') {
@@ -31,13 +36,18 @@ const AttachedActions = ({ attachment, theme }: IMessageAttachedActions) => {
 
 const Attachments = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply }: IMessageAttachments) => {
-		const { theme } = useTheme();
 		if (!attachments || attachments.length === 0) {
 			return null;
 		}
 
-		return attachments.map((file: any, index: number) => {
-			if (file.image_url) {
+		if (attachments.length === 2 && attachments[0].image_url && attachments[1].message_link) {
+			attachments = [attachments[1], attachments[0]];
+		}
+
+		const { theme } = useTheme();
+
+		return attachments.map((file: IAttachment, index: number) => {
+			if (file && file.image_url) {
 				return (
 					<Image
 						key={file.image_url}
@@ -50,7 +60,7 @@ const Attachments = React.memo(
 					/>
 				);
 			}
-			if (file.audio_url) {
+			if (file && file.audio_url) {
 				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} isReply={isReply} theme={theme} />;
 			}
 			if (file.video_url) {
@@ -66,20 +76,11 @@ const Attachments = React.memo(
 					/>
 				);
 			}
-			if (file.actions && file.actions.length > 0) {
-				return <AttachedActions attachment={file} theme={theme} />;
+			if (file && file.actions && file.actions.length > 0) {
+				return <AttachedActions attachment={file} />;
 			}
 
-			return (
-				<Reply
-					key={index}
-					index={index}
-					attachment={file}
-					timeFormat={timeFormat}
-					getCustomEmoji={getCustomEmoji}
-					theme={theme}
-				/>
-			);
+			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 		});
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)

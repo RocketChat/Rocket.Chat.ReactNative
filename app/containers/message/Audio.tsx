@@ -16,6 +16,7 @@ import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { IAttachment } from '../../definitions';
 
 interface IButton {
 	loading: boolean;
@@ -26,10 +27,7 @@ interface IButton {
 }
 
 interface IMessageAudioProps {
-	file: {
-		audio_url: string;
-		description: string;
-	};
+	file: IAttachment;
 	isReply?: boolean;
 	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
@@ -135,7 +133,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		const { baseUrl, user } = this.context;
 
 		let url = file.audio_url;
-		if (!url.startsWith('http')) {
+		if (url && !url.startsWith('http')) {
 			url = `${baseUrl}${file.audio_url}`;
 		}
 

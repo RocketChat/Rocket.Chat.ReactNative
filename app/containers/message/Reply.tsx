@@ -16,6 +16,7 @@ import { IAttachment } from '../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import RCActivityIndicator from '../ActivityIndicator';
 import Attachments from './Attachments';
+import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	button: {
@@ -114,7 +115,6 @@ interface IMessageReply {
 	attachment: IAttachment;
 	timeFormat?: string;
 	index: number;
-	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 }
 
@@ -204,12 +204,14 @@ const Fields = React.memo(
 );
 
 const Reply = React.memo(
-	({ attachment, timeFormat, index, getCustomEmoji, theme }: IMessageReply) => {
+	({ attachment, timeFormat, index, getCustomEmoji }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 
 		if (!attachment) {
 			return null;
 		}
+
+		const { theme } = useTheme();
 		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
 
 		const onPress = async () => {
@@ -283,7 +285,7 @@ const Reply = React.memo(
 			</>
 		);
 	},
-	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme
+	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment)
 );
 
 Reply.displayName = 'MessageReply';

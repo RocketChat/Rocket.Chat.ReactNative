@@ -3,6 +3,7 @@ import { StyleProp, TextStyle } from 'react-native';
 
 import { IUserChannel, IUserMention } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { IAttachment } from '../../definitions';
 
 export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
@@ -16,11 +17,7 @@ export interface IMessageAttachments {
 }
 
 export interface IMessageAttachedActions {
-	attachment: {
-		actions: [];
-		text: string;
-	};
-	theme: string;
+	attachment: IAttachment;
 }
 
 export interface IMessageAvatar {

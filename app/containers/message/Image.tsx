@@ -12,6 +12,7 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { IAttachment } from '../../definitions';
 
 type TMessageButton = {
 	children: JSX.Element;
@@ -26,7 +27,7 @@ type TMessageImage = {
 };
 
 interface IMessageImage {
-	file: { image_url: string; description?: string };
+	file: IAttachment;
 	imageUrl?: string;
 	showAttachment?: Function;
 	style?: StyleProp<TextStyle>[];
@@ -79,7 +80,6 @@ const ImageContainer = React.memo(
 			return (
 				<Button disabled={isReply} theme={theme} onPress={onPress}>
 					<View>
-						<MessageImage img={img} theme={theme} />
 						<Markdown
 							msg={file.description}
 							style={style}
@@ -88,6 +88,7 @@ const ImageContainer = React.memo(
 							getCustomEmoji={getCustomEmoji}
 							theme={theme}
 						/>
+						<MessageImage img={img} theme={theme} />
 					</View>
 				</Button>
 			);

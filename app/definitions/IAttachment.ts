@@ -10,6 +10,7 @@ export interface IAttachment {
 	image_type?: string;
 	video_url?: string;
 	video_type?: string;
+	audio_url?: string;
 	title_link_download?: boolean;
 	attachments: IAttachment[];
 	fields?: IAttachment[];
@@ -18,6 +19,7 @@ export interface IAttachment {
 	image_size?: number;
 	author_name?: string;
 	author_icon?: string;
+	actions?: [];
 	message_link?: string;
 	text?: string;
 	short?: boolean;
