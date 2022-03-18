@@ -2,7 +2,9 @@ import { ITeam } from '../../ITeam';
 import type { IMessageFromServer } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import type { IUser } from '../../IUser';
+import { IGetRoomRoles } from '../../IRole';
 import { IServerAttachment } from '../../IAttachment';
+import { PaginatedRequest } from '../helpers/PaginatedRequest';
 
 export type ChannelsEndpoints = {
 	'channels.files': {
@@ -14,12 +16,15 @@ export type ChannelsEndpoints = {
 		};
 	};
 	'channels.members': {
-		GET: (params: { roomId: IServerRoom['_id']; offset?: number; count?: number; filter?: string; status?: string[] }) => {
-			count: number;
-			offset: number;
+		GET: (params: {
+			roomId: IServerRoom['_id'];
+			offset?: number;
+			count?: number;
+			filter?: boolean;
+			status?: string[];
+		}) => PaginatedRequest<{
 			members: IUser[];
-			total: number;
-		};
+		}>;
 	};
 	'channels.history': {
 		GET: (params: { roomId: string; count: number; latest?: string }) => {
@@ -95,6 +100,9 @@ export type ChannelsEndpoints = {
 	};
 	'channels.removeLeader': {
 		POST: (params: { roomId: string; userId: string }) => {};
+	};
+	'channels.roles': {
+		GET: (params: { roomId: string }) => { roles: IGetRoomRoles[] };
 	};
 	'channels.messages': {
 		GET: (params: {

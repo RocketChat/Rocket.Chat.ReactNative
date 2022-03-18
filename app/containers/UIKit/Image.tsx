@@ -5,6 +5,8 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import ImageContainer from '../message/Image';
 import Navigation from '../../lib/Navigation';
+import { IThumb, IImage, IElement } from './interfaces';
+import { TThemeMode } from '../../definitions/ITheme';
 
 const styles = StyleSheet.create({
 	image: {
@@ -15,44 +17,25 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IThumb {
-	element: {
-		imageUrl: string;
-	};
-	size?: number;
-}
-
-interface IMedia {
-	element: {
-		imageUrl: string;
-	};
-	theme: string;
-}
-
-interface IImage {
-	element: any;
-	context: any;
-	theme: string;
-}
-
-const ThumbContext = (args: any) => (
+const ThumbContext = (args: IThumb) => (
 	<View style={styles.mediaContext}>
 		<Thumb size={20} {...args} />
 	</View>
 );
 
 export const Thumb = ({ element, size = 88 }: IThumb) => (
-	<FastImage style={[{ width: size, height: size }, styles.image]} source={{ uri: element.imageUrl }} />
+	<FastImage style={[{ width: size, height: size }, styles.image]} source={{ uri: element?.imageUrl }} />
 );
 
-export const Media = ({ element, theme }: IMedia) => {
+export const Media = ({ element, theme }: IImage) => {
 	const showAttachment = (attachment: any) => Navigation.navigate('AttachmentView', { attachment });
-	const { imageUrl } = element;
+	const imageUrl = element?.imageUrl ?? '';
 	// @ts-ignore
+	// TODO: delete ts-ignore after refactor Markdown and ImageContainer
 	return <ImageContainer file={{ image_url: imageUrl }} imageUrl={imageUrl} showAttachment={showAttachment} theme={theme} />;
 };
 
-const genericImage = (element: any, context: any, theme: string) => {
+const genericImage = (theme: TThemeMode, element: IElement, context?: number) => {
 	switch (context) {
 		case BLOCK_CONTEXT.SECTION:
 			return <Thumb element={element} />;
@@ -63,4 +46,4 @@ const genericImage = (element: any, context: any, theme: string) => {
 	}
 };
 
-export const Image = ({ element, context, theme }: IImage) => genericImage(element, context, theme);
+export const Image = ({ element, context, theme }: IImage) => genericImage(theme, element, context);

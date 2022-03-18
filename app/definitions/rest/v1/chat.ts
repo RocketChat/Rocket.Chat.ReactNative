@@ -1,4 +1,4 @@
-import type { IMessage, IMessageFromServer } from '../../IMessage';
+import type { IMessage, IMessageFromServer, IReadReceipts } from '../../IMessage';
 import type { IServerRoom } from '../../IRoom';
 import { PaginatedResult } from '../helpers/PaginatedResult';
 
@@ -38,7 +38,7 @@ export type ChatEndpoints = {
 	'chat.getThreadsList': {
 		GET: (params: {
 			rid: IServerRoom['_id'];
-			type: 'unread' | 'following' | 'all';
+			type?: 'unread' | 'following' | 'all';
 			text?: string;
 			offset: number;
 			count: number;
@@ -46,6 +46,14 @@ export type ChatEndpoints = {
 			threads: IMessage[];
 			total: number;
 		}>;
+	};
+	'chat.syncThreadsList': {
+		GET: (params: { rid: IServerRoom['_id']; updatedSince: string }) => {
+			threads: {
+				update: IMessage[];
+				remove: IMessage[];
+			};
+		};
 	};
 	'chat.delete': {
 		POST: (params: { msgId: string; roomId: string }) => {
@@ -64,5 +72,13 @@ export type ChatEndpoints = {
 		GET: (params: { roomId: IServerRoom['_id']; searchText: string; count: number; offset: number }) => {
 			messages: IMessageFromServer[];
 		};
+	};
+	'chat.update': {
+		POST: (params: { roomId: IServerRoom['_id']; msgId: string; text: string }) => {
+			messages: IMessageFromServer;
+		};
+	};
+	'chat.getMessageReadReceipts': {
+		GET: (params: { messageId: string }) => { receipts: IReadReceipts[] };
 	};
 };

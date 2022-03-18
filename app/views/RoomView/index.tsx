@@ -44,7 +44,6 @@ import {
 import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
-import { CONTAINER_TYPES } from '../../lib/methods/actions';
 import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
@@ -55,6 +54,7 @@ import Loading from '../../containers/Loading';
 import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
+import { ContainerTypes } from '../../containers/UIKit/interfaces';
 import RoomServices from './services';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
@@ -1104,7 +1104,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			rid,
 			appId,
 			container: {
-				type: CONTAINER_TYPES.MESSAGE,
+				type: ContainerTypes.MESSAGE,
 				id: mid
 			}
 		});

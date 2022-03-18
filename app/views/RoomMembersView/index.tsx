@@ -433,7 +433,8 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	fetchRoomMembersRoles = async () => {
 		try {
 			const { room } = this.state;
-			const result = await RocketChat.getRoomRoles(room.rid, room.t);
+			const type = room.t as SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
+			const result = await RocketChat.getRoomRoles(room.rid, type);
 			if (result?.success) {
 				this.roomRoles = result.roles;
 			}
@@ -635,7 +636,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 					ListHeaderComponent={this.renderSearchBar}
 					ListFooterComponent={() => {
 						if (isLoading) {
-							return <ActivityIndicator theme={theme} />;
+							return <ActivityIndicator />;
 						}
 						return null;
 					}}

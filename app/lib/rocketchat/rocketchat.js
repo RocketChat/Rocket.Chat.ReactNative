@@ -2,17 +2,11 @@ import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
 import { InteractionManager } from 'react-native';
 import { setActiveUsers } from '../../actions/activeUsers';
-import { encryptionInit } from '../../actions/encryption';
 import { setUser } from '../../actions/login';
-import { shareSelectServer, shareSetSettings, shareSetUser } from '../../actions/share';
 import defaultSettings from '../../constants/settings';
 import { getDeviceToken } from '../../notifications/push';
-import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import log from '../../utils/log';
-import SSLPinning from '../../utils/sslPinning';
 import database from '../database';
-import { sanitizeLikeString } from '../database/utils';
-import { Encryption } from '../encryption';
 import triggerBlockAction, { triggerCancel, triggerSubmitView } from '../methods/actions';
 import callJitsi, { callJitsiWithoutServer } from '../methods/callJitsi';
 import canOpenRoom from '../methods/canOpenRoom';
@@ -68,7 +62,8 @@ import {
 	stopListener,
 	connect
 } from './services/connect';
-import * as restAPis from './services/restApi';
+import { shareExtensionInit, closeShareExtension } from './services/shareExtension';
+import * as restApis from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -84,7 +79,7 @@ const RocketChat = {
 	TOKEN_KEY,
 	CURRENT_SERVER,
 	CERTIFICATE_KEY,
-	...restAPis,
+	...restApis,
 	...search,
 	callJitsi,
 	callJitsiWithoutServer,
@@ -112,81 +107,11 @@ const RocketChat = {
 	checkAndReopen,
 	disconnect,
 	connect,
-	async shareExtensionInit(server) {
-		database.setShareDB(server);
-
-		try {
-			const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
-			SSLPinning.setCertificate(certificate, server);
-		} catch {
-			// Do nothing
-		}
-
-		this.shareSDK = sdk.disconnect();
-		this.shareSDK = sdk.initialize(server);
-
-		// set Server
-		const currentServer = { server };
-		const serversDB = database.servers;
-		const serversCollection = serversDB.get('servers');
-		try {
-			const serverRecord = await serversCollection.find(server);
-			currentServer.version = serverRecord.version;
-		} catch {
-			// Record not found
-		}
-		reduxStore.dispatch(shareSelectServer(currentServer));
-
-		RocketChat.setCustomEmojis();
-
-		try {
-			// set Settings
-			const settings = ['Accounts_AvatarBlockUnauthenticatedAccess'];
-			const db = database.active;
-			const settingsCollection = db.get('settings');
-			const settingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(settings))).fetch();
-			const parsed = Object.values(settingsRecords).map(item => ({
-				_id: item.id,
-				valueAsString: item.valueAsString,
-				valueAsBoolean: item.valueAsBoolean,
-				valueAsNumber: item.valueAsNumber,
-				valueAsArray: item.valueAsArray,
-				_updatedAt: item._updatedAt
-			}));
-			reduxStore.dispatch(shareSetSettings(this.parseSettings(parsed)));
-
-			// set User info
-			const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
-			const userCollections = serversDB.get('users');
-			let user = null;
-			if (userId) {
-				const userRecord = await userCollections.find(userId);
-				user = {
-					id: userRecord.id,
-					token: userRecord.token,
-					username: userRecord.username,
-					roles: userRecord.roles
-				};
-			}
-			reduxStore.dispatch(shareSetUser(user));
-			await RocketChat.login({ resume: user.token });
-			reduxStore.dispatch(encryptionInit());
-		} catch (e) {
-			log(e);
-		}
-	},
-	closeShareExtension() {
-		this.shareSDK = sdk.disconnect();
-		database.share = null;
-
-		reduxStore.dispatch(shareSelectServer({}));
-		reduxStore.dispatch(shareSetUser({}));
-		reduxStore.dispatch(shareSetSettings({}));
-	},
+	shareExtensionInit,
+	closeShareExtension,
 
 	async e2eFetchMyKeys() {
 		// RC 0.70.0
-		const sdk = this.shareSDK || this.sdk;
 		const result = await sdk.get('e2e.fetchMyKeys');
 		// snake_case -> camelCase
 		if (result.success) {
@@ -198,13 +123,6 @@ const RocketChat = {
 		}
 		return result;
 	},
-	e2eResetOwnKey() {
-		this.unsubscribeRooms();
-
-		// RC 0.72.0
-		return this.methodCallWrapper('e2e.resetOwnE2EKey');
-	},
-
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,
@@ -216,34 +134,6 @@ const RocketChat = {
 	},
 	removeServer,
 	clearCache,
-	registerPushToken() {
-		return new Promise(async resolve => {
-			const token = getDeviceToken();
-			if (token) {
-				const type = isIOS ? 'apn' : 'gcm';
-				const data = {
-					value: token,
-					type,
-					appName: getBundleId
-				};
-				try {
-					// RC 0.60.0
-					await this.post('push.token', data);
-				} catch (error) {
-					console.log(error);
-				}
-			}
-			return resolve();
-		});
-	},
-	removePushToken() {
-		const token = getDeviceToken();
-		if (token) {
-			// RC 0.60.0
-			return this.sdk.del('push.token', { token });
-		}
-		return Promise.resolve();
-	},
 	loadMissedMessages,
 	loadMessagesForRoom,
 	loadSurroundingMessages,
@@ -253,13 +143,6 @@ const RocketChat = {
 	getRooms,
 	readMessages,
 	resendMessage,
-	createGroupChat() {
-		const { users } = reduxStore.getState().selectedUsers;
-		const usernames = users.map(u => u.name).join(',');
-
-		// RC 3.1.0
-		return this.post('im.create', { usernames });
-	},
 	triggerBlockAction,
 	triggerSubmitView,
 	triggerCancel,
@@ -298,11 +181,6 @@ const RocketChat = {
 			return setting;
 		});
 	},
-	async editMessage(message) {
-		const { rid, msg } = await Encryption.encryptMessage(message);
-		// RC 0.49.0
-		return this.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
-	},
 	getRoom,
 	getPermalinkMessage,
 	getPermalinkChannel(channel) {
@@ -329,32 +207,7 @@ const RocketChat = {
 	onStreamData(...args) {
 		return sdk.onStreamData(...args);
 	},
-	emitTyping(room, typing = true) {
-		const { login, settings } = reduxStore.getState();
-		const { UI_Use_Real_Name } = settings;
-		const { user } = login;
-		const name = UI_Use_Real_Name ? user.name : user.username;
-		return this.methodCall('stream-notify-room', `${room}/typing`, name, typing);
-	},
 	toggleFavorite,
-	async getRoomMembers({ rid, allUsers, roomType, type, filter, skip = 0, limit = 10 }) {
-		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
-			const params = {
-				roomId: rid,
-				offset: skip,
-				count: limit,
-				...(type !== 'all' && { 'status[]': type }),
-				...(filter && { filter })
-			};
-			// RC 3.16.0
-			const result = await this.sdk.get(`${this.roomTypeToApiType(roomType)}.members`, params);
-			return result?.members;
-		}
-		// RC 0.42.0
-		const result = await this.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
-		return result?.records;
-	},
 	methodCallWrapper(method, ...params) {
 		return sdk.methodCallWrapper(method, ...params);
 	},
@@ -392,17 +245,6 @@ const RocketChat = {
 	},
 	methodCall(...args) {
 		return sdk.methodCall(...args);
-	},
-	sendEmailCode() {
-		const { username } = reduxStore.getState().login.user;
-		// RC 3.1.0
-		return this.post('users.2fa.sendEmailCode', { emailOrUsername: username });
-	},
-	addUsersToRoom(rid) {
-		let { users } = reduxStore.getState().selectedUsers;
-		users = users.map(u => u.name);
-		// RC 0.51.0
-		return this.methodCallWrapper('addUsersToRoom', { rid, users });
 	},
 	hasRole(role) {
 		const shareUser = reduxStore.getState().share.user;
@@ -468,14 +310,6 @@ const RocketChat = {
 	getLoginServices,
 	determineAuthType,
 	roomTypeToApiType,
-	readThreads(tmid) {
-		const serverVersion = reduxStore.getState().server.version;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
-			// RC 3.4.0
-			return this.methodCallWrapper('readThreads', tmid);
-		}
-		return Promise.resolve();
-	},
 	_setUser(ddpMessage) {
 		this.activeUsers = this.activeUsers || {};
 		const { user } = reduxStore.getState().login;

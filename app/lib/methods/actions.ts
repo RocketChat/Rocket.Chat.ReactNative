@@ -2,42 +2,37 @@ import random from '../../utils/random';
 import EventEmitter from '../../utils/events';
 import fetch from '../../utils/fetch';
 import Navigation from '../Navigation';
-
-const ACTION_TYPES = {
-	ACTION: 'blockAction',
-	SUBMIT: 'viewSubmit',
-	CLOSED: 'viewClosed'
-};
-
-export const MODAL_ACTIONS = {
-	MODAL: 'modal',
-	OPEN: 'modal.open',
-	CLOSE: 'modal.close',
-	UPDATE: 'modal.update',
-	ERRORS: 'errors'
-};
-
-export const CONTAINER_TYPES = {
-	VIEW: 'view',
-	MESSAGE: 'message'
-};
+import sdk from '../rocketchat/services/sdk';
+import {
+	ActionTypes,
+	ITriggerAction,
+	ITriggerBlockAction,
+	ITriggerCancel,
+	ITriggerSubmitView,
+	IUserInteraction,
+	ModalActions
+} from '../../containers/UIKit/interfaces';
+import { TRocketChat } from '../../definitions/IRocketChat';
 
 const triggersId = new Map();
 
-const invalidateTriggerId = id => {
+const invalidateTriggerId = (id: string) => {
 	const appId = triggersId.get(id);
 	triggersId.delete(id);
 	return appId;
 };
 
-export const generateTriggerId = appId => {
+export const generateTriggerId = (appId?: string): string => {
 	const triggerId = random(17);
 	triggersId.set(triggerId, appId);
 
 	return triggerId;
 };
 
-export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
+export const handlePayloadUserInteraction = (
+	type: ModalActions,
+	{ triggerId, ...data }: IUserInteraction
+): ModalActions | undefined => {
 	if (!triggersId.has(triggerId)) {
 		return;
 	}
@@ -58,7 +53,7 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 		return;
 	}
 
-	if ([MODAL_ACTIONS.ERRORS].includes(type)) {
+	if ([ModalActions.ERRORS].includes(type)) {
 		EventEmitter.emit(viewId, {
 			type,
 			triggerId,
@@ -66,10 +61,10 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 			appId,
 			...data
 		});
-		return MODAL_ACTIONS.ERRORS;
+		return ModalActions.ERRORS;
 	}
 
-	if ([MODAL_ACTIONS.UPDATE].includes(type)) {
+	if ([ModalActions.UPDATE].includes(type)) {
 		EventEmitter.emit(viewId, {
 			type,
 			triggerId,
@@ -77,10 +72,10 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 			appId,
 			...data
 		});
-		return MODAL_ACTIONS.UPDATE;
+		return ModalActions.UPDATE;
 	}
 
-	if ([MODAL_ACTIONS.OPEN].includes(type) || [MODAL_ACTIONS.MODAL].includes(type)) {
+	if ([ModalActions.OPEN].includes(type) || [ModalActions.MODAL].includes(type)) {
 		Navigation.navigate('ModalBlockView', {
 			data: {
 				triggerId,
@@ -89,21 +84,24 @@ export const handlePayloadUserInteraction = (type, { triggerId, ...data }) => {
 				...data
 			}
 		});
-		return MODAL_ACTIONS.OPEN;
+		return ModalActions.OPEN;
 	}
 
-	return MODAL_ACTIONS.CLOSE;
+	return ModalActions.CLOSE;
 };
 
-export function triggerAction({ type, actionId, appId, rid, mid, viewId, container, ...rest }) {
-	return new Promise(async (resolve, reject) => {
+export function triggerAction(
+	this: TRocketChat,
+	{ type, actionId, appId, rid, mid, viewId, container, ...rest }: ITriggerAction
+) {
+	return new Promise<ModalActions | undefined | void>(async (resolve, reject) => {
 		const triggerId = generateTriggerId(appId);
 
 		const payload = rest.payload || rest;
 
 		try {
-			const { userId, authToken } = this.sdk.currentLogin;
-			const { host } = this.sdk.client;
+			const { userId, authToken } = sdk.current.currentLogin;
+			const { host } = sdk.current.client;
 
 			// we need to use fetch because this.sdk.post add /v1 to url
 			const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
@@ -142,17 +140,17 @@ export function triggerAction({ type, actionId, appId, rid, mid, viewId, contain
 	});
 }
 
-export default function triggerBlockAction(options) {
-	return triggerAction.call(this, { type: ACTION_TYPES.ACTION, ...options });
+export default function triggerBlockAction(this: TRocketChat, options: ITriggerBlockAction) {
+	return triggerAction.call(this, { type: ActionTypes.ACTION, ...options });
 }
 
-export async function triggerSubmitView({ viewId, ...options }) {
-	const result = await triggerAction.call(this, { type: ACTION_TYPES.SUBMIT, viewId, ...options });
-	if (!result || MODAL_ACTIONS.CLOSE === result) {
+export async function triggerSubmitView(this: TRocketChat, { viewId, ...options }: ITriggerSubmitView) {
+	const result = await triggerAction.call(this, { type: ActionTypes.SUBMIT, viewId, ...options });
+	if (!result || ModalActions.CLOSE === result) {
 		Navigation.back();
 	}
 }
 
-export function triggerCancel({ view, ...options }) {
-	return triggerAction.call(this, { type: ACTION_TYPES.CLOSED, view, ...options });
+export function triggerCancel(this: TRocketChat, { view, ...options }: ITriggerCancel) {
+	return triggerAction.call(this, { type: ActionTypes.CLOSED, view, ...options });
 }

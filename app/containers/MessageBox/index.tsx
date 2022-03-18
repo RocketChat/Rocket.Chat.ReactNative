@@ -31,6 +31,7 @@ import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import { canUploadFile } from '../../utils/media';
 import EventEmiter from '../../utils/events';
 import { KEY_COMMAND, handleCommandShowUpload, handleCommandSubmit, handleCommandTyping } from '../../commands';
+import getMentionRegexp from './getMentionRegexp';
 import Mentions from './Mentions';
 import MessageboxContext from './Context';
 import {
@@ -49,7 +50,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
 import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
-import { IUser } from '../../definitions';
+import { IPreviewItem, IUser } from '../../definitions';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -114,7 +115,7 @@ interface IMessageBoxState {
 	showSend: any;
 	recording: boolean;
 	trackingType: string;
-	commandPreview: [];
+	commandPreview: IPreviewItem[];
 	showCommandPreview: boolean;
 	command: {
 		appId?: any;
@@ -489,7 +490,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const msg = this.text;
 		const { start, end } = this.selection;
 		const cursor = Math.max(start, end);
-		const regexp = /([a-z0-9._-]+)$/im;
+		const regexp = getMentionRegexp();
 		let result = msg.substr(0, cursor).replace(regexp, '');
 		// Remove the ! after select the canned response
 		if (trackingType === MENTIONS_TRACKING_TYPE_CANNED) {
@@ -638,12 +639,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}, 1000);
 	};
 
-	setCommandPreview = async (command: any, name: string, params: any) => {
+	setCommandPreview = async (command: any, name: string, params: string) => {
 		const { rid } = this.props;
 		try {
-			const { success, preview } = await RocketChat.getCommandPreview(name, rid, params);
-			if (success) {
-				return this.setState({ commandPreview: preview?.items, showCommandPreview: true, command });
+			const response = await RocketChat.getCommandPreview(name, rid, params);
+			if (response.success) {
+				return this.setState({ commandPreview: response.preview?.items || [], showCommandPreview: true, command });
 			}
 		} catch (e) {
 			log(e);
@@ -887,7 +888,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
+					await RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
 					replyCancel();
 				} catch (e) {
 					logEvent(events.COMMAND_RUN_F);

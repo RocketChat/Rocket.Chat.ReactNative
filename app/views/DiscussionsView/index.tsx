@@ -198,7 +198,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				removeClippedSubviews={isIOS}
 				onEndReached={() => (isSearching ? searchTotal : total) > API_FETCH_COUNT ?? load()}
 				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				scrollIndicatorInsets={{ right: 1 }}
 			/>
 		</SafeAreaView>
