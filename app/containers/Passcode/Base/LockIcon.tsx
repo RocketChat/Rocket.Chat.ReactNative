@@ -7,7 +7,7 @@ import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import { useTheme } from '../../../theme';
 
-const LockIcon = () => {
+const LockIcon = React.memo(() => {
 	const { theme } = useTheme();
 
 	return (
@@ -17,6 +17,6 @@ const LockIcon = () => {
 			</View>
 		</Row>
 	);
-};
+});
 
 export default LockIcon;
