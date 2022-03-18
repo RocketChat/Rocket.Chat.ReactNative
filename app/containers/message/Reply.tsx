@@ -258,7 +258,7 @@ const Reply = React.memo(
 										styles.backdrop,
 										{ backgroundColor: themes[theme].bannerBackground, opacity: themes[theme].attachmentLoadingOpacity }
 									]}></View>
-								<RCActivityIndicator theme={theme} />
+								<RCActivityIndicator />
 							</View>
 						) : null}
 					</View>

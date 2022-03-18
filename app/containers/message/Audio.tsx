@@ -96,7 +96,7 @@ const Button = React.memo(({ loading, paused, onPress, theme }: IButton) => (
 		hitSlop={BUTTON_HIT_SLOP}
 		background={Touchable.SelectableBackgroundBorderless()}>
 		{loading ? (
-			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} theme={theme} />
+			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} />
 		) : (
 			<CustomIcon name={paused ? 'play-filled' : 'pause-filled'} size={36} color={themes[theme].tintColor} />
 		)}

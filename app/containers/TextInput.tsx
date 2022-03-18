@@ -116,8 +116,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 
 	get loading() {
 		const { theme } = this.props;
-		// @ts-ignore
-		return <ActivityIndicator style={[styles.iconContainer, styles.iconRight, { color: themes[theme].bodyText }]} />;
+		return <ActivityIndicator style={[styles.iconContainer, styles.iconRight]} color={themes[theme].bodyText} />;
 	}
 
 	tooglePassword = () => {
