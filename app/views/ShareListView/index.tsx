@@ -450,7 +450,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		const { theme } = this.props;
 
 		if (loading) {
-			return <ActivityIndicator theme={theme} />;
+			return <ActivityIndicator />;
 		}
 
 		if (needsPermission) {

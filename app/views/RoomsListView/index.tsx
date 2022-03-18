@@ -912,7 +912,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	renderListHeader = () => {
 		const { searching } = this.state;
-		const { queueSize, inquiryEnabled, encryptionBanner, user, theme } = this.props;
+		const { queueSize, inquiryEnabled, encryptionBanner, user } = this.props;
 		return (
 			<ListHeader
 				searching={searching}
@@ -922,7 +922,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				inquiryEnabled={inquiryEnabled}
 				encryptionBanner={encryptionBanner}
 				user={user}
-				theme={theme}
 			/>
 		);
 	};
@@ -934,7 +933,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return null;
 		}
 
-		const options = this.getHeader() as any;
+		const options = this.getHeader();
 		return <Header {...options} />;
 	};
 
@@ -1001,7 +1000,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		if (loading) {
-			return <ActivityIndicator theme={theme} />;
+			return <ActivityIndicator />;
 		}
 
 		return (
