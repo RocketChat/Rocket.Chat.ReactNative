@@ -141,7 +141,7 @@ const Description = React.memo(
 		return (
 			<Markdown
 				msg={text}
-				style={[{ color: themes[theme].auxiliaryTintColor }]}
+				style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14 }]}
 				baseUrl={baseUrl}
 				username={user.username}
 				getCustomEmoji={getCustomEmoji}
