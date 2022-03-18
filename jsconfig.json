@@ -2,7 +2,11 @@
 	"compilerOptions": {
 		"jsx": "react",
 		"allowSyntheticDefaultImports": true,
-		"experimentalDecorators": true
+		"experimentalDecorators": true,
+		"paths": {
+			"@app/*": ["./app/*"]
+		},
+		"baseUrl": "./"
 	},
 	"exclude": ["node_modules"]
 }

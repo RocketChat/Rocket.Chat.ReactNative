@@ -3,9 +3,10 @@ import hoistNonReactStatics from 'hoist-non-react-statics';
 
 import { TNavigationOptions } from './definitions/navigationTypes';
 import { IThemePreference } from './definitions/ITheme';
+import { TColors } from './lib/hooks/useColors';
 
 interface IThemeContextProps {
-	theme: string;
+	theme: keyof TColors | string;
 	themePreferences?: IThemePreference;
 	setTheme?: (newTheme?: {}) => void;
 }
