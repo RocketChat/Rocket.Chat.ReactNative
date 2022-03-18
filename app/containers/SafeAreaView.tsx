@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 
 interface ISafeAreaView extends ViewProps {
 	vertical?: boolean;
-	children: React.ReactNode;
+	children: (React.ReactElement | React.ReactElement[] | null)[];
 }
 
 const SafeAreaView = React.memo(({ style, children, vertical = true, ...props }: ISafeAreaView) => {
