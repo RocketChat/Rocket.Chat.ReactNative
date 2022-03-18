@@ -20,11 +20,11 @@ interface IPasscodePasscodeEnter {
 
 const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) => {
 	const ref = useRef<IBase>(null);
-	let attempts: any = 0;
+	let attempts = 0;
 	let lockedUntil: any = false;
 	const [passcode] = useUserPreferences(PASSCODE_KEY);
 	const [status, setStatus] = useState<TYPE | null>(null);
-	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
+	const { setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	const biometry = async () => {
@@ -44,7 +44,6 @@ const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) =
 				await resetAttempts();
 				setStatus(TYPE.ENTER);
 			} else {
-				attempts = await getAttempts();
 				setStatus(TYPE.LOCKED);
 			}
 		} else {

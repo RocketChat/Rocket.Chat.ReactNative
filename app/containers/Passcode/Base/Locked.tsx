@@ -13,7 +13,7 @@ import Subtitle from './Subtitle';
 import LockIcon from './LockIcon';
 
 interface IPasscodeTimer {
-	time: string;
+	time: Date | null;
 	setStatus: Function;
 }
 
@@ -23,18 +23,18 @@ interface IPasscodeLocked {
 
 const Timer = React.memo(({ time, setStatus }: IPasscodeTimer) => {
 	const calcTimeLeft = () => {
-		const diff = getDiff(time);
+		const diff = getDiff(time || 0);
 		if (diff > 0) {
 			return Math.floor((diff / 1000) % 60);
 		}
 	};
 
-	const [timeLeft, setTimeLeft] = useState<any>(calcTimeLeft());
+	const [timeLeft, setTimeLeft] = useState(calcTimeLeft());
 
 	useEffect(() => {
 		setTimeout(() => {
 			setTimeLeft(calcTimeLeft());
-			if (timeLeft <= 1) {
+			if (timeLeft && timeLeft <= 1) {
 				resetAttempts();
 				setStatus(TYPE.ENTER);
 			}
@@ -49,7 +49,7 @@ const Timer = React.memo(({ time, setStatus }: IPasscodeTimer) => {
 });
 
 const Locked = React.memo(({ setStatus }: IPasscodeLocked) => {
-	const [lockedUntil, setLockedUntil] = useState<any>(null);
+	const [lockedUntil, setLockedUntil] = useState<Date | null>(null);
 	const { theme } = useTheme();
 
 	const readItemFromStorage = async () => {

@@ -16,7 +16,7 @@ const PasscodeChoose = ({ finishProcess, force = false }: IPasscodeChoose) => {
 	const confirmRef = useRef<IBase>(null);
 	const [subtitle, setSubtitle] = useState(null);
 	const [status, setStatus] = useState(TYPE.CHOOSE);
-	const [previousPasscode, setPreviouPasscode] = useState<any>(null);
+	const [previousPasscode, setPreviouPasscode] = useState('');
 
 	const firstStep = (p: string) => {
 		setTimeout(() => {
