@@ -1060,7 +1060,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const commandsPreviewAndMentions = !recording ? (
 			<>
 				<CommandsPreview commandPreview={commandPreview} showCommandPreview={showCommandPreview} />
-				<Mentions mentions={mentions} trackingType={trackingType} theme={theme} loading={mentionLoading} />
+				<Mentions mentions={mentions} trackingType={trackingType} loading={mentionLoading} />
 			</>
 		) : null;
 
@@ -1071,7 +1071,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				username={user.username}
 				replying={replying}
 				getCustomEmoji={getCustomEmoji}
-				theme={theme}
 			/>
 		) : null;
 
