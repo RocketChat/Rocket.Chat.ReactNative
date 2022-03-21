@@ -1,6 +1,6 @@
 {
   "1_person_reacted": "تفاعل شخص واحد",
-  "1_user": "مستخدم واحد\n",
+  "1_user": "مستخدم واحد",
   "error-action-not-allowed": "غير مسموح بالإجراء {{action}}",
   "error-application-not-found": "لم يتم العثور على التطبيق",
   "error-archived-duplicate-name": "هناك قناة مؤرشفة باسم {{room_name}}",
