@@ -12,6 +12,7 @@ import styles from './styles';
 import MessageContext from './Context';
 import { useTheme } from '../../theme';
 import { IAttachment } from '../../definitions';
+import CollapsibleQuote from './Components/CollapsibleQuote';
 
 const AttachedActions = ({ attachment }: IMessageAttachedActions) => {
 	if (!attachment.actions) {
@@ -80,6 +81,10 @@ const Attachments = React.memo(
 			if (file && file.actions && file.actions.length > 0) {
 				return <AttachedActions attachment={file} />;
 			}
+			if (file.title)
+				return (
+					<CollapsibleQuote key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />
+				);
 
 			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 		});

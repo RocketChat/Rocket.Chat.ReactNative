@@ -67,6 +67,8 @@ export const themes: any = {
 		previewTintColor: '#ffffff',
 		backdropOpacity: 0.3,
 		attachmentLoadingOpacity: 0.7,
+		collapsibleQuoteBorder: '#CBCED1',
+		collapsibleChevron: '#6C727A',
 		...mentions
 	},
 	dark: {
@@ -116,6 +118,8 @@ export const themes: any = {
 		previewTintColor: '#ffffff',
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3,
+		collapsibleQuoteBorder: '#CBCED1',
+		collapsibleChevron: '#6C727A',
 		...mentions
 	},
 	black: {
@@ -165,6 +169,8 @@ export const themes: any = {
 		previewTintColor: '#ffffff',
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3,
+		collapsibleQuoteBorder: '#CBCED1',
+		collapsibleChevron: '#6C727A',
 		...mentions
 	}
 };
