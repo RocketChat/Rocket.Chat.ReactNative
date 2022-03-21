@@ -21,7 +21,8 @@ import { themes } from '../../constants/colors';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 
 const MessageInner = React.memo((props: IMessageInner) => {
-	const isCollapsible = props.attachments[0] && props.attachments[0].collapsed;
+	const { attachments } = props;
+	const isCollapsible = attachments ? attachments[0] && attachments[0].collapsed : false;
 
 	if (props.type === 'discussion-created') {
 		return (
