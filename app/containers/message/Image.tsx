@@ -12,6 +12,7 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { useTheme } from '../../theme';
 
 type TMessageButton = {
 	children: JSX.Element;
@@ -28,8 +29,7 @@ interface IMessageImage {
 	file: { image_url: string; description?: string };
 	imageUrl?: string;
 	showAttachment: Function;
-	theme: string;
-	getCustomEmoji: TGetCustomEmoji;
+	getCustomEmoji?: TGetCustomEmoji;
 }
 
 const ImageProgress = createImageProgress(FastImage);
@@ -53,7 +53,8 @@ export const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
 ));
 
 const ImageContainer = React.memo(
-	({ file, imageUrl, showAttachment, getCustomEmoji, theme }: IMessageImage) => {
+	({ file, imageUrl, showAttachment, getCustomEmoji }: IMessageImage) => {
+		const { theme } = useTheme();
 		const { baseUrl, user } = useContext(MessageContext);
 		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 		if (!img) {
@@ -85,7 +86,7 @@ const ImageContainer = React.memo(
 			</Button>
 		);
 	},
-	(prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme
+	(prevProps, nextProps) => dequal(prevProps.file, nextProps.file)
 );
 
 ImageContainer.displayName = 'MessageImageContainer';

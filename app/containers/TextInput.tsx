@@ -54,7 +54,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	label?: string;
 	error?: {
 		error: any;
-		reason: any;
+		reason?: any;
 	};
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;

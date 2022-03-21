@@ -2,9 +2,9 @@
 import React, { useContext, useState } from 'react';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import { BlockContext } from './interfaces';
+import { BlockContext, IText } from './interfaces';
 
-export const textParser = ([{ text }]: any) => text;
+export const textParser = ([{ text }]: IText[]) => text;
 
 export const defaultContext: any = {
 	action: (...args: any) => console.log(args),
@@ -27,7 +27,14 @@ type TFunctionReturn = (value: any) => Promise<void>;
 
 type TReturn = [TObjectReturn, TFunctionReturn];
 
-export const useBlockContext = ({ blockId, actionId, appId, initialValue }: any, context: BlockContext): TReturn => {
+interface IUseBlockContext {
+	blockId?: string;
+	actionId: string;
+	appId?: string;
+	initialValue?: string;
+}
+
+export const useBlockContext = ({ blockId, actionId, appId, initialValue }: IUseBlockContext, context: BlockContext): TReturn => {
 	const { action, appId: appIdFromContext, viewId, state, language, errors, values = {} } = useContext(KitContext);
 	const { value = initialValue } = values[actionId] || {};
 	const [loading, setLoading] = useState(false);
