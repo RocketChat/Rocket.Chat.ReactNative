@@ -45,17 +45,16 @@ const Attachments = React.memo(
 				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} theme={theme} />;
 			}
 			if (file.video_url) {
-				return (
-					<Video key={file.video_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} theme={theme} />
-				);
+				return <Video key={file.video_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} />;
 			}
 			if (file.actions && file.actions.length > 0) {
 				return <AttachedActions attachment={file} theme={theme} />;
 			}
-			if (file.title)
+			if (file.title) {
 				return (
 					<CollapsibleQuote key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />
 				);
+			}
 
 			return (
 				<Reply

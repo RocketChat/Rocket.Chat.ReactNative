@@ -7,7 +7,7 @@ import { IAttachment } from '../../definitions';
 export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
 export interface IMessageAttachments {
-	attachments: IAttachment[];
+	attachments?: IAttachment[];
 	timeFormat?: string;
 	showAttachment: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;

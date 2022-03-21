@@ -16,9 +16,10 @@ import I18n from '../../i18n';
 import { IAttachment } from '../../definitions/IAttachment';
 import RCActivityIndicator from '../ActivityIndicator';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { useTheme } from '../../theme';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
-const isTypeSupported = (type: any) => SUPPORTED_TYPES.indexOf(type) !== -1;
+const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
 
 const styles = StyleSheet.create({
 	button: {
@@ -33,21 +34,21 @@ const styles = StyleSheet.create({
 
 interface IMessageVideo {
 	file: IAttachment;
-	showAttachment: Function;
+	showAttachment: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
-	theme: string;
 }
 
 const Video = React.memo(
-	({ file, showAttachment, getCustomEmoji, theme }: IMessageVideo) => {
+	({ file, showAttachment, getCustomEmoji }: IMessageVideo) => {
 		const { baseUrl, user } = useContext(MessageContext);
 		const [loading, setLoading] = useState(false);
+		const { theme } = useTheme();
 
 		if (!baseUrl) {
 			return null;
 		}
 		const onPress = async () => {
-			if (isTypeSupported(file.video_type)) {
+			if (file.video_type && isTypeSupported(file.video_type)) {
 				return showAttachment(file);
 			}
 
@@ -89,7 +90,7 @@ const Video = React.memo(
 			</>
 		);
 	},
-	(prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme
+	(prevProps, nextProps) => dequal(prevProps.file, nextProps.file)
 );
 
 export default Video;
