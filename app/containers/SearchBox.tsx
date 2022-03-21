@@ -57,14 +57,14 @@ interface ISearchBox {
 	onChangeText: TextInputProps['onChangeText'];
 	onSubmitEditing?: () => void;
 	hasCancel?: boolean;
-	onCancelPress?: Function;
+	onCancelPress?: () => void;
 	theme?: string;
 	inputRef?: React.Ref<RNTextInput>;
 	testID?: string;
 	onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
 }
 
-const CancelButton = (onCancelPress: Function, theme: string) => (
+const CancelButton = (onCancelPress: () => void, theme: string) => (
 	<Touchable onPress={onCancelPress} style={styles.cancel}>
 		<Text style={[styles.cancelText, { color: themes[theme].headerTintColor }]}>{I18n.t('Cancel')}</Text>
 	</Touchable>
@@ -104,7 +104,7 @@ const SearchBox = ({
 				{...props}
 			/>
 		</View>
-		{hasCancel ? CancelButton(onCancelPress!, theme!) : null}
+		{hasCancel && onCancelPress ? CancelButton(onCancelPress, theme!) : null}
 	</View>
 );
 
