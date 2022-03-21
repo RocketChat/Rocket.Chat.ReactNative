@@ -1,10 +1,11 @@
 import React from 'react';
-import { Easing, StyleSheet, Text, View } from 'react-native';
-import { Audio } from 'expo-av';
+import { StyleSheet, Text, View } from 'react-native';
+import { Audio, AVPlaybackStatus } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import { dequal } from 'dequal';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { Sound } from 'expo-av/build/Audio/Sound';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
@@ -16,19 +17,17 @@ import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { IAttachment } from '../../definitions';
 
 interface IButton {
 	loading: boolean;
 	paused: boolean;
 	theme: string;
-	onPress: Function;
+	onPress: () => void;
 }
 
 interface IMessageAudioProps {
-	file: {
-		audio_url?: string;
-		description?: string;
-	};
+	file: IAttachment;
 	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
@@ -83,12 +82,6 @@ const formatTime = (seconds: number) => moment.utc(seconds * 1000).format('mm:ss
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
-const sliderAnimationConfig = {
-	duration: 250,
-	easing: Easing.linear,
-	delay: 0
-};
-
 const Button = React.memo(({ loading, paused, onPress, theme }: IButton) => (
 	<Touchable
 		style={styles.playPauseButton}
@@ -108,7 +101,7 @@ Button.displayName = 'MessageAudioButton';
 class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
 	static contextType = MessageContext;
 
-	private sound: any;
+	private sound: Sound;
 
 	constructor(props: IMessageAudioProps) {
 		super(props);
@@ -141,7 +134,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		this.setState({ loading: false });
 	}
 
-	shouldComponentUpdate(nextProps: any, nextState: any) {
+	shouldComponentUpdate(nextProps: IMessageAudioProps, nextState: IMessageAudioState) {
 		const { currentTime, duration, paused, loading } = this.state;
 		const { file, theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -182,7 +175,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	}
 
-	onPlaybackStatusUpdate = (status: any) => {
+	onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
 		if (status) {
 			this.onLoad(status);
 			this.onProgress(status);
@@ -190,26 +183,32 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	};
 
-	onLoad = (data: any) => {
-		const duration = data.durationMillis / 1000;
-		this.setState({ duration: duration > 0 ? duration : 0 });
-	};
-
-	onProgress = (data: any) => {
-		const { duration } = this.state;
-		const currentTime = data.positionMillis / 1000;
-		if (currentTime <= duration) {
-			this.setState({ currentTime });
+	onLoad = (data: AVPlaybackStatus) => {
+		if (data.isLoaded && data.durationMillis) {
+			const duration = data.durationMillis / 1000;
+			this.setState({ duration: duration > 0 ? duration : 0 });
 		}
 	};
 
-	onEnd = async (data: any) => {
-		if (data.didJustFinish) {
-			try {
-				await this.sound.stopAsync();
-				this.setState({ paused: true, currentTime: 0 });
-			} catch {
-				// do nothing
+	onProgress = (data: AVPlaybackStatus) => {
+		if (data.isLoaded) {
+			const { duration } = this.state;
+			const currentTime = data.positionMillis / 1000;
+			if (currentTime <= duration) {
+				this.setState({ currentTime });
+			}
+		}
+	};
+
+	onEnd = async (data: AVPlaybackStatus) => {
+		if (data.isLoaded) {
+			if (data.didJustFinish) {
+				try {
+					await this.sound.stopAsync();
+					this.setState({ paused: true, currentTime: 0 });
+				} catch {
+					// do nothing
+				}
 			}
 		}
 	};
@@ -238,7 +237,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	};
 
-	onValueChange = async (value: any) => {
+	onValueChange = async (value: number) => {
 		try {
 			this.setState({ currentTime: value });
 			await this.sound.setPositionAsync(value * 1000);
@@ -270,9 +269,6 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 						value={currentTime}
 						maximumValue={duration}
 						minimumValue={0}
-						/* @ts-ignore*/ // TODO - should we remove this props ? animateTransitions, animationConfig they dont exist on Slider
-						animateTransitions
-						animationConfig={sliderAnimationConfig}
 						thumbTintColor={isAndroid && themes[theme].tintColor}
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}

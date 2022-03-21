@@ -16,7 +16,7 @@ import { IAttachment } from '../../definitions';
 const AttachedActions = ({ attachment, theme }: { attachment: IAttachment; theme: string }) => {
 	const { onAnswerButtonPress } = useContext(MessageContext);
 
-	const attachedButtons = attachment?.actions?.map((element: { type: string; msg: string; text: string }) => {
+	const attachedButtons = attachment?.actions?.map(element => {
 		if (element.type === 'button') {
 			return <Button theme={theme} onPress={() => onAnswerButtonPress(element.msg)} title={element.text} />;
 		}
