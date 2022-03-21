@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
-import { transparentize } from 'color2k';
 import { dequal } from 'dequal';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
@@ -16,22 +15,24 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { IAttachment } from '../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import RCActivityIndicator from '../ActivityIndicator';
+import Attachments from './Attachments';
+import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	button: {
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 6,
+		marginVertical: 4,
 		alignSelf: 'flex-start',
-		borderWidth: 1,
-		borderRadius: 4
+		borderLeftWidth: 2
 	},
 	attachmentContainer: {
 		flex: 1,
 		borderRadius: 4,
 		flexDirection: 'column',
-		padding: 15
+		paddingVertical: 4,
+		paddingLeft: 8
 	},
 	backdrop: {
 		...StyleSheet.absoluteFillObject
@@ -39,7 +40,8 @@ const styles = StyleSheet.create({
 	authorContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		marginBottom: 8
 	},
 	author: {
 		flex: 1,
@@ -48,9 +50,8 @@ const styles = StyleSheet.create({
 	},
 	time: {
 		fontSize: 12,
-		marginLeft: 10,
-		...sharedStyles.textRegular,
-		fontWeight: '300'
+		marginLeft: 8,
+		...sharedStyles.textRegular
 	},
 	fieldsContainer: {
 		flex: 1,
@@ -114,7 +115,6 @@ interface IMessageReply {
 	attachment: IAttachment;
 	timeFormat?: string;
 	index: number;
-	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 }
 
@@ -123,10 +123,10 @@ const Title = React.memo(({ attachment, timeFormat, theme }: IMessageTitle) => {
 	return (
 		<View style={styles.authorContainer}>
 			{attachment.author_name ? (
-				<Text style={[styles.author, { color: themes[theme].bodyText }]}>{attachment.author_name}</Text>
+				<Text style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>{attachment.author_name}</Text>
 			) : null}
 			{attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
-			{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text> : null}
+			{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryTintColor }]}>{time}</Text> : null}
 		</View>
 	);
 });
@@ -138,7 +138,16 @@ const Description = React.memo(
 			return null;
 		}
 		const { baseUrl, user } = useContext(MessageContext);
-		return <Markdown msg={text} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />;
+		return (
+			<Markdown
+				msg={text}
+				style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14 }]}
+				baseUrl={baseUrl}
+				username={user.username}
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+			/>
+		);
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.attachment.text !== nextProps.attachment.text) {
@@ -195,12 +204,14 @@ const Fields = React.memo(
 );
 
 const Reply = React.memo(
-	({ attachment, timeFormat, index, getCustomEmoji, theme }: IMessageReply) => {
+	({ attachment, timeFormat, index, getCustomEmoji }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 
 		if (!attachment) {
 			return null;
 		}
+
+		const { theme } = useTheme();
 		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
 
 		const onPress = async () => {
@@ -221,14 +232,9 @@ const Reply = React.memo(
 			openLink(url, theme);
 		};
 
-		let { borderColor, chatComponentBackground: backgroundColor } = themes[theme];
-		try {
-			if (attachment.color) {
-				backgroundColor = transparentize(attachment.color, 0.8);
-				borderColor = attachment.color;
-			}
-		} catch (e) {
-			// fallback to default
+		let { borderColor } = themes[theme];
+		if (attachment.color) {
+			borderColor = attachment.color;
 		}
 
 		return (
@@ -240,7 +246,6 @@ const Reply = React.memo(
 						index > 0 && styles.marginTop,
 						attachment.description && styles.marginBottom,
 						{
-							backgroundColor,
 							borderColor
 						}
 					]}
@@ -248,6 +253,13 @@ const Reply = React.memo(
 					disabled={loading}>
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+						<Attachments
+							attachments={attachment.attachments}
+							getCustomEmoji={getCustomEmoji}
+							timeFormat={timeFormat}
+							style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14, marginBottom: 8 }]}
+							isReply
+						/>
 						<UrlImage image={attachment.thumb_url} />
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
@@ -273,7 +285,7 @@ const Reply = React.memo(
 			</>
 		);
 	},
-	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment) && prevProps.theme === nextProps.theme
+	(prevProps, nextProps) => dequal(prevProps.attachment, nextProps.attachment)
 );
 
 Reply.displayName = 'MessageReply';
