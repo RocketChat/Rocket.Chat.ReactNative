@@ -10,6 +10,7 @@ import Reply from './Reply';
 import Button from '../Button';
 import styles from './styles';
 import MessageContext from './Context';
+import CollapsibleQuote from './Components/CollapsibleQuote';
 
 const AttachedActions = ({ attachment, theme }: IMessageAttachedActions) => {
 	const { onAnswerButtonPress } = useContext(MessageContext);
@@ -51,6 +52,10 @@ const Attachments = React.memo(
 			if (file.actions && file.actions.length > 0) {
 				return <AttachedActions attachment={file} theme={theme} />;
 			}
+			if (file.title)
+				return (
+					<CollapsibleQuote key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />
+				);
 
 			return (
 				<Reply

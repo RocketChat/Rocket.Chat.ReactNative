@@ -8,6 +8,7 @@ import { themes } from '../../../constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { useOrientation } from '../../../dimensions';
+import { useTheme } from '../../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -38,7 +39,6 @@ interface IRoomHeader {
 	server: string;
 	showServerDropdown: boolean;
 	showSearchHeader: boolean;
-	theme: string;
 	onSearchChangeText: TextInputProps['onChangeText'];
 	onPress: TouchableOpacityProps['onPress'];
 }
@@ -52,10 +52,10 @@ const Header = React.memo(
 		server,
 		showServerDropdown,
 		showSearchHeader,
-		theme,
 		onSearchChangeText,
 		onPress
 	}: IRoomHeader) => {
+		const { theme } = useTheme();
 		const titleColorStyle = { color: themes[theme].headerTitleColor };
 		const isLight = theme === 'light';
 		const { isLandscape } = useOrientation();
