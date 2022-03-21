@@ -2,13 +2,14 @@ import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import { IUserChannel, IUserMention } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { IAttachment } from '../../definitions';
 
 export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
 export interface IMessageAttachments {
 	attachments: any;
 	timeFormat?: string;
-	showAttachment: Function;
+	showAttachment: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }

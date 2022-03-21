@@ -37,9 +37,7 @@ const Attachments = React.memo(
 
 		return attachments.map((file: any, index: number) => {
 			if (file.image_url) {
-				return (
-					<Image key={file.image_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} theme={theme} />
-				);
+				return <Image key={file.image_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} />;
 			}
 			if (file.audio_url) {
 				return <Audio key={file.audio_url} file={file} getCustomEmoji={getCustomEmoji} theme={theme} />;

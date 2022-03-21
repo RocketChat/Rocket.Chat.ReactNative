@@ -10,7 +10,7 @@ import messagesStatus from '../../constants/messagesStatus';
 import { withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { TAnyMessageModel } from '../../definitions';
+import { IAttachment, TAnyMessageModel } from '../../definitions';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -46,7 +46,7 @@ interface IMessageContainerProps {
 	replyBroadcast?: Function;
 	reactionInit?: Function;
 	fetchThreadName?: Function;
-	showAttachment?: Function;
+	showAttachment: (file: IAttachment) => void;
 	onReactionLongPress?: Function;
 	navToRoomInfo?: Function;
 	callJitsi?: Function;
@@ -72,7 +72,6 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		replyBroadcast: () => {},
 		reactionInit: () => {},
 		fetchThreadName: () => {},
-		showAttachment: () => {},
 		onReactionLongPress: () => {},
 		navToRoomInfo: () => {},
 		callJitsi: () => {},
@@ -442,7 +441,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					isTemp={this.isTemp}
 					isEncrypted={this.isEncrypted}
 					hasError={this.hasError}
-					showAttachment={showAttachment!}
+					showAttachment={showAttachment}
 					getCustomEmoji={getCustomEmoji}
 					navToRoomInfo={navToRoomInfo!}
 					callJitsi={callJitsi!}

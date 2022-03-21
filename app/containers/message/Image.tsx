@@ -12,38 +12,30 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-
-type TMessageButton = {
-	children: JSX.Element;
-	onPress: Function;
-	theme: string;
-};
-
-type TMessageImage = {
-	img: string;
-	theme: string;
-};
+import { useTheme } from '../../theme';
+import { IAttachment } from '../../definitions';
 
 interface IMessageImage {
 	file: { image_url: string; description?: string };
 	imageUrl?: string;
-	showAttachment: Function;
-	theme: string;
-	getCustomEmoji: TGetCustomEmoji;
+	showAttachment: (file: IAttachment) => void;
+	getCustomEmoji?: TGetCustomEmoji;
 }
 
 const ImageProgress = createImageProgress(FastImage);
 
-const Button = React.memo(({ children, onPress, theme }: TMessageButton) => (
-	<Touchable onPress={onPress} style={styles.imageContainer} background={Touchable.Ripple(themes[theme].bannerBackground)}>
-		{children}
-	</Touchable>
-));
+const Button = React.memo(
+	({ children, onPress, theme }: { children: React.ReactElement; onPress: () => void; theme: string }) => (
+		<Touchable onPress={onPress} style={styles.imageContainer} background={Touchable.Ripple(themes[theme].bannerBackground)}>
+			{children}
+		</Touchable>
+	)
+);
 
-export const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
+export const MessageImage = React.memo(({ imgUri, theme }: { imgUri: string; theme: string }) => (
 	<ImageProgress
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
-		source={{ uri: encodeURI(img) }}
+		source={{ uri: encodeURI(imgUri) }}
 		resizeMode={FastImage.resizeMode.cover}
 		indicator={Progress.Pie}
 		indicatorProps={{
@@ -53,20 +45,22 @@ export const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
 ));
 
 const ImageContainer = React.memo(
-	({ file, imageUrl, showAttachment, getCustomEmoji, theme }: IMessageImage) => {
+	({ file, imageUrl, showAttachment, getCustomEmoji }: IMessageImage) => {
 		const { baseUrl, user } = useContext(MessageContext);
-		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
+		const { theme } = useTheme();
+		const img = imageUrl || (file.image_url ? formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl) : null);
+
 		if (!img) {
 			return null;
 		}
 
-		const onPress = () => showAttachment(file);
+		const onPress = () => showAttachment(file as IAttachment);
 
 		if (file.description) {
 			return (
 				<Button theme={theme} onPress={onPress}>
 					<View>
-						<MessageImage img={img} theme={theme} />
+						<MessageImage imgUri={img} theme={theme} />
 						<Markdown
 							msg={file.description}
 							baseUrl={baseUrl}
@@ -81,11 +75,11 @@ const ImageContainer = React.memo(
 
 		return (
 			<Button theme={theme} onPress={onPress}>
-				<MessageImage img={img} theme={theme} />
+				<MessageImage imgUri={img} theme={theme} />
 			</Button>
 		);
 	},
-	(prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme
+	(prevProps, nextProps) => dequal(prevProps.file, nextProps.file)
 );
 
 ImageContainer.displayName = 'MessageImageContainer';
