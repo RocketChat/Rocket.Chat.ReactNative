@@ -1,8 +1,8 @@
 {
-  "1_person_reacted": "تفاعل شخص 1",
-  "1_user": "مستخدم 1",
-  "error-action-not-allowed": "{{action}} غير مسموح",
-  "error-application-not-found": "لم يتم العثور على البرنامج",
+  "1_person_reacted": "تفاعل شخص واحد",
+  "1_user": "مستخدم واحد",
+  "error-action-not-allowed": "غير مسموح بالإجراء {{action}}",
+  "error-application-not-found": "لم يتم العثور على التطبيق",
   "error-archived-duplicate-name": "هناك قناة مؤرشفة باسم {{room_name}}",
   "error-avatar-invalid-url": "عنوان الصورة الرمزية غير صحيح: {{url}}",
   "error-avatar-url-handling": "خطأ في معالجة الصورة الرمزية ({{url}}) للمستخدم {{username}}",
