@@ -285,7 +285,6 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 						value={currentTime}
 						maximumValue={duration}
 						minimumValue={0}
-						// @ts-ignore
 						animateTransitions
 						animationConfig={sliderAnimationConfig}
 						thumbTintColor={isReply ? themes[theme].tintDisabled : isAndroid && themes[theme].tintColor}
