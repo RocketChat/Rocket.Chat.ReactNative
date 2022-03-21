@@ -143,6 +143,7 @@
 		"@rocket.chat/eslint-config": "^0.4.0",
 		"@storybook/addon-storyshots": "5.3.21",
 		"@storybook/react-native": "5.3.25",
+		"@testing-library/jest-native": "^4.0.4",
 		"@testing-library/react-native": "^9.0.0",
 		"@types/bytebuffer": "^5.0.43",
 		"@types/ejson": "^2.1.3",
@@ -205,7 +206,10 @@
 		},
 		"transform": {
 			"^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-		}
+		},
+		"setupFilesAfterEnv": [
+			"@testing-library/jest-native/extend-expect"
+		]
 	},
 	"snyk": true,
 	"engines": {

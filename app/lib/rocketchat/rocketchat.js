@@ -2,14 +2,10 @@ import { Q } from '@nozbe/watermelondb';
 import AsyncStorage from '@react-native-community/async-storage';
 import { InteractionManager } from 'react-native';
 import { setActiveUsers } from '../../actions/activeUsers';
-import { encryptionInit } from '../../actions/encryption';
 import { setUser } from '../../actions/login';
-import { shareSelectServer, shareSetSettings, shareSetUser } from '../../actions/share';
 import defaultSettings from '../../constants/settings';
 import { getDeviceToken } from '../../notifications/push';
-import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import log from '../../utils/log';
-import SSLPinning from '../../utils/sslPinning';
 import database from '../database';
 import triggerBlockAction, { triggerCancel, triggerSubmitView } from '../methods/actions';
 import callJitsi, { callJitsiWithoutServer } from '../methods/callJitsi';
@@ -66,7 +62,8 @@ import {
 	stopListener,
 	connect
 } from './services/connect';
-import * as restAPis from './services/restApi';
+import { shareExtensionInit, closeShareExtension } from './services/shareExtension';
+import * as restApis from './services/restApi';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
@@ -82,7 +79,7 @@ const RocketChat = {
 	TOKEN_KEY,
 	CURRENT_SERVER,
 	CERTIFICATE_KEY,
-	...restAPis,
+	...restApis,
 	...search,
 	callJitsi,
 	callJitsiWithoutServer,
@@ -110,92 +107,8 @@ const RocketChat = {
 	checkAndReopen,
 	disconnect,
 	connect,
-	async shareExtensionInit(server) {
-		database.setShareDB(server);
-
-		try {
-			const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
-			SSLPinning.setCertificate(certificate, server);
-		} catch {
-			// Do nothing
-		}
-
-		this.shareSDK = sdk.disconnect();
-		this.shareSDK = sdk.initialize(server);
-
-		// set Server
-		const currentServer = { server };
-		const serversDB = database.servers;
-		const serversCollection = serversDB.get('servers');
-		try {
-			const serverRecord = await serversCollection.find(server);
-			currentServer.version = serverRecord.version;
-		} catch {
-			// Record not found
-		}
-		reduxStore.dispatch(shareSelectServer(currentServer));
-
-		RocketChat.setCustomEmojis();
-
-		try {
-			// set Settings
-			const settings = ['Accounts_AvatarBlockUnauthenticatedAccess'];
-			const db = database.active;
-			const settingsCollection = db.get('settings');
-			const settingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(settings))).fetch();
-			const parsed = Object.values(settingsRecords).map(item => ({
-				_id: item.id,
-				valueAsString: item.valueAsString,
-				valueAsBoolean: item.valueAsBoolean,
-				valueAsNumber: item.valueAsNumber,
-				valueAsArray: item.valueAsArray,
-				_updatedAt: item._updatedAt
-			}));
-			reduxStore.dispatch(shareSetSettings(this.parseSettings(parsed)));
-
-			// set User info
-			const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
-			const userCollections = serversDB.get('users');
-			let user = null;
-			if (userId) {
-				const userRecord = await userCollections.find(userId);
-				user = {
-					id: userRecord.id,
-					token: userRecord.token,
-					username: userRecord.username,
-					roles: userRecord.roles
-				};
-			}
-			reduxStore.dispatch(shareSetUser(user));
-			await RocketChat.login({ resume: user.token });
-			reduxStore.dispatch(encryptionInit());
-		} catch (e) {
-			log(e);
-		}
-	},
-	closeShareExtension() {
-		this.shareSDK = sdk.disconnect();
-		database.share = null;
-
-		reduxStore.dispatch(shareSelectServer({}));
-		reduxStore.dispatch(shareSetUser({}));
-		reduxStore.dispatch(shareSetSettings({}));
-	},
-
-	async e2eFetchMyKeys() {
-		// RC 0.70.0
-		const sdk = this.shareSDK || this.sdk;
-		const result = await sdk.get('e2e.fetchMyKeys');
-		// snake_case -> camelCase
-		if (result.success) {
-			return {
-				success: result.success,
-				publicKey: result.public_key,
-				privateKey: result.private_key
-			};
-		}
-		return result;
-	},
+	shareExtensionInit,
+	closeShareExtension,
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,
@@ -207,34 +120,6 @@ const RocketChat = {
 	},
 	removeServer,
 	clearCache,
-	registerPushToken() {
-		return new Promise(async resolve => {
-			const token = getDeviceToken();
-			if (token) {
-				const type = isIOS ? 'apn' : 'gcm';
-				const data = {
-					value: token,
-					type,
-					appName: getBundleId
-				};
-				try {
-					// RC 0.60.0
-					await this.post('push.token', data);
-				} catch (error) {
-					console.log(error);
-				}
-			}
-			return resolve();
-		});
-	},
-	removePushToken() {
-		const token = getDeviceToken();
-		if (token) {
-			// RC 0.60.0
-			return this.sdk.del('push.token', { token });
-		}
-		return Promise.resolve();
-	},
 	loadMissedMessages,
 	loadMessagesForRoom,
 	loadSurroundingMessages,
