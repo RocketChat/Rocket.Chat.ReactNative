@@ -36,6 +36,7 @@ const AttachedActions = ({ attachment }: IMessageAttachedActions) => {
 };
 
 const Attachments = React.memo(
+	// @ts-ignore
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply }: IMessageAttachments) => {
 		if (!attachments || attachments.length === 0) {
 			return null;
