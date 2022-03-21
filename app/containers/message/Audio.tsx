@@ -26,8 +26,8 @@ interface IButton {
 
 interface IMessageAudioProps {
 	file: {
-		audio_url: string;
-		description: string;
+		audio_url?: string;
+		description?: string;
 	};
 	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
@@ -128,7 +128,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		const { baseUrl, user } = this.context;
 
 		let url = file.audio_url;
-		if (!url.startsWith('http')) {
+		if (url && !url.startsWith('http')) {
 			url = `${baseUrl}${file.audio_url}`;
 		}
 
@@ -270,14 +270,14 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 						value={currentTime}
 						maximumValue={duration}
 						minimumValue={0}
+						/* @ts-ignore*/ // TODO - should we remove this props ? animateTransitions, animationConfig they dont exist on Slider
 						animateTransitions
 						animationConfig={sliderAnimationConfig}
 						thumbTintColor={isAndroid && themes[theme].tintColor}
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
 						onValueChange={this.onValueChange}
-						/* @ts-ignore*/
-						thumbImage={isIOS && { uri: 'audio_thumb', scale }}
+						thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>

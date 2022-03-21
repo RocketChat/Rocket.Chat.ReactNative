@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { dequal } from 'dequal';
 import { Text } from 'react-native';
 
-import { IMessageAttachments, IMessageAttachedActions } from './interfaces';
+import { IMessageAttachments } from './interfaces';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
@@ -11,11 +11,12 @@ import Button from '../Button';
 import styles from './styles';
 import MessageContext from './Context';
 import CollapsibleQuote from './Components/CollapsibleQuote';
+import { IAttachment } from '../../definitions';
 
-const AttachedActions = ({ attachment, theme }: IMessageAttachedActions) => {
+const AttachedActions = ({ attachment, theme }: { attachment: IAttachment; theme: string }) => {
 	const { onAnswerButtonPress } = useContext(MessageContext);
 
-	const attachedButtons = attachment.actions.map((element: { type: string; msg: string; text: string }) => {
+	const attachedButtons = attachment?.actions?.map((element: { type: string; msg: string; text: string }) => {
 		if (element.type === 'button') {
 			return <Button theme={theme} onPress={() => onAnswerButtonPress(element.msg)} title={element.text} />;
 		}
@@ -30,12 +31,13 @@ const AttachedActions = ({ attachment, theme }: IMessageAttachedActions) => {
 };
 
 const Attachments = React.memo(
-	({ attachments, timeFormat, showAttachment, getCustomEmoji, theme }: IMessageAttachments) => {
+	// TODO - change this any to React.ReactElement[] | null
+	({ attachments, timeFormat, showAttachment, getCustomEmoji, theme }: IMessageAttachments): any => {
 		if (!attachments || attachments.length === 0) {
 			return null;
 		}
 
-		return attachments.map((file: any, index: number) => {
+		return attachments.map((file: IAttachment, index: number) => {
 			if (file.image_url) {
 				return <Image key={file.image_url} file={file} showAttachment={showAttachment} getCustomEmoji={getCustomEmoji} />;
 			}

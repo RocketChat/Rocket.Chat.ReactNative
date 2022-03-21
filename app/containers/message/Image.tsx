@@ -16,7 +16,7 @@ import { useTheme } from '../../theme';
 import { IAttachment } from '../../definitions';
 
 interface IMessageImage {
-	file: { image_url: string; description?: string };
+	file: { image_url?: string; description?: string };
 	imageUrl?: string;
 	showAttachment: (file: IAttachment) => void;
 	getCustomEmoji?: TGetCustomEmoji;
