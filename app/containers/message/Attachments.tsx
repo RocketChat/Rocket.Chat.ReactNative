@@ -12,7 +12,7 @@ import styles from './styles';
 import MessageContext from './Context';
 import { useTheme } from '../../theme';
 import { IAttachment } from '../../definitions';
-import CollapsibleQuote from './Components/CollapsibleQuote';
+import CollapsibleQuote from './components/CollapsibleQuote';
 
 const AttachedActions = ({ attachment }: IMessageAttachedActions) => {
 	if (!attachment.actions) {

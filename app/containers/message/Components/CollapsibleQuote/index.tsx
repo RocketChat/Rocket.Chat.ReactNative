@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: 6,
-		borderWidth: 1,
-		borderRadius: 4,
+		borderTopLeftRadius: 2,
+		borderBottomLeftRadius: 2,
 		minHeight: 40
 	},
 	attachmentContainer: {

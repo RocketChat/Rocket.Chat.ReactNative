@@ -12,7 +12,7 @@ export interface IAttachment {
 	video_type?: string;
 	audio_url?: string;
 	title_link_download?: boolean;
-	attachments: IAttachment[];
+	attachments?: IAttachment[];
 	fields?: IAttachment[];
 	image_dimensions?: { width?: number; height?: number };
 	image_preview?: string;
@@ -27,7 +27,6 @@ export interface IAttachment {
 	author_link?: string;
 	color?: string;
 	thumb_url?: string;
-	attachments?: any[];
 	collapsed?: boolean;
 }
 
