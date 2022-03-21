@@ -8,7 +8,7 @@ import { IAttachment } from '../../definitions';
 export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
 export interface IMessageAttachments {
-	attachments: any;
+	attachments: IAttachment[];
 	timeFormat?: string;
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;

@@ -3,6 +3,7 @@ import { dequal } from 'dequal';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { animateNextTransition } from '../../../../utils/layoutAnimation';
 import { themes } from '../../../../constants/colors';
 import { IAttachment } from '../../../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
@@ -119,6 +120,7 @@ const CollapsibleQuote = React.memo(
 
 		const onPress = () => {
 			setCollapsed(!collapsed);
+			animateNextTransition();
 		};
 
 		let {
