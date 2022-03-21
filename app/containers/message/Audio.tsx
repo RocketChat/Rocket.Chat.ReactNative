@@ -287,12 +287,11 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 						minimumValue={0}
 						animateTransitions
 						animationConfig={sliderAnimationConfig}
-						thumbTintColor={isAndroid && themes[theme].tintColor}
+						thumbTintColor={isReply ? themes[theme].tintDisabled : isAndroid && themes[theme].tintColor}
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
 						onValueChange={this.onValueChange}
-						/* @ts-ignore*/
-						thumbImage={isIOS && { uri: 'audio_thumb', scale }}
+						thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
