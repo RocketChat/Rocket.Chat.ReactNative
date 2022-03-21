@@ -1,14 +1,14 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import database from '../database';
-import { Encryption } from '../encryption';
 import { MESSAGE_TYPE_ANY_LOAD } from '../../constants/messageTypeLoad';
-import { generateLoadMoreId } from '../utils';
-import protectedFunction from './helpers/protectedFunction';
-import buildMessage from './helpers/buildMessage';
-import { IMessage, TMessageModel, TThreadMessageModel, TThreadModel } from '../../definitions';
+import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
+import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
+import { Encryption } from '../encryption';
+import { generateLoadMoreId } from '../utils';
+import buildMessage from './helpers/buildMessage';
+import protectedFunction from './helpers/protectedFunction';
 
 interface IUpdateMessages {
 	rid: string;
@@ -27,9 +27,11 @@ export default async function updateMessages({
 		return Promise.resolve(0);
 	}
 
-	const sub = await getSubscriptionByRoomId(rid);
+	let sub = (await getSubscriptionByRoomId(rid)) as TSubscriptionModel;
 	if (!sub) {
-		throw new Error('updateMessages: subscription not found');
+		sub = { id: rid } as any;
+		// TODO: If I didn't join the room I obviously don't have a subscription, this error catch is imperfect. Think of a way to handle the error when I actually try to open a room without subscription.
+		console.log('updateMessages: subscription not found');
 	}
 
 	const db = database.active;

@@ -37,6 +37,21 @@ class AvatarContainer extends React.Component<IAvatar, any> {
 		}
 	}
 
+	shouldComponentUpdate(nextProps: IAvatar, nextState: { avatarETag: string }) {
+		const { avatarETag } = this.state;
+		const { text, type } = this.props;
+		if (nextState.avatarETag !== avatarETag) {
+			return true;
+		}
+		if (nextProps.text !== text) {
+			return true;
+		}
+		if (nextProps.type !== type) {
+			return true;
+		}
+		return false;
+	}
+
 	componentWillUnmount() {
 		if (this.subscription?.unsubscribe) {
 			this.subscription.unsubscribe();

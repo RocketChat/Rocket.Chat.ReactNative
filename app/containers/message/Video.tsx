@@ -77,11 +77,7 @@ const Video = React.memo(
 					onPress={onPress}
 					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
 					background={Touchable.Ripple(themes[theme].bannerBackground)}>
-					{loading ? (
-						<RCActivityIndicator theme={theme} />
-					) : (
-						<CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />
-					)}
+					{loading ? <RCActivityIndicator /> : <CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />}
 				</Touchable>
 				<Markdown
 					msg={file.description}

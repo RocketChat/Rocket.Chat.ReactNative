@@ -1,13 +1,12 @@
 import React from 'react';
 import { ActivityIndicator, ImageBackground, StyleSheet, Text, View } from 'react-native';
 
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 
 interface IBackgroundContainer {
 	text?: string;
-	theme?: string;
 	loading?: boolean;
 }
 
@@ -32,12 +31,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-const BackgroundContainer = ({ theme, text, loading }: IBackgroundContainer) => (
-	<View style={styles.container}>
-		<ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />
-		{text && !loading ? <Text style={[styles.text, { color: themes[theme!].auxiliaryTintColor }]}>{text}</Text> : null}
-		{loading ? <ActivityIndicator style={styles.text} color={themes[theme!].auxiliaryTintColor} /> : null}
-	</View>
-);
+const BackgroundContainer = ({ text, loading }: IBackgroundContainer): React.ReactElement => {
+	const { theme } = useTheme();
+	return (
+		<View style={styles.container}>
+			<ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />
+			{text && !loading ? <Text style={[styles.text, { color: themes[theme].auxiliaryTintColor }]}>{text}</Text> : null}
+			{loading ? <ActivityIndicator style={styles.text} color={themes[theme].auxiliaryTintColor} /> : null}
+		</View>
+	);
+};
 
-export default withTheme(BackgroundContainer);
+export default BackgroundContainer;
