@@ -9,21 +9,36 @@ import { connect } from 'react-redux';
 import TextInput from '../TextInput';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
+import { IApplicationState } from '../../definitions';
 
 export const TWO_FACTOR = 'TWO_FACTOR';
 
-interface ITwoFactor {
-	theme?: string;
-	isMasterDetail: boolean;
+interface IMethodsProp {
+	text: string;
+	keyboardType: 'numeric' | 'default';
+	title?: string;
+	secureTextEntry?: boolean;
+}
+interface IMethods {
+	totp: IMethodsProp;
+	email: IMethodsProp;
+	password: IMethodsProp;
 }
 
-const methods: any = {
+interface EventListenerMethod {
+	method?: keyof IMethods;
+	submit?: (param: string) => void;
+	cancel?: () => void;
+	invalid?: boolean;
+}
+
+const methods: IMethods = {
 	totp: {
 		text: 'Open_your_authentication_app_and_enter_the_code',
 		keyboardType: 'numeric'
@@ -40,14 +55,14 @@ const methods: any = {
 	}
 };
 
-const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
+const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) => {
+	const { theme } = useTheme();
 	const [visible, setVisible] = useState(false);
-	const [data, setData] = useState<any>({});
-	const [code, setCode] = useState<any>('');
+	const [data, setData] = useState<EventListenerMethod>({});
+	const [code, setCode] = useState<string>('');
 
-	const method = methods[data.method];
+	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
-
 	const sendEmail = () => RocketChat.sendEmailCode();
 
 	useDeepCompareEffect(() => {
@@ -59,7 +74,7 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 		}
 	}, [data]);
 
-	const showTwoFactor = (args: any) => setData(args);
+	const showTwoFactor = (args: EventListenerMethod) => setData(args);
 
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(TWO_FACTOR, showTwoFactor);
@@ -87,26 +102,19 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 		setData({});
 	};
 
-	const color = themes[theme!].titleText;
+	const color = themes[theme].titleText;
 	return (
-		<Modal
-			// @ts-ignore
-			transparent
-			avoidKeyboard
-			useNativeDriver
-			isVisible={visible}
-			hideModalContentWhileAnimating>
+		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
 			<View style={styles.container} testID='two-factor'>
 				<View
 					style={[
 						styles.content,
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-						{ backgroundColor: themes[theme!].backgroundColor }
+						{ backgroundColor: themes[theme].backgroundColor }
 					]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 					<TextInput
-						/* @ts-ignore*/
 						value={code}
 						theme={theme}
 						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
@@ -116,19 +124,19 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 						onSubmitEditing={onSubmit}
 						keyboardType={method?.keyboardType}
 						secureTextEntry={method?.secureTextEntry}
-						error={data.invalid && { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') }}
+						error={data.invalid ? { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
 						testID='two-factor-input'
 					/>
-					{isEmail && (
+					{isEmail ? (
 						<Text style={[styles.sendEmail, { color }]} onPress={sendEmail}>
 							{I18n.t('Send_me_the_code_again')}
 						</Text>
-					)}
+					) : null}
 					<View style={styles.buttonContainer}>
 						<Button
 							title={I18n.t('Cancel')}
 							type='secondary'
-							backgroundColor={themes[theme!].chatComponentBackground}
+							backgroundColor={themes[theme].chatComponentBackground}
 							style={styles.button}
 							onPress={onCancel}
 							theme={theme}
@@ -148,8 +156,8 @@ const TwoFactor = React.memo(({ theme, isMasterDetail }: ITwoFactor) => {
 	);
 });
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(TwoFactor));
+export default connect(mapStateToProps)(TwoFactor);

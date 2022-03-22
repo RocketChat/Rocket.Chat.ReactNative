@@ -485,6 +485,24 @@ stories.add('Message with reply', () => (
 				}
 			]}
 		/>
+		<Message
+			msg='Looks cool!'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					attachments: [
+						{
+							author_name: 'rocket.cat',
+							ts: date,
+							timeFormat: 'LT',
+							description: 'What you think about this one?',
+							image_url: 'https://octodex.github.com/images/yaktocat.png'
+						}
+					],
+					text: ''
+				}
+			]}
+		/>
 	</>
 ));
 

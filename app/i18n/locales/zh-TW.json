@@ -21,6 +21,7 @@
   "error-save-video": "錯誤，無法儲存影片",
   "error-field-unavailable": "{{field}} 已被使用 :(",
   "error-file-too-large": "檔案太大",
+  "error-not-permission-to-upload-file": "You don't have permission to upload files",
   "error-importer-not-defined": "沒有正確定義，它缺少匯入類型",
   "error-input-is-not-a-valid-field": "{{input}}不是有效的{{field}}",
   "error-invalid-actionlink": "無效的操作連結",
