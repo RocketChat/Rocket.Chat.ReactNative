@@ -8,7 +8,7 @@ const Blocks = React.memo(({ blocks, id: mid, rid, blockAction }: IMessageBlocks
 		const appId = blocks[0]?.appId || '';
 		return React.createElement(
 			messageBlockWithContext({
-				action: async ({ actionId, value, blockId }: any) => {
+				action: async ({ actionId, value, blockId }: { actionId: string; value: string; blockId: string }) => {
 					await blockAction({
 						actionId,
 						appId,

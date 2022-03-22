@@ -42,11 +42,9 @@ export interface IMessageBroadcast {
 		_id: string;
 	};
 	broadcast: boolean;
-	theme: string;
 }
 
 export interface IMessageCallButton {
-	theme: string;
 	callJitsi: Function;
 }
 
