@@ -45,7 +45,7 @@ interface IMessageContainerProps {
 	errorActionsShow?: Function;
 	replyBroadcast?: Function;
 	reactionInit?: Function;
-	fetchThreadName?: Function;
+	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	showAttachment: (file: IAttachment) => void;
 	onReactionLongPress?: Function;
 	navToRoomInfo?: Function;
@@ -71,7 +71,6 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		errorActionsShow: () => {},
 		replyBroadcast: () => {},
 		reactionInit: () => {},
-		fetchThreadName: () => {},
 		showAttachment: () => {},
 		onReactionLongPress: () => {},
 		navToRoomInfo: () => {},
@@ -428,7 +427,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					// @ts-ignore
 					tlm={tlm}
 					tmsg={tmsg}
-					fetchThreadName={fetchThreadName!}
+					fetchThreadName={fetchThreadName}
 					// @ts-ignore
 					mentions={mentions}
 					channels={channels}

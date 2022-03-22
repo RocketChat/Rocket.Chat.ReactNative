@@ -3,7 +3,7 @@ import { StyleProp, TextStyle } from 'react-native';
 
 import { IUserChannel, IUserMention } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, SubscriptionType } from '../../definitions';
+import { IAttachment, IThread, SubscriptionType } from '../../definitions';
 
 export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
@@ -107,13 +107,9 @@ export interface IMessageTouchable {
 	drid?: any;
 }
 
-export interface IMessageRepliedThread {
-	tmid?: string;
-	tmsg?: string;
-	id: string;
+export interface IMessageRepliedThread extends Pick<IThread, 'tmid' | 'tmsg' | 'id'> {
 	isHeader: boolean;
-	theme: string;
-	fetchThreadName: Function;
+	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	isEncrypted: boolean;
 }
 
