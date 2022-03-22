@@ -1000,7 +1000,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		if (loading) {
-			return <ActivityIndicator theme={theme} />;
+			return <ActivityIndicator />;
 		}
 
 		return (

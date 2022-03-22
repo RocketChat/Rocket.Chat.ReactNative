@@ -70,7 +70,6 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
 	if (item?.ts) {
-		// @ts-ignore TODO: to be fixed after we unify our types
 		time = formatDateThreads(item.ts);
 	}
 
@@ -78,15 +77,15 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 		<Touchable
 			onPress={() => onPress(item)}
 			testID={`thread-messages-view-${item.msg}`}
-			style={{ backgroundColor: themes[theme!].backgroundColor }}>
+			style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} theme={theme} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: themes[theme!].titleText }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
 							{username}
 						</Text>
-						<Text style={[styles.time, { color: themes[theme!].auxiliaryText }]}>{time}</Text>
+						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
 						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} />

@@ -292,7 +292,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={List.Separator}
 					keyboardShouldPersistTaps='always'
-					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+					ListFooterComponent={loading ? <ActivityIndicator /> : null}
 					onEndReached={() => this.load({})}
 				/>
 				{showOptionsDropdown ? (
