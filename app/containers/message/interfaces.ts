@@ -98,7 +98,7 @@ export interface IMessageEmoji {
 
 export interface IMessageThread {
 	msg?: string;
-	tcount?: number;
+	tcount?: number | null;
 	theme: string;
 	tlm?: Date;
 	isThreadRoom: boolean;

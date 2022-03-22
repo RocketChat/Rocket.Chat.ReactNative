@@ -52,7 +52,7 @@ interface IThreadDetails {
 
 const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IThreadDetails): JSX.Element => {
 	const { theme } = useTheme();
-	let count: string | number | undefined = item.tcount;
+	let count: string | number | undefined | null = item.tcount;
 	if (count && count >= 1000) {
 		count = '+999';
 	}
