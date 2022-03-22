@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { PADDING_HORIZONTAL } from './constants';
 
 const styles = StyleSheet.create({
@@ -20,18 +20,20 @@ const styles = StyleSheet.create({
 
 interface IListHeader {
 	title: string;
-	theme?: string;
 	translateTitle?: boolean;
 }
 
-const ListHeader = React.memo(({ title, theme, translateTitle = true }: IListHeader) => (
-	<View style={styles.container}>
-		<Text style={[styles.title, { color: themes[theme!].infoText }]} numberOfLines={1}>
-			{translateTitle ? I18n.t(title) : title}
-		</Text>
-	</View>
-));
+const ListHeader = React.memo(({ title, translateTitle = true }: IListHeader) => {
+	const { theme } = useTheme();
+	return (
+		<View style={styles.container}>
+			<Text style={[styles.title, { color: themes[theme].infoText }]} numberOfLines={1}>
+				{translateTitle ? I18n.t(title) : title}
+			</Text>
+		</View>
+	);
+});
 
 ListHeader.displayName = 'List.Header';
 
-export default withTheme(ListHeader);
+export default ListHeader;
