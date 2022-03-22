@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { appStart } from '../../actions/app';
 import { logout } from '../../actions/login';
 import { selectServerRequest } from '../../actions/server';
-import { themes } from '../../constants/colors';
 import { isFDroidBuild } from '../../constants/environment';
 import { APP_STORE_LINK, FDROID_MARKET_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../constants/links';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -171,7 +170,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 	};
 
 	render() {
-		const { server, isMasterDetail, theme } = this.props;
+		const { server, isMasterDetail, colors } = this.props;
 		return (
 			<SafeAreaView testID='settings-view'>
 				<StatusBar />
@@ -274,7 +273,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 							testID='settings-view-clear-cache'
 							onPress={this.handleClearCache}
 							showActionIndicator
-							color={themes[theme].dangerColor}
+							color={colors.dangerColor}
 						/>
 						<List.Separator />
 						<List.Item
@@ -282,7 +281,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 							testID='settings-logout'
 							onPress={this.handleLogout}
 							showActionIndicator
-							color={themes[theme].dangerColor}
+							color={colors.dangerColor}
 						/>
 						<List.Separator />
 					</List.Section>
