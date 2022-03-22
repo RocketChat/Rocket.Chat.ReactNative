@@ -3,16 +3,18 @@ import { Easing, Notifier, NotifierRoot } from 'react-native-notifier';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import NotifierComponent from './NotifierComponent';
+import NotifierComponent, { INotifierComponent } from './NotifierComponent';
 import EventEmitter from '../../utils/events';
 import Navigation from '../../lib/Navigation';
 import { getActiveRoute } from '../../utils/navigation';
+import { IApplicationState } from '../../definitions';
+import { IRoom } from '../../reducers/room';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
 const InAppNotification = memo(
-	({ rooms, appState }: { rooms: any; appState: string }) => {
-		const show = (notification: any) => {
+	({ rooms, appState }: { rooms: IRoom['rooms']; appState: string }) => {
+		const show = (notification: INotifierComponent['notification']) => {
 			if (appState !== 'foreground') {
 				return;
 			}
@@ -46,7 +48,7 @@ const InAppNotification = memo(
 	(prevProps, nextProps) => dequal(prevProps.rooms, nextProps.rooms)
 );
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	rooms: state.room.rooms,
 	appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
 });
