@@ -109,20 +109,6 @@ const RocketChat = {
 	connect,
 	shareExtensionInit,
 	closeShareExtension,
-
-	async e2eFetchMyKeys() {
-		// RC 0.70.0
-		const result = await sdk.get('e2e.fetchMyKeys');
-		// snake_case -> camelCase
-		if (result.success) {
-			return {
-				success: result.success,
-				publicKey: result.public_key,
-				privateKey: result.private_key
-			};
-		}
-		return result;
-	},
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,
