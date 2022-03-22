@@ -130,8 +130,8 @@ export interface IMessage extends IMessageFromServer {
 	dcount?: number;
 	dlm?: string | Date;
 	tmid?: string;
-	tcount?: number;
-	tlm?: string | Date;
+	tcount?: number | null;
+	tlm?: string | Date | null;
 	replies?: string[];
 	unread?: boolean;
 	autoTranslate?: boolean;
