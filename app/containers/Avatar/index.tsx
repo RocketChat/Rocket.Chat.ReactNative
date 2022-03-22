@@ -10,8 +10,6 @@ import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 
 class AvatarContainer extends React.Component<IAvatar, any> {
-	private mounted: boolean;
-
 	private subscription?: Subscription;
 
 	static defaultProps = {
@@ -21,13 +19,8 @@ class AvatarContainer extends React.Component<IAvatar, any> {
 
 	constructor(props: IAvatar) {
 		super(props);
-		this.mounted = false;
 		this.state = { avatarETag: '' };
 		this.init();
-	}
-
-	componentDidMount() {
-		this.mounted = true;
 	}
 
 	componentDidUpdate(prevProps: IAvatar) {

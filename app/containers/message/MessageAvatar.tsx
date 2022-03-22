@@ -4,12 +4,13 @@ import Avatar from '../Avatar';
 import styles from './styles';
 import MessageContext from './Context';
 import { IMessageAvatar } from './interfaces';
+import { SubscriptionType } from '../../definitions';
 
 const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
 	const { user } = useContext(MessageContext);
 	if (isHeader && author) {
 		const navParam = {
-			t: 'd',
+			t: SubscriptionType.DIRECT,
 			rid: author._id
 		};
 		return (

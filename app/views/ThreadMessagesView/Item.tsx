@@ -70,7 +70,6 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
 	if (item?.ts) {
-		// TODO: to be fixed after we unify our types
 		time = formatDateThreads(item.ts);
 	}
 
