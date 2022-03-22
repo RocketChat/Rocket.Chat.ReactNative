@@ -27,12 +27,12 @@ export const Thumb = ({ element, size = 88 }: IThumb) => (
 	<FastImage style={[{ width: size, height: size }, styles.image]} source={{ uri: element?.imageUrl }} />
 );
 
-export const Media = ({ element, theme }: IImage) => {
+export const Media = ({ element }: IImage) => {
 	const showAttachment = (attachment: any) => Navigation.navigate('AttachmentView', { attachment });
 	const imageUrl = element?.imageUrl ?? '';
 	// @ts-ignore
 	// TODO: delete ts-ignore after refactor Markdown and ImageContainer
-	return <ImageContainer file={{ image_url: imageUrl }} imageUrl={imageUrl} showAttachment={showAttachment} theme={theme} />;
+	return <ImageContainer file={{ image_url: imageUrl }} imageUrl={imageUrl} showAttachment={showAttachment} />;
 };
 
 const genericImage = (theme: TThemeMode, element: IElement, context?: number) => {

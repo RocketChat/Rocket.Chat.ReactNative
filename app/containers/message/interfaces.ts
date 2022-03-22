@@ -12,12 +12,8 @@ export interface IMessageAttachments {
 	timeFormat?: string;
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;
-	showAttachment?: Function;
+	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
-}
-
-export interface IMessageAttachedActions {
-	attachment: IAttachment;
 }
 
 export interface IMessageAvatar {

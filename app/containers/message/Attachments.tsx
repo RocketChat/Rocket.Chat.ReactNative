@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { dequal } from 'dequal';
 import { Text } from 'react-native';
 
-import { IMessageAttachments, IMessageAttachedActions } from './interfaces';
+import { IMessageAttachments } from './interfaces';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
@@ -14,14 +14,14 @@ import { useTheme } from '../../theme';
 import { IAttachment } from '../../definitions';
 import CollapsibleQuote from './Components/CollapsibleQuote';
 
-const AttachedActions = ({ attachment }: IMessageAttachedActions) => {
+const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
 	if (!attachment.actions) {
 		return null;
 	}
 	const { onAnswerButtonPress } = useContext(MessageContext);
 	const { theme } = useTheme();
 
-	const attachedButtons = attachment.actions.map((element: { type: string; msg: string; text: string }) => {
+	const attachedButtons = attachment.actions.map(element => {
 		if (element.type === 'button') {
 			return <Button theme={theme} onPress={() => onAnswerButtonPress(element.msg)} title={element.text} />;
 		}
@@ -36,8 +36,8 @@ const AttachedActions = ({ attachment }: IMessageAttachedActions) => {
 };
 
 const Attachments = React.memo(
-	// @ts-ignore
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply }: IMessageAttachments) => {
+	// TODO - change this any to React.ReactElement[] | null
+	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply }: IMessageAttachments): any => {
 		if (!attachments || attachments.length === 0) {
 			return null;
 		}
@@ -54,7 +54,6 @@ const Attachments = React.memo(
 						getCustomEmoji={getCustomEmoji}
 						style={style}
 						isReply={isReply}
-						theme={theme}
 					/>
 				);
 			}
