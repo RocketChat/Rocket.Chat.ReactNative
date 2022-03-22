@@ -6,7 +6,7 @@ import { IThemePreference } from './definitions/ITheme';
 import { colors as baseColors } from './constants/colors';
 
 type TSupportedThemes = keyof typeof baseColors;
-export type TColors = typeof baseColors[TSupportedThemes];
+type TColors = typeof baseColors[TSupportedThemes];
 
 interface IThemeContextProps {
 	theme: string;
