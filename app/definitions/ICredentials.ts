@@ -1,3 +1,5 @@
+import { AppleAuthenticationFullName } from 'expo-apple-authentication';
+
 export interface ICredentials {
 	resume?: string;
 	user?: string;
@@ -13,4 +15,7 @@ export interface ICredentials {
 		login: ICredentials;
 		code: string;
 	};
+	fullName?: AppleAuthenticationFullName | null;
+	email?: string | null;
+	identityToken?: string | null;
 }
