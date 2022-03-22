@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import { dequal } from 'dequal';
 import { createImageProgress } from 'react-native-image-progress';
@@ -12,9 +12,11 @@ import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { IAttachment } from '../../definitions';
 
 type TMessageButton = {
 	children: JSX.Element;
+	disabled?: boolean;
 	onPress: Function;
 	theme: string;
 };
@@ -25,17 +27,23 @@ type TMessageImage = {
 };
 
 interface IMessageImage {
-	file: { image_url: string; description?: string };
+	file: IAttachment;
 	imageUrl?: string;
-	showAttachment: Function;
+	showAttachment?: Function;
+	style?: StyleProp<TextStyle>[];
+	isReply?: boolean;
 	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 }
 
 const ImageProgress = createImageProgress(FastImage);
 
-const Button = React.memo(({ children, onPress, theme }: TMessageButton) => (
-	<Touchable onPress={onPress} style={styles.imageContainer} background={Touchable.Ripple(themes[theme].bannerBackground)}>
+const Button = React.memo(({ children, onPress, disabled, theme }: TMessageButton) => (
+	<Touchable
+		disabled={disabled}
+		onPress={onPress}
+		style={styles.imageContainer}
+		background={Touchable.Ripple(themes[theme].bannerBackground)}>
 		{children}
 	</Touchable>
 ));
@@ -53,34 +61,41 @@ export const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
 ));
 
 const ImageContainer = React.memo(
-	({ file, imageUrl, showAttachment, getCustomEmoji, theme }: IMessageImage) => {
+	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply, theme }: IMessageImage) => {
 		const { baseUrl, user } = useContext(MessageContext);
 		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 		if (!img) {
 			return null;
 		}
 
-		const onPress = () => showAttachment(file);
+		const onPress = () => {
+			if (!showAttachment) {
+				return;
+			}
+
+			return showAttachment(file);
+		};
 
 		if (file.description) {
 			return (
-				<Button theme={theme} onPress={onPress}>
+				<Button disabled={isReply} theme={theme} onPress={onPress}>
 					<View>
-						<MessageImage img={img} theme={theme} />
 						<Markdown
 							msg={file.description}
+							style={[isReply && style]}
 							baseUrl={baseUrl}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
 							theme={theme}
 						/>
+						<MessageImage img={img} theme={theme} />
 					</View>
 				</Button>
 			);
 		}
 
 		return (
-			<Button theme={theme} onPress={onPress}>
+			<Button disabled={isReply} theme={theme} onPress={onPress}>
 				<MessageImage img={img} theme={theme} />
 			</Button>
 		);

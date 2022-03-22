@@ -319,9 +319,9 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 	};
 
 	renderFooter = () => {
-		const { rid, theme, loading } = this.props;
+		const { rid, loading } = this.props;
 		if (loading && rid) {
-			return <ActivityIndicator theme={theme} />;
+			return <ActivityIndicator />;
 		}
 		return null;
 	};
