@@ -192,7 +192,7 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{content}
-				{loading ? <RCActivityIndicator absolute size='large' theme={theme} /> : null}
+				{loading ? <RCActivityIndicator absolute size='large' /> : null}
 			</View>
 		);
 	}

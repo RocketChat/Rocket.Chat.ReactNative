@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../../views/Styles';
 import { isTablet } from '../../utils/deviceInfo';
 
-export default StyleSheet.create<any>({
+export default StyleSheet.create({
 	root: {
 		flexDirection: 'row'
 	},
@@ -28,7 +28,6 @@ export default StyleSheet.create<any>({
 	},
 	flex: {
 		flexDirection: 'row'
-		// flex: 1
 	},
 	temp: { opacity: 0.3 },
 	marginTop: {
@@ -100,7 +99,6 @@ export default StyleSheet.create<any>({
 		...sharedStyles.textSemibold
 	},
 	imageContainer: {
-		// flex: 1,
 		flexDirection: 'column',
 		borderRadius: 4
 	},
@@ -141,7 +139,6 @@ export default StyleSheet.create<any>({
 	},
 	repliedThread: {
 		flexDirection: 'row',
-		// flex: 1,
 		alignItems: 'center',
 		marginTop: 6,
 		marginBottom: 12

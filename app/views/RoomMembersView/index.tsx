@@ -636,7 +636,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 					ListHeaderComponent={this.renderSearchBar}
 					ListFooterComponent={() => {
 						if (isLoading) {
-							return <ActivityIndicator theme={theme} />;
+							return <ActivityIndicator />;
 						}
 						return null;
 					}}
