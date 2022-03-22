@@ -186,7 +186,7 @@ class RegisterView extends React.Component<IProps, any> {
 							}}
 							value={customFields[key]}>
 							<TextInput
-								inputRef={(e: any) => {
+								inputRef={e => {
 									// @ts-ignore
 									this[key] = e;
 								}}

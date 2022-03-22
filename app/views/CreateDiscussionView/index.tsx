@@ -175,7 +175,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 							testID='multi-select-discussion-name'
 							placeholder={I18n.t('A_meaningful_name_for_the_discussion_room')}
 							containerStyle={styles.inputStyle}
-							/* @ts-ignore*/
 							defaultValue={name}
 							onChangeText={(text: string) => this.setState({ name: text })}
 							theme={theme}
