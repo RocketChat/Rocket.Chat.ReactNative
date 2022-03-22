@@ -59,7 +59,7 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck, theme }: 
 					{item.id}
 				</Text>
 			</View>
-			{hasCheck ? <Check theme={theme!} /> : null}
+			{hasCheck ? <Check /> : null}
 		</View>
 	</Pressable>
 ));
