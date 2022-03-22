@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
+import { Easing, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
@@ -83,6 +83,12 @@ const styles = StyleSheet.create({
 const formatTime = (seconds: number) => moment.utc(seconds * 1000).format('mm:ss');
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
+
+const sliderAnimationConfig = {
+	duration: 250,
+	easing: Easing.linear,
+	delay: 0
+};
 
 const Button = React.memo(({ loading, paused, onPress, disabled, theme }: IButton) => (
 	<Touchable
@@ -279,6 +285,9 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 						value={currentTime}
 						maximumValue={duration}
 						minimumValue={0}
+						// @ts-ignore
+						animateTransitions
+						animationConfig={sliderAnimationConfig}
 						thumbTintColor={isReply && isAndroid ? themes[theme].tintDisabled : isAndroid && themes[theme].tintColor}
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
