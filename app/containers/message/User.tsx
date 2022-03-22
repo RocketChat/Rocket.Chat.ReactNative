@@ -98,7 +98,7 @@ const User = React.memo(
 						</Text>
 					</TouchableOpacity>
 					<Text style={[messageStyles.time, { color: themes[theme].auxiliaryTintColor }]}>{time}</Text>
-					{hasError && <MessageError hasError={hasError} theme={theme} {...props} />}
+					{hasError ? <MessageError hasError={hasError} {...props} /> : null}
 				</View>
 			);
 		}
