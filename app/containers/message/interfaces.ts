@@ -74,13 +74,6 @@ export interface IMessageContent {
 	type: string;
 }
 
-export interface IMessageDiscussion {
-	msg?: string;
-	dcount?: number;
-	dlm?: Date;
-	theme: string;
-}
-
 export interface IMessageEmoji {
 	content: any;
 	baseUrl: string;
@@ -125,8 +118,7 @@ export interface IMessageRepliedThread {
 }
 
 export interface IMessageInner
-	extends IMessageDiscussion,
-		IMessageContent,
+	extends IMessageContent,
 		IMessageCallButton,
 		IMessageBlocks,
 		IMessageThread,
