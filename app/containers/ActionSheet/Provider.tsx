@@ -1,18 +1,17 @@
 import React, { ForwardedRef, forwardRef, useContext, useRef } from 'react';
 
-import ActionSheet, { TActionSheetItem } from './ActionSheet';
-import { useTheme } from '../../theme';
+import ActionSheet from './ActionSheet';
 
+export type TActionSheetOptionsItem = { title: string; icon: string; onPress: () => void };
+
+export type TActionSheetOptions = {
+	options: TActionSheetOptionsItem[];
+	headerHeight: number;
+	customHeader: React.ReactElement | null;
+	hasCancel?: boolean;
+};
 interface IActionSheetProvider {
-	showActionSheet: ({
-		options,
-		headerHeight,
-		customHeader
-	}: {
-		options: TActionSheetItem[];
-		headerHeight: number;
-		customHeader: React.ReactElement | null;
-	}) => void;
+	showActionSheet: (item: TActionSheetOptions) => void;
 	hideActionSheet: () => void;
 }
 
@@ -25,17 +24,16 @@ export const useActionSheet = () => useContext(context);
 
 const { Provider, Consumer } = context;
 
-export const withActionSheet = (Component: any): any =>
-	forwardRef((props: any, ref: ForwardedRef<any>) => (
-		<Consumer>{(contexts: any) => <Component {...props} {...contexts} ref={ref} />}</Consumer>
+export const withActionSheet = (Component: React.ComponentType<any>): typeof Component =>
+	forwardRef((props: typeof React.Component, ref: ForwardedRef<IActionSheetProvider>) => (
+		<Consumer>{(contexts: IActionSheetProvider) => <Component {...props} {...contexts} ref={ref} />}</Consumer>
 	));
 
-export const ActionSheetProvider = React.memo(({ children }: { children: JSX.Element | JSX.Element[] }) => {
-	const ref: ForwardedRef<any> = useRef();
-	const { theme }: any = useTheme();
+export const ActionSheetProvider = React.memo(({ children }: { children: React.ReactElement | React.ReactElement[] }) => {
+	const ref: ForwardedRef<IActionSheetProvider> = useRef(null);
 
 	const getContext = () => ({
-		showActionSheet: (options: any) => {
+		showActionSheet: (options: TActionSheetOptions) => {
 			ref.current?.showActionSheet(options);
 		},
 		hideActionSheet: () => {
@@ -45,7 +43,7 @@ export const ActionSheetProvider = React.memo(({ children }: { children: JSX.Ele
 
 	return (
 		<Provider value={getContext()}>
-			<ActionSheet ref={ref} theme={theme}>
+			<ActionSheet ref={ref}>
 				<>{children}</>
 			</ActionSheet>
 		</Provider>

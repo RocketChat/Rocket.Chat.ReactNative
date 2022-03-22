@@ -66,7 +66,7 @@ export const Overflow = ({ element, loading, action, parser, theme }: IOverflow)
 				{!loading ? (
 					<CustomIcon size={18} name='kebab' color={themes[theme].bodyText} />
 				) : (
-					<ActivityIndicator style={styles.loading} theme={theme} />
+					<ActivityIndicator style={styles.loading} />
 				)}
 			</Touchable>
 			<Popover

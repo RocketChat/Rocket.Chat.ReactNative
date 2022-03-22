@@ -41,7 +41,7 @@ const Item = ({ item, selected, onSelect, theme }: IItem) => {
 			<>
 				{item.imageUrl ? <FastImage style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
 				<Text style={{ color: themes[theme].titleText }}>{textParser([item.text])}</Text>
-				{selected ? <Check theme={theme} /> : null}
+				{selected ? <Check /> : null}
 			</>
 		</Touchable>
 	);
