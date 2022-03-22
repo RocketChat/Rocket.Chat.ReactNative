@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, TextInput as RNTextInput, TextInputProps, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { themes } from '../constants/colors';
 import I18n from '../i18n';
 import { CustomIcon } from '../lib/Icons';
 import TextInput from '../presentation/TextInput';
@@ -52,24 +51,20 @@ interface ISearchBox extends TextInputProps {
 }
 
 const CancelButton = ({ onCancelPress }: { onCancelPress?: Function }) => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	return (
 		<Touchable onPress={onCancelPress} style={styles.cancel}>
-			<Text style={[styles.cancelText, { color: themes[theme].headerTintColor }]}>{I18n.t('Cancel')}</Text>
+			<Text style={[styles.cancelText, { color: colors.headerTintColor }]}>{I18n.t('Cancel')}</Text>
 		</Touchable>
 	);
 };
 
 const SearchBox = ({ hasCancel, onCancelPress, inputRef, ...props }: ISearchBox): React.ReactElement => {
-	const { theme } = useTheme();
+	const { theme, colors } = useTheme();
 	return (
-		<View
-			style={[
-				styles.container,
-				{ backgroundColor: isIOS ? themes[theme].headerBackground : themes[theme].headerSecondaryBackground }
-			]}>
-			<View style={[styles.searchBox, { backgroundColor: themes[theme].searchboxBackground }]}>
-				<CustomIcon name='search' size={14} color={themes[theme].auxiliaryText} />
+		<View style={[styles.container, { backgroundColor: isIOS ? colors.headerBackground : colors.headerSecondaryBackground }]}>
+			<View style={[styles.searchBox, { backgroundColor: colors.searchboxBackground }]}>
+				<CustomIcon name='search' size={14} color={colors.auxiliaryText} />
 				<TextInput
 					ref={inputRef}
 					autoCapitalize='none'
