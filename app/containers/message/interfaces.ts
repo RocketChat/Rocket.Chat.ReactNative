@@ -82,13 +82,8 @@ export interface IMessageEmoji {
 	getCustomEmoji: TGetCustomEmoji;
 }
 
-export interface IMessageThread {
-	msg?: string;
-	tcount?: number | null;
-	theme: string;
-	tlm?: Date;
+export interface IMessageThread extends Pick<IThread, 'msg' | 'tcount' | 'tlm' | 'id'> {
 	isThreadRoom: boolean;
-	id: string;
 }
 
 export interface IMessageTouchable {
