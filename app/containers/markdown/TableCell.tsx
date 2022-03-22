@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, ViewStyle } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import styles from './styles';
@@ -14,7 +14,7 @@ interface ITableCell {
 export const CELL_WIDTH = 100;
 
 const TableCell = React.memo(({ isLastCell, align, children, theme }: ITableCell) => {
-	const cellStyle = [styles.cell, { borderColor: themes[theme].borderColor }];
+	const cellStyle: ViewStyle[] = [styles.cell, { borderColor: themes[theme].borderColor }];
 	if (!isLastCell) {
 		cellStyle.push(styles.cellRightBorder);
 	}

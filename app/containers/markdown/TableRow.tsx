@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import styles from './styles';
@@ -11,7 +11,7 @@ interface ITableRow {
 }
 
 const TableRow = React.memo(({ isLastRow, children: _children, theme }: ITableRow) => {
-	const rowStyle = [styles.row, { borderColor: themes[theme].borderColor }];
+	const rowStyle: ViewStyle[] = [styles.row, { borderColor: themes[theme].borderColor }];
 	if (!isLastRow) {
 		rowStyle.push(styles.rowBottomBorder);
 	}
