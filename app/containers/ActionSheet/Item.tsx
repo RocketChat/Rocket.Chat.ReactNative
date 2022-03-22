@@ -3,23 +3,24 @@ import { Text, View } from 'react-native';
 
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
+import { useTheme } from '../../theme';
 import { Button } from './Button';
 import styles from './styles';
 
-interface IActionSheetItem {
+export interface IActionSheetItem {
 	item: {
 		title: string;
 		icon: string;
-		danger: boolean;
-		testID: string;
-		onPress(): void;
-		right: Function;
+		danger?: boolean;
+		testID?: string;
+		onPress: () => void;
+		right?: Function;
 	};
-	theme: string;
 	hide(): void;
 }
 
-export const Item = React.memo(({ item, hide, theme }: IActionSheetItem) => {
+export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
+	const { theme } = useTheme();
 	const onPress = () => {
 		hide();
 		item?.onPress();
