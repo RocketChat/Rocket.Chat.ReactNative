@@ -52,10 +52,7 @@ const styles = StyleSheet.create({
 
 export interface IRCTextInputProps extends TextInputProps {
 	label?: string;
-	error?: {
-		error: any;
-		reason: any;
-	};
+	error?: any;
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
 	inputStyle?: StyleProp<TextStyle>;
@@ -68,7 +65,11 @@ export interface IRCTextInputProps extends TextInputProps {
 	theme: string;
 }
 
-export default class RCTextInput extends React.PureComponent<IRCTextInputProps, any> {
+interface IRCTextInputState {
+	showPassword: boolean;
+}
+
+export default class RCTextInput extends React.PureComponent<IRCTextInputProps, IRCTextInputState> {
 	static defaultProps = {
 		error: {},
 		theme: 'light'
@@ -120,7 +121,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 	}
 
 	tooglePassword = () => {
-		this.setState((prevState: any) => ({ showPassword: !prevState.showPassword }));
+		this.setState(prevState => ({ showPassword: !prevState.showPassword }));
 	};
 
 	render() {

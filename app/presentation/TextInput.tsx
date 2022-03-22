@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IThemedTextInput extends IRCTextInputProps {
+export interface IThemedTextInput extends IRCTextInputProps {
 	style: StyleProp<TextStyle>;
 	theme: string;
 }
