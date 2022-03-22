@@ -49,8 +49,8 @@ interface IMessageContainerProps {
 	showAttachment: (file: IAttachment) => void;
 	onReactionLongPress?: Function;
 	navToRoomInfo?: Function;
-	callJitsi?: Function;
-	blockAction?: Function;
+	callJitsi?: () => void;
+	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
 	onAnswerButtonPress?: Function;
 	theme?: string;
 	threadBadgeColor?: string;
@@ -445,8 +445,8 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					showAttachment={showAttachment}
 					getCustomEmoji={getCustomEmoji}
 					navToRoomInfo={navToRoomInfo!}
-					callJitsi={callJitsi!}
-					blockAction={blockAction!}
+					callJitsi={callJitsi}
+					blockAction={blockAction}
 					theme={theme as string}
 					highlighted={highlighted!}
 				/>

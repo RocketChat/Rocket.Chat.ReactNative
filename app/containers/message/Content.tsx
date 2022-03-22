@@ -78,7 +78,7 @@ const Content = React.memo(
 			content = (
 				<View style={styles.flex}>
 					<View style={styles.contentContainer}>{content}</View>
-					<Encrypted type={props.type} theme={props.theme} />
+					<Encrypted type={props.type} />
 				</View>
 			);
 		}

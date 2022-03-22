@@ -3,7 +3,7 @@ import { StyleProp, TextStyle } from 'react-native';
 
 import { IUserChannel, IUserMention } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment } from '../../definitions';
+import { IAttachment, SubscriptionType } from '../../definitions';
 
 export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
@@ -25,16 +25,15 @@ export interface IMessageAvatar {
 		_id: string;
 	};
 	small?: boolean;
-	navToRoomInfo: Function;
+	navToRoomInfo: (params: { t: SubscriptionType; rid: string }) => void;
 	getCustomEmoji: TGetCustomEmoji;
-	theme: string;
 }
 
 export interface IMessageBlocks {
-	blocks: any;
+	blocks: { appId?: string }[];
 	id: string;
 	rid: string;
-	blockAction: Function;
+	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
 }
 
 export interface IMessageBroadcast {
@@ -45,7 +44,7 @@ export interface IMessageBroadcast {
 }
 
 export interface IMessageCallButton {
-	callJitsi: Function;
+	callJitsi?: () => void;
 }
 
 export interface IUser {
