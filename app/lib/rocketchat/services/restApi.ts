@@ -656,12 +656,11 @@ export const toggleFollowMessage = (mid: string, follow: boolean) => {
 };
 
 export const getThreadsList = ({ rid, count, offset, text }: { rid: string; count: number; offset: number; text?: string }) => {
-	const params: any = {
+	const params = {
 		rid,
 		count,
-		offset,
-		sort: { ts: -1 }
-	};
+		offset
+	} as { rid: string; count: number; offset: number; text?: string };
 	if (text) {
 		params.text = text;
 	}
@@ -887,4 +886,18 @@ export const getRoomMembers = async ({
 	if (result.success) {
 		return result?.records;
 	}
+};
+
+export const e2eFetchMyKeys = async () => {
+	// RC 0.70.0
+	const result = await sdk.get('e2e.fetchMyKeys');
+	// snake_case -> camelCase
+	if (result.success) {
+		return {
+			success: result.success,
+			publicKey: result.public_key,
+			privateKey: result.private_key
+		};
+	}
+	return result;
 };
