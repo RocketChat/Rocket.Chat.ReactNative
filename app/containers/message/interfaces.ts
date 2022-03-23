@@ -113,6 +113,7 @@ export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessage
 	isHeader: boolean;
 	hasError: boolean;
 	style: any;
+	// style: ViewStyle;
 	onLongPress?: (item: TAnyMessageModel) => void;
 	isReadReceiptEnabled?: boolean;
 	unread?: boolean;

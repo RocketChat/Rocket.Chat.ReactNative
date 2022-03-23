@@ -1,5 +1,6 @@
 import React from 'react';
 import { Keyboard, ViewStyle } from 'react-native';
+import { Subscription } from 'rxjs';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -39,41 +40,31 @@ interface IMessageContainerProps {
 	highlighted?: boolean;
 	getCustomEmoji: TGetCustomEmoji;
 	onLongPress?: (item: TAnyMessageModel) => void;
-	onReactionPress?: Function;
-	onEncryptedPress?: Function;
-	onDiscussionPress?: Function;
-	onThreadPress?: Function;
-	errorActionsShow?: Function;
-	replyBroadcast?: Function;
-	reactionInit?: Function;
+	onReactionPress?: (emoji: string, id: string) => void;
+	onEncryptedPress?: () => void;
+	onDiscussionPress?: (item: TAnyMessageModel) => void;
+	onThreadPress?: (item: TAnyMessageModel) => void;
+	errorActionsShow?: (item: TAnyMessageModel) => void;
+	replyBroadcast?: (item: TAnyMessageModel) => void;
+	reactionInit?: (item: TAnyMessageModel) => void;
 	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	showAttachment: (file: IAttachment) => void;
-	onReactionLongPress?: Function;
+	onReactionLongPress?: (item: TAnyMessageModel) => void;
 	navToRoomInfo: (navParam: IRoomInfoParam) => void;
 	callJitsi?: () => void;
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
-	onAnswerButtonPress?: Function;
+	onAnswerButtonPress?: (message: string, tmid?: string, tshow?: boolean) => void;
 	theme?: string;
 	threadBadgeColor?: string;
-	toggleFollowThread?: Function;
-	jumpToMessage?: Function;
-	onPress?: Function;
+	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
+	jumpToMessage?: (link: string) => void;
+	onPress?: () => void;
 }
 
 class MessageContainer extends React.Component<IMessageContainerProps> {
 	static defaultProps = {
 		getCustomEmoji: () => null,
 		onLongPress: () => {},
-		onReactionPress: () => {},
-		onEncryptedPress: () => {},
-		onDiscussionPress: () => {},
-		onThreadPress: () => {},
-		onAnswerButtonPress: () => {},
-		errorActionsShow: () => {},
-		replyBroadcast: () => {},
-		reactionInit: () => {},
-		showAttachment: () => {},
-		onReactionLongPress: () => {},
 		callJitsi: () => {},
 		blockAction: () => {},
 		archived: false,
@@ -84,7 +75,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 
 	state = { isManualUnignored: false };
 
-	private subscription: any;
+	private subscription?: Subscription;
 
 	componentDidMount() {
 		const { item } = this.props;
@@ -168,7 +159,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		}
 	};
 
-	onReactionPress = (emoji: any) => {
+	onReactionPress = (emoji: string) => {
 		const { onReactionPress, item } = this.props;
 		if (onReactionPress) {
 			onReactionPress(emoji, item.id);
@@ -304,8 +295,8 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 	onLinkPress = (link: string): void => {
 		const { item, theme, jumpToMessage } = this.props;
 		const isMessageLink = item?.attachments?.findIndex((att: any) => att?.message_link === link) !== -1;
-		if (isMessageLink) {
-			return jumpToMessage!(link);
+		if (isMessageLink && jumpToMessage) {
+			return jumpToMessage(link);
 		}
 		openLink(link, theme);
 	};
@@ -369,8 +360,8 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		let message = msg;
 		// "autoTranslateRoom" and "autoTranslateLanguage" are properties from the subscription
 		// "autoTranslateMessage" is a toggle between "View Original" and "Translate" state
-		if (autoTranslateRoom && autoTranslateMessage) {
-			message = getMessageTranslation(item, autoTranslateLanguage!) || message;
+		if (autoTranslateRoom && autoTranslateMessage && autoTranslateLanguage) {
+			message = getMessageTranslation(item, autoTranslateLanguage) || message;
 		}
 
 		return (

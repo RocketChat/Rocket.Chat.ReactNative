@@ -866,7 +866,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	replyBroadcast = (message: Record<string, string>) => {
+	replyBroadcast = (message: IMessage) => {
 		const { dispatch } = this.props;
 		dispatch(replyBroadcast(message));
 	};
