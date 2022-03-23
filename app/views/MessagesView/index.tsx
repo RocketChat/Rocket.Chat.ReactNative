@@ -212,7 +212,6 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 								}
 							]
 						}}
-						theme={theme}
 					/>
 				)
 			},

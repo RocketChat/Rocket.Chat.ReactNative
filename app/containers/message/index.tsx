@@ -8,7 +8,7 @@ import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import messagesStatus from '../../constants/messagesStatus';
-import { withTheme } from '../../theme';
+import { useTheme, withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, TAnyMessageModel } from '../../definitions';
@@ -54,7 +54,6 @@ interface IMessageContainerProps {
 	callJitsi?: () => void;
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
 	onAnswerButtonPress?: (message: string, tmid?: string, tshow?: boolean) => void;
-	theme?: string;
 	threadBadgeColor?: string;
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
@@ -93,10 +92,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
 		const { isManualUnignored } = this.state;
-		const { theme, threadBadgeColor, isIgnored, highlighted } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
+		const { threadBadgeColor, isIgnored, highlighted } = this.props;
 		if (nextProps.highlighted !== highlighted) {
 			return true;
 		}
@@ -297,7 +293,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	};
 
 	onLinkPress = (link: string): void => {
-		const { item, theme, jumpToMessage } = this.props;
+		const { theme } = useTheme();
+		const { item, jumpToMessage } = this.props;
 		const isMessageLink = item?.attachments?.findIndex((att: IAttachment) => att?.message_link === link) !== -1;
 		if (isMessageLink && jumpToMessage) {
 			return jumpToMessage(link);

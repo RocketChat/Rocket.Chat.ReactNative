@@ -1,5 +1,6 @@
 import { MarkdownAST } from '@rocket.chat/message-parser';
 import { StyleProp, TextStyle } from 'react-native';
+import { ImageStyle } from '@rocket.chat/react-native-fast-image';
 
 import { IUserChannel } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
@@ -61,10 +62,10 @@ export interface IMessageContent {
 }
 
 export interface IMessageEmoji {
-	content: any;
+	content: string;
 	baseUrl: string;
-	standardEmojiStyle: object;
-	customEmojiStyle: object;
+	standardEmojiStyle: { fontSize: number };
+	customEmojiStyle: StyleProp<ImageStyle>;
 	getCustomEmoji: TGetCustomEmoji;
 }
 
@@ -79,12 +80,12 @@ export interface IMessageTouchable {
 	isTemp: boolean;
 	archived?: boolean;
 	highlighted?: boolean;
-	ts?: any;
-	urls?: any;
+	ts?: string | Date;
+	urls?: IUrl[];
 	reactions?: any;
-	alias?: any;
-	role?: any;
-	drid?: any;
+	alias?: string;
+	role?: string;
+	drid?: string;
 }
 
 export interface IMessageRepliedThread extends Pick<IThread, 'tmid' | 'tmsg' | 'id'> {
