@@ -21,7 +21,7 @@ interface IMessageContainerProps {
 		token: string;
 	};
 	msg?: string;
-	rid?: string;
+	rid: string;
 	timeFormat?: string;
 	style?: ViewStyle;
 	archived?: boolean;
@@ -38,7 +38,7 @@ interface IMessageContainerProps {
 	isIgnored?: boolean;
 	highlighted?: boolean;
 	getCustomEmoji: TGetCustomEmoji;
-	onLongPress?: Function;
+	onLongPress?: (item: TAnyMessageModel) => void;
 	onReactionPress?: Function;
 	onEncryptedPress?: Function;
 	onDiscussionPress?: Function;
@@ -331,7 +331,6 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 			callJitsi,
 			blockAction,
 			rid,
-			theme,
 			threadBadgeColor,
 			toggleFollowThread,
 			jumpToMessage,
@@ -395,14 +394,15 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					toggleFollowThread,
 					replies
 				}}>
+				{/* @ts-ignore*/}
 				<Message
 					id={id}
 					msg={message}
 					md={md}
-					rid={rid!}
+					rid={rid}
 					author={u}
 					ts={ts}
-					type={t as any}
+					type={t}
 					attachments={attachments}
 					blocks={blocks}
 					urls={urls}
@@ -412,23 +412,20 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					emoji={emoji}
 					timeFormat={timeFormat}
 					style={style}
-					archived={archived!}
-					broadcast={broadcast!}
+					archived={archived}
+					broadcast={broadcast}
 					useRealName={useRealName}
-					isReadReceiptEnabled={isReadReceiptEnabled!}
+					isReadReceiptEnabled={isReadReceiptEnabled}
 					unread={unread}
 					role={role}
 					drid={drid}
 					dcount={dcount}
-					// @ts-ignore
 					dlm={dlm}
 					tmid={tmid}
 					tcount={tcount}
-					// @ts-ignore
 					tlm={tlm}
 					tmsg={tmsg}
 					fetchThreadName={fetchThreadName}
-					// @ts-ignore
 					mentions={mentions}
 					channels={channels}
 					isIgnored={this.isIgnored}
@@ -446,8 +443,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					navToRoomInfo={navToRoomInfo}
 					callJitsi={callJitsi}
 					blockAction={blockAction}
-					theme={theme as string}
-					highlighted={highlighted!}
+					highlighted={highlighted}
 				/>
 			</MessageContext.Provider>
 		);

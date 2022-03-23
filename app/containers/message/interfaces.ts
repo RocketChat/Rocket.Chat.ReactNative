@@ -1,12 +1,10 @@
 import { MarkdownAST } from '@rocket.chat/message-parser';
 import { StyleProp, TextStyle } from 'react-native';
 
-import { IUserChannel, IUserMention } from '../markdown/interfaces';
+import { IUserChannel } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, IThread, IUrl, IUserMessage } from '../../definitions';
+import { IAttachment, IThread, IUrl, IUserMention, IUserMessage, MessageType, TAnyMessageModel } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
-
-export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
 export interface IMessageAttachments {
 	attachments?: IAttachment[];
@@ -36,7 +34,7 @@ export interface IMessageBlocks {
 
 export interface IMessageBroadcast {
 	author?: IUserMessage;
-	broadcast: boolean;
+	broadcast?: boolean;
 }
 
 export interface IMessageCallButton {
@@ -51,7 +49,6 @@ export interface IMessageContent {
 	isThreadRoom: boolean;
 	msg?: string;
 	md?: MarkdownAST;
-	theme: string;
 	isEdited: boolean;
 	isEncrypted: boolean;
 	getCustomEmoji: TGetCustomEmoji;
@@ -80,9 +77,8 @@ export interface IMessageTouchable {
 	isInfo: boolean;
 	isThreadReply: boolean;
 	isTemp: boolean;
-	archived: boolean;
-	highlighted: boolean;
-	theme: string;
+	archived?: boolean;
+	highlighted?: boolean;
 	ts?: any;
 	urls?: any;
 	reactions?: any;
@@ -104,7 +100,7 @@ export interface IMessageInner
 		IMessageThread,
 		IMessageAttachments,
 		IMessageBroadcast {
-	type: TMessageType;
+	type: MessageType;
 	blocks: [];
 	urls?: IUrl[];
 }
@@ -117,9 +113,10 @@ export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessage
 	isHeader: boolean;
 	hasError: boolean;
 	style: any;
-	onLongPress: Function;
-	isReadReceiptEnabled: boolean;
+	onLongPress?: (item: TAnyMessageModel) => void;
+	isReadReceiptEnabled?: boolean;
 	unread?: boolean;
-	theme: string;
 	isIgnored: boolean;
+	dcount: number | undefined;
+	dlm: string | Date | undefined;
 }

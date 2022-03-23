@@ -12,15 +12,17 @@ import MessageContext from './Context';
 import Encrypted from './Encrypted';
 import { E2E_MESSAGE_TYPE } from '../../lib/encryption/constants';
 import { IMessageContent } from './interfaces';
+import { useTheme } from '../../theme';
 
 const Content = React.memo(
 	(props: IMessageContent) => {
+		const { theme } = useTheme();
 		if (props.isInfo) {
 			// @ts-ignore
 			const infoMessage = getInfoMessage({ ...props });
 
 			const renderMessageContent = (
-				<Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]} accessibilityLabel={infoMessage}>
+				<Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]} accessibilityLabel={infoMessage}>
 					{infoMessage}
 				</Text>
 			);
@@ -36,16 +38,14 @@ const Content = React.memo(
 			return renderMessageContent;
 		}
 
-		const isPreview: any = props.tmid && !props.isThreadRoom;
+		const isPreview = props.tmid && !props.isThreadRoom;
 		let content = null;
 
 		if (props.tmid && !props.msg) {
-			content = <Text style={[styles.text, { color: themes[props.theme].bodyText }]}>{I18n.t('Sent_an_attachment')}</Text>;
+			content = <Text style={[styles.text, { color: themes[theme].bodyText }]}>{I18n.t('Sent_an_attachment')}</Text>;
 		} else if (props.isEncrypted) {
 			content = (
-				<Text
-					style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}
-					accessibilityLabel={I18n.t('Encrypted_message')}>
+				<Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]} accessibilityLabel={I18n.t('Encrypted_message')}>
 					{I18n.t('Encrypted_message')}
 				</Text>
 			);
@@ -67,7 +67,7 @@ const Content = React.memo(
 					navToRoomInfo={props.navToRoomInfo}
 					tmid={props.tmid}
 					useRealName={props.useRealName}
-					theme={props.theme}
+					theme={theme}
 					onLinkPress={onLinkPress}
 				/>
 			);
@@ -84,7 +84,7 @@ const Content = React.memo(
 		}
 
 		if (props.isIgnored) {
-			content = <Text style={[styles.textInfo, { color: themes[props.theme].auxiliaryText }]}>{I18n.t('Message_Ignored')}</Text>;
+			content = <Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]}>{I18n.t('Message_Ignored')}</Text>;
 		}
 
 		return <View style={props.isTemp && styles.temp}>{content}</View>;
@@ -97,9 +97,6 @@ const Content = React.memo(
 			return false;
 		}
 		if (prevProps.type !== nextProps.type) {
-			return false;
-		}
-		if (prevProps.theme !== nextProps.theme) {
 			return false;
 		}
 		if (prevProps.isEncrypted !== nextProps.isEncrypted) {

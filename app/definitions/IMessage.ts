@@ -111,7 +111,7 @@ export interface ILoadMoreMessage {
 
 export interface IMessage extends IMessageFromServer {
 	id: string;
-	t?: MessageType;
+	t: MessageType;
 	alias?: string;
 	parseUrls?: boolean;
 	avatar?: string;

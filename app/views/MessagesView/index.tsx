@@ -180,7 +180,8 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 			showAttachment: this.showAttachment,
 			getCustomEmoji: this.getCustomEmoji,
 			navToRoomInfo: this.navToRoomInfo,
-			onPress: () => this.jumpToMessage({ item })
+			onPress: () => this.jumpToMessage({ item }),
+			rid: this.rid
 		});
 
 		return {
