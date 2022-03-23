@@ -61,7 +61,11 @@ interface IMessageContainerProps {
 	onPress?: () => void;
 }
 
-class MessageContainer extends React.Component<IMessageContainerProps> {
+interface IMessageContainerState {
+	isManualUnignored: boolean;
+}
+
+class MessageContainer extends React.Component<IMessageContainerProps, IMessageContainerState> {
 	static defaultProps = {
 		getCustomEmoji: () => null,
 		onLongPress: () => {},
@@ -87,7 +91,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		}
 	}
 
-	shouldComponentUpdate(nextProps: any, nextState: any) {
+	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
 		const { isManualUnignored } = this.state;
 		const { theme, threadBadgeColor, isIgnored, highlighted } = this.props;
 		if (nextProps.theme !== theme) {
@@ -218,7 +222,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 				previousItem.u.username === item.u.username &&
 				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
 				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
-				item.ts - previousItem.ts < Message_GroupingPeriod! * 1000 &&
+				item.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
 				previousItem.tmid === item.tmid
 			) {
 				return false;
@@ -294,7 +298,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 
 	onLinkPress = (link: string): void => {
 		const { item, theme, jumpToMessage } = this.props;
-		const isMessageLink = item?.attachments?.findIndex((att: any) => att?.message_link === link) !== -1;
+		const isMessageLink = item?.attachments?.findIndex((att: IAttachment) => att?.message_link === link) !== -1;
 		if (isMessageLink && jumpToMessage) {
 			return jumpToMessage(link);
 		}
