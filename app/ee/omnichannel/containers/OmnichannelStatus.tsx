@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { Switch, View } from 'react-native';
+import Touchable from 'react-native-platform-touchable';
 
 import * as List from '../../../containers/List';
 import styles from '../../../views/RoomsListView/styles';
@@ -48,7 +49,13 @@ const OmnichannelStatus = memo(({ searching, goQueue, queueSize, inquiryEnabled,
 				right={() => (
 					<View style={styles.omnichannelRightContainer}>
 						{inquiryEnabled ? <UnreadBadge style={styles.queueIcon} unread={queueSize} /> : null}
-						<Switch value={status} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleLivechat} />
+						<Touchable
+							onPress={() => {
+								console.log('AQUIII');
+							}}
+							style={{ backgroundColor: '#324', zIndex: 5 }}>
+							<Switch value={status} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleLivechat} />
+						</Touchable>
 					</View>
 				)}
 			/>
