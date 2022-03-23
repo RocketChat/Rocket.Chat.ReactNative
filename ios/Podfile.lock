@@ -415,8 +415,8 @@ PODS:
     - React-Core
   - react-native-netinfo (6.0.0):
     - React-Core
-  - react-native-notifications (2.1.7):
-    - React
+  - react-native-notifications (4.2.4):
+    - React-Core
   - react-native-orientation-locker (1.1.8):
     - React
   - react-native-restart (0.0.22):
@@ -950,7 +950,7 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: 442c3abadb51a81551a3b53705b7560de390e6f7
   EXWebBrowser: 76783ba5dcb8699237746ecf41a9643d428a4cc5
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: 110d69378fce79af38271c39894b59fec7890221
+  FBReactNativeSpec: 8a1012a62d7a3d667376b413656d780b8e4680ce
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
@@ -999,7 +999,7 @@ SPEC CHECKSUMS:
   react-native-jitsi-meet: 3e3ac5d0445091154119f94342efd55c8b1124ce
   react-native-mmkv-storage: 88bcb10bbe85a8122061d17d03abcc64a02fe1c9
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
-  react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
+  react-native-notifications: 3de8ef9cd800e5db0225d9aa46b228d2b94ce51e
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
