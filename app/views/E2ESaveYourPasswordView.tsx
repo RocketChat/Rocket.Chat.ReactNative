@@ -1,5 +1,6 @@
 import React from 'react';
-import { Clipboard, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
 
 import { encryptionSetBanner } from '../actions/encryption';
