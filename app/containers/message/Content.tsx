@@ -41,9 +41,7 @@ const Content = React.memo(
 		const isPreview = props.tmid && !props.isThreadRoom;
 		let content = null;
 
-		if (props.tmid && !props.msg) {
-			content = <Text style={[styles.text, { color: themes[theme].bodyText }]}>{I18n.t('Sent_an_attachment')}</Text>;
-		} else if (props.isEncrypted) {
+		if (props.isEncrypted) {
 			content = (
 				<Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]} accessibilityLabel={I18n.t('Encrypted_message')}>
 					{I18n.t('Encrypted_message')}

@@ -2,24 +2,23 @@ import React, { useRef, useState } from 'react';
 import * as Haptics from 'expo-haptics';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
-import Base from './Base';
+import Base, { IBase } from './Base';
 import { TYPE } from './constants';
 import I18n from '../../i18n';
 
 interface IPasscodeChoose {
-	theme: string;
 	force?: boolean;
 	finishProcess: Function;
 }
 
-const PasscodeChoose = ({ theme, finishProcess, force = false }: IPasscodeChoose) => {
-	const chooseRef = useRef<any>(null);
-	const confirmRef = useRef<any>(null);
+const PasscodeChoose = ({ finishProcess, force = false }: IPasscodeChoose) => {
+	const chooseRef = useRef<IBase>(null);
+	const confirmRef = useRef<IBase>(null);
 	const [subtitle, setSubtitle] = useState(null);
 	const [status, setStatus] = useState(TYPE.CHOOSE);
-	const [previousPasscode, setPreviouPasscode] = useState<any>(null);
+	const [previousPasscode, setPreviouPasscode] = useState('');
 
-	const firstStep = (p: any) => {
+	const firstStep = (p: string) => {
 		setTimeout(() => {
 			setStatus(TYPE.CONFIRM);
 			setPreviouPasscode(p);
@@ -43,7 +42,6 @@ const PasscodeChoose = ({ theme, finishProcess, force = false }: IPasscodeChoose
 		return (
 			<Base
 				ref={confirmRef}
-				theme={theme}
 				type={TYPE.CONFIRM}
 				onEndProcess={changePasscode}
 				previousPasscode={previousPasscode}
@@ -56,7 +54,6 @@ const PasscodeChoose = ({ theme, finishProcess, force = false }: IPasscodeChoose
 	return (
 		<Base
 			ref={chooseRef}
-			theme={theme}
 			type={TYPE.CHOOSE}
 			onEndProcess={firstStep}
 			title={I18n.t('Passcode_choose_title')}
