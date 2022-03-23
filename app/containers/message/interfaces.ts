@@ -3,7 +3,7 @@ import { StyleProp, TextStyle } from 'react-native';
 
 import { IUserChannel, IUserMention } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, IThread, IUrl, SubscriptionType } from '../../definitions';
+import { IAttachment, IThread, IUrl, IUserMessage } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
 
 export type TMessageType = 'discussion-created' | 'jitsi_call_started';
@@ -19,14 +19,11 @@ export interface IMessageAttachments {
 
 export interface IMessageAvatar {
 	isHeader: boolean;
-	avatar: string;
-	emoji: string;
-	author: {
-		username: string;
-		_id: string;
-	};
+	avatar?: string;
+	emoji?: string;
+	author?: IUserMessage;
 	small?: boolean;
-	navToRoomInfo: (params: { t: SubscriptionType; rid: string }) => void;
+	navToRoomInfo: (navParam: IRoomInfoParam) => void;
 	getCustomEmoji: TGetCustomEmoji;
 }
 
@@ -38,9 +35,7 @@ export interface IMessageBlocks {
 }
 
 export interface IMessageBroadcast {
-	author: {
-		_id: string;
-	};
+	author?: IUserMessage;
 	broadcast: boolean;
 }
 
@@ -62,7 +57,7 @@ export interface IMessageContent {
 	getCustomEmoji: TGetCustomEmoji;
 	channels?: IUserChannel[];
 	mentions?: IUserMention[];
-	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
+	navToRoomInfo: (navParam: IRoomInfoParam) => void;
 	useRealName?: boolean;
 	isIgnored: boolean;
 	type: string;
@@ -114,7 +109,7 @@ export interface IMessageInner
 	urls?: IUrl[];
 }
 
-export interface IMessage extends IMessageRepliedThread, IMessageInner {
+export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessageAvatar {
 	isThreadReply: boolean;
 	isThreadSequential: boolean;
 	isInfo: boolean;

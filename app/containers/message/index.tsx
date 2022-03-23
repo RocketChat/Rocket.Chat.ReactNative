@@ -49,7 +49,7 @@ interface IMessageContainerProps {
 	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	showAttachment: (file: IAttachment) => void;
 	onReactionLongPress?: Function;
-	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
+	navToRoomInfo: (navParam: IRoomInfoParam) => void;
 	callJitsi?: () => void;
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
 	onAnswerButtonPress?: Function;

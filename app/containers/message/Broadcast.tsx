@@ -14,7 +14,7 @@ import { useTheme } from '../../theme';
 const Broadcast = React.memo(({ author, broadcast }: IMessageBroadcast) => {
 	const { user, replyBroadcast } = useContext(MessageContext);
 	const { theme } = useTheme();
-	const isOwn = author._id === user.id;
+	const isOwn = author?._id === user.id;
 
 	if (broadcast && !isOwn) {
 		return (
