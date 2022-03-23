@@ -11,6 +11,7 @@ import { withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, TAnyMessageModel } from '../../definitions';
+import { IRoomInfoParam } from '../../views/SearchMessagesView';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -48,7 +49,7 @@ interface IMessageContainerProps {
 	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
 	showAttachment: (file: IAttachment) => void;
 	onReactionLongPress?: Function;
-	navToRoomInfo?: Function;
+	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
 	callJitsi?: () => void;
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
 	onAnswerButtonPress?: Function;
@@ -73,7 +74,6 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 		reactionInit: () => {},
 		showAttachment: () => {},
 		onReactionLongPress: () => {},
-		navToRoomInfo: () => {},
 		callJitsi: () => {},
 		blockAction: () => {},
 		archived: false,
@@ -443,7 +443,7 @@ class MessageContainer extends React.Component<IMessageContainerProps> {
 					hasError={this.hasError}
 					showAttachment={showAttachment}
 					getCustomEmoji={getCustomEmoji}
-					navToRoomInfo={navToRoomInfo!}
+					navToRoomInfo={navToRoomInfo}
 					callJitsi={callJitsi}
 					blockAction={blockAction}
 					theme={theme as string}

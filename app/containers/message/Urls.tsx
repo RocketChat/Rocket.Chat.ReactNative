@@ -130,7 +130,7 @@ const Url = React.memo(
 
 const Urls = React.memo(
 	// TODO - didn't work - (React.ReactElement | null)[] | React.ReactElement | null
-	({ urls }: { urls: IUrl[] }): any => {
+	({ urls }: { urls?: IUrl[] }): any => {
 		const { theme } = useTheme();
 
 		if (!urls || urls.length === 0) {

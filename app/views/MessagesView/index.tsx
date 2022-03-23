@@ -22,6 +22,7 @@ import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 import { IEmoji } from '../../definitions/IEmoji';
+import { IRoomInfoParam } from '../SearchMessagesView';
 
 interface IMessagesViewProps {
 	user: {
@@ -40,14 +41,6 @@ interface IMessagesViewProps {
 	showActionSheet: Function;
 	useRealName: boolean;
 	isMasterDetail: boolean;
-}
-
-interface IRoomInfoParam {
-	room: ISubscription;
-	member: any;
-	rid: string;
-	t: SubscriptionType;
-	joined: boolean;
 }
 
 interface IMessagesViewState {

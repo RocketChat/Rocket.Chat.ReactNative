@@ -3,7 +3,8 @@ import { StyleProp, TextStyle } from 'react-native';
 
 import { IUserChannel, IUserMention } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, IThread, SubscriptionType } from '../../definitions';
+import { IAttachment, IThread, IUrl, SubscriptionType } from '../../definitions';
+import { IRoomInfoParam } from '../../views/SearchMessagesView';
 
 export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
@@ -47,13 +48,6 @@ export interface IMessageCallButton {
 	callJitsi?: () => void;
 }
 
-export interface IUser {
-	id: string;
-	username: string;
-	token: string;
-	name: string;
-}
-
 export interface IMessageContent {
 	_id: string;
 	isTemp: boolean;
@@ -68,7 +62,7 @@ export interface IMessageContent {
 	getCustomEmoji: TGetCustomEmoji;
 	channels?: IUserChannel[];
 	mentions?: IUserMention[];
-	navToRoomInfo?: Function;
+	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
 	useRealName?: boolean;
 	isIgnored: boolean;
 	type: string;
@@ -117,6 +111,7 @@ export interface IMessageInner
 		IMessageBroadcast {
 	type: TMessageType;
 	blocks: [];
+	urls?: IUrl[];
 }
 
 export interface IMessage extends IMessageRepliedThread, IMessageInner {
