@@ -165,7 +165,7 @@
 		"axios": "0.21.1",
 		"babel-jest": "^27.0.6",
 		"babel-plugin-transform-remove-console": "^6.9.4",
-		"codecov": "3.8.2",
+		"codecov": "^3.8.3",
 		"detox": "18.17.0",
 		"eslint": "^7.31.0",
 		"eslint-config-prettier": "^8.3.0",
