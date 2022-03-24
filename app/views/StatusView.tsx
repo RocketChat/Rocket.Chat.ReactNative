@@ -18,7 +18,7 @@ import { getUserSelector } from '../selectors/login';
 import { withTheme } from '../theme';
 import EventEmitter from '../utils/events';
 import { showErrorAlert } from '../utils/info';
-import { events, logEvent } from '../utils/log';
+import log, { events, logEvent } from '../utils/log';
 
 const STATUS = [
 	{
@@ -111,7 +111,13 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 		try {
 			const result = await RocketChat.setUserStatus(status as UserStatus, statusText as string);
 			if (result.success) {
-				logEvent(events.STATUS_CUSTOM);
+				if (statusText !== user.statusText) {
+					logEvent(events.STATUS_CUSTOM);
+				}
+				if (status !== user.status) {
+					// @ts-ignore
+					logEvent(events[`STATUS_${status.toUpperCase()}`]);
+				}
 				dispatch(
 					setUser({
 						...(statusText !== user.statusText && { statusText }),
@@ -126,30 +132,18 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 			}
 		} catch (e: any) {
 			showErrorAlert(I18n.t(e.data.errorType));
-			logEvent(events.STATUS_CUSTOM_F);
+			if (statusText !== user.statusText) {
+				logEvent(events.STATUS_CUSTOM_F);
+			}
+			if (status !== user.status) {
+				logEvent(events.SET_STATUS_FAIL);
+			}
+			log(e);
 			EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
 		}
 
 		this.setState({ loading: false });
 	};
-
-	// setUserStatus = async () => {
-	// 	const { statusText } = this.state;
-	// 	const { user, dispatch } = this.props;
-	// 	// @ts-ignore
-	// 	logEvent(events[`STATUS_${item.id.toUpperCase()}`]);
-	// 	if (user.status !== item.id) {
-	// 		try {
-	// 			const result = await RocketChat.setUserStatus(item.id, statusText);
-	// 			if (result.success) {
-	// 				dispatch(setUser({ status: item.id as UserStatus }));
-	// 			}
-	// 		} catch (e: any) {
-	// 			logEvent(events.SET_STATUS_FAIL);
-	// 			log(e);
-	// 		}
-	// 	}
-	// };
 
 	renderHeader = () => {
 		const { statusText, status } = this.state;
