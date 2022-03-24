@@ -208,6 +208,15 @@ export default schemaMigrations({
 					columns: [{ name: 'draft_message', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 16,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'source', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });

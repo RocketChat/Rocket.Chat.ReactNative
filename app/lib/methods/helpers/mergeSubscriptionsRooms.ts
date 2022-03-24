@@ -5,9 +5,12 @@ import { store as reduxStore } from '../../auxStore';
 import { compareServerVersion } from '../../utils';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
-import { ISubscription, IServerSubscription, IServerRoom, IRoom } from '../../../definitions';
+import { ISubscription, IServerSubscription, IServerRoom, IRoom, IOmnichannelRoom } from '../../../definitions';
 
-export const merge = (subscription: ISubscription | IServerSubscription, room?: IRoom | IServerRoom): ISubscription => {
+export const merge = (
+	subscription: ISubscription | IServerSubscription,
+	room?: IRoom | IServerRoom | IOmnichannelRoom
+): ISubscription => {
 	const serverVersion = reduxStore.getState().server.version as string;
 	const mergedSubscription: ISubscription = EJSON.fromJSONValue(subscription);
 
@@ -77,6 +80,9 @@ export const merge = (subscription: ISubscription | IServerSubscription, room?: 
 			mergedSubscription.tags = room.tags;
 		}
 		mergedSubscription.sysMes = room?.sysMes;
+		if (room?.source) {
+			mergedSubscription.source = room?.source;
+		}
 	}
 
 	if (!mergedSubscription.name) {
