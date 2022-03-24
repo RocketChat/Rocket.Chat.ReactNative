@@ -293,10 +293,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			params.roomAnnouncement = announcement;
 		}
 		// Room Type
-		// This logic is strange to me, since in the code t is boolean, but room.t is string
-		if (!!room.t !== t) {
-			params.roomType = t ? 'p' : 'c';
-		}
+		params.roomType = t ? 'p' : 'c';
 		// Read Only
 		if (room.ro !== ro) {
 			params.readOnly = ro;
