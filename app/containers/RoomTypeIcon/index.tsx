@@ -6,6 +6,7 @@ import { STATUS_COLORS, themes } from '../../constants/colors';
 import Status from '../Status/Status';
 import { useTheme } from '../../theme';
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
+import { OmnichannelSourceType } from '../../definitions';
 
 const styles = StyleSheet.create({
 	icon: {
@@ -20,9 +21,10 @@ interface IRoomTypeIcon {
 	status?: string;
 	size?: number;
 	style?: ViewStyle;
+	sourceType?: OmnichannelSourceType;
 }
 
-const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, size = 16 }: IRoomTypeIcon) => {
+const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, size = 16, sourceType }: IRoomTypeIcon) => {
 	console.log(
 		'🚀 ~ file: index.tsx ~ line 27 ~ RoomTypeIcon ~ type, isGroupChat, status, style, teamMain, size',
 		type,
@@ -30,7 +32,8 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, s
 		status,
 		style,
 		teamMain,
-		size
+		size,
+		sourceType
 	);
 	if (!type) {
 		return null;
@@ -47,7 +50,7 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, s
 	}
 
 	if (type === 'l') {
-		return <OmnichannelRoomIcon size={size} type={type} status={status} />;
+		return <OmnichannelRoomIcon size={size} type={type} status={status} sourceType={sourceType} />;
 	}
 
 	// TODO: move this to a separate function

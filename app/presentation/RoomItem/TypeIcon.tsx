@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { OmnichannelSourceType } from '../../definitions';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 interface ITypeIcon {
@@ -11,9 +12,10 @@ interface ITypeIcon {
 	theme?: string;
 	size?: number;
 	style?: object;
+	sourceType?: OmnichannelSourceType;
 }
 
-const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain, size, style }: ITypeIcon) => (
+const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain, size, style, sourceType }: ITypeIcon) => (
 	<RoomTypeIcon
 		type={prid ? 'discussion' : type}
 		isGroupChat={isGroupChat}
@@ -21,6 +23,7 @@ const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain, size, 
 		teamMain={teamMain}
 		size={size}
 		style={style}
+		sourceType={sourceType}
 	/>
 ));
 

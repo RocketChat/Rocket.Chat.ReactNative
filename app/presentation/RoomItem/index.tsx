@@ -216,6 +216,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				autoJoin={autoJoin}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
+				sourceType={item.source?.type}
 			/>
 		);
 	}
