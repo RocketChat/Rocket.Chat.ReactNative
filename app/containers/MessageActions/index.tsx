@@ -183,7 +183,7 @@ const MessageActions = React.memo(
 						const subRecord = await subCollection.find(rid);
 						await db.write(async () => {
 							try {
-								await subRecord.update(sub => (sub.lastOpen = ts as Date)); // TODO: reevaluate later
+								await subRecord.update(sub => (sub.lastOpen = ts as Date)); // TODO: reevaluate IMessage
 							} catch {
 								// do nothing
 							}
@@ -233,7 +233,7 @@ const MessageActions = React.memo(
 			const handleStar = async (message: TAnyMessageModel) => {
 				logEvent(message.starred ? events.ROOM_MSG_ACTION_UNSTAR : events.ROOM_MSG_ACTION_STAR);
 				try {
-					await RocketChat.toggleStarMessage(message.id, message.starred as boolean); // TODO: reevaluate `message.starred` type
+					await RocketChat.toggleStarMessage(message.id, message.starred as boolean); // TODO: reevaluate `message.starred` type on IMessage
 					EventEmitter.emit(LISTENER, { message: message.starred ? I18n.t('Message_unstarred') : I18n.t('Message_starred') });
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_STAR_F);
@@ -244,7 +244,7 @@ const MessageActions = React.memo(
 			const handlePin = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_PIN);
 				try {
-					await RocketChat.togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type
+					await RocketChat.togglePinMessage(message.id, message.pinned as boolean); // TODO: reevaluate `message.pinned` type on IMessage
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_PIN_F);
 					log(e);
@@ -254,7 +254,7 @@ const MessageActions = React.memo(
 			const handleReaction: IHeader['handleReaction'] = (shortname, message) => {
 				logEvent(events.ROOM_MSG_ACTION_REACTION);
 				if (shortname) {
-					// TODO: Need to evaluate this. Room view ends up using string only if I got it right.
+					// TODO: evaluate unification with IEmoji
 					onReactionPress(shortname as any, message.id);
 				} else {
 					reactionInit(message);
