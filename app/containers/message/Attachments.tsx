@@ -35,16 +35,15 @@ const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
 	);
 };
 
-const Attachments = React.memo(
-	// TODO - change this any to React.ReactElement[] | null
-	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply }: IMessageAttachments): any => {
+const Attachments: React.FC<IMessageAttachments> = React.memo(
+	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply }: IMessageAttachments) => {
 		if (!attachments || attachments.length === 0) {
 			return null;
 		}
 
 		const { theme } = useTheme();
 
-		return attachments.map((file: IAttachment, index: number) => {
+		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
 			if (file && file.image_url) {
 				return (
 					<Image
@@ -88,6 +87,7 @@ const Attachments = React.memo(
 
 			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 		});
+		return <>{attachmentsElements}</>;
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)
 );
