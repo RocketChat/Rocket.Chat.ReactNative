@@ -14,9 +14,18 @@ import { ROW_HEIGHT } from '../../presentation/RoomItem';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
 import { useOrientation } from '../../dimensions';
+import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
 
-interface INotifierComponent {
-	notification: object;
+export interface INotifierComponent {
+	notification: {
+		text: string;
+		payload: {
+			sender: { username: string };
+			type: SubscriptionType;
+		} & Pick<ISubscription, '_id' | 'name' | 'rid' | 'prid'>;
+		title: string;
+		avatar: string;
+	};
 	isMasterDetail: boolean;
 }
 
@@ -67,15 +76,15 @@ const styles = StyleSheet.create({
 const hideNotification = () => Notifier.hideNotification();
 
 const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
-	const { theme }: any = useTheme();
+	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
 	const { isLandscape } = useOrientation();
 
-	const { text, payload }: any = notification;
+	const { text, payload } = notification;
 	const { type, rid } = payload;
 	const name = type === 'd' ? payload.sender.username : payload.name;
 	// if sub is not on local database, title and avatar will be null, so we use payload from notification
-	const { title = name, avatar = name }: any = notification;
+	const { title = name, avatar = name } = notification;
 
 	const onPress = () => {
 		const { prid, _id } = payload;
@@ -133,7 +142,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 	);
 });
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 

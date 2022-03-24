@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { CELL_WIDTH } from './TableCell';
 import styles from './styles';
@@ -19,7 +19,7 @@ const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 	const getTableWidth = () => numColumns * CELL_WIDTH;
 
 	const renderRows = (drawExtraBorders = true) => {
-		const tableStyle = [styles.table, { borderColor: themes[theme].borderColor }];
+		const tableStyle: ViewStyle[] = [styles.table, { borderColor: themes[theme].borderColor }];
 		if (drawExtraBorders) {
 			tableStyle.push(styles.tableExtraBorders);
 		}

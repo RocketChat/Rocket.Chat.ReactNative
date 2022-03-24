@@ -173,10 +173,10 @@ export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage): strin
 		return I18n.t('This_room_encryption_has_been_enabled_by__username_', { username });
 	}
 	if (type === 'removed-user-from-team') {
-		return I18n.t('Removed__username__from_team', { user_removed: username });
+		return I18n.t('Removed__username__from_team', { user_removed: msg });
 	}
 	if (type === 'added-user-to-team') {
-		return I18n.t('Added__username__to_team', { user_added: username });
+		return I18n.t('Added__username__to_team', { user_added: msg });
 	}
 	if (type === 'user-added-room-to-team') {
 		return I18n.t('added__roomName__to_team', { roomName: msg });

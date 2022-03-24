@@ -1,14 +1,11 @@
 import React from 'react';
 import { ActivityIndicator, ActivityIndicatorProps, StyleSheet } from 'react-native';
 
+import { useTheme } from '../theme';
 import { themes } from '../constants/colors';
 
-type TTheme = 'light' | 'dark' | 'black' | string;
-
 interface IActivityIndicator extends ActivityIndicatorProps {
-	theme?: TTheme;
 	absolute?: boolean;
-	props?: object;
 }
 
 const styles = StyleSheet.create({
@@ -27,8 +24,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const RCActivityIndicator = ({ theme = 'light', absolute, ...props }: IActivityIndicator) => (
-	<ActivityIndicator style={[styles.indicator, absolute && styles.absolute]} color={themes[theme].auxiliaryText} {...props} />
-);
+const RCActivityIndicator = ({ absolute, ...props }: IActivityIndicator): React.ReactElement => {
+	const { theme } = useTheme();
+	return (
+		<ActivityIndicator style={[styles.indicator, absolute && styles.absolute]} color={themes[theme].auxiliaryText} {...props} />
+	);
+};
 
 export default RCActivityIndicator;
