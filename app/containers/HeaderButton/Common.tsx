@@ -12,14 +12,16 @@ interface IHeaderButtonCommon {
 }
 
 // Left
-export const Drawer = React.memo(({ navigation, testID, onPress = navigation.toggleDrawer(), ...props }: IHeaderButtonCommon) => (
-	<Container left>
-		<Item iconName='hamburguer' onPress={onPress} testID={testID} {...props} />
-	</Container>
-));
+export const Drawer = React.memo(
+	({ navigation, testID, onPress = navigation?.toggleDrawer(), ...props }: IHeaderButtonCommon) => (
+		<Container left>
+			<Item iconName='hamburguer' onPress={onPress} testID={testID} {...props} />
+		</Container>
+	)
+);
 
 export const CloseModal = React.memo(
-	({ navigation, testID, onPress = () => navigation.pop(), ...props }: IHeaderButtonCommon) => (
+	({ navigation, testID, onPress = () => navigation?.pop(), ...props }: IHeaderButtonCommon) => (
 		<Container left>
 			<Item iconName='close' onPress={onPress} testID={testID} {...props} />
 		</Container>
@@ -55,6 +57,6 @@ export const Preferences = React.memo(({ onPress, testID, ...props }: IHeaderBut
 	</Container>
 ));
 
-export const Legal = React.memo(({ navigation, testID, onPress = navigation.navigate('LegalView') }: IHeaderButtonCommon) => (
+export const Legal = React.memo(({ navigation, testID, onPress = navigation?.navigate('LegalView') }: IHeaderButtonCommon) => (
 	<More onPress={onPress} testID={testID} />
 ));
