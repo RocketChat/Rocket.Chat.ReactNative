@@ -293,7 +293,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			params.roomAnnouncement = announcement;
 		}
 		// Room Type
-		params.roomType = t ? 'p' : 'c';
+		if ((room.t === SubscriptionType.GROUP) !== t) {
+			params.roomType = t ? 'p' : 'c';
+		}
 		// Read Only
 		if (room.ro !== ro) {
 			params.readOnly = ro;
