@@ -6,7 +6,7 @@ import Container from './HeaderButtonContainer';
 import Item from './HeaderButtonItem';
 
 interface IHeaderButtonCommon {
-	navigation: any; // TODO: Evaluate proper type
+	navigation?: any; // TODO: Evaluate proper type
 	onPress?: () => void;
 	testID?: string;
 }
