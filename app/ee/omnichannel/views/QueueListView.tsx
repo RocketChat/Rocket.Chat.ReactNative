@@ -107,6 +107,7 @@ class QueueListView extends React.Component<IQueueListView, any> {
 	getUidDirectMessage = (room: IOmnichannelRoom) => RocketChat.getUidDirectMessage(room);
 
 	renderItem: ListRenderItem<IOmnichannelRoom> = ({ item }) => {
+		console.log('🚀 ~ file: QueueListView.tsx ~ line 110 ~ QueueListView ~ { item }', { item });
 		const {
 			user: { id: userId, username, token },
 			server,

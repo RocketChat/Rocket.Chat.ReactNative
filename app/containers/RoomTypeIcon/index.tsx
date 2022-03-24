@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 
-import { CustomIcon } from '../lib/Icons';
-import { STATUS_COLORS, themes } from '../constants/colors';
-import Status from './Status/Status';
-import { withTheme } from '../theme';
+import { CustomIcon } from '../../lib/Icons';
+import { STATUS_COLORS, themes } from '../../constants/colors';
+import Status from '../Status/Status';
+import { useTheme } from '../../theme';
+import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
 
 const styles = StyleSheet.create({
 	icon: {
@@ -13,7 +14,6 @@ const styles = StyleSheet.create({
 });
 
 interface IRoomTypeIcon {
-	theme?: string;
 	type: string;
 	isGroupChat?: boolean;
 	teamMain?: boolean;
@@ -22,10 +22,20 @@ interface IRoomTypeIcon {
 	style?: ViewStyle;
 }
 
-const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, teamMain, size = 16 }: IRoomTypeIcon) => {
+const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, size = 16 }: IRoomTypeIcon) => {
+	console.log(
+		'🚀 ~ file: index.tsx ~ line 27 ~ RoomTypeIcon ~ type, isGroupChat, status, style, teamMain, size',
+		type,
+		isGroupChat,
+		status,
+		style,
+		teamMain,
+		size
+	);
 	if (!type) {
 		return null;
 	}
+	const { theme } = useTheme();
 
 	const color = themes[theme!].titleText;
 	const iconStyle = [styles.icon, { color }, style];
@@ -34,6 +44,10 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, team
 		return (
 			<Status style={[iconStyle, { color: STATUS_COLORS[status!] ?? STATUS_COLORS.offline }]} size={size} status={status!} />
 		);
+	}
+
+	if (type === 'l') {
+		return <OmnichannelRoomIcon size={size} type={type} status={status} />;
 	}
 
 	// TODO: move this to a separate function
@@ -50,11 +64,9 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, team
 		} else {
 			icon = 'mention';
 		}
-	} else if (type === 'l') {
-		icon = 'omnichannel';
 	}
 
 	return <CustomIcon name={icon} size={size} style={iconStyle} />;
 });
 
-export default withTheme(RoomTypeIcon);
+export default RoomTypeIcon;
