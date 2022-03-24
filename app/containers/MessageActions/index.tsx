@@ -12,8 +12,7 @@ import { getMessageTranslation } from '../message/utils';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import { showConfirmationAlert } from '../../utils/info';
-import { useActionSheet } from '../ActionSheet';
-import { TActionSheetItem } from '../ActionSheet/ActionSheet';
+import { TActionSheetOptionsItem, useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../utils/log/events';
 import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
@@ -326,8 +325,7 @@ const MessageActions = forwardRef(
 		};
 
 		const getOptions = (message: TAnyMessageModel) => {
-			// TODO: waiting for Action Sheet PR
-			let options: TActionSheetItem[] = [];
+			let options: TActionSheetOptionsItem[] = [];
 
 			// Reply
 			if (!isReadOnly) {

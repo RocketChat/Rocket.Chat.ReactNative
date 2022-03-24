@@ -19,8 +19,6 @@ import { IActionSheetItem, Item } from './Item';
 import { TActionSheetOptions, TActionSheetOptionsItem } from './Provider';
 import styles, { ITEM_HEIGHT } from './styles';
 
-export type TActionSheetItem = { title: string; icon: string; onPress: () => void; danger?: boolean };
-
 const getItemLayout = (data: TActionSheetOptionsItem[] | null | undefined, index: number) => ({
 	length: ITEM_HEIGHT,
 	offset: ITEM_HEIGHT * index,
