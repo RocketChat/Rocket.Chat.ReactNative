@@ -26,6 +26,7 @@ export * from './ICertificate';
 export * from './IUrl';
 export * from './ICredentials';
 export * from './ISearch';
+export * from './TUserStatus';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: StackNavigationProp<T, S>;
