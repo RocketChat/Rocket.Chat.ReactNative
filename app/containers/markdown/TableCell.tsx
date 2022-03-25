@@ -6,7 +6,7 @@ import styles from './styles';
 
 interface ITableCell {
 	align: '' | 'left' | 'center' | 'right';
-	children: JSX.Element;
+	children: React.ReactElement | null;
 	isLastCell: boolean;
 	theme: string;
 }
