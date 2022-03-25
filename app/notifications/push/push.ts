@@ -13,7 +13,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import { store as reduxStore } from '../../lib/auxStore';
 import I18n from '../../i18n';
 
-class PushNotificationV2 {
+class PushNotification {
 	onNotification: (notification: any) => void;
 	deviceToken: string;
 	constructor() {
@@ -85,4 +85,4 @@ class PushNotificationV2 {
 	}
 }
 
-export default new PushNotificationV2();
+export default new PushNotification();
