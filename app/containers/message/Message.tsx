@@ -21,6 +21,9 @@ import { themes } from '../../constants/colors';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 
 const MessageInner = React.memo((props: IMessageInner) => {
+	const { attachments } = props;
+	const isCollapsible = attachments ? attachments[0] && attachments[0].collapsed : false;
+
 	if (props.type === 'discussion-created') {
 		return (
 			<>
@@ -29,6 +32,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 			</>
 		);
 	}
+
 	if (props.type === 'jitsi_call_started') {
 		return (
 			<>
@@ -38,6 +42,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 			</>
 		);
 	}
+
 	if (props.blocks && props.blocks.length) {
 		return (
 			<>
@@ -48,11 +53,22 @@ const MessageInner = React.memo((props: IMessageInner) => {
 			</>
 		);
 	}
+
 	return (
 		<>
 			<User {...props} />
-			<Content {...props} />
-			<Attachments {...props} />
+			{isCollapsible ? (
+				<>
+					<Content {...props} />
+					<Attachments {...props} />
+				</>
+			) : (
+				<>
+					<Attachments {...props} />
+					<Content {...props} />
+				</>
+			)}
+
 			<Urls {...props} />
 			<Thread {...props} />
 			<Reactions {...props} />

@@ -6,10 +6,10 @@ import { TNavigationOptions } from './definitions/navigationTypes';
 
 export interface IDimensionsContextProps {
 	width: number;
-	height?: number;
-	scale: number;
+	height: number;
+	scale?: number;
 	fontScale: number;
-	setDimensions: ({
+	setDimensions?: ({
 		width,
 		height,
 		scale,
@@ -39,7 +39,7 @@ export const useDimensions = () => React.useContext(DimensionsContext);
 
 export const useOrientation = () => {
 	const { width, height } = React.useContext(DimensionsContext);
-	const isPortrait = height! > width!;
+	const isPortrait = height > width;
 	return {
 		isPortrait,
 		isLandscape: !isPortrait

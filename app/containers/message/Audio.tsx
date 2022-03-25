@@ -1,5 +1,5 @@
 import React from 'react';
-import { Easing, StyleSheet, Text, View } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 import { Audio } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
@@ -16,19 +16,20 @@ import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { IAttachment } from '../../definitions';
 
 interface IButton {
 	loading: boolean;
 	paused: boolean;
 	theme: string;
+	disabled?: boolean;
 	onPress: Function;
 }
 
 interface IMessageAudioProps {
-	file: {
-		audio_url: string;
-		description: string;
-	};
+	file: IAttachment;
+	isReply?: boolean;
+	style?: StyleProp<TextStyle>[];
 	theme: string;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
@@ -83,22 +84,21 @@ const formatTime = (seconds: number) => moment.utc(seconds * 1000).format('mm:ss
 
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
-const sliderAnimationConfig = {
-	duration: 250,
-	easing: Easing.linear,
-	delay: 0
-};
-
-const Button = React.memo(({ loading, paused, onPress, theme }: IButton) => (
+const Button = React.memo(({ loading, paused, onPress, disabled, theme }: IButton) => (
 	<Touchable
 		style={styles.playPauseButton}
+		disabled={disabled}
 		onPress={onPress}
 		hitSlop={BUTTON_HIT_SLOP}
 		background={Touchable.SelectableBackgroundBorderless()}>
 		{loading ? (
-			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} theme={theme} />
+			<ActivityIndicator style={[styles.playPauseButton, styles.audioLoading]} />
 		) : (
-			<CustomIcon name={paused ? 'play-filled' : 'pause-filled'} size={36} color={themes[theme].tintColor} />
+			<CustomIcon
+				name={paused ? 'play-filled' : 'pause-filled'}
+				size={36}
+				color={disabled ? themes[theme].tintDisabled : themes[theme].tintColor}
+			/>
 		)}
 	</Touchable>
 ));
@@ -128,7 +128,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		const { baseUrl, user } = this.context;
 
 		let url = file.audio_url;
-		if (!url.startsWith('http')) {
+		if (url && !url.startsWith('http')) {
 			url = `${baseUrl}${file.audio_url}`;
 		}
 
@@ -249,7 +249,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 	render() {
 		const { loading, paused, currentTime, duration } = this.state;
-		const { file, getCustomEmoji, theme, scale } = this.props;
+		const { file, getCustomEmoji, theme, scale, isReply, style } = this.props;
 		const { description } = file;
 		const { baseUrl, user } = this.context;
 
@@ -259,29 +259,34 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 		return (
 			<>
+				<Markdown
+					msg={description}
+					style={[isReply && style]}
+					baseUrl={baseUrl}
+					username={user.username}
+					getCustomEmoji={getCustomEmoji}
+					theme={theme}
+				/>
 				<View
 					style={[
 						styles.audioContainer,
 						{ backgroundColor: themes[theme].chatComponentBackground, borderColor: themes[theme].borderColor }
 					]}>
-					<Button loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
+					<Button disabled={isReply} loading={loading} paused={paused} onPress={this.togglePlayPause} theme={theme} />
 					<Slider
+						disabled={isReply}
 						style={styles.slider}
 						value={currentTime}
 						maximumValue={duration}
 						minimumValue={0}
-						animateTransitions
-						animationConfig={sliderAnimationConfig}
-						thumbTintColor={isAndroid && themes[theme].tintColor}
+						thumbTintColor={isReply && isAndroid ? themes[theme].tintDisabled : isAndroid && themes[theme].tintColor}
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
 						onValueChange={this.onValueChange}
-						/* @ts-ignore*/
-						thumbImage={isIOS && { uri: 'audio_thumb', scale }}
+						thumbImage={isIOS ? { uri: 'audio_thumb', scale } : undefined}
 					/>
 					<Text style={[styles.duration, { color: themes[theme].auxiliaryText }]}>{this.duration}</Text>
 				</View>
-				<Markdown msg={description} baseUrl={baseUrl} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 			</>
 		);
 	}
