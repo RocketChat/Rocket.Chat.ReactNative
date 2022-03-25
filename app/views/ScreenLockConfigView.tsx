@@ -223,7 +223,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		return (
 			<List.Section>
 				<List.Separator />
-				{items.map(item => this.renderItem({ item }))}
+				<>{items.map(item => this.renderItem({ item }))}</>
 			</List.Section>
 		);
 	};

@@ -6,7 +6,6 @@ import { CompositeNavigationProp } from '@react-navigation/core';
 
 import * as List from '../containers/List';
 import StatusBar from '../containers/StatusBar';
-import { useTheme } from '../theme';
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
@@ -41,7 +40,6 @@ const setHeader = ({
 
 const AddChannelTeamView = ({ navigation, route, isMasterDetail }: IAddChannelTeamView) => {
 	const { teamId, teamChannels } = route.params;
-	const { theme } = useTheme();
 
 	useEffect(() => {
 		setHeader({ navigation, isMasterDetail });
@@ -67,7 +65,6 @@ const AddChannelTeamView = ({ navigation, route, isMasterDetail }: IAddChannelTe
 					testID='add-channel-team-view-create-channel'
 					left={() => <List.Icon name='team' />}
 					right={() => <List.Icon name='chevron-right' />}
-					theme={theme}
 				/>
 				<List.Separator />
 				<List.Item
@@ -76,7 +73,6 @@ const AddChannelTeamView = ({ navigation, route, isMasterDetail }: IAddChannelTe
 					testID='add-channel-team-view-add-existing'
 					left={() => <List.Icon name='channel-public' />}
 					right={() => <List.Icon name='chevron-right' />}
-					theme={theme}
 				/>
 				<List.Separator />
 			</List.Container>
