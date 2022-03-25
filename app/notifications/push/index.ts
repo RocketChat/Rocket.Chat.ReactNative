@@ -17,9 +17,9 @@ interface IEjson {
 }
 
 export const onNotification = (push: INotification): void => {
-	if (push) {
+	if (push.payload) {
 		try {
-			const notification = push?.getData();
+			const notification = push.payload;
 			const { rid, name, sender, type, host, messageType, messageId }: IEjson = EJSON.parse(notification.ejson);
 
 			const types: Record<string, string> = {

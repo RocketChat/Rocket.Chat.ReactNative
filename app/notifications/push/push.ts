@@ -30,7 +30,7 @@ class PushNotificationV2 {
 			// 		NotificationsIOS.requestPermissions(actions);
 			Notifications.ios.registerRemoteNotifications();
 		} else {
-			Notifications.registerRemoteNotifications();
+			Notifications.android.registerRemoteNotifications();
 		}
 
 		Notifications.events().registerRemoteNotificationsRegistered((event: Registered) => {
