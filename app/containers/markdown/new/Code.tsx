@@ -11,7 +11,7 @@ interface ICodeProps {
 	value: CodeProps['value'];
 }
 
-const Code = ({ value }: ICodeProps): JSX.Element => {
+const Code = ({ value }: ICodeProps) => {
 	const { theme } = useTheme();
 
 	return (
@@ -19,9 +19,9 @@ const Code = ({ value }: ICodeProps): JSX.Element => {
 			style={[
 				styles.codeBlock,
 				{
-					color: themes[theme!].bodyText,
-					backgroundColor: themes[theme!].bannerBackground,
-					borderColor: themes[theme!].borderColor
+					color: themes[theme].bodyText,
+					backgroundColor: themes[theme].bannerBackground,
+					borderColor: themes[theme].borderColor
 				}
 			]}>
 			{value.map(block => {

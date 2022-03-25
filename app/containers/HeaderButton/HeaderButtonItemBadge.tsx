@@ -15,6 +15,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const Badge = ({ ...props }) => <UnreadBadge {...props} style={styles.badgeContainer} small />;
+export const Badge = ({ ...props }): React.ReactElement => <UnreadBadge {...props} style={styles.badgeContainer} small />;
 
 export default Badge;

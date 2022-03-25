@@ -203,7 +203,7 @@ class RegisterView extends React.Component<IProps, any> {
 
 						return (
 							<TextInput
-								inputRef={(e: any) => {
+								inputRef={e => {
 									// @ts-ignore
 									this[key] = e;
 								}}
@@ -241,7 +241,7 @@ class RegisterView extends React.Component<IProps, any> {
 		return (
 			<FormContainer testID='register-view'>
 				<FormContainerInner>
-					<LoginServices navigation={navigation} />
+					<LoginServices navigation={navigation} theme={theme} separator />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
 					<TextInput
 						label={I18n.t('Name')}
