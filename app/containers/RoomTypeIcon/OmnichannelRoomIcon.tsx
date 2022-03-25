@@ -1,11 +1,11 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
 import { SvgUri } from 'react-native-svg';
+import { useSelector } from 'react-redux';
 
-import { IOmnichannelSource, OmnichannelSourceType } from '../../definitions';
+import { IOmnichannelSource, OmnichannelSourceType, IApplicationState } from '../../definitions';
 import { STATUS_COLORS } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
-import { fetchteste } from '../../ee/omnichannel/hooks/useFetch';
 
 const iconMap = {
 	widget: 'livechat-monochromatic',
@@ -24,21 +24,16 @@ interface IOmnichannelRoomIconProps {
 	sourceType?: IOmnichannelSource;
 }
 
-export const OmnichannelRoomIcon = React.memo(({ size, style, sourceType, status }: IOmnichannelRoomIconProps) => {
-	console.log('🚀 ~ file: OmnichannelRoomIcon.tsx ~ line 27 ~ OmnichannelRoomIcon ~ { size, style, sourceType, status }', {
-		size,
-		style,
-		sourceType,
-		status
-	});
-	if (sourceType?.type === OmnichannelSourceType.APP) {
-		fetchteste({ icon: sourceType.sidebarIcon, appId: sourceType.id });
+export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnichannelRoomIconProps) => {
+	if (sourceType?.type === OmnichannelSourceType.APP && sourceType.id && sourceType.sidebarIcon) {
+		const baseUrl = useSelector((state: IApplicationState) => state.server?.server);
+
 		return (
 			<SvgUri
 				height={size}
 				width={size}
 				color={STATUS_COLORS[status || 'offline']}
-				uri='https://thenewcode.com/assets/images/thumbnails/homer-simpson.svg'
+				uri={`${baseUrl}/api/apps/public/${sourceType.id}/get-sidebar-icon?icon=${sourceType.sidebarIcon}`}
 				style={style}
 			/>
 		);
@@ -52,4 +47,4 @@ export const OmnichannelRoomIcon = React.memo(({ size, style, sourceType, status
 			color={STATUS_COLORS[status || 'offline']}
 		/>
 	);
-});
+};
