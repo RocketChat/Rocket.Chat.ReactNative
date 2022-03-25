@@ -2,9 +2,10 @@ import React from 'react';
 import { ViewStyle } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 
-import { OmnichannelSourceType } from '../../definitions';
+import { IOmnichannelSource, OmnichannelSourceType } from '../../definitions';
 import { STATUS_COLORS } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
+import { fetchteste } from '../../ee/omnichannel/hooks/useFetch';
 
 const iconMap = {
 	widget: 'livechat-monochromatic',
@@ -20,12 +21,18 @@ interface IOmnichannelRoomIconProps {
 	type: string;
 	style?: ViewStyle;
 	status?: string;
-	sourceType?: OmnichannelSourceType;
+	sourceType?: IOmnichannelSource;
 }
 
 export const OmnichannelRoomIcon = React.memo(({ size, style, sourceType, status }: IOmnichannelRoomIconProps) => {
-	if (sourceType === OmnichannelSourceType.APP) {
-		// if (true) {
+	console.log('🚀 ~ file: OmnichannelRoomIcon.tsx ~ line 27 ~ OmnichannelRoomIcon ~ { size, style, sourceType, status }', {
+		size,
+		style,
+		sourceType,
+		status
+	});
+	if (sourceType?.type === OmnichannelSourceType.APP) {
+		fetchteste({ icon: sourceType.sidebarIcon, appId: sourceType.id });
 		return (
 			<SvgUri
 				height={size}
@@ -38,6 +45,11 @@ export const OmnichannelRoomIcon = React.memo(({ size, style, sourceType, status
 	}
 
 	return (
-		<CustomIcon name={iconMap[sourceType || 'other']} size={size} style={style} color={STATUS_COLORS[status || 'offline']} />
+		<CustomIcon
+			name={iconMap[sourceType?.type || 'other']}
+			size={size}
+			style={style}
+			color={STATUS_COLORS[status || 'offline']}
+		/>
 	);
 });
