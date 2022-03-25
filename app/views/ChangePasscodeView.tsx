@@ -80,7 +80,7 @@ const ChangePasscodeView = React.memo(() => {
 
 	return (
 		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal}>
-			<PasscodeChoose theme={theme} finishProcess={onSubmit} force={data?.force} />
+			<PasscodeChoose finishProcess={onSubmit} force={data?.force} />
 			{!data?.force ? (
 				<Touchable onPress={onCancel} style={styles.close}>
 					<CustomIcon name='close' color={themes[theme].passcodePrimary} size={30} />

@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import { IApplicationState, IUser } from '../definitions';
 
-interface IServices {
+export interface IServices {
 	facebook: { clientId: string };
 	github: { clientId: string };
 	gitlab: { clientId: string };
