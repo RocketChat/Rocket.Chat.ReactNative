@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 });
 
 interface IListContainer {
-	children: React.ReactNode;
+	children: (React.ReactElement | null)[] | React.ReactElement | null;
 	testID?: string;
 }
 const ListContainer = React.memo(({ children, ...props }: IListContainer) => (

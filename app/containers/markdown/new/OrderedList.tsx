@@ -11,13 +11,13 @@ interface IOrderedListProps {
 	value: OrderedListProps['value'];
 }
 
-const OrderedList = ({ value }: IOrderedListProps): JSX.Element => {
+const OrderedList = ({ value }: IOrderedListProps) => {
 	const { theme } = useTheme();
 	return (
 		<View>
 			{value.map((item, index) => (
 				<View style={styles.row}>
-					<Text style={[styles.text, { color: themes[theme!].bodyText }]}>{index + 1}. </Text>
+					<Text style={[styles.text, { color: themes[theme].bodyText }]}>{index + 1}. </Text>
 					<Inline value={item.value} />
 				</View>
 			))}
