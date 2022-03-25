@@ -7,6 +7,7 @@ import { themes } from '../../constants/colors';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { withTheme } from '../../theme';
+import { IOmnichannelSource } from '../../definitions';
 
 const HIT_SLOP = {
 	top: 5,
@@ -74,6 +75,7 @@ interface IRoomHeader {
 	parentTitle: string;
 	onPress: () => void;
 	testID: string;
+	sourceType?: IOmnichannelSource;
 }
 
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, theme, scale }: TRoomHeaderSubTitle) => {
@@ -136,7 +138,8 @@ const Header = React.memo(
 		isGroupChat,
 		teamMain,
 		testID,
-		usersTyping = []
+		usersTyping = [],
+		sourceType
 	}: IRoomHeader) => {
 		const portrait = height > width;
 		let scale = 1;
@@ -172,7 +175,13 @@ const Header = React.memo(
 				hitSlop={HIT_SLOP}>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
-						<RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />
+						<RoomTypeIcon
+							type={prid ? 'discussion' : type}
+							isGroupChat={isGroupChat}
+							status={status}
+							teamMain={teamMain}
+							sourceType={sourceType}
+						/>
 					)}
 					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} theme={theme!} testID={testID} />
 				</View>
