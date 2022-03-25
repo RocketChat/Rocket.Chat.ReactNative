@@ -40,7 +40,6 @@ export const onNotification = (push: INotification): void => {
 				path: `${types[type]}/${roomName}`,
 				isCall: messageType === 'jitsi_call_started'
 			};
-			// TODO REDUX MIGRATION TO TS
 			store.dispatch(deepLinkingOpen(params));
 		} catch (e) {
 			console.warn(e);

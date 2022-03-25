@@ -1,8 +1,17 @@
-import { Notifications, Registered, RegistrationError, NotificationCompletion, Notification } from 'react-native-notifications';
+import {
+	Notifications,
+	Registered,
+	RegistrationError,
+	NotificationCompletion,
+	Notification,
+	NotificationAction,
+	NotificationCategory
+} from 'react-native-notifications';
 
 import { INotification } from '../../definitions/INotification';
 import { isIOS } from '../../utils/deviceInfo';
 import { store as reduxStore } from '../../lib/auxStore';
+import I18n from '../../i18n';
 
 class PushNotificationV2 {
 	onNotification: (notification: any) => void;
@@ -11,31 +20,25 @@ class PushNotificationV2 {
 		this.onNotification = () => {};
 		this.deviceToken = '';
 		if (isIOS) {
-			// 		const actions = [
-			// 			new NotificationCategory({
-			// 				identifier: 'MESSAGE',
-			// 				actions: [
-			// 					new NotificationAction({
-			// 						activationMode: 'background',
-			// 						title: I18n.t('Reply'),
-			// 						textInput: {
-			// 							buttonTitle: I18n.t('Reply'),
-			// 							placeholder: I18n.t('Type_message')
-			// 						},
-			// 						identifier: 'REPLY_ACTION'
-			// 					})
-			// 				]
-			// 			})
-			// 		];
-			// 		NotificationsIOS.requestPermissions(actions);
+			// init
 			Notifications.ios.registerRemoteNotifications();
+
+			// setCategories
+			const notificationAction = new NotificationAction('REPLY_ACTION', 'background', I18n.t('Reply'), true, {
+				buttonTitle: I18n.t('Reply'),
+				placeholder: I18n.t('Type_message')
+			});
+			const notificationCategory = new NotificationCategory('MESSAGE', [notificationAction]);
+			Notifications.setCategories([notificationCategory]);
 		} else {
+			// init
 			Notifications.android.registerRemoteNotifications();
 		}
 
 		Notifications.events().registerRemoteNotificationsRegistered((event: Registered) => {
 			this.deviceToken = event.deviceToken;
 		});
+
 		Notifications.events().registerRemoteNotificationsRegistrationFailed((event: RegistrationError) => {
 			// TODO: Handle error
 			console.log(event);
