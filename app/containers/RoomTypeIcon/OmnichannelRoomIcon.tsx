@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 import { useSelector } from 'react-redux';
 
@@ -19,7 +19,7 @@ const iconMap = {
 interface IOmnichannelRoomIconProps {
 	size: number;
 	type: string;
-	style?: ViewStyle;
+	style?: StyleProp<ViewStyle>;
 	status?: string;
 	sourceType?: IOmnichannelSource;
 }
