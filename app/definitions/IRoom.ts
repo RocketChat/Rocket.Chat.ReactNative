@@ -99,7 +99,7 @@ export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featu
 		replyTo: string;
 		subject: string;
 	};
-	source: IOmnichannelRoom;
+	source: IOmnichannelSource;
 	transcriptRequest?: IRequestTranscript;
 	servedBy?: IServedBy;
 	onHold?: boolean;

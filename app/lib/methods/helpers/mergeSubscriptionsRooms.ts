@@ -47,7 +47,9 @@ export const merge = (
 				: lastRoomUpdate;
 		}
 		mergedSubscription.ro = room?.ro ?? false;
-		mergedSubscription.broadcast = room?.broadcast;
+		if (room && 'broadcast' in room) {
+			mergedSubscription.broadcast = room?.broadcast;
+		}
 		mergedSubscription.encrypted = room?.encrypted;
 		mergedSubscription.e2eKeyId = room?.e2eKeyId;
 		mergedSubscription.avatarETag = room?.avatarETag;
@@ -80,7 +82,7 @@ export const merge = (
 			mergedSubscription.tags = room.tags;
 		}
 		mergedSubscription.sysMes = room?.sysMes;
-		if (room?.source) {
+		if (room && 'source' in room) {
 			mergedSubscription.source = room?.source;
 		}
 	}
