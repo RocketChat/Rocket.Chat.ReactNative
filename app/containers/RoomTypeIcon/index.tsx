@@ -30,7 +30,7 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, s
 	}
 	const { theme } = useTheme();
 
-	const color = themes[theme!].titleText;
+	const color = themes[theme].titleText;
 	const iconStyle = [styles.icon, { color }, style];
 
 	if (type === 'd' && !isGroupChat) {
@@ -40,7 +40,7 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, s
 	}
 
 	if (type === 'l') {
-		return <OmnichannelRoomIcon size={size} type={type} status={status} sourceType={sourceType} />;
+		return <OmnichannelRoomIcon style={style} size={size} type={type} status={status} sourceType={sourceType} />;
 	}
 
 	// TODO: move this to a separate function

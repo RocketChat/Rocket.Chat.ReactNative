@@ -12,7 +12,7 @@ import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
 import { DisplayMode } from '../../constants/constantDisplayMode';
-import { OmnichannelSourceType } from '../../definitions';
+import { IOmnichannelSource } from '../../definitions';
 
 interface IRoomItem {
 	rid: string;
@@ -61,7 +61,7 @@ interface IRoomItem {
 	size?: number;
 	showAvatar: boolean;
 	displayMode: string;
-	sourceType: OmnichannelSourceType;
+	sourceType: IOmnichannelSource;
 }
 
 const RoomItem = ({
