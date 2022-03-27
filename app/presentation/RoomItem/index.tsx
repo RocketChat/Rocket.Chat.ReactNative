@@ -151,7 +151,8 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 			swipeEnabled,
 			autoJoin,
 			showAvatar,
-			displayMode
+			displayMode,
+			connected
 		} = this.props;
 		const name = getRoomTitle(item);
 		const testID = `rooms-list-view-item-${name}`;
@@ -159,6 +160,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 		const isRead = getIsRead(item);
 		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt);
 		const alert = item.alert || item.tunread?.length;
+		const sourceType = { ...item.source, connected };
 
 		let accessibilityLabel = name;
 		if (item.unread === 1) {
@@ -216,7 +218,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				autoJoin={autoJoin}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
-				sourceType={item.source}
+				sourceType={sourceType}
 			/>
 		);
 	}

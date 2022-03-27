@@ -6,7 +6,7 @@ import { STATUS_COLORS, themes } from '../../constants/colors';
 import Status from '../Status/Status';
 import { useTheme } from '../../theme';
 import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
-import { IOmnichannelSource } from '../../definitions';
+import { IOmnichannelSourceConnected } from '../../definitions';
 
 const styles = StyleSheet.create({
 	icon: {
@@ -21,7 +21,7 @@ interface IRoomTypeIcon {
 	status?: string;
 	size?: number;
 	style?: ViewStyle;
-	sourceType?: IOmnichannelSource;
+	sourceType?: IOmnichannelSourceConnected;
 }
 
 const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, size = 16, sourceType }: IRoomTypeIcon) => {

@@ -7,7 +7,7 @@ import { themes } from '../../constants/colors';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { withTheme } from '../../theme';
-import { IOmnichannelSource } from '../../definitions';
+import { IOmnichannelSourceConnected } from '../../definitions';
 
 const HIT_SLOP = {
 	top: 5,
@@ -75,7 +75,7 @@ interface IRoomHeader {
 	parentTitle: string;
 	onPress: () => void;
 	testID: string;
-	sourceType?: IOmnichannelSource;
+	sourceType?: IOmnichannelSourceConnected;
 }
 
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, theme, scale }: TRoomHeaderSubTitle) => {

@@ -83,6 +83,10 @@ export interface IOmnichannelSource {
 	_updatedAt?: Date;
 	queuedAt?: Date;
 }
+
+export interface IOmnichannelSourceConnected extends IOmnichannelSource {
+	connected: boolean;
+}
 export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featured' | 'broadcast'>> {
 	_id: string;
 	rid: string;
