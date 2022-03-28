@@ -1,6 +1,6 @@
 import React from 'react';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
-import { StyleProp, TextStyle } from 'react-native';
+import { StyleProp, TextProps, TextStyle } from 'react-native';
 
 const icoMoonConfig = require('./selection.json');
 const glyphIcoMoon = require('./glyphIcoMoon.json');
@@ -14,7 +14,7 @@ interface ICustomIcon {
 	color?: string;
 	testID?: string | null;
 	style?: StyleProp<TextStyle>;
-	onPress?: () => void;
+	onPress?: TextProps['onPress'];
 }
 
 const CustomIcon = ({ name, size, color, testID, style, ...props }: ICustomIcon) => (
