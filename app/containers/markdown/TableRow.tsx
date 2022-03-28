@@ -5,7 +5,7 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 
 interface ITableRow {
-	children: JSX.Element;
+	children: React.ReactElement | null;
 	isLastRow: boolean;
 	theme: string;
 }
@@ -16,7 +16,7 @@ const TableRow = React.memo(({ isLastRow, children: _children, theme }: ITableRo
 		rowStyle.push(styles.rowBottomBorder);
 	}
 
-	const children: any = React.Children.toArray(_children);
+	const children = React.Children.toArray(_children) as React.ReactElement[];
 	children[children.length - 1] = React.cloneElement(children[children.length - 1], {
 		isLastCell: true
 	});

@@ -11,7 +11,7 @@ import openLink from '../../utils/openLink';
 import { TOnLinkPress } from './interfaces';
 
 interface ILink {
-	children: JSX.Element;
+	children: React.ReactElement | null;
 	link: string;
 	theme: string;
 	onLinkPress?: TOnLinkPress;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { Text, TextStyle } from 'react-native';
 import removeMarkdown from 'remove-markdown';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
@@ -13,10 +13,10 @@ interface IMarkdownPreview {
 	msg?: string;
 	numberOfLines?: number;
 	testID?: string;
-	style?: StyleProp<TextStyle>[];
+	style?: TextStyle[];
 }
 
-const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdownPreview): React.ReactElement | null => {
+const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdownPreview) => {
 	if (!msg) {
 		return null;
 	}
