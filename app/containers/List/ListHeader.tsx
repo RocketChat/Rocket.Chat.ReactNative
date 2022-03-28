@@ -25,6 +25,7 @@ interface IListHeader {
 
 const ListHeader = React.memo(({ title, translateTitle = true }: IListHeader) => {
 	const { theme } = useTheme();
+
 	return (
 		<View style={styles.container}>
 			<Text style={[styles.title, { color: themes[theme].infoText }]} numberOfLines={1}>

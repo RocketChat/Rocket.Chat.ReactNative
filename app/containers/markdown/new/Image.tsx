@@ -31,11 +31,11 @@ const MessageImage = ({ img, theme }: TMessageImage) => (
 	/>
 );
 
-const Image = ({ value }: IImageProps): JSX.Element => {
+const Image = ({ value }: IImageProps) => {
 	const { theme } = useTheme();
 	const { src } = value;
 
-	return <MessageImage img={src.value} theme={theme!} />;
+	return <MessageImage img={src.value} theme={theme} />;
 };
 
 export default Image;
