@@ -1,11 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import { StyleSheet, Text, TextInputProps, TouchableOpacityProps, View } from 'react-native';
 
 import TextInput from '../../../presentation/TextInput';
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { themes } from '../../../constants/colors';
-import { CustomIcon } from '../../../lib/Icons';
 import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { useOrientation } from '../../../dimensions';
 import { useTheme } from '../../../theme';
@@ -50,11 +49,11 @@ const Header = React.memo(
 		isFetching,
 		serverName = 'Rocket.Chat',
 		server,
-		showServerDropdown,
+		// showServerDropdown,
 		showSearchHeader,
-		onSearchChangeText,
-		onPress
-	}: IRoomHeader) => {
+		onSearchChangeText
+	}: // onPress
+	IRoomHeader) => {
 		const { theme } = useTheme();
 		const titleColorStyle = { color: themes[theme].headerTitleColor };
 		const isLight = theme === 'light';
@@ -89,27 +88,19 @@ const Header = React.memo(
 		}
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
-					<View style={styles.button}>
-						<Text style={[styles.title, titleColorStyle, { fontSize: titleFontSize }]} numberOfLines={1}>
-							{serverName}
-						</Text>
-						<CustomIcon
-							name='chevron-down'
-							color={themes[theme].headerTintColor}
-							style={[showServerDropdown && styles.upsideDown]}
-							size={18}
-						/>
-					</View>
-					{subtitle ? (
-						<Text
-							testID='rooms-list-header-server-subtitle'
-							style={[styles.subtitle, { color: themes[theme].auxiliaryText, fontSize: subTitleFontSize }]}
-							numberOfLines={1}>
-							{subtitle}
-						</Text>
-					) : null}
-				</TouchableOpacity>
+				<View style={styles.button}>
+					<Text style={[styles.title, titleColorStyle, { fontSize: titleFontSize }]} numberOfLines={1}>
+						{serverName}
+					</Text>
+				</View>
+				{subtitle ? (
+					<Text
+						testID='rooms-list-header-server-subtitle'
+						style={[styles.subtitle, { color: themes[theme].auxiliaryText, fontSize: subTitleFontSize }]}
+						numberOfLines={1}>
+						{subtitle}
+					</Text>
+				) : null}
 			</View>
 		);
 	}
