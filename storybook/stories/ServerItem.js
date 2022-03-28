@@ -19,7 +19,18 @@ const item = {
 	iconURL: 'https://open.rocket.chat/images/logo/android-chrome-512x512.png'
 };
 
-const ServerItem = props => <ServerItemComponent item={item} hasCheck={false} {...props} />;
+const ServerItem = ({ theme = themes.light, ...props }) => (
+	<ThemeContext.Provider
+		value={{
+			theme,
+			themePreferences: {
+				currentTheme: theme,
+				darkLevel: theme
+			}
+		}}>
+		<ServerItemComponent item={item} hasCheck={false} {...props} />
+	</ThemeContext.Provider>
+);
 
 stories.add('content', () => (
 	<>
@@ -47,16 +58,10 @@ stories.add('touchable', () => (
 	</>
 ));
 
-const ThemeStory = ({ theme }) => (
-	<ThemeContext.Provider value={theme}>
-		<ServerItem theme={theme} hasCheck />
-	</ThemeContext.Provider>
-);
-
 stories.add('themes', () => (
 	<>
-		<ThemeStory theme={themes.light} />
-		<ThemeStory theme={themes.dark} />
-		<ThemeStory theme={themes.black} />
+		<ServerItem theme={themes.light} />
+		<ServerItem theme={themes.dark} />
+		<ServerItem theme={themes.black} />
 	</>
 ));

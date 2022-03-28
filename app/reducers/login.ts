@@ -1,7 +1,6 @@
-import { UserStatus } from '../definitions/UserStatus';
 import * as types from '../actions/actionsTypes';
 import { TActionsLogin } from '../actions/login';
-import { IUser } from '../definitions';
+import { IUser, TUserStatus } from '../definitions';
 
 export interface IUserLogin {
 	id: string;
@@ -9,7 +8,7 @@ export interface IUserLogin {
 	username: string;
 	name: string;
 	language?: string;
-	status: UserStatus;
+	status: TUserStatus;
 	statusText: string;
 	roles: string[];
 	avatarETag?: string;
@@ -79,6 +78,13 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 					...state.user,
 					...action.user
 				}
+			};
+		case types.USER.CLEAR:
+			return {
+				...state,
+				user: {},
+				isAuthenticated: false,
+				isLocalAuthenticated: false
 			};
 		case types.LOGIN.SET_SERVICES:
 			return {

@@ -175,7 +175,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 
 	render() {
 		const { loading } = this.state;
-		const { route, theme } = this.props;
+		const { route } = this.props;
 		const { url, authType } = route.params;
 		const isIframe = authType === 'iframe';
 
@@ -196,7 +196,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 						this.setState({ loading: false });
 					}}
 				/>
-				{loading ? <ActivityIndicator size='large' theme={theme} absolute /> : null}
+				{loading ? <ActivityIndicator size='large' absolute /> : null}
 			</>
 		);
 	}

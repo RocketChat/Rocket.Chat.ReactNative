@@ -24,7 +24,7 @@ interface IMultiSelect {
 	multiselect?: boolean;
 	onSearch?: () => void;
 	onClose?: () => void;
-	inputStyle: object;
+	inputStyle?: object;
 	value?: any[];
 	disabled?: boolean | object;
 	theme: string;
@@ -126,7 +126,6 @@ export const MultiSelect = React.memo(
 					<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
 						<TextInput
 							testID='multi-select-search'
-							/* @ts-ignore*/
 							onChangeText={onSearch || onSearchChange}
 							placeholder={I18n.t('Search')}
 							theme={theme}

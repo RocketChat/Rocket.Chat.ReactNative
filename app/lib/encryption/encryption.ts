@@ -118,8 +118,8 @@ class Encryption {
 	// Persist keys on UserPreferences
 	persistKeys = async (server: string, publicKey: string, privateKey: string) => {
 		this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
-		await UserPreferences.setStringAsync(`${server}-${E2E_PUBLIC_KEY}`, EJSON.stringify(publicKey));
-		await UserPreferences.setStringAsync(`${server}-${E2E_PRIVATE_KEY}`, privateKey);
+		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, EJSON.stringify(publicKey));
+		UserPreferences.setString(`${server}-${E2E_PRIVATE_KEY}`, privateKey);
 	};
 
 	// Could not obtain public-private keypair from server.
@@ -182,9 +182,9 @@ class Encryption {
 	};
 
 	// Create a random password to local created keys
-	createRandomPassword = async (server: string) => {
+	createRandomPassword = (server: string) => {
 		const password = randomPassword();
-		await UserPreferences.setStringAsync(`${server}-${E2E_RANDOM_PASSWORD_KEY}`, password);
+		UserPreferences.setString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`, password);
 		return password;
 	};
 
@@ -194,7 +194,7 @@ class Encryption {
 
 		// Encode the private key
 		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, this.userId as string);
-		const publicKey = await UserPreferences.getStringAsync(`${server}-${E2E_PUBLIC_KEY}`);
+		const publicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
 		// Send the new keys to the server
 		await RocketChat.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
@@ -244,7 +244,7 @@ class Encryption {
 			const threadMessagesToDecrypt = await threadMessagesCollection.query(...whereClause).fetch();
 
 			// Concat messages/threads/threadMessages
-			let toDecrypt: (TThreadModel | TThreadMessageModel)[] = [
+			let toDecrypt: (TThreadModel | TThreadMessageModel | TMessageModel)[] = [
 				...messagesToDecrypt,
 				...threadsToDecrypt,
 				...threadMessagesToDecrypt
@@ -259,7 +259,7 @@ class Encryption {
 						newMessage = await this.decryptMessage({
 							t,
 							rid,
-							msg,
+							msg: msg as string,
 							tmsg
 						});
 					}
@@ -443,7 +443,7 @@ class Encryption {
 	};
 
 	// Decrypt a message
-	decryptMessage = async (message: Partial<IMessage>) => {
+	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg'>) => {
 		const { t, e2e } = message;
 
 		// Prevent create a new instance if this room was encrypted sometime ago
@@ -464,12 +464,13 @@ class Encryption {
 		}
 
 		const { rid } = message;
-		const roomE2E = await this.getRoomInstance(rid as string);
+		const roomE2E = await this.getRoomInstance(rid);
 		return roomE2E.decrypt(message);
 	};
 
 	// Decrypt multiple messages
-	decryptMessages = (messages: IMessage[]) => Promise.all(messages.map((m: IMessage) => this.decryptMessage(m)));
+	decryptMessages = (messages: Partial<IMessage>[]) =>
+		Promise.all(messages.map((m: Partial<IMessage>) => this.decryptMessage(m as IMessage)));
 
 	// Decrypt multiple subscriptions
 	decryptSubscriptions = (subscriptions: ISubscription[]) => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));

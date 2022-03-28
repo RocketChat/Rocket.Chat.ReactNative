@@ -62,7 +62,7 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 	}, []);
 
 	return (
-		<FormContainer theme={theme} testID='send-email-confirmation-view'>
+		<FormContainer testID='send-email-confirmation-view'>
 			<FormContainerInner>
 				<TextInput
 					autoFocus

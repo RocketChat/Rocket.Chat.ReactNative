@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import { themes } from '../../constants/colors';
+import { IAccessoryComponent, IFields, ISection } from './interfaces';
 
 const styles = StyleSheet.create({
 	content: {
@@ -23,36 +24,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IAccessory {
-	blockId?: string;
-	appId?: string;
-	element: any;
-	parser: any;
-}
+const Accessory = ({ element, parser }: IAccessoryComponent) =>
+	parser.renderAccessories({ ...element }, BLOCK_CONTEXT.SECTION, parser);
 
-interface IFields {
-	fields: any;
-	parser: any;
-	theme: string;
-}
-
-interface ISection {
-	blockId: string;
-	appId: string;
-	text: object;
-	fields: [];
-	accessory: any;
-	theme: string;
-	parser: any;
-}
-
-const Accessory = ({ blockId, appId, element, parser }: IAccessory) =>
-	parser.renderAccessories({ blockId, appId, ...element }, BLOCK_CONTEXT.SECTION, parser);
-
-const Fields = ({ fields, parser, theme }: IFields) =>
-	fields.map((field: any) => (
-		<Text style={[styles.text, styles.field, { color: themes[theme].bodyText }]}>{parser.text(field)}</Text>
-	));
+const Fields = ({ fields, parser, theme }: IFields) => (
+	<>
+		{fields.map(field => (
+			<Text style={[styles.text, styles.field, { color: themes[theme].bodyText }]}>{parser.text(field)}</Text>
+		))}
+	</>
+);
 
 const accessoriesRight = ['image', 'overflow'];
 

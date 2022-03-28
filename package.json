@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.25.0",
+	"version": "4.26.1",
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
@@ -94,7 +94,7 @@
 		"react-native-keycommands": "2.0.3",
 		"react-native-localize": "2.1.1",
 		"react-native-mime-types": "2.3.0",
-		"react-native-mmkv-storage": "0.3.5",
+		"react-native-mmkv-storage": "0.6.12",
 		"react-native-modal": "11.10.0",
 		"react-native-navigation-bar-color": "2.0.1",
 		"react-native-notifications": "2.1.7",
@@ -143,8 +143,9 @@
 		"@rocket.chat/eslint-config": "^0.4.0",
 		"@storybook/addon-storyshots": "5.3.21",
 		"@storybook/react-native": "5.3.25",
-		"@types/bytebuffer": "^5.0.43",
+		"@testing-library/jest-native": "^4.0.4",
 		"@testing-library/react-native": "^9.0.0",
+		"@types/bytebuffer": "^5.0.43",
 		"@types/ejson": "^2.1.3",
 		"@types/jest": "^26.0.24",
 		"@types/lodash": "^4.14.171",
@@ -157,13 +158,14 @@
 		"@types/react-redux": "^7.1.18",
 		"@types/react-test-renderer": "^17.0.1",
 		"@types/semver": "^7.3.9",
+		"@types/ua-parser-js": "^0.7.36",
 		"@types/url-parse": "^1.4.6",
 		"@typescript-eslint/eslint-plugin": "^4.28.3",
 		"@typescript-eslint/parser": "^4.28.5",
 		"axios": "0.21.1",
 		"babel-jest": "^27.0.6",
 		"babel-plugin-transform-remove-console": "^6.9.4",
-		"codecov": "3.8.2",
+		"codecov": "^3.8.3",
 		"detox": "18.17.0",
 		"eslint": "^7.31.0",
 		"eslint-config-prettier": "^8.3.0",
@@ -204,7 +206,10 @@
 		},
 		"transform": {
 			"^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-		}
+		},
+		"setupFilesAfterEnv": [
+			"@testing-library/jest-native/extend-expect"
+		]
 	},
 	"snyk": true,
 	"engines": {
@@ -245,13 +250,13 @@
 					}
 				}
 			},
-			"and.emu.debug": {
+			"android.emu.debug": {
 				"device": "Pixel_API_28_AOSP",
 				"type": "android.emulator",
 				"binaryPath": "android/app/build/outputs/apk/e2ePlay/debug/app-e2e-play-debug.apk",
 				"build": "cd android && ./gradlew app:assembleE2ePlayDebug app:assembleE2ePlayDebugAndroidTest -DtestBuildType=debug && cd .."
 			},
-			"and.emu.release": {
+			"android.emu.release": {
 				"device": "Pixel_API_28_AOSP",
 				"type": "android.emulator",
 				"binaryPath": "android/app/build/outputs/apk/e2ePlay/release/app-e2e-play-release.apk",
