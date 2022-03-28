@@ -166,16 +166,16 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 					t: item.t,
 					search: true
 				});
-			} else {
-				this.goRoom({
-					rid: item._id,
-					name: item.name,
-					t: item.t,
-					search: true,
-					teamMain: item.teamMain,
-					teamId: item.teamId
-				});
 			}
+		} else {
+			this.goRoom({
+				rid: item._id,
+				name: item.name,
+				t: item.t,
+				search: true,
+				teamMain: item.teamMain,
+				teamId: item.teamId
+			});
 		}
 	};
 

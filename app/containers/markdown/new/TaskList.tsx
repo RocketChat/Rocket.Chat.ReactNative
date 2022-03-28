@@ -11,13 +11,13 @@ interface ITasksProps {
 	value: TasksProps['value'];
 }
 
-const TaskList = ({ value = [] }: ITasksProps): JSX.Element => {
+const TaskList = ({ value = [] }: ITasksProps) => {
 	const { theme } = useTheme();
 	return (
 		<View>
 			{value.map(item => (
 				<View style={styles.row}>
-					<Text style={[styles.text, { color: themes[theme!].bodyText }]}>{item.status ? '- [x] ' : '- [ ] '}</Text>
+					<Text style={[styles.text, { color: themes[theme].bodyText }]}>{item.status ? '- [x] ' : '- [ ] '}</Text>
 					<Inline value={item.value} />
 				</View>
 			))}

@@ -18,7 +18,7 @@ const style = StyleSheet.create({
 });
 
 interface IListItem {
-	children: JSX.Element;
+	children: React.ReactElement | null;
 	bulletWidth: number;
 	level: number;
 	ordered: boolean;

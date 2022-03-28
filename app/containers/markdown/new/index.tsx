@@ -35,7 +35,7 @@ const Body = ({
 	getCustomEmoji,
 	baseUrl,
 	onLinkPress
-}: IBodyProps): React.ReactElement | null => {
+}: IBodyProps) => {
 	if (isEmpty(tokens)) {
 		return null;
 	}

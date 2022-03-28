@@ -8,7 +8,7 @@ export interface IDimensionsContextProps {
 	width: number;
 	height: number;
 	scale?: number;
-	fontScale?: number;
+	fontScale: number;
 	setDimensions?: ({
 		width,
 		height,
@@ -22,7 +22,9 @@ export interface IDimensionsContextProps {
 	}) => void;
 }
 
-export const DimensionsContext = React.createContext<IDimensionsContextProps>(Dimensions.get('window'));
+export const DimensionsContext = React.createContext<IDimensionsContextProps>(
+	Dimensions.get('window') as IDimensionsContextProps
+);
 
 export function withDimensions<T extends object>(Component: React.ComponentType<T> & TNavigationOptions): typeof Component {
 	const DimensionsComponent = (props: T) => (
