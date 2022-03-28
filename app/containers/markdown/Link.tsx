@@ -2,7 +2,7 @@ import React from 'react';
 import { Clipboard, Text } from 'react-native';
 
 import styles from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';

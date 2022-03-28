@@ -23,7 +23,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { serverInitAdd } from '../../actions/server';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import EventEmitter from '../../utils/events';
 import {
 	KEY_COMMAND,
@@ -36,7 +36,7 @@ import {
 	handleCommandShowPreferences,
 	IKeyCommandEvent
 } from '../../commands';
-import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
+import { MAX_SIDEBAR_WIDTH } from '../../lib/constants/tablet';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -47,7 +47,7 @@ import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
 import { IApplicationState, IBaseScreen, ISubscription, IUser, RootEnum, TSubscriptionModel } from '../../definitions';
-import { DisplayMode, SortBy } from '../../constants/constantDisplayMode';
+import { DisplayMode, SortBy } from '../../lib/constants/constantDisplayMode';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';

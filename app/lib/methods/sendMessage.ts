@@ -1,7 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Model } from '@nozbe/watermelondb';
 
-import messagesStatus from '../../constants/messagesStatus';
+import messagesStatus from '../constants/messagesStatus';
 import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';

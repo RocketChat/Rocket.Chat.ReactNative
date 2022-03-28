@@ -8,7 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 
 import { closeRoom, leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants/colors';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';

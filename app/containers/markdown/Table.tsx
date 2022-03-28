@@ -5,7 +5,7 @@ import { CELL_WIDTH } from './TableCell';
 import styles from './styles';
 import Navigation from '../../lib/Navigation';
 import I18n from '../../i18n';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 
 interface ITable {
 	children: React.ReactElement | null;

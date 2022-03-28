@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 
 import Inline from './Inline';
 import styles from '../styles';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants/colors';
 import { useTheme } from '../../../theme';
 
 interface IUnorderedListProps {

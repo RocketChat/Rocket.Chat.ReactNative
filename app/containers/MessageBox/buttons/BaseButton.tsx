@@ -1,7 +1,7 @@
 import React from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import styles from '../styles';
 import I18n from '../../../i18n';

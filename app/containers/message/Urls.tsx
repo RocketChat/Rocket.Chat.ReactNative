@@ -6,7 +6,7 @@ import { dequal } from 'dequal';
 import Touchable from './Touchable';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import { withTheme } from '../../theme';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';

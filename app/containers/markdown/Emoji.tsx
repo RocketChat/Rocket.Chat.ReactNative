@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import styles from './styles';
 
 interface IEmoji {

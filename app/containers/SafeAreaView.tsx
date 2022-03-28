@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView as SafeAreaContext } from 'react-native-safe-area-context';
 
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants/colors';
 import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({

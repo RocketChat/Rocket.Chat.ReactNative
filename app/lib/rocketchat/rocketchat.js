@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { InteractionManager } from 'react-native';
 import { setActiveUsers } from '../../actions/activeUsers';
 import { setUser } from '../../actions/login';
-import defaultSettings from '../../constants/settings';
+import defaultSettings from '../constants/settings';
 import { getDeviceToken } from '../../notifications/push';
 import log from '../../utils/log';
 import database from '../database';

@@ -4,7 +4,7 @@ import { dequal } from 'dequal';
 
 import Item from './Item';
 import styles from '../styles';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants/colors';
 import { withTheme } from '../../../theme';
 import { IPreviewItem } from '../../../definitions';
 

@@ -6,7 +6,7 @@ import prettyBytes from 'pretty-bytes';
 
 import { CustomIcon } from '../../lib/Icons';
 import { ImageViewer, types } from '../../presentation/ImageViewer';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import { useDimensions, useOrientation } from '../../dimensions';
 import { getHeaderHeight } from '../../containers/Header';
 import sharedStyles from '../Styles';

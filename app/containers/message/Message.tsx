@@ -17,7 +17,7 @@ import Discussion from './Discussion';
 import Content from './Content';
 import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 
 const MessageInner = React.memo((props: IMessageInner) => {

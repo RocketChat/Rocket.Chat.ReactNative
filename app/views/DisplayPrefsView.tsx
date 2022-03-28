@@ -5,8 +5,8 @@ import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setPreference } from '../actions/sortPreferences';
-import { themes } from '../constants/colors';
-import { DisplayMode, SortBy } from '../constants/constantDisplayMode';
+import { themes } from '../lib/constants/colors';
+import { DisplayMode, SortBy } from '../lib/constants/constantDisplayMode';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';

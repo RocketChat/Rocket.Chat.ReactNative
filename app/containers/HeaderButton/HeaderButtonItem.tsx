@@ -4,7 +4,7 @@ import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../lib/Icons';
 import { useTheme } from '../../theme';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import sharedStyles from '../../views/Styles';
 
 interface IHeaderButtonItem {

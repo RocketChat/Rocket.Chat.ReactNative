@@ -6,7 +6,7 @@ import { MENTIONS_TRACKING_TYPE_CANNED } from '../constants';
 import styles from '../styles';
 import sharedStyles from '../../../views/Styles';
 import I18n from '../../../i18n';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants/colors';
 import { CustomIcon } from '../../../lib/Icons';
 import MessageboxContext from '../Context';
 

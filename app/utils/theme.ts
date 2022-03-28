@@ -3,7 +3,7 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import setRootViewColor from 'rn-root-view';
 
 import { IThemePreference, TThemeMode } from '../definitions/ITheme';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants/colors';
 import { isAndroid } from './deviceInfo';
 import UserPreferences from '../lib/userPreferences';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';

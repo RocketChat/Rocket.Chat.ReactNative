@@ -3,7 +3,7 @@ import { Clipboard, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { encryptionSetBanner } from '../actions/encryption';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants/colors';
 import Button from '../containers/Button';
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';

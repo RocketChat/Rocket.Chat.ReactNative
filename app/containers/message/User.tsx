@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import { withTheme } from '../../theme';
 import MessageError from './MessageError';
 import sharedStyles from '../../views/Styles';

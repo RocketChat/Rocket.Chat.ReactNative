@@ -3,7 +3,7 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants/colors';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';

@@ -4,7 +4,7 @@ import orderBy from 'lodash/orderBy';
 
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
-import { MessageTypeLoad } from '../../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../constants/messageTypeLoad';
 import sdk from '../rocketchat/services/sdk';
 import { IMessage } from '../../definitions';
 import { generateLoadMoreId } from '../utils';

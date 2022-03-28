@@ -7,7 +7,7 @@ import Markdown from '../markdown';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
 import { formatAttachmentUrl } from '../../lib/utils';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import MessageContext from './Context';
 import { fileDownload } from '../../utils/fileDownload';
 import EventEmitter from '../../utils/events';

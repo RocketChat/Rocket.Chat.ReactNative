@@ -6,7 +6,7 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 import Check from '../../Check';
 import * as List from '../../List';
 import { textParser } from '../utils';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants/colors';
 import styles from './styles';
 
 interface IItem {

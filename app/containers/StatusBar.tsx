@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar as StatusBarRN } from 'react-native';
 
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants/colors';
 import { useTheme } from '../theme';
 
 const supportedStyles = {

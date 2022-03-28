@@ -6,7 +6,7 @@ import MessageContext from './Context';
 import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
-import messagesStatus from '../../constants/messagesStatus';
+import messagesStatus from '../../lib/constants/messagesStatus';
 import { withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';

@@ -4,10 +4,10 @@ import { Dimensions, ScrollView } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { Provider } from 'react-redux';
 
-import { themes } from '../../app/constants/colors';
+import { themes } from '../../app/lib/constants/colors';
 import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
 import { longText } from '../utils';
-import { DisplayMode } from '../../app/constants/constantDisplayMode';
+import { DisplayMode } from '../../app/lib/constants/constantDisplayMode';
 import { store } from './index';
 
 const baseUrl = 'https://open.rocket.chat';

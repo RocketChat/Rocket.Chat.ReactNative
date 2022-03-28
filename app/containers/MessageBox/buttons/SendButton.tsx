@@ -1,7 +1,7 @@
 import React from 'react';
 
 import BaseButton from './BaseButton';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants/colors';
 
 interface ISendButton {
 	theme: string;

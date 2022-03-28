@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import { withTheme } from '../../theme';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';

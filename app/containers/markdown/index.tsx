@@ -5,7 +5,7 @@ import Renderer from 'commonmark-react-renderer';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import I18n from '../../i18n';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import MarkdownLink from './Link';
 import MarkdownList from './List';
 import MarkdownListItem from './ListItem';

@@ -9,7 +9,7 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import TextInput from '../../containers/TextInput';

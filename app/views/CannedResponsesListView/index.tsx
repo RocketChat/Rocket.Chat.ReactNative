@@ -20,7 +20,7 @@ import Navigation from '../../lib/Navigation';
 import { goRoom } from '../../utils/goRoom';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
 import log from '../../utils/log';
 import CannedResponseItem from './CannedResponseItem';
 import Dropdown from './Dropdown';
