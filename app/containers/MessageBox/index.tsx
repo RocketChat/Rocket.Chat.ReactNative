@@ -47,7 +47,7 @@ import { getUserSelector } from '../../selectors/login';
 import Navigation from '../../lib/Navigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
 import { IPreviewItem, IUser } from '../../definitions';

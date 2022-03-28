@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { themes } from '../../../constants/colors';
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
 
 export const ROW_HEIGHT = 44;

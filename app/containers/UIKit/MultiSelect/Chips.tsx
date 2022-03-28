@@ -5,7 +5,7 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 
 import { themes } from '../../../constants/colors';
 import { textParser } from '../utils';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../CustomIcon';
 import styles from './styles';
 
 interface IChip {

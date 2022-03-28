@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import Touchable from './Touchable';
 import { E2E_MESSAGE_TYPE } from '../../lib/encryption/constants';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { themes } from '../../constants/colors';
 import { BUTTON_HIT_SLOP } from './utils';
 import MessageContext from './Context';

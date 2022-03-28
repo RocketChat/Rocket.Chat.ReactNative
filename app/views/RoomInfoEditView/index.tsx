@@ -20,7 +20,7 @@ import { IApplicationState, IBaseScreen, ISubscription, SubscriptionType, TSubsc
 import { ERoomType } from '../../definitions/ERoomType';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import RocketChat from '../../lib/rocketchat';
 import { compareServerVersion } from '../../lib/utils';
 import KeyboardView from '../../presentation/KeyboardView';

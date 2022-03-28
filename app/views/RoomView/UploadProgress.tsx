@@ -7,7 +7,7 @@ import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
 import log from '../../utils/log';
 import I18n from '../../i18n';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import { themes } from '../../constants/colors';
 import sharedStyles from '../Styles';
 import { withTheme } from '../../theme';

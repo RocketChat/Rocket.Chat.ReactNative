@@ -6,7 +6,7 @@ import { Notifier } from 'react-native-notifier';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Avatar from '../Avatar';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';

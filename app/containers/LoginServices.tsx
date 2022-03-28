@@ -15,7 +15,7 @@ import I18n from '../i18n';
 import random from '../utils/random';
 import { events, logEvent } from '../utils/log';
 import RocketChat from '../lib/rocketchat';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon } from './CustomIcon';
 import { IServices } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
 import { IApplicationState } from '../definitions';

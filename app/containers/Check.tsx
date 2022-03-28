@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon } from './CustomIcon';
 import { themes } from '../constants/colors';
 import { useTheme } from '../theme';
 

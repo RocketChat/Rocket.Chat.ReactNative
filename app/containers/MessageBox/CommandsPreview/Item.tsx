@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
 import styles from '../styles';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../CustomIcon';
 import { themes } from '../../../constants/colors';
 import MessageboxContext from '../Context';
 import ActivityIndicator from '../../ActivityIndicator';

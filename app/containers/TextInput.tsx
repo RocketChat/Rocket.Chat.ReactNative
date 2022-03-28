@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 import sharedStyles from '../views/Styles';
 import TextInput from '../presentation/TextInput';
 import { themes } from '../constants/colors';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon } from './CustomIcon';
 import ActivityIndicator from './ActivityIndicator';
 
 const styles = StyleSheet.create({
@@ -81,23 +81,23 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 
 	get iconLeft() {
 		const { testID, iconLeft, theme } = this.props;
-		return (
+		return iconLeft ? (
 			<CustomIcon
 				name={iconLeft}
 				testID={testID ? `${testID}-icon-left` : null}
 				style={[styles.iconContainer, styles.iconLeft, { color: themes[theme].bodyText }]}
 				size={20}
 			/>
-		);
+		) : null;
 	}
 
 	get iconRight() {
 		const { iconRight, onIconRightPress, theme } = this.props;
-		return (
+		return iconRight ? (
 			<Touchable onPress={onIconRightPress} style={[styles.iconContainer, styles.iconRight]}>
 				<CustomIcon name={iconRight} style={{ color: themes[theme].bodyText }} size={20} />
 			</Touchable>
-		);
+		) : null;
 	}
 
 	get iconPassword() {

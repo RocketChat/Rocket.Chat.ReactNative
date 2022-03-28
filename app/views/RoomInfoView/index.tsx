@@ -8,7 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Observable, Subscription } from 'rxjs';
 
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import Status from '../../containers/Status';
 import Avatar from '../../containers/Avatar';
 import sharedStyles from '../Styles';

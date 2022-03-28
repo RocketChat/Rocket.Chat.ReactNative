@@ -7,7 +7,7 @@ import styles from '../styles';
 import sharedStyles from '../../../views/Styles';
 import I18n from '../../../i18n';
 import { themes } from '../../../constants/colors';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../CustomIcon';
 import MessageboxContext from '../Context';
 
 const MentionHeaderList = ({ trackingType, hasMentions, theme, loading }) => {

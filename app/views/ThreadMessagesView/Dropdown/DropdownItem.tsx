@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { themes } from '../../../constants/colors';
 import { withTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../../containers/CustomIcon';
 import sharedStyles from '../../Styles';
 
 const styles = StyleSheet.create({

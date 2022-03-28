@@ -22,7 +22,7 @@ import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
 import database from '../lib/database';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon } from '../containers/CustomIcon';
 import RocketChat from '../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
 import { getUserSelector } from '../selectors/login';

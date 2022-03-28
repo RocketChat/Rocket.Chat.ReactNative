@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 import Touch from '../../utils/touch';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';

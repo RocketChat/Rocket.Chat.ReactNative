@@ -2,7 +2,7 @@ import React from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { themes } from '../../../constants/colors';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../CustomIcon';
 import styles from '../styles';
 import I18n from '../../../i18n';
 
@@ -12,10 +12,10 @@ interface IBaseButton {
 	testID: string;
 	accessibilityLabel: string;
 	icon: string;
-	color: string;
+	color?: string;
 }
 
-const BaseButton = React.memo(({ onPress, testID, accessibilityLabel, icon, theme, color }: Partial<IBaseButton>) => (
+const BaseButton = React.memo(({ onPress, testID, accessibilityLabel, icon, theme, color }: IBaseButton) => (
 	<BorderlessButton
 		onPress={onPress}
 		style={styles.actionButton}

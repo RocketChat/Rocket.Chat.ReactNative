@@ -4,7 +4,7 @@ import { Text } from 'react-native';
 import styles from './styles';
 import { themes } from '../../../constants/colors';
 import Touch from '../../../utils/touch';
-import { CustomIcon } from '../../../lib/Icons';
+import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 
 interface IPasscodeButton {

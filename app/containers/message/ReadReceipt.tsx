@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { themes } from '../../constants/colors';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 
 interface IMessageReadReceipt {

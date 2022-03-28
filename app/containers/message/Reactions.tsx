@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import Touchable from './Touchable';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from './utils';

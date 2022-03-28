@@ -8,7 +8,7 @@ import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import styles from './styles';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../CustomIcon';
 import { events, logEvent } from '../../utils/log';
 
 interface IMessageBoxRecordAudioProps {

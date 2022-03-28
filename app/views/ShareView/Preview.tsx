@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import prettyBytes from 'pretty-bytes';
 
-import { CustomIcon } from '../../lib/Icons';
+import { CustomIcon } from '../../containers/CustomIcon';
 import { ImageViewer, types } from '../../presentation/ImageViewer';
 import { themes } from '../../constants/colors';
 import { useDimensions, useOrientation } from '../../dimensions';

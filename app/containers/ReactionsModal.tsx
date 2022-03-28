@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 
 import Emoji from './message/Emoji';
 import I18n from '../i18n';
-import { CustomIcon } from '../lib/Icons';
+import { CustomIcon } from './CustomIcon';
 import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
 import { withTheme } from '../theme';
