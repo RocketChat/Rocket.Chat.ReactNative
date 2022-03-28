@@ -1041,9 +1041,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		const isAndroidTablet: Partial<IThemedTextInput> =
 			isTablet && isAndroid
 				? {
-						// multiline: false,
-						onSubmitEditing: this.submit,
-						returnKeyType: 'send'
+						onSubmitEditing: this.submit
 				  }
 				: {};
 
