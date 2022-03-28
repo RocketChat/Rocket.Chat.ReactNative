@@ -11,9 +11,12 @@ const styles = StyleSheet.create({
 	}
 });
 
+type SupportedChildren = React.ReactElement | React.ReactElement[] | null;
+type TSafeAreaViewChildren = SupportedChildren | SupportedChildren[];
+
 interface ISafeAreaView extends ViewProps {
 	vertical?: boolean;
-	children: (React.ReactElement | React.ReactElement[] | null)[];
+	children: TSafeAreaViewChildren;
 }
 
 const SafeAreaView = React.memo(({ style, children, vertical = true, ...props }: ISafeAreaView) => {
