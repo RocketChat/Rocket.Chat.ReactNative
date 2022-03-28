@@ -11,10 +11,10 @@ interface IParagraphProps {
 	value: ParagraphProps['value'];
 }
 
-const Paragraph = ({ value }: IParagraphProps): JSX.Element => {
+const Paragraph = ({ value }: IParagraphProps) => {
 	const { theme } = useTheme();
 	return (
-		<Text style={[styles.text, { color: themes[theme!].bodyText }]}>
+		<Text style={[styles.text, { color: themes[theme].bodyText }]}>
 			<Inline value={value} />
 		</Text>
 	);

@@ -7,7 +7,7 @@ import { themes } from '../../constants/colors';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { withTheme } from '../../theme';
-import { IOmnichannelSourceConnected } from '../../definitions';
+import { TUserStatus, IOmnichannelSourceConnected } from '../../definitions';
 
 const HIT_SLOP = {
 	top: 5,
@@ -68,7 +68,7 @@ interface IRoomHeader {
 	prid: string;
 	tmid: string;
 	teamMain: boolean;
-	status: string;
+	status: TUserStatus;
 	theme?: string;
 	usersTyping: [];
 	isGroupChat: boolean;

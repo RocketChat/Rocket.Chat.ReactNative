@@ -1,20 +1,15 @@
-import React, { memo } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
+import { IApplicationState, TUserStatus } from '../../definitions';
 import Status from './Status';
+import { IStatus } from './definition';
 
-interface IStatusContainer {
-	style: any;
-	size: number;
-	status: string;
-}
+const StatusContainer = ({ id, style, size = 32, ...props }: Omit<IStatus, 'status'>): React.ReactElement => {
+	const status = useSelector((state: IApplicationState) =>
+		state.meteor.connected ? state.activeUsers[id] && state.activeUsers[id].status : 'loading'
+	) as TUserStatus;
+	return <Status size={size} style={style} status={status} {...props} />;
+};
 
-const StatusContainer = memo(({ style, size = 32, status }: IStatusContainer) => (
-	<Status size={size} style={style} status={status} />
-));
-
-const mapStateToProps = (state: any, ownProps: any) => ({
-	status: state.meteor.connected ? state.activeUsers[ownProps.id] && state.activeUsers[ownProps.id].status : 'loading'
-});
-
-export default connect(mapStateToProps)(StatusContainer);
+export default StatusContainer;

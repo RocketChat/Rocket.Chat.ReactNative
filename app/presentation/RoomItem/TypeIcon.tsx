@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { IOmnichannelSourceConnected } from '../../definitions';
+import { TUserStatus, IOmnichannelSourceConnected } from '../../definitions';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 
 interface ITypeIcon {
 	type: string;
-	status: string;
+	status: TUserStatus;
 	prid: string;
 	isGroupChat: boolean;
 	teamMain: boolean;

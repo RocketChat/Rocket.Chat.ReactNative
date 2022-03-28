@@ -1,7 +1,7 @@
 import Model from '@nozbe/watermelondb/Model';
 
 import { IUserEmail, IUserSettings } from './IUser';
-import { UserStatus } from './UserStatus';
+import { TUserStatus } from './TUserStatus';
 
 export interface ILoggedUser {
 	id: string;
@@ -9,7 +9,7 @@ export interface ILoggedUser {
 	username: string;
 	name: string;
 	language?: string;
-	status: UserStatus;
+	status: TUserStatus;
 	statusText?: string;
 	customFields?: {
 		[key: string]: any;
