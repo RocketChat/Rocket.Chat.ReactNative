@@ -1,19 +1,19 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import database from '../database';
-import { Encryption } from '../encryption';
 import { MESSAGE_TYPE_ANY_LOAD } from '../../constants/messageTypeLoad';
-import { generateLoadMoreId } from '../utils';
-import protectedFunction from './helpers/protectedFunction';
-import buildMessage from './helpers/buildMessage';
-import { IMessage, TMessageModel, TThreadMessageModel, TThreadModel } from '../../definitions';
+import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
+import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
+import { Encryption } from '../encryption';
+import { generateLoadMoreId } from '../utils';
+import buildMessage from './helpers/buildMessage';
+import protectedFunction from './helpers/protectedFunction';
 
 interface IUpdateMessages {
 	rid: string;
-	update: IMessage[];
-	remove?: IMessage[];
+	update: Partial<IMessage>[];
+	remove?: Partial<IMessage>[];
 	loaderItem?: TMessageModel;
 }
 
@@ -27,9 +27,11 @@ export default async function updateMessages({
 		return Promise.resolve(0);
 	}
 
-	const sub = await getSubscriptionByRoomId(rid);
+	let sub = (await getSubscriptionByRoomId(rid)) as TSubscriptionModel;
 	if (!sub) {
-		throw new Error('updateMessages: subscription not found');
+		sub = { id: rid } as any;
+		// TODO: If I didn't join the room I obviously don't have a subscription, this error catch is imperfect. Think of a way to handle the error when I actually try to open a room without subscription.
+		console.log('updateMessages: subscription not found');
 	}
 
 	const db = database.active;
@@ -37,7 +39,7 @@ export default async function updateMessages({
 		// Decrypt these messages
 		update = await Encryption.decryptMessages(update);
 
-		const messagesIds: string[] = [...update.map(m => m._id), ...remove.map(m => m._id)];
+		const messagesIds: string[] = [...update.map(m => m._id as string), ...remove.map(m => m._id as string)];
 		const msgCollection = db.get('messages');
 		const threadCollection = db.get('threads');
 		const threadMessagesCollection = db.get('thread_messages');
@@ -49,11 +51,11 @@ export default async function updateMessages({
 			.query(Q.where('subscription_id', rid), Q.where('id', Q.oneOf(messagesIds)))
 			.fetch();
 
-		update = update.map(m => buildMessage(m));
+		update = update.map(m => buildMessage(m)) as IMessage[];
 
 		// filter loaders to delete
 		let loadersToDelete: TMessageModel[] = allMessagesRecords.filter(i1 =>
-			update.find(i2 => i1.id === generateLoadMoreId(i2._id))
+			update.find(i2 => i1.id === generateLoadMoreId(i2._id as string))
 		);
 
 		// Delete
@@ -105,7 +107,9 @@ export default async function updateMessages({
 			threadCollection.prepareCreate(
 				protectedFunction((t: TThreadModel) => {
 					t._raw = sanitizedRaw({ id: thread._id }, threadCollection.schema);
-					t.subscription.id = sub.id;
+					if (t.subscription) {
+						t.subscription.id = sub.id;
+					}
 					Object.assign(t, thread);
 				})
 			)

@@ -27,12 +27,11 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
-import getRoomInfo from '../../lib/methods/getRoomInfo';
+import getRoomInfo, { IRoomInfoResult } from '../../lib/methods/getRoomInfo';
 import { isIOS } from '../../utils/deviceInfo';
 import { compareServerVersion } from '../../lib/utils';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
-import { IRoom } from '../../definitions';
 import { IEmoji } from '../../definitions/IEmoji';
 
 const QUERY_SIZE = 50;
@@ -82,7 +81,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	private encrypted: boolean | undefined;
 
-	private room: Pick<IRoom, 'rid' | 'name' | 'fname' | 't'> | null | undefined;
+	private room?: IRoomInfoResult;
 
 	static navigationOptions = ({ navigation, route }: INavigationOption) => {
 		const options: StackNavigationOptions = {
@@ -109,7 +108,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	}
 
 	async componentDidMount() {
-		this.room = await getRoomInfo(this.rid);
+		this.room = (await getRoomInfo(this.rid)) ?? undefined;
 	}
 
 	shouldComponentUpdate(nextProps: ISearchMessagesViewProps, nextState: ISearchMessagesViewState) {
@@ -158,11 +157,13 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		if (result.success) {
 			return result.messages;
 		}
-	};
 
+		return [];
+	};
 	getMessages = async (searchText: string, debounced?: boolean) => {
 		try {
 			const messages = await this.searchMessages(searchText);
+			// @ts-ignore TODO: find a way to deal with the difference between IMessageFromServer and TMessageModel expected by state
 			this.setState(prevState => ({
 				messages: debounced ? messages : [...prevState.messages, ...messages],
 				loading: false
@@ -257,6 +258,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		const { user, baseUrl, theme, useRealName } = this.props;
 		return (
 			<Message
+				// @ts-ignore IMessage | TMessageModel?
 				item={item}
 				baseUrl={baseUrl}
 				user={user}
@@ -289,7 +291,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
 				keyExtractor={item => item._id}
 				onEndReached={this.onEndReached}
-				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
 				{...scrollPersistTaps}

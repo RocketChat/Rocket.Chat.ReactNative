@@ -1,11 +1,12 @@
 // eslint-disable-next-line import/no-unresolved
 const random = require('./helpers/random');
+// eslint-disable-next-line import/no-unresolved
+const account = require('./e2e_account');
 
 const value = random(20);
 const data = {
 	server: 'https://mobile.rocket.chat',
-	adminUser: 'e2e_admin',
-	adminPassword: 'p7mFh4yLwCRXSnMvG',
+	...account,
 	alternateServer: 'https://stable.rocket.chat',
 	users: {
 		regular: {

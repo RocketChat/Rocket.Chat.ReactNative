@@ -2,34 +2,47 @@ import Model from '@nozbe/watermelondb/Model';
 import Relation from '@nozbe/watermelondb/Relation';
 
 import { ILastMessage, TMessageModel } from './IMessage';
+import { IRocketChatRecord } from './IRocketChatRecord';
+import { RoomID, RoomType } from './IRoom';
 import { IServedBy } from './IServedBy';
 import { TThreadModel } from './IThread';
 import { TThreadMessageModel } from './IThreadMessage';
 import { TUploadModel } from './IUpload';
+import { IUser } from './IUser';
 
 export enum SubscriptionType {
 	GROUP = 'p',
 	DIRECT = 'd',
 	CHANNEL = 'c',
 	OMNICHANNEL = 'l',
-	E2E = 'e2e',
+	E2E = 'e2e', // FIXME: this is not a type of subscription
 	THREAD = 'thread' // FIXME: this is not a type of subscription
 }
 
 export interface IVisitor {
-	_id: string;
-	username: string;
-	token: string;
-	status: string;
-	lastMessageTs: Date;
+	_id?: string;
+	token?: string;
+	status: 'online' | 'busy' | 'away' | 'offline';
+	username?: string;
+	lastMessageTs?: Date;
 }
 
+export enum ERoomTypes {
+	DIRECT = 'direct',
+	GROUP = 'group',
+	CHANNEL = 'channel'
+}
+
+type RelationModified<T extends Model> = { fetch(): Promise<T[]> } & Relation<T>;
+
 export interface ISubscription {
-	_id: string; // _id belongs watermelonDB
-	id: string; // id from server
+	_id: string;
+	id: string;
+	_updatedAt?: string;
+	v?: IVisitor;
 	f: boolean;
-	t: SubscriptionType;
-	ts: Date;
+	t: SubscriptionType; // TODO: we need to review this type later
+	ts: string | Date;
 	ls: Date;
 	name: string;
 	fname?: string;
@@ -38,12 +51,14 @@ export interface ISubscription {
 	alert: boolean;
 	roles?: string[];
 	unread: number;
+	lm: string;
+	lr: string;
 	userMentions: number;
 	groupMentions: number;
-	tunread?: string[];
+	tunread: string[];
 	tunreadUser?: string[];
 	tunreadGroup?: string[];
-	roomUpdatedAt: Date;
+	roomUpdatedAt: Date | number;
 	ro: boolean;
 	lastOpen?: Date;
 	description?: string;
@@ -59,18 +74,19 @@ export interface ISubscription {
 	ignored?: string[];
 	broadcast?: boolean;
 	prid?: string;
-	draftMessage?: string;
+	draftMessage?: string | null;
 	lastThreadSync?: Date;
-	jitsiTimeout?: number;
+	jitsiTimeout?: Date;
 	autoTranslate?: boolean;
-	autoTranslateLanguage: string;
-	lastMessage?: ILastMessage;
+	autoTranslateLanguage?: string;
+	lastMessage?: ILastMessage | null; // TODO: we need to use IMessage here
 	hideUnreadStatus?: boolean;
 	sysMes?: string[] | boolean;
 	uids?: string[];
 	usernames?: string[];
 	visitor?: IVisitor;
 	departmentId?: string;
+	status?: string;
 	servedBy?: IServedBy;
 	livechatData?: any;
 	tags?: string[];
@@ -80,11 +96,68 @@ export interface ISubscription {
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
+	unsubscribe: () => Promise<any>;
+	separator?: boolean;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
-	messages: Relation<TMessageModel>;
-	threads: Relation<TThreadModel>;
-	threadMessages: Relation<TThreadMessageModel>;
-	uploads: Relation<TUploadModel>;
+	messages: RelationModified<TMessageModel>;
+	threads: RelationModified<TThreadModel>;
+	threadMessages: RelationModified<TThreadMessageModel>;
+	uploads: RelationModified<TUploadModel>;
 }
 
 export type TSubscriptionModel = ISubscription & Model;
+
+// https://github.com/RocketChat/Rocket.Chat/blob/a88a96fcadd925b678ff27ada37075e029f78b5e/definition/ISubscription.ts#L8
+export interface IServerSubscription extends IRocketChatRecord {
+	u: Pick<IUser, '_id' | 'username' | 'name'>;
+	v?: Pick<IUser, '_id' | 'username' | 'name'>;
+	rid: RoomID;
+	open: boolean;
+	ts: Date;
+
+	name: string;
+
+	alert?: boolean;
+	unread: number;
+	t: RoomType;
+	ls: Date;
+	f?: true;
+	lr: Date;
+	hideUnreadStatus?: true;
+	teamMain?: boolean;
+	teamId?: string;
+
+	userMentions: number;
+	groupMentions: number;
+
+	tunread?: Array<string>;
+	tunreadGroup?: Array<string>;
+	tunreadUser?: Array<string>;
+
+	prid?: RoomID;
+
+	roles?: string[];
+
+	onHold?: boolean;
+	encrypted?: boolean;
+	E2EKey?: string;
+	unreadAlert?: 'default' | 'all' | 'mentions' | 'nothing';
+
+	fname?: unknown;
+
+	code?: unknown;
+	archived?: unknown;
+	audioNotificationValue?: unknown;
+	desktopNotifications?: unknown;
+	mobilePushNotifications?: unknown;
+	emailNotifications?: unknown;
+	blocked?: unknown;
+	blocker?: unknown;
+	autoTranslate?: unknown;
+	autoTranslateLanguage?: unknown;
+	disableNotifications?: unknown;
+	muteGroupMentions?: unknown;
+	ignored?: unknown;
+
+	department?: unknown;
+}

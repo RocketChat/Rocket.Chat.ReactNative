@@ -26,9 +26,9 @@ interface IToastProps {
 }
 
 class Toast extends React.Component<IToastProps, any> {
-	private listener: any;
+	private listener?: Function;
 
-	private toast: any;
+	private toast: EasyToast | null | undefined;
 
 	componentDidMount() {
 		this.listener = EventEmitter.addEventListener(LISTENER, this.showToast);
@@ -43,12 +43,14 @@ class Toast extends React.Component<IToastProps, any> {
 	}
 
 	componentWillUnmount() {
-		EventEmitter.removeListener(LISTENER, this.listener);
+		if (this.listener) {
+			EventEmitter.removeListener(LISTENER, this.listener);
+		}
 	}
 
-	getToastRef = (toast: any) => (this.toast = toast);
+	getToastRef = (toast: EasyToast | null) => (this.toast = toast);
 
-	showToast = ({ message }: any) => {
+	showToast = ({ message }: { message: string }) => {
 		if (this.toast && this.toast.show) {
 			this.toast.show(message, 1000);
 		}

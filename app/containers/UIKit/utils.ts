@@ -2,6 +2,8 @@
 import React, { useContext, useState } from 'react';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
+import { BlockContext } from './interfaces';
+
 export const textParser = ([{ text }]: any) => text;
 
 export const defaultContext: any = {
@@ -13,7 +15,19 @@ export const defaultContext: any = {
 
 export const KitContext = React.createContext(defaultContext);
 
-export const useBlockContext = ({ blockId, actionId, appId, initialValue }: any, context: any) => {
+type TObjectReturn = {
+	loading: boolean;
+	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	error: any;
+	value: any;
+	language: any;
+};
+
+type TFunctionReturn = (value: any) => Promise<void>;
+
+type TReturn = [TObjectReturn, TFunctionReturn];
+
+export const useBlockContext = ({ blockId, actionId, appId, initialValue }: any, context: BlockContext): TReturn => {
 	const { action, appId: appIdFromContext, viewId, state, language, errors, values = {} } = useContext(KitContext);
 	const { value = initialValue } = values[actionId] || {};
 	const [loading, setLoading] = useState(false);

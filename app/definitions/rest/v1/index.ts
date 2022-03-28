@@ -11,9 +11,14 @@ import { PermissionsEndpoints } from './permissions';
 import { RolesEndpoints } from './roles';
 import { RoomsEndpoints } from './rooms';
 import { OauthCustomConfiguration } from './settings';
-import { UserEndpoints } from './user';
 import { UsersEndpoints } from './users';
 import { TeamsEndpoints } from './teams';
+import { E2eEndpoints } from './e2e';
+import { SubscriptionsEndpoints } from './subscriptions';
+import { VideoConferenceEndpoints } from './videoConference';
+import { CommandsEndpoints } from './commands';
+import { PushTokenEndpoints } from './pushToken';
+import { DirectoryEndpoint } from './directory';
 
 export type Endpoints = ChannelsEndpoints &
 	ChatEndpoints &
@@ -28,6 +33,11 @@ export type Endpoints = ChannelsEndpoints &
 	RolesEndpoints &
 	RoomsEndpoints &
 	OauthCustomConfiguration &
-	UserEndpoints &
 	UsersEndpoints &
-	TeamsEndpoints;
+	TeamsEndpoints &
+	E2eEndpoints &
+	SubscriptionsEndpoints &
+	VideoConferenceEndpoints &
+	CommandsEndpoints &
+	PushTokenEndpoints &
+	DirectoryEndpoint;

@@ -118,7 +118,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 				t: room.t,
 				fname: name
 			}),
-			t: room.t,
+			t: room.t as any,
 			roomUserId: RocketChat.getUidDirectMessage(room),
 			usedCannedResponse: item.text
 		};
@@ -353,7 +353,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 				onEndReached={onEndReached}
 				onEndReachedThreshold={0.5}
 				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 			/>
 		);
 	};

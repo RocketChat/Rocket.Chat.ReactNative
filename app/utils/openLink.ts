@@ -37,7 +37,7 @@ const appSchemeURL = (url: string, browser: string): string => {
 
 const openLink = async (url: string, theme = 'light'): Promise<void> => {
 	try {
-		const browser = await UserPreferences.getStringAsync(DEFAULT_BROWSER_KEY);
+		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
 
 		if (browser === 'inApp') {
 			await WebBrowser.openBrowserAsync(url, {

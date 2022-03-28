@@ -10,7 +10,7 @@ import { themes } from '../../constants/colors';
 import { MarkdownPreview } from '../../containers/markdown';
 import { formatDateThreads, makeThreadName } from '../../utils/room';
 import DiscussionDetails from './DiscussionDetails';
-import { TThreadModel } from '../../definitions/IThread';
+import { IMessageFromServer } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 });
 
 interface IItem {
-	item: TThreadModel;
+	item: IMessageFromServer;
 	onPress: {
 		(...args: any[]): void;
 		stop(): void;
@@ -63,6 +63,7 @@ const Item = ({ item, onPress }: IItem): JSX.Element => {
 
 	if (item?.ts) {
 		messageTime = moment(item.ts).format('LT');
+		// @ts-ignore TODO: Unify IMessage
 		messageDate = formatDateThreads(item.ts);
 	}
 
