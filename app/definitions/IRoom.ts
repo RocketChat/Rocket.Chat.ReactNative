@@ -67,7 +67,6 @@ export enum OmnichannelSourceType {
 }
 
 export interface IOmnichannelSource {
-	// TODO: looks like this is not so required as the definition suggests
 	// The source, or client, which created the Omnichannel room
 	type: OmnichannelSourceType;
 	// An optional identification of external sources, such as an App
