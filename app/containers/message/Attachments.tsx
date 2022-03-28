@@ -82,7 +82,8 @@ const Attachments = React.memo(
 			if (file && file.actions && file.actions.length > 0) {
 				return <AttachedActions attachment={file} />;
 			}
-			if (file.title) {
+			if (typeof file.collapsed === 'boolean') {
+				console.log(file);
 				return (
 					<CollapsibleQuote key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />
 				);
