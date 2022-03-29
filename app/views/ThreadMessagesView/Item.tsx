@@ -65,7 +65,7 @@ interface IItem {
 	toggleFollowThread: (isFollowing: boolean, id: string) => void;
 }
 
-const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem) => {
+const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread }: IItem): React.ReactElement => {
 	const { theme } = useTheme();
 	const username = (useRealName && item?.u?.name) || item?.u?.username;
 	let time;
@@ -79,7 +79,7 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 			testID={`thread-messages-view-${item.msg}`}
 			style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<View style={styles.container}>
-				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} theme={theme} />
+				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
 						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
