@@ -136,7 +136,7 @@ export async function setSettings(): Promise<void> {
 }
 
 export function subscribeSettings(): void {
-	return RocketChat.subscribe('stream-notify-all', 'public-settings-changed');
+	return sdk.subscribe('stream-notify-all', 'public-settings-changed');
 }
 
 type IData = ISettingsIcon | IPreparedSettings;
