@@ -1,4 +1,4 @@
-export const glyphIcoMoon = {
+export const mappedIcons = {
 	attach: 59676,
 	link: 59752,
 	'status-away': 59741,

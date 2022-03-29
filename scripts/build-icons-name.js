@@ -1,7 +1,7 @@
 const fs = require('fs');
 const icoMoonConfig = require('../app/containers/CustomIcon/selection.json');
 
-let iconsName = 'export const glyphIcoMoon = {\n';
+let iconsName = 'export const mappedIcons = {\n';
 icoMoonConfig.icons.forEach((icon) => {
 	icon.properties.name.split(/\s*,\s*/g).forEach((name) => {
 		iconsName += `\t'${name}': ${icon.properties.code},\n`;

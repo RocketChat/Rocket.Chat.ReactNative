@@ -1,25 +1,22 @@
 import React from 'react';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
-import { StyleProp, TextProps, TextStyle } from 'react-native';
+import { TextProps } from 'react-native';
 
-import { glyphIcoMoon } from './glyphIcoMoon';
+import { mappedIcons } from './glyphIcoMoon';
 
 const icoMoonConfig = require('./selection.json');
 
-export const IconMoon = createIconSetFromIcoMoon(icoMoonConfig, 'custom', 'custom.ttf');
+export const IconSet = createIconSetFromIcoMoon(icoMoonConfig, 'custom', 'custom.ttf');
 
-export type TIconsName = keyof typeof glyphIcoMoon;
+export type TIconsName = keyof typeof mappedIcons;
 
-interface ICustomIcon {
+interface ICustomIcon extends TextProps {
 	name: TIconsName;
 	size: number;
 	color?: string;
-	testID?: string | null;
-	style?: StyleProp<TextStyle>;
-	onPress?: TextProps['onPress'];
 }
 
 const CustomIcon = ({ name, size, color, testID, style, ...props }: ICustomIcon) => (
-	<IconMoon name={name} size={size} color={color} testID={testID || undefined} {...props} />
+	<IconSet name={name} size={size} color={color} {...props} />
 );
 export { CustomIcon };
