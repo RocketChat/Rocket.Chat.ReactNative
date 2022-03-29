@@ -6,7 +6,7 @@ import { IThemePreference, TThemeMode } from '../definitions/ITheme';
 import { themes } from '../constants/colors';
 import { isAndroid } from './deviceInfo';
 import UserPreferences from '../lib/userPreferences';
-import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
+import { THEME_PREFERENCES_KEY } from '../lib/constants';
 
 let themeListener: { remove: () => void } | null;
 

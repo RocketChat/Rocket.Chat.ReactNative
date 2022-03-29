@@ -48,7 +48,7 @@ import Navigation from '../../lib/Navigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants';
 import { takeInquiry } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
 import { goRoom, TGoRoomItem } from '../../utils/goRoom';
