@@ -18,7 +18,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 
 	const handlePress = () => {
 		const index = channels?.findIndex(channel => channel.name === hashtag);
-		if (index && navToRoomInfo) {
+		if (typeof index !== 'undefined' && navToRoomInfo) {
 			const navParam = {
 				t: 'c',
 				rid: channels?.[index]._id
