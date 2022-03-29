@@ -157,11 +157,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),
 			headerTitleAlign: 'center',
-			headerTitle: I18n.t('Threads'),
-			headerTitleContainerStyle: {
-				left: null,
-				right: null
-			}
+			headerTitle: I18n.t('Threads')
 		};
 
 		if (isMasterDetail) {

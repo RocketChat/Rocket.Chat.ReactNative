@@ -274,11 +274,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),
 			headerTitleAlign: 'center',
-			headerTitle: I18n.t('Canned_Responses'),
-			headerTitleContainerStyle: {
-				left: null,
-				right: null
-			}
+			headerTitle: I18n.t('Canned_Responses')
 		};
 
 		if (isMasterDetail) {
