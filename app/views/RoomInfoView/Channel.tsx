@@ -25,7 +25,7 @@ const Channel = ({ room }: { room: ISubscription }) => {
 			/>
 			<Item
 				label={I18n.t('Broadcast_Channel')}
-				content={room.broadcast && I18n.t('Broadcast_channel_Description')}
+				content={room.broadcast ? I18n.t('Broadcast_channel_Description') : ''}
 				testID='room-info-view-broadcast'
 			/>
 		</>
