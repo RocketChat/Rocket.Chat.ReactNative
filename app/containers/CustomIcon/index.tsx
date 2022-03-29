@@ -2,14 +2,14 @@ import React from 'react';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import { StyleProp, TextProps, TextStyle } from 'react-native';
 
+import { glyphIcoMoon } from './glyphIcoMoon';
+
 const icoMoonConfig = require('./selection.json');
-const glyphIcoMoon = require('./glyphIcoMoon.json');
 
 export const IconMoon = createIconSetFromIcoMoon(icoMoonConfig, 'custom', 'custom.ttf');
 
-type TIconNames = keyof typeof glyphIcoMoon;
 interface ICustomIcon {
-	name: TIconNames;
+	name: keyof typeof glyphIcoMoon;
 	size: number;
 	color?: string;
 	testID?: string | null;
@@ -18,6 +18,6 @@ interface ICustomIcon {
 }
 
 const CustomIcon = ({ name, size, color, testID, style, ...props }: ICustomIcon) => (
-	<IconMoon name={name as string} size={size} color={color} testID={testID || undefined} {...props} />
+	<IconMoon name={name} size={size} color={color} testID={testID || undefined} {...props} />
 );
 export { CustomIcon };
