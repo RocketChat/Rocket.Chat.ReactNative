@@ -1,28 +1,28 @@
+// @ts-nocheck - TEMP
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { ISubscription, IUser, TSubscription } from '../../../definitions';
 import log from '../../../utils/log';
 import { store as reduxStore } from '../../auxStore';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../../constants';
 import defaultSettings from '../../../constants/settings';
 import database from '../../database';
 
-export function isGroupChat(room: TSubscription): boolean {
+export function isGroupChat(room): boolean {
 	return ((room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2)) ?? false;
 }
 
-export function getRoomAvatar(room: TSubscription) {
+export function getRoomAvatar(room) {
 	if (isGroupChat(room) && room.uids && room.usernames) {
 		return room.uids.length + room.usernames.join();
 	}
 	return room.prid ? room.fname : room.name;
 }
 
-export function getUidDirectMessage(room: TSubscription) {
+export function getUidDirectMessage(room) {
 	const { id: userId } = reduxStore.getState().login.user;
 
 	if (!room) {
-		return false;
+		return null;
 	}
 
 	// legacy method
@@ -31,7 +31,7 @@ export function getUidDirectMessage(room: TSubscription) {
 	}
 
 	if (isGroupChat(room)) {
-		return false;
+		return null;
 	}
 
 	const me = room.uids?.find(uid => uid === userId);
@@ -40,7 +40,7 @@ export function getUidDirectMessage(room: TSubscription) {
 	return other && other.length ? other[0] : me;
 }
 
-export function getRoomTitle(room: TSubscription) {
+export function getRoomTitle(room) {
 	const { UI_Use_Real_Name: useRealName, UI_Allow_room_names_with_special_chars: allowSpecialChars } =
 		reduxStore.getState().settings;
 	const { username } = reduxStore.getState().login.user;
@@ -56,7 +56,7 @@ export function getRoomTitle(room: TSubscription) {
 	return ((room.prid || useRealName) && room.fname) || room.name;
 }
 
-export function getSenderName(sender: IUser) {
+export function getSenderName(sender) {
 	const { UI_Use_Real_Name: useRealName } = reduxStore.getState().settings;
 	return useRealName ? sender.name : sender.username;
 }
@@ -76,13 +76,13 @@ export function canAutoTranslate() {
 	}
 }
 
-export function isRead(item: ISubscription) {
+export function isRead(item) {
 	let isUnread = item.archived !== true && item.open === true; // item is not archived and not opened
 	isUnread = isUnread && (item.unread > 0 || item.alert === true); // either its unread count > 0 or its alert
 	return !isUnread;
 }
 
-export function hasRole(role: string): boolean {
+export function hasRole(role): boolean {
 	const shareUser = reduxStore.getState().share.user;
 	const loginUser = reduxStore.getState().login.user;
 	const userRoles = shareUser?.roles || loginUser?.roles || [];
@@ -145,7 +145,7 @@ export function _prepareSettings(settings) {
 	});
 }
 
-export async function hasPermission(permissions, rid) {
+export async function hasPermission(permissions, rid?: any) {
 	let roomRoles = [];
 	if (rid) {
 		const db = database.active;

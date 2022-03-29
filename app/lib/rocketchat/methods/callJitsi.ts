@@ -2,7 +2,7 @@ import { ISubscription } from '../../../definitions';
 import { events, logEvent } from '../../../utils/log';
 import { store } from '../../auxStore';
 import Navigation from '../../Navigation';
-import sdk from '..';
+import sdk from '../services/sdk';
 
 async function jitsiURL({ room }: { room: ISubscription }) {
 	const { settings } = store.getState();
