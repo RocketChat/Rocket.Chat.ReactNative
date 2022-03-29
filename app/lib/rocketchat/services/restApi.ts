@@ -911,3 +911,5 @@ export function getUserInfo(userId: string) {
 	// RC 0.48.0
 	return sdk.get('users.info', { userId });
 }
+
+export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
