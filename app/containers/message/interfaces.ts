@@ -1,24 +1,23 @@
 import { MarkdownAST } from '@rocket.chat/message-parser';
+import { StyleProp, TextStyle } from 'react-native';
 
 import { IUserChannel, IUserMention } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { IAttachment } from '../../definitions';
 
 export type TMessageType = 'discussion-created' | 'jitsi_call_started';
 
 export interface IMessageAttachments {
-	attachments: any;
+	attachments?: IAttachment[];
 	timeFormat?: string;
-	showAttachment: Function;
+	style?: StyleProp<TextStyle>[];
+	isReply?: boolean;
+	showAttachment?: Function;
 	getCustomEmoji: TGetCustomEmoji;
-	theme: string;
 }
 
 export interface IMessageAttachedActions {
-	attachment: {
-		actions: [];
-		text: string;
-	};
-	theme: string;
+	attachment: IAttachment;
 }
 
 export interface IMessageAvatar {
@@ -32,7 +31,6 @@ export interface IMessageAvatar {
 	small?: boolean;
 	navToRoomInfo: Function;
 	getCustomEmoji: TGetCustomEmoji;
-	theme: string;
 }
 
 export interface IMessageBlocks {
@@ -99,7 +97,7 @@ export interface IMessageEmoji {
 
 export interface IMessageThread {
 	msg?: string;
-	tcount?: number;
+	tcount?: number | null;
 	theme: string;
 	tlm?: Date;
 	isThreadRoom: boolean;

@@ -8,6 +8,7 @@ import { avatarURL } from '../../utils/avatar';
 import { SubscriptionType } from '../../definitions/ISubscription';
 import Emoji from '../markdown/Emoji';
 import { IAvatar } from './interfaces';
+import { useTheme } from '../../theme';
 
 const Avatar = React.memo(
 	({
@@ -18,7 +19,6 @@ const Avatar = React.memo(
 		user,
 		onPress,
 		emoji,
-		theme,
 		getCustomEmoji,
 		avatarETag,
 		isStatic,
@@ -34,6 +34,8 @@ const Avatar = React.memo(
 			return null;
 		}
 
+		const { theme } = useTheme();
+
 		const avatarStyle = {
 			width: size,
 			height: size,
@@ -44,7 +46,7 @@ const Avatar = React.memo(
 		if (emoji) {
 			image = (
 				<Emoji
-					theme={theme!}
+					theme={theme}
 					baseUrl={server}
 					getCustomEmoji={getCustomEmoji}
 					isMessageContainsOnlyEmoji

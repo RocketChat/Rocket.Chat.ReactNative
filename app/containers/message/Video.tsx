@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle } from 'react-native';
 import { dequal } from 'dequal';
 
 import Touchable from './Touchable';
@@ -33,13 +33,15 @@ const styles = StyleSheet.create({
 
 interface IMessageVideo {
 	file: IAttachment;
-	showAttachment: Function;
+	showAttachment?: Function;
 	getCustomEmoji: TGetCustomEmoji;
+	style?: StyleProp<TextStyle>[];
+	isReply?: boolean;
 	theme: string;
 }
 
 const Video = React.memo(
-	({ file, showAttachment, getCustomEmoji, theme }: IMessageVideo) => {
+	({ file, showAttachment, getCustomEmoji, style, isReply, theme }: IMessageVideo) => {
 		const { baseUrl, user } = useContext(MessageContext);
 		const [loading, setLoading] = useState(false);
 
@@ -47,7 +49,7 @@ const Video = React.memo(
 			return null;
 		}
 		const onPress = async () => {
-			if (isTypeSupported(file.video_type)) {
+			if (isTypeSupported(file.video_type) && showAttachment) {
 				return showAttachment(file);
 			}
 
@@ -73,19 +75,21 @@ const Video = React.memo(
 
 		return (
 			<>
-				<Touchable
-					onPress={onPress}
-					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}>
-					{loading ? <RCActivityIndicator /> : <CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />}
-				</Touchable>
 				<Markdown
 					msg={file.description}
 					baseUrl={baseUrl}
 					username={user.username}
 					getCustomEmoji={getCustomEmoji}
+					style={[isReply && style]}
 					theme={theme}
 				/>
+				<Touchable
+					disabled={isReply}
+					onPress={onPress}
+					style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
+					background={Touchable.Ripple(themes[theme].bannerBackground)}>
+					{loading ? <RCActivityIndicator /> : <CustomIcon name='play-filled' size={54} color={themes[theme].buttonText} />}
+				</Touchable>
 			</>
 		);
 	},

@@ -1,7 +1,7 @@
 import { coerce, gt, gte, lt, lte, SemVer } from 'semver';
 
-export const formatAttachmentUrl = (attachmentUrl: string, userId: string, token: string, server: string): string => {
-	if (attachmentUrl.startsWith('http')) {
+export const formatAttachmentUrl = (attachmentUrl: string | undefined, userId: string, token: string, server: string): string => {
+	if (attachmentUrl && attachmentUrl.startsWith('http')) {
 		if (attachmentUrl.includes('rc_token')) {
 			return encodeURI(attachmentUrl);
 		}

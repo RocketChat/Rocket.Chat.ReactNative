@@ -3,6 +3,7 @@ import { Animated, Easing, Linking, StyleSheet, Text, View } from 'react-native'
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
 import * as AppleAuthentication from 'expo-apple-authentication';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { withTheme } from '../theme';
 import sharedStyles from '../views/Styles';
@@ -15,6 +16,9 @@ import random from '../utils/random';
 import { events, logEvent } from '../utils/log';
 import RocketChat from '../lib/rocketchat';
 import { CustomIcon } from '../lib/Icons';
+import { IServices } from '../selectors/login';
+import { OutsideParamList } from '../stacks/types';
+import { IApplicationState } from '../definitions';
 
 const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
@@ -58,31 +62,40 @@ const styles = StyleSheet.create({
 });
 
 interface IOpenOAuth {
-	url?: string;
+	url: string;
 	ssoToken?: string;
 	authType?: string;
 }
 
-interface IService {
+interface IItemService {
 	name: string;
 	service: string;
 	authType: string;
 	buttonColor: string;
 	buttonLabelColor: string;
+	clientConfig: { provider: string };
+	serverURL: string;
+	authorizePath: string;
+	clientId: string;
+	scope: string;
+}
+
+interface IOauthProvider {
+	[key: string]: () => void;
+	facebook: () => void;
+	github: () => void;
+	gitlab: () => void;
+	google: () => void;
+	linkedin: () => void;
+	'meteor-developer': () => void;
+	twitter: () => void;
+	wordpress: () => void;
 }
 
 interface ILoginServicesProps {
-	navigation: any;
+	navigation: StackNavigationProp<OutsideParamList>;
 	server: string;
-	services: {
-		facebook: { clientId: string };
-		github: { clientId: string };
-		gitlab: { clientId: string };
-		google: { clientId: string };
-		linkedin: { clientId: string };
-		'meteor-developer': { clientId: string };
-		wordpress: { clientId: string; serverURL: string };
-	};
+	services: IServices;
 	Gitlab_URL: string;
 	CAS_enabled: boolean;
 	CAS_login_url: string;
@@ -90,12 +103,13 @@ interface ILoginServicesProps {
 	theme: string;
 }
 
-class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
-	private _animation: any;
+interface ILoginServicesState {
+	collapsed: boolean;
+	servicesHeight: Animated.Value;
+}
 
-	static defaultProps = {
-		separator: true
-	};
+class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServicesState> {
+	private _animation?: Animated.CompositeAnimation | void;
 
 	state = {
 		collapsed: true,
@@ -194,7 +208,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		this.openOAuth({ url: `${endpoint}${params}` });
 	};
 
-	onPressCustomOAuth = (loginService: any) => {
+	onPressCustomOAuth = (loginService: IItemService) => {
 		logEvent(events.ENTER_WITH_CUSTOM_OAUTH);
 		const { server } = this.props;
 		const { serverURL, authorizePath, clientId, scope, service } = loginService;
@@ -207,7 +221,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		this.openOAuth({ url });
 	};
 
-	onPressSaml = (loginService: any) => {
+	onPressSaml = (loginService: IItemService) => {
 		logEvent(events.ENTER_WITH_SAML);
 		const { server } = this.props;
 		const { clientConfig } = loginService;
@@ -234,7 +248,6 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 					AppleAuthentication.AppleAuthenticationScope.EMAIL
 				]
 			});
-			// @ts-ignore
 			await RocketChat.loginOAuthOrSso({ fullName, email, identityToken });
 		} catch {
 			logEvent(events.ENTER_WITH_APPLE_F);
@@ -243,7 +256,12 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 
 	getOAuthState = (loginStyle = LOGIN_STYPE_POPUP) => {
 		const credentialToken = random(43);
-		let obj: any = { loginStyle, credentialToken, isCordova: true };
+		let obj: {
+			loginStyle: string;
+			credentialToken: string;
+			isCordova: boolean;
+			redirectUrl?: string;
+		} = { loginStyle, credentialToken, isCordova: true };
 		if (loginStyle === LOGIN_STYPE_REDIRECT) {
 			obj = {
 				...obj,
@@ -263,12 +281,11 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		if (this._animation) {
 			this._animation.stop();
 		}
-		// @ts-ignore
 		this._animation = Animated.timing(servicesHeight, {
 			toValue: height,
 			duration: 300,
-			// @ts-ignore
-			easing: Easing.easeOutCubic
+			easing: Easing.inOut(Easing.quad),
+			useNativeDriver: true
 		}).start();
 	};
 
@@ -281,11 +298,11 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		} else {
 			this.transitionServicesTo(SERVICES_COLLAPSED_HEIGHT);
 		}
-		this.setState((prevState: any) => ({ collapsed: !prevState.collapsed }));
+		this.setState((prevState: ILoginServicesState) => ({ collapsed: !prevState.collapsed }));
 	};
 
 	getSocialOauthProvider = (name: string) => {
-		const oauthProviders: any = {
+		const oauthProviders: IOauthProvider = {
 			facebook: this.onPressFacebook,
 			github: this.onPressGithub,
 			gitlab: this.onPressGitlab,
@@ -324,7 +341,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		return null;
 	};
 
-	renderItem = (service: IService) => {
+	renderItem = (service: IItemService) => {
 		const { CAS_enabled, theme } = this.props;
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
@@ -401,26 +418,28 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, any> {
 		if (length > 3 && separator) {
 			return (
 				<>
-					<Animated.View style={style}>{Object.values(services).map((service: any) => this.renderItem(service))}</Animated.View>
+					<Animated.View style={style}>
+						{Object.values(services).map((service: IItemService) => this.renderItem(service))}
+					</Animated.View>
 					{this.renderServicesSeparator()}
 				</>
 			);
 		}
 		return (
 			<>
-				{Object.values(services).map((service: any) => this.renderItem(service))}
+				{Object.values(services).map((service: IItemService) => this.renderItem(service))}
 				{this.renderServicesSeparator()}
 			</>
 		);
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
-	Gitlab_URL: state.settings.API_Gitlab_URL,
-	CAS_enabled: state.settings.CAS_enabled,
-	CAS_login_url: state.settings.CAS_login_url,
-	services: state.login.services
+	Gitlab_URL: state.settings.API_Gitlab_URL as string,
+	CAS_enabled: state.settings.CAS_enabled as boolean,
+	CAS_login_url: state.settings.CAS_login_url as string,
+	services: state.login.services as IServices
 });
 
-export default connect(mapStateToProps)(withTheme(LoginServices)) as any;
+export default connect(mapStateToProps)(withTheme(LoginServices));

@@ -666,4 +666,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewAllTeamsPermission: state.permissions['view-all-teams']
 });
 
-export default connect(mapStateToProps)(withActionSheet(withTheme(RoomMembersView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(RoomMembersView)));

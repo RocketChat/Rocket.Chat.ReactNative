@@ -4,7 +4,6 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
 import Orientation from 'react-native-orientation-locker';
 
-import { useTheme } from '../theme';
 import EventEmitter from '../utils/events';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../constants/localAuthentication';
 import { isTablet } from '../utils/deviceInfo';
@@ -18,8 +17,6 @@ interface IData {
 const ScreenLockedView = (): JSX.Element => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<IData>({});
-
-	const { theme } = useTheme();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -62,7 +59,7 @@ const ScreenLockedView = (): JSX.Element => {
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
 			animationOut='fadeOut'>
-			<PasscodeEnter theme={theme} hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
+			<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
 		</Modal>
 	);
 };
