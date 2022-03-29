@@ -906,3 +906,8 @@ export const logoutOtherLocations = () => {
 	const { id } = reduxStore.getState().login.user;
 	return sdk.post('users.removeOtherTokens', { userId: id as string });
 };
+
+export function getUserInfo(userId: string) {
+	// RC 0.48.0
+	return sdk.get('users.info', { userId });
+}
