@@ -321,7 +321,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const marginTop = previousServer ? 0 : 35;
 
 		return (
-			<FormContainer theme={theme} testID='new-server-view' keyboardShouldPersistTaps='never'>
+			<FormContainer testID='new-server-view' keyboardShouldPersistTaps='never'>
 				<FormContainerInner>
 					<Image
 						style={[

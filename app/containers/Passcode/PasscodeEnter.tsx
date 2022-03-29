@@ -4,7 +4,7 @@ import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { sha256 } from 'js-sha256';
 
-import Base from './Base';
+import Base, { IBase } from './Base';
 import Locked from './Base/Locked';
 import { TYPE } from './constants';
 import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '../../constants/localAuthentication';
@@ -14,18 +14,17 @@ import { useUserPreferences } from '../../lib/userPreferences';
 import I18n from '../../i18n';
 
 interface IPasscodePasscodeEnter {
-	theme: string;
 	hasBiometry: boolean;
 	finishProcess: Function;
 }
 
-const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeEnter) => {
-	const ref = useRef(null);
-	let attempts: any = 0;
+const PasscodeEnter = ({ hasBiometry, finishProcess }: IPasscodePasscodeEnter) => {
+	const ref = useRef<IBase>(null);
+	let attempts = 0;
 	let lockedUntil: any = false;
 	const [passcode] = useUserPreferences(PASSCODE_KEY);
-	const [status, setStatus] = useState(null);
-	const { getItem: getAttempts, setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
+	const [status, setStatus] = useState<TYPE | null>(null);
+	const { setItem: setAttempts } = useAsyncStorage(ATTEMPTS_KEY);
 	const { setItem: setLockedUntil } = useAsyncStorage(LOCKED_OUT_TIMER_KEY);
 
 	const biometry = async () => {
@@ -45,7 +44,6 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeE
 				await resetAttempts();
 				setStatus(TYPE.ENTER);
 			} else {
-				attempts = await getAttempts();
 				setStatus(TYPE.LOCKED);
 			}
 		} else {
@@ -58,7 +56,7 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeE
 		readStorage();
 	}, [status]);
 
-	const onEndProcess = (p: any) => {
+	const onEndProcess = (p: string) => {
 		setTimeout(() => {
 			if (sha256(p) === passcode) {
 				finishProcess();
@@ -69,8 +67,7 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeE
 					setLockedUntil(new Date().toISOString());
 					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
 				} else {
-					// @ts-ignore
-					ref.current.wrongPasscode();
+					ref?.current?.wrongPasscode();
 					setAttempts(attempts?.toString());
 					Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
 				}
@@ -79,13 +76,12 @@ const PasscodeEnter = ({ theme, hasBiometry, finishProcess }: IPasscodePasscodeE
 	};
 
 	if (status === TYPE.LOCKED) {
-		return <Locked theme={theme} setStatus={setStatus} />;
+		return <Locked setStatus={setStatus} />;
 	}
 
 	return (
 		<Base
 			ref={ref}
-			theme={theme}
 			type={TYPE.ENTER}
 			title={I18n.t('Passcode_enter_title')}
 			showBiometry={hasBiometry}

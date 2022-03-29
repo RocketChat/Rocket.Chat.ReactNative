@@ -540,9 +540,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 	renderFooter = () => {
 		const { loadingMore } = this.state;
-		const { theme } = this.props;
 		if (loadingMore) {
-			return <ActivityIndicator theme={theme} />;
+			return <ActivityIndicator />;
 		}
 		return null;
 	};

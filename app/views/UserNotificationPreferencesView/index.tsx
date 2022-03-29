@@ -114,7 +114,6 @@ class UserNotificationPreferencesView extends React.Component<
 	};
 
 	render() {
-		const { theme } = this.props;
 		const { loading } = this.state;
 		return (
 			<SafeAreaView testID='user-notification-preference-view'>
@@ -159,7 +158,7 @@ class UserNotificationPreferencesView extends React.Component<
 							</List.Section>
 						</>
 					) : (
-						<ActivityIndicator theme={theme} />
+						<ActivityIndicator />
 					)}
 				</List.Container>
 			</SafeAreaView>

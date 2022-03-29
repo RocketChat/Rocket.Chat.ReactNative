@@ -280,6 +280,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 
 	renderHeading = ({ children, level }: any) => {
 		const { numberOfLines, theme } = this.props;
+		// @ts-ignore
 		const textStyle = styles[`heading${level}Text`];
 		return (
 			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme].bodyText }]}>

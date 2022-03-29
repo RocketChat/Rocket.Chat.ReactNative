@@ -73,7 +73,6 @@ export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 export const MIN_ROCKETCHAT_VERSION = '0.70.0';
-export const STATUSES = ['offline', 'online', 'away', 'busy'];
 
 const RocketChat = {
 	TOKEN_KEY,
@@ -109,20 +108,6 @@ const RocketChat = {
 	connect,
 	shareExtensionInit,
 	closeShareExtension,
-
-	async e2eFetchMyKeys() {
-		// RC 0.70.0
-		const result = await sdk.get('e2e.fetchMyKeys');
-		// snake_case -> camelCase
-		if (result.success) {
-			return {
-				success: result.success,
-				publicKey: result.public_key,
-				privateKey: result.private_key
-			};
-		}
-		return result;
-	},
 	loginTOTP,
 	loginWithPassword,
 	loginOAuthOrSso,

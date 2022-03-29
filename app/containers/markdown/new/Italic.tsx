@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Italic = ({ value }: IItalicProps): JSX.Element => (
+const Italic = ({ value }: IItalicProps) => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {
