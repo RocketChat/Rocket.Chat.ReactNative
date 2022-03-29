@@ -27,12 +27,11 @@ interface IRightActions {
 	displayMode: string;
 }
 
+const reverse = new Animated.Value(isRTL() ? -1 : 1);
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
 
 export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleReadPress, displayMode }: ILeftActions) => {
-	const reverse = new Animated.Value(isRTL() ? -1 : 1);
-
 	const translateX = Animated.multiply(
 		transX.interpolate({
 			inputRange: [0, ACTION_WIDTH],
@@ -73,8 +72,6 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 
 export const RightActions = React.memo(
 	({ transX, favorite, width, toggleFav, onHidePress, theme, displayMode }: IRightActions) => {
-		const reverse = new Animated.Value(isRTL() ? -1 : 1);
-
 		const translateXFav = Animated.multiply(
 			transX.interpolate({
 				inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
