@@ -2,14 +2,14 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import orderBy from 'lodash/orderBy';
 
-import { setPermissions as setPermissionsAction } from '../../actions/permissions';
-import { IPermission, TPermissionModel } from '../../definitions';
-import log from '../../utils/log';
-import { store as reduxStore } from '../auxStore';
-import database from '../database';
-import sdk from '../rocketchat/services/sdk';
-import { compareServerVersion } from '../utils';
-import protectedFunction from './helpers/protectedFunction';
+import { setPermissions as setPermissionsAction } from '../../../actions/permissions';
+import { IPermission, TPermissionModel } from '../../../definitions';
+import log from '../../../utils/log';
+import { store as reduxStore } from '../../auxStore';
+import database from '../../database';
+import sdk from '../services/sdk';
+import { compareServerVersion } from '../../utils';
+import protectedFunction from '../../methods/helpers/protectedFunction';
 
 export const SUPPORTED_PERMISSIONS = [
 	'add-user-to-any-c-room',

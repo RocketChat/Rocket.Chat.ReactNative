@@ -17,7 +17,7 @@ import { store as reduxStore } from '../../auxStore';
 import { getDeviceToken } from '../../../notifications/push';
 import { getBundleId, isIOS } from '../../../utils/deviceInfo';
 import { compareServerVersion } from '../../utils';
-import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
+import roomTypeToApiType, { RoomTypes } from '../../methods/roomTypeToApiType';
 import sdk from './sdk';
 
 export const createChannel = ({

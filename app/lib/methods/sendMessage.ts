@@ -85,7 +85,7 @@ export async function resendMessage(message: TMessageModel, tmid?: string) {
 	}
 }
 
-export default async function (
+export async function sendMessage(
 	rid: string,
 	msg: string,
 	tmid: string | undefined,

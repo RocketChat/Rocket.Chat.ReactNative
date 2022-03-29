@@ -5,7 +5,7 @@ import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
 import log from '../../../utils/log';
-import { onRolesChanged } from '../../methods/getRoles';
+import { onRolesChanged } from '../methods/getRoles';
 import { setActiveUsers } from '../../../actions/activeUsers';
 import protectedFunction from '../../methods/helpers/protectedFunction';
 import database from '../../database';
