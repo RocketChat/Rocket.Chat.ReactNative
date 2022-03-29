@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 import Touch from '../../utils/touch';
-import { CustomIcon } from '../../containers/CustomIcon';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
 import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
@@ -51,7 +51,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 	renderItem = (itemType: string) => {
 		const { changeType, type: propType, theme } = this.props;
 		let text = 'Users';
-		let icon = 'user';
+		let icon: TIconsName = 'user';
 		if (itemType === 'channels') {
 			text = 'Channels';
 			icon = 'channel-public';

@@ -15,7 +15,7 @@ import I18n from '../i18n';
 import random from '../utils/random';
 import { events, logEvent } from '../utils/log';
 import RocketChat from '../lib/rocketchat';
-import { CustomIcon } from './CustomIcon';
+import { CustomIcon, TIconsName } from './CustomIcon';
 import { IServices } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
 import { IApplicationState } from '../definitions';
@@ -345,7 +345,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 		const { CAS_enabled, theme } = this.props;
 		let { name } = service;
 		name = name === 'meteor-developer' ? 'meteor' : name;
-		const icon = `${name}-monochromatic`;
+		const icon = `${name}-monochromatic` as TIconsName;
 		const isSaml = service.service === 'saml';
 		let onPress = () => {};
 

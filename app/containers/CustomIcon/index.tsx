@@ -8,8 +8,10 @@ const icoMoonConfig = require('./selection.json');
 
 export const IconMoon = createIconSetFromIcoMoon(icoMoonConfig, 'custom', 'custom.ttf');
 
+export type TIconsName = keyof typeof glyphIcoMoon;
+
 interface ICustomIcon {
-	name: keyof typeof glyphIcoMoon;
+	name: TIconsName;
 	size: number;
 	color?: string;
 	testID?: string | null;

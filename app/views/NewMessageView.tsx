@@ -15,7 +15,7 @@ import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IBaseScreen, ISearch, TSubscriptionModel } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
-import { CustomIcon } from '../containers/CustomIcon';
+import { CustomIcon, TIconsName } from '../containers/CustomIcon';
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
 import { compareServerVersion } from '../lib/utils';
@@ -51,7 +51,7 @@ interface IButton {
 	onPress: () => void;
 	testID: string;
 	title: string;
-	icon: string;
+	icon: TIconsName;
 	first?: boolean;
 }
 

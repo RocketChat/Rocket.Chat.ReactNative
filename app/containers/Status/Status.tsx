@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
-import { CustomIcon, IconMoon } from '../CustomIcon';
+import { CustomIcon, IconMoon, TIconsName } from '../CustomIcon';
 import { STATUS_COLORS } from '../../constants/colors';
 import { IStatus } from './definition';
 
 const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: Omit<IStatus, 'id'>) => {
-	const name = `status-${status}`;
+	const name: TIconsName = `status-${status}`;
 	const isNameValid = IconMoon.hasIcon(name);
 	const iconName = isNameValid ? name : 'status-offline';
 	const calculatedStyle: StyleProp<TextStyle> = [

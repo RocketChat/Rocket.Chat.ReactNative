@@ -19,6 +19,7 @@ import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import { IRoom } from '../definitions/IRoom';
+import { TIconsName } from '../containers/CustomIcon';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -157,7 +158,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const channelIcon = item.t === 'p' ? 'channel-private' : 'channel-public';
 		const teamIcon = item.t === 'p' ? 'teams-private' : 'teams';
 		const icon = item.teamMain ? teamIcon : channelIcon;
-		const checked = this.isChecked(item.rid!) ? 'check' : '';
+		const checked = this.isChecked(item.rid!) ? 'check' : ('' as TIconsName);
 
 		const showRadio = () => (
 			<RadioButton

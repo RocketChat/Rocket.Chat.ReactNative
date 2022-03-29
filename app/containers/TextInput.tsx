@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 import sharedStyles from '../views/Styles';
 import TextInput from '../presentation/TextInput';
 import { themes } from '../constants/colors';
-import { CustomIcon } from './CustomIcon';
+import { CustomIcon, TIconsName } from './CustomIcon';
 import ActivityIndicator from './ActivityIndicator';
 
 const styles = StyleSheet.create({
@@ -58,8 +58,8 @@ export interface IRCTextInputProps extends TextInputProps {
 	inputStyle?: StyleProp<TextStyle>;
 	inputRef?: React.Ref<RNTextInput>;
 	testID?: string;
-	iconLeft?: string;
-	iconRight?: string;
+	iconLeft?: TIconsName;
+	iconRight?: TIconsName;
 	left?: JSX.Element;
 	onIconRightPress?(): void;
 	theme: string;

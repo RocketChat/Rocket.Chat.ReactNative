@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 
-import { CustomIcon } from './CustomIcon';
+import { CustomIcon, TIconsName } from './CustomIcon';
 import { STATUS_COLORS, themes } from '../constants/colors';
 import Status from './Status/Status';
 import { withTheme } from '../theme';
@@ -39,7 +39,7 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, team
 	}
 
 	// TODO: move this to a separate function
-	let icon = 'channel-private';
+	let icon: TIconsName = 'channel-private';
 	if (teamMain) {
 		icon = `teams${type === 'p' ? '-private' : ''}`;
 	} else if (type === 'discussion') {

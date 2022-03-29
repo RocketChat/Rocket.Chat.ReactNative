@@ -3,7 +3,7 @@ import React from 'react';
 import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import Avatar from '../containers/Avatar';
-import { CustomIcon } from '../containers/CustomIcon';
+import { CustomIcon, TIconsName } from '../containers/CustomIcon';
 import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
 import { isIOS } from '../utils/deviceInfo';
@@ -46,7 +46,7 @@ interface IUserItem {
 	testID: string;
 	onLongPress?: () => void;
 	style?: StyleProp<ViewStyle>;
-	icon?: string | null;
+	icon?: TIconsName | null;
 	theme: string;
 }
 

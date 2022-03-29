@@ -2,12 +2,12 @@ import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { themes } from '../../constants/colors';
-import { CustomIcon } from '../CustomIcon';
+import { CustomIcon, TIconsName } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import { ICON_SIZE } from './constants';
 
 interface IListIcon {
-	name: string;
+	name: TIconsName;
 	color?: string;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;

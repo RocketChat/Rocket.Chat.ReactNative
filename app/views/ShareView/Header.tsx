@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../../i18n';
-import { CustomIcon } from '../../containers/CustomIcon';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import RocketChat from '../../lib/rocketchat';
 import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';
@@ -50,7 +50,7 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 	} else {
 		type = room?.t;
 	}
-	let icon;
+	let icon: TIconsName;
 	if (type === 'discussion') {
 		icon = 'discussions';
 	} else if (type === 'thread') {

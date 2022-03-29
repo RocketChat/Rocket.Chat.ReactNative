@@ -2,7 +2,7 @@ import React from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { themes } from '../../../constants/colors';
-import { CustomIcon } from '../../CustomIcon';
+import { CustomIcon, TIconsName } from '../../CustomIcon';
 import styles from '../styles';
 import I18n from '../../../i18n';
 
@@ -11,7 +11,7 @@ interface IBaseButton {
 	onPress(): void;
 	testID: string;
 	accessibilityLabel: string;
-	icon: string;
+	icon: TIconsName;
 	color?: string;
 }
 

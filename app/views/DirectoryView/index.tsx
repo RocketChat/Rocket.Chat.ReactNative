@@ -11,7 +11,7 @@ import DirectoryItem from '../../presentation/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import { CustomIcon } from '../../containers/CustomIcon';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -183,7 +183,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 		const { type } = this.state;
 		const { theme } = this.props;
 		let text = 'Users';
-		let icon = 'user';
+		let icon: TIconsName = 'user';
 
 		if (type === 'channels') {
 			text = 'Channels';
