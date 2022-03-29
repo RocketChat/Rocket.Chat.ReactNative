@@ -901,3 +901,8 @@ export const e2eFetchMyKeys = async () => {
 	}
 	return result;
 };
+
+export const logoutOtherLocations = () => {
+	const { id } = reduxStore.getState().login.user;
+	return sdk.post('users.removeOtherTokens', { userId: id as string });
+};
