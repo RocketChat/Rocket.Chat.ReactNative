@@ -16,7 +16,7 @@ import { store } from '../../auxStore';
 import { loginRequest, setLoginServices, setUser } from '../../../actions/login';
 import sdk from './sdk';
 import I18n from '../../../i18n';
-import RocketChat from '../rocketchat';
+import RocketChat from '..';
 import { ICredentials, ILoggedUser, IRocketChat, STATUSES } from '../../../definitions';
 import { isIOS } from '../../../utils/deviceInfo';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../../actions/connect';
