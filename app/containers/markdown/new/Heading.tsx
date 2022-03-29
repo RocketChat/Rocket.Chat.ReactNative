@@ -11,12 +11,12 @@ interface IHeadingProps {
 	level: HeadingProps['level'];
 }
 
-const Heading = ({ value, level }: IHeadingProps): JSX.Element => {
+const Heading = ({ value, level }: IHeadingProps) => {
 	const { theme } = useTheme();
 	const textStyle = styles[`heading${level}`];
 
 	return (
-		<Text style={[textStyle, { color: themes[theme!].bodyText }]}>
+		<Text style={[textStyle, { color: themes[theme].bodyText }]}>
 			{value.map(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':

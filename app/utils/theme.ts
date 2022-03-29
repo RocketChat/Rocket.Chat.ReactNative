@@ -5,8 +5,19 @@ import setRootViewColor from 'rn-root-view';
 import { IThemePreference, TThemeMode } from '../definitions/ITheme';
 import { themes } from '../constants/colors';
 import { isAndroid } from './deviceInfo';
+import UserPreferences from '../lib/userPreferences';
+import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 
 let themeListener: { remove: () => void } | null;
+
+export const initialTheme = (): IThemePreference => {
+	const theme = UserPreferences.getMap(THEME_PREFERENCES_KEY) as IThemePreference;
+	const initialTheme: IThemePreference = {
+		currentTheme: defaultTheme(),
+		darkLevel: 'black'
+	};
+	return theme || initialTheme;
+};
 
 export const defaultTheme = (): TThemeMode => {
 	const systemTheme = Appearance.getColorScheme();

@@ -2,9 +2,12 @@ import { TMessageModel } from '../../definitions/IMessage';
 import I18n from '../../i18n';
 import { DISCUSSION } from './constants';
 
-export const formatMessageCount = (count: number, type: string) => {
+export const formatMessageCount = (count?: number, type?: string): string => {
 	const discussion = type === DISCUSSION;
 	let text = discussion ? I18n.t('No_messages_yet') : null;
+	if (!count) {
+		return text;
+	}
 	if (count === 1) {
 		text = `${count} ${discussion ? I18n.t('message') : I18n.t('reply')}`;
 	} else if (count > 1 && count < 1000) {
@@ -170,10 +173,10 @@ export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage): strin
 		return I18n.t('This_room_encryption_has_been_enabled_by__username_', { username });
 	}
 	if (type === 'removed-user-from-team') {
-		return I18n.t('Removed__username__from_team', { user_removed: username });
+		return I18n.t('Removed__username__from_team', { user_removed: msg });
 	}
 	if (type === 'added-user-to-team') {
-		return I18n.t('Added__username__to_team', { user_added: username });
+		return I18n.t('Added__username__to_team', { user_added: msg });
 	}
 	if (type === 'user-added-room-to-team') {
 		return I18n.t('added__roomName__to_team', { roomName: msg });

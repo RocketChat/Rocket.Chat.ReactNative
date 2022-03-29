@@ -1,14 +1,26 @@
 import { ChatsStackParamList } from '../stacks/types';
 import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
-import { ISubscription, SubscriptionType } from '../definitions/ISubscription';
+import { IOmnichannelRoom, SubscriptionType, IVisitor, TSubscriptionModel, ISubscription } from '../definitions';
+
+interface IGoRoomItem {
+	search?: boolean; // comes from spotlight
+	username?: string;
+	t?: SubscriptionType;
+	rid?: string;
+	name?: string;
+	prid?: string;
+	visitor?: IVisitor;
+}
+
+export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
 const navigate = ({
 	item,
 	isMasterDetail,
 	...props
 }: {
-	item: IItem;
+	item: TGoRoomItem;
 	isMasterDetail: boolean;
 	navigationMethod?: () => ChatsStackParamList;
 }) => {
@@ -30,9 +42,9 @@ const navigate = ({
 	});
 };
 
-interface IItem extends Partial<ISubscription> {
-	search?: boolean; // comes from spotlight
-	username?: string;
+interface IOmnichannelRoomVisitor extends IOmnichannelRoom {
+	// this visitor came from ee/omnichannel/views/QueueListView
+	visitor: IVisitor;
 }
 
 export const goRoom = async ({
@@ -40,19 +52,18 @@ export const goRoom = async ({
 	isMasterDetail = false,
 	...props
 }: {
-	item: IItem;
+	item: TGoRoomItem;
 	isMasterDetail: boolean;
 	navigationMethod?: any;
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
 }): Promise<void> => {
-	if (item.t === SubscriptionType.DIRECT && item?.search) {
+	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
-			// @ts-ignore
-			const result = await RocketChat.createDirectMessage(username);
-			if (result.success) {
+			const result = await RocketChat.createDirectMessage(username as string);
+			if (result.success && result?.room?._id) {
 				return navigate({
 					item: {
 						rid: result.room._id,

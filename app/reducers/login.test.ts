@@ -1,4 +1,6 @@
+import { TUserStatus } from '../definitions';
 import {
+	clearUser,
 	loginFailure,
 	loginRequest,
 	loginSuccess,
@@ -7,7 +9,6 @@ import {
 	setLoginServices,
 	setUser
 } from '../actions/login';
-import { UserStatus } from '../definitions/UserStatus';
 import { initialState } from './login';
 import { mockedStore } from './mockedStore';
 
@@ -48,7 +49,7 @@ describe('test selectedUsers reducer', () => {
 			isFromWebView: false,
 			showMessageInMainThread: false,
 			enableMessageParserEarlyAdoption: false,
-			status: UserStatus.ONLINE,
+			status: 'online' as TUserStatus,
 			statusText: 'online'
 		};
 		mockedStore.dispatch(loginSuccess(user));
@@ -79,6 +80,12 @@ describe('test selectedUsers reducer', () => {
 		mockedStore.dispatch(setUser(user));
 		const state = mockedStore.getState().login.user.username;
 		expect(state).toEqual(user.username);
+	});
+
+	it('should clear user after clearUser', () => {
+		mockedStore.dispatch(clearUser());
+		const state = mockedStore.getState().login.user;
+		expect(state).toEqual({});
 	});
 
 	// TODO PREFERENCE REDUCER WITH EMPTY PREFERENCE - NON USED?

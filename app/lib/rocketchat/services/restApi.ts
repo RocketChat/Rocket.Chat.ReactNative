@@ -1,6 +1,24 @@
-import sdk from './sdk';
+import {
+	IMessage,
+	INotificationPreferences,
+	IPreviewItem,
+	IRoom,
+	IRoomNotifications,
+	SubscriptionType,
+	IUser,
+	TRocketChat
+} from '../../../definitions';
+import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
+import { ISpotlight } from '../../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
+import { Encryption } from '../../encryption';
+import { TParams } from '../../../definitions/ILivechatEditView';
+import { store as reduxStore } from '../../auxStore';
+import { getDeviceToken } from '../../../notifications/push';
+import { getBundleId, isIOS } from '../../../utils/deviceInfo';
+import { compareServerVersion } from '../../utils';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
+import sdk from './sdk';
 
 export const createChannel = ({
 	name,
@@ -18,7 +36,7 @@ export const createChannel = ({
 	broadcast: boolean;
 	encrypted: boolean;
 	teamId: string;
-}): any => {
+}) => {
 	const params = {
 		name,
 		members: users,
@@ -29,64 +47,49 @@ export const createChannel = ({
 			...(teamId && { teamId })
 		}
 	};
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post(type ? 'groups.create' : 'channels.create', params);
 };
 
-export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: string): any =>
+export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: string) =>
 	// RC 2.2.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
 
-export const e2eRequestSubscriptionKeys = (): any =>
+export const e2eRequestSubscriptionKeys = (): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('e2e.requestSubscriptionKeys');
 
-export const e2eGetUsersOfRoomWithoutKey = (rid: string): any =>
+export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
 
-export const e2eSetRoomKeyID = (rid: string, keyID: string): any =>
+export const e2eSetRoomKeyID = (rid: string, keyID: string) =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.setRoomKeyID', { rid, keyID });
 
 export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 	// RC 0.70.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('e2e.updateGroupKey', { uid, rid, key });
 
-export const e2eRequestRoomKey = (rid: string, e2eKeyId: string) =>
+export const e2eRequestRoomKey = (rid: string, e2eKeyId: string): Promise<{ message: { msg?: string }; success: boolean }> =>
 	// RC 0.70.0
 	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
-export const updateJitsiTimeout = (roomId: string): any =>
+export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('video-conference/jitsi.update-timeout', { roomId });
 
-export const register = (credentials: any): any =>
+export const register = (credentials: { name: string; email: string; pass: string; username: string }) =>
 	// RC 0.50.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.register', credentials);
 
-export const forgotPassword = (email: string): any =>
+export const forgotPassword = (email: string) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.forgotPassword', { email });
 
-export const sendConfirmationEmail = (email: string) => sdk.methodCallWrapper('sendConfirmationEmail', email);
+export const sendConfirmationEmail = (email: string): Promise<{ message: string; success: boolean }> =>
+	sdk.methodCallWrapper('sendConfirmationEmail', email);
 
-export const spotlight = (search: string, usernames: string, type: { users: boolean; rooms: boolean }) =>
+export const spotlight = (search: string, usernames: string[], type: { users: boolean; rooms: boolean }): Promise<ISpotlight> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('spotlight', search, usernames, type);
 
@@ -125,7 +128,7 @@ export const getDiscussions = ({
 	count,
 	text
 }: {
-	roomId: string | undefined;
+	roomId: string;
 	text?: string | undefined;
 	offset: number;
 	count: number;
@@ -154,7 +157,7 @@ export const createTeam = ({
 	readOnly: boolean;
 	broadcast: boolean;
 	encrypted: boolean;
-}): any => {
+}) => {
 	const params = {
 		name,
 		users,
@@ -168,14 +171,10 @@ export const createTeam = ({
 		}
 	};
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('teams.create', params);
 };
-export const addRoomsToTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }): any =>
+export const addRoomsToTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('teams.addRooms', { teamId, rooms });
 
 export const removeTeamRoom = ({ roomId, teamId }: { roomId: string; teamId: string }) =>
@@ -192,10 +191,8 @@ export const leaveTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }
 		...(rooms?.length && { rooms })
 	});
 
-export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; userId: string; rooms: string[] }): any =>
+export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; userId: string; rooms: string[] }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('teams.removeMember', {
 		teamId,
 		userId,
@@ -203,10 +200,8 @@ export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; us
 		...(rooms?.length && { rooms })
 	});
 
-export const updateTeamRoom = ({ roomId, isDefault }: { roomId: string; isDefault: boolean }): any =>
+export const updateTeamRoom = ({ roomId, isDefault }: { roomId: string; isDefault: boolean }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('teams.updateRoom', { roomId, isDefault });
 
 export const deleteTeam = ({ teamId, roomsToRemove }: { teamId: string; roomsToRemove: string[] }): any =>
@@ -215,19 +210,11 @@ export const deleteTeam = ({ teamId, roomsToRemove }: { teamId: string; roomsToR
 	// @ts-ignore
 	sdk.post('teams.delete', { teamId, roomsToRemove });
 
-export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId: string }): any =>
+export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId: string }) =>
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('teams.listRoomsOfUser', { teamId, userId });
 
-export const getTeamInfo = ({ teamId }: { teamId: string }): any =>
-	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get('teams.info', { teamId });
-
-export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }): any => {
+export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
 	const params = {
 		...(type === 'c'
 			? {
@@ -239,125 +226,87 @@ export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: s
 					roomName: name
 			  })
 	};
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post(type === 'c' ? 'channels.convertToTeam' : 'groups.convertToTeam', params);
 };
 
-export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; selected: string[] }): any => {
+export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; selected: string[] }) => {
 	const params = {
 		teamId,
 		...(selected.length && { roomsToRemove: selected })
 	};
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('teams.convertToChannel', params);
 };
 
-export const joinRoom = (roomId: string, joinCode: string, type: 'c' | 'p'): any => {
-	// TODO: join code
+export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p') => {
 	// RC 0.48.0
 	if (type === 'p') {
-		return sdk.methodCallWrapper('joinRoom', roomId);
+		return sdk.methodCallWrapper('joinRoom', roomId) as Promise<boolean>;
 	}
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('channels.join', { roomId, joinCode });
 };
 
-export const deleteMessage = (messageId: string, rid: string): any =>
+export const deleteMessage = (messageId: string, rid: string) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.delete', { msgId: messageId, roomId: rid });
 
-export const markAsUnread = ({ messageId }: { messageId: string }): any =>
+export const markAsUnread = ({ messageId }: { messageId: string }) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 
-export const toggleStarMessage = (messageId: string, starred: boolean): any => {
+export const toggleStarMessage = (messageId: string, starred: boolean) => {
 	if (starred) {
 		// RC 0.59.0
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('chat.unStarMessage', { messageId });
 	}
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('chat.starMessage', { messageId });
 };
 
-export const togglePinMessage = (messageId: string, pinned: boolean): any => {
+export const togglePinMessage = (messageId: string, pinned: boolean) => {
 	if (pinned) {
 		// RC 0.59.0
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('chat.unPinMessage', { messageId });
 	}
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('chat.pinMessage', { messageId });
 };
 
-export const reportMessage = (messageId: string): any =>
+export const reportMessage = (messageId: string) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.reportMessage', { messageId, description: 'Message reported by user' });
 
-export const setUserPreferences = (userId: string, data: any): any =>
+export const setUserPreferences = (userId: string, data: Partial<INotificationPreferences>) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.setPreferences', { userId, data });
 
-export const setUserStatus = (status?: string, message?: string): any =>
+export const setUserStatus = (status: string, message: string) =>
 	// RC 1.2.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.setStatus', { status, message });
 
-export const setReaction = (emoji: string, messageId: string): any =>
+export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('chat.react', { emoji, messageId });
 
-export const toggleRead = (read: boolean, roomId: string): any => {
+export const toggleRead = (read: boolean, roomId: string) => {
 	if (read) {
-		// TODO: missing definitions from server
-		// @ts-ignore
 		return sdk.post('subscriptions.unread', { roomId });
 	}
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.post('subscriptions.read', { rid: roomId });
 };
 
-export const getUserRoles = () =>
-	// RC 0.27.0
-	sdk.methodCallWrapper('getUserRoles');
-
-export const getRoomCounters = (roomId: string, t: RoomTypes): any =>
+export const getRoomCounters = (
+	roomId: string,
+	t: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
+) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
 
-export const getChannelInfo = (roomId: string): any =>
+export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('channels.info', { roomId });
 
-export const getUserPreferences = (userId: string): any =>
+export const getUserPreferences = (userId: string) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('users.getPreferences', { userId });
 
 export const getRoomInfo = (roomId: string) =>
@@ -384,7 +333,7 @@ export const getTeamListRoom = ({
 	offset: number;
 	type: string;
 	filter: any;
-}): any => {
+}) => {
 	const params: any = {
 		teamId,
 		count,
@@ -396,8 +345,6 @@ export const getTeamListRoom = ({
 		params.filter = filter;
 	}
 	// RC 3.13.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.get('teams.listRooms', params);
 };
 
@@ -405,11 +352,11 @@ export const closeLivechat = (rid: string, comment: string) =>
 	// RC 0.29.0
 	sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true });
 
-export const editLivechat = (userData: any, roomData: any) =>
+export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> =>
 	// RC 0.55.0
 	sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
 
-export const returnLivechat = (rid: string) =>
+export const returnLivechat = (rid: string): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
 
@@ -417,7 +364,7 @@ export const forwardLivechat = (transferData: any) =>
 	// RC 0.36.0
 	sdk.methodCallWrapper('livechat:transfer', transferData);
 
-export const getDepartmentInfo = (departmentId: string): any =>
+export const getDepartmentInfo = (departmentId: string) =>
 	// RC 2.2.0
 	sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
 
@@ -438,25 +385,37 @@ export const usersAutoComplete = (selector: any) =>
 	// RC 2.4.0
 	sdk.get('users.autocomplete', { selector });
 
-export const getRoutingConfig = () =>
+export const getRoutingConfig = (): Promise<{
+	previewRoom: boolean;
+	showConnecting: boolean;
+	showQueue: boolean;
+	showQueueLink: boolean;
+	returnQueue: boolean;
+	enableTriggerAction: boolean;
+	autoAssignAgent: boolean;
+}> =>
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getRoutingConfig');
 
-export const getTagsList = () =>
+export const getTagsList = (): Promise<
+	{
+		_id: string;
+		name: string;
+		departments: string[];
+	}[]
+> =>
 	// RC 2.0.0
 	sdk.methodCallWrapper('livechat:getTagsList');
 
-export const getAgentDepartments = (uid: string): any =>
+export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get(`livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
 
 export const getCustomFields = () =>
 	// RC 2.2.0
 	sdk.get('livechat/custom-fields');
 
-export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }): any => {
+export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }) => {
 	const params = {
 		offset,
 		count,
@@ -466,12 +425,10 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	};
 
 	// RC 3.17.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	return sdk.get('canned-responses', params);
 };
 
-export const toggleBlockUser = (rid: string, blocked: string, block: boolean) => {
+export const toggleBlockUser = (rid: string, blocked: string, block: boolean): Promise<boolean> => {
 	if (block) {
 		// RC 0.49.0
 		return sdk.methodCallWrapper('blockUser', { rid, blocked });
@@ -480,19 +437,19 @@ export const toggleBlockUser = (rid: string, blocked: string, block: boolean) =>
 	return sdk.methodCallWrapper('unblockUser', { rid, blocked });
 };
 
-export const leaveRoom = (roomId: string, t: RoomTypes): any =>
+export const leaveRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.leave`, { roomId });
 
-export const deleteRoom = (roomId: string, t: RoomTypes): any =>
+export const deleteRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.49.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.delete`, { roomId });
 
-export const toggleMuteUserInRoom = (rid: string, username: string, mute: boolean) => {
+export const toggleMuteUserInRoom = (
+	rid: string,
+	username: string,
+	mute: boolean
+): Promise<{ message: { msg: string; result: boolean }; success: boolean }> => {
 	if (mute) {
 		// RC 0.51.0
 		return sdk.methodCallWrapper('muteUserInRoom', { rid, username });
@@ -508,20 +465,17 @@ export const toggleRoomOwner = ({
 	isOwner
 }: {
 	roomId: string;
-	t: RoomTypes;
+	t: SubscriptionType;
 	userId: string;
 	isOwner: boolean;
-}): any => {
+}) => {
+	const type = t as SubscriptionType.CHANNEL;
 	if (isOwner) {
 		// RC 0.49.4
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.addOwner`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(type)}.addOwner`, { roomId, userId });
 	}
 	// RC 0.49.4
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.removeOwner`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(type)}.removeOwner`, { roomId, userId });
 };
 
 export const toggleRoomLeader = ({
@@ -531,20 +485,17 @@ export const toggleRoomLeader = ({
 	isLeader
 }: {
 	roomId: string;
-	t: RoomTypes;
+	t: SubscriptionType;
 	userId: string;
 	isLeader: boolean;
-}): any => {
+}) => {
+	const type = t as SubscriptionType.CHANNEL;
 	if (isLeader) {
 		// RC 0.58.0
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.addLeader`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(type)}.addLeader`, { roomId, userId });
 	}
 	// RC 0.58.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.removeLeader`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(type)}.removeLeader`, { roomId, userId });
 };
 
 export const toggleRoomModerator = ({
@@ -554,93 +505,89 @@ export const toggleRoomModerator = ({
 	isModerator
 }: {
 	roomId: string;
-	t: RoomTypes;
+	t: SubscriptionType;
 	userId: string;
 	isModerator: boolean;
-}): any => {
+}) => {
+	const type = t as SubscriptionType.CHANNEL;
 	if (isModerator) {
 		// RC 0.49.4
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.addModerator`, { roomId, userId });
+		return sdk.post(`${roomTypeToApiType(type)}.addModerator`, { roomId, userId });
 	}
 	// RC 0.49.4
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.removeModerator`, { roomId, userId });
+	return sdk.post(`${roomTypeToApiType(type)}.removeModerator`, { roomId, userId });
 };
 
-export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomTypes; userId: string }): any =>
+export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: RoomTypes; userId: string }) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.kick`, { roomId, userId });
 
-export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }): any =>
+export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }) =>
 	// RC 0.64.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.ignoreUser', { rid, userId, ignore });
 
-export const toggleArchiveRoom = (roomId: string, t: RoomTypes, archive: boolean): any => {
+export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean) => {
+	const type = t as SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	if (archive) {
 		// RC 0.48.0
-		// TODO: missing definitions from server
-		// @ts-ignore
-		return sdk.post(`${roomTypeToApiType(t)}.archive`, { roomId });
+		return sdk.post(`${roomTypeToApiType(type)}.archive`, { roomId });
 	}
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	return sdk.post(`${roomTypeToApiType(t)}.unarchive`, { roomId });
+	return sdk.post(`${roomTypeToApiType(type)}.unarchive`, { roomId });
 };
 
-export const hideRoom = (roomId: string, t: RoomTypes): any =>
+export const hideRoom = (roomId: string, t: RoomTypes) =>
 	// RC 0.48.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post(`${roomTypeToApiType(t)}.close`, { roomId });
 
-export const saveRoomSettings = (rid: string, params: any) =>
+export const saveRoomSettings = (
+	rid: string,
+	params: {
+		roomName?: string;
+		roomAvatar?: string;
+		roomDescription?: string;
+		roomTopic?: string;
+		roomAnnouncement?: string;
+		roomType?: SubscriptionType;
+		readOnly?: boolean;
+		reactWhenReadOnly?: boolean;
+		systemMessages?: string[];
+		joinCode?: string;
+		encrypted?: boolean;
+	}
+): Promise<{ result: boolean; rid: string }> =>
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
-export const saveUserProfile = (data: any, customFields?: any): any =>
+export const saveUserProfile = (data: IParams | Pick<IParams, 'username'>, customFields?: { [key: string | number]: string }) =>
 	// RC 0.62.2
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.updateOwnBasicInfo', { data, customFields });
 
-export const saveUserPreferences = (data: any): any =>
+export const saveUserPreferences = (data: Partial<INotificationPreferences>) =>
 	// RC 0.62.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.setPreferences', { data });
 
-export const saveNotificationSettings = (roomId: string, notifications: any): any =>
+export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
 	// RC 0.63.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('rooms.saveNotification', { roomId, notifications });
 
 export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
 	sdk.get('chat.getMessage', { msgId });
 
-export const getRoomRoles = (roomId: string, type: RoomTypes): any =>
+export const getRoomRoles = (
+	roomId: string,
+	type: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
+) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
 
-export const getAvatarSuggestion = () =>
+export const getAvatarSuggestion = (): Promise<IAvatarSuggestion> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('getAvatarSuggestion');
 
-export const resetAvatar = (userId: string): any =>
+export const resetAvatar = (userId: string) =>
 	// RC 0.55.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('users.resetAvatar', { userId });
 
 export const setAvatarFromService = ({
@@ -651,49 +598,48 @@ export const setAvatarFromService = ({
 	data: any;
 	contentType?: string;
 	service?: string | null;
-}) =>
+}): Promise<void> =>
 	// RC 0.51.0
 	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
 
-export const getUsernameSuggestion = (): any =>
+export const getUsernameSuggestion = () =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('users.getUsernameSuggestion');
 
-export const getFiles = (roomId: string, type: RoomTypes, offset: number): any =>
+export const getFiles = (roomId: string, type: SubscriptionType, offset: number) => {
+	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get(`${roomTypeToApiType(type)}.files`, {
+	return sdk.get(`${roomTypeToApiType(t)}.files`, {
 		roomId,
 		offset,
 		sort: { uploadedAt: -1 }
 	});
+};
 
-export const getMessages = (roomId: string, type: RoomTypes, query: any, offset: number): any =>
+export const getMessages = (
+	roomId: string,
+	type: SubscriptionType,
+	query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean },
+	offset: number
+) => {
+	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	// RC 0.59.0
-	// TODO: missing definitions from server
-	// @ts-ignore
-	sdk.get(`${roomTypeToApiType(type)}.messages`, {
+	return sdk.get(`${roomTypeToApiType(t)}.messages`, {
 		roomId,
 		query,
 		offset,
 		sort: { ts: -1 }
 	});
+};
 
-export const getReadReceipts = (messageId: string): any =>
+export const getReadReceipts = (messageId: string) =>
 	// RC 0.63.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.getMessageReadReceipts', {
 		messageId
 	});
 
-export const searchMessages = (roomId: string, searchText: string, count: number, offset: number): any =>
+export const searchMessages = (roomId: string, searchText: string, count: number, offset: number) =>
 	// RC 0.60.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.search', {
 		roomId,
 		searchText,
@@ -710,12 +656,11 @@ export const toggleFollowMessage = (mid: string, follow: boolean) => {
 };
 
 export const getThreadsList = ({ rid, count, offset, text }: { rid: string; count: number; offset: number; text?: string }) => {
-	const params: any = {
+	const params = {
 		rid,
 		count,
-		offset,
-		sort: { ts: -1 }
-	};
+		offset
+	} as { rid: string; count: number; offset: number; text?: string };
 	if (text) {
 		params.text = text;
 	}
@@ -724,19 +669,15 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	return sdk.get('chat.getThreadsList', params);
 };
 
-export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }): any =>
+export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>
 	// RC 1.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('chat.syncThreadsList', {
 		rid,
 		updatedSince
 	});
 
-export const runSlashCommand = (command: string, roomId: string, params: any, triggerId?: string, tmid?: string): any =>
+export const runSlashCommand = (command: string, roomId: string, params: string, triggerId?: string, tmid?: string) =>
 	// RC 0.60.2
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('commands.run', {
 		command,
 		roomId,
@@ -745,10 +686,8 @@ export const runSlashCommand = (command: string, roomId: string, params: any, tr
 		tmid
 	});
 
-export const getCommandPreview = (command: string, roomId: string, params: any): any =>
+export const getCommandPreview = (command: string, roomId: string, params: string) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('commands.preview', {
 		command,
 		roomId,
@@ -757,15 +696,13 @@ export const getCommandPreview = (command: string, roomId: string, params: any):
 
 export const executeCommandPreview = (
 	command: string,
-	params: any,
+	params: string,
 	roomId: string,
-	previewItem: any,
+	previewItem: IPreviewItem,
 	triggerId: string,
 	tmid?: string
-): any =>
+) =>
 	// RC 0.65.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.post('commands.preview', {
 		command,
 		params,
@@ -775,10 +712,18 @@ export const executeCommandPreview = (
 		tmid
 	});
 
-export const getDirectory = ({ query, count, offset, sort }: { query: any; count: number; offset: number; sort: any }): any =>
+export const getDirectory = ({
+	query,
+	count,
+	offset,
+	sort
+}: {
+	query: { [key: string]: string };
+	count: number;
+	offset: number;
+	sort: { [key: string]: number };
+}) =>
 	// RC 1.0
-	// TODO: missing definitions from server
-	// @ts-ignore
 	sdk.get('directory', {
 		query,
 		count,
@@ -786,8 +731,17 @@ export const getDirectory = ({ query, count, offset, sort }: { query: any; count
 		sort
 	});
 
-export const saveAutoTranslate = ({ rid, field, value, options }: { rid: string; field: string; value: any; options: any }) =>
-	sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options);
+export const saveAutoTranslate = ({
+	rid,
+	field,
+	value,
+	options
+}: {
+	rid: string;
+	field: string;
+	value: string;
+	options?: { defaultLanguage: string };
+}) => sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options ?? null);
 
 export const getSupportedLanguagesAutoTranslate = () => sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 
@@ -811,3 +765,139 @@ export const useInviteToken = (token: string): any =>
 	// TODO: missing definitions from server
 	// @ts-ignore
 	sdk.post('useInviteToken', { token });
+
+export const readThreads = (tmid: string): Promise<void> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.4.0')) {
+		// RC 3.4.0
+		return sdk.methodCallWrapper('readThreads', tmid);
+	}
+	return Promise.resolve();
+};
+
+export const createGroupChat = () => {
+	const { users } = reduxStore.getState().selectedUsers;
+	const usernames = users.map(u => u.name).join(',');
+
+	// RC 3.1.0
+	return sdk.post('im.create', { usernames });
+};
+
+export const addUsersToRoom = (rid: string): Promise<boolean> => {
+	const { users: selectedUsers } = reduxStore.getState().selectedUsers;
+	const users = selectedUsers.map(u => u.name);
+	// RC 0.51.0
+	return sdk.methodCallWrapper('addUsersToRoom', { rid, users });
+};
+
+export const emitTyping = (room: IRoom, typing = true) => {
+	const { login, settings } = reduxStore.getState();
+	const { UI_Use_Real_Name } = settings;
+	const { user } = login;
+	const name = UI_Use_Real_Name ? user.name : user.username;
+	return sdk.methodCall('stream-notify-room', `${room}/typing`, name, typing);
+};
+
+export function e2eResetOwnKey(this: TRocketChat): Promise<boolean | {}> {
+	// {} when TOTP is enabled
+	// TODO: remove this
+	this.unsubscribeRooms();
+
+	// RC 0.72.0
+	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
+}
+
+export const editMessage = async (message: IMessage) => {
+	const { rid, msg } = await Encryption.encryptMessage(message);
+	// RC 0.49.0
+	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
+};
+
+export const registerPushToken = () =>
+	new Promise<void>(async resolve => {
+		const token = getDeviceToken();
+		if (token) {
+			const type = isIOS ? 'apn' : 'gcm';
+			const data = {
+				value: token,
+				type,
+				appName: getBundleId
+			};
+			try {
+				// RC 0.60.0
+				await sdk.post('push.token', data);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		return resolve();
+	});
+
+export const removePushToken = (): Promise<boolean | void> => {
+	const token = getDeviceToken();
+	if (token) {
+		// RC 0.60.0
+		return sdk.current.del('push.token', { token });
+	}
+	return Promise.resolve();
+};
+
+export const sendEmailCode = () => {
+	const { username } = reduxStore.getState().login.user as IUser;
+	// RC 3.1.0
+	return sdk.post('users.2fa.sendEmailCode', { emailOrUsername: username });
+};
+
+export const getRoomMembers = async ({
+	rid,
+	allUsers,
+	roomType,
+	type,
+	filter,
+	skip = 0,
+	limit = 10
+}: {
+	rid: string;
+	allUsers: boolean;
+	type: 'all' | 'online';
+	roomType: SubscriptionType;
+	filter: boolean;
+	skip: number;
+	limit: number;
+}) => {
+	const t = roomType as SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.DIRECT;
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.16.0')) {
+		const params = {
+			roomId: rid,
+			offset: skip,
+			count: limit,
+			...(type !== 'all' && { 'status[]': type }),
+			...(filter && { filter })
+		};
+		// RC 3.16.0
+		const result = await sdk.get(`${roomTypeToApiType(t)}.members`, params);
+		if (result.success) {
+			return result?.members;
+		}
+	}
+	// RC 0.42.0
+	const result = await sdk.methodCallWrapper('getUsersOfRoom', rid, allUsers, { skip, limit });
+	if (result.success) {
+		return result?.records;
+	}
+};
+
+export const e2eFetchMyKeys = async () => {
+	// RC 0.70.0
+	const result = await sdk.get('e2e.fetchMyKeys');
+	// snake_case -> camelCase
+	if (result.success) {
+		return {
+			success: result.success,
+			publicKey: result.public_key,
+			privateKey: result.private_key
+		};
+	}
+	return result;
+};

@@ -1,6 +1,6 @@
 import Model from '@nozbe/watermelondb/Model';
 
-import { UserStatus } from './UserStatus';
+import { TUserStatus } from './TUserStatus';
 import { IRocketChatRecord } from './IRocketChatRecord';
 import { ILoggedUser } from './ILoggedUser';
 
@@ -20,6 +20,16 @@ export interface IPersonalAccessToken extends ILoginToken {
 	lastTokenPart: string;
 	name?: string;
 	bypassTwoFactor?: boolean;
+}
+
+export interface IUserRegistered {
+	_id: string;
+	type: string;
+	status: TUserStatus;
+	active: boolean;
+	name: string;
+	username: string;
+	__rooms: string[];
 }
 
 export interface IUserEmailVerificationToken {
@@ -93,6 +103,23 @@ export interface IUserSettings {
 		[key: string]: any;
 	};
 }
+export type TNotifications = 'default' | 'all' | 'mentions' | 'nothing';
+
+export interface INotificationPreferences {
+	id: string;
+	enableMessageParserEarlyAdoption: boolean;
+	desktopNotifications: TNotifications;
+	pushNotifications: TNotifications;
+	emailNotificationMode?: 'mentions' | 'nothing';
+	language?: string;
+}
+
+export interface IUserPreferences {
+	user: { _id: string };
+	settings: {
+		preferences: INotificationPreferences;
+	};
+}
 
 export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' | 'name' | 'status'> {
 	_id: string;
@@ -106,14 +133,14 @@ export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' |
 	name?: string;
 	services?: IUserServices;
 	emails?: IUserEmail[];
-	status?: UserStatus;
+	status: TUserStatus;
 	statusConnection?: string;
 	lastLogin?: Date;
 	avatarOrigin?: string;
 	avatarETag?: string;
 	utcOffset?: number;
 	language?: string;
-	statusDefault?: UserStatus;
+	statusDefault?: TUserStatus;
 	statusText?: string;
 	oauth?: {
 		authorizedClients: string[];
@@ -130,6 +157,7 @@ export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' |
 	settings?: IUserSettings;
 	defaultRoom?: string;
 	ldap?: boolean;
+	muted?: boolean;
 }
 
 export interface IRegisterUser extends IUser {

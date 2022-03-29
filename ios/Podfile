@@ -6,6 +6,7 @@ require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 def all_pods
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
+  pod 'ReactNativeUiLib', :path => '../node_modules/react-native-ui-lib/lib'
   config = use_native_modules!
   use_unimodules!
   use_react_native!(

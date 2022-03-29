@@ -39,7 +39,7 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		}
 
 		// Fetch stored private e2e key for this server
-		const storedPrivateKey = yield UserPreferences.getStringAsync(`${server}-${E2E_PRIVATE_KEY}`);
+		const storedPrivateKey = UserPreferences.getString(`${server}-${E2E_PRIVATE_KEY}`);
 
 		// Fetch server stored e2e keys
 		const keys = yield RocketChat.e2eFetchMyKeys();
@@ -52,13 +52,15 @@ const handleEncryptionInit = function* handleEncryptionInit() {
 		}
 
 		// If the user has a private key stored, but never entered the password
-		const storedRandomPassword = yield UserPreferences.getStringAsync(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
+		const storedRandomPassword = UserPreferences.getString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
+
 		if (storedRandomPassword) {
 			yield put(encryptionSet(true, E2E_BANNER_TYPE.SAVE_PASSWORD));
 		}
 
 		// Fetch stored public e2e key for this server
-		let storedPublicKey = yield UserPreferences.getStringAsync(`${server}-${E2E_PUBLIC_KEY}`);
+		let storedPublicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
+
 		// Prevent parse undefined
 		if (storedPublicKey) {
 			storedPublicKey = EJSON.parse(storedPublicKey);

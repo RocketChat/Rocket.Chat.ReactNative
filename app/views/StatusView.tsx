@@ -2,7 +2,6 @@ import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { UserStatus } from '../definitions/UserStatus';
 import { setUser } from '../actions/login';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
@@ -11,7 +10,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
 import { LISTENER } from '../containers/Toast';
-import { IApplicationState, IBaseScreen } from '../definitions';
+import { IApplicationState, IBaseScreen, IUser, TUserStatus } from '../definitions';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { getUserSelector } from '../selectors/login';
@@ -20,7 +19,12 @@ import EventEmitter from '../utils/events';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 
-const STATUS = [
+interface IStatus {
+	id: TUserStatus;
+	name: string;
+}
+
+const STATUS: IStatus[] = [
 	{
 		id: 'online',
 		name: 'Online'
@@ -54,19 +58,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IUser {
-	id?: string;
-	status?: string;
-	statusText?: string;
-}
-
 interface IStatusViewState {
 	statusText: string;
 	loading: boolean;
 }
 
 interface IStatusViewProps extends IBaseScreen<any, 'StatusView'> {
-	user: IUser;
+	user: Pick<IUser, 'id' | 'status' | 'statusText'>;
 	isMasterDetail: boolean;
 	Accounts_AllowInvisibleStatusOption: boolean;
 }
@@ -141,7 +139,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 					value={statusText}
 					containerStyle={styles.inputContainer}
 					onChangeText={text => this.setState({ statusText: text })}
-					left={<Status testID={`status-view-current-${user.status}`} style={styles.inputLeft} status={user.status!} size={24} />}
+					left={<Status testID={`status-view-current-${user.status}`} style={styles.inputLeft} status={user.status} size={24} />}
 					inputStyle={styles.inputStyle}
 					placeholder={I18n.t('What_are_you_doing_right_now')}
 					testID='status-view-input'
@@ -151,7 +149,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 		);
 	};
 
-	renderItem = ({ item }: { item: { id: string; name: string } }) => {
+	renderItem = ({ item }: { item: IStatus }) => {
 		const { statusText } = this.state;
 		const { user, dispatch } = this.props;
 		const { id, name } = item;
@@ -165,7 +163,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 						try {
 							const result = await RocketChat.setUserStatus(item.id, statusText);
 							if (result.success) {
-								dispatch(setUser({ status: item.id as UserStatus }));
+								dispatch(setUser({ status: item.id }));
 							}
 						} catch (e: any) {
 							showErrorAlert(I18n.t(e.data.errorType));

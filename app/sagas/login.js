@@ -163,8 +163,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		yield UserPreferences.setStringAsync(`${RocketChat.TOKEN_KEY}-${server}`, user.id);
-		yield UserPreferences.setStringAsync(`${RocketChat.TOKEN_KEY}-${user.id}`, user.token);
+		UserPreferences.setString(`${RocketChat.TOKEN_KEY}-${server}`, user.id);
+		UserPreferences.setString(`${RocketChat.TOKEN_KEY}-${user.id}`, user.token);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 
@@ -196,26 +196,6 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
 			}
-			// else {
-			// 	const serversDB = database.servers;
-			// 	// all servers
-			// 	const serversCollection = serversDB.get('servers');
-			// 	const servers = yield serversCollection.query().fetch();
-
-			// 	// see if there're other logged in servers and selects first one
-			// 	if (servers.length > 0) {
-			// 		for (let i = 0; i < servers.length; i += 1) {
-			// 			const newServer = servers[i].id;
-			// 			const token = yield UserPreferences.getStringAsync(`${RocketChat.TOKEN_KEY}-${newServer}`);
-			// 			if (token) {
-			// 				yield put(selectServerRequest(newServer));
-			// 				return;
-			// 			}
-			// 		}
-			// 	}
-			// 	// if there's no servers, go outside
-			// 	yield put(appStart({ root: ROOT_OUTSIDE }));
-			// }
 		} catch (e) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 			log(e);
