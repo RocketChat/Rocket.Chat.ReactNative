@@ -130,10 +130,6 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 			),
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
-			headerTitleContainerStyle: {
-				left: null,
-				right: null
-			},
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item iconName='search' onPress={onSearchPress} />

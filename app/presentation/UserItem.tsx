@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-ignore
 import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import Avatar from '../containers/Avatar';
