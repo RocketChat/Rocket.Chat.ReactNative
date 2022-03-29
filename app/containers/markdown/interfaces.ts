@@ -2,6 +2,7 @@ export interface IUserMention {
 	_id: string;
 	username: string;
 	name?: string;
+	type?: string;
 }
 
 export interface IUserChannel {

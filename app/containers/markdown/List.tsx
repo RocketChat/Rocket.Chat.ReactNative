@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface IList {
-	children: JSX.Element;
+	children: React.ReactElement[] | null;
 	ordered: boolean;
 	start: number;
 	tight: boolean;
@@ -11,9 +11,8 @@ interface IList {
 const List = React.memo(({ children, ordered, tight, start = 1, numberOfLines = 0 }: IList) => {
 	let bulletWidth = 15;
 
-	if (ordered) {
-		// @ts-ignore
-		const lastNumber = start + children.length - 1;
+	if (ordered && children) {
+		const lastNumber = start + children?.length - 1;
 		bulletWidth = 9 * lastNumber.toString().length + 7;
 	}
 
