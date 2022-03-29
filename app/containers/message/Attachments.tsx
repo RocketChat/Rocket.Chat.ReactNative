@@ -54,7 +54,6 @@ const Attachments = React.memo(
 						getCustomEmoji={getCustomEmoji}
 						style={style}
 						isReply={isReply}
-						theme={theme}
 					/>
 				);
 			}
@@ -82,7 +81,7 @@ const Attachments = React.memo(
 			if (file && file.actions && file.actions.length > 0) {
 				return <AttachedActions attachment={file} />;
 			}
-			if (file.title) {
+			if (typeof file.collapsed === 'boolean') {
 				return (
 					<CollapsibleQuote key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />
 				);

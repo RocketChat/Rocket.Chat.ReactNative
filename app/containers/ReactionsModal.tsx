@@ -74,7 +74,7 @@ interface IItem {
 
 interface IModalContent {
 	message?: TMessageModel;
-	onClose: Function;
+	onClose: () => void;
 	theme: string;
 }
 

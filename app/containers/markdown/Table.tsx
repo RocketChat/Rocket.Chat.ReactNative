@@ -8,7 +8,7 @@ import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
 
 interface ITable {
-	children: JSX.Element;
+	children: React.ReactElement | null;
 	numColumns: number;
 	theme: string;
 }
