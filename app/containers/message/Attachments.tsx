@@ -74,7 +74,6 @@ const Attachments = React.memo(
 						getCustomEmoji={getCustomEmoji}
 						style={style}
 						isReply={isReply}
-						theme={theme}
 					/>
 				);
 			}
