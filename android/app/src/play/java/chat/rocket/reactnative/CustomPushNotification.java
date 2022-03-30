@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
-import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_BACKGROUND_EVENT_NAME;
 
 public class CustomPushNotification extends PushNotification {
     public static ReactApplicationContext reactApplicationContext;
