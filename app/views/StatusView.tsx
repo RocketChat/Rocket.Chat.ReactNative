@@ -108,9 +108,6 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 					);
 
 					EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
-				} else {
-					logEvent(events.STATUS_CUSTOM_F);
-					EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
 				}
 			} catch (e: any) {
 				const messageError =
