@@ -14,6 +14,7 @@ import { useTheme } from '../../theme';
 import { IAttachment } from '../../definitions';
 import CollapsibleQuote from './Components/CollapsibleQuote';
 import openLink from '../../utils/openLink';
+import { themes } from '../../constants/colors';
 
 export type TElement = {
 	type: string;
@@ -48,7 +49,7 @@ const AttachedActions = ({ attachment }: IMessageAttachedActions) => {
 	});
 	return (
 		<>
-			<Text style={styles.text}>{attachment.text}</Text>
+			<Text style={[styles.text, { color: themes[theme].bodyText }]}>{attachment.text}</Text>
 			{attachedButtons}
 		</>
 	);
