@@ -6,6 +6,7 @@ import Touchable from 'react-native-platform-touchable';
 import { CustomIcon } from '../../lib/Icons';
 import ActivityIndicator from '../ActivityIndicator';
 import { themes } from '../../constants/colors';
+import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';
 import { IOption, IOptions, IOverflow } from './interfaces';
@@ -43,9 +44,10 @@ const Options = ({ options, onOptionPress, parser, theme }: IOptions) => (
 	/>
 );
 
-const touchable: { [key: string]: any } = {};
+const touchable: { [key: string]: Touchable | null } = {};
 
-export const Overflow = ({ element, loading, action, parser, theme }: IOverflow) => {
+export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
+	const { theme } = useTheme();
 	const options = element?.options || [];
 	const blockId = element?.blockId || '';
 	const [show, onShow] = useState(false);
@@ -58,7 +60,7 @@ export const Overflow = ({ element, loading, action, parser, theme }: IOverflow)
 	return (
 		<>
 			<Touchable
-				ref={(ref: any) => (touchable[blockId] = ref)}
+				ref={ref => (touchable[blockId] = ref)}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 				onPress={() => onShow(!show)}
 				hitSlop={BUTTON_HIT_SLOP}
@@ -71,6 +73,7 @@ export const Overflow = ({ element, loading, action, parser, theme }: IOverflow)
 			</Touchable>
 			<Popover
 				isVisible={show}
+				// fromView exists in Popover Component
 				/* @ts-ignore*/
 				fromView={touchable[blockId]}
 				onRequestClose={() => onShow(false)}>
