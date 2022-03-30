@@ -2,7 +2,6 @@ import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { UserStatus } from '../definitions/UserStatus';
 import { setUser } from '../actions/login';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
@@ -11,7 +10,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import Status from '../containers/Status/Status';
 import TextInput from '../containers/TextInput';
 import { LISTENER } from '../containers/Toast';
-import { IApplicationState, IBaseScreen, IUser } from '../definitions';
+import { IApplicationState, IBaseScreen, IUser, TUserStatus } from '../definitions';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { getUserSelector } from '../selectors/login';
@@ -20,7 +19,12 @@ import EventEmitter from '../utils/events';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 
-const STATUS = [
+interface IStatus {
+	id: TUserStatus;
+	name: string;
+}
+
+const STATUS: IStatus[] = [
 	{
 		id: 'online',
 		name: 'Online'
@@ -56,7 +60,7 @@ const styles = StyleSheet.create({
 
 interface IStatusViewState {
 	statusText: string;
-	status: UserStatus;
+	status: TUserStatus;
 	loading: boolean;
 }
 
@@ -109,7 +113,7 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 		this.setState({ loading: true });
 
 		try {
-			const result = await RocketChat.setUserStatus(status as UserStatus, statusText as string);
+			const result = await RocketChat.setUserStatus(status, statusText as string);
 			if (result.success) {
 				if (statusText !== user.statusText) {
 					logEvent(events.STATUS_CUSTOM);
@@ -131,13 +135,11 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 				EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
 			}
 		} catch (e: any) {
-			showErrorAlert(I18n.t(e.data.errorType));
-			if (statusText !== user.statusText) {
-				logEvent(events.STATUS_CUSTOM_F);
-			}
-			if (status !== user.status) {
-				logEvent(events.SET_STATUS_FAIL);
-			}
+			const messageError =
+				e.data && e.data.error.includes('[error-too-many-requests]')
+					? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
+					: e.data.errorType;
+			showErrorAlert(messageError);
 			log(e);
 			EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
 		}
@@ -171,9 +173,9 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 		return (
 			<List.Item
 				title={name}
-				onPress={() => this.setState({ status: item.id as UserStatus })}
+				onPress={() => this.setState({ status: item.id as TUserStatus })}
 				testID={`status-view-${id}`}
-				left={() => <Status size={24} status={item.id} />}
+				left={() => <Status size={24} status={item.id as TUserStatus} />}
 			/>
 		);
 	};
