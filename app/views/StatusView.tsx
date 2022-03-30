@@ -94,57 +94,41 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 	submit = async () => {
 		logEvent(events.STATUS_DONE);
 		const { statusText, status } = this.state;
-		const { user } = this.props;
+		const { dispatch, user } = this.props;
 		if (statusText !== user.statusText || status !== user.status) {
-			await this.setCustomStatus();
+			this.setState({ loading: true });
+			try {
+				const result = await RocketChat.setUserStatus(status, statusText);
+				if (result.success) {
+					dispatch(
+						setUser({
+							...(statusText !== user.statusText && { statusText }),
+							...(status !== user.status && { status })
+						})
+					);
+
+					EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
+				} else {
+					logEvent(events.STATUS_CUSTOM_F);
+					EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+				}
+			} catch (e: any) {
+				const messageError =
+					e.data && e.data.error.includes('[error-too-many-requests]')
+						? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
+						: e.data.errorType;
+				showErrorAlert(messageError);
+				log(e);
+				EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+			}
 		}
+		this.setState({ loading: false });
 		this.close();
 	};
 
 	close = () => {
 		const { navigation } = this.props;
 		navigation.goBack();
-	};
-
-	setCustomStatus = async () => {
-		const { statusText, status } = this.state;
-		const { dispatch, user } = this.props;
-
-		this.setState({ loading: true });
-
-		try {
-			const result = await RocketChat.setUserStatus(status, statusText as string);
-			if (result.success) {
-				if (statusText !== user.statusText) {
-					logEvent(events.STATUS_CUSTOM);
-				}
-				if (status !== user.status) {
-					// @ts-ignore
-					logEvent(events[`STATUS_${status.toUpperCase()}`]);
-				}
-				dispatch(
-					setUser({
-						...(statusText !== user.statusText && { statusText }),
-						...(status !== user.status && { status })
-					})
-				);
-
-				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
-			} else {
-				logEvent(events.STATUS_CUSTOM_F);
-				EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
-			}
-		} catch (e: any) {
-			const messageError =
-				e.data && e.data.error.includes('[error-too-many-requests]')
-					? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
-					: e.data.errorType;
-			showErrorAlert(messageError);
-			log(e);
-			EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
-		}
-
-		this.setState({ loading: false });
 	};
 
 	renderHeader = () => {
@@ -157,7 +141,10 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 					theme={theme}
 					value={statusText}
 					containerStyle={styles.inputContainer}
-					onChangeText={text => this.setState({ statusText: text })}
+					onChangeText={text => {
+						logEvent(events.STATUS_CUSTOM);
+						this.setState({ statusText: text });
+					}}
 					left={<Status testID={`status-view-current-${user.status}`} style={styles.inputLeft} status={status} size={24} />}
 					inputStyle={styles.inputStyle}
 					placeholder={I18n.t('What_are_you_doing_right_now')}
@@ -168,14 +155,18 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 		);
 	};
 
-	renderItem = ({ item }: { item: { id: string; name: string } }) => {
+	renderItem = ({ item }: { item: { id: TUserStatus; name: string } }) => {
 		const { id, name } = item;
 		return (
 			<List.Item
 				title={name}
-				onPress={() => this.setState({ status: item.id as TUserStatus })}
+				onPress={() => {
+					// @ts-ignore
+					logEvent(events[`STATUS_${item.id.toUpperCase()}`]);
+					this.setState({ status: item.id });
+				}}
 				testID={`status-view-${id}`}
-				left={() => <Status size={24} status={item.id as TUserStatus} />}
+				left={() => <Status size={24} status={item.id} />}
 			/>
 		);
 	};
