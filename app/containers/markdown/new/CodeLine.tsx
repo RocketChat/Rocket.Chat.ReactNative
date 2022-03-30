@@ -6,7 +6,7 @@ interface ICodeLineProps {
 	value: CodeLineProps['value'];
 }
 
-const CodeLine = ({ value }: ICodeLineProps): JSX.Element | null => {
+const CodeLine = ({ value }: ICodeLineProps) => {
 	if (value.type !== 'PLAIN_TEXT') {
 		return null;
 	}
