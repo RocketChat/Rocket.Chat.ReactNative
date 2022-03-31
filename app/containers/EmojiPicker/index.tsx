@@ -109,6 +109,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 		const freqEmojiCollection = db.get('frequently_used_emojis');
 		let freqEmojiRecord: any;
 		try {
+			// @ts-ignore
 			freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
 		} catch (error) {
 			// Do nothing
