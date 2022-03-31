@@ -24,11 +24,17 @@ interface IItems {
 	theme: string;
 }
 
-const keyExtractor = (item: IItemData) => item.value.toString();
+const keyExtractor = (item: IItemData) => {
+	if (typeof item.value === 'string') {
+		return item.value;
+	}
+	return item.value.name || item.text.text.toLowerCase();
+};
 
 // RectButton doesn't work on modal (Android)
 const Item = ({ item, selected, onSelect, theme }: IItem) => {
-	const itemName = item.value || item.text.text.toLowerCase();
+	const itemName = keyExtractor(item);
+
 	return (
 		<Touchable
 			testID={`multi-select-item-${itemName}`}

@@ -24,9 +24,10 @@ import Chips from './Chips';
 import Items from './Items';
 import Input from './Input';
 import styles from './styles';
+import { ISearchLocal } from '../../../definitions';
 
 export interface IItemData {
-	value: string;
+	value: string | ISearchLocal;
 	text: { text: string };
 	imageUrl?: string;
 }

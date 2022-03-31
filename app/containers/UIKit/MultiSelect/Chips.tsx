@@ -23,11 +23,16 @@ interface IChips {
 	theme: string;
 }
 
-const keyExtractor = (item: IItemData) => item.value.toString();
+const keyExtractor = (item: IItemData) => {
+	if (typeof item.value === 'string') {
+		return item.value;
+	}
+	return item.value.name || item.value.fname;
+};
 
 const Chip = ({ item, onSelect, style, theme }: IChip) => (
 	<Touchable
-		key={item.value}
+		key={keyExtractor(item)}
 		onPress={() => onSelect(item)}
 		style={[styles.chip, { backgroundColor: themes[theme].auxiliaryBackground }, style]}
 		background={Touchable.Ripple(themes[theme].bannerBackground)}>
