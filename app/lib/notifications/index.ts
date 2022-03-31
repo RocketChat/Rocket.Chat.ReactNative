@@ -1,10 +1,10 @@
 import EJSON from 'ejson';
 
-import { store } from '../../auxStore';
-import { deepLinkingOpen } from '../../../actions/deepLinking';
-import { isFDroidBuild } from '../../../constants/environment';
+import { store } from '../auxStore';
+import { deepLinkingOpen } from '../../actions/deepLinking';
+import { isFDroidBuild } from '../../constants/environment';
 import PushNotification from './push';
-import { INotification, SubscriptionType } from '../../../definitions';
+import { INotification, SubscriptionType } from '../../definitions';
 
 interface IEjson {
 	rid: string;

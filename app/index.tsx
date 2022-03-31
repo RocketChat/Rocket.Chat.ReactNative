@@ -11,7 +11,7 @@ import EventEmitter from './utils/events';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications, onNotification } from './lib/notifications/push';
+import { initializePushNotifications, onNotification } from './lib/notifications';
 import store from './lib/createStore';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './utils/log';
 import { ThemeContext } from './theme';
