@@ -2,9 +2,9 @@
 // TODO BUMP LIB VERSION
 import NotificationsIOS, { NotificationAction, NotificationCategory, Notification } from 'react-native-notifications';
 
-import { store as reduxStore } from '../../lib/auxStore';
-import I18n from '../../i18n';
-import { INotification } from '../../definitions/INotification';
+import { store as reduxStore } from '../../auxStore';
+import I18n from '../../../i18n';
+import { INotification } from '../../../definitions/INotification';
 
 class PushNotification {
 	onNotification: (notification: Notification) => void;
