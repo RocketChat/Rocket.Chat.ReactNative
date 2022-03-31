@@ -205,5 +205,8 @@ export default {
 	},
 	Canned_Responses_Enable: {
 		type: 'valueAsBoolean'
+	},
+	Accounts_AvatarExternalProviderUrl: {
+		type: 'valueAsString'
 	}
 } as const;

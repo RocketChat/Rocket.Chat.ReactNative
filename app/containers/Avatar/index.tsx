@@ -100,6 +100,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	blockUnauthenticatedAccess:
 		(state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess as boolean) ??
 		state.settings.Accounts_AvatarBlockUnauthenticatedAccess ??
-		true
+		true,
+	externalProviderUrl: state.settings.Accounts_AvatarExternalProviderUrl as string
 });
 export default connect(mapStateToProps)(AvatarContainer);
