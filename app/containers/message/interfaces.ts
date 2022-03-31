@@ -31,7 +31,6 @@ export interface IMessageAvatar {
 	small?: boolean;
 	navToRoomInfo: Function;
 	getCustomEmoji: TGetCustomEmoji;
-	theme: string;
 }
 
 export interface IMessageBlocks {
@@ -98,7 +97,7 @@ export interface IMessageEmoji {
 
 export interface IMessageThread {
 	msg?: string;
-	tcount?: number;
+	tcount?: number | null;
 	theme: string;
 	tlm?: Date;
 	isThreadRoom: boolean;

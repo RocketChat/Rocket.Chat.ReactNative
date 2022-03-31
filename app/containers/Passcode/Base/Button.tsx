@@ -5,16 +5,18 @@ import styles from './styles';
 import { themes } from '../../../constants/colors';
 import Touch from '../../../utils/touch';
 import { CustomIcon } from '../../../lib/Icons';
+import { useTheme } from '../../../theme';
 
 interface IPasscodeButton {
 	text?: string;
 	icon?: string;
-	theme: string;
 	disabled?: boolean;
 	onPress?: Function;
 }
 
-const Button = React.memo(({ text, disabled, theme, onPress, icon }: IPasscodeButton) => {
+const Button = React.memo(({ text, disabled, onPress, icon }: IPasscodeButton) => {
+	const { theme } = useTheme();
+
 	const press = () => onPress && onPress(text);
 
 	return (

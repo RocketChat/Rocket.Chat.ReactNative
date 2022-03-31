@@ -293,8 +293,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			params.roomAnnouncement = announcement;
 		}
 		// Room Type
-		// This logic is strange to me, since in the code t is boolean, but room.t is string
-		if (!!room.t !== t) {
+		if ((room.t === SubscriptionType.GROUP) !== t) {
 			params.roomType = t ? 'p' : 'c';
 		}
 		// Read Only
@@ -465,7 +464,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 
 	renderSystemMessages = () => {
 		const { systemMessages, enableSysMes } = this.state;
-		const { theme } = this.props;
 
 		if (!enableSysMes) {
 			return null;
@@ -482,7 +480,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 				value={systemMessages as string[]}
 				context={BLOCK_CONTEXT.FORM}
 				multiselect
-				theme={theme}
 			/>
 		);
 	};

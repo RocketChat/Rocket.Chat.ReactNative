@@ -11,13 +11,13 @@ interface IUnorderedListProps {
 	value: UnorderedListProps['value'];
 }
 
-const UnorderedList = ({ value }: IUnorderedListProps): JSX.Element => {
+const UnorderedList = ({ value }: IUnorderedListProps) => {
 	const { theme } = useTheme();
 	return (
 		<View>
 			{value.map(item => (
 				<View style={styles.row}>
-					<Text style={[styles.text, { color: themes[theme!].bodyText }]}>- </Text>
+					<Text style={[styles.text, { color: themes[theme].bodyText }]}>- </Text>
 					<Inline value={item.value} />
 				</View>
 			))}

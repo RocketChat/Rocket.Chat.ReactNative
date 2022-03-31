@@ -9,7 +9,7 @@ import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { generateTriggerId } from '../../lib/methods/actions';
-import TextInput from '../../presentation/TextInput';
+import TextInput, { IThemedTextInput } from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
@@ -1037,7 +1037,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			tmid
 		} = this.props;
 
-		const isAndroidTablet =
+		const isAndroidTablet: Partial<IThemedTextInput> =
 			isTablet && isAndroid
 				? {
 						multiline: false,
@@ -1088,7 +1088,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 				<TextInput
 					ref={component => (this.component = component)}
 					style={[styles.textBoxInput, { color: themes[theme].bodyText }]}
-					// @ts-ignore
 					returnKeyType='default'
 					keyboardType='twitter'
 					blurOnSubmit={false}
