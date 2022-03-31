@@ -1,5 +1,6 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { Alert, Clipboard, Share } from 'react-native';
+import { Alert, Share } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
 import moment from 'moment';
 

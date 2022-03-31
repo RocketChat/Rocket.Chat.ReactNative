@@ -32,9 +32,9 @@ export function subscribeUsersPresence(this: IRocketChat) {
 	sdk.subscribe('stream-notify-logged', 'Users:NameChanged');
 }
 
-let ids: string[] = [];
+let usersBatch: string[] = [];
 
-export default async function getUsersPresence() {
+export default async function getUsersPresence(usersParams: string[]) {
 	const serverVersion = reduxStore.getState().server.version as string;
 	const { user: loggedUser } = reduxStore.getState().login;
 
@@ -45,11 +45,11 @@ export default async function getUsersPresence() {
 		// if server is greather than or equal 3.0.0
 		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.0.0')) {
 			// if not have any id
-			if (!ids.length) {
+			if (!usersParams.length) {
 				return;
 			}
 			// Request userPresence on demand
-			params = { ids: ids.join(',') };
+			params = { ids: usersParams.join(',') };
 		}
 
 		try {
@@ -57,13 +57,13 @@ export default async function getUsersPresence() {
 			const result = (await sdk.get('users.presence' as any, params as any)) as any;
 
 			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.1.0')) {
-				sdk.subscribeRaw('stream-user-presence', ['', { added: ids }]);
+				sdk.subscribeRaw('stream-user-presence', ['', { added: usersParams }]);
 			}
 
 			if (result.success) {
 				const { users } = result;
 
-				const activeUsers = ids.reduce((ret: IActiveUsers, id) => {
+				const activeUsers = usersParams.reduce((ret: IActiveUsers, id) => {
 					const user = users.find((u: IUser) => u._id === id) ?? { _id: id, status: 'offline' };
 					const { _id, status, statusText } = user;
 
@@ -77,7 +77,6 @@ export default async function getUsersPresence() {
 				InteractionManager.runAfterInteractions(() => {
 					reduxStore.dispatch(setActiveUsers(activeUsers));
 				});
-				ids = [];
 
 				const db = database.active;
 				const userCollection = db.get('users');
@@ -110,12 +109,13 @@ let usersTimer: ReturnType<typeof setTimeout> | null = null;
 export function getUserPresence(uid: string) {
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {
-			getUsersPresence();
+			getUsersPresence(usersBatch);
+			usersBatch = [];
 			usersTimer = null;
 		}, 2000);
 	}
 
 	if (uid) {
-		ids.push(uid);
+		usersBatch.push(uid);
 	}
 }

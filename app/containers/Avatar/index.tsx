@@ -5,13 +5,11 @@ import { Observable, Subscription } from 'rxjs';
 
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
-import { TSubscriptionModel, TUserModel } from '../../definitions';
+import { IApplicationState, TSubscriptionModel, TUserModel } from '../../definitions';
 import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 
 class AvatarContainer extends React.Component<IAvatar, any> {
-	private mounted: boolean;
-
 	private subscription?: Subscription;
 
 	static defaultProps = {
@@ -21,16 +19,11 @@ class AvatarContainer extends React.Component<IAvatar, any> {
 
 	constructor(props: IAvatar) {
 		super(props);
-		this.mounted = false;
 		this.state = { avatarETag: '' };
 		this.init();
 	}
 
-	componentDidMount() {
-		this.mounted = true;
-	}
-
-	componentDidUpdate(prevProps: any) {
+	componentDidUpdate(prevProps: IAvatar) {
 		const { text, type } = this.props;
 		if (prevProps.text !== text || prevProps.type !== type) {
 			this.init();
@@ -88,12 +81,7 @@ class AvatarContainer extends React.Component<IAvatar, any> {
 			const observable = record.observe() as Observable<TSubscriptionModel | TUserModel>;
 			this.subscription = observable.subscribe(r => {
 				const { avatarETag } = r;
-				if (this.mounted) {
-					this.setState({ avatarETag });
-				} else {
-					// @ts-ignore
-					this.state.avatarETag = avatarETag;
-				}
+				this.setState({ avatarETag });
 			});
 		}
 	};
@@ -105,12 +93,12 @@ class AvatarContainer extends React.Component<IAvatar, any> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	server: state.share.server.server || state.server.server,
 	serverVersion: state.share.server.version || state.server.version,
 	blockUnauthenticatedAccess:
-		state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess ??
+		(state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess as boolean) ??
 		state.settings.Accounts_AvatarBlockUnauthenticatedAccess ??
 		true
 });
