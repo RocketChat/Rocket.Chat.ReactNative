@@ -6,6 +6,7 @@ import { store as reduxStore } from '../../auxStore';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../../constants';
 import defaultSettings from '../../../constants/settings';
 import database from '../../database';
+import subscribeRoomsTmp from '../../methods/subscriptions/rooms';
 
 export function isGroupChat(room): boolean {
 	return ((room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2)) ?? false;
@@ -110,7 +111,8 @@ export async function getAllowAnalyticsEvents() {
 export async function subscribeRooms(this: any) {
 	if (!this.roomsSub) {
 		try {
-			this.roomsSub = await subscribeRooms.call(this);
+			// TODO: We need to change this naming. Maybe move this logic to the SDK?
+			this.roomsSub = await subscribeRoomsTmp.call(this);
 		} catch (e) {
 			log(e);
 		}
