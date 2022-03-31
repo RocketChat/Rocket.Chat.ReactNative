@@ -16,12 +16,11 @@ export interface IAvatar {
 		id?: string;
 		token?: string;
 	};
-	theme?: string;
 	onPress?: () => void;
 	getCustomEmoji?: TGetCustomEmoji;
 	avatarETag?: string;
 	isStatic?: boolean | string;
 	rid?: string;
 	blockUnauthenticatedAccess?: boolean;
-	serverVersion: string;
+	serverVersion: string | null;
 }
