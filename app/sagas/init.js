@@ -16,7 +16,7 @@ import { RootEnum } from '../definitions';
 import appConfig from '../../app.json';
 
 export const initLocalSettings = function* initLocalSettings() {
-	const sortPreferences = yield RocketChat.getSortPreferences();
+	const sortPreferences = RocketChat.getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 };
 
@@ -32,8 +32,8 @@ const restore = function* restore() {
 			const serversCollection = serversDB.get('servers');
 			const servers = yield serversCollection.query().fetch();
 			const isBiometryEnabled = servers.some(server => !!server.biometry);
-			yield UserPreferences.setBoolAsync(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
-			yield UserPreferences.setBoolAsync(BIOMETRY_MIGRATION_KEY, true);
+			UserPreferences.setBool(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
+			UserPreferences.setBool(BIOMETRY_MIGRATION_KEY, true);
 		}
 
 		const { server } = appConfig;
