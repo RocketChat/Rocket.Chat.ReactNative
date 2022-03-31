@@ -77,7 +77,6 @@ const SelectUsers = ({
 		<>
 			<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Invite_users')}</Text>
 			<MultiSelect
-				theme={theme}
 				inputStyle={styles.inputStyle}
 				onSearch={getUsers}
 				onChange={onUserSelect}

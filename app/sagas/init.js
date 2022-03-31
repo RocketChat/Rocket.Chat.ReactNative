@@ -16,7 +16,7 @@ import { RootEnum } from '../definitions';
 import appConfig from '../../app.json';
 
 export const initLocalSettings = function* initLocalSettings() {
-	const sortPreferences = yield RocketChat.getSortPreferences();
+	const sortPreferences = RocketChat.getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 };
 

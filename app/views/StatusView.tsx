@@ -166,7 +166,11 @@ class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
 								dispatch(setUser({ status: item.id }));
 							}
 						} catch (e: any) {
-							showErrorAlert(I18n.t(e.data.errorType));
+							const messageError =
+								e.data && e.data.error.includes('[error-too-many-requests]')
+									? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
+									: e.data.errorType;
+							showErrorAlert(messageError);
 							logEvent(events.SET_STATUS_FAIL);
 							log(e);
 						}
