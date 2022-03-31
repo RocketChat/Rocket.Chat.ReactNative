@@ -14,7 +14,7 @@ import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
 import store from './lib/createStore';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './utils/log';
-import { ThemeContext } from './theme';
+import { ThemeContext, TSupportedThemes } from './theme';
 import { DimensionsContext } from './dimensions';
 import RocketChat from './lib/rocketchat';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
@@ -32,7 +32,7 @@ import { isFDroidBuild } from './constants/environment';
 import { IThemePreference } from './definitions/ITheme';
 import { ICommand } from './definitions/ICommand';
 import { initStore } from './lib/auxStore';
-import { themes } from './constants/colors';
+import { colors, themes } from './constants/colors';
 
 RNScreens.enableScreens();
 initStore(store);
@@ -45,7 +45,7 @@ interface IDimensions {
 }
 
 interface IState {
-	theme: string;
+	theme: TSupportedThemes;
 	themePreferences: IThemePreference;
 	width: number;
 	height: number;
@@ -215,7 +215,8 @@ export default class Root extends React.Component<{}, IState> {
 							value={{
 								theme,
 								themePreferences,
-								setTheme: this.setTheme
+								setTheme: this.setTheme,
+								colors: colors[theme]
 							}}>
 							<DimensionsContext.Provider
 								value={{
