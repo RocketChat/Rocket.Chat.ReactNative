@@ -32,14 +32,7 @@ import Direct from './Direct';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import {
-	SubscriptionType,
-	TSubscriptionModel,
-	ISubscription,
-	IUser,
-	IApplicationState,
-	IOmnichannelSourceConnected
-} from '../../definitions';
+import { SubscriptionType, TSubscriptionModel, ISubscription, IUser, IApplicationState } from '../../definitions';
 import { ILivechatVisitor } from '../../definitions/ILivechatVisitor';
 
 interface IGetRoomTitle {
@@ -49,10 +42,9 @@ interface IGetRoomTitle {
 	username: string;
 	statusText?: string;
 	theme: string;
-	sourceType?: IOmnichannelSourceConnected;
 }
 
-const getRoomTitle = ({ room, type, name, username, statusText, theme, sourceType }: IGetRoomTitle) =>
+const getRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoomTitle) =>
 	type === SubscriptionType.DIRECT ? (
 		<>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]}>
@@ -76,7 +68,7 @@ const getRoomTitle = ({ room, type, name, username, statusText, theme, sourceTyp
 				teamMain={room.teamMain}
 				key='room-info-type'
 				status={room.visitor?.status}
-				sourceType={sourceType}
+				sourceType={room.source}
 			/>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>
 				{RocketChat.getRoomTitle(room)}
@@ -98,7 +90,6 @@ interface IRoomInfoViewProps {
 	editOmnichannelContact?: string[];
 	editLivechatRoomCustomfields?: string[];
 	roles: { [key: string]: string };
-	connected: boolean;
 }
 
 interface IUserParsed extends IUser {
@@ -431,9 +422,8 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	render() {
 		const { room, roomUser } = this.state;
-		const { theme, connected } = this.props;
+		const { theme } = this.props;
 
-		const sourceType = room.source ? { ...room.source, connected } : undefined;
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar />
@@ -447,8 +437,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 								name: roomUser?.name,
 								username: roomUser?.username,
 								statusText: roomUser?.statusText,
-								theme,
-								sourceType
+								theme
 							})}
 						</View>
 						{this.renderButtons()}
@@ -467,8 +456,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	editRoomPermission: state.permissions['edit-room'],
 	editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
 	editLivechatRoomCustomfields: state.permissions['edit-livechat-room-customfields'],
-	roles: state.roles,
-	connected: state.meteor.connected
+	roles: state.roles
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoView));

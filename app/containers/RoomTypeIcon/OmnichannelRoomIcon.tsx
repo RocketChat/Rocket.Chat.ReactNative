@@ -3,7 +3,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 import { useSelector } from 'react-redux';
 
-import { OmnichannelSourceType, IApplicationState, IOmnichannelSourceConnected } from '../../definitions';
+import { OmnichannelSourceType, IApplicationState, IOmnichannelSource } from '../../definitions';
 import { STATUS_COLORS } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 
@@ -21,13 +21,14 @@ interface IOmnichannelRoomIconProps {
 	type: string;
 	style?: StyleProp<ViewStyle>;
 	status?: string;
-	sourceType?: IOmnichannelSourceConnected;
+	sourceType?: IOmnichannelSource;
 }
 
 export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnichannelRoomIconProps) => {
-	if (sourceType?.type === OmnichannelSourceType.APP && sourceType.id && sourceType.sidebarIcon && sourceType.connected) {
-		const baseUrl = useSelector((state: IApplicationState) => state.server?.server);
+	const baseUrl = useSelector((state: IApplicationState) => state.server?.server);
+	const connected = useSelector((state: IApplicationState) => state.meteor?.connected);
 
+	if (sourceType?.type === OmnichannelSourceType.APP && sourceType.id && sourceType.sidebarIcon && connected) {
 		return (
 			<SvgUri
 				height={size}

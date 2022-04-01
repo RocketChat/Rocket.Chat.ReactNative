@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { IApplicationState, TUserStatus, IOmnichannelSourceConnected } from '../../definitions';
+import { IApplicationState, TUserStatus, IOmnichannelSource } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import RoomHeader from './RoomHeader';
@@ -27,7 +27,7 @@ interface IRoomHeaderContainerProps {
 	parentTitle: string;
 	isGroupChat: boolean;
 	testID: string;
-	sourceType?: IOmnichannelSourceConnected;
+	sourceType?: IOmnichannelSource;
 }
 
 class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
