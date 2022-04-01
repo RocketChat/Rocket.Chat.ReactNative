@@ -275,7 +275,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			),
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Canned_Responses'),
-			// TODO: Review after @types/react-native 0.64.2
+			// TODO: Review because @types/react-native was upgraded
 			// @ts-ignore
 			headerTitleContainerStyle: {
 				left: null,
