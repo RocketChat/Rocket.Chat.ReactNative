@@ -376,6 +376,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
 						theme={theme}
 						testID='new-server-view-button'
+						accessibilityLabel='new-server-view-button'
 					/>
 					<OrSeparator theme={theme} />
 					<Text

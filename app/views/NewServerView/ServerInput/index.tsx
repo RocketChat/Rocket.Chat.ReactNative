@@ -64,6 +64,7 @@ const ServerInput = ({
 				theme={theme}
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
+				accessibilityLabel='enter-workspace-url'
 			/>
 			{focused && serversHistory?.length ? (
 				<View
