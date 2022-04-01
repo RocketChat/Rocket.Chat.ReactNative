@@ -55,7 +55,6 @@ interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomAc
 	addTeamChannelPermission?: string[];
 	convertTeamPermission?: string[];
 	viewCannedResponsesPermission?: string[];
-	connected: boolean;
 }
 
 interface IRoomActionsViewState {
@@ -727,11 +726,10 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
 		const { rid, name, t, topic, source } = room;
-		const { theme, fontScale, connected } = this.props;
+		const { theme, fontScale } = this.props;
 
 		const avatar = RocketChat.getRoomAvatar(room);
 		const isGroupChat = RocketChat.isGroupChat(room);
-		const sourceType = source ? { ...source, connected } : undefined;
 
 		return (
 			<List.Section>
@@ -773,7 +771,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 										type={room.prid ? 'discussion' : room.t}
 										teamMain={room.teamMain}
 										status={room.visitor?.status}
-										sourceType={sourceType}
+										sourceType={source}
 									/>
 									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
 										{RocketChat.getRoomTitle(room)}
@@ -1297,8 +1295,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createTeamPermission: state.permissions['create-team'],
 	addTeamChannelPermission: state.permissions['add-team-channel'],
 	convertTeamPermission: state.permissions['convert-team'],
-	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
-	connected: state.meteor.connected
+	viewCannedResponsesPermission: state.permissions['view-canned-responses']
 });
 
 export default connect(mapStateToProps)(withTheme(withDimensions(RoomActionsView)));
