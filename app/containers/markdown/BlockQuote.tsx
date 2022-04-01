@@ -5,7 +5,7 @@ import { themes } from '../../constants/colors';
 import styles from './styles';
 
 interface IBlockQuote {
-	children: JSX.Element;
+	children: React.ReactElement | null;
 	theme: string;
 }
 

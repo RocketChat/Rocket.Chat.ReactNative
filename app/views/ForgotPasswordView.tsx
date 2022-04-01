@@ -92,7 +92,7 @@ class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForg
 		const { theme } = this.props;
 
 		return (
-			<FormContainer theme={theme} testID='forgot-password-view'>
+			<FormContainer testID='forgot-password-view'>
 				<FormContainerInner>
 					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>
 						{I18n.t('Forgot_password')}

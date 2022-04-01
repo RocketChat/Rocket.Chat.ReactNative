@@ -72,8 +72,7 @@ const JoinCode = React.memo(
 		useImperativeHandle(ref, () => ({ show }));
 
 		return (
-			// @ts-ignore TODO: `transparent` seems to exist, but types are incorrect on the lib
-			<Modal transparent={true} avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
+			<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
 				<View style={styles.container} testID='join-code'>
 					<View
 						style={[

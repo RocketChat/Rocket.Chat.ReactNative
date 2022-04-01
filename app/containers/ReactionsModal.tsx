@@ -76,7 +76,7 @@ interface IItem extends ISharedFields {
 
 interface IModalContent extends ISharedFields {
 	message?: TMessageModel;
-	onClose(): void;
+	onClose: () => void;
 	theme: string;
 }
 

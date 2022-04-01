@@ -164,7 +164,7 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<StatusBar theme={theme} />
+				<StatusBar />
 				<List.Container>
 					<View style={styles.container}>
 						{this.renderChangePassword()}

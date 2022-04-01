@@ -272,8 +272,14 @@ export type OutsideParamList = {
 	};
 	RegisterView: {
 		title: string;
+		username?: string;
 	};
 	LegalView: undefined;
+	AuthenticationWebView: {
+		authType: string;
+		url: string;
+		ssoToken?: string;
+	};
 };
 
 export type OutsideModalParamList = {

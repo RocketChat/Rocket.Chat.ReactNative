@@ -8,40 +8,37 @@ import * as List from '../../List';
 import { textParser } from '../utils';
 import { themes } from '../../../constants/colors';
 import styles from './styles';
+import { IItemData } from '.';
 
 interface IItem {
-	item: {
-		value: { name: string };
-		text: { text: string };
-		imageUrl: string;
-	};
-	selected: any;
+	item: IItemData;
+	selected?: string;
 	onSelect: Function;
 	theme: string;
 }
 
 interface IItems {
-	items: [];
-	selected: [];
+	items: IItemData[];
+	selected: string[];
 	onSelect: Function;
 	theme: string;
 }
 
-const keyExtractor = (item: any) => item.value.toString();
+const keyExtractor = (item: IItemData) => item.value.toString();
 
 // RectButton doesn't work on modal (Android)
 const Item = ({ item, selected, onSelect, theme }: IItem) => {
-	const itemName = item.value.name || item.text.text.toLowerCase();
+	const itemName = item.value || item.text.text.toLowerCase();
 	return (
 		<Touchable
 			testID={`multi-select-item-${itemName}`}
-			key={item}
+			key={itemName}
 			onPress={() => onSelect(item)}
 			style={[styles.item, { backgroundColor: themes[theme].backgroundColor }]}>
 			<>
 				{item.imageUrl ? <FastImage style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
 				<Text style={{ color: themes[theme].titleText }}>{textParser([item.text])}</Text>
-				{selected ? <Check theme={theme} /> : null}
+				{selected ? <Check /> : null}
 			</>
 		</Touchable>
 	);

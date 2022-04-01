@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { themes } from '../../constants/colors';
 import { CustomIcon } from '../../lib/Icons';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
@@ -10,26 +10,30 @@ import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
-import { IEmoji } from '../../definitions/IEmoji';
 import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
+import { TAnyMessageModel } from '../../definitions';
+import { IEmoji } from '../../definitions/IEmoji';
 
-interface IHeader {
-	handleReaction: Function;
+type TItem = TFrequentlyUsedEmojiModel | string;
+
+export interface IHeader {
+	handleReaction: (emoji: TItem, message: TAnyMessageModel) => void;
 	server: string;
-	message: object;
+	message: TAnyMessageModel;
 	isMasterDetail: boolean;
-	theme?: string;
 }
 
+type TOnReaction = ({ emoji }: { emoji: TItem }) => void;
+
 interface THeaderItem {
-	item: IEmoji;
-	onReaction: Function;
+	item: TItem;
+	onReaction: TOnReaction;
 	server: string;
 	theme: string;
 }
 
 interface THeaderFooter {
-	onReaction: any;
+	onReaction: TOnReaction;
 	theme: string;
 }
 
@@ -62,25 +66,32 @@ const styles = StyleSheet.create({
 	}
 });
 
-const keyExtractor = (item: any) => item?.id || item;
+const keyExtractor = (item: TItem) => {
+	const emojiModel = item as TFrequentlyUsedEmojiModel;
+	return (emojiModel.id ? emojiModel.content : item) as string;
+};
 
 const DEFAULT_EMOJIS = ['clap', '+1', 'heart_eyes', 'grinning', 'thinking_face', 'smiley'];
 
-const HeaderItem = React.memo(({ item, onReaction, server, theme }: THeaderItem) => (
-	<Button
-		testID={`message-actions-emoji-${item.content || item}`}
-		onPress={() => onReaction({ emoji: `:${item.content || item}:` })}
-		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
-		theme={theme}>
-		{item?.isCustom ? (
-			<CustomEmoji style={styles.customEmoji} emoji={item} baseUrl={server} />
-		) : (
-			<Text style={styles.headerIcon}>{shortnameToUnicode(`:${item.content || item}:`)}</Text>
-		)}
-	</Button>
-));
+const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
+	const emojiModel = item as TFrequentlyUsedEmojiModel;
+	const emoji = (emojiModel.id ? emojiModel.content : item) as string;
+	return (
+		<Button
+			testID={`message-actions-emoji-${emoji}`}
+			onPress={() => onReaction({ emoji: `:${emoji}:` })}
+			style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
+			theme={theme}>
+			{emojiModel?.isCustom ? (
+				<CustomEmoji style={styles.customEmoji} emoji={emojiModel as IEmoji} baseUrl={server} />
+			) : (
+				<Text style={styles.headerIcon}>{shortnameToUnicode(`:${emoji}:`)}</Text>
+			)}
+		</Button>
+	);
+};
 
-const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
+const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	<Button
 		testID='add-reaction'
 		onPress={onReaction}
@@ -88,17 +99,19 @@ const HeaderFooter = React.memo(({ onReaction, theme }: THeaderFooter) => (
 		theme={theme}>
 		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
 	</Button>
-));
+);
 
-const Header = React.memo(({ handleReaction, server, message, isMasterDetail, theme }: IHeader) => {
-	const [items, setItems] = useState<(TFrequentlyUsedEmojiModel | string)[]>([]);
-	const { width, height }: any = useDimensions();
+const Header = React.memo(({ handleReaction, server, message, isMasterDetail }: IHeader) => {
+	const [items, setItems] = useState<TItem[]>([]);
+	const { width, height } = useDimensions();
+	const { theme } = useTheme();
 
+	// TODO: create custom hook to re-render based on screen size
 	const setEmojis = async () => {
 		try {
 			const db = database.active;
 			const freqEmojiCollection = db.get('frequently_used_emojis');
-			let freqEmojis: (TFrequentlyUsedEmojiModel | string)[] = await freqEmojiCollection.query().fetch();
+			let freqEmojis: TItem[] = await freqEmojiCollection.query().fetch();
 
 			const isLandscape = width > height;
 			const size = (isLandscape || isMasterDetail ? width / 2 : width) - CONTAINER_MARGIN * 2;
@@ -115,22 +128,21 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 		setEmojis();
 	}, []);
 
-	const onReaction = ({ emoji }: { emoji: IEmoji }) => handleReaction(emoji, message);
+	const onReaction: TOnReaction = ({ emoji }) => handleReaction(emoji, message);
 
-	const renderItem = useCallback(
-		({ item }) => <HeaderItem item={item} onReaction={onReaction} server={server} theme={theme!} />,
-		[]
+	const renderItem = ({ item }: { item: TItem }) => (
+		<HeaderItem item={item} onReaction={onReaction} server={server} theme={theme} />
 	);
 
-	const renderFooter = useCallback(() => <HeaderFooter onReaction={onReaction} theme={theme!} />, []);
+	const renderFooter = () => <HeaderFooter onReaction={onReaction} theme={theme} />;
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme!].focusedBackground }]}>
+		<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
 			<FlatList
 				data={items}
 				renderItem={renderItem}
 				ListFooterComponent={renderFooter}
-				style={{ backgroundColor: themes[theme!].focusedBackground }}
+				style={{ backgroundColor: themes[theme].focusedBackground }}
 				keyExtractor={keyExtractor}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}
@@ -140,4 +152,4 @@ const Header = React.memo(({ handleReaction, server, message, isMasterDetail, th
 	);
 });
 
-export default withTheme(Header);
+export default Header;

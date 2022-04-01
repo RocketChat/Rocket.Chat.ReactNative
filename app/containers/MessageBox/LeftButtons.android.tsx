@@ -3,7 +3,6 @@ import React from 'react';
 import { CancelEditingButton, ToggleEmojiButton } from './buttons';
 
 interface IMessageBoxLeftButtons {
-	theme: string;
 	showEmojiKeyboard: boolean;
 	openEmoji(): void;
 	closeEmoji(): void;
@@ -11,13 +10,11 @@ interface IMessageBoxLeftButtons {
 	editCancel(): void;
 }
 
-const LeftButtons = React.memo(
-	({ theme, showEmojiKeyboard, editing, editCancel, openEmoji, closeEmoji }: IMessageBoxLeftButtons) => {
-		if (editing) {
-			return <CancelEditingButton onPress={editCancel} theme={theme} />;
-		}
-		return <ToggleEmojiButton show={showEmojiKeyboard} open={openEmoji} close={closeEmoji} theme={theme} />;
+const LeftButtons = React.memo(({ showEmojiKeyboard, editing, editCancel, openEmoji, closeEmoji }: IMessageBoxLeftButtons) => {
+	if (editing) {
+		return <CancelEditingButton onPress={editCancel} />;
 	}
-);
+	return <ToggleEmojiButton show={showEmojiKeyboard} open={openEmoji} close={closeEmoji} />;
+});
 
 export default LeftButtons;

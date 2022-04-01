@@ -10,10 +10,10 @@ interface IPlainProps {
 	value: PlainProps['value'];
 }
 
-const Plain = ({ value }: IPlainProps): JSX.Element => {
+const Plain = ({ value }: IPlainProps) => {
 	const { theme } = useTheme();
 	return (
-		<Text accessibilityLabel={value} style={[styles.plainText, { color: themes[theme!].bodyText }]}>
+		<Text accessibilityLabel={value} style={[styles.plainText, { color: themes[theme].bodyText }]}>
 			{value}
 		</Text>
 	);

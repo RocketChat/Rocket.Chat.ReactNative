@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 
 import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	separator: {
@@ -12,13 +12,14 @@ const styles = StyleSheet.create({
 
 interface IListSeparator {
 	style?: ViewStyle;
-	theme?: string;
 }
 
-const ListSeparator = React.memo(({ style, theme }: IListSeparator) => (
-	<View style={[styles.separator, style, { backgroundColor: themes[theme!].separatorColor }]} />
-));
+const ListSeparator = React.memo(({ style }: IListSeparator) => {
+	const { theme } = useTheme();
+
+	return <View style={[styles.separator, style, { backgroundColor: themes[theme].separatorColor }]} />;
+});
 
 ListSeparator.displayName = 'List.Separator';
 
-export default withTheme(ListSeparator);
+export default ListSeparator;

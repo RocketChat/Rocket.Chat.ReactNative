@@ -84,7 +84,9 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 		const attachment = route.params?.attachment;
 		let { title } = attachment;
 		try {
-			title = decodeURI(title);
+			if (title) {
+				title = decodeURI(title);
+			}
 		} catch {
 			// Do nothing
 		}
@@ -192,7 +194,7 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 			<View style={[styles.container, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{content}
-				{loading ? <RCActivityIndicator absolute size='large' theme={theme} /> : null}
+				{loading ? <RCActivityIndicator absolute size='large' /> : null}
 			</View>
 		);
 	}
