@@ -57,8 +57,8 @@ export const MessageImage = React.memo(({ imgUri, theme }: { imgUri: string; the
 
 const ImageContainer = React.memo(
 	({ file, imageUrl, showAttachment, getCustomEmoji, style, isReply }: IMessageImage) => {
-		const { baseUrl, user } = useContext(MessageContext);
 		const { theme } = useTheme();
+		const { baseUrl, user } = useContext(MessageContext);
 		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
 
 		if (!img) {

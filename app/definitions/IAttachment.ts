@@ -2,7 +2,7 @@ import { IUser } from './IUser';
 
 export interface IAttachment {
 	ts?: string | Date;
-	title: string;
+	title?: string;
 	type?: string;
 	description?: string;
 	title_link?: string;

@@ -172,60 +172,64 @@ class RegisterView extends React.Component<IProps, any> {
 			return null;
 		}
 		try {
-			return Object.keys(this.parsedCustomFields).map((key, index, array) => {
-				if (this.parsedCustomFields[key].type === 'select') {
-					const options = this.parsedCustomFields[key].options.map((option: string) => ({ label: option, value: option }));
-					return (
-						<RNPickerSelect
-							key={key}
-							items={options}
-							onValueChange={value => {
-								const newValue: { [key: string]: string | number } = {};
-								newValue[key] = value;
-								this.setState({ customFields: { ...customFields, ...newValue } });
-							}}
-							value={customFields[key]}>
+			return (
+				<>
+					{Object.keys(this.parsedCustomFields).map((key, index, array) => {
+						if (this.parsedCustomFields[key].type === 'select') {
+							const options = this.parsedCustomFields[key].options.map((option: string) => ({ label: option, value: option }));
+							return (
+								<RNPickerSelect
+									key={key}
+									items={options}
+									onValueChange={value => {
+										const newValue: { [key: string]: string | number } = {};
+										newValue[key] = value;
+										this.setState({ customFields: { ...customFields, ...newValue } });
+									}}
+									value={customFields[key]}>
+									<TextInput
+										inputRef={(e: any) => {
+											// @ts-ignore
+											this[key] = e;
+										}}
+										placeholder={key}
+										value={customFields[key]}
+										testID='register-view-custom-picker'
+										theme={theme}
+									/>
+								</RNPickerSelect>
+							);
+						}
+
+						return (
 							<TextInput
 								inputRef={e => {
 									// @ts-ignore
 									this[key] = e;
 								}}
+								key={key}
+								label={key}
 								placeholder={key}
 								value={customFields[key]}
-								testID='register-view-custom-picker'
+								onChangeText={(value: string) => {
+									const newValue: { [key: string]: string | number } = {};
+									newValue[key] = value;
+									this.setState({ customFields: { ...customFields, ...newValue } });
+								}}
+								onSubmitEditing={() => {
+									if (array.length - 1 > index) {
+										// @ts-ignore
+										return this[array[index + 1]].focus();
+									}
+									this.avatarUrl.focus();
+								}}
+								containerStyle={styles.inputContainer}
 								theme={theme}
 							/>
-						</RNPickerSelect>
-					);
-				}
-
-				return (
-					<TextInput
-						inputRef={(e: any) => {
-							// @ts-ignore
-							this[key] = e;
-						}}
-						key={key}
-						label={key}
-						placeholder={key}
-						value={customFields[key]}
-						onChangeText={(value: string) => {
-							const newValue: { [key: string]: string | number } = {};
-							newValue[key] = value;
-							this.setState({ customFields: { ...customFields, ...newValue } });
-						}}
-						onSubmitEditing={() => {
-							if (array.length - 1 > index) {
-								// @ts-ignore
-								return this[array[index + 1]].focus();
-							}
-							this.avatarUrl.focus();
-						}}
-						containerStyle={styles.inputContainer}
-						theme={theme}
-					/>
-				);
-			});
+						);
+					})}
+				</>
+			);
 		} catch (error) {
 			return null;
 		}
@@ -235,7 +239,7 @@ class RegisterView extends React.Component<IProps, any> {
 		const { saving } = this.state;
 		const { theme, showLoginButton, navigation } = this.props;
 		return (
-			<FormContainer theme={theme} testID='register-view'>
+			<FormContainer testID='register-view'>
 				<FormContainerInner>
 					<LoginServices navigation={navigation} theme={theme} separator />
 					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>

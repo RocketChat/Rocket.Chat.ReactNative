@@ -6,7 +6,7 @@ import { IRoom } from '../definitions/IRoom';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
 import { IAttachment } from '../definitions/IAttachment';
-import { IMessage } from '../definitions/IMessage';
+import { IMessage, TMessageModel } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ModalStackParamList } from './MasterDetailStack/types';
@@ -24,7 +24,7 @@ export type ChatsStackParamList = {
 				rid: string;
 				t: SubscriptionType;
 				tmid?: string;
-				message?: object; // TODO: TMessageModel?
+				message?: TMessageModel;
 				name?: string;
 				fname?: string;
 				prid?: string;

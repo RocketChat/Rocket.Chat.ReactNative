@@ -6,7 +6,7 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import ImageContainer from '../message/Image';
 import Navigation from '../../lib/Navigation';
 import { IThumb, IImage, IElement } from './interfaces';
-import { TThemeMode } from '../../definitions/ITheme';
+import { IAttachment } from '../../definitions';
 
 const styles = StyleSheet.create({
 	image: {
@@ -28,22 +28,21 @@ export const Thumb = ({ element, size = 88 }: IThumb) => (
 );
 
 export const Media = ({ element }: IImage) => {
-	const showAttachment = (attachment: any) => Navigation.navigate('AttachmentView', { attachment });
+	const showAttachment = (attachment: IAttachment) => Navigation.navigate('AttachmentView', { attachment });
 	const imageUrl = element?.imageUrl ?? '';
-	// @ts-ignore
-	// TODO: delete ts-ignore after refactor Markdown and ImageContainer
+
 	return <ImageContainer file={{ image_url: imageUrl }} imageUrl={imageUrl} showAttachment={showAttachment} />;
 };
 
-const genericImage = (theme: TThemeMode, element: IElement, context?: number) => {
+const genericImage = (element: IElement, context?: number) => {
 	switch (context) {
 		case BLOCK_CONTEXT.SECTION:
 			return <Thumb element={element} />;
 		case BLOCK_CONTEXT.CONTEXT:
 			return <ThumbContext element={element} />;
 		default:
-			return <Media element={element} theme={theme} />;
+			return <Media element={element} />;
 	}
 };
 
-export const Image = ({ element, context, theme }: IImage) => genericImage(theme, element, context);
+export const Image = ({ element, context }: IImage) => genericImage(element, context);

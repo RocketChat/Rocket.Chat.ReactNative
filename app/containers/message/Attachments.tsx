@@ -13,6 +13,15 @@ import MessageContext from './Context';
 import { useTheme } from '../../theme';
 import { IAttachment } from '../../definitions';
 import CollapsibleQuote from './Components/CollapsibleQuote';
+import openLink from '../../utils/openLink';
+import { themes } from '../../constants/colors';
+
+export type TElement = {
+	type: string;
+	msg?: string;
+	url?: string;
+	text: string;
+};
 
 const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
 	if (!attachment.actions) {
@@ -21,15 +30,26 @@ const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
 	const { onAnswerButtonPress } = useContext(MessageContext);
 	const { theme } = useTheme();
 
-	const attachedButtons = attachment.actions.map(element => {
+	const attachedButtons = attachment.actions.map((element: TElement) => {
+		const onPress = () => {
+			if (element.msg) {
+				onAnswerButtonPress(element.msg);
+			}
+
+			if (element.url) {
+				openLink(element.url);
+			}
+		};
+
 		if (element.type === 'button') {
-			return <Button theme={theme} onPress={() => onAnswerButtonPress(element.msg)} title={element.text} />;
+			return <Button theme={theme} onPress={onPress} title={element.text} />;
 		}
+
 		return null;
 	});
 	return (
 		<>
-			<Text style={styles.text}>{attachment.text}</Text>
+			<Text style={[styles.text, { color: themes[theme].bodyText }]}>{attachment.text}</Text>
 			{attachedButtons}
 		</>
 	);
@@ -80,7 +100,7 @@ const Attachments = React.memo(
 			if (file && file.actions && file.actions.length > 0) {
 				return <AttachedActions attachment={file} />;
 			}
-			if (file.title) {
+			if (typeof file.collapsed === 'boolean') {
 				return (
 					<CollapsibleQuote key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />
 				);
