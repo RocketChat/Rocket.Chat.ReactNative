@@ -183,3 +183,18 @@ stories.add('Expanded Room Item without Avatar', () => (
 		/>
 	</>
 ));
+
+stories.add('Omnichannel Icon', () => (
+	<>
+		<RoomItem type='l' sourceType={{ type: 'widget' }} status='online' />
+		<RoomItem type='l' sourceType={{ type: 'widget' }} status='away' />
+		<RoomItem type='l' sourceType={{ type: 'widget' }} status='loading' />
+		<RoomItem type='l' sourceType={{ type: 'widget' }} />
+		<RoomItem type='l' sourceType={{ type: 'email' }} status='online' />
+		<RoomItem type='l' sourceType={{ type: 'email' }} />
+		<RoomItem type='l' sourceType={{ type: 'sms' }} status='online' />
+		<RoomItem type='l' sourceType={{ type: 'sms' }} />
+		<RoomItem type='l' sourceType={{ type: 'app' }} status='online' />
+		<RoomItem type='l' sourceType={{ type: 'app' }} />
+	</>
+));
