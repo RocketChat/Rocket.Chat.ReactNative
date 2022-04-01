@@ -9,12 +9,12 @@ icoMoonConfig.icons.forEach((icon) => {
 });
 iconsName = `${iconsName.slice(0, -2) }\n};\n`;
 
-fs.writeFile('app/containers/CustomIcon/glyphIcoMoon.js', iconsName, 'utf8', function (err) {
+fs.writeFile('app/containers/CustomIcon/mappedIcons.js', iconsName, 'utf8', function (err) {
 	if (err) {
 		console.log('An error occurred while writing Object to File.');
 		console.log(err);
 		return;
 	}
 
-	console.log('File has been saved.');
+	console.log('🚀   Icons name generated.');
 });

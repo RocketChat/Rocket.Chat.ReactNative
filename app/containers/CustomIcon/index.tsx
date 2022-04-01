@@ -2,7 +2,7 @@ import React from 'react';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import { TextProps } from 'react-native';
 
-import { mappedIcons } from './glyphIcoMoon';
+import { mappedIcons } from './mappedIcons';
 
 const icoMoonConfig = require('./selection.json');
 
