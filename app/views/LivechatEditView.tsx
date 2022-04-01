@@ -275,7 +275,6 @@ const LivechatEditView = ({
 						value={tagParamSelected}
 						context={BLOCK_CONTEXT.FORM}
 						multiselect
-						theme={theme}
 						disabled={!permissions[1]}
 						inputStyle={styles.multiSelect}
 					/>

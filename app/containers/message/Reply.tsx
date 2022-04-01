@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
 		marginBottom: 4
 	},
 	image: {
-		// @ts-ignore
+		// @ts-ignore TODO - check with the team, change this to undefined
 		width: null,
 		height: 200,
 		flex: 1,
@@ -93,24 +93,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IMessageTitle {
-	attachment: IAttachment;
-	timeFormat?: string;
-	theme: string;
-}
-
-interface IMessageDescription {
-	attachment: IAttachment;
-	getCustomEmoji: TGetCustomEmoji;
-	theme: string;
-}
-
-interface IMessageFields {
-	attachment: IAttachment;
-	theme: string;
-	getCustomEmoji: TGetCustomEmoji;
-}
-
 interface IMessageReply {
 	attachment: IAttachment;
 	timeFormat?: string;
@@ -118,7 +100,7 @@ interface IMessageReply {
 	getCustomEmoji: TGetCustomEmoji;
 }
 
-const Title = React.memo(({ attachment, timeFormat, theme }: IMessageTitle) => {
+const Title = React.memo(({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: string }) => {
 	const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
 	return (
 		<View style={styles.authorContainer}>
@@ -132,7 +114,7 @@ const Title = React.memo(({ attachment, timeFormat, theme }: IMessageTitle) => {
 });
 
 const Description = React.memo(
-	({ attachment, getCustomEmoji, theme }: IMessageDescription) => {
+	({ attachment, getCustomEmoji, theme }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji; theme: string }) => {
 		const text = attachment.text || attachment.title;
 		if (!text) {
 			return null;
@@ -164,7 +146,7 @@ const Description = React.memo(
 );
 
 const UrlImage = React.memo(
-	({ image }: any) => {
+	({ image }: { image?: string }) => {
 		if (!image) {
 			return null;
 		}
@@ -176,7 +158,7 @@ const UrlImage = React.memo(
 );
 
 const Fields = React.memo(
-	({ attachment, theme, getCustomEmoji }: IMessageFields) => {
+	({ attachment, theme, getCustomEmoji }: { attachment: IAttachment; theme: string; getCustomEmoji: TGetCustomEmoji }) => {
 		if (!attachment.fields) {
 			return null;
 		}
@@ -206,12 +188,12 @@ const Fields = React.memo(
 const Reply = React.memo(
 	({ attachment, timeFormat, index, getCustomEmoji }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
+		const { theme } = useTheme();
 
 		if (!attachment) {
 			return null;
 		}
 
-		const { theme } = useTheme();
 		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
 
 		const onPress = async () => {

@@ -10,10 +10,12 @@ import { DISCUSSION } from './constants';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { formatDateThreads } from '../../utils/room';
-import { IMessageDiscussion } from './interfaces';
+import { IMessage } from '../../definitions';
+import { useTheme } from '../../theme';
 
 const Discussion = React.memo(
-	({ msg, dcount, dlm, theme }: IMessageDiscussion) => {
+	({ msg, dcount, dlm }: Pick<IMessage, 'msg' | 'dcount' | 'dlm'>) => {
+		const { theme } = useTheme();
 		let time;
 		if (dlm) {
 			time = formatDateThreads(dlm);
@@ -48,9 +50,6 @@ const Discussion = React.memo(
 			return false;
 		}
 		if (prevProps.dlm !== nextProps.dlm) {
-			return false;
-		}
-		if (prevProps.theme !== nextProps.theme) {
 			return false;
 		}
 		return true;

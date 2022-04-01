@@ -6,14 +6,12 @@ import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
-
-interface IMessageError {
-	hasError: boolean;
-	theme: string;
-}
+import { useTheme } from '../../theme';
 
 const MessageError = React.memo(
-	({ hasError, theme }: IMessageError) => {
+	({ hasError }: { hasError: boolean }) => {
+		const { theme } = useTheme();
+
 		if (!hasError) {
 			return null;
 		}
@@ -24,7 +22,7 @@ const MessageError = React.memo(
 			</Touchable>
 		);
 	},
-	(prevProps, nextProps) => prevProps.hasError === nextProps.hasError && prevProps.theme === nextProps.theme
+	(prevProps, nextProps) => prevProps.hasError === nextProps.hasError
 );
 
 MessageError.displayName = 'MessageError';

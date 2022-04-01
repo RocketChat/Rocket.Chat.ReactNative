@@ -47,23 +47,17 @@ const RECORDING_MODE = {
 	interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
 };
 
-const formatTime = function (seconds: any) {
-	let minutes: any = Math.floor(seconds / 60);
-	seconds %= 60;
-	if (minutes < 10) {
-		minutes = `0${minutes}`;
-	}
-	if (seconds < 10) {
-		seconds = `0${seconds}`;
-	}
-	return `${minutes}:${seconds}`;
+const formatTime = function (time: number) {
+	const minutes = Math.floor(time / 60);
+	const seconds = time % 60;
+	const min = minutes < 10 ? `0${minutes}` : minutes;
+	const sec = seconds < 10 ? `0${seconds}` : seconds;
+	return `${min}:${sec}`;
 };
 
 export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAudioProps, any> {
 	private isRecorderBusy: boolean;
-
-	private recording: any;
-
+	private recording!: Audio.Recording;
 	private LastDuration: number;
 
 	constructor(props: IMessageBoxRecordAudioProps) {
@@ -112,7 +106,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 		return false;
 	};
 
-	onRecordingStatusUpdate = (status: any) => {
+	onRecordingStatusUpdate = (status: Audio.RecordingStatus) => {
 		this.setState({
 			isRecording: status.isRecording,
 			recordingDurationMillis: status.durationMillis
@@ -157,7 +151,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 				await this.recording.stopAndUnloadAsync();
 
 				const fileURI = this.recording.getURI();
-				const fileData = await getInfoAsync(fileURI);
+				const fileData = await getInfoAsync(fileURI as string);
 				const fileInfo = {
 					name: `${Date.now()}.m4a`,
 					mime: 'audio/aac',
