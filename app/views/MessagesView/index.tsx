@@ -22,6 +22,7 @@ import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 import { IEmoji } from '../../definitions/IEmoji';
+import { IRoomInfoParam } from '../SearchMessagesView';
 import { TMessageModel } from '../../definitions';
 
 interface IMessagesViewProps {
@@ -41,14 +42,6 @@ interface IMessagesViewProps {
 	showActionSheet: Function;
 	useRealName: boolean;
 	isMasterDetail: boolean;
-}
-
-interface IRoomInfoParam {
-	room: ISubscription;
-	member: any;
-	rid: string;
-	t: SubscriptionType;
-	joined: boolean;
 }
 
 interface IMessagesViewState {
@@ -188,7 +181,8 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 			showAttachment: this.showAttachment,
 			getCustomEmoji: this.getCustomEmoji,
 			navToRoomInfo: this.navToRoomInfo,
-			onPress: () => this.jumpToMessage({ item })
+			onPress: () => this.jumpToMessage({ item }),
+			rid: this.rid
 		});
 
 		return {
@@ -219,7 +213,6 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 								}
 							]
 						}}
-						theme={theme}
 					/>
 				)
 			},

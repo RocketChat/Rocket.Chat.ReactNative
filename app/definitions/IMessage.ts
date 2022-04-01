@@ -6,7 +6,7 @@ import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
 import { TThreadMessageModel } from './IThreadMessage';
 import { TThreadModel } from './IThread';
-import { IUrlFromServer } from './IUrl';
+import { IUrl, IUrlFromServer } from './IUrl';
 
 export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj' | MessageTypeLoad;
 
@@ -75,7 +75,7 @@ export interface IMessageFromServer {
 	ts: string | Date; // wm date issue
 	u: IUserMessage;
 	_updatedAt: string | Date;
-	urls?: IUrlFromServer[];
+	urls?: IUrl[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
 	md?: MarkdownAST;
@@ -111,7 +111,7 @@ export interface ILoadMoreMessage {
 
 export interface IMessage extends IMessageFromServer {
 	id: string;
-	t?: MessageType;
+	t: MessageType;
 	alias?: string;
 	parseUrls?: boolean;
 	avatar?: string;

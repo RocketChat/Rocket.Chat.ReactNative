@@ -1,6 +1,6 @@
 export interface IUserMention {
 	_id: string;
-	username: string;
+	username?: string;
 	name?: string;
 	type?: string;
 }
