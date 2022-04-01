@@ -1,16 +1,23 @@
 import React, { useContext } from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
-import PropTypes from 'prop-types';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 
-import { MENTIONS_TRACKING_TYPE_CANNED } from '../constants';
-import styles from '../styles';
-import sharedStyles from '../../../views/Styles';
-import I18n from '../../../i18n';
 import { themes } from '../../../constants/colors';
+import I18n from '../../../i18n';
 import { CustomIcon } from '../../../lib/Icons';
+import { useTheme } from '../../../theme';
+import sharedStyles from '../../../views/Styles';
+import { MENTIONS_TRACKING_TYPE_CANNED } from '../constants';
 import MessageboxContext from '../Context';
+import styles from '../styles';
 
-const MentionHeaderList = ({ trackingType, hasMentions, theme, loading }) => {
+interface IMentionHeaderList {
+	trackingType: string;
+	hasMentions: boolean;
+	loading: boolean;
+}
+
+const MentionHeaderList = ({ trackingType, hasMentions, loading }: IMentionHeaderList) => {
+	const { theme } = useTheme();
 	const context = useContext(MessageboxContext);
 	const { onPressNoMatchCanned } = context;
 
@@ -37,13 +44,6 @@ const MentionHeaderList = ({ trackingType, hasMentions, theme, loading }) => {
 	}
 
 	return null;
-};
-
-MentionHeaderList.propTypes = {
-	trackingType: PropTypes.string,
-	hasMentions: PropTypes.bool,
-	theme: PropTypes.string,
-	loading: PropTypes.bool
 };
 
 export default MentionHeaderList;
