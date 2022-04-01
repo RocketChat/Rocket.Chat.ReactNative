@@ -194,7 +194,7 @@ stories.add('Omnichannel Icon', () => (
 		<RoomItem type='l' sourceType={{ type: 'email' }} />
 		<RoomItem type='l' sourceType={{ type: 'sms' }} status='online' />
 		<RoomItem type='l' sourceType={{ type: 'sms' }} />
-		<RoomItem type='l' sourceType={{ type: 'app' }} status='online' />
-		<RoomItem type='l' sourceType={{ type: 'app' }} />
+		<RoomItem type='l' sourceType={{ type: 'other' }} status='online' />
+		<RoomItem type='l' sourceType={{ type: 'other' }} />
 	</>
 ));
