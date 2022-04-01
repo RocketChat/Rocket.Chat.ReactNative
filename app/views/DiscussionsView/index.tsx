@@ -130,6 +130,12 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 			),
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
+			// TODO: Review after @types/react-native 0.64.2
+			// @ts-ignore
+			headerTitleContainerStyle: {
+				left: null,
+				right: null
+			},
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item iconName='search' onPress={onSearchPress} />

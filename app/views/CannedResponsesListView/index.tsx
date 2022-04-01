@@ -274,7 +274,13 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 				<HeaderBackButton labelVisible={false} onPress={() => navigation.pop()} tintColor={themes[theme].headerTintColor} />
 			),
 			headerTitleAlign: 'center',
-			headerTitle: I18n.t('Canned_Responses')
+			headerTitle: I18n.t('Canned_Responses'),
+			// TODO: Review after @types/react-native 0.64.2
+			// @ts-ignore
+			headerTitleContainerStyle: {
+				left: null,
+				right: null
+			}
 		};
 
 		if (isMasterDetail) {
