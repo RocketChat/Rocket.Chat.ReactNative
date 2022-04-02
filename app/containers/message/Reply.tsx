@@ -77,6 +77,8 @@ const styles = StyleSheet.create({
 		marginBottom: 4
 	},
 	image: {
+		// @ts-ignore
+		width: null,
 		height: 200,
 		flex: 1,
 		borderTopLeftRadius: 4,
@@ -168,6 +170,8 @@ const UrlImage = React.memo(
 		}
 		const { baseUrl, user } = useContext(MessageContext);
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
+		// TODO: Review because @types/react-native was upgraded
+		// @ts-ignore
 		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
 	},
 	(prevProps, nextProps) => prevProps.image === nextProps.image
