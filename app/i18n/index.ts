@@ -114,6 +114,7 @@ export const setLanguage = (l: string) => {
 	i18n.translations = { ...i18n.translations, [locale]: translations[locale]?.() };
 	I18nManager.forceRTL(isRTL(locale));
 	I18nManager.swapLeftAndRightInRTL(isRTL(locale));
+	// TODO: Review this logic
 	// @ts-ignore
 	i18n.isRTL = I18nManager.isRTL;
 	moment.locale(toMomentLocale(locale));
