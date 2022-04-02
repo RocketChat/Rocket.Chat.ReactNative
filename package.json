@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.26.1",
+	"version": "4.26.2",
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
@@ -30,6 +30,7 @@
 		"@bugsnag/react-native": "^7.10.5",
 		"@codler/react-native-keyboard-aware-scroll-view": "^1.0.1",
 		"@nozbe/watermelondb": "0.23.0",
+		"@react-native-clipboard/clipboard": "^1.8.5",
 		"@react-native-community/art": "^1.2.0",
 		"@react-native-community/async-storage": "1.12.1",
 		"@react-native-community/blur": "^3.6.0",
@@ -209,7 +210,8 @@
 			"^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
 		},
 		"setupFilesAfterEnv": [
-			"@testing-library/jest-native/extend-expect"
+			"@testing-library/jest-native/extend-expect",
+			"./jest.setup.js"
 		]
 	},
 	"snyk": true,

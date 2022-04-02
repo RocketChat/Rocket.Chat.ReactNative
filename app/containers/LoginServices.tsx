@@ -285,7 +285,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 			toValue: height,
 			duration: 300,
 			easing: Easing.inOut(Easing.quad),
-			useNativeDriver: true
+			useNativeDriver: false
 		}).start();
 	};
 
