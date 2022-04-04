@@ -24,6 +24,7 @@ import RocketChat from '../../lib/rocketchat';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
 import ShareListHeader from './Header';
+import { IServerInfo } from '../../definitions';
 
 interface IDataFromShare {
 	value: string;
@@ -52,12 +53,6 @@ interface IChat {
 	description: string;
 }
 
-interface IServerInfo {
-	id: string;
-	iconURL: string;
-	name: string;
-	useRealName: boolean;
-}
 interface IState {
 	searching: boolean;
 	searchText: string;
