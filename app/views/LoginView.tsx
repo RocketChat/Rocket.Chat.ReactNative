@@ -213,7 +213,8 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 						<Text
 							style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
 							onPress={this.register}
-							testID='login-view-register'>
+							testID='login-view-register'
+							accessibilityLabel='login-view-register'>
 							{I18n.t('Create_account')}
 						</Text>
 					</View>
