@@ -34,7 +34,7 @@ interface IUserNotificationPreferencesViewState {
 interface IUserNotificationPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>;
 	theme: string;
-	user: Partial<IUser>;
+	user: IUser;
 }
 
 class UserNotificationPreferencesView extends React.Component<
@@ -56,7 +56,7 @@ class UserNotificationPreferencesView extends React.Component<
 	async componentDidMount() {
 		const { user } = this.props;
 		const { id } = user;
-		const result = await RocketChat.getUserPreferences(id as string);
+		const result = await RocketChat.getUserPreferences(id);
 		if (result.success) {
 			const { preferences } = result;
 			this.setState({ preferences, loading: true });
@@ -102,7 +102,7 @@ class UserNotificationPreferencesView extends React.Component<
 	saveNotificationPreferences = async (params: { [key: string]: string }) => {
 		const { user } = this.props;
 		const { id } = user;
-		const result = await RocketChat.setUserPreferences(id as string, params);
+		const result = await RocketChat.setUserPreferences(id, params);
 		if (result.success) {
 			const {
 				user: { settings }
