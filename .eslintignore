@@ -5,3 +5,4 @@ e2e/docker
 android
 ios
 .eslintrc.js
+appium/tests
