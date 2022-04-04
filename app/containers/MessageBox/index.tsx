@@ -569,7 +569,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	};
 
 	getUsers = debounce(async (keyword: any) => {
-		let res = await RocketChat.search({ text: keyword, filterRooms: false, filterUsers: true });
+		const { rid, roomType } = this.props;
+		let res = await RocketChat.mentionsSearch({ text: keyword, rid, roomType, filterRooms: false, filterUsers: true });
 		res = [...this.getFixedMentions(keyword), ...res];
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
