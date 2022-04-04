@@ -17,6 +17,7 @@ import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
 import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
+import sdk from '../../rocketchat/services/sdk';
 
 const WINDOW_TIME = 1000;
 
@@ -57,12 +58,12 @@ export default class RoomSubscription {
 		if (this.promises) {
 			await this.unsubscribe();
 		}
-		this.promises = RocketChat.subscribeRoom(this.rid);
+		this.promises = sdk.subscribeRoom(this.rid);
 
-		this.connectedListener = RocketChat.onStreamData('connected', this.handleConnection);
-		this.disconnectedListener = RocketChat.onStreamData('close', this.handleConnection);
-		this.notifyRoomListener = RocketChat.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
-		this.messageReceivedListener = RocketChat.onStreamData('stream-room-messages', this.handleMessageReceived);
+		this.connectedListener = sdk.onStreamData('connected', this.handleConnection);
+		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
+		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
+		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
 			await this.unsubscribe();
 		}

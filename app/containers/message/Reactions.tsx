@@ -7,30 +7,28 @@ import styles from './styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from './utils';
 import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
-interface IMessageAddReaction {
-	theme: string;
+interface IReaction {
+	_id: string;
+	emoji: string;
+	usernames: string[];
 }
 
 interface IMessageReaction {
-	reaction: {
-		usernames: [];
-		emoji: object;
-	};
+	reaction: IReaction;
 	getCustomEmoji: TGetCustomEmoji;
 	theme: string;
 }
 
 interface IMessageReactions {
-	reactions?: object[];
+	reactions?: IReaction[];
 	getCustomEmoji: TGetCustomEmoji;
-	theme: string;
 }
 
-const AddReaction = React.memo(({ theme }: IMessageAddReaction) => {
+const AddReaction = React.memo(({ theme }: { theme: string }) => {
 	const { reactionInit } = useContext(MessageContext);
 	return (
 		<Touchable
@@ -49,7 +47,7 @@ const AddReaction = React.memo(({ theme }: IMessageAddReaction) => {
 
 const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) => {
 	const { onReactionPress, onReactionLongPress, baseUrl, user } = useContext(MessageContext);
-	const reacted = reaction.usernames.findIndex((item: IMessageReaction) => item === user.username) !== -1;
+	const reacted = reaction.usernames.findIndex((item: string) => item === user.username) !== -1;
 	return (
 		<Touchable
 			onPress={() => onReactionPress(reaction.emoji)}
@@ -76,13 +74,15 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 	);
 });
 
-const Reactions = React.memo(({ reactions, getCustomEmoji, theme }: IMessageReactions) => {
+const Reactions = React.memo(({ reactions, getCustomEmoji }: IMessageReactions) => {
+	const { theme } = useTheme();
+
 	if (!Array.isArray(reactions) || reactions.length === 0) {
 		return null;
 	}
 	return (
 		<View style={styles.reactionsContainer}>
-			{reactions.map((reaction: any) => (
+			{reactions.map(reaction => (
 				<Reaction key={reaction.emoji} reaction={reaction} getCustomEmoji={getCustomEmoji} theme={theme} />
 			))}
 			<AddReaction theme={theme} />
@@ -94,4 +94,4 @@ Reaction.displayName = 'MessageReaction';
 Reactions.displayName = 'MessageReactions';
 AddReaction.displayName = 'MessageAddReaction';
 
-export default withTheme(Reactions);
+export default Reactions;
