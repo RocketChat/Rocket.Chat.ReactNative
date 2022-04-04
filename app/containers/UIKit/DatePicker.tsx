@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import moment from 'moment';
@@ -11,6 +11,7 @@ import { themes } from '../../constants/colors';
 import sharedStyles from '../../views/Styles';
 import { CustomIcon } from '../../lib/Icons';
 import { isAndroid } from '../../utils/deviceInfo';
+import { useTheme } from '../../theme';
 import ActivityIndicator from '../ActivityIndicator';
 import { IDatePicker } from './interfaces';
 
@@ -36,14 +37,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const DatePicker = ({ element, language, action, context, theme, loading, value, error }: IDatePicker) => {
+export const DatePicker = ({ element, language, action, context, loading, value, error }: IDatePicker) => {
+	const { theme } = useTheme();
 	const [show, onShow] = useState(false);
 	const initial_date = element?.initial_date;
 	const placeholder = element?.placeholder;
 
 	const [currentDate, onChangeDate] = useState(new Date(initial_date || value));
 
-	const onChange = ({ nativeEvent: { timestamp } }: any, date: any) => {
+	// timestamp as number exists in Event
+	// @ts-ignore
+	const onChange = ({ nativeEvent: { timestamp } }: Event, date?: Date) => {
 		const newDate = date || new Date(timestamp);
 		onChangeDate(newDate);
 		action({ value: moment(newDate).format('YYYY-MM-DD') });
@@ -52,7 +56,9 @@ export const DatePicker = ({ element, language, action, context, theme, loading,
 		}
 	};
 
-	let button = <Button title={textParser([placeholder])} onPress={() => onShow(!show)} loading={loading} theme={theme} />;
+	let button = placeholder ? (
+		<Button title={textParser([placeholder])} onPress={() => onShow(!show)} loading={loading} theme={theme} />
+	) : null;
 
 	if (context === BLOCK_CONTEXT.FORM) {
 		button = (

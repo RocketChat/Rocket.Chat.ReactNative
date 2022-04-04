@@ -13,7 +13,7 @@ import { initStore } from './lib/auxStore';
 import { closeShareExtension, shareExtensionInit } from './lib/rocketchat/services/shareExtension';
 import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
 import RocketChat from './lib/rocketchat';
-import { ThemeContext } from './theme';
+import { ThemeContext, TSupportedThemes } from './theme';
 import { localAuthenticate } from './utils/localAuthentication';
 import { IThemePreference } from './definitions/ITheme';
 import ScreenLockedView from './views/ScreenLockedView';
@@ -28,6 +28,7 @@ import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
+import { colors } from './constants/colors';
 
 initStore(store);
 
@@ -39,7 +40,7 @@ interface IDimensions {
 }
 
 interface IState {
-	theme: string;
+	theme: TSupportedThemes;
 	themePreferences: IThemePreference;
 	root: any;
 	width: number;
@@ -161,7 +162,7 @@ class Root extends React.Component<{}, IState> {
 		return (
 			<AppearanceProvider>
 				<Provider store={store}>
-					<ThemeContext.Provider value={{ theme }}>
+					<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
 						<DimensionsContext.Provider
 							value={{
 								width,

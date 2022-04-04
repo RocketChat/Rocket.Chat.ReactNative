@@ -17,7 +17,7 @@ import { store as reduxStore } from '../../auxStore';
 import { getDeviceToken } from '../../../notifications/push';
 import { getBundleId, isIOS } from '../../../utils/deviceInfo';
 import { compareServerVersion } from '../../utils';
-import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
+import roomTypeToApiType, { RoomTypes } from '../../methods/roomTypeToApiType';
 import sdk from './sdk';
 
 export const createChannel = ({
@@ -901,3 +901,15 @@ export const e2eFetchMyKeys = async () => {
 	}
 	return result;
 };
+
+export const logoutOtherLocations = () => {
+	const { id } = reduxStore.getState().login.user;
+	return sdk.post('users.removeOtherTokens', { userId: id as string });
+};
+
+export function getUserInfo(userId: string) {
+	// RC 0.48.0
+	return sdk.get('users.info', { userId });
+}
+
+export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
