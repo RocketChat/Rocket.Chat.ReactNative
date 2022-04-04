@@ -84,7 +84,9 @@ class AttachmentView extends React.Component<IAttachmentViewProps, IAttachmentVi
 		const attachment = route.params?.attachment;
 		let { title } = attachment;
 		try {
-			title = decodeURI(title);
+			if (title) {
+				title = decodeURI(title);
+			}
 		} catch {
 			// Do nothing
 		}

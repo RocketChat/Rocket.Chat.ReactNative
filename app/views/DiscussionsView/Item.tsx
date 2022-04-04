@@ -73,7 +73,7 @@ const Item = ({ item, onPress }: IItem): JSX.Element => {
 			testID={`discussions-view-${item.msg}`}
 			style={{ backgroundColor: themes[theme].backgroundColor }}>
 			<View style={styles.container}>
-				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} theme={theme} />
+				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
 						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>

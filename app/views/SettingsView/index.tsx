@@ -2,7 +2,8 @@ import CookieManager from '@react-native-cookies/cookies';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import FastImage from '@rocket.chat/react-native-fast-image';
 import React from 'react';
-import { Clipboard, Linking, Share } from 'react-native';
+import { Linking, Share } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
 
 import { appStart } from '../../actions/app';

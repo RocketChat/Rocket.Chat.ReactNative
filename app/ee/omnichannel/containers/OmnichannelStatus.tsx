@@ -9,6 +9,7 @@ import UnreadBadge from '../../../presentation/UnreadBadge';
 import RocketChat from '../../../lib/rocketchat';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../lib';
 import { IUser } from '../../../definitions/IUser';
+import Touch from '../../../utils/touch';
 
 interface IOmnichannelStatus {
 	searching: boolean;
@@ -48,7 +49,9 @@ const OmnichannelStatus = memo(({ searching, goQueue, queueSize, inquiryEnabled,
 				right={() => (
 					<View style={styles.omnichannelRightContainer}>
 						{inquiryEnabled ? <UnreadBadge style={styles.queueIcon} unread={queueSize} /> : null}
-						<Switch value={status} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleLivechat} />
+						<Touch theme={theme} onPress={toggleLivechat}>
+							<Switch value={status} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleLivechat} />
+						</Touch>
 					</View>
 				)}
 			/>

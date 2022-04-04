@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { dequal } from 'dequal';
 import { Text } from 'react-native';
 
-import { IMessageAttachments, IMessageAttachedActions } from './interfaces';
+import { IMessageAttachments } from './interfaces';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
@@ -13,30 +13,49 @@ import MessageContext from './Context';
 import { useTheme } from '../../theme';
 import { IAttachment } from '../../definitions';
 import CollapsibleQuote from './Components/CollapsibleQuote';
+import openLink from '../../utils/openLink';
+import { themes } from '../../lib/constants/colors';
 
-const AttachedActions = ({ attachment }: IMessageAttachedActions) => {
+export type TElement = {
+	type: string;
+	msg?: string;
+	url?: string;
+	text: string;
+};
+
+const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
 	if (!attachment.actions) {
 		return null;
 	}
 	const { onAnswerButtonPress } = useContext(MessageContext);
 	const { theme } = useTheme();
 
-	const attachedButtons = attachment.actions.map((element: { type: string; msg: string; text: string }) => {
+	const attachedButtons = attachment.actions.map((element: TElement) => {
+		const onPress = () => {
+			if (element.msg) {
+				onAnswerButtonPress(element.msg);
+			}
+
+			if (element.url) {
+				openLink(element.url);
+			}
+		};
+
 		if (element.type === 'button') {
-			return <Button theme={theme} onPress={() => onAnswerButtonPress(element.msg)} title={element.text} />;
+			return <Button theme={theme} onPress={onPress} title={element.text} />;
 		}
+
 		return null;
 	});
 	return (
 		<>
-			<Text style={styles.text}>{attachment.text}</Text>
+			<Text style={[styles.text, { color: themes[theme].bodyText }]}>{attachment.text}</Text>
 			{attachedButtons}
 		</>
 	);
 };
 
-const Attachments = React.memo(
-	// @ts-ignore
+const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply }: IMessageAttachments) => {
 		if (!attachments || attachments.length === 0) {
 			return null;
@@ -44,7 +63,7 @@ const Attachments = React.memo(
 
 		const { theme } = useTheme();
 
-		return attachments.map((file: IAttachment, index: number) => {
+		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
 			if (file && file.image_url) {
 				return (
 					<Image
@@ -54,7 +73,6 @@ const Attachments = React.memo(
 						getCustomEmoji={getCustomEmoji}
 						style={style}
 						isReply={isReply}
-						theme={theme}
 					/>
 				);
 			}
@@ -74,7 +92,6 @@ const Attachments = React.memo(
 						getCustomEmoji={getCustomEmoji}
 						style={style}
 						isReply={isReply}
-						theme={theme}
 					/>
 				);
 			}
@@ -90,6 +107,7 @@ const Attachments = React.memo(
 
 			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 		});
+		return <>{attachmentsElements}</>;
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)
 );

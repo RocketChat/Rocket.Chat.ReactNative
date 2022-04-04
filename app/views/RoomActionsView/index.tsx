@@ -21,7 +21,7 @@ import { IApplicationState, IBaseScreen, IRoom, ISubscription, IUser, TSubscript
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import { E2E_ROOM_TYPES } from '../../lib/encryption/constants';
+import { E2E_ROOM_TYPES } from '../../lib/constants';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import RocketChat from '../../lib/rocketchat';
 import { compareServerVersion } from '../../lib/utils';

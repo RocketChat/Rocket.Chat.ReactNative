@@ -1,5 +1,6 @@
 import React from 'react';
-import { Clipboard, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
 
 import { encryptionSetBanner } from '../actions/encryption';
@@ -11,7 +12,7 @@ import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
 import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
-import { E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
+import { E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
 import UserPreferences from '../lib/userPreferences';
 import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';

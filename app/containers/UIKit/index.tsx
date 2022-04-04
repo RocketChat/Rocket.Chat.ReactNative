@@ -20,7 +20,7 @@ import { Input } from './Input';
 import { DatePicker } from './DatePicker';
 import { Overflow } from './Overflow';
 import { ThemeContext } from '../../theme';
-import { BlockContext, IButton, IInputIndex, IParser, IText } from './interfaces';
+import { BlockContext, IActions, IButton, IElement, IInputIndex, IParser, ISection, IText } from './interfaces';
 
 const styles = StyleSheet.create({
 	input: {
@@ -78,35 +78,28 @@ class MessageParser extends UiKitParserMessage {
 	}
 
 	divider() {
-		const { theme } = useContext(ThemeContext);
-		// @ts-ignore
-		return <Divider theme={theme} />;
+		return <Divider />;
 	}
 
-	section(args: any) {
-		const { theme } = useContext(ThemeContext);
-		return <Section {...args} theme={theme} parser={this} />;
+	section(args: ISection) {
+		return <Section {...args} parser={this.current} />;
 	}
 
-	actions(args: any) {
-		const { theme } = useContext(ThemeContext);
-		return <Actions {...args} theme={theme} parser={this} />;
+	actions(args: IActions) {
+		return <Actions {...args} parser={this.current} />;
 	}
 
-	overflow(element: any, context: any) {
-		const [{ loading }, action]: any = useBlockContext(element, context);
-		const { theme }: any = useContext(ThemeContext);
-		return <Overflow element={element} context={context} loading={loading} action={action} theme={theme} parser={this.current} />;
+	overflow(element: IElement, context: BlockContext) {
+		const [{ loading }, action] = useBlockContext(element, context);
+		return <Overflow element={element} context={context} loading={loading} action={action} parser={this.current} />;
 	}
 
-	datePicker(element: any, context: any) {
-		const [{ loading, value, error, language }, action]: any = useBlockContext(element, context);
-		const { theme }: any = useContext(ThemeContext);
+	datePicker(element: IElement, context: BlockContext) {
+		const [{ loading, value, error, language }, action] = useBlockContext(element, context);
 		return (
 			<DatePicker
 				element={element}
 				language={language}
-				theme={theme}
 				value={value}
 				action={action}
 				context={context}
@@ -116,9 +109,8 @@ class MessageParser extends UiKitParserMessage {
 		);
 	}
 
-	image(element: any, context: any) {
-		const { theme }: any = useContext(ThemeContext);
-		return <Image element={element} theme={theme} context={context} />;
+	image(element: IElement, context: BlockContext) {
+		return <Image element={element} context={context} />;
 	}
 
 	context(args: any) {
@@ -126,24 +118,19 @@ class MessageParser extends UiKitParserMessage {
 		return <Context {...args} theme={theme} parser={this} />;
 	}
 
-	multiStaticSelect(element: any, context: any) {
-		const [{ loading, value }, action]: any = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
-		return (
-			<MultiSelect {...element} theme={theme} value={value} onChange={action} context={context} loading={loading} multiselect />
-		);
+	multiStaticSelect(element: IElement, context: BlockContext) {
+		const [{ loading, value }, action] = useBlockContext(element, context);
+		return <MultiSelect {...element} value={value} onChange={action} context={context} loading={loading} multiselect />;
 	}
 
-	staticSelect(element: any, context: any) {
-		const [{ loading, value }, action]: any = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
-		return <Select {...element} theme={theme} value={value} onChange={action} loading={loading} />;
+	staticSelect(element: IElement, context: BlockContext) {
+		const [{ loading, value }, action] = useBlockContext(element, context);
+		return <Select {...element} value={value} onChange={action} loading={loading} />;
 	}
 
-	selectInput(element: any, context: any) {
-		const [{ loading, value }, action]: any = useBlockContext(element, context);
-		const { theme } = useContext(ThemeContext);
-		return <MultiSelect {...element} theme={theme} value={value} onChange={action} context={context} loading={loading} />;
+	selectInput(element: IElement, context: BlockContext) {
+		const [{ loading, value }, action] = useBlockContext(element, context);
+		return <MultiSelect {...element} value={value} onChange={action} context={context} loading={loading} />;
 	}
 }
 
@@ -160,8 +147,8 @@ class ModalParser extends UiKitParserModal {
 	}
 
 	input({ element, blockId, appId, label, description, hint }: IInputIndex, context: number) {
-		const [{ error }]: any = useBlockContext({ ...element, appId, blockId }, context);
-		const { theme }: any = useContext(ThemeContext);
+		const [{ error }] = useBlockContext({ ...element, appId, blockId }, context);
+		const { theme } = useContext(ThemeContext);
 		return (
 			<Input
 				parser={this.current}
@@ -175,17 +162,15 @@ class ModalParser extends UiKitParserModal {
 		);
 	}
 
-	image(element: any, context: any) {
-		const { theme }: any = useContext(ThemeContext);
-		return <Image element={element} theme={theme} context={context} />;
+	image(element: IElement, context: BlockContext) {
+		return <Image element={element} context={context} />;
 	}
 
-	plainInput(element: any, context: any) {
-		const [{ loading, value, error }, action]: any = useBlockContext(element, context);
+	plainInput(element: IElement, context: BlockContext) {
+		const [{ loading, value, error }, action] = useBlockContext(element, context);
 		const { theme } = useContext(ThemeContext);
 		const { multiline, actionId, placeholder } = element;
 		return (
-			// @ts-ignore
 			<TextInput
 				key={actionId}
 				placeholder={plainText(placeholder)}

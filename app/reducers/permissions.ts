@@ -1,6 +1,6 @@
 import { PERMISSIONS } from '../actions/actionsTypes';
 import { TActionPermissions } from '../actions/permissions';
-import { SUPPORTED_PERMISSIONS } from '../lib/methods/getPermissions';
+import { SUPPORTED_PERMISSIONS } from '../lib/rocketchat/methods/getPermissions';
 
 export type TSupportedPermissions = typeof SUPPORTED_PERMISSIONS[number];
 

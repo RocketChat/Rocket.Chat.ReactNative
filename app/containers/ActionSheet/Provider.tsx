@@ -2,7 +2,7 @@ import React, { ForwardedRef, forwardRef, useContext, useRef } from 'react';
 
 import ActionSheet from './ActionSheet';
 
-export type TActionSheetOptionsItem = { title: string; icon: string; onPress: () => void };
+export type TActionSheetOptionsItem = { title: string; icon: string; onPress: () => void; danger?: boolean };
 
 export type TActionSheetOptions = {
 	options: TActionSheetOptionsItem[];

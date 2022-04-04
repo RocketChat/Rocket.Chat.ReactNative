@@ -6,7 +6,8 @@ import { IThemePreference, TThemeMode } from '../definitions/ITheme';
 import { themes } from '../lib/constants/colors';
 import { isAndroid } from './deviceInfo';
 import UserPreferences from '../lib/userPreferences';
-import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
+import { THEME_PREFERENCES_KEY } from '../lib/constants';
+import { TSupportedThemes } from '../theme';
 
 let themeListener: { remove: () => void } | null;
 
@@ -27,7 +28,7 @@ export const defaultTheme = (): TThemeMode => {
 	return 'light';
 };
 
-export const getTheme = (themePreferences: IThemePreference): string => {
+export const getTheme = (themePreferences: IThemePreference): TSupportedThemes => {
 	const { darkLevel, currentTheme } = themePreferences;
 	let theme = currentTheme;
 	if (currentTheme === 'automatic') {

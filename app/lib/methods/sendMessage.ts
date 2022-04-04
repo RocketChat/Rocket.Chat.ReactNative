@@ -6,7 +6,7 @@ import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
 import { Encryption } from '../encryption';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../encryption/constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
 import { E2EType, IMessage, IUser, TMessageModel } from '../../definitions';
 import sdk from '../rocketchat/services/sdk';
 
@@ -85,7 +85,7 @@ export async function resendMessage(message: TMessageModel, tmid?: string) {
 	}
 }
 
-export default async function (
+export async function sendMessage(
 	rid: string,
 	msg: string,
 	tmid: string | undefined,

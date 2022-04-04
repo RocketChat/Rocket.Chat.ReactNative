@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
 interface ISearchBox extends TextInputProps {
 	value?: string;
 	hasCancel?: boolean;
-	onCancelPress?: Function;
+	onCancelPress?: () => void;
 	inputRef?: React.Ref<RNTextInput>;
 }
 
-const CancelButton = ({ onCancelPress }: { onCancelPress?: Function }) => {
+const CancelButton = ({ onCancelPress }: { onCancelPress?: () => void }) => {
 	const { theme } = useTheme();
 	return (
 		<Touchable onPress={onCancelPress} style={styles.cancel}>
@@ -84,7 +84,7 @@ const SearchBox = ({ hasCancel, onCancelPress, inputRef, ...props }: ISearchBox)
 					{...props}
 				/>
 			</View>
-			{hasCancel ? <CancelButton onCancelPress={onCancelPress} /> : null}
+			{hasCancel && onCancelPress ? <CancelButton onCancelPress={onCancelPress} /> : null}
 		</View>
 	);
 };

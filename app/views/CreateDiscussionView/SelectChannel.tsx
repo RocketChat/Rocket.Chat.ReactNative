@@ -48,14 +48,13 @@ const SelectChannel = ({
 		<>
 			<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Parent_channel_or_group')}</Text>
 			<MultiSelect
-				theme={theme}
 				inputStyle={styles.inputStyle}
 				onChange={onChannelSelect}
 				onSearch={getChannels}
 				value={initial && [initial]}
-				disabled={initial}
+				disabled={!!initial}
 				options={channels.map(channel => ({
-					value: channel,
+					value: channel.name || channel.fname,
 					text: { text: RocketChat.getRoomTitle(channel) },
 					imageUrl: getAvatar(channel)
 				}))}

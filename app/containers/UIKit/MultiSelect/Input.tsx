@@ -9,10 +9,10 @@ import styles from './styles';
 
 interface IInput {
 	children?: JSX.Element;
-	onPress: Function;
+	onPress: () => void;
 	theme: string;
 	inputStyle?: object;
-	disabled?: boolean | object;
+	disabled?: boolean | null;
 	placeholder?: string;
 	loading?: boolean;
 	innerInputStyle?: object;
