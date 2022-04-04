@@ -7,15 +7,18 @@ import { themes } from '../../constants/colors';
 import I18n from '../../i18n';
 import { MarkdownPreview } from '../markdown';
 import { IMessageRepliedThread } from './interfaces';
+import { useTheme } from '../../theme';
 
-const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted, theme }: IMessageRepliedThread) => {
+const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted }: IMessageRepliedThread) => {
+	const { theme } = useTheme();
+
 	if (!tmid || !isHeader) {
 		return null;
 	}
 
 	const [msg, setMsg] = useState(isEncrypted ? I18n.t('Encrypted_message') : tmsg);
 	const fetch = async () => {
-		const threadName = await fetchThreadName(tmid, id);
+		const threadName = fetchThreadName ? await fetchThreadName(tmid, id) : '';
 		setMsg(threadName);
 	};
 
