@@ -23,7 +23,7 @@ export interface IServerInfo {
 	id: string;
 	iconURL: string;
 	name: string;
-	useRealName: boolean;
+	useRealName?: boolean;
 }
 
 export type TServerModel = IServer & Model;
