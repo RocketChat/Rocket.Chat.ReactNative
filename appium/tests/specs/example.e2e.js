@@ -1,3 +1,4 @@
+// @ts-ignore
 const { expect } = require('chai');
 
 describe('Simple App testing', () => {
