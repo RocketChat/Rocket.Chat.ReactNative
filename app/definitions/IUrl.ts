@@ -45,5 +45,4 @@ export interface IUrl extends IUrlFromServer {
 	title: string;
 	description: string;
 	image: string;
-	url: string;
 }

@@ -19,6 +19,7 @@ import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
 import { themes } from '../../constants/colors';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
+import { useTheme } from '../../theme';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { attachments } = props;
@@ -85,7 +86,6 @@ const Message = React.memo((props: IMessage) => {
 			<View style={[styles.container, props.style]}>
 				{thread}
 				<View style={styles.flex}>
-					{/* @ts-ignore */}
 					<MessageAvatar small {...props} />
 					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 						<Content {...props} />
@@ -98,12 +98,11 @@ const Message = React.memo((props: IMessage) => {
 	return (
 		<View style={[styles.container, props.style]}>
 			<View style={styles.flex}>
-				{/* @ts-ignore */}
 				<MessageAvatar {...props} />
 				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 					<MessageInner {...props} />
 				</View>
-				<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} theme={props.theme} />
+				<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} />
 			</View>
 		</View>
 	);
@@ -119,12 +118,14 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		);
 	}
 	const { onPress, onLongPress } = useContext(MessageContext);
+	const { theme } = useTheme();
+
 	return (
 		<Touchable
 			onLongPress={onLongPress}
 			onPress={onPress}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
-			style={{ backgroundColor: props.highlighted ? themes[props.theme].headerBackground : null }}>
+			style={{ backgroundColor: props.highlighted ? themes[theme].headerBackground : null }}>
 			<View>
 				<Message {...props} />
 			</View>

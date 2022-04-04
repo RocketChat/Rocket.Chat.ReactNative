@@ -42,12 +42,12 @@ interface ISearchMessagesViewState {
 	searchText: string;
 }
 
-interface IRoomInfoParam {
-	room: ISubscription;
-	member: any;
+export interface IRoomInfoParam {
+	room?: ISubscription;
+	member?: any;
 	rid: string;
 	t: SubscriptionType;
-	joined: boolean;
+	joined?: boolean;
 }
 
 interface INavigationOption {

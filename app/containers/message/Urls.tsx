@@ -8,11 +8,12 @@ import Touchable from './Touchable';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { useTheme, withTheme } from '../../theme';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
+import { IUrl } from '../../definitions';
 
 const styles = StyleSheet.create({
 	button: {
@@ -50,29 +51,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IMessageUrlContent {
-	title: string;
-	description: string;
-	theme: string;
-}
-
-interface IMessageUrl {
-	url: {
-		ignoreParse: boolean;
-		url: string;
-		image: string;
-		title: string;
-		description: string;
-	};
-	index: number;
-	theme: string;
-}
-
-interface IMessageUrls {
-	urls?: any;
-	theme?: string;
-}
-
 const UrlImage = React.memo(
 	({ image }: { image: string }) => {
 		if (!image) {
@@ -86,7 +64,7 @@ const UrlImage = React.memo(
 );
 
 const UrlContent = React.memo(
-	({ title, description, theme }: IMessageUrlContent) => (
+	({ title, description, theme }: { title: string; description: string; theme: string }) => (
 		<View style={styles.textContainer}>
 			{title ? (
 				<Text style={[styles.title, { color: themes[theme].tintColor }]} numberOfLines={2}>
@@ -115,7 +93,7 @@ const UrlContent = React.memo(
 );
 
 const Url = React.memo(
-	({ url, index, theme }: IMessageUrl) => {
+	({ url, index, theme }: { url: IUrl; index: number; theme: string }) => {
 		if (!url || url?.ignoreParse) {
 			return null;
 		}
@@ -152,14 +130,17 @@ const Url = React.memo(
 );
 
 const Urls = React.memo(
-	({ urls, theme }: IMessageUrls) => {
+	// TODO - didn't work - (React.ReactElement | null)[] | React.ReactElement | null
+	({ urls }: { urls?: IUrl[] }): any => {
+		const { theme } = useTheme();
+
 		if (!urls || urls.length === 0) {
 			return null;
 		}
 
-		return urls.map((url: any, index: number) => <Url url={url} key={url.url} index={index} theme={theme!} />);
+		return urls.map((url: IUrl, index: number) => <Url url={url} key={url.url} index={index} theme={theme} />);
 	},
-	(oldProps, newProps) => dequal(oldProps.urls, newProps.urls) && oldProps.theme === newProps.theme
+	(oldProps, newProps) => dequal(oldProps.urls, newProps.urls)
 );
 
 UrlImage.displayName = 'MessageUrlImage';
