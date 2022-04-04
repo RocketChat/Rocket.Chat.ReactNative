@@ -18,6 +18,14 @@ export enum SubscriptionType {
 	E2E = 'e2e', // FIXME: this is not a type of subscription
 	THREAD = 'thread' // FIXME: this is not a type of subscription
 }
+export enum ReverseSubscriptionType {
+	'p' = SubscriptionType.GROUP,
+	'd' = SubscriptionType.DIRECT,
+	'c' = SubscriptionType.CHANNEL,
+	'l' = SubscriptionType.OMNICHANNEL,
+	'e2e' = SubscriptionType.E2E,
+	't' = SubscriptionType.THREAD
+}
 
 export interface IVisitor {
 	_id?: string;
