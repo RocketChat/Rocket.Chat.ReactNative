@@ -4,21 +4,21 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"ios": "wdio ./config/ios.config.js",
+		"android": "wdio ./config/android.config.js"
 	},
 	"author": "",
 	"license": "ISC",
-	"dependencies": {
-		"@wdio/cli": "^7.19.3",
-		"chai": "^4.3.6",
-		"webdriverio": "^7.19.3"
-	},
 	"devDependencies": {
 		"@babel/register": "^7.17.7",
 		"@wdio/appium-service": "^7.19.1",
+		"@wdio/cli": "^7.19.3",
 		"@wdio/local-runner": "^7.19.3",
 		"@wdio/mocha-framework": "^7.19.3",
 		"@wdio/spec-reporter": "^7.19.1",
-		"wdio-wait-for": "^2.2.5"
+		"@wdio/sync": "^7.19.3",
+		"chai": "^4.3.6",
+		"wdio-json-reporter": "^3.0.0",
+		"webdriverio": "^7.19.3"
 	}
 }
