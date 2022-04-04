@@ -15,7 +15,7 @@ import { getUserSelector } from '../../selectors/login';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { ProfileStackParamList } from '../../stacks/types';
-import { INotificationPreferences } from '../../definitions';
+import { INotificationPreferences, IUser } from '../../definitions';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -34,9 +34,7 @@ interface IUserNotificationPreferencesViewState {
 interface IUserNotificationPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>;
 	theme: string;
-	user: {
-		id: string;
-	};
+	user: Partial<IUser>;
 }
 
 class UserNotificationPreferencesView extends React.Component<
@@ -58,7 +56,7 @@ class UserNotificationPreferencesView extends React.Component<
 	async componentDidMount() {
 		const { user } = this.props;
 		const { id } = user;
-		const result = await RocketChat.getUserPreferences(id);
+		const result = await RocketChat.getUserPreferences(id as string);
 		if (result.success) {
 			const { preferences } = result;
 			this.setState({ preferences, loading: true });
@@ -104,7 +102,7 @@ class UserNotificationPreferencesView extends React.Component<
 	saveNotificationPreferences = async (params: { [key: string]: string }) => {
 		const { user } = this.props;
 		const { id } = user;
-		const result = await RocketChat.setUserPreferences(id, params);
+		const result = await RocketChat.setUserPreferences(id as string, params);
 		if (result.success) {
 			const {
 				user: { settings }

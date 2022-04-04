@@ -13,7 +13,7 @@ import Loading from '../containers/Loading';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IBaseScreen, ISubscription } from '../definitions';
+import { IApplicationState, IBaseScreen, ISubscription, IUser } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
@@ -39,12 +39,7 @@ interface ISelectedUsersViewProps extends IBaseScreen<ChatsStackParamList, 'Sele
 	// REDUX STATE
 	users: ISelectedUser[];
 	loading: boolean;
-	user: {
-		id: string;
-		token: string;
-		username: string;
-		name: string;
-	};
+	user: IUser;
 	baseUrl: string;
 }
 
@@ -64,7 +59,7 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 		};
 		const { user, dispatch } = this.props;
 		if (this.isGroupChat()) {
-			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name }));
+			dispatch(addUser({ _id: user.id, name: user.username, fname: user.name as string }));
 		}
 		this.setHeader(props.route.params?.showButton);
 	}

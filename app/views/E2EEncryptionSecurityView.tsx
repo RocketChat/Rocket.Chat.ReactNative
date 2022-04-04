@@ -23,6 +23,7 @@ import EventEmitter from '../utils/events';
 import { LISTENER } from '../containers/Toast';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
+import { IUser } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -48,10 +49,7 @@ interface IE2EEncryptionSecurityViewState {
 
 interface IE2EEncryptionSecurityViewProps {
 	theme: string;
-	user: {
-		roles: string[];
-		id: string;
-	};
+	user: IUser;
 	server: string;
 	encryptionEnabled: boolean;
 	logout(): void;
