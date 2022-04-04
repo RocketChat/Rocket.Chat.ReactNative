@@ -43,7 +43,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
-import { E2E_BANNER_TYPE } from '../../lib/encryption/constants';
+import { E2E_BANNER_TYPE } from '../../lib/constants';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
 import { IApplicationState, IBaseScreen, ISubscription, IUser, RootEnum, TSubscriptionModel } from '../../definitions';
@@ -53,7 +53,7 @@ import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
-import { RoomTypes } from '../../lib/rocketchat/methods/roomTypeToApiType';
+import { RoomTypes } from '../../lib/methods/roomTypeToApiType';
 
 interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
 	[key: string]: any;

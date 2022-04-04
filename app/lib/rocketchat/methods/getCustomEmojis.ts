@@ -1,14 +1,14 @@
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { ICustomEmojis } from '../../reducers/customEmojis';
-import { compareServerVersion } from '../utils';
-import { store as reduxStore } from '../auxStore';
-import database from '../database';
-import log from '../../utils/log';
-import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
-import { ICustomEmoji, TCustomEmojiModel } from '../../definitions';
-import sdk from '../rocketchat/services/sdk';
+import { ICustomEmojis } from '../../../reducers/customEmojis';
+import { compareServerVersion } from '../../utils';
+import { store as reduxStore } from '../../auxStore';
+import database from '../../database';
+import log from '../../../utils/log';
+import { setCustomEmojis as setCustomEmojisAction } from '../../../actions/customEmojis';
+import { ICustomEmoji, TCustomEmojiModel } from '../../../definitions';
+import sdk from '../services/sdk';
 
 interface IUpdateEmojis {
 	update: TCustomEmojiModel[];
