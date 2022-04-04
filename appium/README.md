@@ -14,6 +14,8 @@ Follow the below commands -
 
 - Update the `apps` folder with apk to run on android or set .ipa to run on ios.
 
+- Start appium server.
+
 - Execute `npm run ios` to run ios app.
 
 - Execute `npm run android` to run ios app.
