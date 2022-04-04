@@ -1,14 +1,14 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import Model from '@nozbe/watermelondb/Model';
 
-import database from '../database';
-import { getRoleById } from '../database/services/Role';
-import log from '../../utils/log';
-import { store as reduxStore } from '../auxStore';
-import { removeRoles, setRoles as setRolesAction, updateRoles } from '../../actions/roles';
-import protectedFunction from './helpers/protectedFunction';
-import { TRoleModel } from '../../definitions';
-import sdk from '../rocketchat/services/sdk';
+import database from '../../database';
+import { getRoleById } from '../../database/services/Role';
+import log from '../../../utils/log';
+import { store as reduxStore } from '../../auxStore';
+import { removeRoles, setRoles as setRolesAction, updateRoles } from '../../../actions/roles';
+import protectedFunction from '../../methods/helpers/protectedFunction';
+import { TRoleModel } from '../../../definitions';
+import sdk from '../services/sdk';
 
 export async function setRoles(): Promise<void> {
 	const db = database.active;

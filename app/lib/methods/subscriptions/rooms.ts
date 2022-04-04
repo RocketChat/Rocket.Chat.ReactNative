@@ -17,7 +17,7 @@ import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
 import { Encryption } from '../../encryption';
-import { E2E_MESSAGE_TYPE } from '../../encryption/constants';
+import { E2E_MESSAGE_TYPE } from '../../constants';
 import updateMessages from '../updateMessages';
 import {
 	IMessage,

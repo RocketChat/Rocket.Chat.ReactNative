@@ -20,7 +20,7 @@ import { showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { events, logEvent } from '../../utils/log';
-import { E2E_ROOM_TYPES } from '../../lib/encryption/constants';
+import { E2E_ROOM_TYPES } from '../../lib/constants';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
