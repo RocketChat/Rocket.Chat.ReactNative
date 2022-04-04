@@ -106,6 +106,7 @@ export interface ISubscription {
 }
 
 export type TSubscriptionModel = ISubscription & Model;
+export type TSubscription = TSubscriptionModel | ISubscription;
 
 // https://github.com/RocketChat/Rocket.Chat/blob/a88a96fcadd925b678ff27ada37075e029f78b5e/definition/ISubscription.ts#L8
 export interface IServerSubscription extends IRocketChatRecord {

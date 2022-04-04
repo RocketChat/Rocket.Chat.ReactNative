@@ -9,7 +9,7 @@ import Deferred from '../../utils/deferred';
 import debounce from '../../utils/debounce';
 import database from '../database';
 import log from '../../utils/log';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from './constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
 import {
 	b64ToBuffer,
 	bufferToB64,

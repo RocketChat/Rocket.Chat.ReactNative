@@ -5,7 +5,7 @@ import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
 import log from '../../../utils/log';
-import { onRolesChanged } from '../../methods/getRoles';
+import { onRolesChanged } from '../methods/getRoles';
 import { setActiveUsers } from '../../../actions/activeUsers';
 import protectedFunction from '../../methods/helpers/protectedFunction';
 import database from '../../database';
@@ -16,7 +16,7 @@ import { store } from '../../auxStore';
 import { loginRequest, setLoginServices, setUser } from '../../../actions/login';
 import sdk from './sdk';
 import I18n from '../../../i18n';
-import RocketChat, { MIN_ROCKETCHAT_VERSION } from '../rocketchat';
+import RocketChat from '..';
 import { ICredentials, ILoggedUser, IRocketChat, STATUSES } from '../../../definitions';
 import { isIOS } from '../../../utils/deviceInfo';
 import { connectRequest, connectSuccess, disconnect as disconnectAction } from '../../../actions/connect';
@@ -24,6 +24,7 @@ import { updatePermission } from '../../../actions/permissions';
 import EventEmitter from '../../../utils/events';
 import { updateSettings } from '../../../actions/settings';
 import defaultSettings from '../../../constants/settings';
+import { MIN_ROCKETCHAT_VERSION } from '../../constants';
 
 interface IServices {
 	[index: string]: string | boolean;
