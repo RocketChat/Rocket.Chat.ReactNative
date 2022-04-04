@@ -6,12 +6,12 @@ import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
-import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
 import { events, logEvent } from '../utils/log';
 import { IThemePreference, TThemeMode, TDarkLevel } from '../definitions/ITheme';
+import { THEME_PREFERENCES_KEY } from '../lib/constants';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';

@@ -1,16 +1,15 @@
-import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
+import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import orderBy from 'lodash/orderBy';
 
-import { compareServerVersion } from '../utils';
-import database from '../database';
-import log from '../../utils/log';
-import { store as reduxStore } from '../auxStore';
-import RocketChat from '../rocketchat';
-import sdk from '../rocketchat/services/sdk';
-import { setPermissions as setPermissionsAction } from '../../actions/permissions';
-import protectedFunction from './helpers/protectedFunction';
-import { TPermissionModel, IPermission } from '../../definitions';
+import { setPermissions as setPermissionsAction } from '../../../actions/permissions';
+import { IPermission, TPermissionModel } from '../../../definitions';
+import log from '../../../utils/log';
+import { store as reduxStore } from '../../auxStore';
+import database from '../../database';
+import sdk from '../services/sdk';
+import { compareServerVersion } from '../../utils';
+import protectedFunction from '../../methods/helpers/protectedFunction';
 
 export const SUPPORTED_PERMISSIONS = [
 	'add-user-to-any-c-room',
@@ -154,7 +153,7 @@ export function getPermissions(): Promise<void> {
 			const db = database.active;
 			const permissionsCollection = db.get('permissions');
 			const allRecords = await permissionsCollection.query().fetch();
-			RocketChat.subscribe('stream-notify-logged', 'permissions-changed');
+			sdk.subscribe('stream-notify-logged', 'permissions-changed');
 			// if server version is lower than 0.73.0, fetches from old api
 			if (serverVersion && compareServerVersion(serverVersion, 'lowerThan', '0.73.0')) {
 				// RC 0.66.0
