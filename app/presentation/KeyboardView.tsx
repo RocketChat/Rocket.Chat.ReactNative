@@ -6,10 +6,10 @@ import scrollPersistTaps from '../utils/scrollPersistTaps';
 interface IKeyboardViewProps extends KeyboardAwareScrollViewProps {
 	keyboardVerticalOffset?: number;
 	scrollEnabled?: boolean;
-	children: React.ReactNode;
+	children: React.ReactElement[] | React.ReactElement;
 }
 
-export default class KeyboardView extends React.PureComponent<IKeyboardViewProps, any> {
+export default class KeyboardView extends React.PureComponent<IKeyboardViewProps> {
 	render() {
 		const { style, contentContainerStyle, scrollEnabled, keyboardVerticalOffset, children } = this.props;
 
