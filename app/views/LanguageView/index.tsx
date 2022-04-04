@@ -20,7 +20,7 @@ import { showErrorAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';
 
 interface ILanguageViewProps extends IBaseScreen<SettingsStackParamList, 'LanguageView'> {
-	user: Partial<IUser>; // Check later
+	user: IUser;
 }
 
 interface ILanguageViewState {
@@ -35,7 +35,7 @@ class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewStat
 	constructor(props: ILanguageViewProps) {
 		super(props);
 		this.state = {
-			language: props.user && props.user.language ? props.user.language : 'en'
+			language: props.user ? (props.user.language as string) : 'en'
 		};
 	}
 
@@ -99,13 +99,10 @@ class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewStat
 			const usersCollection = serversDB.get('users');
 			await serversDB.write(async () => {
 				try {
-					let userRecord;
-					if (user.id) {
-						userRecord = await usersCollection.find(user.id);
-						await userRecord.update((record: any) => {
-							record.language = params.language;
-						});
-					}
+					const userRecord = await usersCollection.find(user.id);
+					await userRecord.update(record => {
+						record.language = params.language;
+					});
 				} catch (e) {
 					logEvent(events.LANG_SET_LANGUAGE_F);
 				}
