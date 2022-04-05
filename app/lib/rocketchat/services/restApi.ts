@@ -743,7 +743,8 @@ export const saveAutoTranslate = ({
 	options?: { defaultLanguage: string };
 }) => sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options ?? null);
 
-export const getSupportedLanguagesAutoTranslate = () => sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
+	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 
 export const translateMessage = (message: any, targetLanguage: string) =>
 	sdk.methodCallWrapper('autoTranslate.translateMessage', message, targetLanguage);
