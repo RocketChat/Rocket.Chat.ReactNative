@@ -66,7 +66,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 					<List.Item
 						title='Enable_Message_Parser'
 						testID='preferences-view-enable-message-parser'
-						right={() => renderMessageParserSwitch(enableMessageParserEarlyAdoption as boolean)}
+						right={() => renderMessageParserSwitch(enableMessageParserEarlyAdoption)}
 					/>
 					<List.Separator />
 				</List.Section>

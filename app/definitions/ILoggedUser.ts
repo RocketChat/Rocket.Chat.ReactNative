@@ -20,7 +20,7 @@ export interface ILoggedUser {
 	avatarETag?: string;
 	showMessageInMainThread?: boolean;
 	isFromWebView?: boolean;
-	enableMessageParserEarlyAdoption?: boolean;
+	enableMessageParserEarlyAdoption: boolean;
 }
 
 export interface ILoggedUserResultFromServer
