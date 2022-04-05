@@ -24,11 +24,12 @@ export type TElement = {
 };
 
 const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
+	const { onAnswerButtonPress } = useContext(MessageContext);
+	const { theme } = useTheme();
+
 	if (!attachment.actions) {
 		return null;
 	}
-	const { onAnswerButtonPress } = useContext(MessageContext);
-	const { theme } = useTheme();
 
 	const attachedButtons = attachment.actions.map((element: TElement) => {
 		const onPress = () => {
@@ -57,11 +58,11 @@ const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply }: IMessageAttachments) => {
+		const { theme } = useTheme();
+
 		if (!attachments || attachments.length === 0) {
 			return null;
 		}
-
-		const { theme } = useTheme();
 
 		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
 			if (file && file.image_url) {

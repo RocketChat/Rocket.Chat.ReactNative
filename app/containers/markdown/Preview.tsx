@@ -17,11 +17,11 @@ interface IMarkdownPreview {
 }
 
 const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdownPreview) => {
+	const { theme } = useTheme();
+
 	if (!msg) {
 		return null;
 	}
-
-	const { theme } = useTheme();
 
 	let m = formatText(msg);
 	m = formatHyperlink(m);

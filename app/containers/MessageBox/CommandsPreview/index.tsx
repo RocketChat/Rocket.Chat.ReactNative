@@ -15,10 +15,12 @@ interface IMessageBoxCommandsPreview {
 
 const CommandsPreview = React.memo(
 	({ commandPreview, showCommandPreview }: IMessageBoxCommandsPreview) => {
+		const { theme } = useTheme();
+
 		if (!showCommandPreview) {
 			return null;
 		}
-		const { theme } = useTheme();
+
 		return (
 			<FlatList
 				testID='commandbox-container'

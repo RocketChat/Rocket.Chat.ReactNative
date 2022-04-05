@@ -40,6 +40,8 @@ const LeftButtons = ({
 	goRoomActionsView,
 	isMasterDetail
 }: ILeftButtonsProps): React.ReactElement | null => {
+	const onPress = useCallback(() => goRoomActionsView(), []);
+
 	if (!isMasterDetail || tmid) {
 		const onPress = () => navigation.goBack();
 		let label = ' ';
@@ -61,7 +63,6 @@ const LeftButtons = ({
 			/>
 		);
 	}
-	const onPress = useCallback(() => goRoomActionsView(), []);
 
 	if (baseUrl && userId && token) {
 		return <Avatar text={title} size={30} type={t} style={styles.avatar} onPress={onPress} />;

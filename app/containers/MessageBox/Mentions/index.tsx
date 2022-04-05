@@ -16,10 +16,12 @@ interface IMessageBoxMentions {
 
 const Mentions = React.memo(
 	({ mentions, trackingType, loading }: IMessageBoxMentions) => {
+		const { theme } = useTheme();
+
 		if (!trackingType) {
 			return null;
 		}
-		const { theme } = useTheme();
+
 		return (
 			<View testID='messagebox-container'>
 				<FlatList
