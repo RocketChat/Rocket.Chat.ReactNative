@@ -6,7 +6,7 @@ import log from '../../../utils/log';
 import { IShareServer, IShareUser } from '../../../reducers/share';
 import UserPreferences from '../../userPreferences';
 import database from '../../database';
-import RocketChat from '../rocketchat';
+import RocketChat from '..';
 import { encryptionInit } from '../../../actions/encryption';
 import { store } from '../../auxStore';
 import sdk from './sdk';

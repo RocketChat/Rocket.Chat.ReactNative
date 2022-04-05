@@ -28,7 +28,7 @@ import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { RoomTypes } from '../../lib/rocketchat/methods/roomTypeToApiType';
+import { RoomTypes } from '../../lib/methods/roomTypeToApiType';
 import styles from './styles';
 
 const PAGE_SIZE = 25;

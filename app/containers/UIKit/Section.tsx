@@ -4,6 +4,7 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import { themes } from '../../constants/colors';
 import { IAccessoryComponent, IFields, ISection } from './interfaces';
+import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	content: {
@@ -37,10 +38,14 @@ const Fields = ({ fields, parser, theme }: IFields) => (
 
 const accessoriesRight = ['image', 'overflow'];
 
-export const Section = ({ blockId, appId, text, fields, accessory, parser, theme }: ISection) => (
-	<View style={[styles.content, accessory && accessoriesRight.includes(accessory.type) ? styles.row : styles.column]}>
-		{text ? <View style={styles.text}>{parser.text(text)}</View> : null}
-		{fields ? <Fields fields={fields} theme={theme} parser={parser} /> : null}
-		{accessory ? <Accessory element={{ blockId, appId, ...accessory }} parser={parser} /> : null}
-	</View>
-);
+export const Section = ({ blockId, appId, text, fields, accessory, parser }: ISection) => {
+	const { theme } = useTheme();
+
+	return (
+		<View style={[styles.content, accessory && accessoriesRight.includes(accessory.type) ? styles.row : styles.column]}>
+			{text ? <View style={styles.text}>{parser.text(text)}</View> : null}
+			{fields ? <Fields fields={fields} theme={theme} parser={parser} /> : null}
+			{accessory ? <Accessory element={{ blockId, appId, ...accessory }} parser={parser} /> : null}
+		</View>
+	);
+};

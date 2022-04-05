@@ -8,7 +8,7 @@ import { MessageTypeLoad } from '../../constants/messageTypeLoad';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
 import { TMessageModel } from '../../definitions';
-import RocketChat from '../rocketchat';
+import sdk from '../rocketchat/services/sdk';
 
 const COUNT = 50;
 
@@ -22,7 +22,7 @@ interface ILoadNextMessages {
 export default function loadNextMessages(args: ILoadNextMessages): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const data = await RocketChat.methodCallWrapper('loadNextMessages', args.rid, args.ts, COUNT);
+			const data = await sdk.methodCallWrapper('loadNextMessages', args.rid, args.ts, COUNT);
 			let messages = EJSON.fromJSONValue(data?.messages);
 			messages = orderBy(messages, 'ts');
 			if (messages?.length) {

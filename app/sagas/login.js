@@ -20,6 +20,7 @@ import UserPreferences from '../lib/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
+import sdk from '../lib/rocketchat/services/sdk';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -86,7 +87,7 @@ const fetchCustomEmojis = function* fetchCustomEmojis() {
 };
 
 const fetchRoles = function* fetchRoles() {
-	RocketChat.subscribe('stream-roles', 'roles');
+	sdk.subscribe('stream-roles', 'roles');
 	yield RocketChat.getRoles();
 };
 

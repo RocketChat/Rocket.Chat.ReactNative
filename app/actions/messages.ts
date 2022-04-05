@@ -1,8 +1,7 @@
 import { Action } from 'redux';
 
 import { MESSAGES } from './actionsTypes';
-
-type IMessage = Record<string, string>;
+import { IMessage } from '../definitions';
 
 interface IReplyBroadcast extends Action {
 	message: IMessage;
