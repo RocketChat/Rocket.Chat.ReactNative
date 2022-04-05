@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizeLikeString } from '../../database/utils';
 import database from '../../database/index';
 import { getRoomMembers, spotlight } from '../services/restApi';
-import isGroupChat from './isGroupChat';
+import { isGroupChat } from './helpers';
 import { ISearch, ISearchLocal, ReverseSubscriptionType, SubscriptionType } from '../../../definitions';
 
 let debounce: null | ((reason: string) => void) = null;
