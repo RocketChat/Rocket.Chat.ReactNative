@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import styles from './styles';
 import Wrapper from './Wrapper';
-import UnreadBadge from '../UnreadBadge';
+import UnreadBadge from '../../containers/UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import Title from './Title';

@@ -3,7 +3,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { View } from 'react-native';
 
-import UnreadBadge from '../../app/presentation/UnreadBadge';
+import UnreadBadge from '../../app/containers/UnreadBadge';
 import { ThemeContext } from '../../app/theme';
 
 const stories = storiesOf('Unread Badge', module);
