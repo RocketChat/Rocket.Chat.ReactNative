@@ -7,26 +7,23 @@ import { themes } from '../../../constants/colors';
 import { textParser } from '../utils';
 import { CustomIcon } from '../../../lib/Icons';
 import styles from './styles';
+import { IItemData } from '.';
 
 interface IChip {
-	item: {
-		value: string;
-		imageUrl: string;
-		text: string;
-	};
-	onSelect: Function;
+	item: IItemData;
+	onSelect: (item: IItemData) => void;
 	style?: object;
 	theme: string;
 }
 
 interface IChips {
-	items: [];
-	onSelect: Function;
+	items: IItemData[];
+	onSelect: (item: IItemData) => void;
 	style?: object;
 	theme: string;
 }
 
-const keyExtractor = (item: any) => item.value.toString();
+const keyExtractor = (item: IItemData) => item.value.toString();
 
 const Chip = ({ item, onSelect, style, theme }: IChip) => (
 	<Touchable

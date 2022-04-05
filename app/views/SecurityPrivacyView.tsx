@@ -8,7 +8,6 @@ import { SWITCH_TRACK_COLOR } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import I18n from '../i18n';
-import { CRASH_REPORT_KEY, ANALYTICS_EVENTS_KEY } from '../lib/rocketchat';
 import {
 	logEvent,
 	events,
@@ -19,6 +18,7 @@ import {
 } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import { isFDroidBuild } from '../constants/environment';
+import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants';
 
 interface ISecurityPrivacyViewProps {
 	navigation: StackNavigationProp<any, 'SecurityPrivacyView'>;

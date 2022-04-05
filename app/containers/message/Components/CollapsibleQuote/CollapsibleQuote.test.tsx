@@ -4,19 +4,6 @@ import React from 'react';
 import MessageContext from '../../Context';
 import CollapsibleQuote from '.';
 
-// For some reason a general mock didn't work, I have to do a search
-jest.mock('react-native-mmkv-storage', () => ({
-	Loader: jest.fn().mockImplementation(() => ({
-		setProcessingMode: jest.fn().mockImplementation(() => ({
-			withEncryption: jest.fn().mockImplementation(() => ({
-				initialize: jest.fn()
-			}))
-		}))
-	})),
-	create: jest.fn(),
-	MODES: { MULTI_PROCESS: '' }
-}));
-
 const testAttachment = {
 	ts: '1970-01-01T00:00:00.000Z',
 	title: 'Engineering (9 today)',

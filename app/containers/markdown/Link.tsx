@@ -1,5 +1,6 @@
 import React from 'react';
-import { Clipboard, Text } from 'react-native';
+import { Text } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import styles from './styles';
 import { themes } from '../../constants/colors';
@@ -10,7 +11,7 @@ import openLink from '../../utils/openLink';
 import { TOnLinkPress } from './interfaces';
 
 interface ILink {
-	children: JSX.Element;
+	children: React.ReactElement | null;
 	link: string;
 	theme: string;
 	onLinkPress?: TOnLinkPress;

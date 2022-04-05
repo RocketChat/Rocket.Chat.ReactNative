@@ -6,12 +6,12 @@ import { withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
-import { THEME_PREFERENCES_KEY } from '../lib/rocketchat';
 import { supportSystemTheme } from '../utils/deviceInfo';
 import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
 import { events, logEvent } from '../utils/log';
 import { IThemePreference, TThemeMode, TDarkLevel } from '../definitions/ITheme';
+import { THEME_PREFERENCES_KEY } from '../lib/constants';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
@@ -131,11 +131,11 @@ class ThemeView extends React.Component<IThemeViewProps> {
 				<List.Container>
 					<List.Section title='Theme'>
 						<List.Separator />
-						{themeGroup.map(item => this.renderItem({ item }))}
+						<>{themeGroup.map(item => this.renderItem({ item }))}</>
 					</List.Section>
 					<List.Section title='Dark_level'>
 						<List.Separator />
-						{darkGroup.map(item => this.renderItem({ item }))}
+						<>{darkGroup.map(item => this.renderItem({ item }))}</>
 					</List.Section>
 				</List.Container>
 			</SafeAreaView>
