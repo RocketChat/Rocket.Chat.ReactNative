@@ -11,7 +11,7 @@ import { Q } from '@nozbe/watermelondb';
 import database from '../../lib/database';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
-import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
+import DirectoryItem, { ROW_HEIGHT } from '../../containers/DirectoryItem';
 import ServerItem from '../../presentation/ServerItem';
 import * as HeaderButton from '../../containers/HeaderButton';
 import ActivityIndicator from '../../containers/ActivityIndicator';

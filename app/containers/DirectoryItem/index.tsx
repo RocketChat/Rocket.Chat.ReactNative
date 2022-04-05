@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, View, ViewStyle } from 'react-native';
 
 import Touch from '../../utils/touch';
-import Avatar from '../../containers/Avatar';
-import RoomTypeIcon from '../../containers/RoomTypeIcon';
+import Avatar from '../Avatar';
+import RoomTypeIcon from '../RoomTypeIcon';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';
