@@ -376,7 +376,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	renderItem = ({ item }: { item: IChat }) => {
 		const { serverInfo } = this.state;
-		const { theme } = this.props;
 		let description;
 		switch (item.t) {
 			case 'c':
@@ -400,7 +399,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				type={item.prid ? 'discussion' : item.t}
 				onPress={() => this.shareMessage(item)}
 				testID={`share-extension-item-${item.name}`}
-				theme={theme}
 			/>
 		);
 	};
