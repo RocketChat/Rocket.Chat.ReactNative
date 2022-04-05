@@ -9,7 +9,7 @@ interface IKeyboardViewProps extends KeyboardAwareScrollViewProps {
 	children: React.ReactElement[] | React.ReactElement;
 }
 
-const KeyboardView = (props: IKeyboardViewProps) => {
+const KeyboardView = React.memo((props: IKeyboardViewProps) => {
 	const { style, contentContainerStyle, scrollEnabled, keyboardVerticalOffset, children } = props;
 	return (
 		<KeyboardAwareScrollView
@@ -22,6 +22,6 @@ const KeyboardView = (props: IKeyboardViewProps) => {
 			{children}
 		</KeyboardAwareScrollView>
 	);
-};
+});
 
 export default KeyboardView;
