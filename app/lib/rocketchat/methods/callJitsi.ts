@@ -1,8 +1,8 @@
-import { ISubscription } from '../../definitions';
-import { events, logEvent } from '../../utils/log';
-import { store } from '../auxStore';
-import Navigation from '../Navigation';
-import sdk from '../rocketchat';
+import { ISubscription } from '../../../definitions';
+import { events, logEvent } from '../../../utils/log';
+import { store } from '../../auxStore';
+import Navigation from '../../Navigation';
+import sdk from '../services/sdk';
 
 async function jitsiURL({ room }: { room: ISubscription }) {
 	const { settings } = store.getState();
@@ -46,10 +46,8 @@ export function callJitsiWithoutServer(path: string): void {
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio: false });
 }
 
-async function callJitsi(room: ISubscription, onlyAudio = false): Promise<void> {
+export async function callJitsi(room: ISubscription, onlyAudio = false): Promise<void> {
 	logEvent(onlyAudio ? events.RA_JITSI_AUDIO : events.RA_JITSI_VIDEO);
 	const url = await jitsiURL({ room });
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio, rid: room?.rid });
 }
-
-export default callJitsi;

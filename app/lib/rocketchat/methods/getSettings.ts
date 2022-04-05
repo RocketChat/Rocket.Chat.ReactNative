@@ -1,17 +1,17 @@
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { addSettings, clearSettings } from '../../actions/settings';
-import { DEFAULT_AUTO_LOCK } from '../../constants/localAuthentication';
-import settings from '../../constants/settings';
-import { IPreparedSettings, ISettingsIcon } from '../../definitions';
-import fetch from '../../utils/fetch';
-import log from '../../utils/log';
-import { store as reduxStore } from '../auxStore';
-import database from '../database';
-import RocketChat from '../rocketchat';
-import sdk from '../rocketchat/services/sdk';
-import protectedFunction from './helpers/protectedFunction';
+import { addSettings, clearSettings } from '../../../actions/settings';
+import { DEFAULT_AUTO_LOCK } from '../../../constants/localAuthentication';
+import settings from '../../../constants/settings';
+import { IPreparedSettings, ISettingsIcon } from '../../../definitions';
+import fetch from '../../../utils/fetch';
+import log from '../../../utils/log';
+import { store as reduxStore } from '../../auxStore';
+import database from '../../database';
+import RocketChat from '..';
+import sdk from '../services/sdk';
+import protectedFunction from '../../methods/helpers/protectedFunction';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -136,12 +136,12 @@ export async function setSettings(): Promise<void> {
 }
 
 export function subscribeSettings(): void {
-	return RocketChat.subscribe('stream-notify-all', 'public-settings-changed');
+	return sdk.subscribe('stream-notify-all', 'public-settings-changed');
 }
 
 type IData = ISettingsIcon | IPreparedSettings;
 
-export default async function (): Promise<void> {
+export async function getSettings(): Promise<void> {
 	try {
 		const db = database.active;
 		const settingsParams = Object.keys(settings).filter(key => !loginSettings.includes(key));
