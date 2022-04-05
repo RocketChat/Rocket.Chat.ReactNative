@@ -12,7 +12,7 @@ import database from '../../lib/database';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
-import ServerItem from '../../presentation/ServerItem';
+import ServerItem from '../../containers/ServerItem';
 import * as HeaderButton from '../../containers/HeaderButton';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';

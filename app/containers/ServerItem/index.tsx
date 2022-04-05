@@ -4,7 +4,7 @@ import { Pressable, Text, View } from 'react-native';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
 import { IServerInfo } from '../../definitions';
-import Check from '../../containers/Check';
+import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../constants/colors';
 import { isIOS } from '../../utils/deviceInfo';
