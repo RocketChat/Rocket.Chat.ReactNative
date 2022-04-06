@@ -21,7 +21,6 @@ import { IApplicationState, IBaseScreen, IRoom, ISubscription, IUser, TSubscript
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import { E2E_ROOM_TYPES } from '../../lib/constants';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import RocketChat from '../../lib/rocketchat';
 import { compareServerVersion } from '../../lib/utils';
@@ -34,6 +33,7 @@ import Touch from '../../utils/touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
+import { E2E_ROOM_TYPES } from '../../constants';
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;

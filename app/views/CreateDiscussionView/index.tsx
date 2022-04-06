@@ -20,12 +20,12 @@ import { showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { events, logEvent } from '../../utils/log';
-import { E2E_ROOM_TYPES } from '../../lib/constants';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
 import { ICreateChannelViewProps, IResult, IError } from './interfaces';
 import { IApplicationState } from '../../definitions';
+import { E2E_ROOM_TYPES } from '../../constants';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	private channel: any;
