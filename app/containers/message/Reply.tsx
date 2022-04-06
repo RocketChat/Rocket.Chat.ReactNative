@@ -77,8 +77,6 @@ const styles = StyleSheet.create({
 		marginBottom: 4
 	},
 	image: {
-		// @ts-ignore TODO - check with the team, change this to undefined
-		width: null,
 		height: 200,
 		flex: 1,
 		borderTopLeftRadius: 4,

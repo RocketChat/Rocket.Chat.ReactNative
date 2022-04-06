@@ -21,6 +21,8 @@ const BaseButton = ({ accessibilityLabel, icon, color, ...props }: Partial<IBase
 		<BorderlessButton
 			{...props}
 			style={styles.actionButton}
+			// TODO: Review this accessibility params because they didn't exist in BorderlessButton
+			// https://docs.swmansion.com/react-native-gesture-handler/docs/api/components/buttons/
 			// @ts-ignore
 			accessibilityLabel={i18n.t(accessibilityLabel)}
 			accessibilityTraits='button'>
