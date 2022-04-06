@@ -276,8 +276,8 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Canned_Responses'),
 			headerTitleContainerStyle: {
-				left: null,
-				right: null
+				left: 0,
+				right: 0
 			}
 		};
 

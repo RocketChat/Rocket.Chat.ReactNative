@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Easing, Linking, StyleSheet, Text, View } from 'react-native';
+import { Animated, Easing, Linking, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 import { Base64 } from 'js-base64';
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -410,7 +410,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 		const { servicesHeight } = this.state;
 		const { services, separator } = this.props;
 		const { length } = Object.values(services);
-		const style = {
+		const style: Animated.AnimatedProps<ViewStyle> = {
 			overflow: 'hidden',
 			height: servicesHeight
 		};
