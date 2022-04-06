@@ -1,18 +1,7 @@
 import React from 'react';
 
-import { TUserStatus } from '../../definitions';
-import RoomTypeIcon from '../../containers/RoomTypeIcon';
-
-interface ITypeIcon {
-	type: string;
-	status: TUserStatus;
-	prid: string;
-	isGroupChat: boolean;
-	teamMain: boolean;
-	theme?: string;
-	size?: number;
-	style?: object;
-}
+import RoomTypeIcon from '../RoomTypeIcon';
+import { ITypeIcon } from './interfaces';
 
 const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain, size, style }: ITypeIcon) => (
 	<RoomTypeIcon

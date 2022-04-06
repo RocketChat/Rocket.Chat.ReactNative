@@ -7,25 +7,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import { DisplayMode } from '../../constants/constantDisplayMode';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
-
-interface ILeftActions {
-	theme: string;
-	transX: any;
-	isRead: boolean;
-	width: number;
-	onToggleReadPress(): void;
-	displayMode: string;
-}
-
-interface IRightActions {
-	theme: string;
-	transX: any;
-	favorite: boolean;
-	width: number;
-	toggleFav(): void;
-	onHidePress(): void;
-	displayMode: string;
-}
+import { ILeftActions, IRightActions } from './interfaces';
 
 const reverse = new Animated.Value(isRTL() ? -1 : 1);
 const CONDENSED_ICON_SIZE = 24;
@@ -44,7 +26,7 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
 
 	return (
-		<View style={[styles.actionsContainer, styles.actionLeftContainer]} pointerEvents='box-none'>
+		<View style={[styles.actionsContainer, styles.actionsLeftContainer]} pointerEvents='box-none'>
 			<Animated.View
 				style={[
 					styles.actionLeftButtonContainer,

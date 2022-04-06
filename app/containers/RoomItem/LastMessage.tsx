@@ -3,28 +3,12 @@ import { dequal } from 'dequal';
 
 import I18n from '../../i18n';
 import styles from './styles';
-import { MarkdownPreview } from '../../containers/markdown';
+import { MarkdownPreview } from '../markdown';
 import { themes } from '../../constants/colors';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants';
+import { ILastMessageComponent } from './interfaces';
 
-interface ILastMessage {
-	theme: string;
-	lastMessage: {
-		u: any;
-		pinned: boolean;
-		t: string;
-		attachments: any;
-		msg: string;
-		e2e: string;
-	};
-	type: string;
-	showLastMessage: boolean;
-	username: string;
-	useRealName: boolean;
-	alert: boolean;
-}
-
-const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }: Partial<ILastMessage>) => {
+const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }: Partial<ILastMessageComponent>) => {
 	if (!showLastMessage) {
 		return '';
 	}
@@ -64,7 +48,7 @@ const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }
 const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);
 
 const LastMessage = React.memo(
-	({ lastMessage, type, showLastMessage, username, alert, useRealName, theme }: ILastMessage) => (
+	({ lastMessage, type, showLastMessage, username, alert, useRealName, theme }: ILastMessageComponent) => (
 		<MarkdownPreview
 			msg={formatMsg({
 				lastMessage,

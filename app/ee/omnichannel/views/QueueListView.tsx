@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
 import I18n from '../../../i18n';
-import RoomItem, { ROW_HEIGHT } from '../../../presentation/RoomItem';
+import RoomItem, { ROW_HEIGHT } from '../../../containers/RoomItem';
 import { MAX_SIDEBAR_WIDTH } from '../../../constants/tablet';
 import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { getUserSelector } from '../../../selectors/login';

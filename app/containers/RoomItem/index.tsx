@@ -5,36 +5,10 @@ import I18n from '../../i18n';
 import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
 import { formatDate } from '../../utils/room';
 import RoomItem from './RoomItem';
-import { TUserStatus } from '../../definitions';
+import { ISubscription, TUserStatus } from '../../definitions';
+import { IRoomItemContainer } from './interfaces';
 
 export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
-interface IRoomItemContainerProps {
-	item: any;
-	showLastMessage: boolean;
-	id: string;
-	onPress: Function;
-	onLongPress: Function;
-	username: string;
-	avatarSize: number;
-	width: number;
-	status: TUserStatus;
-	toggleFav(): void;
-	toggleRead(): void;
-	hideChannel(): void;
-	useRealName: boolean;
-	getUserPresence: Function;
-	connected: boolean;
-	theme: string;
-	isFocused: boolean;
-	getRoomTitle: Function;
-	getRoomAvatar: Function;
-	getIsGroupChat: Function;
-	getIsRead: Function;
-	swipeEnabled: boolean;
-	autoJoin: boolean;
-	showAvatar: boolean;
-	displayMode: string;
-}
 
 const attrs = [
 	'width',
@@ -49,12 +23,10 @@ const attrs = [
 	'displayMode'
 ];
 
-class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
-	private mounted: boolean;
+class RoomItemContainer extends React.Component<IRoomItemContainer, any> {
+	private roomSubscription: ISubscription | undefined;
 
-	private roomSubscription: any;
-
-	static defaultProps: Partial<IRoomItemContainerProps> = {
+	static defaultProps: Partial<IRoomItemContainer> = {
 		avatarSize: 48,
 		status: 'offline',
 		getUserPresence: () => {},
@@ -65,26 +37,24 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 		swipeEnabled: true
 	};
 
-	constructor(props: IRoomItemContainerProps) {
+	constructor(props: IRoomItemContainer) {
 		super(props);
-		this.mounted = false;
 		this.init();
 	}
 
 	componentDidMount() {
-		this.mounted = true;
 		const { connected, getUserPresence, id } = this.props;
 		if (connected && this.isDirect) {
 			getUserPresence(id);
 		}
 	}
 
-	shouldComponentUpdate(nextProps: any) {
-		const { props }: any = this;
+	shouldComponentUpdate(nextProps: IRoomItemContainer) {
+		const { props } = this;
 		return !attrs.every(key => props[key] === nextProps[key]);
 	}
 
-	componentDidUpdate(prevProps: any) {
+	componentDidUpdate(prevProps: IRoomItemContainer) {
 		const { connected, getUserPresence, id } = this.props;
 		if (prevProps.connected !== connected && connected && this.isDirect) {
 			getUserPresence(id);
@@ -106,7 +76,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 		const {
 			item: { t },
 			id
-		}: any = this.props;
+		} = this.props;
 		return t === 'd' && id && !this.isGroupChat;
 	}
 
@@ -177,7 +147,6 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 		}
 
 		return (
-			// @ts-ignore
 			<RoomItem
 				name={name}
 				avatar={avatar}
@@ -197,7 +166,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				type={item.t}
 				theme={theme}
 				isFocused={isFocused}
-				size={avatarSize}
+				avatarSize={avatarSize}
 				prid={item.prid}
 				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}

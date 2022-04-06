@@ -10,7 +10,7 @@ import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';
-import { ROW_HEIGHT } from '../../presentation/RoomItem';
+import { ROW_HEIGHT } from '../RoomItem';
 import { goRoom } from '../../utils/goRoom';
 import Navigation from '../../lib/Navigation';
 import { useOrientation } from '../../dimensions';

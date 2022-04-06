@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react-native';
 import { Provider } from 'react-redux';
 
 import { themes } from '../../app/constants/colors';
-import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
+import RoomItemComponent from '../../app/containers/RoomItem/RoomItem';
 import { longText } from '../utils';
 import { DisplayMode } from '../../app/constants/constantDisplayMode';
 import { store } from './index';

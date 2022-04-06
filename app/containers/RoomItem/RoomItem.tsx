@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import styles from './styles';
 import Wrapper from './Wrapper';
-import UnreadBadge from '../UnreadBadge';
+import UnreadBadge from '../../presentation/UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import Title from './Title';
@@ -12,56 +12,7 @@ import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
 import { DisplayMode } from '../../constants/constantDisplayMode';
-import { TUserStatus } from '../../definitions';
-
-interface IRoomItem {
-	rid: string;
-	type: string;
-	prid: string;
-	name: string;
-	avatar: string;
-	showLastMessage: boolean;
-	username: string;
-	avatarSize: number;
-	testID: string;
-	width: number;
-	status: TUserStatus;
-	useRealName: boolean;
-	theme: string;
-	isFocused: boolean;
-	isGroupChat: boolean;
-	isRead: boolean;
-	teamMain: boolean;
-	date: string;
-	accessibilityLabel: string;
-	lastMessage: {
-		u: any;
-		pinned: boolean;
-		t: string;
-		attachments: any;
-		msg: string;
-		e2e: string;
-	};
-	favorite: boolean;
-	alert: boolean;
-	hideUnreadStatus: boolean;
-	unread: number;
-	userMentions: number;
-	groupMentions: number;
-	tunread: [];
-	tunreadUser: [];
-	tunreadGroup: [];
-	swipeEnabled: boolean;
-	toggleFav(): void;
-	toggleRead(): void;
-	onPress(): void;
-	onLongPress(): void;
-	hideChannel(): void;
-	autoJoin: boolean;
-	size?: number;
-	showAvatar: boolean;
-	displayMode: string;
-}
+import { IRoomItem } from './interfaces';
 
 const RoomItem = ({
 	rid,
