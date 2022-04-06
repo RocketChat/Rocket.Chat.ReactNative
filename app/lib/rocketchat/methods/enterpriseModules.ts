@@ -1,9 +1,9 @@
 import sdk from '../services/sdk';
-import { compareServerVersion } from '../../utils';
 import { store as reduxStore } from '../../auxStore';
 import database from '../../database';
 import log from '../../../utils/log';
 import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '../../../actions/enterpriseModules';
+import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
 
 const LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE = 'omnichannel-mobile-enterprise';
 const LICENSE_LIVECHAT_ENTERPRISE = 'livechat-enterprise';
