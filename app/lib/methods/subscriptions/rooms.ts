@@ -8,7 +8,7 @@ import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
 import log from '../../../utils/log';
 import random from '../../../utils/random';
-import { store } from '../../auxStore';
+import { store } from '../../store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';

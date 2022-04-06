@@ -1,6 +1,6 @@
 import sdk from '../services/sdk';
 import { compareServerVersion } from '../../utils';
-import { store as reduxStore } from '../../auxStore';
+import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
 import log from '../../../utils/log';
 import { clearEnterpriseModules, setEnterpriseModules as setEnterpriseModulesAction } from '../../../actions/enterpriseModules';

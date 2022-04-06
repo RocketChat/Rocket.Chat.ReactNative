@@ -1,9 +1,9 @@
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import reducers from '../reducers';
-import sagas from '../sagas';
-import applyAppStateMiddleware from './appStateMiddleware';
+import reducers from '../../reducers';
+import sagas from '../../sagas';
+import applyAppStateMiddleware from '../appStateMiddleware';
 
 let sagaMiddleware;
 let enhancers;

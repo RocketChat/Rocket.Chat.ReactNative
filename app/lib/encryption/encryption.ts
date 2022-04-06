@@ -9,7 +9,7 @@ import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import Deferred from '../../utils/deferred';
 import log from '../../utils/log';
-import { store } from '../auxStore';
+import { store } from '../store/auxStore';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,

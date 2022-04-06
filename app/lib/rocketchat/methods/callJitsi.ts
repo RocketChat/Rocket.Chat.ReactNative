@@ -1,6 +1,6 @@
 import { ISubscription } from '../../../definitions';
 import { events, logEvent } from '../../../utils/log';
-import { store } from '../../auxStore';
+import { store } from '../../store/auxStore';
 import Navigation from '../../Navigation';
 import sdk from '../services/sdk';
 

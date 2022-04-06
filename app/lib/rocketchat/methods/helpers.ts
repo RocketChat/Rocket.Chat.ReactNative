@@ -2,7 +2,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
 import log from '../../../utils/log';
-import { store as reduxStore } from '../../auxStore';
+import { store as reduxStore } from '../../store/auxStore';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../../constants';
 import defaultSettings from '../../../constants/settings';
 import database from '../../database';

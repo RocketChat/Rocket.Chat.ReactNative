@@ -3,7 +3,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { IActiveUsers } from '../../../reducers/activeUsers';
 import { compareServerVersion } from '../../utils';
-import { store as reduxStore } from '../../auxStore';
+import { store as reduxStore } from '../../store/auxStore';
 import { setActiveUsers } from '../../../actions/activeUsers';
 import { setUser } from '../../../actions/login';
 import database from '../../database';

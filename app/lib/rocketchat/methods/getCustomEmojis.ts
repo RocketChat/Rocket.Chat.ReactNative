@@ -3,7 +3,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { ICustomEmojis } from '../../../reducers/customEmojis';
 import { compareServerVersion } from '../../utils';
-import { store as reduxStore } from '../../auxStore';
+import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
 import log from '../../../utils/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../../actions/customEmojis';

@@ -12,7 +12,7 @@ import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction
 import { deepLinkingOpen } from './actions/deepLinking';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import { initializePushNotifications, onNotification } from './notifications/push';
-import store from './lib/createStore';
+import store from './lib/store';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './utils/log';
 import { ThemeContext, TSupportedThemes } from './theme';
 import { DimensionsContext } from './dimensions';
@@ -31,7 +31,7 @@ import debounce from './utils/debounce';
 import { isFDroidBuild } from './constants/environment';
 import { IThemePreference } from './definitions/ITheme';
 import { ICommand } from './definitions/ICommand';
-import { initStore } from './lib/auxStore';
+import { initStore } from './lib/store/auxStore';
 import { colors, themes } from './constants/colors';
 
 RNScreens.enableScreens();
