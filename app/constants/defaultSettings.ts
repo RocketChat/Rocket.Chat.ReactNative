@@ -1,4 +1,4 @@
-export default {
+export const defaultSettings = {
 	Accounts_AllowEmailChange: {
 		type: 'valueAsBoolean'
 	},
