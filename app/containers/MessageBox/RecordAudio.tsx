@@ -199,7 +199,7 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 					style={styles.actionButton}
 					testID='messagebox-send-audio'
 					// TODO: Review this accessibility params because they didn't exist in BorderlessButton
-					// https://docs.swmansion.com/react-native-gesture-handler/docs/api/components/buttons/
+					// https://docs.swmansion.com/react-native-gesture-handler/docs/1.10.3/api/components/buttons The first important session
 					// @ts-ignore
 					accessibilityLabel={I18n.t('Send_audio_message')}
 					accessibilityTraits='button'>
