@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 
-import { themes } from '../../lib/constants/colors';
+import { themes } from '../../lib/constants';
 
 export * from './animations';
 

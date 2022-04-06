@@ -15,7 +15,7 @@ import EventEmitter from '../utils/events';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { ImageViewer } from '../presentation/ImageViewer';
-import { themes } from '../lib/constants/colors';
+import { themes } from '../lib/constants';
 import { formatAttachmentUrl } from '../lib/utils';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
