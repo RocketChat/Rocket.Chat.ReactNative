@@ -28,10 +28,6 @@ const SetUsernameStack = () => (
 // App
 const Stack = createStackNavigator<StackParamList>();
 const App = React.memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
-	if (!root) {
-		return null;
-	}
-
 	const { theme } = React.useContext(ThemeContext);
 	const navTheme = navigationTheme(theme);
 
@@ -41,6 +37,10 @@ const App = React.memo(({ root, isMasterDetail }: { root: string; isMasterDetail
 		Navigation.routeNameRef.current = currentRouteName;
 		setCurrentScreen(currentRouteName);
 	}, []);
+
+	if (!root) {
+		return null;
+	}
 
 	return (
 		<NavigationContainer
