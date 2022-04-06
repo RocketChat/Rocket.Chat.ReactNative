@@ -28,7 +28,7 @@ import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
-import { isFDroidBuild } from './constants/environment';
+import { isFDroidBuild } from './constants';
 import { IThemePreference } from './definitions/ITheme';
 import { ICommand } from './definitions/ICommand';
 import { initStore } from './lib/auxStore';

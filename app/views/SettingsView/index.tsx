@@ -10,7 +10,7 @@ import { appStart } from '../../actions/app';
 import { logout } from '../../actions/login';
 import { selectServerRequest } from '../../actions/server';
 import { themes } from '../../constants/colors';
-import { isFDroidBuild } from '../../constants/environment';
+import { isFDroidBuild } from '../../constants';
 import { APP_STORE_LINK, FDROID_MARKET_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../constants/links';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
