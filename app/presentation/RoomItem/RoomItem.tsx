@@ -138,7 +138,7 @@ const RoomItem = ({
 				<>
 					<View style={styles.titleContainer}>
 						{showAvatar ? (
-							<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} theme={theme} teamMain={teamMain} />
+							<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} teamMain={teamMain} />
 						) : null}
 						<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 						{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
@@ -171,7 +171,6 @@ const RoomItem = ({
 						prid={prid}
 						status={status}
 						isGroupChat={isGroupChat}
-						theme={theme}
 						teamMain={teamMain}
 						size={22}
 						style={{ marginRight: 8 }}

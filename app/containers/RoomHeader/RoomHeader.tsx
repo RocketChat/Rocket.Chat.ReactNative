@@ -7,7 +7,7 @@ import { themes } from '../../constants/colors';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { TUserStatus } from '../../definitions';
-import { TSupportedThemes, useTheme } from '../../theme';
+import { useTheme } from '../../theme';
 
 const HIT_SLOP = {
 	top: 5,
@@ -67,7 +67,6 @@ interface IRoomHeader {
 	tmid: string;
 	teamMain: boolean;
 	status: TUserStatus;
-	theme: TSupportedThemes;
 	usersTyping: [];
 	isGroupChat: boolean;
 	parentTitle: string;
@@ -152,13 +151,7 @@ const Header = React.memo(
 		if (tmid) {
 			renderFunc = () => (
 				<View style={styles.titleContainer}>
-					<RoomTypeIcon
-						type={prid ? 'discussion' : type}
-						isGroupChat={isGroupChat}
-						status={status}
-						teamMain={teamMain}
-						theme={theme}
-					/>
+					<RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />
 					<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
 						{parentTitle}
 					</Text>
@@ -178,13 +171,7 @@ const Header = React.memo(
 				hitSlop={HIT_SLOP}>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
-						<RoomTypeIcon
-							type={prid ? 'discussion' : type}
-							isGroupChat={isGroupChat}
-							status={status}
-							teamMain={teamMain}
-							theme={theme}
-						/>
+						<RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />
 					)}
 					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
 				</View>

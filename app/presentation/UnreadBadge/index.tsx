@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	unreadNumberContainerNormal: {
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
 });
 
 interface IUnreadBadge {
-	theme: TSupportedThemes;
 	unread?: number;
 	userMentions?: number;
 	groupMentions?: number;
@@ -42,10 +41,11 @@ interface IUnreadBadge {
 }
 
 const UnreadBadge = React.memo(
-	({ theme, unread, userMentions, groupMentions, style, tunread, tunreadUser, tunreadGroup, small }: IUnreadBadge) => {
+	({ unread, userMentions, groupMentions, style, tunread, tunreadUser, tunreadGroup, small }: IUnreadBadge) => {
 		if ((!unread || unread <= 0) && !tunread?.length) {
 			return null;
 		}
+		const { theme } = useTheme();
 		const { backgroundColor, color } = getUnreadStyle({
 			theme,
 			unread,
@@ -88,4 +88,4 @@ const UnreadBadge = React.memo(
 	}
 );
 
-export default withTheme(UnreadBadge);
+export default UnreadBadge;

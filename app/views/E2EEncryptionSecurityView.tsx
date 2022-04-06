@@ -47,7 +47,7 @@ interface IE2EEncryptionSecurityViewState {
 }
 
 interface IE2EEncryptionSecurityViewProps {
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	user: {
 		roles: string[];
 		id: string;
@@ -129,10 +129,10 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 		return (
 			<>
 				<List.Section>
-					<Text style={[styles.title, { color: themes[theme].titleColor }]}>
+					<Text style={[styles.title, { color: themes[theme!].headerTitleColor }]}>
 						{I18n.t('E2E_encryption_change_password_title')}
 					</Text>
-					<Text style={[styles.description, { color: themes[theme].bodyText }]}>
+					<Text style={[styles.description, { color: themes[theme!].bodyText }]}>
 						{I18n.t('E2E_encryption_change_password_description')}
 					</Text>
 					<TextInput
@@ -163,15 +163,17 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: themes[theme!].backgroundColor }}>
 				<StatusBar />
 				<List.Container>
 					<View style={styles.container}>
 						{this.renderChangePassword()}
 
 						<List.Section>
-							<Text style={[styles.title, { color: themes[theme].titleColor }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
-							<Text style={[styles.description, { color: themes[theme].bodyText }]}>
+							<Text style={[styles.title, { color: themes[theme!].headerTitleColor }]}>
+								{I18n.t('E2E_encryption_reset_title')}
+							</Text>
+							<Text style={[styles.description, { color: themes[theme!].bodyText }]}>
 								{I18n.t('E2E_encryption_reset_description')}
 							</Text>
 							<Button
@@ -179,7 +181,7 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 								title={I18n.t('E2E_encryption_reset_button')}
 								theme={theme}
 								type='secondary'
-								backgroundColor={themes[theme].chatComponentBackground}
+								backgroundColor={themes[theme!].chatComponentBackground}
 								testID='e2e-encryption-security-view-reset-key'
 							/>
 						</List.Section>

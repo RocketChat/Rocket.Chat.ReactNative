@@ -4,6 +4,7 @@ import parse from 'url-parse';
 
 import UserPreferences from '../lib/userPreferences';
 import { themes } from '../constants/colors';
+import { TSupportedThemes } from '../theme';
 
 export const DEFAULT_BROWSER_KEY = 'DEFAULT_BROWSER_KEY';
 
@@ -35,7 +36,7 @@ const appSchemeURL = (url: string, browser: string): string => {
 	return schemeUrl;
 };
 
-const openLink = async (url: string, theme = 'light'): Promise<void> => {
+const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise<void> => {
 	try {
 		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
 
