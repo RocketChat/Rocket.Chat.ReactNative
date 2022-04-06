@@ -2,7 +2,7 @@ import { Linking } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import parse from 'url-parse';
 
-import UserPreferences from '../lib/userPreferences';
+import UserPreferences from '../lib/methods/userPreferences';
 import { themes } from '../constants/colors';
 
 export const DEFAULT_BROWSER_KEY = 'DEFAULT_BROWSER_KEY';

@@ -13,7 +13,7 @@ import { LISTENER } from '../containers/Toast';
 import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
-import UserPreferences from '../lib/userPreferences';
+import UserPreferences from '../lib/methods/userPreferences';
 import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import EventEmitter from '../utils/events';
