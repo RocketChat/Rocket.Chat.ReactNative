@@ -11,7 +11,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import UserPreferences from '../lib/userPreferences';
 import { events, logEvent } from '../utils/log';
 import { IThemePreference, TThemeMode, TDarkLevel } from '../definitions/ITheme';
-import { THEME_PREFERENCES_KEY } from '../lib/constants';
+import { THEME_PREFERENCES_KEY } from '../constants';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
