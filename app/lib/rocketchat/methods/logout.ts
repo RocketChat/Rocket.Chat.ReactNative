@@ -7,7 +7,7 @@ import { extractHostname } from '../../../utils/server';
 import { BASIC_AUTH_KEY } from '../../../utils/fetch';
 import database, { getDatabase } from '../../database';
 import RocketChat from '..';
-import { useSsl } from '../../../utils/url';
+import { checkUseSsl } from '../../../utils/url';
 import log from '../../../utils/log';
 import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../../constants';
 import UserPreferences from '../../userPreferences';
@@ -80,7 +80,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 		if (userId) {
 			const resume = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${userId}`);
 
-			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: checkUseSsl(server) });
 			await sdk.login({ resume });
 
 			const token = getDeviceToken();

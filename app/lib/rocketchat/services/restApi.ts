@@ -760,7 +760,7 @@ export const validateInviteToken = (token: string): any =>
 	// @ts-ignore
 	sdk.post('validateInviteToken', { token });
 
-export const useInviteToken = (token: string): any =>
+export const inviteToken = (token: string): any =>
 	// RC 2.4.0
 	// TODO: missing definitions from server
 	// @ts-ignore
