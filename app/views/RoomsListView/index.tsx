@@ -36,7 +36,6 @@ import {
 	handleCommandShowPreferences,
 	IKeyCommandEvent
 } from '../../commands';
-import { MAX_SIDEBAR_WIDTH } from '../../constants/tablet';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -52,7 +51,7 @@ import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
 import { RoomTypes } from '../../lib/methods/roomTypeToApiType';
-import { E2E_BANNER_TYPE, DisplayMode, SortBy } from '../../constants';
+import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH } from '../../constants';
 
 interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
 	[key: string]: any;

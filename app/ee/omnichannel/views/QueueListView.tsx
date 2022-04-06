@@ -7,7 +7,6 @@ import { dequal } from 'dequal';
 
 import I18n from '../../../i18n';
 import RoomItem, { ROW_HEIGHT } from '../../../presentation/RoomItem';
-import { MAX_SIDEBAR_WIDTH } from '../../../constants/tablet';
 import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { getUserSelector } from '../../../selectors/login';
 import { withTheme } from '../../../theme';
@@ -21,7 +20,7 @@ import RocketChat from '../../../lib/rocketchat';
 import { events, logEvent } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
-import { DisplayMode } from '../../../constants';
+import { DisplayMode, MAX_SIDEBAR_WIDTH } from '../../../constants';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { TSettingsValues } from '../../../reducers/settings';
