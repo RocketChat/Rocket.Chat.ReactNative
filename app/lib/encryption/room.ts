@@ -21,7 +21,7 @@ import {
 } from './utils';
 import { Encryption } from './index';
 import { IUser } from '../../definitions/IUser';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
 
 export default class EncryptionRoom {
 	ready: boolean;

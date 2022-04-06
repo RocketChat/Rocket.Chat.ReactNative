@@ -3,7 +3,7 @@ import { StyleSheet, Text } from 'react-native';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';

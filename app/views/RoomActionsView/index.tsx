@@ -8,7 +8,6 @@ import { Observable, Subscription } from 'rxjs';
 
 import { closeRoom, leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -33,7 +32,7 @@ import Touch from '../../utils/touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
-import { E2E_ROOM_TYPES } from '../../constants';
+import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;

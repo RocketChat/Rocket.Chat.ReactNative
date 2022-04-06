@@ -12,7 +12,7 @@ import log from '../../../utils/log';
 import UserPreferences from '../../userPreferences';
 import { ICertificate, IRocketChat } from '../../../definitions';
 import sdk from '../services/sdk';
-import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../../../constants';
+import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../../constants';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);

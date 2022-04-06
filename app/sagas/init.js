@@ -1,7 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 
-import { BIOMETRY_ENABLED_KEY } from '../constants';
+import { BIOMETRY_ENABLED_KEY } from '../lib/constants';
 import UserPreferences from '../lib/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';

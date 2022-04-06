@@ -20,7 +20,7 @@ import {
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS
-} from '../../constants';
+} from '../constants';
 
 class Encryption {
 	ready: boolean;

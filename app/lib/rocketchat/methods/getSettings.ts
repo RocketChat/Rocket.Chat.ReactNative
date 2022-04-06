@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { addSettings, clearSettings } from '../../../actions/settings';
-import { DEFAULT_AUTO_LOCK, defaultSettings } from '../../../constants';
+import { DEFAULT_AUTO_LOCK, defaultSettings } from '../../constants';
 import { IPreparedSettings, ISettingsIcon } from '../../../definitions';
 import fetch from '../../../utils/fetch';
 import log from '../../../utils/log';

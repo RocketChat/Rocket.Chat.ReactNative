@@ -27,11 +27,11 @@ import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
-import { isFDroidBuild, MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants';
+import { isFDroidBuild, MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './lib/constants';
 import { IThemePreference } from './definitions/ITheme';
 import { ICommand } from './definitions/ICommand';
 import { initStore } from './lib/auxStore';
-import { colors, themes } from './constants/colors';
+import { colors, themes } from './lib/constants/colors';
 
 RNScreens.enableScreens();
 initStore(store);

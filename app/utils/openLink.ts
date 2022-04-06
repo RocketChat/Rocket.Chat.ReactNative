@@ -3,7 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import parse from 'url-parse';
 
 import UserPreferences from '../lib/userPreferences';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants/colors';
 
 export const DEFAULT_BROWSER_KEY = 'DEFAULT_BROWSER_KEY';
 

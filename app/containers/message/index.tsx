@@ -11,7 +11,7 @@ import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, TAnyMessageModel } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
-import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;

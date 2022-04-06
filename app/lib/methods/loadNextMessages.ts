@@ -4,7 +4,7 @@ import orderBy from 'lodash/orderBy';
 
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
-import { MessageTypeLoad } from '../../constants';
+import { MessageTypeLoad } from '../constants';
 import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
 import { TMessageModel } from '../../definitions';

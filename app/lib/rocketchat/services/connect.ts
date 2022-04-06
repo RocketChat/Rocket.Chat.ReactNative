@@ -23,7 +23,7 @@ import { connectRequest, connectSuccess, disconnect as disconnectAction } from '
 import { updatePermission } from '../../../actions/permissions';
 import EventEmitter from '../../../utils/events';
 import { updateSettings } from '../../../actions/settings';
-import { MIN_ROCKETCHAT_VERSION, defaultSettings } from '../../../constants';
+import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../../constants';
 
 interface IServices {
 	[index: string]: string | boolean;

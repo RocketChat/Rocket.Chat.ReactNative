@@ -32,7 +32,7 @@ import sdk from '../../rocketchat/services/sdk';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
-import { E2E_MESSAGE_TYPE } from '../../../constants';
+import { E2E_MESSAGE_TYPE } from '../../constants';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
