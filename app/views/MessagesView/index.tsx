@@ -201,6 +201,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				renderItem: (item: any) => (
 					<Message
 						{...renderItemCommonProps(item)}
+						theme={theme}
 						item={{
 							...item,
 							u: item.user,
