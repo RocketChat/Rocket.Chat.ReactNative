@@ -12,7 +12,7 @@ import { themes } from '../../constants/colors';
 import { useTheme } from '../../theme';
 import { ROW_HEIGHT } from '../../presentation/RoomItem';
 import { goRoom } from '../../utils/goRoom';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { useOrientation } from '../../dimensions';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
 

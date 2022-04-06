@@ -16,7 +16,7 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
 import RocketChat from '../../lib/rocketchat';
 import debounce from '../../utils/debounce';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { goRoom } from '../../utils/goRoom';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';

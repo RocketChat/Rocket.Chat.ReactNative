@@ -25,7 +25,7 @@ import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import Livechat from './Livechat';
 import Channel from './Channel';
 import Direct from './Direct';
