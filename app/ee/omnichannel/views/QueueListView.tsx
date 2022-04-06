@@ -21,7 +21,7 @@ import RocketChat from '../../../lib/rocketchat';
 import { events, logEvent } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
-import { DisplayMode } from '../../../constants/constantDisplayMode';
+import { DisplayMode } from '../../../constants';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { TSettingsValues } from '../../../reducers/settings';

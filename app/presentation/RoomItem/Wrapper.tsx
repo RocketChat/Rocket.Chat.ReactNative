@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { themes } from '../../constants/colors';
-import { DisplayMode } from '../../constants/constantDisplayMode';
+import { DisplayMode } from '../../constants';
 import IconOrAvatar from './IconOrAvatar';
 import styles from './styles';
 

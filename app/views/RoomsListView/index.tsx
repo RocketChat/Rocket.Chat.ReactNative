@@ -46,14 +46,13 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
 import { IApplicationState, IBaseScreen, ISubscription, IUser, RootEnum, TSubscriptionModel } from '../../definitions';
-import { DisplayMode, SortBy } from '../../constants/constantDisplayMode';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
 import { RoomTypes } from '../../lib/methods/roomTypeToApiType';
-import { E2E_BANNER_TYPE } from '../../constants';
+import { E2E_BANNER_TYPE, DisplayMode, SortBy } from '../../constants';
 
 interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
 	[key: string]: any;

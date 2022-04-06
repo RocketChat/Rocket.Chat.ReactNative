@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { themes } from '../../app/constants/colors';
 import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
 import { longText } from '../utils';
-import { DisplayMode } from '../../app/constants/constantDisplayMode';
+import { DisplayMode } from '../../app/constants';
 import { store } from './index';
 
 const baseUrl = 'https://open.rocket.chat';
