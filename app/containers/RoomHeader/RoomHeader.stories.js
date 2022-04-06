@@ -2,13 +2,15 @@
 import React from 'react';
 import { Dimensions, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
+import { Provider } from 'react-redux';
 
 import Header from '../Header';
 import { longText } from '../../../storybook/utils';
 import { ThemeContext } from '../../theme';
+import { store } from '../../../storybook/stories';
 import RoomHeaderComponent from './RoomHeader';
 
-const stories = storiesOf('RoomHeader', module);
+const stories = storiesOf('RoomHeader', module).addDecorator(story => <Provider store={store}>{story()}</Provider>);
 
 // TODO: refactor after react-navigation v6
 const HeaderExample = ({ title }) => (
