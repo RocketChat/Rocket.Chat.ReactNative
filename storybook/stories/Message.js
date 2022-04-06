@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/react-native';
 // import moment from 'moment';
 
 import MessageComponent from '../../app/containers/message/Message';
-import messagesStatus from '../../app/constants/messagesStatus';
+import { messagesStatus } from '../../app/constants';
 import MessageSeparator from '../../app/views/RoomView/Separator';
 import MessageContext from '../../app/containers/message/Context';
 import { themes } from '../../app/constants/colors';
