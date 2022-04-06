@@ -8,12 +8,12 @@ import * as Progress from 'react-native-progress';
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import styles from './styles';
-import { formatAttachmentUrl } from '../../lib/utils';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment } from '../../definitions';
 import { useTheme } from '../../theme';
+import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 
 interface IMessageButton {
 	children: React.ReactElement;
