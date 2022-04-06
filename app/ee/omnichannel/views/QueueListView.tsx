@@ -10,7 +10,7 @@ import RoomItem, { ROW_HEIGHT } from '../../../presentation/RoomItem';
 import { MAX_SIDEBAR_WIDTH } from '../../../constants/tablet';
 import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { getUserSelector } from '../../../selectors/login';
-import { withTheme } from '../../../theme';
+import { TSupportedThemes, withTheme } from '../../../theme';
 import { withDimensions } from '../../../dimensions';
 import SafeAreaView from '../../../containers/SafeAreaView';
 import { themes } from '../../../constants/colors';
@@ -44,7 +44,7 @@ interface IQueueListView extends INavigationOptions {
 	queued: IOmnichannelRoom[];
 	server: string;
 	useRealName?: TSettingsValues;
-	theme: string;
+	theme: TSupportedThemes;
 	showAvatar: any;
 	displayMode: DisplayMode;
 }

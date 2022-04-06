@@ -7,6 +7,7 @@ import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
 import { themes } from '../constants/colors';
 import { isIOS } from '../utils/deviceInfo';
+import { TSupportedThemes } from '../theme';
 
 const styles = StyleSheet.create({
 	button: {
@@ -47,7 +48,7 @@ interface IUserItem {
 	onLongPress?: () => void;
 	style?: StyleProp<ViewStyle>;
 	icon?: string | null;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, theme }: IUserItem) => (

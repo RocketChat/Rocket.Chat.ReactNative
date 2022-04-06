@@ -1,7 +1,7 @@
 import React from 'react';
 import { Animated, Modal, StyleSheet, View } from 'react-native';
 
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../constants/colors';
 
 const styles = StyleSheet.create({
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
 interface ILoadingProps {
 	visible: boolean;
-	theme?: string;
+	theme: TSupportedThemes;
 }
 
 interface ILoadingState {
@@ -102,7 +102,7 @@ class Loading extends React.PureComponent<ILoadingProps, ILoadingState> {
 
 		const opacityAnimation = opacity.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0, themes[theme!].backdropOpacity],
+			outputRange: [0, themes[theme].backdropOpacity],
 			extrapolate: 'clamp'
 		});
 
@@ -113,7 +113,7 @@ class Loading extends React.PureComponent<ILoadingProps, ILoadingState> {
 						style={[
 							{
 								...StyleSheet.absoluteFillObject,
-								backgroundColor: themes[theme!].backdropColor,
+								backgroundColor: themes[theme].backdropColor,
 								opacity: opacityAnimation
 							}
 						]}

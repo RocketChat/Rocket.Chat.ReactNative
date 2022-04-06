@@ -18,7 +18,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
 import { themes } from '../../constants/colors';
 import { animateNextTransition } from '../../utils/layoutAnimation';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import RocketChat from '../../lib/rocketchat';
 import { sanitizeLikeString } from '../../lib/database/utils';
@@ -79,7 +79,7 @@ interface IShareListViewProps extends INavigationOption {
 	server: string;
 	token: string;
 	userId: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const permission: Rationale = {

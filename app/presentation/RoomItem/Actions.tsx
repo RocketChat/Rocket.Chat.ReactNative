@@ -7,9 +7,10 @@ import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../constants/colors';
 import { DisplayMode } from '../../constants/constantDisplayMode';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
+import { TSupportedThemes } from '../../theme';
 
 interface ILeftActions {
-	theme: string;
+	theme: TSupportedThemes;
 	transX: any;
 	isRead: boolean;
 	width: number;
@@ -18,7 +19,7 @@ interface ILeftActions {
 }
 
 interface IRightActions {
-	theme: string;
+	theme: TSupportedThemes;
 	transX: any;
 	favorite: boolean;
 	width: number;

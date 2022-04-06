@@ -4,7 +4,7 @@ import { StyleSheet, ViewStyle } from 'react-native';
 import { CustomIcon } from '../lib/Icons';
 import { STATUS_COLORS, themes } from '../constants/colors';
 import Status from './Status/Status';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { TUserStatus } from '../definitions';
 
 const styles = StyleSheet.create({
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 });
 
 interface IRoomTypeIcon {
-	theme?: string;
+	theme: TSupportedThemes;
 	type: string;
 	isGroupChat?: boolean;
 	teamMain?: boolean;
@@ -28,7 +28,7 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, team
 		return null;
 	}
 
-	const color = themes[theme!].titleText;
+	const color = themes[theme].titleText;
 	const iconStyle = [styles.icon, { color }, style];
 
 	if (type === 'd' && !isGroupChat) {

@@ -7,6 +7,7 @@ import { CustomIcon } from '../../../lib/Icons';
 import sharedStyles from '../../Styles';
 import Touch from '../../../utils/touch';
 import { TServerHistoryModel } from '../../../definitions/IServerHistory';
+import { TSupportedThemes } from '../../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
 
 interface IItem {
 	item: TServerHistoryModel;
-	theme: string;
+	theme: TSupportedThemes;
 	onPress(url: string): void;
 	onDelete(item: TServerHistoryModel): void;
 }

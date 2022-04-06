@@ -6,12 +6,13 @@ import Avatar from '../../containers/Avatar';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../constants/colors';
+import { TSupportedThemes } from '../../theme';
 
 export { ROW_HEIGHT };
 
 interface IDirectoryItemLabel {
 	text?: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IDirectoryItem {
@@ -24,7 +25,7 @@ interface IDirectoryItem {
 	style?: ViewStyle;
 	rightLabel?: string;
 	rid?: string;
-	theme: string;
+	theme: TSupportedThemes;
 	teamMain?: boolean;
 }
 

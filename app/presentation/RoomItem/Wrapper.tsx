@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import { TSupportedThemes } from '../../theme';
 import { themes } from '../../constants/colors';
 import { DisplayMode } from '../../constants/constantDisplayMode';
 import IconOrAvatar from './IconOrAvatar';
@@ -11,7 +12,7 @@ interface IWrapper {
 	avatar: string;
 	avatarSize: number;
 	type: string;
-	theme: string;
+	theme: TSupportedThemes;
 	rid: string;
 	children: JSX.Element;
 	displayMode: string;

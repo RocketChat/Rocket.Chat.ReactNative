@@ -5,6 +5,7 @@ import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
 import { getReadableVersion } from '../utils/deviceInfo';
 import I18n from '../i18n';
+import { TSupportedThemes } from '../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AppVersion = React.memo(({ theme }: { theme: string }) => (
+const AppVersion = React.memo(({ theme }: { theme: TSupportedThemes }) => (
 	<View style={styles.container}>
 		<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>
 			{I18n.t('Version_no', { version: '' })}

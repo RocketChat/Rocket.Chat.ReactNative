@@ -13,6 +13,7 @@ import Tag from './Tag';
 import I18n from '../../i18n';
 import { DisplayMode } from '../../constants/constantDisplayMode';
 import { TUserStatus } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
 
 interface IRoomItem {
 	rid: string;
@@ -27,7 +28,7 @@ interface IRoomItem {
 	width: number;
 	status: TUserStatus;
 	useRealName: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	isFocused: boolean;
 	isGroupChat: boolean;
 	isRead: boolean;

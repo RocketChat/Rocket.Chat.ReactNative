@@ -2,7 +2,7 @@ import React from 'react';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
 import I18n from '../i18n';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
@@ -59,7 +59,7 @@ interface ITheme {
 }
 
 interface IThemeViewProps {
-	theme: string;
+	theme: TSupportedThemes;
 	themePreferences: IThemePreference;
 	setTheme(newTheme?: IThemePreference): void;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../constants/colors';
-import { withTheme } from '../../../theme';
+import { TSupportedThemes, withTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
 import { CustomIcon } from '../../../lib/Icons';
 import sharedStyles from '../../Styles';
@@ -25,15 +25,15 @@ const styles = StyleSheet.create({
 interface IDropdownItem {
 	text: string;
 	iconName: string | null;
-	theme?: string;
+	theme: TSupportedThemes;
 	onPress: () => void;
 }
 
 const DropdownItem = React.memo(({ theme, onPress, iconName, text }: IDropdownItem) => (
-	<Touch theme={theme!} onPress={onPress} style={{ backgroundColor: themes[theme!].backgroundColor }}>
+	<Touch theme={theme} onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }}>
 		<View style={styles.container}>
-			<Text style={[styles.text, { color: themes[theme!].auxiliaryText }]}>{text}</Text>
-			{iconName ? <CustomIcon name={iconName} size={22} color={themes[theme!].auxiliaryText} /> : null}
+			<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>{text}</Text>
+			{iconName ? <CustomIcon name={iconName} size={22} color={themes[theme].auxiliaryText} /> : null}
 		</View>
 	</Touch>
 ));

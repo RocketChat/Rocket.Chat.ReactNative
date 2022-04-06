@@ -5,7 +5,7 @@ import EasyToast from 'react-native-easy-toast';
 import { themes } from '../constants/colors';
 import sharedStyles from '../views/Styles';
 import EventEmitter from '../utils/events';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	toast: {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 export const LISTENER = 'Toast';
 
 interface IToastProps {
-	theme?: string;
+	theme: TSupportedThemes;
 }
 
 class Toast extends React.Component<IToastProps, any> {
@@ -63,8 +63,8 @@ class Toast extends React.Component<IToastProps, any> {
 				ref={this.getToastRef}
 				// @ts-ignore
 				position='center'
-				style={[styles.toast, { backgroundColor: themes[theme!].toastBackground }]}
-				textStyle={[styles.text, { color: themes[theme!].buttonText }]}
+				style={[styles.toast, { backgroundColor: themes[theme].toastBackground }]}
+				textStyle={[styles.text, { color: themes[theme].buttonText }]}
 				opacity={0.9}
 			/>
 		);

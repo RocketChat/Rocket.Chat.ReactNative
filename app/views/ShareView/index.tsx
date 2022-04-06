@@ -13,7 +13,7 @@ import Loading from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
 import MessageBox from '../../containers/MessageBox';
@@ -45,7 +45,7 @@ interface IShareViewState {
 interface IShareViewProps {
 	navigation: StackNavigationProp<InsideStackParamList, 'ShareView'>;
 	route: RouteProp<InsideStackParamList, 'ShareView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	user: {
 		id: string;
 		username: string;

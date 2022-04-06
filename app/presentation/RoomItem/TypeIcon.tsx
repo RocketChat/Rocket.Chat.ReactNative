@@ -2,6 +2,7 @@ import React from 'react';
 
 import { TUserStatus } from '../../definitions';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
+import { TSupportedThemes } from '../../theme';
 
 interface ITypeIcon {
 	type: string;
@@ -9,12 +10,12 @@ interface ITypeIcon {
 	prid: string;
 	isGroupChat: boolean;
 	teamMain: boolean;
-	theme?: string;
+	theme: TSupportedThemes;
 	size?: number;
 	style?: object;
 }
 
-const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain, size, style }: ITypeIcon) => (
+const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain, size, style, theme }: ITypeIcon) => (
 	<RoomTypeIcon
 		type={prid ? 'discussion' : type}
 		isGroupChat={isGroupChat}
@@ -22,6 +23,7 @@ const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain, size, 
 		teamMain={teamMain}
 		size={size}
 		style={style}
+		theme={theme}
 	/>
 ));
 

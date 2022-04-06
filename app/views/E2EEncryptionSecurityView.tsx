@@ -8,7 +8,7 @@ import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import I18n from '../i18n';
 import log, { events, logEvent } from '../utils/log';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -47,7 +47,7 @@ interface IE2EEncryptionSecurityViewState {
 }
 
 interface IE2EEncryptionSecurityViewProps {
-	theme: string;
+	theme: TSupportedThemes;
 	user: {
 		roles: string[];
 		id: string;

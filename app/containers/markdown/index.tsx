@@ -24,12 +24,13 @@ import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { formatHyperlink } from './formatHyperlink';
+import { TSupportedThemes } from '../../theme';
 
 export { default as MarkdownPreview } from './Preview';
 
 interface IMarkdownProps {
 	msg?: string;
-	theme: string;
+	theme: TSupportedThemes;
 	md?: MarkdownAST;
 	mentions?: IUserMention[];
 	getCustomEmoji?: TGetCustomEmoji;

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	unreadNumberContainerNormal: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 });
 
 interface IUnreadBadge {
-	theme?: string;
+	theme: TSupportedThemes;
 	unread?: number;
 	userMentions?: number;
 	groupMentions?: number;

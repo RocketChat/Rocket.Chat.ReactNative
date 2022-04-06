@@ -6,11 +6,12 @@ import styles from './styles';
 import Navigation from '../../lib/Navigation';
 import I18n from '../../i18n';
 import { themes } from '../../constants/colors';
+import { TSupportedThemes } from '../../theme';
 
 interface ITable {
 	children: React.ReactElement | null;
 	numColumns: number;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const MAX_HEIGHT = 300;

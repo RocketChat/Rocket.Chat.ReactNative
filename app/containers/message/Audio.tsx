@@ -18,11 +18,12 @@ import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
 
 interface IButton {
 	loading: boolean;
 	paused: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	disabled?: boolean;
 	onPress: () => void;
 }
@@ -31,7 +32,7 @@ interface IMessageAudioProps {
 	file: IAttachment;
 	isReply?: boolean;
 	style?: StyleProp<TextStyle>[];
-	theme: string;
+	theme: TSupportedThemes;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
 }
