@@ -11,7 +11,7 @@ import { hasNotch, isTablet } from '../utils/deviceInfo';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../utils/events';
 import { CustomIcon } from '../lib/Icons';
-import { CHANGE_PASSCODE_EMITTER } from '../constants/localAuthentication';
+import { CHANGE_PASSCODE_EMITTER } from '../constants';
 import { themes } from '../constants/colors';
 
 const styles = StyleSheet.create({

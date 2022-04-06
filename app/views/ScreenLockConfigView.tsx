@@ -11,7 +11,7 @@ import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
 import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../utils/localAuthentication';
-import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
+import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';
 import { TServerModel } from '../definitions/IServer';

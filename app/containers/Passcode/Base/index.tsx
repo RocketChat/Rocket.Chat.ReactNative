@@ -10,7 +10,7 @@ import Button from './Button';
 import Dots from './Dots';
 import { TYPE } from '../constants';
 import { themes } from '../../../constants/colors';
-import { PASSCODE_LENGTH } from '../../../constants/localAuthentication';
+import { PASSCODE_LENGTH } from '../../../constants';
 import { useTheme } from '../../../theme';
 import LockIcon from './LockIcon';
 import Title from './Title';
