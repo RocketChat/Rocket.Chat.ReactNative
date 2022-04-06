@@ -24,7 +24,7 @@ import { updatePermission } from '../../../actions/permissions';
 import EventEmitter from '../../../utils/events';
 import { updateSettings } from '../../../actions/settings';
 import defaultSettings from '../../../constants/settings';
-import { MIN_ROCKETCHAT_VERSION } from '../../constants';
+import { MIN_ROCKETCHAT_VERSION } from '../../../constants';
 
 interface IServices {
 	[index: string]: string | boolean;
