@@ -24,7 +24,6 @@ import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../constants/colors';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../constants/messageTypeLoad';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
@@ -81,7 +80,7 @@ import {
 	TThreadModel
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../constants';
 
 const stateAttrsUpdate = [
 	'joined',

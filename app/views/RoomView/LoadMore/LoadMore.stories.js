@@ -7,7 +7,7 @@ import { longText } from '../../../../storybook/utils';
 import { ThemeContext } from '../../../theme';
 import { Message, MessageDecorator, StoryProvider } from '../../../../storybook/stories/Message';
 import { themes } from '../../../constants/colors';
-import { MessageTypeLoad } from '../../../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../../../constants';
 import LoadMore from './index';
 
 const stories = storiesOf('LoadMore', module);
