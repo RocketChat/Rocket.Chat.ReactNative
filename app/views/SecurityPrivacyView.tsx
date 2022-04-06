@@ -18,7 +18,7 @@ import {
 } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
 import { isFDroidBuild } from '../constants/environment';
-import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants';
+import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../constants';
 
 interface ISecurityPrivacyViewProps {
 	navigation: StackNavigationProp<any, 'SecurityPrivacyView'>;
