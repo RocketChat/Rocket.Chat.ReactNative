@@ -22,7 +22,7 @@ import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../utils/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { RootEnum } from '../definitions';
-import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -70,7 +70,7 @@ const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
+		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		SSLPinning.setCertificate(certificate, server);
 		yield put(inquiryReset());
 		yield put(encryptionStop());
@@ -149,7 +149,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
+		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		SSLPinning.setCertificate(certificate, server);
 
 		const serverInfo = yield getServerInfo({ server });

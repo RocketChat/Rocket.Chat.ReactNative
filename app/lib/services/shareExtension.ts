@@ -10,13 +10,13 @@ import RocketChat from '../rocketchat';
 import { encryptionInit } from '../../actions/encryption';
 import { store } from '../store/auxStore';
 import sdk from './sdk';
-import { TOKEN_KEY } from '../constants';
+import { CERTIFICATE_KEY, TOKEN_KEY } from '../constants';
 
 export async function shareExtensionInit(server: string) {
 	database.setShareDB(server);
 
 	try {
-		const certificate = UserPreferences.getString(`${RocketChat.CERTIFICATE_KEY}-${server}`);
+		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (SSLPinning && certificate) {
 			await SSLPinning.setCertificate(certificate, server);
 		}

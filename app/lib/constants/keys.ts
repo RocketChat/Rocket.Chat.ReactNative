@@ -21,3 +21,4 @@ export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 export const MIN_ROCKETCHAT_VERSION = '0.70.0';
 export const TOKEN_KEY = 'reactnativemeteor_usertoken';
 export const CURRENT_SERVER = 'currentServer';
+export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';

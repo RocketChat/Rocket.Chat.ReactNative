@@ -31,10 +31,7 @@ import * as connect from './services/connect';
 import * as restApis from './services/restApi';
 import * as shareExtension from './services/shareExtension';
 
-const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
-
 const RocketChat = {
-	CERTIFICATE_KEY,
 	...restApis,
 	...search,
 	...getPermalinks,

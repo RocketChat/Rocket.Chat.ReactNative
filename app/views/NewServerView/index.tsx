@@ -9,7 +9,7 @@ import parse from 'url-parse';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
-import { themes } from '../../lib/constants';
+import { CERTIFICATE_KEY, themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -19,7 +19,6 @@ import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import RocketChat from '../../lib/rocketchat';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
@@ -194,7 +193,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 			// Save info - SSL Pinning
 			if (certificate) {
-				UserPreferences.setString(`${RocketChat.CERTIFICATE_KEY}-${server}`, certificate);
+				UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
 			}
 
 			// Save info - HTTP Basic Authentication
