@@ -15,7 +15,7 @@ import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { IEmoji } from '../../definitions/IEmoji';
 

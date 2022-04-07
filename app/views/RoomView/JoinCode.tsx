@@ -8,7 +8,7 @@ import Button from '../../containers/Button';
 import TextInput from '../../containers/TextInput';
 import RocketChat from '../../lib/rocketchat';
 import sharedStyles from '../Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { IApplicationState } from '../../definitions';
 
 const styles = StyleSheet.create({

@@ -13,7 +13,7 @@ import log, { events, logEvent } from '../utils/log';
 import SearchBox from '../containers/SearchBox';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import Loading from '../containers/Loading';

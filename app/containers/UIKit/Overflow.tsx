@@ -5,7 +5,7 @@ import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../lib/Icons';
 import ActivityIndicator from '../ActivityIndicator';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { BUTTON_HIT_SLOP } from '../message/utils';
 import * as List from '../List';

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
 
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import EventEmitter from '../utils/events';
 import { withTheme } from '../theme';

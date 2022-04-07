@@ -4,7 +4,7 @@ import { StyleSheet, Text } from 'react-native';
 import RocketChat from '../../lib/rocketchat';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import { ISubscription } from '../../definitions';
 import { ILivechatVisitorModified } from './index';
