@@ -10,7 +10,7 @@ import TextInput from '../TextInput';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import { useTheme } from '../../theme';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import RocketChat from '../../lib/rocketchat';

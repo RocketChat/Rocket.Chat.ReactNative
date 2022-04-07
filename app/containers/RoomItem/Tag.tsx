@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import styles from './styles';
 

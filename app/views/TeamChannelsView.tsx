@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { deleteRoom } from '../actions/room';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import { withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';

@@ -12,7 +12,7 @@ import {
 import Touch from '../../utils/touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { isRTL } from '../../i18n';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
 
