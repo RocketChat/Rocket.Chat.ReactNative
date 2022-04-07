@@ -293,6 +293,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 				}
 				this.setState({ highlightedMessage: messageId });
 				this.clearHighlightedMessageTimeout();
+				// @ts-ignore
 				this.highlightedMessageTimeout = setTimeout(() => {
 					this.setState({ highlightedMessage: null });
 				}, 10000);
