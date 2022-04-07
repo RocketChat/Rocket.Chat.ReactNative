@@ -6,8 +6,8 @@ import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThre
 import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { Encryption } from '../encryption';
-import { generateLoadMoreId } from '../utils';
 import buildMessage from './helpers/buildMessage';
+import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 import protectedFunction from './helpers/protectedFunction';
 
 interface IUpdateMessages {

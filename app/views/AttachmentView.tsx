@@ -16,7 +16,6 @@ import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { ImageViewer } from '../presentation/ImageViewer';
 import { themes } from '../constants/colors';
-import { formatAttachmentUrl } from '../lib/utils';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
 import { isAndroid } from '../utils/deviceInfo';
@@ -26,6 +25,7 @@ import { getHeaderHeight } from '../containers/Header';
 import StatusBar from '../containers/StatusBar';
 import { InsideStackParamList } from '../stacks/types';
 import { IAttachment } from '../definitions/IAttachment';
+import { formatAttachmentUrl } from '../lib/methods/helpers/formatAttachmentUrl';
 
 const styles = StyleSheet.create({
 	container: {

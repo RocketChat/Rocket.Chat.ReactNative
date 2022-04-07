@@ -2,13 +2,13 @@ import { InteractionManager } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { IActiveUsers } from '../../../reducers/activeUsers';
-import { compareServerVersion } from '../../utils';
 import { store as reduxStore } from '../../auxStore';
 import { setActiveUsers } from '../../../actions/activeUsers';
 import { setUser } from '../../../actions/login';
 import database from '../../database';
 import { IRocketChat, IUser } from '../../../definitions';
 import sdk from '../services/sdk';
+import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
 
 export function subscribeUsersPresence(this: IRocketChat) {
 	const serverVersion = reduxStore.getState().server.version as string;

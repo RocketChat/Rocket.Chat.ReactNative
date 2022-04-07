@@ -11,12 +11,12 @@ import sharedStyles from '../../views/Styles';
 import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import { fileDownloadAndPreview } from '../../utils/fileDownload';
-import { formatAttachmentUrl } from '../../lib/utils';
 import { IAttachment } from '../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import RCActivityIndicator from '../ActivityIndicator';
 import Attachments from './Attachments';
 import { useTheme } from '../../theme';
+import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 
 const styles = StyleSheet.create({
 	button: {
