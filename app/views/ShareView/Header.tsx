@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import RocketChat from '../../lib/rocketchat';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';

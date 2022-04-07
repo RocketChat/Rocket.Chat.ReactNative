@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, View } from 'react-native';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { themedHeader } from '../../utils/navigation';
 import { isIOS, isTablet } from '../../utils/deviceInfo';
 import { useTheme } from '../../theme';

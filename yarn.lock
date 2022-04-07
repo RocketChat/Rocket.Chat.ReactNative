@@ -14836,13 +14836,10 @@ react-native-navigation-bar-color@2.0.1:
   resolved "https://registry.yarnpkg.com/react-native-navigation-bar-color/-/react-native-navigation-bar-color-2.0.1.tgz#ee2be25cc37105f7da355717b0a9a32c9c059ae6"
   integrity sha512-1kE/oxWt+HYjRxdZdvke9tJ365xaee5n3+euOQA1En8zQuSbOxiE4SYEGM7TeaWnmLJ0l37mRnPHaB2H4mGh0A==
 
-react-native-notifications@2.1.7:
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-2.1.7.tgz#ef836f6f8c12bdc5103598035590347811426a70"
-  integrity sha512-m9jfpobP1BpqG2w6pN2kKzKJt2bqrLIRS3QAuH0MU0dpRwib/4ehaAUKOiFj+xVCtuKHALpceb97FHuA0i4dkw==
-  dependencies:
-    core-js "^1.0.0"
-    uuid "^2.0.3"
+react-native-notifications@^4.2.4:
+  version "4.2.4"
+  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-4.2.4.tgz#0d686eb1576d3d9cb73dd9db1ee4f212e00f7d89"
+  integrity sha512-ffToxERa2bRUsXShCO19yXY6c6l4Esq7MqRKAb4mPSn+T428X7Je7WYvWOIOVw/BMGJ3R0lPrZk52vDpoYqanw==
 
 react-native-notifier@1.6.1:
   version "1.6.1"
@@ -17682,11 +17679,6 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
-
-uuid@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
-  integrity sha1-Z+LoY3lyFVMN/zGOW/nc6/1Hsho=
 
 uuid@^3.0.1, uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"

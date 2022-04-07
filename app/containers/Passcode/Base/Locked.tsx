@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Grid } from 'react-native-easy-grid';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { resetAttempts } from '../../../utils/localAuthentication';
 import { TYPE } from '../constants';
 import { getDiff, getLockedUntil } from '../utils';
