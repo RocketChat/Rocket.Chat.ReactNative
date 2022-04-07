@@ -5,7 +5,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import debounce from '../utils/debounce';
 import * as List from '../containers/List';
 import SearchBox from '../containers/SearchBox';

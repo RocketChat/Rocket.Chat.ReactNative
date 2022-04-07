@@ -12,7 +12,7 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';

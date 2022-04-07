@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { IEmoji } from '../../../definitions/IEmoji';
 import { useTheme } from '../../../theme';
 import Avatar from '../../Avatar';

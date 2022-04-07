@@ -7,7 +7,7 @@ import {
 } from '../../../containers/UIKit/interfaces';
 import { TRocketChat } from '../../../definitions';
 import { triggerAction } from '../../methods/actions';
-import Navigation from '../../Navigation';
+import Navigation from '../../navigation/appNavigation';
 
 export function triggerBlockAction(this: TRocketChat, options: ITriggerBlockAction) {
 	return triggerAction.call(this, { type: ActionTypes.ACTION, ...options });

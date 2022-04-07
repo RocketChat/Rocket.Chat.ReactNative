@@ -17,7 +17,6 @@ import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
 import { Encryption } from '../../encryption';
-import { E2E_MESSAGE_TYPE } from '../../constants';
 import updateMessages from '../updateMessages';
 import {
 	IMessage,
@@ -33,6 +32,7 @@ import sdk from '../../rocketchat/services/sdk';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
+import { E2E_MESSAGE_TYPE } from '../../constants';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 

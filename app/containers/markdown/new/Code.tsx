@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { Code as CodeProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import CodeLine from './CodeLine';
 

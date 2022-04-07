@@ -2,10 +2,9 @@ import React from 'react';
 
 import { useTheme } from '../../../theme';
 import * as List from '../../../containers/List';
-import { E2E_BANNER_TYPE } from '../../../lib/constants';
-import { themes } from '../../../constants/colors';
 import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelStatus';
 import { IUser } from '../../../definitions';
+import { E2E_BANNER_TYPE, themes } from '../../../lib/constants';
 
 export type TEncryptionBanner = 'REQUEST_PASSWORD' | 'SAVE_PASSWORD';
 
