@@ -13,7 +13,7 @@ import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
 

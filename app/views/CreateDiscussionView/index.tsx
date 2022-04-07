@@ -14,7 +14,7 @@ import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import TextInput from '../../containers/TextInput';
 import RocketChat from '../../lib/rocketchat';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { createDiscussionRequest } from '../../actions/createDiscussion';
 import { showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';

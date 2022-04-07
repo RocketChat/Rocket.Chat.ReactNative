@@ -10,7 +10,7 @@ import StatusBar from '../containers/StatusBar';
 import Button from '../containers/Button';
 import { useTheme } from '../theme';
 import RocketChat from '../lib/rocketchat';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import { goRoom } from '../utils/goRoom';
 import { themes } from '../constants/colors';
 import Markdown from '../containers/markdown';
