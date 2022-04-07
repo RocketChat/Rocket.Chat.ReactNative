@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import BaseButton from './BaseButton';
 

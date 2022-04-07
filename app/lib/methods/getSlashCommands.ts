@@ -4,7 +4,7 @@ import database from '../database';
 import log from '../../utils/log';
 import protectedFunction from './helpers/protectedFunction';
 import { ISlashCommandResult, TSlashCommandModel } from '../../definitions';
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
 
 export default function getSlashCommands() {
 	const db = database.active;

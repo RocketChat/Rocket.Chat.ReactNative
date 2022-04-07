@@ -8,7 +8,7 @@ import { Encryption } from '../encryption';
 import protectedFunction from './helpers/protectedFunction';
 import buildMessage from './helpers/buildMessage';
 import { TThreadMessageModel } from '../../definitions';
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
 
 async function load({ tmid }: { tmid: string }) {
 	try {

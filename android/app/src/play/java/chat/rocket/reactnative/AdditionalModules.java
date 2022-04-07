@@ -3,7 +3,6 @@ package chat.rocket.reactnative;
 import android.app.Application;
 
 import com.facebook.react.ReactPackage;
-import com.wix.reactnativenotifications.RNNotificationsPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,8 +16,7 @@ public class AdditionalModules {
         return Arrays.<ReactPackage>asList(
                 new ReactNativeFirebaseAnalyticsPackage(),
                 new ReactNativeFirebaseAppPackage(),
-                new ReactNativeFirebaseCrashlyticsPackage(),
-                new RNNotificationsPackage(application)
+                new ReactNativeFirebaseCrashlyticsPackage()
         );
     }
 }
