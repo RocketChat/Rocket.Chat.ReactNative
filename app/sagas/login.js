@@ -22,6 +22,7 @@ import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { TOKEN_KEY } from '../lib/constants';
+import { getSlashCommands } from '../lib/methods';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -95,7 +96,7 @@ const fetchRoles = function* fetchRoles() {
 };
 
 const fetchSlashCommands = function* fetchSlashCommands() {
-	yield RocketChat.getSlashCommands();
+	yield getSlashCommands();
 };
 
 const registerPushToken = function* registerPushToken() {
