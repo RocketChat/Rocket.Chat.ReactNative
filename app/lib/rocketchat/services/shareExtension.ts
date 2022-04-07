@@ -4,7 +4,7 @@ import { shareSetSettings, shareSelectServer, shareSetUser } from '../../../acti
 import SSLPinning from '../../../utils/sslPinning';
 import log from '../../../utils/log';
 import { IShareServer, IShareUser } from '../../../reducers/share';
-import UserPreferences from '../../userPreferences';
+import UserPreferences from '../../methods/userPreferences';
 import database from '../../database';
 import RocketChat from '..';
 import { encryptionInit } from '../../../actions/encryption';

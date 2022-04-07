@@ -8,8 +8,8 @@ import log from '../../../utils/log';
 import { store as reduxStore } from '../../auxStore';
 import database from '../../database';
 import sdk from '../services/sdk';
-import { compareServerVersion } from '../../utils';
 import protectedFunction from '../../methods/helpers/protectedFunction';
+import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
 
 export const SUPPORTED_PERMISSIONS = [
 	'add-user-to-any-c-room',

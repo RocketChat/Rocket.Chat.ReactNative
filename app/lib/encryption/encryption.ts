@@ -4,7 +4,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q, Model } from '@nozbe/watermelondb';
 
 import RocketChat from '../rocketchat';
-import UserPreferences from '../userPreferences';
+import UserPreferences from '../methods/userPreferences';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import Deferred from '../../utils/deferred';
