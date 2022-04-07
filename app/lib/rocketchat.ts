@@ -2,7 +2,6 @@
 import * as sendMessage from './methods/sendMessage';
 import * as callJitsi from './methods/callJitsi';
 import * as enterpriseModules from './methods/enterpriseModules';
-import * as getCustomEmojis from './methods/getCustomEmojis';
 import * as getPermalinks from './methods/getPermalinks';
 import * as getPermissions from './methods/getPermissions';
 import * as getRoles from './methods/getRoles';
@@ -34,7 +33,6 @@ const RocketChat = {
 	...getPermissions,
 	...triggerActions,
 	...callJitsi,
-	...getCustomEmojis,
 	...helpers,
 	...setUser // this
 };

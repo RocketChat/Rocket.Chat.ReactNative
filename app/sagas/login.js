@@ -22,7 +22,7 @@ import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { TOKEN_KEY } from '../lib/constants';
-import { getSlashCommands } from '../lib/methods';
+import { getCustomEmojis, getSlashCommands } from '../lib/methods';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -87,7 +87,7 @@ const fetchPermissions = function* fetchPermissions() {
 };
 
 const fetchCustomEmojis = function* fetchCustomEmojis() {
-	yield RocketChat.getCustomEmojis();
+	yield getCustomEmojis();
 };
 
 const fetchRoles = function* fetchRoles() {
