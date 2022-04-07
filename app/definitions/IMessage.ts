@@ -1,7 +1,7 @@
 import Model from '@nozbe/watermelondb/Model';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
-import { MessageTypeLoad } from '../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../lib/constants';
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
 import { TThreadMessageModel } from './IThreadMessage';

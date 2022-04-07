@@ -115,33 +115,23 @@ export interface INotificationPreferences {
 }
 
 export interface IUserPreferences {
-	user: { _id: string };
+	user: Pick<IUser, '_id'>;
 	settings: {
 		preferences: INotificationPreferences;
 	};
 }
 
-export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' | 'name' | 'status'> {
+export interface IUser extends IRocketChatRecord, ILoggedUser {
 	_id: string;
-	id: string;
-	token: string;
 	createdAt?: Date;
-	roles?: string[];
 	type?: string;
 	active?: boolean;
-	username: string;
-	name?: string;
 	services?: IUserServices;
-	emails?: IUserEmail[];
-	status: TUserStatus;
 	statusConnection?: string;
 	lastLogin?: Date;
 	avatarOrigin?: string;
-	avatarETag?: string;
 	utcOffset?: number;
-	language?: string;
 	statusDefault?: TUserStatus;
-	statusText?: string;
 	oauth?: {
 		authorizedClients: string[];
 	};
@@ -151,9 +141,6 @@ export interface IUser extends IRocketChatRecord, Omit<ILoggedUser, 'username' |
 		public_key: string;
 	};
 	requirePasswordChange?: boolean;
-	customFields?: {
-		[key: string]: any;
-	};
 	settings?: IUserSettings;
 	defaultRoom?: string;
 	ldap?: boolean;

@@ -7,12 +7,11 @@ import styles from './styles';
 import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME, getInfoMessage } from './utils';
-import { themes } from '../../constants/colors';
 import MessageContext from './Context';
 import Encrypted from './Encrypted';
-import { E2E_MESSAGE_TYPE } from '../../lib/constants';
 import { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
+import { E2E_MESSAGE_TYPE, themes } from '../../lib/constants';
 
 const Content = React.memo(
 	(props: IMessageContent) => {
