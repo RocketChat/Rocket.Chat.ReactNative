@@ -5,7 +5,6 @@ import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
 import log from '../../utils/log';
-import { onRolesChanged } from '../rocketchat/methods/getRoles';
 import { setActiveUsers } from '../../actions/activeUsers';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import database from '../database';
@@ -24,6 +23,7 @@ import EventEmitter from '../../utils/events';
 import { updateSettings } from '../../actions/settings';
 import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
+import { onRolesChanged } from '../methods/getRoles';
 
 interface IServices {
 	[index: string]: string | boolean;
