@@ -9,7 +9,7 @@ import { Q } from '@nozbe/watermelondb';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { generateTriggerId } from '../../lib/methods/actions';
-import TextInput, { IThemedTextInput } from '../../presentation/TextInput';
+import TextInput from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
@@ -1037,13 +1037,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			tmid
 		} = this.props;
 
-		const isAndroidTablet: Partial<IThemedTextInput> =
-			isTablet && isAndroid
-				? {
-						onSubmitEditing: this.submit
-				  }
-				: {};
-
 		const recordAudio =
 			showSend || !Message_AudioRecorderEnabled ? null : (
 				<RecordAudio
@@ -1098,7 +1091,6 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					multiline
 					testID={`messagebox-input${tmid ? '-thread' : ''}`}
 					theme={theme}
-					{...isAndroidTablet}
 				/>
 				<RightButtons
 					theme={theme}
