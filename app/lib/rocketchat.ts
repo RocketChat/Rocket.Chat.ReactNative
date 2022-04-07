@@ -2,8 +2,6 @@
 import * as sendMessage from './methods/sendMessage';
 import * as enterpriseModules from './methods/enterpriseModules';
 import * as getPermalinks from './methods/getPermalinks';
-import * as getRoles from './methods/getRoles';
-import * as getSettings from './methods/getSettings';
 import * as getUsersPresence from './methods/getUsersPresence';
 import * as helpers from './methods/helpers';
 import * as logout from './methods/logout';
@@ -25,8 +23,6 @@ const RocketChat = {
 	...sendFileMessage,
 	...logout,
 	...getUsersPresence,
-	...getSettings,
-	...getRoles,
 	...helpers,
 	...setUser // this
 };
