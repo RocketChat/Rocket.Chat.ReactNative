@@ -7,7 +7,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import * as List from '../../containers/List';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
-import DirectoryItem from '../../presentation/DirectoryItem';
+import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
