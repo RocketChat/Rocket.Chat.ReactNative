@@ -20,3 +20,4 @@ export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 export const MIN_ROCKETCHAT_VERSION = '0.70.0';
 export const TOKEN_KEY = 'reactnativemeteor_usertoken';
+export const CURRENT_SERVER = 'currentServer';
