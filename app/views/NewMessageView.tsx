@@ -16,8 +16,8 @@ import { IApplicationState, IBaseScreen, ISearch, TSubscriptionModel } from '../
 import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../lib/Icons';
+import Navigation from '../lib/navigation/appNavigation';
 import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
-import Navigation from '../lib/Navigation';
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import { withTheme } from '../theme';
