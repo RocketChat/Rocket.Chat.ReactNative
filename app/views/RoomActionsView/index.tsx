@@ -16,7 +16,15 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
 import StatusBar from '../../containers/StatusBar';
-import { IApplicationState, IBaseScreen, IRoom, ISubscription, IUser, TSubscriptionModel } from '../../definitions';
+import {
+	IApplicationState,
+	IBaseScreen,
+	IRoom,
+	ISubscription,
+	IUser,
+	SubscriptionType,
+	TSubscriptionModel
+} from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -139,15 +147,33 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		this.mounted = true;
 		const { room, member } = this.state;
 		if (room.rid) {
-			if (!room.id && !this.isOmnichannelPreview) {
-				try {
-					const result = await RocketChat.getChannelInfo(room.rid);
-					if (result.success) {
-						// @ts-ignore
-						this.setState({ room: { ...result.channel, rid: result.channel._id } });
+			// there is room.id for rooms in db
+			if (!room.id) {
+				// need to check if the type is from omnichannel
+				if (room.t === SubscriptionType.OMNICHANNEL) {
+					// if is a Preview, we don't need to do anything
+					// however if isn't a Preview, the room should be in db
+					if (!this.isOmnichannelPreview) {
+						const db = database.active;
+						const subCollection = db.get('subscriptions');
+						try {
+							const result = await subCollection.find(room.rid);
+							this.setState({ room: result });
+						} catch (error) {
+							console.log('RoomActionsView: componentDidMout - Room not found');
+							log(error);
+						}
 					}
-				} catch (e) {
-					log(e);
+				} else {
+					try {
+						const result = await RocketChat.getChannelInfo(room.rid);
+						if (result.success) {
+							// @ts-ignore
+							this.setState({ room: { ...result.channel, rid: result.channel._id } });
+						}
+					} catch (e) {
+						log(e);
+					}
 				}
 			}
 
