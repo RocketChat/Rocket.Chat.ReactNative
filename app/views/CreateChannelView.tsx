@@ -23,7 +23,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import RocketChat from '../lib/rocketchat';
 import sharedStyles from './Styles';
 import { ChatsStackParamList } from '../stacks/types';
-import { IApplicationState, IBaseScreen } from '../definitions';
+import { IApplicationState, IBaseScreen, IUser } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -90,11 +90,7 @@ interface ICreateChannelViewProps extends IBaseScreen<ChatsStackParamList, 'Crea
 	isFetching: boolean;
 	encryptionEnabled: boolean;
 	users: IOtherUser[];
-	user: {
-		id: string;
-		token: string;
-		roles: string[];
-	};
+	user: IUser;
 	teamId: string;
 	createPublicChannelPermission: string[] | undefined;
 	createPrivateChannelPermission: string[] | undefined;
