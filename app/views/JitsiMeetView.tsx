@@ -13,6 +13,7 @@ import { events, logEvent } from '../utils/log';
 import { isAndroid, isIOS } from '../utils/deviceInfo';
 import { withTheme } from '../theme';
 import { InsideStackParamList } from '../stacks/types';
+import { IApplicationState, IUser } from '../definitions';
 
 const formatUrl = (url: string, baseUrl: string, uriSize: number, avatarAuthURLFragment: string) =>
 	`${baseUrl}/avatar/${url}?format=png&width=${uriSize}&height=${uriSize}${avatarAuthURLFragment}`;
@@ -30,12 +31,7 @@ interface IJitsiMeetViewProps {
 	route: RouteProp<InsideStackParamList, 'JitsiMeetView'>;
 	baseUrl: string;
 	theme: string;
-	user: {
-		id: string;
-		username: string;
-		name: string;
-		token: string;
-	};
+	user: IUser;
 }
 
 class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewState> {
@@ -50,12 +46,12 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 		this.jitsiTimeout = null;
 
 		const { user, baseUrl } = props;
-		const { name: displayName, id: userId, token, username } = user;
+		const { name, id: userId, token, username } = user;
 		const avatarAuthURLFragment = `&rc_token=${token}&rc_uid=${userId}`;
 		const avatar = formatUrl(username, baseUrl, 100, avatarAuthURLFragment);
 		this.state = {
 			userInfo: {
-				displayName,
+				displayName: name as string,
 				avatar
 			},
 			loading: true
@@ -135,7 +131,7 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	baseUrl: state.server.server
 });
