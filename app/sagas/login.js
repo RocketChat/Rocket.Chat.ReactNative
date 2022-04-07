@@ -5,7 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
-import { loginFailure, loginSuccess, logout, setUser } from '../actions/login';
+import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import RocketChat from '../lib/rocketchat';
 import log, { events, logEvent } from '../utils/log';
@@ -28,6 +28,7 @@ import {
 	getRoles,
 	getSlashCommands,
 	getUserPresence,
+	logout,
 	subscribeSettings,
 	subscribeUsersPresence
 } from '../lib/methods';
@@ -35,7 +36,7 @@ import {
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
 const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, isFromWebView);
-const logoutCall = args => RocketChat.logout(args);
+const logoutCall = args => logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
@@ -76,9 +77,9 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 		}
 	} catch (e) {
 		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
-			yield put(logout(true, 'Logged_out_by_server'));
+			yield put(logoutAction(true, 'Logged_out_by_server'));
 		} else if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
-			yield put(logout(true, 'Token_expired'));
+			yield put(logoutAction(true, 'Token_expired'));
 		} else {
 			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
 			yield put(loginFailure(e));
