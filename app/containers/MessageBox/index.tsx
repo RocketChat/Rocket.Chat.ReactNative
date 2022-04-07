@@ -52,7 +52,8 @@ import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
 import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { sendFileMessage } from '../../lib/methods';
+import { getPermalinkMessage, sendFileMessage } from '../../lib/methods';
+import { executeCommandPreview } from '../../lib/services';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -529,7 +530,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		try {
 			const { appId } = command;
 			const triggerId = generateTriggerId(appId);
-			RocketChat.executeCommandPreview(name, params, rid, item, triggerId, tmid || messageTmid);
+			executeCommandPreview(name, params, rid, item, triggerId, tmid || messageTmid);
 			replyCancel();
 		} catch (e) {
 			log(e);
@@ -552,7 +553,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	getPermalink = async (message: any) => {
 		try {
-			return await RocketChat.getPermalinkMessage(message);
+			return await getPermalinkMessage(message);
 		} catch (error) {
 			return null;
 		}

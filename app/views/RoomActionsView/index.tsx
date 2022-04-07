@@ -33,7 +33,7 @@ import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
-import { callJitsi } from '../../lib/methods';
+import { callJitsi, getPermalinkChannel } from '../../lib/methods';
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
@@ -484,7 +484,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	handleShare = () => {
 		logEvent(events.RA_SHARE);
 		const { room } = this.state;
-		const permalink = RocketChat.getPermalinkChannel(room);
+		const permalink = getPermalinkChannel(room);
 		if (!permalink) {
 			return;
 		}

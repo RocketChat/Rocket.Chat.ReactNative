@@ -17,6 +17,7 @@ import { TActionSheetOptionsItem, useActionSheet } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../utils/log/events';
 import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
+import { getPermalinkMessage } from '../../lib/methods';
 
 export interface IMessageActions {
 	room: TSubscriptionModel;
@@ -150,7 +151,7 @@ const MessageActions = React.memo(
 				return true;
 			};
 
-			const getPermalink = (message: TAnyMessageModel) => RocketChat.getPermalinkMessage(message);
+			const getPermalink = (message: TAnyMessageModel) => getPermalinkMessage(message);
 
 			const handleReply = (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_REPLY);
