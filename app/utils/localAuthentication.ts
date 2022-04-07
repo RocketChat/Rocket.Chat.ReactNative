@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { sha256 } from 'js-sha256';
 import moment from 'moment';
 
-import UserPreferences from '../lib/userPreferences';
+import UserPreferences from '../lib/methods/userPreferences';
 import { store } from '../lib/auxStore';
 import database from '../lib/database';
 import { getServerTimeSync } from '../lib/rocketchat/services/getServerTimeSync';

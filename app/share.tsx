@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 
 import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
-import UserPreferences from './lib/userPreferences';
+import UserPreferences from './lib/methods/userPreferences';
 import Navigation from './lib/ShareNavigation';
 import store from './lib/createStore';
 import { initStore } from './lib/auxStore';

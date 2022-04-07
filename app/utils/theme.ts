@@ -3,10 +3,10 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import setRootViewColor from 'rn-root-view';
 
 import { IThemePreference, TThemeMode } from '../definitions/ITheme';
-import { isAndroid } from './deviceInfo';
-import UserPreferences from '../lib/userPreferences';
+import { themes, THEME_PREFERENCES_KEY } from '../lib/constants';
+import UserPreferences from '../lib/methods/userPreferences';
 import { TSupportedThemes } from '../theme';
-import { THEME_PREFERENCES_KEY, themes } from '../lib/constants';
+import { isAndroid } from './deviceInfo';
 
 let themeListener: { remove: () => void } | null;
 

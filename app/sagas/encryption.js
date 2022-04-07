@@ -7,7 +7,7 @@ import { Encryption } from '../lib/encryption';
 import Navigation from '../lib/Navigation';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
-import UserPreferences from '../lib/userPreferences';
+import UserPreferences from '../lib/methods/userPreferences';
 import { getUserSelector } from '../selectors/login';
 import { showErrorAlert } from '../utils/info';
 import I18n from '../i18n';

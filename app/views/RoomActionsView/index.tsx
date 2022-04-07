@@ -22,7 +22,6 @@ import I18n from '../../i18n';
 import database from '../../lib/database';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import RocketChat from '../../lib/rocketchat';
-import { compareServerVersion } from '../../lib/utils';
 import { getUserSelector } from '../../selectors/login';
 import { ChatsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
@@ -33,6 +32,7 @@ import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;

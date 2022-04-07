@@ -6,8 +6,8 @@ import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
 import roomTypeToApiType, { RoomTypes } from './roomTypeToApiType';
 import sdk from '../rocketchat/services/sdk';
-import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
+import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 
 const COUNT = 50;
 

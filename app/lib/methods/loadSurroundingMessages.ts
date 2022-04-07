@@ -7,8 +7,8 @@ import { getMessageById } from '../database/services/Message';
 import { MessageTypeLoad } from '../constants';
 import sdk from '../rocketchat/services/sdk';
 import { IMessage } from '../../definitions';
-import { generateLoadMoreId } from '../utils';
 import updateMessages from './updateMessages';
+import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 
 const COUNT = 50;
 

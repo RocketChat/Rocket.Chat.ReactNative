@@ -29,10 +29,10 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo, { IRoomInfoResult } from '../../lib/methods/getRoomInfo';
 import { isIOS } from '../../utils/deviceInfo';
-import { compareServerVersion } from '../../lib/utils';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 import { IEmoji } from '../../definitions/IEmoji';
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 
 const QUERY_SIZE = 50;
 
