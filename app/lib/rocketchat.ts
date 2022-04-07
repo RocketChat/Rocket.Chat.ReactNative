@@ -1,7 +1,6 @@
 // Methods
 import canOpenRoom from './methods/canOpenRoom';
 import clearCache from './methods/clearCache';
-import getRooms from './methods/getRooms';
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadNextMessages from './methods/loadNextMessages';
@@ -55,8 +54,7 @@ const RocketChat = {
 	loadMessagesForRoom,
 	loadSurroundingMessages,
 	loadNextMessages,
-	loadThreadMessages,
-	getRooms
+	loadThreadMessages
 };
 
 export default RocketChat;

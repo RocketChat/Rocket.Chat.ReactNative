@@ -375,8 +375,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (this.getUsers && this.getUsers.stop) {
 			this.getUsers.stop();
 		}
-		if (this.getRooms && this.getRooms.stop) {
-			this.getRooms.stop();
+		if (this.searchRooms && this.searchRooms.stop) {
+			this.searchRooms.stop();
 		}
 		if (this.getEmojis && this.getEmojis.stop) {
 			this.getEmojis.stop();
@@ -574,7 +574,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
 
-	getRooms = debounce(async (keyword = '') => {
+	searchRooms = debounce(async (keyword = '') => {
 		const res = await RocketChat.search({ text: keyword, filterRooms: true, filterUsers: false });
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
@@ -948,7 +948,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		} else if (type === MENTIONS_TRACKING_TYPE_CANNED) {
 			this.getCannedResponses(keyword);
 		} else {
-			this.getRooms(keyword);
+			this.searchRooms(keyword);
 		}
 	};
 

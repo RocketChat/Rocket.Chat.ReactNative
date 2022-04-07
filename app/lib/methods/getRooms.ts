@@ -1,6 +1,6 @@
 import sdk from '../services/sdk';
 
-export default function (updatedSince: Date) {
+export function getRooms(updatedSince: Date) {
 	// subscriptions.get: Since RC 0.60.0
 	// rooms.get: Since RC 0.62.0
 	if (updatedSince) {

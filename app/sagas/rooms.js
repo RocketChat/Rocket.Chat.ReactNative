@@ -9,6 +9,7 @@ import log from '../utils/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
 import RocketChat from '../lib/rocketchat';
 import buildMessage from '../lib/methods/helpers/buildMessage';
+import { getRooms } from '../lib/methods';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	const serversDB = database.servers;
@@ -45,7 +46,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 			}
 		}
 
-		const [subscriptionsResult, roomsResult] = yield RocketChat.getRooms(roomsUpdatedAt);
+		const [subscriptionsResult, roomsResult] = yield getRooms(roomsUpdatedAt);
 		const subscriptions = yield mergeSubscriptionsRooms(subscriptionsResult, roomsResult);
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
