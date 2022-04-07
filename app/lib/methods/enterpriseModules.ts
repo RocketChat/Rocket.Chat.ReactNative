@@ -57,11 +57,6 @@ export function getEnterpriseModules() {
 	});
 }
 
-export function hasLicense(module: string) {
-	const { enterpriseModules } = reduxStore.getState();
-	return enterpriseModules.includes(module);
-}
-
 export function isOmnichannelModuleAvailable() {
 	const { enterpriseModules } = reduxStore.getState();
 	return [LICENSE_OMNICHANNEL_MOBILE_ENTERPRISE, LICENSE_LIVECHAT_ENTERPRISE].some(module => enterpriseModules.includes(module));

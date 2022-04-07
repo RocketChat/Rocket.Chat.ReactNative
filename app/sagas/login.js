@@ -24,10 +24,12 @@ import sdk from '../lib/services/sdk';
 import { TOKEN_KEY } from '../lib/constants';
 import {
 	getCustomEmojis,
+	getEnterpriseModules,
 	getPermissions,
 	getRoles,
 	getSlashCommands,
 	getUserPresence,
+	isOmnichannelModuleAvailable,
 	logout,
 	subscribeSettings,
 	subscribeUsersPresence
@@ -117,7 +119,7 @@ const fetchUsersPresence = function* fetchUserPresence() {
 };
 
 const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
-	yield RocketChat.getEnterpriseModules();
+	yield getEnterpriseModules();
 
 	if (isOmnichannelStatusAvailable(user) && RocketChat.isOmnichannelModuleAvailable()) {
 		yield put(inquiryRequest());
@@ -236,7 +238,7 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 const handleSetUser = function* handleSetUser({ user }) {
 	setLanguage(user?.language);
 
-	if (user?.statusLivechat && RocketChat.isOmnichannelModuleAvailable()) {
+	if (user?.statusLivechat && isOmnichannelModuleAvailable()) {
 		if (isOmnichannelStatusAvailable(user)) {
 			yield put(inquiryRequest());
 		} else {

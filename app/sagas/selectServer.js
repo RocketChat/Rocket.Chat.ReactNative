@@ -23,7 +23,7 @@ import SSLPinning from '../utils/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { RootEnum } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import { getLoginSettings, setPermissions, setRoles, setSettings } from '../lib/methods';
+import { getLoginSettings, setEnterpriseModules, setPermissions, setRoles, setSettings } from '../lib/methods';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -128,7 +128,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		RocketChat.setCustomEmojis();
 		setPermissions();
 		setRoles();
-		RocketChat.setEnterpriseModules();
+		setEnterpriseModules();
 
 		let serverInfo;
 		if (fetchVersion) {
