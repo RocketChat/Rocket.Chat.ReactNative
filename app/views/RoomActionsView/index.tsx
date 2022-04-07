@@ -8,7 +8,6 @@ import { Observable, Subscription } from 'rxjs';
 
 import { closeRoom, leaveRoom } from '../../actions/room';
 import { setLoading } from '../../actions/selectedUsers';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -21,7 +20,6 @@ import { IApplicationState, IBaseScreen, IRoom, ISubscription, IUser, TSubscript
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import { E2E_ROOM_TYPES } from '../../lib/constants';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import RocketChat from '../../lib/rocketchat';
 import { getUserSelector } from '../../selectors/login';
@@ -33,6 +31,7 @@ import Touch from '../../utils/touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
+import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {

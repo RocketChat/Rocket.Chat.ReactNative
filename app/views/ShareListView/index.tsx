@@ -16,7 +16,7 @@ import ServerItem from '../../presentation/ServerItem';
 import * as HeaderButton from '../../containers/HeaderButton';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { animateNextTransition } from '../../utils/layoutAnimation';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';

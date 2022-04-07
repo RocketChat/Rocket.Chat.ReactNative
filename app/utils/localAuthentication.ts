@@ -15,7 +15,7 @@ import {
 	LOCAL_AUTHENTICATE_EMITTER,
 	LOCKED_OUT_TIMER_KEY,
 	PASSCODE_KEY
-} from '../constants/localAuthentication';
+} from '../lib/constants';
 import I18n from '../i18n';
 import { setLocalAuthenticated } from '../actions/login';
 import { TServerModel } from '../definitions/IServer';

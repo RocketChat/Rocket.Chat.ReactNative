@@ -2,7 +2,7 @@ import EJSON from 'ejson';
 
 import { store } from '../../lib/auxStore';
 import { deepLinkingOpen } from '../../actions/deepLinking';
-import { isFDroidBuild } from '../../constants/environment';
+import { isFDroidBuild } from '../../lib/constants';
 import PushNotification from './push';
 import { INotification, SubscriptionType } from '../../definitions';
 

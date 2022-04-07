@@ -14,7 +14,7 @@ import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import { getUserSelector } from '../selectors/login';
 import { PADDING_HORIZONTAL } from '../containers/List/constants';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import { Encryption } from '../lib/encryption';
 import RocketChat from '../lib/rocketchat';
 import { logout as logoutAction } from '../actions/login';

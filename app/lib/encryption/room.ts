@@ -9,7 +9,6 @@ import Deferred from '../../utils/deferred';
 import debounce from '../../utils/debounce';
 import database from '../database';
 import log from '../../utils/log';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
 import {
 	b64ToBuffer,
 	bufferToB64,
@@ -22,6 +21,7 @@ import {
 } from './utils';
 import { Encryption } from './index';
 import { IUser } from '../../definitions/IUser';
+import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
 
 export default class EncryptionRoom {
 	ready: boolean;

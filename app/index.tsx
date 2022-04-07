@@ -17,7 +17,6 @@ import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './utils/lo
 import { ThemeContext, TSupportedThemes } from './theme';
 import { DimensionsContext } from './dimensions';
 import RocketChat from './lib/rocketchat';
-import { MIN_WIDTH_MASTER_DETAIL_LAYOUT } from './constants/tablet';
 import { isTablet } from './utils/deviceInfo';
 import { KEY_COMMAND } from './commands';
 import AppContainer from './AppContainer';
@@ -28,11 +27,10 @@ import Toast from './containers/Toast';
 import InAppNotification from './containers/InAppNotification';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import debounce from './utils/debounce';
-import { isFDroidBuild } from './constants/environment';
+import { isFDroidBuild, MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, themes } from './lib/constants';
 import { IThemePreference } from './definitions/ITheme';
 import { ICommand } from './definitions/ICommand';
 import { initStore } from './lib/auxStore';
-import { colors, themes } from './constants/colors';
 
 RNScreens.enableScreens();
 initStore(store);

@@ -5,7 +5,7 @@ import ShareExtension from 'rn-extensions-share';
 import * as HeaderButton from '../containers/HeaderButton';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import { withTheme } from '../theme';
 
 const styles = StyleSheet.create({

@@ -6,7 +6,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { createChannelRequest } from '../actions/createChannel';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';

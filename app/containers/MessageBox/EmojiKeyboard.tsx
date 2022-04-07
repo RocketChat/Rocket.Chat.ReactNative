@@ -5,7 +5,7 @@ import { KeyboardRegistry } from 'react-native-ui-lib/keyboard';
 import { store } from '../../lib/auxStore';
 import EmojiPicker from '../EmojiPicker';
 import styles from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { IEmoji } from '../../definitions/IEmoji';
 

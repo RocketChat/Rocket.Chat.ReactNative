@@ -12,7 +12,7 @@ import { useTheme } from '../theme';
 import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/navigation/appNavigation';
 import { goRoom } from '../utils/goRoom';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import Markdown from '../containers/markdown';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../stacks/types';
