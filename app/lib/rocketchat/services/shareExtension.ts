@@ -8,7 +8,7 @@ import UserPreferences from '../../methods/userPreferences';
 import database from '../../database';
 import RocketChat from '..';
 import { encryptionInit } from '../../../actions/encryption';
-import { store } from '../../auxStore';
+import { store } from '../../store/auxStore';
 import sdk from './sdk';
 
 export async function shareExtensionInit(server: string) {

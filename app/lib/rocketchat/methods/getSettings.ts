@@ -6,7 +6,7 @@ import { DEFAULT_AUTO_LOCK, defaultSettings } from '../../constants';
 import { IPreparedSettings, ISettingsIcon } from '../../../definitions';
 import fetch from '../../../utils/fetch';
 import log from '../../../utils/log';
-import { store as reduxStore } from '../../auxStore';
+import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
 import RocketChat from '..';
 import sdk from '../services/sdk';

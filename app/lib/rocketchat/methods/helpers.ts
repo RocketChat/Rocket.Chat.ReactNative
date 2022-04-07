@@ -2,7 +2,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
 import log from '../../../utils/log';
-import { store as reduxStore } from '../../auxStore';
+import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
 import subscribeRoomsTmp from '../../methods/subscriptions/rooms';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, defaultSettings } from '../../constants';
