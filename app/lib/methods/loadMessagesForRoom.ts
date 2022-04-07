@@ -30,7 +30,7 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 	return data.messages;
 }
 
-export default function loadMessagesForRoom(args: {
+export function loadMessagesForRoom(args: {
 	rid: string;
 	t: RoomTypes;
 	latest?: Date;

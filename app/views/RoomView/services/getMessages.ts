@@ -1,4 +1,4 @@
-import loadMessagesForRoom from '../../../lib/methods/loadMessagesForRoom';
+import { loadMessagesForRoom } from '../../../lib/methods';
 import loadMissedMessages from '../../../lib/methods/loadMissedMessages';
 
 // TODO: clarify latest vs lastOpen
