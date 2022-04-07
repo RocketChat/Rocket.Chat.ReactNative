@@ -381,8 +381,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (this.getEmojis && this.getEmojis.stop) {
 			this.getEmojis.stop();
 		}
-		if (this.getSlashCommands && this.getSlashCommands.stop) {
-			this.getSlashCommands.stop();
+		if (this.getCommands && this.getCommands.stop) {
+			this.getCommands.stop();
 		}
 		if (this.getCannedResponses && this.getCannedResponses.stop) {
 			this.getCannedResponses.stop();
@@ -594,7 +594,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ mentions: mergedEmojis || [], mentionLoading: false });
 	}, 300);
 
-	getSlashCommands = debounce(async (keyword: any) => {
+	getCommands = debounce(async (keyword: any) => {
 		const db = database.active;
 		const commandsCollection = db.get('slash_commands');
 		const likeString = sanitizeLikeString(keyword);
@@ -944,7 +944,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
 			this.getEmojis(keyword);
 		} else if (type === MENTIONS_TRACKING_TYPE_COMMANDS) {
-			this.getSlashCommands(keyword);
+			this.getCommands(keyword);
 		} else if (type === MENTIONS_TRACKING_TYPE_CANNED) {
 			this.getCannedResponses(keyword);
 		} else {
