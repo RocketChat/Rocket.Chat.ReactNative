@@ -12,7 +12,7 @@ import database from '../../lib/database';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import I18n from '../../i18n';
 import DirectoryItem, { ROW_HEIGHT } from '../../presentation/DirectoryItem';
-import ServerItem from '../../presentation/ServerItem';
+import ServerItem from '../../containers/ServerItem';
 import * as HeaderButton from '../../containers/HeaderButton';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
@@ -24,6 +24,7 @@ import RocketChat from '../../lib/rocketchat';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
 import ShareListHeader from './Header';
+import { IServerInfo } from '../../definitions';
 
 interface IDataFromShare {
 	value: string;
@@ -52,12 +53,6 @@ interface IChat {
 	description: string;
 }
 
-interface IServerInfo {
-	id: string;
-	iconURL: string;
-	name: string;
-	useRealName: boolean;
-}
 interface IState {
 	searching: boolean;
 	searchText: string;
