@@ -38,7 +38,7 @@ const RocketChat = {
 	...getCustomEmojis,
 	...helpers,
 	...userPreferencesMethods,
-	...setUser
+	...setUser // this
 };
 
 export default RocketChat;
