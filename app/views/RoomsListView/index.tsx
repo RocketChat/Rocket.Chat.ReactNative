@@ -49,7 +49,7 @@ import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
-import { RoomTypes } from '../../lib/methods';
+import { getUserPresence, RoomTypes } from '../../lib/methods';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
 
 interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
@@ -636,7 +636,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 
-	getUserPresence = (uid: string) => RocketChat.getUserPresence(uid);
+	handleGetUserPresence = (uid: string) => getUserPresence(uid);
 
 	getUidDirectMessage = (room: ISubscription) => RocketChat.getUidDirectMessage(room);
 
@@ -967,7 +967,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
-				getUserPresence={this.getUserPresence}
+				getUserPresence={this.handleGetUserPresence}
 				getRoomTitle={this.getRoomTitle}
 				getRoomAvatar={this.getRoomAvatar}
 				getIsGroupChat={this.isGroupChat}

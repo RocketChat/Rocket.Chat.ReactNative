@@ -2,7 +2,6 @@
 import * as sendMessage from './methods/sendMessage';
 import * as enterpriseModules from './methods/enterpriseModules';
 import * as getPermalinks from './methods/getPermalinks';
-import * as getUsersPresence from './methods/getUsersPresence';
 import * as helpers from './methods/helpers';
 import * as logout from './methods/logout';
 import * as search from './methods/search';
@@ -22,7 +21,6 @@ const RocketChat = {
 	...shareExtension,
 	...sendFileMessage,
 	...logout,
-	...getUsersPresence,
 	...helpers,
 	...setUser // this
 };

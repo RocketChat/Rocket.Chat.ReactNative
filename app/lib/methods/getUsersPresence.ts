@@ -34,7 +34,7 @@ export function subscribeUsersPresence(this: IRocketChat) {
 
 let usersBatch: string[] = [];
 
-export default async function getUsersPresence(usersParams: string[]) {
+export async function getUsersPresence(usersParams: string[]) {
 	const serverVersion = reduxStore.getState().server.version as string;
 	const { user: loggedUser } = reduxStore.getState().login;
 
@@ -106,6 +106,7 @@ export default async function getUsersPresence(usersParams: string[]) {
 }
 
 let usersTimer: ReturnType<typeof setTimeout> | null = null;
+
 export function getUserPresence(uid: string) {
 	if (!usersTimer) {
 		usersTimer = setTimeout(() => {
