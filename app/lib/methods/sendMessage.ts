@@ -47,7 +47,7 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 	}
 };
 
-export async function sendMessageCall(message: any) {
+async function sendMessageCall(message: any) {
 	const { _id, tmid } = message;
 	try {
 		// RC 0.60.0

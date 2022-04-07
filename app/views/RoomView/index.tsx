@@ -80,7 +80,7 @@ import {
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
-import { callJitsi, loadSurroundingMessages, loadThreadMessages, readMessages } from '../../lib/methods';
+import { callJitsi, loadSurroundingMessages, loadThreadMessages, readMessages, sendMessage } from '../../lib/methods';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -893,11 +893,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.setState(...args);
 	};
 
-	sendMessage = (message: string, tmid?: string, tshow?: boolean) => {
+	handleSendMessage = (message: string, tmid?: string, tshow?: boolean) => {
 		logEvent(events.ROOM_SEND_MESSAGE);
 		const { rid } = this.state.room;
 		const { user } = this.props;
-		RocketChat.sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
+		sendMessage(rid, message, this.tmid || tmid, user, tshow).then(() => {
 			if (this.list && this.list.current) {
 				// @ts-ignore
 				this.list.current.update();
@@ -1188,7 +1188,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onEncryptedPress={this.onEncryptedPress}
 					onDiscussionPress={this.onDiscussionPress}
 					onThreadPress={this.onThreadPress}
-					onAnswerButtonPress={this.sendMessage}
+					onAnswerButtonPress={this.handleSendMessage}
 					showAttachment={this.showAttachment}
 					reactionInit={this.onReactionInit}
 					replyBroadcast={this.replyBroadcast}
@@ -1274,7 +1274,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<MessageBox
 				ref={this.messagebox}
-				onSubmit={this.sendMessage}
+				onSubmit={this.handleSendMessage}
 				rid={this.rid}
 				tmid={this.tmid}
 				roomType={room.t}

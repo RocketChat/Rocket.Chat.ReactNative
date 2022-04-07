@@ -1,5 +1,4 @@
 // Spread Methods
-import * as sendMessage from './methods/sendMessage';
 import * as enterpriseModules from './methods/enterpriseModules';
 import * as getPermalinks from './methods/getPermalinks';
 import * as helpers from './methods/helpers';
@@ -10,7 +9,6 @@ const RocketChat = {
 	...search,
 	...getPermalinks,
 	...enterpriseModules,
-	...sendMessage,
 	...helpers,
 	...setUser // this
 };
