@@ -11,7 +11,6 @@ import * as logout from './methods/logout';
 import * as search from './methods/search';
 import * as sendFileMessage from './methods/sendFileMessage';
 import * as setUser from './methods/setUser';
-import * as triggerActions from './methods/triggerActions';
 import * as connect from './services/connect';
 import * as restApis from './services/restApi';
 import * as shareExtension from './services/shareExtension';
@@ -30,7 +29,6 @@ const RocketChat = {
 	...getSettings,
 	...getRoles,
 	...getPermissions,
-	...triggerActions,
 	...helpers,
 	...setUser // this
 };

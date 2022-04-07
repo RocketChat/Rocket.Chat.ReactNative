@@ -16,6 +16,7 @@ import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/navigation/appNavigation';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
+import { triggerCancel, triggerSubmitView } from '../lib/methods';
 
 const styles = StyleSheet.create({
 	container: {
@@ -183,7 +184,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		}
 
 		try {
-			await RocketChat.triggerCancel({
+			await triggerCancel({
 				appId,
 				viewId,
 				view: {
@@ -209,7 +210,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		const { appId, viewId } = data;
 		this.setState({ loading: true });
 		try {
-			await RocketChat.triggerSubmitView({
+			await triggerSubmitView({
 				viewId,
 				appId,
 				payload: {

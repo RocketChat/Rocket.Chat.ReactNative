@@ -34,6 +34,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { SubscriptionType, TSubscriptionModel, ISubscription, IUser, IApplicationState } from '../../definitions';
 import { ILivechatVisitor } from '../../definitions/ILivechatVisitor';
+import { callJitsi } from '../../lib/methods';
 
 interface IGetRoomTitle {
 	room: ISubscription;
@@ -355,7 +356,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 
 	videoCall = () => {
 		const { room } = this.state;
-		RocketChat.callJitsi(room);
+		callJitsi(room);
 	};
 
 	renderAvatar = (room: ISubscription, roomUser: IUserParsed) => {
