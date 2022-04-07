@@ -4,7 +4,7 @@ import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withActionSheet } from '../../containers/ActionSheet';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -28,7 +28,7 @@ import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { RoomTypes } from '../../lib/rocketchat/methods/roomTypeToApiType';
+import { RoomTypes } from '../../lib/methods/roomTypeToApiType';
 import styles from './styles';
 
 const PAGE_SIZE = 25;

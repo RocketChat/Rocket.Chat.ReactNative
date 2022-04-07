@@ -4,8 +4,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import { isRTL } from '../../i18n';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { themes } from '../../constants/colors';
-import { DisplayMode } from '../../constants/constantDisplayMode';
+import { DisplayMode, themes } from '../../lib/constants';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
 
 interface ILeftActions {

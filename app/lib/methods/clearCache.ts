@@ -1,4 +1,4 @@
-import database from '../../database';
+import database from '../database';
 
 export default async function clearCache({ server }: { server: string }): Promise<void> {
 	try {

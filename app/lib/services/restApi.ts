@@ -7,18 +7,18 @@ import {
 	SubscriptionType,
 	IUser,
 	TRocketChat
-} from '../../../definitions';
-import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
-import { ISpotlight } from '../../../definitions/ISpotlight';
-import { TEAM_TYPE } from '../../../definitions/ITeam';
-import { Encryption } from '../../encryption';
-import { TParams } from '../../../definitions/ILivechatEditView';
-import { store as reduxStore } from '../../auxStore';
-import { getDeviceToken } from '../../../notifications/push';
-import { getBundleId, isIOS } from '../../../utils/deviceInfo';
-import { compareServerVersion } from '../../utils';
+} from '../../definitions';
+import { IAvatarSuggestion, IParams } from '../../definitions/IProfileViewInterfaces';
+import { ISpotlight } from '../../definitions/ISpotlight';
+import { TEAM_TYPE } from '../../definitions/ITeam';
+import { Encryption } from '../encryption';
+import { TParams } from '../../definitions/ILivechatEditView';
+import { store as reduxStore } from '../store/auxStore';
+import { getDeviceToken } from '../../notifications/push';
+import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import sdk from './sdk';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 
 export const createChannel = ({
 	name,
@@ -901,3 +901,15 @@ export const e2eFetchMyKeys = async () => {
 	}
 	return result;
 };
+
+export const logoutOtherLocations = () => {
+	const { id } = reduxStore.getState().login.user;
+	return sdk.post('users.removeOtherTokens', { userId: id as string });
+};
+
+export function getUserInfo(userId: string) {
+	// RC 0.48.0
+	return sdk.get('users.info', { userId });
+}
+
+export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });

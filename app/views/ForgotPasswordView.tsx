@@ -10,7 +10,7 @@ import isValidEmail from '../utils/isValidEmail';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';

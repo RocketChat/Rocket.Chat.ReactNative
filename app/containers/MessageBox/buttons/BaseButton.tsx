@@ -5,7 +5,7 @@ import styles from '../styles';
 import i18n from '../../../i18n';
 import { CustomIcon, TIconsName } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 
 interface IBaseButton {
 	onPress(): void;

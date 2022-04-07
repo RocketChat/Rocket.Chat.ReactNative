@@ -18,7 +18,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
 import log, { events, logEvent } from '../../utils/log';
 import { withTheme } from '../../theme';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';

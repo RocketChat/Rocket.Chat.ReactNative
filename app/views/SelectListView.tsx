@@ -11,7 +11,7 @@ import * as List from '../containers/List';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import { withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';

@@ -2,7 +2,7 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 import React, { useContext, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { CustomIcon } from '../../CustomIcon';
 import { useTheme } from '../../../theme';
 import ActivityIndicator from '../../ActivityIndicator';

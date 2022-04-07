@@ -14,3 +14,8 @@ export const E2E_ROOM_TYPES: Record<string, string> = {
 	d: 'd',
 	p: 'p'
 };
+
+export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
+export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
+export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
+export const MIN_ROCKETCHAT_VERSION = '0.70.0';

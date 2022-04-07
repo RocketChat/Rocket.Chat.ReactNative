@@ -2,7 +2,7 @@ import React from 'react';
 import { I18nManager, StyleSheet, Text, View } from 'react-native';
 
 import Touch from '../../utils/touch';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';

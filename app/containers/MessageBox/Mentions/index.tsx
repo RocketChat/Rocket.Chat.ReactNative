@@ -5,7 +5,7 @@ import { dequal } from 'dequal';
 import MentionHeaderList from './MentionHeaderList';
 import styles from '../styles';
 import MentionItem from './MentionItem';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 
 interface IMessageBoxMentions {

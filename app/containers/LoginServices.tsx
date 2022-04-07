@@ -7,7 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import { withTheme } from '../theme';
 import sharedStyles from '../views/Styles';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import Button from './Button';
 import OrSeparator from './OrSeparator';
 import Touch from '../utils/touch';
