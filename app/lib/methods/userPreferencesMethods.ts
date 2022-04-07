@@ -1,5 +1,5 @@
-import { IPreferences } from '../../../definitions';
-import userPreferences from '../../methods/userPreferences';
+import { IPreferences } from '../../definitions';
+import userPreferences from './userPreferences';
 
 const SORT_PREFS_KEY = 'RC_SORT_PREFS_KEY';
 

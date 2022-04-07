@@ -28,7 +28,7 @@ import {
 	TThreadMessageModel,
 	TThreadModel
 } from '../../../definitions';
-import sdk from '../../rocketchat/services/sdk';
+import sdk from '../../services/sdk';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';

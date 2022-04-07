@@ -20,7 +20,7 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
-import sdk from '../lib/rocketchat/services/sdk';
+import sdk from '../lib/services/sdk';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);

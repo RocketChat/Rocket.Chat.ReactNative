@@ -1,8 +1,8 @@
-import log from '../../../utils/log';
-import { TMessageModel, TSubscriptionModel } from '../../../definitions';
-import { store } from '../../store/auxStore';
-import getRoom from '../../methods/getRoom';
+import log from '../../utils/log';
+import { TMessageModel, TSubscriptionModel } from '../../definitions';
+import { store } from '../store/auxStore';
 import { isGroupChat } from './helpers';
+import getRoom from './getRoom';
 
 type TRoomType = 'p' | 'c' | 'd';
 

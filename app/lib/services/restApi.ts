@@ -7,18 +7,18 @@ import {
 	SubscriptionType,
 	IUser,
 	TRocketChat
-} from '../../../definitions';
-import { IAvatarSuggestion, IParams } from '../../../definitions/IProfileViewInterfaces';
-import { ISpotlight } from '../../../definitions/ISpotlight';
-import { TEAM_TYPE } from '../../../definitions/ITeam';
-import { Encryption } from '../../encryption';
-import { TParams } from '../../../definitions/ILivechatEditView';
-import { store as reduxStore } from '../../store/auxStore';
-import { getDeviceToken } from '../../../notifications/push';
-import { getBundleId, isIOS } from '../../../utils/deviceInfo';
-import roomTypeToApiType, { RoomTypes } from '../../methods/roomTypeToApiType';
+} from '../../definitions';
+import { IAvatarSuggestion, IParams } from '../../definitions/IProfileViewInterfaces';
+import { ISpotlight } from '../../definitions/ISpotlight';
+import { TEAM_TYPE } from '../../definitions/ITeam';
+import { Encryption } from '../encryption';
+import { TParams } from '../../definitions/ILivechatEditView';
+import { store as reduxStore } from '../store/auxStore';
+import { getDeviceToken } from '../../notifications/push';
+import { getBundleId, isIOS } from '../../utils/deviceInfo';
+import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import sdk from './sdk';
-import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
+import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 
 export const createChannel = ({
 	name,

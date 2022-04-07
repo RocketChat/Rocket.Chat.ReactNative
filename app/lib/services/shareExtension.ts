@@ -1,14 +1,14 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { shareSetSettings, shareSelectServer, shareSetUser } from '../../../actions/share';
-import SSLPinning from '../../../utils/sslPinning';
-import log from '../../../utils/log';
-import { IShareServer, IShareUser } from '../../../reducers/share';
-import UserPreferences from '../../methods/userPreferences';
-import database from '../../database';
-import RocketChat from '..';
-import { encryptionInit } from '../../../actions/encryption';
-import { store } from '../../store/auxStore';
+import { shareSetSettings, shareSelectServer, shareSetUser } from '../../actions/share';
+import SSLPinning from '../../utils/sslPinning';
+import log from '../../utils/log';
+import { IShareServer, IShareUser } from '../../reducers/share';
+import UserPreferences from '../methods/userPreferences';
+import database from '../database';
+import RocketChat from '../rocketchat';
+import { encryptionInit } from '../../actions/encryption';
+import { store } from '../store/auxStore';
 import sdk from './sdk';
 
 export async function shareExtensionInit(server: string) {
