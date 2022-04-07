@@ -277,14 +277,14 @@ android {
 dependencies {
     addUnimodulesDependencies()
     implementation project(':@react-native-community_viewpager')
-    playImplementation project(':reactnativenotifications')
+    playImplementation project(':react-native-notifications')
+    playImplementation 'com.google.firebase:firebase-core:16.0.0'
     playImplementation project(':@react-native-firebase_app')
     playImplementation project(':@react-native-firebase_analytics')
     playImplementation project(':@react-native-firebase_crashlytics')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    playImplementation "com.google.firebase:firebase-messaging:18.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

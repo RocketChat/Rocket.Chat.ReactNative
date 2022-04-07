@@ -12,7 +12,7 @@ import { appStart } from '../../actions/app';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
-import ServerItem from '../../presentation/ServerItem';
+import ServerItem from '../../containers/ServerItem';
 import database from '../../lib/database';
 import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
@@ -180,7 +180,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 	};
 
 	renderServer = ({ item }: { item: { id: string; iconURL: string; name: string; version: string } }) => {
-		const { server, theme } = this.props;
+		const { server } = this.props;
 
 		return (
 			<ServerItem
@@ -188,7 +188,6 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 				onPress={() => this.select(item.id, item.version)}
 				onLongPress={() => item.id === server || this.remove(item.id)}
 				hasCheck={item.id === server}
-				theme={theme}
 			/>
 		);
 	};
