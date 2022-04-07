@@ -12,7 +12,7 @@ import { appStart } from '../../actions/app';
 import RocketChat from '../../lib/rocketchat';
 import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
-import ServerItem from '../../presentation/ServerItem';
+import ServerItem from '../../containers/ServerItem';
 import database from '../../lib/database';
 import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
