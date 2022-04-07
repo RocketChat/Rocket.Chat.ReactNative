@@ -1,7 +1,6 @@
 // Methods
 import canOpenRoom from './methods/canOpenRoom';
 import clearCache from './methods/clearCache';
-import loadMissedMessages from './methods/loadMissedMessages';
 // Spread Methods
 import * as sendMessage from './methods/sendMessage';
 import * as callJitsi from './methods/callJitsi';
@@ -45,8 +44,7 @@ const RocketChat = {
 	...setUser,
 
 	canOpenRoom,
-	clearCache,
-	loadMissedMessages
+	clearCache
 };
 
 export default RocketChat;

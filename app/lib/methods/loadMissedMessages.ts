@@ -29,7 +29,7 @@ async function load({ rid: roomId, lastOpen }: { rid: string; lastOpen?: Date })
 	return result;
 }
 
-export default function loadMissedMessages(args: { rid: string; lastOpen?: Date }): Promise<void> {
+export function loadMissedMessages(args: { rid: string; lastOpen?: Date }): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await load({ rid: args.rid, lastOpen: args.lastOpen });
