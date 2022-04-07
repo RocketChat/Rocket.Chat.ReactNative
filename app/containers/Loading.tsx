@@ -2,7 +2,7 @@ import React from 'react';
 import { Animated, Modal, StyleSheet, View } from 'react-native';
 
 import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 
 const styles = StyleSheet.create({
 	container: {

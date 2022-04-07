@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import styles from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
