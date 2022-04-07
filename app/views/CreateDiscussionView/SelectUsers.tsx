@@ -13,6 +13,7 @@ import { themes } from '../../lib/constants';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
 import { SubscriptionType } from '../../definitions/ISubscription';
+import { search } from '../../lib/methods';
 
 interface IUser {
 	name: string;
@@ -35,7 +36,7 @@ const SelectUsers = ({
 		try {
 			const db = database.active;
 			const usersCollection = db.get('users');
-			const res = await RocketChat.search({ text: keyword, filterRooms: false });
+			const res = await search({ text: keyword, filterRooms: false });
 			let items = [
 				...users.filter((u: IUser) => selected.includes(u.name)),
 				...res.filter(r => !users.find((u: IUser) => u.name === r.name))

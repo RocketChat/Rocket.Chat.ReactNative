@@ -10,6 +10,7 @@ import { avatarURL } from '../../utils/avatar';
 import debounce from '../../utils/debounce';
 import { ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
+import { localSearch } from '../../lib/methods';
 
 const SelectChannel = ({
 	server,
@@ -25,7 +26,7 @@ const SelectChannel = ({
 
 	const getChannels = debounce(async (keyword = '') => {
 		try {
-			const res = await RocketChat.localSearch({ text: keyword });
+			const res = await localSearch({ text: keyword });
 			setChannels(res);
 		} catch {
 			// do nothing

@@ -49,7 +49,7 @@ import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList } from '../../stacks/types';
-import { getUserPresence, RoomTypes } from '../../lib/methods';
+import { getUserPresence, RoomTypes, search } from '../../lib/methods';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
 
 interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
@@ -228,7 +228,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.getSubscriptions();
 		}
 		if (searchText !== nextProps.searchText) {
-			this.search(nextProps.searchText);
+			this.handleSearch(nextProps.searchText);
 		}
 	}
 
@@ -577,7 +577,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { dispatch } = this.props;
 		this.internalSetState({ searching: true }, () => {
 			dispatch(openSearchHeader());
-			this.search('');
+			this.handleSearch('');
 			this.setHeader();
 		});
 	};
@@ -611,8 +611,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	// eslint-disable-next-line react/sort-comp
-	search = debounce(async (text: string) => {
-		const result = await RocketChat.search({ text });
+	handleSearch = debounce(async (text: string) => {
+		const result = await search({ text });
 
 		// if the search was cancelled before the promise is resolved
 		const { searching } = this.state;

@@ -25,6 +25,7 @@ import { withTheme } from '../theme';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
+import { search } from '../lib/methods';
 
 const ITEM_WIDTH = 250;
 const getItemLayout = (_: any, index: number) => ({ length: ITEM_WIDTH, offset: ITEM_WIDTH * index, index });
@@ -117,13 +118,13 @@ class SelectedUsersView extends React.Component<ISelectedUsersViewProps, ISelect
 	};
 
 	onSearchChangeText(text: string) {
-		this.search(text);
+		this.handleSearch(text);
 	}
 
-	search = async (text: string) => {
+	handleSearch = async (text: string) => {
 		// TODO: When migrate rocketchat.js pass the param IUser to there and the return should be
 		// IUser | TSubscriptionModel, this because we do a local search too
-		const result = (await RocketChat.search({ text, filterRooms: false })) as ISelectedUser[];
+		const result = (await search({ text, filterRooms: false })) as ISelectedUser[];
 		this.setState({
 			search: result
 		});
