@@ -52,6 +52,7 @@ import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
 import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { sendFileMessage } from '../../lib/methods';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -835,7 +836,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (fileInfo) {
 			try {
 				if (this.canUploadFile(fileInfo)) {
-					await RocketChat.sendFileMessage(rid, fileInfo, tmid, server, user);
+					await sendFileMessage(rid, fileInfo, tmid, server, user);
 				}
 			} catch (e) {
 				log(e);

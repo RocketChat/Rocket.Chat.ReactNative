@@ -29,6 +29,7 @@ import Header from './Header';
 import styles from './styles';
 import { IAttachment } from './interfaces';
 import { IUser, TSubscriptionModel } from '../../definitions';
+import { sendFileMessage } from '../../lib/methods';
 
 interface IShareViewState {
 	selected: IAttachment;
@@ -218,7 +219,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				await Promise.all(
 					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
 						if (canUpload) {
-							return RocketChat.sendFileMessage(
+							return sendFileMessage(
 								room.rid,
 								{
 									name,
