@@ -1,6 +1,5 @@
 // Spread Methods
 import * as sendMessage from './methods/sendMessage';
-import * as callJitsi from './methods/callJitsi';
 import * as enterpriseModules from './methods/enterpriseModules';
 import * as getPermalinks from './methods/getPermalinks';
 import * as getPermissions from './methods/getPermissions';
@@ -32,7 +31,6 @@ const RocketChat = {
 	...getRoles,
 	...getPermissions,
 	...triggerActions,
-	...callJitsi,
 	...helpers,
 	...setUser // this
 };

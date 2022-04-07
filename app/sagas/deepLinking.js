@@ -15,7 +15,7 @@ import { loginRequest } from '../actions/login';
 import log from '../utils/log';
 import { RootEnum } from '../definitions';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import { canOpenRoom } from '../lib/methods';
+import { callJitsi, callJitsiWithoutServer, canOpenRoom } from '../lib/methods';
 
 const roomTypes = {
 	channel: 'c',
@@ -86,7 +86,7 @@ const navigate = function* navigate({ params }) {
 				}
 
 				if (params.isCall) {
-					RocketChat.callJitsi(item);
+					callJitsi(item);
 				}
 			}
 		} else {
@@ -127,7 +127,7 @@ const handleOpen = function* handleOpen({ params }) {
 		});
 
 		if (!host && params.fullURL) {
-			RocketChat.callJitsiWithoutServer(params.fullURL);
+			callJitsiWithoutServer(params.fullURL);
 			return;
 		}
 	}

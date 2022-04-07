@@ -80,7 +80,7 @@ import {
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
-import { loadSurroundingMessages, loadThreadMessages, readMessages } from '../../lib/methods';
+import { callJitsi, loadSurroundingMessages, loadThreadMessages, readMessages } from '../../lib/methods';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -1047,14 +1047,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	callJitsi = () => {
+	handleCallJitsi = () => {
 		const { room } = this.state;
 		if ('id' in room) {
 			const { jitsiTimeout } = room;
 			if (jitsiTimeout && jitsiTimeout < new Date()) {
 				showErrorAlert(I18n.t('Call_already_ended'));
 			} else {
-				RocketChat.callJitsi(room);
+				callJitsi(room);
 			}
 		}
 	};
@@ -1202,7 +1202,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
 					navToRoomInfo={this.navToRoomInfo}
 					getCustomEmoji={this.getCustomEmoji}
-					callJitsi={this.callJitsi}
+					callJitsi={this.handleCallJitsi}
 					blockAction={this.blockAction}
 					threadBadgeColor={this.getBadgeColor(item?.id)}
 					toggleFollowThread={this.toggleFollowThread}

@@ -33,6 +33,7 @@ import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { callJitsi } from '../../lib/methods';
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
@@ -807,7 +808,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Separator />
 				<List.Item
 					title='Voice_call'
-					onPress={() => RocketChat.callJitsi(room, true)}
+					onPress={() => callJitsi(room, true)}
 					testID='room-actions-voice'
 					left={() => <List.Icon name='phone' />}
 					showActionIndicator
@@ -815,7 +816,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Separator />
 				<List.Item
 					title='Video_call'
-					onPress={() => RocketChat.callJitsi(room)}
+					onPress={() => callJitsi(room)}
 					testID='room-actions-video'
 					left={() => <List.Icon name='camera' />}
 					showActionIndicator
