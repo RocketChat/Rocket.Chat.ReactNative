@@ -4,7 +4,7 @@ import { MessageTypeLoad } from '../constants';
 import { IMessage, TMessageModel } from '../../definitions';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
-import roomTypeToApiType, { RoomTypes } from './roomTypeToApiType';
+import { RoomTypes, roomTypeToApiType } from './roomTypeToApiType';
 import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
