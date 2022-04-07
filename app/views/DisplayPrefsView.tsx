@@ -13,10 +13,10 @@ import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IPreferences } from '../definitions';
 import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat';
 import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../utils/log';
+import { saveSortPreference } from '../lib/methods';
 
 interface IDisplayPrefsView {
 	navigation: StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>;
@@ -46,7 +46,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 
 	const setSortPreference = (param: Partial<IPreferences>) => {
 		dispatch(setPreference(param));
-		RocketChat.saveSortPreference(param);
+		saveSortPreference(param);
 	};
 
 	const sortByName = () => {

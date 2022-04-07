@@ -6,15 +6,15 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { selectServerRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
-import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
 import database from '../lib/database';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
+import { getSortPreferences } from '../lib/methods';
 
 export const initLocalSettings = function* initLocalSettings() {
-	const sortPreferences = RocketChat.getSortPreferences();
+	const sortPreferences = getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 };
 
