@@ -18,6 +18,7 @@ import log from '../../../utils/log';
 import EmptyRoom from '../EmptyRoom';
 import List, { IListProps } from './List';
 import NavBottomFAB from './NavBottomFAB';
+import { loadThreadMessages } from '../../../lib/methods';
 
 const QUERY_SIZE = 50;
 
@@ -235,7 +236,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 			if (messages.length) {
 				try {
 					if (tmid) {
-						await RocketChat.loadThreadMessages({ tmid, rid });
+						await loadThreadMessages({ tmid, rid });
 					} else {
 						await RocketChat.loadMissedMessages({ rid, lastOpen: moment().subtract(7, 'days').toDate() });
 					}

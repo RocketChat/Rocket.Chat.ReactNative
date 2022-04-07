@@ -5,7 +5,6 @@ import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
 import loadNextMessages from './methods/loadNextMessages';
 import loadSurroundingMessages from './methods/loadSurroundingMessages';
-import loadThreadMessages from './methods/loadThreadMessages';
 // Spread Methods
 import * as sendMessage from './methods/sendMessage';
 import * as callJitsi from './methods/callJitsi';
@@ -53,8 +52,7 @@ const RocketChat = {
 	loadMissedMessages,
 	loadMessagesForRoom,
 	loadSurroundingMessages,
-	loadNextMessages,
-	loadThreadMessages
+	loadNextMessages
 };
 
 export default RocketChat;

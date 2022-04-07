@@ -80,7 +80,7 @@ import {
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
-import { readMessages } from '../../lib/methods';
+import { loadThreadMessages, readMessages } from '../../lib/methods';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -567,7 +567,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				return;
 			}
 			if (this.tmid) {
-				await RoomServices.getThreadMessages(this.tmid, this.rid);
+				await loadThreadMessages({ tmid: this.tmid, rid: this.rid });
 			} else {
 				const newLastOpen = new Date();
 				await RoomServices.getMessages(room);
@@ -849,7 +849,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			} else {
 				/**
 				 * if it's from server, we don't have it saved locally and so we fetch surroundings
-				 * we test if it's not from threads because we're fetching from threads currently with `getThreadMessages`
+				 * we test if it's not from threads because we're fetching from threads currently with `loadThreadMessages`
 				 */
 				if (message.fromServer && !message.tmid && this.rid) {
 					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid });
