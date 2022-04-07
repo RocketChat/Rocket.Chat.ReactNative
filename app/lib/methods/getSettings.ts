@@ -1,16 +1,16 @@
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { addSettings, clearSettings } from '../../../actions/settings';
-import { DEFAULT_AUTO_LOCK, defaultSettings } from '../../constants';
-import { IPreparedSettings, ISettingsIcon } from '../../../definitions';
-import fetch from '../../../utils/fetch';
-import log from '../../../utils/log';
-import { store as reduxStore } from '../../store/auxStore';
-import database from '../../database';
-import RocketChat from '..';
+import { addSettings, clearSettings } from '../../actions/settings';
+import { DEFAULT_AUTO_LOCK, defaultSettings } from '../constants';
+import { IPreparedSettings, ISettingsIcon } from '../../definitions';
+import fetch from '../../utils/fetch';
+import log from '../../utils/log';
+import { store as reduxStore } from '../store/auxStore';
+import database from '../database';
 import sdk from '../services/sdk';
-import protectedFunction from '../../methods/helpers/protectedFunction';
+import { parseSettings, _prepareSettings } from './helpers';
+import protectedFunction from './helpers/protectedFunction';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -112,7 +112,7 @@ export async function getLoginSettings({ server }: { server: string }): Promise<
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
-			reduxStore.dispatch(addSettings(RocketChat.parseSettings(RocketChat._prepareSettings(result.settings))));
+			reduxStore.dispatch(addSettings(parseSettings(_prepareSettings(result.settings))));
 		}
 	} catch (e) {
 		log(e);
@@ -131,7 +131,7 @@ export async function setSettings(): Promise<void> {
 		valueAsArray: item.valueAsArray,
 		_updatedAt: item._updatedAt
 	}));
-	reduxStore.dispatch(addSettings(RocketChat.parseSettings(parsed.slice(0, parsed.length))));
+	reduxStore.dispatch(addSettings(parseSettings(parsed.slice(0, parsed.length))));
 }
 
 export function subscribeSettings(): void {
@@ -155,10 +155,10 @@ export async function getSettings(): Promise<void> {
 			return;
 		}
 		const data: IData[] = result.settings || [];
-		const filteredSettings: IPreparedSettings[] = RocketChat._prepareSettings(data);
+		const filteredSettings: IPreparedSettings[] = _prepareSettings(data);
 		const filteredSettingsIds = filteredSettings.map(s => s._id);
 
-		reduxStore.dispatch(addSettings(RocketChat.parseSettings(filteredSettings)));
+		reduxStore.dispatch(addSettings(parseSettings(filteredSettings)));
 
 		// filter server info
 		const serverInfo = filteredSettings.filter(i1 => serverInfoKeys.includes(i1._id));

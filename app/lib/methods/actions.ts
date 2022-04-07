@@ -4,7 +4,7 @@ import EventEmitter from '../../utils/events';
 import fetch from '../../utils/fetch';
 import random from '../../utils/random';
 import Navigation from '../navigation/appNavigation';
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
 
 const triggersId = new Map();
 

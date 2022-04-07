@@ -4,10 +4,10 @@ import {
 	ITriggerCancel,
 	ITriggerSubmitView,
 	ModalActions
-} from '../../../containers/UIKit/interfaces';
-import { TRocketChat } from '../../../definitions';
-import { triggerAction } from '../../methods/actions';
-import Navigation from '../../navigation/appNavigation';
+} from '../../containers/UIKit/interfaces';
+import { TRocketChat } from '../../definitions';
+import Navigation from '../navigation/appNavigation';
+import { triggerAction } from './actions';
 
 export function triggerBlockAction(this: TRocketChat, options: ITriggerBlockAction) {
 	return triggerAction.call(this, { type: ActionTypes.ACTION, ...options });

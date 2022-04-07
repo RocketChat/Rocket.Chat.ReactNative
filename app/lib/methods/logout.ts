@@ -2,17 +2,17 @@ import * as FileSystem from 'expo-file-system';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import Model from '@nozbe/watermelondb/Model';
 
-import { getDeviceToken } from '../../../notifications/push';
-import { extractHostname } from '../../../utils/server';
-import { BASIC_AUTH_KEY } from '../../../utils/fetch';
-import database, { getDatabase } from '../../database';
-import RocketChat from '..';
-import { useSsl } from '../../../utils/url';
-import log from '../../../utils/log';
-import UserPreferences from '../../methods/userPreferences';
-import { ICertificate, IRocketChat } from '../../../definitions';
+import { getDeviceToken } from '../../notifications/push';
+import { extractHostname } from '../../utils/server';
+import { BASIC_AUTH_KEY } from '../../utils/fetch';
+import database, { getDatabase } from '../database';
+import { useSsl } from '../../utils/url';
+import log from '../../utils/log';
+import { ICertificate, IRocketChat } from '../../definitions';
 import sdk from '../services/sdk';
-import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../../constants';
+import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../constants';
+import UserPreferences from './userPreferences';
+import RocketChat from '../rocketchat';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);
