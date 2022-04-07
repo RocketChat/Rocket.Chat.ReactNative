@@ -521,7 +521,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					tmid={tmid}
 					teamId={teamId}
 					joined={joined}
-					t={t}
+					t={this.t || t}
 					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
