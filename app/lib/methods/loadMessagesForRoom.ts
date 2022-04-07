@@ -5,7 +5,7 @@ import { IMessage, TMessageModel } from '../../definitions';
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
 import roomTypeToApiType, { RoomTypes } from './roomTypeToApiType';
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 

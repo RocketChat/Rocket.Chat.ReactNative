@@ -2,10 +2,10 @@ import { Rocketchat } from '@rocket.chat/sdk';
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 
-import { twoFactor } from '../../../utils/twoFactor';
-import { useSsl } from '../../../utils/url';
-import { store as reduxStore } from '../../store/auxStore';
-import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../../definitions/rest/helpers';
+import { twoFactor } from '../../utils/twoFactor';
+import { useSsl } from '../../utils/url';
+import { store as reduxStore } from '../store/auxStore';
+import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../definitions/rest/helpers';
 
 class Sdk {
 	private sdk: typeof Rocketchat;

@@ -15,7 +15,7 @@ import { getUserSelector } from '../../selectors/login';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { ProfileStackParamList } from '../../stacks/types';
-import { INotificationPreferences } from '../../definitions';
+import { INotificationPreferences, IUser } from '../../definitions';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -34,9 +34,7 @@ interface IUserNotificationPreferencesViewState {
 interface IUserNotificationPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>;
 	theme: string;
-	user: {
-		id: string;
-	};
+	user: IUser;
 }
 
 class UserNotificationPreferencesView extends React.Component<

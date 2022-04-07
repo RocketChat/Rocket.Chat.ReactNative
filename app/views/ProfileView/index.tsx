@@ -37,9 +37,9 @@ import {
 	INavigationOptions,
 	IParams,
 	IProfileViewProps,
-	IProfileViewState,
-	IUser
+	IProfileViewState
 } from '../../definitions/IProfileViewInterfaces';
+import { IUser } from '../../definitions';
 
 class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> {
 	private name: any;
@@ -116,7 +116,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		const { name, username, emails, customFields } = user || userProps;
 
 		this.setState({
-			name,
+			name: name as string,
 			username,
 			email: emails ? emails[0].address : null,
 			newPassword: null,
