@@ -18,7 +18,8 @@ const IconOrAvatar = ({
 	teamMain,
 	showLastMessage,
 	theme,
-	displayMode
+	displayMode,
+	sourceType
 }) => {
 	if (showAvatar) {
 		return (
@@ -38,6 +39,7 @@ const IconOrAvatar = ({
 					teamMain={teamMain}
 					size={24}
 					style={{ marginRight: 12 }}
+					sourceType={sourceType}
 				/>
 			</View>
 		);
