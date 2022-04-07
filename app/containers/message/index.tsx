@@ -6,13 +6,12 @@ import Message from './Message';
 import MessageContext from './Context';
 import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants';
-import messagesStatus from '../../constants/messagesStatus';
 import { useTheme, withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, TAnyMessageModel } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;

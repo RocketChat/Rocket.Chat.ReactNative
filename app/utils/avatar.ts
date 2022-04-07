@@ -1,6 +1,6 @@
-import { compareServerVersion } from '../lib/utils';
 import { SubscriptionType } from '../definitions/ISubscription';
 import { IAvatar } from '../containers/Avatar/interfaces';
+import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 
 const formatUrl = (url: string, size: number, query: string) => `${url}?format=png&size=${size}${query}`;
 

@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import { twoFactor } from '../../../utils/twoFactor';
 import { useSsl } from '../../../utils/url';
-import reduxStore from '../../createStore';
+import { store as reduxStore } from '../../store/auxStore';
 import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../../definitions/rest/helpers';
 
 class Sdk {
