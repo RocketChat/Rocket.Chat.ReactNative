@@ -15,7 +15,7 @@ import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
-import { IApplicationState, IBaseScreen, RootEnum } from '../../definitions';
+import { IApplicationState, IBaseScreen, IUser, RootEnum } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
@@ -34,10 +34,7 @@ import SidebarView from '../SidebarView';
 interface ISettingsViewProps extends IBaseScreen<SettingsStackParamList, 'SettingsView'> {
 	server: IServer;
 	isMasterDetail: boolean;
-	user: {
-		roles: [];
-		id: string;
-	};
+	user: IUser;
 }
 
 class SettingsView extends React.Component<ISettingsViewProps, any> {
