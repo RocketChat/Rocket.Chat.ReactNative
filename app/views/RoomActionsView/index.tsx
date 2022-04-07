@@ -41,6 +41,7 @@ import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
@@ -147,21 +148,12 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		this.mounted = true;
 		const { room, member } = this.state;
 		if (room.rid) {
-			// there is room.id for rooms in db
 			if (!room.id) {
-				// need to check if the type is from omnichannel
 				if (room.t === SubscriptionType.OMNICHANNEL) {
-					// if is a Preview, we don't need to do anything
-					// however if isn't a Preview, the room should be in db
 					if (!this.isOmnichannelPreview) {
-						const db = database.active;
-						const subCollection = db.get('subscriptions');
-						try {
-							const result = await subCollection.find(room.rid);
+						const result = await getSubscriptionByRoomId(room.rid);
+						if (result) {
 							this.setState({ room: result });
-						} catch (error) {
-							console.log('RoomActionsView: componentDidMout - Room not found');
-							log(error);
 						}
 					}
 				} else {
