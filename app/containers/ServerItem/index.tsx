@@ -6,7 +6,7 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 import { IServerInfo } from '../../definitions';
 import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { isIOS } from '../../utils/deviceInfo';
 import { useTheme } from '../../theme';
 
