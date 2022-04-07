@@ -1,5 +1,5 @@
 import log from '../../../../utils/log';
-import { store } from '../../../../lib/auxStore';
+import { store } from '../../../../lib/store/auxStore';
 import RocketChat from '../../../../lib/rocketchat';
 import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest } from '../../actions/inquiry';
 import sdk from '../../../../lib/rocketchat/services/sdk';

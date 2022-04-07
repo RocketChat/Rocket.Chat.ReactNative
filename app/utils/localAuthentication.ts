@@ -5,7 +5,7 @@ import { sha256 } from 'js-sha256';
 import moment from 'moment';
 
 import UserPreferences from '../lib/methods/userPreferences';
-import { store } from '../lib/auxStore';
+import { store } from '../lib/store/auxStore';
 import database from '../lib/database';
 import { getServerTimeSync } from '../lib/rocketchat/services/getServerTimeSync';
 import {

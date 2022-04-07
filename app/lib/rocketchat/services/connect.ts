@@ -11,7 +11,7 @@ import protectedFunction from '../../methods/helpers/protectedFunction';
 import database from '../../database';
 import { selectServerFailure } from '../../../actions/server';
 import { twoFactor } from '../../../utils/twoFactor';
-import { store } from '../../auxStore';
+import { store } from '../../store/auxStore';
 import { loginRequest, setLoginServices, setUser } from '../../../actions/login';
 import sdk from './sdk';
 import I18n from '../../../i18n';

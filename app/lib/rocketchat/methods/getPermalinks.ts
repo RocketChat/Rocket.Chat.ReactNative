@@ -1,6 +1,6 @@
 import log from '../../../utils/log';
 import { TMessageModel, TSubscriptionModel } from '../../../definitions';
-import { store } from '../../auxStore';
+import { store } from '../../store/auxStore';
 import getRoom from '../../methods/getRoom';
 import { isGroupChat } from './helpers';
 

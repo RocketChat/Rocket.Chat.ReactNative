@@ -5,7 +5,7 @@ import orderBy from 'lodash/orderBy';
 import { setPermissions as setPermissionsAction } from '../../../actions/permissions';
 import { IPermission, TPermissionModel } from '../../../definitions';
 import log from '../../../utils/log';
-import { store as reduxStore } from '../../auxStore';
+import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
 import sdk from '../services/sdk';
 import protectedFunction from '../../methods/helpers/protectedFunction';
