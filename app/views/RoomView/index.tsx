@@ -80,7 +80,7 @@ import {
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
-import { loadThreadMessages, readMessages } from '../../lib/methods';
+import { loadSurroundingMessages, loadThreadMessages, readMessages } from '../../lib/methods';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -852,7 +852,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				 * we test if it's not from threads because we're fetching from threads currently with `loadThreadMessages`
 				 */
 				if (message.fromServer && !message.tmid && this.rid) {
-					await RocketChat.loadSurroundingMessages({ messageId, rid: this.rid });
+					await loadSurroundingMessages({ messageId, rid: this.rid });
 				}
 				// @ts-ignore
 				await Promise.race([this.list.current.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
