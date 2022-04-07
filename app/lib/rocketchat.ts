@@ -3,7 +3,6 @@ import canOpenRoom from './methods/canOpenRoom';
 import clearCache from './methods/clearCache';
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
 import loadMissedMessages from './methods/loadMissedMessages';
-import loadNextMessages from './methods/loadNextMessages';
 import loadSurroundingMessages from './methods/loadSurroundingMessages';
 // Spread Methods
 import * as sendMessage from './methods/sendMessage';
@@ -51,8 +50,7 @@ const RocketChat = {
 	clearCache,
 	loadMissedMessages,
 	loadMessagesForRoom,
-	loadSurroundingMessages,
-	loadNextMessages
+	loadSurroundingMessages
 };
 
 export default RocketChat;

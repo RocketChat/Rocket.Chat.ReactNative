@@ -19,7 +19,7 @@ interface ILoadNextMessages {
 	loaderItem: TMessageModel;
 }
 
-export default function loadNextMessages(args: ILoadNextMessages): Promise<void> {
+export function loadNextMessages(args: ILoadNextMessages): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const data = await sdk.methodCallWrapper('loadNextMessages', args.rid, args.ts, COUNT);
