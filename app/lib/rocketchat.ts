@@ -1,18 +1,18 @@
 // Methods
-import canOpenRoom from '../methods/canOpenRoom';
-import clearCache from '../methods/clearCache';
-import getRoom from '../methods/getRoom';
-import getRooms from '../methods/getRooms';
-import getSlashCommands from '../methods/getSlashCommands';
-import loadMessagesForRoom from '../methods/loadMessagesForRoom';
-import loadMissedMessages from '../methods/loadMissedMessages';
-import loadNextMessages from '../methods/loadNextMessages';
-import loadSurroundingMessages from '../methods/loadSurroundingMessages';
-import loadThreadMessages from '../methods/loadThreadMessages';
-import readMessages from '../methods/readMessages';
-import roomTypeToApiType from '../methods/roomTypeToApiType';
+import canOpenRoom from './methods/canOpenRoom';
+import clearCache from './methods/clearCache';
+import getRoom from './methods/getRoom';
+import getRooms from './methods/getRooms';
+import getSlashCommands from './methods/getSlashCommands';
+import loadMessagesForRoom from './methods/loadMessagesForRoom';
+import loadMissedMessages from './methods/loadMissedMessages';
+import loadNextMessages from './methods/loadNextMessages';
+import loadSurroundingMessages from './methods/loadSurroundingMessages';
+import loadThreadMessages from './methods/loadThreadMessages';
+import readMessages from './methods/readMessages';
+import roomTypeToApiType from './methods/roomTypeToApiType';
 // Spread Methods
-import * as sendMessage from '../methods/sendMessage';
+import * as sendMessage from './methods/sendMessage';
 import * as callJitsi from './methods/callJitsi';
 import * as enterpriseModules from './methods/enterpriseModules';
 import * as getCustomEmojis from './methods/getCustomEmojis';

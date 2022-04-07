@@ -17,7 +17,7 @@ import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
 import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
-import sdk from '../../rocketchat/services/sdk';
+import sdk from '../../services/sdk';
 
 const WINDOW_TIME = 1000;
 

@@ -1,9 +1,9 @@
 import { InteractionManager } from 'react-native';
 
-import { setActiveUsers } from '../../../actions/activeUsers';
-import { setUser } from '../../../actions/login';
-import { store as reduxStore } from '../../store/auxStore';
-import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
+import { setActiveUsers } from '../../actions/activeUsers';
+import { setUser } from '../../actions/login';
+import { store as reduxStore } from '../store/auxStore';
+import { compareServerVersion } from './helpers/compareServerVersion';
 
 // TODO
 export function _setUser(this: any, ddpMessage: { fields: any; id: any; cleared: any }) {
