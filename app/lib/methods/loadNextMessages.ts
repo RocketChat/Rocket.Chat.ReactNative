@@ -4,11 +4,11 @@ import orderBy from 'lodash/orderBy';
 
 import log from '../../utils/log';
 import { getMessageById } from '../database/services/Message';
-import { MessageTypeLoad } from '../../constants/messageTypeLoad';
-import { generateLoadMoreId } from '../utils';
+import { MessageTypeLoad } from '../constants';
 import updateMessages from './updateMessages';
 import { TMessageModel } from '../../definitions';
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
+import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 
 const COUNT = 50;
 

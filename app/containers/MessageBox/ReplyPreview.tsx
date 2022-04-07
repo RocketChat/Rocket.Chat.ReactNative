@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { MarkdownPreview } from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { IMessage } from '../../definitions/IMessage';
 import { useTheme } from '../../theme';
 import { IApplicationState } from '../../definitions';

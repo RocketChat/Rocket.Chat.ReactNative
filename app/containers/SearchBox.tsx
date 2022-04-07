@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TextInput as RNTextInput, TextInputProps, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import I18n from '../i18n';
 import { CustomIcon } from '../lib/Icons';
 import TextInput from '../presentation/TextInput';

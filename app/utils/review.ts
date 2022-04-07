@@ -2,8 +2,7 @@ import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import I18n from '../i18n';
-import { STORE_REVIEW_LINK } from '../constants/links';
-import { isFDroidBuild } from '../constants/environment';
+import { isFDroidBuild, STORE_REVIEW_LINK } from '../lib/constants';
 import { showErrorAlert } from './info';
 import { isIOS } from './deviceInfo';
 import { events, logEvent } from './log';

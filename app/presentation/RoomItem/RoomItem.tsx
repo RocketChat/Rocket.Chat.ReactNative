@@ -11,7 +11,7 @@ import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
-import { DisplayMode } from '../../constants/constantDisplayMode';
+import { DisplayMode } from '../../lib/constants';
 import { TUserStatus } from '../../definitions';
 
 interface IRoomItem {

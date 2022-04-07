@@ -4,7 +4,7 @@ import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withActionSheet } from '../../containers/ActionSheet';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
