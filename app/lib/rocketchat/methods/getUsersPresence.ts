@@ -7,7 +7,7 @@ import { setActiveUsers } from '../../../actions/activeUsers';
 import { setUser } from '../../../actions/login';
 import database from '../../database';
 import { IRocketChat, IUser } from '../../../definitions';
-import sdk from '../services/sdk';
+import sdk from '../../services/sdk';
 import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
 
 export function subscribeUsersPresence(this: IRocketChat) {

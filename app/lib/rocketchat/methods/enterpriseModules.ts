@@ -1,4 +1,4 @@
-import sdk from '../services/sdk';
+import sdk from '../../services/sdk';
 import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
 import log from '../../../utils/log';

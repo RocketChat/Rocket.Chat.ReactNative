@@ -7,7 +7,7 @@ import moment from 'moment';
 import UserPreferences from '../lib/methods/userPreferences';
 import { store } from '../lib/store/auxStore';
 import database from '../lib/database';
-import { getServerTimeSync } from '../lib/rocketchat/services/getServerTimeSync';
+import { getServerTimeSync } from '../lib/services/getServerTimeSync';
 import {
 	ATTEMPTS_KEY,
 	BIOMETRY_ENABLED_KEY,

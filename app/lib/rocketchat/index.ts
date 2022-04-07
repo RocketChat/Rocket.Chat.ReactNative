@@ -28,9 +28,9 @@ import * as sendFileMessage from './methods/sendFileMessage';
 import * as setUser from './methods/setUser';
 import * as triggerActions from './methods/triggerActions';
 import * as userPreferencesMethods from './methods/userPreferencesMethods';
-import * as connect from './services/connect';
-import * as restApis from './services/restApi';
-import * as shareExtension from './services/shareExtension';
+import * as connect from '../services/connect';
+import * as restApis from '../services/restApi';
+import * as shareExtension from '../services/shareExtension';
 
 const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';

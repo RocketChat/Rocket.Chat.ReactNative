@@ -7,7 +7,7 @@ import { IPermission, TPermissionModel } from '../../../definitions';
 import log from '../../../utils/log';
 import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
-import sdk from '../services/sdk';
+import sdk from '../../services/sdk';
 import protectedFunction from '../../methods/helpers/protectedFunction';
 import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
 

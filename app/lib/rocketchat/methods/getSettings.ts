@@ -9,7 +9,7 @@ import log from '../../../utils/log';
 import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
 import RocketChat from '..';
-import sdk from '../services/sdk';
+import sdk from '../../services/sdk';
 import protectedFunction from '../../methods/helpers/protectedFunction';
 
 const serverInfoKeys = [

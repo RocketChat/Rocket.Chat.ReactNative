@@ -8,7 +8,7 @@ import { store as reduxStore } from '../../store/auxStore';
 import { removeRoles, setRoles as setRolesAction, updateRoles } from '../../../actions/roles';
 import protectedFunction from '../../methods/helpers/protectedFunction';
 import { TRoleModel } from '../../../definitions';
-import sdk from '../services/sdk';
+import sdk from '../../services/sdk';
 
 export async function setRoles(): Promise<void> {
 	const db = database.active;

@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 
 import { sanitizeLikeString } from '../../database/utils';
 import database from '../../database/index';
-import { spotlight } from '../services/restApi';
+import { spotlight } from '../../services/restApi';
 import { ISearch, ISearchLocal, SubscriptionType } from '../../../definitions';
 import { isGroupChat } from './helpers';
 
