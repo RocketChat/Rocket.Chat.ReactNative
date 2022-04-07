@@ -4,7 +4,7 @@ import { put, select, takeLatest } from 'redux-saga/effects';
 import { ENCRYPTION } from '../actions/actionsTypes';
 import { encryptionSet } from '../actions/encryption';
 import { Encryption } from '../lib/encryption';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
 import UserPreferences from '../lib/methods/userPreferences';

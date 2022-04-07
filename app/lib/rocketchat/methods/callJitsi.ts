@@ -1,7 +1,7 @@
 import { ISubscription } from '../../../definitions';
 import { events, logEvent } from '../../../utils/log';
 import { store } from '../../auxStore';
-import Navigation from '../../Navigation';
+import Navigation from '../../navigation/appNavigation';
 import sdk from '../services/sdk';
 
 async function jitsiURL({ room }: { room: ISubscription }) {

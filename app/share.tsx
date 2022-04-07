@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 
 import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
 import UserPreferences from './lib/methods/userPreferences';
-import Navigation from './lib/ShareNavigation';
+import Navigation from './lib/navigation/shareNavigation';
 import store from './lib/createStore';
 import { initStore } from './lib/auxStore';
 import { closeShareExtension, shareExtensionInit } from './lib/rocketchat/services/shareExtension';
