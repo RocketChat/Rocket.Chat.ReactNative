@@ -1,7 +1,7 @@
 import React from 'react';
 import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 
 interface ITouchProps extends RectButtonProps {
 	children: React.ReactNode;

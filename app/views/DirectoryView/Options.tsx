@@ -5,7 +5,7 @@ import Touch from '../../utils/touch';
 import { CustomIcon } from '../../lib/Icons';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import styles from './styles';
 
 const ANIMATION_DURATION = 200;

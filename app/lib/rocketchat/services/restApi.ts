@@ -13,12 +13,12 @@ import { ISpotlight } from '../../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../../definitions/ITeam';
 import { Encryption } from '../../encryption';
 import { TParams } from '../../../definitions/ILivechatEditView';
-import { store as reduxStore } from '../../auxStore';
+import { store as reduxStore } from '../../store/auxStore';
 import { getDeviceToken } from '../../../notifications/push';
 import { getBundleId, isIOS } from '../../../utils/deviceInfo';
-import { compareServerVersion } from '../../utils';
 import roomTypeToApiType, { RoomTypes } from '../../methods/roomTypeToApiType';
 import sdk from './sdk';
+import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
 
 export const createChannel = ({
 	name,

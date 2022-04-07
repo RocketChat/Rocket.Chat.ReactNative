@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import { MarkdownPreview } from '../markdown';
 import { IMessageRepliedThread } from './interfaces';

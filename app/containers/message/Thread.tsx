@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';

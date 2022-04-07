@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Text, TextStyle, View, ViewStyle } from 'react-native';
 
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import styles from './styles';
 
 interface ISwitchContainer {

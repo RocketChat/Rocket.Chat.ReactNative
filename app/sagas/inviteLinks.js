@@ -5,7 +5,7 @@ import { INVITE_LINKS } from '../actions/actionsTypes';
 import { inviteLinksFailure, inviteLinksSetInvite, inviteLinksSuccess } from '../actions/inviteLinks';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import I18n from '../i18n';
 
 const handleRequest = function* handleRequest({ token }) {

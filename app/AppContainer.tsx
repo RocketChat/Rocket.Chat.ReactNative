@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
 import { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
-import Navigation from './lib/Navigation';
+import Navigation from './lib/navigation/appNavigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './utils/navigation';
 import { RootEnum } from './definitions';
 // Stacks

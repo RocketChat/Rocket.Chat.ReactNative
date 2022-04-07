@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { CustomIcon } from '../../../lib/Icons';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import ActivityIndicator from '../../ActivityIndicator';
 import styles from './styles';
 

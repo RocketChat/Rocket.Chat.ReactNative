@@ -1,14 +1,13 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Model } from '@nozbe/watermelondb';
 
-import messagesStatus from '../../constants/messagesStatus';
 import database from '../database';
 import log from '../../utils/log';
 import random from '../../utils/random';
 import { Encryption } from '../encryption';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
 import { E2EType, IMessage, IUser, TMessageModel } from '../../definitions';
 import sdk from '../rocketchat/services/sdk';
+import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../constants';
 
 const changeMessageStatus = async (id: string, status: number, tmid?: string, message?: IMessage) => {
 	const db = database.active;

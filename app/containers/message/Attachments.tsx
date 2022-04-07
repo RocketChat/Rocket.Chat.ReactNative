@@ -14,7 +14,7 @@ import { useTheme } from '../../theme';
 import { IAttachment } from '../../definitions';
 import CollapsibleQuote from './Components/CollapsibleQuote';
 import openLink from '../../utils/openLink';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 
 export type TElement = {
 	type: string;

@@ -9,7 +9,7 @@ import database from '../../database';
 import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
 import { getThreadMessageById } from '../../database/services/ThreadMessage';
-import reduxStore from '../../createStore';
+import { store as reduxStore } from '../../store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';

@@ -14,7 +14,7 @@ import I18n from '../i18n';
 import UserItem from '../presentation/UserItem';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
-import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../lib/constants';
 import { withTheme } from '../theme';
 import { Review } from '../utils/review';
 import { getUserSelector } from '../selectors/login';

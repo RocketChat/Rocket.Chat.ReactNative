@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 
 const styles = StyleSheet.create({
 	container: {

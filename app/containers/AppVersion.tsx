@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import { getReadableVersion } from '../utils/deviceInfo';
 import I18n from '../i18n';

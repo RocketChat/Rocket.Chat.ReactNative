@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import React from 'react';
 import { FlatList } from 'react-native';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { IPreviewItem } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import styles from '../styles';

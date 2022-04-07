@@ -4,15 +4,15 @@ import { put, select, takeLatest } from 'redux-saga/effects';
 import { ENCRYPTION } from '../actions/actionsTypes';
 import { encryptionSet } from '../actions/encryption';
 import { Encryption } from '../lib/encryption';
-import Navigation from '../lib/Navigation';
-import { E2E_BANNER_TYPE, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
+import Navigation from '../lib/navigation/appNavigation';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
-import UserPreferences from '../lib/userPreferences';
+import UserPreferences from '../lib/methods/userPreferences';
 import { getUserSelector } from '../selectors/login';
 import { showErrorAlert } from '../utils/info';
 import I18n from '../i18n';
 import log from '../utils/log';
+import { E2E_BANNER_TYPE, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
 
 const getServer = state => state.share.server.server || state.server.server;
 const getE2eEnable = state => state.settings.E2E_Enable;

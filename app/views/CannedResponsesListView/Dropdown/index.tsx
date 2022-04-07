@@ -3,7 +3,7 @@ import { Animated, Easing, FlatList, TouchableWithoutFeedback } from 'react-nati
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { withTheme } from '../../../theme';
 import * as List from '../../../containers/List';
 import { IDepartment } from '../../../definitions/ICannedResponse';

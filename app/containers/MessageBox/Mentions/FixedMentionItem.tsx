@@ -3,7 +3,7 @@ import { Text, TouchableOpacity } from 'react-native';
 
 import styles from '../styles';
 import I18n from '../../../i18n';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 
 interface IMessageBoxFixedMentionItem {

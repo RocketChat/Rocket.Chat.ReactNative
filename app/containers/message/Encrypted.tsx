@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 
 import Touchable from './Touchable';
-import { E2E_MESSAGE_TYPE } from '../../lib/constants';
 import { CustomIcon } from '../../lib/Icons';
-import { themes } from '../../constants/colors';
 import { BUTTON_HIT_SLOP } from './utils';
 import MessageContext from './Context';
 import styles from './styles';
 import { useTheme } from '../../theme';
+import { E2E_MESSAGE_TYPE, themes } from '../../lib/constants';
 
 const Encrypted = React.memo(({ type }: { type: string }) => {
 	const { theme } = useTheme();

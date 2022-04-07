@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { ImageComponent } from './ImageComponent';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 
 const styles = StyleSheet.create({
 	scrollContent: {
