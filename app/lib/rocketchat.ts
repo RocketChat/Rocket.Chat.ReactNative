@@ -1,7 +1,6 @@
 // Methods
 import canOpenRoom from './methods/canOpenRoom';
 import clearCache from './methods/clearCache';
-import getRoom from './methods/getRoom';
 import getRooms from './methods/getRooms';
 import getSlashCommands from './methods/getSlashCommands';
 import loadMessagesForRoom from './methods/loadMessagesForRoom';
@@ -61,8 +60,7 @@ const RocketChat = {
 	loadThreadMessages,
 	getRooms,
 	readMessages,
-	getSlashCommands,
-	getRoom
+	getSlashCommands
 };
 
 export default RocketChat;

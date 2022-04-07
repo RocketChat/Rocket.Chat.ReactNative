@@ -33,6 +33,7 @@ import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
 import { E2E_MESSAGE_TYPE } from '../../constants';
+import { getRoom } from '../getRoom';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
@@ -351,7 +352,7 @@ export default function subscribeRooms() {
 				const {
 					payload: { rid, message, sender }
 				} = notification;
-				const room = await RocketChat.getRoom(rid);
+				const room = await getRoom(rid);
 				notification.title = RocketChat.getRoomTitle(room);
 				notification.avatar = RocketChat.getRoomAvatar(room);
 
