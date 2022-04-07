@@ -9,10 +9,10 @@ import database, { getDatabase } from '../../database';
 import RocketChat from '..';
 import { useSsl } from '../../../utils/url';
 import log from '../../../utils/log';
-import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../../constants';
 import UserPreferences from '../../methods/userPreferences';
 import { ICertificate, IRocketChat } from '../../../definitions';
 import sdk from '../services/sdk';
+import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../../constants';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);

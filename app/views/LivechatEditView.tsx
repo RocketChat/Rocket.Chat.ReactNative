@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import TextInput from '../containers/TextInput';
 import KeyboardView from '../presentation/KeyboardView';
 import RocketChat from '../lib/rocketchat';

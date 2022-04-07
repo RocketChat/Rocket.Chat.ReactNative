@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { MESSAGE_TYPE_ANY_LOAD } from '../../constants/messageTypeLoad';
+import { MESSAGE_TYPE_ANY_LOAD } from '../constants';
 import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 import database from '../database';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';

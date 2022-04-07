@@ -2,8 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { addSettings, clearSettings } from '../../../actions/settings';
-import { DEFAULT_AUTO_LOCK } from '../../../constants/localAuthentication';
-import settings from '../../../constants/settings';
+import { DEFAULT_AUTO_LOCK, defaultSettings } from '../../constants';
 import { IPreparedSettings, ISettingsIcon } from '../../../definitions';
 import fetch from '../../../utils/fetch';
 import log from '../../../utils/log';
@@ -144,7 +143,7 @@ type IData = ISettingsIcon | IPreparedSettings;
 export async function getSettings(): Promise<void> {
 	try {
 		const db = database.active;
-		const settingsParams = Object.keys(settings).filter(key => !loginSettings.includes(key));
+		const settingsParams = Object.keys(defaultSettings).filter(key => !loginSettings.includes(key));
 		// RC 0.60.0
 		const result = await fetch(
 			`${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}&count=${

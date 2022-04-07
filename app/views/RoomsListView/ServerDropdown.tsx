@@ -14,7 +14,7 @@ import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import ServerItem from '../../presentation/ServerItem';
 import database from '../../lib/database';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer, IKeyCommandEvent } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';

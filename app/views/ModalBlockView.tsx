@@ -7,7 +7,7 @@ import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scr
 
 import { withTheme } from '../theme';
 import EventEmitter from '../utils/events';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import RocketChat from '../lib/rocketchat';

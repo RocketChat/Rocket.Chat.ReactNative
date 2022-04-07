@@ -8,7 +8,7 @@ import * as Progress from 'react-native-progress';
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import styles from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment } from '../../definitions';

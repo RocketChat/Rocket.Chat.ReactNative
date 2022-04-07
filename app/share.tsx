@@ -28,7 +28,7 @@ import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
-import { colors } from './constants/colors';
+import { colors } from './lib/constants';
 
 initStore(store);
 
