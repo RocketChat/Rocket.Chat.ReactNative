@@ -63,7 +63,7 @@ async function open({ type, rid, name }: { type: ERoomTypes; rid: string; name: 
 	}
 }
 
-export default async function canOpenRoom({ rid, path, isCall }: { rid: string; isCall: boolean; path: string }): Promise<any> {
+export async function canOpenRoom({ rid, path, isCall }: { rid: string; isCall: boolean; path: string }): Promise<any> {
 	try {
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');

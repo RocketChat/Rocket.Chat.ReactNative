@@ -1,5 +1,3 @@
-// Methods
-import canOpenRoom from './methods/canOpenRoom';
 // Spread Methods
 import * as sendMessage from './methods/sendMessage';
 import * as callJitsi from './methods/callJitsi';
@@ -40,9 +38,7 @@ const RocketChat = {
 	...getCustomEmojis,
 	...helpers,
 	...userPreferencesMethods,
-	...setUser,
-
-	canOpenRoom
+	...setUser
 };
 
 export default RocketChat;

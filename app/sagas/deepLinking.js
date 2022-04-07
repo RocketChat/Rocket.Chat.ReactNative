@@ -15,6 +15,7 @@ import { loginRequest } from '../actions/login';
 import log from '../utils/log';
 import { RootEnum } from '../definitions';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { canOpenRoom } from '../lib/methods';
 
 const roomTypes = {
 	channel: 'c',
@@ -53,7 +54,7 @@ const navigate = function* navigate({ params }) {
 			[type, name, , jumpToThreadId] = params.path.split('/');
 		}
 		if (type !== 'invite' || params.rid) {
-			const room = yield RocketChat.canOpenRoom(params);
+			const room = yield canOpenRoom(params);
 			if (room) {
 				const item = {
 					name,
