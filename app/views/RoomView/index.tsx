@@ -80,6 +80,7 @@ import {
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
+import { readMessages } from '../../lib/methods';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -578,7 +579,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					} else {
 						this.setLastOpen(null);
 					}
-					RoomServices.readMessages(room.rid, newLastOpen).catch(e => console.log(e));
+					readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
 				}
 			}
 

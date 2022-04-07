@@ -18,6 +18,7 @@ import { Encryption } from '../../encryption';
 import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
+import { readMessages } from '../readMessages';
 
 const WINDOW_TIME = 1000;
 
@@ -185,7 +186,7 @@ export default class RoomSubscription {
 	});
 
 	read = debounce((lastOpen: Date) => {
-		RocketChat.readMessages(this.rid, lastOpen);
+		readMessages(this.rid, lastOpen);
 	}, 300);
 
 	updateMessage = (message: IMessage): Promise<void> =>

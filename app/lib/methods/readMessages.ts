@@ -3,7 +3,7 @@ import log from '../../utils/log';
 import { TSubscriptionModel } from '../../definitions';
 import sdk from '../services/sdk';
 
-export default async function readMessages(rid: string, ls: Date, updateLastOpen = false): Promise<void> {
+export async function readMessages(rid: string, ls: Date, updateLastOpen = false): Promise<void> {
 	try {
 		const db = database.active;
 		const subscription = await db.get('subscriptions').find(rid);
