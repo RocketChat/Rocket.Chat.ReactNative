@@ -31,12 +31,10 @@ import * as connect from './services/connect';
 import * as restApis from './services/restApi';
 import * as shareExtension from './services/shareExtension';
 
-const TOKEN_KEY = 'reactnativemeteor_usertoken';
 const CURRENT_SERVER = 'currentServer';
 const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
 
 const RocketChat = {
-	TOKEN_KEY,
 	CURRENT_SERVER,
 	CERTIFICATE_KEY,
 	...restApis,

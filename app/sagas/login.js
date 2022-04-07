@@ -21,6 +21,7 @@ import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry'
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
+import { TOKEN_KEY } from '../lib/constants';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -164,8 +165,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		UserPreferences.setString(`${RocketChat.TOKEN_KEY}-${server}`, user.id);
-		UserPreferences.setString(`${RocketChat.TOKEN_KEY}-${user.id}`, user.token);
+		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
+		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 
@@ -205,7 +206,7 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 				if (servers.length > 0) {
 					for (let i = 0; i < servers.length; i += 1) {
 						const newServer = servers[i].id;
-						const token = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${newServer}`);
+						const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 						if (token) {
 							yield put(selectServerRequest(newServer));
 							return;

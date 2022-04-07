@@ -22,6 +22,7 @@ import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../utils/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { RootEnum } from '../definitions';
+import { TOKEN_KEY } from '../lib/constants';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -76,7 +77,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		yield put(clearActiveUsers());
 		const serversDB = database.servers;
 		UserPreferences.setString(RocketChat.CURRENT_SERVER, server);
-		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		const userCollections = serversDB.get('users');
 		let user = null;
 		if (userId) {
@@ -96,7 +97,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 				};
 			} catch {
 				// search credentials on shared credentials (Experimental/Official)
-				const token = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${userId}`);
+				const token = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 				if (token) {
 					user = { token };
 				}

@@ -14,6 +14,7 @@ import { goRoom } from '../utils/goRoom';
 import { loginRequest } from '../actions/login';
 import log from '../utils/log';
 import { RootEnum } from '../definitions';
+import { TOKEN_KEY } from '../lib/constants';
 
 const roomTypes = {
 	channel: 'c',
@@ -159,7 +160,7 @@ const handleOpen = function* handleOpen({ params }) {
 
 	const [server, user] = yield all([
 		UserPreferences.getString(RocketChat.CURRENT_SERVER),
-		UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${host}`)
+		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
 	]);
 
 	// TODO: needs better test

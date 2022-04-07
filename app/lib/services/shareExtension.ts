@@ -10,6 +10,7 @@ import RocketChat from '../rocketchat';
 import { encryptionInit } from '../../actions/encryption';
 import { store } from '../store/auxStore';
 import sdk from './sdk';
+import { TOKEN_KEY } from '../constants';
 
 export async function shareExtensionInit(server: string) {
 	database.setShareDB(server);
@@ -60,7 +61,7 @@ export async function shareExtensionInit(server: string) {
 		store.dispatch(shareSetSettings(RocketChat.parseSettings(parsed)));
 
 		// set User info
-		const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		const userCollections = serversDB.get('users');
 		let user = null;
 		if (userId) {

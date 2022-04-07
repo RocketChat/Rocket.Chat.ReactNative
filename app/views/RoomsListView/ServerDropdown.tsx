@@ -14,7 +14,7 @@ import I18n from '../../i18n';
 import EventEmitter from '../../utils/events';
 import ServerItem from '../../containers/ServerItem';
 import database from '../../lib/database';
-import { themes } from '../../lib/constants';
+import { themes, TOKEN_KEY } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { KEY_COMMAND, handleCommandSelectServer, IKeyCommandEvent } from '../../commands';
 import { isTablet } from '../../utils/deviceInfo';
@@ -135,7 +135,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 		this.close();
 		if (currentServer !== server) {
 			logEvent(events.RL_CHANGE_SERVER);
-			const userId = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${server}`);
+			const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 			if (isMasterDetail) {
 				goRoom({ item: {}, isMasterDetail });
 			}
