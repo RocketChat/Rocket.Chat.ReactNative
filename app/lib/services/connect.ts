@@ -24,6 +24,7 @@ import { updateSettings } from '../../actions/settings';
 import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
 import { onRolesChanged } from '../methods/getRoles';
+import { getSettings } from '../methods';
 
 interface IServices {
 	[index: string]: string | boolean;
@@ -85,7 +86,7 @@ function connect(
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 		sdk.initialize(server);
-		this.getSettings();
+		getSettings();
 
 		sdk.current
 			.connect()

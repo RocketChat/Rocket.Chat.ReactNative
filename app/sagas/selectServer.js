@@ -23,7 +23,7 @@ import SSLPinning from '../utils/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { RootEnum } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import { setPermissions, setRoles } from '../lib/methods';
+import { getLoginSettings, setPermissions, setRoles, setSettings } from '../lib/methods';
 
 const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
@@ -124,7 +124,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
 		// and block the selectServerSuccess raising multiples errors
-		RocketChat.setSettings();
+		setSettings();
 		RocketChat.setCustomEmojis();
 		setPermissions();
 		setRoles();
@@ -159,7 +159,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 
 		if (serverInfo) {
 			yield RocketChat.getLoginServices(server);
-			yield RocketChat.getLoginSettings({ server });
+			yield getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
 
 			if (fromServerHistory) {

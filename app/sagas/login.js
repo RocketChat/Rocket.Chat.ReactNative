@@ -22,7 +22,7 @@ import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
 import sdk from '../lib/services/sdk';
 import { TOKEN_KEY } from '../lib/constants';
-import { getCustomEmojis, getPermissions, getRoles, getSlashCommands } from '../lib/methods';
+import { getCustomEmojis, getPermissions, getRoles, getSlashCommands, subscribeSettings } from '../lib/methods';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
@@ -78,8 +78,8 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 	}
 };
 
-const subscribeSettings = function* subscribeSettings() {
-	yield RocketChat.subscribeSettings();
+const subscribeSetting = function* subscribeSetting() {
+	yield subscribeSettings();
 };
 
 const fetchPermissions = function* fetchPermissions() {
@@ -132,7 +132,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(registerPushToken);
 		yield fork(fetchUsersPresence);
 		yield fork(fetchEnterpriseModules, { user });
-		yield fork(subscribeSettings);
+		yield fork(subscribeSetting);
 		yield put(encryptionInit());
 
 		setLanguage(user?.language);
