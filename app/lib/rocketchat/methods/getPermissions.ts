@@ -5,11 +5,11 @@ import orderBy from 'lodash/orderBy';
 import { setPermissions as setPermissionsAction } from '../../../actions/permissions';
 import { IPermission, TPermissionModel } from '../../../definitions';
 import log from '../../../utils/log';
-import { store as reduxStore } from '../../auxStore';
+import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
 import sdk from '../services/sdk';
-import { compareServerVersion } from '../../utils';
 import protectedFunction from '../../methods/helpers/protectedFunction';
+import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
 
 export const SUPPORTED_PERMISSIONS = [
 	'add-user-to-any-c-room',

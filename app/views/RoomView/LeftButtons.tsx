@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { HeaderBackButton, StackNavigationProp } from '@react-navigation/stack';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import Avatar from '../../containers/Avatar';
 import { ChatsStackParamList } from '../../stacks/types';
 

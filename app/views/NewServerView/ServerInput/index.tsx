@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
 
 import TextInput from '../../../containers/TextInput';
 import * as List from '../../../containers/List';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
 import { TServerHistoryModel } from '../../../definitions/IServerHistory';
 import Item from './Item';

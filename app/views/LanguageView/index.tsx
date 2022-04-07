@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { appStart } from '../../actions/app';
 import { setUser } from '../../actions/login';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';

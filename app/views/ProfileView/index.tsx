@@ -26,7 +26,7 @@ import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Subscription } from 'rxjs';
 
 import { addUser, removeUser, reset } from '../actions/selectedUsers';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
 import Loading from '../containers/Loading';

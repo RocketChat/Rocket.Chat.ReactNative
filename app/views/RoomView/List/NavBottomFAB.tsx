@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { call, cond, greaterOrEq, useCode } from 'react-native-reanimated';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { CustomIcon } from '../../../lib/Icons';
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
