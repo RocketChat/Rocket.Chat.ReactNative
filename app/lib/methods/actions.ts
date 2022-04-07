@@ -3,8 +3,8 @@ import { TRocketChat } from '../../definitions/IRocketChat';
 import EventEmitter from '../../utils/events';
 import fetch from '../../utils/fetch';
 import random from '../../utils/random';
-import Navigation from '../Navigation';
-import sdk from '../rocketchat/services/sdk';
+import Navigation from '../navigation/appNavigation';
+import sdk from '../services/sdk';
 
 const triggersId = new Map();
 

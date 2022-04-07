@@ -3,7 +3,7 @@ import { Animated, Easing, TouchableWithoutFeedback } from 'react-native';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { withTheme } from '../../../theme';
 import { headerHeight } from '../../../containers/Header';
 import * as List from '../../../containers/List';
