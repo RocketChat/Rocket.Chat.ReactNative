@@ -4,7 +4,7 @@ import Touchable from 'react-native-platform-touchable';
 
 import sharedStyles from '../views/Styles';
 import TextInput from '../presentation/TextInput';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import { CustomIcon } from '../lib/Icons';
 import ActivityIndicator from './ActivityIndicator';
 

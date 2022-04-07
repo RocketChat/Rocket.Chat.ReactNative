@@ -4,7 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
 
 import SafeAreaView from '../containers/SafeAreaView';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import Markdown from '../containers/markdown';
 import { withTheme } from '../theme';

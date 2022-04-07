@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 
+import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
 import { CustomIcon } from '../../lib/Icons';
-import { STATUS_COLORS, themes } from '../../constants/colors';
+import { STATUS_COLORS, themes } from '../../lib/constants';
 import Status from '../Status/Status';
 import { useTheme } from '../../theme';
-import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
-import { IOmnichannelSource, TUserStatus } from '../../definitions';
+import { TUserStatus, IOmnichannelSource } from '../../definitions';
 
 const styles = StyleSheet.create({
 	icon: {

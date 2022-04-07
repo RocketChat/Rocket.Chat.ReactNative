@@ -6,8 +6,7 @@ import Touchable from './Touchable';
 import Markdown from '../markdown';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
-import { formatAttachmentUrl } from '../../lib/utils';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { fileDownload } from '../../utils/fileDownload';
 import EventEmitter from '../../utils/events';
@@ -16,9 +15,11 @@ import I18n from '../../i18n';
 import { IAttachment } from '../../definitions/IAttachment';
 import RCActivityIndicator from '../ActivityIndicator';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { useTheme } from '../../theme';
+import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
-const isTypeSupported = (type: any) => SUPPORTED_TYPES.indexOf(type) !== -1;
+const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
 
 const styles = StyleSheet.create({
 	button: {
@@ -33,23 +34,24 @@ const styles = StyleSheet.create({
 
 interface IMessageVideo {
 	file: IAttachment;
-	showAttachment?: Function;
+	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;
-	theme: string;
 }
 
 const Video = React.memo(
-	({ file, showAttachment, getCustomEmoji, style, isReply, theme }: IMessageVideo) => {
+	({ file, showAttachment, getCustomEmoji, style, isReply }: IMessageVideo) => {
 		const { baseUrl, user } = useContext(MessageContext);
 		const [loading, setLoading] = useState(false);
+		const { theme } = useTheme();
 
 		if (!baseUrl) {
 			return null;
 		}
+
 		const onPress = async () => {
-			if (isTypeSupported(file.video_type) && showAttachment) {
+			if (file.video_type && isTypeSupported(file.video_type) && showAttachment) {
 				return showAttachment(file);
 			}
 
@@ -93,7 +95,7 @@ const Video = React.memo(
 			</>
 		);
 	},
-	(prevProps, nextProps) => dequal(prevProps.file, nextProps.file) && prevProps.theme === nextProps.theme
+	(prevProps, nextProps) => dequal(prevProps.file, nextProps.file)
 );
 
 export default Video;

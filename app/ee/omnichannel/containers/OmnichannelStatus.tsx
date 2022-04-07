@@ -3,7 +3,7 @@ import { Switch, View } from 'react-native';
 
 import * as List from '../../../containers/List';
 import styles from '../../../views/RoomsListView/styles';
-import { SWITCH_TRACK_COLOR, themes } from '../../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import UnreadBadge from '../../../presentation/UnreadBadge';
 import RocketChat from '../../../lib/rocketchat';

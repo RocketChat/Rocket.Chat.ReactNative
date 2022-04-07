@@ -11,8 +11,8 @@ import UpdatedAt from './UpdatedAt';
 import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
-import { DisplayMode } from '../../constants/constantDisplayMode';
-import { IOmnichannelSource, TUserStatus } from '../../definitions';
+import { DisplayMode } from '../../lib/constants';
+import { TUserStatus, IOmnichannelSource } from '../../definitions';
 
 interface IRoomItem {
 	rid: string;

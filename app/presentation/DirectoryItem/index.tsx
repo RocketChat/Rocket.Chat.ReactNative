@@ -5,7 +5,7 @@ import Touch from '../../utils/touch';
 import Avatar from '../../containers/Avatar';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import styles, { ROW_HEIGHT } from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 
 export { ROW_HEIGHT };
 

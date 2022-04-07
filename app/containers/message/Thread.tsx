@@ -2,14 +2,17 @@ import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
 import { IMessageThread } from './interfaces';
+import { useTheme } from '../../theme';
 
 const Thread = React.memo(
-	({ msg, tcount, tlm, isThreadRoom, theme, id }: IMessageThread) => {
+	({ msg, tcount, tlm, isThreadRoom, id }: IMessageThread) => {
+		const { theme } = useTheme();
+
 		if (!tlm || isThreadRoom || tcount === 0) {
 			return null;
 		}
@@ -36,9 +39,6 @@ const Thread = React.memo(
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.tcount !== nextProps.tcount) {
-			return false;
-		}
-		if (prevProps.theme !== nextProps.theme) {
 			return false;
 		}
 		return true;

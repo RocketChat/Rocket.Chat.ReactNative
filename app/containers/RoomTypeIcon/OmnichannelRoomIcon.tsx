@@ -4,7 +4,7 @@ import { SvgUri } from 'react-native-svg';
 import { useSelector } from 'react-redux';
 
 import { OmnichannelSourceType, IApplicationState, IOmnichannelSource } from '../../definitions';
-import { STATUS_COLORS } from '../../constants/colors';
+import { STATUS_COLORS } from '../../lib/constants';
 import { CustomIcon } from '../../lib/Icons';
 
 const iconMap = {

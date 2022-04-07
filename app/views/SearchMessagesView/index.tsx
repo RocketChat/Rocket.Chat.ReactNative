@@ -19,7 +19,7 @@ import { IMessage } from '../../containers/message/interfaces';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -29,10 +29,10 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import getThreadName from '../../lib/methods/getThreadName';
 import getRoomInfo, { IRoomInfoResult } from '../../lib/methods/getRoomInfo';
 import { isIOS } from '../../utils/deviceInfo';
-import { compareServerVersion } from '../../lib/utils';
 import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 import { IEmoji } from '../../definitions/IEmoji';
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 
 const QUERY_SIZE = 50;
 
@@ -42,12 +42,12 @@ interface ISearchMessagesViewState {
 	searchText: string;
 }
 
-interface IRoomInfoParam {
-	room: ISubscription;
-	member: any;
+export interface IRoomInfoParam {
+	room?: ISubscription;
+	member?: any;
 	rid: string;
 	t: SubscriptionType;
-	joined: boolean;
+	joined?: boolean;
 }
 
 interface INavigationOption {

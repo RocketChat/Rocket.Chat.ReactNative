@@ -1,16 +1,16 @@
 // https://github.com/bamlab/redux-enhancer-react-native-appstate
 import { AppState } from 'react-native';
 
-import { APP_STATE } from '../actions/actionsTypes';
+import { APP_STATE } from '../../actions/actionsTypes';
 
 export default () =>
-	createStore =>
-	(...args) => {
+	(createStore: any) =>
+	(...args: any) => {
 		const store = createStore(...args);
 
 		let currentState = '';
 
-		const handleAppStateChange = nextAppState => {
+		const handleAppStateChange = (nextAppState: any) => {
 			if (nextAppState !== 'inactive') {
 				if (currentState !== nextAppState) {
 					let type;

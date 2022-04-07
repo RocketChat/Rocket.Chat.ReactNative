@@ -1,10 +1,10 @@
 import { Q } from '@nozbe/watermelondb';
 
-import { sanitizeLikeString } from '../../database/utils';
-import database from '../../database/index';
+import { sanitizeLikeString } from '../database/utils';
+import database from '../database/index';
 import { spotlight } from '../services/restApi';
-import isGroupChat from './isGroupChat';
-import { ISearch, ISearchLocal, SubscriptionType } from '../../../definitions';
+import { ISearch, ISearchLocal, SubscriptionType } from '../../definitions';
+import { isGroupChat } from './helpers';
 
 let debounce: null | ((reason: string) => void) = null;
 
