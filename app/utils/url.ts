@@ -12,4 +12,4 @@ export const isValidURL = (url: string): boolean => {
 };
 
 // Use checkUseSsl: false only if server url starts with http://
-export const checkUseSsl = (url: string): boolean => !/http:\/\//.test(url);
+export const isSsl = (url: string): boolean => !/http:\/\//.test(url);

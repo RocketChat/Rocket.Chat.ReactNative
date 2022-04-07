@@ -22,14 +22,15 @@ interface IOmnichannelStatus {
 const OmnichannelStatus = memo(({ searching, goQueue, queueSize, inquiryEnabled, user }: IOmnichannelStatus) => {
 	const { theme } = useTheme();
 	const [status, setStatus] = useState<boolean>(false);
+	const canUseOmnichannel = RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent');
 
 	useEffect(() => {
-		if (RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent')) {
+		if (canUseOmnichannel) {
 			setStatus(isOmnichannelStatusAvailable(user));
 		}
 	}, [user.statusLivechat]);
 
-	if (searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
+	if (searching || !canUseOmnichannel) {
 		return null;
 	}
 
