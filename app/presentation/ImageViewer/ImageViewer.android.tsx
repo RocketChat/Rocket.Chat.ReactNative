@@ -4,7 +4,7 @@ import { PanGestureHandler, PinchGestureHandler, State } from 'react-native-gest
 import Animated, { EasingNode } from 'react-native-reanimated';
 
 import { ImageComponent } from './ImageComponent';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({

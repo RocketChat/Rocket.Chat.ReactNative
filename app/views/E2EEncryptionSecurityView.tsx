@@ -14,7 +14,7 @@ import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
 import { getUserSelector } from '../selectors/login';
 import { PADDING_HORIZONTAL } from '../containers/List/constants';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import { Encryption } from '../lib/encryption';
 import RocketChat from '../lib/rocketchat';
 import { logout as logoutAction } from '../actions/login';
@@ -23,6 +23,7 @@ import EventEmitter from '../utils/events';
 import { LISTENER } from '../containers/Toast';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
+import { IUser } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -48,10 +49,7 @@ interface IE2EEncryptionSecurityViewState {
 
 interface IE2EEncryptionSecurityViewProps {
 	theme?: TSupportedThemes;
-	user: {
-		roles: string[];
-		id: string;
-	};
+	user: IUser;
 	server: string;
 	encryptionEnabled: boolean;
 	logout(): void;

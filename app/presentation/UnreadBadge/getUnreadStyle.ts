@@ -1,5 +1,5 @@
+import { themes } from '../../lib/constants';
 import { TSupportedThemes } from '../../theme';
-import { themes } from '../../constants/colors';
 
 interface IGetUnreadStyle {
 	unread?: number;

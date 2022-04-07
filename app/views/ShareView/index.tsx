@@ -7,7 +7,7 @@ import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
 
 import { InsideStackParamList } from '../../stacks/types';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import Loading from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';

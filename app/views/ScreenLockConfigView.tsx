@@ -6,16 +6,15 @@ import { Subscription } from 'rxjs';
 
 import I18n from '../i18n';
 import { TSupportedThemes, withTheme } from '../theme';
-import { SWITCH_TRACK_COLOR, themes } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
 import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../utils/localAuthentication';
-import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../constants/localAuthentication';
+import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK, themes, SWITCH_TRACK_COLOR } from '../lib/constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';
 import { TServerModel } from '../definitions/IServer';
-import userPreferences from '../lib/userPreferences';
+import userPreferences from '../lib/methods/userPreferences';
 
 const DEFAULT_BIOMETRY = false;
 

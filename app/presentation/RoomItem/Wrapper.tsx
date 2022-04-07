@@ -1,9 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import { DisplayMode, themes } from '../../lib/constants';
 import { TSupportedThemes } from '../../theme';
-import { themes } from '../../constants/colors';
-import { DisplayMode } from '../../constants/constantDisplayMode';
 import IconOrAvatar from './IconOrAvatar';
 import styles from './styles';
 

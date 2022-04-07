@@ -8,15 +8,15 @@ import Touchable from './Touchable';
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { fileDownloadAndPreview } from '../../utils/fileDownload';
-import { formatAttachmentUrl } from '../../lib/utils';
 import { IAttachment } from '../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import RCActivityIndicator from '../ActivityIndicator';
 import Attachments from './Attachments';
 import { TSupportedThemes, useTheme } from '../../theme';
+import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 
 const styles = StyleSheet.create({
 	button: {

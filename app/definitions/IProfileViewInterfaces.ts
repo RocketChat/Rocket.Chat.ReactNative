@@ -3,20 +3,7 @@ import React from 'react';
 
 import { TSupportedThemes } from '../theme';
 import { ProfileStackParamList } from '../stacks/types';
-
-export interface IUser {
-	id: string;
-	name: string;
-	username: string;
-	emails: {
-		[index: number]: {
-			address: string;
-		};
-	};
-	customFields: {
-		[index: string | number]: string;
-	};
-}
+import { IUser } from './IUser';
 
 export interface IParams {
 	name: string;

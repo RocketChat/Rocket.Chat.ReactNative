@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { TSupportedThemes } from '../../theme';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import styles from './styles';
 
 interface IBlockQuote {

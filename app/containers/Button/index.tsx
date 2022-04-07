@@ -3,7 +3,7 @@ import { StyleSheet, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { TSupportedThemes } from '../../theme';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 

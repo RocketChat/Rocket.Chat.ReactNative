@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 
-import { themes } from '../../../constants/colors';
-import { MessageTypeLoad } from '../../../constants/messageTypeLoad';
+import { MessageTypeLoad, themes } from '../../../lib/constants';
 import { MessageType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';

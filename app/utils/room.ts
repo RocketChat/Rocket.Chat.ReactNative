@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import I18n from '../i18n';
 import { IAttachment } from '../definitions/IAttachment';
 import { SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';

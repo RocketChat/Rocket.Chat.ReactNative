@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainerProps } from '@react-navigation/core';
 
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { TSupportedThemes } from '../../theme';
 
 interface IModalContainer extends NavigationContainerProps {

@@ -3,7 +3,7 @@ import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { CustomIcon } from '../../lib/Icons';
 import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
