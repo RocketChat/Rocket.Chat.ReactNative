@@ -11,7 +11,6 @@ import protectedFunction from '../../methods/helpers/protectedFunction';
 import database from '../../database';
 import { selectServerFailure } from '../../../actions/server';
 import { twoFactor } from '../../../utils/twoFactor';
-import { compareServerVersion } from '../../utils';
 import { store } from '../../auxStore';
 import { loginRequest, setLoginServices, setUser } from '../../../actions/login';
 import sdk from './sdk';
@@ -25,6 +24,7 @@ import EventEmitter from '../../../utils/events';
 import { updateSettings } from '../../../actions/settings';
 import defaultSettings from '../../../constants/settings';
 import { MIN_ROCKETCHAT_VERSION } from '../../constants';
+import { compareServerVersion } from '../../methods/helpers/compareServerVersion';
 
 interface IServices {
 	[index: string]: string | boolean;

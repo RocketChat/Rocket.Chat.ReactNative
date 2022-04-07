@@ -15,7 +15,7 @@ import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK } from '../constants/localAuthe
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../utils/log';
 import { TServerModel } from '../definitions/IServer';
-import userPreferences from '../lib/userPreferences';
+import userPreferences from '../lib/methods/userPreferences';
 
 const DEFAULT_BIOMETRY = false;
 

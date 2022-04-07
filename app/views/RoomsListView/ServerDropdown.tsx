@@ -23,7 +23,7 @@ import { showConfirmationAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';
 import { headerHeight } from '../../containers/Header';
 import { goRoom } from '../../utils/goRoom';
-import UserPreferences from '../../lib/userPreferences';
+import UserPreferences from '../../lib/methods/userPreferences';
 import { IApplicationState, IBaseScreen, RootEnum, TServerModel } from '../../definitions';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';

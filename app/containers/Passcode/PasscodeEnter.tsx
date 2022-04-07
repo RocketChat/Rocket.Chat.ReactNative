@@ -10,7 +10,7 @@ import { TYPE } from './constants';
 import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '../../constants/localAuthentication';
 import { biometryAuth, resetAttempts } from '../../utils/localAuthentication';
 import { getDiff, getLockedUntil } from './utils';
-import { useUserPreferences } from '../../lib/userPreferences';
+import { useUserPreferences } from '../../lib/methods/userPreferences';
 import I18n from '../../i18n';
 
 interface IPasscodePasscodeEnter {
