@@ -9,7 +9,7 @@ import database from '../../database';
 import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
 import { getThreadMessageById } from '../../database/services/ThreadMessage';
-import reduxStore from '../../createStore';
+import { store as reduxStore } from '../../store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
@@ -17,7 +17,7 @@ import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
 import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
-import sdk from '../../rocketchat/services/sdk';
+import sdk from '../../services/sdk';
 
 const WINDOW_TIME = 1000;
 

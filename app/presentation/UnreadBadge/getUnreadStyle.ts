@@ -1,4 +1,4 @@
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 
 export const getUnreadStyle = ({ unread, userMentions, groupMentions, theme, tunread, tunreadUser, tunreadGroup }: any) => {
 	if ((!unread || unread <= 0) && !tunread?.length) {

@@ -6,7 +6,7 @@ import { FlatListProps, RefreshControl, ViewToken } from 'react-native';
 import { event, Value } from 'react-native-reanimated';
 import { Observable, Subscription } from 'rxjs';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';

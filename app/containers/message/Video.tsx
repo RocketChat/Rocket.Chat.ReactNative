@@ -6,7 +6,7 @@ import Touchable from './Touchable';
 import Markdown from '../markdown';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { fileDownload } from '../../utils/fileDownload';
 import EventEmitter from '../../utils/events';

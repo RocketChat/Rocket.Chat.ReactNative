@@ -8,7 +8,7 @@ import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 
 import { deleteRoom } from '../../actions/room';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import Avatar from '../../containers/Avatar';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';

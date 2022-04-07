@@ -8,9 +8,9 @@ import { Provider } from 'react-redux';
 import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './utils/theme';
 import UserPreferences from './lib/methods/userPreferences';
 import Navigation from './lib/navigation/shareNavigation';
-import store from './lib/createStore';
-import { initStore } from './lib/auxStore';
-import { closeShareExtension, shareExtensionInit } from './lib/rocketchat/services/shareExtension';
+import store from './lib/store';
+import { initStore } from './lib/store/auxStore';
+import { closeShareExtension, shareExtensionInit } from './lib/services/shareExtension';
 import { defaultHeader, getActiveRouteName, navigationTheme, themedHeader } from './utils/navigation';
 import RocketChat from './lib/rocketchat';
 import { ThemeContext, TSupportedThemes } from './theme';
@@ -28,7 +28,7 @@ import AuthLoadingView from './views/AuthLoadingView';
 import { DimensionsContext } from './dimensions';
 import debounce from './utils/debounce';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
-import { colors } from './constants/colors';
+import { colors } from './lib/constants';
 
 initStore(store);
 

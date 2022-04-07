@@ -11,7 +11,7 @@ import { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -19,7 +19,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import SidebarItem from './SidebarItem';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
-import { TUserStatus } from '../../definitions';
+import { IUser } from '../../definitions';
 
 interface ISeparatorProps {
 	theme: string;
@@ -39,13 +39,7 @@ interface ISidebarProps {
 	navigation: DrawerNavigationProp<DrawerParamList>;
 	state: DrawerNavigationState<DrawerParamList>;
 	Site_Name: string;
-	user: {
-		statusText: string;
-		status: TUserStatus;
-		username: string;
-		name: string;
-		roles: string[];
-	};
+	user: IUser;
 	theme?: string;
 	loadingServer: boolean;
 	useRealName: boolean;

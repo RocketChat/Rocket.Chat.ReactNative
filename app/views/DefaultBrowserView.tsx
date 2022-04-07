@@ -4,7 +4,7 @@ import { FlatList, Linking } from 'react-native';
 
 import I18n from '../i18n';
 import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import { DEFAULT_BROWSER_KEY } from '../utils/openLink';

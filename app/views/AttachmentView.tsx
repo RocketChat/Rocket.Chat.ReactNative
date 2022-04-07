@@ -15,7 +15,7 @@ import EventEmitter from '../utils/events';
 import I18n from '../i18n';
 import { withTheme } from '../theme';
 import { ImageViewer } from '../presentation/ImageViewer';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import RCActivityIndicator from '../containers/ActivityIndicator';
 import * as HeaderButton from '../containers/HeaderButton';
 import { isAndroid } from '../utils/deviceInfo';

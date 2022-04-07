@@ -5,7 +5,7 @@ import * as Progress from 'react-native-progress';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
 import sharedStyles from '../Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { isTablet } from '../../utils/deviceInfo';
 
 const ImageProgress = createImageProgress(FastImage);

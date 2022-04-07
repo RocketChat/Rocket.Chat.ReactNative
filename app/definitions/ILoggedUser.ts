@@ -7,7 +7,7 @@ export interface ILoggedUser {
 	id: string;
 	token: string;
 	username: string;
-	name: string;
+	name?: string;
 	language?: string;
 	status: TUserStatus;
 	statusText?: string;
@@ -20,7 +20,7 @@ export interface ILoggedUser {
 	avatarETag?: string;
 	showMessageInMainThread?: boolean;
 	isFromWebView?: boolean;
-	enableMessageParserEarlyAdoption?: boolean;
+	enableMessageParserEarlyAdoption: boolean;
 }
 
 export interface ILoggedUserResultFromServer

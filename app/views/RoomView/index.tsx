@@ -23,8 +23,6 @@ import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
-import { themes } from '../../constants/colors';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../constants/messageTypeLoad';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
@@ -48,7 +46,6 @@ import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants';
 import { takeInquiry } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
 import { goRoom, TGoRoomItem } from '../../utils/goRoom';
@@ -82,6 +79,7 @@ import {
 	TThreadModel
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
+import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
 
 const stateAttrsUpdate = [
 	'joined',

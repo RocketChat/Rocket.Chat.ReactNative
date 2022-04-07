@@ -9,7 +9,6 @@ import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import TextInput from '../../containers/TextInput';
@@ -20,12 +19,12 @@ import { showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { events, logEvent } from '../../utils/log';
-import { E2E_ROOM_TYPES } from '../../lib/constants';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
 import { ICreateChannelViewProps, IResult, IError } from './interfaces';
 import { IApplicationState } from '../../definitions';
+import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	private channel: any;

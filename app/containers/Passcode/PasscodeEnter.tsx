@@ -7,7 +7,7 @@ import { sha256 } from 'js-sha256';
 import Base, { IBase } from './Base';
 import Locked from './Base/Locked';
 import { TYPE } from './constants';
-import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '../../constants/localAuthentication';
+import { ATTEMPTS_KEY, LOCKED_OUT_TIMER_KEY, MAX_ATTEMPTS, PASSCODE_KEY } from '../../lib/constants';
 import { biometryAuth, resetAttempts } from '../../utils/localAuthentication';
 import { getDiff, getLockedUntil } from './utils';
 import { useUserPreferences } from '../../lib/methods/userPreferences';

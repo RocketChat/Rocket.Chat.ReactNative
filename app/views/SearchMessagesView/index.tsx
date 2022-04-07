@@ -19,7 +19,7 @@ import { IMessage } from '../../containers/message/interfaces';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';

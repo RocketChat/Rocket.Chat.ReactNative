@@ -4,7 +4,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useSelector } from 'react-redux';
 
-import { SWITCH_TRACK_COLOR } from '../constants/colors';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import I18n from '../i18n';
@@ -17,8 +16,7 @@ import {
 	getReportAnalyticsEventsValue
 } from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
-import { isFDroidBuild } from '../constants/environment';
-import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY } from '../lib/constants';
+import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, isFDroidBuild, SWITCH_TRACK_COLOR } from '../lib/constants';
 
 interface ISecurityPrivacyViewProps {
 	navigation: StackNavigationProp<any, 'SecurityPrivacyView'>;

@@ -8,7 +8,7 @@ import Touchable from './Touchable';
 import Markdown from '../markdown';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { fileDownloadAndPreview } from '../../utils/fileDownload';
 import { IAttachment } from '../../definitions/IAttachment';

@@ -1,8 +1,8 @@
 import { ERoomTypes } from '../../definitions';
-import { store } from '../auxStore';
+import { store } from '../store/auxStore';
 import database from '../database';
 import RocketChat from '../rocketchat';
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
 
 const restTypes = {
 	channel: 'channels',
