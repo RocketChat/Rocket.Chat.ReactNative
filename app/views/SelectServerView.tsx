@@ -7,7 +7,7 @@ import { Q, Model } from '@nozbe/watermelondb';
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import ServerItem, { ROW_HEIGHT } from '../presentation/ServerItem';
-import { shareExtensionInit } from '../lib/rocketchat/services/shareExtension';
+import { shareExtensionInit } from '../lib/services/shareExtension';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';

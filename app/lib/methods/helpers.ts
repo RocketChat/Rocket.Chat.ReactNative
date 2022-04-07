@@ -1,11 +1,11 @@
 // @ts-nocheck - TEMP
 import AsyncStorage from '@react-native-community/async-storage';
 
-import log from '../../../utils/log';
-import { store as reduxStore } from '../../store/auxStore';
-import database from '../../database';
-import subscribeRoomsTmp from '../../methods/subscriptions/rooms';
-import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, defaultSettings } from '../../constants';
+import log from '../../utils/log';
+import { store as reduxStore } from '../store/auxStore';
+import database from '../database';
+import subscribeRoomsTmp from './subscriptions/rooms';
+import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, defaultSettings } from '../constants';
 
 export function isGroupChat(room): boolean {
 	return ((room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2)) ?? false;
