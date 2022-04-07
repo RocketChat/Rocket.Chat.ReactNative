@@ -1,6 +1,5 @@
 // Methods
 import canOpenRoom from './methods/canOpenRoom';
-import clearCache from './methods/clearCache';
 // Spread Methods
 import * as sendMessage from './methods/sendMessage';
 import * as callJitsi from './methods/callJitsi';
@@ -43,8 +42,7 @@ const RocketChat = {
 	...userPreferencesMethods,
 	...setUser,
 
-	canOpenRoom,
-	clearCache
+	canOpenRoom
 };
 
 export default RocketChat;

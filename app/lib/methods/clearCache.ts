@@ -1,6 +1,6 @@
 import database from '../database';
 
-export default async function clearCache({ server }: { server: string }): Promise<void> {
+export async function clearCache({ server }: { server: string }): Promise<void> {
 	try {
 		const serversDB = database.servers;
 		await serversDB.write(async () => {
