@@ -7,6 +7,7 @@ import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
 import { TServerHistoryModel } from '../../../definitions/IServerHistory';
 import Item from './Item';
+import { withTest } from '../../../lib/methods/withTest';
 
 const styles = StyleSheet.create({
 	container: {
@@ -56,7 +57,6 @@ const ServerInput = ({
 				value={text}
 				returnKeyType='send'
 				onChangeText={onChangeText}
-				testID='new-server-view-input'
 				onSubmitEditing={onSubmit}
 				clearButtonMode='while-editing'
 				keyboardType='url'
@@ -64,7 +64,7 @@ const ServerInput = ({
 				theme={theme}
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
-				accessibilityLabel='enter-workspace-url'
+				{...withTest('new-server-view-input')}
 			/>
 			{focused && serversHistory?.length ? (
 				<View
