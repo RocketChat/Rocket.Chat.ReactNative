@@ -6,9 +6,11 @@ import styles from './styles';
 import { themes } from '../../../../lib/constants';
 import { useTheme } from '../../../../theme';
 import RocketChat from '../../../../lib/rocketchat';
-import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../lib';
 import { IUser } from '../../../../definitions/IUser';
 import { isIOS } from '../../../../utils/deviceInfo';
+import { showConfirmationAlert } from '../../../../utils/info';
+import I18n from '../../../../i18n';
+import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../lib';
 import OmnichannelQueue from './OmnichannelQueue';
 
 interface IOmnichannelStatus {
@@ -31,11 +33,26 @@ const OmnichannelStatus = memo(({ searching, goQueue, queueSize, user }: IOmnich
 	}, [user.statusLivechat]);
 
 	const toggleLivechat = async () => {
-		try {
-			setStatus(v => !v);
-			await changeLivechatStatus();
-		} catch {
-			setStatus(v => !v);
+		// if not-available, prompt to change to available
+		if (!isOmnichannelStatusAvailable(user)) {
+			showConfirmationAlert({
+				message: I18n.t('Omnichannel_enable_alert'),
+				confirmationText: I18n.t('Yes'),
+				onPress: async () => {
+					try {
+						await changeLivechatStatus();
+					} catch {
+						// Do nothing
+					}
+				}
+			});
+		} else {
+			try {
+				setStatus(v => !v);
+				await changeLivechatStatus();
+			} catch {
+				setStatus(v => !v);
+			}
 		}
 	};
 
