@@ -119,12 +119,12 @@ exports.config = {
 		ui: 'bdd',
 		timeout: 60000
 	},
-	specs: ['./tests/specs/**/*.js'],
-	beforeSuite() {
-		const { setup } = require('../../e2e/helpers/data_setup');
+	specs: ['./tests/specs/**/*.js']
+	// beforeSuite() {
+	// 	const { setup } = require('../../e2e/helpers/data_setup');
 
-		before(async () => {
-			await setup();
-		});
-	}
+	// 	before(async () => {
+	// 		await setup();
+	// 	});
+	// }
 };

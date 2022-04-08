@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+// const { expect } = require('chai');
 
 describe('Verify initial app screen', () => {
 	beforeEach(() => {
@@ -14,7 +14,7 @@ describe('Verify initial app screen', () => {
 	it('set workspace url and login', async () => {
 		await $('~new-server-view-input').setValue('mobile');
 		await $('~new-server-view-button').click();
-		const register = await $('//android.widget.TextView[@content-desc="Create an account"]').getText();
-		expect(register).to.equal('Create an account');
+		// const register = await $('//android.widget.TextView[@content-desc="Create an account"]').getText();
+		// expect(register).to.equal('Create an account');
 	});
 });
