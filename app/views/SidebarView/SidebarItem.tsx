@@ -5,6 +5,7 @@ import Touch from '../../utils/touch';
 import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import styles from './styles';
+import { testProps } from '../../lib/methods/testProps';
 
 interface SidebarItemProps {
 	left: JSX.Element;
@@ -19,7 +20,7 @@ interface SidebarItemProps {
 const Item = React.memo(({ left, right, text, onPress, testID, current, theme }: SidebarItemProps) => (
 	<Touch
 		key={testID}
-		testID={testID}
+		{...testProps(testID)}
 		onPress={onPress}
 		theme={theme}
 		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}>

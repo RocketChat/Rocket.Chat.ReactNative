@@ -6,7 +6,13 @@ export const setValue = async (tag, value) => await $(`~${tag}`).setValue(`${val
 
 export const getText = async tag => await $(`~${tag}`).getText();
 
-export const equal = async (value, prop) => expect(value).to.equal(prop);
+export const equal = async (value, text) => expect(value).to.equal(prop);
+
+export const click = async tag => await $(`~${tag}`).click();
+
+export const clickById = async tag => await $(`#${tag}`).click();
+
+export const scrollToBottom = async () => await driver.execute('mobile: scroll', { direction: 'down' });
 
 export const setValueAndEnter = async (tag, value) => {
 	if (driver.capabilities.platformName === 'Android') {

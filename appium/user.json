@@ -1,0 +1,60 @@
+{
+	"server": "https://mobile.rocket.chat",
+	"adminUser": "e2e_admin",
+	"adminPassword": "Nj8uyGpNX47J6td",
+	"alternateServer": "https://stable.rocket.chat",
+	"users": {
+		"regular": {
+			"username": "useronefvtetnpenrsrbowccakq",
+			"password": "123",
+			"email": "mobile+regularfvtetnpenrsrbowccakq@rocket.chat"
+		},
+		"alternate": {
+			"username": "usertwofvtetnpenrsrbowccakq",
+			"password": "123",
+			"email": "mobile+alternatefvtetnpenrsrbowccakq@rocket.chat",
+			"totpSecret": "NA4GOMZGHBQSK6KEFRVT62DMGJJGSYZJFZIHO3ZOGVXWCYZ6MMZQ"
+		},
+		"profileChanges": {
+			"username": "userthreefvtetnpenrsrbowccakq",
+			"password": "123",
+			"email": "mobile+profileChangesfvtetnpenrsrbowccakq@rocket.chat"
+		},
+		"existing": {
+			"username": "existinguserfvtetnpenrsrbowccakq",
+			"password": "123",
+			"email": "mobile+existingfvtetnpenrsrbowccakq@rocket.chat"
+		}
+	},
+	"channels": {
+		"detoxpublic": { "name": "detox-public" },
+		"detoxpublicprotected": { "name": "detox-public-protected", "joinCode": "123" }
+	},
+	"groups": {
+		"private": { "name": "detox-private-fvtetnpenrsrbowccakq" },
+		"alternate": { "name": "detox-alternate-fvtetnpenrsrbowccakq" },
+		"alternate2": { "name": "detox-alternate2-fvtetnpenrsrbowccakq" }
+	},
+	"teams": { "private": { "name": "detox-team-fvtetnpenrsrbowccakq" } },
+	"registeringUser": {
+		"username": "newuserfvtetnpenrsrbowccakq",
+		"password": "passwordfvtetnpenrsrbowccakq",
+		"email": "mobile+registeringfvtetnpenrsrbowccakq@rocket.chat"
+	},
+	"registeringUser2": {
+		"username": "newusertwofvtetnpenrsrbowccakq",
+		"password": "passwordtwofvtetnpenrsrbowccakq",
+		"email": "mobile+registeringtwofvtetnpenrsrbowccakq@rocket.chat"
+	},
+	"registeringUser3": {
+		"username": "newuserthreefvtetnpenrsrbowccakq",
+		"password": "passwordthreefvtetnpenrsrbowccakq",
+		"email": "mobile+registeringthreefvtetnpenrsrbowccakq@rocket.chat"
+	},
+	"registeringUser4": {
+		"username": "newuserfourfvtetnpenrsrbowccakq",
+		"password": "passwordfourfvtetnpenrsrbowccakq",
+		"email": "mobile+registeringfourfvtetnpenrsrbowccakq@rocket.chat"
+	},
+	"random": "fvtetnpenrsrbowccakq"
+}
