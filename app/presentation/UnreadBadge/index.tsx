@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
@@ -34,7 +34,7 @@ interface IUnreadBadge {
 	unread?: number;
 	userMentions?: number;
 	groupMentions?: number;
-	style?: ViewStyle;
+	style?: StyleProp<ViewStyle>;
 	tunread?: [];
 	tunreadUser?: [];
 	tunreadGroup?: [];

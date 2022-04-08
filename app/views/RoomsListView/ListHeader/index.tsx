@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTheme } from '../../../theme';
 import * as List from '../../../containers/List';
-import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelStatus';
+import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelHeader';
 import { IUser } from '../../../definitions';
 import { E2E_BANNER_TYPE, themes } from '../../../lib/constants';
 

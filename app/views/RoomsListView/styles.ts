@@ -24,13 +24,6 @@ export default StyleSheet.create({
 	backdrop: {
 		...StyleSheet.absoluteFillObject
 	},
-	queueIcon: {
-		marginHorizontal: 12
-	},
-	omnichannelRightContainer: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
 	groupTitleContainer: {
 		paddingHorizontal: 12,
 		paddingTop: 17,

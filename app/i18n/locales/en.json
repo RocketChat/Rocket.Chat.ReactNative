@@ -808,5 +808,7 @@
   "Removed__roomName__from_this_team": "removed #{{roomName}} from this Team",
   "Removed__username__from_team": "removed @{{user_removed}} from this Team",
   "User_joined_team": "joined this Team",
-  "User_left_team": "left this Team"
+  "User_left_team": "left this Team",
+  "Omnichannel_queue": "Omnichannel queue",
+  "Empty": "Empty"
 }
