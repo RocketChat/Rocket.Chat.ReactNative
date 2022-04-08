@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { I18nManager, StyleSheet } from 'react-native';
 
 import sharedStyles from '../../../../views/Styles';
 
@@ -16,5 +16,8 @@ export default StyleSheet.create({
 	emptyText: {
 		...sharedStyles.textRegular,
 		fontSize: 12
+	},
+	actionIndicator: {
+		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
 	}
 });
