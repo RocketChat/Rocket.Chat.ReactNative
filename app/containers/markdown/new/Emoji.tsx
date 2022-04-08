@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
 import shortnameToUnicode from '../../../utils/shortnameToUnicode';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
 import CustomEmoji from '../../EmojiPicker/CustomEmoji';

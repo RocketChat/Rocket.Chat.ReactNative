@@ -19,7 +19,7 @@ export interface IAttachment {
 	image_size?: number;
 	author_name?: string;
 	author_icon?: string;
-	actions?: [];
+	actions?: { type: string; msg: string; text: string }[];
 	message_link?: string;
 	text?: string;
 	short?: boolean;

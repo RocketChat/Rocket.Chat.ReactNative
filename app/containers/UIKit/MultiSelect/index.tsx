@@ -15,7 +15,7 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import Button from '../../Button';
 import TextInput from '../../TextInput';
 import { textParser } from '../utils';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
 import { isIOS } from '../../../utils/deviceInfo';
 import { useTheme } from '../../../theme';

@@ -6,13 +6,13 @@ import { getDeviceToken } from '../../notifications/push';
 import { extractHostname } from '../../utils/server';
 import { BASIC_AUTH_KEY } from '../../utils/fetch';
 import database, { getDatabase } from '../database';
-import RocketChat from '../rocketchat';
 import { useSsl } from '../../utils/url';
 import log from '../../utils/log';
-import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../encryption/constants';
-import UserPreferences from '../userPreferences';
 import { ICertificate, IRocketChat } from '../../definitions';
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
+import { E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../constants';
+import UserPreferences from './userPreferences';
+import RocketChat from '../rocketchat';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${RocketChat.TOKEN_KEY}-${server}`);
@@ -98,7 +98,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 	}
 }
 
-export default async function logout(this: IRocketChat, { server }: { server: string }): Promise<void> {
+export async function logout(this: IRocketChat, { server }: { server: string }): Promise<void> {
 	if (this.roomsSub) {
 		this.roomsSub.stop();
 		this.roomsSub = null;

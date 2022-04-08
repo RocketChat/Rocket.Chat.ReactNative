@@ -23,8 +23,6 @@ import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
-import { themes } from '../../constants/colors';
-import { MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad } from '../../constants/messageTypeLoad';
 import debounce from '../../utils/debounce';
 import ReactionsModal from '../../containers/ReactionsModal';
 import { LISTENER } from '../../containers/Toast';
@@ -44,11 +42,10 @@ import {
 import { Review } from '../../utils/review';
 import RoomClass from '../../lib/methods/subscriptions/room';
 import { getUserSelector } from '../../selectors/login';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/encryption/constants';
 import { takeInquiry } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
 import { goRoom, TGoRoomItem } from '../../utils/goRoom';
@@ -77,10 +74,12 @@ import {
 	IVisitor,
 	SubscriptionType,
 	TAnyMessageModel,
+	TMessageModel,
 	TSubscriptionModel,
 	TThreadModel
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
+import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -150,7 +149,7 @@ interface IRoomViewState {
 	member: any;
 	lastOpen: Date | null;
 	reactionsModalVisible: boolean;
-	selectedMessage?: Object;
+	selectedMessage?: TAnyMessageModel;
 	canAutoTranslate: boolean;
 	loading: boolean;
 	showingBlockingLoader: boolean;
@@ -513,7 +512,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					tmid={tmid}
 					teamId={teamId}
 					joined={joined}
-					t={t}
+					t={this.t || t}
 					encrypted={encrypted}
 					navigation={navigation}
 					toggleFollowThread={this.toggleFollowThread}
@@ -686,7 +685,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				id: message.subscription.id
 			},
 			msg: message?.attachments?.[0]?.description || message.msg
-		};
+		} as TMessageModel;
 		this.setState({ selectedMessage: newMessage, editing: true });
 	};
 
@@ -866,7 +865,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
-	replyBroadcast = (message: Record<string, string>) => {
+	replyBroadcast = (message: IMessage) => {
 		const { dispatch } = this.props;
 		dispatch(replyBroadcast(message));
 	};
@@ -1374,7 +1373,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					baseUrl={baseUrl}
 					onClose={this.onCloseReactionsModal}
 					getCustomEmoji={this.getCustomEmoji}
-					theme={theme}
 				/>
 				<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
 				<Loading visible={showingBlockingLoader} />

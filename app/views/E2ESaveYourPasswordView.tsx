@@ -4,7 +4,6 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { connect } from 'react-redux';
 
 import { encryptionSetBanner } from '../actions/encryption';
-import { themes } from '../constants/colors';
 import Button from '../containers/Button';
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -12,8 +11,8 @@ import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
 import { IApplicationState, IBaseScreen } from '../definitions';
 import I18n from '../i18n';
-import { E2E_RANDOM_PASSWORD_KEY } from '../lib/encryption/constants';
-import UserPreferences from '../lib/userPreferences';
+import { E2E_RANDOM_PASSWORD_KEY, themes } from '../lib/constants';
+import UserPreferences from '../lib/methods/userPreferences';
 import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import EventEmitter from '../utils/events';

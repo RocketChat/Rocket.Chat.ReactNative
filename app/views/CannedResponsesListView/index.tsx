@@ -16,11 +16,11 @@ import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
 import RocketChat from '../../lib/rocketchat';
 import debounce from '../../utils/debounce';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { goRoom } from '../../utils/goRoom';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import log from '../../utils/log';
 import CannedResponseItem from './CannedResponseItem';
 import Dropdown from './Dropdown';
@@ -276,8 +276,8 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Canned_Responses'),
 			headerTitleContainerStyle: {
-				left: null,
-				right: null
+				left: 0,
+				right: 0
 			}
 		};
 
