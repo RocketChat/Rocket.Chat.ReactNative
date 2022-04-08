@@ -1,0 +1,79 @@
+diff --git a/node_modules/react-native-notifications/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java b/node_modules/react-native-notifications/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java
+index f9c858b..94ea188 100644
+--- a/node_modules/react-native-notifications/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java
++++ b/node_modules/react-native-notifications/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java
+@@ -2,8 +2,8 @@
+ package com.wix.reactnativenotifications;
+ 
+ import android.content.Context;
+-import android.support.annotation.NonNull;
+-import android.support.v4.app.NotificationManagerCompat;
++import androidx.annotation.NonNull;
++import androidx.core.app.NotificationManagerCompat;
+ 
+ public abstract class NotificationManagerCompatFacade {
+     public static NotificationManagerCompat from(@NonNull Context context) {
+diff --git a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
+index b93f762..c2b736a 100644
+--- a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
++++ b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
+@@ -28,7 +28,7 @@ public class PushNotification implements IPushNotification {
+     final protected AppLifecycleFacade mAppLifecycleFacade;
+     final protected AppLaunchHelper mAppLaunchHelper;
+     final protected JsIOHelper mJsIOHelper;
+-    final protected PushNotificationProps mNotificationProps;
++    protected PushNotificationProps mNotificationProps;
+     final protected AppVisibilityListener mAppVisibilityListener = new AppVisibilityListener() {
+         @Override
+         public void onAppVisible() {
+diff --git a/node_modules/react-native-notifications/lib/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java b/node_modules/react-native-notifications/lib/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java
+index f9c858b..94ea188 100644
+--- a/node_modules/react-native-notifications/lib/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java
++++ b/node_modules/react-native-notifications/lib/android/app/src/reactNative59/java/com/wix/reactnativenotifications/NotificationManagerCompatFacade.java
+@@ -2,8 +2,8 @@
+ package com.wix.reactnativenotifications;
+ 
+ import android.content.Context;
+-import android.support.annotation.NonNull;
+-import android.support.v4.app.NotificationManagerCompat;
++import androidx.annotation.NonNull;
++import androidx.core.app.NotificationManagerCompat;
+ 
+ public abstract class NotificationManagerCompatFacade {
+     public static NotificationManagerCompat from(@NonNull Context context) {
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
+index 4b33656..36aaa47 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
+@@ -29,18 +29,20 @@ - (void)requestPermissions:(NSDictionary *)options {
+             authOptions = authOptions | UNAuthorizationOptionAnnouncement;
+         }
+     }
++    if(![[[NSBundle mainBundle] bundlePath] hasSuffix:@".appex"]){
++        [UNUserNotificationCenter.currentNotificationCenter requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
++            if (!error && granted) {
++                [UNUserNotificationCenter.currentNotificationCenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
++                    if (settings.authorizationStatus == UNAuthorizationStatusAuthorized || settings.authorizationStatus == UNAuthorizationStatusProvisional) {
++                        dispatch_async(dispatch_get_main_queue(), ^{
++                            [[UIApplication sharedApplication] registerForRemoteNotifications];
++                        });
++                    }
++                }];
++            }
++        }];
++    }
+     
+-    [UNUserNotificationCenter.currentNotificationCenter requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
+-        if (!error && granted) {
+-            [UNUserNotificationCenter.currentNotificationCenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+-                if (settings.authorizationStatus == UNAuthorizationStatusAuthorized || settings.authorizationStatus == UNAuthorizationStatusProvisional) {
+-                    dispatch_async(dispatch_get_main_queue(), ^{
+-                        [[UIApplication sharedApplication] registerForRemoteNotifications];
+-                    });
+-                }
+-            }];
+-        }
+-    }];
+ }
+ 
+ - (void)setCategories:(NSArray *)json {

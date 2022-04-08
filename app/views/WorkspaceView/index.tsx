@@ -7,7 +7,7 @@ import { CompositeNavigationProp } from '@react-navigation/core';
 import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import { getShowLoginButton } from '../../selectors/login';

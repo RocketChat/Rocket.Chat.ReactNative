@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, ActivityIndicatorProps, StyleSheet } from 'react-native';
 
 import { useTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 
 interface IActivityIndicator extends ActivityIndicatorProps {
 	absolute?: boolean;

@@ -4,7 +4,7 @@ import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-n
 import Avatar from './Avatar';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import { isIOS } from '../utils/deviceInfo';
 
 const styles = StyleSheet.create({

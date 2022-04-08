@@ -18,7 +18,7 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -161,8 +161,8 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			// TODO: Review because @types/react-native was upgraded
 			// @ts-ignore
 			headerTitleContainerStyle: {
-				left: null,
-				right: null
+				left: 0,
+				right: 0
 			}
 		};
 

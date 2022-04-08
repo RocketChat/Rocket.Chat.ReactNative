@@ -8,7 +8,7 @@ import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import { connect } from 'react-redux';
 
 import { deleteRoom } from '../../actions/room';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import Avatar from '../../containers/Avatar';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -22,7 +22,6 @@ import I18n from '../../i18n';
 import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
 import RocketChat from '../../lib/rocketchat';
-import { compareServerVersion } from '../../lib/utils';
 import KeyboardView from '../../presentation/KeyboardView';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
@@ -38,6 +37,7 @@ import { IAvatar } from '../../definitions/IProfileViewInterfaces';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
+import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 
 interface IRoomInfoEditViewState {
 	room: ISubscription;
