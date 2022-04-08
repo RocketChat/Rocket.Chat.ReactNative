@@ -3,6 +3,7 @@ import { ButtonProps, StyleSheet, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { themes } from '../../lib/constants';
+import { testProps } from '../../lib/methods/testProps';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
@@ -49,8 +50,21 @@ export default class Button extends React.PureComponent<Partial<IButtonProps>, a
 	};
 
 	render() {
-		const { title, type, onPress, disabled, backgroundColor, color, loading, style, theme, fontSize, styleText, ...otherProps } =
-			this.props;
+		const {
+			title,
+			type,
+			onPress,
+			disabled,
+			backgroundColor,
+			color,
+			loading,
+			style,
+			theme,
+			fontSize,
+			styleText,
+			testID,
+			...otherProps
+		} = this.props;
 		const isPrimary = type === 'primary';
 
 		let textColor = isPrimary ? themes[theme!].buttonText : themes[theme!].bodyText;
@@ -70,8 +84,8 @@ export default class Button extends React.PureComponent<Partial<IButtonProps>, a
 					disabled && styles.disabled,
 					style
 				]}
-				accessibilityLabel={title}
-				{...otherProps}>
+				{...otherProps}
+				{...testProps((testID || title) as string)}>
 				{loading ? (
 					<ActivityIndicator color={textColor} />
 				) : (

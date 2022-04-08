@@ -8,6 +8,7 @@ import { themes } from '../lib/constants';
 import TextInput from '../presentation/TextInput';
 import { isIOS, isTablet } from '../utils/deviceInfo';
 import { useOrientation } from '../dimensions';
+import { testProps } from '../lib/methods/testProps';
 
 const styles = StyleSheet.create({
 	container: {
@@ -40,7 +41,7 @@ const SearchHeader = ({ onSearchChangeText, testID }: ISearchHeaderProps): JSX.E
 				placeholder={I18n.t('Search')}
 				onChangeText={onSearchChangeText}
 				theme={theme}
-				testID={testID}
+				{...testProps(testID || '')}
 			/>
 		</View>
 	);

@@ -13,6 +13,7 @@ import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import { BUTTON_HIT_SLOP } from '../../utils';
+import { testProps } from '../../../../lib/methods/testProps';
 
 const styles = StyleSheet.create({
 	button: {
@@ -90,7 +91,9 @@ const Fields = React.memo(
 			<>
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>
+						<Text
+							{...testProps('collapsibleQuoteTouchableFieldTitle')}
+							style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>
 							{field.title}
 						</Text>
 						<Markdown
@@ -144,7 +147,7 @@ const CollapsibleQuote = React.memo(
 		return (
 			<>
 				<Touchable
-					testID={`collapsibleQuoteTouchable-${attachment.title}`}
+					{...testProps(`collapsibleQuoteTouchable-${attachment.title}`)}
 					onPress={onPress}
 					style={[
 						styles.button,

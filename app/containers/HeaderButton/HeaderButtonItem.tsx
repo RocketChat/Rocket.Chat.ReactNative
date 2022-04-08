@@ -6,6 +6,7 @@ import { CustomIcon } from '../../lib/Icons';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
+import { testProps } from '../../lib/methods/testProps';
 
 interface IHeaderButtonItem {
 	title?: string;
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
 const Item = ({ title, iconName, onPress, testID, badge }: IHeaderButtonItem): React.ReactElement => {
 	const { theme } = useTheme();
 	return (
-		<Touchable onPress={onPress} testID={testID} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
+		<Touchable onPress={onPress} {...testProps(testID as string)} hitSlop={BUTTON_HIT_SLOP} style={styles.container}>
 			<>
 				{iconName ? (
 					<CustomIcon name={iconName} size={24} color={themes[theme].headerTintColor} />

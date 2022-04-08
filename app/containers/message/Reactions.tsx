@@ -10,6 +10,7 @@ import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import { testProps } from '../../lib/methods/testProps';
 
 interface IReaction {
 	_id: string;
@@ -34,7 +35,7 @@ const AddReaction = React.memo(({ theme }: { theme: string }) => {
 		<Touchable
 			onPress={reactionInit}
 			key='message-add-reaction'
-			testID='message-add-reaction'
+			{...testProps('message-add-reaction')}
 			style={[styles.reactionButton, { backgroundColor: themes[theme].backgroundColor }]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 			hitSlop={BUTTON_HIT_SLOP}>
@@ -53,7 +54,7 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 			onPress={() => onReactionPress(reaction.emoji)}
 			onLongPress={onReactionLongPress}
 			key={reaction.emoji}
-			testID={`message-reaction-${reaction.emoji}`}
+			{...testProps(`message-reaction-${reaction.emoji}`)}
 			style={[
 				styles.reactionButton,
 				{ backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].backgroundColor }

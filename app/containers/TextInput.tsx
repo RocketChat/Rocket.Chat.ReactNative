@@ -7,6 +7,7 @@ import TextInput from '../presentation/TextInput';
 import { themes } from '../lib/constants';
 import { CustomIcon } from '../lib/Icons';
 import ActivityIndicator from './ActivityIndicator';
+import { testProps } from '../lib/methods/testProps';
 
 const styles = StyleSheet.create({
 	error: {
@@ -84,7 +85,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 		return (
 			<CustomIcon
 				name={iconLeft}
-				testID={testID ? `${testID}-icon-left` : null}
+				{...testProps(testID ? `${testID}-icon-left` : '')}
 				style={[styles.iconContainer, styles.iconLeft, { color: themes[theme].bodyText }]}
 				size={20}
 			/>
@@ -107,7 +108,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 			<Touchable onPress={this.tooglePassword} style={[styles.iconContainer, styles.iconRight]}>
 				<CustomIcon
 					name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
-					testID={testID ? `${testID}-icon-right` : null}
+					{...testProps(testID ? `${testID}-icon-right` : '')}
 					style={{ color: themes[theme].auxiliaryText }}
 					size={20}
 				/>
@@ -170,7 +171,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 						autoCapitalize='none'
 						underlineColorAndroid='transparent'
 						secureTextEntry={secureTextEntry && !showPassword}
-						testID={testID}
+						{...testProps(testID || '')}
 						accessibilityLabel={placeholder}
 						placeholder={placeholder}
 						theme={theme}

@@ -7,7 +7,7 @@ import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
 import { TServerHistoryModel } from '../../../definitions/IServerHistory';
 import Item from './Item';
-import { withTest } from '../../../lib/methods/withTest';
+import { testProps } from '../../../lib/methods/testProps';
 
 const styles = StyleSheet.create({
 	container: {
@@ -64,7 +64,7 @@ const ServerInput = ({
 				theme={theme}
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
-				{...withTest('new-server-view-input')}
+				{...testProps('new-server-view-input')}
 			/>
 			{focused && serversHistory?.length ? (
 				<View

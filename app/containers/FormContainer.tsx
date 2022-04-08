@@ -10,6 +10,7 @@ import StatusBar from './StatusBar';
 import AppVersion from './AppVersion';
 import { isTablet } from '../utils/deviceInfo';
 import SafeAreaView from './SafeAreaView';
+import { testProps } from '../lib/methods/testProps';
 
 interface IFormContainer extends ScrollViewProps {
 	testID: string;
@@ -40,7 +41,7 @@ const FormContainer = ({ children, testID, ...props }: IFormContainer) => {
 				contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
 				{...scrollPersistTaps}
 				{...props}>
-				<SafeAreaView testID={testID} style={{ backgroundColor: themes[theme].backgroundColor }}>
+				<SafeAreaView {...testProps(testID)} style={{ backgroundColor: themes[theme].backgroundColor }}>
 					{children}
 					<AppVersion theme={theme} />
 				</SafeAreaView>

@@ -3,6 +3,7 @@ import { I18nManager, StyleProp, StyleSheet, TextInput, TextStyle } from 'react-
 
 import { IRCTextInputProps } from '../containers/TextInput';
 import { themes } from '../lib/constants';
+import { testProps } from '../lib/methods/testProps';
 
 const styles = StyleSheet.create({
 	input: {
@@ -22,6 +23,7 @@ const ThemedTextInput = React.forwardRef<TextInput, IThemedTextInput>(({ style, 
 		placeholderTextColor={themes[theme].auxiliaryText}
 		keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 		{...props}
+		{...testProps(props.testID)}
 	/>
 ));
 

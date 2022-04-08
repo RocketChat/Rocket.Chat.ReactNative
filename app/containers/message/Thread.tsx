@@ -8,6 +8,7 @@ import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
 import { IMessageThread } from './interfaces';
 import { useTheme } from '../../theme';
+import { testProps } from '../../lib/methods/testProps';
 
 const Thread = React.memo(
 	({ msg, tcount, tlm, isThreadRoom, id }: IMessageThread) => {
@@ -20,7 +21,9 @@ const Thread = React.memo(
 		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
 		return (
 			<View style={styles.buttonContainer}>
-				<View style={[styles.button, { backgroundColor: themes[theme].tintColor }]} testID={`message-thread-button-${msg}`}>
+				<View
+					style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
+					{...testProps(`message-thread-button-${msg}`)}>
 					<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{I18n.t('Reply')}</Text>
 				</View>
 				<ThreadDetails

@@ -52,6 +52,7 @@ import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
 import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { testProps } from '../../lib/methods/testProps';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -1002,7 +1003,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			<TouchableWithoutFeedback
 				style={[styles.sendToChannelButton, { backgroundColor: themes[theme].messageboxBackground }]}
 				onPress={this.onPressSendToChannel}
-				testID='messagebox-send-to-channel'>
+				{...testProps('messagebox-send-to-channel')}>
 				<CustomIcon name={tshow ? 'checkbox-checked' : 'checkbox-unchecked'} size={24} color={themes[theme].auxiliaryText} />
 				<Text style={[styles.sendToChannelText, { color: themes[theme].auxiliaryText }]}>
 					{I18n.t('Messagebox_Send_to_channel')}
@@ -1123,7 +1124,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 							{ backgroundColor: themes[theme].messageboxBackground },
 							!recording && editing && { backgroundColor: themes[theme].chatComponentBackground }
 						]}
-						testID='messagebox'>
+						{...testProps('messagebox')}>
 						{textInputAndButtons}
 						{recordAudio}
 					</View>

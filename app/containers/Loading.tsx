@@ -3,6 +3,7 @@ import { Animated, Modal, StyleSheet, View } from 'react-native';
 
 import { withTheme } from '../theme';
 import { themes } from '../lib/constants';
+import { testProps } from '../lib/methods/testProps';
 
 const styles = StyleSheet.create({
 	container: {
@@ -108,7 +109,7 @@ class Loading extends React.PureComponent<ILoadingProps, ILoadingState> {
 
 		return (
 			<Modal visible={visible} transparent onRequestClose={() => {}}>
-				<View style={styles.container} testID='loading'>
+				<View style={styles.container} {...testProps('loading')}>
 					<Animated.View
 						style={[
 							{

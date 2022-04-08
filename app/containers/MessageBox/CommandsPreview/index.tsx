@@ -7,6 +7,7 @@ import { IPreviewItem } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
 import Item from './Item';
+import { testProps } from '../../../lib/methods/testProps';
 
 interface IMessageBoxCommandsPreview {
 	commandPreview: IPreviewItem[];
@@ -21,7 +22,7 @@ const CommandsPreview = React.memo(
 		const { theme } = useTheme();
 		return (
 			<FlatList
-				testID='commandbox-container'
+				{...testProps('commandbox-container')}
 				style={[styles.mentionList, { backgroundColor: themes[theme].messageboxBackground }]}
 				data={commandPreview}
 				renderItem={({ item }) => <Item item={item} />}

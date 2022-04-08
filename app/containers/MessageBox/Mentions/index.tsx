@@ -7,6 +7,7 @@ import styles from '../styles';
 import MentionItem from './MentionItem';
 import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
+import { testProps } from '../../../lib/methods/testProps';
 
 interface IMessageBoxMentions {
 	mentions: any[];
@@ -21,7 +22,7 @@ const Mentions = React.memo(
 		}
 		const { theme } = useTheme();
 		return (
-			<View testID='messagebox-container'>
+			<View {...testProps('messagebox-container')}>
 				<FlatList
 					style={[styles.mentionList, { backgroundColor: themes[theme].auxiliaryBackground }]}
 					ListHeaderComponent={() => (

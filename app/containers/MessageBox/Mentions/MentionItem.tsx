@@ -10,6 +10,7 @@ import MessageboxContext from '../Context';
 import styles from '../styles';
 import FixedMentionItem from './FixedMentionItem';
 import MentionEmoji from './MentionEmoji';
+import { testProps } from '../../../lib/methods/testProps';
 
 interface IMessageBoxMentionItem {
 	item: {
@@ -95,7 +96,7 @@ const MentionItem = ({ item, trackingType }: IMessageBoxMentionItem) => {
 				}
 			]}
 			onPress={() => onPressMention(item)}
-			testID={testID}>
+			{...testProps(testID)}>
 			<MentionItemContent item={item} trackingType={trackingType} />
 		</TouchableOpacity>
 	);

@@ -10,6 +10,7 @@ import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { useDimensions } from '../../dimensions';
 import { CustomIcon } from '../../lib/Icons';
+import { testProps } from '../../lib/methods/testProps';
 
 const styles = StyleSheet.create({
 	container: {
@@ -86,7 +87,9 @@ const Content = React.memo(
 		const { fontScale } = useDimensions();
 
 		return (
-			<View style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale }]} testID={testID}>
+			<View
+				style={[styles.container, disabled && styles.disabled, { height: BASE_HEIGHT * fontScale }]}
+				{...testProps(testID || '')}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>

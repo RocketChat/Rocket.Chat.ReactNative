@@ -2,10 +2,10 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import React from 'react';
 
 import styles from '../styles';
-import i18n from '../../../i18n';
 import { CustomIcon } from '../../../lib/Icons';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
+import { testProps } from '../../../lib/methods/testProps';
 
 interface IBaseButton {
 	onPress(): void;
@@ -22,8 +22,8 @@ const BaseButton = ({ accessibilityLabel, icon, color, ...props }: Partial<IBase
 			{...props}
 			style={styles.actionButton}
 			// @ts-ignore
-			accessibilityLabel={i18n.t(accessibilityLabel)}
-			accessibilityTraits='button'>
+			accessibilityTraits='button'
+			{...testProps(props.testID)}>
 			<CustomIcon name={icon} size={24} color={color || themes[theme].auxiliaryTintColor} />
 		</BorderlessButton>
 	);

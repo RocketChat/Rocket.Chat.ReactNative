@@ -7,6 +7,7 @@ import RoomTypeIcon from '../RoomTypeIcon';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
+import { testProps } from '../../lib/methods/testProps';
 
 export { ROW_HEIGHT };
 
@@ -49,7 +50,7 @@ const DirectoryItem = ({
 }: IDirectoryItem): React.ReactElement => {
 	const { theme } = useTheme();
 	return (
-		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID} theme={theme}>
+		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} {...testProps(testID)} theme={theme}>
 			<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
 				<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
 				<View style={styles.directoryItemTextContainer}>
