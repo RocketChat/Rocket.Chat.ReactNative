@@ -69,6 +69,12 @@ export default class RoomSubscription {
 		}
 
 		reduxStore.dispatch(subscribeRoom(this.rid));
+		const rooms = reduxStore.getState().room;
+		if (rooms.rooms.length > 1) {
+			for (let i = 1; i < rooms.rooms.length; i++) {
+				reduxStore.dispatch(unsubscribeRoom(rooms.rooms[i]));
+			}
+		}
 	};
 
 	unsubscribe = async () => {
