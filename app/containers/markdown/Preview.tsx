@@ -8,6 +8,7 @@ import { formatText } from './formatText';
 import { useTheme } from '../../theme';
 import styles from './styles';
 import { formatHyperlink } from './formatHyperlink';
+import { testProps } from '../../lib/methods/testProps';
 
 interface IMarkdownPreview {
 	msg?: string;
@@ -35,7 +36,7 @@ const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdo
 			accessibilityLabel={m}
 			style={[styles.text, { color: themes[theme].bodyText }, ...style]}
 			numberOfLines={numberOfLines}
-			testID={testID}>
+			{...testProps(testID)}>
 			{m}
 		</Text>
 	);

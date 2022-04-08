@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 import styles from './styles';
 import { themes } from '../../lib/constants';
+import { testProps } from '../../lib/methods/testProps';
 
 interface ITabBarProps {
 	goToPage: Function;
@@ -35,7 +36,7 @@ export default class TabBar extends React.Component<Partial<ITabBarProps>> {
 						key={tab}
 						onPress={() => goToPage!(i)}
 						style={styles.tab}
-						testID={`reaction-picker-${tab}`}>
+						{...testProps(`reaction-picker-${tab}`)}>
 						<Text style={[styles.tabEmoji, tabEmojiStyle]}>{tab}</Text>
 						{activeTab === i ? (
 							<View style={[styles.activeTabLine, { backgroundColor: themes[theme!].tintColor }]} />

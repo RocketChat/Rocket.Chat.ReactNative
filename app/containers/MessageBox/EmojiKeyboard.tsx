@@ -8,6 +8,7 @@ import styles from './styles';
 import { themes } from '../../lib/constants';
 import { withTheme } from '../../theme';
 import { IEmoji } from '../../definitions/IEmoji';
+import { testProps } from '../../lib/methods/testProps';
 
 interface IMessageBoxEmojiKeyboard {
 	theme: string;
@@ -31,7 +32,7 @@ export default class EmojiKeyboard extends React.PureComponent<IMessageBoxEmojiK
 		return (
 			<View
 				style={[styles.emojiKeyboardContainer, { borderTopColor: themes[theme].borderColor }]}
-				testID='messagebox-keyboard-emoji'>
+				{...testProps('messagebox-keyboard-emoji')}>
 				<EmojiPicker onEmojiSelected={this.onEmojiSelected} baseUrl={this.baseUrl} />
 			</View>
 		);

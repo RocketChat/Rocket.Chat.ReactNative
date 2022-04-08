@@ -6,6 +6,7 @@ import styles from './styles';
 import CustomEmoji from './CustomEmoji';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { IEmoji, IEmojiCategory } from '../../definitions/IEmoji';
+import { testProps } from '../../lib/methods/testProps';
 
 const EMOJI_SIZE = 50;
 
@@ -34,7 +35,7 @@ class EmojiCategory extends React.Component<Partial<IEmojiCategory>> {
 				activeOpacity={0.7}
 				key={emoji && emoji.isCustom ? emoji.content : emoji}
 				onPress={() => onEmojiSelected!(emoji)}
-				testID={`reaction-picker-${emoji && emoji.isCustom ? emoji.content : emoji}`}>
+				{...testProps(`reaction-picker-${emoji && emoji.isCustom ? emoji.content : emoji}`)}>
 				{renderEmoji(emoji, EMOJI_SIZE, baseUrl!)}
 			</TouchableOpacity>
 		);

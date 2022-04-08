@@ -3,6 +3,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { themes } from '../../lib/constants';
 import { CustomIcon } from '../../lib/Icons';
+import { testProps } from '../../lib/methods/testProps';
 import { useTheme } from '../../theme';
 import { ICON_SIZE } from './constants';
 
@@ -25,7 +26,7 @@ const ListIcon = React.memo(({ name, color, style, testID }: IListIcon) => {
 
 	return (
 		<View style={[styles.icon, style]}>
-			<CustomIcon name={name} color={color ?? themes[theme].auxiliaryText} size={ICON_SIZE} testID={testID} />
+			<CustomIcon name={name} color={color ?? themes[theme].auxiliaryText} size={ICON_SIZE} {...testProps(testID || '')} />
 		</View>
 	);
 });

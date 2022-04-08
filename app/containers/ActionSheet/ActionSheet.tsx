@@ -18,6 +18,7 @@ import { Handle } from './Handle';
 import { IActionSheetItem, Item } from './Item';
 import { TActionSheetOptions, TActionSheetOptionsItem } from './Provider';
 import styles, { ITEM_HEIGHT } from './styles';
+import { testProps } from '../../lib/methods/testProps';
 
 const getItemLayout = (data: TActionSheetOptionsItem[] | null | undefined, index: number) => ({
 	length: ITEM_HEIGHT,
@@ -152,7 +153,7 @@ const ActionSheet = React.memo(
 					<>
 						<TapGestureHandler onHandlerStateChange={onBackdropPressed}>
 							<Animated.View
-								testID='action-sheet-backdrop'
+								{...testProps('action-sheet-backdrop')}
 								style={[
 									styles.backdrop,
 									{
@@ -163,7 +164,7 @@ const ActionSheet = React.memo(
 							/>
 						</TapGestureHandler>
 						<ScrollBottomSheet<TActionSheetOptionsItem>
-							testID='action-sheet'
+							{...testProps('action-sheet')}
 							ref={bottomSheetRef}
 							componentType='FlatList'
 							snapPoints={snaps}

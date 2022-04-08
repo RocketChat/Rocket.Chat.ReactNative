@@ -13,6 +13,7 @@ import sharedStyles from '../../views/Styles';
 import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
 import { TAnyMessageModel } from '../../definitions';
 import { IEmoji } from '../../definitions/IEmoji';
+import { testProps } from '../../lib/methods/testProps';
 
 type TItem = TFrequentlyUsedEmojiModel | string;
 
@@ -78,7 +79,7 @@ const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
 	const emoji = (emojiModel.id ? emojiModel.content : item) as string;
 	return (
 		<Button
-			testID={`message-actions-emoji-${emoji}`}
+			{...testProps(`message-actions-emoji-${emoji}`)}
 			onPress={() => onReaction({ emoji: `:${emoji}:` })}
 			style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
 			theme={theme}>
@@ -93,7 +94,7 @@ const HeaderItem = ({ item, onReaction, server, theme }: THeaderItem) => {
 
 const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	<Button
-		testID='add-reaction'
+		{...testProps('add-reaction')}
 		onPress={onReaction}
 		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
 		theme={theme}>

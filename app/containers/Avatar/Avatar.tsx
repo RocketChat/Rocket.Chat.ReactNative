@@ -9,6 +9,7 @@ import { SubscriptionType } from '../../definitions/ISubscription';
 import Emoji from '../markdown/Emoji';
 import { IAvatar } from './interfaces';
 import { useTheme } from '../../theme';
+import { testProps } from '../../lib/methods/testProps';
 
 const Avatar = React.memo(
 	({
@@ -88,7 +89,7 @@ const Avatar = React.memo(
 		}
 
 		return (
-			<View style={[avatarStyle, style]} testID='avatar'>
+			<View style={[avatarStyle, style]} {...testProps('avatar')}>
 				{image}
 				{children}
 			</View>

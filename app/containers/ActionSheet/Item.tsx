@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 
 import { themes } from '../../lib/constants';
 import { CustomIcon } from '../../lib/Icons';
+import { testProps } from '../../lib/methods/testProps';
 import { useTheme } from '../../theme';
 import { Button } from './Button';
 import styles from './styles';
@@ -31,7 +32,7 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 			onPress={onPress}
 			style={[styles.item, { backgroundColor: themes[theme].focusedBackground }]}
 			theme={theme}
-			testID={item.testID}>
+			{...testProps(item.testID || '')}>
 			<CustomIcon name={item.icon} size={20} color={item.danger ? themes[theme].dangerColor : themes[theme].bodyText} />
 			<View style={styles.titleContainer}>
 				<Text

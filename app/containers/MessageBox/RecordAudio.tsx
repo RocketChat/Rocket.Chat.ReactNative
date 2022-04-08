@@ -10,6 +10,7 @@ import I18n from '../../i18n';
 import { themes } from '../../lib/constants';
 import { CustomIcon } from '../../lib/Icons';
 import { events, logEvent } from '../../utils/log';
+import { testProps } from '../../lib/methods/testProps';
 
 interface IMessageBoxRecordAudioProps {
 	theme: string;
@@ -197,9 +198,8 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 				<BorderlessButton
 					onPress={this.startRecordingAudio}
 					style={styles.actionButton}
-					testID='messagebox-send-audio'
+					{...testProps('messagebox-send-audio')}
 					// @ts-ignore
-					accessibilityLabel={I18n.t('Send_audio_message')}
 					accessibilityTraits='button'>
 					<CustomIcon name='microphone' size={24} color={themes[theme].auxiliaryTintColor} />
 				</BorderlessButton>

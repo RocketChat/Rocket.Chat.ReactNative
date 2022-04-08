@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native';
 
 import { themes } from '../../../lib/constants';
 import { CustomIcon } from '../../../lib/Icons';
+import { testProps } from '../../../lib/methods/testProps';
 import { useTheme } from '../../../theme';
 import ActivityIndicator from '../../ActivityIndicator';
 import MessageboxContext from '../Context';
@@ -27,7 +28,7 @@ const Item = ({ item }: IMessageBoxCommandsPreviewItem) => {
 		<TouchableOpacity
 			style={styles.commandPreview}
 			onPress={() => onPressCommandPreview(item)}
-			testID={`command-preview-item${item.id}`}>
+			{...testProps(`command-preview-item${item.id}`)}>
 			{item.type === 'image' ? (
 				<FastImage
 					style={styles.commandPreviewImage}
