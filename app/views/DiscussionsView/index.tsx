@@ -131,8 +131,8 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
 			headerTitleContainerStyle: {
-				left: null,
-				right: null
+				left: 0,
+				right: 0
 			},
 			headerRight: () => (
 				<HeaderButton.Container>
