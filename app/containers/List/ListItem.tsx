@@ -91,7 +91,7 @@ const Content = React.memo(
 
 		return (
 			<View
-				style={[styles.container, disabled && styles.disabled, { height: heightContainer || BASE_HEIGHT * fontScale }]}
+				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
 				testID={testID}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
