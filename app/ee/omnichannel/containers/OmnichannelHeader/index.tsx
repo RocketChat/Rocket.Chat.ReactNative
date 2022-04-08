@@ -3,11 +3,10 @@ import { Switch, View } from 'react-native';
 
 import * as List from '../../../../containers/List';
 import styles from './styles';
-import { themes } from '../../../../lib/constants';
+import { SWITCH_TRACK_COLOR, themes } from '../../../../lib/constants';
 import { useTheme } from '../../../../theme';
 import RocketChat from '../../../../lib/rocketchat';
 import { IUser } from '../../../../definitions/IUser';
-import { isIOS } from '../../../../utils/deviceInfo';
 import { showConfirmationAlert } from '../../../../utils/info';
 import I18n from '../../../../i18n';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../lib';
@@ -64,12 +63,7 @@ const OmnichannelStatus = memo(({ searching, goQueue, queueSize, user }: IOmnich
 				onPress={toggleLivechat}
 				right={() => (
 					<View style={styles.omnichannelRightContainer}>
-						<Switch
-							value={status}
-							trackColor={{ true: themes[theme].omnichannelTrueSwitch, false: themes[theme].omnichannelFalseSwitch }}
-							thumbColor={!isIOS && (status ? themes[theme].omnichannelTrueSwitch : themes[theme].switchAndroidThumbFalse)}
-							onValueChange={toggleLivechat}
-						/>
+						<Switch value={status} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleLivechat} />
 					</View>
 				)}
 			/>

@@ -69,9 +69,6 @@ export const colors = {
 		attachmentLoadingOpacity: 0.7,
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
-		omnichannelFalseSwitch: '#CBCED1',
-		omnichannelTrueSwitch: '#1D74F5',
-		switchAndroidThumbFalse: '#EEEEEE',
 		...mentions
 	},
 	dark: {
@@ -123,9 +120,6 @@ export const colors = {
 		attachmentLoadingOpacity: 0.3,
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
-		omnichannelFalseSwitch: '#CBCED1',
-		omnichannelTrueSwitch: '#1D74F5',
-		switchAndroidThumbFalse: '#EEEEEE',
 		...mentions
 	},
 	black: {
@@ -177,9 +171,6 @@ export const colors = {
 		attachmentLoadingOpacity: 0.3,
 		collapsibleQuoteBorder: '#CBCED1',
 		collapsibleChevron: '#6C727A',
-		omnichannelFalseSwitch: '#CBCED1',
-		omnichannelTrueSwitch: '#1D74F5',
-		switchAndroidThumbFalse: '#EEEEEE',
 		...mentions
 	}
 };
