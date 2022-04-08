@@ -19,7 +19,6 @@ import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import { IRoom } from '../definitions/IRoom';
-import { TIconsName } from '../containers/CustomIcon';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -152,13 +151,14 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	};
 
 	renderItem = ({ item }: { item: Partial<IRoom> }) => {
+		console.log('***** enter here *****');
 		const { theme } = this.props;
 		const { selected } = this.state;
 
 		const channelIcon = item.t === 'p' ? 'channel-private' : 'channel-public';
 		const teamIcon = item.t === 'p' ? 'teams-private' : 'teams';
 		const icon = item.teamMain ? teamIcon : channelIcon;
-		const checked = this.isChecked(item.rid!) ? 'check' : ('' as TIconsName);
+		const checked = this.isChecked(item.rid!) ? 'check' : '';
 
 		const showRadio = () => (
 			<RadioButton
@@ -168,13 +168,14 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 				size={ICON_SIZE}
 			/>
 		);
-		const showCheck = () => (
-			<List.Icon
-				testID={checked ? `${item.name}-checked` : `${item.name}-unchecked`}
-				name={checked}
-				color={themes[theme].actionTintColor}
-			/>
-		);
+		const showCheck = () =>
+			checked !== '' ? (
+				<List.Icon
+					testID={checked ? `${item.name}-checked` : `${item.name}-unchecked`}
+					name={checked}
+					color={themes[theme].actionTintColor}
+				/>
+			) : null;
 
 		return (
 			<>
