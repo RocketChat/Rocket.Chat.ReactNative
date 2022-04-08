@@ -1,5 +1,5 @@
 module.exports = {
-	deviceName: '', // pass the udid or device name
-	platformVersion: '', // pass the platform version
-	app: 'com.apple.app'
+	deviceName: 'iPhone 11 Pro',
+	platformVersion: '14.5',
+	app: 'chat.rocket.reactnative'
 };
