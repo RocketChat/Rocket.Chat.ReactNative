@@ -656,7 +656,6 @@
   "After_seconds_set_by_admin": "Через {{seconds}} секунд (установлено администратором сервера)",
   "Dont_activate": "Не активировать сейчас",
   "Queued_chats": "Чаты в очереди",
-  "Queue_is_empty": "Очередь пуста",
   "Logout_from_other_logged_in_locations": "Выйти из всех других подключенных расположений",
   "You_will_be_logged_out_from_other_locations": "Будет произведен ваш выход из всех других подключенных расположений.",
   "Logged_out_of_other_clients_successfully": "Выход из других клиентских подключений выполнен успешно",

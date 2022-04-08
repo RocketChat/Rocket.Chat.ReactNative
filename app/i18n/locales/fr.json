@@ -656,7 +656,6 @@
   "After_seconds_set_by_admin": "Après {{seconds}} secondes (défini par l'administrateur)",
   "Dont_activate": "Ne pas activer maintenant",
   "Queued_chats": "Discussions en file d'attente",
-  "Queue_is_empty": "La file d'attente est vide",
   "Logout_from_other_logged_in_locations": "Déconnexion des autres emplacements connectés",
   "You_will_be_logged_out_from_other_locations": "Vous serez déconnecté des autres emplacements.",
   "Logged_out_of_other_clients_successfully": "Déconnexion réussie des autres clients",

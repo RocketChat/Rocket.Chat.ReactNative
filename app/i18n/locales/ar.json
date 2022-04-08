@@ -650,7 +650,6 @@
   "After_seconds_set_by_admin": "بعد {{seconds}} ثوان (حددها المدير)",
   "Dont_activate": "لا تقم بالتفعيل الآن",
   "Queued_chats": "محادثات في قائمى الانتظار",
-  "Queue_is_empty": "قائمة الانتظار فارغة",
   "Logout_from_other_logged_in_locations": "تسجيل الخروج من الأماكن الأخرى",
   "You_will_be_logged_out_from_other_locations": "سيتم تسجيل خروج من الأماكن الأخرى",
   "Logged_out_of_other_clients_successfully": "تم تسجيل الخروج من الأماكن الأخرى بنجاح",

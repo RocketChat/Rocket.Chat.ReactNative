@@ -644,7 +644,6 @@
   "After_seconds_set_by_admin": "{{seconds}} saniye sonra (yönetici tarafından belirlenir)",
   "Dont_activate": "Şimdi etkinleştirme",
   "Queued_chats": "Sıralı sohbetler",
-  "Queue_is_empty": "Sıra boş",
   "Logout_from_other_logged_in_locations": "Giriş yapılan diğer konumlardan çıkış yap",
   "You_will_be_logged_out_from_other_locations": "Diğer konumlardan çıkış yapacaksınız.",
   "Logged_out_of_other_clients_successfully": "Diğer istemcilerden başarıyla çıkış yapıldı",

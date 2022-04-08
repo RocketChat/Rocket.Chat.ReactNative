@@ -656,7 +656,6 @@
   "After_seconds_set_by_admin": "Nach {{seconds}} Sekunden (durch den Admin gesetzt)",
   "Dont_activate": "Jetzt nicht aktivieren",
   "Queued_chats": "Chats in der Warteschlange",
-  "Queue_is_empty": "Warteschlange leer",
   "Logout_from_other_logged_in_locations": "Auf anderen angemeldeten Geräte abmelden",
   "You_will_be_logged_out_from_other_locations": "Sie werden auf anderen Geräten abgemeldet.",
   "Logged_out_of_other_clients_successfully": "Erfolgreich von anderen Geräten abgemeldet.",

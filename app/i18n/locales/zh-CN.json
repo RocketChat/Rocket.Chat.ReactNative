@@ -642,7 +642,6 @@
   "After_seconds_set_by_admin": "{{seconds}} 秒 (管理员设定)",
   "Dont_activate": "現在不要激活",
   "Queued_chats": "聊天队列",
-  "Queue_is_empty": "队列是空的",
   "Logout_from_other_logged_in_locations": "注销其他已登陆的设备",
   "You_will_be_logged_out_from_other_locations": "您将于其他设备上注销",
   "Logged_out_of_other_clients_successfully": "成功登出其他用户端",

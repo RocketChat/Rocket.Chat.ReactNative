@@ -656,7 +656,6 @@
   "After_seconds_set_by_admin": "Na {{seconds}} seconden (ingesteld door beheerder)",
   "Dont_activate": "Nu niet activeren",
   "Queued_chats": "Chats in de wachtrij",
-  "Queue_is_empty": "Wachtrij is leeg",
   "Logout_from_other_logged_in_locations": "Afmelden bij andere ingelogde locaties",
   "You_will_be_logged_out_from_other_locations": "Je wordt uitgelogd van andere locaties.",
   "Logged_out_of_other_clients_successfully": "Succesvol uitgelogd bij andere klanten",
