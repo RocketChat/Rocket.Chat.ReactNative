@@ -69,7 +69,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 				theme={theme}
 				accessibilityLabel={I18n.t(text)}>
 				<View style={styles.dropdownItemContainer}>
-					<CustomIcon style={[styles.dropdownItemIcon, { color: themes[theme].bodyText }]} size={22} name={icon} />
+					<CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
 					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
 					{propType === itemType ? <Check /> : null}
 				</View>
@@ -103,9 +103,10 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 							]}>
 							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
 							<CustomIcon
-								style={[styles.dropdownItemIcon, styles.inverted, { color: themes[theme].auxiliaryTintColor }]}
+								style={[styles.dropdownItemIcon, styles.inverted]}
 								size={22}
 								name='chevron-down'
+								color={themes[theme].auxiliaryTintColor}
 							/>
 						</View>
 					</Touch>

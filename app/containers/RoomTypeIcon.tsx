@@ -56,7 +56,7 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, team
 		icon = 'omnichannel';
 	}
 
-	return <CustomIcon name={icon} size={size} style={iconStyle} />;
+	return <CustomIcon name={icon} size={size} color={color} style={iconStyle} />;
 });
 
 export default withTheme(RoomTypeIcon);

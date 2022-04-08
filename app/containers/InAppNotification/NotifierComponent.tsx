@@ -136,7 +136,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 				</>
 			</Touchable>
 			<Touchable onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP} background={Touchable.SelectableBackgroundBorderless()}>
-				<CustomIcon name='close' style={[styles.close, { color: themes[theme].titleText }]} size={20} />
+				<CustomIcon name='close' size={20} color={themes[theme].titleText} style={styles.close} />
 			</Touchable>
 		</View>
 	);

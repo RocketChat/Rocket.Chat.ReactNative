@@ -13,7 +13,7 @@ export type TIconsName = keyof typeof mappedIcons;
 interface ICustomIcon extends TextProps {
 	name: TIconsName;
 	size: number;
-	color?: string;
+	color: string;
 }
 
 const CustomIcon = ({ name, size, color, testID, ...props }: ICustomIcon) => (

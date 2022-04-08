@@ -85,8 +85,9 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 			<CustomIcon
 				name={iconLeft}
 				testID={testID ? `${testID}-icon-left` : undefined}
-				style={[styles.iconContainer, styles.iconLeft, { color: themes[theme].bodyText }]}
 				size={20}
+				color={themes[theme].bodyText}
+				style={[styles.iconContainer, styles.iconLeft]}
 			/>
 		) : null;
 	}
@@ -95,7 +96,7 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 		const { iconRight, onIconRightPress, theme } = this.props;
 		return iconRight ? (
 			<Touchable onPress={onIconRightPress} style={[styles.iconContainer, styles.iconRight]}>
-				<CustomIcon name={iconRight} style={{ color: themes[theme].bodyText }} size={20} />
+				<CustomIcon name={iconRight} size={20} color={themes[theme].bodyText} />
 			</Touchable>
 		) : null;
 	}
@@ -108,8 +109,8 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 				<CustomIcon
 					name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 					testID={testID ? `${testID}-icon-right` : undefined}
-					style={{ color: themes[theme].auxiliaryText }}
 					size={20}
+					color={themes[theme].auxiliaryText}
 				/>
 			</Touchable>
 		);
