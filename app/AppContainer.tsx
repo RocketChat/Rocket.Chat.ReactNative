@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, memo, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
@@ -27,20 +27,22 @@ const SetUsernameStack = () => (
 
 // App
 const Stack = createStackNavigator<StackParamList>();
-const App = React.memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
+const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
+	const { theme } = useContext(ThemeContext);
+	useEffect(() => {
+		if (root) {
+			const state = Navigation.navigationRef.current?.getRootState();
+			const currentRouteName = getActiveRouteName(state);
+			Navigation.routeNameRef.current = currentRouteName;
+			setCurrentScreen(currentRouteName);
+		}
+	}, [root]);
+
 	if (!root) {
 		return null;
 	}
 
-	const { theme } = React.useContext(ThemeContext);
 	const navTheme = navigationTheme(theme);
-
-	React.useEffect(() => {
-		const state = Navigation.navigationRef.current?.getRootState();
-		const currentRouteName = getActiveRouteName(state);
-		Navigation.routeNameRef.current = currentRouteName;
-		setCurrentScreen(currentRouteName);
-	}, []);
 
 	return (
 		<NavigationContainer
