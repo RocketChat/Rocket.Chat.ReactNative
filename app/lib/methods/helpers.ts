@@ -1,11 +1,7 @@
 // @ts-nocheck - TEMP
-import AsyncStorage from '@react-native-community/async-storage';
-
 import log from '../../utils/log';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
-import subscribeRoomsTmp from './subscriptions/rooms';
-import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, defaultSettings } from '../constants';
 
 export function isGroupChat(room): boolean {
 	return ((room.uids && room.uids.length > 2) || (room.usernames && room.usernames.length > 2)) ?? false;
@@ -87,63 +83,6 @@ export function hasRole(role): boolean {
 	const loginUser = reduxStore.getState().login.user;
 	const userRoles = shareUser?.roles || loginUser?.roles || [];
 	return userRoles.indexOf(role) > -1;
-}
-
-// AsyncStorage
-export async function getAllowCrashReport() {
-	const allowCrashReport = await AsyncStorage.getItem(CRASH_REPORT_KEY);
-	if (allowCrashReport === null) {
-		return true;
-	}
-	return JSON.parse(allowCrashReport);
-}
-
-export async function getAllowAnalyticsEvents() {
-	const allowAnalyticsEvents = await AsyncStorage.getItem(ANALYTICS_EVENTS_KEY);
-	if (allowAnalyticsEvents === null) {
-		return true;
-	}
-	return JSON.parse(allowAnalyticsEvents);
-}
-
-// TODO: remove this
-export async function subscribeRooms(this: any) {
-	if (!this.roomsSub) {
-		try {
-			// TODO: We need to change this naming. Maybe move this logic to the SDK?
-			this.roomsSub = await subscribeRoomsTmp.call(this);
-		} catch (e) {
-			log(e);
-		}
-	}
-}
-
-// TODO: remove this
-export function unsubscribeRooms(this: any) {
-	if (this.roomsSub) {
-		this.roomsSub.stop();
-		this.roomsSub = null;
-	}
-}
-
-export function parseSettings(settings) {
-	return settings.reduce((ret, item) => {
-		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
-		if (item._id === 'Hide_System_Messages') {
-			ret[item._id] = ret[item._id].reduce(
-				(array, value) => [...array, ...(value === 'mute_unmute' ? ['user-muted', 'user-unmuted'] : [value])],
-				[]
-			);
-		}
-		return ret;
-	});
-}
-
-export function _prepareSettings(settings) {
-	return settings.map(setting => {
-		setting[defaultSettings[setting._id].type] = setting.value;
-		return setting;
-	});
 }
 
 export async function hasPermission(permissions, rid?: any) {

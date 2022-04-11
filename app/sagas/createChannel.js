@@ -2,26 +2,14 @@ import { call, put, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
-import { createChannelFailure, createChannelSuccess } from '../actions/createChannel';
+import { createChannelFailure, createChannelRequest, createChannelSuccess } from '../actions/createChannel';
 import { showErrorAlert } from '../utils/info';
-import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/navigation/appNavigation';
 import database from '../lib/database';
 import I18n from '../i18n';
 import { events, logEvent } from '../utils/log';
 import { goRoom } from '../utils/goRoom';
-
-const createChannel = function createChannel(data) {
-	return RocketChat.createChannel(data);
-};
-
-const createGroupChat = function createGroupChat() {
-	return RocketChat.createGroupChat();
-};
-
-const createTeam = function createTeam(data) {
-	return RocketChat.createTeam(data);
-};
+import { createGroupChat, createTeam } from '../lib/services';
 
 const handleRequest = function* handleRequest({ data }) {
 	try {
@@ -39,7 +27,7 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast: `${broadcast}`,
 				encrypted: `${encrypted}`
 			});
-			const result = yield call(createTeam, data);
+			const result = yield createTeam(data);
 			sub = {
 				rid: result?.team?.roomId,
 				...result.team,
@@ -47,7 +35,7 @@ const handleRequest = function* handleRequest({ data }) {
 			};
 		} else if (data.group) {
 			logEvent(events.SELECTED_USERS_CREATE_GROUP);
-			const result = yield call(createGroupChat);
+			const result = yield createGroupChat();
 			if (result.success) {
 				sub = {
 					rid: result.room?._id,
@@ -62,7 +50,7 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			});
-			const result = yield call(createChannel, data);
+			const result = yield createChannelRequest(data);
 			sub = {
 				rid: result?.channel?._id || result?.group?._id,
 				...result?.channel,

@@ -30,15 +30,14 @@ import {
 	getSlashCommands,
 	getUserPresence,
 	isOmnichannelModuleAvailable,
-	logout,
-	subscribeSettings,
-	subscribeUsersPresence
+	subscribeSettings
 } from '../lib/methods';
+import { login, loginWithPassword } from '../lib/services';
 
 const getServer = state => state.server.server;
-const loginWithPasswordCall = args => RocketChat.loginWithPassword(args);
-const loginCall = (credentials, isFromWebView) => RocketChat.login(credentials, isFromWebView);
-const logoutCall = args => logout(args);
+const loginWithPasswordCall = args => loginWithPassword(args);
+const loginCall = (credentials, isFromWebView) => login(credentials, isFromWebView);
+const logoutCall = args => RocketChat.logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
 	logEvent(events.LOGIN_DEFAULT_LOGIN);
@@ -111,17 +110,17 @@ const fetchSlashCommands = function* fetchSlashCommands() {
 };
 
 const registerPushToken = function* registerPushToken() {
-	yield RocketChat.registerPushToken();
+	yield registerPushToken();
 };
 
 const fetchUsersPresence = function* fetchUserPresence() {
-	subscribeUsersPresence();
+	RocketChat.subscribeUsersPresence();
 };
 
 const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	yield getEnterpriseModules();
 
-	if (isOmnichannelStatusAvailable(user) && RocketChat.isOmnichannelModuleAvailable()) {
+	if (isOmnichannelStatusAvailable(user) && isOmnichannelModuleAvailable()) {
 		yield put(inquiryRequest());
 	}
 };

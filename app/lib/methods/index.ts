@@ -32,3 +32,5 @@ export * from './triggerActions';
 export * from './updateMessages';
 export * from './userPreferences';
 export * from './userPreferencesMethods';
+export * from './crashReport';
+export * from './parseSettings';

@@ -23,14 +23,15 @@ import SSLPinning from '../utils/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { RootEnum } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
-import { getLoginSettings, setEnterpriseModules, setPermissions, setRoles, setSettings } from '../lib/methods';
+import { getLoginSettings, setCustomEmojis, setEnterpriseModules, setPermissions, setRoles, setSettings } from '../lib/methods';
+import { abort, getLoginServices, getServerInfo, getWebsocketInfo } from '../lib/services';
 
-const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
+const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = true }) {
 	try {
-		const serverInfo = yield RocketChat.getServerInfo(server);
+		const serverInfo = yield getServerInfo(server);
 		let websocketInfo = { success: true };
 		if (raiseError) {
-			websocketInfo = yield RocketChat.getWebsocketInfo({ server });
+			websocketInfo = yield getWebsocketInfo({ server });
 		}
 		if (!serverInfo.success || !websocketInfo.success) {
 			if (raiseError) {
@@ -109,7 +110,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		setBasicAuth(basicAuth);
 
 		// Check for running requests and abort them before connecting to the server
-		RocketChat.abort();
+		abort();
 
 		if (user) {
 			yield put(clearSettings());
@@ -125,14 +126,14 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		// We can't use yield here because fetch of Settings & Custom Emojis is slower
 		// and block the selectServerSuccess raising multiples errors
 		setSettings();
-		RocketChat.setCustomEmojis();
+		setCustomEmojis();
 		setPermissions();
 		setRoles();
 		setEnterpriseModules();
 
 		let serverInfo;
 		if (fetchVersion) {
-			serverInfo = yield getServerInfo({ server, raiseError: false });
+			serverInfo = yield getServerInfoSaga({ server, raiseError: false });
 		}
 
 		// Return server version even when offline
@@ -153,12 +154,12 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		SSLPinning.setCertificate(certificate, server);
 
-		const serverInfo = yield getServerInfo({ server });
+		const serverInfo = yield getServerInfoSaga({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
 
 		if (serverInfo) {
-			yield RocketChat.getLoginServices(server);
+			yield getLoginServices(server);
 			yield getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
 

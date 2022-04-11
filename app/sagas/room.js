@@ -6,11 +6,11 @@ import EventEmitter from '../utils/events';
 import Navigation from '../lib/navigation/appNavigation';
 import * as types from '../actions/actionsTypes';
 import { removedRoom } from '../actions/room';
-import RocketChat from '../lib/rocketchat';
 import log, { events, logEvent } from '../utils/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
+import { closeLivechat, deleteRoom, deleteTeam, emitTyping, forwardLivechat, leaveRoom, leaveTeam } from '../lib/services';
 
 const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -19,11 +19,11 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	}
 
 	try {
-		yield RocketChat.emitTyping(rid, status);
+		yield emitTyping(rid, status);
 
 		if (status) {
 			yield delay(5000);
-			yield RocketChat.emitTyping(rid, false);
+			yield emitTyping(rid, false);
 		}
 	} catch (e) {
 		log(e);
@@ -65,9 +65,9 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 		let result = {};
 
 		if (roomType === 'channel') {
-			result = yield RocketChat.leaveRoom(room.rid, room.t);
+			result = yield leaveRoom(room.rid, room.t);
 		} else if (roomType === 'team') {
-			result = yield RocketChat.leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) });
+			result = yield leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) });
 		}
 
 		if (result?.success) {
@@ -91,9 +91,9 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 		let result = {};
 
 		if (roomType === 'channel') {
-			result = yield RocketChat.deleteRoom(room.rid, room.t);
+			result = yield deleteRoom(room.rid, room.t);
 		} else if (roomType === 'team') {
-			result = yield RocketChat.deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
+			result = yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
 		}
 
 		if (result?.success) {
@@ -116,7 +116,7 @@ const handleCloseRoom = function* handleCloseRoom({ rid }) {
 
 	const closeRoom = async (comment = '') => {
 		try {
-			await RocketChat.closeLivechat(rid, comment);
+			await closeLivechat(rid, comment);
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
 			} else {
@@ -150,7 +150,7 @@ const handleCloseRoom = function* handleCloseRoom({ rid }) {
 
 const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 	try {
-		const result = yield RocketChat.forwardLivechat(transferData);
+		const result = yield forwardLivechat(transferData);
 		if (result === true) {
 			const isMasterDetail = yield select(state => state.app.isMasterDetail);
 			if (isMasterDetail) {

@@ -18,14 +18,13 @@ import database from '../lib/database';
 import { CustomIcon } from '../lib/Icons';
 import Navigation from '../lib/navigation/appNavigation';
 import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
-import RocketChat from '../lib/rocketchat';
 import UserItem from '../presentation/UserItem';
 import { withTheme } from '../theme';
 import { goRoom } from '../utils/goRoom';
 import log, { events, logEvent } from '../utils/log';
 import Touch from '../utils/touch';
 import sharedStyles from './Styles';
-import { search } from '../lib/methods';
+import { hasPermission, search } from '../lib/methods';
 
 const QUERY_SIZE = 50;
 
@@ -215,7 +214,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 			createDirectMessagePermission,
 			createDiscussionPermission
 		];
-		const permissionsToCreate = await RocketChat.hasPermission(permissions);
+		const permissionsToCreate = await hasPermission(permissions);
 		this.setState({ permissions: permissionsToCreate });
 	};
 

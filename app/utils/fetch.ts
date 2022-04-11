@@ -48,6 +48,7 @@ export default (url: string, options: IOptions = {}): Promise<Response> => {
 	}
 	// TODO: Refactor when migrate rocketchat.js
 	// @ts-ignore
+	// WHAT?
 	if (RocketChat.controller) {
 		// @ts-ignore
 		const { signal } = RocketChat.controller;

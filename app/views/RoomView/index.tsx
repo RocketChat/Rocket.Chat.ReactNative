@@ -13,7 +13,6 @@ import { IReduxEmoji } from '../../definitions/IEmoji';
 import Touch from '../../utils/touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
-import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import MessageActions, { IMessageActions } from '../../containers/MessageActions';
 import MessageErrorActions from '../../containers/MessageErrorActions';
@@ -80,7 +79,19 @@ import {
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
-import { callJitsi, loadSurroundingMessages, loadThreadMessages, readMessages, sendMessage } from '../../lib/methods';
+import {
+	callJitsi,
+	canAutoTranslate as canAutoTranslateMethod,
+	getRoomTitle,
+	getUidDirectMessage,
+	isGroupChat,
+	loadSurroundingMessages,
+	loadThreadMessages,
+	readMessages,
+	sendMessage,
+	triggerBlockAction
+} from '../../lib/methods';
+import { editMessage, getUserInfo, joinRoom, setReaction, toggleFollowMessage } from '../../lib/services';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -212,7 +223,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		};
 		this.jumpToMessageId = props.route.params?.jumpToMessageId;
 		this.jumpToThreadId = props.route.params?.jumpToThreadId;
-		const roomUserId = props.route.params?.roomUserId ?? RocketChat.getUidDirectMessage(room);
+		const roomUserId = props.route.params?.roomUserId ?? getUidDirectMessage(room);
 		this.state = {
 			joined: true,
 			room,
@@ -430,15 +441,15 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		const prid = room?.prid;
-		const isGroupChat = RocketChat.isGroupChat(room as ISubscription);
+		const isGroupChatConst = isGroupChat(room as ISubscription);
 		let title = route.params?.name;
 		let parentTitle = '';
 		// TODO: I think it's safe to remove this, but we need to test tablet without rooms
 		if (!tmid) {
-			title = RocketChat.getRoomTitle(room);
+			title = getRoomTitle(room);
 		}
 		if (tmid) {
-			parentTitle = RocketChat.getRoomTitle(room);
+			parentTitle = getRoomTitle(room);
 		}
 		let subtitle: string | undefined;
 		let t: string;
@@ -502,7 +513,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					type={t}
 					roomUserId={roomUserId}
 					visitor={visitor}
-					isGroupChat={isGroupChat}
+					isGroupChat={isGroupChatConst}
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
 				/>
@@ -583,7 +594,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}
 			}
 
-			const canAutoTranslate = RocketChat.canAutoTranslate();
+			const canAutoTranslate = canAutoTranslateMethod();
 			const member = await this.getRoomMember();
 
 			this.setState({ canAutoTranslate, member, loading: false });
@@ -602,12 +613,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room } = this.state;
 		const { t } = room;
 
-		if ('id' in room && t === 'd' && !RocketChat.isGroupChat(room)) {
+		if ('id' in room && t === 'd' && !isGroupChat(room)) {
 			try {
-				const roomUserId = RocketChat.getUidDirectMessage(room);
+				const roomUserId = getUidDirectMessage(room);
 				this.setState({ roomUserId }, () => this.setHeader());
 
-				const result = await RocketChat.getUserInfo(roomUserId);
+				const result = await getUserInfo(roomUserId);
 				if (result.success) {
 					return result.user;
 				}
@@ -697,7 +708,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	onEditRequest = async (message: TAnyMessageModel) => {
 		this.setState({ selectedMessage: undefined, editing: false });
 		try {
-			await RocketChat.editMessage(message);
+			await editMessage(message);
 		} catch (e) {
 			log(e);
 		}
@@ -736,7 +747,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReactionPress = async (shortname: string, messageId: string) => {
 		try {
-			await RocketChat.setReaction(shortname, messageId);
+			await setReaction(shortname, messageId);
 			this.onReactionClose();
 			Review.pushPositiveEvent();
 		} catch (e) {
@@ -881,7 +892,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (rid === this.rid) {
 			Navigation.navigate('RoomsListView');
 			!this.isOmnichannel &&
-				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: RocketChat.getRoomTitle(room) }), I18n.t('Oops'));
+				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(room) }), I18n.t('Oops'));
 		}
 	};
 
@@ -925,7 +936,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	joinRoom = async () => {
+	handleJoinRoom = async () => {
 		logEvent(events.ROOM_JOIN);
 		try {
 			const { room } = this.state;
@@ -941,7 +952,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					// @ts-ignore
 					this.joinCode.current?.show();
 				} else {
-					await RocketChat.joinRoom(rid, null, this.t as any);
+					await joinRoom(rid, null, this.t as any);
 					this.onJoin();
 				}
 			}
@@ -961,7 +972,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (!threadMessageId) {
 				return;
 			}
-			await RocketChat.toggleFollowMessage(threadMessageId, !isFollowingThread);
+			await toggleFollowMessage(threadMessageId, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
@@ -1096,7 +1107,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		rid: string;
 		mid: string;
 	}) =>
-		RocketChat.triggerBlockAction({
+		triggerBlockAction({
 			blockId,
 			actionId,
 			value,
@@ -1242,7 +1253,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						{I18n.t('You_are_in_preview_mode')}
 					</Text>
 					<Touch
-						onPress={this.joinRoom}
+						onPress={this.handleJoinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
 						theme={theme}>

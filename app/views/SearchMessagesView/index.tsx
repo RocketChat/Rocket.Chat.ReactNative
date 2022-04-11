@@ -12,7 +12,6 @@ import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
-import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { IMessage } from '../../containers/message/interfaces';
@@ -33,6 +32,7 @@ import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 import { IEmoji } from '../../definitions/IEmoji';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { searchMessages } from '../../lib/services';
 
 const QUERY_SIZE = 50;
 
@@ -134,7 +134,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	}
 
 	// Handle encrypted rooms search messages
-	searchMessages = async (searchText: string) => {
+	handleSearchMessages = async (searchText: string) => {
 		if (!searchText) {
 			return [];
 		}
@@ -153,7 +153,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const result = await RocketChat.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
+		const result = await searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
 		if (result.success) {
 			return result.messages;
 		}
@@ -162,7 +162,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	};
 	getMessages = async (searchText: string, debounced?: boolean) => {
 		try {
-			const messages = await this.searchMessages(searchText);
+			const messages = await this.handleSearchMessages(searchText);
 			// @ts-ignore TODO: find a way to deal with the difference between IMessageFromServer and TMessageModel expected by state
 			this.setState(prevState => ({
 				messages: debounced ? messages : [...prevState.messages, ...messages],

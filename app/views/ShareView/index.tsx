@@ -14,7 +14,6 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { isBlocked } from '../../utils/room';
 import { isReadOnly } from '../../utils/isReadOnly';
 import { withTheme } from '../../theme';
-import RocketChat from '../../lib/rocketchat';
 import TextInput from '../../containers/TextInput';
 import MessageBox from '../../containers/MessageBox';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -29,7 +28,7 @@ import Header from './Header';
 import styles from './styles';
 import { IAttachment } from './interfaces';
 import { IUser, TSubscriptionModel } from '../../definitions';
-import { sendFileMessage, sendMessage } from '../../lib/methods';
+import { hasPermission, sendFileMessage, sendMessage } from '../../lib/methods';
 
 interface IShareViewState {
 	selected: IAttachment;
@@ -145,7 +144,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const permissionsCollection = db.get('permissions');
 		const uploadFilePermissionFetch = await permissionsCollection.query(Q.where('id', Q.like('mobile-upload-file'))).fetch();
 		const uploadFilePermission = uploadFilePermissionFetch[0]?.roles;
-		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission], room.rid);
+		const permissionToUpload = await hasPermission([uploadFilePermission], room.rid);
 		// uploadFilePermission as undefined is considered that there isn't this permission, so all can upload file.
 		return !uploadFilePermission || permissionToUpload[0];
 	};

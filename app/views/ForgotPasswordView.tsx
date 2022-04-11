@@ -8,13 +8,13 @@ import Button from '../containers/Button';
 import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
 import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat';
 import { withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
 import { OutsideParamList } from '../stacks/types';
+import { forgotPassword } from '../lib/services';
 
 interface IForgotPasswordViewState {
 	email: string;
@@ -73,7 +73,7 @@ class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForg
 		}
 		try {
 			this.setState({ isFetching: true });
-			const result = await RocketChat.forgotPassword(email);
+			const result = await forgotPassword(email);
 			if (result.success) {
 				const { navigation } = this.props;
 				navigation.pop();

@@ -11,7 +11,6 @@ import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { TAnyMessageModel, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import database from '../../../lib/database';
 import { compareServerVersion } from '../../../lib/methods/helpers/compareServerVersion';
-import RocketChat from '../../../lib/rocketchat';
 import debounce from '../../../utils/debounce';
 import { animateNextTransition } from '../../../utils/layoutAnimation';
 import log from '../../../utils/log';
@@ -19,6 +18,7 @@ import EmptyRoom from '../EmptyRoom';
 import List, { IListProps } from './List';
 import NavBottomFAB from './NavBottomFAB';
 import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
+import { readThreads } from '../../../lib/services';
 
 const QUERY_SIZE = 50;
 
@@ -204,7 +204,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					this.state.messages = messages;
 				}
 				// TODO: move it away from here
-				this.readThreads();
+				this.handleReadThreads();
 			});
 		}
 	};
@@ -214,12 +214,12 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		this.query();
 	};
 
-	readThreads = debounce(async () => {
+	handleReadThreads = debounce(async () => {
 		const { tmid } = this.props;
 
 		if (tmid) {
 			try {
-				await RocketChat.readThreads(tmid);
+				await readThreads(tmid);
 			} catch {
 				// Do nothing
 			}

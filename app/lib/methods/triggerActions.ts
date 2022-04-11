@@ -1,4 +1,10 @@
-import { ActionTypes, ITriggerCancel, ITriggerSubmitView, ModalActions } from '../../containers/UIKit/interfaces';
+import {
+	ActionTypes,
+	ITriggerBlockAction,
+	ITriggerCancel,
+	ITriggerSubmitView,
+	ModalActions
+} from '../../containers/UIKit/interfaces';
 import Navigation from '../navigation/appNavigation';
 import { triggerAction } from './actions';
 
@@ -11,4 +17,8 @@ export async function triggerSubmitView({ viewId, ...options }: ITriggerSubmitVi
 
 export function triggerCancel({ view, ...options }: ITriggerCancel) {
 	return triggerAction({ type: ActionTypes.CLOSED, view, ...options });
+}
+
+export function triggerBlockAction(options: ITriggerBlockAction) {
+	return triggerAction({ type: ActionTypes.ACTION, ...options });
 }

@@ -5,12 +5,11 @@ import { themes } from '../../lib/constants';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { ISearchLocal } from '../../definitions';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
 import { avatarURL } from '../../utils/avatar';
 import debounce from '../../utils/debounce';
 import { ICreateDiscussionViewSelectChannel } from './interfaces';
 import styles from './styles';
-import { localSearch } from '../../lib/methods';
+import { getRoomAvatar, getRoomTitle, localSearch } from '../../lib/methods';
 
 const SelectChannel = ({
 	server,
@@ -35,7 +34,7 @@ const SelectChannel = ({
 
 	const getAvatar = (item: any) =>
 		avatarURL({
-			text: RocketChat.getRoomAvatar(item),
+			text: getRoomAvatar(item),
 			type: item.t,
 			user: { id: userId, token },
 			server,
@@ -56,7 +55,7 @@ const SelectChannel = ({
 				disabled={!!initial}
 				options={channels.map(channel => ({
 					value: channel.name || channel.fname,
-					text: { text: RocketChat.getRoomTitle(channel) },
+					text: { text: getRoomTitle(channel) },
 					imageUrl: getAvatar(channel)
 				}))}
 				onClose={() => setChannels([])}

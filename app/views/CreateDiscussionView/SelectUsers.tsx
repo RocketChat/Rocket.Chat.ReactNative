@@ -5,7 +5,6 @@ import { Q } from '@nozbe/watermelondb';
 
 import debounce from '../../utils/debounce';
 import { avatarURL } from '../../utils/avatar';
-import RocketChat from '../../lib/rocketchat';
 import database from '../../lib/database';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
@@ -13,7 +12,7 @@ import { themes } from '../../lib/constants';
 import styles from './styles';
 import { ICreateDiscussionViewSelectUsers } from './interfaces';
 import { SubscriptionType } from '../../definitions/ISubscription';
-import { search } from '../../lib/methods';
+import { getRoomAvatar, getRoomTitle, search } from '../../lib/methods';
 
 interface IUser {
 	name: string;
@@ -65,7 +64,7 @@ const SelectUsers = ({
 
 	const getAvatar = (item: any) =>
 		avatarURL({
-			text: RocketChat.getRoomAvatar(item),
+			text: getRoomAvatar(item),
 			type: SubscriptionType.DIRECT,
 			user: { id: userId, token },
 			server,
@@ -83,7 +82,7 @@ const SelectUsers = ({
 				onChange={onUserSelect}
 				options={users.map((user: IUser) => ({
 					value: user.name,
-					text: { text: RocketChat.getRoomTitle(user) },
+					text: { text: getRoomTitle(user) },
 					imageUrl: getAvatar(user)
 				}))}
 				onClose={() => setUsers(users.filter((u: IUser) => selected.includes(u.name)))}

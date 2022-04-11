@@ -7,7 +7,6 @@ import { themes } from '../../lib/constants';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
-import RocketChat from '../../lib/rocketchat';
 import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -16,6 +15,7 @@ import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { ProfileStackParamList } from '../../stacks/types';
 import { INotificationPreferences, IUser } from '../../definitions';
+import { getUserPreferences, setUserPreferences } from '../../lib/services';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -56,7 +56,7 @@ class UserNotificationPreferencesView extends React.Component<
 	async componentDidMount() {
 		const { user } = this.props;
 		const { id } = user;
-		const result = await RocketChat.getUserPreferences(id);
+		const result = await getUserPreferences(id);
 		if (result.success) {
 			const { preferences } = result;
 			this.setState({ preferences, loading: true });
@@ -102,7 +102,7 @@ class UserNotificationPreferencesView extends React.Component<
 	saveNotificationPreferences = async (params: { [key: string]: string }) => {
 		const { user } = this.props;
 		const { id } = user;
-		const result = await RocketChat.setUserPreferences(id, params);
+		const result = await setUserPreferences(id, params);
 		if (result.success) {
 			const {
 				user: { settings }

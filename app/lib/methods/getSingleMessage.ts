@@ -1,10 +1,10 @@
-import RocketChat from '../rocketchat';
 import { IMessage } from '../../definitions';
+import { getSingleMessage } from '../services';
 
-const getSingleMessage = (messageId: string): Promise<IMessage> =>
+const getMessage = (messageId: string): Promise<IMessage> =>
 	new Promise(async (resolve, reject) => {
 		try {
-			const result = await RocketChat.getSingleMessage(messageId);
+			const result = await getSingleMessage(messageId);
 			if (result.success) {
 				return resolve(result.message);
 			}
@@ -14,4 +14,4 @@ const getSingleMessage = (messageId: string): Promise<IMessage> =>
 		}
 	});
 
-export default getSingleMessage;
+export default getMessage;

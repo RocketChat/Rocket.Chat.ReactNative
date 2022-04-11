@@ -15,7 +15,6 @@ import SafeAreaView from '../../../containers/SafeAreaView';
 import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../utils/goRoom';
 import * as HeaderButton from '../../../containers/HeaderButton';
-import RocketChat from '../../../lib/rocketchat';
 import { events, logEvent } from '../../../utils/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 import { IOmnichannelRoom, IApplicationState } from '../../../definitions';
@@ -23,6 +22,7 @@ import { DisplayMode, MAX_SIDEBAR_WIDTH, themes } from '../../../lib/constants';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { TSettingsValues } from '../../../reducers/settings';
+import { getRoomAvatar, getRoomTitle, getUidDirectMessage } from '../../../lib/methods';
 
 interface INavigationOptions {
 	isMasterDetail: boolean;
@@ -98,12 +98,6 @@ class QueueListView extends React.Component<IQueueListView, any> {
 		});
 	};
 
-	getRoomTitle = (item: IOmnichannelRoom) => RocketChat.getRoomTitle(item);
-
-	getRoomAvatar = (item: IOmnichannelRoom) => RocketChat.getRoomAvatar(item);
-
-	getUidDirectMessage = (room: IOmnichannelRoom) => RocketChat.getUidDirectMessage(room);
-
 	renderItem: ListRenderItem<IOmnichannelRoom> = ({ item }) => {
 		const {
 			user: { id: userId, username, token },
@@ -115,7 +109,7 @@ class QueueListView extends React.Component<IQueueListView, any> {
 			showAvatar,
 			displayMode
 		} = this.props;
-		const id = this.getUidDirectMessage(item);
+		const id = getUidDirectMessage(item);
 
 		return (
 			<RoomItem
@@ -131,8 +125,8 @@ class QueueListView extends React.Component<IQueueListView, any> {
 				testID={`queue-list-view-item-${item.name}`}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				useRealName={useRealName}
-				getRoomTitle={this.getRoomTitle}
-				getRoomAvatar={this.getRoomAvatar}
+				getRoomTitle={getRoomTitle}
+				getRoomAvatar={getRoomAvatar}
 				visitor={item.v}
 				swipeEnabled={false}
 				showAvatar={showAvatar}

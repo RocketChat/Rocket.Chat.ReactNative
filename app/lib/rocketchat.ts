@@ -1,10 +1,16 @@
-// Spread Methods
-import * as helpers from './methods/helpers';
-import * as setUser from './methods/setUser';
+import { _setUser } from './methods/setUser';
+import { logout } from './methods/logout';
+import { subscribeRooms, unsubscribeRooms } from './methods/subscribeRooms';
+import { subscribeUsersPresence } from './methods/getUsersPresence';
+import { connect } from './services/connect';
 
 const RocketChat = {
-	...helpers,
-	...setUser // this
+	logout,
+	subscribeRooms,
+	unsubscribeRooms,
+	_setUser,
+	subscribeUsersPresence,
+	connect
 };
 
 export default RocketChat;

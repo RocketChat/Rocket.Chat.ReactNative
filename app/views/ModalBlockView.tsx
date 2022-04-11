@@ -10,13 +10,12 @@ import EventEmitter from '../utils/events';
 import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
-import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/navigation/appNavigation';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
-import { triggerCancel, triggerSubmitView } from '../lib/methods';
+import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods';
 
 const styles = StyleSheet.create({
 	container: {
@@ -231,7 +230,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 	action = async ({ actionId, value, blockId }: IActions) => {
 		const { data } = this.state;
 		const { mid, appId, viewId } = data;
-		await RocketChat.triggerBlockAction({
+		await triggerBlockAction({
 			container: {
 				type: ContainerTypes.VIEW,
 				id: viewId

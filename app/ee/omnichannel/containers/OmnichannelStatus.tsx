@@ -6,10 +6,10 @@ import styles from '../../../views/RoomsListView/styles';
 import { SWITCH_TRACK_COLOR, themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import UnreadBadge from '../../../presentation/UnreadBadge';
-import RocketChat from '../../../lib/rocketchat';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../lib';
 import { IUser } from '../../../definitions/IUser';
 import Touch from '../../../utils/touch';
+import { isOmnichannelModuleAvailable } from '../../../lib/methods';
 
 interface IOmnichannelStatus {
 	searching: boolean;
@@ -20,7 +20,7 @@ interface IOmnichannelStatus {
 }
 
 const OmnichannelStatus = memo(({ searching, goQueue, queueSize, inquiryEnabled, user }: IOmnichannelStatus) => {
-	if (searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
+	if (searching || !(isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
 		return null;
 	}
 	const { theme } = useTheme();

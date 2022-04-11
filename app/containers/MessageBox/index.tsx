@@ -11,7 +11,6 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { generateTriggerId } from '../../lib/methods/actions';
 import TextInput, { IThemedTextInput } from '../../presentation/TextInput';
 import { userTyping as userTypingAction } from '../../actions/room';
-import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
 import { emojis } from '../../emojis';
@@ -52,8 +51,8 @@ import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
 import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { getPermalinkMessage, search, sendFileMessage } from '../../lib/methods';
-import { executeCommandPreview } from '../../lib/services';
+import { getPermalinkMessage, hasPermission, search, sendFileMessage } from '../../lib/methods';
+import { executeCommandPreview, getCommandPreview, getListCannedResponse, runSlashCommand } from '../../lib/services';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -409,7 +408,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			return;
 		}
 
-		const permissionToUpload = await RocketChat.hasPermission([uploadFilePermission], rid);
+		const permissionToUpload = await hasPermission([uploadFilePermission], rid);
 		this.setState({ permissionToUpload: permissionToUpload[0] });
 	};
 
@@ -605,7 +604,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}, 300);
 
 	getCannedResponses = debounce(async (text?: string) => {
-		const res = await RocketChat.getListCannedResponse({ text });
+		const res = await getListCannedResponse({ text });
 		this.setState({ mentions: res.success ? res.cannedResponses : [], mentionLoading: false });
 	}, 500);
 
@@ -642,7 +641,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	setCommandPreview = async (command: any, name: string, params: string) => {
 		const { rid } = this.props;
 		try {
-			const response = await RocketChat.getCommandPreview(name, rid, params);
+			const response = await getCommandPreview(name, rid, params);
 			if (response.success) {
 				return this.setState({ commandPreview: response.preview?.items || [], showCommandPreview: true, command });
 			}
@@ -889,7 +888,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					await RocketChat.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
+					await runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
 					replyCancel();
 				} catch (e) {
 					logEvent(events.COMMAND_RUN_F);

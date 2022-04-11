@@ -12,6 +12,7 @@ import { ICertificate, IRocketChat } from '../../definitions';
 import sdk from '../services/sdk';
 import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants';
 import UserPreferences from './userPreferences';
+import { removePushToken } from '../services';
 
 function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
@@ -109,7 +110,7 @@ export async function logout(this: IRocketChat, { server }: { server: string }):
 	}
 
 	try {
-		await this.removePushToken();
+		await removePushToken();
 	} catch (e) {
 		log(e);
 	}

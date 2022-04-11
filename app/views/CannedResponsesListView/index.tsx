@@ -14,7 +14,6 @@ import SearchHeader from '../../containers/SearchHeader';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { getHeaderTitlePosition } from '../../containers/Header';
 import { useTheme } from '../../theme';
-import RocketChat from '../../lib/rocketchat';
 import debounce from '../../utils/debounce';
 import Navigation from '../../lib/navigation/appNavigation';
 import { goRoom } from '../../utils/goRoom';
@@ -29,6 +28,8 @@ import styles from './styles';
 import { ICannedResponse, IDepartment } from '../../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../../stacks/types';
 import { ISubscription } from '../../definitions/ISubscription';
+import { getRoomTitle, getUidDirectMessage } from '../../lib/methods';
+import { getDepartments, getListCannedResponse } from '../../lib/services';
 
 const COUNT = 25;
 
@@ -89,9 +90,9 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	};
 
-	const getDepartments = debounce(async () => {
+	const handleGetDepartments = debounce(async () => {
 		try {
-			const res: any = await RocketChat.getDepartments();
+			const res: any = await getDepartments();
 			if (res.success) {
 				setDepartments([...fixedScopes, ...res.departments]);
 			}
@@ -114,12 +115,12 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		const { name } = room;
 		const params = {
 			rid: room.rid,
-			name: RocketChat.getRoomTitle({
+			name: getRoomTitle({
 				t: room.t,
 				fname: name
 			}),
 			t: room.t as any,
-			roomUserId: RocketChat.getUidDirectMessage(room),
+			roomUserId: getUidDirectMessage(room),
 			usedCannedResponse: item.text
 		};
 
@@ -139,7 +140,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	};
 
-	const getListCannedResponse = async ({
+	const handleGetListCannedResponse = async ({
 		text,
 		department,
 		depId,
@@ -151,7 +152,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		debounced: boolean;
 	}) => {
 		try {
-			const res = await RocketChat.getListCannedResponse({
+			const res = await getListCannedResponse({
 				text,
 				offset,
 				count: COUNT,
@@ -190,15 +191,15 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const searchCallback = useCallback(
 		debounce(async (text = '', department = '', depId = '') => {
-			await getListCannedResponse({ text, department, depId, debounced: true });
+			await handleGetListCannedResponse({ text, department, depId, debounced: true });
 		}, 1000),
 		[]
 	); // use debounce with useCallback https://stackoverflow.com/a/58594890
 
 	useEffect(() => {
 		getRoomFromDb();
-		getDepartments();
-		getListCannedResponse({ text: '', department: '', depId: '', debounced: false });
+		handleGetDepartments();
+		handleGetListCannedResponse({ text: '', department: '', depId: '', debounced: false });
 	}, []);
 
 	const newSearch = () => {
