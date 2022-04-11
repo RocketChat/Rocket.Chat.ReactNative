@@ -120,8 +120,6 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 			subtitle = subtitleProp;
 		}
 
-		const sourceT = sourceType ? { ...sourceType, connected } : undefined;
-
 		return (
 			<RoomHeader
 				prid={prid}
@@ -138,7 +136,7 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 				isGroupChat={isGroupChat}
 				testID={testID}
 				onPress={onPress}
-				sourceType={sourceT}
+				sourceType={sourceType}
 			/>
 		);
 	}
