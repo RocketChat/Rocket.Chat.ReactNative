@@ -32,7 +32,7 @@ import {
 	isOmnichannelModuleAvailable,
 	subscribeSettings
 } from '../lib/methods';
-import { login, loginWithPassword } from '../lib/services';
+import { login, loginWithPassword, registerPushToken } from '../lib/services';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => loginWithPassword(args);
@@ -88,36 +88,36 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 	}
 };
 
-const subscribeSetting = function* subscribeSetting() {
+const subscribeSettingsFork = function* subscribeSettingsFork() {
 	yield subscribeSettings();
 };
 
-const fetchPermissions = function* fetchPermissions() {
+const fetchPermissionsFork = function* fetchPermissionsFork() {
 	yield getPermissions();
 };
 
-const fetchCustomEmojis = function* fetchCustomEmojis() {
+const fetchCustomEmojisFork = function* fetchCustomEmojisFork() {
 	yield getCustomEmojis();
 };
 
-const fetchRoles = function* fetchRoles() {
+const fetchRolesFork = function* fetchRolesFork() {
 	sdk.subscribe('stream-roles', 'roles');
 	yield getRoles();
 };
 
-const fetchSlashCommands = function* fetchSlashCommands() {
+const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 	yield getSlashCommands();
 };
 
-const registerPushToken = function* registerPushToken() {
+const registerPushTokenFork = function* registerPushTokenFork() {
 	yield registerPushToken();
 };
 
-const fetchUsersPresence = function* fetchUserPresence() {
+const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
 	RocketChat.subscribeUsersPresence();
 };
 
-const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
+const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {
 	yield getEnterpriseModules();
 
 	if (isOmnichannelStatusAvailable(user) && isOmnichannelModuleAvailable()) {
@@ -125,7 +125,7 @@ const fetchEnterpriseModules = function* fetchEnterpriseModules({ user }) {
 	}
 };
 
-const fetchRooms = function* fetchRooms() {
+const fetchRoomsFork = function* fetchRoomsFork() {
 	yield put(roomsRequest());
 };
 
@@ -134,15 +134,15 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		getUserPresence(user.id);
 
 		const server = yield select(getServer);
-		yield fork(fetchRooms);
-		yield fork(fetchPermissions);
-		yield fork(fetchCustomEmojis);
-		yield fork(fetchRoles);
-		yield fork(fetchSlashCommands);
-		yield fork(registerPushToken);
-		yield fork(fetchUsersPresence);
-		yield fork(fetchEnterpriseModules, { user });
-		yield fork(subscribeSetting);
+		yield fork(fetchRoomsFork);
+		yield fork(fetchPermissionsFork);
+		yield fork(fetchCustomEmojisFork);
+		yield fork(fetchRolesFork);
+		yield fork(fetchSlashCommandsFork);
+		yield fork(registerPushTokenFork);
+		yield fork(fetchUsersPresenceFork);
+		yield fork(fetchEnterpriseModulesFork, { user });
+		yield fork(subscribeSettingsFork);
 		yield put(encryptionInit());
 
 		setLanguage(user?.language);
