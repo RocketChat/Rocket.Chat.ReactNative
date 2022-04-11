@@ -242,7 +242,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			return;
 		}
 		setLoading(true);
-		await getListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
+		await handleGetListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
 	};
 
 	const getHeader = (): StackNavigationOptions => {

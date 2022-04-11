@@ -1,11 +1,12 @@
 import { defaultSettings } from '../constants';
 
-export function parseSettings(settings) {
-	return settings.reduce((ret, item) => {
+export function parseSettings(settings: any) {
+	return settings.reduce((ret: any, item: any) => {
+		// @ts-ignore
 		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
 		if (item._id === 'Hide_System_Messages') {
 			ret[item._id] = ret[item._id].reduce(
-				(array, value) => [...array, ...(value === 'mute_unmute' ? ['user-muted', 'user-unmuted'] : [value])],
+				(array: any, value: any) => [...array, ...(value === 'mute_unmute' ? ['user-muted', 'user-unmuted'] : [value])],
 				[]
 			);
 		}
@@ -13,8 +14,9 @@ export function parseSettings(settings) {
 	});
 }
 
-export function _prepareSettings(settings) {
-	return settings.map(setting => {
+export function _prepareSettings(settings: any) {
+	return settings.map((setting: any) => {
+		// @ts-ignore
 		setting[defaultSettings[setting._id].type] = setting.value;
 		return setting;
 	});

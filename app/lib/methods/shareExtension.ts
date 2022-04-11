@@ -11,8 +11,8 @@ import { store } from '../store/auxStore';
 import sdk from '../services/sdk';
 import { CERTIFICATE_KEY, TOKEN_KEY } from '../constants';
 import { setCustomEmojis } from './getCustomEmojis';
-import { parseSettings } from './helpers';
 import { login } from '../services';
+import { parseSettings } from './parseSettings';
 
 export async function shareExtensionInit(server: string) {
 	database.setShareDB(server);
