@@ -8,7 +8,7 @@ import { toMomentLocale } from '../utils/moment';
 import { isRTL } from './isRTL';
 import englishJson from './locales/en.json';
 
-type TJson = keyof typeof englishJson;
+type TTranslatedKeys = keyof typeof englishJson;
 
 export { isRTL };
 
@@ -128,15 +128,16 @@ const defaultLanguage = { languageTag: 'en', isRTL: false };
 const availableLanguages = Object.keys(translations);
 const { languageTag } = RNLocalize.findBestAvailableLanguage(availableLanguages) || defaultLanguage;
 
+// @ts-ignore
+i18n.isTranslated = (text?: string) => text in englishJson;
+
 setLanguage(languageTag);
 i18n.fallbacks = true;
 
 type Ti18n = {
 	isRTL: boolean;
-	t(scope: TJson, options?: any): string;
-	// en will be always have the object from JSON, because it is insert in translations at line 126
-	// we can use i18n.translations.en['string'] to check if there is the key in our default json
-	translations: { en: { [locale: string]: string }; [locale: string]: object };
+	t(scope: TTranslatedKeys, options?: any): string;
+	isTranslated: (text?: string) => boolean;
 } & typeof i18n;
 
 export default i18n as Ti18n;
