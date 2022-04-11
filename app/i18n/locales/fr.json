@@ -597,6 +597,7 @@
   "you": "vous",
   "You": "Vous",
   "Logged_out_by_server": "Vous avez été déconnecté du serveur. Veuillez vous reconnecter.",
+  "Token_expired": "Votre session a expiré. Veuillez vous reconnecter.",
   "You_need_to_access_at_least_one_RocketChat_server_to_share_something": "Vous devez accéder à au moins un serveur Rocket.Chat pour partager quelque chose.",
   "You_need_to_verifiy_your_email_address_to_get_notications": "Vous devez vérifier votre adresse e-mail pour recevoir des notifications",
   "Your_certificate": "Votre certificat",
