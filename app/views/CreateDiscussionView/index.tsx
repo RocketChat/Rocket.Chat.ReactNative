@@ -137,8 +137,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	get isEncryptionEnabled() {
 		const { channel } = this.state;
 		const { encryptionEnabled } = this.props;
-		// TODO: remove this ts-ignore when migrate the file: app/lib/encryption/constants.js
-		// @ts-ignore
 		return encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 	}
 

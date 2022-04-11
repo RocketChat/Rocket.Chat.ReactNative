@@ -18,7 +18,7 @@ import I18n from '../../i18n';
 import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import UserItem from '../../presentation/UserItem';
+import UserItem from '../../containers/UserItem';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { withTheme } from '../../theme';

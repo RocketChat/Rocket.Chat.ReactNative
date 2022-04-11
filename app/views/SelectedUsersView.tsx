@@ -16,7 +16,7 @@ import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IBaseScreen, ISubscription, IUser } from '../definitions';
 import I18n from '../i18n';
 import database from '../lib/database';
-import UserItem from '../presentation/UserItem';
+import UserItem from '../containers/UserItem';
 import { ISelectedUser } from '../reducers/selectedUsers';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
