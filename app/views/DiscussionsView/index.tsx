@@ -130,8 +130,6 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 			),
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
-			// TODO: Review because @types/react-native was upgraded
-			// @ts-ignore
 			headerTitleContainerStyle: {
 				left: 0,
 				right: 0

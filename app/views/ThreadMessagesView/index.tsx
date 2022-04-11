@@ -158,8 +158,6 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			),
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Threads'),
-			// TODO: Review because @types/react-native was upgraded
-			// @ts-ignore
 			headerTitleContainerStyle: {
 				left: 0,
 				right: 0
