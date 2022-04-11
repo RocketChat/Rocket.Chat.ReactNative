@@ -8,7 +8,6 @@ import styles from './styles';
 interface IWrapper {
 	accessibilityLabel: string;
 	avatar: string;
-	avatarSize: number;
 	type: string;
 	theme: string;
 	rid: string;

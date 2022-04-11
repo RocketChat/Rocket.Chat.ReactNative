@@ -15,7 +15,6 @@ interface IRoomItemContainerProps {
 	onPress: Function;
 	onLongPress: Function;
 	username: string;
-	avatarSize: number;
 	width: number;
 	status: TUserStatus;
 	toggleFav(): void;
@@ -55,7 +54,6 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 	private roomSubscription: any;
 
 	static defaultProps: Partial<IRoomItemContainerProps> = {
-		avatarSize: 48,
 		status: 'offline',
 		getUserPresence: () => {},
 		getRoomTitle: () => 'title',
@@ -144,7 +142,6 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 			hideChannel,
 			theme,
 			isFocused,
-			avatarSize,
 			status,
 			showLastMessage,
 			username,
@@ -197,7 +194,6 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				type={item.t}
 				theme={theme}
 				isFocused={isFocused}
-				size={avatarSize}
 				prid={item.prid}
 				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}

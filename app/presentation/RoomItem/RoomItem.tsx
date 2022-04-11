@@ -22,7 +22,6 @@ interface IRoomItem {
 	avatar: string;
 	showLastMessage: boolean;
 	username: string;
-	avatarSize: number;
 	testID: string;
 	width: number;
 	status: TUserStatus;
@@ -58,7 +57,6 @@ interface IRoomItem {
 	onLongPress(): void;
 	hideChannel(): void;
 	autoJoin: boolean;
-	size?: number;
 	showAvatar: boolean;
 	displayMode: string;
 }
@@ -70,7 +68,6 @@ const RoomItem = ({
 	name,
 	avatar,
 	width,
-	avatarSize = 48,
 	username,
 	showLastMessage,
 	status = 'offline',
@@ -122,7 +119,6 @@ const RoomItem = ({
 		<Wrapper
 			accessibilityLabel={accessibilityLabel}
 			avatar={avatar}
-			avatarSize={avatarSize}
 			type={type}
 			theme={theme}
 			rid={rid}
