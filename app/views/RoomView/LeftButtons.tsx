@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { HeaderBackButton, StackNavigationProp } from '@react-navigation/stack';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import Avatar from '../../containers/Avatar';
 import { ChatsStackParamList } from '../../stacks/types';
 
@@ -40,6 +40,8 @@ const LeftButtons = ({
 	goRoomActionsView,
 	isMasterDetail
 }: ILeftButtonsProps): React.ReactElement | null => {
+	const onPress = useCallback(() => goRoomActionsView(), []);
+
 	if (!isMasterDetail || tmid) {
 		const onPress = () => navigation.goBack();
 		let label = ' ';
@@ -61,7 +63,6 @@ const LeftButtons = ({
 			/>
 		);
 	}
-	const onPress = useCallback(() => goRoomActionsView(), []);
 
 	if (baseUrl && userId && token) {
 		return <Avatar text={title} size={30} type={t} style={styles.avatar} onPress={onPress} />;

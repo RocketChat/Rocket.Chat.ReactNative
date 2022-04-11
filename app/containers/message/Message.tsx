@@ -17,7 +17,7 @@ import Discussion from './Discussion';
 import Content from './Content';
 import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 
@@ -110,6 +110,9 @@ const Message = React.memo((props: IMessage) => {
 Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
+	const { onPress, onLongPress } = useContext(MessageContext);
+	const { theme } = useTheme();
+
 	if (props.hasError) {
 		return (
 			<View>
@@ -117,8 +120,6 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			</View>
 		);
 	}
-	const { onPress, onLongPress } = useContext(MessageContext);
-	const { theme } = useTheme();
 
 	return (
 		<Touchable

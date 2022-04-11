@@ -7,7 +7,7 @@ import { dequal } from 'dequal';
 import Touchable from './Touchable';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useTheme, withTheme } from '../../theme';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
@@ -53,10 +53,12 @@ const styles = StyleSheet.create({
 
 const UrlImage = React.memo(
 	({ image }: { image: string }) => {
+		const { baseUrl, user } = useContext(MessageContext);
+
 		if (!image) {
 			return null;
 		}
-		const { baseUrl, user } = useContext(MessageContext);
+
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
 		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
 	},

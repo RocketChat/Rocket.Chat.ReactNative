@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { ISearchLocal } from '../../definitions';
 import I18n from '../../i18n';
@@ -54,7 +54,7 @@ const SelectChannel = ({
 				value={initial && [initial]}
 				disabled={!!initial}
 				options={channels.map(channel => ({
-					value: channel.name || channel.fname,
+					value: channel,
 					text: { text: RocketChat.getRoomTitle(channel) },
 					imageUrl: getAvatar(channel)
 				}))}

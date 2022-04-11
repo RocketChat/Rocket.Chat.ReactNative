@@ -5,7 +5,7 @@ import { INVITE_LINKS } from '../actions/actionsTypes';
 import { inviteLinksFailure, inviteLinksSetInvite, inviteLinksSuccess } from '../actions/inviteLinks';
 import RocketChat from '../lib/rocketchat';
 import log from '../utils/log';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import I18n from '../i18n';
 
 const handleRequest = function* handleRequest({ token }) {
@@ -16,7 +16,7 @@ const handleRequest = function* handleRequest({ token }) {
 			return;
 		}
 
-		const result = yield RocketChat.useInviteToken(token);
+		const result = yield RocketChat.inviteToken(token);
 		if (!result.success) {
 			yield put(inviteLinksFailure());
 			return;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { Heading as HeadingProps } from '@rocket.chat/message-parser';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 

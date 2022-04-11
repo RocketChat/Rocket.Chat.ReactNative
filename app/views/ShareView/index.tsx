@@ -7,7 +7,7 @@ import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
 
 import { InsideStackParamList } from '../../stacks/types';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import Loading from '../../containers/Loading';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -180,7 +180,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 				// Set a filename, if there isn't any
 				if (!item.filename) {
-					item.filename = new Date().toISOString();
+					item.filename = `${new Date().toISOString()}.jpg`;
 				}
 				return item;
 			})

@@ -4,7 +4,7 @@ import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withActionSheet } from '../../containers/ActionSheet';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -19,7 +19,7 @@ import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import RocketChat from '../../lib/rocketchat';
-import UserItem from '../../presentation/UserItem';
+import UserItem from '../../containers/UserItem';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { withTheme } from '../../theme';

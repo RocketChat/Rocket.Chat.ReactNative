@@ -6,8 +6,7 @@ import Touchable from './Touchable';
 import Markdown from '../markdown';
 import { isIOS } from '../../utils/deviceInfo';
 import { CustomIcon } from '../../lib/Icons';
-import { formatAttachmentUrl } from '../../lib/utils';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { fileDownload } from '../../utils/fileDownload';
 import EventEmitter from '../../utils/events';
@@ -17,6 +16,7 @@ import { IAttachment } from '../../definitions/IAttachment';
 import RCActivityIndicator from '../ActivityIndicator';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { useTheme } from '../../theme';
+import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;

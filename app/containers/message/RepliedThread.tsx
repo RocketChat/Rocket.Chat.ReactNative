@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import { MarkdownPreview } from '../markdown';
 import { IMessageRepliedThread } from './interfaces';
@@ -11,22 +11,22 @@ import { useTheme } from '../../theme';
 
 const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted }: IMessageRepliedThread) => {
 	const { theme } = useTheme();
-
-	if (!tmid || !isHeader) {
-		return null;
-	}
-
 	const [msg, setMsg] = useState(isEncrypted ? I18n.t('Encrypted_message') : tmsg);
-	const fetch = async () => {
-		const threadName = fetchThreadName ? await fetchThreadName(tmid, id) : '';
-		setMsg(threadName);
-	};
 
 	useEffect(() => {
 		if (!msg) {
 			fetch();
 		}
 	}, []);
+
+	if (!tmid || !isHeader) {
+		return null;
+	}
+
+	const fetch = async () => {
+		const threadName = fetchThreadName ? await fetchThreadName(tmid, id) : '';
+		setMsg(threadName);
+	};
 
 	if (!msg) {
 		return null;

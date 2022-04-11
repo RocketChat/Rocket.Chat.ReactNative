@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { IInput } from './interfaces';
 
 const styles = StyleSheet.create({
