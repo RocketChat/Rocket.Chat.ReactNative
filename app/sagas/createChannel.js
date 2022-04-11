@@ -2,14 +2,14 @@ import { call, put, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { CREATE_CHANNEL, LOGIN } from '../actions/actionsTypes';
-import { createChannelFailure, createChannelRequest, createChannelSuccess } from '../actions/createChannel';
+import { createChannelFailure, createChannelSuccess } from '../actions/createChannel';
 import { showErrorAlert } from '../utils/info';
 import Navigation from '../lib/navigation/appNavigation';
 import database from '../lib/database';
 import I18n from '../i18n';
 import { events, logEvent } from '../utils/log';
 import { goRoom } from '../utils/goRoom';
-import { createGroupChat, createTeam } from '../lib/services';
+import { createChannel, createGroupChat, createTeam } from '../lib/services';
 
 const handleRequest = function* handleRequest({ data }) {
 	try {
@@ -50,7 +50,7 @@ const handleRequest = function* handleRequest({ data }) {
 				broadcast,
 				encrypted
 			});
-			const result = yield createChannelRequest(data);
+			const result = yield createChannel(data);
 			sub = {
 				rid: result?.channel?._id || result?.group?._id,
 				...result?.channel,
