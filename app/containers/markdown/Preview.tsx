@@ -3,7 +3,7 @@ import { Text, TextStyle } from 'react-native';
 import removeMarkdown from 'remove-markdown';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { formatText } from './formatText';
 import { useTheme } from '../../theme';
 import styles from './styles';
@@ -17,11 +17,11 @@ interface IMarkdownPreview {
 }
 
 const MarkdownPreview = ({ msg, numberOfLines = 1, testID, style = [] }: IMarkdownPreview) => {
+	const { theme } = useTheme();
+
 	if (!msg) {
 		return null;
 	}
-
-	const { theme } = useTheme();
 
 	let m = formatText(msg);
 	m = formatHyperlink(m);

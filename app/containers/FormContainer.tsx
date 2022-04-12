@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, ScrollViewProps, StyleSheet, View } from 'react-native';
 
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import KeyboardView from '../presentation/KeyboardView';

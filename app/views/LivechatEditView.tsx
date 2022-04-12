@@ -5,8 +5,8 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { TSupportedThemes, withTheme } from '../theme';
+import { themes } from '../lib/constants';
 import TextInput from '../containers/TextInput';
 import KeyboardView from '../presentation/KeyboardView';
 import RocketChat from '../lib/rocketchat';
@@ -47,7 +47,7 @@ interface ILivechatEditViewProps {
 	user: any;
 	navigation: StackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
 	route: RouteProp<ChatsStackParamList, 'LivechatEditView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	editOmnichannelContact: string[] | undefined;
 	editLivechatRoomCustomfields: string[] | undefined;
 }

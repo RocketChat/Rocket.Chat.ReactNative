@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { loginRequest } from '../actions/login';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
@@ -17,7 +17,7 @@ import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
 import KeyboardView from '../presentation/KeyboardView';
 import { getUserSelector } from '../selectors/login';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { isTablet } from '../utils/deviceInfo';
 import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -41,7 +41,7 @@ interface ISetUsernameViewProps {
 	server: string;
 	userId: string;
 	token: string;
-	theme: string;
+	theme: TSupportedThemes;
 	dispatch: Dispatch;
 }
 

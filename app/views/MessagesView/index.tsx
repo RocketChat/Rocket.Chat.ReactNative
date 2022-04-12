@@ -12,8 +12,8 @@ import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -22,6 +22,8 @@ import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 import { IEmoji } from '../../definitions/IEmoji';
+import { IRoomInfoParam } from '../SearchMessagesView';
+import { TMessageModel } from '../../definitions';
 
 interface IMessagesViewProps {
 	user: {
@@ -36,18 +38,10 @@ interface IMessagesViewProps {
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 	customEmojis: { [key: string]: IEmoji };
-	theme: string;
+	theme: TSupportedThemes;
 	showActionSheet: Function;
 	useRealName: boolean;
 	isMasterDetail: boolean;
-}
-
-interface IRoomInfoParam {
-	room: ISubscription;
-	member: any;
-	rid: string;
-	t: SubscriptionType;
-	joined: boolean;
 }
 
 interface IMessagesViewState {
@@ -79,7 +73,7 @@ interface IParams {
 	rid: string;
 	t: SubscriptionType;
 	tmid?: string;
-	message?: object;
+	message?: TMessageModel;
 	name?: string;
 	fname?: string;
 	prid?: string;
@@ -187,7 +181,8 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 			showAttachment: this.showAttachment,
 			getCustomEmoji: this.getCustomEmoji,
 			navToRoomInfo: this.navToRoomInfo,
-			onPress: () => this.jumpToMessage({ item })
+			onPress: () => this.jumpToMessage({ item }),
+			rid: this.rid
 		});
 
 		return {
@@ -206,6 +201,7 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 				renderItem: (item: any) => (
 					<Message
 						{...renderItemCommonProps(item)}
+						theme={theme}
 						item={{
 							...item,
 							u: item.user,
@@ -218,7 +214,6 @@ class MessagesView extends React.Component<IMessagesViewProps, any> {
 								}
 							]
 						}}
-						theme={theme}
 					/>
 				)
 			},

@@ -2,19 +2,22 @@ import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
 import { IMessageThread } from './interfaces';
+import { useTheme } from '../../theme';
 
 const Thread = React.memo(
-	({ msg, tcount, tlm, isThreadRoom, theme, id }: IMessageThread) => {
+	({ msg, tcount, tlm, isThreadRoom, id }: IMessageThread) => {
+		const { theme } = useTheme();
+		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
+
 		if (!tlm || isThreadRoom || tcount === 0) {
 			return null;
 		}
 
-		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
 		return (
 			<View style={styles.buttonContainer}>
 				<View style={[styles.button, { backgroundColor: themes[theme].tintColor }]} testID={`message-thread-button-${msg}`}>
@@ -36,9 +39,6 @@ const Thread = React.memo(
 	},
 	(prevProps, nextProps) => {
 		if (prevProps.tcount !== nextProps.tcount) {
-			return false;
-		}
-		if (prevProps.theme !== nextProps.theme) {
 			return false;
 		}
 		return true;

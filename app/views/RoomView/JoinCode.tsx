@@ -8,8 +8,9 @@ import Button from '../../containers/Button';
 import TextInput from '../../containers/TextInput';
 import RocketChat from '../../lib/rocketchat';
 import sharedStyles from '../Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { IApplicationState } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -46,7 +47,7 @@ export interface IJoinCodeProps {
 	t: string;
 	onJoin: Function;
 	isMasterDetail: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const JoinCode = React.memo(

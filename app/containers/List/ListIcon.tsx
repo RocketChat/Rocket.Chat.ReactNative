@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { CustomIcon } from '../../lib/Icons';
 import { useTheme } from '../../theme';
 import { ICON_SIZE } from './constants';
 
 interface IListIcon {
 	name: string;
-	color?: string;
+	color?: string | null;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 }

@@ -3,8 +3,9 @@ import { Text } from 'react-native';
 
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import styles from './styles';
+import { TSupportedThemes } from '../../theme';
 
 interface IEmoji {
 	literal: string;
@@ -13,7 +14,7 @@ interface IEmoji {
 	baseUrl: string;
 	customEmojis?: any;
 	style?: object;
-	theme: string;
+	theme: TSupportedThemes;
 	onEmojiSelected?: Function;
 	tabEmojiStyle?: object;
 }

@@ -5,13 +5,13 @@ import { RouteProp } from '@react-navigation/native';
 
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
-import { themes } from '../constants/colors';
-import { withTheme } from '../theme';
+import { themes } from '../lib/constants';
+import { TSupportedThemes, withTheme } from '../theme';
 import { ChatsStackParamList } from '../stacks/types';
 
 interface IMarkdownTableViewProps {
 	route: RouteProp<ChatsStackParamList, 'MarkdownTableView'>;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class MarkdownTableView extends React.Component<IMarkdownTableViewProps> {

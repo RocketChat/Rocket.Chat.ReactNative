@@ -8,29 +8,24 @@ import * as Progress from 'react-native-progress';
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import styles from './styles';
-import { formatAttachmentUrl } from '../../lib/utils';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { useTheme } from '../../theme';
 import { IAttachment } from '../../definitions';
+import { TSupportedThemes, useTheme } from '../../theme';
+import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 
-type TMessageButton = {
-	children: JSX.Element;
+interface IMessageButton {
+	children: React.ReactElement;
 	disabled?: boolean;
-	onPress: Function;
-	theme: string;
-};
-
-type TMessageImage = {
-	img: string;
-	theme: string;
-};
+	onPress: () => void;
+	theme: TSupportedThemes;
+}
 
 interface IMessageImage {
 	file: IAttachment;
 	imageUrl?: string;
-	showAttachment?: Function;
+	showAttachment?: (file: IAttachment) => void;
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;
 	getCustomEmoji?: TGetCustomEmoji;
@@ -38,7 +33,7 @@ interface IMessageImage {
 
 const ImageProgress = createImageProgress(FastImage);
 
-const Button = React.memo(({ children, onPress, disabled, theme }: TMessageButton) => (
+const Button = React.memo(({ children, onPress, disabled, theme }: IMessageButton) => (
 	<Touchable
 		disabled={disabled}
 		onPress={onPress}
@@ -48,10 +43,10 @@ const Button = React.memo(({ children, onPress, disabled, theme }: TMessageButto
 	</Touchable>
 ));
 
-export const MessageImage = React.memo(({ img, theme }: TMessageImage) => (
+export const MessageImage = React.memo(({ imgUri, theme }: { imgUri: string; theme: TSupportedThemes }) => (
 	<ImageProgress
 		style={[styles.image, { borderColor: themes[theme].borderColor }]}
-		source={{ uri: encodeURI(img) }}
+		source={{ uri: encodeURI(imgUri) }}
 		resizeMode={FastImage.resizeMode.cover}
 		indicator={Progress.Pie}
 		indicatorProps={{
@@ -65,6 +60,7 @@ const ImageContainer = React.memo(
 		const { theme } = useTheme();
 		const { baseUrl, user } = useContext(MessageContext);
 		const img = imageUrl || formatAttachmentUrl(file.image_url, user.id, user.token, baseUrl);
+
 		if (!img) {
 			return null;
 		}
@@ -89,7 +85,7 @@ const ImageContainer = React.memo(
 							getCustomEmoji={getCustomEmoji}
 							theme={theme}
 						/>
-						<MessageImage img={img} theme={theme} />
+						<MessageImage imgUri={img} theme={theme} />
 					</View>
 				</Button>
 			);
@@ -97,7 +93,7 @@ const ImageContainer = React.memo(
 
 		return (
 			<Button disabled={isReply} theme={theme} onPress={onPress}>
-				<MessageImage img={img} theme={theme} />
+				<MessageImage imgUri={img} theme={theme} />
 			</Button>
 		);
 	},

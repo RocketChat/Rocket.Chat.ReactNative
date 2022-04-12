@@ -2,13 +2,15 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { useTheme } from '../../theme';
 import MessageError from './MessageError';
 import sharedStyles from '../../views/Styles';
 import messageStyles from './styles';
 import MessageContext from './Context';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
+import { SubscriptionType } from '../../definitions';
+import { IRoomInfoParam } from '../../views/SearchMessagesView';
 
 const styles = StyleSheet.create({
 	container: {
@@ -49,15 +51,16 @@ interface IMessageUser {
 	alias?: string;
 	ts?: Date;
 	timeFormat?: string;
-	theme: string;
-	navToRoomInfo?: Function;
+	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
 	type: string;
 }
 
 const User = React.memo(
-	({ isHeader, useRealName, author, alias, ts, timeFormat, hasError, theme, navToRoomInfo, type, ...props }: IMessageUser) => {
+	({ isHeader, useRealName, author, alias, ts, timeFormat, hasError, navToRoomInfo, type, ...props }: IMessageUser) => {
+		const { user } = useContext(MessageContext);
+		const { theme } = useTheme();
+
 		if (isHeader || hasError) {
-			const { user } = useContext(MessageContext);
 			const username = (useRealName && author?.name) || author?.username;
 			const aliasUsername = alias ? (
 				<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>
@@ -65,8 +68,8 @@ const User = React.memo(
 			const time = moment(ts).format(timeFormat);
 			const onUserPress = () => {
 				navToRoomInfo?.({
-					t: 'd',
-					rid: author?._id
+					t: SubscriptionType.DIRECT,
+					rid: author?._id || ''
 				});
 			};
 			const isDisabled = author?._id === user.id;
@@ -83,7 +86,7 @@ const User = React.memo(
 					<Text
 						style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
 						onPress={onUserPress}
-						// @ts-ignore
+						// @ts-ignore // TODO - check this prop
 						disabled={isDisabled}>
 						{textContent}
 					</Text>
@@ -98,7 +101,7 @@ const User = React.memo(
 						</Text>
 					</TouchableOpacity>
 					<Text style={[messageStyles.time, { color: themes[theme].auxiliaryTintColor }]}>{time}</Text>
-					{hasError && <MessageError hasError={hasError} theme={theme} {...props} />}
+					{hasError ? <MessageError hasError={hasError} {...props} /> : null}
 				</View>
 			);
 		}
@@ -108,4 +111,4 @@ const User = React.memo(
 
 User.displayName = 'MessageUser';
 
-export default withTheme(User);
+export default User;

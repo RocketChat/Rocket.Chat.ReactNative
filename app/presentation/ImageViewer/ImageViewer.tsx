@@ -2,7 +2,8 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { ImageComponent } from './ImageComponent';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	scrollContent: {
@@ -19,7 +20,7 @@ interface IImageViewer {
 	imageComponentType?: string;
 	width: number;
 	height: number;
-	theme: string;
+	theme: TSupportedThemes;
 	onLoadEnd?: () => void;
 }
 

@@ -3,19 +3,19 @@ import { StyleSheet, Text } from 'react-native';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { ProfileStackParamList } from '../../stacks/types';
-import { INotificationPreferences } from '../../definitions';
+import { INotificationPreferences, IUser } from '../../definitions';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -33,10 +33,8 @@ interface IUserNotificationPreferencesViewState {
 
 interface IUserNotificationPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>;
-	theme: string;
-	user: {
-		id: string;
-	};
+	theme: TSupportedThemes;
+	user: IUser;
 }
 
 class UserNotificationPreferencesView extends React.Component<

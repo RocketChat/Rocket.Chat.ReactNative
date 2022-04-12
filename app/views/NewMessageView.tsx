@@ -6,7 +6,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { createChannelRequest } from '../actions/createChannel';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -16,10 +16,10 @@ import { IApplicationState, IBaseScreen, ISearch, TSubscriptionModel } from '../
 import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../lib/Icons';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
+import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 import RocketChat from '../lib/rocketchat';
-import { compareServerVersion } from '../lib/utils';
-import UserItem from '../presentation/UserItem';
+import UserItem from '../containers/UserItem';
 import { withTheme } from '../theme';
 import { goRoom } from '../utils/goRoom';
 import log, { events, logEvent } from '../utils/log';

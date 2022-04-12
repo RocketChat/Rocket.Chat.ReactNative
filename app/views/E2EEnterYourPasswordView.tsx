@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, Text, TextInput as RNTextInput } from 'react-na
 import { connect } from 'react-redux';
 
 import { encryptionDecodeKey } from '../actions/encryption';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import Button from '../containers/Button';
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
