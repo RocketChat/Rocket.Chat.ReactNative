@@ -10,7 +10,7 @@ import {
 
 import { INotification } from '../../definitions/INotification';
 import { isIOS } from '../../utils/deviceInfo';
-import { store as reduxStore } from '../../lib/store/auxStore';
+import { store as reduxStore } from '../store/auxStore';
 import I18n from '../../i18n';
 
 class PushNotification {
