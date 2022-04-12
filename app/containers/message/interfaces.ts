@@ -59,6 +59,7 @@ export interface IMessageContent {
 	useRealName?: boolean;
 	isIgnored: boolean;
 	type: string;
+	hasError: boolean;
 }
 
 export interface IMessageEmoji {

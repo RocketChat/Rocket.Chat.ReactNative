@@ -11,12 +11,18 @@ import MessageContext from './Context';
 import { SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME } from './utils';
 import { SubscriptionType } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import Edited from './Edited';
+import Encrypted from './Encrypted';
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		alignItems: 'center'
+	},
+	actionIcons: {
+		flexDirection: 'row',
 		alignItems: 'center'
 	},
 	username: {
@@ -41,7 +47,7 @@ const styles = StyleSheet.create({
 
 interface IMessageUser {
 	isHeader?: boolean;
-	hasError?: boolean;
+	hasError: boolean;
 	useRealName?: boolean;
 	author?: {
 		_id: string;
@@ -53,10 +59,11 @@ interface IMessageUser {
 	timeFormat?: string;
 	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
 	type: string;
+	isEdited: boolean;
 }
 
 const User = React.memo(
-	({ isHeader, useRealName, author, alias, ts, timeFormat, hasError, navToRoomInfo, type, ...props }: IMessageUser) => {
+	({ isHeader, useRealName, author, alias, ts, timeFormat, hasError, navToRoomInfo, type, isEdited, ...props }: IMessageUser) => {
 		const { user } = useContext(MessageContext);
 		const { theme } = useTheme();
 
@@ -100,8 +107,12 @@ const User = React.memo(
 							{textContent}
 						</Text>
 					</TouchableOpacity>
-					<Text style={[messageStyles.time, { color: themes[theme].auxiliaryTintColor }]}>{time}</Text>
-					{hasError ? <MessageError hasError={hasError} {...props} /> : null}
+					<View style={styles.actionIcons}>
+						<Text style={[messageStyles.time, { color: themes[theme].auxiliaryTintColor }]}>{time}</Text>
+						<Encrypted type={type} />
+						<Edited isEdited={isEdited} />
+						<MessageError hasError={hasError} {...props} />
+					</View>
 				</View>
 			);
 		}
