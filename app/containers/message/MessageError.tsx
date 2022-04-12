@@ -19,7 +19,7 @@ const MessageError = React.memo(
 
 		return (
 			<Touchable onPress={onErrorPress} style={styles.leftIcons} hitSlop={BUTTON_HIT_SLOP}>
-				<CustomIcon name='warning' color={themes[theme].dangerColor} size={18} />
+				<CustomIcon name='warning' color={themes[theme].dangerColor} size={16} />
 			</Touchable>
 		);
 	},

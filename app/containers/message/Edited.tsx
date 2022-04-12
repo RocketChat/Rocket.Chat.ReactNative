@@ -15,7 +15,7 @@ const Edited = memo(({ isEdited }: { isEdited: boolean }) => {
 
 	return (
 		<View style={styles.leftIcons}>
-			<CustomIcon name='edit' size={18} color={themes[theme].auxiliaryText} />
+			<CustomIcon name='edit' size={16} color={themes[theme].auxiliaryText} />
 		</View>
 	);
 });
