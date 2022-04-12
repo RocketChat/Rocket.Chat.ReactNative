@@ -6,7 +6,7 @@ import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
 import { formatDate } from '../../utils/room';
 import RoomItem from './RoomItem';
 import { ISubscription, TUserStatus } from '../../definitions';
-import { IRoomItemContainer } from './interfaces';
+import { IRoomItemContainerProps } from './interfaces';
 
 export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
 
@@ -23,10 +23,10 @@ const attrs = [
 	'displayMode'
 ];
 
-class RoomItemContainer extends React.Component<IRoomItemContainer, any> {
+class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 	private roomSubscription: ISubscription | undefined;
 
-	static defaultProps: Partial<IRoomItemContainer> = {
+	static defaultProps: Partial<IRoomItemContainerProps> = {
 		avatarSize: 48,
 		status: 'offline',
 		getUserPresence: () => {},
@@ -37,7 +37,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainer, any> {
 		swipeEnabled: true
 	};
 
-	constructor(props: IRoomItemContainer) {
+	constructor(props: IRoomItemContainerProps) {
 		super(props);
 		this.init();
 	}
@@ -49,12 +49,12 @@ class RoomItemContainer extends React.Component<IRoomItemContainer, any> {
 		}
 	}
 
-	shouldComponentUpdate(nextProps: IRoomItemContainer) {
+	shouldComponentUpdate(nextProps: IRoomItemContainerProps) {
 		const { props } = this;
 		return !attrs.every(key => props[key] === nextProps[key]);
 	}
 
-	componentDidUpdate(prevProps: IRoomItemContainer) {
+	componentDidUpdate(prevProps: IRoomItemContainerProps) {
 		const { connected, getUserPresence, id } = this.props;
 		if (prevProps.connected !== connected && connected && this.isDirect) {
 			getUserPresence(id);

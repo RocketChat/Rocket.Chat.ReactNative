@@ -1,3 +1,5 @@
+import { TSupportedThemes } from '../../theme';
+
 export enum ElementTypes {
 	IMAGE = 'image',
 	BUTTON = 'button',
@@ -199,7 +201,7 @@ export interface IInput extends Partial<Block> {
 	description: string;
 	error: string;
 	hint: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 export interface IInputIndex {
@@ -231,7 +233,7 @@ export interface IOverflow extends Partial<Block> {
 interface PropsOption {
 	onOptionPress: Function;
 	parser: IParser;
-	theme: string;
+	theme: TSupportedThemes;
 }
 export interface IOptions extends PropsOption {
 	options: Option[];
@@ -265,6 +267,6 @@ export interface ISection {
 
 export interface IFields {
 	parser: IParser;
-	theme: string;
+	theme: TSupportedThemes;
 	fields: any[];
 }

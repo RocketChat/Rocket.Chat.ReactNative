@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Dispatch } from 'redux';
 
-import { TColors } from '../theme';
+import { TColors, TSupportedThemes } from '../theme';
 
 export * from './IAttachment';
 export * from './INotification';
@@ -36,7 +36,7 @@ export interface IBaseScreen<T extends Record<string, object | undefined>, S ext
 	dispatch: Dispatch;
 	isMasterDetail: boolean;
 	// TODO: remove after migrating all Class components
-	theme: string;
+	theme: TSupportedThemes;
 	colors: TColors;
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-import { useTheme } from '../../theme';
+import { TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { CustomIcon } from '../../lib/Icons';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
@@ -29,12 +29,12 @@ interface THeaderItem {
 	item: TItem;
 	onReaction: TOnReaction;
 	server: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface THeaderFooter {
 	onReaction: TOnReaction;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 export const HEADER_HEIGHT = 36;

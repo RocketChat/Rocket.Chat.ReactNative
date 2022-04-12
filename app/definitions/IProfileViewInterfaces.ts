@@ -1,6 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 
+import { TSupportedThemes } from '../theme';
 import { ProfileStackParamList } from '../stacks/types';
 import { IUser } from './IUser';
 
@@ -34,7 +35,7 @@ export interface IProfileViewProps {
 	Accounts_AllowUsernameChange: boolean;
 	Accounts_CustomFields: string;
 	setUser: Function;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 export interface IAvatar {

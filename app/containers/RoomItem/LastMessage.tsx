@@ -5,9 +5,9 @@ import I18n from '../../i18n';
 import styles from './styles';
 import { MarkdownPreview } from '../markdown';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, themes } from '../../lib/constants';
-import { ILastMessageComponent } from './interfaces';
+import { ILastMessageProps } from './interfaces';
 
-const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }: Partial<ILastMessageComponent>) => {
+const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }: Partial<ILastMessageProps>) => {
 	if (!showLastMessage) {
 		return '';
 	}
@@ -47,7 +47,7 @@ const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }
 const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProps);
 
 const LastMessage = React.memo(
-	({ lastMessage, type, showLastMessage, username, alert, useRealName, theme }: ILastMessageComponent) => (
+	({ lastMessage, type, showLastMessage, username, alert, useRealName, theme }: ILastMessageProps) => (
 		<MarkdownPreview
 			msg={formatMsg({
 				lastMessage,
