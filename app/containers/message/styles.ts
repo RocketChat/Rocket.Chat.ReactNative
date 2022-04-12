@@ -170,9 +170,6 @@ export default StyleSheet.create({
 	readReceipt: {
 		lineHeight: 20
 	},
-	encrypted: {
-		justifyContent: 'center'
-	},
 	threadDetails: {
 		flex: 1,
 		marginLeft: 12

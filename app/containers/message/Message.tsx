@@ -20,6 +20,8 @@ import CallButton from './CallButton';
 import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
+import Edited from './Edited';
+import MessageError from './MessageError';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { attachments } = props;
@@ -102,6 +104,14 @@ const Message = React.memo((props: IMessage) => {
 				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 					<MessageInner {...props} />
 				</View>
+				{!props.isHeader ? (
+					<>
+						{/* TODO check the better place to have this, here or on content*/}
+						{/* <Encrypted type={props.type} />*/}
+						<Edited isEdited={props.isEdited} />
+						<MessageError hasError={props.hasError} />
+					</>
+				) : null}
 				<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} />
 			</View>
 		</View>
