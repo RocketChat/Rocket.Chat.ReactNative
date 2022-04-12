@@ -7,7 +7,7 @@ import log from '../utils/log';
 import Navigation from '../lib/navigation/appNavigation';
 import I18n from '../i18n';
 import { getRoomTitle } from '../lib/methods';
-import { findOrCreateInvite, useInviteToken, validateInviteToken } from '../lib/services';
+import { findOrCreateInvite, inviteToken, validateInviteToken } from '../lib/services';
 
 const handleRequest = function* handleRequest({ token }) {
 	try {
@@ -17,7 +17,7 @@ const handleRequest = function* handleRequest({ token }) {
 			return;
 		}
 
-		const result = yield useInviteToken(token);
+		const result = yield inviteToken(token);
 		if (!result.success) {
 			yield put(inviteLinksFailure());
 			return;
