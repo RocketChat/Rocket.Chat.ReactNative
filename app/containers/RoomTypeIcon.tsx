@@ -23,10 +23,10 @@ interface IRoomTypeIcon {
 }
 
 const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, size = 16 }: IRoomTypeIcon) => {
+	const { theme } = useTheme();
 	if (!type) {
 		return null;
 	}
-	const { theme } = useTheme();
 	const color = themes[theme].titleText;
 	const iconStyle = [styles.icon, { color }, style];
 
