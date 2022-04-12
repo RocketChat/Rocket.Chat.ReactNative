@@ -256,7 +256,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		}
 	};
 
-	handleResetAvatar = async () => {
+	resetAvatar = async () => {
 		const { Accounts_AllowUserAvatarChange } = this.props;
 
 		if (!Accounts_AllowUserAvatarChange) {
@@ -327,7 +327,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			<View style={styles.avatarButtons}>
 				{this.renderAvatarButton({
 					child: <Avatar text={`@${user.username}`} size={50} />,
-					onPress: () => this.handleResetAvatar(),
+					onPress: () => this.resetAvatar(),
 					disabled: !Accounts_AllowUserAvatarChange,
 					key: 'profile-view-reset-avatar'
 				})}
