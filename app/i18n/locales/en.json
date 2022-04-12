@@ -363,7 +363,6 @@
   "Offline": "Offline",
   "Oops": "Oops!",
   "Omnichannel": "Omnichannel",
-  "Open_Livechats": "Chats in Progress",
   "Omnichannel_enable_alert": "You're not available on Omnichannel. Would you like to be available?",
   "Onboarding_description": "A workspace is your team or organization’s space to collaborate. Ask the workspace admin for address to join or create one for your team.",
   "Onboarding_join_workspace": "Join a workspace",
@@ -810,5 +809,7 @@
   "User_joined_team": "joined this Team",
   "User_left_team": "left this Team",
   "Place_chat_on_hold": "Place chat on-hold",
-  "Do_you_want_to_put_this_chat_on_hold": "Do you want to put this chat on hold?"
+  "Do_you_want_to_put_this_chat_on_hold": "Do you want to put this chat on hold?",
+  "Open_Livechats": "Omnichannel chats in progress",
+  "On_hold_Livechats": "Omnichannel chats on hold"
 }
