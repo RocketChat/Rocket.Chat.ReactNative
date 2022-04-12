@@ -13,7 +13,7 @@ import { TEAM_TYPE } from '../../definitions/ITeam';
 import { Encryption } from '../encryption';
 import { TParams } from '../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../store/auxStore';
-import { getDeviceToken } from '../../notifications/push';
+import { getDeviceToken } from '../notifications';
 import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import { RoomTypes, roomTypeToApiType } from '../methods';
 import sdk from './sdk';

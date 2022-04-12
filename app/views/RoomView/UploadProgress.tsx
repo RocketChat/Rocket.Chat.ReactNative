@@ -9,7 +9,7 @@ import I18n from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../Styles';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { IUser, TUploadModel } from '../../definitions';
 import { cancelUpload, isUploadActive, sendFileMessage } from '../../lib/methods';
 
@@ -57,7 +57,7 @@ interface IUploadProgressProps {
 	rid: string;
 	user: Pick<IUser, 'id' | 'username' | 'token'>;
 	baseUrl: string;
-	theme?: string;
+	theme?: TSupportedThemes;
 }
 
 interface IUploadProgressState {

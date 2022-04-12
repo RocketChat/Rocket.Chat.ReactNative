@@ -21,7 +21,7 @@ import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import UserItem from '../../containers/UserItem';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import EventEmitter from '../../utils/events';
 import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
@@ -44,7 +44,7 @@ interface IRoomMembersViewProps extends IBaseScreen<ModalStackParamList, 'RoomMe
 		roles: string[];
 	};
 	showActionSheet: (params: any) => {}; // TODO: this work?
-	theme: string;
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	useRealName: boolean;
 	muteUserPermission: string[];

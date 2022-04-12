@@ -12,7 +12,7 @@ import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../utils/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
@@ -38,7 +38,7 @@ interface ISelectListViewState {
 interface ISelectListViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'SelectListView'>;
 	route: RouteProp<ChatsStackParamList, 'SelectListView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 }
 

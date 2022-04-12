@@ -10,7 +10,7 @@ import { getUserSelector } from '../selectors/login';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { events, logEvent } from '../utils/log';
 import { isAndroid, isIOS } from '../utils/deviceInfo';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { InsideStackParamList } from '../stacks/types';
 import { IApplicationState, IUser } from '../definitions';
 import { Services } from '../lib/services';
@@ -30,7 +30,7 @@ interface IJitsiMeetViewProps {
 	navigation: StackNavigationProp<InsideStackParamList, 'JitsiMeetView'>;
 	route: RouteProp<InsideStackParamList, 'JitsiMeetView'>;
 	baseUrl: string;
-	theme: string;
+	theme: TSupportedThemes;
 	user: IUser;
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
+import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
@@ -13,7 +14,7 @@ interface IButtonProps {
 	disabled: boolean;
 	backgroundColor: string;
 	loading: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	color: string;
 	fontSize: any;
 	style: any;

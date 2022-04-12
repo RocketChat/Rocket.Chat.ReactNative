@@ -53,6 +53,7 @@ import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } fr
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, hasPermission, search, sendFileMessage } from '../../lib/methods';
 import { Services } from '../../lib/services';
+import { TSupportedThemes } from '../../theme';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -96,7 +97,7 @@ export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackPar
 	editRequest: Function;
 	onSubmit: Function;
 	typing: Function;
-	theme: string;
+	theme: TSupportedThemes;
 	replyCancel(): void;
 	showSend: boolean;
 	children: JSX.Element;

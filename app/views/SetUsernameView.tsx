@@ -16,7 +16,7 @@ import { IApplicationState } from '../definitions';
 import I18n from '../i18n';
 import KeyboardView from '../presentation/KeyboardView';
 import { getUserSelector } from '../selectors/login';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { isTablet } from '../utils/deviceInfo';
 import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
@@ -41,7 +41,7 @@ interface ISetUsernameViewProps {
 	server: string;
 	userId: string;
 	token: string;
-	theme: string;
+	theme: TSupportedThemes;
 	dispatch: Dispatch;
 }
 

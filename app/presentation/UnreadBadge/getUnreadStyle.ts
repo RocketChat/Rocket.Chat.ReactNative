@@ -1,17 +1,36 @@
 import { themes } from '../../lib/constants';
+import { TSupportedThemes } from '../../theme';
 
-export const getUnreadStyle = ({ unread, userMentions, groupMentions, theme, tunread, tunreadUser, tunreadGroup }: any) => {
+interface IGetUnreadStyle {
+	unread?: number;
+	userMentions?: number;
+	groupMentions?: number;
+	theme: TSupportedThemes;
+	tunread?: [];
+	tunreadUser?: [];
+	tunreadGroup?: [];
+}
+
+export const getUnreadStyle = ({
+	unread,
+	userMentions,
+	groupMentions,
+	theme,
+	tunread,
+	tunreadUser,
+	tunreadGroup
+}: IGetUnreadStyle) => {
 	if ((!unread || unread <= 0) && !tunread?.length) {
 		return {};
 	}
 
 	let backgroundColor = themes[theme].unreadColor;
 	const color = themes[theme].buttonText;
-	if (userMentions > 0 || tunreadUser?.length) {
+	if ((userMentions && userMentions > 0) || tunreadUser?.length) {
 		backgroundColor = themes[theme].mentionMeColor;
-	} else if (groupMentions > 0 || tunreadGroup?.length) {
+	} else if ((groupMentions && groupMentions > 0) || tunreadGroup?.length) {
 		backgroundColor = themes[theme].mentionGroupColor;
-	} else if (tunread?.length > 0) {
+	} else if (tunread && tunread?.length > 0) {
 		backgroundColor = themes[theme].tunreadColor;
 	}
 

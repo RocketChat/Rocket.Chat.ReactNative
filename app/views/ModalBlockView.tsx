@@ -5,7 +5,7 @@ import { RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import EventEmitter from '../utils/events';
 import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -53,7 +53,7 @@ interface IModalBlockViewState {
 interface IModalBlockViewProps {
 	navigation: StackNavigationProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	language: string;
 	user: {
 		id: string;
