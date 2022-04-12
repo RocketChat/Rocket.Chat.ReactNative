@@ -1,9 +1,9 @@
 import React from 'react';
 
 import RoomTypeIcon from '../RoomTypeIcon';
-import { ITypeIcon } from './interfaces';
+import { ITypeIconProps } from './interfaces';
 
-const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain, size, style }: ITypeIcon) => (
+const TypeIcon = React.memo(({ type, prid, status, isGroupChat, teamMain, size, style }: ITypeIconProps) => (
 	<RoomTypeIcon
 		type={prid ? 'discussion' : type}
 		isGroupChat={isGroupChat}

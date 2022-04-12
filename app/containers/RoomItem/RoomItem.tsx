@@ -12,7 +12,7 @@ import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
 import { DisplayMode } from '../../lib/constants';
-import { IRoomItem } from './interfaces';
+import { IRoomItemProps } from './interfaces';
 
 const RoomItem = ({
 	rid,
@@ -53,7 +53,7 @@ const RoomItem = ({
 	autoJoin,
 	showAvatar,
 	displayMode
-}: IRoomItem) => (
+}: IRoomItemProps) => (
 	<Touchable
 		onPress={onPress}
 		onLongPress={onLongPress}

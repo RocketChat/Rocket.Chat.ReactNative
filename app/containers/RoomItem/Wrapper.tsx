@@ -3,10 +3,10 @@ import { View } from 'react-native';
 
 import { DisplayMode, themes } from '../../lib/constants';
 import IconOrAvatar from './IconOrAvatar';
-import { IWrapper } from './interfaces';
+import { IWrapperProps } from './interfaces';
 import styles from './styles';
 
-const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }: IWrapper): React.ReactElement => (
+const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }: IWrapperProps): React.ReactElement => (
 	<View
 		style={[styles.container, displayMode === DisplayMode.Condensed && styles.containerCondensed]}
 		accessibilityLabel={accessibilityLabel}>

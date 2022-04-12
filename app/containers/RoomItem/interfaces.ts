@@ -1,10 +1,11 @@
 import React from 'react';
 import { Animated } from 'react-native';
 
+import { TSupportedThemes } from '../../theme';
 import { TUserStatus, ILastMessage, SubscriptionType } from '../../definitions';
 
-export interface ILeftActions {
-	theme: string;
+export interface ILeftActionsProps {
+	theme: TSupportedThemes;
 	transX: Animated.AnimatedAddition | Animated.AnimatedMultiplication;
 	isRead: boolean;
 	width: number;
@@ -12,8 +13,8 @@ export interface ILeftActions {
 	displayMode: string;
 }
 
-export interface IRightActions {
-	theme: string;
+export interface IRightActionsProps {
+	theme: TSupportedThemes;
 	transX: Animated.AnimatedAddition | Animated.AnimatedMultiplication;
 	favorite: boolean;
 	width: number;
@@ -22,26 +23,26 @@ export interface IRightActions {
 	displayMode: string;
 }
 
-export interface ITitle {
+export interface ITitleProps {
 	name: string;
-	theme: string;
+	theme: TSupportedThemes;
 	hideUnreadStatus: boolean;
 	alert: boolean;
 }
 
-export interface IUpdatedAt {
+export interface IUpdatedAtProps {
 	date: string;
-	theme: string;
+	theme: TSupportedThemes;
 	hideUnreadStatus: boolean;
 	alert: boolean;
 }
 
-export interface IWrapper {
+export interface IWrapperProps {
 	accessibilityLabel: string;
 	avatar: string;
 	avatarSize: number;
 	type: string;
-	theme: string;
+	theme: TSupportedThemes;
 	rid: string;
 	children: React.ReactElement;
 	displayMode: string;
@@ -53,18 +54,18 @@ export interface IWrapper {
 	showAvatar: boolean;
 }
 
-export interface ITypeIcon {
+export interface ITypeIconProps {
 	type: string;
 	status: TUserStatus;
 	prid: string;
 	isGroupChat: boolean;
 	teamMain: boolean;
-	theme?: string;
+	theme?: TSupportedThemes;
 	size?: number;
 	style?: object;
 }
 
-export interface IRoomItemContainer {
+export interface IRoomItemContainerProps {
 	[key: string]: string | boolean | Function | number;
 	item: any;
 	showLastMessage: boolean;
@@ -81,7 +82,7 @@ export interface IRoomItemContainer {
 	useRealName: boolean;
 	getUserPresence: (uid: string) => void;
 	connected: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	isFocused: boolean;
 	getRoomTitle: (item: any) => string;
 	getRoomAvatar: (item: any) => string;
@@ -93,7 +94,7 @@ export interface IRoomItemContainer {
 	displayMode: string;
 }
 
-export interface IRoomItem {
+export interface IRoomItemProps {
 	rid: string;
 	type: SubscriptionType;
 	prid: string;
@@ -106,7 +107,7 @@ export interface IRoomItem {
 	width: number;
 	status: TUserStatus;
 	useRealName: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	isFocused: boolean;
 	isGroupChat: boolean;
 	isRead: boolean;
@@ -135,8 +136,8 @@ export interface IRoomItem {
 	displayMode: string;
 }
 
-export interface ILastMessageComponent {
-	theme: string;
+export interface ILastMessageProps {
+	theme: TSupportedThemes;
 	lastMessage: ILastMessage;
 	type: SubscriptionType;
 	showLastMessage: boolean;
@@ -158,7 +159,7 @@ export interface ITouchableProps {
 	toggleFav: Function;
 	toggleRead: Function;
 	hideChannel: Function;
-	theme: string;
+	theme: TSupportedThemes;
 	isFocused: boolean;
 	swipeEnabled: boolean;
 	displayMode: string;
