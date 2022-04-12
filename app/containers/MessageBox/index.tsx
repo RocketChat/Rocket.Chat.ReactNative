@@ -377,14 +377,14 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (this.getUsers && this.getUsers.stop) {
 			this.getUsers.stop();
 		}
-		if (this.searchRooms && this.searchRooms.stop) {
-			this.searchRooms.stop();
+		if (this.getRooms && this.getRooms.stop) {
+			this.getRooms.stop();
 		}
 		if (this.getEmojis && this.getEmojis.stop) {
 			this.getEmojis.stop();
 		}
-		if (this.getCommands && this.getCommands.stop) {
-			this.getCommands.stop();
+		if (this.getSlashCommands && this.getSlashCommands.stop) {
+			this.getSlashCommands.stop();
 		}
 		if (this.getCannedResponses && this.getCannedResponses.stop) {
 			this.getCannedResponses.stop();
@@ -576,7 +576,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
 
-	searchRooms = debounce(async (keyword = '') => {
+	getRooms = debounce(async (keyword = '') => {
 		const res = await search({ text: keyword, filterRooms: true, filterUsers: false });
 		this.setState({ mentions: res, mentionLoading: false });
 	}, 300);
@@ -596,7 +596,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		this.setState({ mentions: mergedEmojis || [], mentionLoading: false });
 	}, 300);
 
-	getCommands = debounce(async (keyword: any) => {
+	getSlashCommands = debounce(async (keyword: any) => {
 		const db = database.active;
 		const commandsCollection = db.get('slash_commands');
 		const likeString = sanitizeLikeString(keyword);
@@ -946,11 +946,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		} else if (type === MENTIONS_TRACKING_TYPE_EMOJIS) {
 			this.getEmojis(keyword);
 		} else if (type === MENTIONS_TRACKING_TYPE_COMMANDS) {
-			this.getCommands(keyword);
+			this.getSlashCommands(keyword);
 		} else if (type === MENTIONS_TRACKING_TYPE_CANNED) {
 			this.getCannedResponses(keyword);
 		} else {
-			this.searchRooms(keyword);
+			this.getRooms(keyword);
 		}
 	};
 
