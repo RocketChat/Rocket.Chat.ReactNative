@@ -8,7 +8,7 @@ import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';
@@ -33,7 +33,7 @@ interface IUserNotificationPreferencesViewState {
 
 interface IUserNotificationPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	user: IUser;
 }
 

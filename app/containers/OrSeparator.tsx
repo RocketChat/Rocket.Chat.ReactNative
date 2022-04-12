@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import I18n from '../i18n';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
+import { TSupportedThemes } from '../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
 });
 
 interface IOrSeparator {
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const OrSeparator = React.memo(({ theme }: IOrSeparator) => {

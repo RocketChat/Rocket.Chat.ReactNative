@@ -6,7 +6,7 @@ import Message from './Message';
 import MessageContext from './Context';
 import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, TAnyMessageModel } from '../../definitions';
@@ -57,7 +57,7 @@ interface IMessageContainerProps {
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
 	onPress?: () => void;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IMessageContainerState {
@@ -73,7 +73,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		archived: false,
 		broadcast: false,
 		isIgnored: false,
-		theme: 'light'
+		theme: 'light' as TSupportedThemes
 	};
 
 	state = { isManualUnignored: false };

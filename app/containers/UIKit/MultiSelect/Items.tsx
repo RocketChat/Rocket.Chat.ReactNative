@@ -9,19 +9,20 @@ import { textParser } from '../utils';
 import { themes } from '../../../lib/constants';
 import styles from './styles';
 import { IItemData } from '.';
+import { TSupportedThemes } from '../../../theme';
 
 interface IItem {
 	item: IItemData;
 	selected?: string;
 	onSelect: Function;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IItems {
 	items: IItemData[];
 	selected: string[];
 	onSelect: Function;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const keyExtractor = (item: IItemData) => item.value.toString();
