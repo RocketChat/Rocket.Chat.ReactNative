@@ -60,6 +60,7 @@ export interface ILastMessage {
 	reactions?: IReaction[];
 	unread?: boolean;
 	status?: number;
+	token?: string;
 }
 
 interface IMessageFile {

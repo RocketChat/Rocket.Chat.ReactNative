@@ -98,6 +98,7 @@ export interface ISubscription {
 	teamMain?: boolean;
 	unsubscribe: () => Promise<any>;
 	separator?: boolean;
+	onHold?: boolean;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
 	messages: RelationModified<TMessageModel>;
 	threads: RelationModified<TThreadModel>;

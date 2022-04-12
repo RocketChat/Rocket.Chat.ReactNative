@@ -346,11 +346,11 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		return permissions[0];
 	};
 
-	canPlaceLivechatOnHold = () => {
+	canPlaceLivechatOnHold = (): boolean => {
 		const { livechatAllowManualOnHold } = this.props;
 		const { room } = this.state;
 
-		return livechatAllowManualOnHold && !room?.lastMessage?.token && room.u && !room.onHold;
+		return !!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
 	};
 
 	canReturnQueue = async () => {
