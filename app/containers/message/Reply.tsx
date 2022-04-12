@@ -113,11 +113,13 @@ const Title = React.memo(({ attachment, timeFormat, theme }: { attachment: IAtta
 
 const Description = React.memo(
 	({ attachment, getCustomEmoji, theme }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji; theme: string }) => {
+		const { baseUrl, user } = useContext(MessageContext);
 		const text = attachment.text || attachment.title;
+
 		if (!text) {
 			return null;
 		}
-		const { baseUrl, user } = useContext(MessageContext);
+
 		return (
 			<Markdown
 				msg={text}
@@ -145,10 +147,12 @@ const Description = React.memo(
 
 const UrlImage = React.memo(
 	({ image }: { image?: string }) => {
+		const { baseUrl, user } = useContext(MessageContext);
+
 		if (!image) {
 			return null;
 		}
-		const { baseUrl, user } = useContext(MessageContext);
+
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
 		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
 	},
@@ -157,11 +161,12 @@ const UrlImage = React.memo(
 
 const Fields = React.memo(
 	({ attachment, theme, getCustomEmoji }: { attachment: IAttachment; theme: string; getCustomEmoji: TGetCustomEmoji }) => {
+		const { baseUrl, user } = useContext(MessageContext);
+
 		if (!attachment.fields) {
 			return null;
 		}
 
-		const { baseUrl, user } = useContext(MessageContext);
 		return (
 			<View style={styles.fieldsContainer}>
 				{attachment.fields.map(field => (
@@ -187,12 +192,11 @@ const Reply = React.memo(
 	({ attachment, timeFormat, index, getCustomEmoji }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
+		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
 
 		if (!attachment) {
 			return null;
 		}
-
-		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
 
 		const onPress = async () => {
 			let url = attachment.title_link || attachment.author_link;

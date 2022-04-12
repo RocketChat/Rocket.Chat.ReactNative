@@ -6,7 +6,7 @@ import { getDeviceToken } from '../../notifications/push';
 import { extractHostname } from '../../utils/server';
 import { BASIC_AUTH_KEY } from '../../utils/fetch';
 import database, { getDatabase } from '../database';
-import { useSsl } from '../../utils/url';
+import { isSsl } from '../../utils/url';
 import log from '../../utils/log';
 import { ICertificate, IRocketChat } from '../../definitions';
 import sdk from '../services/sdk';
@@ -80,7 +80,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 		if (userId) {
 			const resume = UserPreferences.getString(`${RocketChat.TOKEN_KEY}-${userId}`);
 
-			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: useSsl(server) });
+			const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 			await sdk.login({ resume });
 
 			const token = getDeviceToken();

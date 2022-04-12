@@ -1,9 +1,8 @@
 import React from 'react';
-// @ts-ignore
 import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 
-import Avatar from '../containers/Avatar';
-import { CustomIcon, TIconsName } from '../containers/CustomIcon';
+import Avatar from './Avatar';
+import { CustomIcon, TIconsName } from './CustomIcon';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
 import { isIOS } from '../utils/deviceInfo';
