@@ -20,15 +20,19 @@ interface IOmnichannelStatus {
 }
 
 const OmnichannelStatus = memo(({ searching, goQueue, queueSize, inquiryEnabled, user }: IOmnichannelStatus) => {
-	if (searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
-		return null;
-	}
 	const { theme } = useTheme();
-	const [status, setStatus] = useState(isOmnichannelStatusAvailable(user));
+	const [status, setStatus] = useState<boolean>(false);
+	const canUseOmnichannel = RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent');
 
 	useEffect(() => {
-		setStatus(isOmnichannelStatusAvailable(user));
+		if (canUseOmnichannel) {
+			setStatus(isOmnichannelStatusAvailable(user));
+		}
 	}, [user.statusLivechat]);
+
+	if (searching || !canUseOmnichannel) {
+		return null;
+	}
 
 	const toggleLivechat = async () => {
 		try {

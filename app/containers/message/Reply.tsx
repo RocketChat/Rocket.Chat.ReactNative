@@ -77,8 +77,6 @@ const styles = StyleSheet.create({
 		marginBottom: 4
 	},
 	image: {
-		// @ts-ignore TODO - check with the team, change this to undefined
-		width: null,
 		height: 200,
 		flex: 1,
 		borderTopLeftRadius: 4,
@@ -125,11 +123,13 @@ const Description = React.memo(
 		getCustomEmoji: TGetCustomEmoji;
 		theme: TSupportedThemes;
 	}) => {
+		const { baseUrl, user } = useContext(MessageContext);
 		const text = attachment.text || attachment.title;
+
 		if (!text) {
 			return null;
 		}
-		const { baseUrl, user } = useContext(MessageContext);
+
 		return (
 			<Markdown
 				msg={text}
@@ -157,10 +157,12 @@ const Description = React.memo(
 
 const UrlImage = React.memo(
 	({ image }: { image?: string }) => {
+		const { baseUrl, user } = useContext(MessageContext);
+
 		if (!image) {
 			return null;
 		}
-		const { baseUrl, user } = useContext(MessageContext);
+
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
 		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
 	},
@@ -177,11 +179,12 @@ const Fields = React.memo(
 		theme: TSupportedThemes;
 		getCustomEmoji: TGetCustomEmoji;
 	}) => {
+		const { baseUrl, user } = useContext(MessageContext);
+
 		if (!attachment.fields) {
 			return null;
 		}
 
-		const { baseUrl, user } = useContext(MessageContext);
 		return (
 			<View style={styles.fieldsContainer}>
 				{attachment.fields.map(field => (
@@ -207,12 +210,11 @@ const Reply = React.memo(
 	({ attachment, timeFormat, index, getCustomEmoji }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
+		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
 
 		if (!attachment) {
 			return null;
 		}
-
-		const { baseUrl, user, jumpToMessage } = useContext(MessageContext);
 
 		const onPress = async () => {
 			let url = attachment.title_link || attachment.author_link;

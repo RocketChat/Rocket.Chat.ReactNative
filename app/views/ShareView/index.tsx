@@ -180,7 +180,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 				// Set a filename, if there isn't any
 				if (!item.filename) {
-					item.filename = new Date().toISOString();
+					item.filename = `${new Date().toISOString()}.jpg`;
 				}
 				return item;
 			})

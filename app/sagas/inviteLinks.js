@@ -16,7 +16,7 @@ const handleRequest = function* handleRequest({ token }) {
 			return;
 		}
 
-		const result = yield RocketChat.useInviteToken(token);
+		const result = yield RocketChat.inviteToken(token);
 		if (!result.success) {
 			yield put(inviteLinksFailure());
 			return;

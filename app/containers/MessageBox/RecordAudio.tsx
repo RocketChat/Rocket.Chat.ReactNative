@@ -195,14 +195,10 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 		}
 		if (!isRecording && !isRecorderActive) {
 			return (
-				<BorderlessButton
-					onPress={this.startRecordingAudio}
-					style={styles.actionButton}
-					testID='messagebox-send-audio'
-					// @ts-ignore
-					accessibilityLabel={I18n.t('Send_audio_message')}
-					accessibilityTraits='button'>
-					<CustomIcon name='microphone' size={24} color={themes[theme].auxiliaryTintColor} />
+				<BorderlessButton onPress={this.startRecordingAudio} style={styles.actionButton} testID='messagebox-send-audio'>
+					<View accessible accessibilityLabel={I18n.t('Send_audio_message')} accessibilityRole='button'>
+						<CustomIcon name='microphone' size={24} color={themes[theme].auxiliaryTintColor} />
+					</View>
 				</BorderlessButton>
 			);
 		}
@@ -211,23 +207,17 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 			return (
 				<View style={styles.recordingContent}>
 					<View style={styles.textArea}>
-						<BorderlessButton
-							onPress={this.cancelRecordingAudio}
-							// @ts-ignore
-							accessibilityLabel={I18n.t('Cancel_recording')}
-							accessibilityTraits='button'
-							style={styles.actionButton}>
-							<CustomIcon size={24} color={themes[theme].dangerColor} name='delete' />
+						<BorderlessButton onPress={this.cancelRecordingAudio} style={styles.actionButton}>
+							<View accessible accessibilityLabel={I18n.t('Cancel_recording')} accessibilityRole='button'>
+								<CustomIcon size={24} color={themes[theme].dangerColor} name='delete' />
+							</View>
 						</BorderlessButton>
 						<Text style={[styles.recordingDurationText, { color: themes[theme].titleText }]}>{this.GetLastDuration}</Text>
 					</View>
-					<BorderlessButton
-						onPress={this.finishRecordingAudio}
-						// @ts-ignore
-						accessibilityLabel={I18n.t('Finish_recording')}
-						accessibilityTraits='button'
-						style={styles.actionButton}>
-						<CustomIcon size={24} color={themes[theme].tintColor} name='send-filled' />
+					<BorderlessButton onPress={this.finishRecordingAudio} style={styles.actionButton}>
+						<View accessible accessibilityLabel={I18n.t('Finish_recording')} accessibilityRole='button'>
+							<CustomIcon size={24} color={themes[theme].tintColor} name='send-filled' />
+						</View>
 					</BorderlessButton>
 				</View>
 			);
@@ -236,24 +226,18 @@ export default class RecordAudio extends React.PureComponent<IMessageBoxRecordAu
 		return (
 			<View style={styles.recordingContent}>
 				<View style={styles.textArea}>
-					<BorderlessButton
-						onPress={this.cancelRecordingAudio}
-						// @ts-ignore
-						accessibilityLabel={I18n.t('Cancel_recording')}
-						accessibilityTraits='button'
-						style={styles.actionButton}>
-						<CustomIcon size={24} color={themes[theme].dangerColor} name='delete' />
+					<BorderlessButton onPress={this.cancelRecordingAudio} style={styles.actionButton}>
+						<View accessible accessibilityLabel={I18n.t('Cancel_recording')} accessibilityRole='button'>
+							<CustomIcon size={24} color={themes[theme].dangerColor} name='delete' />
+						</View>
 					</BorderlessButton>
 					<Text style={[styles.recordingDurationText, { color: themes[theme].titleText }]}>{this.duration}</Text>
 					<CustomIcon size={24} color={themes[theme].dangerColor} name='record' />
 				</View>
-				<BorderlessButton
-					onPress={this.finishRecordingAudio}
-					// @ts-ignore
-					accessibilityLabel={I18n.t('Finish_recording')}
-					accessibilityTraits='button'
-					style={styles.actionButton}>
-					<CustomIcon size={24} color={themes[theme].tintColor} name='send-filled' />
+				<BorderlessButton onPress={this.finishRecordingAudio} style={styles.actionButton}>
+					<View accessible accessibilityLabel={I18n.t('Finish_recording')} accessibilityRole='button'>
+						<CustomIcon size={24} color={themes[theme].tintColor} name='send-filled' />
+					</View>
 				</BorderlessButton>
 			</View>
 		);

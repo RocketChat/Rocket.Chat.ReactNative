@@ -738,7 +738,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onPress={this.submit}
 							disabled={!this.formIsChanged()}
 							testID='room-info-edit-view-submit'>
-							<Text style={[styles.button, { color: themes[theme].buttonText }]} accessibilityTraits='button'>
+							<Text style={[styles.button, { color: themes[theme].buttonText }]} accessibilityRole='button'>
 								{I18n.t('SAVE')}
 							</Text>
 						</TouchableOpacity>
@@ -755,7 +755,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								testID='room-info-edit-view-reset'>
 								<Text
 									style={[styles.button, styles.button_inverted, { color: themes[theme].bodyText }]}
-									accessibilityTraits='button'>
+									accessibilityRole='button'>
 									{I18n.t('RESET')}
 								</Text>
 							</TouchableOpacity>
@@ -788,7 +788,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onPress={room.teamMain ? this.deleteTeam : this.delete}
 							disabled={!this.hasDeletePermission()}
 							testID='room-info-edit-view-delete'>
-							<Text style={[styles.button, styles.button_inverted, { color: dangerColor }]} accessibilityTraits='button'>
+							<Text style={[styles.button, styles.button_inverted, { color: dangerColor }]} accessibilityRole='button'>
 								{I18n.t('DELETE')}
 							</Text>
 						</TouchableOpacity>
