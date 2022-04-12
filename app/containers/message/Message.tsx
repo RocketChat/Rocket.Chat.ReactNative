@@ -110,6 +110,9 @@ const Message = React.memo((props: IMessage) => {
 Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
+	const { onPress, onLongPress } = useContext(MessageContext);
+	const { theme } = useTheme();
+
 	if (props.hasError) {
 		return (
 			<View>
@@ -117,8 +120,6 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			</View>
 		);
 	}
-	const { onPress, onLongPress } = useContext(MessageContext);
-	const { theme } = useTheme();
 
 	return (
 		<Touchable
