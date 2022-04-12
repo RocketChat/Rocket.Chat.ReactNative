@@ -2,7 +2,7 @@ import * as FileSystem from 'expo-file-system';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import Model from '@nozbe/watermelondb/Model';
 
-import { getDeviceToken } from '../../notifications/push';
+import { getDeviceToken } from '../notifications';
 import { extractHostname } from '../../utils/server';
 import { BASIC_AUTH_KEY } from '../../utils/fetch';
 import database, { getDatabase } from '../database';
