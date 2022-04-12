@@ -5,12 +5,13 @@ import { CELL_WIDTH } from './TableCell';
 import styles from './styles';
 import Navigation from '../../lib/navigation/appNavigation';
 import I18n from '../../i18n';
+import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
 
 interface ITable {
 	children: React.ReactElement | null;
 	numColumns: number;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const MAX_HEIGHT = 300;

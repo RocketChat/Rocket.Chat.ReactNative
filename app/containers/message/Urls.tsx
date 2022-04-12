@@ -8,7 +8,7 @@ import Touchable from './Touchable';
 import openLink from '../../utils/openLink';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
-import { useTheme, withTheme } from '../../theme';
+import { TSupportedThemes, useTheme, withTheme } from '../../theme';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../utils/events';
 import I18n from '../../i18n';
@@ -66,7 +66,7 @@ const UrlImage = React.memo(
 );
 
 const UrlContent = React.memo(
-	({ title, description, theme }: { title: string; description: string; theme: string }) => (
+	({ title, description, theme }: { title: string; description: string; theme: TSupportedThemes }) => (
 		<View style={styles.textContainer}>
 			{title ? (
 				<Text style={[styles.title, { color: themes[theme].tintColor }]} numberOfLines={2}>
@@ -95,7 +95,7 @@ const UrlContent = React.memo(
 );
 
 const Url = React.memo(
-	({ url, index, theme }: { url: IUrl; index: number; theme: string }) => {
+	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
 		if (!url || url?.ignoreParse) {
 			return null;
 		}

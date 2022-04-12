@@ -7,6 +7,7 @@ import FastImage from '@rocket.chat/react-native-fast-image';
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants';
 import { isTablet } from '../../utils/deviceInfo';
+import { TSupportedThemes } from '../../theme';
 
 const ImageProgress = createImageProgress(FastImage);
 
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
 const getInitial = (url: string) => url && url.replace(/http(s?):\/\//, '').slice(0, 1);
 
 interface IFallback {
-	theme: string;
+	theme: TSupportedThemes;
 	initial: string;
 }
 const Fallback = ({ theme, initial }: IFallback) => (
@@ -53,7 +54,7 @@ const Fallback = ({ theme, initial }: IFallback) => (
 );
 
 interface IServerAvatar {
-	theme: string;
+	theme: TSupportedThemes;
 	url: string;
 	image: string;
 }

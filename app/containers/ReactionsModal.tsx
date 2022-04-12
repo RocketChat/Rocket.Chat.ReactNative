@@ -8,7 +8,7 @@ import I18n from '../i18n';
 import { CustomIcon } from '../lib/Icons';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
-import { useTheme, withTheme } from '../theme';
+import { TSupportedThemes, useTheme, withTheme } from '../theme';
 import { TGetCustomEmoji } from '../definitions/IEmoji';
 import { TMessageModel, ILoggedUser } from '../definitions';
 import SafeAreaView from './SafeAreaView';
@@ -77,7 +77,7 @@ interface IItem extends ISharedFields {
 interface IModalContent extends ISharedFields {
 	message?: TMessageModel;
 	onClose: () => void;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IReactionsModal extends ISharedFields {

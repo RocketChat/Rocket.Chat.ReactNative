@@ -4,7 +4,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
 import { themes } from '../../../lib/constants';
-import { withTheme } from '../../../theme';
+import { TSupportedThemes, withTheme } from '../../../theme';
 import * as List from '../../../containers/List';
 import { IDepartment } from '../../../definitions/ICannedResponse';
 import DropdownItemFilter from './DropdownItemFilter';
@@ -14,7 +14,7 @@ import { ROW_HEIGHT } from './DropdownItem';
 const ANIMATION_DURATION = 200;
 
 interface IDropdownProps {
-	theme?: string;
+	theme?: TSupportedThemes;
 	currentDepartment: IDepartment;
 	onClose: () => void;
 	onDepartmentSelected: (value: IDepartment) => void;
