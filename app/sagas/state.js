@@ -5,7 +5,7 @@ import log from '../utils/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
-import { checkAndReopen, setUserPresenceAway, setUserPresenceOnline } from '../lib/services';
+import { Services } from '../lib/services';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
@@ -19,9 +19,9 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	}
 	try {
 		yield localAuthenticate(server.server);
-		checkAndReopen();
+		Services.checkAndReopen();
 		setBadgeCount();
-		return yield setUserPresenceOnline();
+		return yield Services.setUserPresenceOnline();
 	} catch (e) {
 		log(e);
 	}
@@ -36,7 +36,7 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 		const server = yield select(state => state.server.server);
 		yield saveLastLocalAuthenticationSession(server);
 
-		yield setUserPresenceAway();
+		yield Services.setUserPresenceAway();
 	} catch (e) {
 		log(e);
 	}

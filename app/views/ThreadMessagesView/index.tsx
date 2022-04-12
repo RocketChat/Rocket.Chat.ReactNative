@@ -38,7 +38,7 @@ import Item from './Item';
 import styles from './styles';
 import { IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { getUidDirectMessage } from '../../lib/methods';
-import { getSyncThreadsList, getThreadsList, toggleFollowMessage } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 const API_FETCH_COUNT = 50;
 
@@ -336,7 +336,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await getThreadsList({
+			const result = await Services.getThreadsList({
 				rid: this.rid,
 				count: API_FETCH_COUNT,
 				offset: messages.length,
@@ -360,7 +360,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await getSyncThreadsList({
+			const result = await Services.getSyncThreadsList({
 				rid: this.rid,
 				updatedSince: updatedSince.toISOString()
 			});
@@ -451,7 +451,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
 		try {
-			await toggleFollowMessage(tmid, !isFollowingThread);
+			await Services.toggleFollowMessage(tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);

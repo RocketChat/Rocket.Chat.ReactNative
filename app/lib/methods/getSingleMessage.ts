@@ -1,10 +1,10 @@
 import { IMessage } from '../../definitions';
-import { getSingleMessage } from '../services';
+import { Services } from '../services';
 
-const getMessage = (messageId: string): Promise<IMessage> =>
+const getSingleMessage = (messageId: string): Promise<IMessage> =>
 	new Promise(async (resolve, reject) => {
 		try {
-			const result = await getSingleMessage(messageId);
+			const result = await Services.getSingleMessage(messageId);
 			if (result.success) {
 				return resolve(result.message);
 			}
@@ -14,4 +14,4 @@ const getMessage = (messageId: string): Promise<IMessage> =>
 		}
 	});
 
-export default getMessage;
+export default getSingleMessage;

@@ -14,7 +14,7 @@ import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
 import { OutsideParamList } from '../stacks/types';
-import { forgotPassword } from '../lib/services';
+import { Services } from '../lib/services';
 
 interface IForgotPasswordViewState {
 	email: string;
@@ -73,7 +73,7 @@ class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForg
 		}
 		try {
 			this.setState({ isFetching: true });
-			const result = await forgotPassword(email);
+			const result = await Services.forgotPassword(email);
 			if (result.success) {
 				const { navigation } = this.props;
 				navigation.pop();

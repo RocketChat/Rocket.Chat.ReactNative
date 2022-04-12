@@ -23,7 +23,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import styles from './styles';
 import Options from './Options';
-import { createDirectMessage, getDirectory, getRoomInfo } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 interface IDirectoryViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'DirectoryView'>;
@@ -91,7 +91,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 		try {
 			const { data, type, globalUsers } = this.state;
 			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
-			const directories = await getDirectory({
+			const directories = await Services.getDirectory({
 				query,
 				offset: data.length,
 				count: 50,
@@ -152,12 +152,12 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 	onPressItem = async (item: any) => {
 		const { type } = this.state;
 		if (type === 'users') {
-			const result = await createDirectMessage(item.username);
+			const result = await Services.createDirectMessage(item.username);
 			if (result.success) {
 				this.goRoom({ rid: result.room._id, name: item.username, t: 'd' });
 			}
 		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
-			const result = await getRoomInfo(item._id);
+			const result = await Services.getRoomInfo(item._id);
 			if (result.success) {
 				this.goRoom({
 					rid: item._id,

@@ -91,7 +91,7 @@ import {
 	sendMessage,
 	triggerBlockAction
 } from '../../lib/methods';
-import { editMessage, getUserInfo, joinRoom, setReaction, toggleFollowMessage } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 const stateAttrsUpdate = [
 	'joined',
@@ -618,7 +618,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				const roomUserId = getUidDirectMessage(room);
 				this.setState({ roomUserId }, () => this.setHeader());
 
-				const result = await getUserInfo(roomUserId);
+				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					return result.user;
 				}
@@ -708,7 +708,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	onEditRequest = async (message: TAnyMessageModel) => {
 		this.setState({ selectedMessage: undefined, editing: false });
 		try {
-			await editMessage(message);
+			await Services.editMessage(message);
 		} catch (e) {
 			log(e);
 		}
@@ -747,7 +747,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	onReactionPress = async (shortname: string, messageId: string) => {
 		try {
-			await setReaction(shortname, messageId);
+			await Services.setReaction(shortname, messageId);
 			this.onReactionClose();
 			Review.pushPositiveEvent();
 		} catch (e) {
@@ -936,7 +936,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	handleJoinRoom = async () => {
+	joinRoom = async () => {
 		logEvent(events.ROOM_JOIN);
 		try {
 			const { room } = this.state;
@@ -952,7 +952,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					// @ts-ignore
 					this.joinCode.current?.show();
 				} else {
-					await joinRoom(rid, null, this.t as any);
+					await Services.joinRoom(rid, null, this.t as any);
 					this.onJoin();
 				}
 			}
@@ -972,7 +972,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			if (!threadMessageId) {
 				return;
 			}
-			await toggleFollowMessage(threadMessageId, !isFollowingThread);
+			await Services.toggleFollowMessage(threadMessageId, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 		} catch (e) {
 			log(e);
@@ -1255,7 +1255,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						{I18n.t('You_are_in_preview_mode')}
 					</Text>
 					<Touch
-						onPress={this.handleJoinRoom}
+						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
 						enabled={!loading}
 						theme={theme}>

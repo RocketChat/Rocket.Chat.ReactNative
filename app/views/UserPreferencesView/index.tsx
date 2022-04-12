@@ -13,7 +13,7 @@ import { SWITCH_TRACK_COLOR } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
 import { IApplicationState } from '../../definitions';
-import { saveUserPreferences } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 interface IUserPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
@@ -37,7 +37,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	const toggleMessageParser = async (value: boolean) => {
 		try {
 			dispatch(setUser({ enableMessageParserEarlyAdoption: value }));
-			await saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
+			await Services.saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
 		} catch (e) {
 			log(e);
 		}

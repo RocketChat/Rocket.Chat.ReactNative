@@ -15,7 +15,7 @@ import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { ProfileStackParamList } from '../../stacks/types';
 import { INotificationPreferences, IUser } from '../../definitions';
-import { getUserPreferences, setUserPreferences } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -56,7 +56,7 @@ class UserNotificationPreferencesView extends React.Component<
 	async componentDidMount() {
 		const { user } = this.props;
 		const { id } = user;
-		const result = await getUserPreferences(id);
+		const result = await Services.getUserPreferences(id);
 		if (result.success) {
 			const { preferences } = result;
 			this.setState({ preferences, loading: true });
@@ -102,7 +102,7 @@ class UserNotificationPreferencesView extends React.Component<
 	saveNotificationPreferences = async (params: { [key: string]: string }) => {
 		const { user } = this.props;
 		const { id } = user;
-		const result = await setUserPreferences(id, params);
+		const result = await Services.setUserPreferences(id, params);
 		if (result.success) {
 			const {
 				user: { settings }

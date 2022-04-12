@@ -34,7 +34,7 @@ import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack
 import { SubscriptionType, TSubscriptionModel, ISubscription, IUser, IApplicationState } from '../../definitions';
 import { ILivechatVisitor } from '../../definitions/ILivechatVisitor';
 import { callJitsi, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods';
-import { createDirectMessage, getRoomInfo, getUserInfo, getVisitorInfo } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 interface IGetRoomTitle {
 	room: ISubscription;
@@ -203,7 +203,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const { room } = this.state;
 		try {
 			if (room.visitor?._id) {
-				const result = await getVisitorInfo(room.visitor._id);
+				const result = await Services.getVisitorInfo(room.visitor._id);
 				if (result.success) {
 					const { visitor } = result;
 					const params: { os?: string; browser?: string } = {};
@@ -235,7 +235,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		if (isEmpty(roomUser)) {
 			try {
 				const roomUserId = getUidDirectMessage(room);
-				const result = await getUserInfo(roomUserId);
+				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
 					const { roles } = user;
@@ -276,7 +276,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 			});
 		} else {
 			try {
-				const result = await getRoomInfo(this.rid);
+				const result = await Services.getRoomInfo(this.rid);
 				if (result.success) {
 					({ room } = result);
 					this.setState({ room: { ...roomState, ...room } });
@@ -309,7 +309,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 				const {
 					roomUser: { username }
 				} = this.state;
-				const result = await createDirectMessage(username);
+				const result = await Services.createDirectMessage(username);
 				if (result.success) {
 					const {
 						room: { rid }

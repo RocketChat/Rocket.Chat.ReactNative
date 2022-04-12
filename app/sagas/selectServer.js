@@ -24,14 +24,14 @@ import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { RootEnum } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import { getLoginSettings, setCustomEmojis, setEnterpriseModules, setPermissions, setRoles, setSettings } from '../lib/methods';
-import { abort, getLoginServices, getServerInfo, getWebsocketInfo } from '../lib/services';
+import { Services } from '../lib/services';
 
-const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = true }) {
+const getServerInfo = function* getServerInfo({ server, raiseError = true }) {
 	try {
-		const serverInfo = yield getServerInfo(server);
+		const serverInfo = yield Services.getServerInfo(server);
 		let websocketInfo = { success: true };
 		if (raiseError) {
-			websocketInfo = yield getWebsocketInfo({ server });
+			websocketInfo = yield Services.getWebsocketInfo({ server });
 		}
 		if (!serverInfo.success || !websocketInfo.success) {
 			if (raiseError) {
@@ -110,7 +110,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		setBasicAuth(basicAuth);
 
 		// Check for running requests and abort them before connecting to the server
-		abort();
+		Services.abort();
 
 		if (user) {
 			yield put(clearSettings());
@@ -133,7 +133,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		let serverInfo;
 		if (fetchVersion) {
-			serverInfo = yield getServerInfoSaga({ server, raiseError: false });
+			serverInfo = yield getServerInfo({ server, raiseError: false });
 		}
 
 		// Return server version even when offline
@@ -154,12 +154,12 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		SSLPinning.setCertificate(certificate, server);
 
-		const serverInfo = yield getServerInfoSaga({ server });
+		const serverInfo = yield getServerInfo({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');
 
 		if (serverInfo) {
-			yield getLoginServices(server);
+			yield Services.getLoginServices(server);
 			yield getLoginSettings({ server });
 			Navigation.navigate('WorkspaceView');
 

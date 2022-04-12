@@ -17,7 +17,7 @@ import { SettingsStackParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { showErrorAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';
-import { saveUserPreferences } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 interface ILanguageViewProps extends IBaseScreen<SettingsStackParamList, 'LanguageView'> {
 	user: IUser;
@@ -92,7 +92,7 @@ class LanguageView extends React.Component<ILanguageViewProps, ILanguageViewStat
 		}
 
 		try {
-			await saveUserPreferences(params);
+			await Services.saveUserPreferences(params);
 			dispatch(setUser({ language: params.language }));
 
 			const serversDB = database.servers;

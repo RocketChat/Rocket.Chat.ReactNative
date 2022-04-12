@@ -11,7 +11,7 @@ import CustomFields from './CustomFields';
 import Item from './Item';
 import Timezone from './Timezone';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { getDepartmentInfo } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 const styles = StyleSheet.create({
 	title: {
@@ -31,7 +31,7 @@ const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechat
 
 	const getDepartment = async (id: string) => {
 		if (id) {
-			const result = await getDepartmentInfo(id);
+			const result = await Services.getDepartmentInfo(id);
 			if (result.success) {
 				setDepartment(result.department as ILivechatDepartment);
 			}

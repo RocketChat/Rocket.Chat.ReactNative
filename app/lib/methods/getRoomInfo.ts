@@ -1,6 +1,6 @@
 import { IServerSubscription, RoomType } from '../../definitions';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import { getRoomInfo } from '../services';
+import { Services } from '../services';
 
 export interface IRoomInfoResult {
 	rid: IServerSubscription['rid'];
@@ -9,7 +9,7 @@ export interface IRoomInfoResult {
 	t: IServerSubscription['t'];
 }
 
-const getInfo = async (rid: string): Promise<IRoomInfoResult | null> => {
+const getRoomInfo = async (rid: string): Promise<IRoomInfoResult | null> => {
 	let result;
 	result = await getSubscriptionByRoomId(rid);
 	if (result) {
@@ -21,7 +21,7 @@ const getInfo = async (rid: string): Promise<IRoomInfoResult | null> => {
 		};
 	}
 
-	result = await getRoomInfo(rid);
+	result = await Services.getRoomInfo(rid);
 	if (result?.success) {
 		return {
 			rid,
@@ -34,4 +34,4 @@ const getInfo = async (rid: string): Promise<IRoomInfoResult | null> => {
 	return null;
 };
 
-export default getInfo;
+export default getRoomInfo;

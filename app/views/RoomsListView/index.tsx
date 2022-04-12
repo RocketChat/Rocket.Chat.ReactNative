@@ -60,7 +60,7 @@ import {
 	search
 } from '../../lib/methods';
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
-import { hideRoom, toggleFavorite, toggleRead } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 interface IRoomsListViewProps extends IBaseScreen<ChatsStackParamList, 'RoomsListView'> {
 	[key: string]: any;
@@ -665,7 +665,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await toggleFavorite(rid, !favorite);
+			const result = await Services.toggleFavorite(rid, !favorite);
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
 				await db.write(async () => {
@@ -685,11 +685,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	handleToggleRead = async (rid: string, tIsRead: boolean) => {
+	toggleRead = async (rid: string, tIsRead: boolean) => {
 		logEvent(tIsRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await toggleRead(tIsRead, rid);
+			const result = await Services.toggleRead(tIsRead, rid);
 
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
@@ -715,7 +715,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		logEvent(events.RL_HIDE_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await hideRoom(rid, type);
+			const result = await Services.hideRoom(rid, type);
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
 				await db.write(async () => {
@@ -964,7 +964,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				onPress={this.onPressItem}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				toggleFav={this.toggleFav}
-				toggleRead={this.handleToggleRead}
+				toggleRead={this.toggleRead}
 				hideChannel={this.hideChannel}
 				useRealName={useRealName}
 				getUserPresence={this.handleGetUserPresence}

@@ -38,7 +38,7 @@ import styles from './styles';
 import SwitchContainer from './SwitchContainer';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import { getRoomTitle, hasPermission } from '../../lib/methods';
-import { saveRoomSettings, toggleArchiveRoom } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 interface IRoomInfoEditViewState {
 	room: ISubscription;
@@ -321,7 +321,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		}
 
 		try {
-			await saveRoomSettings(room.rid, params);
+			await Services.saveRoomSettings(room.rid, params);
 		} catch (e: any) {
 			if (e.error === 'error-invalid-room-name') {
 				this.setState({ nameError: e });
@@ -437,7 +437,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 					onPress: async () => {
 						try {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE);
-							await toggleArchiveRoom(rid, t as SubscriptionType, !archived);
+							await Services.toggleArchiveRoom(rid, t as SubscriptionType, !archived);
 						} catch (e) {
 							logEvent(events.RI_EDIT_TOGGLE_ARCHIVE_F);
 							log(e);

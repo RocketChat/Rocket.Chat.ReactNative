@@ -15,7 +15,7 @@ import log from '../utils/log';
 import { RootEnum } from '../definitions';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import { callJitsi, callJitsiWithoutServer, canOpenRoom, getUidDirectMessage } from '../lib/methods';
-import { getServerInfo, loginOAuthOrSso } from '../lib/services';
+import { Services } from '../lib/services';
 
 const roomTypes = {
 	channel: 'c',
@@ -106,7 +106,7 @@ const fallbackNavigation = function* fallbackNavigation() {
 const handleOAuth = function* handleOAuth({ params }) {
 	const { credentialToken, credentialSecret } = params;
 	try {
-		yield loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
+		yield Services.loginOAuthOrSso({ oauth: { credentialToken, credentialSecret } }, false);
 	} catch (e) {
 		log(e);
 	}
@@ -189,7 +189,7 @@ const handleOpen = function* handleOpen({ params }) {
 			// do nothing?
 		}
 		// if deep link is from a different server
-		const result = yield getServerInfo(host);
+		const result = yield Services.getServerInfo(host);
 		if (!result.success) {
 			// Fallback to prevent the app from being stuck on splash screen
 			yield fallbackNavigation();

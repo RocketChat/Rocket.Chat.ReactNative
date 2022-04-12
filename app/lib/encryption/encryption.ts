@@ -20,7 +20,7 @@ import {
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS
 } from '../constants';
-import { e2eRequestSubscriptionKeys, e2eSetUserPublicAndPrivateKeys } from '../services';
+import { Services } from '../services';
 
 class Encryption {
 	ready: boolean;
@@ -141,10 +141,10 @@ class Encryption {
 		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, userId);
 
 		// Send the new keys to the server
-		await e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await Services.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
 
 		// Request e2e keys of all encrypted rooms
-		await e2eRequestSubscriptionKeys();
+		await Services.e2eRequestSubscriptionKeys();
 	};
 
 	// Encode a private key before send it to the server
@@ -197,7 +197,7 @@ class Encryption {
 		const publicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
 		// Send the new keys to the server
-		await e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await Services.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
 	};
 
 	// get a encryption room instance

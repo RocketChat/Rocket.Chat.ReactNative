@@ -18,7 +18,7 @@ import { CustomIcon } from '../lib/Icons';
 import { IServices } from '../selectors/login';
 import { OutsideParamList } from '../stacks/types';
 import { IApplicationState } from '../definitions';
-import { loginOAuthOrSso } from '../lib/services';
+import { Services } from '../lib/services';
 
 const BUTTON_HEIGHT = 48;
 const SERVICE_HEIGHT = 58;
@@ -248,7 +248,7 @@ class LoginServices extends React.PureComponent<ILoginServicesProps, ILoginServi
 					AppleAuthentication.AppleAuthenticationScope.EMAIL
 				]
 			});
-			await loginOAuthOrSso({ fullName, email, identityToken });
+			await Services.loginOAuthOrSso({ fullName, email, identityToken });
 		} catch {
 			logEvent(events.ENTER_WITH_APPLE_F);
 		}

@@ -11,7 +11,7 @@ import { store } from '../store/auxStore';
 import sdk from '../services/sdk';
 import { CERTIFICATE_KEY, TOKEN_KEY } from '../constants';
 import { setCustomEmojis } from './getCustomEmojis';
-import { login } from '../services';
+import { Services } from '../services';
 import { parseSettings } from './parseSettings';
 
 export async function shareExtensionInit(server: string) {
@@ -77,7 +77,7 @@ export async function shareExtensionInit(server: string) {
 		}
 		store.dispatch(shareSetUser(user as IShareUser));
 		if (user) {
-			await login({ resume: user.token });
+			await Services.login({ resume: user.token });
 		}
 		store.dispatch(encryptionInit());
 	} catch (e) {

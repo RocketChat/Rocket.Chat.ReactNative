@@ -32,11 +32,11 @@ import {
 	isOmnichannelModuleAvailable,
 	subscribeSettings
 } from '../lib/methods';
-import { login, loginWithPassword, registerPushToken } from '../lib/services';
+import { Services } from '../lib/services';
 
 const getServer = state => state.server.server;
-const loginWithPasswordCall = args => loginWithPassword(args);
-const loginCall = (credentials, isFromWebView) => login(credentials, isFromWebView);
+const loginWithPasswordCall = args => Services.loginWithPassword(args);
+const loginCall = (credentials, isFromWebView) => Services.login(credentials, isFromWebView);
 const logoutCall = args => RocketChat.logout(args);
 
 const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnError = false, isFromWebView = false }) {
@@ -110,7 +110,7 @@ const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
 };
 
 const registerPushTokenFork = function* registerPushTokenFork() {
-	yield registerPushToken();
+	yield Services.registerPushToken();
 };
 
 const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {

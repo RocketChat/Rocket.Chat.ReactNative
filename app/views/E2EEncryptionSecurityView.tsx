@@ -23,7 +23,7 @@ import { LISTENER } from '../containers/Toast';
 import debounce from '../utils/debounce';
 import sharedStyles from './Styles';
 import { IUser } from '../definitions';
-import { e2eResetOwnKey } from '../lib/services';
+import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({
 	container: {
@@ -101,7 +101,7 @@ class E2EEncryptionSecurityView extends React.Component<IE2EEncryptionSecurityVi
 			onPress: async () => {
 				logEvent(events.E2E_SEC_RESET_OWN_KEY);
 				try {
-					const res = await e2eResetOwnKey();
+					const res = await Services.e2eResetOwnKey();
 					/**
 					 * It might return an empty object when TOTP is enabled,
 					 * that's why we're using strict equality to boolean

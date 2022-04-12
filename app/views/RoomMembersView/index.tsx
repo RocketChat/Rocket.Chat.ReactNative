@@ -29,19 +29,7 @@ import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { getRoomTitle, hasPermission, isGroupChat, RoomTypes } from '../../lib/methods';
 import styles from './styles';
-import {
-	createDirectMessage,
-	getRoomMembers,
-	getRoomRoles,
-	ignoreUser,
-	removeTeamMember,
-	removeUserFromRoom,
-	teamListRoomsOfUser,
-	toggleMuteUserInRoom,
-	toggleRoomLeader,
-	toggleRoomModerator,
-	toggleRoomOwner
-} from '../../lib/services';
+import { Services } from '../../lib/services';
 
 const PAGE_SIZE = 25;
 
@@ -212,7 +200,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 				const [room] = query;
 				this.goRoom(room);
 			} else {
-				const result = await createDirectMessage(item.username);
+				const result = await Services.createDirectMessage(item.username);
 				if (result.success) {
 					this.goRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT });
 				}
@@ -227,7 +215,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			const { navigation } = this.props;
 			const { room } = this.state;
 
-			const result = await teamListRoomsOfUser({ teamId: room.teamId as string, userId: selectedUser._id });
+			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId as string, userId: selectedUser._id });
 
 			if (result.success) {
 				if (result.rooms?.length) {
@@ -241,14 +229,14 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 						title: 'Remove_Member',
 						infoText: 'Remove_User_Team_Channels',
 						data: teamChannels,
-						nextAction: (selected: any) => this.handleRemoveFromTeamSelected(selectedUser, selected),
+						nextAction: (selected: any) => this.removeFromTeam(selectedUser, selected),
 						showAlert: () => showErrorAlert(I18n.t('Last_owner_team_room'), I18n.t('Cannot_remove'))
 					});
 				} else {
 					showConfirmationAlert({
 						message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
 						confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-						onPress: () => this.handleRemoveFromTeamSelected(selectedUser)
+						onPress: () => this.removeFromTeam(selectedUser)
 					});
 				}
 			}
@@ -256,18 +244,18 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			showConfirmationAlert({
 				message: I18n.t('Removing_user_from_this_team', { user: selectedUser.username }),
 				confirmationText: I18n.t('Yes_action_it', { action: I18n.t('remove') }),
-				onPress: () => this.handleRemoveFromTeamSelected(selectedUser)
+				onPress: () => this.removeFromTeam(selectedUser)
 			});
 		}
 	};
 
-	handleRemoveFromTeamSelected = async (selectedUser: IUser, selected?: any) => {
+	removeFromTeam = async (selectedUser: IUser, selected?: any) => {
 		try {
 			const { members, membersFiltered, room } = this.state;
 			const { navigation } = this.props;
 
 			const userId = selectedUser._id;
-			const result = await removeTeamMember({
+			const result = await Services.removeTeamMember({
 				teamId: room.teamId,
 				userId,
 				...(selected && { rooms: selected })
@@ -446,7 +434,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		try {
 			const { room } = this.state;
 			const type = room.t as SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
-			const result = await getRoomRoles(room.rid, type);
+			const result = await Services.getRoomRoles(room.rid, type);
 			if (result?.success) {
 				this.roomRoles = result.roles;
 			}
@@ -464,7 +452,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 
 		this.setState({ isLoading: true });
 		try {
-			const membersResult = await getRoomMembers({
+			const membersResult = await Services.getRoomMembers({
 				rid,
 				roomType: t,
 				type: allUsers ? 'all' : 'online',
@@ -504,7 +492,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	handleMute = async (user: TUserModel) => {
 		const { rid } = this.state;
 		try {
-			await toggleMuteUserInRoom(rid, user?.username, !user?.muted);
+			await Services.toggleMuteUserInRoom(rid, user?.username, !user?.muted);
 			EventEmitter.emit(LISTENER, {
 				message: I18n.t('User_has_been_key', { key: user?.muted ? I18n.t('unmuted') : I18n.t('muted') })
 			});
@@ -516,7 +504,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	handleOwner = async (selectedUser: TUserModel, isOwner: boolean) => {
 		try {
 			const { room } = this.state;
-			await toggleRoomOwner({
+			await Services.toggleRoomOwner({
 				roomId: room.rid,
 				t: room.t,
 				userId: selectedUser._id,
@@ -540,7 +528,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	handleLeader = async (selectedUser: TUserModel, isLeader: boolean) => {
 		try {
 			const { room } = this.state;
-			await toggleRoomLeader({
+			await Services.toggleRoomLeader({
 				roomId: room.rid,
 				t: room.t,
 				userId: selectedUser._id,
@@ -564,7 +552,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	handleModerator = async (selectedUser: TUserModel, isModerator: boolean) => {
 		try {
 			const { room } = this.state;
-			await toggleRoomModerator({
+			await Services.toggleRoomModerator({
 				roomId: room.rid,
 				t: room.t,
 				userId: selectedUser._id,
@@ -588,7 +576,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	handleIgnore = async (selectedUser: TUserModel, ignore: boolean) => {
 		try {
 			const { room } = this.state;
-			await ignoreUser({
+			await Services.ignoreUser({
 				rid: room.rid,
 				userId: selectedUser._id,
 				ignore
@@ -605,7 +593,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			const { room, members, membersFiltered } = this.state;
 			const userId = selectedUser._id;
 			// TODO: interface SubscriptionType on IRoom is wrong
-			await removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
+			await Services.removeUserFromRoom({ roomId: room.rid, t: room.t as RoomTypes, userId });
 			const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 			EventEmitter.emit(LISTENER, { message });
 			this.setState({

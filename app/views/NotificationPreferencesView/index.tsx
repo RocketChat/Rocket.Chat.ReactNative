@@ -18,7 +18,7 @@ import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { ChatsStackParamList } from '../../stacks/types';
 import { IRoomNotifications } from '../../definitions';
-import { saveNotificationSettings } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -74,7 +74,7 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 		}
 	}
 
-	handleSaveNotificationSettings = async (key: string, value: string | boolean, params: IRoomNotifications) => {
+	saveNotificationSettings = async (key: string, value: string | boolean, params: IRoomNotifications) => {
 		// @ts-ignore
 		logEvent(events[`NP_${key.toUpperCase()}`]);
 		const { room } = this.state;
@@ -90,7 +90,7 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 			});
 
 			try {
-				const result = await saveNotificationSettings(this.rid, params);
+				const result = await Services.saveNotificationSettings(this.rid, params);
 				if (result.success) {
 					return;
 				}
@@ -113,10 +113,9 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 	};
 
 	onValueChangeSwitch = (key: string, value: string | boolean) =>
-		this.handleSaveNotificationSettings(key, value, { [key]: value ? '1' : '0' });
+		this.saveNotificationSettings(key, value, { [key]: value ? '1' : '0' });
 
-	onValueChangePicker = (key: string, value: string) =>
-		this.handleSaveNotificationSettings(key, value, { [key]: value.toString() });
+	onValueChangePicker = (key: string, value: string) => this.saveNotificationSettings(key, value, { [key]: value.toString() });
 
 	pickerSelection = (title: string, key: string) => {
 		const { room } = this.state;

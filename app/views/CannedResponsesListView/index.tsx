@@ -29,7 +29,7 @@ import { ICannedResponse, IDepartment } from '../../definitions/ICannedResponse'
 import { ChatsStackParamList } from '../../stacks/types';
 import { ISubscription } from '../../definitions/ISubscription';
 import { getRoomTitle, getUidDirectMessage } from '../../lib/methods';
-import { getDepartments, getListCannedResponse } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 const COUNT = 25;
 
@@ -90,9 +90,9 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	};
 
-	const handleGetDepartments = debounce(async () => {
+	const getDepartments = debounce(async () => {
 		try {
-			const res: any = await getDepartments();
+			const res: any = await Services.getDepartments();
 			if (res.success) {
 				setDepartments([...fixedScopes, ...res.departments]);
 			}
@@ -140,7 +140,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 	};
 
-	const handleGetListCannedResponse = async ({
+	const getListCannedResponse = async ({
 		text,
 		department,
 		depId,
@@ -152,7 +152,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		debounced: boolean;
 	}) => {
 		try {
-			const res = await getListCannedResponse({
+			const res = await Services.getListCannedResponse({
 				text,
 				offset,
 				count: COUNT,
@@ -191,15 +191,15 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const searchCallback = useCallback(
 		debounce(async (text = '', department = '', depId = '') => {
-			await handleGetListCannedResponse({ text, department, depId, debounced: true });
+			await getListCannedResponse({ text, department, depId, debounced: true });
 		}, 1000),
 		[]
 	); // use debounce with useCallback https://stackoverflow.com/a/58594890
 
 	useEffect(() => {
 		getRoomFromDb();
-		handleGetDepartments();
-		handleGetListCannedResponse({ text: '', department: '', depId: '', debounced: false });
+		getDepartments();
+		getListCannedResponse({ text: '', department: '', depId: '', debounced: false });
 	}, []);
 
 	const newSearch = () => {
@@ -242,7 +242,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			return;
 		}
 		setLoading(true);
-		await handleGetListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
+		await getListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
 	};
 
 	const getHeader = (): StackNavigationOptions => {

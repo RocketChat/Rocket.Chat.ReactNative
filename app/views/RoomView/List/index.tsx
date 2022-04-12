@@ -18,7 +18,7 @@ import EmptyRoom from '../EmptyRoom';
 import List, { IListProps } from './List';
 import NavBottomFAB from './NavBottomFAB';
 import { loadMissedMessages, loadThreadMessages } from '../../../lib/methods';
-import { readThreads } from '../../../lib/services';
+import { Services } from '../../../lib/services';
 
 const QUERY_SIZE = 50;
 
@@ -204,7 +204,7 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 					this.state.messages = messages;
 				}
 				// TODO: move it away from here
-				this.handleReadThreads();
+				this.readThreads();
 			});
 		}
 	};
@@ -214,12 +214,12 @@ class ListContainer extends React.Component<IListContainerProps, IListContainerS
 		this.query();
 	};
 
-	handleReadThreads = debounce(async () => {
+	readThreads = debounce(async () => {
 		const { tmid } = this.props;
 
 		if (tmid) {
 			try {
-				await readThreads(tmid);
+				await Services.readThreads(tmid);
 			} catch {
 				// Do nothing
 			}

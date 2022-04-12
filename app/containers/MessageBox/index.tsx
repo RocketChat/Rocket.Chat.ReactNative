@@ -52,7 +52,7 @@ import { forceJpgExtension } from './forceJpgExtension';
 import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { getPermalinkMessage, hasPermission, search, sendFileMessage } from '../../lib/methods';
-import { executeCommandPreview, getCommandPreview, getListCannedResponse, runSlashCommand } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -529,7 +529,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		try {
 			const { appId } = command;
 			const triggerId = generateTriggerId(appId);
-			executeCommandPreview(name, params, rid, item, triggerId, tmid || messageTmid);
+			Services.executeCommandPreview(name, params, rid, item, triggerId, tmid || messageTmid);
 			replyCancel();
 		} catch (e) {
 			log(e);
@@ -604,7 +604,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}, 300);
 
 	getCannedResponses = debounce(async (text?: string) => {
-		const res = await getListCannedResponse({ text });
+		const res = await Services.getListCannedResponse({ text });
 		this.setState({ mentions: res.success ? res.cannedResponses : [], mentionLoading: false });
 	}, 500);
 
@@ -641,7 +641,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	setCommandPreview = async (command: any, name: string, params: string) => {
 		const { rid } = this.props;
 		try {
-			const response = await getCommandPreview(name, rid, params);
+			const response = await Services.getCommandPreview(name, rid, params);
 			if (response.success) {
 				return this.setState({ commandPreview: response.preview?.items || [], showCommandPreview: true, command });
 			}
@@ -888,7 +888,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 					const messageWithoutCommand = message.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					await runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
+					await Services.runSlashCommand(command, roomId, messageWithoutCommand, triggerId, tmid || messageTmid);
 					replyCancel();
 				} catch (e) {
 					logEvent(events.COMMAND_RUN_F);

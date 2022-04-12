@@ -23,7 +23,7 @@ import { useTheme } from '../../theme';
 import SearchHeader from '../../containers/SearchHeader';
 import { TThreadModel } from '../../definitions/IThread';
 import Item from './Item';
-import { getDiscussions } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 const API_FETCH_COUNT = 50;
 
@@ -63,7 +63,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 
 		setLoading(true);
 		try {
-			const result = await getDiscussions({
+			const result = await Services.getDiscussions({
 				roomId: rid,
 				offset: isSearching ? search.length : discussions.length,
 				count: API_FETCH_COUNT,

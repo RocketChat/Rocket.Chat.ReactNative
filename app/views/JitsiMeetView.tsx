@@ -13,7 +13,7 @@ import { isAndroid, isIOS } from '../utils/deviceInfo';
 import { withTheme } from '../theme';
 import { InsideStackParamList } from '../stacks/types';
 import { IApplicationState, IUser } from '../definitions';
-import { updateJitsiTimeout } from '../lib/services';
+import { Services } from '../lib/services';
 
 const formatUrl = (url: string, baseUrl: string, uriSize: number, avatarAuthURLFragment: string) =>
 	`${baseUrl}/avatar/${url}?format=png&width=${uriSize}&height=${uriSize}${avatarAuthURLFragment}`;
@@ -93,14 +93,14 @@ class JitsiMeetView extends React.Component<IJitsiMeetViewProps, IJitsiMeetViewS
 	onConferenceJoined = () => {
 		logEvent(events.JM_CONFERENCE_JOIN);
 		if (this.rid) {
-			updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
+			Services.updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
 			if (this.jitsiTimeout) {
 				BackgroundTimer.clearInterval(this.jitsiTimeout);
 				BackgroundTimer.stopBackgroundTimer();
 				this.jitsiTimeout = null;
 			}
 			this.jitsiTimeout = BackgroundTimer.setInterval(() => {
-				updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
+				Services.updateJitsiTimeout(this.rid).catch((e: unknown) => console.log(e));
 			}, 10000);
 		}
 	};

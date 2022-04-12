@@ -7,17 +7,17 @@ import log from '../utils/log';
 import Navigation from '../lib/navigation/appNavigation';
 import I18n from '../i18n';
 import { getRoomTitle } from '../lib/methods';
-import { findOrCreateInvite, inviteToken, validateInviteToken } from '../lib/services';
+import { Services } from '../lib/services';
 
 const handleRequest = function* handleRequest({ token }) {
 	try {
-		const validateResult = yield validateInviteToken(token);
+		const validateResult = yield Services.validateInviteToken(token);
 		if (!validateResult.valid) {
 			yield put(inviteLinksFailure());
 			return;
 		}
 
-		const result = yield inviteToken(token);
+		const result = yield Services.inviteToken(token);
 		if (!result.success) {
 			yield put(inviteLinksFailure());
 			return;
@@ -48,7 +48,7 @@ const handleFailure = function handleFailure() {
 const handleCreateInviteLink = function* handleCreateInviteLink({ rid }) {
 	try {
 		const inviteLinks = yield select(state => state.inviteLinks);
-		const result = yield findOrCreateInvite({
+		const result = yield Services.findOrCreateInvite({
 			rid,
 			days: inviteLinks.days,
 			maxUses: inviteLinks.maxUses

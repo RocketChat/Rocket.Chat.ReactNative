@@ -9,7 +9,7 @@ import TextInput from '../../containers/TextInput';
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants';
 import { IApplicationState } from '../../definitions';
-import { joinRoom } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 const styles = StyleSheet.create({
 	container: {
@@ -61,7 +61,7 @@ const JoinCode = React.memo(
 
 		const handleJoinRoom = async () => {
 			try {
-				await joinRoom(rid, code, t as any);
+				await Services.joinRoom(rid, code, t as any);
 				onJoin();
 				hide();
 			} catch (e) {

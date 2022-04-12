@@ -21,7 +21,7 @@ import { isTablet } from '../utils/deviceInfo';
 import { showErrorAlert } from '../utils/info';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
 import sharedStyles from './Styles';
-import { getUsernameSuggestion, saveUserProfile } from '../lib/services';
+import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -64,7 +64,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 	}
 
 	async componentDidMount() {
-		const suggestion = await getUsernameSuggestion();
+		const suggestion = await Services.getUsernameSuggestion();
 		if (suggestion.success) {
 			this.setState({ username: suggestion.result });
 		}
@@ -95,7 +95,7 @@ class SetUsernameView extends React.Component<ISetUsernameViewProps, ISetUsernam
 
 		this.setState({ saving: true });
 		try {
-			await saveUserProfile({ username });
+			await Services.saveUserProfile({ username });
 			dispatch(loginRequest({ resume: token }));
 		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));

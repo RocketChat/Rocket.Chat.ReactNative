@@ -6,7 +6,7 @@ import { MESSAGES } from '../actions/actionsTypes';
 import database from '../lib/database';
 import log from '../utils/log';
 import { goRoom } from '../utils/goRoom';
-import { createDirectMessage } from '../lib/services';
+import { Services } from '../lib/services';
 
 const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 	try {
@@ -25,7 +25,7 @@ const handleReplyBroadcast = function* handleReplyBroadcast({ message }) {
 		if (subscriptions.length) {
 			goRoom({ item: subscriptions[0], isMasterDetail, message });
 		} else {
-			const result = yield createDirectMessage(username);
+			const result = yield Services.createDirectMessage(username);
 			if (result?.success) {
 				goRoom({ item: result?.room, isMasterDetail, message });
 			}

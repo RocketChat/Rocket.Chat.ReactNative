@@ -10,7 +10,7 @@ import log, { events, logEvent } from '../utils/log';
 import I18n from '../i18n';
 import { showErrorAlert } from '../utils/info';
 import { LISTENER } from '../containers/Toast';
-import { closeLivechat, deleteRoom, deleteTeam, emitTyping, forwardLivechat, leaveRoom, leaveTeam } from '../lib/services';
+import { Services } from '../lib/services';
 
 const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	const auth = yield select(state => state.login.isAuthenticated);
@@ -19,11 +19,11 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 	}
 
 	try {
-		yield emitTyping(rid, status);
+		yield Services.emitTyping(rid, status);
 
 		if (status) {
 			yield delay(5000);
-			yield emitTyping(rid, false);
+			yield Services.emitTyping(rid, false);
 		}
 	} catch (e) {
 		log(e);
@@ -65,9 +65,9 @@ const handleLeaveRoom = function* handleLeaveRoom({ room, roomType, selected }) 
 		let result = {};
 
 		if (roomType === 'channel') {
-			result = yield leaveRoom(room.rid, room.t);
+			result = yield Services.leaveRoom(room.rid, room.t);
 		} else if (roomType === 'team') {
-			result = yield leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) });
+			result = yield Services.leaveTeam({ teamId: room.teamId, ...(selected && { rooms: selected }) });
 		}
 
 		if (result?.success) {
@@ -91,9 +91,9 @@ const handleDeleteRoom = function* handleDeleteRoom({ room, roomType, selected }
 		let result = {};
 
 		if (roomType === 'channel') {
-			result = yield deleteRoom(room.rid, room.t);
+			result = yield Services.deleteRoom(room.rid, room.t);
 		} else if (roomType === 'team') {
-			result = yield deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
+			result = yield Services.deleteTeam({ teamId: room.teamId, ...(selected && { roomsToRemove: selected }) });
 		}
 
 		if (result?.success) {
@@ -116,7 +116,7 @@ const handleCloseRoom = function* handleCloseRoom({ rid }) {
 
 	const closeRoom = async (comment = '') => {
 		try {
-			await closeLivechat(rid, comment);
+			await Services.closeLivechat(rid, comment);
 			if (isMasterDetail) {
 				Navigation.navigate('DrawerNavigator');
 			} else {
@@ -150,7 +150,7 @@ const handleCloseRoom = function* handleCloseRoom({ rid }) {
 
 const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 	try {
-		const result = yield forwardLivechat(transferData);
+		const result = yield Services.forwardLivechat(transferData);
 		if (result === true) {
 			const isMasterDetail = yield select(state => state.app.isMasterDetail);
 			if (isMasterDetail) {

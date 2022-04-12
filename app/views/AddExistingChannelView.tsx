@@ -23,7 +23,7 @@ import debounce from '../utils/debounce';
 import { ChatsStackParamList } from '../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../definitions';
 import { getRoomTitle, hasPermission } from '../lib/methods';
-import { addRoomsToTeam } from '../lib/services';
+import { Services } from '../lib/services';
 
 interface IAddExistingChannelViewState {
 	search: TSubscriptionModel[];
@@ -134,7 +134,7 @@ class AddExistingChannelView extends React.Component<IAddExistingChannelViewProp
 		this.setState({ loading: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await addRoomsToTeam({ rooms: selected, teamId: this.teamId });
+			const result = await Services.addRoomsToTeam({ rooms: selected, teamId: this.teamId });
 			if (result.success) {
 				this.setState({ loading: false });
 				// @ts-ignore

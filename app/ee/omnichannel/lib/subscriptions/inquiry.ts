@@ -4,7 +4,7 @@ import { inquiryQueueAdd, inquiryQueueRemove, inquiryQueueUpdate, inquiryRequest
 import sdk from '../../../../lib/services/sdk';
 import { IOmnichannelRoom } from '../../../../definitions';
 import { hasRole } from '../../../../lib/methods';
-import { getAgentDepartments } from '../../../../lib/services';
+import { Services } from '../../../../lib/services';
 
 interface IArgsQueueOmnichannel extends IOmnichannelRoom {
 	type: string;
@@ -82,7 +82,7 @@ export default function subscribeInquiry() {
 			throw new Error('inquiry: @subscribeInquiry user.id not found');
 		}
 
-		getAgentDepartments(user.id).then(result => {
+		Services.getAgentDepartments(user.id).then(result => {
 			if (result.success) {
 				const { departments } = result;
 

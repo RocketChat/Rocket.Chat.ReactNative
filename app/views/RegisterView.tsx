@@ -20,7 +20,7 @@ import isValidEmail from '../utils/isValidEmail';
 import log, { events, logEvent } from '../utils/log';
 import openLink from '../utils/openLink';
 import sharedStyles from './Styles';
-import { register } from '../lib/services';
+import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({
 	title: {
@@ -128,7 +128,7 @@ class RegisterView extends React.Component<IProps, any> {
 		const { dispatch, Accounts_EmailVerification, navigation, Accounts_ManuallyApproveNewUsers } = this.props;
 
 		try {
-			await register({
+			await Services.register({
 				name,
 				email,
 				pass: password,

@@ -15,7 +15,7 @@ import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
 import { IApplicationState } from '../../definitions';
-import { sendEmailCode } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 export const TWO_FACTOR = 'TWO_FACTOR';
 
@@ -63,7 +63,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
-	const sendEmail = () => sendEmailCode();
+	const sendEmail = () => Services.sendEmailCode();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {

@@ -42,20 +42,7 @@ import {
 	hasPermission,
 	isGroupChat
 } from '../../lib/methods';
-import {
-	addRoomsToTeam,
-	addUsersToRoom,
-	convertChannelToTeam,
-	convertTeamToChannel,
-	getChannelInfo,
-	getRoomCounters,
-	getRoutingConfig,
-	getUserInfo,
-	returnLivechat,
-	saveRoomSettings,
-	teamListRoomsOfUser,
-	toggleBlockUser
-} from '../../lib/services';
+import { Services } from '../../lib/services';
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
@@ -164,7 +151,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		if (room.rid) {
 			if (!room.id && !this.isOmnichannelPreview) {
 				try {
-					const result = await getChannelInfo(room.rid);
+					const result = await Services.getChannelInfo(room.rid);
 					if (result.success) {
 						// @ts-ignore
 						this.setState({ room: { ...result.channel, rid: result.channel._id } });
@@ -176,7 +163,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			if (room && room.t !== 'd' && this.canViewMembers()) {
 				try {
-					const counters = await getRoomCounters(room.rid, room.t as any);
+					const counters = await Services.getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
 						this.setState({ membersCount: counters.members, joined: counters.joined });
 					}
@@ -367,7 +354,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	canReturnQueue = async () => {
 		try {
-			const { returnQueue } = await getRoutingConfig();
+			const { returnQueue } = await Services.getRoutingConfig();
 			return returnQueue;
 		} catch {
 			return false;
@@ -398,7 +385,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		dispatch(closeRoom(rid));
 	};
 
-	handleReturnLivechat = () => {
+	returnLivechat = () => {
 		const {
 			room: { rid }
 		} = this.state;
@@ -407,7 +394,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			confirmationText: I18n.t('Yes'),
 			onPress: async () => {
 				try {
-					await returnLivechat(rid);
+					await Services.returnLivechat(rid);
 				} catch (e: any) {
 					showErrorAlert(e.reason, I18n.t('Oops'));
 				}
@@ -421,7 +408,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		try {
 			if (!isGroupChat(room)) {
 				const roomUserId = getUidDirectMessage(room);
-				const result = await getUserInfo(roomUserId);
+				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					this.setState({ member: result.user as any });
 				}
@@ -438,7 +425,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { rid } = room;
 		try {
 			dispatch(setLoading(true));
-			await addUsersToRoom(rid);
+			await Services.addUsersToRoom(rid);
 			navigation.pop();
 		} catch (e) {
 			log(e);
@@ -447,13 +434,13 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		}
 	};
 
-	handleToggleBlockUser = async () => {
+	toggleBlockUser = async () => {
 		logEvent(events.RA_TOGGLE_BLOCK_USER);
 		const { room } = this.state;
 		const { rid, blocker } = room;
 		const { member } = this.state;
 		try {
-			await toggleBlockUser(rid, member._id as string, !blocker);
+			await Services.toggleBlockUser(rid, member._id as string, !blocker);
 		} catch (e) {
 			logEvent(events.RA_TOGGLE_BLOCK_USER_F);
 			log(e);
@@ -480,7 +467,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			try {
 				// Send new room setting value to server
-				const { result } = await saveRoomSettings(rid, { encrypted });
+				const { result } = await Services.saveRoomSettings(rid, { encrypted });
 				// If it was saved successfully
 				if (result) {
 					return;
@@ -534,7 +521,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			if (!room.teamId) {
 				return;
 			}
-			const result = await teamListRoomsOfUser({ teamId: room.teamId, userId });
+			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId, userId });
 
 			if (result.success) {
 				if (result.rooms?.length) {
@@ -567,7 +554,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			if (!room.teamId) {
 				return;
 			}
-			const result = await convertTeamToChannel({ teamId: room.teamId, selected });
+			const result = await Services.convertTeamToChannel({ teamId: room.teamId, selected });
 
 			if (result.success) {
 				navigation.navigate('RoomView');
@@ -595,7 +582,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			if (!room.teamId) {
 				return;
 			}
-			const result = await teamListRoomsOfUser({ teamId: room.teamId, userId });
+			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId, userId });
 
 			if (result.success) {
 				if (result.rooms?.length) {
@@ -634,7 +621,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		try {
 			const { room } = this.state;
 			const { navigation } = this.props;
-			const result = await convertChannelToTeam({ rid: room.rid, name: room.name, type: room.t as any });
+			const result = await Services.convertChannelToTeam({ rid: room.rid, name: room.name, type: room.t as any });
 
 			if (result.success) {
 				navigation.navigate('RoomView');
@@ -659,7 +646,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		try {
 			const { room } = this.state;
 			const { navigation } = this.props;
-			const result = await addRoomsToTeam({ teamId: selected?.[0], rooms: [room.rid] });
+			const result = await Services.addRoomsToTeam({ teamId: selected?.[0], rooms: [room.rid] });
 			if (result.success) {
 				navigation.navigate('RoomView');
 			}
@@ -888,7 +875,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						title={`${blocker ? 'Unblock' : 'Block'}_user`}
 						onPress={() =>
 							this.onPressTouchable({
-								event: this.handleToggleBlockUser
+								event: this.toggleBlockUser
 							})
 						}
 						testID='room-actions-block-user'
@@ -1275,7 +1262,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									title='Return'
 									onPress={() =>
 										this.onPressTouchable({
-											event: this.handleReturnLivechat
+											event: this.returnLivechat
 										})
 									}
 									left={() => <List.Icon name='undo' />}

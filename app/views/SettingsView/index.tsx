@@ -30,7 +30,7 @@ import openLink from '../../utils/openLink';
 import { onReviewPress } from '../../utils/review';
 import SidebarView from '../SidebarView';
 import { clearCache } from '../../lib/methods';
-import { disconnect } from '../../lib/services';
+import { Services } from '../../lib/services';
 
 interface ISettingsViewProps extends IBaseScreen<SettingsStackParamList, 'SettingsView'> {
 	server: IServer;
@@ -100,7 +100,7 @@ class SettingsView extends React.Component<ISettingsViewProps, any> {
 				await clearCache({ server });
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();
-				disconnect();
+				Services.disconnect();
 				dispatch(selectServerRequest(server));
 			}
 		});

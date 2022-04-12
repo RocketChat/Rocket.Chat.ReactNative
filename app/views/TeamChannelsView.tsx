@@ -33,7 +33,7 @@ import { goRoom } from '../utils/goRoom';
 import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 import { getRoomAvatar, getRoomTitle, hasPermission } from '../lib/methods';
-import { getRoomInfo, getTeamListRoom, removeTeamRoom, updateTeamRoom } from '../lib/services';
+import { Services } from '../lib/services';
 
 const API_FETCH_COUNT = 25;
 const PERMISSION_DELETE_C = 'delete-c';
@@ -172,7 +172,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 		this.setState({ loadingMore: true });
 		try {
-			const result = await getTeamListRoom({
+			const result = await Services.getTeamListRoom({
 				teamId: this.teamId,
 				offset: length,
 				count: API_FETCH_COUNT,
@@ -342,7 +342,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			const { navigation, isMasterDetail } = this.props;
 			try {
 				let params = {};
-				const result = await getRoomInfo(item._id);
+				const result = await Services.getRoomInfo(item._id);
 				if (result.success) {
 					params = {
 						rid: item._id,
@@ -372,7 +372,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		logEvent(events.TC_TOGGLE_AUTOJOIN);
 		try {
 			const { data } = this.state;
-			const result = await updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
+			const result = await Services.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
 			if (result.success) {
 				const newData = data.map(i => {
 					if (i._id === item._id) {
@@ -411,7 +411,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const { data } = this.state;
-			const result = await removeTeamRoom({ roomId: item._id, teamId: this.team.teamId });
+			const result = await Services.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId });
 			if (result.success) {
 				const newData = data.filter(room => result.room._id !== room._id);
 				this.setState({ data: newData });
