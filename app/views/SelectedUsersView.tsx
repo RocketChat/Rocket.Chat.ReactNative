@@ -17,7 +17,7 @@ import { IApplicationState, IBaseScreen, ISubscription, IUser } from '../definit
 import I18n from '../i18n';
 import database from '../lib/database';
 import RocketChat from '../lib/rocketchat';
-import UserItem from '../presentation/UserItem';
+import UserItem from '../containers/UserItem';
 import { ISelectedUser } from '../reducers/selectedUsers';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';

@@ -27,7 +27,7 @@ import RocketChat from '../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import debounce from '../utils/debounce';
 import { isIOS } from '../utils/deviceInfo';
 import { goRoom } from '../utils/goRoom';
@@ -87,7 +87,7 @@ type IProps = Omit<IBaseScreen<ChatsStackParamList, 'TeamChannelsView'>, 'naviga
 interface ITeamChannelsViewProps extends IProps {
 	isMasterDetail: boolean;
 	insets: EdgeInsets;
-	theme: string;
+	theme: TSupportedThemes;
 	useRealName: boolean;
 	width: number;
 	StoreLastMessage: boolean;

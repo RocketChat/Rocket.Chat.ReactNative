@@ -12,7 +12,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
@@ -32,7 +32,7 @@ interface INavigationOption {
 
 interface IReadReceiptViewProps extends INavigationOption {
 	Message_TimeAndDateFormat: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceiptViewState> {

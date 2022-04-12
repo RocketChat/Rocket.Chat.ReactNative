@@ -16,6 +16,8 @@ import { E2E_MESSAGE_TYPE, themes } from '../../lib/constants';
 const Content = React.memo(
 	(props: IMessageContent) => {
 		const { theme } = useTheme();
+		const { baseUrl, user, onLinkPress } = useContext(MessageContext);
+
 		if (props.isInfo) {
 			// @ts-ignore
 			const infoMessage = getInfoMessage({ ...props });
@@ -49,7 +51,6 @@ const Content = React.memo(
 		} else if (isPreview) {
 			content = <MarkdownPreview msg={props.msg} />;
 		} else {
-			const { baseUrl, user, onLinkPress } = useContext(MessageContext);
 			content = (
 				<Markdown
 					msg={props.msg}

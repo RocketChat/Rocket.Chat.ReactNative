@@ -13,7 +13,7 @@ import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { LISTENER } from '../containers/Toast';
 import EventEmitter from '../utils/events';
 import I18n from '../i18n';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { ImageViewer } from '../presentation/ImageViewer';
 import { themes } from '../lib/constants';
 import RCActivityIndicator from '../containers/ActivityIndicator';
@@ -41,7 +41,7 @@ interface IAttachmentViewState {
 interface IAttachmentViewProps {
 	navigation: StackNavigationProp<InsideStackParamList, 'AttachmentView'>;
 	route: RouteProp<InsideStackParamList, 'AttachmentView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	baseUrl: string;
 	width: number;
 	height: number;
