@@ -26,7 +26,7 @@ import Input from './Input';
 import styles from './styles';
 
 export interface IItemData {
-	value: string;
+	value: any;
 	text: { text: string };
 	imageUrl?: string;
 }
