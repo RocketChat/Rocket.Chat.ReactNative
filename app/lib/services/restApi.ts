@@ -18,7 +18,7 @@ import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import { RoomTypes, roomTypeToApiType } from '../methods';
 import sdk from './sdk';
 import { compareServerVersion } from '../methods/helpers/compareServerVersion';
-import { unsubscribeRooms } from '../methods/subscribeRooms';
+import RocketChat from '../rocketchat';
 
 export const createChannel = ({
 	name,
@@ -800,7 +800,7 @@ export const emitTyping = (room: IRoom, typing = true) => {
 
 export function e2eResetOwnKey(): Promise<boolean | {}> {
 	// {} when TOTP is enabled
-	unsubscribeRooms();
+	RocketChat.unsubscribeRooms();
 
 	// RC 0.72.0
 	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
