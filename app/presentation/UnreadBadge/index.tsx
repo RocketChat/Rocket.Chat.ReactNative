@@ -42,10 +42,11 @@ interface IUnreadBadge {
 
 const UnreadBadge = React.memo(
 	({ unread, userMentions, groupMentions, style, tunread, tunreadUser, tunreadGroup, small }: IUnreadBadge) => {
+		const { theme } = useTheme();
 		if ((!unread || unread <= 0) && !tunread?.length) {
 			return null;
 		}
-		const { theme } = useTheme();
+
 		const { backgroundColor, color } = getUnreadStyle({
 			theme,
 			unread,
