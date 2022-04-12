@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import RocketChat from '../../lib/rocketchat';
-import { useTheme } from '../../theme';
+import { TSupportedThemes, useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Title = ({ title, theme }: { title: string; theme: string }) => (
+const Title = ({ title, theme }: { title: string; theme: TSupportedThemes }) => (
 	<Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text>
 );
 

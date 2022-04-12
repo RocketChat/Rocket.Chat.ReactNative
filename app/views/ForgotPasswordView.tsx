@@ -9,7 +9,7 @@ import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { events, logEvent } from '../utils/log';
@@ -25,7 +25,7 @@ interface IForgotPasswordViewState {
 interface IForgotPasswordViewProps {
 	navigation: StackNavigationProp<OutsideParamList, 'ForgotPasswordView'>;
 	route: RouteProp<OutsideParamList, 'ForgotPasswordView'>;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForgotPasswordViewState> {

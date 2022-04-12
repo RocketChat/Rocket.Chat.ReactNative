@@ -5,6 +5,7 @@ import { HeaderBackButton, StackNavigationProp } from '@react-navigation/stack';
 import { themes } from '../../lib/constants';
 import Avatar from '../../containers/Avatar';
 import { ChatsStackParamList } from '../../stacks/types';
+import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	avatar: {
@@ -22,7 +23,7 @@ interface ILeftButtonsProps {
 	token?: string;
 	title?: string;
 	t: string;
-	theme: string;
+	theme: TSupportedThemes;
 	goRoomActionsView: Function;
 	isMasterDetail: boolean;
 }

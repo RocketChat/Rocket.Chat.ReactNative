@@ -8,19 +8,20 @@ import { textParser } from '../utils';
 import { CustomIcon } from '../../../lib/Icons';
 import styles from './styles';
 import { IItemData } from '.';
+import { TSupportedThemes } from '../../../theme';
 
 interface IChip {
 	item: IItemData;
 	onSelect: (item: IItemData) => void;
 	style?: object;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IChips {
 	items: IItemData[];
 	onSelect: (item: IItemData) => void;
 	style?: object;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const keyExtractor = (item: IItemData) => item.value.toString();

@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 
 import { themes } from '../../lib/constants';
+import { TSupportedThemes } from '../../theme';
 
 export * from './animations';
 
@@ -15,13 +16,13 @@ export const cardStyle = {
 	backgroundColor: 'rgba(0,0,0,0)'
 };
 
-export const borderBottom: any = (theme: any) => ({
+export const borderBottom: any = (theme: TSupportedThemes) => ({
 	borderBottomWidth: StyleSheet.hairlineWidth,
 	borderBottomColor: themes[theme].headerBorder,
 	elevation: 0
 });
 
-export const themedHeader = (theme: any) => ({
+export const themedHeader = (theme: TSupportedThemes) => ({
 	headerStyle: {
 		...borderBottom(theme),
 		backgroundColor: themes[theme].headerBackground
@@ -30,7 +31,7 @@ export const themedHeader = (theme: any) => ({
 	headerTitleStyle: { color: themes[theme].headerTitleColor }
 });
 
-export const navigationTheme = (theme: any) => {
+export const navigationTheme = (theme: TSupportedThemes) => {
 	const defaultNavTheme = theme === 'light' ? DefaultTheme : DarkTheme;
 
 	return {

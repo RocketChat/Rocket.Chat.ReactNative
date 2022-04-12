@@ -4,7 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 import I18n from '../i18n';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import debounce from '../utils/debounce';
 import * as List from '../containers/List';
@@ -34,7 +34,7 @@ interface IItem {
 	item: IOptionsField;
 	selected: boolean;
 	onItemPress: () => void;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IRenderSearch {
@@ -52,7 +52,7 @@ interface IPickerViewState {
 interface IPickerViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'PickerView'>;
 	route: RouteProp<ChatsStackParamList, 'PickerView'>;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (

@@ -6,9 +6,10 @@ import { isRTL } from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { DisplayMode, themes } from '../../lib/constants';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
+import { TSupportedThemes } from '../../theme';
 
 interface ILeftActions {
-	theme: string;
+	theme: TSupportedThemes;
 	transX: any;
 	isRead: boolean;
 	width: number;
@@ -17,7 +18,7 @@ interface ILeftActions {
 }
 
 interface IRightActions {
-	theme: string;
+	theme: TSupportedThemes;
 	transX: any;
 	favorite: boolean;
 	width: number;

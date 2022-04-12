@@ -175,4 +175,4 @@ export const colors = {
 	}
 };
 
-export const themes: any = colors;
+export const themes = colors;

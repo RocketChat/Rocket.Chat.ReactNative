@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, ViewStyle } from 'react-native';
 
+import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
 import styles from './styles';
 
 interface ITableRow {
 	children: React.ReactElement | null;
 	isLastRow: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const TableRow = React.memo(({ isLastRow, children: _children, theme }: ITableRow) => {
