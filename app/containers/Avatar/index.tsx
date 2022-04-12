@@ -32,7 +32,10 @@ class AvatarContainer extends React.Component<IAvatar, any> {
 
 	shouldComponentUpdate(nextProps: IAvatar, nextState: { avatarETag: string }) {
 		const { avatarETag } = this.state;
-		const { text, type } = this.props;
+		const { text, type, externalProviderUrl } = this.props;
+		if (nextProps.externalProviderUrl !== externalProviderUrl) {
+			return true;
+		}
 		if (nextState.avatarETag !== avatarETag) {
 			return true;
 		}
