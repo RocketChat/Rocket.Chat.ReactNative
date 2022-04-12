@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { TMessageModel } from '../../definitions/IMessage';
 import I18n from '../../i18n';
 import { DISCUSSION } from './constants';
@@ -55,7 +56,11 @@ export const SYSTEM_MESSAGES = [
 	'user-converted-to-team',
 	'user-converted-to-channel',
 	'user-deleted-room-from-team',
-	'user-removed-room-from-team'
+	'user-removed-room-from-team',
+	'room-disallowed-reacting',
+	'room-allowed-reacting',
+	'room-set-read-only',
+	'room-removed-read-only'
 ];
 
 export const SYSTEM_MESSAGE_TYPES = {
@@ -193,7 +198,19 @@ export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage): strin
 	if (type === 'user-removed-room-from-team') {
 		return I18n.t('Removed__roomName__from_this_team', { roomName: msg });
 	}
-	return '';
+	if (type === 'room-disallowed-reacting') {
+		return I18n.t('Room_disallowed_reacting', { userBy: username });
+	}
+	if (type === 'room-allowed-reacting') {
+		return I18n.t('Room_allowed_reacting', { userBy: username });
+	}
+	if (type === 'room-set-read-only') {
+		return I18n.t('Room_set_read_only', { userBy: username });
+	}
+	if (type === 'room-removed-read-only') {
+		return I18n.t('Room_removed_read_only', { userBy: username });
+	}
+	return I18n.t('Unsupported_system_message');
 };
 
 export const getMessageTranslation = (message: TMessageModel, autoTranslateLanguage: string) => {

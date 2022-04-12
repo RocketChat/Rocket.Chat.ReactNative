@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import Message from './Message';
 import MessageContext from './Context';
 import debounce from '../../utils/debounce';
-import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
+import { getMessageTranslation, SYSTEM_MESSAGES } from './utils';
 import { useTheme, withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
@@ -31,6 +31,7 @@ interface IMessageContainerProps {
 	Message_GroupingPeriod?: number;
 	isReadReceiptEnabled?: boolean;
 	isThreadRoom: boolean;
+	isSystemMessage?: boolean;
 	useRealName?: boolean;
 	autoTranslateRoom?: boolean;
 	autoTranslateLanguage?: string;
@@ -254,8 +255,11 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	}
 
 	get isInfo(): boolean {
-		const { item } = this.props;
-		return (item.t && SYSTEM_MESSAGES.includes(item.t)) ?? false;
+		const { item, isSystemMessage } = this.props;
+		if (['e2e', 'discussion-created'].includes(item.t)) {
+			return false;
+		}
+		return item.t && (isSystemMessage || SYSTEM_MESSAGES.includes(item.t));
 	}
 
 	get isTemp(): boolean {

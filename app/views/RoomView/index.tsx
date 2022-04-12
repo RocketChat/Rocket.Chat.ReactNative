@@ -142,7 +142,9 @@ type TRoomUpdate = typeof roomAttrsUpdate[number];
 interface IRoomViewState {
 	[key: string]: any;
 	joined: boolean;
-	room: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string; joinCodeRequired?: boolean };
+	room:
+		| TSubscriptionModel
+		| { rid: string; t: string; name?: string; fname?: string; prid?: string; joinCodeRequired?: boolean; sysMes?: boolean };
 	roomUpdate: {
 		[K in TRoomUpdate]?: any; // TODO: get type from TSubscriptionModel
 	};
@@ -1192,6 +1194,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					reactionInit={this.onReactionInit}
 					replyBroadcast={this.replyBroadcast}
 					errorActionsShow={this.errorActionsShow}
+					isSystemMessage={room.sysMes as boolean}
 					baseUrl={baseUrl}
 					Message_GroupingPeriod={Message_GroupingPeriod}
 					timeFormat={Message_TimeFormat}
