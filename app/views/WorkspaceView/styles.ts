@@ -5,7 +5,7 @@ import sharedStyles from '../Styles';
 export default StyleSheet.create({
 	serverName: {
 		...sharedStyles.textSemibold,
-		fontSize: 15,
+		fontSize: 16,
 		marginBottom: 4
 	},
 	serverUrl: {

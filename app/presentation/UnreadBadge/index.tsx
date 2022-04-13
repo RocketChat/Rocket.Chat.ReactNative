@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	unreadText: {
-		fontSize: 13,
+		fontSize: 12,
 		...sharedStyles.textSemibold
 	},
 	textSmall: {

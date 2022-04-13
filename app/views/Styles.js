@@ -112,12 +112,12 @@ export default StyleSheet.create({
 		backgroundColor: 'transparent',
 		...Platform.select({
 			ios: {
-				fontFamily: 'Inter-Regular',
-				fontWeight: '700'
+				fontFamily: 'Inter-Bold'
+				// fontWeight: '700'
 			},
 			android: {
 				includeFontPadding: false,
-				fontFamily: 'Inter-Regular',
+				fontFamily: 'Inter-Medium',
 				fontWeight: 'bold'
 			}
 		})

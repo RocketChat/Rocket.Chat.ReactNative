@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		top: 60,
 		left: 0,
 		right: 0,
-		fontSize: 15,
+		fontSize: 16,
 		paddingHorizontal: 24,
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter

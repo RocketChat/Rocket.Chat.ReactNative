@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		...sharedStyles.textRegular,
-		fontSize: 13
+		fontSize: 14
 	},
 	bold: {
 		...sharedStyles.textSemibold

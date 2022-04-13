@@ -55,12 +55,12 @@ const styles = StyleSheet.create({
 		marginRight: 10
 	},
 	roomName: {
-		fontSize: 15,
+		fontSize: 16,
 		lineHeight: 20,
 		...sharedStyles.textMedium
 	},
 	message: {
-		fontSize: 13,
+		fontSize: 14,
 		lineHeight: 17,
 		...sharedStyles.textRegular
 	},

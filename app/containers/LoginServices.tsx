@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 	},
 	serviceText: {
 		...sharedStyles.textRegular,
-		fontSize: 15
+		fontSize: 14
 	},
 	serviceName: {
 		...sharedStyles.textSemibold

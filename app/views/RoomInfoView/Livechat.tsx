@@ -15,7 +15,7 @@ import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 
 const styles = StyleSheet.create({
 	title: {
-		fontSize: 15,
+		fontSize: 14,
 		paddingHorizontal: 20,
 		...sharedStyles.textMedium
 	}

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 	},
 	pickerText: {
 		...sharedStyles.textRegular,
-		fontSize: 15
+		fontSize: 14
 	},
 	icon: {
 		right: 16

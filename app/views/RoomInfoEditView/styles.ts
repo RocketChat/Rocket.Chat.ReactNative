@@ -43,7 +43,7 @@ export default StyleSheet.create({
 		alignItems: 'flex-end'
 	},
 	switchLabelPrimary: {
-		fontSize: 15,
+		fontSize: 14,
 		paddingBottom: 6,
 		...sharedStyles.textRegular
 	},

@@ -27,7 +27,7 @@ export default StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	serverUrl: {
-		fontSize: 13,
+		fontSize: 14,
 		...sharedStyles.textRegular
 	}
 });

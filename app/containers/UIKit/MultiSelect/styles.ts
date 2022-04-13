@@ -27,7 +27,7 @@ export default StyleSheet.create<any>({
 	pickerText: {
 		...sharedStyles.textRegular,
 		paddingLeft: 6,
-		fontSize: 15
+		fontSize: 14
 	},
 	item: {
 		height: 48,

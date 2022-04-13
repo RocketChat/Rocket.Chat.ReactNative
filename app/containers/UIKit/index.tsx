@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		marginBottom: 16
 	},
 	text: {
-		fontSize: 15,
+		fontSize: 14,
 		lineHeight: 22,
 		textAlignVertical: 'center',
 		...sharedStyles.textRegular

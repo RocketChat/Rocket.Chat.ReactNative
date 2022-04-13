@@ -14,7 +14,7 @@ export default StyleSheet.create({
 		borderRadius: 4
 	},
 	title: {
-		fontSize: 15,
+		fontSize: 16,
 		paddingBottom: 8,
 		...sharedStyles.textBold,
 		...sharedStyles.textAlignCenter

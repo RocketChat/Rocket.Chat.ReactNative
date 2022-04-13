@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 		marginBottom: 12
 	},
 	text: {
-		fontSize: 15,
+		fontSize: 16,
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},

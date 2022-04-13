@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 6
 	},
 	title: {
-		fontSize: 15,
+		fontSize: 16,
 		...sharedStyles.textRegular
 	}
 });

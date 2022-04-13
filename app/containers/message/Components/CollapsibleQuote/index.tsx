@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 10
 	},
 	fieldTitle: {
-		fontSize: 15,
+		fontSize: 14,
 		...sharedStyles.textBold
 	},
 	marginTop: {
@@ -48,14 +48,14 @@ const styles = StyleSheet.create({
 		marginBottom: 4
 	},
 	title: {
-		fontSize: 16,
+		fontSize: 14,
 		...sharedStyles.textMedium
 	},
 	touchableContainer: {
 		flexDirection: 'row'
 	},
 	markdownFontSize: {
-		fontSize: 15
+		fontSize: 14
 	},
 	iconContainer: {
 		width: 20,

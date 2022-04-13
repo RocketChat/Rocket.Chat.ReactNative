@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 	},
 	description: {
 		marginBottom: 10,
-		fontSize: 15,
+		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	error: {

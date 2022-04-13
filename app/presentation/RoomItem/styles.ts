@@ -29,7 +29,7 @@ export default StyleSheet.create<any>({
 	},
 	title: {
 		flex: 1,
-		fontSize: 15,
+		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	alert: {
@@ -62,7 +62,7 @@ export default StyleSheet.create<any>({
 	},
 	markdownText: {
 		flex: 1,
-		fontSize: 13,
+		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	avatar: {

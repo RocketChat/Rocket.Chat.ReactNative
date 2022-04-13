@@ -26,11 +26,11 @@ const styles = StyleSheet.create({
 		marginRight: 15
 	},
 	name: {
-		fontSize: 15,
+		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	username: {
-		fontSize: 13,
+		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	icon: {

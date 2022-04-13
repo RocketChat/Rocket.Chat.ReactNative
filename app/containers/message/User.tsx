@@ -20,12 +20,12 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	username: {
-		fontSize: 15,
+		fontSize: 16,
 		lineHeight: 22,
 		...sharedStyles.textMedium
 	},
 	usernameInfoMessage: {
-		fontSize: 15,
+		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	titleContainer: {

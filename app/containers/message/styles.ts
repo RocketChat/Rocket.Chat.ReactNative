@@ -53,7 +53,7 @@ export default StyleSheet.create({
 		minWidth: 46.3
 	},
 	reactionCount: {
-		fontSize: 13,
+		fontSize: 12,
 		marginLeft: 3,
 		marginRight: 8.5,
 		...sharedStyles.textSemibold
@@ -95,7 +95,7 @@ export default StyleSheet.create({
 		marginRight: 8
 	},
 	buttonText: {
-		fontSize: 11,
+		fontSize: 12,
 		...sharedStyles.textSemibold
 	},
 	imageContainer: {
@@ -118,17 +118,17 @@ export default StyleSheet.create({
 		resizeMode: 'contain'
 	},
 	text: {
-		fontSize: 15,
+		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	textInfo: {
 		fontStyle: 'italic',
-		fontSize: 15,
+		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	startedDiscussion: {
 		fontStyle: 'italic',
-		fontSize: 15,
+		fontSize: 14,
 		marginBottom: 6,
 		...sharedStyles.textRegular
 	},
@@ -148,7 +148,7 @@ export default StyleSheet.create({
 		marginLeft: 16
 	},
 	repliedThreadName: {
-		fontSize: 15,
+		fontSize: 14,
 		flex: 1,
 		...sharedStyles.textRegular
 	},

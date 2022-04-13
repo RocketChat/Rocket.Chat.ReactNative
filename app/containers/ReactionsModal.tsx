@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
 		paddingVertical: 10
 	},
 	title: {
-		fontSize: 15,
+		fontSize: 16,
 		...sharedStyles.textSemibold,
 		...sharedStyles.textAlignCenter
 	},
 	reactCount: {
-		fontSize: 13,
+		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	peopleReacted: {

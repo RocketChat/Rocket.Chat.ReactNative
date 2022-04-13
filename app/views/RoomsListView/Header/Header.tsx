@@ -60,7 +60,7 @@ const Header = React.memo(
 		const isLight = theme === 'light';
 		const { isLandscape } = useOrientation();
 		const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
-		const titleFontSize = 15 * scale;
+		const titleFontSize = 16 * scale;
 		const subTitleFontSize = 12 * scale;
 
 		if (showSearchHeader) {

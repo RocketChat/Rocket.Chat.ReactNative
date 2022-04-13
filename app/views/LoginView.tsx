@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	registerDisabled: {
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter,
-		fontSize: 15
+		fontSize: 14
 	},
 	title: {
 		...sharedStyles.textBold,

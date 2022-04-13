@@ -31,16 +31,15 @@ export default StyleSheet.create({
 		textDecorationLine: 'line-through'
 	},
 	plainText: {
-		fontSize: 15,
+		fontSize: 14,
 		flexShrink: 1
 	},
 	text: {
-		fontSize: 15,
+		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	textInfo: {
 		fontStyle: 'italic',
-		fontSize: 15,
 		...sharedStyles.textRegular
 	},
 	textBig: {
@@ -57,7 +56,7 @@ export default StyleSheet.create({
 	},
 	temp: { opacity: 0.3 },
 	mention: {
-		fontSize: 15,
+		fontSize: 14,
 		...sharedStyles.textSemibold
 	},
 	paragraph: {
@@ -74,7 +73,8 @@ export default StyleSheet.create({
 		resizeMode: 'contain'
 	},
 	codeInline: {
-		fontSize: 15,
+		fontSize: 14,
+		lineHeight: 20,
 		...sharedStyles.textRegular,
 		...codeFontFamily,
 		borderWidth: 1,
@@ -83,7 +83,8 @@ export default StyleSheet.create({
 		paddingTop: 2
 	},
 	codeBlock: {
-		fontSize: 15,
+		fontSize: 14,
+		lineHeight: 20,
 		...sharedStyles.textRegular,
 		...codeFontFamily,
 		borderWidth: 1,
@@ -91,11 +92,11 @@ export default StyleSheet.create({
 		padding: 4
 	},
 	link: {
-		fontSize: 15,
+		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	edited: {
-		fontSize: 13,
+		fontSize: 12,
 		...sharedStyles.textRegular
 	},
 	heading1: {
@@ -116,7 +117,7 @@ export default StyleSheet.create({
 	},
 	heading5: {
 		...sharedStyles.textMedium,
-		fontSize: 15
+		fontSize: 16
 	},
 	heading6: {
 		...sharedStyles.textMedium,
