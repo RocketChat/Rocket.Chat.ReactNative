@@ -5,7 +5,7 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 import { Subscription } from 'rxjs';
 
 import I18n from '../i18n';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
@@ -25,7 +25,7 @@ interface IItem {
 }
 
 interface IScreenLockConfigViewProps {
-	theme: string;
+	theme: TSupportedThemes;
 	server: string;
 	Force_Screen_Lock: boolean;
 	Force_Screen_Lock_After: number;

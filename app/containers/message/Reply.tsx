@@ -15,7 +15,7 @@ import { IAttachment } from '../../definitions/IAttachment';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import RCActivityIndicator from '../ActivityIndicator';
 import Attachments from './Attachments';
-import { useTheme } from '../../theme';
+import { TSupportedThemes, useTheme } from '../../theme';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 
 const styles = StyleSheet.create({
@@ -98,21 +98,31 @@ interface IMessageReply {
 	getCustomEmoji: TGetCustomEmoji;
 }
 
-const Title = React.memo(({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: string }) => {
-	const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
-	return (
-		<View style={styles.authorContainer}>
-			{attachment.author_name ? (
-				<Text style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>{attachment.author_name}</Text>
-			) : null}
-			{attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
-			{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryTintColor }]}>{time}</Text> : null}
-		</View>
-	);
-});
+const Title = React.memo(
+	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
+		const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
+		return (
+			<View style={styles.authorContainer}>
+				{attachment.author_name ? (
+					<Text style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>{attachment.author_name}</Text>
+				) : null}
+				{attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
+				{time ? <Text style={[styles.time, { color: themes[theme].auxiliaryTintColor }]}>{time}</Text> : null}
+			</View>
+		);
+	}
+);
 
 const Description = React.memo(
-	({ attachment, getCustomEmoji, theme }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji; theme: string }) => {
+	({
+		attachment,
+		getCustomEmoji,
+		theme
+	}: {
+		attachment: IAttachment;
+		getCustomEmoji: TGetCustomEmoji;
+		theme: TSupportedThemes;
+	}) => {
 		const { baseUrl, user } = useContext(MessageContext);
 		const text = attachment.text || attachment.title;
 
@@ -160,7 +170,15 @@ const UrlImage = React.memo(
 );
 
 const Fields = React.memo(
-	({ attachment, theme, getCustomEmoji }: { attachment: IAttachment; theme: string; getCustomEmoji: TGetCustomEmoji }) => {
+	({
+		attachment,
+		theme,
+		getCustomEmoji
+	}: {
+		attachment: IAttachment;
+		theme: TSupportedThemes;
+		getCustomEmoji: TGetCustomEmoji;
+	}) => {
 		const { baseUrl, user } = useContext(MessageContext);
 
 		if (!attachment.fields) {
