@@ -415,8 +415,8 @@ PODS:
     - React-Core
   - react-native-netinfo (6.0.0):
     - React-Core
-  - react-native-notifications (2.1.7):
-    - React
+  - react-native-notifications (4.2.4):
+    - React-Core
   - react-native-orientation-locker (1.1.8):
     - React
   - react-native-restart (0.0.22):
@@ -505,6 +505,8 @@ PODS:
   - RNBootSplash (3.2.4):
     - React-Core
   - RNCAsyncStorage (1.12.1):
+    - React-Core
+  - RNCClipboard (1.8.5):
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
@@ -693,6 +695,7 @@ DEPENDENCIES:
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNConfigReader (from `../node_modules/react-native-config-reader`)
   - "RNCPicker (from `../node_modules/@react-native-community/picker`)"
@@ -879,6 +882,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCClipboard:
+    :path: "../node_modules/@react-native-clipboard/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNConfigReader:
@@ -950,7 +955,7 @@ SPEC CHECKSUMS:
   EXVideoThumbnails: 442c3abadb51a81551a3b53705b7560de390e6f7
   EXWebBrowser: 76783ba5dcb8699237746ecf41a9643d428a4cc5
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: b427d2f482828b9533661dbcf9edf846cb60dc7b
+  FBReactNativeSpec: 686ac17e193dcf7d5df4d772b224504dd2f3ad81
   Firebase: 919186c8e119dd9372a45fd1dd17a8a942bc1892
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 8cd4f8ea22075e0ee582849b1cf79d8816506085
@@ -999,7 +1004,7 @@ SPEC CHECKSUMS:
   react-native-jitsi-meet: 3e3ac5d0445091154119f94342efd55c8b1124ce
   react-native-mmkv-storage: 88bcb10bbe85a8122061d17d03abcc64a02fe1c9
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
-  react-native-notifications: ee8fd739853e72694f3af8b374c8ccb106b7b227
+  react-native-notifications: 3de8ef9cd800e5db0225d9aa46b228d2b94ce51e
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
@@ -1024,6 +1029,7 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBootSplash: 4844706cbb56a3270556c9b94e59dedadccd47e4
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
+  RNCClipboard: cc054ad1e8a33d2a74cd13e565588b4ca928d8fd
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNCPicker: 914b557e20b3b8317b084aca9ff4b4edb95f61e4

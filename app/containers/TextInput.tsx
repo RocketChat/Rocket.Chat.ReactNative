@@ -4,9 +4,10 @@ import Touchable from 'react-native-platform-touchable';
 
 import sharedStyles from '../views/Styles';
 import TextInput from '../presentation/TextInput';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import { CustomIcon } from '../lib/Icons';
 import ActivityIndicator from './ActivityIndicator';
+import { TSupportedThemes } from '../theme';
 
 const styles = StyleSheet.create({
 	error: {
@@ -52,10 +53,7 @@ const styles = StyleSheet.create({
 
 export interface IRCTextInputProps extends TextInputProps {
 	label?: string;
-	error?: {
-		error: any;
-		reason: any;
-	};
+	error?: any;
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
 	inputStyle?: StyleProp<TextStyle>;
@@ -65,10 +63,14 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconRight?: string;
 	left?: JSX.Element;
 	onIconRightPress?(): void;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
-export default class RCTextInput extends React.PureComponent<IRCTextInputProps, any> {
+interface IRCTextInputState {
+	showPassword: boolean;
+}
+
+export default class RCTextInput extends React.PureComponent<IRCTextInputProps, IRCTextInputState> {
 	static defaultProps = {
 		error: {},
 		theme: 'light'
@@ -116,12 +118,11 @@ export default class RCTextInput extends React.PureComponent<IRCTextInputProps, 
 
 	get loading() {
 		const { theme } = this.props;
-		// @ts-ignore
-		return <ActivityIndicator style={[styles.iconContainer, styles.iconRight, { color: themes[theme].bodyText }]} />;
+		return <ActivityIndicator style={[styles.iconContainer, styles.iconRight]} color={themes[theme].bodyText} />;
 	}
 
 	tooglePassword = () => {
-		this.setState((prevState: any) => ({ showPassword: !prevState.showPassword }));
+		this.setState(prevState => ({ showPassword: !prevState.showPassword }));
 	};
 
 	render() {

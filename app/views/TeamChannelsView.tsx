@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { deleteRoom } from '../actions/room';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import { withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
@@ -27,7 +27,7 @@ import RocketChat from '../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import debounce from '../utils/debounce';
 import { isIOS } from '../utils/deviceInfo';
 import { goRoom } from '../utils/goRoom';
@@ -87,7 +87,7 @@ type IProps = Omit<IBaseScreen<ChatsStackParamList, 'TeamChannelsView'>, 'naviga
 interface ITeamChannelsViewProps extends IProps {
 	isMasterDetail: boolean;
 	insets: EdgeInsets;
-	theme: string;
+	theme: TSupportedThemes;
 	useRealName: boolean;
 	width: number;
 	StoreLastMessage: boolean;
@@ -350,14 +350,17 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			logEvent(events.TC_GO_ROOM);
 			const { navigation, isMasterDetail } = this.props;
 			try {
-				const { room } = (await RocketChat.getRoomInfo(item._id)) as any;
-				const params = {
-					rid: item._id,
-					name: RocketChat.getRoomTitle(room),
-					joinCodeRequired: room.joinCodeRequired,
-					t: room.t,
-					teamId: room.teamId
-				};
+				let params = {};
+				const result = await RocketChat.getRoomInfo(item._id);
+				if (result.success) {
+					params = {
+						rid: item._id,
+						name: RocketChat.getRoomTitle(result.room),
+						joinCodeRequired: result.room.joinCodeRequired,
+						t: result.room.t,
+						teamId: result.room.teamId
+					};
+				}
 				if (isMasterDetail) {
 					navigation.pop();
 				}
@@ -537,9 +540,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 	renderFooter = () => {
 		const { loadingMore } = this.state;
-		const { theme } = this.props;
 		if (loadingMore) {
-			return <ActivityIndicator theme={theme} />;
+			return <ActivityIndicator />;
 		}
 		return null;
 	};

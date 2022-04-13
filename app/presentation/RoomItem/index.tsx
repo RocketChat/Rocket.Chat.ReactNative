@@ -5,6 +5,8 @@ import I18n from '../../i18n';
 import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
 import { formatDate } from '../../utils/room';
 import RoomItem from './RoomItem';
+import { TUserStatus } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
 
 export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
 interface IRoomItemContainerProps {
@@ -16,14 +18,14 @@ interface IRoomItemContainerProps {
 	username: string;
 	avatarSize: number;
 	width: number;
-	status: string;
+	status: TUserStatus;
 	toggleFav(): void;
 	toggleRead(): void;
 	hideChannel(): void;
 	useRealName: boolean;
 	getUserPresence: Function;
 	connected: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	isFocused: boolean;
 	getRoomTitle: Function;
 	getRoomAvatar: Function;
@@ -53,7 +55,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 
 	private roomSubscription: any;
 
-	static defaultProps = {
+	static defaultProps: Partial<IRoomItemContainerProps> = {
 		avatarSize: 48,
 		status: 'offline',
 		getUserPresence: () => {},
@@ -233,7 +235,7 @@ const mapStateToProps = (state: any, ownProps: any) => {
 	}
 	return {
 		connected: state.meteor.connected,
-		status
+		status: status as TUserStatus
 	};
 };
 

@@ -5,11 +5,11 @@ import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
 import coerce from 'semver/functions/coerce';
 
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import { SERVER } from '../actions/actionsTypes';
 import { selectServerFailure, selectServerRequest, selectServerSuccess, serverFailure } from '../actions/server';
 import { clearSettings } from '../actions/settings';
-import { setUser } from '../actions/login';
+import { clearUser, setUser } from '../actions/login';
 import { clearActiveUsers } from '../actions/activeUsers';
 import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
@@ -17,7 +17,7 @@ import log, { logServerVersion } from '../utils/log';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../utils/fetch';
 import { appStart } from '../actions/app';
-import UserPreferences from '../lib/userPreferences';
+import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../utils/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
@@ -111,10 +111,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 		if (user) {
 			yield put(clearSettings());
-			yield RocketChat.connect({ server, user, logoutOnError: true });
 			yield put(setUser(user));
+			yield RocketChat.connect({ server, logoutOnError: true });
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 		} else {
+			yield put(clearUser());
 			yield RocketChat.connect({ server });
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		}

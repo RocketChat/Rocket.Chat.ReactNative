@@ -12,28 +12,16 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
-import { withTheme } from '../../theme';
-import { themes } from '../../constants/colors';
+import { TSupportedThemes, withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
-
-interface IReceipts {
-	_id: string;
-	roomId: string;
-	userId: string;
-	messageId: string;
-	ts: string;
-	user?: {
-		_id: string;
-		name: string;
-		username: string;
-	};
-}
+import { IReadReceipts } from '../../definitions';
 
 interface IReadReceiptViewState {
 	loading: boolean;
-	receipts: IReceipts[];
+	receipts: IReadReceipts[];
 }
 
 interface INavigationOption {
@@ -44,7 +32,7 @@ interface INavigationOption {
 
 interface IReadReceiptViewProps extends INavigationOption {
 	Message_TimeAndDateFormat: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceiptViewState> {
@@ -125,7 +113,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 		);
 	};
 
-	renderItem = ({ item }: { item: IReceipts }) => {
+	renderItem = ({ item }: { item: IReadReceipts }) => {
 		const { theme, Message_TimeAndDateFormat } = this.props;
 		const time = moment(item.ts).format(Message_TimeAndDateFormat);
 		if (!item?.user?.username) {

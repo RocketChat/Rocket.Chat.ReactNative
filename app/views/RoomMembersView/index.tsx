@@ -4,7 +4,7 @@ import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { withActionSheet } from '../../containers/ActionSheet';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -19,16 +19,16 @@ import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import RocketChat from '../../lib/rocketchat';
-import UserItem from '../../presentation/UserItem';
+import UserItem from '../../containers/UserItem';
 import { getUserSelector } from '../../selectors/login';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import EventEmitter from '../../utils/events';
 import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
-import { RoomTypes } from '../../lib/rocketchat/methods/roomTypeToApiType';
+import { RoomTypes } from '../../lib/methods/roomTypeToApiType';
 import styles from './styles';
 
 const PAGE_SIZE = 25;
@@ -44,7 +44,7 @@ interface IRoomMembersViewProps extends IBaseScreen<ModalStackParamList, 'RoomMe
 		roles: string[];
 	};
 	showActionSheet: (params: any) => {}; // TODO: this work?
-	theme: string;
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	useRealName: boolean;
 	muteUserPermission: string[];
@@ -433,7 +433,8 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 	fetchRoomMembersRoles = async () => {
 		try {
 			const { room } = this.state;
-			const result = await RocketChat.getRoomRoles(room.rid, room.t);
+			const type = room.t as SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
+			const result = await RocketChat.getRoomRoles(room.rid, type);
 			if (result?.success) {
 				this.roomRoles = result.roles;
 			}
@@ -635,7 +636,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 					ListHeaderComponent={this.renderSearchBar}
 					ListFooterComponent={() => {
 						if (isLoading) {
-							return <ActivityIndicator theme={theme} />;
+							return <ActivityIndicator />;
 						}
 						return null;
 					}}
@@ -665,4 +666,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewAllTeamsPermission: state.permissions['view-all-teams']
 });
 
-export default connect(mapStateToProps)(withActionSheet(withTheme(RoomMembersView)));
+export default connect(mapStateToProps)(withTheme(withActionSheet(RoomMembersView)));

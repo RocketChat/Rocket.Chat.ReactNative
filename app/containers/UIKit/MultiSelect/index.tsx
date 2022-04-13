@@ -1,33 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import { Animated, Easing, KeyboardAvoidingView, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import {
+	Animated,
+	Easing,
+	KeyboardAvoidingView,
+	Modal,
+	StyleSheet,
+	Text,
+	TouchableWithoutFeedback,
+	View,
+	TextStyle
+} from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import Button from '../../Button';
 import TextInput from '../../TextInput';
 import { textParser } from '../utils';
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
 import { isIOS } from '../../../utils/deviceInfo';
+import { useTheme } from '../../../theme';
+import { BlockContext, IText } from '../interfaces';
 import Chips from './Chips';
 import Items from './Items';
 import Input from './Input';
 import styles from './styles';
 
+export interface IItemData {
+	value: any;
+	text: { text: string };
+	imageUrl?: string;
+}
+
 interface IMultiSelect {
-	options: any[];
+	options?: IItemData[];
 	onChange: Function;
-	placeholder: {
-		text: string;
-	};
-	context?: number;
+	placeholder?: IText;
+	context?: BlockContext;
 	loading?: boolean;
 	multiselect?: boolean;
 	onSearch?: () => void;
 	onClose?: () => void;
-	inputStyle?: object;
+	inputStyle?: TextStyle;
 	value?: any[];
-	disabled?: boolean | object;
-	theme: string;
+	disabled?: boolean | null;
 	innerInputStyle?: object;
 }
 
@@ -54,9 +69,9 @@ export const MultiSelect = React.memo(
 		onClose = () => {},
 		disabled,
 		inputStyle,
-		theme,
 		innerInputStyle
 	}: IMultiSelect) => {
+		const { theme } = useTheme();
 		const [selected, select] = useState<any>(Array.isArray(values) ? values : []);
 		const [open, setOpen] = useState(false);
 		const [search, onSearchChange] = useState('');
@@ -95,7 +110,7 @@ export const MultiSelect = React.memo(
 			}).start(() => setShowContent(false));
 		};
 
-		const onSelect = (item: any) => {
+		const onSelect = (item: IItemData) => {
 			const {
 				value,
 				text: { text }
@@ -126,7 +141,6 @@ export const MultiSelect = React.memo(
 					<View style={[styles.content, { backgroundColor: themes[theme].backgroundColor }]}>
 						<TextInput
 							testID='multi-select-search'
-							/* @ts-ignore*/
 							onChangeText={onSearch || onSearchChange}
 							placeholder={I18n.t('Search')}
 							theme={theme}

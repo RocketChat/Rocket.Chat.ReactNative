@@ -9,8 +9,8 @@ import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
-import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { TSupportedThemes, withTheme } from '../theme';
+import { themes } from '../lib/constants';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
@@ -25,7 +25,7 @@ interface IForgotPasswordViewState {
 interface IForgotPasswordViewProps {
 	navigation: StackNavigationProp<OutsideParamList, 'ForgotPasswordView'>;
 	route: RouteProp<OutsideParamList, 'ForgotPasswordView'>;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForgotPasswordViewState> {
@@ -92,7 +92,7 @@ class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForg
 		const { theme } = this.props;
 
 		return (
-			<FormContainer theme={theme} testID='forgot-password-view'>
+			<FormContainer testID='forgot-password-view'>
 				<FormContainerInner>
 					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: themes[theme].titleText }]}>
 						{I18n.t('Forgot_password')}

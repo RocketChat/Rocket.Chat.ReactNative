@@ -3,7 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
+import { IInput } from './interfaces';
 
 const styles = StyleSheet.create({
 	container: {
@@ -30,16 +31,6 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	}
 });
-
-interface IInput {
-	element: object;
-	parser: any;
-	label: string;
-	description: string;
-	error: string;
-	hint: string;
-	theme: string;
-}
 
 export const Input = ({ element, parser, label, description, error, hint, theme }: IInput) => (
 	<View style={styles.container}>

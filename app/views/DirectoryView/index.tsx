@@ -7,7 +7,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import * as List from '../../containers/List';
 import Touch from '../../utils/touch';
 import RocketChat from '../../lib/rocketchat';
-import DirectoryItem from '../../presentation/DirectoryItem';
+import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
@@ -17,8 +17,8 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
 import log, { events, logEvent } from '../../utils/log';
-import { withTheme } from '../../theme';
-import { themes } from '../../constants/colors';
+import { TSupportedThemes, withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
@@ -33,7 +33,7 @@ interface IDirectoryViewProps {
 		id: string;
 		token: string;
 	};
-	theme: string;
+	theme: TSupportedThemes;
 	directoryDefaultView: string;
 	isMasterDetail: boolean;
 }
@@ -157,14 +157,16 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 				this.goRoom({ rid: result.room._id, name: item.username, t: 'd' });
 			}
 		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
-			const { room }: any = await RocketChat.getRoomInfo(item._id);
-			this.goRoom({
-				rid: item._id,
-				name: item.name,
-				joinCodeRequired: room.joinCodeRequired,
-				t: item.t,
-				search: true
-			});
+			const result = await RocketChat.getRoomInfo(item._id);
+			if (result.success) {
+				this.goRoom({
+					rid: item._id,
+					name: item.name,
+					joinCodeRequired: result.room.joinCodeRequired,
+					t: item.t,
+					search: true
+				});
+			}
 		} else {
 			this.goRoom({
 				rid: item._id,
@@ -290,7 +292,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, any> {
 					renderItem={this.renderItem}
 					ItemSeparatorComponent={List.Separator}
 					keyboardShouldPersistTaps='always'
-					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+					ListFooterComponent={loading ? <ActivityIndicator /> : null}
 					onEndReached={() => this.load({})}
 				/>
 				{showOptionsDropdown ? (

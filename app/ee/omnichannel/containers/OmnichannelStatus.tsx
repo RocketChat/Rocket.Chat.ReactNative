@@ -3,12 +3,13 @@ import { Switch, View } from 'react-native';
 
 import * as List from '../../../containers/List';
 import styles from '../../../views/RoomsListView/styles';
-import { SWITCH_TRACK_COLOR, themes } from '../../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import UnreadBadge from '../../../presentation/UnreadBadge';
 import RocketChat from '../../../lib/rocketchat';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../lib';
 import { IUser } from '../../../definitions/IUser';
+import Touch from '../../../utils/touch';
 
 interface IOmnichannelStatus {
 	searching: boolean;
@@ -19,15 +20,19 @@ interface IOmnichannelStatus {
 }
 
 const OmnichannelStatus = memo(({ searching, goQueue, queueSize, inquiryEnabled, user }: IOmnichannelStatus) => {
-	if (searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
-		return null;
-	}
 	const { theme } = useTheme();
-	const [status, setStatus] = useState(isOmnichannelStatusAvailable(user));
+	const [status, setStatus] = useState<boolean>(false);
+	const canUseOmnichannel = RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent');
 
 	useEffect(() => {
-		setStatus(isOmnichannelStatusAvailable(user));
+		if (canUseOmnichannel) {
+			setStatus(isOmnichannelStatusAvailable(user));
+		}
 	}, [user.statusLivechat]);
+
+	if (searching || !canUseOmnichannel) {
+		return null;
+	}
 
 	const toggleLivechat = async () => {
 		try {
@@ -48,7 +53,9 @@ const OmnichannelStatus = memo(({ searching, goQueue, queueSize, inquiryEnabled,
 				right={() => (
 					<View style={styles.omnichannelRightContainer}>
 						{inquiryEnabled ? <UnreadBadge style={styles.queueIcon} unread={queueSize} /> : null}
-						<Switch value={status} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleLivechat} />
+						<Touch theme={theme} onPress={toggleLivechat}>
+							<Switch value={status} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleLivechat} />
+						</Touch>
 					</View>
 				)}
 			/>

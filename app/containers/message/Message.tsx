@@ -17,10 +17,14 @@ import Discussion from './Discussion';
 import Content from './Content';
 import ReadReceipt from './ReadReceipt';
 import CallButton from './CallButton';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
+import { useTheme } from '../../theme';
 
 const MessageInner = React.memo((props: IMessageInner) => {
+	const { attachments } = props;
+	const isCollapsible = attachments ? attachments[0] && attachments[0].collapsed : false;
+
 	if (props.type === 'discussion-created') {
 		return (
 			<>
@@ -29,6 +33,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 			</>
 		);
 	}
+
 	if (props.type === 'jitsi_call_started') {
 		return (
 			<>
@@ -38,6 +43,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 			</>
 		);
 	}
+
 	if (props.blocks && props.blocks.length) {
 		return (
 			<>
@@ -48,11 +54,22 @@ const MessageInner = React.memo((props: IMessageInner) => {
 			</>
 		);
 	}
+
 	return (
 		<>
 			<User {...props} />
-			<Content {...props} />
-			<Attachments {...props} />
+			{isCollapsible ? (
+				<>
+					<Content {...props} />
+					<Attachments {...props} />
+				</>
+			) : (
+				<>
+					<Attachments {...props} />
+					<Content {...props} />
+				</>
+			)}
+
 			<Urls {...props} />
 			<Thread {...props} />
 			<Reactions {...props} />
@@ -69,7 +86,6 @@ const Message = React.memo((props: IMessage) => {
 			<View style={[styles.container, props.style]}>
 				{thread}
 				<View style={styles.flex}>
-					{/* @ts-ignore */}
 					<MessageAvatar small {...props} />
 					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 						<Content {...props} />
@@ -82,12 +98,11 @@ const Message = React.memo((props: IMessage) => {
 	return (
 		<View style={[styles.container, props.style]}>
 			<View style={styles.flex}>
-				{/* @ts-ignore */}
 				<MessageAvatar {...props} />
 				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 					<MessageInner {...props} />
 				</View>
-				<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} theme={props.theme} />
+				<ReadReceipt isReadReceiptEnabled={props.isReadReceiptEnabled} unread={props.unread || false} />
 			</View>
 		</View>
 	);
@@ -95,6 +110,9 @@ const Message = React.memo((props: IMessage) => {
 Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
+	const { onPress, onLongPress } = useContext(MessageContext);
+	const { theme } = useTheme();
+
 	if (props.hasError) {
 		return (
 			<View>
@@ -102,13 +120,13 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			</View>
 		);
 	}
-	const { onPress, onLongPress } = useContext(MessageContext);
+
 	return (
 		<Touchable
 			onLongPress={onLongPress}
 			onPress={onPress}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
-			style={{ backgroundColor: props.highlighted ? themes[props.theme].headerBackground : null }}>
+			style={{ backgroundColor: props.highlighted ? themes[theme].headerBackground : undefined }}>
 			<View>
 				<Message {...props} />
 			</View>

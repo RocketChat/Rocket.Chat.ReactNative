@@ -1,16 +1,17 @@
 import React from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { CELL_WIDTH } from './TableCell';
 import styles from './styles';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import I18n from '../../i18n';
-import { themes } from '../../constants/colors';
+import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
 
 interface ITable {
-	children: JSX.Element;
+	children: React.ReactElement | null;
 	numColumns: number;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const MAX_HEIGHT = 300;
@@ -19,7 +20,7 @@ const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 	const getTableWidth = () => numColumns * CELL_WIDTH;
 
 	const renderRows = (drawExtraBorders = true) => {
-		const tableStyle = [styles.table, { borderColor: themes[theme].borderColor }];
+		const tableStyle: ViewStyle[] = [styles.table, { borderColor: themes[theme].borderColor }];
 		if (drawExtraBorders) {
 			tableStyle.push(styles.tableExtraBorders);
 		}

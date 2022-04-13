@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { toggleServerDropdown, closeServerDropdown, setSearch } from '../../../actions/rooms';
-import { withTheme } from '../../../theme';
+import { TSupportedThemes, withTheme } from '../../../theme';
 import EventEmitter from '../../../utils/events';
 import { KEY_COMMAND, handleCommandOpenServerDropdown, IKeyCommandEvent } from '../../../commands';
 import { isTablet } from '../../../utils/deviceInfo';
@@ -18,7 +18,7 @@ interface IRoomsListHeaderViewProps {
 	connecting: boolean;
 	connected: boolean;
 	isFetching: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	server: string;
 	dispatch: Dispatch;
 }
@@ -59,11 +59,10 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 	};
 
 	render() {
-		const { serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, theme, server } = this.props;
+		const { serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, server } = this.props;
 
 		return (
 			<Header
-				theme={theme}
 				serverName={serverName}
 				server={server}
 				showServerDropdown={showServerDropdown}

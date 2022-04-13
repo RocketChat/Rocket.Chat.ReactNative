@@ -7,8 +7,8 @@ import { CompositeNavigationProp } from '@react-navigation/core';
 import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import { getShowLoginButton } from '../../selectors/login';
 import ServerAvatar from './ServerAvatar';
@@ -19,7 +19,7 @@ interface IWorkSpaceProp {
 		StackNavigationProp<OutsideParamList, 'WorkspaceView'>,
 		StackNavigationProp<OutsideModalParamList>
 	>;
-	theme: string;
+	theme: TSupportedThemes;
 	Site_Name: string;
 	Site_Url: string;
 	server: string;
@@ -74,7 +74,7 @@ class WorkspaceView extends React.Component<IWorkSpaceProp, any> {
 		const { theme, Site_Name, Site_Url, Assets_favicon_512, server, showLoginButton } = this.props;
 
 		return (
-			<FormContainer theme={theme} testID='workspace-view'>
+			<FormContainer testID='workspace-view'>
 				<FormContainerInner>
 					<View style={styles.alignItemsCenter}>
 						<ServerAvatar theme={theme} url={server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />

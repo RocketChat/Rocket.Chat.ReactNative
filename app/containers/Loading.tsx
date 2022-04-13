@@ -1,8 +1,8 @@
 import React from 'react';
 import { Animated, Modal, StyleSheet, View } from 'react-native';
 
-import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { TSupportedThemes, withTheme } from '../theme';
+import { themes } from '../lib/constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -19,18 +19,23 @@ const styles = StyleSheet.create({
 
 interface ILoadingProps {
 	visible: boolean;
-	theme?: string;
+	theme?: TSupportedThemes;
 }
 
-class Loading extends React.PureComponent<ILoadingProps, any> {
+interface ILoadingState {
+	scale: Animated.Value;
+	opacity: Animated.Value;
+}
+
+class Loading extends React.PureComponent<ILoadingProps, ILoadingState> {
 	state = {
 		scale: new Animated.Value(1),
 		opacity: new Animated.Value(0)
 	};
 
-	private opacityAnimation: any;
+	private opacityAnimation?: Animated.CompositeAnimation;
 
-	private scaleAnimation: any;
+	private scaleAnimation?: Animated.CompositeAnimation;
 
 	componentDidMount() {
 		const { opacity, scale } = this.state;
@@ -61,7 +66,7 @@ class Loading extends React.PureComponent<ILoadingProps, any> {
 		}
 	}
 
-	componentDidUpdate(prevProps: any) {
+	componentDidUpdate(prevProps: ILoadingProps) {
 		const { visible } = this.props;
 		if (visible && visible !== prevProps.visible) {
 			this.startAnimations();
@@ -107,8 +112,7 @@ class Loading extends React.PureComponent<ILoadingProps, any> {
 					<Animated.View
 						style={[
 							{
-								// @ts-ignore
-								...StyleSheet.absoluteFill,
+								...StyleSheet.absoluteFillObject,
 								backgroundColor: themes[theme!].backdropColor,
 								opacity: opacityAnimation
 							}

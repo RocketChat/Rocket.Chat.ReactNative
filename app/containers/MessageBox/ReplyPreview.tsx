@@ -6,8 +6,10 @@ import { connect } from 'react-redux';
 import { MarkdownPreview } from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { IMessage } from '../../definitions/IMessage';
+import { useTheme } from '../../theme';
+import { IApplicationState } from '../../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -49,12 +51,13 @@ interface IMessageBoxReplyPreview {
 	baseUrl: string;
 	username: string;
 	getCustomEmoji: Function;
-	theme: string;
 	useRealName: boolean;
 }
 
 const ReplyPreview = React.memo(
-	({ message, Message_TimeFormat, replying, close, theme, useRealName }: IMessageBoxReplyPreview) => {
+	({ message, Message_TimeFormat, replying, close, useRealName }: IMessageBoxReplyPreview) => {
+		const { theme } = useTheme();
+
 		if (!replying) {
 			return null;
 		}
@@ -75,16 +78,14 @@ const ReplyPreview = React.memo(
 			</View>
 		);
 	},
-	(prevProps: any, nextProps: any) =>
-		prevProps.replying === nextProps.replying &&
-		prevProps.theme === nextProps.theme &&
-		prevProps.message.id === nextProps.message.id
+	(prevProps: IMessageBoxReplyPreview, nextProps: IMessageBoxReplyPreview) =>
+		prevProps.replying === nextProps.replying && prevProps.message.id === nextProps.message.id
 );
 
-const mapStateToProps = (state: any) => ({
-	Message_TimeFormat: state.settings.Message_TimeFormat,
+const mapStateToProps = (state: IApplicationState) => ({
+	Message_TimeFormat: state.settings.Message_TimeFormat as string,
 	baseUrl: state.server.server,
-	useRealName: state.settings.UI_Use_Real_Name
+	useRealName: state.settings.UI_Use_Real_Name as boolean
 });
 
 export default connect(mapStateToProps)(ReplyPreview);

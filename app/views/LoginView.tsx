@@ -4,7 +4,7 @@ import { Alert, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { loginRequest } from '../actions/login';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -229,9 +229,9 @@ class LoginView extends React.Component<ILoginViewProps, any> {
 	render() {
 		const { Accounts_ShowFormLogin, theme, navigation } = this.props;
 		return (
-			<FormContainer theme={theme} testID='login-view'>
+			<FormContainer testID='login-view'>
 				<FormContainerInner>
-					<LoginServices separator={Accounts_ShowFormLogin} navigation={navigation} />
+					<LoginServices separator={Accounts_ShowFormLogin} navigation={navigation} theme={theme} />
 					{this.renderUserForm()}
 				</FormContainerInner>
 			</FormContainer>

@@ -11,7 +11,7 @@ import RocketChat from '../lib/rocketchat';
 import { isIOS } from '../utils/deviceInfo';
 import StatusBar from '../containers/StatusBar';
 import ActivityIndicator from '../containers/ActivityIndicator';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import debounce from '../utils/debounce';
 import * as HeaderButton from '../containers/HeaderButton';
 
@@ -52,7 +52,7 @@ interface IAuthenticationWebView extends INavigationOption {
 	server: string;
 	Accounts_Iframe_api_url: string;
 	Accounts_Iframe_api_method: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IState {
@@ -175,7 +175,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 
 	render() {
 		const { loading } = this.state;
-		const { route, theme } = this.props;
+		const { route } = this.props;
 		const { url, authType } = route.params;
 		const isIframe = authType === 'iframe';
 
@@ -196,7 +196,7 @@ class AuthenticationWebView extends React.PureComponent<IAuthenticationWebView, 
 						this.setState({ loading: false });
 					}}
 				/>
-				{loading ? <ActivityIndicator size='large' theme={theme} absolute /> : null}
+				{loading ? <ActivityIndicator size='large' absolute /> : null}
 			</>
 		);
 	}

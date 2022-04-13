@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { Heading as HeadingProps } from '@rocket.chat/message-parser';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 
@@ -11,12 +11,12 @@ interface IHeadingProps {
 	level: HeadingProps['level'];
 }
 
-const Heading = ({ value, level }: IHeadingProps): JSX.Element => {
+const Heading = ({ value, level }: IHeadingProps) => {
 	const { theme } = useTheme();
 	const textStyle = styles[`heading${level}`];
 
 	return (
-		<Text style={[textStyle, { color: themes[theme!].bodyText }]}>
+		<Text style={[textStyle, { color: themes[theme].bodyText }]}>
 			{value.map(block => {
 				switch (block.type) {
 					case 'PLAIN_TEXT':

@@ -1,12 +1,12 @@
 import Model from '@nozbe/watermelondb/Model';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
-import { MessageTypeLoad } from '../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../lib/constants';
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
 import { TThreadMessageModel } from './IThreadMessage';
 import { TThreadModel } from './IThread';
-import { IUrlFromServer } from './IUrl';
+import { IUrl, IUrlFromServer } from './IUrl';
 
 export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj' | MessageTypeLoad;
 
@@ -75,7 +75,7 @@ export interface IMessageFromServer {
 	ts: string | Date; // wm date issue
 	u: IUserMessage;
 	_updatedAt: string | Date;
-	urls?: IUrlFromServer[];
+	urls?: IUrl[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
 	md?: MarkdownAST;
@@ -111,7 +111,7 @@ export interface ILoadMoreMessage {
 
 export interface IMessage extends IMessageFromServer {
 	id: string;
-	t?: MessageType;
+	t: MessageType;
 	alias?: string;
 	parseUrls?: boolean;
 	avatar?: string;
@@ -130,8 +130,8 @@ export interface IMessage extends IMessageFromServer {
 	dcount?: number;
 	dlm?: string | Date;
 	tmid?: string;
-	tcount?: number;
-	tlm?: string | Date;
+	tcount?: number | null;
+	tlm?: string | Date | null;
 	replies?: string[];
 	unread?: boolean;
 	autoTranslate?: boolean;
@@ -147,3 +147,13 @@ export type TMessageModel = IMessage & Model;
 
 export type TAnyMessageModel = TMessageModel | TThreadModel | TThreadMessageModel;
 export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;
+
+// Read receipts to ReadReceiptView and chat.getMessageReadReceipts
+export interface IReadReceipts {
+	_id: string;
+	roomId: string;
+	userId: string;
+	messageId: string;
+	ts: string;
+	user?: IUserMessage;
+}

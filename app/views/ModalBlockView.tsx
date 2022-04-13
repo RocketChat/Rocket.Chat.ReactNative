@@ -5,17 +5,17 @@ import { RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import EventEmitter from '../utils/events';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import RocketChat from '../lib/rocketchat';
 import ActivityIndicator from '../containers/ActivityIndicator';
-import { CONTAINER_TYPES, MODAL_ACTIONS } from '../lib/methods/actions';
 import { textParser } from '../containers/UIKit/utils';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
+import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
 
 const styles = StyleSheet.create({
 	container: {
@@ -53,7 +53,7 @@ interface IModalBlockViewState {
 interface IModalBlockViewProps {
 	navigation: StackNavigationProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	language: string;
 	user: {
 		id: string;
@@ -161,8 +161,8 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		});
 	};
 
-	handleUpdate = ({ type, ...data }: { type: string }) => {
-		if ([MODAL_ACTIONS.ERRORS].includes(type)) {
+	handleUpdate = ({ type, ...data }: { type: ModalActions }) => {
+		if ([ModalActions.ERRORS].includes(type)) {
 			const { errors }: any = data;
 			this.setState({ errors });
 		} else {
@@ -232,7 +232,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 		const { mid, appId, viewId } = data;
 		await RocketChat.triggerBlockAction({
 			container: {
-				type: CONTAINER_TYPES.VIEW,
+				type: ContainerTypes.VIEW,
 				id: viewId
 			},
 			actionId,
@@ -277,7 +277,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 						}
 					)}
 				</View>
-				{loading ? <ActivityIndicator absolute size='large' theme={theme} /> : null}
+				{loading ? <ActivityIndicator absolute size='large' /> : null}
 			</KeyboardAwareScrollView>
 		);
 	}

@@ -18,8 +18,8 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -67,7 +67,7 @@ interface IThreadMessagesViewProps {
 	user: any;
 	baseUrl: string;
 	useRealName: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	insets: EdgeInsets;
 }
@@ -159,8 +159,8 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Threads'),
 			headerTitleContainerStyle: {
-				left: null,
-				right: null
+				left: 0,
+				right: 0
 			}
 		};
 
@@ -335,7 +335,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result: any = await RocketChat.getThreadsList({
+			const result = await RocketChat.getThreadsList({
 				rid: this.rid,
 				count: API_FETCH_COUNT,
 				offset: messages.length,
@@ -524,7 +524,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				removeClippedSubviews={isIOS}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={this.renderHeader}
-				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
 			/>
 		);

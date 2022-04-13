@@ -12,7 +12,7 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import debounce from '../../utils/debounce';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -131,8 +131,8 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Discussions'),
 			headerTitleContainerStyle: {
-				left: null,
-				right: null
+				left: 0,
+				right: 0
 			},
 			headerRight: () => (
 				<HeaderButton.Container>
@@ -198,7 +198,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): JSX.Elem
 				removeClippedSubviews={isIOS}
 				onEndReached={() => (isSearching ? searchTotal : total) > API_FETCH_COUNT ?? load()}
 				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
+				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				scrollIndicatorInsets={{ right: 1 }}
 			/>
 		</SafeAreaView>

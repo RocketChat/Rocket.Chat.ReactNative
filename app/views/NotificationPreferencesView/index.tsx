@@ -6,12 +6,12 @@ import Model from '@nozbe/watermelondb/Model';
 import { Observable, Subscription } from 'rxjs';
 
 import database from '../../lib/database';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
 import log, { events, logEvent } from '../../utils/log';
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 interface INotificationPreferencesView {
 	navigation: StackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>;
 	route: RouteProp<ChatsStackParamList, 'NotificationPrefView'>;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class NotificationPreferencesView extends React.Component<INotificationPreferencesView, any> {

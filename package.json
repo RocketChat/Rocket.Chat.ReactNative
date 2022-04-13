@@ -1,6 +1,6 @@
 {
 	"name": "rocket-chat-reactnative",
-	"version": "4.26.0",
+	"version": "4.26.2",
 	"private": true,
 	"scripts": {
 		"start": "react-native start",
@@ -30,6 +30,7 @@
 		"@bugsnag/react-native": "^7.10.5",
 		"@codler/react-native-keyboard-aware-scroll-view": "^1.0.1",
 		"@nozbe/watermelondb": "0.23.0",
+		"@react-native-clipboard/clipboard": "^1.8.5",
 		"@react-native-community/art": "^1.2.0",
 		"@react-native-community/async-storage": "1.12.1",
 		"@react-native-community/blur": "^3.6.0",
@@ -97,7 +98,7 @@
 		"react-native-mmkv-storage": "0.6.12",
 		"react-native-modal": "11.10.0",
 		"react-native-navigation-bar-color": "2.0.1",
-		"react-native-notifications": "2.1.7",
+		"react-native-notifications": "^4.2.4",
 		"react-native-notifier": "1.6.1",
 		"react-native-orientation-locker": "1.1.8",
 		"react-native-picker-select": "^8.0.4",
@@ -143,13 +144,14 @@
 		"@rocket.chat/eslint-config": "^0.4.0",
 		"@storybook/addon-storyshots": "5.3.21",
 		"@storybook/react-native": "5.3.25",
+		"@testing-library/jest-native": "^4.0.4",
 		"@testing-library/react-native": "^9.0.0",
 		"@types/bytebuffer": "^5.0.43",
 		"@types/ejson": "^2.1.3",
 		"@types/jest": "^26.0.24",
 		"@types/lodash": "^4.14.171",
 		"@types/react": "^17.0.14",
-		"@types/react-native": "^0.62.7",
+		"@types/react-native": "0.64.2",
 		"@types/react-native-background-timer": "^2.0.0",
 		"@types/react-native-config-reader": "^4.1.0",
 		"@types/react-native-platform-touchable": "^1.1.2",
@@ -164,7 +166,7 @@
 		"axios": "0.21.1",
 		"babel-jest": "^27.0.6",
 		"babel-plugin-transform-remove-console": "^6.9.4",
-		"codecov": "3.8.2",
+		"codecov": "^3.8.3",
 		"detox": "18.17.0",
 		"eslint": "^7.31.0",
 		"eslint-config-prettier": "^8.3.0",
@@ -172,6 +174,7 @@
 		"eslint-plugin-jest": "24.7.0",
 		"eslint-plugin-jsx-a11y": "6.3.1",
 		"eslint-plugin-react": "7.20.3",
+		"eslint-plugin-react-hooks": "^4.4.0",
 		"eslint-plugin-react-native": "3.8.1",
 		"husky": "^6.0.0",
 		"identity-obj-proxy": "^3.0.0",
@@ -205,7 +208,11 @@
 		},
 		"transform": {
 			"^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-		}
+		},
+		"setupFilesAfterEnv": [
+			"@testing-library/jest-native/extend-expect",
+			"./jest.setup.js"
+		]
 	},
 	"snyk": true,
 	"engines": {

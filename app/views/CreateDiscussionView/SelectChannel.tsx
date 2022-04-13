@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { ISearchLocal } from '../../definitions';
 import I18n from '../../i18n';
@@ -48,12 +48,11 @@ const SelectChannel = ({
 		<>
 			<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Parent_channel_or_group')}</Text>
 			<MultiSelect
-				theme={theme}
 				inputStyle={styles.inputStyle}
 				onChange={onChannelSelect}
 				onSearch={getChannels}
 				value={initial && [initial]}
-				disabled={initial}
+				disabled={!!initial}
 				options={channels.map(channel => ({
 					value: channel,
 					text: { text: RocketChat.getRoomTitle(channel) },

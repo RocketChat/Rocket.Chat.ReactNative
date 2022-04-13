@@ -7,7 +7,7 @@ const codeFontFamily = Platform.select({
 	android: { fontFamily: 'monospace' }
 });
 
-export default StyleSheet.create<any>({
+export default StyleSheet.create({
 	container: {
 		alignItems: 'flex-start',
 		flexDirection: 'row'

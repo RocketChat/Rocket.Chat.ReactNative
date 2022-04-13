@@ -3,13 +3,11 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 import { storiesOf } from '@storybook/react-native';
-// import moment from 'moment';
 
 import MessageComponent from '../../app/containers/message/Message';
-import messagesStatus from '../../app/constants/messagesStatus';
+import { messagesStatus, themes } from '../../app/lib/constants';
 import MessageSeparator from '../../app/views/RoomView/Separator';
 import MessageContext from '../../app/containers/message/Context';
-import { themes } from '../../app/constants/colors';
 import { store } from './index';
 
 const _theme = 'light';
@@ -482,6 +480,24 @@ stories.add('Message with reply', () => (
 					ts: date,
 					timeFormat: 'LT',
 					text: 'How are you? :nyan_rocket:'
+				}
+			]}
+		/>
+		<Message
+			msg='Looks cool!'
+			attachments={[
+				{
+					author_name: 'rocket.cat',
+					attachments: [
+						{
+							author_name: 'rocket.cat',
+							ts: date,
+							timeFormat: 'LT',
+							description: 'What you think about this one?',
+							image_url: 'https://octodex.github.com/images/yaktocat.png'
+						}
+					],
+					text: ''
 				}
 			]}
 		/>

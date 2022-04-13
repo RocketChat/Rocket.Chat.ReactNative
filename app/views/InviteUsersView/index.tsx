@@ -5,7 +5,7 @@ import { ScrollView, Share, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import { inviteLinksClear, inviteLinksCreate } from '../../actions/inviteLinks';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import Markdown from '../../containers/markdown';
 import SafeAreaView from '../../containers/SafeAreaView';
