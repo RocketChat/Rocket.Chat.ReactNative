@@ -951,7 +951,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	resumeRoom = async () => {
-		logEvent(events.ROOM_JOIN);
+		logEvent(events.ROOM_RESUME);
 		try {
 			const { room } = this.state;
 

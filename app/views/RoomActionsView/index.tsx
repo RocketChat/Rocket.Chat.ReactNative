@@ -406,7 +406,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { room } = this.state;
 		showConfirmationAlert({
 			title: I18n.t('Are_you_sure_question_mark'),
-			message: I18n.t('Do_you_want_to_put_this_chat_on_hold'),
+			message: I18n.t('Would_like_to_place_on_hold'),
 			confirmationText: I18n.t('Yes'),
 			onPress: async () => {
 				try {
