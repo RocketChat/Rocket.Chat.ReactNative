@@ -4,7 +4,7 @@ import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
 import { themes } from '../../../lib/constants';
-import { withTheme } from '../../../theme';
+import { TSupportedThemes, withTheme } from '../../../theme';
 import { headerHeight } from '../../../containers/Header';
 import * as List from '../../../containers/List';
 import { Filter } from '../filters';
@@ -15,7 +15,7 @@ const ANIMATION_DURATION = 200;
 
 interface IDropdownProps {
 	isMasterDetail?: boolean;
-	theme?: string;
+	theme?: TSupportedThemes;
 	insets?: EdgeInsets;
 	currentFilter: Filter;
 	onClose: () => void;

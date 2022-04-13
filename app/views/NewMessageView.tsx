@@ -19,7 +19,7 @@ import { CustomIcon } from '../lib/Icons';
 import Navigation from '../lib/navigation/appNavigation';
 import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 import RocketChat from '../lib/rocketchat';
-import UserItem from '../presentation/UserItem';
+import UserItem from '../containers/UserItem';
 import { withTheme } from '../theme';
 import { goRoom } from '../utils/goRoom';
 import log, { events, logEvent } from '../utils/log';

@@ -4,10 +4,11 @@ import { Text } from 'react-native';
 import styles from './styles';
 import { themes } from '../../lib/constants';
 import { capitalize } from '../../utils/room';
+import { TSupportedThemes } from '../../theme';
 
 interface IUpdatedAt {
 	date: string;
-	theme: string;
+	theme: TSupportedThemes;
 	hideUnreadStatus: boolean;
 	alert: boolean;
 }

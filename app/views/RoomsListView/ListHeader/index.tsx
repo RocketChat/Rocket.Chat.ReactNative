@@ -20,11 +20,11 @@ interface IRoomListHeader {
 
 const ListHeader = React.memo(
 	({ searching, goEncryption, goQueue, queueSize, inquiryEnabled, encryptionBanner, user }: IRoomListHeader) => {
+		const { theme } = useTheme();
+
 		if (searching) {
 			return null;
 		}
-
-		const { theme } = useTheme();
 
 		return (
 			<>

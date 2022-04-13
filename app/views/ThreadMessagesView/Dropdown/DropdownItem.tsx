@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { themes } from '../../../lib/constants';
-import { withTheme } from '../../../theme';
+import { TSupportedThemes, withTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
 import { CustomIcon } from '../../../lib/Icons';
 import sharedStyles from '../../Styles';
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 interface IDropdownItem {
 	text: string;
 	iconName: string | null;
-	theme?: string;
+	theme?: TSupportedThemes;
 	onPress: () => void;
 }
 
