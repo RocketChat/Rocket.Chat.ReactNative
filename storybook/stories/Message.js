@@ -118,7 +118,12 @@ stories.add('With alias', () => (
 	</>
 ));
 
-stories.add('Edited', () => <Message msg='Message' edited />);
+stories.add('Edited', () => (
+	<>
+		<Message msg='Message header' isEdited />
+		<Message msg='Message without header' isEdited isHeader={false} />
+	</>
+));
 
 stories.add('Encrypted', () => (
 	<>

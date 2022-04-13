@@ -54,12 +54,6 @@ stories.add('Text', () => (
 	</View>
 ));
 
-stories.add('Edited', () => (
-	<View style={styles.container}>
-		<Markdown msg='This is edited' theme={theme} />
-	</View>
-));
-
 stories.add('Preview', () => (
 	<View style={styles.container}>
 		<MarkdownPreview msg={longText} />
