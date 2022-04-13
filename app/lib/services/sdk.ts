@@ -3,7 +3,7 @@ import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 
 import { twoFactor } from '../../utils/twoFactor';
-import { useSsl } from '../../utils/url';
+import { isSsl } from '../../utils/url';
 import { store as reduxStore } from '../store/auxStore';
 import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../definitions/rest/helpers';
 
@@ -14,7 +14,7 @@ class Sdk {
 
 	private initializeSdk(server: string): typeof Rocketchat {
 		// The app can't reconnect if reopen interval is 5s while in development
-		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: useSsl(server), reopen: __DEV__ ? 20000 : 5000 });
+		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: isSsl(server), reopen: __DEV__ ? 20000 : 5000 });
 	}
 
 	// TODO: We need to stop returning the SDK after all methods are dehydrated

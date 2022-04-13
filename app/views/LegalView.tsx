@@ -5,13 +5,13 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import openLink from '../utils/openLink';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 
 interface ILegalView {
 	server: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class LegalView extends React.Component<ILegalView, any> {

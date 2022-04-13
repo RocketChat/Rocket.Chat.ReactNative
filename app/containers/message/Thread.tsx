@@ -12,12 +12,12 @@ import { useTheme } from '../../theme';
 const Thread = React.memo(
 	({ msg, tcount, tlm, isThreadRoom, id }: IMessageThread) => {
 		const { theme } = useTheme();
+		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
 
 		if (!tlm || isThreadRoom || tcount === 0) {
 			return null;
 		}
 
-		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
 		return (
 			<View style={styles.buttonContainer}>
 				<View style={[styles.button, { backgroundColor: themes[theme].tintColor }]} testID={`message-thread-button-${msg}`}>

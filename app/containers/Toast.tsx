@@ -5,7 +5,7 @@ import EasyToast from 'react-native-easy-toast';
 import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import EventEmitter from '../utils/events';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	toast: {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 export const LISTENER = 'Toast';
 
 interface IToastProps {
-	theme?: string;
+	theme?: TSupportedThemes;
 }
 
 class Toast extends React.Component<IToastProps, any> {
