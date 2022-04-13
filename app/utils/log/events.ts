@@ -226,6 +226,7 @@ export default {
 	ROOM_MSG_ACTION_REPORT: 'room_msg_action_report',
 	ROOM_MSG_ACTION_REPORT_F: 'room_msg_action_report_f',
 	ROOM_JOIN: 'room_join',
+	ROOM_RESUME: 'room_resume',
 	ROOM_GO_RA: 'room_go_ra',
 	ROOM_TOGGLE_FOLLOW_THREADS: 'room_toggle_follow_threads',
 	ROOM_GO_TEAM_CHANNELS: 'room_go_team_channels',
