@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Orientation from 'react-native-orientation-locker';
@@ -8,7 +9,7 @@ import Touchable from 'react-native-platform-touchable';
 
 import { useTheme } from '../theme';
 import { hasNotch, isTablet } from '../utils/deviceInfo';
-import { PasscodeChoose } from '../containers/Passcode';
+import { PasscodeChange } from '../containers/Passcode';
 import EventEmitter from '../utils/events';
 import { CustomIcon } from '../lib/Icons';
 import { CHANGE_PASSCODE_EMITTER, themes } from '../lib/constants';
@@ -79,7 +80,8 @@ const ChangePasscodeView = React.memo(() => {
 
 	return (
 		<Modal useNativeDriver isVisible={visible} hideModalContentWhileAnimating style={styles.modal}>
-			<PasscodeChoose finishProcess={onSubmit} force={data?.force} />
+			<PasscodeChange theme={theme} finishProcess={onSubmit} force={data?.force} />
+			{/* <PasscodeChoose finishProcess={onSubmit} force={data?.force} /> */}
 			{!data?.force ? (
 				<Touchable onPress={onCancel} style={styles.close}>
 					<CustomIcon name='close' color={themes[theme].passcodePrimary} size={30} />

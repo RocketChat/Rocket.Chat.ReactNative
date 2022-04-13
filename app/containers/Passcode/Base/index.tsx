@@ -57,6 +57,9 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 				const currentPasscode = p + text;
 				if (currentPasscode?.length === PASSCODE_LENGTH) {
 					switch (type) {
+						case TYPE.VALIDATE:
+							onEndProcess(currentPasscode);
+							break;
 						case TYPE.CHOOSE:
 							onEndProcess(currentPasscode);
 							break;
