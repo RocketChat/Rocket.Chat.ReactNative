@@ -402,6 +402,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	placeOnHoldLivechat = () => {
+		const { navigation } = this.props;
 		const { room } = this.state;
 		showConfirmationAlert({
 			title: I18n.t('Are_you_sure_question_mark'),
@@ -410,6 +411,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			onPress: async () => {
 				try {
 					await RocketChat.onHoldLivechat(room.rid);
+					navigation.navigate('RoomsListView');
 				} catch (e: any) {
 					showErrorAlert(e.data?.error, I18n.t('Oops'));
 				}
