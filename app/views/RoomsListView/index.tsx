@@ -491,7 +491,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observeWithColumns(['alert']);
+				.observeWithColumns(['alert', 'on_hold']);
 			// When we're NOT grouping
 		} else {
 			this.count += QUERY_SIZE;
