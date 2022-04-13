@@ -106,8 +106,6 @@ const Message = React.memo((props: IMessage) => {
 				</View>
 				{!props.isHeader ? (
 					<>
-						{/* TODO check the better place to have this, here or on content*/}
-						{/* <Encrypted type={props.type} />*/}
 						<Edited isEdited={props.isEdited} />
 						<MessageError hasError={props.hasError} />
 					</>
