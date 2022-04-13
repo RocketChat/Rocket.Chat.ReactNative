@@ -7,6 +7,7 @@ import TextInput from '../presentation/TextInput';
 import { themes } from '../lib/constants';
 import { CustomIcon, TIconsName } from './CustomIcon';
 import ActivityIndicator from './ActivityIndicator';
+import { TSupportedThemes } from '../theme';
 
 const styles = StyleSheet.create({
 	error: {
@@ -62,7 +63,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconRight?: TIconsName;
 	left?: JSX.Element;
 	onIconRightPress?(): void;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IRCTextInputState {

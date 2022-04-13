@@ -26,7 +26,7 @@ import KeyboardView from '../../presentation/KeyboardView';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import EventEmitter from '../../utils/events';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';
@@ -62,7 +62,7 @@ interface IRoomInfoEditViewState {
 interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | ModalStackParamList, 'RoomInfoEditView'> {
 	serverVersion?: string;
 	encryptionEnabled: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	setReadOnlyPermission: string[];
 	setReactWhenReadOnlyPermission: string[];
 	archiveRoomPermission: string[];

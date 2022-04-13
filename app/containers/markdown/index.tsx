@@ -23,13 +23,14 @@ import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { formatHyperlink } from './formatHyperlink';
+import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
 
 export { default as MarkdownPreview } from './Preview';
 
 interface IMarkdownProps {
 	msg?: string;
-	theme: string;
+	theme: TSupportedThemes;
 	md?: MarkdownAST;
 	mentions?: IUserMention[];
 	getCustomEmoji?: TGetCustomEmoji;

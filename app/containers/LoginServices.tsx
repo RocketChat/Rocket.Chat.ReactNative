@@ -5,7 +5,7 @@ import { Base64 } from 'js-base64';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
 import Button from './Button';
@@ -100,7 +100,7 @@ interface ILoginServicesProps {
 	CAS_enabled: boolean;
 	CAS_login_url: string;
 	separator: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface ILoginServicesState {

@@ -17,7 +17,7 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import debounce from '../../utils/debounce';
 import log, { events, logEvent } from '../../utils/log';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -33,7 +33,7 @@ interface IDirectoryViewProps {
 		id: string;
 		token: string;
 	};
-	theme: string;
+	theme: TSupportedThemes;
 	directoryDefaultView: string;
 	isMasterDetail: boolean;
 }

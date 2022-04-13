@@ -8,7 +8,7 @@ import { ICON_SIZE } from './constants';
 
 interface IListIcon {
 	name: TIconsName;
-	color?: string;
+	color?: string | null;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 }

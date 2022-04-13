@@ -9,6 +9,7 @@ import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
 import { allowPreview } from './utils';
 import { IAttachment } from './interfaces';
+import { TSupportedThemes } from '../../theme';
 
 const THUMB_SIZE = 64;
 
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
 
 interface IThumbContent {
 	item: IAttachment;
-	theme: string;
+	theme: TSupportedThemes;
 	isShareExtension: boolean;
 }
 

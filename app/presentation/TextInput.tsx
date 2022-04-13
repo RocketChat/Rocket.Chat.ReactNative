@@ -3,6 +3,7 @@ import { I18nManager, StyleProp, StyleSheet, TextInput, TextStyle } from 'react-
 
 import { IRCTextInputProps } from '../containers/TextInput';
 import { themes } from '../lib/constants';
+import { TSupportedThemes } from '../theme';
 
 const styles = StyleSheet.create({
 	input: {
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
 
 export interface IThemedTextInput extends IRCTextInputProps {
 	style: StyleProp<TextStyle>;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const ThemedTextInput = React.forwardRef<TextInput, IThemedTextInput>(({ style, theme, ...props }, ref) => (

@@ -13,7 +13,7 @@ import RocketChat from '../../lib/rocketchat';
 import StatusBar from '../../containers/StatusBar';
 import getFileUrlFromMessage from '../../lib/methods/helpers/getFileUrlFromMessage';
 import { themes } from '../../lib/constants';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -38,7 +38,7 @@ interface IMessagesViewProps {
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 	customEmojis: { [key: string]: IEmoji };
-	theme: string;
+	theme: TSupportedThemes;
 	showActionSheet: Function;
 	useRealName: boolean;
 	isMasterDetail: boolean;
