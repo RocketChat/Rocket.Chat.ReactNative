@@ -85,7 +85,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Use your microphone to record audio messages</string>
 	<key>NSMotionUsageDescription</key>
-	<string>Allow $(PRODUCT_NAME) to access your device's accelerometer</string>
+	<string>Allow $(PRODUCT_NAME) to access your device&apos;s accelerometer</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -97,6 +97,7 @@
 		<string>custom.ttf</string>
 		<string>Inter-Medium.ttf</string>
 		<string>Inter-Regular.ttf</string>
+		<string>Inter-Bold.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

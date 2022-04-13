@@ -70,6 +70,9 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>
+		<string>Inter-Regular.ttf</string>
+		<string>Inter-Bold.ttf</string>
+		<string>Inter-Medium.ttf</string>
 	</array>
 </dict>
 </plist>
