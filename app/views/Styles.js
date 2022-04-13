@@ -5,6 +5,7 @@ import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants';
 const defaultTextStyle = {
 	textAlign: 'left',
 	backgroundColor: 'transparent',
+	fontFamily: 'Inter',
 	...Platform.select({
 		android: {
 			includeFontPadding: false
@@ -74,15 +75,15 @@ export default StyleSheet.create({
 	},
 	textRegular: {
 		...defaultTextStyle,
-		fontFamily: 'Inter-Regular'
+		fontWeight: '400'
 	},
 	textMedium: {
 		...defaultTextStyle,
-		fontFamily: 'Inter-Medium'
+		fontWeight: '500'
 	},
 	textBold: {
 		...defaultTextStyle,
-		fontFamily: 'Inter-Bold'
+		fontWeight: '700'
 	},
 	inputLastChild: {
 		marginBottom: 15
