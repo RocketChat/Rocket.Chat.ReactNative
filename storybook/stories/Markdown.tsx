@@ -56,7 +56,7 @@ stories.add('Text', () => (
 
 stories.add('Edited', () => (
 	<View style={styles.container}>
-		<Markdown msg='This is edited' theme={theme} isEdited />
+		<Markdown msg='This is edited' theme={theme} />
 	</View>
 ));
 

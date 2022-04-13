@@ -59,7 +59,6 @@ const Content = React.memo(
 					getCustomEmoji={props.getCustomEmoji}
 					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
-					isEdited={props.isEdited}
 					channels={props.channels}
 					mentions={props.mentions}
 					navToRoomInfo={props.navToRoomInfo}
