@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 		fontSize: 14
 	},
 	bold: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	}
 });
 

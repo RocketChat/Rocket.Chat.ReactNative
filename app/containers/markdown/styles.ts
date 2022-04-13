@@ -57,7 +57,7 @@ export default StyleSheet.create({
 	temp: { opacity: 0.3 },
 	mention: {
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	paragraph: {
 		marginTop: 0,
@@ -108,11 +108,11 @@ export default StyleSheet.create({
 		fontSize: 22
 	},
 	heading3: {
-		...sharedStyles.textSemibold,
+		...sharedStyles.textMedium,
 		fontSize: 20
 	},
 	heading4: {
-		...sharedStyles.textSemibold,
+		...sharedStyles.textMedium,
 		fontSize: 18
 	},
 	heading5: {

@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 		fontSize: 13
 	},
 	bottomContainerTextBold: {
-		...sharedStyles.textSemibold,
+		...sharedStyles.textMedium,
 		fontSize: 13
 	},
 	loginButton: {

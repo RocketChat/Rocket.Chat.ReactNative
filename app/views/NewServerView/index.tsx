@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	chooseCertificate: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	description: {
 		...sharedStyles.textRegular,

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 	noResult: {
 		fontSize: 15,
 		paddingVertical: 56,
-		...sharedStyles.textSemibold,
+		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},
 	listNoHeader: {

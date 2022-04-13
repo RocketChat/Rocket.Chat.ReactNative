@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 	},
 	invitedTitle: {
 		fontSize: 16,
-		...sharedStyles.textSemibold,
+		...sharedStyles.textMedium,
 		lineHeight: 41
 	},
 	invitedCount: {

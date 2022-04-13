@@ -35,7 +35,7 @@ const MentionHeaderList = ({ trackingType, hasMentions, loading }: IMentionHeade
 			return (
 				<TouchableOpacity style={[styles.wrapMentionHeaderListRow, styles.mentionNoMatchHeader]} onPress={onPressNoMatchCanned}>
 					<Text style={[styles.mentionHeaderListNoMatchFound, { color: themes[theme].auxiliaryText }]}>
-						{I18n.t('No_match_found')} <Text style={sharedStyles.textSemibold}>{I18n.t('Check_canned_responses')}</Text>
+						{I18n.t('No_match_found')} <Text style={sharedStyles.textMedium}>{I18n.t('Check_canned_responses')}</Text>
 					</Text>
 					<CustomIcon name='chevron-right' size={24} color={themes[theme].auxiliaryText} />
 				</TouchableOpacity>

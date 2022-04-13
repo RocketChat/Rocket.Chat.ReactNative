@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 	label: {
 		fontSize: 14,
 		marginVertical: 10,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	description: {
 		marginBottom: 10,

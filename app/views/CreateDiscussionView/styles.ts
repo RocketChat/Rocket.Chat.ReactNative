@@ -13,7 +13,7 @@ export default StyleSheet.create({
 	label: {
 		marginBottom: 10,
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	inputStyle: {
 		marginBottom: 16

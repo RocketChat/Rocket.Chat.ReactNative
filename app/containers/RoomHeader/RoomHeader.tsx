@@ -31,14 +31,14 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flexShrink: 1,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	subtitle: {
 		flexShrink: 1,
 		...sharedStyles.textRegular
 	},
 	typingUsers: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	}
 });
 

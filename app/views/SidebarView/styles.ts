@@ -24,7 +24,7 @@ export default StyleSheet.create({
 	itemText: {
 		marginVertical: 16,
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	separator: {
 		borderBottomWidth: StyleSheet.hairlineWidth,
@@ -53,13 +53,13 @@ export default StyleSheet.create({
 	},
 	currentServerText: {
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	version: {
 		marginHorizontal: 10,
 		marginBottom: 10,
 		fontSize: 13,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	inverted: {
 		transform: [{ scaleY: -1 }]

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 	},
 	unreadText: {
 		fontSize: 12,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	textSmall: {
 		fontSize: 10

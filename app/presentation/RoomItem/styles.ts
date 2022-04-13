@@ -33,7 +33,7 @@ export default StyleSheet.create<any>({
 		...sharedStyles.textMedium
 	},
 	alert: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	row: {
 		flex: 1,
@@ -55,7 +55,7 @@ export default StyleSheet.create<any>({
 		...sharedStyles.textRegular
 	},
 	updateAlert: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	status: {
 		marginRight: 2
@@ -112,7 +112,7 @@ export default StyleSheet.create<any>({
 	tagText: {
 		fontSize: 12,
 		paddingHorizontal: 4,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	typeIcon: {
 		height: ROW_HEIGHT,

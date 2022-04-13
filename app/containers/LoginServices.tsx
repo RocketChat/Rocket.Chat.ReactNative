@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 		fontSize: 14
 	},
 	serviceName: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	options: {
 		marginBottom: 0

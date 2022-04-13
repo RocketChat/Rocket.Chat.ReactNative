@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	label: {
 		marginBottom: 10,
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	input: {
 		...sharedStyles.textRegular,

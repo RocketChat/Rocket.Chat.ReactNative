@@ -61,7 +61,7 @@ export default StyleSheet.create({
 		marginVertical: 20
 	},
 	broadcast: {
-		...sharedStyles.textSemibold,
+		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},
 	hideSystemMessages: {

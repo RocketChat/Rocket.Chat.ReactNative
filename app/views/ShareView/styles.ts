@@ -26,7 +26,7 @@ export default StyleSheet.create({
 		...sharedStyles.textAlignCenter
 	},
 	send: {
-		...sharedStyles.textSemibold,
+		...sharedStyles.textMedium,
 		fontSize: 15
 	}
 });

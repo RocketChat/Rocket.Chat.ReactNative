@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 	detailText: {
 		fontSize: 10,
 		marginLeft: 2,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	}
 });
 

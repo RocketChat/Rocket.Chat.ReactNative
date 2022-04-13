@@ -56,7 +56,7 @@ export default StyleSheet.create({
 		fontSize: 12,
 		marginLeft: 3,
 		marginRight: 8.5,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	reactionEmoji: {
 		fontSize: 12,
@@ -96,7 +96,7 @@ export default StyleSheet.create({
 	},
 	buttonText: {
 		fontSize: 12,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	imageContainer: {
 		flexDirection: 'column',

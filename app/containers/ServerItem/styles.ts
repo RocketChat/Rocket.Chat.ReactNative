@@ -24,7 +24,7 @@ export default StyleSheet.create({
 	},
 	serverName: {
 		fontSize: 16,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	serverUrl: {
 		fontSize: 14,

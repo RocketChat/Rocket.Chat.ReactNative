@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		...sharedStyles.textSemibold,
+		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},
 	reactCount: {

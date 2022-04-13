@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 	title: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	subtitle: {
 		...sharedStyles.textRegular

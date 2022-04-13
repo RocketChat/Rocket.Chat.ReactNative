@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 	},
 	fieldTitle: {
 		fontSize: 14,
-		...sharedStyles.textSemibold
+		...sharedStyles.textMedium
 	},
 	fieldValue: {
 		fontSize: 14,

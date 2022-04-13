@@ -2,6 +2,16 @@ import { Platform, StyleSheet } from 'react-native';
 
 import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants';
 
+const defaultTextStyle = {
+	textAlign: 'left',
+	backgroundColor: 'transparent',
+	...Platform.select({
+		android: {
+			includeFontPadding: false
+		}
+	})
+};
+
 export default StyleSheet.create({
 	container: {
 		flex: 1,
@@ -63,64 +73,16 @@ export default StyleSheet.create({
 		borderLeftWidth: StyleSheet.hairlineWidth
 	},
 	textRegular: {
-		textAlign: 'left',
-		backgroundColor: 'transparent',
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter-Regular',
-				fontWeight: '400'
-			},
-			android: {
-				includeFontPadding: false,
-				fontFamily: 'Inter-Regular',
-				fontWeight: 'normal'
-			}
-		})
+		...defaultTextStyle,
+		fontFamily: 'Inter-Regular'
 	},
 	textMedium: {
-		textAlign: 'left',
-		backgroundColor: 'transparent',
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter-Medium',
-				fontWeight: '500'
-			},
-			android: {
-				includeFontPadding: false,
-				fontFamily: 'Inter-Medium',
-				fontWeight: 'normal'
-			}
-		})
-	},
-	textSemibold: {
-		textAlign: 'left',
-		backgroundColor: 'transparent',
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter-Regular',
-				fontWeight: '600'
-			},
-			android: {
-				includeFontPadding: false,
-				fontFamily: 'Inter-Regular',
-				fontWeight: 'bold'
-			}
-		})
+		...defaultTextStyle,
+		fontFamily: 'Inter-Medium'
 	},
 	textBold: {
-		textAlign: 'left',
-		backgroundColor: 'transparent',
-		...Platform.select({
-			ios: {
-				fontFamily: 'Inter-Bold'
-				// fontWeight: '700'
-			},
-			android: {
-				includeFontPadding: false,
-				fontFamily: 'Inter-Medium',
-				fontWeight: 'bold'
-			}
-		})
+		...defaultTextStyle,
+		fontFamily: 'Inter-Bold'
 	},
 	inputLastChild: {
 		marginBottom: 15
