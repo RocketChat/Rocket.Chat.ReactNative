@@ -151,7 +151,6 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	};
 
 	renderItem = ({ item }: { item: Partial<IRoom> }) => {
-		console.log('***** enter here *****');
 		const { theme } = this.props;
 		const { selected } = this.state;
 
