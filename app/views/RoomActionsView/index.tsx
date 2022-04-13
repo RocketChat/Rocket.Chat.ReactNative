@@ -75,6 +75,7 @@ interface IRoomActionsViewState {
 	canConvertTeam: boolean;
 	canViewCannedResponse: boolean;
 	canPlaceLivechatOnHold: boolean;
+	isOnHold: boolean;
 }
 
 class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomActionsViewState> {
@@ -123,13 +124,14 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			canAddChannelToTeam: false,
 			canConvertTeam: false,
 			canViewCannedResponse: false,
-			canPlaceLivechatOnHold: false
+			canPlaceLivechatOnHold: false,
+			isOnHold: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable.subscribe(changes => {
 				if (this.mounted) {
-					this.setState({ room: changes });
+					this.setState({ room: changes, isOnHold: !!changes?.onHold });
 				} else {
 					// @ts-ignore
 					this.state.room = changes;
@@ -197,6 +199,19 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
 				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
 			}
+		}
+	}
+
+	componentDidUpdate(prevProps: IRoomActionsViewProps, prevState: IRoomActionsViewState) {
+		const { livechatAllowManualOnHold } = this.props;
+		const { room, isOnHold } = this.state;
+
+		if (
+			room.t === 'l' &&
+			(isOnHold !== prevState.isOnHold || prevProps.livechatAllowManualOnHold !== livechatAllowManualOnHold)
+		) {
+			const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
+			this.setState({ canPlaceLivechatOnHold });
 		}
 	}
 
@@ -388,18 +403,15 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	placeOnHoldLivechat = () => {
 		const { room } = this.state;
-		console.log('🚀 ~ file: index.tsx ~ line 382 ~ RoomActionsView ~ room', room);
 		showConfirmationAlert({
 			title: I18n.t('Are_you_sure_question_mark'),
 			message: I18n.t('Do_you_want_to_put_this_chat_on_hold'),
 			confirmationText: I18n.t('Yes'),
 			onPress: async () => {
 				try {
-					const a = await RocketChat.onHoldLivechat(room.rid);
-					console.log('🚀 ~ file: index.tsx ~ line 390 ~ RoomActionsView ~ onPress: ~ a', a);
+					await RocketChat.onHoldLivechat(room.rid);
 				} catch (e: any) {
-					console.log('🚀 ~ file: index.tsx ~ line 392 ~ RoomActionsView ~ onPress: ~ e', e);
-					showErrorAlert(e.reason, I18n.t('Oops'));
+					showErrorAlert(e.data?.error, I18n.t('Oops'));
 				}
 			}
 		});
