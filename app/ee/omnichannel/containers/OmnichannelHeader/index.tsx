@@ -21,11 +21,12 @@ interface IOmnichannelStatus {
 }
 
 const OmnichannelStatus = memo(({ searching, goQueue, queueSize, user }: IOmnichannelStatus) => {
+	const { theme } = useTheme();
+	const [status, setStatus] = useState(isOmnichannelStatusAvailable(user));
+
 	if (searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
 		return null;
 	}
-	const { theme } = useTheme();
-	const [status, setStatus] = useState(isOmnichannelStatusAvailable(user));
 
 	useEffect(() => {
 		setStatus(isOmnichannelStatusAvailable(user));
