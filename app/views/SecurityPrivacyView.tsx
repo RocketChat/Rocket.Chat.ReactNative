@@ -1,22 +1,24 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-community/async-storage';
 import { useSelector } from 'react-redux';
 
-import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
-import I18n from '../i18n';
-import {
-	logEvent,
-	events,
-	toggleCrashErrorsReport,
-	toggleAnalyticsEventsReport,
-	getReportCrashErrorsValue,
-	getReportAnalyticsEventsValue
-} from '../utils/log';
 import SafeAreaView from '../containers/SafeAreaView';
+import StatusBar from '../containers/StatusBar';
+import I18n from '../i18n';
 import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, isFDroidBuild, SWITCH_TRACK_COLOR } from '../lib/constants';
+import useServer from '../lib/methods/useServer';
+import { handleLocalAuthentication } from '../utils/localAuthentication';
+import {
+	events,
+	getReportAnalyticsEventsValue,
+	getReportCrashErrorsValue,
+	logEvent,
+	toggleAnalyticsEventsReport,
+	toggleCrashErrorsReport
+} from '../utils/log';
 
 interface ISecurityPrivacyViewProps {
 	navigation: StackNavigationProp<any, 'SecurityPrivacyView'>;
@@ -25,7 +27,7 @@ interface ISecurityPrivacyViewProps {
 const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Element => {
 	const [crashReportState, setCrashReportState] = useState(getReportCrashErrorsValue());
 	const [analyticsEventsState, setAnalyticsEventsState] = useState(getReportAnalyticsEventsValue());
-
+	const [server] = useServer();
 	const e2eEnabled = useSelector((state: any) => state.settings.E2E_Enable);
 
 	useEffect(() => {
@@ -54,6 +56,13 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 		navigation.navigate(screen);
 	};
 
+	const navigateToScreenLockConfigView = async () => {
+		if (server?.autoLock) {
+			await handleLocalAuthentication(true);
+		}
+		navigateToScreen('ScreenLockConfigView');
+	};
+
 	return (
 		<SafeAreaView testID='security-privacy-view'>
 			<StatusBar />
@@ -74,7 +83,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 					<List.Item
 						title='Screen_lock'
 						showActionIndicator
-						onPress={() => navigateToScreen('ScreenLockConfigView')}
+						onPress={navigateToScreenLockConfigView}
 						testID='security-privacy-view-screen-lock'
 					/>
 					<List.Separator />
