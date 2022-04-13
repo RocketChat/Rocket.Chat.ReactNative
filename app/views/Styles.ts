@@ -1,8 +1,8 @@
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, TextStyle } from 'react-native';
 
 import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants';
 
-const defaultTextStyle = {
+const defaultTextStyle: TextStyle = {
 	textAlign: 'left',
 	backgroundColor: 'transparent',
 	fontFamily: 'Inter',
