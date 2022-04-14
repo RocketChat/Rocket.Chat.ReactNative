@@ -762,7 +762,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			value = message;
 			replyCancel();
 		}
-		Navigation.navigate('ShareView', { room: this.room, value, attachments });
+		Navigation.navigate('ShareView', { room: this.room, thread: value, attachments });
 	};
 
 	createDiscussion = () => {
