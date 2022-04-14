@@ -379,7 +379,7 @@ jobs:
     resource_class: large
     steps:
       - android-build
-  
+
   android-build-official:
     <<: *defaults
     docker:
@@ -505,7 +505,7 @@ workflows:
       - android-google-play-production-experimental:
           requires:
             - android-hold-google-play-production-experimental
-      
+
       # Android Official
       - android-hold-build-official:
           type: approval
@@ -521,3 +521,21 @@ workflows:
       - android-google-play-beta-official:
           requires:
             - android-hold-google-play-beta-official
+
+      # Android Experimental
+      - android-automatic-build-experimental:
+          filters:
+            branches:
+              only:
+                - develop
+          requires:
+            - lint-testunit
+      - android-build-experimental:
+          requires:
+            - android-automatic-build-experimental
+      - android-internal-app-sharing-experimental:
+          requires:
+            - android-build-experimental
+      - android-google-play-production-experimental:
+          requires:
+            - android-build-experimental
