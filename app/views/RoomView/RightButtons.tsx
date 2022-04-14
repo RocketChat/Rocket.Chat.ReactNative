@@ -82,16 +82,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			}
 		}
 		if (t === 'l') {
-			const canReturnQueue = await this.canReturnQueue();
-			const canForwardGuest = await this.canForwardGuest();
-			this.setState({ canReturnQueue, canForwardGuest });
-		}
-	}
-
-	componentDidUpdate(prevProps: IRightButtonsProps) {
-		const { status } = this.props;
-		if (prevProps.status !== status) {
-			return false;
+			this.setOmnichannelPermissions();
 		}
 	}
 
@@ -122,6 +113,14 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return false;
 	}
 
+	componentDidUpdate(prevProps: IRightButtonsProps) {
+		const { status, joined } = this.props;
+
+		if (prevProps.status !== status || prevProps.joined !== joined) {
+			this.setOmnichannelPermissions();
+		}
+	}
+
 	componentWillUnmount() {
 		if (this.threadSubscription && this.threadSubscription.unsubscribe) {
 			this.threadSubscription.unsubscribe();
@@ -130,6 +129,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			this.subSubscription.unsubscribe();
 		}
 	}
+
+	setOmnichannelPermissions = async () => {
+		const canReturnQueue = await this.canReturnQueue();
+		const canForwardGuest = await this.canForwardGuest();
+		this.setState({ canReturnQueue, canForwardGuest });
+	};
 
 	observeThread = (threadRecord: TMessageModel) => {
 		const threadObservable: Observable<TMessageModel> = threadRecord.observe();
@@ -278,13 +283,17 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 	};
 
+	isOmnichannelPreview = () => {
+		const { joined, status } = this.props;
+		return joined && status !== 'queued';
+	};
+
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, teamId, joined, status } = this.props;
-		const isOmnichannelPreview = joined && status !== 'queued';
+		const { t, tmid, threadsEnabled, teamId, joined } = this.props;
 
 		if (t === 'l') {
-			if (isOmnichannelPreview) {
+			if (this.isOmnichannelPreview()) {
 				return (
 					<HeaderButton.Container>
 						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />

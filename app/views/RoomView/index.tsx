@@ -315,7 +315,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
-		const { roomUpdate } = this.state;
+		const { roomUpdate, joined } = this.state;
 		const { appState, insets, route } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
@@ -341,7 +341,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 		// If it's a livechat room
 		if (this.t === 'l') {
-			if (!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor)) {
+			if (
+				!dequal(prevState.roomUpdate.visitor, roomUpdate.visitor) ||
+				!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
+				prevState.joined !== joined
+			) {
 				this.setHeader();
 			}
 		}
@@ -1146,6 +1150,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
+	goToCannedResponses = () => {
+		const { room } = this.state;
+		Navigation.navigate('CannedResponsesListView', { rid: room.rid, room });
+	};
+
 	renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
 		const { room, lastOpen, canAutoTranslate } = this.state;
 		const { user, Message_GroupingPeriod, Message_TimeFormat, useRealName, baseUrl, Message_Read_Receipt_Enabled, theme } =
@@ -1279,6 +1288,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<MessageBox
 				ref={this.messagebox}
+				goToCannedResponses={this.goToCannedResponses}
 				onSubmit={this.sendMessage}
 				rid={this.rid}
 				tmid={this.tmid}
@@ -1338,7 +1348,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if ('id' in room) {
 			({ sysMes, bannerClosed, announcement, tunread, ignored } = room);
 		}
-
+		console.log({ room });
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
 				<StatusBar />
