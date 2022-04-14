@@ -976,7 +976,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { rid, t } = room;
 		const { theme } = this.props;
 
-		if (t !== 'l' && this.isOmnichannelPreview) {
+		if (t !== 'l' || this.isOmnichannelPreview) {
 			return null;
 		}
 

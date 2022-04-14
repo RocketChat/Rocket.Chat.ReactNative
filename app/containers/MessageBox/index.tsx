@@ -50,9 +50,10 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
 import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
-import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { IApplicationState, IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { TSupportedThemes } from '../../theme';
+import { ChatsStackParamList } from '../../stacks/types';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -76,7 +77,7 @@ const videoPickerConfig: Options = {
 	mediaType: 'video'
 };
 
-export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackParamList, any> {
+export interface IMessageBoxProps extends IBaseScreen<ChatsStackParamList & MasterDetailInsideStackParamList, any> {
 	rid: string;
 	baseUrl: string;
 	message: IMessage;
@@ -108,6 +109,8 @@ export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackPar
 	usedCannedResponse: string;
 	uploadFilePermission: string[];
 	serverVersion: string;
+	viewCannedResponsesPermission: boolean;
+	goToCannedResponses: () => void;
 }
 
 interface IMessageBoxState {
@@ -124,6 +127,7 @@ interface IMessageBoxState {
 	tshow: boolean;
 	mentionLoading: boolean;
 	permissionToUpload: boolean;
+	canViewCannedResponse: boolean;
 }
 
 class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
@@ -178,7 +182,8 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			command: {},
 			tshow: false,
 			mentionLoading: false,
-			permissionToUpload: true
+			permissionToUpload: true,
+			canViewCannedResponse: false
 		};
 		this.text = '';
 		this.selection = { start: 0, end: 0 };
@@ -208,7 +213,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	async componentDidMount() {
 		const db = database.active;
-		const { rid, tmid, navigation, sharing, usedCannedResponse, isMasterDetail } = this.props;
+		const { rid, tmid, navigation, sharing, usedCannedResponse, isMasterDetail, roomType } = this.props;
 		let msg;
 		try {
 			const threadsCollection = db.get('threads');
@@ -245,6 +250,11 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 		if (isMasterDetail && usedCannedResponse) {
 			this.onChangeText(usedCannedResponse);
+		}
+
+		if (roomType === 'l') {
+			const canViewCannedResponse = await this.canViewCannedResponse();
+			this.setState({ canViewCannedResponse });
 		}
 
 		this.setOptions();
@@ -398,6 +408,12 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			EventEmiter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 	}
+
+	canViewCannedResponse = async () => {
+		const { viewCannedResponsesPermission, rid } = this.props;
+		const permissions = await RocketChat.hasPermission([viewCannedResponsesPermission], rid);
+		return permissions[0];
+	};
 
 	setOptions = async () => {
 		const { uploadFilePermission, rid } = this.props;
@@ -778,10 +794,17 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 
 	showMessageBoxActions = () => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
-		const { permissionToUpload } = this.state;
-		const { showActionSheet } = this.props;
+		const { permissionToUpload, canViewCannedResponse } = this.state;
+		const { showActionSheet, goToCannedResponses } = this.props;
 
 		const options = [];
+		if (canViewCannedResponse) {
+			options.push({
+				title: I18n.t('Canned_Responses'),
+				icon: 'canned-response',
+				onPress: () => goToCannedResponses()
+			});
+		}
 		if (permissionToUpload) {
 			options.push(
 				{
@@ -1166,7 +1189,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	threadsEnabled: state.settings.Threads_enabled,
@@ -1174,7 +1197,8 @@ const mapStateToProps = (state: any) => ({
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize,
 	Message_AudioRecorderEnabled: state.settings.Message_AudioRecorderEnabled,
-	uploadFilePermission: state.permissions['mobile-upload-file']
+	uploadFilePermission: state.permissions['mobile-upload-file'],
+	viewCannedResponsesPermission: state.permissions['view-canned-responses']
 });
 
 const dispatchToProps = {
