@@ -14,7 +14,7 @@ import StatusBar from '../containers/StatusBar';
 import TextInput from '../containers/TextInput';
 import { IApplicationState } from '../definitions';
 import I18n from '../i18n';
-import KeyboardView from '../presentation/KeyboardView';
+import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { TSupportedThemes, withTheme } from '../theme';
 import { isTablet } from '../utils/deviceInfo';

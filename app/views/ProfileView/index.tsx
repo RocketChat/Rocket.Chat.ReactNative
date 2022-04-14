@@ -10,7 +10,7 @@ import omit from 'lodash/omit';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
 import Touch from '../../utils/touch';
-import KeyboardView from '../../presentation/KeyboardView';
+import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
