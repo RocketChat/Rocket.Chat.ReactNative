@@ -13,6 +13,7 @@ import Tag from './Tag';
 import I18n from '../../i18n';
 import { DisplayMode } from '../../lib/constants';
 import { TUserStatus } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
 
 interface IRoomItem {
 	rid: string;
@@ -27,7 +28,7 @@ interface IRoomItem {
 	width: number;
 	status: TUserStatus;
 	useRealName: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	isFocused: boolean;
 	isGroupChat: boolean;
 	isRead: boolean;
@@ -137,7 +138,7 @@ const RoomItem = ({
 				<>
 					<View style={styles.titleContainer}>
 						{showAvatar ? (
-							<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} theme={theme} teamMain={teamMain} />
+							<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} teamMain={teamMain} />
 						) : null}
 						<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 						{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
@@ -170,7 +171,6 @@ const RoomItem = ({
 						prid={prid}
 						status={status}
 						isGroupChat={isGroupChat}
-						theme={theme}
 						teamMain={teamMain}
 						size={22}
 						style={{ marginRight: 8 }}

@@ -10,9 +10,10 @@ import I18n from '../../i18n';
 import { themes } from '../../lib/constants';
 import { CustomIcon } from '../../lib/Icons';
 import { events, logEvent } from '../../utils/log';
+import { TSupportedThemes } from '../../theme';
 
 interface IMessageBoxRecordAudioProps {
-	theme: string;
+	theme: TSupportedThemes;
 	permissionToUpload: boolean;
 	recordingCallback: Function;
 	onFinish: Function;

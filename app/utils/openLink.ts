@@ -3,6 +3,7 @@ import * as WebBrowser from 'expo-web-browser';
 import parse from 'url-parse';
 
 import { themes } from '../lib/constants';
+import { TSupportedThemes } from '../theme';
 import UserPreferences from '../lib/methods/userPreferences';
 
 export const DEFAULT_BROWSER_KEY = 'DEFAULT_BROWSER_KEY';
@@ -35,7 +36,7 @@ const appSchemeURL = (url: string, browser: string): string => {
 	return schemeUrl;
 };
 
-const openLink = async (url: string, theme = 'light'): Promise<void> => {
+const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise<void> => {
 	try {
 		const browser = UserPreferences.getString(DEFAULT_BROWSER_KEY);
 
