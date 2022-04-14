@@ -117,7 +117,7 @@ commands:
             echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
-            if [[ $CIRCLE_JOB == "android-build-official" || "android-automatic-build-official" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
               echo $CHAT_ROCKET_ANDROID_STORE_FILE_BASE64_JKS | base64 --decode > ./app/$KEYSTORE_OFFICIAL
@@ -150,7 +150,7 @@ commands:
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               ./gradlew bundleOfficialPlayRelease
             fi
-            if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-experimental" ] || [ $CIRCLE_JOB == "android-automatic-build-experimental" ]]; then
               ./gradlew bundleExperimentalPlayRelease
             fi
             if [[ ! $KEYSTORE ]]; then
@@ -169,7 +169,7 @@ commands:
                 --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
                 --bundle android/app/build/generated/assets/react/officialPlay/release/app.bundle
             fi
-            if [[ $CIRCLE_JOB == "android-build-experimental" ]]; then
+            if [[ $CIRCLE_JOB == "android-build-experimental" ] || [ $CIRCLE_JOB == "android-automatic-build-experimental" ]]; then
               npx bugsnag-source-maps upload-react-native \
                 --api-key=$BUGSNAG_KEY \
                 --app-version-code=$CIRCLE_BUILD_NUM \
