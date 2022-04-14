@@ -494,13 +494,13 @@ workflows:
 
       # Android Experimental
       - android-hold-build-experimental:
+          type: approval
+          requires:
+              - lint-testunit
           filters:
             branches:
               ignore:
                 - improve/circleci
-          type: approval
-          requires:
-              - lint-testunit
       - android-build-experimental:
           requires:
             - android-hold-build-experimental
