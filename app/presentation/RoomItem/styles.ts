@@ -62,7 +62,7 @@ export default StyleSheet.create<any>({
 	},
 	markdownText: {
 		flex: 1,
-		lineHeight: undefined,
+		fontSize: 14,
 		...sharedStyles.textRegular
 	},
 	avatar: {

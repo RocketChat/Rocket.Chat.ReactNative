@@ -33,11 +33,11 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start'
 	},
 	title: {
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	description: {
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textRegular
 	},
 	marginTop: {

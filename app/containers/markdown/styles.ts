@@ -31,13 +31,11 @@ export default StyleSheet.create({
 		textDecorationLine: 'line-through'
 	},
 	plainText: {
-		fontSize: 14,
-		lineHeight: 20,
+		fontSize: 16,
 		flexShrink: 1
 	},
 	text: {
-		fontSize: 14,
-		lineHeight: 20,
+		fontSize: 16,
 		...sharedStyles.textRegular
 	},
 	textInfo: {
@@ -58,7 +56,7 @@ export default StyleSheet.create({
 	},
 	temp: { opacity: 0.3 },
 	mention: {
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	paragraph: {
@@ -75,7 +73,7 @@ export default StyleSheet.create({
 		resizeMode: 'contain'
 	},
 	codeInline: {
-		fontSize: 14,
+		fontSize: 16,
 		lineHeight: 20,
 		...sharedStyles.textRegular,
 		...codeFontFamily,
@@ -85,7 +83,7 @@ export default StyleSheet.create({
 		paddingTop: 2
 	},
 	codeBlock: {
-		fontSize: 14,
+		fontSize: 16,
 		lineHeight: 20,
 		...sharedStyles.textRegular,
 		...codeFontFamily,
@@ -94,7 +92,7 @@ export default StyleSheet.create({
 		padding: 4
 	},
 	link: {
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textRegular
 	},
 	edited: {
@@ -123,7 +121,7 @@ export default StyleSheet.create({
 	},
 	heading6: {
 		...sharedStyles.textMedium,
-		fontSize: 14
+		fontSize: 16
 	},
 	quote: {
 		height: '100%',

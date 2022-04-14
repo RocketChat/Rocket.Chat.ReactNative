@@ -26,7 +26,7 @@ export default StyleSheet.create({
 		paddingBottom: 12,
 		paddingLeft: 0,
 		paddingRight: 0,
-		fontSize: 14,
+		fontSize: 16,
 		letterSpacing: 0,
 		...sharedStyles.textRegular
 	},

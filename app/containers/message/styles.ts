@@ -118,17 +118,17 @@ export default StyleSheet.create({
 		resizeMode: 'contain'
 	},
 	text: {
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textRegular
 	},
 	textInfo: {
 		fontStyle: 'italic',
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textRegular
 	},
 	startedDiscussion: {
 		fontStyle: 'italic',
-		fontSize: 14,
+		fontSize: 16,
 		marginBottom: 6,
 		...sharedStyles.textRegular
 	},
@@ -148,7 +148,7 @@ export default StyleSheet.create({
 		marginLeft: 16
 	},
 	repliedThreadName: {
-		fontSize: 14,
+		fontSize: 16,
 		flex: 1,
 		...sharedStyles.textRegular
 	},

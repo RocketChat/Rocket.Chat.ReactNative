@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 	},
 	author: {
 		flex: 1,
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	time: {
@@ -63,11 +63,11 @@ const styles = StyleSheet.create({
 		padding: 10
 	},
 	fieldTitle: {
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textMedium
 	},
 	fieldValue: {
-		fontSize: 14,
+		fontSize: 16,
 		...sharedStyles.textRegular
 	},
 	marginTop: {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flex: 1,
-		fontSize: 14,
+		fontSize: 16,
 		marginBottom: 3,
 		...sharedStyles.textMedium
 	}
@@ -133,7 +133,7 @@ const Description = React.memo(
 		return (
 			<Markdown
 				msg={text}
-				style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14 }]}
+				style={[{ color: themes[theme].auxiliaryTintColor }]}
 				baseUrl={baseUrl}
 				username={user.username}
 				getCustomEmoji={getCustomEmoji}

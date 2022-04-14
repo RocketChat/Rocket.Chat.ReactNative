@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 	},
 	serviceText: {
 		...sharedStyles.textRegular,
-		fontSize: 14
+		fontSize: 16
 	},
 	serviceName: {
 		...sharedStyles.textMedium
