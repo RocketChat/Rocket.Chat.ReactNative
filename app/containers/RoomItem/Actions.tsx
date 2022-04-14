@@ -13,7 +13,7 @@ const EXPANDED_ICON_SIZE = 28;
 
 export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
 	const animatedStyles = useAnimatedStyle(() => {
-		let translateX = interpolate(transX.value, [0, ACTION_WIDTH], [-ACTION_WIDTH, 0]);
+		let translateX = transX.value;
 		if (I18nManager.isRTL) {
 			translateX = interpolate(transX.value, [-ACTION_WIDTH, 0], [width - ACTION_WIDTH, width]);
 			return {
@@ -21,7 +21,7 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 			};
 		}
 		return {
-			right: width - ACTION_WIDTH,
+			right: width,
 			transform: [{ translateX }]
 		};
 	});
@@ -35,7 +35,7 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 				style={[
 					styles.actionLeftButtonContainer,
 					{
-						width,
+						width: width * 2,
 						backgroundColor: themes[theme].tintColor
 					},
 					viewHeight,
@@ -116,7 +116,7 @@ export const RightActions = React.memo(
 					style={[
 						styles.actionRightButtonContainer,
 						{
-							width,
+							width: width * 2,
 							backgroundColor: themes[theme].hideBackground
 						},
 						isCondensed && { height: ROW_HEIGHT_CONDENSED },
