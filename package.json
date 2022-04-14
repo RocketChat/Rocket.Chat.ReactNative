@@ -148,6 +148,7 @@
 		"@testing-library/react-native": "^9.0.0",
 		"@types/bytebuffer": "^5.0.43",
 		"@types/ejson": "^2.1.3",
+		"@types/i18n-js": "^3.8.2",
 		"@types/jest": "^26.0.24",
 		"@types/lodash": "^4.14.171",
 		"@types/react": "^17.0.14",

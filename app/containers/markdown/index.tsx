@@ -29,7 +29,7 @@ import { themes } from '../../lib/constants';
 export { default as MarkdownPreview } from './Preview';
 
 interface IMarkdownProps {
-	msg?: string;
+	msg?: string | null;
 	theme: TSupportedThemes;
 	md?: MarkdownAST;
 	mentions?: IUserMention[];
