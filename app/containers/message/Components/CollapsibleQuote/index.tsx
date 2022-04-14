@@ -81,11 +81,13 @@ interface IMessageReply {
 
 const Fields = React.memo(
 	({ attachment, getCustomEmoji }: IMessageFields) => {
+		const { theme } = useTheme();
+		const { baseUrl, user } = useContext(MessageContext);
+
 		if (!attachment.fields) {
 			return null;
 		}
-		const { baseUrl, user } = useContext(MessageContext);
-		const { theme } = useTheme();
+
 		return (
 			<>
 				{attachment.fields.map(field => (
@@ -111,11 +113,12 @@ const Fields = React.memo(
 
 const CollapsibleQuote = React.memo(
 	({ attachment, index, getCustomEmoji }: IMessageReply) => {
+		const { theme } = useTheme();
+		const [collapsed, setCollapsed] = useState(attachment?.collapsed);
+
 		if (!attachment) {
 			return null;
 		}
-		const [collapsed, setCollapsed] = useState(attachment.collapsed);
-		const { theme } = useTheme();
 
 		const onPress = () => {
 			setCollapsed(!collapsed);

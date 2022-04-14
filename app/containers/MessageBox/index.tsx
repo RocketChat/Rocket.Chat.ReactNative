@@ -52,6 +52,7 @@ import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
 import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { TSupportedThemes } from '../../theme';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -95,7 +96,7 @@ export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackPar
 	editRequest: Function;
 	onSubmit: Function;
 	typing: Function;
-	theme: string;
+	theme: TSupportedThemes;
 	replyCancel(): void;
 	showSend: boolean;
 	children: JSX.Element;

@@ -4,6 +4,7 @@ import { themes } from '../lib/constants';
 import I18n from '../i18n';
 import { IAttachment } from '../definitions/IAttachment';
 import { SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
+import { TSupportedThemes } from '../theme';
 
 export const isBlocked = (room: TSubscriptionModel): boolean => {
 	if (room) {
@@ -46,7 +47,7 @@ export const getBadgeColor = ({
 	// TODO: Refactor when migrate model folder
 	subscription: any;
 	messageId: string;
-	theme: string;
+	theme: TSupportedThemes;
 }): string | undefined => {
 	if (subscription?.tunreadUser?.includes(messageId)) {
 		return themes[theme].mentionMeColor;

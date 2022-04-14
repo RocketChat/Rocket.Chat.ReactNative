@@ -30,11 +30,11 @@ const Avatar = React.memo(
 		borderRadius = 4,
 		type = SubscriptionType.DIRECT
 	}: IAvatar) => {
+		const { theme } = useTheme();
+
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
 		}
-
-		const { theme } = useTheme();
 
 		const avatarStyle = {
 			width: size,

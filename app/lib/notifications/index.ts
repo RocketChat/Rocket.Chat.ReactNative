@@ -1,8 +1,8 @@
 import EJSON from 'ejson';
 
-import { store } from '../../lib/store/auxStore';
+import { store } from '../store/auxStore';
 import { deepLinkingOpen } from '../../actions/deepLinking';
-import { isFDroidBuild } from '../../lib/constants';
+import { isFDroidBuild } from '../constants';
 import PushNotification from './push';
 import { INotification, SubscriptionType } from '../../definitions';
 

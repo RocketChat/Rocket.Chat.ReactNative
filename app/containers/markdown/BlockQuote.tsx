@@ -1,12 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
 import styles from './styles';
 
 interface IBlockQuote {
 	children: React.ReactElement | null;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const BlockQuote = React.memo(({ children, theme }: IBlockQuote) => (

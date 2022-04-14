@@ -11,11 +11,12 @@ import { useTheme } from '../../theme';
 const MessageError = React.memo(
 	({ hasError }: { hasError: boolean }) => {
 		const { theme } = useTheme();
+		const { onErrorPress } = useContext(MessageContext);
 
 		if (!hasError) {
 			return null;
 		}
-		const { onErrorPress } = useContext(MessageContext);
+
 		return (
 			<Touchable onPress={onErrorPress} style={styles.errorButton} hitSlop={BUTTON_HIT_SLOP}>
 				<CustomIcon name='warning' color={themes[theme].dangerColor} size={18} />

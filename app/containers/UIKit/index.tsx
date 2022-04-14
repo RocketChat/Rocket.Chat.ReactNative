@@ -1,4 +1,4 @@
-/* eslint-disable class-methods-use-this */
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { BLOCK_CONTEXT, UiKitParserMessage, UiKitParserModal, uiKitMessage, uiKitModal } from '@rocket.chat/ui-kit';

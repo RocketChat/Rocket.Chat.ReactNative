@@ -14,7 +14,7 @@ import { TEAM_TYPE } from '../../definitions/ITeam';
 import { Encryption } from '../encryption';
 import { TParams } from '../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../store/auxStore';
-import { getDeviceToken } from '../../notifications/push';
+import { getDeviceToken } from '../notifications';
 import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import sdk from './sdk';
@@ -761,7 +761,7 @@ export const validateInviteToken = (token: string): any =>
 	// @ts-ignore
 	sdk.post('validateInviteToken', { token });
 
-export const useInviteToken = (token: string): any =>
+export const inviteToken = (token: string): any =>
 	// RC 2.4.0
 	// TODO: missing definitions from server
 	// @ts-ignore
