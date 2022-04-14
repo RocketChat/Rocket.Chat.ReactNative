@@ -24,13 +24,13 @@ const OmnichannelStatus = memo(({ searching, goQueue, queueSize, user }: IOmnich
 	const { theme } = useTheme();
 	const [status, setStatus] = useState(isOmnichannelStatusAvailable(user));
 
-	if (searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
-		return null;
-	}
-
 	useEffect(() => {
 		setStatus(isOmnichannelStatusAvailable(user));
 	}, [user.statusLivechat]);
+
+	if (searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
+		return null;
+	}
 
 	const toggleLivechat = async () => {
 		// if not-available, prompt to change to available
