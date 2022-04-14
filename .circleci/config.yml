@@ -500,7 +500,7 @@ workflows:
           filters:
             branches:
               ignore:
-                - improve/circleci
+                - develop
       - android-build-experimental:
           requires:
             - android-hold-build-experimental
@@ -530,7 +530,7 @@ workflows:
           filters:
             branches:
               ignore:
-                - improve/circleci
+                - develop
       - android-build-official:
           requires:
             - android-hold-build-official
@@ -547,7 +547,7 @@ workflows:
           filters:
             branches:
               only:
-                - improve/circleci
+                - develop
           requires:
             - lint-testunit
       - android-google-play-production-experimental:
