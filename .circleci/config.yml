@@ -101,8 +101,6 @@ commands:
     steps:
       - checkout
 
-      - run: node --version
-
       - restore_cache: *restore-npm-cache-linux
 
       - run: *install-npm-modules
@@ -374,7 +372,7 @@ jobs:
   android-build-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2021.08.1-node
+      - image: cimg/android:2022.03.1-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -385,7 +383,7 @@ jobs:
   android-build-official:
     <<: *defaults
     docker:
-      - image: cmig/android:2022.03-node
+      - image: cimg/android:2022.03.1-node
     environment:
       <<: *android-env
       <<: *bash-env
@@ -396,7 +394,7 @@ jobs:
   android-internal-app-sharing-experimental:
     <<: *defaults
     docker:
-      - image: cmig/android:2022.03-node
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-internal-app-sharing
@@ -404,7 +402,7 @@ jobs:
   android-google-play-beta-experimental:
     <<: *defaults
     docker:
-      - image: cmig/android:2022.03-node
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-google-play-beta:
@@ -413,14 +411,14 @@ jobs:
   android-google-play-production-experimental:
     <<: *defaults
     docker:
-      - image: cmig/android:2022.03-node
+      - image: cimg/android:2022.03.1-node
     steps:
       - upload-to-google-play-production
 
   android-google-play-beta-official:
     <<: *defaults
     docker:
-      - image: cmig/android:2022.03-node
+      - image: cimg/android:2022.03.1-node
 
     steps:
       - upload-to-google-play-beta:
