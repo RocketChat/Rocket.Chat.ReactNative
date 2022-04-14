@@ -971,19 +971,71 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		);
 	};
 
+	renderOmnichannelSection = () => {
+		const { room, canForwardGuest, canReturnQueue } = this.state;
+		const { rid, t } = room;
+		const { theme } = this.props;
+
+		if (t !== 'l' && this.isOmnichannelPreview) {
+			return null;
+		}
+
+		return (
+			<List.Section>
+				{canForwardGuest ? (
+					<>
+						<List.Item
+							title='Forward'
+							onPress={() =>
+								this.onPressTouchable({
+									route: 'ForwardLivechatView',
+									params: { rid }
+								})
+							}
+							left={() => <List.Icon name='chat-forward' color={themes[theme].titleText} />}
+							showActionIndicator
+						/>
+						<List.Separator />
+					</>
+				) : null}
+
+				{canReturnQueue ? (
+					<>
+						<List.Item
+							title='Return'
+							onPress={() =>
+								this.onPressTouchable({
+									event: this.returnLivechat
+								})
+							}
+							left={() => <List.Icon name='move-to-the-queue' color={themes[theme].titleText} />}
+							showActionIndicator
+						/>
+						<List.Separator />
+					</>
+				) : null}
+
+				<>
+					<List.Item
+						title='Close'
+						color={themes[theme].dangerColor}
+						onPress={() =>
+							this.onPressTouchable({
+								event: this.closeLivechat
+							})
+						}
+						left={() => <List.Icon name='chat-close' color={themes[theme].dangerColor} />}
+						showActionIndicator
+					/>
+					<List.Separator />
+				</>
+			</List.Section>
+		);
+	};
+
 	render() {
-		const {
-			room,
-			membersCount,
-			canViewMembers,
-			canAddUser,
-			canInviteUser,
-			joined,
-			canAutoTranslate,
-			canForwardGuest,
-			canReturnQueue,
-			canViewCannedResponse
-		} = this.state;
+		const { room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canViewCannedResponse } =
+			this.state;
 		const { rid, t, prid } = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
@@ -1067,6 +1119,18 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									}
 									testID='room-actions-discussions'
 									left={() => <List.Icon name='discussions' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
+
+						{['l'].includes(t) && !this.isOmnichannelPreview && canViewCannedResponse ? (
+							<>
+								<List.Item
+									title='Canned_Responses'
+									onPress={() => this.onPressTouchable({ route: 'CannedResponsesListView', params: { rid, room } })}
+									left={() => <List.Icon name='canned-response' />}
 									showActionIndicator
 								/>
 								<List.Separator />
@@ -1200,69 +1264,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 						{this.teamChannelActions(t, room)}
 						{this.teamToChannelActions(t, room)}
-
-						{['l'].includes(t) && !this.isOmnichannelPreview && canViewCannedResponse ? (
-							<>
-								<List.Item
-									title='Canned_Responses'
-									onPress={() => this.onPressTouchable({ route: 'CannedResponsesListView', params: { rid, room } })}
-									left={() => <List.Icon name='canned-response' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['l'].includes(t) && !this.isOmnichannelPreview ? (
-							<>
-								<List.Item
-									title='Close'
-									onPress={() =>
-										this.onPressTouchable({
-											event: this.closeLivechat
-										})
-									}
-									left={() => <List.Icon name='close' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['l'].includes(t) && !this.isOmnichannelPreview && canForwardGuest ? (
-							<>
-								<List.Item
-									title='Forward'
-									onPress={() =>
-										this.onPressTouchable({
-											route: 'ForwardLivechatView',
-											params: { rid }
-										})
-									}
-									left={() => <List.Icon name='user-forward' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
-
-						{['l'].includes(t) && !this.isOmnichannelPreview && canReturnQueue ? (
-							<>
-								<List.Item
-									title='Return'
-									onPress={() =>
-										this.onPressTouchable({
-											event: this.returnLivechat
-										})
-									}
-									left={() => <List.Icon name='undo' />}
-									showActionIndicator
-								/>
-								<List.Separator />
-							</>
-						) : null}
 					</List.Section>
-
+					{this.renderOmnichannelSection()}
 					{this.renderLastSection()}
 				</List.Container>
 			</SafeAreaView>
