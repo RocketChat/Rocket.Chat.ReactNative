@@ -75,15 +75,15 @@ export default StyleSheet.create({
 	},
 	textRegular: {
 		...defaultTextStyle,
-		fontWeight: '400'
+		fontFamily: 'Inter-Regular'
 	},
 	textMedium: {
 		...defaultTextStyle,
-		fontWeight: '500'
+		fontFamily: 'Inter-Medium'
 	},
 	textBold: {
 		...defaultTextStyle,
-		fontWeight: '700'
+		fontFamily: 'Inter-Bold'
 	},
 	inputLastChild: {
 		marginBottom: 15
