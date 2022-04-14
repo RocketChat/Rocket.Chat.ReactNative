@@ -91,7 +91,7 @@ const Content = React.memo(
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
 						<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>
-							{translateTitle ? I18n.t(title) : title}
+							{translateTitle && title ? I18n.t(title) : title}
 						</Text>
 						{alert ? (
 							<CustomIcon style={[styles.alertIcon, { color: themes[theme].dangerColor }]} size={ICON_SIZE} name='info' />
