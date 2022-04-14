@@ -101,6 +101,8 @@ commands:
     steps:
       - checkout
 
+      - run: node --version
+
       - restore_cache: *restore-npm-cache-linux
 
       - run: *install-npm-modules
@@ -372,7 +374,7 @@ jobs:
   android-build-experimental:
     <<: *defaults
     docker:
-      - image: cmig/android:2022.03.1-node
+      - image: cimg/android:2021.08.1-node
     environment:
       <<: *android-env
       <<: *bash-env
