@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Observable, Subscription } from 'rxjs';
+import { Dispatch } from 'redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -11,18 +12,27 @@ import { events, logEvent } from '../../utils/log';
 import { isTeamRoom } from '../../utils/room';
 import { IApplicationState, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
+import { withActionSheet } from '../../containers/ActionSheet';
+import i18n from '../../i18n';
+import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
+import { closeRoom } from '../../actions/room';
+import RocketChat from '../../lib/rocketchat';
 
 interface IRightButtonsProps {
 	userId?: string;
 	threadsEnabled: boolean;
-	rid?: string;
+	rid: string;
 	t: string;
 	tmid?: string;
 	teamId?: string;
 	isMasterDetail: boolean;
 	toggleFollowThread: Function;
 	joined: boolean;
+	status?: string;
+	dispatch: Dispatch;
 	encrypted?: boolean;
+	showActionSheet: Function; // TODO: Change to proper type
+	transferLivechatGuestPermission: boolean;
 	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
 }
 
@@ -31,6 +41,8 @@ interface IRigthButtonsState {
 	tunread: string[];
 	tunreadUser: string[];
 	tunreadGroup: string[];
+	canReturnQueue: boolean;
+	canForwardGuest: boolean;
 }
 
 class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsState> {
@@ -43,12 +55,14 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			isFollowingThread: true,
 			tunread: [],
 			tunreadUser: [],
-			tunreadGroup: []
+			tunreadGroup: [],
+			canReturnQueue: false,
+			canForwardGuest: false
 		};
 	}
 
 	async componentDidMount() {
-		const { tmid, rid } = this.props;
+		const { tmid, rid, t } = this.props;
 		const db = database.active;
 		if (tmid) {
 			try {
@@ -67,12 +81,30 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 				console.log("Can't find subscription to observe.");
 			}
 		}
+		if (t === 'l') {
+			const canReturnQueue = await this.canReturnQueue();
+			const canForwardGuest = await this.canForwardGuest();
+			this.setState({ canReturnQueue, canForwardGuest });
+		}
+	}
+
+	componentDidUpdate(prevProps: IRightButtonsProps) {
+		const { status } = this.props;
+		if (prevProps.status !== status) {
+			return false;
+		}
 	}
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId } = this.props;
+		const { teamId, status, joined } = this.props;
 		if (nextProps.teamId !== teamId) {
+			return true;
+		}
+		if (nextProps.status !== status) {
+			return true;
+		}
+		if (nextProps.joined !== joined) {
 			return true;
 		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
@@ -157,6 +189,69 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 	};
 
+	canForwardGuest = async () => {
+		const { transferLivechatGuestPermission, rid } = this.props;
+		const permissions = await RocketChat.hasPermission([transferLivechatGuestPermission], rid);
+		return permissions[0];
+	};
+
+	canReturnQueue = async () => {
+		try {
+			const { returnQueue } = await RocketChat.getRoutingConfig();
+			return returnQueue;
+		} catch {
+			return false;
+		}
+	};
+
+	returnLivechat = () => {
+		const { rid } = this.props;
+		showConfirmationAlert({
+			message: i18n.t('Would_you_like_to_return_the_inquiry'),
+			confirmationText: i18n.t('Yes'),
+			onPress: async () => {
+				try {
+					await RocketChat.returnLivechat(rid);
+				} catch (e: any) {
+					showErrorAlert(e.reason, i18n.t('Oops'));
+				}
+			}
+		});
+	};
+
+	closeLivechat = () => {
+		const { dispatch, rid } = this.props;
+
+		dispatch(closeRoom(rid));
+	};
+
+	showMoreActions = () => {
+		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
+		const { showActionSheet, rid, navigation } = this.props;
+		const { canReturnQueue, canForwardGuest } = this.state;
+
+		const options = [
+			canForwardGuest && {
+				title: i18n.t('Forward_Chat'),
+				icon: 'chat-forward',
+				onPress: () => navigation.navigate('ForwardLivechatView', { rid })
+			},
+			canReturnQueue && {
+				title: i18n.t('Return_to_waiting_line'),
+				icon: 'move-to-the-queue',
+				onPress: () => this.returnLivechat()
+			},
+			{
+				title: i18n.t('Close'),
+				icon: 'chat-close',
+				onPress: () => this.closeLivechat(),
+				danger: true
+			}
+		];
+
+		showActionSheet({ options });
+	};
+
 	goSearchView = () => {
 		logEvent(events.ROOM_GO_SEARCH);
 		const { rid, t, navigation, isMasterDetail, encrypted } = this.props;
@@ -185,8 +280,17 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, teamId, joined } = this.props;
+		const { t, tmid, threadsEnabled, teamId, joined, status } = this.props;
+		const isOmnichannelPreview = joined && status !== 'queued';
+
 		if (t === 'l') {
+			if (isOmnichannelPreview) {
+				return (
+					<HeaderButton.Container>
+						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
+					</HeaderButton.Container>
+				);
+			}
 			return null;
 		}
 		if (tmid) {
@@ -222,7 +326,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 const mapStateToProps = (state: IApplicationState) => ({
 	userId: getUserSelector(state).id,
 	threadsEnabled: state.settings.Threads_enabled as boolean,
-	isMasterDetail: state.app.isMasterDetail
+	isMasterDetail: state.app.isMasterDetail,
+	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest']
 });
 
-export default connect(mapStateToProps)(RightButtonsContainer);
+export default connect(mapStateToProps)(withActionSheet(RightButtonsContainer));

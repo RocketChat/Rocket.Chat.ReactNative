@@ -115,7 +115,8 @@ const roomAttrsUpdate = [
 	'visitor',
 	'joinCodeRequired',
 	'teamMain',
-	'teamId'
+	'teamId',
+	'status'
 ] as const;
 
 interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
@@ -142,7 +143,9 @@ type TRoomUpdate = typeof roomAttrsUpdate[number];
 interface IRoomViewState {
 	[key: string]: any;
 	joined: boolean;
-	room: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string; joinCodeRequired?: boolean };
+	room:
+		| TSubscriptionModel
+		| { rid: string; t: string; name?: string; fname?: string; prid?: string; joinCodeRequired?: boolean; status?: boolean };
 	roomUpdate: {
 		[K in TRoomUpdate]?: any; // TODO: get type from TSubscriptionModel
 	};
@@ -512,6 +515,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					tmid={tmid}
 					teamId={teamId}
 					joined={joined}
+					status={room.status}
 					t={this.t || t}
 					encrypted={encrypted}
 					navigation={navigation}
