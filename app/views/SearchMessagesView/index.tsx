@@ -12,7 +12,6 @@ import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
-import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { IMessage } from '../../containers/message/interfaces';
@@ -134,15 +133,15 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	}
 
 	// Handle encrypted rooms search messages
-	searchMessages = async (searchText: string) => {
+	searchMessages = (searchText: string) => {
 		if (!searchText) {
 			return [];
 		}
 		// If it's a encrypted, room we'll search only on the local stored messages
+		const db = database.active;
+		const likeString = sanitizeLikeString(searchText);
 		if (this.encrypted) {
-			const db = database.active;
 			const messagesCollection = db.get('messages');
-			const likeString = sanitizeLikeString(searchText);
 			return messagesCollection
 				.query(
 					// Messages of this room
@@ -153,12 +152,15 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const result = await RocketChat.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
-		if (result.success) {
-			return result.messages;
-		}
-
-		return [];
+		const whereClause = [Q.where('rid', this.rid), Q.where('msg', Q.like(`%${likeString}%`)), Q.experimentalTake(QUERY_SIZE)] as (
+			| Q.WhereDescription
+			| Q.Or
+		)[];
+		const messagesCollection = db
+			.get('messages')
+			.query(...whereClause)
+			.fetch();
+		return messagesCollection;
 	};
 	getMessages = async (searchText: string, debounced?: boolean) => {
 		try {
