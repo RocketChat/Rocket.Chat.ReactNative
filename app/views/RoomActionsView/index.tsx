@@ -724,7 +724,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
-		const { rid, name, t, topic } = room;
+		const { rid, name, t, topic, source } = room;
 		const { theme, fontScale } = this.props;
 
 		const avatar = RocketChat.getRoomAvatar(room);
@@ -766,7 +766,12 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								</Text>
 							) : (
 								<View style={styles.roomTitleRow}>
-									<RoomTypeIcon type={room.prid ? 'discussion' : room.t} teamMain={room.teamMain} status={room.visitor?.status} />
+									<RoomTypeIcon
+										type={room.prid ? 'discussion' : room.t}
+										teamMain={room.teamMain}
+										status={room.visitor?.status}
+										sourceType={source}
+									/>
 									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
 										{RocketChat.getRoomTitle(room)}
 									</Text>

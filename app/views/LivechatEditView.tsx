@@ -8,7 +8,7 @@ import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import TextInput from '../containers/TextInput';
-import KeyboardView from '../presentation/KeyboardView';
+import KeyboardView from '../containers/KeyboardView';
 import RocketChat from '../lib/rocketchat';
 import I18n from '../i18n';
 import { LISTENER } from '../containers/Toast';

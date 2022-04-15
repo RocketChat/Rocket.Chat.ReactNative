@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import UnreadBadge from '../../presentation/UnreadBadge';
+import UnreadBadge from '../UnreadBadge';
 
 const styles = StyleSheet.create({
 	badgeContainer: {

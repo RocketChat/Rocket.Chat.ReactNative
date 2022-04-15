@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { DisplayMode, themes } from '../../lib/constants';
+import { IOmnichannelSource } from '../../definitions';
 import { TSupportedThemes } from '../../theme';
 import IconOrAvatar from './IconOrAvatar';
 import styles from './styles';
@@ -21,6 +22,7 @@ interface IWrapper {
 	isGroupChat: boolean;
 	teamMain: boolean;
 	showAvatar: boolean;
+	sourceType: IOmnichannelSource;
 }
 
 const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }: IWrapper) => (
