@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IUnreadBadge {
+export interface IUnreadBadge {
 	unread?: number;
 	userMentions?: number;
 	groupMentions?: number;
@@ -43,6 +43,7 @@ interface IUnreadBadge {
 const UnreadBadge = React.memo(
 	({ unread, userMentions, groupMentions, style, tunread, tunreadUser, tunreadGroup, small }: IUnreadBadge) => {
 		const { theme } = useTheme();
+
 		if ((!unread || unread <= 0) && !tunread?.length) {
 			return null;
 		}
