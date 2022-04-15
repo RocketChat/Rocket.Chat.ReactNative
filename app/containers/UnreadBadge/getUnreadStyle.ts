@@ -1,8 +1,9 @@
 import { IUnreadBadge } from '.';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants/colors';
+import { TSupportedThemes } from '../../theme';
 
 interface IGetUnreadStyle extends Omit<IUnreadBadge, 'small' | 'style'> {
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 export const getUnreadStyle = ({
