@@ -6,7 +6,7 @@ import { themes } from '../../../../lib/constants';
 import { CustomIcon } from '../../../../lib/Icons';
 import * as List from '../../../../containers/List';
 import styles from './styles';
-import UnreadBadge from '../../../../presentation/UnreadBadge';
+import UnreadBadge from '../../../../containers/UnreadBadge';
 import i18n from '../../../../i18n';
 
 interface IOmnichannelQueue {
