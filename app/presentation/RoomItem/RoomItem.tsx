@@ -12,7 +12,7 @@ import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
 import { DisplayMode } from '../../lib/constants';
-import { TUserStatus } from '../../definitions';
+import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { TSupportedThemes } from '../../theme';
 
 interface IRoomItem {
@@ -62,6 +62,7 @@ interface IRoomItem {
 	size?: number;
 	showAvatar: boolean;
 	displayMode: string;
+	sourceType: IOmnichannelSource;
 }
 
 const RoomItem = ({
@@ -102,7 +103,8 @@ const RoomItem = ({
 	teamMain,
 	autoJoin,
 	showAvatar,
-	displayMode
+	displayMode,
+	sourceType
 }: IRoomItem) => (
 	<Touchable
 		onPress={onPress}
@@ -133,12 +135,20 @@ const RoomItem = ({
 			teamMain={teamMain}
 			displayMode={displayMode}
 			showAvatar={showAvatar}
-			showLastMessage={showLastMessage}>
+			showLastMessage={showLastMessage}
+			sourceType={sourceType}>
 			{showLastMessage && displayMode === DisplayMode.Expanded ? (
 				<>
 					<View style={styles.titleContainer}>
 						{showAvatar ? (
-							<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} teamMain={teamMain} />
+							<TypeIcon
+								type={type}
+								prid={prid}
+								status={status}
+								isGroupChat={isGroupChat}
+								teamMain={teamMain}
+								sourceType={sourceType}
+							/>
 						) : null}
 						<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 						{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
@@ -174,6 +184,7 @@ const RoomItem = ({
 						teamMain={teamMain}
 						size={22}
 						style={{ marginRight: 8 }}
+						sourceType={sourceType}
 					/>
 					<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 					{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}

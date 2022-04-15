@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 15,
+	version: 16,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -59,7 +59,8 @@ export default appSchema({
 				{ name: 'e2e_key_id', type: 'string', isOptional: true },
 				{ name: 'avatar_etag', type: 'string', isOptional: true },
 				{ name: 'team_id', type: 'string', isIndexed: true },
-				{ name: 'team_main', type: 'boolean', isOptional: true } // Use `Q.notEq(true)` to get false or null
+				{ name: 'team_main', type: 'boolean', isOptional: true }, // Use `Q.notEq(true)` to get false or null
+				{ name: 'source', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
