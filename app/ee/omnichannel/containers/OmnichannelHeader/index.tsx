@@ -1,0 +1,77 @@
+import React, { memo, useEffect, useState } from 'react';
+import { Switch, View } from 'react-native';
+
+import * as List from '../../../../containers/List';
+import styles from './styles';
+import { SWITCH_TRACK_COLOR, themes } from '../../../../lib/constants';
+import { useTheme } from '../../../../theme';
+import RocketChat from '../../../../lib/rocketchat';
+import { IUser } from '../../../../definitions/IUser';
+import { showConfirmationAlert } from '../../../../utils/info';
+import I18n from '../../../../i18n';
+import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../lib';
+import OmnichannelQueue from './OmnichannelQueue';
+
+interface IOmnichannelStatus {
+	searching: boolean;
+	goQueue: () => void;
+	queueSize: number;
+	inquiryEnabled: boolean;
+	user: IUser;
+}
+
+const OmnichannelStatus = memo(({ searching, goQueue, queueSize, user }: IOmnichannelStatus) => {
+	const { theme } = useTheme();
+	const [status, setStatus] = useState(isOmnichannelStatusAvailable(user));
+
+	useEffect(() => {
+		setStatus(isOmnichannelStatusAvailable(user));
+	}, [user.statusLivechat]);
+
+	if (searching || !(RocketChat.isOmnichannelModuleAvailable() && user?.roles?.includes('livechat-agent'))) {
+		return null;
+	}
+
+	const toggleLivechat = async () => {
+		// if not-available, prompt to change to available
+		if (!isOmnichannelStatusAvailable(user)) {
+			showConfirmationAlert({
+				message: I18n.t('Omnichannel_enable_alert'),
+				confirmationText: I18n.t('Yes'),
+				onPress: async () => {
+					try {
+						await changeLivechatStatus();
+					} catch {
+						// Do nothing
+					}
+				}
+			});
+		} else {
+			try {
+				setStatus(v => !v);
+				await changeLivechatStatus();
+			} catch {
+				setStatus(v => !v);
+			}
+		}
+	};
+
+	return (
+		<>
+			<List.Item
+				title='Omnichannel'
+				color={themes[theme].bodyText}
+				onPress={toggleLivechat}
+				right={() => (
+					<View style={styles.omnichannelRightContainer}>
+						<Switch value={status} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleLivechat} />
+					</View>
+				)}
+			/>
+			<List.Separator />
+			{status ? <OmnichannelQueue queueSize={queueSize} onPress={goQueue} /> : null}
+		</>
+	);
+});
+
+export default OmnichannelStatus;

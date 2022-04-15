@@ -40,9 +40,7 @@ import { goRoom } from '../../utils/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Header, { getHeaderTitlePosition } from '../../containers/Header';
 import { withDimensions } from '../../dimensions';
-import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../ee/omnichannel/lib';
 import { IApplicationState, IBaseScreen, ISubscription, IUser, RootEnum, TSubscriptionModel } from '../../definitions';
 import styles from './styles';
 import ServerDropdown from './ServerDropdown';
@@ -745,30 +743,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	goQueue = () => {
 		logEvent(events.RL_GO_QUEUE);
-		const { navigation, isMasterDetail, queueSize, inquiryEnabled, user } = this.props;
-
-		// if not-available, prompt to change to available
-		if (!isOmnichannelStatusAvailable(user)) {
-			showConfirmationAlert({
-				message: I18n.t('Omnichannel_enable_alert'),
-				confirmationText: I18n.t('Yes'),
-				onPress: async () => {
-					try {
-						await changeLivechatStatus();
-					} catch {
-						// Do nothing
-					}
-				}
-			});
-		}
+		const { navigation, isMasterDetail, inquiryEnabled } = this.props;
 
 		if (!inquiryEnabled) {
 			return;
 		}
-		// prevent navigation to empty list
-		if (!queueSize) {
-			return showErrorAlert(I18n.t('Queue_is_empty'), I18n.t('Oops'));
-		}
+
 		if (isMasterDetail) {
 			navigation.navigate('ModalStackNavigator', { screen: 'QueueListView' });
 		} else {
