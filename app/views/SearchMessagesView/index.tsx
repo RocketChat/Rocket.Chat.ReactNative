@@ -12,6 +12,7 @@ import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import Markdown from '../../containers/markdown';
 import debounce from '../../utils/debounce';
+import RocketChat from '../../lib/rocketchat';
 import Message from '../../containers/message';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { IMessage } from '../../containers/message/interfaces';
@@ -32,6 +33,7 @@ import styles from './styles';
 import { InsideStackParamList, ChatsStackParamList } from '../../stacks/types';
 import { IEmoji } from '../../definitions/IEmoji';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { IUrl } from '../../definitions';
 
 const QUERY_SIZE = 50;
 
@@ -133,7 +135,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	}
 
 	// Handle encrypted rooms search messages
-	searchMessages = (searchText: string) => {
+	searchMessages = async (searchText: string) => {
 		if (!searchText) {
 			return [];
 		}
@@ -152,15 +154,29 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const whereClause = [Q.where('rid', this.rid), Q.where('msg', Q.like(`%${likeString}%`)), Q.experimentalTake(QUERY_SIZE)] as (
-			| Q.WhereDescription
-			| Q.Or
-		)[];
-		const messagesCollection = db
-			.get('messages')
-			.query(...whereClause)
-			.fetch();
-		return messagesCollection;
+		const result = await RocketChat.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
+		if (result.success) {
+			const urlRenderMessages = result.messages?.map(message => {
+				// @ts-ignore
+				if (message.urls.length > 0) {
+					message.urls = message.urls?.map((url, index) => {
+						if (url.meta !== undefined) {
+							return {
+								_id: index,
+								title: url.meta.pageTitle,
+								description: url.meta.ogDescription,
+								image: url.meta.ogImage,
+								url: url.url
+							} as IUrl;
+						}
+						return {} as IUrl;
+					});
+				}
+				return message;
+			});
+			return urlRenderMessages;
+		}
+		return [];
 	};
 	getMessages = async (searchText: string, debounced?: boolean) => {
 		try {
