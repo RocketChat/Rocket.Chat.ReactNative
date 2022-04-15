@@ -5,7 +5,7 @@ import * as List from '../../../containers/List';
 import styles from '../../../views/RoomsListView/styles';
 import { SWITCH_TRACK_COLOR, themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
-import UnreadBadge from '../../../presentation/UnreadBadge';
+import UnreadBadge from '../../../containers/UnreadBadge';
 import RocketChat from '../../../lib/rocketchat';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../lib';
 import { IUser } from '../../../definitions/IUser';
