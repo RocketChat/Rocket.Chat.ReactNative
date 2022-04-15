@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react-native';
 
 import MessageContext from '../../app/containers/message/Context';
 import { UiKitMessage } from '../../app/containers/UIKit';
-import { themes } from '../../app/constants/colors';
+import { themes } from '../../app/lib/constants';
 
 const styles = StyleSheet.create({
 	container: {

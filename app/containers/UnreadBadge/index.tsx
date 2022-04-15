@@ -47,6 +47,7 @@ const UnreadBadge = React.memo(
 		if ((!unread || unread <= 0) && !tunread?.length) {
 			return null;
 		}
+
 		const { backgroundColor, color } = getUnreadStyle({
 			theme,
 			unread,

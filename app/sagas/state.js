@@ -1,7 +1,7 @@
 import { select, takeLatest } from 'redux-saga/effects';
 
 import RocketChat from '../lib/rocketchat';
-import { setBadgeCount } from '../notifications/push';
+import { setBadgeCount } from '../lib/notifications/push';
 import log from '../utils/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';

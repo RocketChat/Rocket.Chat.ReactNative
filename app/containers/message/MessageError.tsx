@@ -4,18 +4,19 @@ import Touchable from './Touchable';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { useTheme } from '../../theme';
 
 const MessageError = React.memo(
 	({ hasError }: { hasError: boolean }) => {
 		const { theme } = useTheme();
+		const { onErrorPress } = useContext(MessageContext);
 
 		if (!hasError) {
 			return null;
 		}
-		const { onErrorPress } = useContext(MessageContext);
+
 		return (
 			<Touchable onPress={onErrorPress} style={styles.errorButton} hitSlop={BUTTON_HIT_SLOP}>
 				<CustomIcon name='warning' color={themes[theme].dangerColor} size={18} />

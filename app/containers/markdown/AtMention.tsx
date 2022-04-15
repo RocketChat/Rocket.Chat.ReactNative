@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
 import { useTheme } from '../../theme';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import styles from './styles';
 import { events, logEvent } from '../../utils/log';
 import { IUserMention } from './interfaces';

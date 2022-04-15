@@ -4,28 +4,27 @@ import { ScrollView, Switch, Text } from 'react-native';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
 import Loading from '../../containers/Loading';
-import KeyboardView from '../../presentation/KeyboardView';
+import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import TextInput from '../../containers/TextInput';
 import RocketChat from '../../lib/rocketchat';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { createDiscussionRequest } from '../../actions/createDiscussion';
 import { showErrorAlert } from '../../utils/info';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
 import { events, logEvent } from '../../utils/log';
-import { E2E_ROOM_TYPES } from '../../lib/constants';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
 import { ICreateChannelViewProps, IResult, IError } from './interfaces';
 import { IApplicationState } from '../../definitions';
+import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	private channel: any;
@@ -138,8 +137,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	get isEncryptionEnabled() {
 		const { channel } = this.state;
 		const { encryptionEnabled } = this.props;
-		// TODO: remove this ts-ignore when migrate the file: app/lib/encryption/constants.js
-		// @ts-ignore
 		return encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 	}
 

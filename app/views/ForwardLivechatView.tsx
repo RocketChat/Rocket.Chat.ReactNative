@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { forwardRoom, ITransferData } from '../actions/room';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
 import { IBaseScreen, IServerRoom } from '../definitions';

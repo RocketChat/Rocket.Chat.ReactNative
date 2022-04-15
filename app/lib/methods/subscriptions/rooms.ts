@@ -8,7 +8,7 @@ import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
 import log from '../../../utils/log';
 import random from '../../../utils/random';
-import { store } from '../../auxStore';
+import { store } from '../../store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
@@ -17,7 +17,6 @@ import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
 import { Encryption } from '../../encryption';
-import { E2E_MESSAGE_TYPE } from '../../constants';
 import updateMessages from '../updateMessages';
 import {
 	IMessage,
@@ -29,10 +28,11 @@ import {
 	TThreadMessageModel,
 	TThreadModel
 } from '../../../definitions';
-import sdk from '../../rocketchat/services/sdk';
+import sdk from '../../services/sdk';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
+import { E2E_MESSAGE_TYPE } from '../../constants';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 

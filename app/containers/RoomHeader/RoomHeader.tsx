@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
 import { TUserStatus } from '../../definitions';
@@ -67,7 +67,6 @@ interface IRoomHeader {
 	tmid: string;
 	teamMain: boolean;
 	status: TUserStatus;
-	theme?: string;
 	usersTyping: [];
 	isGroupChat: boolean;
 	parentTitle: string;

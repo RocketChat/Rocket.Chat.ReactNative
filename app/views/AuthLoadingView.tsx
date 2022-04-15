@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
-import { withTheme } from '../theme';
-import { themes } from '../constants/colors';
+import { TSupportedThemes, withTheme } from '../theme';
+import { themes } from '../lib/constants';
 import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 });
 
 interface IAuthLoadingView {
-	theme: string;
+	theme: TSupportedThemes;
 	text: string;
 }
 

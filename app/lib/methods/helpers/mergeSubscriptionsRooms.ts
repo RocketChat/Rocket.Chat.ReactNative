@@ -1,11 +1,11 @@
 import EJSON from 'ejson';
 
 import { Encryption } from '../../encryption';
-import { store as reduxStore } from '../../auxStore';
-import { compareServerVersion } from '../../utils';
+import { store as reduxStore } from '../../store/auxStore';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
 import { ISubscription, IServerSubscription, IServerRoom, IRoom } from '../../../definitions';
+import { compareServerVersion } from './compareServerVersion';
 
 export const merge = (subscription: ISubscription | IServerSubscription, room?: IRoom | IServerRoom): ISubscription => {
 	const serverVersion = reduxStore.getState().server.version as string;

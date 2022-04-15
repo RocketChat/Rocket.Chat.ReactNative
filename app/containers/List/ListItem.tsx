@@ -2,9 +2,9 @@ import React from 'react';
 import { I18nManager, StyleSheet, Text, View } from 'react-native';
 
 import Touch from '../../utils/touch';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
-import { useTheme } from '../../theme';
+import { TSupportedThemes, useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
@@ -59,7 +59,7 @@ interface IListItemContent {
 	left?: () => JSX.Element | null;
 	right?: () => JSX.Element | null;
 	disabled?: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	testID?: string;
 	color?: string;
 	translateTitle?: boolean;
@@ -91,7 +91,7 @@ const Content = React.memo(
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
 						<Text style={[styles.title, { color: color || themes[theme].titleText }]} numberOfLines={1}>
-							{translateTitle ? I18n.t(title) : title}
+							{translateTitle && title ? I18n.t(title) : title}
 						</Text>
 						{alert ? (
 							<CustomIcon style={[styles.alertIcon, { color: themes[theme].dangerColor }]} size={ICON_SIZE} name='info' />
@@ -121,7 +121,7 @@ interface IListButtonPress extends IListItemButton {
 interface IListItemButton {
 	title?: string;
 	disabled?: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	backgroundColor?: string;
 	underlayColor?: string;
 }

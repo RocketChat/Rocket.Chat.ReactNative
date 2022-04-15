@@ -1,4 +1,4 @@
-import sdk from '../../../lib/rocketchat/services/sdk';
+import sdk from '../../../lib/services/sdk';
 import { IUser } from '../../../definitions';
 import EventEmitter from '../../../utils/events';
 import subscribeInquiry from './subscriptions/inquiry';

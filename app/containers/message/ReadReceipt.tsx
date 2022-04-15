@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import { useTheme } from '../../theme';

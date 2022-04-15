@@ -8,11 +8,11 @@ import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import Button from '../containers/Button';
-import { useTheme } from '../theme';
+import { TSupportedThemes, useTheme } from '../theme';
 import RocketChat from '../lib/rocketchat';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import { goRoom } from '../utils/goRoom';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import Markdown from '../containers/markdown';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../stacks/types';
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
 interface IItem {
 	label: string;
 	content?: string;
-	theme: string;
+	theme: TSupportedThemes;
 	testID?: string;
 }
 

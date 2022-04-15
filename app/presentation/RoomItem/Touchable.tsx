@@ -5,8 +5,9 @@ import { LongPressGestureHandler, PanGestureHandler, State } from 'react-native-
 import Touch from '../../utils/touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { isRTL } from '../../i18n';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { LeftActions, RightActions } from './Actions';
+import { TSupportedThemes } from '../../theme';
 
 interface ITouchableProps {
 	children: JSX.Element;
@@ -21,7 +22,7 @@ interface ITouchableProps {
 	toggleFav: Function;
 	toggleRead: Function;
 	hideChannel: Function;
-	theme: string;
+	theme: TSupportedThemes;
 	isFocused: boolean;
 	swipeEnabled: boolean;
 	displayMode: string;

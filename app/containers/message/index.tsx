@@ -6,13 +6,12 @@ import Message from './Message';
 import MessageContext from './Context';
 import debounce from '../../utils/debounce';
 import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants';
-import messagesStatus from '../../constants/messagesStatus';
-import { useTheme, withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment, TAnyMessageModel } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -58,6 +57,7 @@ interface IMessageContainerProps {
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
 	onPress?: () => void;
+	theme: TSupportedThemes;
 }
 
 interface IMessageContainerState {
@@ -73,7 +73,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		archived: false,
 		broadcast: false,
 		isIgnored: false,
-		theme: 'light'
+		theme: 'light' as TSupportedThemes
 	};
 
 	state = { isManualUnignored: false };
@@ -293,8 +293,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	};
 
 	onLinkPress = (link: string): void => {
-		const { theme } = useTheme();
-		const { item, jumpToMessage } = this.props;
+		const { item, jumpToMessage, theme } = this.props;
 		const isMessageLink = item?.attachments?.findIndex((att: IAttachment) => att?.message_link === link) !== -1;
 		if (isMessageLink && jumpToMessage) {
 			return jumpToMessage(link);

@@ -4,11 +4,11 @@ import { dequal } from 'dequal';
 import I18n from '../../i18n';
 import styles from './styles';
 import { MarkdownPreview } from '../../containers/markdown';
-import { themes } from '../../constants/colors';
-import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants';
+import { E2E_MESSAGE_TYPE, E2E_STATUS, themes } from '../../lib/constants';
+import { TSupportedThemes } from '../../theme';
 
 interface ILastMessage {
-	theme: string;
+	theme: TSupportedThemes;
 	lastMessage: {
 		u: any;
 		pinned: boolean;

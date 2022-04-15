@@ -1,6 +1,6 @@
 import firebaseAnalytics from '@react-native-firebase/analytics';
 
-import { isFDroidBuild } from '../../constants/environment';
+import { isFDroidBuild } from '../../lib/constants';
 import events from './events';
 
 const analytics = firebaseAnalytics || '';

@@ -20,7 +20,7 @@ import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
 import ReplyPreview from './ReplyPreview';
 import debounce from '../../utils/debounce';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 // @ts-ignore
 // eslint-disable-next-line import/extensions,import/no-unresolved
 import LeftButtons from './LeftButtons';
@@ -44,7 +44,7 @@ import {
 } from './constants';
 import CommandsPreview from './CommandsPreview';
 import { getUserSelector } from '../../selectors/login';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { withActionSheet } from '../ActionSheet';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
@@ -52,6 +52,7 @@ import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
 import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { TSupportedThemes } from '../../theme';
 
 if (isAndroid) {
 	require('./EmojiKeyboard');
@@ -95,7 +96,7 @@ export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackPar
 	editRequest: Function;
 	onSubmit: Function;
 	typing: Function;
-	theme: string;
+	theme: TSupportedThemes;
 	replyCancel(): void;
 	showSend: boolean;
 	children: JSX.Element;
@@ -679,7 +680,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		if (result.success) {
 			return true;
 		}
-		Alert.alert(I18n.t('Error_uploading'), I18n.t(result.error));
+		Alert.alert(I18n.t('Error_uploading'), result.error && I18n.isTranslated(result.error) ? I18n.t(result.error) : result.error);
 		return false;
 	};
 
@@ -761,7 +762,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 			value = message;
 			replyCancel();
 		}
-		Navigation.navigate('ShareView', { room: this.room, value, attachments });
+		Navigation.navigate('ShareView', { room: this.room, thread: value, attachments });
 	};
 
 	createDiscussion = () => {

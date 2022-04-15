@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import MessageError from './MessageError';
 import sharedStyles from '../../views/Styles';
@@ -57,9 +57,10 @@ interface IMessageUser {
 
 const User = React.memo(
 	({ isHeader, useRealName, author, alias, ts, timeFormat, hasError, navToRoomInfo, type, ...props }: IMessageUser) => {
+		const { user } = useContext(MessageContext);
+		const { theme } = useTheme();
+
 		if (isHeader || hasError) {
-			const { user } = useContext(MessageContext);
-			const { theme } = useTheme();
 			const username = (useRealName && author?.name) || author?.username;
 			const aliasUsername = alias ? (
 				<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>

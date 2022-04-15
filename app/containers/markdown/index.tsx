@@ -5,7 +5,6 @@ import Renderer from 'commonmark-react-renderer';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import I18n from '../../i18n';
-import { themes } from '../../constants/colors';
 import MarkdownLink from './Link';
 import MarkdownList from './List';
 import MarkdownListItem from './ListItem';
@@ -24,12 +23,14 @@ import { formatText } from './formatText';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { formatHyperlink } from './formatHyperlink';
+import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
 
 export { default as MarkdownPreview } from './Preview';
 
 interface IMarkdownProps {
-	msg?: string;
-	theme: string;
+	msg?: string | null;
+	theme: TSupportedThemes;
 	md?: MarkdownAST;
 	mentions?: IUserMention[];
 	getCustomEmoji?: TGetCustomEmoji;

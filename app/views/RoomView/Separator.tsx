@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import I18n from '../../i18n';
 import sharedStyles from '../Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({

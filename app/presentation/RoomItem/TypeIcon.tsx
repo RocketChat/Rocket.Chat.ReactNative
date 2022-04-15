@@ -9,7 +9,6 @@ interface ITypeIcon {
 	prid: string;
 	isGroupChat: boolean;
 	teamMain: boolean;
-	theme?: string;
 	size?: number;
 	style?: object;
 }

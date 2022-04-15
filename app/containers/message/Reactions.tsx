@@ -6,8 +6,8 @@ import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import Emoji from './Emoji';
 import { BUTTON_HIT_SLOP } from './utils';
-import { themes } from '../../constants/colors';
-import { useTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, useTheme } from '../../theme';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 
@@ -20,7 +20,7 @@ interface IReaction {
 interface IMessageReaction {
 	reaction: IReaction;
 	getCustomEmoji: TGetCustomEmoji;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IMessageReactions {
@@ -28,7 +28,7 @@ interface IMessageReactions {
 	getCustomEmoji: TGetCustomEmoji;
 }
 
-const AddReaction = React.memo(({ theme }: { theme: string }) => {
+const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 	const { reactionInit } = useContext(MessageContext);
 	return (
 		<Touchable

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { getUnreadStyle } from './getUnreadStyle';
 
 const testsForTheme = theme => {

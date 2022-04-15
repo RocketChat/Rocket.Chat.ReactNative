@@ -18,14 +18,14 @@ import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log, { events, logEvent } from '../../utils/log';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { MarkdownPreview } from '../../containers/markdown';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../utils/goRoom';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import Livechat from './Livechat';
 import Channel from './Channel';
 import Direct from './Direct';
@@ -41,7 +41,7 @@ interface IGetRoomTitle {
 	name?: string;
 	username: string;
 	statusText?: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const getRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoomTitle) =>
@@ -82,7 +82,7 @@ interface IRoomInfoViewProps {
 	>;
 	route: RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 	rooms: string[];
-	theme: string;
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	jitsiEnabled: boolean;
 	editRoomPermission?: string[];
