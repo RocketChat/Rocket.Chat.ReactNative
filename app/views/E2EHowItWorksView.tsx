@@ -7,7 +7,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import Markdown from '../containers/markdown';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import I18n from '../i18n';
 import { E2ESaveYourPasswordStackParamList } from '../stacks/types';
 
@@ -29,7 +29,7 @@ interface INavigation {
 }
 
 interface IE2EHowItWorksViewProps extends INavigation {
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class E2EHowItWorksView extends React.Component<IE2EHowItWorksViewProps, any> {

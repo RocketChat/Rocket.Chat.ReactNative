@@ -6,11 +6,12 @@ import { CustomIcon } from '../../../lib/Icons';
 import { themes } from '../../../lib/constants';
 import ActivityIndicator from '../../ActivityIndicator';
 import styles from './styles';
+import { TSupportedThemes } from '../../../theme';
 
 interface IInput {
 	children?: JSX.Element;
 	onPress: () => void;
-	theme: string;
+	theme: TSupportedThemes;
 	inputStyle?: object;
 	disabled?: boolean | null;
 	placeholder?: string;

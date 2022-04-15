@@ -2,7 +2,7 @@ import { TMessageModel } from '../../definitions/IMessage';
 import I18n from '../../i18n';
 import { DISCUSSION } from './constants';
 
-export const formatMessageCount = (count?: number, type?: string): string => {
+export const formatMessageCount = (count?: number, type?: string): string | null => {
 	const discussion = type === DISCUSSION;
 	let text = discussion ? I18n.t('No_messages_yet') : null;
 	if (!count) {

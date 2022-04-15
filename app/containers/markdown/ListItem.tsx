@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
 
 const style = StyleSheet.create({
@@ -23,7 +24,7 @@ interface IListItem {
 	level: number;
 	ordered: boolean;
 	continue: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	index: number;
 }
 

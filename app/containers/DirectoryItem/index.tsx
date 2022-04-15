@@ -6,13 +6,13 @@ import Avatar from '../Avatar';
 import RoomTypeIcon from '../RoomTypeIcon';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../lib/constants';
-import { useTheme } from '../../theme';
+import { TSupportedThemes, useTheme } from '../../theme';
 
 export { ROW_HEIGHT };
 
 interface IDirectoryItemLabel {
 	text?: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IDirectoryItem {
