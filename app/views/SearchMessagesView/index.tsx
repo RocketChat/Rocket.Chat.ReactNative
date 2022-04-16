@@ -140,10 +140,10 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			return [];
 		}
 		// If it's a encrypted, room we'll search only on the local stored messages
-		const db = database.active;
-		const likeString = sanitizeLikeString(searchText);
 		if (this.encrypted) {
+			const db = database.active;
 			const messagesCollection = db.get('messages');
+			const likeString = sanitizeLikeString(searchText);
 			return messagesCollection
 				.query(
 					// Messages of this room
@@ -158,9 +158,9 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		if (result.success) {
 			const urlRenderMessages = result.messages?.map(message => {
 				// @ts-ignore
-				if (message.urls.length > 0) {
+				if (message.urls && message.urls.length > 0) {
 					message.urls = message.urls?.map((url, index) => {
-						if (url.meta !== undefined) {
+						if (url.meta) {
 							return {
 								_id: index,
 								title: url.meta.pageTitle,
