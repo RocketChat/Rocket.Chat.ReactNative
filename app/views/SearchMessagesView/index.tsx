@@ -157,7 +157,6 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		const result = await RocketChat.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
 		if (result.success) {
 			const urlRenderMessages = result.messages?.map(message => {
-				// @ts-ignore
 				if (message.urls && message.urls.length > 0) {
 					message.urls = message.urls?.map((url, index) => {
 						if (url.meta) {
