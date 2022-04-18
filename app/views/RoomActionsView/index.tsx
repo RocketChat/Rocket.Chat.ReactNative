@@ -49,11 +49,10 @@ interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomAc
 	editRoomPermission?: string[];
 	toggleRoomE2EEncryptionPermission?: string[];
 	viewBroadcastMemberListPermission?: string[];
-	transferLivechatGuestPermission?: string[];
 	createTeamPermission?: string[];
 	addTeamChannelPermission?: string[];
 	convertTeamPermission?: string[];
-	viewCannedResponsesPermission?: string[];
+	omnichannelPermissions: string[];
 }
 
 interface IRoomActionsViewState {
@@ -65,14 +64,11 @@ interface IRoomActionsViewState {
 	canAutoTranslate: boolean;
 	canAddUser: boolean;
 	canInviteUser: boolean;
-	canForwardGuest: boolean;
-	canReturnQueue: boolean;
 	canEdit: boolean;
 	canToggleEncryption: boolean;
 	canCreateTeam: boolean;
 	canAddChannelToTeam: boolean;
 	canConvertTeam: boolean;
-	canViewCannedResponse: boolean;
 }
 
 class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomActionsViewState> {
@@ -80,6 +76,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	private rid: string;
 	private t: string;
 	private joined: boolean;
+	private omnichannelPermissions: boolean[];
 	private roomObservable?: Observable<TSubscriptionModel>;
 	private subscription?: Subscription;
 
@@ -104,6 +101,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		this.rid = props.route.params?.rid;
 		this.t = props.route.params?.t;
 		this.joined = props.route.params?.joined;
+		this.omnichannelPermissions = props.route.params?.omnichannelPermissions;
 		this.state = {
 			room: room || { rid: this.rid, t: this.t },
 			membersCount: 0,
@@ -113,14 +111,11 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			canAutoTranslate: false,
 			canAddUser: false,
 			canInviteUser: false,
-			canForwardGuest: false,
-			canReturnQueue: false,
 			canEdit: false,
 			canToggleEncryption: false,
 			canCreateTeam: false,
 			canAddChannelToTeam: false,
-			canConvertTeam: false,
-			canViewCannedResponse: false
+			canConvertTeam: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
@@ -185,14 +180,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				canAddChannelToTeam,
 				canConvertTeam
 			});
-
-			// livechat permissions
-			if (room.t === 'l') {
-				const canForwardGuest = await this.canForwardGuest();
-				const canReturnQueue = await this.canReturnQueue();
-				const canViewCannedResponse = await this.canViewCannedResponse();
-				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse });
-			}
 		}
 	}
 
@@ -324,31 +311,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		// We save the state to read in render
 		const result = t === 'c' || t === 'p';
 		return result;
-	};
-
-	canForwardGuest = async () => {
-		const { room } = this.state;
-		const { transferLivechatGuestPermission } = this.props;
-		const { rid } = room;
-		const permissions = await RocketChat.hasPermission([transferLivechatGuestPermission], rid);
-		return permissions[0];
-	};
-
-	canViewCannedResponse = async () => {
-		const { room } = this.state;
-		const { viewCannedResponsesPermission } = this.props;
-		const { rid } = room;
-		const permissions = await RocketChat.hasPermission([viewCannedResponsesPermission], rid);
-		return permissions[0];
-	};
-
-	canReturnQueue = async () => {
-		try {
-			const { returnQueue } = await RocketChat.getRoutingConfig();
-			return returnQueue;
-		} catch {
-			return false;
-		}
 	};
 
 	renderEncryptedSwitch = () => {
@@ -972,7 +934,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	renderOmnichannelSection = () => {
-		const { room, canForwardGuest, canReturnQueue } = this.state;
+		const { room } = this.state;
 		const { rid, t } = room;
 		const { theme } = this.props;
 
@@ -982,7 +944,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 		return (
 			<List.Section>
-				{canForwardGuest ? (
+				{this.omnichannelPermissions[0] ? (
 					<>
 						<List.Item
 							title='Forward'
@@ -999,7 +961,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					</>
 				) : null}
 
-				{canReturnQueue ? (
+				{this.omnichannelPermissions[1] ? (
 					<>
 						<List.Item
 							title='Return'
@@ -1034,8 +996,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	render() {
-		const { room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate, canViewCannedResponse } =
-			this.state;
+		const { room, membersCount, canViewMembers, canAddUser, canInviteUser, joined, canAutoTranslate } = this.state;
 		const { rid, t, prid } = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
 
@@ -1125,7 +1086,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							</>
 						) : null}
 
-						{['l'].includes(t) && !this.isOmnichannelPreview && canViewCannedResponse ? (
+						{['l'].includes(t) && !this.isOmnichannelPreview && this.omnichannelPermissions[2] ? (
 							<>
 								<List.Item
 									title='Canned_Responses'
@@ -1288,11 +1249,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 	editRoomPermission: state.permissions['edit-room'],
 	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
 	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
-	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
 	createTeamPermission: state.permissions['create-team'],
 	addTeamChannelPermission: state.permissions['add-team-channel'],
-	convertTeamPermission: state.permissions['convert-team'],
-	viewCannedResponsesPermission: state.permissions['view-canned-responses']
+	convertTeamPermission: state.permissions['convert-team']
 });
 
 export default connect(mapStateToProps)(withTheme(withDimensions(RoomActionsView)));

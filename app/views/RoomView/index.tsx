@@ -137,6 +137,7 @@ interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	height: number;
 	insets: EdgeInsets;
 	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
+	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
 }
 
 type TRoomUpdate = typeof roomAttrsUpdate[number];
@@ -164,8 +165,9 @@ interface IRoomViewState {
 	readOnly: boolean;
 	unreadsCount: number | null;
 	roomUserId?: string | null;
-	canReturnQueue?: boolean;
-	canForwardGuest?: boolean;
+	canReturnQueue: boolean;
+	canForwardGuest: boolean;
+	canViewCannedResponse: boolean;
 }
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
@@ -237,7 +239,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			unreadsCount: null,
 			roomUserId,
 			canReturnQueue: false,
-			canForwardGuest: false
+			canForwardGuest: false,
+			canViewCannedResponse: false
 		};
 		this.setHeader();
 
@@ -437,6 +440,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return permissions[0];
 	};
 
+	canViewCannedResponse = async () => {
+		const { room } = this.state;
+		const { viewCannedResponsesPermission } = this.props;
+		const { rid } = room;
+		const permissions = await RocketChat.hasPermission([viewCannedResponsesPermission], rid);
+		return permissions[0];
+	};
+
 	canReturnQueue = async () => {
 		try {
 			const { returnQueue } = await RocketChat.getRoutingConfig();
@@ -447,9 +458,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	};
 
 	setOmnichannelPermissions = async () => {
-		const canReturnQueue = await this.canReturnQueue();
 		const canForwardGuest = await this.canForwardGuest();
-		this.setState({ canReturnQueue, canForwardGuest });
+		const canReturnQueue = await this.canReturnQueue();
+		const canViewCannedResponse = await this.canViewCannedResponse();
+		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse });
 	};
 
 	get isOmnichannel() {
@@ -505,6 +517,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			numIconsRight = 3;
 		}
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
+		const omnichannelPermissions = [canForwardGuest, canReturnQueue];
 
 		navigation.setOptions({
 			headerShown: true,
@@ -552,7 +565,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					teamId={teamId}
 					joined={joined}
 					status={room.status}
-					omnichannelPermissions={[canForwardGuest, canReturnQueue]}
+					omnichannelPermissions={omnichannelPermissions}
 					t={this.t || t}
 					encrypted={encrypted}
 					navigation={navigation}
@@ -564,7 +577,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	goRoomActionsView = (screen?: string) => {
 		logEvent(events.ROOM_GO_RA);
-		const { room, member, joined } = this.state;
+		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			// @ts-ignore TODO: find a way to make it work
@@ -578,7 +591,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					room,
 					member,
 					showCloseModal: !!screen,
-					joined
+					joined,
+					omnichannelPermissions: [canForwardGuest, canReturnQueue, canViewCannedResponse]
 				}
 			});
 		} else if (this.rid && this.t) {
@@ -587,7 +601,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				t: this.t as SubscriptionType,
 				room: room as TSubscriptionModel,
 				member,
-				joined
+				joined,
+				omnichannelPermissions: [canForwardGuest, canReturnQueue, canViewCannedResponse]
 			});
 		}
 	};
@@ -1442,7 +1457,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	serverVersion: state.server.version,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled as boolean,
 	Hide_System_Messages: state.settings.Hide_System_Messages as string[],
-	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest']
+	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
+	viewCannedResponsesPermission: state.permissions['view-canned-responses']
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));
