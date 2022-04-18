@@ -11,7 +11,7 @@ interface ITag {
 }
 
 const Tag = React.memo(({ name, testID }: ITag) => {
-	const { theme }: any = useTheme();
+	const { theme } = useTheme();
 
 	return (
 		<View style={[styles.tagContainer, { backgroundColor: themes[theme].borderColor }]}>

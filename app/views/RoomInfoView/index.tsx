@@ -19,7 +19,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import log, { events, logEvent } from '../../utils/log';
 import { themes } from '../../lib/constants';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { MarkdownPreview } from '../../containers/markdown';
 import { LISTENER } from '../../containers/Toast';
 import EventEmitter from '../../utils/events';
@@ -41,7 +41,7 @@ interface IGetRoomTitle {
 	name?: string;
 	username: string;
 	statusText?: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const getRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoomTitle) =>
@@ -68,6 +68,7 @@ const getRoomTitle = ({ room, type, name, username, statusText, theme }: IGetRoo
 				teamMain={room.teamMain}
 				key='room-info-type'
 				status={room.visitor?.status}
+				sourceType={room.source}
 			/>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>
 				{RocketChat.getRoomTitle(room)}
@@ -82,7 +83,7 @@ interface IRoomInfoViewProps {
 	>;
 	route: RouteProp<ChatsStackParamList, 'RoomInfoView'>;
 	rooms: string[];
-	theme: string;
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	jitsiEnabled: boolean;
 	editRoomPermission?: string[];
@@ -422,6 +423,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	render() {
 		const { room, roomUser } = this.state;
 		const { theme } = this.props;
+
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar />

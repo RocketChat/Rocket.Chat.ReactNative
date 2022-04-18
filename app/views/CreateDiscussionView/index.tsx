@@ -4,7 +4,7 @@ import { ScrollView, Switch, Text } from 'react-native';
 import { StackNavigationOptions } from '@react-navigation/stack';
 
 import Loading from '../../containers/Loading';
-import KeyboardView from '../../presentation/KeyboardView';
+import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -137,8 +137,6 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	get isEncryptionEnabled() {
 		const { channel } = this.state;
 		const { encryptionEnabled } = this.props;
-		// TODO: remove this ts-ignore when migrate the file: app/lib/encryption/constants.js
-		// @ts-ignore
 		return encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 	}
 

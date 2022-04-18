@@ -6,7 +6,7 @@ import Modal from 'react-native-modal';
 import EmojiPicker from '../../containers/EmojiPicker';
 import { isAndroid } from '../../utils/deviceInfo';
 import { themes } from '../../lib/constants';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import styles from './styles';
 import { IApplicationState } from '../../definitions';
 
@@ -22,7 +22,7 @@ interface IReactionPickerProps {
 	onEmojiSelected: Function; // TODO: properly type this
 	width: number;
 	height: number;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class ReactionPicker extends React.Component<IReactionPickerProps> {
