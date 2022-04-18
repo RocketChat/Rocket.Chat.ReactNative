@@ -4,10 +4,13 @@ import { Encryption } from '../../encryption';
 import { store as reduxStore } from '../../store/auxStore';
 import findSubscriptionsRooms from './findSubscriptionsRooms';
 import normalizeMessage from './normalizeMessage';
-import { ISubscription, IServerSubscription, IServerRoom, IRoom } from '../../../definitions';
+import { ISubscription, IServerSubscription, IServerRoom, IRoom, IOmnichannelRoom } from '../../../definitions';
 import { compareServerVersion } from './compareServerVersion';
 
-export const merge = (subscription: ISubscription | IServerSubscription, room?: IRoom | IServerRoom): ISubscription => {
+export const merge = (
+	subscription: ISubscription | IServerSubscription,
+	room?: IRoom | IServerRoom | IOmnichannelRoom
+): ISubscription => {
 	const serverVersion = reduxStore.getState().server.version as string;
 	const mergedSubscription: ISubscription = EJSON.fromJSONValue(subscription);
 
@@ -44,7 +47,9 @@ export const merge = (subscription: ISubscription | IServerSubscription, room?: 
 				: lastRoomUpdate;
 		}
 		mergedSubscription.ro = room?.ro ?? false;
-		mergedSubscription.broadcast = room?.broadcast;
+		if (room && 'broadcast' in room) {
+			mergedSubscription.broadcast = room?.broadcast;
+		}
 		mergedSubscription.encrypted = room?.encrypted;
 		mergedSubscription.e2eKeyId = room?.e2eKeyId;
 		mergedSubscription.avatarETag = room?.avatarETag;
@@ -77,6 +82,9 @@ export const merge = (subscription: ISubscription | IServerSubscription, room?: 
 			mergedSubscription.tags = room.tags;
 		}
 		mergedSubscription.sysMes = room?.sysMes;
+		if (room && 'source' in room) {
+			mergedSubscription.source = room?.source;
+		}
 	}
 
 	if (!mergedSubscription.name) {

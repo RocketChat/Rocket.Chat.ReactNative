@@ -46,7 +46,7 @@ class PushNotification {
 
 		Notifications.events().registerNotificationReceivedForeground(
 			(notification: Notification, completion: (response: NotificationCompletion) => void) => {
-				completion({ alert: true, sound: true, badge: false });
+				completion({ alert: false, sound: false, badge: false });
 			}
 		);
 

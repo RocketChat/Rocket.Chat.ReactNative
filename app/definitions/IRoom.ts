@@ -65,6 +65,24 @@ export enum OmnichannelSourceType {
 	API = 'api',
 	OTHER = 'other' // catch-all source type
 }
+
+export interface IOmnichannelSource {
+	// The source, or client, which created the Omnichannel room
+	type: OmnichannelSourceType;
+	// An optional identification of external sources, such as an App
+	id?: string;
+	// A human readable alias that goes with the ID, for post analytical purposes
+	alias?: string;
+	// A label to be shown in the room info
+	label?: string;
+	// The sidebar icon
+	sidebarIcon?: string;
+	// The default sidebar icon
+	defaultIcon?: string;
+	_updatedAt?: Date;
+	queuedAt?: Date;
+}
+
 export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featured' | 'broadcast'>> {
 	_id: string;
 	rid: string;
@@ -77,23 +95,7 @@ export interface IOmnichannelRoom extends Partial<Omit<IRoom, 'default' | 'featu
 		replyTo: string;
 		subject: string;
 	};
-	source: {
-		// TODO: looks like this is not so required as the definition suggests
-		// The source, or client, which created the Omnichannel room
-		type: OmnichannelSourceType;
-		// An optional identification of external sources, such as an App
-		id?: string;
-		// A human readable alias that goes with the ID, for post analytical purposes
-		alias?: string;
-		// A label to be shown in the room info
-		label?: string;
-		// The sidebar icon
-		sidebarIcon?: string;
-		// The default sidebar icon
-		defaultIcon?: string;
-		_updatedAt?: Date;
-		queuedAt?: Date;
-	};
+	source: IOmnichannelSource;
 	transcriptRequest?: IRequestTranscript;
 	servedBy?: IServedBy;
 	onHold?: boolean;
