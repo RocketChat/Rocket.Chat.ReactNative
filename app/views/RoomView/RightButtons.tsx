@@ -285,7 +285,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	isOmnichannelPreview = () => {
 		const { joined, status } = this.props;
-		return joined && status !== 'queued';
+		return !joined && status === 'queued';
 	};
 
 	render() {
@@ -293,7 +293,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		const { t, tmid, threadsEnabled, teamId, joined } = this.props;
 
 		if (t === 'l') {
-			if (this.isOmnichannelPreview()) {
+			if (!this.isOmnichannelPreview()) {
 				return (
 					<HeaderButton.Container>
 						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />

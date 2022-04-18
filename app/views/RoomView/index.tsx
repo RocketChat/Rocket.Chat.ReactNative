@@ -467,7 +467,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		let numIconsRight = 2;
-		if (tmid) {
+		if (tmid || room.status) {
 			numIconsRight = 1;
 		} else if (teamId && isTeamRoom({ teamId, joined })) {
 			numIconsRight = 3;
