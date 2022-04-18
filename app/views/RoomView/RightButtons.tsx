@@ -34,7 +34,7 @@ interface IRightButtonsProps {
 	showActionSheet: Function; // TODO: Change to proper type
 	transferLivechatGuestPermission: boolean;
 	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
-	omnichannelPermissions: boolean[];
+	omnichannelPermissions: boolean[]; // TODO: Update to proper type
 }
 
 interface IRigthButtonsState {
@@ -82,7 +82,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId, status, joined } = this.props;
+		const { teamId, status, joined, omnichannelPermissions } = this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
 		}
@@ -93,6 +93,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
+			return true;
+		}
+		if (!dequal(nextProps.omnichannelPermissions, omnichannelPermissions)) {
 			return true;
 		}
 		if (!dequal(nextState.tunread, tunread)) {
@@ -174,21 +177,6 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 	};
 
-	canForwardGuest = async () => {
-		const { transferLivechatGuestPermission, rid } = this.props;
-		const permissions = await RocketChat.hasPermission([transferLivechatGuestPermission], rid);
-		return permissions[0];
-	};
-
-	canReturnQueue = async () => {
-		try {
-			const { returnQueue } = await RocketChat.getRoutingConfig();
-			return returnQueue;
-		} catch {
-			return false;
-		}
-	};
-
 	returnLivechat = () => {
 		const { rid } = this.props;
 		showConfirmationAlert({
@@ -212,26 +200,31 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	showMoreActions = () => {
 		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
-		const { showActionSheet, rid, omnichannelPermissions, navigation } = this.props;
+		const { showActionSheet, rid, navigation, omnichannelPermissions } = this.props;
 
-		const options = [
-			omnichannelPermissions[0] && {
+		const options = [];
+		if (omnichannelPermissions[0]) {
+			options.push({
 				title: i18n.t('Forward_Chat'),
 				icon: 'chat-forward',
 				onPress: () => navigation.navigate('ForwardLivechatView', { rid })
-			},
-			omnichannelPermissions[1] && {
+			});
+		}
+
+		if (omnichannelPermissions[1]) {
+			options.push({
 				title: i18n.t('Return_to_waiting_line'),
 				icon: 'move-to-the-queue',
 				onPress: () => this.returnLivechat()
-			},
-			{
-				title: i18n.t('Close'),
-				icon: 'chat-close',
-				onPress: () => this.closeLivechat(),
-				danger: true
-			}
-		];
+			});
+		}
+
+		options.push({
+			title: i18n.t('Close'),
+			icon: 'chat-close',
+			onPress: () => this.closeLivechat(),
+			danger: true
+		});
 
 		showActionSheet({ options });
 	};

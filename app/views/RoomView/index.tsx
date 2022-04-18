@@ -93,7 +93,8 @@ const stateAttrsUpdate = [
 	'reacting',
 	'readOnly',
 	'member',
-	'showingBlockingLoader'
+	'showingBlockingLoader',
+	'omnichannelPermissions'
 ];
 const roomAttrsUpdate = [
 	'f',
@@ -165,9 +166,7 @@ interface IRoomViewState {
 	readOnly: boolean;
 	unreadsCount: number | null;
 	roomUserId?: string | null;
-	canReturnQueue: boolean;
-	canForwardGuest: boolean;
-	canViewCannedResponse: boolean;
+	omnichannelPermissions: object; // TODO: Update to proper type
 }
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
@@ -238,9 +237,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			readOnly: false,
 			unreadsCount: null,
 			roomUserId,
-			canReturnQueue: false,
-			canForwardGuest: false,
-			canViewCannedResponse: false
+			omnichannelPermissions: {}
 		};
 		this.setHeader();
 
@@ -249,6 +246,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.observeRoom(room);
 		} else if (this.rid) {
 			this.findAndObserveRoom(this.rid);
+		}
+
+		if (this.t === 'l') {
+			this.setOmnichannelPermissions();
 		}
 
 		this.setReadOnly();
@@ -357,7 +358,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
 				prevState.joined !== joined
 			) {
-				this.setOmnichannelPermissions();
 				this.setHeader();
 			}
 		}
@@ -470,7 +470,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	setHeader = () => {
-		const { room, unreadsCount, roomUserId, joined, canReturnQueue, canForwardGuest } = this.state;
+		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue } = this.state;
 		const { navigation, isMasterDetail, theme, baseUrl, user, insets, route } = this.props;
 		const { rid, tmid } = this;
 		if (!room.rid) {
@@ -517,7 +517,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			numIconsRight = 3;
 		}
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
-		const omnichannelPermissions = [canForwardGuest, canReturnQueue];
 
 		navigation.setOptions({
 			headerShown: true,
@@ -565,7 +564,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					teamId={teamId}
 					joined={joined}
 					status={room.status}
-					omnichannelPermissions={omnichannelPermissions}
+					omnichannelPermissions={[canForwardGuest, canReturnQueue]}
 					t={this.t || t}
 					encrypted={encrypted}
 					navigation={navigation}
