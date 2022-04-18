@@ -136,6 +136,7 @@ interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	width: number;
 	height: number;
 	insets: EdgeInsets;
+	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
 }
 
 type TRoomUpdate = typeof roomAttrsUpdate[number];
@@ -163,6 +164,8 @@ interface IRoomViewState {
 	readOnly: boolean;
 	unreadsCount: number | null;
 	roomUserId?: string | null;
+	canReturnQueue?: boolean;
+	canForwardGuest?: boolean;
 }
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
@@ -232,7 +235,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			reacting: false,
 			readOnly: false,
 			unreadsCount: null,
-			roomUserId
+			roomUserId,
+			canReturnQueue: false,
+			canForwardGuest: false
 		};
 		this.setHeader();
 
@@ -279,6 +284,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			if (isIOS && this.rid) {
 				this.updateUnreadCount();
+			}
+			if (this.t === 'l') {
+				this.setOmnichannelPermissions();
 			}
 		});
 		if (isTablet) {
@@ -346,6 +354,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				!dequal(prevState.roomUpdate.status, roomUpdate.status) ||
 				prevState.joined !== joined
 			) {
+				this.setOmnichannelPermissions();
 				this.setHeader();
 			}
 		}
@@ -422,13 +431,34 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		console.countReset(`${this.constructor.name}.render calls`);
 	}
 
+	canForwardGuest = async () => {
+		const { transferLivechatGuestPermission } = this.props;
+		const permissions = await RocketChat.hasPermission([transferLivechatGuestPermission], this.rid);
+		return permissions[0];
+	};
+
+	canReturnQueue = async () => {
+		try {
+			const { returnQueue } = await RocketChat.getRoutingConfig();
+			return returnQueue;
+		} catch {
+			return false;
+		}
+	};
+
+	setOmnichannelPermissions = async () => {
+		const canReturnQueue = await this.canReturnQueue();
+		const canForwardGuest = await this.canForwardGuest();
+		this.setState({ canReturnQueue, canForwardGuest });
+	};
+
 	get isOmnichannel() {
 		const { room } = this.state;
 		return room.t === 'l';
 	}
 
 	setHeader = () => {
-		const { room, unreadsCount, roomUserId, joined } = this.state;
+		const { room, unreadsCount, roomUserId, joined, canReturnQueue, canForwardGuest } = this.state;
 		const { navigation, isMasterDetail, theme, baseUrl, user, insets, route } = this.props;
 		const { rid, tmid } = this;
 		if (!room.rid) {
@@ -455,6 +485,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let token: string | undefined;
 		let avatar: string | undefined;
 		let visitor: IVisitor | undefined;
+		let status: string | undefined;
 		if ('id' in room) {
 			subtitle = room.topic;
 			t = room.t;
@@ -464,10 +495,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			({ id: userId, token } = user);
 			avatar = room.name;
 			visitor = room.visitor;
+			status = room.status;
 		}
 
 		let numIconsRight = 2;
-		if (tmid || room.status) {
+		if (tmid || (status && joined)) {
 			numIconsRight = 1;
 		} else if (teamId && isTeamRoom({ teamId, joined })) {
 			numIconsRight = 3;
@@ -520,6 +552,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					teamId={teamId}
 					joined={joined}
 					status={room.status}
+					omnichannelPermissions={[canForwardGuest, canReturnQueue]}
 					t={this.t || t}
 					encrypted={encrypted}
 					navigation={navigation}
@@ -1348,7 +1381,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if ('id' in room) {
 			({ sysMes, bannerClosed, announcement, tunread, ignored } = room);
 		}
-		console.log({ room });
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
 				<StatusBar />
@@ -1409,7 +1441,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server,
 	serverVersion: state.server.version,
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled as boolean,
-	Hide_System_Messages: state.settings.Hide_System_Messages as string[]
+	Hide_System_Messages: state.settings.Hide_System_Messages as string[],
+	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest']
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));

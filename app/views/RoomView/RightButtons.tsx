@@ -34,6 +34,7 @@ interface IRightButtonsProps {
 	showActionSheet: Function; // TODO: Change to proper type
 	transferLivechatGuestPermission: boolean;
 	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
+	omnichannelPermissions: boolean[];
 }
 
 interface IRigthButtonsState {
@@ -41,8 +42,6 @@ interface IRigthButtonsState {
 	tunread: string[];
 	tunreadUser: string[];
 	tunreadGroup: string[];
-	canReturnQueue: boolean;
-	canForwardGuest: boolean;
 }
 
 class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsState> {
@@ -55,14 +54,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			isFollowingThread: true,
 			tunread: [],
 			tunreadUser: [],
-			tunreadGroup: [],
-			canReturnQueue: false,
-			canForwardGuest: false
+			tunreadGroup: []
 		};
 	}
 
 	async componentDidMount() {
-		const { tmid, rid, t } = this.props;
+		const { tmid, rid } = this.props;
 		const db = database.active;
 		if (tmid) {
 			try {
@@ -80,9 +77,6 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			} catch (e) {
 				console.log("Can't find subscription to observe.");
 			}
-		}
-		if (t === 'l') {
-			this.setOmnichannelPermissions();
 		}
 	}
 
@@ -113,14 +107,6 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return false;
 	}
 
-	componentDidUpdate(prevProps: IRightButtonsProps) {
-		const { status, joined } = this.props;
-
-		if (prevProps.status !== status || prevProps.joined !== joined) {
-			this.setOmnichannelPermissions();
-		}
-	}
-
 	componentWillUnmount() {
 		if (this.threadSubscription && this.threadSubscription.unsubscribe) {
 			this.threadSubscription.unsubscribe();
@@ -129,12 +115,6 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			this.subSubscription.unsubscribe();
 		}
 	}
-
-	setOmnichannelPermissions = async () => {
-		const canReturnQueue = await this.canReturnQueue();
-		const canForwardGuest = await this.canForwardGuest();
-		this.setState({ canReturnQueue, canForwardGuest });
-	};
 
 	observeThread = (threadRecord: TMessageModel) => {
 		const threadObservable: Observable<TMessageModel> = threadRecord.observe();
@@ -232,16 +212,15 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	showMoreActions = () => {
 		logEvent(events.ROOM_SHOW_MORE_ACTIONS);
-		const { showActionSheet, rid, navigation } = this.props;
-		const { canReturnQueue, canForwardGuest } = this.state;
+		const { showActionSheet, rid, omnichannelPermissions, navigation } = this.props;
 
 		const options = [
-			canForwardGuest && {
+			omnichannelPermissions[0] && {
 				title: i18n.t('Forward_Chat'),
 				icon: 'chat-forward',
 				onPress: () => navigation.navigate('ForwardLivechatView', { rid })
 			},
-			canReturnQueue && {
+			omnichannelPermissions[1] && {
 				title: i18n.t('Return_to_waiting_line'),
 				icon: 'move-to-the-queue',
 				onPress: () => this.returnLivechat()
@@ -335,8 +314,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 const mapStateToProps = (state: IApplicationState) => ({
 	userId: getUserSelector(state).id,
 	threadsEnabled: state.settings.Threads_enabled as boolean,
-	isMasterDetail: state.app.isMasterDetail,
-	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest']
+	isMasterDetail: state.app.isMasterDetail
 });
 
 export default connect(mapStateToProps)(withActionSheet(RightButtonsContainer));
