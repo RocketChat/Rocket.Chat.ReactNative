@@ -7249,9 +7249,9 @@ commondir@^1.0.1:
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   integrity sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
 
-"commonmark-react-renderer@git+https://github.com/RocketChat/commonmark-react-renderer.git":
-  version "4.3.4"
-  resolved "git+https://github.com/RocketChat/commonmark-react-renderer.git#1264ac7b1c13d9be3e2f67eec6702a3132f4fac2"
+"commonmark-react-renderer@git+https://github.com/RocketChat/commonmark-react-renderer.git#improve/remove-edited-indicator":
+  version "4.3.5"
+  resolved "git+https://github.com/RocketChat/commonmark-react-renderer.git#09ae9f3cb0128dcee9a1039baeaacb61fae50078"
   dependencies:
     lodash.assign "^4.2.0"
     lodash.isplainobject "^4.0.6"
