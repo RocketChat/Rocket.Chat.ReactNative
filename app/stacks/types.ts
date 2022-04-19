@@ -42,6 +42,7 @@ export type ChatsStackParamList = {
 		rid: string;
 		t: SubscriptionType;
 		joined: boolean;
+		omnichannelPermissions: boolean[];
 	};
 	SelectListView: {
 		data?: IRoom[];
