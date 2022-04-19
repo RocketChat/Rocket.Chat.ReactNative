@@ -18,6 +18,9 @@ import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../utils/log/events';
 import { IApplicationState, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
 
+// TODO: need to move to global settings
+const START_OF_DAY = 10;
+
 export interface IMessageActions {
 	room: TSubscriptionModel;
 	tmid?: string;
@@ -31,6 +34,7 @@ export interface IMessageActions {
 	Message_AllowDeleting?: boolean;
 	Message_AllowDeleting_BlockDeleteInMinutes?: number;
 	Message_AllowEditing?: boolean;
+	Message_AllowRemind?: boolean;
 	Message_AllowEditing_BlockEditInMinutes?: number;
 	Message_AllowPinning?: boolean;
 	Message_AllowStarring?: boolean;
@@ -58,6 +62,7 @@ const MessageActions = React.memo(
 				Message_AllowDeleting,
 				Message_AllowDeleting_BlockDeleteInMinutes,
 				Message_AllowEditing,
+				Message_AllowRemind,
 				Message_AllowEditing_BlockEditInMinutes,
 				Message_AllowPinning,
 				Message_AllowStarring,
@@ -206,6 +211,17 @@ const MessageActions = React.memo(
 				} catch {
 					logEvent(events.ROOM_MSG_ACTION_PERMALINK_F);
 				}
+			};
+
+			const handleRemind = async (message: TAnyMessageModel, ttr: string) => {
+				const permalink = await getPermalink(message);
+				if (permalink) {
+					const result = await RocketChat.remindMessage(message.id, ttr, permalink);
+					if (result.success) {
+						return EventEmitter.emit(LISTENER, { message: I18n.t('Remind_Toast') });
+					}
+				}
+				EventEmitter.emit(LISTENER, { message: I18n.t('error-action-not-allowed', { action: I18n.t('Remind') }) });
 			};
 
 			const handleCopy = async (message: TAnyMessageModel) => {
@@ -365,6 +381,28 @@ const MessageActions = React.memo(
 					onPress: () => handlePermalink(message)
 				});
 
+				if (Message_AllowRemind) {
+					// TODO: migrate to date-fns
+					const after20mins = moment().add(5, 'seconds').toString();
+					const after1hour = moment().add(1, 'hour').toString();
+					const tmrw = moment().add(1, 'd').startOf('d').set('hour', START_OF_DAY).toString();
+					options.push({
+						title: I18n.t('Remind_in_20_minutes'),
+						icon: 'clock',
+						onPress: () => handleRemind(message, after20mins)
+					});
+					options.push({
+						title: I18n.t('Remind_in_an_hour'),
+						icon: 'clock',
+						onPress: () => handleRemind(message, after1hour)
+					});
+					options.push({
+						title: I18n.t('Remind_tomorrow'),
+						icon: 'clock',
+						onPress: () => handleRemind(message, tmrw)
+					});
+				}
+
 				// Create Discussion
 				options.push({
 					title: I18n.t('Start_a_Discussion'),
@@ -476,6 +514,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Message_AllowDeleting: state.settings.Message_AllowDeleting as boolean,
 	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes as number,
 	Message_AllowEditing: state.settings.Message_AllowEditing as boolean,
+	Message_AllowRemind: state.settings.Message_AllowRemind as boolean,
 	Message_AllowEditing_BlockEditInMinutes: state.settings.Message_AllowEditing_BlockEditInMinutes as number,
 	Message_AllowPinning: state.settings.Message_AllowPinning as boolean,
 	Message_AllowStarring: state.settings.Message_AllowStarring as boolean,

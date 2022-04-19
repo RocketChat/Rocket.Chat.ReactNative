@@ -110,6 +110,9 @@ export const defaultSettings = {
 	Message_AllowDeleting: {
 		type: 'valueAsBoolean'
 	},
+	Message_AllowRemind: {
+		type: 'valueAsBoolean'
+	},
 	Message_AllowDeleting_BlockDeleteInMinutes: {
 		type: 'valueAsNumber'
 	},

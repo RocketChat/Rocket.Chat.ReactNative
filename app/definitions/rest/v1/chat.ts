@@ -29,6 +29,9 @@ export type ChatEndpoints = {
 	'chat.reportMessage': {
 		POST: (params: { messageId: IMessage['_id']; description: string }) => void;
 	};
+	'chat.remindMessage': {
+		POST: (params: { messageId: IMessage['_id']; ttr: string; permalink: string }) => {};
+	};
 	'chat.getDiscussions': {
 		GET: (params: { roomId: IServerRoom['_id']; text?: string; offset: number; count: number }) => {
 			messages: IMessageFromServer[];

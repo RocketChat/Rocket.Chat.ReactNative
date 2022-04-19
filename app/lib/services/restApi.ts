@@ -253,6 +253,9 @@ export const markAsUnread = ({ messageId }: { messageId: string }) =>
 	// RC 0.65.0
 	sdk.post('subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 
+export const remindMessage = (messageId: string, ttr: string, permalink: string) =>
+	sdk.post('chat.remindMessage', { messageId, ttr, permalink });
+
 export const toggleStarMessage = (messageId: string, starred: boolean) => {
 	if (starred) {
 		// RC 0.59.0
