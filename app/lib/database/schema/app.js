@@ -117,7 +117,8 @@ export default appSchema({
 				{ name: 'blocks', type: 'string', isOptional: true },
 				{ name: 'e2e', type: 'string', isOptional: true },
 				{ name: 'tshow', type: 'boolean', isOptional: true },
-				{ name: 'md', type: 'string', isOptional: true }
+				{ name: 'md', type: 'string', isOptional: true },
+				{ name: 'comment', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

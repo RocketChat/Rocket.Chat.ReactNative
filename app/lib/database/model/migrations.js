@@ -215,6 +215,10 @@ export default schemaMigrations({
 				addColumns({
 					table: 'subscriptions',
 					columns: [{ name: 'on_hold', type: 'boolean', isOptional: true }]
+				}),
+				addColumns({
+					table: 'messages',
+					columns: [{ name: 'comment', type: 'string', isOptional: true }]
 				})
 			]
 		}

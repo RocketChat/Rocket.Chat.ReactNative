@@ -813,5 +813,7 @@
   "Open_Livechats": "Omnichannel chats in progress",
   "On_hold_Livechats": "Omnichannel chats on hold",
   "Chat_is_on_hold": "This chat is on-hold due to inactivity",
-  "Resume": "Resume"
+  "Resume": "Resume",
+  "Omnichannel_placed_chat_on_hold": "Chat On Hold: {{comment}}",
+  "Omnichannel_on_hold_chat_resumed": "On Hold Chat Resumed: {{comment}}"
 }

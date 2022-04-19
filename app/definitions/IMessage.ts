@@ -141,6 +141,7 @@ export interface IMessage extends IMessageFromServer {
 	blocks?: any;
 	e2e?: E2EType;
 	tshow?: boolean;
+	comment?: string;
 	subscription?: { id: string };
 }
 
