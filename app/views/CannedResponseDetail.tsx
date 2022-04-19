@@ -8,7 +8,7 @@ import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import Button from '../containers/Button';
-import { useTheme } from '../theme';
+import { TSupportedThemes, useTheme } from '../theme';
 import RocketChat from '../lib/rocketchat';
 import Navigation from '../lib/navigation/appNavigation';
 import { goRoom } from '../utils/goRoom';
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
 interface IItem {
 	label: string;
 	content?: string;
-	theme: string;
+	theme: TSupportedThemes;
 	testID?: string;
 }
 

@@ -12,7 +12,7 @@ import I18n from '../../i18n';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { CustomIcon } from '../../lib/Icons';
 import { themes } from '../../lib/constants';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/navigation/appNavigation';
@@ -22,7 +22,7 @@ import { DrawerParamList } from '../../stacks/types';
 import { IUser } from '../../definitions';
 
 interface ISeparatorProps {
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 // TODO: remove this
@@ -40,7 +40,7 @@ interface ISidebarProps {
 	state: DrawerNavigationState<DrawerParamList>;
 	Site_Name: string;
 	user: IUser;
-	theme?: string;
+	theme: TSupportedThemes;
 	loadingServer: boolean;
 	useRealName: boolean;
 	allowStatusMessage: boolean;

@@ -20,7 +20,7 @@ import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../utils/log';
 import { themes } from '../../lib/constants';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -69,7 +69,7 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	customEmojis: {
 		[key: string]: IEmoji;
 	};
-	theme: string;
+	theme: TSupportedThemes;
 	useRealName: boolean;
 }
 class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
