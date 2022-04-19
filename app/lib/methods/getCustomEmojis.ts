@@ -6,7 +6,7 @@ import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
 import log from '../../utils/log';
 import { setCustomEmojis as setCustomEmojisAction } from '../../actions/customEmojis';
-import { ICustomEmoji, TCustomEmojiModel } from '../../definitions';
+import { ICustomEmojiModel, TCustomEmojiModel } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers/compareServerVersion';
 
@@ -16,7 +16,7 @@ interface IUpdateEmojis {
 	allRecords: TCustomEmojiModel[];
 }
 
-const getUpdatedSince = (allEmojis: ICustomEmoji[]) => {
+const getUpdatedSince = (allEmojis: ICustomEmojiModel[]) => {
 	if (!allEmojis.length) {
 		return null;
 	}

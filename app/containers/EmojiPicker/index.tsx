@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { dequal } from 'dequal';
 import { connect } from 'react-redux';
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { ImageStyle } from '@rocket.chat/react-native-fast-image';
 
 import TabBar from './TabBar';
 import EmojiCategory from './EmojiCategory';
@@ -17,22 +18,18 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { IEmoji } from '../../definitions/IEmoji';
-
-const scrollProps = {
-	keyboardShouldPersistTaps: 'always',
-	keyboardDismissMode: 'none'
-};
+import { IEmoji, TGetCustomEmoji } from '../../definitions/IEmoji';
+import { IApplicationState } from '../../definitions';
 
 interface IEmojiPickerProps {
-	isMessageContainsOnlyEmoji: boolean;
-	getCustomEmoji?: Function;
+	isMessageContainsOnlyEmoji?: boolean;
+	getCustomEmoji?: TGetCustomEmoji;
 	baseUrl: string;
-	customEmojis?: any;
-	style: object;
+	customEmojis: any;
+	style?: StyleProp<ImageStyle>;
 	theme: TSupportedThemes;
-	onEmojiSelected?: ((emoji: any) => void) | ((keyboardId: any, params?: any) => void);
-	tabEmojiStyle?: object;
+	onEmojiSelected?: (emoji: string, shortname?: string) => void;
+	tabEmojiStyle?: StyleProp<TextStyle>;
 }
 
 interface IEmojiPickerState {
@@ -166,7 +163,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 				emojis={emojis}
 				onEmojiSelected={(emoji: IEmoji) => this.onEmojiSelected(emoji)}
 				style={styles.categoryContainer}
-				width={width!}
+				width={width}
 				baseUrl={baseUrl}
 				tabLabel={label}
 			/>
@@ -184,8 +181,10 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 			<View onLayout={this.onLayout} style={{ flex: 1 }}>
 				<ScrollableTabView
 					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} theme={theme} />}
-					/* @ts-ignore*/
-					contentProps={scrollProps}
+					contentProps={{
+						keyboardShouldPersistTaps: 'always',
+						keyboardDismissMode: 'none'
+					}}
 					style={{ backgroundColor: themes[theme].focusedBackground }}>
 					{categories.tabs.map((tab, i) =>
 						i === 0 && frequentlyUsed.length === 0
@@ -198,9 +197,8 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	customEmojis: state.customEmojis
 });
 
-// TODO - remove this as any, at the new PR to fix the HOC erros
-export default connect(mapStateToProps)(withTheme(EmojiPicker)) as any;
+export default connect(mapStateToProps)(withTheme(EmojiPicker));

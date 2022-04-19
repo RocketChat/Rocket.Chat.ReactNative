@@ -1,24 +1,35 @@
+import Model from '@nozbe/watermelondb/Model';
+import { StyleProp } from 'react-native';
+import { ImageStyle } from '@rocket.chat/react-native-fast-image';
+
 // TODO: evaluate unification with IEmoji
 export interface IEmoji {
-	content?: string;
-	name?: string;
-	extension?: string;
-	isCustom?: boolean;
+	content: string;
+	name: string;
+	extension: string;
+	isCustom: boolean;
 }
 
 export interface ICustomEmoji {
 	baseUrl?: string;
 	emoji: IEmoji;
-	style: any;
+	style: StyleProp<ImageStyle>;
+}
+
+export interface ICustomEmojiModel {
+	_id: string;
+	name?: string;
+	aliases?: string[];
+	extension: string;
+	_updatedAt: Date;
 }
 
 export interface IEmojiCategory {
 	baseUrl: string;
 	emojis: IEmoji[];
-	onEmojiSelected: Function;
-	emojisPerRow: number;
-	width: number;
-	style: any;
+	onEmojiSelected: (emoji: IEmoji) => void;
+	width: number | null;
+	style: StyleProp<ImageStyle>;
 	tabLabel: string;
 }
 
@@ -29,3 +40,6 @@ export interface IReduxEmoji {
 }
 
 export type TGetCustomEmoji = (name: string) => any;
+
+export type TFrequentlyUsedEmojiModel = IEmoji & Model;
+export type TCustomEmojiModel = ICustomEmojiModel & Model;

@@ -10,9 +10,8 @@ import database from '../../lib/database';
 import { Button } from '../ActionSheet';
 import { useDimensions } from '../../dimensions';
 import sharedStyles from '../../views/Styles';
-import { TFrequentlyUsedEmojiModel } from '../../definitions/IFrequentlyUsedEmoji';
 import { TAnyMessageModel } from '../../definitions';
-import { IEmoji } from '../../definitions/IEmoji';
+import { IEmoji, TFrequentlyUsedEmojiModel } from '../../definitions/IEmoji';
 
 type TItem = TFrequentlyUsedEmojiModel | string;
 
