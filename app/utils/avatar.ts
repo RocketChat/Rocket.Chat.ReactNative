@@ -2,7 +2,7 @@ import { SubscriptionType } from '../definitions/ISubscription';
 import { IAvatar } from '../containers/Avatar/interfaces';
 import { compareServerVersion } from '../lib/methods/helpers/compareServerVersion';
 
-const formatUrl = (url: string, size: number, query: string) => `${url}?format=png&size=${size}${query}`;
+const formatUrl = (url: string, size: number, query?: string) => `${url}?format=png&size=${size}${query}`;
 
 export const avatarURL = ({
 	type,
@@ -14,11 +14,16 @@ export const avatarURL = ({
 	avatarETag,
 	rid,
 	blockUnauthenticatedAccess,
-	serverVersion
+	serverVersion,
+	externalProviderUrl
 }: IAvatar): string => {
 	let room;
 	if (type === SubscriptionType.DIRECT) {
 		room = text;
+		if (externalProviderUrl) {
+			const externalUri = externalProviderUrl.trim().replace(/\/+$/, '').replace('{username}', room);
+			return formatUrl(`${externalUri}`, size);
+		}
 	} else if (rid && !compareServerVersion(serverVersion, 'lowerThan', '3.6.0')) {
 		room = `room/${rid}`;
 	} else {

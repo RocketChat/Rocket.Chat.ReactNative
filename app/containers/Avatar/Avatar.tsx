@@ -28,7 +28,8 @@ const Avatar = React.memo(
 		text,
 		size = 25,
 		borderRadius = 4,
-		type = SubscriptionType.DIRECT
+		type = SubscriptionType.DIRECT,
+		externalProviderUrl
 	}: IAvatar) => {
 		const { theme } = useTheme();
 
@@ -67,7 +68,8 @@ const Avatar = React.memo(
 					avatarETag,
 					serverVersion,
 					rid,
-					blockUnauthenticatedAccess
+					blockUnauthenticatedAccess,
+					externalProviderUrl
 				});
 			}
 
