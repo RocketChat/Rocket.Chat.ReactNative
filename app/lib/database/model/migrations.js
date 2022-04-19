@@ -214,6 +214,15 @@ export default schemaMigrations({
 			steps: [
 				addColumns({
 					table: 'subscriptions',
+					columns: [{ name: 'source', type: 'string', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 17,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
 					columns: [{ name: 'on_hold', type: 'boolean', isOptional: true }]
 				}),
 				addColumns({

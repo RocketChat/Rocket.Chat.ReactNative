@@ -208,5 +208,8 @@ export const defaultSettings = {
 	},
 	Livechat_allow_manual_on_hold: {
 		type: 'valueAsBoolean'
+	},
+	Accounts_AvatarExternalProviderUrl: {
+		type: 'valueAsString'
 	}
 } as const;

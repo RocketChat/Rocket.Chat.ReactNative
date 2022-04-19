@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
-import { Q } from '@nozbe/watermelondb';
 
 import debounce from '../../utils/debounce';
 import { avatarURL } from '../../utils/avatar';
 import RocketChat from '../../lib/rocketchat';
-import database from '../../lib/database';
 import I18n from '../../i18n';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { themes } from '../../lib/constants';
@@ -33,30 +31,8 @@ const SelectUsers = ({
 
 	const getUsers = debounce(async (keyword = '') => {
 		try {
-			const db = database.active;
-			const usersCollection = db.get('users');
 			const res = await RocketChat.search({ text: keyword, filterRooms: false });
-			let items = [
-				...users.filter((u: IUser) => selected.includes(u.name)),
-				...res.filter(r => !users.find((u: IUser) => u.name === r.name))
-			];
-			const records = await usersCollection.query(Q.where('username', Q.oneOf(items.map(u => u.name)))).fetch();
-			items = items.map(item => {
-				const index = records.findIndex(r => r.username === item.name);
-				if (index > -1) {
-					const record = records[index];
-					return {
-						uids: item.uids,
-						usernames: item.usernames,
-						prid: item.prid,
-						fname: item.fname,
-						name: item.name,
-						avatarETag: record.avatarETag
-					};
-				}
-				return item;
-			});
-			setUsers(items);
+			setUsers(res);
 		} catch {
 			// do nothing
 		}

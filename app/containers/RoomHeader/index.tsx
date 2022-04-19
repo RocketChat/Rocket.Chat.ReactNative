@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { IApplicationState, TUserStatus } from '../../definitions';
+import { IApplicationState, TUserStatus, IOmnichannelSource } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import RoomHeader from './RoomHeader';
@@ -27,12 +27,26 @@ interface IRoomHeaderContainerProps {
 	parentTitle: string;
 	isGroupChat: boolean;
 	testID: string;
+	sourceType?: IOmnichannelSource;
 }
 
 class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 	shouldComponentUpdate(nextProps: IRoomHeaderContainerProps) {
-		const { type, title, subtitle, status, statusText, connecting, connected, onPress, usersTyping, width, height, teamMain } =
-			this.props;
+		const {
+			type,
+			title,
+			subtitle,
+			status,
+			statusText,
+			connecting,
+			connected,
+			onPress,
+			usersTyping,
+			width,
+			height,
+			teamMain,
+			sourceType
+		} = this.props;
 		if (nextProps.type !== type) {
 			return true;
 		}
@@ -63,6 +77,9 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 		if (!dequal(nextProps.usersTyping, usersTyping)) {
 			return true;
 		}
+		if (!dequal(nextProps.sourceType, sourceType)) {
+			return true;
+		}
 		if (nextProps.onPress !== onPress) {
 			return true;
 		}
@@ -90,7 +107,8 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 			height,
 			parentTitle,
 			isGroupChat,
-			testID
+			testID,
+			sourceType
 		} = this.props;
 
 		let subtitle;
@@ -118,6 +136,7 @@ class RoomHeaderContainer extends Component<IRoomHeaderContainerProps, any> {
 				isGroupChat={isGroupChat}
 				testID={testID}
 				onPress={onPress}
+				sourceType={sourceType}
 			/>
 		);
 	}

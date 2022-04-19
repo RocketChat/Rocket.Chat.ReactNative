@@ -14,7 +14,7 @@ import { TEAM_TYPE } from '../../definitions/ITeam';
 import { Encryption } from '../encryption';
 import { TParams } from '../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../store/auxStore';
-import { getDeviceToken } from '../../notifications/push';
+import { getDeviceToken } from '../notifications';
 import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import sdk from './sdk';
@@ -745,7 +745,8 @@ export const saveAutoTranslate = ({
 	options?: { defaultLanguage: string };
 }) => sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options ?? null);
 
-export const getSupportedLanguagesAutoTranslate = () => sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
+	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 
 export const translateMessage = (message: any, targetLanguage: string) =>
 	sdk.methodCallWrapper('autoTranslate.translateMessage', message, targetLanguage);

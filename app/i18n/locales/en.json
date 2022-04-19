@@ -656,7 +656,6 @@
   "After_seconds_set_by_admin": "After {{seconds}} seconds (set by admin)",
   "Dont_activate": "Don't activate now",
   "Queued_chats": "Queued chats",
-  "Queue_is_empty": "Queue is empty",
   "Logout_from_other_logged_in_locations": "Logout from other logged in locations",
   "You_will_be_logged_out_from_other_locations": "You'll be logged out from other locations.",
   "Logged_out_of_other_clients_successfully": "Logged out of other clients successfully",
@@ -815,5 +814,7 @@
   "Chat_is_on_hold": "This chat is on-hold due to inactivity",
   "Resume": "Resume",
   "Omnichannel_placed_chat_on_hold": "Chat On Hold: {{comment}}",
-  "Omnichannel_on_hold_chat_resumed": "On Hold Chat Resumed: {{comment}}"
+  "Omnichannel_on_hold_chat_resumed": "On Hold Chat Resumed: {{comment}}",
+  "Omnichannel_queue": "Omnichannel queue",
+  "Empty": "Empty"
 }

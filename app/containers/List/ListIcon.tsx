@@ -8,9 +8,10 @@ import { ICON_SIZE } from './constants';
 
 interface IListIcon {
 	name: string;
-	color?: string;
+	color?: string | null;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
+	size?: number;
 }
 
 const styles = StyleSheet.create({
@@ -20,12 +21,12 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ListIcon = React.memo(({ name, color, style, testID }: IListIcon) => {
+const ListIcon = React.memo(({ name, color, style, testID, size }: IListIcon) => {
 	const { theme } = useTheme();
 
 	return (
 		<View style={[styles.icon, style]}>
-			<CustomIcon name={name} color={color ?? themes[theme].auxiliaryText} size={ICON_SIZE} testID={testID} />
+			<CustomIcon name={name} color={color ?? themes[theme].auxiliaryText} size={size ?? ICON_SIZE} testID={testID} />
 		</View>
 	);
 });
