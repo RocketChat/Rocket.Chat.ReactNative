@@ -6,10 +6,19 @@ import 'moment/min/locales';
 
 import { toMomentLocale } from '../utils/moment';
 import { isRTL } from './isRTL';
+import englishJson from './locales/en.json';
+
+type TTranslatedKeys = keyof typeof englishJson;
 
 export { isRTL };
 
-export const LANGUAGES = [
+interface ILanguage {
+	label: string;
+	value: string;
+	file: () => any;
+}
+
+export const LANGUAGES: ILanguage[] = [
 	{
 		label: 'English',
 		value: 'en',
@@ -82,12 +91,16 @@ export const LANGUAGES = [
 	}
 ];
 
+interface ITranslations {
+	[language: string]: () => typeof englishJson;
+}
+
 const translations = LANGUAGES.reduce((ret, item) => {
 	ret[item.value] = item.file;
 	return ret;
-}, {});
+}, {} as ITranslations);
 
-export const setLanguage = l => {
+export const setLanguage = (l: string) => {
 	if (!l) {
 		return;
 	}
@@ -104,6 +117,8 @@ export const setLanguage = l => {
 	i18n.translations = { ...i18n.translations, [locale]: translations[locale]?.() };
 	I18nManager.forceRTL(isRTL(locale));
 	I18nManager.swapLeftAndRightInRTL(isRTL(locale));
+	// TODO: Review this logic
+	// @ts-ignore
 	i18n.isRTL = I18nManager.isRTL;
 	moment.locale(toMomentLocale(locale));
 };
@@ -113,7 +128,16 @@ const defaultLanguage = { languageTag: 'en', isRTL: false };
 const availableLanguages = Object.keys(translations);
 const { languageTag } = RNLocalize.findBestAvailableLanguage(availableLanguages) || defaultLanguage;
 
+// @ts-ignore
+i18n.isTranslated = (text?: string) => text in englishJson;
+
 setLanguage(languageTag);
 i18n.fallbacks = true;
 
-export default i18n;
+type Ti18n = {
+	isRTL: boolean;
+	t(scope: TTranslatedKeys, options?: any): string;
+	isTranslated: (text?: string) => boolean;
+} & typeof i18n;
+
+export default i18n as Ti18n;

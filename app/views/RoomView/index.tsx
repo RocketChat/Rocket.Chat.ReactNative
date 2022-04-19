@@ -70,6 +70,7 @@ import {
 	IBaseScreen,
 	ILoggedUser,
 	IMessage,
+	IOmnichannelSource,
 	ISubscription,
 	IVisitor,
 	SubscriptionType,
@@ -498,6 +499,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		let avatar: string | undefined;
 		let visitor: IVisitor | undefined;
 		let status: string | undefined;
+		let sourceType: IOmnichannelSource | undefined;
 		if ('id' in room) {
 			subtitle = room.topic;
 			t = room.t;
@@ -508,6 +510,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			avatar = room.name;
 			visitor = room.visitor;
 			status = room.status;
+		}
+
+		if ('source' in room) {
+			t = room.t;
+			sourceType = room.source;
+			visitor = room.visitor;
 		}
 
 		let numIconsRight = 2;
@@ -555,6 +563,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					isGroupChat={isGroupChat}
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
+					sourceType={sourceType}
 				/>
 			),
 			headerRight: () => (

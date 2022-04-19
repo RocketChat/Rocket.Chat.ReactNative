@@ -22,7 +22,7 @@ import I18n from '../../i18n';
 import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
 import RocketChat from '../../lib/rocketchat';
-import KeyboardView from '../../presentation/KeyboardView';
+import KeyboardView from '../../containers/KeyboardView';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';

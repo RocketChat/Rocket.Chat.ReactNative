@@ -16,7 +16,15 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
 import StatusBar from '../../containers/StatusBar';
-import { IApplicationState, IBaseScreen, IRoom, ISubscription, IUser, TSubscriptionModel } from '../../definitions';
+import {
+	IApplicationState,
+	IBaseScreen,
+	IRoom,
+	ISubscription,
+	IUser,
+	SubscriptionType,
+	TSubscriptionModel
+} from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -33,6 +41,7 @@ import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
@@ -134,15 +143,24 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		this.mounted = true;
 		const { room, member } = this.state;
 		if (room.rid) {
-			if (!room.id && !this.isOmnichannelPreview) {
-				try {
-					const result = await RocketChat.getChannelInfo(room.rid);
-					if (result.success) {
-						// @ts-ignore
-						this.setState({ room: { ...result.channel, rid: result.channel._id } });
+			if (!room.id) {
+				if (room.t === SubscriptionType.OMNICHANNEL) {
+					if (!this.isOmnichannelPreview) {
+						const result = await getSubscriptionByRoomId(room.rid);
+						if (result) {
+							this.setState({ room: result });
+						}
 					}
-				} catch (e) {
-					log(e);
+				} else {
+					try {
+						const result = await RocketChat.getChannelInfo(room.rid);
+						if (result.success) {
+							// @ts-ignore
+							this.setState({ room: { ...result.channel, rid: result.channel._id } });
+						}
+					} catch (e) {
+						log(e);
+					}
 				}
 			}
 
@@ -686,7 +704,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
-		const { rid, name, t, topic } = room;
+		const { rid, name, t, topic, source } = room;
 		const { theme, fontScale } = this.props;
 
 		const avatar = RocketChat.getRoomAvatar(room);
@@ -728,7 +746,12 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								</Text>
 							) : (
 								<View style={styles.roomTitleRow}>
-									<RoomTypeIcon type={room.prid ? 'discussion' : room.t} teamMain={room.teamMain} status={room.visitor?.status} />
+									<RoomTypeIcon
+										type={room.prid ? 'discussion' : room.t}
+										teamMain={room.teamMain}
+										status={room.visitor?.status}
+										sourceType={source}
+									/>
 									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
 										{RocketChat.getRoomTitle(room)}
 									</Text>
