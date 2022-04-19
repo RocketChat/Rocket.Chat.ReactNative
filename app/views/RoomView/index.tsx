@@ -290,7 +290,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				this.updateUnreadCount();
 			}
 			if (this.t === 'l') {
-				this.setOmnichannelPermissions();
+				const canForwardGuest = this.canForwardGuest();
+				const canReturnQueue = this.canReturnQueue();
+				const canViewCannedResponse = this.canViewCannedResponse();
+				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse });
 			}
 		});
 		if (isTablet) {
@@ -371,7 +374,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				roomUpdate.teamId !== prevState.roomUpdate.teamId) &&
 			!this.tmid
 		) {
-			this.setOmnichannelPermissions();
+			this.setHeader();
 		}
 		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
@@ -453,14 +456,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		} catch {
 			return false;
 		}
-	};
-
-	setOmnichannelPermissions = async () => {
-		const canForwardGuest = await this.canForwardGuest();
-		const canReturnQueue = await this.canReturnQueue();
-		const canViewCannedResponse = await this.canViewCannedResponse();
-		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse });
-		this.setHeader();
 	};
 
 	get isOmnichannel() {
