@@ -2,7 +2,7 @@ import React from 'react';
 import { Animated } from 'react-native';
 
 import { TSupportedThemes } from '../../theme';
-import { TUserStatus, ILastMessage, SubscriptionType } from '../../definitions';
+import { TUserStatus, ILastMessage, SubscriptionType, IOmnichannelSource } from '../../definitions';
 
 export interface ILeftActionsProps {
 	theme: TSupportedThemes;
@@ -52,6 +52,7 @@ export interface IWrapperProps {
 	isGroupChat: boolean;
 	teamMain: boolean;
 	showAvatar: boolean;
+	sourceType: IOmnichannelSource;
 }
 
 export interface ITypeIconProps {
@@ -63,6 +64,7 @@ export interface ITypeIconProps {
 	theme?: TSupportedThemes;
 	size?: number;
 	style?: object;
+	sourceType: IOmnichannelSource;
 }
 
 export interface IRoomItemContainerProps {
@@ -134,6 +136,7 @@ export interface IRoomItemProps {
 	size?: number;
 	showAvatar: boolean;
 	displayMode: string;
+	sourceType: IOmnichannelSource;
 }
 
 export interface ILastMessageProps {
