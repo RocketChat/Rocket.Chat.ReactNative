@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import styles from './styles';
 import Wrapper from './Wrapper';
-import UnreadBadge from '../../presentation/UnreadBadge';
+import UnreadBadge from '../../containers/UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import Title from './Title';
@@ -52,7 +52,8 @@ const RoomItem = ({
 	teamMain,
 	autoJoin,
 	showAvatar,
-	displayMode
+	displayMode,
+	sourceType
 }: IRoomItemProps) => (
 	<Touchable
 		onPress={onPress}
@@ -83,12 +84,20 @@ const RoomItem = ({
 			teamMain={teamMain}
 			displayMode={displayMode}
 			showAvatar={showAvatar}
-			showLastMessage={showLastMessage}>
+			showLastMessage={showLastMessage}
+			sourceType={sourceType}>
 			{showLastMessage && displayMode === DisplayMode.Expanded ? (
 				<>
 					<View style={styles.titleContainer}>
 						{showAvatar ? (
-							<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} teamMain={teamMain} />
+							<TypeIcon
+								type={type}
+								prid={prid}
+								status={status}
+								isGroupChat={isGroupChat}
+								teamMain={teamMain}
+								sourceType={sourceType}
+							/>
 						) : null}
 						<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 						{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
@@ -124,6 +133,7 @@ const RoomItem = ({
 						teamMain={teamMain}
 						size={22}
 						style={{ marginRight: 8 }}
+						sourceType={sourceType}
 					/>
 					<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 					{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
