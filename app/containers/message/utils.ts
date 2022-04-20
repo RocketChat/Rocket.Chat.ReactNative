@@ -60,7 +60,13 @@ export const SYSTEM_MESSAGES = [
 	'room-disallowed-reacting',
 	'room-allowed-reacting',
 	'room-set-read-only',
-	'room-removed-read-only'
+	'room-removed-read-only',
+	'livechat_navigation_history',
+	'livechat_transcript_history',
+	'command',
+	'livechat-close',
+	'livechat-started',
+	'livechat_video_call'
 ];
 
 export const SYSTEM_MESSAGE_TYPES = {
