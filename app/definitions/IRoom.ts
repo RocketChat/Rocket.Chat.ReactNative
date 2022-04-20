@@ -55,6 +55,8 @@ export interface IRoom {
 	uids: Array<string>;
 	lm?: Date;
 	sysMes?: string[];
+	onHold?: boolean;
+	waitingResponse?: boolean;
 }
 
 export enum OmnichannelSourceType {

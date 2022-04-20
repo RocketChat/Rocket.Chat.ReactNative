@@ -21,7 +21,6 @@ const RoomItem = ({
 	name,
 	avatar,
 	width,
-	avatarSize = 48,
 	username,
 	showLastMessage,
 	status = 'offline',
@@ -74,7 +73,6 @@ const RoomItem = ({
 		<Wrapper
 			accessibilityLabel={accessibilityLabel}
 			avatar={avatar}
-			avatarSize={avatarSize}
 			type={type}
 			theme={theme}
 			rid={rid}

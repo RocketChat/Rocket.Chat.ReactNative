@@ -27,7 +27,6 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 	private roomSubscription: ISubscription | undefined;
 
 	static defaultProps: Partial<IRoomItemContainerProps> = {
-		avatarSize: 48,
 		status: 'offline',
 		getUserPresence: () => {},
 		getRoomTitle: () => 'title',
@@ -114,7 +113,6 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 			hideChannel,
 			theme,
 			isFocused,
-			avatarSize,
 			status,
 			showLastMessage,
 			username,
@@ -166,7 +164,6 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				type={item.t}
 				theme={theme}
 				isFocused={isFocused}
-				avatarSize={avatarSize}
 				prid={item.prid}
 				status={status}
 				hideUnreadStatus={item.hideUnreadStatus}
