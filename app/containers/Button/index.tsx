@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import { useTheme } from '../../theme';
@@ -15,9 +15,9 @@ interface IButtonProps {
 	backgroundColor: string;
 	loading: boolean;
 	color: string;
-	fontSize: any;
+	fontSize: number;
 	style: any;
-	styleText?: any;
+	styleText?: StyleProp<TextStyle>[];
 	testID: string;
 }
 
@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
 		marginBottom: 12
 	},
 	text: {
-		fontSize: 16,
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},
@@ -46,10 +45,10 @@ const Button = React.memo(
 		onPress = () => alert('It works!'),
 		disabled = false,
 		loading = false,
+		fontSize = 16,
 		backgroundColor,
 		color,
 		style,
-		fontSize,
 		styleText,
 		...otherProps
 	}: Partial<IButtonProps>) => {
@@ -78,7 +77,7 @@ const Button = React.memo(
 				{loading ? (
 					<ActivityIndicator color={textColor} />
 				) : (
-					<Text style={[styles.text, { color: textColor }, fontSize && { fontSize }, styleText]} accessibilityLabel={title}>
+					<Text style={[styles.text, { color: textColor, fontSize }, styleText]} accessibilityLabel={title}>
 						{title}
 					</Text>
 				)}
