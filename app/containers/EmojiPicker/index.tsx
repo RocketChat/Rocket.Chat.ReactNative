@@ -28,7 +28,7 @@ interface IEmojiPickerProps {
 	customEmojis: any;
 	style?: StyleProp<ImageStyle>;
 	theme: TSupportedThemes;
-	onEmojiSelected?: (emoji: string, shortname?: string) => void;
+	onEmojiSelected: (emoji: string, shortname?: string) => void;
 	tabEmojiStyle?: StyleProp<TextStyle>;
 }
 
@@ -89,12 +89,12 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 					extension: emoji.extension,
 					isCustom: true
 				});
-				onEmojiSelected!(`:${emoji.content}:`);
+				onEmojiSelected(`:${emoji.content}:`);
 			} else {
 				const content = emoji;
 				this._addFrequentlyUsed({ content, isCustom: false });
 				const shortname = `:${emoji}:`;
-				onEmojiSelected!(shortnameToUnicode(shortname), shortname);
+				onEmojiSelected(shortnameToUnicode(shortname), shortname);
 			}
 		} catch (e) {
 			log(e);
@@ -106,7 +106,6 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 		const freqEmojiCollection = db.get('frequently_used_emojis');
 		let freqEmojiRecord: any;
 		try {
-			// @ts-ignore
 			freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
 		} catch (error) {
 			// Do nothing
@@ -146,7 +145,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 		}
 	}: any) => this.setState({ width });
 
-	renderCategory(category: any, i: number, label: string) {
+	renderCategory(category: keyof typeof emojisByCategory, i: number, label: string) {
 		const { frequentlyUsed, customEmojis, width } = this.state;
 		const { baseUrl } = this.props;
 
@@ -186,7 +185,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 						keyboardDismissMode: 'none'
 					}}
 					style={{ backgroundColor: themes[theme].focusedBackground }}>
-					{categories.tabs.map((tab, i) =>
+					{categories.tabs.map((tab: any, i) =>
 						i === 0 && frequentlyUsed.length === 0
 							? null // when no frequentlyUsed don't show the tab
 							: this.renderCategory(tab.category, i, tab.tabLabel)
