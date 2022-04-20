@@ -67,8 +67,8 @@ const Status = ({ status, statusText }: { status: IStatus; statusText: string })
 		<List.Item
 			title={name}
 			onPress={async () => {
-				// @ts-ignore
-				logEvent(events[`STATUS_${status.id.toUpperCase()}`]);
+				const key = `STATUS_${status.id.toUpperCase()}` as keyof typeof events;
+				logEvent(events[key]);
 				if (user.status !== status.id) {
 					try {
 						const result = await RocketChat.setUserStatus(status.id, statusText);
