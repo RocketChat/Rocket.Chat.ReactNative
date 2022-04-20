@@ -1,7 +1,7 @@
 import { select, takeLatest } from 'redux-saga/effects';
 
 import RocketChat from '../lib/rocketchat';
-import { setBadgeCount } from '../lib/notifications/push';
+import Push from '../lib/notifications/push';
 import log from '../utils/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../utils/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
@@ -20,7 +20,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	try {
 		yield localAuthenticate(server.server);
 		RocketChat.checkAndReopen();
-		setBadgeCount();
+		Push.setBadgeCount();
 		return yield RocketChat.setUserPresenceOnline();
 	} catch (e) {
 		log(e);
