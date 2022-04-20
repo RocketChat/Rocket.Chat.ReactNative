@@ -1,21 +1,21 @@
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { setUser } from '../../actions/login';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
 import Loading from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
-import Status from '../../containers/Status/Status';
+import StatusIcon from '../../containers/Status/Status';
 import TextInput from '../../containers/TextInput';
-import { LISTENER } from '../../containers/Toast';
-import { IApplicationState, IBaseScreen, IUser, TUserStatus } from '../../definitions';
+import { IApplicationState, TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
+import { showToast } from '../../lib/methods/helpers/showToast';
 import RocketChat from '../../lib/rocketchat';
 import { getUserSelector } from '../../selectors/login';
-import { withTheme } from '../../theme';
-import EventEmitter from '../../utils/events';
+import { useTheme } from '../../theme';
 import { showErrorAlert } from '../../utils/info';
 import log, { events, logEvent } from '../../utils/log';
 
@@ -58,156 +58,132 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IStatusViewState {
-	statusText: string;
-	loading: boolean;
-}
+const Status = ({ status, statusText }: { status: IStatus; statusText: string }) => {
+	const user = useSelector((state: IApplicationState) => getUserSelector(state));
+	const dispatch = useDispatch();
 
-interface IStatusViewProps extends IBaseScreen<any, 'StatusView'> {
-	user: IUser;
-	isMasterDetail: boolean;
-	Accounts_AllowInvisibleStatusOption: boolean;
-}
+	const { id, name } = status;
+	return (
+		<List.Item
+			title={name}
+			onPress={async () => {
+				// @ts-ignore
+				logEvent(events[`STATUS_${status.id.toUpperCase()}`]);
+				if (user.status !== status.id) {
+					try {
+						const result = await RocketChat.setUserStatus(status.id, statusText);
+						if (result.success) {
+							dispatch(setUser({ status: status.id }));
+						}
+					} catch (e: any) {
+						const messageError =
+							e.data && e.data.error.includes('[error-too-many-requests]')
+								? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
+								: e.data.errorType;
+						showErrorAlert(messageError);
+						logEvent(events.SET_STATUS_FAIL);
+						log(e);
+					}
+				}
+			}}
+			testID={`status-view-${id}`}
+			left={() => <StatusIcon size={24} status={status.id} />}
+		/>
+	);
+};
 
-class StatusView extends React.Component<IStatusViewProps, IStatusViewState> {
-	constructor(props: IStatusViewProps) {
-		super(props);
-		const { statusText } = props.user;
-		this.state = { statusText: statusText || '', loading: false };
-		this.setHeader();
-	}
+const StatusView = (): React.ReactElement => {
+	const user = useSelector((state: IApplicationState) => getUserSelector(state));
+	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
+	const Accounts_AllowInvisibleStatusOption = useSelector(
+		(state: IApplicationState) => state.settings.Accounts_AllowInvisibleStatusOption
+	);
 
-	setHeader = () => {
-		const { navigation, isMasterDetail } = this.props;
-		navigation.setOptions({
-			title: I18n.t('Edit_Status'),
-			headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CancelModal onPress={this.close} />,
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Done')} onPress={this.submit} testID='status-view-submit' />
-				</HeaderButton.Container>
-			)
-		});
-	};
+	const [statusText, setStatusText] = useState(user.statusText || '');
+	const [loading, setLoading] = useState(false);
 
-	submit = async () => {
-		logEvent(events.STATUS_DONE);
-		const { statusText } = this.state;
-		const { user } = this.props;
-		if (statusText !== user.statusText) {
-			await this.setCustomStatus(statusText);
-		}
-		this.close();
-	};
+	const dispatch = useDispatch();
+	const { setOptions, goBack } = useNavigation();
 
-	close = () => {
-		const { navigation } = this.props;
-		navigation.goBack();
-	};
+	const { theme } = useTheme();
 
-	setCustomStatus = async (statusText: string) => {
-		const { user, dispatch } = this.props;
+	useEffect(() => {
+		const submit = async () => {
+			logEvent(events.STATUS_DONE);
+			if (statusText !== user.statusText) {
+				await setCustomStatus(statusText);
+			}
+			goBack();
+		};
+		const setHeader = () => {
+			setOptions({
+				title: I18n.t('Edit_Status'),
+				headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CancelModal onPress={goBack} />,
+				headerRight: () => (
+					<HeaderButton.Container>
+						<HeaderButton.Item title={I18n.t('Done')} onPress={submit} testID='status-view-submit' />
+					</HeaderButton.Container>
+				)
+			});
+		};
+		setHeader();
+	}, [statusText]);
 
-		this.setState({ loading: true });
-
+	const setCustomStatus = async (statusText: string) => {
+		setLoading(true);
 		try {
 			const result = await RocketChat.setUserStatus(user.status, statusText);
 			if (result.success) {
-				logEvent(events.STATUS_CUSTOM);
 				dispatch(setUser({ statusText }));
-				EventEmitter.emit(LISTENER, { message: I18n.t('Status_saved_successfully') });
+				logEvent(events.STATUS_CUSTOM);
+				showToast(I18n.t('Status_saved_successfully'));
 			} else {
 				logEvent(events.STATUS_CUSTOM_F);
-				EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+				showToast(I18n.t(I18n.t('error-could-not-change-status')));
 			}
 		} catch {
 			logEvent(events.STATUS_CUSTOM_F);
-			EventEmitter.emit(LISTENER, { message: I18n.t('error-could-not-change-status') });
+			showToast(I18n.t(I18n.t('error-could-not-change-status')));
 		}
-
-		this.setState({ loading: false });
+		setLoading(false);
 	};
 
-	renderHeader = () => {
-		const { statusText } = this.state;
-		const { user, theme } = this.props;
+	const status = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
 
-		return (
-			<>
-				<TextInput
-					theme={theme}
-					value={statusText}
-					containerStyle={styles.inputContainer}
-					onChangeText={text => this.setState({ statusText: text })}
-					left={<Status testID={`status-view-current-${user.status}`} style={styles.inputLeft} status={user.status} size={24} />}
-					inputStyle={styles.inputStyle}
-					placeholder={I18n.t('What_are_you_doing_right_now')}
-					testID='status-view-input'
-				/>
-				<List.Separator />
-			</>
-		);
-	};
-
-	renderItem = ({ item }: { item: IStatus }) => {
-		const { statusText } = this.state;
-		const { user, dispatch } = this.props;
-		const { id, name } = item;
-		return (
-			<List.Item
-				title={name}
-				onPress={async () => {
-					// @ts-ignore
-					logEvent(events[`STATUS_${item.id.toUpperCase()}`]);
-					if (user.status !== item.id) {
-						try {
-							const result = await RocketChat.setUserStatus(item.id, statusText);
-							if (result.success) {
-								dispatch(setUser({ status: item.id }));
+	return (
+		<SafeAreaView testID='status-view'>
+			<FlatList
+				data={status}
+				keyExtractor={item => item.id}
+				renderItem={({ item }) => <Status status={item} statusText={statusText} />}
+				ListHeaderComponent={
+					<>
+						<TextInput
+							theme={theme}
+							value={statusText}
+							containerStyle={styles.inputContainer}
+							onChangeText={text => setStatusText(text)}
+							left={
+								<StatusIcon
+									testID={`status-view-current-${user.status}`}
+									style={styles.inputLeft}
+									status={user.status}
+									size={24}
+								/>
 							}
-						} catch (e: any) {
-							const messageError =
-								e.data && e.data.error.includes('[error-too-many-requests]')
-									? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
-									: e.data.errorType;
-							showErrorAlert(messageError);
-							logEvent(events.SET_STATUS_FAIL);
-							log(e);
-						}
-					}
-				}}
-				testID={`status-view-${id}`}
-				left={() => <Status size={24} status={item.id} />}
+							inputStyle={styles.inputStyle}
+							placeholder={I18n.t('What_are_you_doing_right_now')}
+							testID='status-view-input'
+						/>
+						<List.Separator />
+					</>
+				}
+				ListFooterComponent={List.Separator}
+				ItemSeparatorComponent={List.Separator}
 			/>
-		);
-	};
+			<Loading visible={loading} />
+		</SafeAreaView>
+	);
+};
 
-	render() {
-		const { loading } = this.state;
-		const { Accounts_AllowInvisibleStatusOption } = this.props;
-
-		const status = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
-
-		return (
-			<SafeAreaView testID='status-view'>
-				<FlatList
-					data={status}
-					keyExtractor={item => item.id}
-					renderItem={this.renderItem}
-					ListHeaderComponent={this.renderHeader}
-					ListFooterComponent={List.Separator}
-					ItemSeparatorComponent={List.Separator}
-				/>
-				<Loading visible={loading} />
-			</SafeAreaView>
-		);
-	}
-}
-
-const mapStateToProps = (state: IApplicationState) => ({
-	user: getUserSelector(state),
-	isMasterDetail: state.app.isMasterDetail,
-	Accounts_AllowInvisibleStatusOption: (state.settings.Accounts_AllowInvisibleStatusOption as boolean) ?? true
-});
-
-export default connect(mapStateToProps)(withTheme(StatusView));
+export default StatusView;
