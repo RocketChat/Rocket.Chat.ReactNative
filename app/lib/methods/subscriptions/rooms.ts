@@ -26,7 +26,8 @@ import {
 	TMessageModel,
 	TRoomModel,
 	TThreadMessageModel,
-	TThreadModel
+	TThreadModel,
+	SubscriptionType
 } from '../../../definitions';
 import sdk from '../../services/sdk';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
@@ -99,7 +100,8 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					encrypted: s.encrypted,
 					e2eKeyId: s.e2eKeyId,
 					E2EKey: s.E2EKey,
-					avatarETag: s.avatarETag
+					avatarETag: s.avatarETag,
+					onHold: s.onHold
 				} as ISubscription;
 			} catch (error) {
 				try {
@@ -251,6 +253,11 @@ const debouncedUpdate = (subscription: ISubscription) => {
 							createOrUpdateSubscription(sub, room);
 						} else {
 							const room = batch[key] as IRoom;
+							// If the omnichannel's chat is onHold and waitingResponse we shouldn't create or update the chat,
+							// because it should go to Queue
+							if (room.t === SubscriptionType.OMNICHANNEL && room.onHold && room.waitingResponse) {
+								return null;
+							}
 							const subQueueId = getSubQueueId(room._id);
 							const sub = batch[subQueueId] as ISubscription;
 							delete batch[subQueueId];

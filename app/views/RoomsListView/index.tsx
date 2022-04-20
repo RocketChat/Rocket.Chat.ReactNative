@@ -88,7 +88,8 @@ interface IRoomsListViewState {
 	searching: boolean;
 	search: ISubscription[];
 	loading: boolean;
-	chatsUpdate: [];
+	chatsUpdate: string[];
+	omnichannelsUpdate: string[];
 	chats: ISubscription[];
 	item: ISubscription;
 	canCreateRoom: boolean;
@@ -107,7 +108,8 @@ const DISCUSSIONS_HEADER = 'Discussions';
 const TEAMS_HEADER = 'Teams';
 const CHANNELS_HEADER = 'Channels';
 const DM_HEADER = 'Direct_Messages';
-const OMNICHANNEL_HEADER = 'Open_Livechats';
+const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
+const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 const QUERY_SIZE = 20;
 
 const filterIsUnread = (s: TSubscriptionModel) => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
@@ -172,6 +174,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			search: [],
 			loading: true,
 			chatsUpdate: [],
+			omnichannelsUpdate: [],
 			chats: [],
 			item: {} as ISubscription,
 			canCreateRoom: false
@@ -231,7 +234,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	}
 
 	shouldComponentUpdate(nextProps: IRoomsListViewProps, nextState: IRoomsListViewState) {
-		const { chatsUpdate, searching, item, canCreateRoom } = this.state;
+		const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate } = this.state;
 		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -257,6 +260,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		// If they aren't equal, set to update if focused
 		if (chatsNotEqual) {
+			this.shouldUpdate = true;
+		}
+
+		const omnichannelsNotEqual = !dequal(nextState.omnichannelsUpdate, omnichannelsUpdate);
+
+		if (omnichannelsNotEqual) {
 			this.shouldUpdate = true;
 		}
 
@@ -295,7 +304,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return true;
 		}
 		// If it's focused and there are changes, update
-		if (chatsNotEqual) {
+		if (chatsNotEqual || omnichannelsNotEqual) {
 			this.shouldUpdate = false;
 			return true;
 		}
@@ -480,21 +489,21 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observeWithColumns(['alert']);
-
+				.observeWithColumns(['alert', 'on_hold']);
 			// When we're NOT grouping
 		} else {
 			this.count += QUERY_SIZE;
 			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause, Q.experimentalSkip(0), Q.experimentalTake(this.count))
-				.observe();
+				.observeWithColumns(['on_hold']);
 		}
 
 		this.querySubscription = observable.subscribe(data => {
 			let tempChats = [] as TSubscriptionModel[];
 			let chats = data;
 
+			let omnichannelsUpdate: string[] = [];
 			let chatsUpdate = [];
 			if (showUnread) {
 				/**
@@ -513,8 +522,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			const isOmnichannelAgent = user?.roles?.includes('livechat-agent');
 			if (isOmnichannelAgent) {
 				const omnichannel = chats.filter(s => filterIsOmnichannel(s));
+				const omnichannelInProgress = omnichannel.filter(s => !s.onHold);
+				const omnichannelOnHold = omnichannel.filter(s => s.onHold);
 				chats = chats.filter(s => !filterIsOmnichannel(s));
-				tempChats = this.addRoomsGroup(omnichannel, OMNICHANNEL_HEADER, tempChats);
+				omnichannelsUpdate = omnichannelInProgress.map(s => s.rid);
+				tempChats = this.addRoomsGroup(omnichannelInProgress, OMNICHANNEL_HEADER_IN_PROGRESS, tempChats);
+				tempChats = this.addRoomsGroup(omnichannelOnHold, OMNICHANNEL_HEADER_ON_HOLD, tempChats);
 			}
 
 			// unread
@@ -551,6 +564,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				this.internalSetState({
 					chats: tempChats,
 					chatsUpdate,
+					omnichannelsUpdate,
 					loading: false
 				});
 			} else {
@@ -558,6 +572,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				this.state.chats = tempChats;
 				// @ts-ignore
 				this.state.chatsUpdate = chatsUpdate;
+				// @ts-ignore
+				this.state.omnichannelsUpdate = omnichannelsUpdate;
 				// @ts-ignore
 				this.state.loading = false;
 			}
