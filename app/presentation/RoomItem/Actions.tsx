@@ -44,7 +44,7 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
 
 	return (
-		<View style={[styles.actionsContainer, styles.actionLeftContainer]} pointerEvents='box-none'>
+		<View style={[styles.actionsContainer, styles.actionsLeftContainer]} pointerEvents='box-none'>
 			<Animated.View
 				style={[
 					styles.actionLeftButtonContainer,
