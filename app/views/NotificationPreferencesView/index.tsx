@@ -16,7 +16,7 @@ import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import SafeAreaView from '../../containers/SafeAreaView';
 import log, { events, logEvent } from '../../utils/log';
 import sharedStyles from '../Styles';
-import { OPTIONS } from './options';
+import { IOptionsField, OPTIONS } from './options';
 import { ChatsStackParamList } from '../../stacks/types';
 import { IRoomNotifications } from '../../definitions';
 
@@ -131,10 +131,10 @@ class NotificationPreferencesView extends React.Component<INotificationPreferenc
 	renderPickerOption = (key: string) => {
 		const { room } = this.state;
 		const { theme } = this.props;
-		const text = room[key] ? OPTIONS[key].find((option: any) => option.value === room[key]) : OPTIONS[key][0];
+		const text = room[key] ? OPTIONS[key].find(option => option.value === room[key]) : (OPTIONS[key][0] as IOptionsField);
 		return (
 			<Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>
-				{I18n.t(text?.label, { defaultValue: text?.label, second: text?.second })}
+				{text?.label ? I18n.t(text?.label, { defaultValue: text?.label, second: text?.second }) : text?.label}
 			</Text>
 		);
 	};

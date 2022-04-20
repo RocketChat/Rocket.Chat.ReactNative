@@ -363,7 +363,6 @@
   "Offline": "Offline",
   "Oops": "Oops!",
   "Omnichannel": "Omnichannel",
-  "Open_Livechats": "Chats in Progress",
   "Omnichannel_enable_alert": "You're not available on Omnichannel. Would you like to be available?",
   "Onboarding_description": "A workspace is your team or organization’s space to collaborate. Ask the workspace admin for address to join or create one for your team.",
   "Onboarding_join_workspace": "Join a workspace",
@@ -657,7 +656,6 @@
   "After_seconds_set_by_admin": "After {{seconds}} seconds (set by admin)",
   "Dont_activate": "Don't activate now",
   "Queued_chats": "Queued chats",
-  "Queue_is_empty": "Queue is empty",
   "Logout_from_other_logged_in_locations": "Logout from other logged in locations",
   "You_will_be_logged_out_from_other_locations": "You'll be logged out from other locations.",
   "Logged_out_of_other_clients_successfully": "Logged out of other clients successfully",
@@ -808,5 +806,15 @@
   "Removed__roomName__from_this_team": "removed #{{roomName}} from this Team",
   "Removed__username__from_team": "removed @{{user_removed}} from this Team",
   "User_joined_team": "joined this Team",
-  "User_left_team": "left this Team"
+  "User_left_team": "left this Team",
+  "Place_chat_on_hold": "Place chat on-hold",
+  "Would_like_to_place_on_hold": "Would you like to place this chat On-Hold?",
+  "Open_Livechats": "Omnichannel chats in progress",
+  "On_hold_Livechats": "Omnichannel chats on hold",
+  "Chat_is_on_hold": "This chat is on-hold due to inactivity",
+  "Resume": "Resume",
+  "Omnichannel_placed_chat_on_hold": "Chat On Hold: {{comment}}",
+  "Omnichannel_on_hold_chat_resumed": "On Hold Chat Resumed: {{comment}}",
+  "Omnichannel_queue": "Omnichannel queue",
+  "Empty": "Empty"
 }

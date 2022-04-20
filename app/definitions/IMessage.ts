@@ -60,6 +60,7 @@ export interface ILastMessage {
 	reactions?: IReaction[];
 	unread?: boolean;
 	status?: number;
+	token?: string;
 }
 
 interface IMessageFile {
@@ -140,6 +141,7 @@ export interface IMessage extends IMessageFromServer {
 	blocks?: any;
 	e2e?: E2EType;
 	tshow?: boolean;
+	comment?: string;
 	subscription?: { id: string };
 }
 

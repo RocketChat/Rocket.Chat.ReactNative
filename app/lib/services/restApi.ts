@@ -360,6 +360,8 @@ export const returnLivechat = (rid: string): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
 
+export const onHoldLivechat = (roomId: string) => sdk.post('livechat/room.onHold', { roomId });
+
 export const forwardLivechat = (transferData: any) =>
 	// RC 0.36.0
 	sdk.methodCallWrapper('livechat:transfer', transferData);
@@ -743,7 +745,8 @@ export const saveAutoTranslate = ({
 	options?: { defaultLanguage: string };
 }) => sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options ?? null);
 
-export const getSupportedLanguagesAutoTranslate = () => sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
+	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 
 export const translateMessage = (message: any, targetLanguage: string) =>
 	sdk.methodCallWrapper('autoTranslate.translateMessage', message, targetLanguage);
