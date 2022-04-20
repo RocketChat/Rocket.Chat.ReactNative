@@ -2,7 +2,6 @@ import Model from '@nozbe/watermelondb/Model';
 import { StyleProp } from 'react-native';
 import { ImageStyle } from '@rocket.chat/react-native-fast-image';
 
-// TODO: evaluate unification with IEmoji
 export interface IEmoji {
 	content: string;
 	name: string;
@@ -31,12 +30,6 @@ export interface IEmojiCategory {
 	width: number | null;
 	style: StyleProp<ImageStyle>;
 	tabLabel: string;
-}
-
-// TODO: copied from reducers/customEmojis. We can unify later.
-export interface IReduxEmoji {
-	name: string;
-	extension: any;
 }
 
 export type TGetCustomEmoji = (name: string) => any;

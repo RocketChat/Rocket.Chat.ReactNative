@@ -9,7 +9,6 @@ import { dequal } from 'dequal';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 
-import { IReduxEmoji } from '../../definitions/IEmoji';
 import Touch from '../../utils/touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
@@ -77,7 +76,8 @@ import {
 	TAnyMessageModel,
 	TMessageModel,
 	TSubscriptionModel,
-	TThreadModel
+	TThreadModel,
+	IEmoji
 } from '../../definitions';
 import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
@@ -915,8 +915,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		});
 	};
 
-	// TODO: We need to unify
-	getCustomEmoji = (name: string): IReduxEmoji | null => {
+	getCustomEmoji = (name: string): Pick<IEmoji, 'name' | 'extension'> | null => {
 		const { customEmojis } = this.props;
 		const emoji = customEmojis[name];
 		if (emoji) {

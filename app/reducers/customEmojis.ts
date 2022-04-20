@@ -1,14 +1,8 @@
 import { SET_CUSTOM_EMOJIS } from '../actions/actionsTypes';
-import { TApplicationActions } from '../definitions';
-
-// There are at least three interfaces for emoji, but none of them includes only this data.
-interface IEmoji {
-	name: string;
-	extension: string;
-}
+import { IEmoji, TApplicationActions } from '../definitions';
 
 export interface ICustomEmojis {
-	[key: string]: IEmoji;
+	[key: string]: Pick<IEmoji, 'name' | 'extension'>;
 }
 
 export const initialState: ICustomEmojis = {};

@@ -91,7 +91,7 @@ export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackPar
 	FileUpload_MediaTypeWhiteList: string;
 	FileUpload_MaxFileSize: number;
 	Message_AudioRecorderEnabled: boolean;
-	getCustomEmoji: Function;
+	getCustomEmoji: () => void;
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
@@ -536,7 +536,7 @@ class MessageBox extends Component<IMessageBoxProps, IMessageBoxState> {
 		}
 	};
 
-	onEmojiSelected = (keyboardId: any, params: any) => {
+	onEmojiSelected = (keyboardId: string, params: { emoji: string }) => {
 		const { text } = this;
 		const { emoji } = params;
 		let newText = '';
