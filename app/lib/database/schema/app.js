@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 16,
+	version: 17,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -60,6 +60,7 @@ export default appSchema({
 				{ name: 'avatar_etag', type: 'string', isOptional: true },
 				{ name: 'team_id', type: 'string', isIndexed: true },
 				{ name: 'team_main', type: 'boolean', isOptional: true }, // Use `Q.notEq(true)` to get false or null
+				{ name: 'on_hold', type: 'boolean', isOptional: true },
 				{ name: 'source', type: 'string', isOptional: true }
 			]
 		}),
@@ -117,7 +118,8 @@ export default appSchema({
 				{ name: 'blocks', type: 'string', isOptional: true },
 				{ name: 'e2e', type: 'string', isOptional: true },
 				{ name: 'tshow', type: 'boolean', isOptional: true },
-				{ name: 'md', type: 'string', isOptional: true }
+				{ name: 'md', type: 'string', isOptional: true },
+				{ name: 'comment', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

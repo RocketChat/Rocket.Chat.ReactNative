@@ -17,6 +17,9 @@ export const getInquiriesQueued = () => sdk.get('livechat/inquiries.queued');
 // RC 2.4.0
 export const takeInquiry = (inquiryId: string) => sdk.methodCallWrapper('livechat:takeInquiry', inquiryId);
 
+// RC 4.26
+export const takeResume = (roomId: string) => sdk.methodCallWrapper('livechat:resumeOnHold', roomId);
+
 class Omnichannel {
 	private inquirySub: { stop: () => void } | null;
 	constructor() {
