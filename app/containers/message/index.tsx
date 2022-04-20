@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import Message from './Message';
 import MessageContext from './Context';
 import debounce from '../../utils/debounce';
-import { SYSTEM_MESSAGES, getMessageTranslation } from './utils';
+import { SYSTEM_MESSAGES, getMessageTranslation, IGNORED_LIVECHAT_SYSTEM_MESSAGES } from './utils';
 import { TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../utils/openLink';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
@@ -260,7 +260,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		if (['e2e', 'discussion-created'].includes(item.t)) {
 			return false;
 		}
-		return item.t && (isSystemMessage || SYSTEM_MESSAGES.includes(item.t));
+		return item.t && (isSystemMessage || SYSTEM_MESSAGES.includes(item.t) || IGNORED_LIVECHAT_SYSTEM_MESSAGES.includes(item.t));
 	}
 
 	get isTemp(): boolean {

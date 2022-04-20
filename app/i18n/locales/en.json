@@ -301,6 +301,7 @@
   "License": "License",
   "Livechat": "Livechat",
   "Livechat_edit": "Livechat edit",
+  "Livechat_transfer_return_to_the_queue": "{{userBy}} returned the chat to the queue",
   "Login": "Login",
   "Login_error": "Your credentials were rejected! Please try again.",
   "Login_with": "Login with",

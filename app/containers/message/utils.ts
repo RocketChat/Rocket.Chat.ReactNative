@@ -60,13 +60,17 @@ export const SYSTEM_MESSAGES = [
 	'room-disallowed-reacting',
 	'room-allowed-reacting',
 	'room-set-read-only',
-	'room-removed-read-only',
+	'room-removed-read-only'
+];
+
+export const IGNORED_LIVECHAT_SYSTEM_MESSAGES = [
 	'livechat_navigation_history',
 	'livechat_transcript_history',
 	'command',
 	'livechat-close',
 	'livechat-started',
-	'livechat_video_call'
+	'livechat_video_call',
+	'livechat_webrtc_video_call'
 ];
 
 export const SYSTEM_MESSAGE_TYPES = {
@@ -215,6 +219,9 @@ export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage): strin
 	}
 	if (type === 'room-removed-read-only') {
 		return I18n.t('Room_removed_read_only', { userBy: username });
+	}
+	if (type === 'command') {
+		return I18n.t('Livechat_transfer_return_to_the_queue', { userBy: username });
 	}
 	return I18n.t('Unsupported_system_message');
 };
