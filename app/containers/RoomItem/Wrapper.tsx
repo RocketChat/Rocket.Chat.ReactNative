@@ -2,29 +2,11 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { DisplayMode, themes } from '../../lib/constants';
-import { IOmnichannelSource } from '../../definitions';
-import { TSupportedThemes } from '../../theme';
 import IconOrAvatar from './IconOrAvatar';
+import { IWrapperProps } from './interfaces';
 import styles from './styles';
 
-interface IWrapper {
-	accessibilityLabel: string;
-	avatar: string;
-	type: string;
-	theme: TSupportedThemes;
-	rid: string;
-	children: JSX.Element;
-	displayMode: string;
-	prid: string;
-	showLastMessage: boolean;
-	status: string;
-	isGroupChat: boolean;
-	teamMain: boolean;
-	showAvatar: boolean;
-	sourceType: IOmnichannelSource;
-}
-
-const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }: IWrapper) => (
+const Wrapper = ({ accessibilityLabel, theme, children, displayMode, ...props }: IWrapperProps): React.ReactElement => (
 	<View
 		style={[styles.container, displayMode === DisplayMode.Condensed && styles.containerCondensed]}
 		accessibilityLabel={accessibilityLabel}>
