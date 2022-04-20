@@ -10,7 +10,7 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 
 import database from '../../lib/database';
 import RocketChat from '../../lib/rocketchat';
-import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../presentation/RoomItem';
+import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../utils/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';

@@ -1,46 +1,28 @@
 import React from 'react';
 import { Animated } from 'react-native';
-import { LongPressGestureHandler, PanGestureHandler, State } from 'react-native-gesture-handler';
+import {
+	GestureEvent,
+	HandlerStateChangeEventPayload,
+	LongPressGestureHandler,
+	PanGestureHandler,
+	PanGestureHandlerEventPayload,
+	State
+} from 'react-native-gesture-handler';
 
 import Touch from '../../utils/touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { isRTL } from '../../i18n';
 import { themes } from '../../lib/constants';
 import { LeftActions, RightActions } from './Actions';
-import { TSupportedThemes } from '../../theme';
-
-interface ITouchableProps {
-	children: JSX.Element;
-	type: string;
-	onPress(): void;
-	onLongPress(): void;
-	testID: string;
-	width: number;
-	favorite: boolean;
-	isRead: boolean;
-	rid: string;
-	toggleFav: Function;
-	toggleRead: Function;
-	hideChannel: Function;
-	theme: TSupportedThemes;
-	isFocused: boolean;
-	swipeEnabled: boolean;
-	displayMode: string;
-}
+import { ITouchableProps } from './interfaces';
 
 class Touchable extends React.Component<ITouchableProps, any> {
 	private dragX: Animated.Value;
-
 	private rowOffSet: Animated.Value;
-
 	private reverse: Animated.Value;
-
 	private transX: Animated.AnimatedAddition;
-
 	private transXReverse: Animated.AnimatedMultiplication;
-
-	private _onGestureEvent: (...args: any[]) => void;
-
+	private _onGestureEvent: (event: GestureEvent<PanGestureHandlerEventPayload>) => void;
 	private _value: number;
 
 	constructor(props: ITouchableProps) {
@@ -57,19 +39,19 @@ class Touchable extends React.Component<ITouchableProps, any> {
 		this._value = 0;
 	}
 
-	_onHandlerStateChange = ({ nativeEvent }: any) => {
+	_onHandlerStateChange = ({ nativeEvent }: { nativeEvent: HandlerStateChangeEventPayload & PanGestureHandlerEventPayload }) => {
 		if (nativeEvent.oldState === State.ACTIVE) {
 			this._handleRelease(nativeEvent);
 		}
 	};
 
-	onLongPressHandlerStateChange = ({ nativeEvent }: any) => {
+	onLongPressHandlerStateChange = ({ nativeEvent }: { nativeEvent: HandlerStateChangeEventPayload }) => {
 		if (nativeEvent.state === State.ACTIVE) {
 			this.onLongPress();
 		}
 	};
 
-	_handleRelease = (nativeEvent: any) => {
+	_handleRelease = (nativeEvent: PanGestureHandlerEventPayload) => {
 		const { translationX } = nativeEvent;
 		const { rowState } = this.state;
 		this._value += translationX;
@@ -155,7 +137,7 @@ class Touchable extends React.Component<ITouchableProps, any> {
 		this._animateRow(toValue);
 	};
 
-	_animateRow = (toValue: any) => {
+	_animateRow = (toValue: number) => {
 		this.rowOffSet.setValue(this._value);
 		this._value = toValue;
 		this.dragX.setValue(0);

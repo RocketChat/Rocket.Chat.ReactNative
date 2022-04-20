@@ -6,32 +6,13 @@ import { isRTL } from '../../i18n';
 import { CustomIcon } from '../../lib/Icons';
 import { DisplayMode, themes } from '../../lib/constants';
 import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
-import { TSupportedThemes } from '../../theme';
-
-interface ILeftActions {
-	theme: TSupportedThemes;
-	transX: any;
-	isRead: boolean;
-	width: number;
-	onToggleReadPress(): void;
-	displayMode: string;
-}
-
-interface IRightActions {
-	theme: TSupportedThemes;
-	transX: any;
-	favorite: boolean;
-	width: number;
-	toggleFav(): void;
-	onHidePress(): void;
-	displayMode: string;
-}
+import { ILeftActionsProps, IRightActionsProps } from './interfaces';
 
 const reverse = new Animated.Value(isRTL() ? -1 : 1);
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
 
-export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleReadPress, displayMode }: ILeftActions) => {
+export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
 	const translateX = Animated.multiply(
 		transX.interpolate({
 			inputRange: [0, ACTION_WIDTH],
@@ -71,7 +52,7 @@ export const LeftActions = React.memo(({ theme, transX, isRead, width, onToggleR
 });
 
 export const RightActions = React.memo(
-	({ transX, favorite, width, toggleFav, onHidePress, theme, displayMode }: IRightActions) => {
+	({ transX, favorite, width, toggleFav, onHidePress, theme, displayMode }: IRightActionsProps) => {
 		const translateXFav = Animated.multiply(
 			transX.interpolate({
 				inputRange: [-width / 2, -ACTION_WIDTH * 2, 0],
