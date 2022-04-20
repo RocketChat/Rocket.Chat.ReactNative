@@ -18,11 +18,12 @@ import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
 
 interface IButton {
 	loading: boolean;
 	paused: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	disabled?: boolean;
 	onPress: () => void;
 }
@@ -31,7 +32,7 @@ interface IMessageAudioProps {
 	file: IAttachment;
 	isReply?: boolean;
 	style?: StyleProp<TextStyle>[];
-	theme: string;
+	theme: TSupportedThemes;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
 }
@@ -264,6 +265,13 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 			return null;
 		}
 
+		let thumbColor;
+		if (isAndroid && isReply) {
+			thumbColor = themes[theme].tintDisabled;
+		} else if (isAndroid) {
+			thumbColor = themes[theme].tintColor;
+		}
+
 		return (
 			<>
 				<Markdown
@@ -286,7 +294,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 						value={currentTime}
 						maximumValue={duration}
 						minimumValue={0}
-						thumbTintColor={isReply && isAndroid ? themes[theme].tintDisabled : isAndroid && themes[theme].tintColor}
+						thumbTintColor={thumbColor}
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
 						onValueChange={this.onValueChange}

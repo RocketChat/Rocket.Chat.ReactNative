@@ -10,7 +10,7 @@ import {
 
 import { INotification } from '../../definitions/INotification';
 import { isIOS } from '../../utils/deviceInfo';
-import { store as reduxStore } from '../../lib/store/auxStore';
+import { store as reduxStore } from '../store/auxStore';
 import I18n from '../../i18n';
 
 class PushNotification {
@@ -46,7 +46,7 @@ class PushNotification {
 
 		Notifications.events().registerNotificationReceivedForeground(
 			(notification: Notification, completion: (response: NotificationCompletion) => void) => {
-				completion({ alert: true, sound: true, badge: false });
+				completion({ alert: false, sound: false, badge: false });
 			}
 		);
 

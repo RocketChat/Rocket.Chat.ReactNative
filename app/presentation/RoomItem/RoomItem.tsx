@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import styles from './styles';
 import Wrapper from './Wrapper';
-import UnreadBadge from '../UnreadBadge';
+import UnreadBadge from '../../containers/UnreadBadge';
 import TypeIcon from './TypeIcon';
 import LastMessage from './LastMessage';
 import Title from './Title';
@@ -12,7 +12,8 @@ import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
 import { DisplayMode } from '../../lib/constants';
-import { TUserStatus } from '../../definitions';
+import { TUserStatus, IOmnichannelSource } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
 
 interface IRoomItem {
 	rid: string;
@@ -26,7 +27,7 @@ interface IRoomItem {
 	width: number;
 	status: TUserStatus;
 	useRealName: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	isFocused: boolean;
 	isGroupChat: boolean;
 	isRead: boolean;
@@ -59,6 +60,7 @@ interface IRoomItem {
 	autoJoin: boolean;
 	showAvatar: boolean;
 	displayMode: string;
+	sourceType: IOmnichannelSource;
 }
 
 const RoomItem = ({
@@ -98,7 +100,8 @@ const RoomItem = ({
 	teamMain,
 	autoJoin,
 	showAvatar,
-	displayMode
+	displayMode,
+	sourceType
 }: IRoomItem) => (
 	<Touchable
 		onPress={onPress}
@@ -128,12 +131,20 @@ const RoomItem = ({
 			teamMain={teamMain}
 			displayMode={displayMode}
 			showAvatar={showAvatar}
-			showLastMessage={showLastMessage}>
+			showLastMessage={showLastMessage}
+			sourceType={sourceType}>
 			{showLastMessage && displayMode === DisplayMode.Expanded ? (
 				<>
 					<View style={styles.titleContainer}>
 						{showAvatar ? (
-							<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} theme={theme} teamMain={teamMain} />
+							<TypeIcon
+								type={type}
+								prid={prid}
+								status={status}
+								isGroupChat={isGroupChat}
+								teamMain={teamMain}
+								sourceType={sourceType}
+							/>
 						) : null}
 						<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 						{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
@@ -166,10 +177,10 @@ const RoomItem = ({
 						prid={prid}
 						status={status}
 						isGroupChat={isGroupChat}
-						theme={theme}
 						teamMain={teamMain}
 						size={22}
 						style={{ marginRight: 8 }}
+						sourceType={sourceType}
 					/>
 					<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 					{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}

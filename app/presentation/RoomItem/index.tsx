@@ -6,6 +6,7 @@ import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
 import { formatDate } from '../../utils/room';
 import RoomItem from './RoomItem';
 import { TUserStatus } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
 
 export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
 interface IRoomItemContainerProps {
@@ -23,7 +24,7 @@ interface IRoomItemContainerProps {
 	useRealName: boolean;
 	getUserPresence: Function;
 	connected: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	isFocused: boolean;
 	getRoomTitle: Function;
 	getRoomAvatar: Function;
@@ -213,6 +214,7 @@ class RoomItemContainer extends React.Component<IRoomItemContainerProps, any> {
 				autoJoin={autoJoin}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
+				sourceType={item.source}
 			/>
 		);
 	}
