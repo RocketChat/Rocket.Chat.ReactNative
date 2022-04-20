@@ -18,8 +18,7 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { IEmoji, TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IApplicationState } from '../../definitions';
+import { IEmoji, TGetCustomEmoji, IApplicationState } from '../../definitions';
 
 interface IEmojiPickerProps {
 	isMessageContainsOnlyEmoji?: boolean;
