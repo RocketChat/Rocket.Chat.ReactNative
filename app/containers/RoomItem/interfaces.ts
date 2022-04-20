@@ -40,7 +40,6 @@ export interface IUpdatedAtProps {
 export interface IWrapperProps {
 	accessibilityLabel: string;
 	avatar: string;
-	avatarSize: number;
 	type: string;
 	theme: TSupportedThemes;
 	rid: string;
@@ -75,7 +74,6 @@ export interface IRoomItemContainerProps {
 	onPress: (item: any) => void;
 	onLongPress: (item: any) => Promise<void>;
 	username: string;
-	avatarSize: number;
 	width: number;
 	status: TUserStatus;
 	toggleFav(): void;
@@ -104,7 +102,6 @@ export interface IRoomItemProps {
 	avatar: string;
 	showLastMessage: boolean;
 	username: string;
-	avatarSize: number;
 	testID: string;
 	width: number;
 	status: TUserStatus;
