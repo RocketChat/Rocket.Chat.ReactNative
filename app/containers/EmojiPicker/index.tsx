@@ -12,7 +12,7 @@ import EmojiCategory from './EmojiCategory';
 import styles from './styles';
 import categories from './categories';
 import database from '../../lib/database';
-import { emojisByCategory } from '../../emojis';
+import { emojisByCategory } from './emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';

@@ -14,7 +14,7 @@ import { userTyping as userTypingAction } from '../../actions/room';
 import RocketChat from '../../lib/rocketchat';
 import styles from './styles';
 import database from '../../lib/database';
-import { emojis } from '../../emojis';
+import { emojis } from '../EmojiPicker/emojis';
 import log, { events, logEvent } from '../../utils/log';
 import RecordAudio from './RecordAudio';
 import I18n from '../../i18n';
