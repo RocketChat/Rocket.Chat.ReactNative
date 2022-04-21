@@ -60,7 +60,9 @@ export const SYSTEM_MESSAGES = [
 	'room-disallowed-reacting',
 	'room-allowed-reacting',
 	'room-set-read-only',
-	'room-removed-read-only'
+	'room-removed-read-only',
+	'omnichannel_placed_chat_on_hold',
+	'omnichannel_on_hold_chat_resumed'
 ];
 
 export const IGNORED_LIVECHAT_SYSTEM_MESSAGES = [
@@ -88,7 +90,9 @@ export const SYSTEM_MESSAGE_TYPES = {
 	CONVERTED_TO_TEAM: 'user-converted-to-team',
 	CONVERTED_TO_CHANNEL: 'user-converted-to-channel',
 	DELETED_ROOM_FROM_TEAM: 'user-deleted-room-from-team',
-	REMOVED_ROOM_FROM_TEAM: 'user-removed-room-from-team'
+	REMOVED_ROOM_FROM_TEAM: 'user-removed-room-from-team',
+	OMNICHANNEL_PLACED_CHAT_ON_HOLD: 'omnichannel_placed_chat_on_hold',
+	OMNICHANNEL_ON_HOLD_CHAT_RESUMED: 'omnichannel_on_hold_chat_resumed'
 };
 
 export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
@@ -114,9 +118,10 @@ type TInfoMessage = {
 	role: string;
 	msg: string;
 	author: { username: string };
+	comment?: string;
 };
 
-export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage): string => {
+export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessage): string => {
 	const { username } = author;
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
@@ -219,6 +224,12 @@ export const getInfoMessage = ({ type, role, msg, author }: TInfoMessage): strin
 	}
 	if (type === 'room-removed-read-only') {
 		return I18n.t('Room_removed_read_only', { userBy: username });
+	}
+	if (type === 'omnichannel_placed_chat_on_hold') {
+		return I18n.t('Omnichannel_placed_chat_on_hold', { comment });
+	}
+	if (type === 'omnichannel_on_hold_chat_resumed') {
+		return I18n.t('Omnichannel_on_hold_chat_resumed', { comment });
 	}
 	if (type === 'command') {
 		return I18n.t('Livechat_transfer_return_to_the_queue', { userBy: username });

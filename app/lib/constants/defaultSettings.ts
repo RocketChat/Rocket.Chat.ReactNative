@@ -206,6 +206,9 @@ export const defaultSettings = {
 	Canned_Responses_Enable: {
 		type: 'valueAsBoolean'
 	},
+	Livechat_allow_manual_on_hold: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_AvatarExternalProviderUrl: {
 		type: 'valueAsString'
 	}
