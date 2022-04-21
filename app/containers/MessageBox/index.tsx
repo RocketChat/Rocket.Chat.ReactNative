@@ -50,7 +50,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { CustomIcon } from '../../lib/Icons';
 import { IMessage } from '../../definitions/IMessage';
 import { forceJpgExtension } from './forceJpgExtension';
-import { IBaseScreen, IPreviewItem, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { IBaseScreen, IPreviewItem, IUser, TGetCustomEmoji, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { TSupportedThemes } from '../../theme';
 
@@ -91,7 +91,7 @@ export interface IMessageBoxProps extends IBaseScreen<MasterDetailInsideStackPar
 	FileUpload_MediaTypeWhiteList: string;
 	FileUpload_MaxFileSize: number;
 	Message_AudioRecorderEnabled: boolean;
-	getCustomEmoji: () => void;
+	getCustomEmoji: TGetCustomEmoji;
 	editCancel: Function;
 	editRequest: Function;
 	onSubmit: Function;
