@@ -46,7 +46,7 @@ import Navigation from '../../lib/navigation/appNavigation';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getHeaderTitlePosition } from '../../containers/Header';
-import { takeInquiry } from '../../ee/omnichannel/lib';
+import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import Loading from '../../containers/Loading';
 import { goRoom, TGoRoomItem } from '../../utils/goRoom';
 import getThreadName from '../../lib/methods/getThreadName';
@@ -116,7 +116,8 @@ const roomAttrsUpdate = [
 	'visitor',
 	'joinCodeRequired',
 	'teamMain',
-	'teamId'
+	'teamId',
+	'onHold'
 ] as const;
 
 interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
@@ -958,6 +959,22 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 	};
 
+	resumeRoom = async () => {
+		logEvent(events.ROOM_RESUME);
+		try {
+			const { room } = this.state;
+
+			if (this.isOmnichannel) {
+				if ('rid' in room) {
+					await takeResume(room.rid);
+				}
+				this.onJoin();
+			}
+		} catch (e) {
+			log(e);
+		}
+	};
+
 	getThreadName = (tmid: string, messageId: string) => {
 		const { rid } = this.state.room;
 		return getThreadName(rid, tmid, messageId);
@@ -1242,6 +1259,24 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		if (!this.rid) {
 			return null;
+		}
+		if ('onHold' in room && room.onHold) {
+			return (
+				<View style={styles.joinRoomContainer} key='room-view-chat-on-hold' testID='room-view-chat-on-hold'>
+					<Text accessibilityLabel={I18n.t('Chat_is_on_hold')} style={[styles.previewMode, { color: themes[theme].titleText }]}>
+						{I18n.t('Chat_is_on_hold')}
+					</Text>
+					<Touch
+						onPress={this.resumeRoom}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
+						enabled={!loading}
+						theme={theme}>
+						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-chat-on-hold-button'>
+							{I18n.t('Resume')}
+						</Text>
+					</Touch>
+				</View>
+			);
 		}
 		if (!joined && !this.tmid) {
 			return (
