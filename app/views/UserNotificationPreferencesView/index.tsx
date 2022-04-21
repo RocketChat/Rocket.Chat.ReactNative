@@ -15,7 +15,7 @@ import { getUserSelector } from '../../selectors/login';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import { ProfileStackParamList } from '../../stacks/types';
-import { INotificationPreferences, IUser } from '../../definitions';
+import { IApplicationState, INotificationPreferences, IUser } from '../../definitions';
 
 const styles = StyleSheet.create({
 	pickerText: {
@@ -170,7 +170,7 @@ class UserNotificationPreferencesView extends React.Component<
 	}
 }
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state)
 });
 
