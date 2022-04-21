@@ -353,7 +353,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			blocks,
 			autoTranslate: autoTranslateMessage,
 			replies,
-			md
+			md,
+			comment
 		} = item;
 
 		let message = msg;
@@ -434,6 +435,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					callJitsi={callJitsi}
 					blockAction={blockAction}
 					highlighted={highlighted}
+					comment={comment}
 				/>
 			</MessageContext.Provider>
 		);
