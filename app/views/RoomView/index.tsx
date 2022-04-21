@@ -77,9 +77,9 @@ import {
 	TMessageModel,
 	TSubscriptionModel,
 	TThreadModel,
-	IEmoji
+	IEmoji,
+	ICustomEmojis
 } from '../../definitions';
-import { ICustomEmojis } from '../../reducers/customEmojis';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, MESSAGE_TYPE_ANY_LOAD, MessageTypeLoad, themes } from '../../lib/constants';
 
 const stateAttrsUpdate = [

@@ -7,6 +7,11 @@ export interface IEmoji {
 	name: string;
 	extension: string;
 	isCustom: boolean;
+	count?: number;
+}
+
+export interface ICustomEmojis {
+	[key: string]: Pick<IEmoji, 'name' | 'extension'>;
 }
 
 export interface ICustomEmoji {

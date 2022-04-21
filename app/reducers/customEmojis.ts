@@ -1,9 +1,5 @@
 import { SET_CUSTOM_EMOJIS } from '../actions/actionsTypes';
-import { IEmoji, TApplicationActions } from '../definitions';
-
-export interface ICustomEmojis {
-	[key: string]: Pick<IEmoji, 'name' | 'extension'>;
-}
+import { ICustomEmojis, TApplicationActions } from '../definitions';
 
 export const initialState: ICustomEmojis = {};
 

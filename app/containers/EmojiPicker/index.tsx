@@ -18,13 +18,13 @@ import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { IEmoji, TGetCustomEmoji, IApplicationState } from '../../definitions';
+import { IEmoji, TGetCustomEmoji, IApplicationState, ICustomEmojis, TFrequentlyUsedEmojiModel } from '../../definitions';
 
 interface IEmojiPickerProps {
 	isMessageContainsOnlyEmoji?: boolean;
 	getCustomEmoji?: TGetCustomEmoji;
 	baseUrl: string;
-	customEmojis: any;
+	customEmojis: ICustomEmojis;
 	style?: StyleProp<ImageStyle>;
 	theme: TSupportedThemes;
 	onEmojiSelected: (emoji: string, shortname?: string) => void;
@@ -61,7 +61,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 		this.setState({ show: true });
 	}
 
-	shouldComponentUpdate(nextProps: any, nextState: any) {
+	shouldComponentUpdate(nextProps: IEmojiPickerProps, nextState: IEmojiPickerState) {
 		const { frequentlyUsed, show, width } = this.state;
 		const { theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -103,7 +103,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 	_addFrequentlyUsed = protectedFunction(async (emoji: IEmoji) => {
 		const db = database.active;
 		const freqEmojiCollection = db.get('frequently_used_emojis');
-		let freqEmojiRecord: any;
+		let freqEmojiRecord: TFrequentlyUsedEmojiModel;
 		try {
 			freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
 		} catch (error) {
@@ -112,11 +112,13 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 
 		await db.write(async () => {
 			if (freqEmojiRecord) {
-				await freqEmojiRecord.update((f: any) => {
-					f.count += 1;
+				await freqEmojiRecord.update(f => {
+					if (f.count) {
+						f.count += 1;
+					}
 				});
 			} else {
-				await freqEmojiCollection.create((f: any) => {
+				await freqEmojiCollection.create(f => {
 					f._raw = sanitizedRaw({ id: emoji.content }, freqEmojiCollection.schema);
 					Object.assign(f, emoji);
 					f.count = 1;
