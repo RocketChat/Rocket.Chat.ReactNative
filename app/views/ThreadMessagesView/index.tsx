@@ -533,13 +533,19 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { showFilterDropdown, currentFilter } = this.state;
+		const { theme } = this.props;
 
 		return (
 			<SafeAreaView testID='thread-messages-view'>
 				<StatusBar />
 				{this.renderContent()}
 				{showFilterDropdown ? (
-					<Dropdown currentFilter={currentFilter} onFilterSelected={this.onFilterSelected} onClose={this.closeFilterDropdown} />
+					<Dropdown
+						currentFilter={currentFilter}
+						onFilterSelected={this.onFilterSelected}
+						onClose={this.closeFilterDropdown}
+						theme={theme}
+					/>
 				) : null}
 			</SafeAreaView>
 		);
