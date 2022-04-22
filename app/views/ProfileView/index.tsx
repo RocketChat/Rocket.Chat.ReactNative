@@ -7,7 +7,7 @@ import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { dequal } from 'dequal';
 import omit from 'lodash/omit';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 
 import Touch from '../../utils/touch';
 import KeyboardView from '../../containers/KeyboardView';
@@ -27,19 +27,45 @@ import { CustomIcon } from '../../lib/Icons';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { themes } from '../../lib/constants';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
-import {
-	IAvatar,
-	IAvatarButton,
-	INavigationOptions,
-	IParams,
-	IProfileViewProps,
-	IProfileViewState
-} from '../../definitions/IProfileViewInterfaces';
-import { IUser } from '../../definitions';
+import { IAvatar, IAvatarButton, IAvatarSuggestion, IParams, IUser } from '../../definitions';
+import { ProfileStackParamList } from '../../stacks/types';
+
+interface INavigationOptions {
+	navigation: StackNavigationProp<ProfileStackParamList, 'ProfileView'>;
+	isMasterDetail?: boolean;
+}
+
+interface IProfileViewProps {
+	user: IUser;
+	baseUrl: string;
+	Accounts_AllowEmailChange: boolean;
+	Accounts_AllowPasswordChange: boolean;
+	Accounts_AllowRealNameChange: boolean;
+	Accounts_AllowUserAvatarChange: boolean;
+	Accounts_AllowUsernameChange: boolean;
+	Accounts_CustomFields: string;
+	setUser: Function;
+	theme: TSupportedThemes;
+}
+
+interface IProfileViewState {
+	saving: boolean;
+	name: string;
+	username: string;
+	email: string | null;
+	newPassword: string | null;
+	currentPassword: string | null;
+	avatarUrl: string | null;
+	avatar: IAvatar;
+	avatarSuggestions: IAvatarSuggestion;
+	customFields: {
+		[key: string | number]: string;
+	};
+}
 
 class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> {
 	private name: any;
