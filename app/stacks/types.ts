@@ -139,7 +139,7 @@ export type ChatsStackParamList = {
 	};
 	AddExistingChannelView: {
 		teamId?: string;
-		teamChannels: []; // TODO: Change
+		teamChannels: IItem[];
 	};
 	MarkdownTableView: {
 		renderRows: (drawExtraBorders?: boolean) => JSX.Element;
