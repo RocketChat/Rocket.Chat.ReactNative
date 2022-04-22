@@ -9,7 +9,7 @@ import { useTheme } from '../../theme';
 import { isAndroid, isTablet } from '../../utils/deviceInfo';
 import sharedStyles from '../Styles';
 import { makeThreadName } from '../../utils/room';
-import { ISubscription } from '../../definitions';
+import { ISubscription, TThreadModel } from '../../definitions';
 
 const androidMarginLeft = isTablet ? 0 : 4;
 
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 
 interface IHeader {
 	room: ISubscription;
-	thread: { id?: string };
+	thread: TThreadModel;
 }
 
 const Header = React.memo(({ room, thread }: IHeader) => {

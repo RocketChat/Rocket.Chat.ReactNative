@@ -10,6 +10,7 @@ import { IMessage, TMessageModel } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ModalStackParamList } from './MasterDetailStack/types';
+import { TThreadModel } from '../definitions';
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
@@ -245,7 +246,7 @@ export type InsideStackParamList = {
 		serverInfo: IServer;
 		text: string;
 		room: TSubscriptionModel;
-		thread: any; // TODO: Change
+		thread: TThreadModel;
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;
