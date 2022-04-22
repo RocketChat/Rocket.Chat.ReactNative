@@ -1,7 +1,5 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 
 import TextInput from '../containers/TextInput';
 import Button from '../containers/Button';
@@ -9,12 +7,13 @@ import { showErrorAlert } from '../utils/info';
 import isValidEmail from '../utils/isValidEmail';
 import I18n from '../i18n';
 import RocketChat from '../lib/rocketchat';
-import { TSupportedThemes, withTheme } from '../theme';
+import { withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { events, logEvent } from '../utils/log';
 import sharedStyles from './Styles';
 import { OutsideParamList } from '../stacks/types';
+import { IBaseScreen } from '../definitions';
 
 interface IForgotPasswordViewState {
 	email: string;
@@ -22,14 +21,10 @@ interface IForgotPasswordViewState {
 	isFetching: boolean;
 }
 
-interface IForgotPasswordViewProps {
-	navigation: StackNavigationProp<OutsideParamList, 'ForgotPasswordView'>;
-	route: RouteProp<OutsideParamList, 'ForgotPasswordView'>;
-	theme: TSupportedThemes;
-}
+type IForgotPasswordViewProps = IBaseScreen<OutsideParamList, 'ForgotPasswordView'>;
 
 class ForgotPasswordView extends React.Component<IForgotPasswordViewProps, IForgotPasswordViewState> {
-	static navigationOptions = ({ route }: Pick<IForgotPasswordViewProps, 'route'>) => ({
+	static navigationOptions = ({ route }: IForgotPasswordViewProps) => ({
 		title: route.params?.title ?? 'Rocket.Chat'
 	});
 
