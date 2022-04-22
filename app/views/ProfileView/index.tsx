@@ -7,7 +7,7 @@ import ImagePicker, { Image } from 'react-native-image-crop-picker';
 import RNPickerSelect from 'react-native-picker-select';
 import { dequal } from 'dequal';
 import omit from 'lodash/omit';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 import Touch from '../../utils/touch';
 import KeyboardView from '../../containers/KeyboardView';
@@ -22,7 +22,6 @@ import log, { events, logEvent } from '../../utils/log';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import Avatar from '../../containers/Avatar';
-import { setUser as setUserAction } from '../../actions/login';
 import { CustomIcon } from '../../lib/Icons';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
@@ -31,15 +30,19 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
-import { IApplicationState, IAvatar, IAvatarButton, IAvatarSuggestion, IProfileParams, IUser } from '../../definitions';
+import {
+	IApplicationState,
+	IAvatar,
+	IAvatarButton,
+	IAvatarSuggestion,
+	IBaseScreen,
+	IProfileParams,
+	IUser
+} from '../../definitions';
 import { ProfileStackParamList } from '../../stacks/types';
+import { setUser } from '../../actions/login';
 
-interface INavigationOptions {
-	navigation: StackNavigationProp<ProfileStackParamList, 'ProfileView'>;
-	isMasterDetail?: boolean;
-}
-
-interface IProfileViewProps {
+interface IProfileViewProps extends IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
 	baseUrl: string;
 	Accounts_AllowEmailChange: boolean;
@@ -48,7 +51,6 @@ interface IProfileViewProps {
 	Accounts_AllowUserAvatarChange: boolean;
 	Accounts_AllowUsernameChange: boolean;
 	Accounts_CustomFields: string;
-	setUser: (params: any) => void;
 	theme: TSupportedThemes;
 }
 
@@ -74,7 +76,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	private avatarUrl?: TextInput;
 	private newPassword?: TextInput;
 
-	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOptions) => {
+	static navigationOptions = ({ navigation, isMasterDetail }: IProfileViewProps) => {
 		const options: StackNavigationOptions = {
 			title: I18n.t('Profile')
 		};
@@ -198,7 +200,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		this.setState({ saving: true });
 
 		const { name, username, email, newPassword, currentPassword, avatar, customFields } = this.state;
-		const { user, setUser } = this.props;
+		const { user, dispatch } = this.props;
 		const params = {} as IProfileParams;
 
 		// Name
@@ -267,9 +269,9 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			if (result.success) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
 				if (customFields) {
-					setUser({ customFields, ...params });
+					dispatch(setUser({ customFields, ...params }));
 				} else {
-					setUser({ ...params });
+					dispatch(setUser({ ...params }));
 				}
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 				this.init();
@@ -623,8 +625,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	baseUrl: state.server.server
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
-	setUser: (params: any) => dispatch(setUserAction(params))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTheme(ProfileView));
+export default connect(mapStateToProps)(withTheme(ProfileView));
