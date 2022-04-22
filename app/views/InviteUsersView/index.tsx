@@ -1,8 +1,7 @@
-import { StackNavigationOptions } from '@react-navigation/stack';
+import React, { useEffect } from 'react';
 import moment from 'moment';
-import React from 'react';
 import { ScrollView, Share, View } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import { inviteLinksClear, inviteLinksCreate } from '../../actions/inviteLinks';
 import { themes } from '../../lib/constants';
@@ -15,7 +14,7 @@ import { IApplicationState, IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { TInvite } from '../../reducers/inviteLinks';
 import { ChatsStackParamList } from '../../stacks/types';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { events, logEvent } from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import styles from './styles';
@@ -24,46 +23,38 @@ interface IInviteUsersViewProps extends IBaseScreen<ChatsStackParamList, 'Invite
 	timeDateFormat: string;
 	invite: TInvite;
 }
-class InviteUsersView extends React.Component<IInviteUsersViewProps, any> {
-	static navigationOptions = (): StackNavigationOptions => ({
-		title: I18n.t('Invite_users')
-	});
+const InviteUsersView = ({ timeDateFormat, invite, route, navigation }: IInviteUsersViewProps) => {
+	const rid = route.params?.rid;
+	const { theme } = useTheme();
+	const dispatch = useDispatch();
 
-	private rid: string;
+	useEffect(() => {
+		navigation.setOptions({
+			title: I18n.t('Invite_users')
+		});
+	}, []);
 
-	constructor(props: IInviteUsersViewProps) {
-		super(props);
-		this.rid = props.route.params?.rid;
-	}
+	useEffect(() => {
+		dispatch(inviteLinksCreate(rid));
+		return () => {
+			dispatch(inviteLinksClear());
+		};
+	}, []);
 
-	componentDidMount() {
-		const { dispatch } = this.props;
-		dispatch(inviteLinksCreate(this.rid));
-	}
-
-	componentWillUnmount() {
-		const { dispatch } = this.props;
-		dispatch(inviteLinksClear());
-	}
-
-	share = () => {
+	const share = () => {
 		logEvent(events.IU_SHARE);
-		const { invite } = this.props;
 		if (!invite || !invite.url) {
 			return;
 		}
 		Share.share({ message: invite.url });
 	};
 
-	edit = () => {
+	const edit = () => {
 		logEvent(events.IU_GO_IU_EDIT);
-		const { navigation } = this.props;
-		navigation.navigate('InviteUsersEditView', { rid: this.rid });
+		navigation.navigate('InviteUsersEditView', { rid });
 	};
 
-	linkExpirationText = () => {
-		const { timeDateFormat, invite } = this.props;
-
+	const linkExpirationText = () => {
 		if (!invite || !invite.url) {
 			return null;
 		}
@@ -90,38 +81,33 @@ class InviteUsersView extends React.Component<IInviteUsersViewProps, any> {
 		return I18n.t('Your_invite_link_will_never_expire');
 	};
 
-	renderExpiration = () => {
-		const { theme } = this.props;
-		const expirationMessage = this.linkExpirationText();
+	const renderExpiration = () => {
+		const expirationMessage = linkExpirationText();
 		return <Markdown msg={expirationMessage} theme={theme} />;
 	};
 
-	render() {
-		const { theme, invite } = this.props;
-		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
-				{/* @ts-ignore*/}
-				<ScrollView
-					{...scrollPersistTaps}
-					style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-					showsVerticalScrollIndicator={false}>
-					<StatusBar />
-					<View style={styles.innerContainer}>
-						<RCTextInput label={I18n.t('Invite_Link')} theme={theme} value={invite && invite.url} editable={false} />
-						{this.renderExpiration()}
-						<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
-						<Button title={I18n.t('Share_Link')} type='primary' onPress={this.share} theme={theme} />
-						<Button title={I18n.t('Edit_Invite')} type='secondary' onPress={this.edit} theme={theme} />
-					</View>
-				</ScrollView>
-			</SafeAreaView>
-		);
-	}
-}
+	return (
+		<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<ScrollView
+				{...scrollPersistTaps}
+				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				showsVerticalScrollIndicator={false}>
+				<StatusBar />
+				<View style={styles.innerContainer}>
+					<RCTextInput label={I18n.t('Invite_Link')} theme={theme} value={invite && invite.url} editable={false} />
+					{renderExpiration()}
+					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
+					<Button title={I18n.t('Share_Link')} type='primary' onPress={share} theme={theme} />
+					<Button title={I18n.t('Edit_Invite')} type='secondary' onPress={edit} theme={theme} />
+				</View>
+			</ScrollView>
+		</SafeAreaView>
+	);
+};
 
 const mapStateToProps = (state: IApplicationState) => ({
 	timeDateFormat: state.settings.Message_TimeAndDateFormat as string,
 	invite: state.inviteLinks.invite
 });
 
-export default connect(mapStateToProps)(withTheme(InviteUsersView));
+export default connect(mapStateToProps)(InviteUsersView);
