@@ -1,62 +1,63 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { StackNavigationOptions } from '@react-navigation/stack';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import openLink from '../utils/openLink';
-import { TSupportedThemes, withTheme } from '../theme';
+import { useTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
+import { OutsideParamList } from '../stacks/types';
+import { IBaseScreen, IApplicationState } from '../definitions';
 
-interface ILegalView {
+interface ILegalViewProps extends IBaseScreen<OutsideParamList, 'LegalView'> {
 	server: string;
-	theme: TSupportedThemes;
 }
 
-class LegalView extends React.Component<ILegalView, any> {
-	static navigationOptions = (): StackNavigationOptions => ({
-		title: I18n.t('Legal')
-	});
+const LegalView = ({ server, navigation }: ILegalViewProps) => {
+	const { theme } = useTheme();
 
-	onPressItem = ({ route }: { route: string }) => {
-		const { server, theme } = this.props;
+	useEffect(() => {
+		navigation.setOptions({
+			title: I18n.t('Legal')
+		});
+	}, []);
+
+	const onPressItem = ({ route }: { route: string }) => {
 		if (!server) {
 			return;
 		}
 		openLink(`${server}/${route}`, theme);
 	};
 
-	render() {
-		return (
-			<SafeAreaView testID='legal-view'>
-				<StatusBar />
-				<List.Container>
-					<List.Section>
-						<List.Separator />
-						<List.Item
-							title='Terms_of_Service'
-							onPress={() => this.onPressItem({ route: 'terms-of-service' })}
-							testID='legal-terms-button'
-							showActionIndicator
-						/>
-						<List.Separator />
-						<List.Item
-							title='Privacy_Policy'
-							onPress={() => this.onPressItem({ route: 'privacy-policy' })}
-							testID='legal-privacy-button'
-							showActionIndicator
-						/>
-						<List.Separator />
-					</List.Section>
-				</List.Container>
-			</SafeAreaView>
-		);
-	}
-}
+	return (
+		<SafeAreaView testID='legal-view'>
+			<StatusBar />
+			<List.Container>
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title='Terms_of_Service'
+						onPress={() => onPressItem({ route: 'terms-of-service' })}
+						testID='legal-terms-button'
+						showActionIndicator
+					/>
+					<List.Separator />
+					<List.Item
+						title='Privacy_Policy'
+						onPress={() => onPressItem({ route: 'privacy-policy' })}
+						testID='legal-privacy-button'
+						showActionIndicator
+					/>
+					<List.Separator />
+				</List.Section>
+			</List.Container>
+		</SafeAreaView>
+	);
+};
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server
 });
 
-export default connect(mapStateToProps)(withTheme(LegalView));
+export default connect(mapStateToProps)(LegalView);
