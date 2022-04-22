@@ -59,6 +59,20 @@ export interface IRoom {
 	waitingResponse?: boolean;
 }
 
+export interface IRoomSettings {
+	roomName?: string;
+	roomAvatar?: string;
+	roomDescription?: string;
+	roomTopic?: string;
+	roomAnnouncement?: string;
+	roomType?: SubscriptionType;
+	readOnly?: boolean;
+	reactWhenReadOnly?: boolean;
+	systemMessages?: string[];
+	joinCode?: string;
+	encrypted?: boolean;
+}
+
 export enum OmnichannelSourceType {
 	WIDGET = 'widget',
 	EMAIL = 'email',
