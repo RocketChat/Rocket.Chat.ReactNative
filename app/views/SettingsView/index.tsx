@@ -115,7 +115,7 @@ class SettingsView extends React.Component<ISettingsViewProps> {
 
 	sendEmail = async () => {
 		logEvent(events.SE_CONTACT_US);
-		const subject = encodeURI('Rocket.Chat App Support');
+		const subject = encodeURI('Rocket.Chat Mobile App Support');
 		const email = encodeURI('support@rocket.chat');
 		const description = encodeURI(`
 			version: ${getReadableVersion}
