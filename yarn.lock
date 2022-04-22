@@ -15102,9 +15102,9 @@ react-native-webview@10.3.2:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@RocketChat/react-native#fix-ios-connections:
+react-native@RocketChat/react-native#0.64.2:
   version "0.64.2-rocket"
-  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/678dd08dd3908923840f927dd36294e3fdb7d715"
+  resolved "https://codeload.github.com/RocketChat/react-native/tar.gz/dc2e7828ac118d848fee1f5bdc837329bfadd205"
   dependencies:
     "@jest/create-cache-key-function" "^27.0.2"
     "@react-native-community/cli" "^5.0.1-alpha.1"
