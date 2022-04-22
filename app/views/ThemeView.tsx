@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
 
 import { SettingsStackParamList } from '../stacks/types';
 import I18n from '../i18n';
-import { TSupportedThemes, useTheme } from '../theme';
+import { useTheme } from '../theme';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import { supportSystemTheme } from '../utils/deviceInfo';
@@ -12,6 +11,7 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { events, logEvent } from '../utils/log';
 import { IThemePreference, TThemeMode, TDarkLevel } from '../definitions/ITheme';
 import { THEME_PREFERENCES_KEY, themes } from '../lib/constants';
+import { IBaseScreen } from '../definitions';
 
 const THEME_GROUP = 'THEME_GROUP';
 const DARK_GROUP = 'DARK_GROUP';
@@ -58,9 +58,7 @@ interface ITheme {
 	group: string;
 }
 
-interface IThemeViewProps {
-	navigation: StackNavigationProp<SettingsStackParamList, 'ThemeView'>;
-	theme: TSupportedThemes;
+interface IThemeViewProps extends IBaseScreen<SettingsStackParamList, 'ThemeView'> {
 	themePreferences: IThemePreference;
 	setTheme(newTheme?: IThemePreference): void;
 }
