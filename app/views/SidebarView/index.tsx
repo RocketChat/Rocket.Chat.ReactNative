@@ -28,8 +28,8 @@ interface ISidebarState {
 
 interface ISidebarProps {
 	baseUrl: string;
-	navigation: DrawerNavigationProp<DrawerParamList>;
-	state: DrawerNavigationState<DrawerParamList>;
+	navigation?: DrawerNavigationProp<DrawerParamList>;
+	state?: DrawerNavigationState<DrawerParamList>;
 	Site_Name: string;
 	user: IUser;
 	theme: TSupportedThemes;
@@ -153,7 +153,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (isMasterDetail) {
 			return;
 		}
-		navigation.closeDrawer();
+		navigation?.closeDrawer();
 	};
 
 	renderAdmin = () => {
