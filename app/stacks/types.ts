@@ -2,6 +2,7 @@ import { NavigatorScreenParams } from '@react-navigation/core';
 import { TextInputProps } from 'react-native';
 import Model from '@nozbe/watermelondb/Model';
 
+import { IItem } from '../views/TeamChannelsView';
 import { IRoom } from '../definitions/IRoom';
 import { IOptionsField } from '../views/NotificationPreferencesView/options';
 import { IServer } from '../definitions/IServer';
@@ -37,7 +38,7 @@ export type ChatsStackParamList = {
 		| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
 		room: TSubscriptionModel;
-		member: any;
+		member?: any;
 		rid: string;
 		t: SubscriptionType;
 		joined: boolean;
@@ -126,6 +127,7 @@ export type ChatsStackParamList = {
 	};
 	TeamChannelsView: {
 		teamId: string;
+		joined: boolean;
 	};
 	CreateChannelView: {
 		isTeam?: boolean; // TODO: To check
@@ -133,7 +135,7 @@ export type ChatsStackParamList = {
 	};
 	AddChannelTeamView: {
 		teamId?: string;
-		teamChannels: []; // TODO: Change
+		teamChannels: IItem[];
 	};
 	AddExistingChannelView: {
 		teamId?: string;

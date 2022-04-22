@@ -16,7 +16,7 @@ import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';
 import StatusBar from '../containers/StatusBar';
-import { IApplicationState, IBaseScreen } from '../definitions';
+import { IApplicationState, IBaseScreen, TSubscriptionModel } from '../definitions';
 import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
@@ -42,8 +42,7 @@ const getItemLayout = (data: IItem[] | null | undefined, index: number) => ({
 });
 const keyExtractor = (item: IItem) => item._id;
 
-// This interface comes from request RocketChat.getTeamListRoom
-interface IItem {
+export interface IItem {
 	_id: ERoomType;
 	fname: string;
 	customFields: object;
@@ -90,15 +89,15 @@ interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamC
 }
 class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChannelsViewState> {
 	private teamId: string;
-
-	// TODO: Refactor when migrate room
-	private teamChannels: any;
-
-	// TODO: Refactor when migrate room
-	private team: any;
+	private joined: boolean;
+	private teamChannels: TSubscriptionModel[];
+	private team: TSubscriptionModel;
 
 	constructor(props: ITeamChannelsViewProps) {
 		super(props);
+		this.teamChannels = [];
+		this.team = {} as TSubscriptionModel;
+		this.joined = props.route.params?.joined;
 		this.teamId = props.route.params?.teamId;
 		this.state = {
 			loading: true,
@@ -125,8 +124,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		const db = database.active;
 		try {
 			const subCollection = db.get('subscriptions');
-			this.teamChannels = await subCollection.query(Q.where('team_id', Q.eq(this.teamId)));
-			this.team = this.teamChannels?.find((channel: any) => channel.teamMain);
+			this.teamChannels = await subCollection.query(Q.where('team_id', Q.eq(this.teamId))).fetch();
+			this.team = this.teamChannels?.find((channel: TSubscriptionModel) => channel.teamMain) as TSubscriptionModel;
 			this.setHeader();
 
 			if (!this.team) {
@@ -174,9 +173,9 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				} as ITeamChannelsViewState;
 
 				if (isSearching) {
-					newState.search = [...search, ...result.rooms];
+					newState.search = [...search, ...result.rooms] as IItem[];
 				} else {
-					newState.data = [...data, ...result.rooms];
+					newState.data = [...data, ...result.rooms] as IItem[];
 				}
 
 				this.setState(newState);
@@ -305,23 +304,27 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 	goRoomActionsView = (screen: string) => {
 		logEvent(events.TC_GO_ACTIONS);
-		const { team } = this;
+		const { team, joined } = this;
 		const { navigation, isMasterDetail } = this.props;
-		if (isMasterDetail) {
+		if (!team) {
+			return;
+		}
+		if (isMasterDetail && screen) {
 			navigation.navigate('ModalStackNavigator', {
-				screen: screen ?? 'RoomActionsView',
+				screen: 'RoomActionsView',
 				params: {
 					rid: team.rid,
 					t: team.t,
 					room: team,
-					showCloseModal: false
+					joined
 				}
 			});
 		} else {
 			navigation.navigate('RoomActionsView', {
 				rid: team.rid,
 				t: team.t,
-				room: team
+				room: team,
+				joined
 			});
 		}
 	};
@@ -405,7 +408,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const { data } = this.state;
-			const result = await RocketChat.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId });
+			const result = await RocketChat.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId as string });
 			if (result.success) {
 				const newData = data.filter(room => result.room._id !== room._id);
 				this.setState({ data: newData });
