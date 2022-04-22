@@ -1,8 +1,9 @@
-import React from 'react';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import React, { useEffect } from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
 
+import { SettingsStackParamList } from '../stacks/types';
 import I18n from '../i18n';
-import { TSupportedThemes, withTheme } from '../theme';
+import { TSupportedThemes, useTheme } from '../theme';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import { supportSystemTheme } from '../utils/deviceInfo';
@@ -58,20 +59,25 @@ interface ITheme {
 }
 
 interface IThemeViewProps {
+	navigation: StackNavigationProp<SettingsStackParamList, 'ThemeView'>;
 	theme: TSupportedThemes;
 	themePreferences: IThemePreference;
 	setTheme(newTheme?: IThemePreference): void;
 }
 
-class ThemeView extends React.Component<IThemeViewProps> {
-	static navigationOptions = (): StackNavigationOptions => ({
-		title: I18n.t('Theme')
-	});
+const ThemeView = (props: IThemeViewProps): React.ReactElement => {
+	const { theme, themePreferences, setTheme } = useTheme();
 
-	isSelected = (item: ITheme) => {
-		const { themePreferences } = this.props;
+	useEffect(() => {
+		const { navigation } = props;
+		navigation.setOptions({
+			title: I18n.t('Theme')
+		});
+	}, []);
+
+	const isSelected = (item: ITheme) => {
 		const { group } = item;
-		const { darkLevel, currentTheme } = themePreferences;
+		const { darkLevel, currentTheme } = themePreferences as IThemePreference;
 		if (group === THEME_GROUP) {
 			return item.value === currentTheme;
 		}
@@ -80,9 +86,8 @@ class ThemeView extends React.Component<IThemeViewProps> {
 		}
 	};
 
-	onClick = (item: ITheme) => {
-		const { themePreferences } = this.props;
-		const { darkLevel, currentTheme } = themePreferences;
+	const onClick = (item: ITheme) => {
+		const { darkLevel, currentTheme } = themePreferences as IThemePreference;
 		const { value, group } = item;
 		let changes: Partial<IThemePreference> = {};
 		if (group === THEME_GROUP && currentTheme !== value) {
@@ -93,53 +98,49 @@ class ThemeView extends React.Component<IThemeViewProps> {
 			logEvent(events.THEME_SET_DARK_LEVEL, { dark_level: value });
 			changes = { darkLevel: value as TDarkLevel };
 		}
-		this.setTheme(changes);
+		_setTheme(changes);
 	};
 
-	setTheme = (theme: Partial<IThemePreference>) => {
-		const { setTheme, themePreferences } = this.props;
-		const newTheme = { ...themePreferences, ...theme };
-		setTheme(newTheme);
-		UserPreferences.setMap(THEME_PREFERENCES_KEY, newTheme);
+	const _setTheme = (theme: Partial<IThemePreference>) => {
+		const newTheme: IThemePreference = { ...(themePreferences as IThemePreference), ...theme };
+		if (setTheme) {
+			setTheme(newTheme);
+			UserPreferences.setMap(THEME_PREFERENCES_KEY, newTheme);
+		}
 	};
 
-	renderIcon = () => {
-		const { theme } = this.props;
-		return <List.Icon name='check' color={themes[theme].tintColor} />;
-	};
+	const renderIcon = () => <List.Icon name='check' color={themes[theme].tintColor} />;
 
-	renderItem = ({ item }: { item: ITheme }) => {
+	const renderItem = ({ item }: { item: ITheme }) => {
 		const { label, value } = item;
 		return (
 			<>
 				<List.Item
 					title={label}
-					onPress={() => this.onClick(item)}
+					onPress={() => onClick(item)}
 					testID={`theme-view-${value}`}
-					right={() => (this.isSelected(item) ? this.renderIcon() : null)}
+					right={() => (isSelected(item) ? renderIcon() : null)}
 				/>
 				<List.Separator />
 			</>
 		);
 	};
 
-	render() {
-		return (
-			<SafeAreaView testID='theme-view'>
-				<StatusBar />
-				<List.Container>
-					<List.Section title='Theme'>
-						<List.Separator />
-						<>{themeGroup.map(item => this.renderItem({ item }))}</>
-					</List.Section>
-					<List.Section title='Dark_level'>
-						<List.Separator />
-						<>{darkGroup.map(item => this.renderItem({ item }))}</>
-					</List.Section>
-				</List.Container>
-			</SafeAreaView>
-		);
-	}
-}
+	return (
+		<SafeAreaView testID='theme-view'>
+			<StatusBar />
+			<List.Container>
+				<List.Section title='Theme'>
+					<List.Separator />
+					<>{themeGroup.map(item => renderItem({ item }))}</>
+				</List.Section>
+				<List.Section title='Dark_level'>
+					<List.Separator />
+					<>{darkGroup.map(item => renderItem({ item }))}</>
+				</List.Section>
+			</List.Container>
+		</SafeAreaView>
+	);
+};
 
-export default withTheme(ThemeView);
+export default ThemeView;
