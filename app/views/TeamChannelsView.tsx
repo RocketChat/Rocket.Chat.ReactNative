@@ -1,14 +1,13 @@
-import { Q } from '@nozbe/watermelondb';
-import { HeaderBackButton, StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
+import { Q } from '@nozbe/watermelondb';
+import { HeaderBackButton, StackNavigationOptions } from '@react-navigation/stack';
 import { Alert, FlatList, Keyboard } from 'react-native';
 import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 
 import { deleteRoom } from '../actions/room';
-import { themes } from '../lib/constants';
-import { withActionSheet } from '../containers/ActionSheet';
+import { DisplayMode, themes } from '../lib/constants';
+import { TActionSheetOptions, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
 import { getHeaderTitlePosition } from '../containers/Header';
@@ -27,7 +26,7 @@ import RocketChat from '../lib/rocketchat';
 import RoomItem, { ROW_HEIGHT } from '../containers/RoomItem';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
-import { TSupportedThemes, withTheme } from '../theme';
+import { withTheme } from '../theme';
 import debounce from '../utils/debounce';
 import { isIOS } from '../utils/deviceInfo';
 import { goRoom } from '../utils/goRoom';
@@ -35,11 +34,6 @@ import { showErrorAlert } from '../utils/info';
 import log, { events, logEvent } from '../utils/log';
 
 const API_FETCH_COUNT = 25;
-const PERMISSION_DELETE_C = 'delete-c';
-const PERMISSION_DELETE_P = 'delete-p';
-const PERMISSION_EDIT_TEAM_CHANNEL = 'edit-team-channel';
-const PERMISSION_REMOVE_TEAM_CHANNEL = 'remove-team-channel';
-const PERMISSION_ADD_TEAM_CHANNEL = 'add-team-channel';
 
 const getItemLayout = (data: IItem[] | null | undefined, index: number) => ({
 	length: data?.length || 0,
@@ -80,14 +74,8 @@ interface ITeamChannelsViewState {
 	showCreate: boolean;
 }
 
-type IProps = Omit<IBaseScreen<ChatsStackParamList, 'TeamChannelsView'>, 'navigation'> & {
-	navigation: StackNavigationProp<any, 'TeamChannelsView'>;
-};
-
-interface ITeamChannelsViewProps extends IProps {
-	isMasterDetail: boolean;
+interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamChannelsView'> {
 	insets: EdgeInsets;
-	theme: TSupportedThemes;
 	useRealName: boolean;
 	width: number;
 	StoreLastMessage: boolean;
@@ -96,10 +84,9 @@ interface ITeamChannelsViewProps extends IProps {
 	removeTeamChannelPermission: string[];
 	deleteCPermission: string[];
 	deletePPermission: string[];
-	showActionSheet: (options: any) => void;
+	showActionSheet: (options: TActionSheetOptions) => void;
 	showAvatar: boolean;
-	displayMode: string;
-	dispatch: Dispatch;
+	displayMode: DisplayMode;
 }
 class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChannelsViewState> {
 	private teamId: string;
@@ -187,10 +174,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				} as ITeamChannelsViewState;
 
 				if (isSearching) {
-					// @ts-ignore
 					newState.search = [...search, ...result.rooms];
 				} else {
-					// @ts-ignore
 					newState.data = [...data, ...result.rooms];
 				}
 
@@ -591,11 +576,11 @@ const mapStateToProps = (state: IApplicationState) => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	isMasterDetail: state.app.isMasterDetail,
 	StoreLastMessage: state.settings.Store_Last_Message,
-	addTeamChannelPermission: state.permissions[PERMISSION_ADD_TEAM_CHANNEL],
-	editTeamChannelPermission: state.permissions[PERMISSION_EDIT_TEAM_CHANNEL],
-	removeTeamChannelPermission: state.permissions[PERMISSION_REMOVE_TEAM_CHANNEL],
-	deleteCPermission: state.permissions[PERMISSION_DELETE_C],
-	deletePPermission: state.permissions[PERMISSION_DELETE_P],
+	addTeamChannelPermission: state.permissions['add-team-channel'],
+	editTeamChannelPermission: state.permissions['edit-team-channel'],
+	removeTeamChannelPermission: state.permissions['remove-team-channel'],
+	deleteCPermission: state.permissions['delete-c'],
+	deletePPermission: state.permissions['delete-p'],
 	showAvatar: state.sortPreferences.showAvatar,
 	displayMode: state.sortPreferences.displayMode
 });
