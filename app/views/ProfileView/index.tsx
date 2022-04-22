@@ -31,7 +31,7 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
-import { IApplicationState, IAvatar, IAvatarButton, IAvatarSuggestion, IParams, IUser } from '../../definitions';
+import { IApplicationState, IAvatar, IAvatarButton, IAvatarSuggestion, IProfileParams, IUser } from '../../definitions';
 import { ProfileStackParamList } from '../../stacks/types';
 
 interface INavigationOptions {
@@ -199,7 +199,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 		const { name, username, email, newPassword, currentPassword, avatar, customFields } = this.state;
 		const { user, setUser } = this.props;
-		const params = {} as IParams;
+		const params = {} as IProfileParams;
 
 		// Name
 		if (user.name !== name) {

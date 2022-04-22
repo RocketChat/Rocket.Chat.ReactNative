@@ -1,6 +1,6 @@
 import React from 'react';
 
-export interface IParams {
+export interface IProfileParams {
 	name: string;
 	username: string;
 	email: string | null;
