@@ -92,7 +92,7 @@ interface IRoomInfoViewProps {
 	roles: { [key: string]: string };
 }
 
-interface IUserParsed extends IUser {
+export interface IUserParsed extends IUser {
 	parsedRoles?: string[];
 }
 
@@ -410,7 +410,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 		const { room, roomUser } = this.state;
 
 		if (this.isDirect) {
-			return <Direct roomUser={roomUser} />;
+			return <Direct roomUser={roomUser as IUserParsed} />;
 		}
 
 		if (this.t === SubscriptionType.OMNICHANNEL) {
