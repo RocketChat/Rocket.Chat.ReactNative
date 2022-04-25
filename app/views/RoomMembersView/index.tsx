@@ -13,7 +13,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
 import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
-import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TRoomModel, TUserModel } from '../../definitions';
+import { IApplicationState, IBaseScreen, IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { CustomIcon } from '../../lib/Icons';
@@ -38,7 +38,7 @@ interface IRoomMembersViewProps extends IBaseScreen<ModalStackParamList, 'RoomMe
 	rid: string;
 	members: string[];
 	baseUrl: string;
-	room: TRoomModel;
+	room: TSubscriptionModel;
 	user: {
 		id: string;
 		token: string;
@@ -65,14 +65,14 @@ interface IRoomMembersViewState {
 	rid: string;
 	members: TUserModel[];
 	membersFiltered: TUserModel[];
-	room: TRoomModel;
+	room: TSubscriptionModel;
 	end: boolean;
 }
 
 class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMembersViewState> {
 	private mounted: boolean;
 	private permissions: { [key in TSupportedPermissions]?: boolean };
-	private roomObservable!: Observable<TRoomModel>;
+	private roomObservable!: Observable<TSubscriptionModel>;
 	private subscription!: Subscription;
 	private roomRoles: any;
 
@@ -89,7 +89,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 			rid,
 			members: [],
 			membersFiltered: [],
-			room: room || ({} as TRoomModel),
+			room: room || ({} as TSubscriptionModel),
 			end: false
 		};
 		if (room && room.observe) {
@@ -110,7 +110,6 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		this.mounted = true;
 		this.fetchMembers();
 
-		// @ts-ignore - TODO: room param is wrong
 		if (RocketChat.isGroupChat(room)) {
 			return;
 		}
