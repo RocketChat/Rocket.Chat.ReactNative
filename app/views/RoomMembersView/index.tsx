@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 
 import { themes } from '../../lib/constants';
-import { withActionSheet } from '../../containers/ActionSheet';
+import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../../containers/ActionSheet';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -44,7 +44,7 @@ interface IRoomMembersViewProps extends IBaseScreen<ModalStackParamList, 'RoomMe
 		token: string;
 		roles: string[];
 	};
-	showActionSheet: (params: any) => {}; // TODO: this work?
+	showActionSheet: (params: TActionSheetOptions) => {};
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	useRealName: boolean;
@@ -286,7 +286,7 @@ class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMember
 		const { room } = this.state;
 		const { showActionSheet, user, theme } = this.props;
 
-		const options: {}[] = [
+		const options: TActionSheetOptionsItem[] = [
 			{
 				icon: 'message',
 				title: I18n.t('Direct_message'),
