@@ -21,10 +21,11 @@ import { compareServerVersion } from '../lib/methods/helpers/compareServerVersio
 import RocketChat from '../lib/rocketchat';
 import UserItem from '../containers/UserItem';
 import { withTheme } from '../theme';
-import { goRoom } from '../utils/goRoom';
+import { goRoom, TGoRoomItem } from '../utils/goRoom';
 import log, { events, logEvent } from '../utils/log';
 import Touch from '../utils/touch';
 import sharedStyles from './Styles';
+import { NewMessageStackParamList } from '../stacks/types';
 
 const QUERY_SIZE = 50;
 
@@ -61,7 +62,7 @@ interface INewMessageViewState {
 	permissions: boolean[];
 }
 
-interface INewMessageViewProps extends IBaseScreen<any, 'NewMessageView'> {
+interface INewMessageViewProps extends IBaseScreen<NewMessageStackParamList, 'NewMessageView'> {
 	maxUsers: number;
 	isMasterDetail: boolean;
 	serverVersion: string;
@@ -167,8 +168,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 		});
 	};
 
-	// TODO: Refactor when migrate room
-	goRoom = (item: any) => {
+	goRoom = (item: TGoRoomItem) => {
 		logEvent(events.NEW_MSG_CHAT_WITH_USER);
 		const { isMasterDetail, navigation } = this.props;
 		if (isMasterDetail) {
@@ -286,7 +286,7 @@ class NewMessageView extends React.Component<INewMessageViewProps, INewMessageVi
 			<UserItem
 				name={itemSearch.search ? itemSearch.name : itemModel.fname || ''}
 				username={itemSearch.search ? itemSearch.username : itemModel.name}
-				onPress={() => this.goRoom(item)}
+				onPress={() => this.goRoom(itemModel)}
 				testID={`new-message-view-item-${item.name}`}
 				style={style}
 				theme={theme}
