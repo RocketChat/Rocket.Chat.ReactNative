@@ -58,16 +58,12 @@ interface ITheme {
 	group: string;
 }
 
-interface IThemeViewProps extends IBaseScreen<SettingsStackParamList, 'ThemeView'> {
-	themePreferences: IThemePreference;
-	setTheme(newTheme?: IThemePreference): void;
-}
+type IThemeViewProps = IBaseScreen<SettingsStackParamList, 'ThemeView'>;
 
-const ThemeView = (props: IThemeViewProps): React.ReactElement => {
+const ThemeView = ({ navigation }: IThemeViewProps): React.ReactElement => {
 	const { theme, themePreferences, setTheme } = useTheme();
 
 	useEffect(() => {
-		const { navigation } = props;
 		navigation.setOptions({
 			title: I18n.t('Theme')
 		});
