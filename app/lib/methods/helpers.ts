@@ -146,7 +146,7 @@ export function _prepareSettings(settings) {
 	});
 }
 
-export async function hasPermission(permissions, rid?: any) {
+export async function hasPermission(permissions, rid?: any): boolean[] {
 	let roomRoles = [];
 	if (rid) {
 		const db = database.active;

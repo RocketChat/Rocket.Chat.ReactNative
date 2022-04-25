@@ -29,6 +29,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import log from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import { RoomTypes } from '../../lib/methods/roomTypeToApiType';
+import { TSupportedPermissions } from '../../reducers/permissions';
 import styles from './styles';
 
 const PAGE_SIZE = 25;
@@ -70,7 +71,7 @@ interface IRoomMembersViewState {
 
 class RoomMembersView extends React.Component<IRoomMembersViewProps, IRoomMembersViewState> {
 	private mounted: boolean;
-	private permissions: any; // TODO: fix when get props from api
+	private permissions: { [key in TSupportedPermissions]?: boolean };
 	private roomObservable!: Observable<TRoomModel>;
 	private subscription!: Subscription;
 	private roomRoles: any;
