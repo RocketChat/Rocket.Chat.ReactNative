@@ -32,10 +32,9 @@ const SelectUsers = ({
 	const getUsers = debounce(async (keyword = '') => {
 		try {
 			const res = await RocketChat.search({ text: keyword, filterRooms: false });
-			const items = [
-				...users.filter((u: IUser) => selected.includes(u.name)),
-				...res.filter(r => !users.find((u: IUser) => u.name === r.name))
-			];
+			const selectedUsers = users.filter((u: IUser) => selected.includes(u.name));
+			const filteredUsers = res.filter(r => !users.find((u: IUser) => u.name === r.name));
+			const items = [...selectedUsers, ...filteredUsers];
 			setUsers(items);
 		} catch {
 			// do nothing
