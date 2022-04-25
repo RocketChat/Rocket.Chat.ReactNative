@@ -68,6 +68,7 @@ export const SYSTEM_MESSAGES = [
 export const IGNORED_LIVECHAT_SYSTEM_MESSAGES = [
 	'livechat_navigation_history',
 	'livechat_transcript_history',
+	'livechat_transfer_history',
 	'command',
 	'livechat-close',
 	'livechat-started',
@@ -92,7 +93,15 @@ export const SYSTEM_MESSAGE_TYPES = {
 	DELETED_ROOM_FROM_TEAM: 'user-deleted-room-from-team',
 	REMOVED_ROOM_FROM_TEAM: 'user-removed-room-from-team',
 	OMNICHANNEL_PLACED_CHAT_ON_HOLD: 'omnichannel_placed_chat_on_hold',
-	OMNICHANNEL_ON_HOLD_CHAT_RESUMED: 'omnichannel_on_hold_chat_resumed'
+	OMNICHANNEL_ON_HOLD_CHAT_RESUMED: 'omnichannel_on_hold_chat_resumed',
+	LIVECHAT_NAVIGATION_HISTORY: 'livechat_navigation_history',
+	LIVECHAT_TRANSCRIPT_HISTORY: 'livechat_transcript_history',
+	COMMAND: 'command',
+	LIVECHAT_STARTED: 'livechat-started',
+	LIVECHAT_CLOSE: 'livechat-close',
+	LIVECHAT_VIDEO_CALL: 'livechat_video_call',
+	LIVECHAT_WEBRTC_VIDEO_CALL: 'livechat_webrtc_video_call',
+	LIVECHAT_TRANSFER_HISTORY: 'livechat_transfer_history'
 };
 
 export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
@@ -110,7 +119,15 @@ export const SYSTEM_MESSAGE_TYPES_WITH_AUTHOR_NAME = [
 	SYSTEM_MESSAGE_TYPES.CONVERTED_TO_TEAM,
 	SYSTEM_MESSAGE_TYPES.CONVERTED_TO_CHANNEL,
 	SYSTEM_MESSAGE_TYPES.DELETED_ROOM_FROM_TEAM,
-	SYSTEM_MESSAGE_TYPES.REMOVED_ROOM_FROM_TEAM
+	SYSTEM_MESSAGE_TYPES.REMOVED_ROOM_FROM_TEAM,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_NAVIGATION_HISTORY,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_TRANSCRIPT_HISTORY,
+	SYSTEM_MESSAGE_TYPES.COMMAND,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_STARTED,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_CLOSE,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_VIDEO_CALL,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_WEBRTC_VIDEO_CALL,
+	SYSTEM_MESSAGE_TYPES.LIVECHAT_TRANSFER_HISTORY
 ];
 
 type TInfoMessage = {
@@ -123,6 +140,7 @@ type TInfoMessage = {
 
 export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessage): string => {
 	const { username } = author;
+	console.log({ type, role, msg, author, comment });
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
 	}
@@ -232,7 +250,16 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 		return I18n.t('Omnichannel_on_hold_chat_resumed', { comment });
 	}
 	if (type === 'command') {
-		return I18n.t('Livechat_transfer_return_to_the_queue', { userBy: username });
+		return I18n.t('Livechat_transfer_return_to_the_queue');
+	}
+	if (type === 'livechat-started') {
+		return I18n.t('Chat_started');
+	}
+	if (type === 'livechat-close') {
+		return I18n.t('Conversation_closed');
+	}
+	if (type === 'livechat_transfer_history') {
+		return I18n.t('New_chat_transfer', { agent: username });
 	}
 	return I18n.t('Unsupported_system_message');
 };
