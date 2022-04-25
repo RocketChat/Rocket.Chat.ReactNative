@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
@@ -14,7 +14,8 @@ interface ILegalViewProps extends IBaseScreen<OutsideParamList, 'LegalView'> {
 	server: string;
 }
 
-const LegalView = ({ server, navigation }: ILegalViewProps) => {
+const LegalView = ({ navigation }: ILegalViewProps): React.ReactElement => {
+	const server = useSelector((state: IApplicationState) => state.server.server);
 	const { theme } = useTheme();
 
 	useEffect(() => {
@@ -56,8 +57,4 @@ const LegalView = ({ server, navigation }: ILegalViewProps) => {
 	);
 };
 
-const mapStateToProps = (state: IApplicationState) => ({
-	server: state.server.server
-});
-
-export default connect(mapStateToProps)(LegalView);
+export default LegalView;
