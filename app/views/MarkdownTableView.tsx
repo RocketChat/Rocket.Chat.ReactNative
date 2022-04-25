@@ -3,7 +3,6 @@ import { ScrollView } from 'react-native';
 
 import I18n from '../i18n';
 import { isIOS } from '../utils/deviceInfo';
-import { themes } from '../lib/constants';
 import { useTheme } from '../theme';
 import { ChatsStackParamList } from '../stacks/types';
 import { IBaseScreen } from '../definitions';
@@ -13,7 +12,7 @@ type IMarkdownTableViewProps = IBaseScreen<ChatsStackParamList, 'MarkdownTableVi
 const MarkdownTableView = ({ navigation, route }: IMarkdownTableViewProps): React.ReactElement => {
 	const renderRows = route.params?.renderRows;
 	const tableWidth = route.params?.tableWidth;
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -23,14 +22,14 @@ const MarkdownTableView = ({ navigation, route }: IMarkdownTableViewProps): Reac
 
 	if (isIOS) {
 		return (
-			<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }} contentContainerStyle={{ width: tableWidth }}>
+			<ScrollView style={{ backgroundColor: colors.backgroundColor }} contentContainerStyle={{ width: tableWidth }}>
 				{renderRows()}
 			</ScrollView>
 		);
 	}
 
 	return (
-		<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
+		<ScrollView style={{ backgroundColor: colors.backgroundColor }}>
 			<ScrollView horizontal>{renderRows()}</ScrollView>
 		</ScrollView>
 	);
