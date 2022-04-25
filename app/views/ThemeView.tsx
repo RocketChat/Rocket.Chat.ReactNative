@@ -67,7 +67,7 @@ const ThemeView = ({ navigation }: IThemeViewProps): React.ReactElement => {
 		navigation.setOptions({
 			title: I18n.t('Theme')
 		});
-	}, []);
+	}, [navigation]);
 
 	const isSelected = (item: ITheme) => {
 		const { group } = item;
