@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 
 import { SettingsStackParamList } from '../stacks/types';
 import I18n from '../i18n';
@@ -63,7 +63,7 @@ type IThemeViewProps = IBaseScreen<SettingsStackParamList, 'ThemeView'>;
 const ThemeView = ({ navigation }: IThemeViewProps): React.ReactElement => {
 	const { theme, themePreferences, setTheme } = useTheme();
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Theme')
 		});
