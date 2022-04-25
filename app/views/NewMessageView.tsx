@@ -66,11 +66,11 @@ interface INewMessageViewProps extends IBaseScreen<NewMessageStackParamList, 'Ne
 	maxUsers: number;
 	isMasterDetail: boolean;
 	serverVersion: string;
-	createTeamPermission: string[] | undefined;
-	createDirectMessagePermission: string[] | undefined;
-	createPublicChannelPermission: string[] | undefined;
-	createPrivateChannelPermission: string[] | undefined;
-	createDiscussionPermission: string[] | undefined;
+	createTeamPermission?: string[];
+	createDirectMessagePermission?: string[];
+	createPublicChannelPermission?: string[];
+	createPrivateChannelPermission?: string[];
+	createDiscussionPermission?: string[];
 }
 
 class NewMessageView extends React.Component<INewMessageViewProps, INewMessageViewState> {
