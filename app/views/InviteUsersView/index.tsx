@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
 import { ScrollView, Share, View } from 'react-native';
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { inviteLinksClear, inviteLinksCreate } from '../../actions/inviteLinks';
-import { themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import Markdown from '../../containers/markdown';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -12,20 +11,19 @@ import StatusBar from '../../containers/StatusBar';
 import RCTextInput from '../../containers/TextInput';
 import { IApplicationState, IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
-import { TInvite } from '../../reducers/inviteLinks';
 import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import { events, logEvent } from '../../utils/log';
 import scrollPersistTaps from '../../utils/scrollPersistTaps';
 import styles from './styles';
 
-interface IInviteUsersViewProps extends IBaseScreen<ChatsStackParamList, 'InviteUsersView'> {
-	timeDateFormat: string;
-	invite: TInvite;
-}
-const InviteUsersView = ({ timeDateFormat, invite, route, navigation }: IInviteUsersViewProps) => {
+type IInviteUsersViewProps = IBaseScreen<ChatsStackParamList, 'InviteUsersView'>;
+
+const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.ReactElement => {
 	const rid = route.params?.rid;
-	const { theme } = useTheme();
+	const timeDateFormat = useSelector((state: IApplicationState) => state.settings.Message_TimeAndDateFormat as string);
+	const invite = useSelector((state: IApplicationState) => state.inviteLinks.invite);
+	const { colors, theme } = useTheme();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -87,16 +85,16 @@ const InviteUsersView = ({ timeDateFormat, invite, route, navigation }: IInviteU
 	};
 
 	return (
-		<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
+		<SafeAreaView style={{ backgroundColor: colors.backgroundColor }}>
 			<ScrollView
 				{...scrollPersistTaps}
-				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				style={{ backgroundColor: colors.auxiliaryBackground }}
 				showsVerticalScrollIndicator={false}>
 				<StatusBar />
 				<View style={styles.innerContainer}>
 					<RCTextInput label={I18n.t('Invite_Link')} theme={theme} value={invite && invite.url} editable={false} />
 					{renderExpiration()}
-					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
+					<View style={[styles.divider, { backgroundColor: colors.separatorColor }]} />
 					<Button title={I18n.t('Share_Link')} type='primary' onPress={share} theme={theme} />
 					<Button title={I18n.t('Edit_Invite')} type='secondary' onPress={edit} theme={theme} />
 				</View>
@@ -105,9 +103,4 @@ const InviteUsersView = ({ timeDateFormat, invite, route, navigation }: IInviteU
 	);
 };
 
-const mapStateToProps = (state: IApplicationState) => ({
-	timeDateFormat: state.settings.Message_TimeAndDateFormat as string,
-	invite: state.inviteLinks.invite
-});
-
-export default connect(mapStateToProps)(InviteUsersView);
+export default InviteUsersView;
