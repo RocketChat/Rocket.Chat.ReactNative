@@ -1,24 +1,20 @@
 import React from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
+import Touchable, { PlatformTouchableProps } from 'react-native-platform-touchable';
 
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
-interface IButtonProps {
+interface IButtonProps extends PlatformTouchableProps {
 	title: string;
 	type: string;
-	onPress: () => void;
-	disabled: boolean;
 	backgroundColor: string;
 	loading: boolean;
 	color: string;
 	fontSize: number;
-	style: any;
 	styleText?: StyleProp<TextStyle>[];
-	testID: string;
 }
 
 const styles = StyleSheet.create({
@@ -51,7 +47,7 @@ const Button = React.memo(
 		style,
 		styleText,
 		...otherProps
-	}: Partial<IButtonProps>) => {
+	}: IButtonProps) => {
 		const { theme } = useTheme();
 		const isPrimary = type === 'primary';
 
