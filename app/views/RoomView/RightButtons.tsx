@@ -37,6 +37,7 @@ interface IRightButtonsProps {
 	omnichannelPermissions: {
 		canForwardGuest: boolean;
 		canReturnQueue: boolean;
+		canPlaceLivechatOnHold: boolean;
 	};
 }
 
@@ -195,6 +196,23 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		});
 	};
 
+	placeOnHoldLivechat = () => {
+		const { navigation, rid } = this.props;
+		showConfirmationAlert({
+			title: i18n.t('Are_you_sure_question_mark'),
+			message: i18n.t('Would_like_to_place_on_hold'),
+			confirmationText: i18n.t('Yes'),
+			onPress: async () => {
+				try {
+					await RocketChat.onHoldLivechat(rid);
+					navigation.navigate('RoomsListView');
+				} catch (e: any) {
+					showErrorAlert(e.data?.error, i18n.t('Oops'));
+				}
+			}
+		});
+	};
+
 	closeLivechat = () => {
 		const { dispatch, rid } = this.props;
 		dispatch(closeRoom(rid));
@@ -205,6 +223,14 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		const { showActionSheet, rid, navigation, omnichannelPermissions } = this.props;
 
 		const options = [];
+		if (omnichannelPermissions.canPlaceLivechatOnHold) {
+			options.push({
+				title: i18n.t('Place_chat_on_hold'),
+				icon: 'pause',
+				onPress: () => this.placeOnHoldLivechat()
+			});
+		}
+
 		if (omnichannelPermissions.canForwardGuest) {
 			options.push({
 				title: i18n.t('Forward_Chat'),
