@@ -12,7 +12,7 @@ import { events, logEvent } from '../../utils/log';
 import { isTeamRoom } from '../../utils/room';
 import { IApplicationState, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
-import { withActionSheet } from '../../containers/ActionSheet';
+import { TActionSheetOptions, withActionSheet } from '../../containers/ActionSheet';
 import i18n from '../../i18n';
 import { showConfirmationAlert, showErrorAlert } from '../../utils/info';
 import { closeRoom } from '../../actions/room';
@@ -31,7 +31,7 @@ interface IRightButtonsProps {
 	status?: string;
 	dispatch: Dispatch;
 	encrypted?: boolean;
-	showActionSheet: Function; // TODO: Change to proper type
+	showActionSheet: (item: TActionSheetOptions) => void;
 	transferLivechatGuestPermission: boolean;
 	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
 	omnichannelPermissions: {

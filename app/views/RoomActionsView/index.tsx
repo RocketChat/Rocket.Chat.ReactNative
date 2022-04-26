@@ -1321,8 +1321,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
 	createTeamPermission: state.permissions['create-team'],
 	addTeamChannelPermission: state.permissions['add-team-channel'],
-	convertTeamPermission: state.permissions['convert-team'],
-	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
+	convertTeamPermission: state.permissions['convert-team']
 });
 
 export default connect(mapStateToProps)(withTheme(withDimensions(RoomActionsView)));
