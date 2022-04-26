@@ -16,15 +16,7 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
 import StatusBar from '../../containers/StatusBar';
-import {
-	IApplicationState,
-	IBaseScreen,
-	IRoom,
-	ISubscription,
-	IUser,
-	SubscriptionType,
-	TSubscriptionModel
-} from '../../definitions';
+import { IApplicationState, IBaseScreen, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -577,14 +569,14 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			if (result.success) {
 				if (result.rooms?.length) {
-					const teamChannels = result.rooms.map((r: any) => ({
+					const teamChannels = result.rooms.map(r => ({
 						rid: r._id,
 						name: r.name,
 						teamId: r.teamId
 					}));
 					navigation.navigate('SelectListView', {
 						title: 'Converting_Team_To_Channel',
-						data: teamChannels as any,
+						data: teamChannels,
 						infoText: 'Select_Team_Channels_To_Delete',
 						nextAction: (data: string[]) => this.convertTeamToChannelConfirmation(data)
 					});
@@ -718,10 +710,10 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 			if (teamRooms.length) {
 				const data = teamRooms.map(team => ({
-					rid: team.teamId,
+					rid: team.teamId as string,
 					t: team.t,
 					name: team.name
-				})) as IRoom[]; // TODO: review this usage later
+				}));
 				navigation.navigate('SelectListView', {
 					title: 'Move_to_Team',
 					infoText: 'Move_Channel_Paragraph',
