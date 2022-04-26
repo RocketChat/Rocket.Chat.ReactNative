@@ -229,7 +229,7 @@ const DrawerNavigator = () => {
 		<Drawer.Navigator
 			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
 			drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
-			screenOptions={{ swipeEnabled: false }}
+			screenOptions={{ swipeEnabled: false, headerShown: false }}
 			drawerType='back'
 			overlayColor={`rgba(0,0,0,${themes[theme].backdropOpacity})`}>
 			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
