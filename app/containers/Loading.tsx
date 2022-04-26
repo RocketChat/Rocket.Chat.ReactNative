@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Modal, StyleSheet, View } from 'react-native';
+import { Modal, StyleSheet, View, PixelRatio } from 'react-native';
 import Animated, {
 	cancelAnimation,
 	Extrapolate,
@@ -12,7 +12,6 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { useTheme } from '../theme';
-import { themes } from '../lib/constants';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,8 +20,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	image: {
-		width: 100,
-		height: 100,
+		width: PixelRatio.get() * 40,
+		height: PixelRatio.get() * 40,
 		resizeMode: 'contain'
 	}
 });
@@ -34,7 +33,7 @@ interface ILoadingProps {
 const Loading = ({ visible }: ILoadingProps): React.ReactElement => {
 	const opacity = useSharedValue(0);
 	const scale = useSharedValue(1);
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	useEffect(() => {
 		if (visible) {
@@ -49,7 +48,7 @@ const Loading = ({ visible }: ILoadingProps): React.ReactElement => {
 	}, [opacity, scale, visible]);
 
 	const animatedOpacity = useAnimatedStyle(() => ({
-		opacity: interpolate(opacity.value, [0, 1], [0, themes[theme!].backdropOpacity], Extrapolate.CLAMP)
+		opacity: interpolate(opacity.value, [0, 1], [0, colors.backdropOpacity], Extrapolate.CLAMP)
 	}));
 	const animatedScale = useAnimatedStyle(() => ({ transform: [{ scale: interpolate(scale.value, [0, 0.5, 1], [1, 1.1, 1]) }] }));
 
@@ -60,7 +59,7 @@ const Loading = ({ visible }: ILoadingProps): React.ReactElement => {
 					style={[
 						{
 							...StyleSheet.absoluteFillObject,
-							backgroundColor: themes[theme!].backdropColor
+							backgroundColor: colors.backdropColor
 						},
 						animatedOpacity
 					]}
