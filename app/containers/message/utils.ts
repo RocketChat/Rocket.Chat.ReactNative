@@ -140,7 +140,7 @@ type TInfoMessage = {
 
 export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessage): string => {
 	const { username } = author;
-	console.log({ type, role, msg, author, comment });
+
 	if (type === 'rm') {
 		return I18n.t('Message_removed');
 	}
