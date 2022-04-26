@@ -9,11 +9,12 @@ import ActivityIndicator from '../ActivityIndicator';
 
 interface IButtonProps extends PlatformTouchableProps {
 	title: string;
-	type: string;
-	backgroundColor: string;
-	loading: boolean;
-	color: string;
-	fontSize: number;
+	onPress: () => void;
+	type?: string;
+	backgroundColor?: string;
+	loading?: boolean;
+	color?: string;
+	fontSize?: number;
 	styleText?: StyleProp<TextStyle>[];
 }
 
@@ -36,12 +37,12 @@ const styles = StyleSheet.create({
 
 const Button = React.memo(
 	({
-		title = 'Press me!',
 		type = 'primary',
-		onPress = () => alert('It works!'),
 		disabled = false,
 		loading = false,
 		fontSize = 16,
+		title,
+		onPress,
 		backgroundColor,
 		color,
 		style,
