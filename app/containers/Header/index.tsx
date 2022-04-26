@@ -34,7 +34,7 @@ export const getHeaderTitlePosition = ({
 	left: number;
 	right: number;
 } => ({
-	left: insets.left + 60,
+	left: insets.left,
 	right: insets.right + Math.max(45 * numIconsRight, 15)
 });
 
