@@ -46,6 +46,7 @@ export type ChatsStackParamList = {
 			canForwardGuest: boolean;
 			canReturnQueue: boolean;
 			canViewCannedResponse: boolean;
+			canPlaceLivechatOnHold: boolean;
 		};
 	};
 	SelectListView: {

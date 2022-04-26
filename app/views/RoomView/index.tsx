@@ -68,6 +68,7 @@ import {
 	IApplicationState,
 	IAttachment,
 	IBaseScreen,
+	ILastMessage,
 	ILoggedUser,
 	IMessage,
 	IOmnichannelSource,
@@ -143,6 +144,7 @@ interface IRoomViewProps extends IBaseScreen<ChatsStackParamList, 'RoomView'> {
 	insets: EdgeInsets;
 	transferLivechatGuestPermission?: string[]; // TODO: Check if its the correct type
 	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
+	livechatAllowManualOnHold?: boolean;
 }
 
 type TRoomUpdate = typeof roomAttrsUpdate[number];
@@ -152,7 +154,17 @@ interface IRoomViewState {
 	joined: boolean;
 	room:
 		| TSubscriptionModel
-		| { rid: string; t: string; name?: string; fname?: string; prid?: string; joinCodeRequired?: boolean; status?: boolean };
+		| {
+				rid: string;
+				t: string;
+				name?: string;
+				fname?: string;
+				prid?: string;
+				joinCodeRequired?: boolean;
+				status?: boolean;
+				lastMessage?: ILastMessage;
+				onHold?: boolean;
+		  };
 	roomUpdate: {
 		[K in TRoomUpdate]?: any; // TODO: get type from TSubscriptionModel
 	};
@@ -242,7 +254,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			roomUserId,
 			canViewCannedResponses: false,
 			canForwardGuest: false,
-			canReturnQueue: false
+			canReturnQueue: false,
+			canPlaceLivechatOnHold: false,
+			isOnHold: false
 		};
 		this.setHeader();
 
@@ -292,9 +306,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			if (this.t === 'l') {
 				const canForwardGuest = this.canForwardGuest();
+				const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
 				const canReturnQueue = this.canReturnQueue();
 				const canViewCannedResponse = this.canViewCannedResponse();
-				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse });
+				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
 			}
 		});
 		if (isTablet) {
@@ -331,8 +346,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
-		const { roomUpdate, joined } = this.state;
-		const { appState, insets, route } = this.props;
+		const { roomUpdate, joined, isOnHold } = this.state;
+		const { appState, insets, route, livechatAllowManualOnHold } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
 			this.jumpToMessage(route?.params?.jumpToMessageId);
@@ -363,6 +378,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				prevState.joined !== joined
 			) {
 				this.setHeader();
+			}
+
+			if (isOnHold !== prevState.isOnHold || prevProps.livechatAllowManualOnHold !== livechatAllowManualOnHold) {
+				const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
+				this.setState({ canPlaceLivechatOnHold });
 			}
 		}
 		if (roomUpdate.teamMain !== prevState.roomUpdate.teamMain || roomUpdate.teamId !== prevState.roomUpdate.teamId) {
@@ -441,13 +461,20 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	canForwardGuest = async () => {
 		const { transferLivechatGuestPermission } = this.props;
 		const permissions = await RocketChat.hasPermission([transferLivechatGuestPermission], this.rid);
-		return permissions[0];
+		return permissions[0] as boolean;
+	};
+
+	canPlaceLivechatOnHold = () => {
+		const { livechatAllowManualOnHold } = this.props;
+		const { room } = this.state;
+
+		return !!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
 	};
 
 	canViewCannedResponse = async () => {
 		const { viewCannedResponsesPermission } = this.props;
 		const permissions = await RocketChat.hasPermission([viewCannedResponsesPermission], this.rid);
-		return permissions[0];
+		return permissions[0] as boolean;
 	};
 
 	canReturnQueue = async () => {
@@ -465,7 +492,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	setHeader = () => {
-		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue } = this.state;
+		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail, theme, baseUrl, user, insets, route } = this.props;
 		const { rid, tmid } = this;
 		if (!room.rid) {
@@ -519,7 +546,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			numIconsRight = 3;
 		}
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
-		const omnichannelPermissions = { canForwardGuest, canReturnQueue };
+		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
@@ -579,10 +606,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	goRoomActionsView = (screen?: string) => {
 		logEvent(events.ROOM_GO_RA);
-		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse } = this.state;
+		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
-			// @ts-ignore TODO: find a way to make it work
 			navigation.navigate('ModalStackNavigator', {
 				// @ts-ignore
 				screen: screen ?? 'RoomActionsView',
@@ -594,7 +620,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					member,
 					showCloseModal: !!screen,
 					joined,
-					omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse }
+					omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold }
 				}
 			});
 		} else if (this.rid && this.t) {
@@ -604,7 +630,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				room: room as TSubscriptionModel,
 				member,
 				joined,
-				omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse }
+				omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold }
 			});
 		}
 	};
@@ -720,7 +746,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				return ret;
 			}, {});
 			if (this.mounted) {
-				this.internalSetState({ room: changes, roomUpdate });
+				this.internalSetState({ room: changes, roomUpdate, isOnHold: !!changes?.onHold });
 			} else {
 				// @ts-ignore
 				this.state.room = changes;
@@ -1494,7 +1520,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Message_Read_Receipt_Enabled: state.settings.Message_Read_Receipt_Enabled as boolean,
 	Hide_System_Messages: state.settings.Hide_System_Messages as string[],
 	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
-	viewCannedResponsesPermission: state.permissions['view-canned-responses']
+	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
+	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomView))));

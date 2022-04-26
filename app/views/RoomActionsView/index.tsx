@@ -79,8 +79,6 @@ interface IRoomActionsViewState {
 	canCreateTeam: boolean;
 	canAddChannelToTeam: boolean;
 	canConvertTeam: boolean;
-	canPlaceLivechatOnHold: boolean;
-	isOnHold: boolean;
 }
 
 class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomActionsViewState> {
@@ -92,6 +90,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		canForwardGuest: boolean;
 		canReturnQueue: boolean;
 		canViewCannedResponse: boolean;
+		canPlaceLivechatOnHold: boolean;
 	};
 	private roomObservable?: Observable<TSubscriptionModel>;
 	private subscription?: Subscription;
@@ -131,15 +130,13 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			canToggleEncryption: false,
 			canCreateTeam: false,
 			canAddChannelToTeam: false,
-			canConvertTeam: false,
-			canPlaceLivechatOnHold: false,
-			isOnHold: false
+			canConvertTeam: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable.subscribe(changes => {
 				if (this.mounted) {
-					this.setState({ room: changes, isOnHold: !!changes?.onHold });
+					this.setState({ room: changes });
 				} else {
 					// @ts-ignore
 					this.state.room = changes;
@@ -207,25 +204,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				canAddChannelToTeam,
 				canConvertTeam
 			});
-
-			// livechat permissions
-			if (room.t === 'l') {
-				const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-				this.setState({ canPlaceLivechatOnHold });
-			}
-		}
-	}
-
-	componentDidUpdate(prevProps: IRoomActionsViewProps, prevState: IRoomActionsViewState) {
-		const { livechatAllowManualOnHold } = this.props;
-		const { room, isOnHold } = this.state;
-
-		if (
-			room.t === 'l' &&
-			(isOnHold !== prevState.isOnHold || prevProps.livechatAllowManualOnHold !== livechatAllowManualOnHold)
-		) {
-			const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-			this.setState({ canPlaceLivechatOnHold });
 		}
 	}
 
@@ -1010,7 +988,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	renderOmnichannelSection = () => {
-		const { room, canPlaceLivechatOnHold } = this.state;
+		const { room } = this.state;
 		const { rid, t } = room;
 		const { theme } = this.props;
 
@@ -1037,7 +1015,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					</>
 				) : null}
 
-				{['l'].includes(t) && !this.isOmnichannelPreview && canPlaceLivechatOnHold ? (
+				{this.omnichannelPermissions.canPlaceLivechatOnHold ? (
 					<>
 						<List.Item
 							title='Place_chat_on_hold'
