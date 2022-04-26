@@ -228,10 +228,13 @@ const DrawerNavigator = () => {
 	return (
 		<Drawer.Navigator
 			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
-			drawerPosition={I18nManager.isRTL ? 'right' : 'left'}
-			screenOptions={{ swipeEnabled: false, headerShown: false }}
-			drawerType='back'
-			overlayColor={`rgba(0,0,0,${themes[theme].backdropOpacity})`}>
+			screenOptions={{
+				swipeEnabled: false,
+				headerShown: false,
+				drawerPosition: I18nManager.isRTL ? 'right' : 'left',
+				drawerType: 'back',
+				overlayColor: `rgba(0,0,0,${themes[theme].backdropOpacity})`
+			}}>
 			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
