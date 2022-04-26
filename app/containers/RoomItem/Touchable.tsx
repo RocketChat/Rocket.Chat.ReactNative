@@ -7,7 +7,13 @@ import Animated, {
 	withSpring,
 	runOnJS
 } from 'react-native-reanimated';
-import { LongPressGestureHandler, PanGestureHandler, State } from 'react-native-gesture-handler';
+import {
+	LongPressGestureHandler,
+	PanGestureHandler,
+	State,
+	HandlerStateChangeEventPayload,
+	PanGestureHandlerEventPayload
+} from 'react-native-gesture-handler';
 
 import Touch from '../../utils/touch';
 import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE, FAV_SWIPE } from './styles';
@@ -95,13 +101,13 @@ const Touchable = ({
 		}
 	};
 
-	const onLongPressHandlerStateChange = ({ nativeEvent }: any) => {
+	const onLongPressHandlerStateChange = ({ nativeEvent }: { nativeEvent: HandlerStateChangeEventPayload }) => {
 		if (nativeEvent.state === State.ACTIVE) {
 			handleLongPress();
 		}
 	};
 
-	const handleRelease = (event: any) => {
+	const handleRelease = (event: PanGestureHandlerEventPayload) => {
 		const { translationX } = event;
 		_value += translationX;
 		let toValue = 0;
