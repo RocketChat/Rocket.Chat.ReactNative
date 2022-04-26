@@ -16,27 +16,27 @@ import {
 } from 'react-native-gesture-handler';
 
 import Touch from '../../utils/touch';
-import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE, FAV_SWIPE } from './styles';
+import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
 import { useTheme } from '../../theme';
 
 const Touchable = ({
-	testID,
-	isRead,
-	width,
-	favorite,
 	children,
-	isFocused,
-	swipeEnabled,
-	displayMode,
-	toggleFav,
-	rid,
+	type,
 	onPress,
 	onLongPress,
+	testID,
+	width,
+	favorite,
+	isRead,
+	rid,
+	toggleFav,
+	toggleRead,
 	hideChannel,
-	type,
-	toggleRead
+	isFocused,
+	swipeEnabled,
+	displayMode
 }: ITouchableProps): React.ReactElement => {
 	const { theme, colors } = useTheme();
 
@@ -159,8 +159,6 @@ const Touchable = ({
 				} else {
 					handleToggleRead();
 				}
-			} else if (_value > ACTION_WIDTH * 2 && _value < LONG_SWIPE - FAV_SWIPE && I18nManager.isRTL) {
-				toggleFav();
 			} else if (I18nManager.isRTL) {
 				toValue = 2 * ACTION_WIDTH;
 			} else {
@@ -177,8 +175,6 @@ const Touchable = ({
 				} else {
 					handleHideChannel();
 				}
-			} else if (_value < -ACTION_WIDTH * 2 && _value > -LONG_SWIPE + FAV_SWIPE && !I18nManager.isRTL) {
-				toggleFav();
 			} else if (I18nManager.isRTL) {
 				toValue = -ACTION_WIDTH;
 			} else {

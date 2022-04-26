@@ -8,7 +8,6 @@ export const ACTION_WIDTH = 80;
 export const SMALL_SWIPE = ACTION_WIDTH / 2;
 export const LONG_SWIPE = ACTION_WIDTH * 3;
 export const PARALLAX_SWIPE = 5;
-export const FAV_SWIPE = 20;
 
 export default StyleSheet.create({
 	flex: {
