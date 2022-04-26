@@ -34,7 +34,10 @@ interface IRightButtonsProps {
 	showActionSheet: Function; // TODO: Change to proper type
 	transferLivechatGuestPermission: boolean;
 	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
-	omnichannelPermissions: boolean[]; // TODO: Update to proper type
+	omnichannelPermissions: {
+		canForwardGuest: boolean;
+		canReturnQueue: boolean;
+	};
 }
 
 interface IRigthButtonsState {
@@ -194,7 +197,6 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	closeLivechat = () => {
 		const { dispatch, rid } = this.props;
-
 		dispatch(closeRoom(rid));
 	};
 
@@ -203,7 +205,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		const { showActionSheet, rid, navigation, omnichannelPermissions } = this.props;
 
 		const options = [];
-		if (omnichannelPermissions[0]) {
+		if (omnichannelPermissions.canForwardGuest) {
 			options.push({
 				title: i18n.t('Forward_Chat'),
 				icon: 'chat-forward',
@@ -211,7 +213,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			});
 		}
 
-		if (omnichannelPermissions[1]) {
+		if (omnichannelPermissions.canReturnQueue) {
 			options.push({
 				title: i18n.t('Return_to_waiting_line'),
 				icon: 'move-to-the-queue',

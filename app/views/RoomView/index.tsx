@@ -518,7 +518,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			numIconsRight = 3;
 		}
 		const headerTitlePosition = getHeaderTitlePosition({ insets, numIconsRight });
-		const omnichannelPermissions = [canForwardGuest, canReturnQueue];
+		const omnichannelPermissions = { canForwardGuest, canReturnQueue };
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
@@ -593,7 +593,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					member,
 					showCloseModal: !!screen,
 					joined,
-					omnichannelPermissions: [canForwardGuest, canReturnQueue, canViewCannedResponse]
+					omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse }
 				}
 			});
 		} else if (this.rid && this.t) {
@@ -603,7 +603,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				room: room as TSubscriptionModel,
 				member,
 				joined,
-				omnichannelPermissions: [canForwardGuest, canReturnQueue, canViewCannedResponse]
+				omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse }
 			});
 		}
 	};

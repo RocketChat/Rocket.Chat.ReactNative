@@ -61,7 +61,6 @@ interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomAc
 	createTeamPermission?: string[];
 	addTeamChannelPermission?: string[];
 	convertTeamPermission?: string[];
-	omnichannelPermissions: string[];
 }
 
 interface IRoomActionsViewState {
@@ -85,7 +84,11 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	private rid: string;
 	private t: string;
 	private joined: boolean;
-	private omnichannelPermissions: boolean[];
+	private omnichannelPermissions: {
+		canForwardGuest: boolean;
+		canReturnQueue: boolean;
+		canViewCannedResponse: boolean;
+	};
 	private roomObservable?: Observable<TSubscriptionModel>;
 	private subscription?: Subscription;
 
@@ -967,7 +970,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 		return (
 			<List.Section>
-				{this.omnichannelPermissions[0] ? (
+				{this.omnichannelPermissions.canForwardGuest ? (
 					<>
 						<List.Item
 							title='Forward'
@@ -984,7 +987,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					</>
 				) : null}
 
-				{this.omnichannelPermissions[1] ? (
+				{this.omnichannelPermissions.canReturnQueue ? (
 					<>
 						<List.Item
 							title='Return'
@@ -1109,7 +1112,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							</>
 						) : null}
 
-						{['l'].includes(t) && !this.isOmnichannelPreview && this.omnichannelPermissions[2] ? (
+						{['l'].includes(t) && !this.isOmnichannelPreview && this.omnichannelPermissions.canViewCannedResponse ? (
 							<>
 								<List.Item
 									title='Canned_Responses'

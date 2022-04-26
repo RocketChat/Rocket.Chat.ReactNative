@@ -42,7 +42,11 @@ export type ChatsStackParamList = {
 		rid: string;
 		t: SubscriptionType;
 		joined: boolean;
-		omnichannelPermissions: boolean[];
+		omnichannelPermissions: {
+			canForwardGuest: boolean;
+			canReturnQueue: boolean;
+			canViewCannedResponse: boolean;
+		};
 	};
 	SelectListView: {
 		data?: IRoom[];
