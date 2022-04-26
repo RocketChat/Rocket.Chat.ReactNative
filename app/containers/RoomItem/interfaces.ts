@@ -157,7 +157,6 @@ export interface ITouchableProps {
 	toggleFav: Function;
 	toggleRead: Function;
 	hideChannel: Function;
-	theme: TSupportedThemes;
 	isFocused: boolean;
 	swipeEnabled: boolean;
 	displayMode: string;

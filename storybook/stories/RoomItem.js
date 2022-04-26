@@ -24,20 +24,18 @@ const updatedAt = {
 };
 
 const RoomItem = props => (
-	<SafeAreaProvider>
-		<RoomItemComponent
-			type='d'
-			name='rocket.cat'
-			avatar='rocket.cat'
-			baseUrl={baseUrl}
-			width={width}
-			theme={_theme}
-			showAvatar
-			displayMode={DisplayMode.Expanded}
-			{...updatedAt}
-			{...props}
-		/>
-	</SafeAreaProvider>
+	<RoomItemComponent
+		type='d'
+		name='rocket.cat'
+		avatar='rocket.cat'
+		baseUrl={baseUrl}
+		width={width}
+		theme={_theme}
+		showAvatar
+		displayMode={DisplayMode.Expanded}
+		{...updatedAt}
+		{...props}
+	/>
 );
 
 const stories = storiesOf('Room Item', module)
