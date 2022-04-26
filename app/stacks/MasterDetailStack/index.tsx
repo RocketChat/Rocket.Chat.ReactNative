@@ -96,9 +96,8 @@ const ChatsStackNavigator = React.memo(() => {
 const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
 const DrawerNavigator = React.memo(() => (
 	<Drawer.Navigator
-		// @ts-ignore
-		drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />}
-		drawerType='permanent'>
+		screenOptions={{ drawerType: 'permanent' }}
+		drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />}>
 		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 	</Drawer.Navigator>
 ));
@@ -243,8 +242,9 @@ const InsideStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<InsideStack.Navigator
-			mode='modal'
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...FadeFromCenterModal } as StackNavigationOptions}>
+			screenOptions={
+				{ ...defaultHeader, ...themedHeader(theme), ...FadeFromCenterModal, presentation: 'modal' } as StackNavigationOptions
+			}>
 			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='ModalStackNavigator' component={ModalStackNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />
