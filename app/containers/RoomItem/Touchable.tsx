@@ -15,9 +15,23 @@ import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
 import { useTheme } from '../../theme';
 
-const Touchable = (props: ITouchableProps): JSX.Element => {
-	const { testID, isRead, width, favorite, children, isFocused, swipeEnabled, displayMode } = props;
-
+const Touchable = ({
+	testID,
+	isRead,
+	width,
+	favorite,
+	children,
+	isFocused,
+	swipeEnabled,
+	displayMode,
+	toggleFav,
+	rid,
+	onPress,
+	onLongPress,
+	hideChannel,
+	type,
+	toggleRead
+}: ITouchableProps): React.ReactElement => {
 	const { theme, colors } = useTheme();
 
 	const rowOffSet = useSharedValue(0);
@@ -31,51 +45,46 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 		rowOffSet.value = 0;
 	};
 
-	const toggleFav = () => {
-		const { toggleFav, rid, favorite } = props;
+	const handleToggleFav = () => {
 		if (toggleFav) {
 			toggleFav(rid, favorite);
 		}
 		close();
 	};
 
-	const toggleRead = () => {
-		const { toggleRead, rid, isRead } = props;
+	const handleToggleRead = () => {
 		if (toggleRead) {
 			toggleRead(rid, isRead);
 		}
 	};
 
-	const hideChannel = () => {
-		const { hideChannel, rid, type } = props;
+	const handleHideChannel = () => {
 		if (hideChannel) {
 			hideChannel(rid, type);
 		}
 	};
 
 	const onToggleReadPress = () => {
-		toggleRead();
+		handleToggleRead();
 		close();
 	};
 
 	const onHidePress = () => {
-		hideChannel();
+		handleHideChannel();
 		close();
 	};
 
-	const onPress = () => {
+	const handlePress = () => {
 		if (rowState.value !== 0) {
 			close();
 			return;
 		}
-		const { onPress } = props;
 		if (onPress) {
 			onPress();
 		}
 	};
 
-	const onLongPress = () => {
-		const { onLongPress } = props;
+	const handleLongPress = () => {
 		if (rowState.value !== 0) {
 			close();
 			return;
@@ -88,7 +97,7 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 
 	const onLongPressHandlerStateChange = ({ nativeEvent }: any) => {
 		if (nativeEvent.state === State.ACTIVE) {
-			onLongPress();
+			handleLongPress();
 		}
 	};
 
@@ -108,9 +117,9 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 			} else if (translationX >= LONG_SWIPE) {
 				toValue = 0;
 				if (I18nManager.isRTL) {
-					hideChannel();
+					handleHideChannel();
 				} else {
-					toggleRead();
+					handleToggleRead();
 				}
 			} else if (translationX < 0 && translationX > -LONG_SWIPE) {
 				// open trailing option if he swipe left
@@ -124,9 +133,9 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 				toValue = 0;
 				rowState.value = 1;
 				if (I18nManager.isRTL) {
-					toggleRead();
+					handleToggleRead();
 				} else {
-					hideChannel();
+					handleHideChannel();
 				}
 			} else {
 				toValue = 0;
@@ -140,9 +149,9 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 				toValue = 0;
 				rowState.value = 0;
 				if (I18nManager.isRTL) {
-					hideChannel();
+					handleHideChannel();
 				} else {
-					toggleRead();
+					handleToggleRead();
 				}
 			} else if (_value > ACTION_WIDTH * 2 && _value < LONG_SWIPE - FAV_SWIPE && I18nManager.isRTL) {
 				toggleFav();
@@ -158,9 +167,9 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 				rowState.value = 0;
 			} else if (_value < -LONG_SWIPE) {
 				if (I18nManager.isRTL) {
-					toggleRead();
+					handleToggleRead();
 				} else {
-					hideChannel();
+					handleHideChannel();
 				}
 			} else if (_value < -ACTION_WIDTH * 2 && _value > -LONG_SWIPE + FAV_SWIPE && !I18nManager.isRTL) {
 				toggleFav();
@@ -203,13 +212,13 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 							transX={transX}
 							favorite={favorite}
 							width={width}
-							toggleFav={toggleFav}
+							toggleFav={handleToggleFav}
 							onHidePress={onHidePress}
 							displayMode={displayMode}
 						/>
 						<Animated.View style={animatedStyles}>
 							<Touch
-								onPress={onPress}
+								onPress={handlePress}
 								theme={theme}
 								testID={testID}
 								style={{
