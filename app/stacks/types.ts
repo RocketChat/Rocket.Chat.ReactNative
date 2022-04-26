@@ -49,7 +49,7 @@ export type ChatsStackParamList = {
 		nextAction: (selected: string[]) => void;
 		showAlert?: () => void;
 		isSearch?: boolean;
-		onSearch?: (text: string) => Promise<Partial<TSubscriptionModel[]> | any>;
+		onSearch?: (text: string) => Promise<TDataSelect[] | any>;
 		isRadio?: boolean;
 	};
 	RoomInfoView: {
