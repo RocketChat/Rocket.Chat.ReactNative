@@ -10,8 +10,8 @@ import Animated, {
 import { LongPressGestureHandler, PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import Touch from '../../utils/touch';
-import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE } from './styles';
 import { themes } from '../../lib/constants';
+import { ACTION_WIDTH, LONG_SWIPE, SMALL_SWIPE, FAV_SWIPE } from './styles';
 import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
 
@@ -142,6 +142,8 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 				} else {
 					toggleRead();
 				}
+			} else if (_value > ACTION_WIDTH * 2 && _value < LONG_SWIPE - FAV_SWIPE && I18nManager.isRTL) {
+				toggleFav();
 			} else if (I18nManager.isRTL) {
 				toValue = 2 * ACTION_WIDTH;
 			} else {
@@ -153,13 +155,13 @@ const Touchable = (props: ITouchableProps): JSX.Element => {
 				toValue = 0;
 				rowState.value = 0;
 			} else if (_value < -LONG_SWIPE) {
-				toValue = 0;
-				rowState.value = 0;
 				if (I18nManager.isRTL) {
 					toggleRead();
 				} else {
 					hideChannel();
 				}
+			} else if (_value < -ACTION_WIDTH * 2 && _value > -LONG_SWIPE + FAV_SWIPE && !I18nManager.isRTL) {
+				toggleFav();
 			} else if (I18nManager.isRTL) {
 				toValue = -ACTION_WIDTH;
 			} else {

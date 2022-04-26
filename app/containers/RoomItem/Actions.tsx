@@ -5,7 +5,7 @@ import { RectButton } from 'react-native-gesture-handler';
 
 import { CustomIcon } from '../CustomIcon';
 import { DisplayMode, themes } from '../../lib/constants';
-import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
+import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED, SMALL_SWIPE, PARALLAX_SWIPE } from './styles';
 import { ILeftActionsProps, IRightActionsProps } from './interfaces';
 
 const CONDENSED_ICON_SIZE = 24;
@@ -76,14 +76,14 @@ export const RightActions = React.memo(
 		const animatedHideStyles = useAnimatedStyle(() => {
 			let translateXHide = interpolate(
 				transX.value,
-				[-width, -LONG_SWIPE, -ACTION_WIDTH * 2, 0],
-				[0, width - LONG_SWIPE, width - ACTION_WIDTH, width]
+				[-width, -LONG_SWIPE, -ACTION_WIDTH * 2 - SMALL_SWIPE, -ACTION_WIDTH * 2, 0],
+				[0, width - LONG_SWIPE, width - ACTION_WIDTH - PARALLAX_SWIPE, width - ACTION_WIDTH, width]
 			);
 			if (I18nManager.isRTL) {
 				translateXHide = interpolate(
 					transX.value,
-					[0, ACTION_WIDTH * 2, LONG_SWIPE, width],
-					[-width, -width + ACTION_WIDTH, -width + LONG_SWIPE, 0]
+					[0, ACTION_WIDTH * 2, ACTION_WIDTH * 2 + SMALL_SWIPE, LONG_SWIPE, width],
+					[-width, -width + ACTION_WIDTH, -width + ACTION_WIDTH + PARALLAX_SWIPE, -width + LONG_SWIPE, 0]
 				);
 			}
 			return { transform: [{ translateX: translateXHide }] };
@@ -99,7 +99,7 @@ export const RightActions = React.memo(
 						styles.actionRightButtonContainer,
 						{
 							width,
-							backgroundColor: themes[theme].hideBackground
+							backgroundColor: themes[theme].favoriteBackground
 						},
 						viewHeight,
 						animatedFavStyles
@@ -116,7 +116,8 @@ export const RightActions = React.memo(
 					style={[
 						styles.actionRightButtonContainer,
 						{
-							width
+							width,
+							backgroundColor: themes[theme].hideBackground
 						},
 						isCondensed && { height: ROW_HEIGHT_CONDENSED },
 						animatedHideStyles
