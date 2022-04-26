@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import Touch from '../../../utils/touch';
 import { CustomIcon } from '../../../lib/Icons';
@@ -29,12 +28,12 @@ interface IDropdownItem {
 }
 
 const DropdownItem = React.memo(({ onPress, iconName, text }: IDropdownItem) => {
-	const { theme } = useTheme();
+	const { colors, theme } = useTheme();
 	return (
-		<Touch theme={theme} onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }}>
+		<Touch theme={theme} onPress={onPress} style={{ backgroundColor: colors.backgroundColor }}>
 			<View style={styles.container}>
-				<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>{text}</Text>
-				{iconName ? <CustomIcon name={iconName} size={22} color={themes[theme].auxiliaryText} /> : null}
+				<Text style={[styles.text, { color: colors.auxiliaryText }]}>{text}</Text>
+				{iconName ? <CustomIcon name={iconName} size={22} color={colors.auxiliaryText} /> : null}
 			</View>
 		</Touch>
 	);
