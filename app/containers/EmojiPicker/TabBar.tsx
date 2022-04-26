@@ -34,7 +34,11 @@ export default class TabBar extends React.Component<ITabBarProps> {
 					<TouchableOpacity
 						activeOpacity={0.7}
 						key={tab}
-						onPress={() => (goToPage ? goToPage(i) : null)}
+						onPress={() => {
+							if (goToPage) {
+								goToPage(i);
+							}
+						}}
 						style={styles.tab}
 						testID={`reaction-picker-${tab}`}>
 						<Text style={[styles.tabEmoji, tabEmojiStyle]}>{tab}</Text>
