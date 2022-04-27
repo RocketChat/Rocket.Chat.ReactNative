@@ -18,6 +18,7 @@ import { Encryption } from '../../encryption';
 import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
+import { isTablet } from '../../../utils/deviceInfo';
 
 const WINDOW_TIME = 1000;
 
@@ -69,10 +70,12 @@ export default class RoomSubscription {
 		}
 
 		reduxStore.dispatch(subscribeRoom(this.rid));
-		const rooms = reduxStore.getState().room;
-		if (rooms.rooms.length > 1) {
-			for (let i = 1; i < rooms.rooms.length; i++) {
-				reduxStore.dispatch(unsubscribeRoom(rooms.rooms[i]));
+		if (isTablet) {
+			const rooms = reduxStore.getState().room;
+			if (rooms.rooms.length > 1) {
+				for (let i = 1; i < rooms.rooms.length; i++) {
+					reduxStore.dispatch(unsubscribeRoom(rooms.rooms[i]));
+				}
 			}
 		}
 	};
