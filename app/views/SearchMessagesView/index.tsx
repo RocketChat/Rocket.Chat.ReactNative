@@ -6,7 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
-import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
+import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 import { IAttachment } from '../../definitions/IAttachment';
 import RCTextInput from '../../containers/TextInput';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -207,14 +207,14 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			rid: string;
 			jumpToMessageId: string;
 			t: SubscriptionType;
-			room: IRoomInfoResult | undefined;
+			room: TSubscriptionModel | undefined;
 			tmid?: string;
 			name?: string;
 		} = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
 			t: this.t,
-			room: this.room
+			room: this.room as TSubscriptionModel
 		};
 		if ('tmid' in item && item.tmid) {
 			navigation.pop();
