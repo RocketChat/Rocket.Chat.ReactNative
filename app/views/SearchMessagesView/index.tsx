@@ -273,7 +273,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				theme={theme}
 				onPress={() => this.jumpToMessage({ item })}
 				jumpToMessage={() => this.jumpToMessage({ item })}
-				rid={item.rid}
+				rid={message.rid}
 			/>
 		);
 	};
