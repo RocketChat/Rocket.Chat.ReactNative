@@ -5,7 +5,7 @@ import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setPreference } from '../actions/sortPreferences';
-import { DisplayMode, SortBy, themes } from '../lib/constants';
+import { DisplayMode, SortBy } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
@@ -20,20 +20,18 @@ import { events, logEvent } from '../utils/log';
 
 interface IDisplayPrefsView {
 	navigation: StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>;
-	isMasterDetail: boolean;
 }
 
-const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
-	const { theme } = useTheme();
+const DisplayPrefsView = ({ navigation }: IDisplayPrefsView): JSX.Element => {
+	const { colors } = useTheme();
 
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useSelector(
 		(state: IApplicationState) => state.sortPreferences
 	);
-	const { isMasterDetail } = useSelector((state: any) => state.app);
+	const { isMasterDetail } = useSelector((state: IApplicationState) => state.app);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		const { navigation } = props;
 		navigation.setOptions({
 			title: I18n.t('Display')
 		});
@@ -42,7 +40,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 				headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />
 			});
 		}
-	}, []);
+	}, [isMasterDetail, navigation]);
 
 	const setSortPreference = (param: Partial<IPreferences>) => {
 		dispatch(setPreference(param));
@@ -90,7 +88,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 	};
 
 	const renderCheckBox = (value: boolean) => (
-		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? themes[theme].actionTintColor : null} />
+		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? colors.actionTintColor : null} />
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
@@ -98,11 +96,7 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 	);
 
 	const renderRadio = (value: boolean) => (
-		<RadioButton
-			selected={!!value}
-			color={value ? themes[theme].actionTintColor : themes[theme].auxiliaryText}
-			size={ICON_SIZE}
-		/>
+		<RadioButton selected={!!value} color={value ? colors.actionTintColor : colors.auxiliaryText} size={ICON_SIZE} />
 	);
 
 	return (
@@ -187,7 +181,5 @@ const DisplayPrefsView = (props: IDisplayPrefsView): JSX.Element => {
 		</SafeAreaView>
 	);
 };
-
-DisplayPrefsView.propTypes = {};
 
 export default DisplayPrefsView;
