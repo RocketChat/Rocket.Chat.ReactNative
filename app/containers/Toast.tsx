@@ -25,7 +25,7 @@ interface IToastProps {
 	theme?: TSupportedThemes;
 }
 
-const Toast = React.memo(({ theme }: IToastProps) => {
+const Toast = ({ theme }: IToastProps) => {
 	let listner: Function;
 	let toast: EasyToast | null | undefined;
 	useEffect(() => {
@@ -51,6 +51,6 @@ const Toast = React.memo(({ theme }: IToastProps) => {
 			opacity={0.9}
 		/>
 	);
-});
+};
 
 export default withTheme(Toast);
