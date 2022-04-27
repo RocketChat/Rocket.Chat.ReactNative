@@ -19,7 +19,7 @@ import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
 import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../definitions/ILivechatEditView';
-import { IApplicationState } from '../definitions';
+import { IApplicationState, IUser } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 
@@ -43,8 +43,7 @@ const styles = StyleSheet.create({
 });
 
 interface ILivechatEditViewProps {
-	// TODO: Refactor when migrate models
-	user: any;
+	user: IUser;
 	navigation: StackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
 	route: RouteProp<ChatsStackParamList, 'LivechatEditView'>;
 	theme: TSupportedThemes;
@@ -93,6 +92,7 @@ const LivechatEditView = ({
 	const [tagParam, setTags] = useState(livechat?.tags || []);
 	const [tagParamSelected, setTagParamSelected] = useState(livechat?.tags || []);
 
+	// TODO: Refactor hook
 	useEffect(() => {
 		const arr = [...tagParam, ...availableUserTags];
 		const uniqueArray = arr.filter((val, i) => arr.indexOf(val) === i);
@@ -101,7 +101,7 @@ const LivechatEditView = ({
 
 	const getTagsList = async (agentDepartments: string[]) => {
 		const tags = await RocketChat.getTagsList();
-		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles.includes(role));
+		const isAdmin = ['admin', 'livechat-manager'].find(role => user?.roles?.includes(role));
 		const availableTags = tags
 			.filter(({ departments }) => isAdmin || departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1))
 			.map(({ name }) => name);
@@ -176,6 +176,7 @@ const LivechatEditView = ({
 		setPermissions(permissionsArray);
 	};
 
+	// TODO: Refactor hook
 	useEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Edit')
