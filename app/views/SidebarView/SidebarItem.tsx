@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 
 import Touch from '../../utils/touch';
 import { themes } from '../../lib/constants';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import styles from './styles';
 import { testProps } from '../../lib/methods/testProps';
 
@@ -14,7 +14,7 @@ interface SidebarItemProps {
 	current?: boolean;
 	onPress(): void;
 	testID: string;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 const Item = React.memo(({ left, right, text, onPress, testID, current, theme }: SidebarItemProps) => (

@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, ViewStyle } from 'react-native';
 
-import { CustomIcon } from '../lib/Icons';
-import { STATUS_COLORS, themes } from '../lib/constants';
-import Status from './Status/Status';
-import { withTheme } from '../theme';
-import { TUserStatus } from '../definitions';
+import { OmnichannelRoomIcon } from './OmnichannelRoomIcon';
+import { CustomIcon } from '../../lib/Icons';
+import { STATUS_COLORS, themes } from '../../lib/constants';
+import Status from '../Status/Status';
+import { useTheme } from '../../theme';
+import { TUserStatus, IOmnichannelSource } from '../../definitions';
 
 const styles = StyleSheet.create({
 	icon: {
@@ -14,21 +15,23 @@ const styles = StyleSheet.create({
 });
 
 interface IRoomTypeIcon {
-	theme?: string;
 	type: string;
 	isGroupChat?: boolean;
 	teamMain?: boolean;
 	status?: TUserStatus;
 	size?: number;
 	style?: ViewStyle;
+	sourceType?: IOmnichannelSource;
 }
 
-const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, teamMain, size = 16 }: IRoomTypeIcon) => {
+const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, teamMain, size = 16, sourceType }: IRoomTypeIcon) => {
+	const { theme } = useTheme();
+
 	if (!type) {
 		return null;
 	}
 
-	const color = themes[theme!].titleText;
+	const color = themes[theme].titleText;
 	const iconStyle = [styles.icon, { color }, style];
 
 	if (type === 'd' && !isGroupChat) {
@@ -36,6 +39,10 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, team
 			status = 'offline';
 		}
 		return <Status style={[iconStyle, { color: STATUS_COLORS[status] }]} size={size} status={status} />;
+	}
+
+	if (type === 'l') {
+		return <OmnichannelRoomIcon style={[styles.icon, style]} size={size} type={type} status={status} sourceType={sourceType} />;
 	}
 
 	// TODO: move this to a separate function
@@ -52,11 +59,9 @@ const RoomTypeIcon = React.memo(({ type, isGroupChat, status, style, theme, team
 		} else {
 			icon = 'mention';
 		}
-	} else if (type === 'l') {
-		icon = 'omnichannel';
 	}
 
 	return <CustomIcon name={icon} size={size} style={iconStyle} />;
 });
 
-export default withTheme(RoomTypeIcon);
+export default RoomTypeIcon;

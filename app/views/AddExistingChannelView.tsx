@@ -14,7 +14,7 @@ import SearchBox from '../containers/SearchBox';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import Loading from '../containers/Loading';
 import { animateNextTransition } from '../utils/layoutAnimation';
@@ -34,7 +34,7 @@ interface IAddExistingChannelViewState {
 interface IAddExistingChannelViewProps {
 	navigation: StackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
 	route: RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 	addTeamChannelPermission: string[];
 }

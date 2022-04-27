@@ -8,6 +8,7 @@ import I18n from '../../../i18n';
 import { TServerHistoryModel } from '../../../definitions/IServerHistory';
 import Item from './Item';
 import { testProps } from '../../../lib/methods/testProps';
+import { TSupportedThemes } from '../../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
 
 interface IServerInput extends TextInputProps {
 	text: string;
-	theme: string;
+	theme: TSupportedThemes;
 	serversHistory: any[];
 	onSubmit(): void;
 	onDelete(item: TServerHistoryModel): void;

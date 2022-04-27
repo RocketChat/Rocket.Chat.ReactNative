@@ -14,7 +14,7 @@ import { TEAM_TYPE } from '../../definitions/ITeam';
 import { Encryption } from '../encryption';
 import { TParams } from '../../definitions/ILivechatEditView';
 import { store as reduxStore } from '../store/auxStore';
-import { getDeviceToken } from '../../notifications/push';
+import { getDeviceToken } from '../notifications';
 import { getBundleId, isIOS } from '../../utils/deviceInfo';
 import roomTypeToApiType, { RoomTypes } from '../methods/roomTypeToApiType';
 import sdk from './sdk';
@@ -359,6 +359,8 @@ export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ er
 export const returnLivechat = (rid: string): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
+
+export const onHoldLivechat = (roomId: string) => sdk.post('livechat/room.onHold', { roomId });
 
 export const forwardLivechat = (transferData: any) =>
 	// RC 0.36.0
@@ -743,7 +745,8 @@ export const saveAutoTranslate = ({
 	options?: { defaultLanguage: string };
 }) => sdk.methodCallWrapper('autoTranslate.saveSettings', rid, field, value, options ?? null);
 
-export const getSupportedLanguagesAutoTranslate = () => sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
+export const getSupportedLanguagesAutoTranslate = (): Promise<{ language: string; name: string }[]> =>
+	sdk.methodCallWrapper('autoTranslate.getSupportedLanguages', 'en');
 
 export const translateMessage = (message: any, targetLanguage: string) =>
 	sdk.methodCallWrapper('autoTranslate.translateMessage', message, targetLanguage);
@@ -760,7 +763,7 @@ export const validateInviteToken = (token: string): any =>
 	// @ts-ignore
 	sdk.post('validateInviteToken', { token });
 
-export const useInviteToken = (token: string): any =>
+export const inviteToken = (token: string): any =>
 	// RC 2.4.0
 	// TODO: missing definitions from server
 	// @ts-ignore

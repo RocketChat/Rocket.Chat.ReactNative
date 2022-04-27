@@ -9,7 +9,7 @@ export type TSupportedThemes = keyof typeof colors;
 export type TColors = typeof colors[TSupportedThemes];
 
 interface IThemeContextProps {
-	theme: string;
+	theme: TSupportedThemes;
 	themePreferences?: IThemePreference;
 	setTheme?: (newTheme?: {}) => void;
 	colors: TColors;

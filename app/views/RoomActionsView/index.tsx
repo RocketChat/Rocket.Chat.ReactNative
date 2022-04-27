@@ -16,7 +16,15 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
 import StatusBar from '../../containers/StatusBar';
-import { IApplicationState, IBaseScreen, IRoom, ISubscription, IUser, TSubscriptionModel } from '../../definitions';
+import {
+	IApplicationState,
+	IBaseScreen,
+	IRoom,
+	ISubscription,
+	IUser,
+	SubscriptionType,
+	TSubscriptionModel
+} from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -33,6 +41,7 @@ import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
 interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomActionsView'> {
 	userId: string;
@@ -54,6 +63,7 @@ interface IRoomActionsViewProps extends IBaseScreen<ChatsStackParamList, 'RoomAc
 	addTeamChannelPermission?: string[];
 	convertTeamPermission?: string[];
 	viewCannedResponsesPermission?: string[];
+	livechatAllowManualOnHold?: boolean;
 }
 
 interface IRoomActionsViewState {
@@ -73,6 +83,8 @@ interface IRoomActionsViewState {
 	canAddChannelToTeam: boolean;
 	canConvertTeam: boolean;
 	canViewCannedResponse: boolean;
+	canPlaceLivechatOnHold: boolean;
+	isOnHold: boolean;
 }
 
 class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomActionsViewState> {
@@ -120,13 +132,15 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			canCreateTeam: false,
 			canAddChannelToTeam: false,
 			canConvertTeam: false,
-			canViewCannedResponse: false
+			canViewCannedResponse: false,
+			canPlaceLivechatOnHold: false,
+			isOnHold: false
 		};
 		if (room && room.observe && room.rid) {
 			this.roomObservable = room.observe();
 			this.subscription = this.roomObservable.subscribe(changes => {
 				if (this.mounted) {
-					this.setState({ room: changes });
+					this.setState({ room: changes, isOnHold: !!changes?.onHold });
 				} else {
 					// @ts-ignore
 					this.state.room = changes;
@@ -139,15 +153,24 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		this.mounted = true;
 		const { room, member } = this.state;
 		if (room.rid) {
-			if (!room.id && !this.isOmnichannelPreview) {
-				try {
-					const result = await RocketChat.getChannelInfo(room.rid);
-					if (result.success) {
-						// @ts-ignore
-						this.setState({ room: { ...result.channel, rid: result.channel._id } });
+			if (!room.id) {
+				if (room.t === SubscriptionType.OMNICHANNEL) {
+					if (!this.isOmnichannelPreview) {
+						const result = await getSubscriptionByRoomId(room.rid);
+						if (result) {
+							this.setState({ room: result });
+						}
 					}
-				} catch (e) {
-					log(e);
+				} else {
+					try {
+						const result = await RocketChat.getChannelInfo(room.rid);
+						if (result.success) {
+							// @ts-ignore
+							this.setState({ room: { ...result.channel, rid: result.channel._id } });
+						}
+					} catch (e) {
+						log(e);
+					}
 				}
 			}
 
@@ -191,8 +214,22 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				const canForwardGuest = await this.canForwardGuest();
 				const canReturnQueue = await this.canReturnQueue();
 				const canViewCannedResponse = await this.canViewCannedResponse();
-				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse });
+				const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
+				this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
 			}
+		}
+	}
+
+	componentDidUpdate(prevProps: IRoomActionsViewProps, prevState: IRoomActionsViewState) {
+		const { livechatAllowManualOnHold } = this.props;
+		const { room, isOnHold } = this.state;
+
+		if (
+			room.t === 'l' &&
+			(isOnHold !== prevState.isOnHold || prevProps.livechatAllowManualOnHold !== livechatAllowManualOnHold)
+		) {
+			const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
+			this.setState({ canPlaceLivechatOnHold });
 		}
 	}
 
@@ -342,6 +379,13 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		return permissions[0];
 	};
 
+	canPlaceLivechatOnHold = (): boolean => {
+		const { livechatAllowManualOnHold } = this.props;
+		const { room } = this.state;
+
+		return !!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
+	};
+
 	canReturnQueue = async () => {
 		try {
 			const { returnQueue } = await RocketChat.getRoutingConfig();
@@ -373,6 +417,24 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		const { dispatch } = this.props;
 
 		dispatch(closeRoom(rid));
+	};
+
+	placeOnHoldLivechat = () => {
+		const { navigation } = this.props;
+		const { room } = this.state;
+		showConfirmationAlert({
+			title: I18n.t('Are_you_sure_question_mark'),
+			message: I18n.t('Would_like_to_place_on_hold'),
+			confirmationText: I18n.t('Yes'),
+			onPress: async () => {
+				try {
+					await RocketChat.onHoldLivechat(room.rid);
+					navigation.navigate('RoomsListView');
+				} catch (e: any) {
+					showErrorAlert(e.data?.error, I18n.t('Oops'));
+				}
+			}
+		});
 	};
 
 	returnLivechat = () => {
@@ -724,7 +786,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	renderRoomInfo = () => {
 		const { room, member } = this.state;
-		const { rid, name, t, topic } = room;
+		const { rid, name, t, topic, source } = room;
 		const { theme, fontScale } = this.props;
 
 		const avatar = RocketChat.getRoomAvatar(room);
@@ -766,7 +828,12 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								</Text>
 							) : (
 								<View style={styles.roomTitleRow}>
-									<RoomTypeIcon type={room.prid ? 'discussion' : room.t} teamMain={room.teamMain} status={room.visitor?.status} />
+									<RoomTypeIcon
+										type={room.prid ? 'discussion' : room.t}
+										teamMain={room.teamMain}
+										status={room.visitor?.status}
+										sourceType={source}
+									/>
 									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
 										{RocketChat.getRoomTitle(room)}
 									</Text>
@@ -982,7 +1049,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			canAutoTranslate,
 			canForwardGuest,
 			canReturnQueue,
-			canViewCannedResponse
+			canViewCannedResponse,
+			canPlaceLivechatOnHold
 		} = this.state;
 		const { rid, t, prid } = room;
 		const isGroupChat = RocketChat.isGroupChat(room);
@@ -1246,6 +1314,22 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							</>
 						) : null}
 
+						{['l'].includes(t) && !this.isOmnichannelPreview && canPlaceLivechatOnHold ? (
+							<>
+								<List.Item
+									title='Place_chat_on_hold'
+									onPress={() =>
+										this.onPressTouchable({
+											event: this.placeOnHoldLivechat
+										})
+									}
+									left={() => <List.Icon name='pause' />}
+									showActionIndicator
+								/>
+								<List.Separator />
+							</>
+						) : null}
+
 						{['l'].includes(t) && !this.isOmnichannelPreview && canReturnQueue ? (
 							<>
 								<List.Item
@@ -1289,7 +1373,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createTeamPermission: state.permissions['create-team'],
 	addTeamChannelPermission: state.permissions['add-team-channel'],
 	convertTeamPermission: state.permissions['convert-team'],
-	viewCannedResponsesPermission: state.permissions['view-canned-responses']
+	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
+	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean
 });
 
 export default connect(mapStateToProps)(withTheme(withDimensions(RoomActionsView)));

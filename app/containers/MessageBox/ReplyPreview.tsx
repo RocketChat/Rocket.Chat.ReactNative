@@ -56,10 +56,12 @@ interface IMessageBoxReplyPreview {
 
 const ReplyPreview = React.memo(
 	({ message, Message_TimeFormat, replying, close, useRealName }: IMessageBoxReplyPreview) => {
+		const { theme } = useTheme();
+
 		if (!replying) {
 			return null;
 		}
-		const { theme } = useTheme();
+
 		const time = moment(message.ts).format(Message_TimeFormat);
 		return (
 			<View style={[styles.container, { backgroundColor: themes[theme].messageboxBackground }]}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Animated, Modal, StyleSheet, View } from 'react-native';
 
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import { testProps } from '../lib/methods/testProps';
 
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 interface ILoadingProps {
 	visible: boolean;
-	theme?: string;
+	theme?: TSupportedThemes;
 }
 
 interface ILoadingState {

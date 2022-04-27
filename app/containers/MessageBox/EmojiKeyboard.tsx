@@ -6,12 +6,12 @@ import { store } from '../../lib/store/auxStore';
 import EmojiPicker from '../EmojiPicker';
 import styles from './styles';
 import { themes } from '../../lib/constants';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { IEmoji } from '../../definitions/IEmoji';
 import { testProps } from '../../lib/methods/testProps';
 
 interface IMessageBoxEmojiKeyboard {
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 export default class EmojiKeyboard extends React.PureComponent<IMessageBoxEmojiKeyboard, any> {

@@ -8,6 +8,7 @@ import { themes } from '../lib/constants';
 import { CustomIcon } from '../lib/Icons';
 import ActivityIndicator from './ActivityIndicator';
 import { testProps } from '../lib/methods/testProps';
+import { TSupportedThemes } from '../theme';
 
 const styles = StyleSheet.create({
 	error: {
@@ -63,7 +64,7 @@ export interface IRCTextInputProps extends TextInputProps {
 	iconRight?: string;
 	left?: JSX.Element;
 	onIconRightPress?(): void;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 interface IRCTextInputState {

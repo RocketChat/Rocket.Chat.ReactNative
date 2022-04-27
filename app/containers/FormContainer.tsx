@@ -4,7 +4,7 @@ import { ScrollView, ScrollViewProps, StyleSheet, View } from 'react-native';
 import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import scrollPersistTaps from '../utils/scrollPersistTaps';
-import KeyboardView from '../presentation/KeyboardView';
+import KeyboardView from './KeyboardView';
 import { useTheme } from '../theme';
 import StatusBar from './StatusBar';
 import AppVersion from './AppVersion';

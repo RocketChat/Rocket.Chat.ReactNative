@@ -4,13 +4,14 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import { themes } from '../../lib/constants';
 import { testProps } from '../../lib/methods/testProps';
+import { TSupportedThemes } from '../../theme';
 
 interface ITabBarProps {
 	goToPage: Function;
 	activeTab: number;
 	tabs: [];
 	tabEmojiStyle: object;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 export default class TabBar extends React.Component<Partial<ITabBarProps>> {

@@ -2,6 +2,7 @@ import React from 'react';
 import { ButtonProps, StyleSheet, Text } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
+import { TSupportedThemes } from '../../theme';
 import { themes } from '../../lib/constants';
 import { testProps } from '../../lib/methods/testProps';
 import sharedStyles from '../../views/Styles';
@@ -14,7 +15,7 @@ interface IButtonProps extends ButtonProps {
 	disabled: boolean;
 	backgroundColor: string;
 	loading: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	color: string;
 	fontSize: any;
 	style: any;
