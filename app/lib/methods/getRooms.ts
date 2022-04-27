@@ -1,4 +1,4 @@
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
 
 export default function (updatedSince: Date) {
 	// subscriptions.get: Since RC 0.60.0

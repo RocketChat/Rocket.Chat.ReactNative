@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 
-import { themes } from '../../../constants/colors';
+import { themes } from '../../../lib/constants';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../../lib/Icons';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
-import { MENTIONS_TRACKING_TYPE_CANNED } from '../constants';
 import MessageboxContext from '../Context';
 import styles from '../styles';
+import { MENTIONS_TRACKING_TYPE_CANNED } from '../constants';
 
 interface IMentionHeaderList {
 	trackingType: string;

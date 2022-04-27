@@ -25,6 +25,7 @@ interface ILoginFailure extends Action {
 
 interface ILogout extends Action {
 	forcedByServer: boolean;
+	message: string;
 }
 
 interface ISetUser extends Action {
@@ -79,10 +80,11 @@ export function loginFailure(err: Record<string, any>): ILoginFailure {
 	};
 }
 
-export function logout(forcedByServer = false): ILogout {
+export function logout(forcedByServer = false, message = ''): ILogout {
 	return {
 		type: types.LOGOUT,
-		forcedByServer
+		forcedByServer,
+		message
 	};
 }
 

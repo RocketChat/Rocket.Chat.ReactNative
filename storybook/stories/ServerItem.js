@@ -1,8 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions, react/prop-types */
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 
-import ServerItemComponent from '../../app/presentation/ServerItem';
+import ServerItemComponent from '../../app/containers/ServerItem';
 import { ThemeContext } from '../../app/theme';
 
 const stories = storiesOf('ServerItem', module);

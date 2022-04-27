@@ -2,15 +2,15 @@ import React from 'react';
 import { View } from 'react-native';
 import { KeyboardRegistry } from 'react-native-ui-lib/keyboard';
 
-import { store } from '../../lib/auxStore';
+import { store } from '../../lib/store/auxStore';
 import EmojiPicker from '../EmojiPicker';
 import styles from './styles';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { IEmoji } from '../../definitions/IEmoji';
 
 interface IMessageBoxEmojiKeyboard {
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 export default class EmojiKeyboard extends React.PureComponent<IMessageBoxEmojiKeyboard, any> {

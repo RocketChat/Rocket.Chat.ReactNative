@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { BLOCK_CONTEXT } from '@rocket.chat/ui-kit';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { IAccessoryComponent, IFields, ISection } from './interfaces';
 import { useTheme } from '../../theme';
 

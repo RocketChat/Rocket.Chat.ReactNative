@@ -1,7 +1,7 @@
 import Model from '@nozbe/watermelondb/Model';
 import { MarkdownAST } from '@rocket.chat/message-parser';
 
-import { MessageTypeLoad } from '../constants/messageTypeLoad';
+import { MessageTypeLoad } from '../lib/constants';
 import { IAttachment } from './IAttachment';
 import { IReaction } from './IReaction';
 import { TThreadMessageModel } from './IThreadMessage';
@@ -42,16 +42,16 @@ export interface ITranslations {
 export type E2EType = 'pending' | 'done';
 
 export interface ILastMessage {
-	_id: string;
-	rid: string;
+	_id?: string;
+	rid?: string;
 	tshow?: boolean;
 	t?: MessageType;
 	tmid?: string;
 	msg?: string;
 	e2e?: E2EType;
-	ts: string | Date;
+	ts?: string | Date;
 	u: IUserMessage;
-	_updatedAt: string | Date;
+	_updatedAt?: string | Date;
 	urls?: IUrlFromServer[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
@@ -59,7 +59,9 @@ export interface ILastMessage {
 	attachments?: IAttachment[];
 	reactions?: IReaction[];
 	unread?: boolean;
+	pinned?: boolean;
 	status?: number;
+	token?: string;
 }
 
 interface IMessageFile {
@@ -140,6 +142,7 @@ export interface IMessage extends IMessageFromServer {
 	blocks?: any;
 	e2e?: E2EType;
 	tshow?: boolean;
+	comment?: string;
 	subscription?: { id: string };
 }
 

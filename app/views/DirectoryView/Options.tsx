@@ -5,8 +5,9 @@ import Touch from '../../utils/touch';
 import { CustomIcon } from '../../lib/Icons';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR, themes } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import styles from './styles';
+import { TSupportedThemes } from '../../theme';
 
 const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
@@ -22,7 +23,7 @@ interface IDirectoryOptionsProps {
 	close: Function;
 	changeType: Function;
 	toggleWorkspace(): void;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 export default class DirectoryOptions extends PureComponent<IDirectoryOptionsProps, any> {

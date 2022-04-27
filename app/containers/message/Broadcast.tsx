@@ -6,7 +6,7 @@ import { CustomIcon } from '../../lib/Icons';
 import styles from './styles';
 import { BUTTON_HIT_SLOP } from './utils';
 import I18n from '../../i18n';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { IMessageBroadcast } from './interfaces';
 import { useTheme } from '../../theme';

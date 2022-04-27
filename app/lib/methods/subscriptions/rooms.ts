@@ -8,7 +8,7 @@ import { merge } from '../helpers/mergeSubscriptionsRooms';
 import protectedFunction from '../helpers/protectedFunction';
 import log from '../../../utils/log';
 import random from '../../../utils/random';
-import { store } from '../../auxStore';
+import { store } from '../../store/auxStore';
 import { handlePayloadUserInteraction } from '../actions';
 import buildMessage from '../helpers/buildMessage';
 import RocketChat from '../../rocketchat';
@@ -17,7 +17,6 @@ import { removedRoom } from '../../../actions/room';
 import { setUser } from '../../../actions/login';
 import { INAPP_NOTIFICATION_EMITTER } from '../../../containers/InAppNotification';
 import { Encryption } from '../../encryption';
-import { E2E_MESSAGE_TYPE } from '../../constants';
 import updateMessages from '../updateMessages';
 import {
 	IMessage,
@@ -27,12 +26,14 @@ import {
 	TMessageModel,
 	TRoomModel,
 	TThreadMessageModel,
-	TThreadModel
+	TThreadModel,
+	SubscriptionType
 } from '../../../definitions';
-import sdk from '../../rocketchat/services/sdk';
+import sdk from '../../services/sdk';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import { getMessageById } from '../../database/services/Message';
+import { E2E_MESSAGE_TYPE } from '../../constants';
 
 const removeListener = (listener: { stop: () => void }) => listener.stop();
 
@@ -99,7 +100,8 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					encrypted: s.encrypted,
 					e2eKeyId: s.e2eKeyId,
 					E2EKey: s.E2EKey,
-					avatarETag: s.avatarETag
+					avatarETag: s.avatarETag,
+					onHold: s.onHold
 				} as ISubscription;
 			} catch (error) {
 				try {
@@ -251,6 +253,11 @@ const debouncedUpdate = (subscription: ISubscription) => {
 							createOrUpdateSubscription(sub, room);
 						} else {
 							const room = batch[key] as IRoom;
+							// If the omnichannel's chat is onHold and waitingResponse we shouldn't create or update the chat,
+							// because it should go to Queue
+							if (room.t === SubscriptionType.OMNICHANNEL && room.onHold && room.waitingResponse) {
+								return null;
+							}
 							const subQueueId = getSubQueueId(room._id);
 							const sub = batch[subQueueId] as ISubscription;
 							delete batch[subQueueId];

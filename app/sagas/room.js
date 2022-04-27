@@ -3,7 +3,7 @@ import prompt from 'react-native-prompt-android';
 import { delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
 
 import EventEmitter from '../utils/events';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import * as types from '../actions/actionsTypes';
 import { removedRoom } from '../actions/room';
 import RocketChat from '../lib/rocketchat';

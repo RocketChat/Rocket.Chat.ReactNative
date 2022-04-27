@@ -64,7 +64,7 @@ interface IStatusViewState {
 }
 
 interface IStatusViewProps extends IBaseScreen<any, 'StatusView'> {
-	user: Pick<IUser, 'id' | 'status' | 'statusText'>;
+	user: IUser;
 	isMasterDetail: boolean;
 	Accounts_AllowInvisibleStatusOption: boolean;
 }
