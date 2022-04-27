@@ -34,7 +34,7 @@ const Toast = ({ theme }: IToastProps) => {
 			EventEmitter.removeListener(LISTENER, listner);
 		};
 	});
-	const getToastRef = (toast: EasyToast | null) => (toast = toast);
+	const getToastRef = (newToast: EasyToast | null) => (toast = newToast);
 
 	const showToast = ({ message }: { message: string }) => {
 		if (toast && toast.show) {
