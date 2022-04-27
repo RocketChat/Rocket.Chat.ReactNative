@@ -309,7 +309,8 @@ const InsideStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<InsideStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation, presentation: 'modal' }}>
+		<InsideStack.Navigator
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation, presentation: 'transparentModal' }}>
 			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='NewMessageStackNavigator' component={NewMessageStackNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen

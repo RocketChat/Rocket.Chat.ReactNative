@@ -243,7 +243,12 @@ const InsideStackNavigator = React.memo(() => {
 	return (
 		<InsideStack.Navigator
 			screenOptions={
-				{ ...defaultHeader, ...themedHeader(theme), ...FadeFromCenterModal, presentation: 'modal' } as StackNavigationOptions
+				{
+					...defaultHeader,
+					...themedHeader(theme),
+					...FadeFromCenterModal,
+					presentation: 'transparentModal'
+				} as StackNavigationOptions
 			}>
 			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='ModalStackNavigator' component={ModalStackNavigator} options={{ headerShown: false }} />
