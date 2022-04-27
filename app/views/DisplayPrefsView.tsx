@@ -1,5 +1,6 @@
-import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native';
 import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,11 +19,8 @@ import { SettingsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { events, logEvent } from '../utils/log';
 
-interface IDisplayPrefsView {
-	navigation: StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>;
-}
-
-const DisplayPrefsView = ({ navigation }: IDisplayPrefsView): JSX.Element => {
+const DisplayPrefsView = (): React.ReactElement => {
+	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
 	const { colors } = useTheme();
 
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useSelector(
