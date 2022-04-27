@@ -4,7 +4,7 @@ import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 import FastImage from '@rocket.chat/react-native-fast-image';
 
-import { useTheme } from '../../../theme';
+import { TSupportedThemes, useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
 import styles from '../../message/styles';
 
@@ -14,7 +14,7 @@ interface IImageProps {
 
 type TMessageImage = {
 	img: string;
-	theme: string;
+	theme: TSupportedThemes;
 };
 
 const ImageProgress = createImageProgress(FastImage);

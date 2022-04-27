@@ -54,7 +54,7 @@ const SelectChannel = ({
 				value={initial && [initial]}
 				disabled={!!initial}
 				options={channels.map(channel => ({
-					value: channel.name || channel.fname,
+					value: channel,
 					text: { text: RocketChat.getRoomTitle(channel) },
 					imageUrl: getAvatar(channel)
 				}))}

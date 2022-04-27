@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Avatar from '../../containers/Avatar';
+import Avatar from '../Avatar';
 import { DisplayMode } from '../../lib/constants';
 import TypeIcon from './TypeIcon';
 import styles from './styles';
@@ -18,7 +18,8 @@ const IconOrAvatar = ({
 	teamMain,
 	showLastMessage,
 	theme,
-	displayMode
+	displayMode,
+	sourceType
 }) => {
 	if (showAvatar) {
 		return (
@@ -38,6 +39,7 @@ const IconOrAvatar = ({
 					teamMain={teamMain}
 					size={24}
 					style={{ marginRight: 12 }}
+					sourceType={sourceType}
 				/>
 			</View>
 		);

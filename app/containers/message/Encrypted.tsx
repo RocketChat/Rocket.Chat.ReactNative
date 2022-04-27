@@ -10,11 +10,12 @@ import { E2E_MESSAGE_TYPE, themes } from '../../lib/constants';
 
 const Encrypted = React.memo(({ type }: { type: string }) => {
 	const { theme } = useTheme();
+	const { onEncryptedPress } = useContext(MessageContext);
+
 	if (type !== E2E_MESSAGE_TYPE) {
 		return null;
 	}
 
-	const { onEncryptedPress } = useContext(MessageContext);
 	return (
 		<Touchable onPress={onEncryptedPress} style={styles.encrypted} hitSlop={BUTTON_HIT_SLOP}>
 			<CustomIcon name='encrypted' size={16} color={themes[theme].auxiliaryText} />

@@ -6,7 +6,7 @@ import * as HeaderButton from '../containers/HeaderButton';
 import sharedStyles from './Styles';
 import I18n from '../i18n';
 import { themes } from '../lib/constants';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 });
 
 interface IWithoutServerViewProps {
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class WithoutServerView extends React.Component<IWithoutServerViewProps> {

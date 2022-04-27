@@ -3,7 +3,7 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 import { FlatList, Linking } from 'react-native';
 
 import I18n from '../i18n';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
@@ -52,7 +52,7 @@ interface IDefaultBrowserViewState {
 }
 
 interface IDefaultBrowserViewProps {
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 class DefaultBrowserView extends React.Component<IDefaultBrowserViewProps, IDefaultBrowserViewState> {

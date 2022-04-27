@@ -4,15 +4,9 @@ import { Text } from 'react-native';
 import styles from './styles';
 import { themes } from '../../lib/constants';
 import { capitalize } from '../../utils/room';
+import { IUpdatedAtProps } from './interfaces';
 
-interface IUpdatedAt {
-	date: string;
-	theme: string;
-	hideUnreadStatus: boolean;
-	alert: boolean;
-}
-
-const UpdatedAt = React.memo(({ date, theme, hideUnreadStatus, alert }: IUpdatedAt) => {
+const UpdatedAt = React.memo(({ date, theme, hideUnreadStatus, alert }: IUpdatedAtProps) => {
 	if (!date) {
 		return null;
 	}

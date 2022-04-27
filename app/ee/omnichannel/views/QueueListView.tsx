@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 
 import I18n from '../../../i18n';
-import RoomItem, { ROW_HEIGHT } from '../../../presentation/RoomItem';
+import RoomItem, { ROW_HEIGHT } from '../../../containers/RoomItem';
 import { isIOS, isTablet } from '../../../utils/deviceInfo';
 import { getUserSelector } from '../../../selectors/login';
-import { withTheme } from '../../../theme';
+import { TSupportedThemes, withTheme } from '../../../theme';
 import { withDimensions } from '../../../dimensions';
 import SafeAreaView from '../../../containers/SafeAreaView';
 import StatusBar from '../../../containers/StatusBar';
@@ -42,7 +42,7 @@ interface IQueueListView extends INavigationOptions {
 	queued: IOmnichannelRoom[];
 	server: string;
 	useRealName?: TSettingsValues;
-	theme: string;
+	theme: TSupportedThemes;
 	showAvatar: any;
 	displayMode: DisplayMode;
 }

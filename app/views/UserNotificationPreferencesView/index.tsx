@@ -8,7 +8,7 @@ import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import RocketChat from '../../lib/rocketchat';
-import { withTheme } from '../../theme';
+import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';
@@ -33,7 +33,7 @@ interface IUserNotificationPreferencesViewState {
 
 interface IUserNotificationPreferencesViewProps {
 	navigation: StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>;
-	theme: string;
+	theme: TSupportedThemes;
 	user: IUser;
 }
 
@@ -72,7 +72,11 @@ class UserNotificationPreferencesView extends React.Component<
 	renderPickerOption = (key: TKey) => {
 		const { theme } = this.props;
 		const text = this.findDefaultOption(key);
-		return <Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>{I18n.t(text?.label)}</Text>;
+		return (
+			<Text style={[styles.pickerText, { color: themes[theme].actionTintColor }]}>
+				{text?.label ? I18n.t(text?.label) : text?.label}
+			</Text>
+		);
 	};
 
 	pickerSelection = (title: string, key: TKey) => {
@@ -82,7 +86,9 @@ class UserNotificationPreferencesView extends React.Component<
 
 		const defaultOption = this.findDefaultOption(key);
 		if (OPTIONS[key][0]?.value !== 'default') {
-			const defaultValue = { label: `${I18n.t('Default')} (${I18n.t(defaultOption?.label)})` } as {
+			const defaultValue = {
+				label: `${I18n.t('Default')} (${defaultOption?.label ? I18n.t(defaultOption?.label) : defaultOption?.label})`
+			} as {
 				label: string;
 				value: string;
 			};
