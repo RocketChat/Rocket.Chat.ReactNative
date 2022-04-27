@@ -10,6 +10,7 @@ import { IMessage, TMessageModel } from '../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
 import { ICannedResponse } from '../definitions/ICannedResponse';
 import { ModalStackParamList } from './MasterDetailStack/types';
+import { IRoomInfoResult } from '../lib/methods/getRoomInfo';
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
@@ -28,7 +29,7 @@ export type ChatsStackParamList = {
 				name?: string;
 				fname?: string;
 				prid?: string;
-				room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
+				room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string } | IRoomInfoResult;
 				jumpToMessageId?: string;
 				jumpToThreadId?: string;
 				roomUserId?: string | null;
