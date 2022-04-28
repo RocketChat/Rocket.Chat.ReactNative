@@ -119,7 +119,7 @@ exports.config = {
 		ui: 'bdd',
 		timeout: 60000
 	},
-	specs: ['./tests/specs/**/*.js']
+	specs: ['./tests/specs/**/*.js'],
 	// beforeSuite() {
 	// 	const { setup } = require('../../e2e/helpers/data_setup');
 
@@ -127,4 +127,18 @@ exports.config = {
 	// 		await setup();
 	// 	});
 	// }
+	autoCompileOpts: {
+		autoCompile: true,
+		// see https://github.com/TypeStrong/ts-node#cli-and-programmatic-options
+		// for all available options
+		tsNodeOpts: {
+			transpileOnly: true,
+			project: 'tsconfig.json'
+		},
+		// tsconfig-paths is only used if "tsConfigPathsOpts" are provided, if you
+		// do please make sure "tsconfig-paths" is installed as dependency
+		tsConfigPathsOpts: {
+			baseUrl: './'
+		}
+	}
 };
