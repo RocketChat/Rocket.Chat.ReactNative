@@ -9,10 +9,10 @@ import OrSeparator from '../containers/OrSeparator';
 import Input from '../containers/UIKit/MultiSelect/Input';
 import { IBaseScreen, IServerRoom } from '../definitions';
 import I18n from '../i18n';
-import RocketChat from '../lib/rocketchat';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import { IOptionsField } from './NotificationPreferencesView/options';
+import { Services } from '../lib/services';
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,7 +41,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 
 	const getDepartments = async (text = '', offset = 0) => {
 		try {
-			const result = await RocketChat.getDepartments({ count: COUNT_DEPARTMENT, text, offset });
+			const result = await Services.getDepartments({ count: COUNT_DEPARTMENT, text, offset });
 			if (result.success) {
 				const parsedDepartments = result.departments.map(department => ({
 					label: department.name,
@@ -62,7 +62,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 		try {
 			const { servedBy: { _id: agentId } = {} } = room;
 			const _id = agentId && { $ne: agentId };
-			const result = await RocketChat.usersAutoComplete({
+			const result = await Services.usersAutoComplete({
 				conditions: { _id, status: { $ne: 'offline' }, statusLivechat: 'available' },
 				term
 			});
@@ -80,7 +80,7 @@ const ForwardLivechatView = ({ navigation, route, theme }: IBaseScreen<ChatsStac
 
 	const getRoom = async () => {
 		try {
-			const result = await RocketChat.getRoomInfo(rid);
+			const result = await Services.getRoomInfo(rid);
 			if (result.success) {
 				setRoom(result.room as IServerRoom);
 			}
