@@ -60,7 +60,7 @@ export type ChatsStackParamList = {
 		showCloseModal?: boolean;
 	};
 	RoomInfoEditView: {
-		room: ISubscription;
+		room: TSubscriptionModel;
 		rid: string;
 	};
 	RoomMembersView: {

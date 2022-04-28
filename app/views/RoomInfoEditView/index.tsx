@@ -89,13 +89,12 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 
 	constructor(props: IRoomInfoEditViewProps) {
 		super(props);
-		const room = props.route.params?.room;
-		const name = RocketChat.getRoomTitle(room);
+		this.room = props.route.params?.room;
 		this.state = {
-			room: {} as ISubscription,
+			room: this.room || ({} as ISubscription),
 			avatar: {} as IAvatar,
 			permissions: {} as Record<TSupportedPermissions, string>,
-			name,
+			name: '',
 			description: '',
 			topic: '',
 			announcement: '',
@@ -110,13 +109,10 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			enableSysMes: false,
 			encrypted: false
 		};
-		this.loadRoom();
 	}
 
-	componentWillUnmount() {
-		if (this.querySubscription && this.querySubscription.unsubscribe) {
-			this.querySubscription.unsubscribe();
-		}
+	componentDidMount() {
+		this.loadRoom();
 	}
 
 	// eslint-disable-next-line react/sort-comp
@@ -136,15 +132,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			return;
 		}
 		try {
-			const db = database.active;
-			const sub = await db.get('subscriptions').find(rid);
-			const observable = sub.observe();
-
-			this.querySubscription = observable.subscribe(data => {
-				this.room = data;
-				this.init(this.room);
-			});
-
+			this.init(this.room);
 			const result = await RocketChat.hasPermission(
 				[
 					setReadOnlyPermission,
@@ -176,12 +164,12 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 	};
 
 	init = (room: ISubscription) => {
-		const { name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, encrypted } = room;
+		const { description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, encrypted } = room;
 		const sysMes = room.sysMes as string[];
 		// fake password just to user knows about it
 		this.setState({
 			room,
-			name,
+			name: RocketChat.getRoomTitle(room),
 			description,
 			topic,
 			announcement,

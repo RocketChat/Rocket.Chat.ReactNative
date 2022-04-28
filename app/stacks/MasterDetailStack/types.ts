@@ -4,7 +4,7 @@ import { NavigatorScreenParams } from '@react-navigation/core';
 import { IAttachment } from '../../definitions/IAttachment';
 import { IMessage } from '../../definitions/IMessage';
 import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
-import { TRoomModel } from '../../definitions';
+import { TRoomModel, TSubscriptionModel } from '../../definitions';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -52,7 +52,7 @@ export type ModalStackParamList = {
 		isRadio?: boolean;
 	};
 	RoomInfoEditView: {
-		room: ISubscription;
+		room: TSubscriptionModel;
 		rid: string;
 	};
 	RoomMembersView: {
