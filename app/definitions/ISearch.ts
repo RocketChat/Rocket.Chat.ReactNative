@@ -6,7 +6,7 @@ export interface ISearchLocal {
 	name: string;
 	t: string;
 	fname: string;
-	encrypted: boolean | null;
+	encrypted: boolean;
 	lastMessage?: ILastMessage;
 }
 
