@@ -12,6 +12,11 @@ export const click = async tag => await $(`~${tag}`).click();
 
 export const clickById = async tag => await $(`id=${tag}`).click();
 
+export const openDrawer = async () =>
+	await $('//android.view.ViewGroup[@content-desc="rooms-list-view-sidebar"]/android.widget.TextView').click(); //TEMP
+
+export const clickAlert = async tag => await clickById('android:id/button1');
+
 export const setValueAndEnter = async (tag, value) => {
 	if (driver.capabilities.platformName === 'Android') {
 		await $(`~${tag}`).click();

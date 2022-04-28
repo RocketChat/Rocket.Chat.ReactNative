@@ -1,4 +1,4 @@
-import { click, clickById, scrollToBottom, setValue, setValueAndEnter } from '.';
+import { click, clickAlert, openDrawer, setValue, setValueAndEnter } from '.';
 import { swipeDown } from './gestures';
 // import data from '../../../e2e/data';
 
@@ -10,9 +10,9 @@ export const login = async () => {
 };
 
 export const logout = async () => {
-	await $('//android.view.ViewGroup[@content-desc="rooms-list-view-sidebar"]/android.widget.TextView').click(); //TEMP
+	await openDrawer();
 	await click('sidebar-settings');
 	await swipeDown(20);
 	await click('settings-logout');
-	await clickById('android:id/button1'); // alert
+	await clickAlert();
 };
