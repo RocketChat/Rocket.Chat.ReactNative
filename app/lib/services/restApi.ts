@@ -360,6 +360,8 @@ export const returnLivechat = (rid: string): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
 
+export const onHoldLivechat = (roomId: string) => sdk.post('livechat/room.onHold', { roomId });
+
 export const forwardLivechat = (transferData: any) =>
 	// RC 0.36.0
 	sdk.methodCallWrapper('livechat:transfer', transferData);

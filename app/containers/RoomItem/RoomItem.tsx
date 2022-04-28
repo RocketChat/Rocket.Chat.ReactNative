@@ -12,57 +12,7 @@ import Touchable from './Touchable';
 import Tag from './Tag';
 import I18n from '../../i18n';
 import { DisplayMode } from '../../lib/constants';
-import { TUserStatus } from '../../definitions';
-import { TSupportedThemes } from '../../theme';
-
-interface IRoomItem {
-	rid: string;
-	type: string;
-	prid: string;
-	name: string;
-	avatar: string;
-	showLastMessage: boolean;
-	username: string;
-	avatarSize: number;
-	testID: string;
-	width: number;
-	status: TUserStatus;
-	useRealName: boolean;
-	theme: TSupportedThemes;
-	isFocused: boolean;
-	isGroupChat: boolean;
-	isRead: boolean;
-	teamMain: boolean;
-	date: string;
-	accessibilityLabel: string;
-	lastMessage: {
-		u: any;
-		pinned: boolean;
-		t: string;
-		attachments: any;
-		msg: string;
-		e2e: string;
-	};
-	favorite: boolean;
-	alert: boolean;
-	hideUnreadStatus: boolean;
-	unread: number;
-	userMentions: number;
-	groupMentions: number;
-	tunread: [];
-	tunreadUser: [];
-	tunreadGroup: [];
-	swipeEnabled: boolean;
-	toggleFav(): void;
-	toggleRead(): void;
-	onPress(): void;
-	onLongPress(): void;
-	hideChannel(): void;
-	autoJoin: boolean;
-	size?: number;
-	showAvatar: boolean;
-	displayMode: string;
-}
+import { IRoomItemProps } from './interfaces';
 
 const RoomItem = ({
 	rid,
@@ -71,7 +21,6 @@ const RoomItem = ({
 	name,
 	avatar,
 	width,
-	avatarSize = 48,
 	username,
 	showLastMessage,
 	status = 'offline',
@@ -102,8 +51,9 @@ const RoomItem = ({
 	teamMain,
 	autoJoin,
 	showAvatar,
-	displayMode
-}: IRoomItem) => (
+	displayMode,
+	sourceType
+}: IRoomItemProps) => (
 	<Touchable
 		onPress={onPress}
 		onLongPress={onLongPress}
@@ -123,7 +73,6 @@ const RoomItem = ({
 		<Wrapper
 			accessibilityLabel={accessibilityLabel}
 			avatar={avatar}
-			avatarSize={avatarSize}
 			type={type}
 			theme={theme}
 			rid={rid}
@@ -133,12 +82,20 @@ const RoomItem = ({
 			teamMain={teamMain}
 			displayMode={displayMode}
 			showAvatar={showAvatar}
-			showLastMessage={showLastMessage}>
+			showLastMessage={showLastMessage}
+			sourceType={sourceType}>
 			{showLastMessage && displayMode === DisplayMode.Expanded ? (
 				<>
 					<View style={styles.titleContainer}>
 						{showAvatar ? (
-							<TypeIcon type={type} prid={prid} status={status} isGroupChat={isGroupChat} teamMain={teamMain} />
+							<TypeIcon
+								type={type}
+								prid={prid}
+								status={status}
+								isGroupChat={isGroupChat}
+								teamMain={teamMain}
+								sourceType={sourceType}
+							/>
 						) : null}
 						<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 						{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
@@ -174,6 +131,7 @@ const RoomItem = ({
 						teamMain={teamMain}
 						size={22}
 						style={{ marginRight: 8 }}
+						sourceType={sourceType}
 					/>
 					<Title name={name} theme={theme} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 					{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}

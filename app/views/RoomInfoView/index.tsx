@@ -69,6 +69,7 @@ const renderRoomTitle = ({ room, type, name, username, statusText, theme }: IGet
 				teamMain={room.teamMain}
 				key='room-info-type'
 				status={room.visitor?.status}
+				sourceType={room.source}
 			/>
 			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: themes[theme].titleText }]} key='room-info-name'>
 				{getRoomTitle(room)}
@@ -423,6 +424,7 @@ class RoomInfoView extends React.Component<IRoomInfoViewProps, IRoomInfoViewStat
 	render() {
 		const { room, roomUser } = this.state;
 		const { theme } = this.props;
+
 		return (
 			<ScrollView style={[styles.scroll, { backgroundColor: themes[theme].backgroundColor }]}>
 				<StatusBar />

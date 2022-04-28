@@ -23,7 +23,7 @@ import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../lib/Icons';
-import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
+import RoomItem, { ROW_HEIGHT } from '../containers/RoomItem';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { TSupportedThemes, withTheme } from '../theme';

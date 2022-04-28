@@ -1,14 +1,9 @@
-import { themes } from '../../lib/constants';
+import { IUnreadBadge } from '.';
+import { themes } from '../../lib/constants/colors';
 import { TSupportedThemes } from '../../theme';
 
-interface IGetUnreadStyle {
-	unread?: number;
-	userMentions?: number;
-	groupMentions?: number;
+interface IGetUnreadStyle extends Omit<IUnreadBadge, 'small' | 'style'> {
 	theme: TSupportedThemes;
-	tunread?: [];
-	tunreadUser?: [];
-	tunreadGroup?: [];
 }
 
 export const getUnreadStyle = ({
