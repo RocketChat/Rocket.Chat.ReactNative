@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import EasyToast from 'react-native-easy-toast';
 
-import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import EventEmitter from '../utils/events';
-import { TSupportedThemes, withTheme } from '../theme';
+import { useTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	toast: {
@@ -21,17 +20,14 @@ const styles = StyleSheet.create({
 
 export const LISTENER = 'Toast';
 
-interface IToastProps {
-	theme?: TSupportedThemes;
-}
-
-const Toast = ({ theme }: IToastProps) => {
-	let listner: Function;
+const Toast = () => {
+	const { colors } = useTheme();
+	let listener: Function;
 	let toast: EasyToast | null | undefined;
 	useEffect(() => {
-		listner = EventEmitter.addEventListener(LISTENER, showToast);
+		listener = EventEmitter.addEventListener(LISTENER, showToast);
 		return () => {
-			EventEmitter.removeListener(LISTENER, listner);
+			EventEmitter.removeListener(LISTENER, listener);
 		};
 	});
 	const getToastRef = (newToast: EasyToast | null) => (toast = newToast);
@@ -46,11 +42,11 @@ const Toast = ({ theme }: IToastProps) => {
 			ref={getToastRef}
 			// @ts-ignore
 			position='center'
-			style={[styles.toast, { backgroundColor: themes[theme!].toastBackground }]}
-			textStyle={[styles.text, { color: themes[theme!].buttonText }]}
+			style={[styles.toast, { backgroundColor: colors.toastBackground }]}
+			textStyle={[styles.text, { color: colors.buttonText }]}
 			opacity={0.9}
 		/>
 	);
 };
 
-export default withTheme(Toast);
+export default Toast;
