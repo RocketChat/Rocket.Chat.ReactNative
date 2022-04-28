@@ -52,6 +52,7 @@ export type ModalStackParamList = {
 		isRadio?: boolean;
 	};
 	RoomInfoEditView: {
+		room: ISubscription;
 		rid: string;
 	};
 	RoomMembersView: {

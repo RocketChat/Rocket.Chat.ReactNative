@@ -89,11 +89,13 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 
 	constructor(props: IRoomInfoEditViewProps) {
 		super(props);
+		const room = props.route.params?.room;
+		const name = RocketChat.getRoomTitle(room);
 		this.state = {
 			room: {} as ISubscription,
 			avatar: {} as IAvatar,
 			permissions: {} as Record<TSupportedPermissions, string>,
-			name: '',
+			name,
 			description: '',
 			topic: '',
 			announcement: '',
@@ -174,12 +176,12 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 	};
 
 	init = (room: ISubscription) => {
-		const { description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, encrypted } = room;
+		const { name, description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, encrypted } = room;
 		const sysMes = room.sysMes as string[];
 		// fake password just to user knows about it
 		this.setState({
 			room,
-			name: RocketChat.getRoomTitle(room),
+			name,
 			description,
 			topic,
 			announcement,
