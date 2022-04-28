@@ -9,7 +9,7 @@ import log, { logEvent, events } from '../../utils/log';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
-import { SWITCH_TRACK_COLOR } from '../../constants/colors';
+import { SWITCH_TRACK_COLOR } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';
 import RocketChat from '../../lib/rocketchat';
 import { ProfileStackParamList } from '../../stacks/types';

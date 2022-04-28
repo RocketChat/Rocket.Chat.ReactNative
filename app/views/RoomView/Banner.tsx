@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 
 import Markdown, { MarkdownPreview } from '../../containers/markdown';
 import { CustomIcon } from '../../lib/Icons';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import styles from './styles';
 import { useTheme } from '../../theme';
 

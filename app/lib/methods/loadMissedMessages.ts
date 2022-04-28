@@ -1,7 +1,7 @@
 import { ILastMessage } from '../../definitions';
 import log from '../../utils/log';
 import database from '../database';
-import sdk from '../rocketchat/services/sdk';
+import sdk from '../services/sdk';
 import updateMessages from './updateMessages';
 
 const getLastUpdate = async (rid: string) => {

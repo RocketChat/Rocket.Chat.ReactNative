@@ -4,7 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 
 import { loginRequest } from '../actions/login';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import * as HeaderButton from '../containers/HeaderButton';

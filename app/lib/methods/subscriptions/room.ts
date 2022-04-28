@@ -9,7 +9,7 @@ import database from '../../database';
 import { getMessageById } from '../../database/services/Message';
 import { getThreadById } from '../../database/services/Thread';
 import { getThreadMessageById } from '../../database/services/ThreadMessage';
-import reduxStore from '../../createStore';
+import { store as reduxStore } from '../../store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
 import RocketChat from '../../rocketchat';
@@ -17,6 +17,7 @@ import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
 import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
+import sdk from '../../services/sdk';
 
 const WINDOW_TIME = 1000;
 
@@ -57,12 +58,12 @@ export default class RoomSubscription {
 		if (this.promises) {
 			await this.unsubscribe();
 		}
-		this.promises = RocketChat.subscribeRoom(this.rid);
+		this.promises = sdk.subscribeRoom(this.rid);
 
-		this.connectedListener = RocketChat.onStreamData('connected', this.handleConnection);
-		this.disconnectedListener = RocketChat.onStreamData('close', this.handleConnection);
-		this.notifyRoomListener = RocketChat.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
-		this.messageReceivedListener = RocketChat.onStreamData('stream-room-messages', this.handleMessageReceived);
+		this.connectedListener = sdk.onStreamData('connected', this.handleConnection);
+		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
+		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
+		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
 		if (!this.isAlive) {
 			await this.unsubscribe();
 		}

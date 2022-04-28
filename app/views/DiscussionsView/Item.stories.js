@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native';
 import { Provider } from 'react-redux';
 
 import * as List from '../../containers/List';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { ThemeContext } from '../../theme';
 import { store } from '../../../storybook/stories';
 import Item from './Item';

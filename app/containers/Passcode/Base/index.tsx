@@ -9,8 +9,7 @@ import styles from './styles';
 import Button from './Button';
 import Dots from './Dots';
 import { TYPE } from '../constants';
-import { themes } from '../../../constants/colors';
-import { PASSCODE_LENGTH } from '../../../constants/localAuthentication';
+import { PASSCODE_LENGTH, themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import LockIcon from './LockIcon';
 import Title from './Title';
@@ -20,7 +19,7 @@ interface IPasscodeBase {
 	type: string;
 	previousPasscode?: string;
 	title: string;
-	subtitle?: string;
+	subtitle?: string | null;
 	showBiometry?: boolean;
 	onEndProcess: Function;
 	onError?: Function;

@@ -1,13 +1,14 @@
-import React from 'react';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import React from 'react';
+import { View } from 'react-native';
 
-import { themes } from '../../../constants/colors';
-import { CustomIcon } from '../../../lib/Icons';
 import styles from '../styles';
-import I18n from '../../../i18n';
+import i18n from '../../../i18n';
+import { CustomIcon } from '../../../lib/Icons';
+import { useTheme } from '../../../theme';
+import { themes } from '../../../lib/constants';
 
 interface IBaseButton {
-	theme: string;
 	onPress(): void;
 	testID: string;
 	accessibilityLabel: string;
@@ -15,16 +16,18 @@ interface IBaseButton {
 	color: string;
 }
 
-const BaseButton = React.memo(({ onPress, testID, accessibilityLabel, icon, theme, color }: Partial<IBaseButton>) => (
-	<BorderlessButton
-		onPress={onPress}
-		style={styles.actionButton}
-		testID={testID}
-		// @ts-ignore
-		accessibilityLabel={I18n.t(accessibilityLabel)}
-		accessibilityTraits='button'>
-		<CustomIcon name={icon} size={24} color={color ?? themes[theme!].auxiliaryTintColor} />
-	</BorderlessButton>
-));
+const BaseButton = ({ accessibilityLabel, icon, color, ...props }: Partial<IBaseButton>) => {
+	const { theme } = useTheme();
+	return (
+		<BorderlessButton {...props} style={styles.actionButton}>
+			<View
+				accessible
+				accessibilityLabel={accessibilityLabel ? i18n.t(accessibilityLabel) : accessibilityLabel}
+				accessibilityRole='button'>
+				<CustomIcon name={icon} size={24} color={color || themes[theme].auxiliaryTintColor} />
+			</View>
+		</BorderlessButton>
+	);
+};
 
 export default BaseButton;

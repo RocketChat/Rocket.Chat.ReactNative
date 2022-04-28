@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { CustomIcon } from '../../lib/Icons';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import sharedStyles from '../Styles';
 import { useTheme } from '../../theme';
 import { IMessageFromServer } from '../../definitions';

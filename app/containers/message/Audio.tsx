@@ -1,36 +1,38 @@
 import React from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
-import { Audio } from 'expo-av';
+import { Audio, AVPlaybackStatus } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import moment from 'moment';
 import { dequal } from 'dequal';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { Sound } from 'expo-av/build/Audio/Sound';
 
 import Touchable from './Touchable';
 import Markdown from '../markdown';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { isAndroid, isIOS } from '../../utils/deviceInfo';
 import MessageContext from './Context';
 import ActivityIndicator from '../ActivityIndicator';
 import { withDimensions } from '../../dimensions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { IAttachment } from '../../definitions';
+import { TSupportedThemes } from '../../theme';
 
 interface IButton {
 	loading: boolean;
 	paused: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 	disabled?: boolean;
-	onPress: Function;
+	onPress: () => void;
 }
 
 interface IMessageAudioProps {
 	file: IAttachment;
 	isReply?: boolean;
 	style?: StyleProp<TextStyle>[];
-	theme: string;
+	theme: TSupportedThemes;
 	getCustomEmoji: TGetCustomEmoji;
 	scale?: number;
 }
@@ -108,7 +110,7 @@ Button.displayName = 'MessageAudioButton';
 class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioState> {
 	static contextType = MessageContext;
 
-	private sound: any;
+	private sound: Sound;
 
 	constructor(props: IMessageAudioProps) {
 		super(props);
@@ -141,7 +143,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		this.setState({ loading: false });
 	}
 
-	shouldComponentUpdate(nextProps: any, nextState: any) {
+	shouldComponentUpdate(nextProps: IMessageAudioProps, nextState: IMessageAudioState) {
 		const { currentTime, duration, paused, loading } = this.state;
 		const { file, theme } = this.props;
 		if (nextProps.theme !== theme) {
@@ -182,7 +184,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	}
 
-	onPlaybackStatusUpdate = (status: any) => {
+	onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
 		if (status) {
 			this.onLoad(status);
 			this.onProgress(status);
@@ -190,26 +192,32 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	};
 
-	onLoad = (data: any) => {
-		const duration = data.durationMillis / 1000;
-		this.setState({ duration: duration > 0 ? duration : 0 });
-	};
-
-	onProgress = (data: any) => {
-		const { duration } = this.state;
-		const currentTime = data.positionMillis / 1000;
-		if (currentTime <= duration) {
-			this.setState({ currentTime });
+	onLoad = (data: AVPlaybackStatus) => {
+		if (data.isLoaded && data.durationMillis) {
+			const duration = data.durationMillis / 1000;
+			this.setState({ duration: duration > 0 ? duration : 0 });
 		}
 	};
 
-	onEnd = async (data: any) => {
-		if (data.didJustFinish) {
-			try {
-				await this.sound.stopAsync();
-				this.setState({ paused: true, currentTime: 0 });
-			} catch {
-				// do nothing
+	onProgress = (data: AVPlaybackStatus) => {
+		if (data.isLoaded) {
+			const { duration } = this.state;
+			const currentTime = data.positionMillis / 1000;
+			if (currentTime <= duration) {
+				this.setState({ currentTime });
+			}
+		}
+	};
+
+	onEnd = async (data: AVPlaybackStatus) => {
+		if (data.isLoaded) {
+			if (data.didJustFinish) {
+				try {
+					await this.sound.stopAsync();
+					this.setState({ paused: true, currentTime: 0 });
+				} catch {
+					// do nothing
+				}
 			}
 		}
 	};
@@ -238,7 +246,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 		}
 	};
 
-	onValueChange = async (value: any) => {
+	onValueChange = async (value: number) => {
 		try {
 			this.setState({ currentTime: value });
 			await this.sound.setPositionAsync(value * 1000);
@@ -255,6 +263,13 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 
 		if (!baseUrl) {
 			return null;
+		}
+
+		let thumbColor;
+		if (isAndroid && isReply) {
+			thumbColor = themes[theme].tintDisabled;
+		} else if (isAndroid) {
+			thumbColor = themes[theme].tintColor;
 		}
 
 		return (
@@ -279,7 +294,7 @@ class MessageAudio extends React.Component<IMessageAudioProps, IMessageAudioStat
 						value={currentTime}
 						maximumValue={duration}
 						minimumValue={0}
-						thumbTintColor={isReply && isAndroid ? themes[theme].tintDisabled : isAndroid && themes[theme].tintColor}
+						thumbTintColor={thumbColor}
 						minimumTrackTintColor={themes[theme].tintColor}
 						maximumTrackTintColor={themes[theme].auxiliaryText}
 						onValueChange={this.onValueChange}

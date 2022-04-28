@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { deleteRoom } from '../actions/room';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import { withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
@@ -24,10 +24,10 @@ import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../lib/Icons';
 import RocketChat from '../lib/rocketchat';
-import RoomItem, { ROW_HEIGHT } from '../presentation/RoomItem';
+import RoomItem, { ROW_HEIGHT } from '../containers/RoomItem';
 import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
-import { withTheme } from '../theme';
+import { TSupportedThemes, withTheme } from '../theme';
 import debounce from '../utils/debounce';
 import { isIOS } from '../utils/deviceInfo';
 import { goRoom } from '../utils/goRoom';
@@ -87,7 +87,7 @@ type IProps = Omit<IBaseScreen<ChatsStackParamList, 'TeamChannelsView'>, 'naviga
 interface ITeamChannelsViewProps extends IProps {
 	isMasterDetail: boolean;
 	insets: EdgeInsets;
-	theme: string;
+	theme: TSupportedThemes;
 	useRealName: boolean;
 	width: number;
 	StoreLastMessage: boolean;

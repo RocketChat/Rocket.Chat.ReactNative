@@ -7,7 +7,7 @@ import Animated, { Easing, Extrapolate, interpolateNode, Value } from 'react-nat
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ScrollBottomSheet from 'react-native-scroll-bottom-sheet';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useDimensions, useOrientation } from '../../dimensions';
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';

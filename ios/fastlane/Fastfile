@@ -76,20 +76,18 @@ platform :ios do
       output_path: './'
     )
 
-    update_project_provisioning(
-      xcodeproj: 'RocketChatRN.xcodeproj',
-      profile: "AppStore_chat.rocket.ios.NotificationService.mobileprovision",
-      target_filter: "NotificationService",
-      build_configuration: 'Release',
-      code_signing_identity: 'iPhone Distribution'
+    update_code_signing_settings(
+      profile_name: "match AppStore chat.rocket.ios.NotificationService",
+      build_configurations: "Release",
+      code_sign_identity: "iPhone Distribution",
+      targets: "NotificationService",
     )
 
-    update_project_provisioning(
-      xcodeproj: 'RocketChatRN.xcodeproj',
-      profile: "AppStore_chat.rocket.ios.Rocket-Chat-ShareExtension.mobileprovision",
-      target_filter: "ShareRocketChatRN",
-      build_configuration: 'Release',
-      code_signing_identity: 'iPhone Distribution'
+    update_code_signing_settings(
+      profile_name: "match AppStore chat.rocket.ios.Rocket-Chat-ShareExtension",
+      build_configurations: "Release",
+      code_sign_identity: "iPhone Distribution",
+      targets: "ShareRocketChatRN",
     )
 
     gym(

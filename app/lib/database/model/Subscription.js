@@ -130,4 +130,8 @@ export default class Subscription extends Model {
 	@field('team_id') teamId;
 
 	@field('team_main') teamMain;
+
+	@field('on_hold') onHold;
+
+	@json('source', sanitizer) source;
 }

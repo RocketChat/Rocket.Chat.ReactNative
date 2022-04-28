@@ -1,8 +1,8 @@
 import { IActionSettings } from '../actions/settings';
 import { SETTINGS } from '../actions/actionsTypes';
-import settings from '../constants/settings';
+import { defaultSettings } from '../lib/constants';
 
-export type TSupportedSettings = keyof typeof settings;
+export type TSupportedSettings = keyof typeof defaultSettings;
 export type TSettingsValues = string | number | boolean | string[];
 
 export type TSettingsState = {

@@ -1,5 +1,5 @@
 import { ChatsStackParamList } from '../stacks/types';
-import Navigation from '../lib/Navigation';
+import Navigation from '../lib/navigation/appNavigation';
 import RocketChat from '../lib/rocketchat';
 import { IOmnichannelRoom, SubscriptionType, IVisitor, TSubscriptionModel, ISubscription } from '../definitions';
 

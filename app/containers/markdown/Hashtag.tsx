@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { IUserChannel } from './interfaces';
 import styles from './styles';

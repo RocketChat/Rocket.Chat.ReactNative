@@ -16,11 +16,11 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../utils/info';
 import { localAuthenticate } from '../utils/localAuthentication';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
-import UserPreferences from '../lib/userPreferences';
+import UserPreferences from '../lib/methods/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
 import { RootEnum } from '../definitions';
-
+import sdk from '../lib/services/sdk';
 import appConfig from '../../app.json';
 
 const getServer = state => state.server.server;
@@ -55,7 +55,7 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 						const serverHistoryRecord = serversHistory[0];
 						// this is updating on every login just to save `updated_at`
 						// keeping this server as the most recent on autocomplete order
-						await serverHistoryRecord.update((s) => {
+						await serverHistoryRecord.update(s => {
 							s.username = result.username;
 						});
 					}
@@ -66,8 +66,10 @@ const handleLoginRequest = function* handleLoginRequest({ credentials, logoutOnE
 			yield put(loginSuccess(result));
 		}
 	} catch (e) {
-		if (logoutOnError && e.data && e.data.message && /you've been logged out by the server/i.test(e.data.message)) {
-			yield put(logout(true));
+		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
+			yield put(logout(true, 'Logged_out_by_server'));
+		} else if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
+			yield put(logout(true, 'Token_expired'));
 		} else {
 			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
 			yield put(loginFailure(e));
@@ -88,7 +90,7 @@ const fetchCustomEmojis = function* fetchCustomEmojis() {
 };
 
 const fetchRoles = function* fetchRoles() {
-	RocketChat.subscribe('stream-roles', 'roles');
+	sdk.subscribe('stream-roles', 'roles');
 	yield RocketChat.getRoles();
 };
 
@@ -151,12 +153,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield serversDB.action(async () => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
-				await userRecord.update((record) => {
+				await userRecord.update(record => {
 					record._raw = sanitizedRaw({ id: user.id, ...record._raw }, usersCollection.schema);
 					Object.assign(record, u);
 				});
 			} catch (e) {
-				await usersCollection.create((record) => {
+				await usersCollection.create(record => {
 					record._raw = sanitizedRaw({ id: user.id }, usersCollection.schema);
 					Object.assign(record, u);
 				});
@@ -178,7 +180,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	}
 };
 
-const handleLogout = function* handleLogout({ forcedByServer }) {
+const handleLogout = function* handleLogout({ forcedByServer, message }) {
 	yield put(encryptionStop());
 	yield put(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Logging_out') }));
 	const server = yield select(getServer);
@@ -192,7 +194,9 @@ const handleLogout = function* handleLogout({ forcedByServer }) {
 			// if the user was logged out by the server
 			if (forcedByServer) {
 				// yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-				showErrorAlert(I18n.t('Logged_out_by_server'), I18n.t('Oops'));
+				if (message) {
+					showErrorAlert(I18n.t(message), I18n.t('Oops'));
+				}
 				yield delay(300);
 				EventEmitter.emit('NewServer', { server });
 			}
