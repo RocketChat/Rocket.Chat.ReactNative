@@ -1,4 +1,4 @@
-const { launchApp, equal } = require('../helpers');
+const { launchApp, equal, getText } = require('../helpers');
 const { login, logout } = require('../helpers/login');
 
 describe('Onboarding', () => {
