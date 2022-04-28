@@ -2,7 +2,7 @@ import { Alert, NativeModules, Platform } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import * as FileSystem from 'expo-file-system';
 
-import UserPreferences from '../lib/userPreferences';
+import UserPreferences from '../lib/methods/userPreferences';
 import I18n from '../i18n';
 import { extractHostname } from './server';
 import { ICertificate } from '../definitions';

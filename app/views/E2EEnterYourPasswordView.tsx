@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, Text, TextInput as RNTextInput } from 'react-na
 import { connect } from 'react-redux';
 
 import { encryptionDecodeKey } from '../actions/encryption';
-import { themes } from '../constants/colors';
+import { themes } from '../lib/constants';
 import Button from '../containers/Button';
 import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -12,7 +12,7 @@ import StatusBar from '../containers/StatusBar';
 import TextInput from '../containers/TextInput';
 import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
-import KeyboardView from '../presentation/KeyboardView';
+import KeyboardView from '../containers/KeyboardView';
 import { E2EEnterYourPasswordStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import { events, logEvent } from '../utils/log';

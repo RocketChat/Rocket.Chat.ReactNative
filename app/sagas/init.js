@@ -1,8 +1,8 @@
 import { put, takeLatest, all } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 
-import { BIOMETRY_ENABLED_KEY } from '../constants/localAuthentication';
-import UserPreferences from '../lib/userPreferences';
+import { BIOMETRY_ENABLED_KEY } from '../lib/constants';
+import UserPreferences from '../lib/methods/userPreferences';
 import { selectServerRequest, serverRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';

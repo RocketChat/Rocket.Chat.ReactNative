@@ -4,12 +4,15 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q, Model } from '@nozbe/watermelondb';
 
 import RocketChat from '../rocketchat';
-import UserPreferences from '../userPreferences';
+import UserPreferences from '../methods/userPreferences';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import Deferred from '../../utils/deferred';
 import log from '../../utils/log';
-import { store } from '../auxStore';
+import { store } from '../store/auxStore';
+import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
+import { EncryptionRoom } from './index';
+import { IMessage, ISubscription, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,
@@ -17,10 +20,7 @@ import {
 	E2E_PUBLIC_KEY,
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS
-} from './constants';
-import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
-import { EncryptionRoom } from './index';
-import { IMessage, ISubscription, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
+} from '../constants';
 
 class Encryption {
 	ready: boolean;

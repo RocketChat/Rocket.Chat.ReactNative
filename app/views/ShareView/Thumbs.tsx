@@ -3,12 +3,13 @@ import { FlatList, Image, StyleSheet, View } from 'react-native';
 import { RectButton, TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 
 import { BUTTON_HIT_SLOP } from '../../containers/message/utils';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { CustomIcon } from '../../lib/Icons';
 import { isIOS } from '../../utils/deviceInfo';
 import { THUMBS_HEIGHT } from './constants';
 import { allowPreview } from './utils';
 import { IAttachment } from './interfaces';
+import { TSupportedThemes } from '../../theme';
 
 const THUMB_SIZE = 64;
 
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
 
 interface IThumbContent {
 	item: IAttachment;
-	theme: string;
+	theme: TSupportedThemes;
 	isShareExtension: boolean;
 }
 

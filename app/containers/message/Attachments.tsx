@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { dequal } from 'dequal';
 import { Text } from 'react-native';
 
-import { IMessageAttachments, IMessageAttachedActions } from './interfaces';
+import { IMessageAttachments } from './interfaces';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
@@ -14,7 +14,7 @@ import { useTheme } from '../../theme';
 import { IAttachment } from '../../definitions';
 import CollapsibleQuote from './Components/CollapsibleQuote';
 import openLink from '../../utils/openLink';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 
 export type TElement = {
 	type: string;
@@ -23,12 +23,13 @@ export type TElement = {
 	text: string;
 };
 
-const AttachedActions = ({ attachment }: IMessageAttachedActions) => {
+const AttachedActions = ({ attachment }: { attachment: IAttachment }) => {
+	const { onAnswerButtonPress } = useContext(MessageContext);
+	const { theme } = useTheme();
+
 	if (!attachment.actions) {
 		return null;
 	}
-	const { onAnswerButtonPress } = useContext(MessageContext);
-	const { theme } = useTheme();
 
 	const attachedButtons = attachment.actions.map((element: TElement) => {
 		const onPress = () => {
@@ -55,16 +56,15 @@ const AttachedActions = ({ attachment }: IMessageAttachedActions) => {
 	);
 };
 
-const Attachments = React.memo(
-	// @ts-ignore
+const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply }: IMessageAttachments) => {
+		const { theme } = useTheme();
+
 		if (!attachments || attachments.length === 0) {
 			return null;
 		}
 
-		const { theme } = useTheme();
-
-		return attachments.map((file: IAttachment, index: number) => {
+		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
 			if (file && file.image_url) {
 				return (
 					<Image
@@ -93,7 +93,6 @@ const Attachments = React.memo(
 						getCustomEmoji={getCustomEmoji}
 						style={style}
 						isReply={isReply}
-						theme={theme}
 					/>
 				);
 			}
@@ -109,6 +108,7 @@ const Attachments = React.memo(
 
 			return <Reply key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 		});
+		return <>{attachmentsElements}</>;
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)
 );

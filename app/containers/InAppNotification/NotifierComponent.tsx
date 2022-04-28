@@ -8,11 +8,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Avatar from '../Avatar';
 import { CustomIcon } from '../../lib/Icons';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
-import { ROW_HEIGHT } from '../../presentation/RoomItem';
+import { ROW_HEIGHT } from '../RoomItem';
 import { goRoom } from '../../utils/goRoom';
-import Navigation from '../../lib/Navigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { useOrientation } from '../../dimensions';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
 

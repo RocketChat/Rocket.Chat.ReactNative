@@ -15,8 +15,8 @@ import { emojisByCategory } from '../../emojis';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import shortnameToUnicode from '../../utils/shortnameToUnicode';
 import log from '../../utils/log';
-import { themes } from '../../constants/colors';
-import { withTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { TSupportedThemes, withTheme } from '../../theme';
 import { IEmoji } from '../../definitions/IEmoji';
 
 const scrollProps = {
@@ -30,7 +30,7 @@ interface IEmojiPickerProps {
 	baseUrl: string;
 	customEmojis?: any;
 	style: object;
-	theme?: string;
+	theme: TSupportedThemes;
 	onEmojiSelected?: ((emoji: any) => void) | ((keyboardId: any, params?: any) => void);
 	tabEmojiStyle?: object;
 }
@@ -109,6 +109,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 		const freqEmojiCollection = db.get('frequently_used_emojis');
 		let freqEmojiRecord: any;
 		try {
+			// @ts-ignore
 			freqEmojiRecord = await freqEmojiCollection.find(emoji.content);
 		} catch (error) {
 			// Do nothing
@@ -185,7 +186,7 @@ class EmojiPicker extends Component<IEmojiPickerProps, IEmojiPickerState> {
 					renderTabBar={() => <TabBar tabEmojiStyle={tabEmojiStyle} theme={theme} />}
 					/* @ts-ignore*/
 					contentProps={scrollProps}
-					style={{ backgroundColor: themes[theme!].focusedBackground }}>
+					style={{ backgroundColor: themes[theme].focusedBackground }}>
 					{categories.tabs.map((tab, i) =>
 						i === 0 && frequentlyUsed.length === 0
 							? null // when no frequentlyUsed don't show the tab

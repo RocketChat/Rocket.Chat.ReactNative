@@ -4,10 +4,9 @@ import { Dimensions, ScrollView } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { Provider } from 'react-redux';
 
-import { themes } from '../../app/constants/colors';
-import RoomItemComponent from '../../app/presentation/RoomItem/RoomItem';
+import RoomItemComponent from '../../app/containers/RoomItem/RoomItem';
 import { longText } from '../utils';
-import { DisplayMode } from '../../app/constants/constantDisplayMode';
+import { DisplayMode, themes } from '../../app/lib/constants';
 import { store } from './index';
 
 const baseUrl = 'https://open.rocket.chat';
@@ -181,5 +180,20 @@ stories.add('Expanded Room Item without Avatar', () => (
 			displayMode={DisplayMode.Expanded}
 			showAvatar={false}
 		/>
+	</>
+));
+
+stories.add('Omnichannel Icon', () => (
+	<>
+		<RoomItem type='l' sourceType={{ type: 'widget' }} status='online' />
+		<RoomItem type='l' sourceType={{ type: 'widget' }} status='away' />
+		<RoomItem type='l' sourceType={{ type: 'widget' }} status='loading' />
+		<RoomItem type='l' sourceType={{ type: 'widget' }} />
+		<RoomItem type='l' sourceType={{ type: 'email' }} status='online' />
+		<RoomItem type='l' sourceType={{ type: 'email' }} />
+		<RoomItem type='l' sourceType={{ type: 'sms' }} status='online' />
+		<RoomItem type='l' sourceType={{ type: 'sms' }} />
+		<RoomItem type='l' sourceType={{ type: 'other' }} status='online' />
+		<RoomItem type='l' sourceType={{ type: 'other' }} />
 	</>
 ));

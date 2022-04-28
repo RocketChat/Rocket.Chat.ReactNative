@@ -1,14 +1,15 @@
 import React from 'react';
 import { Text, View, ViewStyle } from 'react-native';
 
-import { themes } from '../../constants/colors';
+import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
 import styles from './styles';
 
 interface ITableCell {
 	align: '' | 'left' | 'center' | 'right';
 	children: React.ReactElement | null;
 	isLastCell: boolean;
-	theme: string;
+	theme: TSupportedThemes;
 }
 
 export const CELL_WIDTH = 100;

@@ -9,7 +9,7 @@ import parse from 'url-parse';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
-import { themes } from '../../constants/colors';
+import { themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -20,7 +20,7 @@ import I18n from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import RocketChat from '../../lib/rocketchat';
-import UserPreferences from '../../lib/userPreferences';
+import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { isTablet } from '../../utils/deviceInfo';

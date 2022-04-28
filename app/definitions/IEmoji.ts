@@ -1,8 +1,9 @@
+// TODO: evaluate unification with IEmoji
 export interface IEmoji {
-	content: any;
-	name: string;
-	extension: any;
-	isCustom: boolean;
+	content?: string;
+	name?: string;
+	extension?: string;
+	isCustom?: boolean;
 }
 
 export interface ICustomEmoji {

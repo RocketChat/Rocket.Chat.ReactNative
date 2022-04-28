@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
-import PropTypes from 'prop-types';
 
-import shortnameToUnicode from '../../../utils/shortnameToUnicode';
-import styles from '../styles';
-import MessageboxContext from '../Context';
-import CustomEmoji from '../../EmojiPicker/CustomEmoji';
 import { IEmoji } from '../../../definitions/IEmoji';
+import shortnameToUnicode from '../../../utils/shortnameToUnicode';
+import CustomEmoji from '../../EmojiPicker/CustomEmoji';
+import MessageboxContext from '../Context';
+import styles from '../styles';
 
 interface IMessageBoxMentionEmoji {
 	item: IEmoji;
@@ -20,10 +19,6 @@ const MentionEmoji = ({ item }: IMessageBoxMentionEmoji) => {
 		return <CustomEmoji style={styles.mentionItemCustomEmoji} emoji={item} baseUrl={baseUrl} />;
 	}
 	return <Text style={styles.mentionItemEmoji}>{shortnameToUnicode(`:${item}:`)}</Text>;
-};
-
-MentionEmoji.propTypes = {
-	item: PropTypes.object
 };
 
 export default MentionEmoji;
