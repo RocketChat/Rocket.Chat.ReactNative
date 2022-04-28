@@ -1,20 +1,20 @@
 import { forwardRef, useImperativeHandle } from 'react';
 import Model from '@nozbe/watermelondb/Model';
 
-import RocketChat from '../lib/rocketchat';
 import database from '../lib/database';
 import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import { useActionSheet } from './ActionSheet';
 import I18n from '../i18n';
 import log from '../utils/log';
 import { TMessageModel } from '../definitions';
+import { resendMessage } from '../lib/methods';
 
 const MessageErrorActions = forwardRef(({ tmid }: { tmid: string }, ref) => {
 	// TODO - remove this any after merge ActionSheet evaluate
 	const { showActionSheet }: any = useActionSheet();
 
 	const handleResend = protectedFunction(async (message: TMessageModel) => {
-		await RocketChat.resendMessage(message, tmid);
+		await resendMessage(message, tmid);
 	});
 
 	const handleDelete = async (message: TMessageModel) => {

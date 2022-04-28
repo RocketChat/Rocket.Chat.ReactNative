@@ -12,7 +12,6 @@ import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import TextInput from '../../containers/TextInput';
-import RocketChat from '../../lib/rocketchat';
 import Navigation from '../../lib/navigation/appNavigation';
 import { createDiscussionRequest } from '../../actions/createDiscussion';
 import { showErrorAlert } from '../../utils/info';
@@ -25,6 +24,7 @@ import SelectChannel from './SelectChannel';
 import { ICreateChannelViewProps, IResult, IError } from './interfaces';
 import { IApplicationState } from '../../definitions';
 import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
+import { getRoomTitle } from '../../lib/methods';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 	private channel: any;
@@ -67,7 +67,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 					}
 					const item = {
 						rid,
-						name: RocketChat.getRoomTitle(result),
+						name: getRoomTitle(result),
 						t,
 						prid
 					};
@@ -161,7 +161,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, any> {
 							server={server}
 							userId={user.id}
 							token={user.token}
-							initial={this.channel && { text: RocketChat.getRoomTitle(this.channel) }}
+							initial={this.channel && { text: getRoomTitle(this.channel) }}
 							onChannelSelect={this.selectChannel}
 							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 							serverVersion={serverVersion}

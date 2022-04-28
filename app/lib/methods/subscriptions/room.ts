@@ -12,13 +12,14 @@ import { getThreadMessageById } from '../../database/services/ThreadMessage';
 import { store as reduxStore } from '../../store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actions/usersTyping';
 import debounce from '../../../utils/debounce';
-import RocketChat from '../../rocketchat';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
 import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { isTablet } from '../../../utils/deviceInfo';
+import { readMessages } from '../readMessages';
+import { loadMissedMessages } from '../loadMissedMessages';
 
 const WINDOW_TIME = 1000;
 
@@ -116,7 +117,7 @@ export default class RoomSubscription {
 	handleConnection = async () => {
 		try {
 			reduxStore.dispatch(clearUserTyping());
-			await RocketChat.loadMissedMessages({ rid: this.rid });
+			await loadMissedMessages({ rid: this.rid });
 			const _lastOpen = new Date();
 			this.read(_lastOpen);
 			this.lastOpen = _lastOpen;
@@ -194,7 +195,7 @@ export default class RoomSubscription {
 	});
 
 	read = debounce((lastOpen: Date) => {
-		RocketChat.readMessages(this.rid, lastOpen);
+		readMessages(this.rid, lastOpen);
 	}, 300);
 
 	updateMessage = (message: IMessage): Promise<void> =>
