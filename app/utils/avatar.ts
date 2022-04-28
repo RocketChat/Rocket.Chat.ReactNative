@@ -6,7 +6,7 @@ const formatUrl = (url: string, size: number, query?: string) => `${url}?format=
 
 export const avatarURL = ({
 	type,
-	text,
+	text = '',
 	size = 25,
 	user = {},
 	avatar,
